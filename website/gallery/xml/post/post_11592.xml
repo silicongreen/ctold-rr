@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<playlist>
+  <slide>
+    <file>/upload/gallery/image/arts/books1.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/books1.jpg</thumbnail>
+    <title></title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/books5.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/books5.jpg</thumbnail>
+    <title></title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/books4.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/books4.jpg</thumbnail>
+    <title></title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/books2.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/books2.jpg</thumbnail>
+    <title></title>
+  </slide>
+</playlist>

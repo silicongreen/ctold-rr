@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<playlist>
+  <slide>
+    <file>/upload/gallery/image/arts/jabbar.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/jabbar.jpg</thumbnail>
+    <title>Abdul Jabbar</title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/apel.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/apel.jpg</thumbnail>
+    <title>Apel Mahmud</title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/roy.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/roy.jpg</thumbnail>
+    <title>Rathindranath Roy</title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/fardus.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/fardus.jpg</thumbnail>
+    <title>Ferdausi Rahman</title>
+  </slide>
+</playlist>

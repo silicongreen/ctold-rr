@@ -1,0 +1,308 @@
+.champs-logo
+{
+	background: url('');
+}
+.tzblog-sidebar aside{
+    margin: 0px 0px;
+    overflow: hidden;
+}
+.tzblog-sidebar aside ul{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.tzblog-sidebar aside ul li{
+    padding: 10px 0;
+}
+.tzblog-sidebar aside ul li a{
+    color: #414952;
+
+}
+.tzblog-sidebar aside h3 .module-title{
+    margin: 0 0 10px;
+}
+/*fearture post*/
+.tzblog-sidebar aside .fearture ul li{
+    margin: 0;
+    padding: 0;
+}
+.tzblog-sidebar aside select option{
+    max-width: 250px;
+    overflow: hidden;
+}
+
+.fearture-item:first-child{
+    margin-top: 0;
+}
+.fearture-item{
+    margin-top: 15px;
+}
+.tz-fearture-img{
+    margin-top: 4px;
+    overflow: hidden;
+    max-height: 188px;
+}
+.fearture-item h6{
+    font-size: 18px;
+    margin: 0;
+    padding: 12px 0px 5px;
+}
+.tzblog-sidebar .fearture-item h6 a {
+    line-height: 21px;
+    font-size: 17px;
+    font-family: 'OpenSansSemiBold';
+    color: #414952;
+    font-weight: bold;
+}
+.fearture-item p{
+    color: #414952;
+    font-family: 'OpenSansRegular,Arial,sans-serif';
+    font-size: 13px;
+    line-height: 24px;
+    margin: 0;
+    padding: 0;
+}
+.fearture-item .tzwginfo:last-of-type{
+    margin: 8px 0 0px;
+}
+.fearture-item .tzwginfo{
+    color: #414952;
+    font-family: 'OpenSansLight,Arial,sans-serif';
+    font-size: 13px;
+
+    line-height: 24px;
+    margin: 8px 0 10px;
+    padding: 0;
+    font-style: italic;
+    display: block;
+}
+.tzblog-sidebar aside .fearture-item .tzwginfo a{
+    color: #414952;
+    font-family: 'OpenSansLight,Arial,sans-serif';
+    font-size: 13px;
+    font-weight: 300;
+    line-height: 24px;
+    margin: 0;
+    padding: 0;
+    font-style: italic;
+    text-transform: none;
+}
+/*contact info*/
+.footerattr ul.tzcontact-info li:first-child{
+    margin-top: 0px;
+}
+.footerattr ul.tzcontact-info li{
+    margin-top: 20px;
+}
+.tzcontact-info li i{
+    float: left;
+    display: block;
+    color: #646462;
+    font-size: 18px;
+    padding-top: 2px;
+}
+.tzcontact-info li span{
+    padding-left: 40px;
+
+    display: block;
+    font-size: 11.998px;
+    font-family: 'OpenSansRegular,Arial,sans-serif';
+
+    line-height: 20px;
+}
+
+/*table*/
+#wp-calendar{
+    width: 100%;
+}
+#wp-calendar caption{
+    font-size: 17px;
+    padding: 10px 0 15px;
+    text-transform: uppercase;
+}
+#wp-calendar td{
+    font-size: 14px;
+    text-align: center;
+}
+.tzblog-sidebar .Tzsearchform {
+    border-radius: 0;
+}
+#sidebar-left .Tzsearchform {
+    background: none repeat scroll 0 0 #646462;
+    border: 1px solid #474747;
+    border-radius: 0;
+    color: #959595 ;
+}
+input, button, select, textarea{
+    font-family: 'OpenSansRegular';
+}
+#searchform .assistive-text{
+    display: none;
+}
+#searchsubmit{
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border: 1px solid #D9DBDC;
+    color: #414952;
+    font-family: 'OpenSansRegular';
+    height: 36px;
+    margin-top: 10px;
+    padding: 0 20px;
+    text-align: center;
+}
+
+/*tagcloud*/
+.tagcloud a:first-child{
+    margin-right: 0px;
+}
+.tagcloud a{
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border: 1px solid #D9DBDC;
+    color: #414952;
+    display: inline-block;
+    font-family: 'OpenSansRegular';
+    padding: 6px 20px 7px;
+    text-align: center;
+    margin-right: 3px;
+    font-size: 13px !important;
+    margin-top: 6px;
+}
+/*widget_nav_menu*/
+.widget_nav_menu ul li i{
+    padding-right: 10px;
+}
+/*cagegory*/
+.widget_categories ul li a{
+    text-transform: uppercase;
+}
+.tweet-item{
+    margin-bottom: 19px;
+}
+.tweet-item a{
+    color: #3498db;
+    font-size: 13px;
+    line-height: 21px;
+    font-family: 'OpenSansRegular';
+}
+.tweet-content{
+    color: #414952;
+    font-size: 13px;
+    line-height: 21px;
+    font-family: 'OpenSansRegular';
+}
+a.user,
+a.user .name,
+a.user .screen_name{
+    font-family: 'OpenSansRegular';
+    color: #3498db;
+}
+span.time a{
+    color: #3e3f3f;
+    font-size: 11px;
+    line-height: 21px;
+    font-family: 'OpenSansSemiBold';
+    display: block;
+}
+.tagcloud{
+    margin-top: 20px;
+}
+.dw-twitter-inner {
+    margin-top: 17px;
+}
+.textwidget{
+    color: #414952;
+    font-family: 'OpenSansRegular,Arial,sans-serif';
+    font-size: 13px;
+    line-height: 24px;
+    margin: 17px 0 0 0;
+    padding: 0;
+}
+
+/*sidebar left*/
+section#sidebar-left aside{
+    color: #959595;
+    margin: 0px;
+    padding: 0;
+}
+
+#sidebar-left h3.module-title span{
+    color: #ffffff;
+}
+#sidebar-left ul li a{
+    color: #959595;
+}
+#sidebar-left .tagcloud a{
+    color: #959595;
+}
+#sidebar-left select{
+    background: #959595;
+    margin-top: 16px;
+    border: 0;
+}
+#sidebar-left aside p{
+    color: #fff !important;
+}
+#sidebar-left #searchsubmit{
+    color: #959595 !important;
+    border: 1px solid #474747;
+}
+#sidebar-left .widget_categories ul{
+    margin-top: 11px;
+}
+#sidebar-left .tz_social{
+    /*border-bottom: 1px solid #474747 !important;*/
+    border-bottom: medium none !important;
+    padding-bottom: 0px !important;
+
+}
+.tz_social:after{
+    display: table;
+    content: "";
+    clear: both;
+}
+aside .tz_social li {
+    border: medium none;
+    display: inline-block;
+    float: left;
+    padding: 0 0 10px;
+}
+#sidebar-left aside .tz_social li a{
+    color: #31312F;
+    background:  #646462;
+}
+
+/*user*/
+.custombox_profile
+{
+    background: none repeat scroll 0 0 #3d3d3b;
+    margin-bottom: 20px;
+    padding: 5px 30px 0;
+}
+.custombox_profile h3 {
+    color: #FFFFFF;
+    font-size: 22px;
+    font-weight: normal;
+    text-transform: uppercase;
+}
+.custombox_profile h3 {
+    float: left;
+}
+.custombox_profile address {
+    margin-top: 22px !important;
+}
+.custombox_profile address {
+    color: #959595;
+    display: inline;
+    float: left;
+    font-size: 12px;
+    margin-left: 5px;
+    margin-top: 0;
+}
+.user-description{
+    margin-bottom: 0 !important;
+}
+.custombox_profile p {
+    color: #fff;
+    font-size: 13px;
+    line-height: 18px;
+    clear: both;
+}

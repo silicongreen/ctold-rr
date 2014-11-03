@@ -1,0 +1,224 @@
+/* 
+    Document   : index
+    Created on : Dec 5, 2013, 10:22:04 AM
+    Author     : fahim
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+#disqus_thread { 
+    padding: 10px !important; 
+}
+.clear_both
+{
+    clear: both !important; 
+}
+.float_left_top_five
+{
+    float:left !important; 
+    margin:0px 5px !important; 
+}
+.icon_image_div
+{
+    width:100% !important;  
+    background-color: #f00 !important; 
+}
+.columinst_imgae_h3
+{
+    height:70px !important;  
+    padding:5px !important;  
+    
+}
+.magazine_publish_date
+{
+    width: 50% !important;  
+    float: right !important; 
+    text-align: right !important;  
+    color: #FFF !important; 
+    padding-right: 10px !important;  
+    font-size: 18px !important;  
+    font-weight: bold !important; 
+}
+.first_top_inner_common_topics
+{
+    float: left !important;  
+    width: 54% !important;  
+    padding: 5px !important; 
+}
+.width_98
+{
+    width: 98.7% !important; 
+}
+
+
+/***************  innermiddlenewsajax ***/
+
+.inner-topics-ajax {
+    float:left !important; 
+    clear:both !important;
+    background: #FFFFFF !important;
+    padding: 5px 2px !important;
+}
+
+.inner-topics-ajax {
+    border: 0 !important; 
+}
+
+.inner-topics-ajax-inner {
+    height:0 !important; 
+    border: none !important;
+}
+
+.inner-topics-ajax-inner-p { 
+     width: 300px !important;
+}
+    
+
+
+.star-outbrain-padding {
+    padding: 10px !important;
+}
+
+
+/*****    post   ************/
+
+.sports-inner-container-em-01 {
+    padding: 10px !important;
+}
+
+.sports-inner-container-em-02 {
+    padding-left: 15px !important; 
+    font-weight: bold !important;
+}
+
+.sports-inner-container-em-03 {
+    padding-left: 10px !important; 
+    padding-bottom: 10px !important; 
+    font-weight: bold !important; 
+    font-size: 11px !important; 
+    float: left !important;
+}
+
+.content-post {
+     position: relative !important; 
+     clear: both !important;
+}
+
+.video_div_post {
+    width: 100% !important; 
+    text-align: center !important;
+}
+
+.image_div_post {
+    width: 100% !important; 
+    text-align: center !important;
+}
+
+.sports-inner-container_resource-post {
+    width:95% !important; 
+    margin-left:10px !important; 
+    padding:5px !important; 
+    border: 1px solid #1f6377 !important;
+}
+
+.sports-inner-container_resource-post h3,p { 
+   padding: 5px !important;
+}
+
+.sports-inner-container-paragraph5 {
+    padding: 5px !important;
+}
+
+.sports-inner-container-paragraph10 {
+    padding: 10px !important;
+}
+
+.sports-inner-container-font12 {
+    font-size: 12px !important;
+}
+
+
+/************   related_news   **************/
+
+.related_news_parent {
+    display: none !important;
+}
+
+
+/*************   show_columinst  ***************/
+.show_columinst_list {
+    list-style:none !important;
+    
+}
+
+.show_columinst_list  li { 
+    border-bottom:1px dotted #070 !important; 
+    width:100% !important; 
+    padding:5px 0px !important; 
+    margin:5px 0px !important;
+    float:left !important; 
+    clear:both !important;
+}
+
+.show_columinst_list  img {
+    float:left !important;
+    margin:0px 5px !important;
+}
+
+.show_columinst_list  span {
+    float:left !important;  
+    text-align: top  !important;
+    color:#000 !important;
+    font-size:12px !important;
+}
+
+
+/************ Single Page ************/
+
+.inner-main-story-span {
+    color: red !important;
+    font-style: italic !important;
+    font-size: 12px !important;
+}
+
+.inner-main-story-info-span-01 {
+    background: #e9e8e8 !important; 
+    padding: 12px 20px !important;
+}
+
+.inner-main-story-info-span-02 {
+    padding: 12px 20px !important;
+}
+
+.inner-editorial-span {
+    color: #a4a3a3 !important; 
+    font-style: italic !important; 
+}
+.cartoon-content .html5gallery-car-0
+{
+    width: 310px !important;
+}
+.cartoon-content .html5gallery-car-1
+{
+    width: 310px !important;
+}
+.cartoon-content .html5gallery-car-2
+{
+    width: 310px !important;
+}
+.cartoon-content .html5gallery-car-3
+{
+    width: 310px !important;
+}
+.cartoon-content .html5gallery-car-4
+{
+    width: 310px !important;
+}
+.cartoon-content .html5gallery-car-5
+{
+    width: 310px !important;
+}
+.cartoon-content .html5gallery-car-6
+{
+    width: 310px !important;
+}

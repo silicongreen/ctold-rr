@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<playlist>
+  <slide>
+    <file>/upload/gallery/image/arts/bappa.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/bappa.jpg</thumbnail>
+    <title>Bappa Mazumder</title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/samina.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/samina.jpg</thumbnail>
+    <title>Samina Chowdhury</title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/jaya-ahsan.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/jaya-ahsan.jpg</thumbnail>
+    <title>Jaya Ahsan</title>
+  </slide>
+</playlist>

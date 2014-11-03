@@ -1,0 +1,322 @@
+/* 
+    Document   : inner
+    Created on : Sep 11, 2013, 6:17:29 PM
+    Author     : Administrator
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+
+/*****************   Start inner-main-news **********/ 
+
+.inner-main-news{
+    float:left;
+    margin-bottom: 8px;
+	width:100%;
+/*    height: 551px;*/
+}
+
+.inner-main-news h3 {
+    background: #76b2fc;
+    color: #ffffff;
+    font-size: 23px;
+    font-weight: normal;
+    height: 42px;
+    line-height: 42px;
+    margin-bottom: 8px;
+    text-indent: 20px;
+}
+
+
+.inner-main-story-container {
+    border:1px solid #cccaca;
+    max-height: 545px;
+    width: 66%;
+}
+
+
+
+
+.inner-main-story {
+    background:#FFFFFF;
+    color: #585858;
+    display: table;
+    padding: 10px 8px 0px 8px;
+    width: 438px;
+}
+
+.inner-main-story-info{
+    background: #f5f3f3;
+    color: #000000;
+    font-size: 12px;
+    font-style: italic;
+}
+
+.inner-main-story h1 {
+    font-size: 24px;
+}
+.inner-main-story p {
+    font-size: 14px;
+    line-height: 20px;
+}
+
+
+.inner-main-topics {
+    background:#F5F3F3;
+    border:1px solid #cccaca;
+    max-height: 539px;
+    width: 32.3% !important;
+}
+
+.inner-main-topics .inner-topics-tabs {
+    background: #f5f3f3;
+    width: 100%;
+}
+.inner-main-topics .inner-topics-tabs-contain {
+    height: 36px;
+    width: 100%;
+}
+.inner-main-topics .inner-topics-tabs li {
+
+    float: left;
+    list-style: none;
+    display: block;
+    color: #7e7e7e;
+    font-size: 14px;
+    font-style: italic;
+    height: 36px;
+    text-align: center;
+    line-height: 36px;  
+    padding: 0px 9px;
+}
+
+.inner-main-topics .inner-topics-tabs   .active {
+    background-color:#585858;
+    color: #FFFFFF;
+    position: relative;
+
+}
+
+.inner-main-topics .inner-topics-tabs .active img {
+    bottom: -7px;
+    left: 24px;
+    position: absolute;
+}
+
+
+.inner-main-topics .inner-editorial {
+    border-bottom: 1px solid #b7b8b8;
+    background:  #ffffff;
+    display: none;
+    height: 509px;
+    overflow: hidden;
+    padding: 15px;
+    position: relative;
+}
+
+.inner-main-topics .inner-editorial  h1 {
+    color: #4e4d4d;
+    font-size: 24px;
+    font-weight: normal;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+.inner-main-topics .inner-editorial  p {
+    color: #4e4d4d;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 20px;
+}
+
+.inner-editorial .editorial-img {
+    bottom: 1px;
+    position: absolute;
+    left: 0px;
+}
+
+.inner-main-topics .inner-topics {
+    border-bottom: 1px solid #CCCACA;
+    color: #4E4D4D;
+    height: 156px;
+    overflow: hidden;
+    padding: 12px;
+    display: block;
+}
+
+.inner-main-topics .inner-topics h1 {
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 16px;  
+}
+
+.inner-main-topics .inner-topics p {
+    font-size: 14px;
+    line-height: 20px;
+}
+
+/*****************   End inner-main-news **********/
+
+
+
+/*****************   Start inner-other-news **********/
+.inner-other-news {
+    float:left;   
+    margin-top: 5px;
+    width:100%;
+}
+
+.inner-other-news h1{
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 20px;   
+}
+
+.inner-other-news p {
+    font-size: 12px;
+    line-height: 20px; 
+    margin-top: 5px;
+}
+
+
+
+.inner-other-topics {
+    background:#FFFFFF;
+    border: 1px solid #cccaca;
+    color: #585858;
+    width: 452px !important;
+}
+
+.inner-other-main-topics{
+    float:right;
+    width:32.0%;
+}
+
+.inner-other-topics-main {
+    border-bottom: 1px solid #dedcdc;
+    display: table;
+    width: 100%;  
+}
+
+.inner-other-topics-main  .inner-other-topics-container{
+    padding: 12px;
+    width: 92%;
+}
+
+.inner-other-topics-list  li{
+    margin-left: 12px;
+    width: 43% !important;
+}
+
+.inner-other-topics-main  .inner-other-topics-container h3{
+    font-size: 14px;
+    font-weight: normal;
+}
+.inner-other-topics-main  .inner-other-topics-container h1{
+    font-size: 16px;
+    font-weight: bold;
+}
+
+
+.inner-other-topics-main  .inner-other-topics-container p{
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.inner-other-topics-main  .inner-other-topics-container li {
+   color: #9A9898;
+    float: left;
+    padding: 4px;
+    width: 45% !important;
+}
+
+.inner-other-main-topics .inner-topics{
+    border: 1px solid #cccaca;
+    color:#000000;
+    height: auto;
+    margin-bottom: 21px;
+}
+
+.inner-other-main-topics .inner-topics h1 {
+    background:#585858;
+    color: #FFFFFF;
+    font-size: 22px;
+    font-style: italic;
+    font-weight: normal;
+    padding: 12px 0px;
+    text-align: center;
+    width: 100%;
+}
+
+
+
+.inner-other-main-topics .inner-topics h3 {    
+    margin: 10px 0px;
+    text-align: center;
+}
+.inner-other-main-topics .inner-topics h5 {   
+    color:#606060;
+    font-size: 12px;
+    font-style: italic;
+    font-weight: normal;
+    margin: 5px 12px;
+    text-align: right;
+}
+
+
+
+/*****************   Start More  ********************/
+
+.more_title
+{
+    background: none repeat scroll 0 0 #585858;
+    color: #FFFFFF;
+    font-size: 25px;
+    font-style: italic;
+    font-weight: normal;
+    padding: 12px 12px;
+    text-align: left; 
+}
+
+.more_container {
+    border-bottom: 1px solid #dedcdc;
+    display: table;
+    width: 100%;  
+}
+
+.more_container  .more_contain{
+    display: table;
+    padding: 12px;
+/*    width: 94%;*/
+}
+
+
+
+.more_container  .more_contain h3{
+    font-size: 14px;
+    font-weight: normal;
+}
+.more_container  .more_contain h1{
+    font-size: 16px;
+    font-weight: bold;
+}
+
+
+.more_container  .more_contain p{
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.more_container  .more_contain li {
+   color: #9A9898;
+    float: left;
+    padding: 4px;
+    width: 45% !important;
+}
+
+
+
+/****************    End More    *********************/ 
+
+/*****************   End inner-other-news **********/
+
+

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<playlist>
+  <slide>
+    <file>/upload/gallery/image/arts/les4.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/les4.jpg</thumbnail>
+    <title>Photo: Google Image </title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/les3.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/les3.jpg</thumbnail>
+    <title>Photo courtesy: Les Macarons</title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/les2.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/les2.jpg</thumbnail>
+    <title>Photo courtesy: Les Macarons</title>
+  </slide>
+</playlist>

@@ -1,0 +1,32 @@
+ul {
+    list-style: disc outside none;
+}
+ul, ol {    
+    padding: 0;
+}
+ul, ol {    
+    margin-top: 0;
+}
+ul li {list-style:none;}
+
+.footer{ background: none repeat scroll 0 0 #ffffff;
+    border-top: 6px solid #aab2b5;
+    width: 100%;
+    padding: 3px 35px 7px 15px;
+	z-index:1000;
+	position:absolute;
+	}
+.footerlink{font-family: arial;font-size:14px;}
+.footerlink ul li {float: left;padding: 10px 5px;margin-bottom:10px;}
+.footerlink ul li a{color: #999999;}
+.active .footerlink a,
+.footerlink a:hover,
+.footerlink a:focus {
+  color: #3498db;
+}
+.poweredby{ color: #999999;
+    float: right;
+    font-size: 16px;
+    margin-top: 9px;}
+
+.poweredby p{ color: #999999;}

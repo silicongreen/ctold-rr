@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<playlist>
+  <slide>
+    <file>/upload/gallery/image/arts/shyamal-mitra.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/shyamal-mitra.jpg</thumbnail>
+    <title>Shyamal Mitra</title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/shahnaz-rahmatullah.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/shahnaz-rahmatullah.jpg</thumbnail>
+    <title>Shahnaz Rahmatullah</title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/mahmuddunnabi_1.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/mahmuddunnabi_1.jpg</thumbnail>
+    <title>Mahmuddunnabi</title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/khondokar-faruk-ahmed.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/khondokar-faruk-ahmed.jpg</thumbnail>
+    <title>Khondokar Faruk Ahmed</title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/hemanta-mukherjee_1.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/hemanta-mukherjee_1.jpg</thumbnail>
+    <title>Hemanta Mukherjee</title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/abdul-jabbar_1.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/abdul-jabbar_1.jpg</thumbnail>
+    <title>Abdul Jabbar</title>
+  </slide>
+</playlist>

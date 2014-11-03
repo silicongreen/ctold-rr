@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<playlist>
+  <slide>
+    <file>/upload/gallery/image/arts/noor-jehan..jpg</file>
+    <thumbnail>/upload/gallery/image/arts/noor-jehan..jpg</thumbnail>
+    <title>Noor Jehan</title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/munir-hussain_1.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/munir-hussain_1.jpg</thumbnail>
+    <title>Munir Hussain</title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/mehdi-hasan.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/mehdi-hasan.jpg</thumbnail>
+    <title>Mehdi Hasan</title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/hemanta-mukherjee.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/hemanta-mukherjee.jpg</thumbnail>
+    <title>Hemanta Mukherjee</title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/anjuman-ara.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/anjuman-ara.jpg</thumbnail>
+    <title>Anjuman Ara</title>
+  </slide>
+</playlist>

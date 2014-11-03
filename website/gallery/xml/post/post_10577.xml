@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<playlist>
+  <slide>
+    <file>/upload/gallery/image/arts/boil2.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/boil2.jpg</thumbnail>
+    <title>Book Fair 1</title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/boi5.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/boi5.jpg</thumbnail>
+    <title>Book Fair 2</title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/boi4.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/boi4.jpg</thumbnail>
+    <title>Book Fair 3</title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/boi3.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/boi3.jpg</thumbnail>
+    <title>Book Fair 4</title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/boi-mela1.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/boi-mela1.jpg</thumbnail>
+    <title>Book Fair 5</title>
+  </slide>
+</playlist>

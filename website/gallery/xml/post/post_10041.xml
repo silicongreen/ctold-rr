@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<playlist>
+  <slide>
+    <file>/upload/gallery/image/arts/memo6.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/memo6.jpg</thumbnail>
+    <title></title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/memo5.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/memo5.jpg</thumbnail>
+    <title></title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/memo4.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/memo4.jpg</thumbnail>
+    <title></title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/memo3.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/memo3.jpg</thumbnail>
+    <title></title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/memo2.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/memo2.jpg</thumbnail>
+    <title></title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/memo1.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/memo1.jpg</thumbnail>
+    <title></title>
+  </slide>
+</playlist>

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<playlist>
+  <slide>
+    <file>/upload/gallery/image/arts/url1.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/url1.jpg</thumbnail>
+    <title></title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/urijul.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/urijul.jpg</thumbnail>
+    <title></title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/fontana-di-trev.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/fontana-di-trev.jpg</thumbnail>
+    <title></title>
+  </slide>
+</playlist>

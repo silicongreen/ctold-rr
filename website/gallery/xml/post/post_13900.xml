@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<playlist>
+  <slide>
+    <file>/upload/gallery/image/arts/matthew-mcconaughey.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/matthew-mcconaughey.jpg</thumbnail>
+    <title>Matthew McConaughey receives his award</title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/cate-blanchett.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/cate-blanchett.jpg</thumbnail>
+    <title>Cate Blanchett receives her award</title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/alfonso-cuaron.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/alfonso-cuaron.jpg</thumbnail>
+    <title>Alfonso Cuaron receives his award</title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/lupita-nyongo.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/lupita-nyongo.jpg</thumbnail>
+    <title>Lupita Nyong'o receives her award</title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/u2_1.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/u2_1.jpg</thumbnail>
+    <title>U2 performs &#xE2;&#x20AC;&#x153;Ordinary  Love&#xE2;&#x20AC;&#x9D; at the ceremony</title>
+  </slide>
+</playlist>

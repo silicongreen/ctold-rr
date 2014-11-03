@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<playlist>
+  <slide>
+    <file>/upload/gallery/image/arts/paintings-by-ronni-ahmmed.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/paintings-by-ronni-ahmmed.jpg</thumbnail>
+    <title>Paintings by Ronni Ahmmed.</title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/animation-by-shahzia-sikander.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/animation-by-shahzia-sikander.jpg</thumbnail>
+    <title>Animation by Shahzia Sikander</title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/a-sculpture-by-rana-begum.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/a-sculpture-by-rana-begum.jpg</thumbnail>
+    <title>A sculpture by Rana Begum</title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/animated-video-by-jitish-kallat.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/animated-video-by-jitish-kallat.jpg</thumbnail>
+    <title>Animated video by Jitish Kallat</title>
+  </slide>
+</playlist>

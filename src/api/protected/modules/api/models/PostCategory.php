@@ -230,19 +230,20 @@ class PostCategory extends CActiveRecord
                     "postType" => array(
                         "select" => "",
                         'joinType' => "INNER JOIN",
-                    )
-                ),
-                'postAuthor' => array(
+                    ),
+                    'postAuthor' => array(
                     'select' => 'postAuthor.title,postAuthor.image'
-                ),
-                'postGalleries' => array(
-                    'select' => 'postGalleries.type,postGalleries.caption,postGalleries.source',
-                    'with' => array(
-                        "material" => array(
-                            "select" => "material.material_url",
+                    ),
+                    'postGalleries' => array(
+                        'select' => 'postGalleries.type,postGalleries.caption,postGalleries.source',
+                        'with' => array(
+                            "material" => array(
+                                "select" => "material.material_url",
+                            )
                         )
                     )
-                )
+                ),
+                
             ),
             'category' => array(
                 'select' => 'category.menu_icon,category.icon,category.name,category.id',

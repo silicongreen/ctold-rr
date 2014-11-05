@@ -116,7 +116,7 @@ class HomepageData extends CActiveRecord
         $criteria->compare("post.status", 5);
         if($category_not_to_show)
         {
-            $criteria->addInCondition('postCategories.category_id', explode(",",$category_not_to_show));
+            //$criteria->addInCondition('postCategories.category_id', explode(",",$category_not_to_show));
         }
         
         $criteria->compare("t.status", 1);       
@@ -189,7 +189,7 @@ class HomepageData extends CActiveRecord
         $criteria->compare("t.status", 1);
         if($category_not_to_show)
         {
-            $criteria->addInCondition('postCategories.category_id', explode(",",$category_not_to_show));
+            //$criteria->addInCondition('postCategories.category_id', explode(",",$category_not_to_show));
         }
         if($already_showed)
         {

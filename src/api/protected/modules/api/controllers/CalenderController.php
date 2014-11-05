@@ -40,6 +40,7 @@ class CalenderController extends Controller {
                 $end_date = date("Y-12-31");
                 $yearly = true;
             }
+            
             $response = array();
             if (Yii::app()->user->user_secret === $user_secret && $start_date != "" && $end_date != "" &&
                     ( Yii::app()->user->isStudent ||

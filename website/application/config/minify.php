@@ -142,6 +142,7 @@ $config['js_groups']            = Array(
                                 'scripts/jquery/jquery.carouFredSel-6.2.1-packed.js',
                                 'scripts/layouts/tdsfront/js/jquery.scrollUp.min.js',
                                 'scripts/layouts/tdsfront/js/jquery.scrollUp_custom.js',
+                                'gallery/html5gallery.js',
                                 'scripts/fancybox/fancybox.js',
                                 'scripts/layouts/tdsfront/js/lib.js',
                                 'scripts/layouts/tdsfront/js/index.js',

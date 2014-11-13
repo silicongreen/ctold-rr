@@ -10,6 +10,8 @@ $config[ 'news_in_index' ] = array(
     'days_to_retrieve_news' => "-30 days"
 );
 
+$config['api_url']   = 'http://api.champs21.com/api/freeuser';
+
 $config[ 'from_api' ] = TRUE;
 
 $config[ 'api_index' ] = array('index','inner','inner-popular');

@@ -1413,9 +1413,11 @@ if(!function_exists('get_curl_url'))
 {
     function get_curl_url($garbagecollector = "")
     {
-        return "http://210.4.73.254/api/index.php/api/freeuser/".$garbagecollector;
-        
-        
+	$CI = & get_instance();
+                
+        $CI->load->config("huffas");	
+
+        return $CI->config->config['api_url'] .  "/".$garbagecollector;
     }
 }
 

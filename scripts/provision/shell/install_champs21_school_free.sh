@@ -1,32 +1,30 @@
 #!/bin/bash
-# Get su permission
-sudo su
 
-if [ ! -d /vagrant/src/api/protected/runtime ]; then
-mkdir /vagrant/src/api/protected/runtime
+if [ ! -d /home/champs21/public_html/src/api/protected/runtime ]; then
+mkdir /home/champs21/public_html/src/api/protected/runtime
 fi
 
-if [ ! -d /vagrant/src/api/protected/runtime/cache ]; then
-mkdir /vagrant/src/api/protected/runtime/cache
+if [ ! -d /home/champs21/public_html/src/api/protected/runtime/cache ]; then
+mkdir /home/champs21/public_html/src/api/protected/runtime/cache
 fi
 
-chmod -R 777 /vagrant/src/api/protected/runtime
+chmod -R 777 /home/champs21/public_html/src/api/protected/runtime
 
-#if [ ! -d /vagrant/src/api/assets ]; then
-mkdir /vagrant/src/api/assets
+#if [ ! -d /home/champs21/public_html/src/api/assets ]; then
+mkdir /home/champs21/public_html/src/api/assets
 #fi
 
-chmod -R 777 /vagrant/src/api/assets
+chmod -R 777 /home/champs21/public_html/src/api/assets
 
 
-#if [ ! -d /vagrant/market/var ]; then
-mkdir /vagrant/market/var
+#if [ ! -d /home/champs21/public_html/market/var ]; then
+mkdir /home/champs21/public_html/market/var
 #fi
-chmod -R 777 /vagrant/market/var
+chmod -R 777 /home/champs21/public_html/market/var
 
 # download and unpack
-cat >/vagrant/website/ckeditor/config.js
-cat >/vagrant/website/ckeditor/config.js <<EOL
+cat >/home/champs21/public_html/website/ckeditor/config.js
+cat >/home/champs21/public_html/website/ckeditor/config.js <<EOL
 
 var base_url = document.getElementById("base_url").value+"ckeditor/kcfinder/";
 CKEDITOR.editorConfig = function( config ) {
@@ -48,51 +46,51 @@ EOL
 curl -OL http://210.4.73.254/configs.tar
 tar -xvf configs.tar
 rm -f configs.tar
-cp configs/ci/config.php /vagrant/website/application/config/config.php
-cp configs/ci/database.php /vagrant/website/application/config/database.php
-cp configs/ci/tds.php /vagrant/website/application/config/tds.php
-cp configs/ci/minify.php /vagrant/website/application/config/minify.php
-cp configs/ci/lkc/config.php /vagrant/website/application/libraries/kcfinder/config.php
-cp configs/ci/ckkc/config.php /vagrant/website/ckeditor/kcfinder/config.php
+cp configs/ci/config.php /home/champs21/public_html/website/application/config/config.php
+cp configs/ci/database.php /home/champs21/public_html/website/application/config/database.php
+cp configs/ci/tds.php /home/champs21/public_html/website/application/config/tds.php
+cp configs/ci/minify.php /home/champs21/public_html/website/application/config/minify.php
+cp configs/ci/lkc/config.php /home/champs21/public_html/website/application/libraries/kcfinder/config.php
+cp configs/ci/ckkc/config.php /home/champs21/public_html/website/ckeditor/kcfinder/config.php
 
-cp configs/api/DbCon.php /vagrant/src/api/protected/config/DbCon.php
+cp configs/api/DbCon.php /home/champs21/public_html/src/api/protected/config/DbCon.php
 
-cp configs/market/local.xml /vagrant/market/app/etc/local.xml
+cp configs/market/local.xml /home/champs21/public_html/market/app/etc/local.xml
 
-if [ ! -d /vagrant/website/css ]; then
-mkdir /vagrant/website/css/
+if [ ! -d /home/champs21/public_html/website/css ]; then
+mkdir /home/champs21/public_html/website/css/
 fi
 
-if [ ! -d /vagrant/website/js ]; then
-mkdir /vagrant/website/js/
+if [ ! -d /home/champs21/public_html/website/js ]; then
+mkdir /home/champs21/public_html/website/js/
 fi
 
-chmod -R 777 /vagrant/website/css/
-chmod -R 777 /vagrant/website/js/
+chmod -R 777 /home/champs21/public_html/website/css/
+chmod -R 777 /home/champs21/public_html/website/js/
 
-cp configs/css/all.css /vagrant/website/css/all.css
-cp configs/css/sidebar.css /vagrant/website/css/sidebar.css
-cp configs/css/styles.css /vagrant/website/css/styles.css
+cp configs/css/all.css /home/champs21/public_html/website/css/all.css
+cp configs/css/sidebar.css /home/champs21/public_html/website/css/sidebar.css
+cp configs/css/styles.css /home/champs21/public_html/website/css/styles.css
 
-cp configs/js/bottom.js /vagrant/website/js/bottom.js
-cp configs/js/top.js /vagrant/website/js/top.js
+cp configs/js/bottom.js /home/champs21/public_html/website/js/bottom.js
+cp configs/js/top.js /home/champs21/public_html/website/js/top.js
 
 
 rm -rf configs
 
 
-if [ ! -d /vagrant/website/upload ]; then
-mkdir /vagrant/website/upload/
+if [ ! -d /home/champs21/public_html/website/upload ]; then
+mkdir /home/champs21/public_html/website/upload/
 fi
-chmod -R 777 /vagrant/website/upload/
+chmod -R 777 /home/champs21/public_html/website/upload/
 
 echo "CREATE DATABASE IF NOT EXISTS champs21_school; CREATE DATABASE IF NOT EXISTS champs21_cmart;
 " | mysql -u root -p079366
-mysql -u root -p079366 champs21_school < /vagrant/website/DB/champs21_school.sql
+mysql -u root -p079366 champs21_school < /home/champs21/public_html/website/DB/champs21_school.sql
 
-mysql -u root -p079366 champs21_cmart < /vagrant/website/DB/champs21_cmart.sql
+mysql -u root -p079366 champs21_cmart < /home/champs21/public_html/website/DB/champs21_cmart.sql
 
-mysql -u root -p079366 champs21_cmart < /vagrant/website/DB/market.sql
+mysql -u root -p079366 champs21_cmart < /home/champs21/public_html/website/DB/market.sql
 
 
 service nginx reload

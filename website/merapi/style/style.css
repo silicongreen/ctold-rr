@@ -258,6 +258,7 @@ blockquote {
 	margin-left:20px;
 	
 }
+
 @media all and (max-width: 1024px) {
 	.content-div-title h2
 	{
@@ -271,6 +272,16 @@ blockquote {
 		margin-left:0px;
 		
 	}
+        .seen-image
+        {
+            float:left;
+            margin-right:10px;
+        }
+        .seen
+        {
+            float:left;
+            padding-top:2px !important;
+        }
 }
 @media all and (max-width: 799px) {
 	.content-div-title h2
@@ -280,11 +291,21 @@ blockquote {
 	.champs-bullet
 	{
 		width:7px;height:7px;border-radius:7px;background:linear-gradient(to bottom, #DB3434, #DB3434);
-		margin-top:0px !important;
+		margin-top:23px !important;
 		margin-right:0px;
 		margin-left:0px;
 		
 	}
+        .seen-image
+        {
+            float:left;
+            margin-right:10px;
+        }
+        .seen
+        {
+            float:left;
+            padding-top:2px !important;
+        }
 }
 
 @media all and (min-width: 450px) and (max-width: 599px) {
@@ -295,11 +316,21 @@ blockquote {
 	.champs-bullet
 	{
 		width:7px;height:7px;border-radius:7px;background:linear-gradient(to bottom, #DB3434, #DB3434);
-		margin-top:0px !important;
+		margin-top:23px !important;
 		margin-right:0px;
 		margin-left:0px;
 		
 	}
+        .seen-image
+        {
+            float:left;
+            margin-right:10px;
+        }
+        .seen
+        {
+            float:left;
+            padding-top:2px !important;
+        }
 }
 @media all and (max-width: 449px) {
 .content-div-title h2
@@ -309,11 +340,66 @@ blockquote {
 	.champs-bullet
 	{
 		width:7px;height:7px;border-radius:7px;background:linear-gradient(to bottom, #DB3434, #DB3434);
-		margin-top:0px !important;
+		margin-top:23px !important;
 		margin-right:0px;
-		margin-left:0px;
-		
+		margin-left:0px;		
 	}
+        .seen-image
+        {
+            float:left;
+            margin-right:10px;
+        }
+        .seen
+        {
+            float:left;
+            padding-top:2px !important;
+        }
+}
+@media all and (min-width: 800px) and (max-width: 991px) {
+    .content-div-title h2
+	{
+		font-size:17px !important;
+	}
+	.champs-bullet
+	{
+		width:7px;height:7px;border-radius:7px;background:linear-gradient(to bottom, #DB3434, #DB3434);
+		margin-top:23px !important;
+		margin-right:0px;
+		margin-left:0px;		
+	}
+        .seen-image
+        {
+            float:left;
+            margin-right:10px;
+        }
+        .seen
+        {
+            float:left;
+            padding-top:2px !important;
+        }
+}
+@media all and (min-width: 992px) and (max-width: 1161px) {
+    .content-div-title h2
+	{
+		font-size:17px !important;
+	}
+	.champs-bullet
+	{
+		width:7px;height:7px;border-radius:7px;background:linear-gradient(to bottom, #DB3434, #DB3434);
+		margin-top:23px !important;
+		margin-right:0px;
+		margin-left:0px;		
+	}
+        .seen-image
+        {
+            float:left;
+            margin-right:10px;
+        }
+        .seen
+        {
+            float:left;
+            padding-top:2px !important;
+        }
 }
 .icon-nav{
     list-style: none; 
@@ -627,7 +713,7 @@ ul.sm ul li:first-child {
     background:#fff;
     height:20px;
     /* width and position will be automatically set by the script */
-    :;
+   
 }
 
 .sm-clean span.scroll-up:hover, .sm-clean span.scroll-down:hover {
@@ -816,7 +902,7 @@ ul.sm ul li:first-child {
 
 #grid {
     list-style: none;
-    margin: 10px auto;
+    margin: 10px auto !important;
     padding: 0;
     max-width: 100%;
     }
@@ -1934,10 +2020,10 @@ display: block;
 
 
 
-@media screen and (max-width: 577px) {
-    .format-link .intro-post .icon.post-type {
-    bottom: -225px;
- }
-
-
+@media screen and (max-width: 577px) 
+{
+    .format-link .intro-post .icon.post-type 
+    {
+        bottom: -225px;
+     }
 }

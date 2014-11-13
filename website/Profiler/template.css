@@ -955,8 +955,7 @@ input[type="color"].placeholder,
   input[type="tel"],
   input[type="color"],
   .uneditable-input {
-    height: 36px;
-    margin: 9px 0;
+    height: 36px;    
     margin-left: 0;
     margin-right: 0;
     width: 100%;

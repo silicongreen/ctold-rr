@@ -42,6 +42,8 @@ $route['m'] = "m/mobile";
 
 $route['default_controller'] = "front/home";
 $route['contact-us'] = "front/home/contact_us";
+$route['about-us'] = "front/home/about_us";
+$route['privacy-policy'] = "front/home/privacy_policy";
 $route['ano/(:any)'] = "ano/home";
 $route['404_override'] = '';
 

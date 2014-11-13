@@ -6,6 +6,8 @@
 <html><!--<![endif]-->
 <head>
     <meta charset="UTF-8">
+	<meta name = "viewport" content = "width=device-width, minimum-scale=1, maximum-scale=1">
+		<meta name = "apple-mobile-web-app-capable" content = "yes" /> 
     <?php if ( isset($fb_contents) && !is_null($fb_contents) ) : ?>
             <?php 
                     foreach($fb_contents as $key => $value) : 
@@ -131,31 +133,32 @@
         <!--[if lt IE 9]>
         <script src="<?php echo base_url(); ?>js/ie9.js"></script>
         <![endif]-->
-        
-        <script src="https://maps.googleapis.com/maps/api/js"></script>
-        <script>
-            function initialize() {
-                
-                var myLatlng = new google.maps.LatLng(23.791403,90.406353);
-                var mapOptions = {
-                    zoom: 14,
-                    center: myLatlng,
-                    mapTypeId: google.maps.MapTypeId.ROADMAP
+        <?php if($ci_key == 'contact_us'): ?>
+            <script src="https://maps.googleapis.com/maps/api/js"></script>
+            <script>
+                function initialize() {
+
+                    var myLatlng = new google.maps.LatLng(23.791403,90.406353);
+                    var mapOptions = {
+                        zoom: 14,
+                        center: myLatlng,
+                        mapTypeId: google.maps.MapTypeId.ROADMAP
+                    }
+
+                    var mapCanvas = document.getElementById('map_canvas');
+                    var map = new google.maps.Map(mapCanvas, mapOptions);
+
+                    var marker = new google.maps.Marker({
+                        position: myLatlng,
+                        map: map,
+                        title:"Champs21.com"
+                    });
+
+                    marker.setMap(map);
                 }
-                
-                var mapCanvas = document.getElementById('map_canvas');
-                var map = new google.maps.Map(mapCanvas, mapOptions);
-                
-                var marker = new google.maps.Marker({
-                    position: myLatlng,
-                    map: map,
-                    title:"Champs21.com"
-                });
-                
-                marker.setMap(map);
-            }
-            
-            google.maps.event.addDomListener(window, 'load', initialize);
-        </script>
+
+                google.maps.event.addDomListener(window, 'load', initialize);
+            </script>
+        <?php endif; ?>
 
 </head>

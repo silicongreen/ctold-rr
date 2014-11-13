@@ -237,12 +237,21 @@
             </div>
             <div <?php if($i_user_folder_count>3):?>class="als-viewport"<?php endif;?> style="float:left; overflow: hidden; width: auto;">
             <ul class="als-wrapper">
-                <?php if ( $ar_user_folder ) foreach ($ar_user_folder as $folder) : ?>               
-                <li class="als-item"  <?php if($selected_folder_id == $folder->id):?>style="left:-505px;"<?php endif;?>>            
-                    <div class="folder  <?php echo ($selected_folder_id == $folder->id) ? 'selected-folder' : ''; ?>" id="folder_<?php echo $folder->id; ?>" onclick="location.href='<?php echo base_url('good-read/' . $folder->title);?>'">
-                        <span class="title-span-folder f2"><?php echo $folder->title; ?></span>
+                <?php if ( $ar_user_folder ) $j = 0; foreach ($ar_user_folder as $folder) : ?>   
+                <?php if($folder->title == trim(strip_tags($folder->title))): ?>
+                <li class="als-item" id="folderli_<?php echo $folder->id; ?>"  <?php if($selected_folder_id == $folder->id):?>style="left:-505px;"<?php endif;?>>            
+                    <div class="folder folder_div  <?php echo ($selected_folder_id == $folder->id) ? 'selected-folder' : ''; ?>" id="folder_<?php echo $folder->id; ?>" data-link="<?php echo base_url('good-read/' . $folder->title);?>" >
+                        <span class="title-span-folder f2"><?php echo strip_tags($folder->title); ?></span>
+                        
+                        <?php if(!in_array($folder->title, $dfolders)): ?>
+                        <a href="javascript:void(0);" id="delete_folder_<?php echo $folder->id; ?>" class="f2 delete_folder" style="position: absolute;top: 3px;right: 3px;display: block;
+                              width: 20px;height: 22px;line-height: 17px;border: 1px solid black;border-radius: 50%;
+                              color:#f5f5f5; text-align:center;text-decoration:none;background: gray;
+                              font-size: 10px;font-weight:bold;">x</a>
+                        <?php endif; ?>      
                     </div>            
                 </li>
+                <?php $j++; endif; ?>
                 <?php endforeach; ?>
             </ul>
             </div>
@@ -250,7 +259,7 @@
                 <span class="title-span-folder f2">Add Folder</span>
             </div>
            <?php if($i_user_folder_count>3):?>
-                    <span class="als-next"><!-- <img src="<?php echo base_url('styles/layouts/tdsfront/images/nextarrow.png');?>" alt="next" title="next" />--></span>
+                    <span class="als-next" style='background: url("../styles/layouts/tdsfront/images/nextarrow.png") no-repeat 10px 55px white !important;height: 149px; float:left; clear:none; position: static; margin-left:10px;'><!-- <img src="<?php echo base_url('styles/layouts/tdsfront/images/nextarrow.png');?>" alt="next" title="next" />--></span>
                 <?php endif;?>
         </div>
         <div class="good-read-box2">
@@ -292,5 +301,48 @@
 	orientation: "horizontal",
 	circular: "yes",
 	autoscroll: "no"
+});
+var preventLink = false;
+$(document).ready(function(){
+    $(document).on("click",".delete_folder", function(event){
+        preventLink = true;
+        if(confirm("Do you realy want to delete this folder"))
+        {
+            
+            var folder = this.id;
+            $.get($('#base_url').val() + 'front/ajax/delete_user_folder', { name: folder}, function(data){
+                if(data!==0)
+                {
+                   
+                   window.location = $('#base_url').val()+"good-read"
+                  
+                }
+                else
+                {
+                    alert("folder delete unsuccessful");
+                }  
+                
+
+            });
+           
+        }
+        else
+        {
+            preventLink = false;
+        }    
+    });
+    $(document).on("click",".folder_div", function(event){
+        var linkwindows = $(this).attr("data-link");
+        if(preventLink)
+        {
+            event.preventDafualt();
+            return false;
+        }
+        else
+        {
+            window.location = linkwindows;
+        }    
+    });
+  
 });
 </script>

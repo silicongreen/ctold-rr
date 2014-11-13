@@ -88,7 +88,7 @@ div.featured{
     background: #fff; 
     border: 1px solid #ccc; 
     border-bottom: 3px solid #ccc; 
-    margin: 20px 20px 0 34px;
+    margin: 0px auto;
     width: 94%;
     position: relative;
 }
@@ -274,7 +274,7 @@ li.menu-item
     color: #900;
 }
 .sub-categories li:last-child:after {
-    content: "";
+    content: none;
     padding-left: 6px;
 }
 
@@ -495,17 +495,17 @@ div#popup_content {
 
 
 #candletoPopup {
-	font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
+    font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
     background: none repeat scroll 0 0 #FFFFFF;
     padding: 40px 20px;	
     border-radius: 3px 3px 3px 3px;
     color: #333333;
     display: none;
-	font-size: 14px;
-    position: fixed;
-	left:230px;
+    font-size: 14px;
+    position:absolute;
+    margin: 0px 10%;
     top:60px;
-    width: 900px;
+    width: 80%;
     z-index: 6000;
 }
 #candlebackgroundPopup { 

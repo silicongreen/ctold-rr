@@ -5,14 +5,14 @@
     <div class="goto"></div>
     <div style="clear:both;"></div>
     <div id="popup_content"> <!--your content start-->
-        <div style="float:left;width:35%;height:400px;">
-            <img src="<?php echo base_url('Profiler/images/right/candle.png'); ?>" width="250" alt="Candle" style="margin: 0 auto;display: block;"> 
+        <div class="candle_left_box">
+            <img src="<?php echo base_url('Profiler/images/right/candle.png'); ?>" alt="Candle" style="width:100%;margin: 0 auto;display: block;"> 
 
         </div>
-        <div style="float:right;width:64%;border-left:1px solid #ccc;height:400px;padding-left:20px;">
-            <p class="f2" style="color:#000;font-size:60px;line-height:65px;">What is candle?</p>
-            <p class="f5" style="color:#CACACA;font-size:21px;line-height:26px;">
-                <img src="<?php echo base_url('Profiler/images/right/Candle-Page.png'); ?>" width="500" alt="Candle" style="margin: 0 auto;display: block;"> 
+        <div class="candle_right_box">
+            <p class="f2 candle_right_box_p1">What is candle?</p>
+            <p class="f5 candle_right_box_p2">
+                <img src="<?php echo base_url('Profiler/images/right/Candle-Page.png'); ?>" alt="Candle" style="width:100%;margin: 0 auto;display: block;"> 
             </p>
 
         </div>
@@ -22,7 +22,7 @@
     <div class="slide innerTop">
         <?= form_open('', array('id' => 'validate_form', 'class' => 'validate_form', 'enctype' => "multipart/form-data")); ?>
         <div id="section_form">
-            <p><img src="<?php echo base_url('Profiler/images/right/candle_text.png'); ?>" width="500" height="100" alt="Candle" style="margin: 0 auto;display: block;"> </p>
+            <p><img src="<?php echo base_url('Profiler/images/right/candle_text.png'); ?>" alt="Candle" style="width:90%;margin: 0 auto;display: block;"> </p>
             <label class="candle-checkbox">
                 <input id="demo_box_4" name="type_post[]" value="1" class="css-checkbox" type="checkbox" checked="checked" />
                 <label for="demo_box_4" class="css-label f5">Visitor</label>
@@ -70,7 +70,7 @@
         </div>
         <?= form_close(); ?>    
         <div id="section_thanks" style="display:none;">
-            <p><img src="<?php echo base_url('Profiler/images/right/candle_thanks.png'); ?>" width="500" height="100" alt="Candle" style="margin: 0 auto;display: block;"> </p>
+            <p><img src="<?php echo base_url('Profiler/images/right/candle_thanks.png'); ?>" alt="Candle" style="width:100%;margin: 0 auto;display: block;"> </p>
         </div>
     </div>
 </div> <!--candletoPopup end-->
@@ -151,7 +151,7 @@
 
 
 
-        $("li.candlepopup").click(function() {
+        $(".candlepopup").click(function() {
             if (t == 0)
             {
                 loading(); // loading
@@ -314,7 +314,7 @@
     }
     #button-top { width: 100px; position: absolute; left: 75%; top: 40px; padding-left: 100px;overflow: hidden;}
     #button-top:hover, #button-bottom:hover {cursor: pointer;}
-    .slide { position: relative;left:300px;margin: 0 auto; width: 550px;  text-align: center; }
+    .slide { position: relative;left:300px;margin: 0 auto; width: 70%;  text-align: center; }
     .slide img {position: relative; z-index: 100;}
     .slide p { padding:8px 16px; color: #fff; margin: 0; }
     .innerTop, .innerBottom { display:none;   z-index: -1;  }
@@ -342,9 +342,12 @@
         padding-left: 30px;
         background: url("Profiler/images/right/icon-send.png") no-repeat 0 4px;
     }
-    .cd-input{width:440px;background: #E7EBEE;font-size:13px !important;}
-    .cd-textarea{width:440px;background: #E7EBEE;font-size:13px !important;}
-
+    .cd-input{width:100%;background: #E7EBEE;font-size:13px !important;}
+    .cd-textarea{width:100%;background: #E7EBEE;font-size:13px !important;}
+.slide #section_form label
+        {
+            width:100%
+        }
 
 
 
@@ -377,13 +380,13 @@
         background-position: 0 -20px;
     }
 
-    .css-label{ background-image:url("Profiler/images/right/checkbox.png"); }
+    .css-label{ background-image:url("Profiler/images/right/checkbox.png"); width:auto !important;}
 
 
 
     .select-style {
         border: 1px solid #ccc;
-        width: 440px;
+        width: 100%;
         height:35px;
         border-radius: 2px;
         overflow: hidden;
@@ -407,8 +410,32 @@
         outline: none;
     }					
 
-
-
+.candle_left_box
+{
+    float:left;
+    width:35%;
+    height:auto;
+}
+.candle_right_box
+{
+   float:right;
+   width:64%;
+   border-left:1px solid #ccc;
+   height:auto;
+   padding-left:20px; 
+}
+.candle_right_box_p1
+{
+    color:#000;
+    font-size:60px;
+    line-height:65px;
+}
+.candle_right_box_p2
+{
+    color:#CACACA;
+    font-size:21px;
+    line-height:26px;
+}
 
 
 

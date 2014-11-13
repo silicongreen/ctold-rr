@@ -41,7 +41,7 @@ div#tz_mainmenu{
 dl{
     font-size:15px;
 }
-html, body, .TzArticleBlogQuoteInfo .date, p, tr td, h3.page-header .badge, .p_tag a, dl { font-family: "Aliquam Rg",OpenSansRegular, Arial, sans-serif; }
+html, body, .TzArticleBlogQuoteInfo .date, p, tr td, h3.page-header .badge, .p_tag a, dl { font-family: "Aliquam Rg", "SolaimanLipi",OpenSansRegular, Arial, sans-serif; }
 
 .sidebar-nav h3, h1.TzArticleTitle,
 h3.title, h3.header, .page-title,
@@ -49,7 +49,7 @@ h3.title, h3.header, .page-title,
 
 a.btn-readmore, .TzPagination a, .author, h2.text a, .mega-group-title, legend { font-family: OpenSansSemibold, Arial, sans-serif; }
 
-.TzPortfolioDate, .TzQuote h2 { font-family: "Aliquam Rg",OpenSansLightItalic, Arial, sans-serif; }
+.TzPortfolioDate, .TzQuote h2 { font-family: "Aliquam Rg", "SolaimanLipi",OpenSansLightItalic, Arial, sans-serif; }
 
 
 @media (min-width: 1200px) {

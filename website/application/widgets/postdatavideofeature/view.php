@@ -20,14 +20,14 @@
                         <div class="carrosel-news">
                             <div class='carrosel-images'>
 								<a href="<?php echo $link_array['url']; ?>" target="<?php echo $link_array['target'] ?>" title="<?php echo $news->headline; ?>">
-                                <img src="<?php echo $arCustomNews['lead_material']; ?>" alt="<?php echo $news->headline; ?>" style="width:595px;height:340px; ">
+                                <img src="<?php echo $arCustomNews['lead_material']; ?>" alt="<?php echo $news->headline; ?>" class="carrosel_img_size" />
 								<div class="play_btn_ch"></div></a>
                             </div>
                             <div class='carrosel-news-content'>
                                 <div class="post-title" style="margin-left:0px!important;">
 									<h2 class="f2" style="font-size:33px;">
 											<a href="<?php echo $link_array['url']; ?>" target="<?php echo $link_array['target'] ?>" title="<?php echo $news->headline; ?>">
-													<span style="color: #000;"><?php echo $news->headline; ?></span>                                           
+                                                                                            <strong style="color: #000;font-weight: 400;"><?php echo $news->headline."The controls attribute adds video "; ?></strong>                                           
 											</a>
 										</h2>
 										<span class="brown-subtitle">
@@ -39,7 +39,7 @@
 							<?php if($news->user_view_count>0):?>
 							<div style="width:25%;float:right;">
 								<div class="seen-image col-lg-3"><img src="<?php echo base_url("styles/layouts/tdsfront/images/social/seen.png"); ?>" /></div>
-								<div class="seen col-lg-9"><span style="font-size:15px; color:#B1B8BA;"><b><?php echo $news->user_view_count; ?></b></span></div>
+								<div class="seen col-lg-9"><span style="font-size:15px; color:#B1B8BA;margin-left:5px; "><b><?php echo $news->user_view_count; ?></b></span></div>
 							</div>
 							<?php endif;?>
                             </div>
@@ -53,6 +53,224 @@
     </div>
     <div style='clear: both;'></div>
     <style>
+        
+        .carrosel_img_size{
+            width:595px;
+            height:340px; 
+        }
+        @media all and (min-width: 315px) and (max-width: 449px) {
+            div.featured 
+            {
+                height: auto !important;
+            }
+            
+            .carrosel_img_size{
+            width:100%;
+            height:100% !important; 
+            }
+            li.carrosel_news div.carrosel-news div.carrosel-images
+            {
+                width:100% !important;
+                height:auto !important;
+            }
+            .featured li.carrosel_news div.carrosel-news div.carrosel-news-content
+            {
+                    clear:both;
+                    width:100% !important;
+                    height:auto !important;
+                    margin-left:0px !important;
+                    margin-top:75px;
+
+            }
+            .carrosel-news-content .post-title h2
+            {
+                font-size:20px !important;
+            }
+            .carrosel-news-content .post-title span
+            {
+                font-size:8px !important;
+            }
+            .carrosel-news-content .akmanda-excerpt
+            {
+
+                margin:1px 1px !important;
+                line-height: 15px !important;
+            }
+            
+        }
+        @media all and (min-width: 450px) and (max-width: 599px) {
+            div.featured 
+            {
+                height: auto !important;
+            }
+            
+            .carrosel_img_size{
+            width:100%;
+            height:100% !important; 
+            }
+            li.carrosel_news div.carrosel-news div.carrosel-images
+            {
+                width:100% !important;
+                height:auto !important;
+            }
+            .featured li.carrosel_news div.carrosel-news div.carrosel-news-content
+            {
+                    clear:both;
+                    width:100% !important;
+                    height:auto !important;
+                    margin-left:0px !important;
+                    margin-top:75px;
+
+            }
+            .carrosel-news-content .post-title h2
+            {
+                font-size:20px !important;
+            }
+            .carrosel-news-content .post-title span
+            {
+                font-size:8px !important;
+            }
+            .carrosel-news-content .akmanda-excerpt
+            {
+
+                margin:1px 1px !important;
+                line-height: 15px !important;
+            }
+            
+        }
+        @media all and (min-width: 600px) and (max-width: 799px) {
+            div.featured 
+            {
+                height: auto !important;
+            }
+            
+            .carrosel_img_size{
+            width:100%;
+            height:100% !important; 
+            }
+            li.carrosel_news div.carrosel-news div.carrosel-images
+            {
+                width:100% !important;
+                height:auto !important;
+            }
+            .featured li.carrosel_news div.carrosel-news div.carrosel-news-content
+            {
+                    clear:both;
+                    width:100% !important;
+                    height:auto !important;
+                    margin-left:0px !important;
+                    margin-top:75px;
+
+            }
+            .carrosel-news-content .post-title h2
+            {
+                font-size:20px !important;
+            }
+            .carrosel-news-content .post-title span
+            {
+                font-size:8px !important;
+            }
+            .carrosel-news-content .akmanda-excerpt
+            {
+
+                margin:1px 1px !important;
+                line-height: 15px !important;
+            }
+            
+        }
+        @media all and (min-width: 800px) and (max-width: 992px) {
+            div.featured 
+            {
+                height: auto !important;
+            }
+            
+            .carrosel_img_size{
+            width:100%;
+            height:100% !important; 
+            }
+            li.carrosel_news div.carrosel-news div.carrosel-images
+            {
+                width:100% !important;
+                height:auto !important;
+            }
+            .featured li.carrosel_news div.carrosel-news div.carrosel-news-content
+            {
+                    clear:both;
+                    width:100% !important;
+                    height:auto !important;
+                    margin-left:0px !important;
+                    margin-top:75px;
+
+            }
+            .carrosel-news-content .post-title h2
+            {
+                font-size:20px !important;
+            }
+            .carrosel-news-content .post-title span
+            {
+                font-size:8px !important;
+            }
+            .carrosel-news-content .akmanda-excerpt
+            {
+
+                margin:1px 1px !important;
+                line-height: 15px !important;
+            }
+        }
+        @media all and (min-width: 993px) and (max-width: 1199px) {
+             div.featured 
+            {
+                height: auto !important;
+            }
+            
+            .carrosel_img_size{
+            width:100%;
+            height:100% !important; 
+            }
+            li.carrosel_news div.carrosel-news div.carrosel-images
+            {
+                width:100% !important;
+                height:auto !important;
+            }
+            .featured li.carrosel_news div.carrosel-news div.carrosel-news-content
+            {
+                    clear:both;
+                    width:100% !important;
+                    height:auto !important;
+                    margin-left:0px !important;
+                    margin-top:75px;
+
+            }
+            .carrosel-news-content .post-title h2
+            {
+                font-size:20px !important;
+            }
+            .carrosel-news-content .post-title span
+            {
+                font-size:8px !important;
+            }
+            .carrosel-news-content .akmanda-excerpt
+            {
+
+                margin:1px 1px !important;
+                line-height: 15px !important;
+            }
+        }   
+        @media all and (min-width: 1200px) and (max-width: 1300px) {
+            .carrosel_img_size{
+            width:100%;
+            height:100% !important; 
+            }
+            .featured li.carrosel_news div.carrosel-news div.carrosel-news-content
+            {
+                    clear:both;
+                    width:35% !important;
+                    height:auto !important;
+                    margin-left:0px !important;
+                    
+
+            }
+        }
         .by_line span
 		{
 			color:red !important;
@@ -132,7 +350,7 @@
         }
         div.featured 
         {
-            height: 374px !important;
+            height: auto !important;
         }
 		li.carrosel_news div.carrosel-news
 		{
@@ -140,13 +358,13 @@
 		}
 		li.carrosel_news div.carrosel-news div.carrosel-images
 		{
-			width:63% !important;
-			height:auto !important;
+			width:63%;
+			height:auto;
 			
 		}
 		.featured li.carrosel_news div.carrosel-news div.carrosel-news-content
 		{
-			width:34% !important;
+			width:34%;
 			height:auto !important;
 			background:none !important;
 			

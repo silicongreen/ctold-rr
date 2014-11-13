@@ -2508,6 +2508,8 @@ class news extends MX_Controller
         }
         $this->db->select("headline");
         $this->db->like("headline", $this->input->get("term"));
+        $this->db->where("status", 5);
+        
         $this->db->order_by("published_date", "DESC");
         $this->db->limit(10);
         $posts = $this->db->get("post");
@@ -2527,6 +2529,7 @@ class news extends MX_Controller
         }
         $this->db->select("id,headline,published_date");
         $this->db->where("headline", trim($this->input->post("term")));
+        $this->db->where("status", 5);
         $this->db->order_by("published_date", "DESC");
         $this->db->limit(1);
         $posts = $this->db->get("post")->row();

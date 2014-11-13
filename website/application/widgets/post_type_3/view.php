@@ -5,9 +5,9 @@
 <?php else : ?>
 <li style="position: relative;" id="post-<?php echo $news->post_id; ?>" class="post-<?php echo $news->post_id; ?> post post-content-showed type-post status-publish format-image has-post-thumbnail hentry category-post-format tag-description tag-image tag-people tag-text post ajax-hide <?php echo $li_class_name; ?> <?php echo ($i < 3) ? "shown" : ""; ?>  <?php echo (!is_null($news->short_title) && strlen(trim($news->short_title)) > 0) ? " format-quote   tag-quote " : ""; ?>  ">    
 <?php endif; ?>    
-    <div class="post-content clearfix" style="<?php echo ( $news->post_type == 4 || $news->post_type == 3) ? 'background: transparent;' : ''; ?><?php echo ($is_exclusive_found) ? 'height:278px;' : '' ?>">
-        <div class="intro-post <?php if($is_exclusive_found===true): ?>col-xs-6<?php endif; ?>">
-            <div class="post-thumb " style="position: relative;">
+    <div class="post-content clearfix" style="width:100%;<?php echo ( $news->post_type == 4 || $news->post_type == 3) ? 'background: transparent;' : ''; ?><?php echo ($is_exclusive_found) ? 'height:278px;' : '' ?>">
+        <div style="width:100%" class="intro-post <?php if($is_exclusive_found===true): ?>col-xs-6<?php endif; ?>">
+            <div class="post-thumb " style="position: relative; width: 100%;">
                 <?php if (!is_null($news->lead_material) && strlen(trim($news->lead_material)) > 0) : ?>
                     <?php if ($news->post_type == 2) : ?>   
                         <a class="add-link" title="<?php echo $news->lead_caption; ?>" href="<?php echo $news->lead_link; ?>" target="_blank">       
@@ -26,9 +26,9 @@
                         </a>
                     <?php endif; ?>
                 <?php endif; ?>
-                <div style="width: 50%; background: #fff; height: 100%; position: absolute; top: 0; left: 0; opacity: 0.65;">
-                    <div style="display: inline-table; vertical-align: bottom; position: absolute; bottom: 10px; margin-left: 10px;">
-                        <div class="akmanda-excerpt" <?php if($is_exclusive_found===true): ?>style="margin: 20px 30px;"<?php endif; ?>> <?php echo $arCustomNews['content']; ?></div>
+                <div style="width: 50%; background: #fff; height: 100%; position: absolute; top: 0; left: 0; opacity: 0.80;">
+                    <div style="display: inline-table; vertical-align: bottom; position: absolute; bottom: 0px; margin-left: 10px;">
+                        <div class="akmanda-excerpt" style="color:black;"  <?php if($is_exclusive_found===true): ?>style="margin: 20px 30px;"<?php endif; ?>> <?php echo $arCustomNews['content']; ?></div>
                     </div>
                 </div>
                 <div style="width: 50%; height: 100%; position: absolute; top: 0; right: 0;">
@@ -44,9 +44,11 @@
                         </div>
                     </div>
                 </div>
+                <?php if ($target == "index") : ?>
                 <div style="width: 57px; height: 100%; position: absolute; top: 45%; left: 42%;">
                     <img width="57"  src="<?php echo $news->icon ?>">
                 </div>
+                <?php endif; ?>
             </div><!-- post thumb -->
             
         </div> 

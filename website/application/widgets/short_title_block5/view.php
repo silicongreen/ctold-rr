@@ -121,11 +121,13 @@ div.callout {
                         <?php echo $news->short_title; ?>
                     </div>
                     <div style="background: url('<?php echo base_url('styles/layouts/tdsfront/images/bg-quote-box.png'); ?>') no-repeat; position: absolute; right: 20px; bottom: 10px; width: 38px; height: 31px; -moz-transform: scaleX(-1);-o-transform: scaleX(-1);-webkit-transform: scaleX(-1);transform: scaleX(-1);filter: FlipH;-ms-filter: 'FlipH';"></div>
+                    <?php if ($target == "index") : ?>
                     <div class="post-thumb " style="width: 57px; position: absolute; bottom: -40px; left: 39%;">
                         <p style="<?php if($is_exclusive_found===true):?>top:104px;position:absolute;<?php else: ?>margin-top: -67px;position: relative;<?php endif;?>text-align: center;width: 100%;">
                             <img width="57" <?php if($is_exclusive_found===true):?>style="margin-left:-101%;"<?php endif; ?> src="<?php echo $news->icon ?>">
                         </p>
                     </div>
+                    <?php endif; ?>
                 </div><!-- post thumb -->
             </div><!-- post thumb -->
             
@@ -190,14 +192,14 @@ div.callout {
         <div class="post-entry <?php if($is_exclusive_found===true): ?>col-xs-6<?php endif; ?>" style="margin-top: 4px; clear: both; " > 
                 
                 <div class="post-title" <?php echo ($is_exclusive_found===true)? 'style="margin: 24px 0px;"' : 'style=" padding-top:5px; padding-bottom: 5px; margin-top: 80px;"'?>>
-                    <?php if ($target == "index") : ?>
+                    
                             
                         <h2 class="f2" style="text-align: center; padding: 5px; ">
                             <a href="<?php echo base_url() . sanitize($news->headline) . "-" . $news->post_id; ?>" title="<?php echo $news->headline; ?>">
                                 <?php echo $news->headline; ?>
                             </a>
                         </h2>
-                    <?php endif; ?>
+                    
                             
                         
                 </div><!-- post-title --> 

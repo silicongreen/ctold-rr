@@ -8,11 +8,11 @@ $widget = new Widget;
 <a href="#" class="champs21_scrollToTop"><!--Scroll To Top--></a>
 <div class="footerlink f5">
     <ul>
-        <li><a href="<?php echo base_url('aboutus');?>">About Us</a></li>
+        <li><a href="<?php echo base_url('about-us');?>">About Us</a></li>
         <li>|</li>
         <li><a href="<?php echo base_url('terms');?>">Terms</a></li>
         <li>|</li>
-        <li><a href="<?php echo base_url('privacypolicy');?>">Privacy Policy</a></li>
+        <li><a href="<?php echo base_url('privacy-policy');?>">Privacy Policy</a></li>
         <li>|</li>
         <li><a href="<?php echo base_url('copyright');?>">Copyright</a></li>
         <li>|</li>
@@ -38,7 +38,7 @@ $widget = new Widget;
 
 
 
-<script type="text/javascript" src="<?= base_url() ?>js/bottom.js"></script>           
+           
         
 <!--<script type="text/javascript" src="<?= base_url() ?>merapi/jquery_002.js"></script>-->
 <!--<script type="text/javascript" src="<?= base_url() ?>merapi/scripts.js"></script>
@@ -54,19 +54,21 @@ $widget = new Widget;
 <script type="text/javascript" src="<?= base_url() ?>Profiler/custom_theme.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>Profiler/menu.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>Profiler/profile_script_resize.js"></script>
-<script src="<?php echo base_url('scripts/jquery/jquery.carouFredSel-6.2.1-packed.js'); ?>"></script>
-<script src="<?php echo base_url('scripts/layouts/tdsfront/js/jquery.scrollUp.min.js'); ?>"></script>
-<script src="<?php echo base_url('scripts/layouts/tdsfront/js/jquery.scrollUp_custom.js'); ?>"></script>
-<script src="<?php echo base_url('scripts/jquery/jquery.lazyload.js'); ?>"></script>
-<script src="<?php echo base_url('scripts/jquery/imgLiquid-min.js'); ?>"></script>
-<script src="<?php echo base_url('gallery/html5gallery.js'); ?>"></script>
-<script src="<?php echo base_url('scripts/layouts/tdsfront/js/index.js'); ?>"></script>
-<script src="<?php echo base_url('scripts/layouts/tdsfront/js/index-req.js'); ?>"></script>
-<script src="<?php echo base_url('scripts/jquery/jquery.tree.js'); ?>"></script>
-<script src="<?php echo base_url('scripts/custom/customTree.js'); ?>"></script>-->
+<script src="<?php //echo base_url('scripts/jquery/jquery.carouFredSel-6.2.1-packed.js'); ?>"></script>
+<script src="<?php //echo base_url('scripts/layouts/tdsfront/js/jquery.scrollUp.min.js'); ?>"></script>
+<script src="<?php //echo base_url('scripts/layouts/tdsfront/js/jquery.scrollUp_custom.js'); ?>"></script>
+<script src="<?php //echo base_url('scripts/jquery/jquery.lazyload.js'); ?>"></script>
+<script src="<?php //echo base_url('scripts/jquery/imgLiquid-min.js'); ?>"></script>
+
+<script src="<?php //echo base_url('scripts/layouts/tdsfront/js/index.js'); ?>"></script>
+<script src="<?php //echo base_url('scripts/layouts/tdsfront/js/index-req.js'); ?>"></script>
+<script src="<?php //echo base_url('scripts/jquery/jquery.tree.js'); ?>"></script>
+<script src="<?php //echo base_url('scripts/custom/customTree.js'); ?>"></script>-->
 <script src="<?php echo base_url('scripts/fancybox/fancybox.js'); ?>"></script>
 <script src="<?php echo base_url('scripts/layouts/tdsfront/js/jquery.liteuploader.js'); ?>"></script>
-<script src="<?php echo base_url('scripts/layouts/tdsfront/js/lib.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo base_url('js/bottom.js'); ?>"></script>
+<script src="<?php echo base_url('gallery/html5gallery.js'); ?>"></script>
+<!--<script src="<?php echo base_url('scripts/layouts/tdsfront/js/lib.js'); ?>"></script>-->
 
 
 <script type="text/javascript">
@@ -164,5 +166,9 @@ $widget = new Widget;
 	text-decoration:none;
         background: url('<?php echo base_url('styles/layouts/tdsfront/images/arrow_up_hover.png'); ?>') no-repeat;
         background-size:40px;
+}
+.container
+{
+    min-height:650px !important;
 }
 </style>    

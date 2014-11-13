@@ -6,10 +6,15 @@
         <?php elseif ((array_key_exists($ci_key_for_cover, $this->config->config['LOGO']) && $this->config->config['LOGO'][$ci_key_for_cover]) ||
                 (array_key_exists("allpage", $this->config->config['LOGO']) && $this->config->config['LOGO']["allpage"])) : ?>
         <div class="header-new" style="background: #fff; width: 77%;margin: 0px auto; height: 80px; padding: 18px 5px; ">
+            
             <div class="logo-div">
                 <a href="<?php echo base_url(); ?>" ><img  src="<?php echo base_url('styles/layouts/tdsfront/images/logo-new.png'); ?>" class="image-logo" alt="logo"></a>
             </div>
-            
+            <?php if( free_user_logged_in() ): ?>
+            <div class="header-logo-div">
+                <a href="<?php echo base_url(); ?>" ><img  src="<?php echo base_url('styles/layouts/tdsfront/images/logo-new.png'); ?>" class="image-logo" alt="logo"></a>
+            </div>
+            <?php endif;?>
             <?php
             
                 $has_profile_img = FALSE;
@@ -43,7 +48,21 @@
                 <div class="login_reg_div_box">
                     
                     <?php if( !free_user_logged_in() ){ ?>
-                    
+                        <div id="settings_div" class="mobile_log_reg_box" style="float: right; float: right; margin: 10px 0 0; padding: 0px; background-color: #fff;">
+                            <div style="" class="settings-btn"></div>
+                        </div>
+                        <div class="settings-elm-holder-div" style="display: none;">
+                            <div class="settings-elm-list-div">
+                                <ul class="">
+                                    <li style="cursor: pointer;">
+                                        <a title="Register Now" id="data" href="javascript:void(0);" class="register-user register-user-btn f2">Register Now</a>
+                                    </li>
+                                    <li style="cursor: pointer;">
+                                        <a title="Login" id="data" href="javascript:void(0);" class="login-user login-user-btn f2">Login</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                         <ul class="tz_social">
                             <li style="cursor: pointer;">
                                 <a title="Register Now" id="data" href="javascript:void(0);" class="register-user register-user-btn f2">Register Now</a>
@@ -61,10 +80,21 @@
                                     -webkit-border-radius: 28px;
                                     -moz-border-radius: 28px;
                                     background: url(<?php echo $profile_image_url; ?>) no-repeat;
-                                    background-position: 50%;" >
+                                    background-position: 50%;
+                                    background-size:125%;" ><!--mcr-all-player-mugshot img {
+display: block;
+width: 46px;
+height: 46px;
+/* border: 2px solid #dedede; */
+-webkit-border-radius: 100%;
+-moz-border-radius: 100%;
+-ms-border-radius: 100%;
+-o-border-radius: 100%;
+/* border-radius: 100%; */
+}-->
                            
                         </div>
-                        <div style="float: left; padding: 0 0 0 10px;" >
+                        <div class="user_profile_name" >
                             <h3 class="f2" style="font-size:15px;margin: 10px 0px;"><?php echo $user_data['nick_name']; ?></h3>
                         </div>
 
@@ -73,25 +103,43 @@
                         </div>
 
                         <div class="settings-elm-holder-div" style="display: none;">
+                            <div class="mobile_profile_box" style="height:65px;background-color: #C82329;padding:10px;">
+                                        <div id="profile_image_div_mobile" style="
+                                                    float: left; width: 46px;
+                                                    height: 44px;
+                                                    border-radius: 28px;                                                    
+                                                    -webkit-border-radius: 28px;
+                                                    -moz-border-radius: 28px;
+                                                    background: url(<?php echo $profile_image_url; ?>) no-repeat;
+                                                    background-position: 50%;
+                                                    background-size:125%;" >
+
+                                        </div>
+                                        <div class="user_profile_name_mobile" >
+                                            <h3 class="f2" style="color:#fff;font-size:15px;margin: 10px 0px;"><?php echo $user_data['nick_name']; ?></h3>
+                                        </div>
+                            </div>
                             <div class="settings-elm-list-div">
-                                <ul>
-                                    <li>
-                                        <span><img width="20" src="<?php echo base_url('styles/layouts/tdsfront/image/account_settings.png'); ?>" /></span>
-                                        <span id="free_user_profile">Update Profile</span>
+                                <ul>                                    
+                                    <li id="free_user_profile">
+                                        <div class="settings-elm-list-profile"></div>
+                                        <label>Update Profile</label>
                                     </li>
-                                    <li>
-                                        <span><img width="20" src="<?php echo base_url('styles/layouts/tdsfront/image/account_settings.png'); ?>" /></span>
-                                        <span id="free_user_profile_picture"><label for="profile_image_file">Update Profile Picture</label></span>
+                                    
+                                    <li id="free_user_profile_picture">
+                                        <div class="settings-elm-list-profile-picture"></div>
+                                        <label for="profile_image_file">Update Profile Picture</label>
                                     </li>
+                                    
                                     <li id="pref_li">
-                                        <span><img width="20" src="<?php echo base_url('styles/layouts/tdsfront/image/privacy.png'); ?>" /></span>
-                                        <span>Preference Settings</span>
+                                        <div class="settings-elm-list-pref"></div>
+                                        <label>Preference Settings</label>
                                     </li>
-                                    <li>
-                                        <span><img width="20" src="<?php echo base_url('styles/layouts/tdsfront/image/logout.png'); ?>" /></span>
-<!--                                            <span><a href="<?php echo base_url('logout_user'); ?>">Log Out</a></span>-->
-                                        <span><a href="<?php echo base_url('logout_user');?>" class="logout_free">Log Out</a></span>
-                                    </li>
+                                    
+                                    <li id="logout_li">
+                                        <div class="settings-elm-list-logout"></div>
+                                        <label>Log Out</label>
+                                    </li>                                    
                                 </ul>
                             </div>
                         </div>
@@ -119,7 +167,7 @@
 
                 <?php echo form_open($action, array('class' => 'validate_form', 'id' => $frm_id, 'enctype' => 'multipart/form-data', 'autocomplete' => 'off')); ?>
 
-                    <div class="clearfix" style="margin-left: auto; margin-right: auto; width: 550px; margin-top: 0px; ">
+                    <div class="clearfix" style="margin-left: auto; margin-right: auto; width: 90%; margin-top: 0px; ">
 
                         <div>
                             
@@ -140,13 +188,17 @@
                             </fieldset>
 
                             <?php if($edit){ ?>
-                            <div style="text-align: center; font-size: 20px; padding: 15px 0 10px 30px;">Mark Your Preferred Name</div>
+                            <div style="text-align: center; font-size: 20px; padding: 15px 0px 20px;">Mark Your Preferred Name</div>
                             <?php }?>
                             
                             <?php if ( !$edit || empty($model->user_type) ) { ?>
-                                <fieldset style="margin: 5px 0;">
-                                    <div class="user_type_div">
+                                <fieldset class="hell_box">
+                                    
+                                    <div style="text-align: left; padding: 15px 0 0 51px;">
                                         <label class="user_type_dialob_label">I am a... </label>
+                                    </div>
+                                    
+                                    <div class="user_type_div">
                                         <ul class="radio-holder">
                                             <?php $i = 0; foreach ($free_user_types as $key => $value) { ?>
                                                 <li class="user_type_radio" <?php echo ($i > 0) ? 'style="padding-left: 60px !important;"' : '' ?>>
@@ -168,7 +220,7 @@
                                     </div>
                                 </fieldset>
 
-                                <div class="clearfix horizontal-line" <?php echo ($edit) ? 'style="margin-bottom: 30px"' : ''; ?>></div>
+                                <div class="clearfix" <?php echo ($edit) ? 'style="margin-bottom: 30px"' : ''; ?>></div>
                             <?php } ?>
 
                             <?php if ( !$edit ) { ?>
@@ -177,15 +229,15 @@
                                     Sign up using email address
                                 </div>-->
 
-                                <fieldset style="margin: 5px 0;">
-                                    <div>
+                                <fieldset>
+                                    <div class="center">
                                         <input placeholder="Enter Email Address" class="f5 email_txt" id="email" name="email" value="<?php echo $model->email; ?>" type="text" maxlength="60" <?php echo ($edit) ? 'readonly="readonly"' : ''; ?>>
                                         <input placeholder="Re-enter Email Address" class="f5 email_txt" id="cnf_email" name="cnf_email" value="<?php echo $model->email; ?>" type="text" maxlength="60" <?php echo ($edit) ? 'readonly="readonly"' : ''; ?>>
                                     </div>
                                 </fieldset>
 
-                                <fieldset style="margin: 5px 0;">
-                                    <div>
+                                <fieldset>
+                                    <div class="center">
                                         <input placeholder="Enter Password (Minimum 6 Charecters)" class="f5 email_txt" id="password" name="password" value="" type="password" maxlength="60" />
                                         <input placeholder="Re-enter Password" class="f5 email_txt" id="cnf_password" name="cnf_password" value="" type="password" maxlength="60" />
                                     </div>
@@ -441,7 +493,7 @@
 
                         </div>
 
-                        <div class="clearfix" style="margin-left: auto; margin-right: auto; margin-top: 20px; text-align: center; margin-bottom: 30px;">
+                        <div class="clearfix" style="margin-left: auto; margin-right: auto; margin-top: 20px; text-align: center; margin-bottom: 20px;">
                             <button id="btn_free_user" class="red" type="submit">
                                 <span class="clearfix f2">
                                     <?php echo ($edit) ? 'Proceed' : 'Create my account'; ?>
@@ -460,7 +512,7 @@
                         <div class="clearfix center"><strong>Or Register with </strong></div>
 
                         <div class="sns-button-div">
-                            <div style="height: 100%; margin-left: auto; margin-right: auto; width: 55%;">
+                            <div style="height: 100%; margin-left: auto; margin-right: auto; width: 105px;">
                                 <div class="fb-button">
                                     <button class="fb-reg-btn"></button>
                                 </div>
@@ -486,15 +538,21 @@
 
                     <?php echo form_open('login_user', array('class' => 'validate_form', 'id' => 'login_frm', 'enctype' => 'multipart/form-data', 'autocomplete' => 'off')); ?>
 
-                        <div class="clearfix" style="margin-left: auto; margin-right: auto; width: 380px; margin-top: 10px; ">
+                        <div class="clearfix" style="margin-left: auto; margin-right: auto; width: 100%; margin-top: 10px; ">
 
                             <div>
                                 <fieldset class="login_logo">
                                     <div>
                                         <img src="styles/layouts/tdsfront/image/Login.png" width="60px" alt="Chmaps21.com" />
                                     </div>
+                                    <div class="not_registered">
+                                        not registered yet?
+                                    </div>
+                                    <div class="sign_up_free">
+                                        <label class="register-user">Sign Up Now!</label><span class="register-user">FREE</span>
+                                    </div>
                                 </fieldset>
-
+                                
                                 <fieldset class="f2 login_title">
                                     <div>
                                         LOGIN
@@ -537,7 +595,7 @@
                                         </div>
 
                                         <div class="f5 login_reset_password">
-                                            <a href="javascript:void(0);">Reset Password</a>
+                                            <a href="javascript:void(0);">Forgot Password?</a>
                                         </div>
                                     </div>
 
@@ -545,7 +603,7 @@
 
                             </div>
 
-                            <div class="clearfix" style="margin-left: auto; margin-right: auto; width:350px;">
+                            <div class="clearfix" style="margin-left: auto; margin-right: auto; width:100%;">
                                 <button class="login_red" type="submit">
                                     <span class="clearfix f2">
                                         Sign in
@@ -557,7 +615,7 @@
                             <div class="clearfix center" style="padding-top: 60px;"><strong>Or Login with </strong></div>
 
                             <div class="sns-button-div" style="width: 100%">
-                                <div style="height: 100%; margin-left: auto; margin-right: auto; width: 40%;">
+                                <div class="sns-button-box" style="height: 100%; margin-left: auto; margin-right: auto; width: 105px;">
                                     <div class="fb-button">
                                         <button class="fb-login-btn"></button>
                                     </div>
@@ -576,7 +634,7 @@
                 </div>
                 <!-- Login Form -->
                 
-                <div style="width: 10%; float: right;">
+                <div style="width: 10%; display: inline-flex;">
                     <?php if( free_user_logged_in() ){ ?>
                     <ul class="ch-grid-header">
                         <li>
@@ -610,6 +668,16 @@
             </div>-->
         </div>
         <?php endif; ?>
+        
+        <!--MObile MEnu start-->
+        
+                                <?php
+                                $widget = new Widget;
+                                $widget->run('champs21mobilemenu');
+                                ?> 
+        
+        <!--MObile MEnu END-->
+        
         <div class="fixed-menu">
             <ul class="fixed-menu-ul">
                 <?php if( free_user_logged_in() ) { ?>
@@ -785,7 +853,7 @@
     <div class="alert-errors" id="alert-errors" style="display: none;">
 
       <div class="alert-header col-lg-12">
-          Opps!
+          Oops!
       </div>
 
       <div class="col-lg-12 horizontal-line-1"></div>
@@ -803,44 +871,348 @@
    </div>
     
 </header>
+<script type="text/javascript">
+jQuery(function($) {
+if($('.header-logo-div').is(':visible')) {
+    $( ".logo-div" ).css( "display",'none' );
+}
+});
+</script>
 <style>
+.image-logo
+{
+    width:100%;
+}
 .logo-div
 {
 	float: left; 
-	width: 40%; 
+	width: 27%; 
 	padding-left: 20px;        
 }
 
 .login_reg_div
 {
 	float: right;
-	width: 27%;
+        display:inline-block;
+	width: auto;
 	padding-right: 15px;
 }
 .login_reg_div_box
 {
-    width: 90%;
-    float: left;
+    width: auto;
+    display:inline-block;
 }
-@media all and (min-width: 600px) and (max-width: 799px) {
+.header-logo-div
+{
+    display:none;
+}
+.user_profile_name
+{
+    float: left; 
+    padding: 0 0 0 10px;
+}
 
-	.login_reg_div {
-            float: right;
-            padding-right: 15px;
-            width: 35%;
-        }
-        
+.mobile_profile_box
+{
+    display:none;
 }
-@media all and (min-width: 450px) and (max-width: 599px) {
-  .logo-div
+.mobile_log_reg_box
+{
+    display:none;
+}
+@media all and (min-width: 200px) and (max-width: 314px) {
+    .fancybox-wrap
+    {
+        width:90% !important;
+    }
+    .fancybox-inner
+    {
+        width:100% !important;
+    }
+    #before-login-user-wrapper
+    {
+        width: 90% !important;
+    }
+    .login_red
+    {
+        width:75% !important;
+    }
+    .header-logo-div
+    {
+         
+        width: 52% !important;
+        
+    }
+}
+@media all and (min-width: 315px) and (max-width: 449px) {
+    .fancybox-wrap
+    {
+        width:90% !important;
+    }
+    .fancybox-inner
+    {
+        width:100% !important;
+    }
+    #before-login-user-wrapper
+    {
+        width: 100% !important;
+    }
+    .header-logo-div
+    {
+        float:left;                
+        width: 63%;
+        text-align:center;
+        margin:0px auto;        
+        display:block;
+    }
+    .ch-grid-header
+    {
+        margin-right:20px !important;
+    }
+}
+@media all and (max-width: 449px) {
+    
+    .header-logo-div
+    {
+        float:left;                
+        width: 63%;
+        text-align:center;
+        margin:0px auto;        
+        display:block;
+    }
+    .container
+    {
+        width:100% !important;
+    }
+    .login_reset_password
+    {
+        font-size:11px;
+    }
+    .login_checkbox_label_txt
+    {
+        font-size:11px;
+    }
+    #login_frm fieldset input[type="checkbox"]
+    {
+        margin-top:5px !important;
+    }
+    .logo-div
 	{		
-		float:none;                
-                width: 40%;
+		float:left;                
+                width: 65%;
+                text-align:center;
                 margin:0px auto;
 		padding-left: 0px;
 	}
 
-	.login_reg_div
+	/*.login_reg_div
+	{	
+		width: 100%;
+		padding-right: 0px;
+		text-align:center;
+	}
+        .login_reg_div_box
+        {
+            float:none;
+            width: 90%;
+            margin:0px auto;
+        }*/
+        .tz_social
+        {
+            display:none;
+        }
+        .login_reg_div_box
+        {
+            margin-right:-15px;
+            display:block !important;
+        }
+        .ch-grid-header
+        {
+            margin-right:20px !important;
+        }
+        .mobile_log_reg_box
+        {
+            display:block;
+        }
+        #settings_div
+        {
+            margin:0px !important;
+        }
+        .settings-btn {
+            background: url("/styles/layouts/tdsfront/image/menu-icon.svg") no-repeat scroll center center / 100% auto transparent !important;
+            cursor: pointer;
+            height: 40px !important;
+            width: 40px !important;
+          }
+        .mobile_profile_box
+        {
+            display:block;
+        }
+        .user_profile_name_mobile
+        {
+            float: left; 
+            padding: 0 0 0 10px;
+        }
+        #profile_image_div
+        {
+            display:none;
+        }
+        .user_profile_name
+        {
+            display:none;
+        }
+        .settings-elm-holder-div
+        {
+            right:0px !important;
+        }
+        
+        
+        
+        
+        
+        
+        
+        .category-fixed-menu
+        {
+            top:115px;            
+        }
+        .fixed-menu
+        {
+            top:initial !important; 
+            top:auto !important; 
+            bottom:0px;
+            width:100%;
+            background:#DB3434;
+            z-index:1000;
+        }
+        .fixed-menu-ul
+        {
+            width:100%;
+            text-align:center;
+        }
+        .fixed-menu li
+        {
+            display:inline-block !important;
+        }
+        .icon-good-read
+        {
+            width:66px !important;
+            height:43px !important;
+            top:-1px;
+        }
+        .icon-candle
+        {
+            width:66px !important;
+            height:43px !important;
+            top:-1px;
+        }
+        .icon-magic-mart
+        {
+            width:66px !important;
+            height:43px !important;
+            top:-1px;
+        }
+        .category-fixed-menu-box label {
+            margin-bottom:0px;
+            float:right;
+            width:100%;
+            border-bottom : 2px solid #6c5754;
+            padding:10px !important;
+            font-size:8px;
+          }
+        .category-fixed-menu
+        {
+            display:none;
+        }
+        .responsive_height
+        {
+            display:block !important;
+            border-top:2px solid gray;
+        }
+        .champs-header
+        {
+            height:134px;
+            border-bottom:2px solid red;
+        }
+        .header-new
+        {
+            /*height:65px !important;*/
+        }
+        .header-new
+        {
+            width:100% !important;
+        }
+        ul.radio-holder li{        
+            padding-left: 0px !important;
+            padding-right: 20px !important;
+        }
+        
+        #candletoPopup
+        {
+            position:absolute;
+            left:0px !important;
+            width:90% !important;
+            margin: 0px 5%;
+        }
+        .candle_left_box
+        {
+            float:left;
+            width:35%;
+            height:auto !important;
+        }
+        .candle_right_box
+        {
+           float:none !important;
+           width:auto !important;
+           border-left:0px solid #ccc !important;
+           height:auto !important;
+           padding-left:0px !important; 
+        }
+        .candle_right_box_p1
+        {
+            position:relative;
+            top:40px;
+            left:20px;
+            font-size:35px !important;
+            line-height:40px !important;
+        }
+        .candle_right_box_p2
+        {
+            float:left;
+        }
+        .slide #section_form label
+        {
+            width:100%
+        }
+        
+} 
+@media all and (min-width: 450px) and (max-width: 599px) {
+    .container
+    {
+        width:100% !important;
+    }
+    .login_reset_password
+    {
+        font-size:12px;
+    }
+    .login_checkbox_label_txt
+    {
+        font-size:12px;
+    }
+    #login_frm fieldset input[type="checkbox"]
+    {
+        margin-top:5px !important;
+    }
+    .logo-div
+	{		
+		float:none;                
+                width: 100%;
+                margin:0px auto;
+		padding-left: 0px;
+                text-align:center;
+	}
+
+	/*.login_reg_div
 	{	
 		width: 100%;
 		padding-right: 0px;
@@ -855,52 +1227,43 @@
         .tz_social a
         {
             font-size:5px;
-        }
+        }*/
         
-}
-@media all and (max-width: 449px) {
-  .logo-div
-	{		
-		float:none;                
-                width: 80%;
-                margin:0px auto;
-		padding-left: 0px;
-	}
-
-	.login_reg_div
-	{	
-		width: 100%;
-		padding-right: 0px;
-		text-align:center;
-	}
-        .login_reg_div_box
+         .fixed-menu
         {
-            float:none;
-            width: 90%;
-            margin:0px auto;
+            top:initial !important;  
+            top:auto !important; 
+            bottom:0px;
+            width:100%;
+            background:#DB3434;
+            z-index:1000;
         }
-        .category-fixed-menu
+        .fixed-menu-ul
         {
-            top:115px;            
+            width:100%;
+            text-align:center;
         }
-        .fixed-menu
+        .fixed-menu li
         {
-            top:115px !important;            
+            display:inline-block !important;
         }
         .icon-good-read
         {
-            width:60px !important;
-            height:41px !important;
+            width:66px !important;
+            height:43px !important;
+            top:-1px;
         }
         .icon-candle
         {
-            width:60px !important;
-            height:41px !important;
+            width:66px !important;
+            height:43px !important;
+            top:-1px;
         }
         .icon-magic-mart
         {
-           width:60px !important;
-            height:41px !important;
+            width:66px !important;
+            height:43px !important;
+            top:-1px;
         }
         .category-fixed-menu-box label {
             margin-bottom:0px;
@@ -910,8 +1273,416 @@
             padding:10px !important;
             font-size:8px;
           }
-} 
+        .category-fixed-menu
+        {
+            display:none;
+        }
+        .responsive_height
+        {
+            display:block !important;
+            border-top:2px solid gray;
+        }
+        .champs-header
+        {
+            height:154px;
+            border-bottom:2px solid red;
+        }
+        .header-new
+        {
+            height:100px !important;
+        }
+        .header-new
+        {
+            width:100% !important;
+        }
+        .fancybox-wrap
+        {
+            width:70% !important;
+        }
+        .fancybox-inner
+        {
+            width:100% !important;
+        }
+       
+        #before-login-user-wrapper
+        {
+            width: 100% !important;
+        }
+        ul.radio-holder li{        
+            padding-right: 20px !important;
+            padding-left: 0px !important;
+        }
+        /*HEADER START*/
+.header-logo-div
+{
+	float:left;                
+	width: 55%;
+	text-align:center;
+	margin:0px auto;        
+	display:block;
+}
+.logo-div
+{		
+	float:left;                
+	width: 55%;
+	text-align:center;
+	margin:0px auto;
+	padding-left: 0px;
+}
+.tz_social
+{
+	display:none;
+}
+.login_reg_div_box
+{
+	margin-right:-15px;
+	display:block !important;
+}
+.ch-grid-header
+{
+	margin-right:35px !important;
+        margin-top:10px;
+}
+.mobile_log_reg_box
+{
+    display:block;
+}
+#settings_div
+{
+	margin:0px !important;
+}
+.settings-btn {
+	background: url("/styles/layouts/tdsfront/image/menu-icon.svg") no-repeat scroll center center / 100% auto transparent !important;
+	cursor: pointer;
+	height: 40px !important;
+	width: 40px !important;
+        margin-right:10px;
+        margin-top:10px;
+  }
+.mobile_profile_box
+{
+	display:block;
+}
+.user_profile_name_mobile
+{
+	float: left; 
+	padding: 0 0 0 10px;
+}
+#profile_image_div
+{
+	display:none;
+}
+.user_profile_name
+{
+	display:none;
+}
+.settings-elm-holder-div
+{
+	right:0px !important;
+}
+        /*CNADLE START*/       
+        #candletoPopup
+        {
+            position:absolute;
+            left:0px !important;
+            width:90% !important;
+            margin: 0px 5%;
+        }
+        .candle_left_box
+        {
+            float:left;
+            width:32%;
+            height:auto !important;
+        }
+        .candle_right_box
+        {
+           float:none !important;
+           width:auto !important;
+           border-left:0px solid #ccc !important;
+           height:auto !important;
+           padding-left:0px !important; 
+        }
+        .candle_right_box_p1
+        {
+            position:relative;
+            top:40px;
+            left:20px;
+            font-size:50px !important;
+            line-height:50px !important;
+        }
+        .candle_right_box_p2
+        {
+           float:left;
+        }
+        
+        
+        
+}
+@media all and (min-width: 600px) and (max-width: 799px) {
+    .container
+    {
+        width:100% !important;
+    }
+    .login_reset_password
+    {
+        font-size:14px;
+    }
+    .login_checkbox_label_txt
+    {
+        font-size:14px;
+    }
+    #login_frm fieldset input[type="checkbox"]
+    {
+        margin-top:7px !important;
+    }
+	
+        
+         .fixed-menu
+        {
+            top:initial !important;  
+            top:auto !important; 
+            bottom:0px;
+            width:100%;
+            background:#DB3434;
+            z-index:1000;
+        }
+        .fixed-menu-ul
+        {
+            width:100%;
+            text-align:center;
+        }
+        .fixed-menu li
+        {
+            display:inline-block !important;
+        }
+        .icon-good-read
+        {
+            width:66px !important;
+            height:43px !important;
+            top:-1px;
+        }
+        .icon-candle
+        {
+            width:66px !important;
+            height:43px !important;
+            top:-1px;
+        }
+        .icon-magic-mart
+        {
+            width:66px !important;
+            height:43px !important;
+            top:-1px;
+        }
+        .category-fixed-menu-box label {
+            margin-bottom:0px;
+            float:right;
+            width:100%;
+            border-bottom : 2px solid #6c5754;
+            padding:10px !important;
+            font-size:8px;
+          }
+        .category-fixed-menu
+        {
+            display:none;
+        }
+        .responsive_height
+        {
+            display:block !important;
+            border-top:2px solid gray;
+        }
+        .champs-header
+        {
+            height:154px;
+            border-bottom:2px solid red;
+        }
+        .header-new
+        {
+            height:100px !important;
+        }
+        .header-new
+        {
+            width:100% !important;
+        }
+        .fancybox-wrap
+    {
+        width:50% !important;
+    }
+    .fancybox-inner
+    {
+        width:100% !important;
+    }
+    
+    #before-login-user-wrapper
+    {
+        width: 100% !important;
+    }
+    ul.radio-holder li{        
+            padding-right: 20px !important;
+            padding-left: 0px !important;
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        .header-logo-div
+{
+	float:left;                
+	width: 45%;
+	text-align:center;
+	margin:0px auto;        
+	display:block;
+        padding-left: 20px;
+        padding-top: 5px;
+}
+.logo-div
+{		
+	float:left;                
+	width: 45%;
+	text-align:center;
+	margin:0px auto;
+	padding-left: 20px;
+        padding-top: 5px;
+}
+.tz_social
+{
+	display:none;
+}
+.login_reg_div_box
+{
+	margin-right:-15px;
+	display:block !important;
+}
+.mobile_log_reg_box
+{
+    display:block;
+}
+.ch-grid-header
+{
+	margin-right:45px !important;
+        margin-top:15px;
+}
+#settings_div
+{
+	margin:0px !important;
+}
+.settings-btn {
+	background: url("/styles/layouts/tdsfront/image/menu-icon.svg") no-repeat scroll center center / 100% auto transparent !important;
+	cursor: pointer;
+	height: 40px !important;
+	width: 40px !important;
+        margin-right:20px;
+        margin-top:15px;
+  }
+.mobile_profile_box
+{
+	display:block;
+}
+.user_profile_name_mobile
+{
+	float: left; 
+	padding: 0 0 0 10px;
+}
+#profile_image_div
+{
+	display:none;
+}
+.user_profile_name
+{
+	display:none;
+}
+.settings-elm-holder-div
+{
+	right:0px !important;
+}
+/*CNADLE START*/       
+        #candletoPopup
+        {
+            position:absolute;
+            left:0px !important;
+            width:90% !important;
+            margin: 0px 5%;
+        }
+        .candle_left_box
+        {
+            float:left;
+            width:32%;
+            height:auto !important;
+        }
+        .candle_right_box_p1
+        {            
+            font-size:50px !important;
+            line-height:50px !important;
+        }
+        
+}
+@media all and (min-width: 800px) and (max-width: 991px) {
+    
+        .header-logo-div
+        {
+                float:left;                
+                width: 40%;
+                text-align:center;
+                margin:0px auto;        
+                display:block;
+        }
+        .logo-div
+        {		
+                float:left;                
+                width: 40%;
+                text-align:center;
+                margin:0px auto;
+                padding-left: 0px;
+        }
+    .fancybox-wrap
+    {
+        width:45% !important;
+    }
+    .fancybox-inner
+    {
+        width:100% !important;
+    }
+    
+    #before-login-user-wrapper
+    {
+        width: 100% !important;
+    }
+    ul.radio-holder li{        
+            padding-right: 20px !important;
+            padding-left: 0px !important;
+        }
+}
+@media all and (min-width: 992px) and (max-width: 1251px) {
+    .fancybox-wrap
+    {
+        width:35% !important;
+    }
+    .fancybox-inner
+    {
+        width:100% !important;
+    }
+    
+    #before-login-user-wrapper
+    {
+        width: 100% !important;
+    }
+    ul.radio-holder li{        
+            padding-right: 20px !important;
+            padding-left: 0px !important;
+        }
+}
 
+
+.responsive_height
+{
+    display:none;
+}
 .category-fixed-menu
 {
     padding:0;
@@ -945,7 +1716,7 @@
     padding:0;
     position:fixed;
     left:0px;
-	top:170px;
+    top:170px;
 }
 .category-fixed-menu-list{
     padding: 21px;
@@ -1101,7 +1872,7 @@
     .login_logo{
         margin: 10px auto;
         text-align: center;
-        width: 400px !important;
+        width: 100% !important;
     }
     .login_title{
         color: #000000;
@@ -1109,14 +1880,13 @@
         height: 48px;
         margin: 10px auto 0;
         text-align: center;
-        width: 400px !important;
+        width: 100% !important;
     }
     
     #login_frm fieldset{
         clear: both;
-        height: 48px;
         margin: 1px auto 0;
-        width: 350px !important;
+        width: 100% !important;
     }
 
     .login_label_side label{
@@ -1133,7 +1903,7 @@
         color: #fff;
         clear: both;
         height: 40px;
-        width: 350px;
+        width: 100%;
         border-radius: 5px;
         -o-border-radius: 5px;
         -moz-border-radius: 5px;
@@ -1187,11 +1957,11 @@
         margin-left: auto !important;
         margin-right: auto !important;
         margin-top: 10px;
-        width: 350px !important;
+        width: 100% !important;
     }
     .login_text{
         color: #000000 !important;
-        width: 350px !important;
+        width: 100% !important;
         height: 40px !important;
         background-color: #ADB2B5 !important;
         font-size: 15px !important;
@@ -1272,12 +2042,15 @@
         text-align: center;
         vertical-align: central;
         float: left;
-        /*        border-radius: 8px;
-                 -ms-border-radius: 8px;
-                -o-border-radius: 8px;
-                -webkit-border-radius: 8px;*/
         width: 50%;
         height: 100%;
+    }
+    .sns-button-box
+    {
+        height: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        width: 35%;
     }
     .login_fb-button img{
         padding-top: 5px;
@@ -1334,9 +2107,15 @@
     }
   
     .reg_logo{
-        margin: 10px auto;
+        margin: 10px auto 5px;
         text-align: center;
-        width: 400px !important;
+        width: 100%;
+    }
+    .hell_box
+    {
+        margin: 10px 0 5px -25px;
+        background-color: #ddd;
+        width: 111%;
     }
     .plus-right {
         background-color: #fff !important;
@@ -1361,25 +2140,19 @@
     .reg_title{
         color: #000000;
         font-size: 35px;
-        margin: 10px auto 0;
         text-align: center;
-        width: 550px !important;
     }
     
     fieldset {
-        clear: both;
-        margin: -10px 0px 0px;
-        text-align: center !important;
+        /*padding-left: 15px;*/
     }
-    
+    .user_type_div{
+        padding: 0 0 0 50px;
+    }
     .user_type_dialob_label {
-        background-color: #dddddd;
-        color: #b0b8bb;
-        font-size: 20px;
-        height: 35px;
-        padding-top: 0;
-        text-align: center;
-        width: 550px !important;
+        color: #000 !important;
+        cursor: pointer;
+        font-size: 18px;
     }
     .css-checkbox {
         clear: both;
@@ -1434,12 +2207,12 @@
         list-style: none outside none;
         margin: 0 0 10px 0;
         padding: 0;
-        radio-holder
+        
     }
     ul.radio-holder li{
         float: left;
         text-align: left !important;
-        padding-left: 20px !important;
+        padding-left: 15px;
     }
     ul.radio-holder li:last-child {
         margin-right: 0px !important;
@@ -1453,7 +2226,7 @@
         color: #000 !important;
         cursor: pointer;
         float: left !important;
-        font-size: 18px;
+        font-size: 14px;
     }
     .user_type_radio{
         padding-top: 10px;
@@ -1462,7 +2235,7 @@
     .red{
         background-color: #DE3427;
         border: none;
-        font-size: 20px;
+        line-height: 15px;
         color: #fff;
         height: 40px;
         width: 50%;
@@ -1533,16 +2306,16 @@
         -o-border-radius: 0px;
         -ms-border-radius: 0px;
         color: #000000 !important;
-        font-size: 15px;
+        font-size: 13px !important;
         height: 36px;
-        width: 49%;
+        width: 42%;
     }
     .center{
         margin-left: auto;
         margin-right: auto;
         padding-top: 15px;
         text-align: center;
-        width: 50%;
+        width: 100%;
     }
     .sns-button-div{
         height: 70px;
@@ -1550,43 +2323,43 @@
         margin-right: auto;
         margin-top: 15px;
         width: 50%;
+        padding-left: 0px;
     }
     .fb-button{
         float: left;
-        height: 75px;
-        /*margin-left: 30px;*/
-        width: 75px;
+        height: 50px;
+        margin-right: 5px;
+        width: 50px;
     }
     .fb-button button {
-        background: url("styles/layouts/tdsfront/image/facebook.png") no-repeat scroll 0 0 / 65px auto transparent;
+        background: url("styles/layouts/tdsfront/image/facebook.png") no-repeat scroll 0 0 / 50px auto transparent;
         border: medium none;
         color: #de3427;
         font-family: inherit;
         margin: 0;
-        padding: 40px;
+        padding: 25px;
         position: relative;
     }
     .fb-button button:hover {
-        background: url("styles/layouts/tdsfront/image/facebook_hover.png") no-repeat scroll 0 0 / 65px auto transparent;
+        background: url("styles/layouts/tdsfront/image/facebook_hover.png") no-repeat scroll 0 0 / 50px auto transparent;
     }
     
     .google-button{
         float: left;
-        height: 75px;
-        /*margin-left: 15px;*/
-        width: 75px;
+        height: 50px;
+        width: 50px;
     }
     .google-button button {
-        background: url("styles/layouts/tdsfront/image/google_plus.png") no-repeat scroll 0 0 / 65px auto transparent;
+        background: url("styles/layouts/tdsfront/image/google_plus.png") no-repeat scroll 0 0 / 50px auto transparent;
         border: medium none;
         color: #de3427;
         font-family: inherit;
         margin: 0;
-        padding: 40px;
+        padding: 25px;
         position: relative;
     }
     .google-button button:hover {
-        background: url("styles/layouts/tdsfront/image/google_plus_hover.png") no-repeat scroll 0 0 / 65px auto transparent;
+        background: url("styles/layouts/tdsfront/image/google_plus_hover.png") no-repeat scroll 0 0 / 50px auto transparent;
     }
     
     .circle{
@@ -1624,15 +2397,9 @@
     .name_text{
         background-color: #adb2b5;
         border-color: #8f979a !important;
-        border-radius: 0px;
-        -moz-border-radius: 0px;
-        -ms-border-radius: 0px;
-       -o-border-radius: 0px;
-       -webkit-border-radius: 0px;
         color: #000000 !important;
-        font-size: 18px !important;
         height: 51px !important;
-        width: 140px !important;
+        width: 110px;
     }
     .name_text_label {
         float: left;
@@ -1649,85 +2416,79 @@
     .text_field {
         background-color: #adb2b5;
         border-color: #8f979a !important;
+        color: #000000 !important;
+        height: 51px !important;
+        margin-bottom: 20px;
+        width: 100%;
         border-radius: 0px;
         -moz-border-radius: 0px;
         -ms-border-radius: 0px;
        -o-border-radius: 0px;
        -webkit-border-radius: 0px;
-        color: #000000 !important;
-        font-size: 18px !important;
-        height: 51px !important;
-        margin-bottom: 20px !important;
-        width: 546px;
     }
     #district{
         background-color: #adb2b5;
-        border-color: #8f979a !important;
-        border-radius: 0px;
-        -moz-border-radius: 0px;
-        -ms-border-radius: 0px;
-       -o-border-radius: 0px;
-       -webkit-border-radius: 0px;
-        color: #000000 !important;
+        border-color: #8f979a;
+        border-radius: 0;
+        color: #000000;
         float: left;
-        font-size: 18px !important;
-        height: 51px !important;
-        width: 263px;
+        font-size: 15px;
+        height: 51px;
+        width: 218px;
     }
     .selectParent{
-        width: 263px;
-        overflow:hidden;
+        overflow: hidden;
+        width: 217px;
     }
     .selectParent select{
-        background: url("styles/layouts/tdsfront/image/drop_down.png") no-repeat scroll 225px center / 28px auto #adb2b5;
-        color: #000000 !important;
-        float: left;
-        font-size: 18px !important;
-        height: 51px !important;
-        padding: 10px;
-        width: 285px !important;
         -webkit-appearance: none;
         -moz-appearance: none;
+        -o-appearance: none;
+        -ms-appearance: none;
         appearance: none;
+        background: url("styles/layouts/tdsfront/image/drop_down.png") no-repeat scroll 180px center / 28px auto #adb2b5;
+        color: #000000;
+        font-size: 15px;
+        height: 51px;
+        padding: 10px;
+        width: 237px;
     }
     .selectDob{
-        width: 169px;
-        overflow:hidden;
+        overflow: hidden;
+        width: 138px;
     }
     .selectDob select{
-        background: url("styles/layouts/tdsfront/image/drop_down.png") no-repeat scroll 131px center / 28px auto #adb2b5;
+        background: url("styles/layouts/tdsfront/image/drop_down.png") no-repeat scroll 100px center / 28px auto #adb2b5;
         color: #000000 !important;
-        float: left;
-        font-size: 18px !important;
+        font-size: 15px;
         height: 51px !important;
         padding: 10px;
-        width: 190px !important;
+        width: 160px !important;
         -webkit-appearance: none;
         -moz-appearance: none;
         appearance: none;
     }
     .selectMedium{
-        /*padding-top: 21px;*/
         overflow: hidden;
-        width: 546px;
+        width: 100%;
     }
     .selectMedium select{
-        background: url("styles/layouts/tdsfront/image/drop_down.png") no-repeat scroll 507px center / 28px auto #adb2b5;
-        color: #000000 !important;
+        background: url("styles/layouts/tdsfront/image/drop_down.png") no-repeat scroll 415px center / 28px auto #adb2b5;
+        color: #000000;
         float: left;
-        font-size: 18px !important;
-        height: 51px !important;
+        font-size: 15px;
+        height: 51px;
         padding: 10px;
-        width: 568px !important;
+        width: 100%;
         -webkit-appearance: none;
         -moz-appearance: none;
         appearance: none;
     }
     .country_code{
-        width: 100px !important;
+        width: 100px;
     }
     .mobile_no{
-        width: 426px !important;
+        width: 100%;
     }
     .date_of_birth{
         float: left;
@@ -1735,67 +2496,41 @@
     }
     .gender_label{
         float: left;
-        font-size: 24px;
-        padding: 25px 0 0;
-        text-align: left;
-        width: 150px;
+        font-size: 20px;
+        padding: 20px 0 0;
     }
     .gender_ul{
-        float: left !important;
-        font-size: 24px;
-        padding: 36px 0 0 25px !important;
+        font-size: 20px;
+        padding: 26px 0 0 50px !important;
     }
     fieldset input[type="checkbox"].custom_checkbox {
         clear: both;
+        cursor: pointer;
         display: block;
         float: left;
-        height: 19px;
-        margin-right: 5px !important;
+        height: 15px;
         margin-top: 8px !important;
-        width: 19px;
-        cursor: pointer;
+        width: 15px;
     }
-/*    
-    fieldset input[type="checkbox"]  label.checkbox_label{
-        background-color: #fff;
-        clear: both !important;
-        cursor: pointer;
-        float: left;
-        height: 19px !important;
-        margin-top: 10px;
-        width: 19px !important;
-        border-radius: 4px;
-        -moz-border-radius: 4px;
-        -webkit-border-radius: 4px;
-        -ms-border-radius: 4px;
-        -o-border-radius: 4px;
-    }
-    fieldset input[type="checkbox"]:checked  label.checkbox_label{
-        background: url('styles/layouts/tdsfront/image/tick_mark.png') top no-repeat;
-        background-color: #fff;
-    }*/
-
     .checkbox_label_txt{
         color: #000000;
-        margin: 7px !important;
         cursor: pointer;
+        font-size: 14px;
+        margin: 7px;
     }
     .grades_ul {
         background-color: #adb2b5 !important;
-        color: #000000 !important;
-        margin-top: 10px;
-        width: 546px;
+        margin: 10px 0 0 0px;
+        width: 100%;
     }
     .select_grades {
         background-color: #fff;
         border: 6px solid #adb2b5;
         color: #7c8487;
         font-size: 18px;
-        font-weight: bold;
         margin-top: 12px;
-        padding: 0 0 0 15px;
-        text-align: left;
-        width: 80%;
+        text-align: center;
+        width: 97%;
     }
     .select_grades span {
         color: #7c8487;
@@ -1810,6 +2545,14 @@
         cursor: pointer;
         height: 25px;
         width: 35px;
+    }
+    .settings-btn:hover {
+        background: url("/styles/layouts/tdsfront/image/down_arrow_hover.png") no-repeat scroll center center / 25px auto transparent;
+        background-size: 40%;        
+    }
+    .settings-btn-active {
+        background: url("/styles/layouts/tdsfront/image/down_arrow_hover.png") no-repeat scroll center center / 25px auto transparent;
+        background-size: 40%;        
     }
     .custombox_profile_no_padding {
         padding: 0px !important;
@@ -1833,24 +2576,33 @@
         width: auto;
     }
     .settings-elm-holder-div {
-        width:13%;
-        padding:15px 0px;
+        border: 1.75px solid #DC3434;
+        
+        box-shadow: 0 0 9px 0 #aaa;
+        -moz-box-shadow: 0 0 9px 0 #aaa;
+        -webkit-box-shadow: 0 0 9px 0 #aaa;
+        -ms-box-shadow: 0 0 9px 0 #aaa;
+        -o-box-shadow: 0 0 9px 0 #aaa;
+        
+        width:190px;
         position:absolute;
-        right:201px;
+        right:199px;
         top:60px;
-        background-color: gray;
+        background-color: #fff;
         z-index: 5000;
     }
     .settings-elm-list-div ul{
         margin:0px;
     }
     .settings-elm-list-div ul li {
-        color: #ffffff;
         cursor: pointer;
         font-size: 11px;
+        margin: 0;
+        padding: 10px 0;
     }
-    .settings-elm-list-div ul li:hover {
+    .settings-elm-list-div ul li:hover{
         background-color: #CC161E;
+        color: #ffffff;
         -webkit-transition: background-color 0.5s ease;
         -moz-transition: background-color 0.5s ease;
         -o-transition: background-color 0.5s ease;
@@ -1858,98 +2610,70 @@
         transition: background-color 0.5s ease;
     }
     .settings-elm-list-div ul li a {
-        color: #ffffff !important;
+        color: #666;
     }
-    .settings-elm-list-div ul li span {
-        padding-left: 7px;
+    .settings-elm-list-div ul li:hover a {
+        color: #ffffff;
     }
-    .settings-elm-list-div ul li span label {
+    .settings-elm-list-div ul li label {
         cursor: pointer;
+        display: inline;
+    }
+    .settings-elm-list-profile{
+        background: url("/styles/layouts/tdsfront/image/update_profile.png") no-repeat scroll center center / 22px auto transparent;
+        float: left;
+        padding: 18px 10px 0 30px;
+    }
+    .settings-elm-list-div ul li:hover .settings-elm-list-profile {
+        background: url("/styles/layouts/tdsfront/image/update_profile_hover.png") no-repeat scroll center center / 22px auto transparent;
+        -webkit-transition: background 0.5s ease;
+        -moz-transition: background 0.5s ease;
+        -o-transition: background 0.5s ease;
+        -ms-transition: background 0.5s ease;
+        transition: background 0.5s ease;
+    }
+    .settings-elm-list-profile-picture {
+        background: url("/styles/layouts/tdsfront/image/change_picture.png") no-repeat scroll center center / 22px auto transparent;
+        float: left;
+        padding: 18px 10px 0 30px;
+    }
+    .settings-elm-list-div ul li:hover .settings-elm-list-profile-picture {
+        background: url("/styles/layouts/tdsfront/image/change_picture_hover.png") no-repeat scroll center center / 22px auto transparent;
+        -webkit-transition: background 0.5s ease;
+        -moz-transition: background 0.5s ease;
+        -o-transition: background 0.5s ease;
+        -ms-transition: background 0.5s ease;
+        transition: background 0.5s ease;
+    }
+    .settings-elm-list-pref {
+        background: url("/styles/layouts/tdsfront/image/account_settings.png") no-repeat scroll center center / 22px auto transparent;
+        float: left;
+        padding: 18px 10px 0 30px;
+    }
+    .settings-elm-list-div ul li:hover .settings-elm-list-pref {
+        background: url("/styles/layouts/tdsfront/image/account_settings_hover.png") no-repeat scroll center center / 22px auto transparent;
+        -webkit-transition: background 0.5s ease;
+        -moz-transition: background 0.5s ease;
+        -o-transition: background 0.5s ease;
+        -ms-transition: background 0.5s ease;
+        transition: background 0.5s ease;
+    }
+    .settings-elm-list-logout {
+        background: url("/styles/layouts/tdsfront/image/log_out.png") no-repeat scroll center center / 22px auto transparent;
+        float: left;
+        padding: 18px 10px 0 30px;
+    }
+    .settings-elm-list-div ul li:hover .settings-elm-list-logout {
+        background: url("/styles/layouts/tdsfront/image/log_out_hover.png") no-repeat scroll center center / 22px auto transparent;
+        -webkit-transition: background 0.5s ease;
+        -moz-transition: background 0.5s ease;
+        -o-transition: background 0.5s ease;
+        -ms-transition: background 0.5s ease;
+        transition: background 0.5s ease;
     }
     .daredevel-tree-label {
         color: #000000;
     }
-/*    .login-user-btn{
-        background: none repeat scroll 0 0 #72bf43 !important;
-        border: 1px solid #72bf43;
-        font-size: 14px !important;
-        position: relative;
-        text-align: center;
-        text-decoration: none;
-        transition: all 0.1s ease 0s;
-        padding: 0 7px;
-        
-        -webkit-transition: all 0.1s;
-        -ms-transition: all 0.1s;
-        -o-transition: all 0.1s;
-        -moz-transition: all 0.1s;
-        transition: all 0.1s;
-        
-        -webkit-box-shadow: 0 5px 0 #4b9106;
-        -ms-box-shadow: 0 5px 0 #4b9106;
-        -o-box-shadow: 0 5px 0 #4b9106;
-        -moz-box-shadow: 0 5px 0 #4b9106;
-        box-shadow: 0 5px 0 #4b9106;
-    }
-    .login-user-btn:hover {
-        background-color: #4b9106 !important;
-        border: 1px solid #4b9106 !important;
-        -webkit-transition: background-color 0.5s ease !important;
-        -moz-transition: background-color 0.5s ease !important;
-        -o-transition: background-color 0.5s ease !important;
-        -ms-transition: background-color 0.5s ease !important;
-        transition: background-color 0.5s ease !important;
-    }
-    .login-user-btn:active{
-        -webkit-box-shadow: 0px 2px 0px #72bf43;
-        -ms-box-shadow: 0px 2px 0px #72bf43;
-        -o-box-shadow: 0px 2px 0px #72bf43;
-        -moz-box-shadow: 0px 2px 0px #72bf43;
-        box-shadow: 0px 2px 0px #72bf43;
-        position:relative;
-        top:7px;
-    }
-    
-    .register-user-btn {
-        background: none repeat scroll 0 0 #f4f929 !important;
-        border: 1px solid #f4f929;
-        font-size: 14px !important;
-        position: relative;
-        text-align: center;
-        text-decoration: none;
-        transition: all 0.1s ease 0s;
-        padding: 0 7px;
-        
-        -webkit-transition: all 0.1s;
-        -ms-transition: all 0.1s;
-        -o-transition: all 0.1s;
-        -moz-transition: all 0.1s;
-        transition: all 0.1s;
-        
-        -webkit-box-shadow: 0 5px 0 #c2c444;
-        -ms-box-shadow: 0 5px 0 #c2c444;
-        -o-box-shadow: 0 5px 0 #c2c444;
-        -moz-box-shadow: 0 5px 0 #c2c444;
-        box-shadow: 0 5px 0 #c2c444;
-    }
-    .register-user-btn:hover {
-        background-color: #c2c444 !important;
-        border: 1px solid #c2c444 !important;
-        -webkit-transition: background-color 0.5s ease !important;
-        -moz-transition: background-color 0.5s ease !important;
-        -o-transition: background-color 0.5s ease !important;
-        -ms-transition: background-color 0.5s ease !important;
-        transition: background-color 0.5s ease !important;
-    }
-    .register-user-btn:active{
-        -webkit-box-shadow: 0px 2px 0px #f4f929;
-        -ms-box-shadow: 0px 2px 0px #f4f929;
-        -o-box-shadow: 0px 2px 0px #f4f929;
-        -moz-box-shadow: 0px 2px 0px #f4f929;
-        box-shadow: 0px 2px 0px #f4f929;
-        position:relative;
-        top:7px;
-    }*/
     .not-signed-up {
         background-color: #ee1c25;
         color: #fff;
@@ -2082,4 +2806,26 @@
     .login-user-btn{
         width: 250px;
     }
+    .not_registered, .sign_up_free{
+        width: 100%;
+    }
+    .not_registered{
+        font-size: 12px;
+        letter-spacing: 0.7px;
+        padding: 7px 0 0;
+    }
+    .sign_up_free{
+        font-size: 14px;
+        margin-bottom: 15px;
+    }
+    .sign_up_free label{
+        color: #666;
+        cursor: pointer;
+        padding-right: 5px;
+    }
+    .sign_up_free span{
+        color: #de3427;
+        cursor: pointer;
+    }
+    
 </style>

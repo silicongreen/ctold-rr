@@ -10,11 +10,13 @@
     <div class="post-content clearfix" style="<?php echo ( $news->post_type == 4 || $news->post_type == 3) ? 'background: transparent;' : ''; ?><?php echo ($is_exclusive_found) ? 'height:278px;' : '' ?>">
         <div class="intro-post <?php if($is_exclusive_found===true): ?>col-xs-6<?php endif; ?>">
             <div class="post-thumb " id="post-image" style="position: relative;">
+                <?php if ($target == "index") : ?>
                 <div class="post-thumb " style="width: 57px; position: absolute; left: 43%; top: 49px;">
                     <p style="<?php if($is_exclusive_found===true):?>top:104px;position:absolute;<?php else: ?>margin-top: -67px;position: relative;<?php endif;?>text-align: center;width: 100%;">
                         <img width="57" <?php if($is_exclusive_found===true):?>style="margin-left:-101%;"<?php endif; ?> src="<?php echo $news->icon ?>">
                     </p>
                 </div>
+                <?php endif; ?>
                 <?php if (!is_null($news->lead_material) && strlen(trim($news->lead_material)) > 0) : ?>
                     <?php if ($news->post_type == 2) : ?>   
                         <a class="add-link" title="<?php echo $news->lead_caption; ?>" href="<?php echo $news->lead_link; ?>" target="_blank">       

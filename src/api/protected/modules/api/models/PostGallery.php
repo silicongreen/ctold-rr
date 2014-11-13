@@ -108,4 +108,18 @@ class PostGallery extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        
+        public function getPostGallery($post_id)
+        {
+            $criteria = new CDbCriteria;
+            $criteria->select = 't.type,t.caption,t.source';
+            $criteria->compare("t.post_id",$post_id);
+            $criteria->with = array(
+                            "material" => array(
+                                "select" => "material.material_url",
+                            )
+                        );
+            $obj_gallery = $this->findAll($criteria);
+            return $obj_gallery;
+        }        
 }

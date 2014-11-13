@@ -513,6 +513,9 @@ class home extends MX_Controller {
             $data['ci_key']    = "index";
             $data['ci_key_for_cover'] = "index";
             $data['s_category_ids'] = "0";
+            
+            $this->load->config("user_register");
+            $data['dfolders'] = $this->config->config['free_user_folders'];
 
             $s_content = $this->load->view('good_read',$data, true);
 
@@ -2254,7 +2257,7 @@ class home extends MX_Controller {
             @readfile($str_music_dir);
         }
     }
-    public function aboutus()
+    public function about_us()
     {
         $ar_js = array();
         $ar_css = array();
@@ -2341,6 +2344,7 @@ class home extends MX_Controller {
         
         $this->extra_params = $ar_params;
     }
+    
     public function terms()
     {
         $ar_js = array();
@@ -2367,8 +2371,6 @@ class home extends MX_Controller {
         $cache_name = "common/right_view";
         if ( ! $s_widgets = $this->cache->file->get($cache_name)  )
         {
-           
-            
             $this->db->where('is_enabled', 1);
             $query = $this->db->get('widget');
             
@@ -2408,11 +2410,8 @@ class home extends MX_Controller {
         {
             $s_right_view = $s_widgets;
         }
-
-            
         
         $str_title = WEBSITE_NAME . " | Terms";
-        
         
         $meta_description = META_DESCRIPTION;
         $keywords = KEYWORDS;
@@ -2431,7 +2430,8 @@ class home extends MX_Controller {
         
         $this->extra_params = $ar_params;
     }
-    public function privacypolicy()
+    
+    public function privacy_policy()
     {
         $ar_js = array();
         $ar_css = array();
@@ -2619,9 +2619,6 @@ class home extends MX_Controller {
         $ar_css = array();
         $extra_js = '';
         
-        $errors = array( 0 => 'Failed');
-        $success = array();
-        
         $data = array();
         
         $data['ci_key']    = "contact_us";
@@ -2635,13 +2632,46 @@ class home extends MX_Controller {
         $data['layout'] = $layout_settings->value;
         
         if(isset($_POST) && !empty($_POST)){
-            echo '<pre>';
-            var_dump($_POST);
+            
+            $this->load->config('champs21');
+            $this->load->library('email');
+            
+            $email_config = $this->config->config['contact_email_addr'];
+            
+            $contact_model = new Contact_us();
+            
+            $contact_model->full_name = $this->input->post('full_name');
+            $contact_model->email = $this->input->post('email');
+            $contact_model->contact_type = $this->input->post('contact_type');
+            $contact_model->description = $this->input->post('ques_description');
+            $contact_model->created_date = date('Y-m-d H:i:s', time());
+            
+            $this->email->from($contact_model->email, $contact_model->full_name);
+            $this->email->to($email_config[$contact_model->contact_type]['to']);
+            $this->email->cc($email_config[$contact_model->contact_type]['cc']);
+            $this->email->bcc($email_config[$contact_model->contact_type]['bcc']);
+            $this->email->reply_to($contact_model->email, $contact_model->full_name);
+
+            $this->email->subject($email_config[$contact_model->contact_type]['subject']);
+            $this->email->message($contact_model->description);
+            
+            if($contact_model->validate()){
+                
+//                if($this->email->send()){
+                    
+                    if($contact_model->save()){
+                        $data['saved'] = TRUE;
+                        $data['errors'][] = 'Seccessfully Saved.';
+                    }else{
+                        $data['saved'] = FALSE;
+                        $data['errors'] = $contact_model->error->all;
+                    }
+//                }
+            }
+            
+            echo json_encode($data);
             exit;
         }
-        
-        $data['errors'] = $errors;
-        $data['success'] = $success;
         
         $s_content = $this->load->view('contact_us', $data, true);
         

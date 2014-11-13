@@ -19,6 +19,7 @@ $cache_name = "INNER_CONTENT_CACHE_" . $i_category_id_cache . "_" . str_replace(
 ob_start();
 
 $widget = new Widget;
+
 ?>
 <?php $s_ci_key = (isset($ci_key)) ? $ci_key : NULL; ?>
 <div class="container" style="width: 77%;min-height:250px;">
@@ -64,7 +65,7 @@ $widget = new Widget;
         <div style="clear:both;"></div>
         <?php $parent_category = $name; ?>
         <?php if ($has_categories) : ?>
-            <div class="sub-categories f5" style="display:none;">
+            <div class="sub-categories f5" style="display:block;">
                 <li class="<?php echo ( empty($a_category_ids) ) ? "selected" : ""; ?>">
                     <a href="<?php echo base_url(sanitize($parent_category)); ?>" class="<?php echo ( empty($a_category_ids) ) ? "selected" : ""; ?>" style="<?php echo ( empty($a_category_ids) ) ? "" : "color: #93989C;"; ?>">
                         All
@@ -108,7 +109,7 @@ $widget = new Widget;
                 <div class="col-lg-12">
                     <div class="col-lg-12">                        
                         <div class="col-lg-12">
-                            <?php if ($has_categories) : ?>
+                            <?php if ($has_categories) :?>
                                 <div class="f2">
                                     <ul id="web_category">
 
@@ -148,7 +149,7 @@ $widget = new Widget;
                                         ?>
                                     </ul>
                                 </div>
-                            <?php endif; ?>
+							<?php endif; ?>
 
 
 
@@ -162,7 +163,29 @@ $widget = new Widget;
 
             </div>
             
-        </div>    
+        </div>
+<?php else:?>
+	<div style="clear: both;"></div>
+        <div class="middle">
+            <div class="col-lg-12" style="margin-top:-11px;" >
+                <div class="col-lg-12">
+                    <div class="col-lg-12">                        
+                        <div class="col-lg-12">
+			<?php
+
+					$widget->run('postvideos',$category_name, $s_category_ids, $ci_key);
+			?>
+			 </div>
+                        
+                    </div> 
+                    
+                </div>
+
+                
+
+            </div>
+            
+        </div>
 <?php endif; ?>
 </div> 
 <style>

@@ -23,7 +23,7 @@
                         
                 </div><!-- post-title --> 
 
-                <div class="akmanda-excerpt" style="padding-top: 30px;"> <?php echo $arCustomNews['content']; ?></div>
+                <div class="akmanda-excerpt" style="padding-top: 30px;text-align:center;"> <?php echo $news->short_title; ?></div>
             </div>
         </div> 
 

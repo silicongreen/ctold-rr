@@ -23,6 +23,33 @@ class ajax extends MX_Controller
     {
         echo "getExclusiveNews";
     }
+    public function delete_user_folder()
+    {
+        $return = 0;
+        if (free_user_logged_in() )
+        {
+            $folder_name = $this->input->get('name');
+            $folder = explode("_",$folder_name);
+            
+            
+            $i_user_id = get_free_user_session("id");
+            $folder_id = $folder[count($folder)-1];
+            
+            $this->load->config("user_register");
+            $folders = $this->config->config['free_user_folders'];
+            
+            $this->db->where("id",$folder_id);
+            $this->db->where("user_id",$i_user_id);
+            foreach($folders as $value)
+            {
+                $this->db->where("title !=",rtrim($value));
+            } 
+            $this->db->delete("user_folder");
+            
+            $return = "folderli_".$folder_id;        
+        }
+        return $return;
+    }        
     
     public function setGKAnswer()
     {

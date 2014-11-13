@@ -293,19 +293,17 @@ function format_date(obj_date, yesterday) {
                                 
                                 $("#grid").masonry('reload');
                                 scrollPage();
+                                if($("#triangle-bottomright").length>0)
+                                {
+                                    $("#triangle-bottomright").css("border-left-width", $("#post-image").width() + "px");
+                                }
 
                                 
                                 setTimeout(function(){
-                                    var content_height = $(".site-main").outerHeight();
                                     
                                     sent_request = false;
                                     $(".loading-box").hide();
-                                    if($("#tz_mainmenu").length>0)
-                                    {
-
-                                        $("#main").children("aside").children("div").height(content_height);     
-                                    } 
-                                    //running flex slider again
+                                    
                                    
                                     
                                 }, 500);

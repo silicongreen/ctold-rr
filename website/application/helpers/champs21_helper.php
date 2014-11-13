@@ -470,8 +470,8 @@ if ( !function_exists("format_data") )
         $a_data['data'] = array();
         foreach( $a_raw_data->data->post as $post )
         {
-            $post->title = $post->author_title;
-            unset($post->author_title);
+            $post->title = $post->author;
+            unset($post->author);
             $post->id = $post->category_id;
             unset($post->category_id);
             $post->name = $post->category_name;

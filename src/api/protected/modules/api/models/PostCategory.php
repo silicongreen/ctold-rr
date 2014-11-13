@@ -191,15 +191,12 @@ class PostCategory extends CActiveRecord
     {
         $criteria = new CDbCriteria;
         $criteria->select = 't.id';
-        $criteria->together = true;
-        $criteria->compare("post.status", 5);
-        $criteria->compare("t.category_id", $category_id);
-        $criteria->compare("postType.type_id", $user_type);
-        $criteria->addCondition("DATE(post.published_date) <= '" . date("Y-m-d") . "'");
+        
+        
         
         if($game_type)
         {
-           $criteria->addCondition("post.game_type= '" . $game_type . "'"); 
+          $criteria->addCondition("post.game_type= '" . $game_type . "'"); 
         }
         if($fetaured == 1 && $fetaured!=false)
         {
@@ -227,21 +224,15 @@ class PostCategory extends CActiveRecord
                 . 'post.lead_source,post.post_type,post.referance_id,post.layout,post.language,post.sub_head,post.headline,post.view_count,post.user_view_count,post.headline_color,post.summary,post.short_title,post.lead_material,post.mobile_image,post.is_breaking,post.breaking_expire,post.is_exclusive,post.exclusive_expired,post.published_date',
                 'joinType' => "INNER JOIN",
                 'with' => array(
+                    
                     "postType" => array(
                         "select" => "",
                         'joinType' => "INNER JOIN",
                     ),
                     'postAuthor' => array(
-                    'select' => 'postAuthor.title,postAuthor.image'
-                    ),
-                    'postGalleries' => array(
-                        'select' => 'postGalleries.type,postGalleries.caption,postGalleries.source',
-                        'with' => array(
-                            "material" => array(
-                                "select" => "material.material_url",
-                            )
-                        )
+                        'select' => 'postAuthor.title,postAuthor.image'
                     )
+                    
                 ),
                 
             ),
@@ -254,9 +245,16 @@ class PostCategory extends CActiveRecord
         $criteria->limit = $page_size;
 
         $criteria->offset = $start;
-
+        $criteria->compare("post.status", 5);
+        $criteria->compare("t.category_id", $category_id);
+        $criteria->compare("postType.type_id", $user_type);
+        $criteria->addCondition("DATE(post.published_date) <= '" . date("Y-m-d") . "'");
+        $criteria->together = true;
 
         $obj_post = $this->findAll($criteria);
+        
+    
+
 
 
         $formated_post = $this->formatPost($obj_post);
@@ -355,6 +353,11 @@ class PostCategory extends CActiveRecord
                 $post_array[$i]['images'] = array();
                 $post_array[$i]['add_images'] = array();
                 $post_array[$i]['web_images'] = array();
+                
+                
+                $postGalleryObj = new PostGallery();
+                
+                $postValue['post']['postGalleries'] = $postGalleryObj->getPostGallery($postValue['post']->id);
                 //$post_array[$i]['images'] = Settings::content_images($postValue['post']->content,true,$postValue['post']->lead_material);
                 if ($postValue['post']['postGalleries'])
                 {

@@ -71,173 +71,8 @@
         </div>
         <?php endif; ?>
 </div>
-
-
-
     
 <?php if ( $b_layout ) : ?>
-<style>
-    .addthis_toolbox{
-        background: #F7F7F7;
-        border: 1px solid #ccc;
-        height: 60px;
-        position: relative;
-        border-radius: 10px 10px 0 0;
-    }
-    .addthis_toolbox div{
-        height: 60px;
-    }
-    .addthis_toolbox-float{
-        background: #F7F7F7;
-        border: 1px solid #ccc;
-        height: 60px;
-        position: fixed;
-        top: 0;
-        width: 68%;
-        margin: 0 20px 0 20px;
-        display: none;
-    }    
-    .addthis_toolbox-float div{
-        height: 60px;
-    }
-    .addthis_button_facebook_share iframe{
-        width: 105px;
-        height: 30px;
-    }
-    .addthis_button_facebook_like div{
-        width: 78px;
-        height: 30px;
-    }
-    .addthis_button_facebook_like div span {
-        height: 20px;
-        vertical-align: bottom;
-/*        width: 450px !important;*/
-        z-index: 1001;
-    }
-    .seen-image{
-        padding-bottom: 7px;
-        padding-left: 0;
-    }
-    .seen-image img {
-        width: 22px;
-    }
-    .seen{
-        padding-top: 5px;
-    }
-    .seen h2{
-        color: #b1b8ba;
-        font-family: tahoma;
-        font-size: 14px;
-        line-height: 0;
-    }
-    .good-read-text{
-        float: left;
-        height: 60px;
-        padding-top: 2px;
-    }
-    .good-read-image{
-        margin-left: auto;
-        margin-right: auto;
-        padding-top: 8px;
-        text-align: center;
-    }
-    .good-read-text h2{
-        color: #FFF;
-        font-size: 25px;
-        font-weight: 600;
-    }
-    .good-read-button{
-        cursor: pointer;
-        padding: 0;
-    }
-    .content-post {
-        margin-top: 10px;
-    }
-    .next-previous {
-        float: right;
-        font-size: 16px;
-        letter-spacing: 0.08em;
-        margin: auto;
-        text-align: center;
-    }
-    .next-previous a {
-        color: #ffffff;
-    }
-    .next {
-        background-color: #bfc3c6;
-        border-radius: 5px;
-         -moz-border-radius: 5px;
-        -webkit-border-radius: 5px;
-        -ms-border-radius: 5px;
-        -o-border-radius: 5px;
-        color: #ffffff;
-        cursor: pointer;
-        float: right;
-        padding: 2px 12px;
-    }
-    .previous {
-        background-color: #bfc3c6;
-        border-radius: 5px;
-         -moz-border-radius: 5px;
-        -webkit-border-radius: 5px;
-        -ms-border-radius: 5px;
-        -o-border-radius: 5px;
-        color: #ffffff;
-        cursor: pointer;
-        float: left;
-        padding: 2px 12px;
-    }
-    .next:hover, .previous:hover {
-        background-color: #373737;
-        -webkit-transition: background-color 0.5s ease;
-        -moz-transition: background-color 0.5s ease;
-        -o-transition: background-color 0.5s ease;
-        -ms-transition: background-color 0.5s ease;
-        transition: background-color 0.5s ease;
-    }
-    .inner-container {
-        padding: 0 30px 50px;
-    }
-    .language {
-        cursor: pointer;
-        padding: 0 0 11px 5px;
-    }
-    .language em {
-        background-color: #dfdfdf;
-        padding: 10px 10px 10px 8px;
-    }
-    .language a em {
-        color: #93989c;
-        font-size: 8px;
-    }
-    .language a em.active{
-        color: #FB3C2D;
-    }
-    .language a em:not(.active):hover {
-        color: #ffffff;
-        background-color: #93989C;
-        -webkit-transition: background-color 0.5s ease;
-        -moz-transition: background-color 0.5s ease;
-        -o-transition: background-color 0.5s ease;
-        -ms-transition: background-color 0.5s ease;
-        transition: background-color 0.5s ease;
-    }
-    .good-read-column {
-        background-color: #fb3c2d;
-        cursor: pointer;
-    }
-    .good-read-column:hover{
-        background-color: #93989C;
-        -webkit-transition: background-color 0.5s ease;
-        -moz-transition: background-color 0.5s ease;
-        -o-transition: background-color 0.5s ease;
-        -ms-transition: background-color 0.5s ease;
-        transition: background-color 0.5s ease;
-    }
-    .fancybox-wrap {
-        top: 50px !important;
-    }
-</style>
 
 <?php endif; ?>    
     
@@ -245,6 +80,13 @@
         <input type="hidden" name="url-post" id="url-post" value="<?php echo base_url('print_post/' . sanitize($headline) . '-' . $post_id); ?>" />
         <?php endif; ?>
         <div class="inner-container" style="margin: 10px 20px;">
+            
+            <!-- Ad Place Top -->
+            <div class="add-wrapper-top">
+                <img src="/styles/ads/ksrm.jpg" />
+            </div>
+            <!-- Ad Place Top -->
+            
         <!-- AddThis Smart Layers END -->
         <!-- AddThis Button BEGIN -->
         <?php if ( $b_layout) : ?>
@@ -286,7 +128,7 @@
         </div>
         
         <div class="col-md-3 social-bar">
-            <div class="col-lg-3" style="padding: 10px 9px 13px 2px; text-align: center;">
+            <div class="col-lg-3 language_box">
                 
                 <div class="col-md-12 language">
                     <a href="#">
@@ -326,19 +168,19 @@
                 
             </div>
             
-            <div class="col-lg-6" style="border-left: 1px solid #ddd; border-right: 1px solid #ddd; padding: 5px 15px 8px 0;">
-                <div class="col-md-12">
-                    <div class="seen-image col-lg-6"><img src="<?php echo base_url("styles/layouts/tdsfront/images/social/seen.png"); ?>" /></div>
-                    <div class="seen col-lg-6"><h2 class=""><?php echo $user_view_count; ?></h2></div>
+            <div class="col-lg-6 social_box">
+                <div class="seen_box">                    
+                    <div class="seen"><h2 class=""><?php echo $user_view_count; ?></h2></div>
+                    <div class="seen-image"><img src="<?php echo base_url("styles/layouts/tdsfront/images/social/seen.png"); ?>" /></div>
                 </div>
-                <div class="col-md-12">
+                <div class="col-md-12" style="clear:both;">
                     <a class="addthis_button_facebook_like" fb:like:layout="button_count" fb:like:href="<?php echo create_link_url(NULL, $headline,$post_id,false,true,false); ?>"></a>
                 </div>
                 <div class="col-md-12">
                     <a class="addthis_button_facebook_share" fb:share:layout="horizontal"  addthis:title="<?php echo $headline; ?>" addthis:url="<?php echo create_link_url(NULL, $headline,$post_id); ?>" addthis:description="<?php echo $fb_desc; ?>"></a>
                 </div>
             </div>
-            <div class="col-lg-3 good-read-column" style="padding: 10px 0;">
+            <div class="col-lg-3 good-read-column">
                 <div class="good-read-button normal <?php echo ( free_user_logged_in() ) ? "" : "login-user"; ?>">
                     <div class="good-read-image"><img src="<?php echo base_url("styles/layouts/tdsfront/images/social/good-read.png"); ?>" width="35" /></div>
                     <?php echo $good_read_single; ?>
@@ -409,7 +251,7 @@
                         
                         $gallery_html = '</p><div  class="ym-grid"> 
                         <div style="text-align:center; width:95%; margin: 0 auto;">
-                            <div style="display:none;" class="html5gallery" data-skin="horizontal" data-thumbshowtitle="false" data-width="600" data-height="270"  data-showsocialmedia="false"  
+                            <div style="display:none;" class="html5gallery" data-responsive="true" data-skin="horizontal" data-thumbshowtitle="false" data-width="600" data-height="270"  data-showsocialmedia="false"  
                          data-resizemode="fill" 
                          data-xml="'.base_url().'gallery/xml/post/post_'.$post_id.'.xml" >
                         </div>
@@ -638,6 +480,11 @@
      
     <?php if ( $b_layout) : ?>
     
+        <!-- Ad Place Top -->
+            <div class="add-wrapper-bottom">
+                <img src="/styles/ads/ad.png" />
+            </div>
+            <!-- Ad Place Top -->
         
     <hr  /> 
     
@@ -688,22 +535,38 @@
         <div style="clear: both; height: 30px;"></div>
         <?php endif; ?>
         <div class="related_post_content">
-            <div class="image">
+            
                 <?php
-                    list($width_main, $height_main, $type_main, $attr_main) = getimagesize($news->image);
+                    
+                    if(isset($news->lead_material))
+                    {
+                       list($width_main, $height_main, $type_main, $attr_main) = getimagesize($news->lead_material); 
+                       
+                    }
+                    if(isset($width_main) && $width_main>0)
+                    {
+                        $image_related = $news->lead_material;
+                    }
+                    else
+                    {
+                        list($width_main, $height_main, $type_main, $attr_main) = getimagesize($news->image);
+                        $image_related = $news->image;
+                    }    
+                    
+                    
                 
                  ?>
                 <?php if(isset($width_main) && $width_main>0): ?>
-                <img src="<?php echo $news->image; ?>" width="90%" />
+                <img src="<?php echo $image_related; ?>" width="120" height="120" style="overflow:hidden;float: left; margin-right:15px;" />
                 <?php endif; ?>
-            </div>
-            <div class="content_data">
-                <span><a href="<?php echo $news->new_link; ?>"><?php echo $news->title; ?></a></span>
-                <div class="content"><?php echo $news->content; ?></div>
+            
+            <div style="margin-right:30px;">
+                <p style="margin:0px;line-height:20px; "><a href="<?php echo $news->new_link; ?>"><?php echo $news->title; ?></a></p>
+                <p style="margin:0px; line-height:16px;font-size:12px;"><?php echo $news->content; ?></p>
             </div>
         </div>
     <?php $i++; endforeach; ?>
-    </div>
+</div>
 </div>
 <?php endif; ?>     
 <?php endif; ?>
@@ -748,3 +611,201 @@
 	</center>	
 </div>
 </div>
+
+<style>
+    .addthis_toolbox{
+        background: #F7F7F7;
+        border: 1px solid #ccc;
+        height: 60px;
+        position: relative;
+        border-radius: 10px 10px 0 0;
+    }
+    .addthis_toolbox div{
+        height: 60px;
+    }
+    .addthis_toolbox-float{
+        background: #F7F7F7;
+        border: 1px solid #ccc;
+        height: 60px;
+        position: fixed;
+        top: 0;
+        width: 68%;
+        margin: 0 20px 0 20px;
+        display: none;
+    }    
+    .addthis_toolbox-float div{
+        height: 60px;
+    }
+    .addthis_button_facebook_share iframe{
+        width: 105px;
+        height: 30px;
+    }
+    .addthis_button_facebook_like div{
+        width: 78px;
+        height: 30px;
+    }
+    .addthis_button_facebook_like div span {
+        height: 20px;
+        vertical-align: bottom;
+/*        width: 450px !important;*/
+        z-index: 1001;
+    }
+    .seen-image{
+        padding-bottom: 7px;
+        padding-left: 0;
+    }
+    .seen-image img {
+        width: 22px;
+    }
+    .seen{
+        padding-top: 5px;
+    }
+    .seen h2{
+        color: #b1b8ba;
+        font-family: tahoma;
+        font-size: 14px;
+        line-height: 0;
+    }
+    .good-read-text{
+        float: left;
+        height: 60px;
+        padding-top: 2px;
+    }
+    .good-read-image{
+        margin-left: auto;
+        margin-right: auto;
+        padding-top: 8px;
+        text-align: center;
+    }
+    .good-read-text h2{
+        color: #FFF;
+        font-size: 25px;
+        font-weight: 600;
+    }
+    .good-read-button{
+        cursor: pointer;
+        padding: 0;
+    }
+    .content-post {
+        margin-top: 10px;
+    }
+    .next-previous {
+        float: right;
+        font-size: 16px;
+        letter-spacing: 0.08em;
+        margin: auto;
+        text-align: center;
+        width: 19%;
+    }
+    .next-previous a {
+        color: #ffffff;
+    }
+    .next {
+        background-color: #bfc3c6;
+        border-radius: 5px;
+         -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        -ms-border-radius: 5px;
+        -o-border-radius: 5px;
+        color: #ffffff;
+        cursor: pointer;
+        float: right;
+        padding: 10px 12px;
+    }
+    .previous {
+        background-color: #bfc3c6;
+        border-radius: 5px;
+         -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        -ms-border-radius: 5px;
+        -o-border-radius: 5px;
+        color: #ffffff;
+        cursor: pointer;
+        float: left;
+        padding: 10px 12px;
+    }
+    .next:hover, .previous:hover {
+        background-color: #373737;
+        -webkit-transition: background-color 0.5s ease;
+        -moz-transition: background-color 0.5s ease;
+        -o-transition: background-color 0.5s ease;
+        -ms-transition: background-color 0.5s ease;
+        transition: background-color 0.5s ease;
+    }
+    .inner-container {
+        padding: 0 30px 50px;
+    }
+    .language {
+        cursor: pointer;
+        padding: 0 0 11px 5px;
+    }
+    .language em {
+        background-color: #dfdfdf;
+        padding: 10px 10px 10px 8px;
+    }
+    .language a em {
+        color: #93989c;
+        font-size: 8px;
+    }
+    .language a em.active{
+        color: #FB3C2D;
+    }
+    .language a em:not(.active):hover {
+        color: #ffffff;
+        background-color: #93989C;
+        -webkit-transition: background-color 0.5s ease;
+        -moz-transition: background-color 0.5s ease;
+        -o-transition: background-color 0.5s ease;
+        -ms-transition: background-color 0.5s ease;
+        transition: background-color 0.5s ease;
+    }
+    .good-read-column {
+        background-color: #fb3c2d;
+        cursor: pointer;
+        padding: 0px 0;
+    }
+    .good-read-column:hover{
+        background-color: #93989C;
+        -webkit-transition: background-color 0.5s ease;
+        -moz-transition: background-color 0.5s ease;
+        -o-transition: background-color 0.5s ease;
+        -ms-transition: background-color 0.5s ease;
+        transition: background-color 0.5s ease;
+    }
+    .fancybox-wrap {
+        top: 50px !important;
+    }
+    .add-wrapper-top{
+        padding: 20px 0 10px;
+        width: 100%
+    }
+    .add-wrapper-top img{
+        width: 100%
+    }
+    .add-wrapper-bottom{
+        padding: 20px 0 10px;
+        width: 100%
+    }
+    .add-wrapper-bottom img{
+        width: 100%
+    }
+    
+    @media all and (min-width: 319px) and (max-width: 479px){
+        .next-previous {
+            width: 65%;
+        }
+    }
+    
+    @media all and (min-width: 480px) and (max-width: 800px){
+        .next-previous {
+            width: 40%;
+        }
+    }
+    
+    @media all and (min-width: 801px) and (max-width: 1024px){
+        .next-previous {
+            width: 25%;
+        }
+    }
+    
+</style>

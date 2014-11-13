@@ -66,16 +66,18 @@ div.callout {
 <li style="position: relative;" id="post-<?php echo $news->post_id; ?>" class="post-<?php echo $news->post_id; ?> post post-content-showed type-post status-publish format-image has-post-thumbnail hentry category-post-format tag-description tag-image tag-people tag-text post ajax-hide <?php echo $li_class_name; ?> <?php echo ($i < 3) ? "shown" : ""; ?>  <?php echo (!is_null($news->short_title) && strlen(trim($news->short_title)) > 0) ? " format-quote   tag-quote " : ""; ?>  ">    
 <?php endif; ?>    
     <div class="post-content clearfix" style="margin-top: 20px;<?php echo ( $news->post_type == 4 || $news->post_type == 3) ? 'background: transparent;' : ''; ?><?php echo ($is_exclusive_found) ? 'height:278px;' : '' ?>">
+       <?php if ($target == "index") : ?>
         <p style="margin-top: -17px;position: relative;text-align: center;width: 100%;">
             <img width="57" <?php if($is_exclusive_found===true):?>style="margin-left:-101%;"<?php endif; ?> src="<?php echo $news->icon ?>">
         </p>
+        <?php endif; ?>   
         <div class="post-title" style="margin: 0px;">
             <h2 class="f2" style="text-align: left; padding: 5px;">
             </h2>
         </div>
         <div class="intro-post <?php if($is_exclusive_found===true): ?>col-xs-6<?php endif; ?>">
             <div class="post-thumb " style="width: 20%; padding: 10px 10px; float: left; margin-top: 20px;">
-                <div class="akmanda_author_img"><img src="<?php echo $news->author_image; ?>"  style="border:0; max-width: 110%;"></div>
+                <div class="akmanda_author_img"><img src="<?php echo $news->author_image; ?>" style="border:0; max-width: 110%;"></div>
             </div><!-- post thumb -->
             <div class="post-thumb callout right" style="width: 70%; padding: 10px 10px; float: left; position: relative;">
                 <div style="background: url('<?php echo base_url('styles/layouts/tdsfront/images/bg-quote-box.png'); ?>') no-repeat; position: absolute; top: 5px; left: 5px; width: 38px; height: 31px; "></div>
@@ -146,16 +148,13 @@ div.callout {
             <div class="post-entry <?php if($is_exclusive_found===true): ?>col-xs-6<?php endif; ?>" > 
                 
                 <div class="post-title" <?php echo ($is_exclusive_found===true)? 'style="margin: 24px 0px;"' : 'style=" padding-top:5px; padding-bottom: 5px; margin-top: 80px;"'?>>
-                    <?php if ($target == "index") : ?>
+                    
                             
                         <h2 class="f2" style="text-align: left; padding: 5px;">
                             <a href="<?php echo base_url() . sanitize($news->headline) . "-" . $news->post_id; ?>" title="<?php echo $news->headline; ?>">
                                 <?php echo $news->headline; ?>
                             </a>
                         </h2>
-                    <?php endif; ?>
-                            
-                        
                 </div><!-- post-title --> 
 
                 <div class="akmanda-excerpt" style="padding-top: 30px;margin: 5px 5px 20px;"> <?php echo $arCustomNews['content']; ?></div>

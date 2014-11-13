@@ -1,7 +1,7 @@
 <?php
 /*
  *---------------------------------------------------------------
- * APPLICATION ENVIRONMENT
+ * APPLICATION ENVIRONMENT : PRODUCTION
  *---------------------------------------------------------------
  *
  * You can load different configurations depending on your

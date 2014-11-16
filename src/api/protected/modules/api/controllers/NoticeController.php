@@ -1,0 +1,118 @@
+<?php
+
+class NoticeController extends Controller {
+
+    /**
+     * @return array action filters
+     */
+    public function filters() {
+        return array(
+            'accessControl', // perform access control for CRUD operations
+            'postOnly + delete', // we only allow deletion via POST request
+        );
+    }
+
+    /**
+     * Specifies the access control rules.
+     * This method is used by the 'accessControl' filter.
+     * @return array access control rules
+     */
+    public function accessRules() {
+        return array(
+            array('allow', // allow authenticated user to perform 'create' and 'update' actions
+                'actions' => array('index', 'acknowledge'),
+                'users' => array('@'),
+            ),
+            array('deny', // deny all users
+                'users' => array('*'),
+            ),
+        );
+    }
+
+    public function actionIndex() {
+
+        if ((Yii::app()->request->isPostRequest) && !empty($_POST)) {
+
+            $user_secret = Yii::app()->request->getPost('user_secret');
+            $school_id = Yii::app()->request->getPost('school');
+            $notice_type = Yii::app()->request->getPost('notice_type');
+            $author_id = Yii::app()->request->getPost('author');
+
+            $to_date = Yii::app()->request->getPost('to_date');
+            $to_date = (!empty($to_date)) ? $to_date : \date('Y-m-d', \time());
+
+            $from_date = Yii::app()->request->getPost('from_date');
+            $from_date = (!empty($from_date)) ? $from_date : \date('Y-m-d', \strtotime("-1 week", \strtotime($to_date)));
+
+            $response = array();
+            if (Yii::app()->user->user_secret === $user_secret) {
+
+                if ($notice_type == 4) {
+                    $response['status']['code'] = 404;
+                    $response['status']['msg'] = 'NO_EVENT_FOUND. PLEASE TRY EVENT API';
+                } else {
+                    $news = new News;
+                    $news = $news->getNews($school_id, $from_date, $to_date, $notice_type, $author_id);
+
+                    if (!$news) {
+                        $response['status']['code'] = 404;
+                        $response['status']['msg'] = 'NO_NOTICE_FOUND.';
+                    } else {
+                        $response['data']['notice'] = $news;
+                        $response['status']['code'] = 200;
+                        $response['status']['msg'] = 'NOTICE_FOUND.';
+                    }
+                }
+            } else {
+                $response['status']['code'] = 403;
+                $response['status']['msg'] = "Access Denied.";
+            }
+        } else {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request.";
+        }
+
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    }
+
+    public function actionAcknowledge() {
+
+        if ((Yii::app()->request->isPostRequest) && !empty($_POST)) {
+
+            $user_secret = Yii::app()->request->getPost('user_secret');
+            $school_id = Yii::app()->request->getPost('school');
+            $notice_id = Yii::app()->request->getPost('notice_id');
+
+            if (empty($notice_id)) {
+                $response['status']['code'] = 400;
+                $response['status']['msg'] = "Bad Request.";
+                echo CJSON::encode($response);
+                Yii::app()->end();
+            }
+
+            if (Yii::app()->user->user_secret === $user_secret) {
+
+                $notice = new NewsAcknowledges;
+                $notice = $notice->acknowledgeNotice($notice_id);
+
+                if ($notice) {
+                    $response['data']['notice_ack'] = $notice;
+                } else {
+                    $response['status']['code'] = 404;
+                    $response['status']['msg'] = "NO_NOTICE_ACKNOWLEDGED.";
+                }
+            } else {
+                $response['status']['code'] = 403;
+                $response['status']['msg'] = "Access Denied.";
+            }
+        } else {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request.";
+        }
+
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    }
+
+}

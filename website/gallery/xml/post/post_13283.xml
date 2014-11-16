@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<playlist>
+  <slide>
+    <file>/upload/gallery/image/arts/sanjeev-kumar.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/sanjeev-kumar.jpg</thumbnail>
+    <title>Sanjeev Kumar</title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/rosy-afsari.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/rosy-afsari.jpg</thumbnail>
+    <title>Rosy Afsari</title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/jaya-bhaduri.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/jaya-bhaduri.jpg</thumbnail>
+    <title>Jaya Bhaduri</title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/gregory-peck.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/gregory-peck.jpg</thumbnail>
+    <title>Gregory Peck</title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/dilip-kumar.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/dilip-kumar.jpg</thumbnail>
+    <title>Dilip Kumar</title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/christopher-plummer.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/christopher-plummer.jpg</thumbnail>
+    <title>Christopher Plummer</title>
+  </slide>
+</playlist>

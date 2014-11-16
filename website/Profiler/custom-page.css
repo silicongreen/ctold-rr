@@ -1,0 +1,47 @@
+
+.TzItemPage{
+    font-size: 14px;
+    color: #414952;
+    line-height: 24px;
+}
+
+
+body .alignright,
+body img.alignright {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #E8EAEF;
+    display: inline;
+    float: right;
+    margin: 0 0 30px 10px;
+    padding: 5px;
+}
+
+body .alignleft,
+body img.alignleft {
+
+    display: inline;
+    float: left;
+    margin: 0 10px 30px 0;
+    padding: 5px;
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #E8EAEF;
+    display: inline;
+}
+body .aligncenter,
+body img.aligncenter {
+    margin-right: auto;
+    margin-left: auto;
+    display: block;
+    clear: both;
+    padding: 5px;
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #E8EAEF;
+}
+#tz-main #tz-component .TzItemPage .TzItemPageInner .box .TzServices h3.title{
+    color: #3E3F3F;
+    font-size: 30px;
+    line-height: 30px;
+    margin-top: 0;
+    text-transform: capitalize;
+
+}

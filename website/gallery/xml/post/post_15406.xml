@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<playlist>
+  <slide>
+    <file>/upload/gallery/image/arts/oscar10.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/oscar10.jpg</thumbnail>
+    <title>Wolf of Wall Street</title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/oscar9.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/oscar9.jpg</thumbnail>
+    <title>Double Indemnity</title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/oscar8.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/oscar8.jpg</thumbnail>
+    <title>Godfather 3</title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/oscar7.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/oscar7.jpg</thumbnail>
+    <title>Shawshank Redemption</title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/oscar6.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/oscar6.jpg</thumbnail>
+    <title>The Elephant Man</title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/oscar5.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/oscar5.jpg</thumbnail>
+    <title>Gangs of New York</title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/oscar4.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/oscar4.jpg</thumbnail>
+    <title>True Grit</title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/oscar3.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/oscar3.jpg</thumbnail>
+    <title>American Hustle</title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/oscar2.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/oscar2.jpg</thumbnail>
+    <title>The Turning Point</title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/oscar1.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/oscar1.jpg</thumbnail>
+    <title>The Color Purple</title>
+  </slide>
+</playlist>

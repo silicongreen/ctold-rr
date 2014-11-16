@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<playlist>
+  <slide>
+    <file>/upload/gallery/image/arts/kamal.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/kamal.jpg</thumbnail>
+    <title>Mustafa Kamal Syed</title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/ali_1.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/ali_1.jpg</thumbnail>
+    <title>Ali Imam</title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/afzal.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/afzal.jpg</thumbnail>
+    <title>Afzal Hossain</title>
+  </slide>
+</playlist>

@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<playlist>
+  <slide>
+    <file>/upload/gallery/image/arts/shahidullah-kaiser.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/shahidullah-kaiser.jpg</thumbnail>
+    <title>Shahidullah Kaiser</title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/mujibur-rahman-dilu.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/mujibur-rahman-dilu.jpg</thumbnail>
+    <title>Mujibur Rahman Dilu</title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/atm-shamsuzzaman.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/atm-shamsuzzaman.jpg</thumbnail>
+    <title>ATM Shamsuzzaman</title>
+  </slide>
+  <slide>
+    <file>/upload/gallery/image/arts/abdullah-al-mamun.jpg</file>
+    <thumbnail>/upload/gallery/image/arts/abdullah-al-mamun.jpg</thumbnail>
+    <title>Abdullah Al Mamun</title>
+  </slide>
+</playlist>

@@ -1,0 +1,23 @@
+
+
+.pagination {
+    text-align: right;
+}
+
+.pagination a {
+	background: url(../../images/squre-button.png) no-repeat transparent 0px 3px;
+	width: 15px;
+	height: 15px;
+	margin: 0 5px 0 0;
+	display: inline-block;
+}
+
+.pagination a:hover {
+	background: url(../../images/squre-button-hover.png) no-repeat transparent 0px 3px;
+	cursor: pointer;
+}
+
+.pagination a.selected {
+	background: url(../../images/squre-button-seclected.png) no-repeat transparent 0px 3px;
+	cursor: default;
+}

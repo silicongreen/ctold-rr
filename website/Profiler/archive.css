@@ -1,0 +1,94 @@
+.tz_portfolio_image{
+    position: relative;
+}
+.p_tag a{
+    padding-right: 5px;
+}
+.p_tag a:last-child{
+    padding-right: 0;
+}
+.TzDescription{
+   margin: 0 0 20px;
+}
+
+/*page author*/
+.tz_portfolio_user{
+    margin-bottom: 70px;
+}
+.TzAuthorInfo p{
+    padding: 7px 0px 0px;
+    margin: 0;
+}
+.AuthorDetails{
+    float: left;
+}
+.AuthorAvatar img {
+    border-radius: 50%;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+}
+body.author #tz-main #sidebar-right div.sidebar-nav{
+    padding-top: 275px;
+}
+.AuthorAvatar {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+    height: 150px;
+    margin-right: 40px;
+    width: 150px;
+    padding-right: 15px;
+}
+.tz_portfolio_user .AuthorAvatar{
+    background: none !important;
+}
+.tz_portfolio_user .AuthorAvatar img{
+    border: 0 !important;
+}
+.tz_portfolio_user .TzAuthorInfo{
+    border: 0 !important;
+}
+.tz_portfolio_user{
+    border: 0 !important;
+}
+/* pagenavi */
+
+#tz-main .TzPagination a,
+#tz-main .TzPagination span{
+    background: none repeat scroll 0 0 #3498DB;
+    border-radius: 3px;
+    box-shadow: 0 -2px 0 rgba(0, 0, 0, 0.15) inset;
+    -moz-box-shadow: 0 -2px 0 rgba(0, 0, 0, 0.15) inset;
+    -webkit-box-shadow: 0 -2px 0 rgba(0, 0, 0, 0.15) inset;
+    -ms-box-shadow: 0 -2px 0 rgba(0, 0, 0, 0.15) inset;
+    -o-box-shadow: 0 -2px 0 rgba(0, 0, 0, 0.15) inset;
+    color: #FFFFFF;
+    float: none;
+    font-size: 14px;
+    line-height: 20px;
+    margin: 10px 5px 0px;
+    padding: 9px 15px;
+    border: 0 !important;
+    display: inline-block;
+}
+.TzBlog .TzLeading:last-of-type {
+    margin-bottom: 50px !important;
+}
+#tz-main .TzPagination span.current{
+    border: 0;
+    font-weight: normal;
+}
+#tz-main .TzPagination span.current,
+#tz-main .TzPagination a:hover,
+#tz-main .TzPagination span:hover{
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15) inset;
+    -moz-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15) inset;
+    -webkit-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15) inset;
+    -ms-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15) inset;
+    -o-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15) inset;
+
+}
+.TzPagination {
+    text-align: center;
+    width: 100%;
+}

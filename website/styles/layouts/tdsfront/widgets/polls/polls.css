@@ -1,0 +1,7 @@
+
+#loader{ display:none; text-align:center;}
+.option{ margin:5px 0; padding-top:5px; }
+.option p{ line-height:1.1em; font-size:0.85em; }
+.bar{ height:10px; background:#3399cc; margin-top:3px; }
+.yourvote{ background:#113399; }
+#button_vote{cursor: pointer;}

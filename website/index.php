@@ -18,8 +18,7 @@
  *
  */
 	define('ENVIRONMENT', 'development');
-  print "loal";
-  exit;
+
 /*
  *---------------------------------------------------------------
  * ERROR REPORTING

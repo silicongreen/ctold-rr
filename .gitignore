@@ -15,3 +15,9 @@ website/market/app/etc/local.xml
 website/market/media/catalog/product/cache/
 website/market/var/
 webhook-deploy
+.vagrant
+composer.lock
+vendor
+log
+nbproject
+

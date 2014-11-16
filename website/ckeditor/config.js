@@ -1,3 +1,4 @@
+
 var base_url = document.getElementById("base_url").value+"ckeditor/kcfinder/";
 CKEDITOR.editorConfig = function( config ) {
     // Define changes to default configuration here. For example:
@@ -12,3 +13,4 @@ CKEDITOR.editorConfig = function( config ) {
     config.filebrowserFlashUploadUrl = base_url + 'upload.php?type=flash';
     config.extraPlugins = 'simpleLink,solution,gallery';
 };
+

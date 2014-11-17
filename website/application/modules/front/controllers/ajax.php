@@ -21,9 +21,79 @@ class ajax extends MX_Controller
 
     public function getExclusiveNews()
     {
-        echo $this->uri->segment(1);
         echo "getExclusiveNews";
     }
+    
+    function minify_css()
+    {
+        $s_css_key = $this->uri->segment(2);
+        
+        $cache_name = "css/" . $s_css_key;
+        
+        if ( $s_content = $this->cache->file->get($cache_name) )
+        {
+            ob_start("ob_gzhandler");
+            
+            $headers['Content-Length'] = strlen($s_content);
+            $headers['Expires'] =  gmdate("D, d M Y H:i:s", time() + 86400 * 30) . " GMT";
+            $headers['Cache-control'] =  "max-age=2592000";
+            $headers['Content-Type'] = 'text/css; charset=utf-8';
+            $headers['Content-Encoding'] = "gzip";
+            $headers['Vary'] = 'Accept-Encoding';
+            //$headers['ETag'] = time() + 86400 * 30;
+
+            foreach ($headers as $name => $val) {
+                header($name . ': ' . $val);
+            }
+            
+            echo $s_content;
+            
+            ob_flush();
+
+
+            exit;
+        }
+        $this->load->config("huffas");
+        
+        $this->layout_front = false;
+        
+        ob_start("ob_gzhandler");
+        
+        $s_css_key = $this->uri->segment(2);
+        
+        $ar_css = $this->config->config['css_champs21'][$s_css_key];
+        
+        foreach( $ar_css as $css )
+        {
+            $s_css .= $this->compress(file_get_contents( base_url( $css ) ));
+        }
+        
+        $headers['Content-Length'] = strlen($s_css);
+        $headers['Expires'] =  gmdate("D, d M Y H:i:s", time() + 86400 * 30) . " GMT";
+        $headers['Cache-control'] =  "max-age=2592000";
+        $headers['Content-Type'] = 'text/css; charset=utf-8';
+        $headers['Content-Encoding'] = "gzip";
+        $headers['Vary'] = 'Accept-Encoding';
+        $headers['ETag'] = time() + 86400 * 30;
+
+        foreach ($headers as $name => $val) {
+            header($name . ': ' . $val);
+        }
+        
+        $this->cache->file->save($cache_name, $s_css, 86400 * 30 * 12);
+        echo $s_css;
+    }
+    
+    function compress( $minify )
+    {
+        $minify = preg_replace( '!/\*[^*]*\*+([^/][^*]*\*+)*/!', '', $minify );
+        
+        /* remove tabs, spaces, newlines, etc. */ 
+        $minify = str_replace( array("\r\n", "\r", "\n", "\t"), '', $minify );
+        
+        return $minify;
+    }
+    
     public function delete_user_folder()
     {
         $return = 0;

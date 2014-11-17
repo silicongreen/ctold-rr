@@ -21,6 +21,7 @@ class ajax extends MX_Controller
 
     public function getExclusiveNews()
     {
+        echo $this->uri->segment(1);
         echo "getExclusiveNews";
     }
     public function delete_user_folder()

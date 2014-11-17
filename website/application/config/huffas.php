@@ -107,3 +107,28 @@ $config['LOGO'] = array(
 $config['swf'] = array(
     "external_url" => 'http://www.champs21.com/',
 );
+
+$config['css_champs21'] = Array(
+        'all.css' => Array( // when loading example.com/css/example1.css you will load stylesheet1.css and stylesheet2.css into one single file
+                    'merapi/style/bootstrap.css',
+                    'merapi/style/plugin.css',
+                    'merapi/style/style.css',
+                    'merapi/style/font.css',
+                    'merapi/css.css'
+        ),
+        'styles.css' => Array( // when loading example.com/css/example1.css you will load stylesheet1.css and stylesheet2.css into one single file
+                    'merapi/style/styles.css',
+                    'styles/layouts/tdsfront/css/fonts.css',
+                    'styles/layouts/tdsfront/css/freefeed.css',
+        ),
+        'sidebar.css' => Array( // when loading example.com/css/example1.css you will load stylesheet1.css and stylesheet2.css into one single file
+                    'Profiler/sidebar.css',
+                    'Profiler/theme.css',
+                    'Profiler/template.css',
+                    'Profiler/megamenu.css',
+                    'Profiler/megamenu-theme.css',
+                    'Profiler/custom_theme.css',
+                    'styles/plugins/fancybox/fancybox.css',
+                    'merapi/style/header-icon-animation.css'
+        )
+);

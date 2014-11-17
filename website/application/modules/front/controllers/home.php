@@ -23,6 +23,59 @@ class home extends MX_Controller {
          $this->load->helper('form');
 
     }
+    
+    
+    function minify_css()
+    {
+        $s_css_key = $this->uri->segment(2);
+        $cache_name = "css/" . strtoupper($s_css_key);
+        
+        if ( $s_content = $this->cache->file->get($cache_name) )
+        {
+            ob_start("ob_gzhandler");
+        
+            header("Cache-Control: public");
+        
+            header("Expires: " . gmdate("D, d M Y H:i:s", time() + 86400 * 30 * 12) . 'GMT');
+        
+            header("content-type: text/css");
+            echo $s_content;
+            exit;
+        }
+        $this->load->config("huffas");
+        
+        $this->layout_front = false;
+        
+        ob_start("ob_gzhandler");
+        
+        header("Cache-Control: public");
+        
+        header("Expires: " . gmdate("D, d M Y H:i:s", time() + 86400 * 30 * 12) . 'GMT');
+        
+        header("content-type: text/css");
+        
+        $s_css_key = $this->uri->segment(2);
+        
+        $ar_css = $this->config->config['css_champs21'][$s_css_key . ".css"];
+        
+        foreach( $ar_css as $css )
+        {
+            $s_css .= $this->compress(file_get_contents( base_url( $css ) ));
+        }
+        $this->cache->file->save($cache_name, $s_css, 86400 * 30 * 12);
+        echo $s_css;
+    }
+    
+    function compress( $minify )
+    {
+        $minify = preg_replace( '!/\*[^*]*\*+([^/][^*]*\*+)*/!', '', $minify );
+        
+        /* remove tabs, spaces, newlines, etc. */ 
+        $minify = str_replace( array("\r\n", "\r", "\n", "\t", ' ', ' ', ' '), '', $minify );
+        
+        return $minify;
+    }
+    
     function schools()
     {
        

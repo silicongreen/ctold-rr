@@ -78,7 +78,7 @@
     
     <link rel="stylesheet" id="bootstrap-css" href="<?php echo base_url('css/champs.css'); ?>" type="text/css" media="all" />
     <link rel="stylesheet" id="contact-form-7-css" href="<?php echo base_url('css/styles.css'); ?>" type="text/css" media="all" />
-    <link rel="stylesheet" id="bootstrap-css" href="<?= base_url('css/all.css'); ?>" type="text/css" media="all" >
+    <link rel="stylesheet" id="bootstrap-css" href="<?= base_url('css1/all.css'); ?>" type="text/css" media="all" >
     <!--link rel="stylesheet" id="contact-form-7-css" href="<?= base_url() ?>css/styles.css?v=1" type="text/css" media="all" /-->
     <link rel="stylesheet" href="<?= base_url('styles/plugins/fancybox/fancybox.css'); ?>" type="text/css" media="all" />
     

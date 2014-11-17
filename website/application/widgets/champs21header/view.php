@@ -693,7 +693,7 @@ height: 46px;
                 <li data="candle" class="<?php echo ( free_user_logged_in() ) ? 'candlepopup' : 'before-login-user'; ?>">
                     <div class="icon-candle">&nbsp;</div> 
                 </li>
-                <li data="magic_mart" class="before-login-user">
+                <li data="magic_mart" class="before-login-user-back" onclick="location.href='<?php echo base_url('/schools'); ?>'">
                 <!-- onclick="location.href='//<?php echo base_url('/market'); ?>'" -->
                     <div class="icon-magic-mart">&nbsp;</div> 
                 </li>

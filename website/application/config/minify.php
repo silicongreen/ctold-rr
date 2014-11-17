@@ -44,7 +44,7 @@ $config['css_local_path']         = FCPATH.'/';
 $config['css_cache_path']         = APPPATH.'/cache/'; // for minify cache only
 $config['css_cache_max_age']         = 3600 * 24 * 7 * 4; // 4 week cache header
 $config['css_groups']            = Array(
-                        'all.css' => Array( // when loading example.com/css/example1.css you will load stylesheet1.css and stylesheet2.css into one single file
+                        'champs.css' => Array( // when loading example.com/css/example1.css you will load stylesheet1.css and stylesheet2.css into one single file
                                     'merapi/style/bootstrap.css',
                                     'merapi/style/plugin.css',
                                     'merapi/style/style.css',
@@ -86,38 +86,8 @@ $config['js_local_path']         = FCPATH.'/';
 $config['js_cache_path']         = APPPATH.'/cache/'; // for minify cache only
 $config['js_cache_max_age']         = 3600 * 24 * 7 * 4; // 4 week cache header
 $config['js_groups']            = Array(
-                        'index-main.js' => Array( // when loading example.com/js/example1.js you will load javascript1.js and javascript2.js into one single file
-                                'scripts/jquery/jquery-min.js',
-                                'scripts/jquery/jqueryui-min.js',
-                                'merapi/script/jquery.imagesloaded.js',
-                                'merapi/script/jquery.masonry.js',
-                                'merapi/script/jquery.masonry.ordered.js',
-                                'merapi/jquery-migrate.js',
-                                'merapi/pluginsHead.js',
-                                'scripts/layouts/tdsfront/js/bootstrap-datepicker.js',
-                                'merapi/scripts.js',                            
-                                'merapi/devicepx-jetpack.js',
-                                'merapi/pluginsFoot.js',
-                                'merapi/main.js',
-                                'Profiler/jquery.form.min.js',
-                                'Profiler/bootstrap.js',
-                                'Profiler/jquery.easing.min.js',
-                                'Profiler/jquery.tinyscrollbar.min.js',
-                                'Profiler/custom_theme.js',
-                                'Profiler/menu.js',
-                                'Profiler/profile_script_resize.js',
-                                'scripts/jquery/jquery.carouFredSel-6.2.1-packed.js',
-                                'scripts/layouts/tdsfront/js/jquery.scrollUp.min.js',
-                                'scripts/layouts/tdsfront/js/jquery.scrollUp_custom.js',
-                                'gallery/html5gallery.js',
-                                'scripts/fancybox/fancybox.js',
-                                'scripts/layouts/tdsfront/js/lib.js',
-                                'scripts/layouts/tdsfront/js/index.js',
-                                'scripts/layouts/tdsfront/js/index-req.js',
-                                'scripts/jquery/jquery.tree.js',
-                                'scripts/custom/customTree.js'
-                        ),
-                        'top.js' => Array( // when loading example.com/js/example1.js you will load javascript1.js and javascript2.js into one single file
+                        
+                        'top-main.js' => Array( // when loading example.com/js/example1.js you will load javascript1.js and javascript2.js into one single file
                                 'scripts/jquery/jquery-min.js',
                                 'scripts/jquery/jqueryui-min.js',
                                 'merapi/script/jquery.imagesloaded.js',
@@ -127,7 +97,7 @@ $config['js_groups']            = Array(
                                 'merapi/pluginsHead.js',
                                 'scripts/layouts/tdsfront/js/bootstrap-datepicker.js'
                         ),
-                        'bottom.js' => Array( // when loading example.com/js/example1.js you will load javascript1.js and javascript2.js into one single file
+                        'main-bottom.js' => Array( // when loading example.com/js/example1.js you will load javascript1.js and javascript2.js into one single file
                                 'merapi/scripts.js',                            
                                 'merapi/devicepx-jetpack.js',
                                 'merapi/pluginsFoot.js',

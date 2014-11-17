@@ -66,7 +66,7 @@ $widget = new Widget;
 <script src="<?php //echo base_url('scripts/custom/customTree.js'); ?>"></script>-->
 <script src="<?php echo base_url('scripts/fancybox/fancybox.js'); ?>"></script>
 <script src="<?php echo base_url('scripts/layouts/tdsfront/js/jquery.liteuploader.js'); ?>"></script>
-<script type="text/javascript" src="<?php echo base_url('js/bottom.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo base_url('js/main-bottom.js'); ?>"></script>
 <script src="<?php echo base_url('gallery/html5gallery.js'); ?>"></script>
 <!--<script src="<?php echo base_url('scripts/layouts/tdsfront/js/lib.js'); ?>"></script>-->
 

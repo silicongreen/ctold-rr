@@ -71,7 +71,7 @@ class home extends MX_Controller {
         $minify = preg_replace( '!/\*[^*]*\*+([^/][^*]*\*+)*/!', '', $minify );
         
         /* remove tabs, spaces, newlines, etc. */ 
-        $minify = str_replace( array("\r\n", "\r", "\n", "\t", ' ', ' ', ' '), '', $minify );
+        $minify = str_replace( array("\r\n", "\r", "\n", "\t"), '', $minify );
         
         return $minify;
     }

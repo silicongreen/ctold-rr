@@ -44,7 +44,7 @@ $config['css_local_path']         = FCPATH.'/';
 $config['css_cache_path']         = APPPATH.'/cache/'; // for minify cache only
 $config['css_cache_max_age']         = 3600 * 24 * 7 * 4; // 4 week cache header
 $config['css_groups']            = Array(
-                        'champs.css' => Array( // when loading example.com/css/example1.css you will load stylesheet1.css and stylesheet2.css into one single file
+                        'champs21.css' => Array( // when loading example.com/css/example1.css you will load stylesheet1.css and stylesheet2.css into one single file
                                     'merapi/style/bootstrap.css',
                                     'merapi/style/plugin.css',
                                     'merapi/style/style.css',

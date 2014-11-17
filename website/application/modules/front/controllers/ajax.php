@@ -38,7 +38,7 @@ class ajax extends MX_Controller
             $headers['Expires'] =  gmdate("D, d M Y H:i:s", time() + 86400 * 30) . " GMT";
             $headers['Cache-control'] =  "max-age=2592000";
             $headers['Content-Type'] = 'text/css; charset=utf-8';
-            $headers['Content-Encoding'] = "gzip";
+            //$headers['Content-Encoding'] = "gzip";
             $headers['Vary'] = 'Accept-Encoding';
             //$headers['ETag'] = time() + 86400 * 30;
 
@@ -72,7 +72,7 @@ class ajax extends MX_Controller
         $headers['Expires'] =  gmdate("D, d M Y H:i:s", time() + 86400 * 30) . " GMT";
         $headers['Cache-control'] =  "max-age=2592000";
         $headers['Content-Type'] = 'text/css; charset=utf-8';
-        $headers['Content-Encoding'] = "gzip";
+        //$headers['Content-Encoding'] = "gzip";
         $headers['Vary'] = 'Accept-Encoding';
         $headers['ETag'] = time() + 86400 * 30;
 

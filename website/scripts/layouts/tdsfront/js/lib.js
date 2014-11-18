@@ -965,6 +965,7 @@ $(document).ready(function(){
                 if(data.saved == true) {
                     exclamation = 'Hooray!';
                     $('#frm_contact_us')[0].reset();
+                    $( "#frm_contact_us input:text, textarea").css( "border", "1px solid #d9dbdc" );
                 }else{
                     $( "#frm_contact_us input:text, textarea").css( "border", "1px solid #DB3434" );
                 }

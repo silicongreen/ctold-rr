@@ -24,3 +24,5 @@ website/git_pull
 website/application/cache/
 website/application/config/champs21.php
 website/upload
+website/nbMeta
+website/market/nbproject

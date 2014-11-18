@@ -515,11 +515,13 @@ if ( !function_exists("send_mail") )
         $headers[] = "Subject: {$ar_email['subject']}";
         $headers[] = "X-Mailer: PHP/".phpversion();
         
-//        echo '<pre>';
+        echo '<pre>';
 //        var_dump($headers);
-//        echo implode("\r\n", $headers);
-//        exit;
+        echo implode("\r\n", $headers);
+        exit;
         
-        return mail($ar_email['to_email'], $ar_email['subject'], $ar_email['message'], implode("\r\n", $headers));
+        var_dump(mail($ar_email['to_email'], $ar_email['subject'], $ar_email['message'], implode("\r\n", $headers)));
+        exit;
+//        return mail($ar_email['to_email'], $ar_email['subject'], $ar_email['message'], implode("\r\n", $headers));
     }
 }

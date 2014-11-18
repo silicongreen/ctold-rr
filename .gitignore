@@ -23,6 +23,7 @@ nbproject
 website/git_pull
 website/application/cache/
 website/application/config/champs21.php
+website/application/config/minify.php
 website/upload
 website/nbMeta
 website/market/nbproject

@@ -930,7 +930,16 @@ class FreeuserController extends Controller
 
         
         $singlepost = $postModel->getSinglePost($id);
+        
+        $next_id = $postcategoryObj->nextpreviousid($category_id, $user_type, $id, $singlepost['published_date'], $singlepost['inner_priority']);
 
+        $previous_id = $postcategoryObj->nextpreviousid($category_id, $user_type, $id, $singlepost['published_date'], $singlepost['inner_priority'],"previous");
+        
+        if($next_id == $previous_id)
+        {
+            $next_id = $postcategoryObj->nextpreviousid($category_id, $user_type, $next_id, $singlepost['published_date'], $singlepost['inner_priority'],"next",$id);
+        }
+        
         $postobj = $postModel->findByPk($id);
 
         $postobj->view_count = $postobj->view_count + 1;
@@ -941,6 +950,8 @@ class FreeuserController extends Controller
         //$subcategory = $categoryModel->getSubcategory($category_id);
         //$response['data']['subcategory'] = $subcategory;
         $response['data']['allpostid'] = $allpostid;
+        $response['data']['previous_id'] = $previous_id;
+        $response['data']['next_id'] = $next_id;
 
         $response['data']['post'] = $singlepost;
         $response['status']['code'] = 200;

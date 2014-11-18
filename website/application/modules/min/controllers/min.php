@@ -36,7 +36,7 @@ class Min extends CI_Controller {
 					$this->_type = 'js';
 					break;
 					
-				case $this->config->item('css_route_segment'):
+                                case $this->config->item('css_route_segment'):
 					$this->_type = 'css';
 					break;
 					

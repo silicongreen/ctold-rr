@@ -5,7 +5,7 @@
         <img src="<?php echo base_url($this->config->config['cover-image'][$ci_key_for_cover]); ?>" width="100%" class="image-logo" alt="logo">
         <?php elseif ((array_key_exists($ci_key_for_cover, $this->config->config['LOGO']) && $this->config->config['LOGO'][$ci_key_for_cover]) ||
                 (array_key_exists("allpage", $this->config->config['LOGO']) && $this->config->config['LOGO']["allpage"])) : ?>
-        <div class="header-new" style="background: #fff; width: 77%;margin: 0px auto; height: 80px; padding: 18px 5px; ">
+        <div class="header-new" style="background: #fff; width: 77%;margin: 0px auto; height: 100px; padding: 18px 5px; ">
             
             <div class="logo-div">
                 <a href="<?php echo base_url(); ?>" ><img  src="<?php echo base_url('styles/layouts/tdsfront/images/logo-new.png'); ?>" class="image-logo" alt="logo"></a>
@@ -173,7 +173,7 @@ height: 46px;
                             
                             <fieldset class="reg_logo">
                                 <div>
-                                    <img src="styles/layouts/tdsfront/image/register.png" width="60px" alt="Chmaps21.com" />
+                                    <img src="<?php echo base_url('styles/layouts/tdsfront/image/register.png'); ?>" width="60px" alt="Chmaps21.com" />
                                 </div>
                             </fieldset>
 
@@ -543,7 +543,7 @@ height: 46px;
                             <div>
                                 <fieldset class="login_logo">
                                     <div>
-                                        <img src="styles/layouts/tdsfront/image/Login.png" width="60px" alt="Chmaps21.com" />
+                                        <img src="<?php echo base_url('styles/layouts/tdsfront/image/Login.png'); ?>" width="60px" alt="Chmaps21.com" />
                                     </div>
                                     <div class="not_registered">
                                         not registered yet?
@@ -802,7 +802,7 @@ height: 46px;
                <div>
                    <fieldset class="login_logo">
                        <div>
-                           <img src="styles/layouts/tdsfront/image/champs_logo.png" width="250px" alt="Chmaps21.com">
+                           <img src="<?php echo base_url('styles/layouts/tdsfront/image/champs_logo.png'); ?>" width="250px" alt="Chmaps21.com">
                        </div>
                    </fieldset>
 

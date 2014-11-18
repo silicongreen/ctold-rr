@@ -23,6 +23,8 @@ class home extends MX_Controller {
          $this->load->helper('form');
 
     }
+    
+    
     function schools()
     {
        
@@ -2634,7 +2636,6 @@ class home extends MX_Controller {
         if(isset($_POST) && !empty($_POST)){
             
             $this->load->config('champs21');
-            $this->load->library('email');
             
             $email_config = $this->config->config['contact_email_addr'];
             
@@ -2646,18 +2647,21 @@ class home extends MX_Controller {
             $contact_model->description = $this->input->post('ques_description');
             $contact_model->created_date = date('Y-m-d H:i:s', time());
             
-            $this->email->from($contact_model->email, $contact_model->full_name);
-            $this->email->to($email_config[$contact_model->contact_type]['to']);
-            $this->email->cc($email_config[$contact_model->contact_type]['cc']);
-            $this->email->bcc($email_config[$contact_model->contact_type]['bcc']);
-            $this->email->reply_to($contact_model->email, $contact_model->full_name);
-
-            $this->email->subject($email_config[$contact_model->contact_type]['subject']);
-            $this->email->message($contact_model->description);
+            $ar_email['sender_full_name'] = $contact_model->full_name;
+            $ar_email['sender_email'] = $contact_model->email;
+            $ar_email['to_name'] = $email_config[$contact_model->contact_type]['to']['full_name'];
+            $ar_email['to_email'] = $email_config[$contact_model->contact_type]['to']['email'];
+            $ar_email['cc_name'] = $email_config[$contact_model->contact_type]['cc']['full_name'];
+            $ar_email['cc_email'] = $email_config[$contact_model->contact_type]['cc']['email'];
+            $ar_email['bcc_name'] = $email_config[$contact_model->contact_type]['bcc']['full_name'];
+            $ar_email['bcc_email'] = $email_config[$contact_model->contact_type]['bcc']['email'];
+            
+            $ar_email['subject'] = $email_config[$contact_model->contact_type]['subject'];
+            $ar_email['message'] = $contact_model->description;
             
             if($contact_model->validate()){
                 
-//                if($this->email->send()){
+                if(send_mail($ar_email)){
                     
                     if($contact_model->save()){
                         $data['saved'] = TRUE;
@@ -2666,7 +2670,7 @@ class home extends MX_Controller {
                         $data['saved'] = FALSE;
                         $data['errors'] = $contact_model->error->all;
                     }
-//                }
+                }
             }
             
             echo json_encode($data);

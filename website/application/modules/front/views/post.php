@@ -81,11 +81,21 @@
         <?php endif; ?>
         <div class="inner-container" style="margin: 10px 20px;">
             
-            <!-- Ad Place Top -->
+            <!-- Ad sense Place Top -->
             <div class="add-wrapper-top">
-                <img src="/styles/ads/ksrm.jpg" />
+                <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                <!-- champs21-single-page-top -->
+                <ins class="adsbygoogle"
+                     style="display: inline-block; width:100%; height:90px; background-color: transparent;"
+                     data-ad-client="ca-pub-2246193625592975"
+                     data-ad-slot="7582729847">
+                </ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+<!--                <img src="/styles/ads/ksrm.jpg" />-->
             </div>
-            <!-- Ad Place Top -->
+            <!-- Ad sense Place Top -->
             
         <!-- AddThis Smart Layers END -->
         <!-- AddThis Button BEGIN -->
@@ -480,11 +490,21 @@
      
     <?php if ( $b_layout) : ?>
     
-        <!-- Ad Place Top -->
+        <!-- Ad Sense Place Bottom -->
             <div class="add-wrapper-bottom">
-                <img src="/styles/ads/ad.png" />
+                <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                <!-- champs21-single-page-bottom -->
+                <ins class="adsbygoogle"
+                     style="display:inline-block; width:100%; height:90px; background-color: transparent;"
+                     data-ad-client="ca-pub-2246193625592975"
+                     data-ad-slot="4489662643">
+                </ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+<!--                <img src="/styles/ads/ad.png" />-->
             </div>
-            <!-- Ad Place Top -->
+            <!-- Ad Sense Place Bottom -->
         
     <hr  /> 
     

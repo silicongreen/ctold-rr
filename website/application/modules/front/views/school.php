@@ -360,6 +360,6 @@ $(function() {
 		$('.headerlink div').css('margin-right', (parseInt($('.headerlink').width() - ($('.headerlink div').width() + 40))/2) + "px")
 	}
 	
-	$('.school_details_and_menu').css('top', (parseInt( 503 - $('.school_details_and_menu').height() )) + "px");
+	$('.school_details_and_menu').css('top', (parseInt( 514 - $('.school_details_and_menu').height() )) + "px");
 });
 </script>

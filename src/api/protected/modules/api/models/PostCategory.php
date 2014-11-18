@@ -143,6 +143,45 @@ class PostCategory extends CActiveRecord
             return 0;
         }
     }
+    public function nextpreviousid($category_id, $user_type,$current_id,$published_date,$inner_priority,$target="next")
+    {
+        $criteria = new CDbCriteria;
+        $criteria->select = 't.id';
+        $criteria->together = true;
+        $criteria->compare("post.status", 5);
+        $criteria->compare("t.category_id", $category_id);
+        $criteria->compare("t.id !", $current_id);
+        $criteria->compare("postType.type_id", $user_type);
+        $criteria->addCondition("DATE(post.published_date) <= '" . date("Y-m-d") . "'");
+        if($target=="next")
+        {
+            $criteria->addCondition("DATE(post.published_date) >= '" . date("Y-m-d",  strtotime($published_date)) . "'");
+            $criteria->addCondition("t.inner_priority <= '" . $inner_priority . "'");
+            $criteria->order = 'DATE(post.published_date) ASC, t.inner_priority DESC';
+        }  
+        else
+        {
+            $criteria->addCondition("DATE(post.published_date) <= '" . date("Y-m-d",  strtotime($published_date)) . "'");
+            $criteria->addCondition("t.inner_priority >= '" . $inner_priority . "'");
+            $criteria->order = 'DATE(post.published_date) DESC, t.inner_priority ASC';
+        }    
+        $criteria->with = array(
+             'post' => array(
+                 'select' => 'post.id',
+                 'joinType' => "INNER JOIN",
+                 'with' => array(
+                     "postType" => array(
+                         "select" => "",
+                         'joinType' => "INNER JOIN",
+                     )
+                 )
+             )
+         );
+        $criteria->limit = 1;
+        $obj_post = $this->find($criteria);
+        return $obj_post['post']->id;
+        
+    }        
 
     public function getPostAll($category_id, $user_type)
     {

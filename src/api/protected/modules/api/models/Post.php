@@ -365,7 +365,7 @@ class Post extends CActiveRecord
         $criteria->order = "category.id ASC";
         $criteria->with = array(
             'postCategories' => array(
-                'select' => 'postCategories.id',
+                'select' => 'postCategories.id,postCategories.inner_priority',
                 'joinType' => "LEFT OUTER JOIN",
                 'with' => array(
                     "category" => array(
@@ -744,6 +744,7 @@ class Post extends CActiveRecord
 
             $post_array['category_menu_icon'] = "";
             $post_array['category_icon'] = "";
+            
 
             if ($postValue['postCategories'][0]['category']->menu_icon)
                 $post_array['category_menu_icon'] = Settings::$image_path . $postValue['postCategories'][0]['category']->menu_icon;
@@ -753,6 +754,8 @@ class Post extends CActiveRecord
 
             $post_array['category_name'] = $postValue['postCategories'][0]['category']->name;
             $post_array['category_id'] = $postValue['postCategories'][0]['category']->id;
+            
+            $post_array['inner_priority'] = $postValue['postCategories'][0]->inner_priority;
 
             $post_array['second_category_name'] = "";
             $post_array['second_category_id'] = $postValue['postCategories'][0]['category']->id;

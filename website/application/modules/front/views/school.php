@@ -55,7 +55,7 @@
         <div class="school_details">
             <div class="school_name" id="fitin">
                 <div>
-				<span class="f2" style="font-size;30px;color:#fff;
+				<span class="f2" style="font-size:30px;color:#fff;
 				text-shadow: 2px 4px 3px rgba(0,0,0,0.3);"><?php echo $school_details->name ?><?php if($school_details->district){ echo " , ".$school_details->district;} ?></span>
                 <!--<span><?php #echo $school_details->views ?> Visits</span>-->
 				</div>

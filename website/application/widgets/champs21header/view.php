@@ -173,7 +173,7 @@ height: 46px;
                             
                             <fieldset class="reg_logo">
                                 <div>
-                                    <img src="styles/layouts/tdsfront/image/register.png" width="60px" alt="Chmaps21.com" />
+                                    <img src="<?php echo base_url('styles/layouts/tdsfront/image/register.png'); ?>" width="60px" alt="Chmaps21.com" />
                                 </div>
                             </fieldset>
 
@@ -543,7 +543,7 @@ height: 46px;
                             <div>
                                 <fieldset class="login_logo">
                                     <div>
-                                        <img src="styles/layouts/tdsfront/image/Login.png" width="60px" alt="Chmaps21.com" />
+                                        <img src="<?php echo base_url('styles/layouts/tdsfront/image/Login.png'); ?>" width="60px" alt="Chmaps21.com" />
                                     </div>
                                     <div class="not_registered">
                                         not registered yet?
@@ -802,7 +802,7 @@ height: 46px;
                <div>
                    <fieldset class="login_logo">
                        <div>
-                           <img src="styles/layouts/tdsfront/image/champs_logo.png" width="250px" alt="Chmaps21.com">
+                           <img src="<?php echo base_url('styles/layouts/tdsfront/image/champs_logo.png'); ?>" width="250px" alt="Chmaps21.com">
                        </div>
                    </fieldset>
 

@@ -150,7 +150,7 @@ class PostCategory extends CActiveRecord
         $criteria->together = true;
         $criteria->compare("post.status", 5);
         $criteria->compare("t.category_id", $category_id);
-        $criteria->compare("t.id !", $current_id);
+        $criteria->compare("post.id !", $current_id);
         $criteria->compare("postType.type_id", $user_type);
         $criteria->addCondition("DATE(post.published_date) <= '" . date("Y-m-d") . "'");
         if($target=="next")

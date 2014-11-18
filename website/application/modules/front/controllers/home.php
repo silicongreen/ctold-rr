@@ -2659,7 +2659,7 @@ class home extends MX_Controller {
             
             if($contact_model->validate()){
                 
-//                if($this->email->send()){
+                if($this->email->send()){
                     
                     if($contact_model->save()){
                         $data['saved'] = TRUE;
@@ -2668,7 +2668,7 @@ class home extends MX_Controller {
                         $data['saved'] = FALSE;
                         $data['errors'] = $contact_model->error->all;
                     }
-//                }
+                }
             }
             
             echo json_encode($data);

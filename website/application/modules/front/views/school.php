@@ -64,8 +64,8 @@
                 <div class="fb-like" data-href="<?php echo base_url()."schools/".sanitize($school_details->name)."/" ?>" data-layout="button_count" data-action="like" data-show-faces="false" data-share="false"></div>
             </div>
         </div> 
-        <div class="footerlink headerlink f5">
-            <div style="width:790px;margin:0px 99px;padding:10px 20px 0px 20px;position:absolute;border-radius:7px;background:linear-gradient(to bottom, #FEFEFE , #D9D9D9);-webkit-box-shadow: 0 10px 25px -2px gray;
+        <div class="headerlink f5">
+            <div style="width:790px;height:60px;margin:0px 99px;padding:20px 20px 0px 20px;position:absolute;border-radius:7px;background:linear-gradient(to bottom, #FEFEFE , #D9D9D9);-webkit-box-shadow: 0 10px 25px -2px gray;
    -moz-box-shadow: 0 10px 25px -2px gray;
         box-shadow: 0 10px 25px -2px gray;">
 				<ul>
@@ -296,9 +296,12 @@
 	margin:0px 99px;
 }
 .headerlink
-{
-   width:100%;
-   height:46px;
+{    
+    height:60px;
+    float: left;
+    font-family: arial;
+    font-size: 14px;
+    margin-top: 5px;
 }
 .school_name
 {    
@@ -326,17 +329,19 @@
 {    
     
 }
-.school_details_and_menu .footerlink ul li
+.school_details_and_menu .headerlink ul li
 {
 	margin-bottom:8px;
+        display: inline;
+        padding: 10px 5px;
 }
-.footerlink ul li a
+.headerlink ul li a
 {
     font-size:17px;
-    padding:13px;
+    padding:16px 10px;
 	
 }
-.footerlink ul li a.red_menu
+.headerlink ul li a.red_menu
 {
     color:red;
     border-bottom: 4px solid red;

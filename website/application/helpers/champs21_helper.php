@@ -495,6 +495,7 @@ if ( !function_exists("send_mail") )
 {
     function send_mail( $ar_email )
     {
+        
         $headers   = array();
         $headers[] = "MIME-Version: 1.0";
         $headers[] = "Content-type: text/plain; charset=utf-8";

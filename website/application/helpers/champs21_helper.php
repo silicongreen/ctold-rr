@@ -514,14 +514,7 @@ if ( !function_exists("send_mail") )
         $headers[] = "Reply-To: ".$ar_email['sender_full_name']." <".$ar_email['sender_email'].">";
         $headers[] = "Subject: {$ar_email['subject']}";
         $headers[] = "X-Mailer: PHP/".phpversion();
-        
-        echo '<pre>';
-//        var_dump($headers);
-        echo implode("\r\n", $headers);
-        exit;
-        
-        var_dump(mail($ar_email['to_email'], $ar_email['subject'], $ar_email['message'], implode("\r\n", $headers)));
-        exit;
-//        return mail($ar_email['to_email'], $ar_email['subject'], $ar_email['message'], implode("\r\n", $headers));
+       
+        return mail($ar_email['to_email'], $ar_email['subject'], $ar_email['message'], implode("\r\n", $headers));
     }
 }

@@ -143,7 +143,7 @@ class PostCategory extends CActiveRecord
             return 0;
         }
     }
-    public function nextpreviousid($category_id, $user_type,$current_id,$published_date,$inner_priority,$target="next")
+    public function nextpreviousid($category_id, $user_type,$current_id,$published_date,$inner_priority,$target="next",$another_id=0,$call=1)
     {
         $criteria = new CDbCriteria;
         $criteria->select = 't.id';
@@ -151,19 +151,39 @@ class PostCategory extends CActiveRecord
         $criteria->compare("post.status", 5);
         $criteria->compare("t.category_id", $category_id);
         $criteria->compare("post.id !", $current_id);
+        if($another_id!=0)
+        {
+            $criteria->compare("post.id !", $another_id);
+        }    
         $criteria->compare("postType.type_id", $user_type);
         $criteria->addCondition("DATE(post.published_date) <= '" . date("Y-m-d") . "'");
         if($target=="next")
         {
-            $criteria->addCondition("DATE(post.published_date) >= '" . date("Y-m-d",  strtotime($published_date)) . "'");
-            $criteria->addCondition("t.inner_priority <= '" . $inner_priority . "'");
-            $criteria->order = 'DATE(post.published_date) ASC, t.inner_priority DESC';
+            if($call==1)
+            {
+                $criteria->addCondition("DATE(post.published_date) = '" . date("Y-m-d",  strtotime($published_date)) . "'"
+                    . " AND t.inner_priority >= '" . $inner_priority . "'");
+            }
+            else
+            {
+               $criteria->addCondition("DATE(post.published_date) < '" . date("Y-m-d",  strtotime($published_date)) . "'"); 
+            }    
+            
+            $criteria->order = 'DATE(post.published_date) DESC, t.inner_priority ASC';
         }  
         else
         {
-            $criteria->addCondition("DATE(post.published_date) <= '" . date("Y-m-d",  strtotime($published_date)) . "'");
-            $criteria->addCondition("t.inner_priority >= '" . $inner_priority . "'");
-            $criteria->order = 'DATE(post.published_date) DESC, t.inner_priority ASC';
+            if($call==1)
+            {
+                $criteria->addCondition("DATE(post.published_date) = '" . date("Y-m-d",  strtotime($published_date)) . "'"
+                    . " AND t.inner_priority <= '" . $inner_priority . "'");
+            }
+            else
+            {
+               $criteria->addCondition("DATE(post.published_date) > '" . date("Y-m-d",  strtotime($published_date)) . "'"); 
+            } 
+           
+            $criteria->order = 'DATE(post.published_date) ASC, t.inner_priority DESC';
         }    
         $criteria->with = array(
              'post' => array(
@@ -179,7 +199,19 @@ class PostCategory extends CActiveRecord
          );
         $criteria->limit = 1;
         $obj_post = $this->find($criteria);
-        return $obj_post['post']->id;
+        if($obj_post)
+        {
+            return $obj_post['post']->id;
+        }
+        else if($call==1)
+        {
+            return $this->nextpreviousid($category_id, $user_type,$current_id,$published_date,$inner_priority,$target,$another_id,2);
+            
+        }  
+        else 
+        {
+            return false;
+        }
         
     }        
 

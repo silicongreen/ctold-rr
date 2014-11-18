@@ -937,7 +937,7 @@ class FreeuserController extends Controller
         
         if($next_id == $previous_id)
         {
-            $next_id = $postcategoryObj->nextpreviousid($category_id, $user_type, $next_id, $singlepost['published_date'], $singlepost['inner_priority']);
+            $next_id = $postcategoryObj->nextpreviousid($category_id, $user_type, $next_id, $singlepost['published_date'], $singlepost['inner_priority'],"next",$id);
         }
         
         $postobj = $postModel->findByPk($id);

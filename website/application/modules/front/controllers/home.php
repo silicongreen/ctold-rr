@@ -2649,7 +2649,8 @@ class home extends MX_Controller {
             
             $ar_email['sender_full_name'] = $contact_model->full_name;
             $ar_email['sender_email'] = $contact_model->email;
-            $ar_email['to'] = $email_config[$contact_model->contact_type]['to']['email'];
+            $ar_email['to_name'] = $email_config[$contact_model->contact_type]['to']['full_name'];
+            $ar_email['to_email'] = $email_config[$contact_model->contact_type]['to']['email'];
             $ar_email['cc_name'] = $email_config[$contact_model->contact_type]['cc']['full_name'];
             $ar_email['cc_email'] = $email_config[$contact_model->contact_type]['cc']['email'];
             $ar_email['bcc_name'] = $email_config[$contact_model->contact_type]['bcc']['full_name'];
@@ -2660,7 +2661,7 @@ class home extends MX_Controller {
             
             if($contact_model->validate()){
                 
-//                if(send_mail($ar_email)){
+                if(send_mail($ar_email)){
                     
                     if($contact_model->save()){
                         $data['saved'] = TRUE;
@@ -2669,7 +2670,7 @@ class home extends MX_Controller {
                         $data['saved'] = FALSE;
                         $data['errors'] = $contact_model->error->all;
                     }
-//                }
+                }
             }
             
             echo json_encode($data);

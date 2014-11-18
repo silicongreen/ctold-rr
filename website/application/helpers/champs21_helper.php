@@ -498,6 +498,7 @@ if ( !function_exists("send_mail") )
         $headers   = array();
         $headers[] = "MIME-Version: 1.0";
         $headers[] = "Content-type: text/plain; charset=utf-8";
+        $headers[] = "To: " . $ar_email['to_name'] . " <" . $ar_email['to_email'] . ">";
         $headers[] = "From: " . $ar_email['sender_full_name'] . " <" . $ar_email['sender_email'] . ">";
         
         if( isset($ar_email['cc_email']) && !empty($ar_email['cc_email']) ) {
@@ -519,6 +520,6 @@ if ( !function_exists("send_mail") )
 //        echo implode("\r\n", $headers);
 //        exit;
         
-        return mail($ar_email['to'], $ar_email['subject'], $ar_email['message'], implode("\r\n", $headers));
+        return mail($ar_email['to_email'], $ar_email['subject'], $ar_email['message'], implode("\r\n", $headers));
     }
 }

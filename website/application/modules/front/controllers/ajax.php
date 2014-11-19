@@ -342,7 +342,80 @@ class ajax extends MX_Controller
             echo 0;
         }
     }
-    
+    public function createteacherpage()
+    {
+        if (free_user_logged_in())
+        {
+           
+            $school_obj = new createpage();
+            $school_obj->user_id = get_free_user_session("id");
+            
+            $information['school_name'] = $this->input->post("school_name");
+            $information['contact'] = $this->input->post("contact");
+            $information['address'] = $this->input->post("address");
+            $information['zip_code'] = $this->input->post("zip_code");
+            $information['about'] = $this->input->post("about");
+
+
+            $this->load->library('upload');
+            if (!empty($_FILES['national_card']['name']))
+            {
+                $config_cover['upload_path'] = 'upload/user_submitted_image/';
+                $config_cover['allowed_types'] = 'jpg|png|gif|jpeg';
+                $config_cover['max_size'] = '1024';
+                $config_cover['is_image'] = false;
+                $config_cover['file_name'] = "image_" . time() . "_" . $_FILES['picture']['name'];
+                $config_cover['overwrite'] = TRUE;
+
+                $this->upload->initialize($config_cover);
+
+                if ($this->upload->do_upload('national_card'))
+                {
+                    $information['national_card'] = $config_cover['upload_path'] . $this->upload->file_name;
+                }
+            }
+            if (!empty($_FILES['school_card']['name']))
+            {
+                $config_image['upload_path'] = 'upload/user_submitted_image/';
+                $config_image['allowed_types'] = 'jpg|png|gif|jpeg';
+                $config_image['max_size'] = '1024';
+                $config_image['max_width'] = '2000';
+                $config_image['max_height'] = '1600';
+                $config_image['is_image'] = TRUE;
+                $config_image['file_name'] = "image_" . time() . "_" . $_FILES['logo']['name'];
+                $config_image['overwrite'] = TRUE;
+
+                $this->upload->initialize($config_image);
+
+                if ($this->upload->do_upload('school_card'))
+                {
+                    $information['school_card'] = $config_image['upload_path'] . $this->upload->file_name;
+                }
+            }
+            $jsonData = json_encode($information);
+            
+            $school_obj->information = $jsonData;
+            
+            echo "<pre>";
+            print_r($jsonData);
+            //$school_obj->save();
+
+
+
+            if($school_obj->id)
+            {
+                echo 1;
+            }
+            else
+            {
+                echo 0;
+            }    
+        }
+        else
+        {
+            echo 0;
+        }
+    }
     
     public function add_post()
     {

@@ -89,10 +89,10 @@
                     <input type="submit" id="submit_form_school" style="display:none;" value="Submit" />
                 </label>
                 <label class="candle-input">
-                    <input type="file" style="display:none;"  id="attach_file_school" name="picture"  />
+                    <input type="file" style="display:none;"  id="attach_file_school" name="national_card"  />
                 </label>
                 <label class="candle-input">
-                    <input type="file" style="display:none;"  id="leadimage_school" name="logo"  />
+                    <input type="file" style="display:none;"  id="leadimage_school" name="school_card"  />
                 </label>
             </div>
 
@@ -212,10 +212,10 @@
             }
             else
             {
-                loading(); // loading
+                
                 var formData = new FormData($(this)[0]);
                 $.ajax({
-                    url: $("#base_url").val() + "front/ajax/add_school/",
+                    url: $("#base_url").val() + "front/ajax/createteacherpage/",
                     type: 'POST',
                     data: formData,
                     async: false,
@@ -224,7 +224,7 @@
                     processData: false,
                     success: function(returndata)
                     {
-                        closeloading();
+                        
                         if (returndata == 0)
                         {
                             alert("Critical Error occur Please refresh page and submit data again");

@@ -697,6 +697,9 @@ height: 46px;
                 <!-- onclick="location.href='//<?php echo base_url('/market'); ?>'" -->
                     <div class="icon-magic-mart">&nbsp;</div> 
                 </li>
+                <li data="create-page" class="before-login-user-back" onclick="location.href='<?php echo base_url('/createpage'); ?>'">                        
+                    <div class="icon-create-page">&nbsp;</div> 
+                </li>
             </ul>
                
         </div>
@@ -1805,6 +1808,18 @@ if($('.header-logo-div').is(':visible')) {
 .icon-magic-mart:hover
 {
     background: url(<?php echo base_url('styles/layouts/tdsfront/image/magicmart_black.png'); ?>) no-repeat;
+    background-size:70%;    
+}
+.icon-create-page
+{
+    background: url(<?php echo base_url('styles/layouts/tdsfront/image/createpage_red.png'); ?>) no-repeat;
+    background-size:70%;
+    width:118px;
+    height:79px;
+}
+.icon-create-page:hover
+{
+    background: url(<?php echo base_url('styles/layouts/tdsfront/image/createpage_black.png'); ?>) no-repeat;
     background-size:70%;    
 }
 <!--</style>

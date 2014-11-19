@@ -2713,4 +2713,103 @@ class home extends MX_Controller {
         
         $this->extra_params = $ar_params;
     }
+    public function createpage()
+    {
+        
+        $ar_js = array();
+        $ar_css = array();
+        $extra_js = '';
+        
+        $data = array();
+        
+        $data['ci_key']    = "createpage";
+        $data['ci_key_for_cover'] = "createpage";
+        $data['s_category_ids'] = "0";
+        
+        $this->db->where('key', 'layout');
+        $query = $this->db->get('settings');
+        $layout_settings = $query->row();
+        
+        $data['layout'] = $layout_settings->value;
+        
+        if(isset($_POST) && !empty($_POST)){
+            
+            $this->load->config('champs21');
+            
+            $email_config = $this->config->config['contact_email_addr'];
+            
+            $contact_model = new Contact_us();
+            
+            $contact_model->full_name = $this->input->post('full_name');
+            $contact_model->email = $this->input->post('email');
+            $contact_model->contact_type = $this->input->post('contact_type');
+            $contact_model->description = $this->input->post('ques_description');
+            $contact_model->created_date = date('Y-m-d H:i:s', time());
+            
+            $ar_email['sender_full_name'] = $contact_model->full_name;
+            $ar_email['sender_email'] = $contact_model->email;
+            $ar_email['to_name'] = $email_config[$contact_model->contact_type]['to']['full_name'];
+            $ar_email['to_email'] = $email_config[$contact_model->contact_type]['to']['email'];
+            $ar_email['cc_name'] = $email_config[$contact_model->contact_type]['cc']['full_name'];
+            $ar_email['cc_email'] = $email_config[$contact_model->contact_type]['cc']['email'];
+            $ar_email['bcc_name'] = $email_config[$contact_model->contact_type]['bcc']['full_name'];
+            $ar_email['bcc_email'] = $email_config[$contact_model->contact_type]['bcc']['email'];
+            
+            $ar_email['subject'] = $email_config[$contact_model->contact_type]['subject'];
+            $ar_email['message'] = $contact_model->description;
+            
+            if($contact_model->validate()){
+                
+                if(send_mail($ar_email)){
+                    
+                    if($contact_model->save()){
+                        $data['saved'] = TRUE;
+                        $data['errors'][] = 'Seccessfully Saved.';
+                    }else{
+                        $data['saved'] = FALSE;
+                        $data['errors'] = $contact_model->error->all;
+                    }
+                }
+            }
+            
+            echo json_encode($data);
+            exit;
+        }
+        
+        $s_content = $this->load->view('createpage', $data, true);
+        
+        $s_right_view = "";
+        $cache_name = "common/right_view";
+        if ( ! $s_widgets = $this->cache->file->get($cache_name)  )
+        {
+            $this->db->where('is_enabled', 1);
+            $query = $this->db->get('widget');
+            
+            $obj_widgets = $query->result();
+            
+            if ($obj_widgets )
+            {
+               $data2['free_user_types'] = $this->get_free_user_types();
+            }
+        }
+        
+        $str_title = WEBSITE_NAME . " | Create Page";
+        
+        $meta_description = META_DESCRIPTION;
+        $keywords = KEYWORDS;
+        $ar_params = array(
+            "javascripts"           => $ar_js,
+            "css"                   => $ar_css,
+            "extra_head"            => $extra_js,
+            "title"                 => $str_title,
+            "description"           => $meta_description,
+            "keywords"              => $keywords,
+            "side_bar"              => $s_right_view,
+            "target"                => "contact-us",
+            "fb_contents"           => NULL,
+            "content"               => $s_content
+        );
+        
+        $this->extra_params = $ar_params;
+    }
 }

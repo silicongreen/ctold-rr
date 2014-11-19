@@ -78,6 +78,9 @@
 							<li>|</li>
 						<?php endif; ?>
 					<?php $ci++; endforeach; ?>
+                                       
+                                          
+                                       <li><a <?php if($menu_details->title == "Feeds"): ?> class="red_menu"<?php endif; ?> href="<?php echo base_url()."schools/".sanitize($school_details->name)."/feed"; ?>">Feeds</a></li>                 
 								  
 				</ul>
 			</div>
@@ -171,9 +174,23 @@
 </div>
 </div>
 <?php endif; ?>
+    
+<?php if(isset($feeds)): ?>
+   <div class="school_content_box"> 
+       <?php $widget = new Widget; $widget->run('postdata', "school",$school_details->id, 'school'); ?>
+   </div>
+<?php endif; ?>    
 
 </div>
 <style>
+    .action-box
+    {
+        background: none repeat scroll 0 0 #e7e7e7 !important;
+    }
+    .post-content
+    {
+       background: none repeat scroll 0 0 #e7e7e7 !important;
+    }
     
 	.school_activities_box
 	{

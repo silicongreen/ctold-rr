@@ -75,7 +75,7 @@ class post extends CI_Model{
             $b_from_api = FALSE;
         }
         
-        if ($b_from_api && in_array($target, $a_api_index) )
+        if (($b_from_api && in_array($target, $a_api_index)) || $target=="school" || $target=="teacher"  )
         {
             $a_exclude_id = array();
             if( isset($a_post_params['NOT_IN'][1]) )
@@ -99,6 +99,13 @@ class post extends CI_Model{
                 }    
                 
             }
+            $stbid=0;
+            if($target=="school" || $target=="teacher")
+            {
+                $link = "getschoolteacherbylinepost";
+                $stbid = $a_post_params['stbid'];
+            
+            }    
             $paze_size = 9;
             $fetaured = 0;
             if(isset($a_post_params['CUSTOM']))
@@ -121,7 +128,7 @@ class post extends CI_Model{
                 
             }    
             
-            return get_api_data_from_yii($a_exclude_id,$page_number,$link,$category_id,$popular,$paze_size,$game_type,$fetaured);
+            return get_api_data_from_yii($a_exclude_id,$page_number,$link,$category_id,$popular,$paze_size,$game_type,$fetaured,$stbid,$target);
             
         }
         else

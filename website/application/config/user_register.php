@@ -4,6 +4,7 @@ if (!defined('BASEPATH'))
 
 $config['medium'] = array(NULL => 'Medium', '0' => 'Bangla', '1' => 'English');
 $config['free_user_types'] = array('1' => 'Visitor', '2' => 'Student', '3' => 'Teacher', '4' => 'Parent');
+$config['join_user_types'] = array('1' => 'Alumni', '2' => 'Student', '3' => 'Teacher', '4' => 'Parent');
 $config['free_user_folders'] = array(
     '0' => 'Unread',
     '1' => 'Articles',

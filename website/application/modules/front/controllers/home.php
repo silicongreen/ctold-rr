@@ -44,27 +44,30 @@ class home extends MX_Controller {
 
 
             $data['ci_key'] = 'schools';
-            $s_content = $this->load->view('schools_all', $data, true);
-
+            
             // User Data
             $user_id = (free_user_logged_in()) ? get_free_user_session('id') : NULL;
 
             $data['model'] = $this->get_free_user($user_id);
 
             $data['free_user_types'] = $this->get_free_user_types();
+            $data['join_user_types'] = $this->get_school_join_user_types();
 
             $data['country'] = $this->get_country();
-            $data['country']['id'] = $data2['model']->tds_country_id;
+            $data['country']['id'] = $data['model']->tds_country_id;
 
             $data['grades'] = $this->get_grades();
 
             $data['medium'] = $this->get_medium();
 
             $data['edit'] = (free_user_logged_in()) ? TRUE : FALSE;
-            // User Data
 
             $obj_post = new Posts();
             $data['category_tree'] = $obj_post->user_preference_tree_for_pref();
+            // User Data
+            
+            
+            $s_content = $this->load->view('schools_all', $data, true);
 
             //has some work in right view
             $s_right_view = $this->load->view('right', $data, TRUE);
@@ -2189,7 +2192,8 @@ class home extends MX_Controller {
             "content" => $s_content
         );
 		$this->extra_params = $ar_params;
-	}
+    }
+    
     private function get_country() {
         
         $country = new Country();
@@ -2216,6 +2220,11 @@ class home extends MX_Controller {
     private function get_free_user_types() {
         $this->load->config("user_register");
         return $this->config->config['free_user_types'];
+    }
+    
+    private function get_school_join_user_types() {
+        $this->load->config("user_register");
+        return $this->config->config['join_user_types'];
     }
     
     private function create_free_user_folders() {

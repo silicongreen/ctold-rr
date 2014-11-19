@@ -687,6 +687,11 @@ $(document).ready(function(){
                 'icon' : 'magic_mart_red.png',
                 'header_label' : 'Magic Mart',
                 'custom_message' : 'Coming Soon.'
+            },
+            'school_join' : {
+                'icon' : 'magicmart_red.png',
+                'header_label' : 'Join To School',
+                'custom_message' : "This is where you'll see your schools specific feeds."
             }
         };
         
@@ -735,6 +740,25 @@ $(document).ready(function(){
         $( "#reg_frm input:text, input:password").css( "border", "1px solid #d9dbdc" );
         
         var html_frm_reg = $('#frm_reg').html();
+        
+        $.fancybox({
+            'content' : html_frm_reg,
+            'width': 500,
+            'height': 'auto',
+            'transitionIn': 'fade',
+            'transitionOut': 'fade',
+            'openEffect': 'elastic',
+            'openSpeed' : 350,
+            'fitToView' : false,
+            'autoSize' : false,
+            'padding': 0,
+            'margin': 0
+        });
+    });
+    
+    $(document).on("click",'.btn_user_join_school',function(){
+        
+        var html_frm_reg = $('#school_join_frm_wrapper').html();
         
         $.fancybox({
             'content' : html_frm_reg,

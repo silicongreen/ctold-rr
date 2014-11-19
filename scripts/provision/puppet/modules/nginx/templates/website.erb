@@ -19,8 +19,8 @@ server {
             set $nocache "Y";
     }
 
-    location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
-            expires 7d;
+    location ~* \.(png|jpg|jpeg|gif|ico)$ {
+            expires off;
             log_not_found off;
     }
 

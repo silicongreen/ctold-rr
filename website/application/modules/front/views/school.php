@@ -176,7 +176,7 @@
 <?php endif; ?>
     
 <?php if(isset($feeds)): ?>
-   <div class="school_content_box"> 
+   <div class="school_feed_box"> 
        <?php $widget = new Widget; $widget->run('postdata', "school",$school_details->id, 'school'); ?>
    </div>
 <?php endif; ?>    
@@ -278,6 +278,16 @@
     width:100%;    
     padding: 41px 20px;
     background: #fff;    
+}
+.school_feed_box
+{
+    float:left;
+    clear:both;
+    width:100%;    
+    padding: 40px 30px;
+    background: #fff;
+    border:1px solid gray;
+    margin-bottom:20px;
 }
 .school_content_box
 {

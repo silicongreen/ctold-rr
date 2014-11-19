@@ -62,7 +62,9 @@
         <div class="clearfix" style="margin-left: auto; margin-right: auto; width: 90%; margin-top: 0px; ">
 
             <div>
-
+                
+                <input type="hidden" id="schl_id" name="schl_id" value="" />
+                
                 <fieldset class="reg_logo">
                     <div>
                         <img src="<?php echo base_url('styles/layouts/tdsfront/image/magicmart_red.png'); ?>" width="60px" alt="Chmaps21.com" />
@@ -138,7 +140,7 @@
             </div>
 
             <div class="clearfix" style="margin-left: auto; margin-right: auto; margin-top: 20px; text-align: center; margin-bottom: 20px;">
-                <button id="btn_free_user" class="red" type="submit">
+                <button id="btn_submit_user_join" class="red" type="submit">
                     <span class="clearfix f2">
                         <?php echo 'Join In'; ?>
                     </span>

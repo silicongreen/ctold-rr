@@ -24,12 +24,24 @@ class home extends MX_Controller {
 
     }
     
+    function join_to_school(){
+        
+        if($this->input->is_ajax_request()){
+            
+            echo( json_encode($_POST));
+            exit;
+            
+            
+            
+        }
+        
+    }
     
     function schools()
     {
        
         $ar_segmens = $this->uri->segment_array();
-        if(count($ar_segmens)<2)
+        if(count($ar_segmens) < 2)
         {            
             
             //$this->show_404_custom();
@@ -65,7 +77,6 @@ class home extends MX_Controller {
             $obj_post = new Posts();
             $data['category_tree'] = $obj_post->user_preference_tree_for_pref();
             // User Data
-            
             
             $s_content = $this->load->view('schools_all', $data, true);
 

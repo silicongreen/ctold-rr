@@ -78,9 +78,9 @@
 							<li>|</li>
 						<?php endif; ?>
 					<?php $ci++; endforeach; ?>
+                                       <li>|</li>
                                        
-                                          
-                                       <li><a <?php if($menu_details->title == "Feeds"): ?> class="red_menu"<?php endif; ?> href="<?php echo base_url()."schools/".sanitize($school_details->name)."/feed"; ?>">Feeds</a></li>                 
+                                       <li><a <?php if(isset($feeds)): ?> class="red_menu"<?php endif; ?> href="<?php echo base_url()."schools/".sanitize($school_details->name)."/feed"; ?>">Feeds</a></li>                 
 								  
 				</ul>
 			</div>

@@ -126,6 +126,10 @@ class home extends MX_Controller {
                         
                         $activities = $school_obj->find_all_ativity($school_details->id);
                     }
+                    else if($ar_segmens[3] == "feed")
+                    {
+                        $feed = true;
+                    }    
                     else
                     {
                         $this->show_404_custom();
@@ -134,7 +138,7 @@ class home extends MX_Controller {
                 
                 if((isset($menu_details) && count($menu_details)>0) 
                       || (isset($activity_details) && count($activity_details)>0)
-                      || (isset($activities) &&  count($activities)>0)
+                      || (isset($activities) &&  count($activities)>0 || isset($feed) )
                   )
                 {
                     $this->load->helper('cookie');
@@ -190,6 +194,12 @@ class home extends MX_Controller {
                             $data['activity_link'] = true;
                             $data['menu_details'] = $menu_details;
                             $data['gallery'] = $school_obj->find_activity_gallery($activity_details->id); 
+                        }
+                        else if(isset($feed))
+                        {
+                           
+                            $data['feeds'] = $feed;
+                            $data['menu_details'] = $menu_details;
                         }
                         else
                         {

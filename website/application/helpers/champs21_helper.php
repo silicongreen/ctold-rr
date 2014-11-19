@@ -391,7 +391,7 @@ if ( ! function_exists("get_diff_date"))
 
 if ( !function_exists("get_api_data_from_yii") )
 {
-    function get_api_data_from_yii($a_exclude_id,$page_number,$link="",$category_id = 0,$popular = false,$page_size = 9,$game_type=false,$fetaured=0)
+    function get_api_data_from_yii($a_exclude_id,$page_number,$link="",$category_id = 0,$popular = false,$page_size = 9,$game_type=false,$fetaured=0,$stbid=0,$target=false)
     {
        
         $url = get_curl_url($link);
@@ -426,7 +426,12 @@ if ( !function_exists("get_api_data_from_yii") )
         {
            $fields['already_showed'] = implode(",", $a_exclude_id); 
            
-        }    
+        } 
+        if($target)
+        {
+            $fields['id'] = $stbid;
+            $fields['target'] = $target;
+        }
         $fields_string = "";
 
         foreach($fields as $key=>$value) { 

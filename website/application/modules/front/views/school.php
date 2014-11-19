@@ -103,7 +103,7 @@
 
                <div style="display:none; margin: 0 auto;" class="html5gallery" data-skin="horizontal" data-width="700" data-height="398" data-showtitle="true" data-showsocialmedia="false"  
                     data-titleoverlay="true" data-titleautohide="true" data-socialurlforeach="true" 
-                    data-resizemode="fit" data-thumbshowtitle="false"   data-bgcolor="#ECEDEF" >
+                    data-resizemode="fit" data-responsive="true" data-thumbshowtitle="false"   data-bgcolor="#ECEDEF" >
 
                    <?php foreach($gallery as $value): ?>
                    <?php

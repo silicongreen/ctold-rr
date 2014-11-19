@@ -101,9 +101,8 @@
         <div style="text-align:center;">
 
 
-              <div style="display:none; margin: 0 auto;" class="mediahtml5gallery" data-skin="vertical" data-width="500" data-height="298" data-showtitle="true" data-showsocialmedia="true"  
-                 data-thumbwidth="80" data-titleoverlay="true" data-titleautohide="true" data-thumbheight="61" data-thumbgap="13" data-socialurlforeach="true"   data-bgcolor="#9F9F9F"
-                 data-resizemode="fill" data-thumbshowtitle="false" >
+              <div style="display:none;" class="html5gallery"  data-responsive="true" data-thumbwidth="150" data-thumbheight="75"  data-skin="horizontal" data-thumbshowtitle="false" data-width="900" data-height="470"  data-showsocialmedia="false"  
+                   data-resizemode="fit" >
 
                    <?php foreach($gallery as $value): ?>
                    <?php

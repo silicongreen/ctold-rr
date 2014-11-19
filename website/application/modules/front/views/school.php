@@ -96,7 +96,7 @@
     <?php endif; ?>
         <div class="f5"><?php echo $school_page_details->content ?></div>
     <?php if(count($gallery)>0): ?>
-     <div style="clear:both; margin-left: 53px;
+     <div style="clear:both;
     margin-top: 20px; ">
         <div style="text-align:center;">
 

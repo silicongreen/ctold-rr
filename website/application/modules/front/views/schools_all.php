@@ -39,13 +39,13 @@
                             <p class="f5" style="font-size:14px;"><?php echo $row['location']; ?></p>
                         </div>
                         
-                        <div class="join-wrapper">
-                            <button id="<?php echo $row['id']; ?>" data="school_join" class="red <?php echo (free_user_logged_in()) ? 'btn_user_join_school' : 'before-login-user'; ?>" type="button">
+<!--                        <div class="join-wrapper">
+                            <button id="<?php #echo $row['id']; ?>" data="school_join" class="red <?php #echo (free_user_logged_in()) ? 'btn_user_join_school' : 'before-login-user'; ?>" type="button">
                                 <span class="clearfix f2">
                                     Join In
                                 </span>
                             </button>
-                        </div>
+                        </div>-->
                         
                     </div>
                 </li>

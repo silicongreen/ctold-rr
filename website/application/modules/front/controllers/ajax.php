@@ -396,9 +396,9 @@ class ajax extends MX_Controller
             
             $school_obj->information = $jsonData;
             
-            echo "<pre>";
-            print_r($jsonData);
-            //$school_obj->save();
+            //echo "<pre>";
+            //print_r($jsonData);
+            $school_obj->save();
 
 
 

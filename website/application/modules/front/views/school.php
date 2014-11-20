@@ -78,6 +78,9 @@
 							<li>|</li>
 						<?php endif; ?>
 					<?php $ci++; endforeach; ?>
+                                       <li>|</li>
+                                       
+                                       <li><a <?php if(isset($feeds)): ?> class="red_menu"<?php endif; ?> href="<?php echo base_url()."schools/".sanitize($school_details->name)."/feed"; ?>">Feeds</a></li>                 
 								  
 				</ul>
 			</div>
@@ -93,14 +96,13 @@
     <?php endif; ?>
         <div class="f5"><?php echo $school_page_details->content ?></div>
     <?php if(count($gallery)>0): ?>
-     <div style="clear:both; margin-left: 53px;
+     <div style="clear:both;
     margin-top: 20px; ">
         <div style="text-align:center;">
 
 
-               <div style="display:none; margin: 0 auto;" class="html5gallery" data-skin="horizontal" data-width="700" data-height="398" data-showtitle="true" data-showsocialmedia="false"  
-                    data-titleoverlay="true" data-titleautohide="true" data-socialurlforeach="true" 
-                    data-resizemode="fit" data-thumbshowtitle="false"   data-bgcolor="#ECEDEF" >
+              <div style="display:none;" class="html5gallery"  data-responsive="true" data-thumbwidth="150" data-thumbheight="75"  data-skin="horizontal" data-thumbshowtitle="false" data-width="900" data-height="470"  data-showsocialmedia="false"  
+                   data-resizemode="fit" >
 
                    <?php foreach($gallery as $value): ?>
                    <?php
@@ -171,9 +173,23 @@
 </div>
 </div>
 <?php endif; ?>
+    
+<?php if(isset($feeds)): ?>
+   <div class="school_feed_box"> 
+       <?php $widget = new Widget; $widget->run('postdata', "school",$school_details->id, 'school'); ?>
+   </div>
+<?php endif; ?>    
 
 </div>
 <style>
+    .action-box
+    {
+        background: none repeat scroll 0 0 #e7e7e7 !important;
+    }
+    .post-content
+    {
+       background: none repeat scroll 0 0 #e7e7e7 !important;
+    }
     
 	.school_activities_box
 	{
@@ -261,6 +277,16 @@
     width:100%;    
     padding: 41px 20px;
     background: #fff;    
+}
+.school_feed_box
+{
+    float:left;
+    clear:both;
+    width:100%;    
+    padding: 40px 30px;
+    background: #fff;
+    border:1px solid gray;
+    margin-bottom:20px;
 }
 .school_content_box
 {

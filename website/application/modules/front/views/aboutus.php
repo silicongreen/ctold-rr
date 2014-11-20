@@ -64,7 +64,7 @@
             </div>
             
             <div class="about-us-fb-like-btn f2">
-                Like Our Facebook Page
+                <a href="https://www.facebook.com/Champs21" target="_blank">Like Our Facebook Page</a>
             </div>
             
         </div>
@@ -78,7 +78,7 @@
             </div>
             
             <div class="about-us-fb-like-btn f2">
-                Like Our Facebook Page
+                <a href="https://www.facebook.com/Champs21" target="_blank">Like Our Facebook Page</a>
             </div>
             
         </div>
@@ -175,6 +175,10 @@
         -o-transition: background-color 1s ease;
         -ms-transition: background-color 1s ease;
         transition: background-color 1s ease;
+    }
+    .about-us-fb-like-btn a{
+        display: block;
+        color: #fff;
     }
     
     @media all and (max-width: 449px ){

@@ -26,8 +26,9 @@ class FreeuserController extends Controller
                 'actions' => array('index', 'create', 'getcategorypost', 'getsinglenews', 'search', "getkeywordpost"
                     , "gettagpost", "getbylinepost", "getmenu",
                     "getuserinfo", "goodread", "readlater", "goodreadall", "goodreadfolder", "removegoodread"
-                    , "schoolsearch","school", "createschool", "schoolpage", "schoolactivity", "candle"
-                    , "products","garbagecollector", "categoryproducts", "productinfo", "cartproduct", 'set_preference', 'get_preference'),
+                    , "schoolsearch", "school", "createschool", "schoolpage", "schoolactivity", "candle"
+                    , "products", "garbagecollector","getschoolteacherbylinepost", "categoryproducts", "productinfo", 
+                    "cartproduct", 'set_preference', 'get_preference'),
                 'users' => array('*'),
             ),
             array('deny', // deny all users
@@ -313,7 +314,7 @@ class FreeuserController extends Controller
             $postobj->language = "en";
             $objbyline = new Bylines();
             $postobj->byline_id = $objbyline->generate_byline_id($username);
-            
+
             if (!empty($_FILES['leadimage']['name']))
             {
                 $main_dir = 'upload/user_submitted_image/';
@@ -325,7 +326,7 @@ class FreeuserController extends Controller
                 $postobj->lead_material = $main_dir . $name;
             }
             $postobj->save();
-            
+
             if (!empty($_FILES['attach_file']['name']))
             {
                 $main_dir = 'upload/user_submitted_image/';
@@ -334,9 +335,9 @@ class FreeuserController extends Controller
                 $name = "file_" . time() . "_" . str_replace(" ", "-", $_FILES["attach_file"]["name"]);
 
                 move_uploaded_file($tmp_name, "$uploads_dir/$name");
-                
+
                 $postAttachmentObj = new PostAttachment();
-                
+
                 $postAttachmentObj->file_name = $main_dir . $name;
                 $postAttachmentObj->post_id = $postobj->id;
                 $postAttachmentObj->show = 1;
@@ -441,9 +442,10 @@ class FreeuserController extends Controller
         echo CJSON::encode($response);
         Yii::app()->end();
     }
+
     public function actionSchool()
     {
-       
+
         $page_size = Yii::app()->request->getPost('page_size');
         $page_number = Yii::app()->request->getPost('page_number');
         if (empty($page_number))
@@ -454,7 +456,7 @@ class FreeuserController extends Controller
         {
             $page_size = 10;
         }
-        
+
 
         $schoolobj = new School();
 
@@ -470,7 +472,7 @@ class FreeuserController extends Controller
 
         $response['status']['code'] = 200;
         $response['status']['msg'] = "DATA_FOUND";
-        
+
         echo CJSON::encode($response);
         Yii::app()->end();
     }
@@ -915,31 +917,31 @@ class FreeuserController extends Controller
         }
 
 
-        
+
         $category_id = Yii::app()->request->getPost('category_id');
         $postModel = new Post();
-        if(!$category_id)
+        if (!$category_id)
         {
             $category_id = $postModel->getCategoryId($id);
-        }    
+        }
 
         $postcategoryObj = new PostCategory();
         $allpostid = $postcategoryObj->getPostAll($category_id, $user_type);
 
 
 
-        
+
         $singlepost = $postModel->getSinglePost($id);
-        
+
         $next_id = $postcategoryObj->nextpreviousid($category_id, $user_type, $id, $singlepost['published_date'], $singlepost['inner_priority']);
 
-        $previous_id = $postcategoryObj->nextpreviousid($category_id, $user_type, $id, $singlepost['published_date'], $singlepost['inner_priority'],"previous");
-        
-        if($next_id == $previous_id)
+        $previous_id = $postcategoryObj->nextpreviousid($category_id, $user_type, $id, $singlepost['published_date'], $singlepost['inner_priority'], "previous");
+
+        if ($next_id == $previous_id)
         {
-            $next_id = $postcategoryObj->nextpreviousid($category_id, $user_type, $next_id, $singlepost['published_date'], $singlepost['inner_priority'],"next",$id);
+            $next_id = $postcategoryObj->nextpreviousid($category_id, $user_type, $next_id, $singlepost['published_date'], $singlepost['inner_priority'], "next", $id);
         }
-        
+
         $postobj = $postModel->findByPk($id);
 
         $postobj->view_count = $postobj->view_count + 1;
@@ -961,62 +963,59 @@ class FreeuserController extends Controller
         echo CJSON::encode($response);
         Yii::app()->end();
     }
+
     private function createAllCache($cache_name)
     {
         $cache_all = "CACHE-KEYS";
         $cache_values = Yii::app()->cache->get($cache_all);
         $new_cache = array();
-        if($cache_values===false)
+        if ($cache_values === false)
         {
             $new_cache[] = $cache_name;
             Yii::app()->cache->set($cache_all, $new_cache);
-        }  
-        else if(!in_array($cache_name, $cache_values))
+        }
+        else if (!in_array($cache_name, $cache_values))
         {
             array_push($cache_values, $cache_name);
             Yii::app()->cache->set($cache_all, $cache_values);
-        }    
-        
-        
-    }        
+        }
+    }
 
     public function actionIndex()
     {
         $page_number = Yii::app()->request->getPost('page_number');
         $page_size = Yii::app()->request->getPost('page_size');
         $user_id = Yii::app()->request->getPost('user_id');
-        
-        
+
+
         $already_showed = Yii::app()->request->getPost('already_showed');
         $from_main_site = Yii::app()->request->getPost('from_main_site');
         $callded_for_cache = Yii::app()->request->getPost('callded_for_cache');
-        
+
         $content_showed_for_caching = "top";
-        if($already_showed)
-        $content_showed_for_caching = md5(str_replace(",","-", $already_showed));
-        
+        if ($already_showed)
+            $content_showed_for_caching = md5(str_replace(",", "-", $already_showed));
+
         $category_filter = "none";
         $category_not_to_show = false;
         if (!$user_id)
         {
             $user_type = 1;
-            
         }
         else
         {
             $freeuserObj = new Freeusers();
             $user_info = $freeuserObj->getUserInfo($user_id);
             $user_type = $user_info['user_type'];
-            
-            $user_pref = FreeUserPreference::model()->findByAttributes(array('free_user_id'=>$user_id));
-            if($user_pref)
+
+            $user_pref = FreeUserPreference::model()->findByAttributes(array('free_user_id' => $user_id));
+            if ($user_pref)
             {
-                if($user_pref->category_ids)
+                if ($user_pref->category_ids)
                 {
                     $category_not_to_show = $user_pref->category_ids;
-                    $category_filter = md5(str_replace(",","-", $user_pref->category_ids));
+                    $category_filter = md5(str_replace(",", "-", $user_pref->category_ids));
                 }
-                
             }
         }
         if (empty($page_number))
@@ -1027,28 +1026,28 @@ class FreeuserController extends Controller
         {
             $page_size = 9;
         }
-        
-        
-        
-        $cache_name = "YII-RESPONSE-HOME-" . $page_number . "-" . $page_size."-".$content_showed_for_caching."-".$category_filter."-".$user_type;
+
+
+
+        $cache_name = "YII-RESPONSE-HOME-" . $page_number . "-" . $page_size . "-" . $content_showed_for_caching . "-" . $category_filter . "-" . $user_type;
         $this->createAllCache($cache_name);
         $response = Yii::app()->cache->get($cache_name);
         if ($response === false)
         {
-            
-           
+
+
             $homepageObj = new HomepageData();
-            
+
             if ($already_showed)
             {
-                $homepage_post = $homepageObj->getHomePagePost($user_type, $page_number, $page_size, false, $already_showed,$from_main_site,$category_not_to_show);
+                $homepage_post = $homepageObj->getHomePagePost($user_type, $page_number, $page_size, false, $already_showed, $from_main_site, $category_not_to_show);
             }
             else
             {
-                $homepage_post = $homepageObj->getHomePagePost($user_type, $page_number, $page_size,false,false,$from_main_site,$category_not_to_show);
+                $homepage_post = $homepageObj->getHomePagePost($user_type, $page_number, $page_size, false, false, $from_main_site, $category_not_to_show);
             }
 
-            $response['data']['total'] = $homepageObj->getPostTotal($user_type,false,$category_not_to_show);
+            $response['data']['total'] = $homepageObj->getPostTotal($user_type, false, $category_not_to_show);
             $has_next = false;
             if ($response['data']['total'] > $page_number * $page_size)
             {
@@ -1064,7 +1063,69 @@ class FreeuserController extends Controller
             Yii::app()->cache->set($cache_name, $response);
         }
 
-        if(!$callded_for_cache)
+        if (!$callded_for_cache)
+            echo CJSON::encode($response);
+        Yii::app()->end();
+    }
+
+    public function actionGetSchoolTeacherBylinePost()
+    {
+        $page_number = Yii::app()->request->getPost('page_number');
+        $page_size = Yii::app()->request->getPost('page_size');
+        $id = Yii::app()->request->getPost('id');
+        $target = Yii::app()->request->getPost('target');
+
+
+        if($target && $id)
+        {
+            if (empty($page_number))
+            {
+                $page_number = 1;
+            }
+            if (empty($page_size))
+            {
+                $page_size = 10;
+            }
+
+            $user_id = Yii::app()->request->getPost('user_id');
+            if (!$user_id)
+            {
+                $user_type = 1;
+            }
+            else
+            {
+                $freeuserObj = new Freeusers();
+                $user_info = $freeuserObj->getUserInfo($user_id);
+                $user_type = $user_info['user_type'];
+            }
+
+            $cache_name = "YII-RESPONSE-STB-" . $id . "-" . $target . "-" . $page_number . "-" . $page_size . "-" . $user_type;
+            $this->createAllCache($cache_name);
+            $response = Yii::app()->cache->get($cache_name);
+            if ($response === false)
+            {
+
+                $postObj = new Post();
+                $post = $postObj->getPosts($id, $user_type, $target, $page = 1, $page_size = 10);
+
+                $response['data']['total'] = $postObj->getPostTotal($id, $user_type, $target);
+                $has_next = false;
+                if ($response['data']['total'] > $page_number * $page_size)
+                {
+                    $has_next = true;
+                }
+                $response['data']['has_next'] = $has_next;
+                $response['data']['post'] = $post;
+                $response['status']['code'] = 200;
+                $response['status']['msg'] = "DATA_FOUND";
+                Yii::app()->cache->set($cache_name, $response);
+            }
+        }
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
         echo CJSON::encode($response);
         Yii::app()->end();
     }
@@ -1078,23 +1139,21 @@ class FreeuserController extends Controller
         $fetaured = Yii::app()->request->getPost('fetaured');
         $game_type = Yii::app()->request->getPost('game_type');
         $callded_for_cache = Yii::app()->request->getPost('callded_for_cache');
-        
+
         $extra = "";
-        if($popular_sort)
+        if ($popular_sort)
         {
             $extra.= "-popular";
-            
         }
-        if($game_type)
+        if ($game_type)
         {
-            $extra.= "-".$game_type;
+            $extra.= "-" . $game_type;
         }
-        if($fetaured==1)
+        if ($fetaured == 1)
         {
             $extra.= "-featured";
-            
         }
-        else if($fetaured==2)
+        else if ($fetaured == 2)
         {
             $extra.= "-notfeatured";
         }
@@ -1118,15 +1177,15 @@ class FreeuserController extends Controller
             $user_info = $freeuserObj->getUserInfo($user_id);
             $user_type = $user_info['user_type'];
         }
-        
-        $cache_name = "YII-RESPONSE-CATEGORY-".$category_id."-". $page_number . "-" . $page_size."-".$user_type.$extra;
+
+        $cache_name = "YII-RESPONSE-CATEGORY-" . $category_id . "-" . $page_number . "-" . $page_size . "-" . $user_type . $extra;
         $this->createAllCache($cache_name);
         $response = Yii::app()->cache->get($cache_name);
         if ($response === false)
         {
-            
+
             $postcategoryObj = new PostCategory();
-            $post = $postcategoryObj->getPost($category_id, $user_type, $page_number, $page_size,$popular_sort,$game_type,$fetaured);
+            $post = $postcategoryObj->getPost($category_id, $user_type, $page_number, $page_size, $popular_sort, $game_type, $fetaured);
 
             $response['data']['total'] = $postcategoryObj->getPostTotal($category_id, $user_type);
             $has_next = false;
@@ -1146,8 +1205,8 @@ class FreeuserController extends Controller
             $response['status']['msg'] = "DATA_FOUND";
             Yii::app()->cache->set($cache_name, $response);
         }
-        if(!$callded_for_cache)
-        echo CJSON::encode($response);
+        if (!$callded_for_cache)
+            echo CJSON::encode($response);
         Yii::app()->end();
     }
 
@@ -1348,7 +1407,7 @@ class FreeuserController extends Controller
                 }
 
 
-                if(!$password)
+                if (!$password)
                 {
                     if ($first_name)
                         $freeuserObj->first_name = $first_name;
@@ -1454,38 +1513,40 @@ class FreeuserController extends Controller
         echo CJSON::encode($response);
         Yii::app()->end();
     }
-    
+
     public function actionGarbageCollector()
     {
-        $keys_to_match = Yii::app()->request->getPost('keys_to_match'); 
+        $keys_to_match = Yii::app()->request->getPost('keys_to_match');
         $cache_all = "CACHE-KEYS";
         $cache_keys = Yii::app()->cache->get($cache_all);
-        if($cache_keys!==false)
+        if ($cache_keys !== false)
         {
-            foreach($cache_keys as $value)
+            foreach ($cache_keys as $value)
             {
-                if(strpos($value, $keys_to_match)!==false)
+                if (strpos($value, $keys_to_match) !== false)
                 {
                     Yii::app()->cache->delete($value);
-                }        
-            }    
-        }    
-        
+                }
+            }
+        }
     }
-    
-    public function actionSet_preference() {
-        
+
+    public function actionSet_preference()
+    {
+
         $response = array();
-        if (isset($_POST) && !empty($_POST)) {
-            
+        if (isset($_POST) && !empty($_POST))
+        {
+
             $user_id = Yii::app()->request->getPost('user_id');
             $category_ids = Yii::app()->request->getPost('category_ids');
-            
-            if( empty($user_id) || empty($category_ids)){
-                
+
+            if (empty($user_id) || empty($category_ids))
+            {
+
                 $response['status']['code'] = 400;
                 $response['status']['msg'] = "BAD_REQUEST";
-                
+
                 echo CJSON::encode($response);
                 Yii::app()->end();
             }
@@ -1494,86 +1555,99 @@ class FreeuserController extends Controller
 
             $user_pref_mod = FreeUserPreference::model()->findByAttributes(array('free_user_id' => $user_id));
 
-            if (!empty($user_pref_mod)) {
+            if (!empty($user_pref_mod))
+            {
 
                 $user_pref_mod->category_ids = $category_ids;
 
-                if ($user_pref_mod->update()) {
+                if ($user_pref_mod->update())
+                {
 
                     $response['data']['preferred_categories'] = $user_pref_mod->category_ids;
                     $response['status']['code'] = 200;
                     $response['status']['msg'] = "PREFERENCE_SAVED";
-                } else {
+                }
+                else
+                {
 
                     $response['status']['code'] = 400;
                     $response['status']['msg'] = "USER_PREFERENCE_NOT_SAVED";
                 }
-            } else {
+            }
+            else
+            {
 
                 $user_pref_mod = new FreeUserPreference;
 
                 $user_pref_mod->free_user_id = $user_id;
                 $user_pref_mod->category_ids = $category_ids;
 
-                if ($user_pref_mod->insert()) {
+                if ($user_pref_mod->insert())
+                {
 
                     $response['data']['preferred_categories'] = $user_pref_mod->category_ids;
                     $response['status']['code'] = 200;
                     $response['status']['msg'] = "USER_PREFERENCE_SAVED";
-                } else {
+                }
+                else
+                {
 
                     $response['status']['code'] = 400;
                     $response['status']['msg'] = "BAD_REQUEST";
                 }
             }
-            
-        }else{
-            
+        }
+        else
+        {
+
             $response['status']['code'] = 400;
             $response['status']['msg'] = "BAD_REQUEST";
         }
-        
+
         echo CJSON::encode($response);
         Yii::app()->end();
-        
     }
-    
-    public function actionGet_preference() {
-        
+
+    public function actionGet_preference()
+    {
+
         $response = array();
-        if (isset($_POST) && !empty($_POST)) {
-            
+        if (isset($_POST) && !empty($_POST))
+        {
+
             $user_id = Yii::app()->request->getPost('user_id');
-            
-            if( empty($user_id) ){
-                
+
+            if (empty($user_id))
+            {
+
                 $response['status']['code'] = 400;
                 $response['status']['msg'] = "BAD_REQUEST";
-                
+
                 echo CJSON::encode($response);
                 Yii::app()->end();
             }
 
             $user_id = Yii::app()->request->getPost('user_id');
-            
+
             $category_mod = new Categories;
             $all_categoires = $category_mod->all_cats_in_relative_manner();
-            
-            $user_pref_mod = FreeUserPreference::model()->findByAttributes(array('free_user_id' => $user_id));
-            
-            $response['data']['all_categories'] = $all_categoires;
-            
-            $response['data']['preferred_categories'] = (!empty($user_pref_mod)) ? $user_pref_mod->category_ids : '';
-            $response['status']['code'] = ( !empty($user_pref_mod) && !empty($all_categoires) ) ? 200 : (!empty($all_categoires)) ? 202 : 404;
-            $response['status']['msg'] = (!empty($user_pref_mod)) ? "USER_PREFERENCE_FOUND" : "USER_PREFERENCE_NOT_FOUND";
 
-        } else {
-            
+            $user_pref_mod = FreeUserPreference::model()->findByAttributes(array('free_user_id' => $user_id));
+
+            $response['data']['all_categories'] = $all_categoires;
+
+            $response['data']['preferred_categories'] = (!empty($user_pref_mod)) ? $user_pref_mod->category_ids : '';
+            $response['status']['code'] = (!empty($user_pref_mod) && !empty($all_categoires) ) ? 200 : (!empty($all_categoires)) ? 202 : 404;
+            $response['status']['msg'] = (!empty($user_pref_mod)) ? "USER_PREFERENCE_FOUND" : "USER_PREFERENCE_NOT_FOUND";
+        }
+        else
+        {
+
             $response['status']['code'] = 400;
             $response['status']['msg'] = "BAD_REQUEST";
         }
-        
-        
+
+
         echo CJSON::encode($response);
         Yii::app()->end();
     }

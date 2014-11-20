@@ -33,7 +33,7 @@ $widget = new Widget;
 
     <!--###############################################################################-->
     <div class="poweredby f5">    
-        <p>Powered by <a href="<?php echo base_url();?>" style="color:red;">Champs21.com</a></p>
+        <p>Powered by <a href="http://www.team-creative.net" style="color:red;">Team Creative</a></p>
 
 
 

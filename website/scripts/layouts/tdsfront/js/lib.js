@@ -687,6 +687,11 @@ $(document).ready(function(){
                 'icon' : 'magic_mart_red.png',
                 'header_label' : 'Magic Mart',
                 'custom_message' : 'Coming Soon.'
+            },
+            'school_join' : {
+                'icon' : 'magicmart_red.png',
+                'header_label' : 'Join To School',
+                'custom_message' : "This is where you'll see your schools specific feeds."
             }
         };
         
@@ -749,6 +754,56 @@ $(document).ready(function(){
             'padding': 0,
             'margin': 0
         });
+    });
+    
+    $(document).on("click",'.btn_user_join_school',function(){
+        
+        $('#schl_id').attr('value', $(this).attr('id'));
+        
+        var html_frm_reg = $('#school_join_frm_wrapper').html();
+        
+        $.fancybox({
+            'content' : html_frm_reg,
+            'width': 500,
+            'height': 'auto',
+            'transitionIn': 'fade',
+            'transitionOut': 'fade',
+            'openEffect': 'elastic',
+            'openSpeed' : 350,
+            'fitToView' : false,
+            'autoSize' : false,
+            'padding': 0,
+            'margin': 0
+        });
+        
+    });
+    
+    
+    $(document).on('submit', 'form#school_join_frm', function(event) {
+        
+        event.preventDefault();
+        
+        var formData = new FormData($(this)[0]);
+        
+        $.ajax({
+            url: $('#base_url').val() + 'join_to_school',
+            type: 'POST',
+            data: formData,
+            dataType: 'json',
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+                
+            },
+            error: function(e) {
+                
+            }
+        });
+        
+        return false;
+        
     });
     
     $(document).on("click",'#free_user_profile',function(){

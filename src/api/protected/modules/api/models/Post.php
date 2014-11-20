@@ -101,6 +101,7 @@ class Post extends CActiveRecord
             'postCategories' => array(self::HAS_MANY, 'PostCategory', 'post_id'),
             'postAttachment' => array(self::HAS_MANY, 'PostAttachment', 'post_id'),
             'postAuthor' => array(self::BELONGS_TO, 'Bylines', 'byline_id'),
+            'postSchool' => array(self::BELONGS_TO, 'School', 'school_id'),
             'postGalleries' => array(self::HAS_MANY, 'PostGallery', 'post_id'),
             'postTags' => array(self::HAS_MANY, 'PostTags', 'post_id'),
             'postUserActivities' => array(self::HAS_MANY, 'PostUserActivity', 'post_id'),
@@ -255,12 +256,12 @@ class Post extends CActiveRecord
         $criteria->compare("t.status", 5);
         $criteria->addCondition("DATE(t.published_date) <= '" . date("Y-m-d") . "'");
         $criteria->addCondition("category.id > 0");
-        $criteria->addCondition("t.post_type != 2");    
+        $criteria->addCondition("t.post_type != 2");
         $criteria->addCondition("t.headline LIKE '%" . $term . "%'");
         $criteria->addCondition("category.name LIKE '" . $term . "%'", "OR");
         $criteria->addCondition("tag.tags_name LIKE '" . $term . "%'", "OR");
         $criteria->addCondition("postAuthor.title LIKE '" . $term . "%'", "OR");
-        
+
         $criteria->order = 'DATE(t.published_date) DESC';
         $criteria->with = array(
             'postCategories' => array(
@@ -304,8 +305,8 @@ class Post extends CActiveRecord
         {
             $merge['id'] = $value->id;
             $merge['title'] = $value->headline;
-            if(isset($value['postCategories'][0]))
-            {    
+            if (isset($value['postCategories'][0]))
+            {
                 $merge['category_id'] = $value['postCategories'][0]['category']->id;
                 $merge['category_name'] = $value['postCategories'][0]['category']->name;
 
@@ -313,20 +314,20 @@ class Post extends CActiveRecord
                 if ($value['postCategories'][0]['category']->icon)
                     $merge['category_icon'] = Settings::$image_path . $value['postCategories'][0]['category']->icon;
             }
-            if(isset($value['postAuthor']->title))
-            $merge['author'] = $value['postAuthor']->title;
-            
+            if (isset($value['postAuthor']->title))
+                $merge['author'] = $value['postAuthor']->title;
+
             $datestring = Settings::get_post_time($value->published_date);
-            
+
             $merge['published_date_string'] = $datestring;
-            
+
             $merge['image'] = "";
-           
+
             if ($value['postGalleries'])
             {
                 foreach ($value['postGalleries'] as $values)
                 {
-                    if (trim($values['material']->material_url) && $values->type==2)
+                    if (trim($values['material']->material_url) && $values->type == 2)
                     {
                         $merge['image'] = Settings::get_mobile_image(Settings::$image_path . $values['material']->material_url);
                         break;
@@ -334,28 +335,29 @@ class Post extends CActiveRecord
                 }
             }
             $merge['views'] = $value->view_count;
-            
-            
+
+
             $post_date[] = $merge;
         }
 
         return $post_date;
     }
+
     public function getCategoryId($id)
     {
-       $criteria = new CDbCriteria;
-       $criteria->compare("t.id", $id);
-       $criteria->select = 't.id';
-       $criteria->order = "postCategories.category_id ASC";
-       $criteria->with = array(
+        $criteria = new CDbCriteria;
+        $criteria->compare("t.id", $id);
+        $criteria->select = 't.id';
+        $criteria->order = "postCategories.category_id ASC";
+        $criteria->with = array(
             'postCategories' => array(
                 'select' => 'postCategories.category_id',
                 'joinType' => "LEFT JOIN"
             )
-       );
-       $obj_post = $this->find($criteria);
-       return $obj_post['postCategories'][0]->category_id;
-    } 
+        );
+        $obj_post = $this->find($criteria);
+        return $obj_post['postCategories'][0]->category_id;
+    }
 
     public function getSinglePost($id)
     {
@@ -399,14 +401,15 @@ class Post extends CActiveRecord
             ),
         );
         $obj_post = $this->find($criteria);
-        
-       
+
+
         $formated_post = $this->formatPost($obj_post);
 
         return $formated_post;
     }
 
-    public function getPostTotal($id, $user_type)
+    ///School
+    public function getPostTotal($id, $user_type, $target = "school")
     {
 
         $criteria = new CDbCriteria();
@@ -414,7 +417,21 @@ class Post extends CActiveRecord
         $criteria->compare("t.status", 5);
         $criteria->together = true;
         $criteria->compare("postType.type_id", $user_type);
-        $criteria->compare("t.byline_id", $id);
+        if ($target == "school")
+        {
+            $criteria->compare("t.school_id", $id);
+            $criteria->compare("t.teacher_id", 0);
+        }
+        else if ($target == "teacher")
+        {
+            $criteria->compare("t.teacher_id", $id);
+            $criteria->compare("t.school_id", 0);
+        }
+        else
+        {
+            $criteria->compare("t.byline_id", $id);
+        }
+
         $criteria->addCondition("DATE(t.published_date) <= '" . date("Y-m-d") . "'");
         $criteria->with = array(
             'postType' => array(
@@ -422,55 +439,67 @@ class Post extends CActiveRecord
                 'joinType' => "INNER JOIN"
             )
         );
-        $criteria->group = "t.byline_id";
-        $criteria->order = 'DATE(t.published_date) DESC';
+        $criteria->group = "t.school_id";
+        $criteria->order = 't.published_date DESC';
 
         $data = $this->find($criteria);
-        if($data)
+        if ($data)
         {
             return $data->total;
         }
         else
         {
             return 0;
-
         }
     }
 
-    public function getPosts($id, $user_type, $page = 1, $page_size = 10)
+    public function getPosts($id, $user_type, $target = "school", $page = 1, $page_size = 10)
     {
         $criteria = new CDbCriteria;
-        $criteria->select = 't.id,t.post_type,t.lead_link,t.lead_caption,t.lead_source,t.view_count,t.headline,t.content,t.headline_color,t.summary,t.short_title,t.lead_material,t.mobile_image,t.is_breaking,t.breaking_expire,t.is_exclusive,t.exclusive_expired,t.published_date';
+        $criteria->select = 't.id,t.content,t.is_featured,t.attach,t.show_byline_image,t.shoulder,t.other_language,'
+                . 't.lead_link,t.lead_caption,t.embedded,t.video_file,t.layout_color,t.post_layout,t.sort_title_type,'
+                . 't.inside_image,t.candle_type,t.subject'
+                . 't.lead_source,t.post_type,t.referance_id,t.layout,t.language,t.sub_head,t.headline,t.view_count,'
+                . 't.user_view_count,t.headline_color,t.summary,t.short_title,t.lead_material,t.mobile_image,'
+                . 't.is_breaking,t.breaking_expire,t.is_exclusive,t.exclusive_expired,t.published_date';
         $criteria->together = true;
         $criteria->compare("t.status", 5);
-        $criteria->compare("t.byline_id", $id);
+
+        if ($target == "school")
+        {
+            $criteria->compare("t.school_id", $id);
+            $criteria->compare("t.teacher_id", 0);
+        }
+        else if ($target == "teacher")
+        {
+            $criteria->compare("t.teacher_id", $id);
+            $criteria->compare("t.school_id", 0);
+        }
+        else
+        {
+            $criteria->compare("t.byline_id", $id);
+        }
+
         $criteria->compare("postType.type_id", $user_type);
         $criteria->addCondition("category.parent_id IS NULL OR category.parent_id = ''");
         $criteria->addCondition("DATE(t.published_date) <= '" . date("Y-m-d") . "'");
-        $criteria->order = 'DATE(t.published_date) DESC';
+        $criteria->order = 't.published_date DESC';
 
         $criteria->with = array(
-            'postCategories' => array(
-                'select' => 'postCategories.id',
-                'joinType' => "INNER JOIN",
-                'with' => array(
+            "postCategories" => array(
+                "select" => "postCategories.id",
+                "with" => array(
                     "category" => array(
-                        "select" => "category.id,category.menu_icon,category.icon,category.name",
-                        'joinType' => "INNER JOIN",
+                        "select" => "category.id,category.menu_icon,category.icon,category.name"
                     )
                 )
             ),
             "postType" => array(
-                "select" => "postType.id",
+                "select" => "",
                 'joinType' => "INNER JOIN",
             ),
-            'postGalleries' => array(
-                'select' => 'postGalleries.type,postGalleries.caption,postGalleries.source',
-                'with' => array(
-                    "material" => array(
-                        "select" => "material.material_url",
-                    )
-                )
+            'postAuthor' => array(
+                'select' => 'postAuthor.title,postAuthor.image'
             )
         );
         $start = ($page - 1) * $page_size;
@@ -480,12 +509,12 @@ class Post extends CActiveRecord
 
 
         $obj_post = $this->findAll($criteria);
-        
-       
 
-        
+
+
+
         $formated_post = $this->formatPostAll($obj_post);
-  
+
         return $formated_post;
     }
 
@@ -493,84 +522,175 @@ class Post extends CActiveRecord
     {
         $post_array = array();
         $i = 0;
-        if ($obj_post && count($obj_post)>0)
+        if ($obj_post)
             foreach ($obj_post as $postValue)
             {
-            
-                $post_array[$i]['title'] = trim($postValue->headline);
-                $post_array[$i]['title_color'] = $postValue->headline_color;
+                $post_array[$i]['title'] = $postValue->headline;
+
                 $post_array[$i]['post_type'] = $postValue->post_type;
+
+                $post_array[$i]['video_file'] = "";
+
+                if ($postValue->video_file)
+                    $post_array[$i]['video_file'] = Settings::$image_path . $postValue->video_file;
+
+
                 $post_array[$i]['seen'] = $postValue->view_count;
+                $post_array[$i]['title_color'] = $postValue->headline_color;
+
                 $post_array[$i]['id'] = $postValue->id;
-                
+
+
+                $post_array[$i]['post_layout'] = $postValue->post_layout;
+
+                $post_array[$i]['sort_title_type'] = $postValue->sort_title_type;
+                $post_array[$i]['inside_image'] = "";
+
+                if ($postValue->inside_image)
+                    $post_array[$i]['inside_image'] = Settings::get_mobile_image(Settings::$image_path . $postValue->inside_image);
+
+                $post_array[$i]['normal_post_type'] = Settings::get_simple_post_layout($postValue);
+
+                $post_array[$i]['author'] = "";
+                $post_array[$i]['author_image'] = "";
+                if (isset($postValue['postAuthor']))
+                {
+                    $post_array[$i]['author'] = $postValue['postAuthor']->title;
+                    if ($postValue['postAuthor']->image)
+                        $post_array[$i]['author_image'] = Settings::$image_path . $postValue['postAuthor']->image;
+                }
+
+
+                $post_array[$i]['post_id'] = $postValue->id;
+                $post_array[$i]['headline'] = $postValue->headline;
+                $post_array[$i]['content'] = $postValue->content;
+                $post_array[$i]['is_featured'] = $postValue->is_featured;
+                $post_array[$i]['show_byline_image'] = $postValue->show_byline_image;
+                $post_array[$i]['headline_color'] = $postValue->headline_color;
+
+
+                $post_array[$i]['short_title'] = $postValue->short_title;
+                $post_array[$i]['shoulder'] = $postValue->shoulder;
+                $post_array[$i]['other_language'] = $postValue->other_language;
+
+                $post_array[$i]['post_type'] = $postValue->post_type;
+                $post_array[$i]['sub_head'] = $postValue->sub_head;
+                $post_array[$i]['lead_material'] = $postValue->lead_material;
+
+                $post_array[$i]['lead_caption'] = $postValue->lead_caption;
+                $post_array[$i]['is_breaking'] = $postValue->is_breaking;
+                $post_array[$i]['breaking_expire'] = $postValue->breaking_expire;
+                $post_array[$i]['is_exclusive'] = $postValue->is_exclusive;
+                $post_array[$i]['exclusive_expired'] = $postValue->exclusive_expired;
+
+
+                $post_array[$i]['language'] = $postValue->language;
+                $post_array[$i]['lead_link'] = $postValue->lead_link;
+                $post_array[$i]['view_count'] = $postValue->view_count;
+
+                $post_array[$i]['user_view_count'] = $postValue->user_view_count;
+                $post_array[$i]['embedded'] = $postValue->embedded;
+
+                $post_array[$i]['embedded_url'] = "";
+                if ($postValue->embedded)
+                    $post_array[$i]['embedded_url'] = Settings::get_embeded_url($postValue->embedded);
+
+                $post_array[$i]['layout_color'] = $postValue->layout_color;
+
+                $post_array[$i]['referance_id'] = $postValue->referance_id;
+                $post_array[$i]['attach'] = $postValue->attach;
+                $post_array[$i]['layout'] = $postValue->layout;
+
+
+
+
+
                 //get all images
                 //$post_array[$i]['images'] = Settings::content_images($postValue->content,true,$postValue->lead_material);
+
                 $post_array[$i]['images'] = array();
                 $post_array[$i]['add_images'] = array();
+                $post_array[$i]['web_images'] = array();
+                $postGalleryObj = new PostGallery();
+                
+                $postValue['postGalleries'] = $postGalleryObj->getPostGallery($postValue->id);
                 if ($postValue['postGalleries'])
                 {
                     $j = 0;
+                    $k = 0;
                     foreach ($postValue['postGalleries'] as $value)
                     {
-                        if (trim($value['material']->material_url) && $value->type==2)
+                        if (trim($value['material']->material_url) && $value->type == 2)
                         {
                             $post_array[$i]['images'][] = Settings::get_mobile_image(Settings::$image_path . $value['material']->material_url);
+
                             $post_array[$i]['add_images'][$j]['ad_image'] = Settings::get_mobile_image(Settings::$image_path . $value['material']->material_url);
                             $post_array[$i]['add_images'][$j]['ad_image_link'] = $value->source;
                             $post_array[$i]['add_images'][$j]['ad_image_caption'] = $value->caption;
                             $j++;
                         }
+                        else if (trim($value['material']->material_url) && $value->type == 1)
+                        {
+                            $post_array[$i]['web_images'][$k]['image'] = Settings::$image_path . $value['material']->material_url;
+                            $post_array[$i]['web_images'][$k]['source'] = $value->source;
+                            $post_array[$i]['web_images'][$k]['caption'] = $value->caption;
+                            $k++;
+                        }
                     }
                 }
-                
-                
 
-
+                $post_array[$i]['summary'] = "";
+                //$post_array[$i]['content'] = $postValue->content;
                 if ($postValue->summary)
                 {
+                    $post_array[$i]['has_summary'] = 1;
                     $post_array[$i]['summary'] = $postValue->summary;
                 }
                 else
                 {
+                    $post_array[$i]['has_summary'] = 0;
                     $post_array[$i]['summary'] = Settings::substr_with_unicode($postValue->content);
                 }
+
                 //new update
-                $post_array[$i]['add_images'] = Settings::add_caption_and_link($postValue);
-                
+                //$post_array[$i]['add_images'] = Settings::add_caption_and_link($postValue);
+
                 $post_array[$i]['share_link'] = Settings::get_post_link_url($postValue);
                 //new update
-                
+
+
                 $post_array[$i]['mobile_image'] = "";
                 if ($postValue->mobile_image)
                     $post_array[$i]['mobile_image'] = Settings::get_mobile_image(Settings::$image_path . $postValue->mobile_image);
 
                 $datestring = Settings::get_post_time($postValue->published_date);
-               
-                
+
+
                 $post_array[$i]['published_date'] = $postValue->published_date;
                 $post_array[$i]['current_date'] = date("Y-m-d H:i:s");
                 $post_array[$i]['published_date_string'] = $datestring;
 
                 $post_array[$i]['category_menu_icon'] = "";
                 $post_array[$i]['category_icon'] = "";
+                $post_array[$i]['category_name'] = "";
+                $post_array[$i]['category_id'] = "";
 
-                if ($postValue['postCategories'][0]['category']->menu_icon)
-                    $post_array[$i]['category_menu_icon'] = Settings::$image_path . $postValue['postCategories'][0]['category']->menu_icon;
+                if (isset($postValue['postCategories'][0]))
+                {
+                    if ($postValue['postCategories'][0]['category']->menu_icon)
+                        $post_array[$i]['category_menu_icon'] = Settings::$image_path . $postValue['postCategories'][0]['category']->menu_icon;
 
-                if ($postValue['postCategories'][0]['category']->icon)
-                    $post_array[$i]['category_icon'] = Settings::$image_path . $postValue['postCategories'][0]['category']->icon;
+                    if ($postValue['postCategories'][0]['category']->icon)
+                        $post_array[$i]['category_icon'] = Settings::$image_path . $postValue['postCategories'][0]['category']->icon;
 
-                $post_array[$i]['category_name'] = $postValue['postCategories'][0]['category']->name;
-                $post_array[$i]['category_id'] = $postValue['postCategories'][0]['category']->id;
+                    $post_array[$i]['category_name'] = $postValue['postCategories'][0]['category']->name;
+                    $post_array[$i]['category_id'] = $postValue['postCategories'][0]['category']->id;
+                }
 
-
-               
                 $i++;
             }
         return $post_array;
     }
-
-   
 
     public function formatpost($postValue)
     {
@@ -579,43 +699,42 @@ class Post extends CActiveRecord
         {
             $post_array['title'] = $postValue->headline;
             $post_array['title_color'] = $postValue->headline_color;
-            
-            
+
+
             $post_array['video_file'] = "";
-            
-            if($postValue->video_file)
-            $post_array['video_file'] = Settings::$image_path.$postValue->video_file;
-            
-            
+
+            if ($postValue->video_file)
+                $post_array['video_file'] = Settings::$image_path . $postValue->video_file;
+
+
             $post_array['seen'] = $postValue->view_count;
             $post_array['attach'] = "";
             $post_array['attach_content'] = "";
             $post_array['attach_download_link'] = "";
             $post_array['attachment'] = array();
-            
-            if($postValue['postAttachment'] && count($postValue['postAttachment'])>0)
+
+            if ($postValue['postAttachment'] && count($postValue['postAttachment']) > 0)
             {
                 $ai = 0;
                 foreach ($postValue['postAttachment'] as $avalue)
                 {
-                    $post_array['attachment'][$ai]['attach'] = Settings::$image_path .$avalue->file_name;
-                
-                    $post_array['attachment'][$ai]['content'] = '<iframe frameborder="0" style="width: 100%; height: 500px;" src="http://docs.google.com/gview?url='.Settings::$image_path .$avalue->file_name.'&embedded=true"></iframe>';
-                    $post_array['attachment'][$ai]['download_link'] = 'http://www.champs21.com/download?f_path='.$avalue->file_name;  
-                
+                    $post_array['attachment'][$ai]['attach'] = Settings::$image_path . $avalue->file_name;
+
+                    $post_array['attachment'][$ai]['content'] = '<iframe frameborder="0" style="width: 100%; height: 500px;" src="http://docs.google.com/gview?url=' . Settings::$image_path . $avalue->file_name . '&embedded=true"></iframe>';
+                    $post_array['attachment'][$ai]['download_link'] = 'http://www.champs21.com/download?f_path=' . $avalue->file_name;
+
                     $post_array['attachment'][$ai]['caption'] = $avalue->caption;
                     $post_array['attachment'][$ai]['show'] = $avalue->show;
                     $ai++;
                 }
-                
-            } 
-            $post_array['post_layout']     = $postValue->post_layout;
-            
+            }
+            $post_array['post_layout'] = $postValue->post_layout;
+
             $post_array['sort_title_type'] = $postValue->sort_title_type;
             $post_array['inside_image'] = "";
 
             if ($postValue->inside_image)
-            $post_array['inside_image'] = Settings::get_mobile_image(Settings::$image_path . $postValue->inside_image);
+                $post_array['inside_image'] = Settings::get_mobile_image(Settings::$image_path . $postValue->inside_image);
 
 
             $post_array['normal_post_type'] = Settings::get_simple_post_layout($postValue);
@@ -626,45 +745,45 @@ class Post extends CActiveRecord
             if (isset($postValue['postAuthor']))
             {
                 $post_array['author'] = $postValue['postAuthor']->title;
-                if($postValue['postAuthor']->image)
-                $post_array['author_image'] = Settings::$image_path.$postValue['postAuthor']->image;
+                if ($postValue['postAuthor']->image)
+                    $post_array['author_image'] = Settings::$image_path . $postValue['postAuthor']->image;
             }
 
 
-           
+
 
             $post_array['id'] = $postValue->id;
 
             if ($postValue->mobile_view_type == 1)
             {
                 $post_array['post_type'] = $postValue->mobile_view_type;
-                if(isset($postValue->mobile_content) && strlen(Settings::substr_with_unicode($postValue->mobile_content, true))>0)
+                if (isset($postValue->mobile_content) && strlen(Settings::substr_with_unicode($postValue->mobile_content, true)) > 0)
                 {
-                  $post_array['content'] = $postValue->mobile_content;  
-                  $post_array['full_content'] = Settings::substr_with_unicode($postValue->mobile_content, true);
-                  $post_array['solution'] = Settings::get_solution($postValue->mobile_content); 
+                    $post_array['content'] = $postValue->mobile_content;
+                    $post_array['full_content'] = Settings::substr_with_unicode($postValue->mobile_content, true);
+                    $post_array['solution'] = Settings::get_solution($postValue->mobile_content);
                 }
                 else
                 {
                     $post_array['content'] = $postValue->content;
                     $post_array['full_content'] = Settings::substr_with_unicode($postValue->content, true);
                     $post_array['solution'] = Settings::get_solution($postValue->content);
-                } 
+                }
                 $post_array['summary'] = "";
                 //$post_array[$i]['content'] = $postValue['post']->content;
                 if ($postValue->summary)
                 {
-                  
+
                     $post_array['summary'] = $postValue->summary;
                 }
                 else
                 {
-                   
+
                     $post_array['summary'] = Settings::substr_with_unicode($postValue->content);
                 }
-                
+
                 $post_array['images'] = array();
-                
+
                 if ($postValue['postGalleries'])
                 {
                     foreach ($postValue['postGalleries'] as $value)
@@ -679,32 +798,32 @@ class Post extends CActiveRecord
             else
             {
                 $post_array['post_type'] = $postValue->mobile_view_type;
-                if(isset($postValue->mobile_content) && strlen(Settings::substr_with_unicode($postValue->mobile_content, true))>0)
+                if (isset($postValue->mobile_content) && strlen(Settings::substr_with_unicode($postValue->mobile_content, true)) > 0)
                 {
-                  $post_array['content'] = $postValue->mobile_content;  
-                  $post_array['full_content'] = Settings::substr_with_unicode($postValue->mobile_content, true);
-                  $post_array['solution'] = Settings::get_solution($postValue->mobile_content); 
+                    $post_array['content'] = $postValue->mobile_content;
+                    $post_array['full_content'] = Settings::substr_with_unicode($postValue->mobile_content, true);
+                    $post_array['solution'] = Settings::get_solution($postValue->mobile_content);
                 }
                 else
                 {
                     $post_array['content'] = $postValue->content;
                     $post_array['full_content'] = Settings::substr_with_unicode($postValue->content, true);
                     $post_array['solution'] = Settings::get_solution($postValue->content);
-                } 
+                }
                 $post_array['summary'] = "";
                 //$post_array[$i]['content'] = $postValue['post']->content;
                 if ($postValue->summary)
                 {
-                  
+
                     $post_array['summary'] = $postValue->summary;
                 }
                 else
                 {
-                   
+
                     $post_array['summary'] = Settings::substr_with_unicode($postValue->content);
                 }
                 $post_array['images'] = array();
-              
+
                 if ($postValue['postGalleries'])
                 {
                     foreach ($postValue['postGalleries'] as $value)
@@ -727,16 +846,16 @@ class Post extends CActiveRecord
                     $post_array['tags'][$j]['id'] = $value['tag']->id;
                     $j++;
                 }
-           
-                
+
+
             $post_array['share_link'] = Settings::get_post_link_url($postValue);
-         
+
             $post_array['mobile_image'] = "";
             if ($postValue->mobile_image)
                 $post_array['mobile_image'] = Settings::$image_path . $postValue->mobile_image;
 
             $datestring = Settings::get_post_time($postValue->published_date);
-           
+
             $post_array['published_date'] = $postValue->published_date;
             //$post_array['attachment'] = $postValue->attach_file;
             $post_array['current_date'] = date("Y-m-d H:i:s");
@@ -744,7 +863,7 @@ class Post extends CActiveRecord
 
             $post_array['category_menu_icon'] = "";
             $post_array['category_icon'] = "";
-            
+
 
             if ($postValue['postCategories'][0]['category']->menu_icon)
                 $post_array['category_menu_icon'] = Settings::$image_path . $postValue['postCategories'][0]['category']->menu_icon;
@@ -754,7 +873,7 @@ class Post extends CActiveRecord
 
             $post_array['category_name'] = $postValue['postCategories'][0]['category']->name;
             $post_array['category_id'] = $postValue['postCategories'][0]['category']->id;
-            
+
             $post_array['inner_priority'] = $postValue['postCategories'][0]->inner_priority;
 
             $post_array['second_category_name'] = "";

@@ -8,16 +8,16 @@
     <div style="clear:both;"></div>
     <div id="popup_content"> <!--your content start-->
         <div style="float:left;width:55%;height:300px;">
-            <?= form_open('schoolsearch', array('class' => 'white-pink', 'enctype' => "multipart/form-data")); ?>
+            <?php echo form_open('schoolsearch', array('class' => 'white-pink', 'enctype' => "multipart/form-data")); ?>
 
-<!--<form action="<?php #echo site_url('home/schoolsearch'); ?>" method="post" class="white-pink"><h1>Contact Form<span>Please fill all the texts in the fields.</span></h1>-->
+<!--<form action="<?php #echo site_url('home/schoolsearch');  ?>" method="post" class="white-pink"><h1>Contact Form<span>Please fill all the texts in the fields.</span></h1>-->
             <p>
                 <label><span>Name :</span><input id="name" type="text" name="name" placeholder="Your Full Name"></label>
                 <label><span>Division</span><input id="division" type="text" name="division" placeholder="Valid Division"></label>		
                 <label><span>Level</span><input id="level" type="text" name="level" placeholder="Valid Level"></label>		
                 <label><span>&nbsp;</span><input type="submit" class="button" value="Search"></label>
             </p>
-            <?= form_close(); ?> 
+            <?php echo form_close(); ?> 
 
         </div>
         <div style="float:right;width:45%;border-left:1px solid #ccc;height:300px;padding-left:20px;">
@@ -85,12 +85,12 @@
             </ul>
         </div>
     </div> <!--your content end-->
-    
+
     <div class="slide innerTop">
-        <?= form_open('', array('id' => 'validate_form_school', 'class' => 'validate_form', 'enctype' => "multipart/form-data")); ?>
+        <?php echo form_open('', array('id' => 'validate_form_school', 'class' => 'validate_form', 'enctype' => "multipart/form-data")); ?>
         <div id="section_form_school">
             <h2 class="f2">My School</h2>
-           
+
             <br/>
             <label class="candle-input">
                 <input type="text" name="school_name" id="school_name" class="cd-input f5" placeholder="School Name">
@@ -125,7 +125,7 @@
             </label>
 
         </div>
-        <?= form_close(); ?>    
+        <?php echo form_close(); ?>    
         <div id="section_thanks_school" style="display:none;">
             <p><img src="<?php echo base_url('Profiler/images/right/school_thanks.png'); ?>" width="500" height="100" alt="Candle" style="margin: 0 auto;display: block;"> </p>
         </div>
@@ -210,7 +210,7 @@
             loading(); // loading
             setTimeout(function() { // then show popup, deley in .5 second
                 $('html,body').animate({scrollTop : 0});
-				loadPopup(); // function show popup 
+                loadPopup(); // function show popup 
             }, 500); // .5 second
             return false;
         });
@@ -241,13 +241,13 @@
 
         /* event for close the popup */
         $("div.close").hover(
-                function() {
-                    $('span.ecs_tooltip').show();
-                },
-                function() {
-                    $('span.ecs_tooltip').hide();
-                }
-        );
+        function() {
+            $('span.ecs_tooltip').show();
+        },
+        function() {
+            $('span.ecs_tooltip').hide();
+        }
+    );
 
         $("div.close").click(function() {
             disablePopup();  // function close pop up
@@ -370,9 +370,9 @@
 
     #button-bottom { width: 100px; position: absolute; left: 75%; top: 240px; padding-left: 100px;overflow: hidden;}
 
-    
 
-   
+
+
 
 
     input[type=checkbox].css-checkbox {

@@ -34,6 +34,7 @@ class postdata extends widget
 
     function run( $s_category_name, $s_category_ids = "", $target = "inner", $b_featured = FALSE, $i_featured_position = 0, $page = "index", $current_page = 0, $limit = 9,$is_game = 0, $q = '')
     {
+       
         $CI = & get_instance();        
         $CI->load->config("huffas");
         
@@ -199,9 +200,16 @@ class postdata extends widget
             $data['q'] = $q;
             $s_priority = "DATE(tds_post.published_date), DESC";
         }
-        
-        $ar_post_news = $this->post->gePostNews($a_post_params, $target, "smaller", $s_priority, $s_category_ids, $limit, $current_page, $b_featured, $i_featured_position); 
-
+        if($target == "school" || $target=="teacher")
+        {
+            $a_post_params = array();
+            $a_post_params['stbid'] =$s_category_ids; 
+            $ar_post_news = $this->post->gePostNews($a_post_params, $target, "smaller", $s_priority, 0, $limit, $current_page, $b_featured, $i_featured_position);
+        }   
+        else
+        {    
+            $ar_post_news = $this->post->gePostNews($a_post_params, $target, "smaller", $s_priority, $s_category_ids, $limit, $current_page, $b_featured, $i_featured_position); 
+        }
         $data['target'] = $target;
         
         $data['is_game'] = $is_game;

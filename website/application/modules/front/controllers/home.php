@@ -24,12 +24,24 @@ class home extends MX_Controller {
 
     }
     
+    function join_to_school(){
+        
+        if($this->input->is_ajax_request()){
+            
+            echo( json_encode($_POST));
+            exit;
+            
+            
+            
+        }
+        
+    }
     
     function schools()
     {
        
         $ar_segmens = $this->uri->segment_array();
-        if(count($ar_segmens)<2)
+        if(count($ar_segmens) < 2)
         {            
             
             //$this->show_404_custom();
@@ -44,27 +56,29 @@ class home extends MX_Controller {
 
 
             $data['ci_key'] = 'schools';
-            $s_content = $this->load->view('schools_all', $data, true);
-
+            
             // User Data
             $user_id = (free_user_logged_in()) ? get_free_user_session('id') : NULL;
 
             $data['model'] = $this->get_free_user($user_id);
 
             $data['free_user_types'] = $this->get_free_user_types();
+            $data['join_user_types'] = $this->get_school_join_user_types();
 
             $data['country'] = $this->get_country();
-            $data['country']['id'] = $data2['model']->tds_country_id;
+            $data['country']['id'] = $data['model']->tds_country_id;
 
             $data['grades'] = $this->get_grades();
 
             $data['medium'] = $this->get_medium();
 
             $data['edit'] = (free_user_logged_in()) ? TRUE : FALSE;
-            // User Data
 
             $obj_post = new Posts();
             $data['category_tree'] = $obj_post->user_preference_tree_for_pref();
+            // User Data
+            
+            $s_content = $this->load->view('schools_all', $data, true);
 
             //has some work in right view
             $s_right_view = $this->load->view('right', $data, TRUE);
@@ -123,6 +137,10 @@ class home extends MX_Controller {
                         
                         $activities = $school_obj->find_all_ativity($school_details->id);
                     }
+                    else if($ar_segmens[3] == "feed")
+                    {
+                        $feed = true;
+                    }    
                     else
                     {
                         $this->show_404_custom();
@@ -131,7 +149,7 @@ class home extends MX_Controller {
                 
                 if((isset($menu_details) && count($menu_details)>0) 
                       || (isset($activity_details) && count($activity_details)>0)
-                      || (isset($activities) &&  count($activities)>0)
+                      || (isset($activities) &&  count($activities)>0 || isset($feed) )
                   )
                 {
                     $this->load->helper('cookie');
@@ -187,6 +205,12 @@ class home extends MX_Controller {
                             $data['activity_link'] = true;
                             $data['menu_details'] = $menu_details;
                             $data['gallery'] = $school_obj->find_activity_gallery($activity_details->id); 
+                        }
+                        else if(isset($feed))
+                        {
+                           
+                            $data['feeds'] = $feed;
+                            $data['menu_details'] = $menu_details;
                         }
                         else
                         {
@@ -2189,7 +2213,8 @@ class home extends MX_Controller {
             "content" => $s_content
         );
 		$this->extra_params = $ar_params;
-	}
+    }
+    
     private function get_country() {
         
         $country = new Country();
@@ -2216,6 +2241,11 @@ class home extends MX_Controller {
     private function get_free_user_types() {
         $this->load->config("user_register");
         return $this->config->config['free_user_types'];
+    }
+    
+    private function get_school_join_user_types() {
+        $this->load->config("user_register");
+        return $this->config->config['join_user_types'];
     }
     
     private function create_free_user_folders() {
@@ -2695,6 +2725,105 @@ class home extends MX_Controller {
         }
         
         $str_title = WEBSITE_NAME . " | Contact Us";
+        
+        $meta_description = META_DESCRIPTION;
+        $keywords = KEYWORDS;
+        $ar_params = array(
+            "javascripts"           => $ar_js,
+            "css"                   => $ar_css,
+            "extra_head"            => $extra_js,
+            "title"                 => $str_title,
+            "description"           => $meta_description,
+            "keywords"              => $keywords,
+            "side_bar"              => $s_right_view,
+            "target"                => "contact-us",
+            "fb_contents"           => NULL,
+            "content"               => $s_content
+        );
+        
+        $this->extra_params = $ar_params;
+    }
+    public function createpage()
+    {
+        
+        $ar_js = array();
+        $ar_css = array();
+        $extra_js = '';
+        
+        $data = array();
+        
+        $data['ci_key']    = "createpage";
+        $data['ci_key_for_cover'] = "createpage";
+        $data['s_category_ids'] = "0";
+        
+        $this->db->where('key', 'layout');
+        $query = $this->db->get('settings');
+        $layout_settings = $query->row();
+        
+        $data['layout'] = $layout_settings->value;
+        
+        if(isset($_POST) && !empty($_POST)){
+            
+            $this->load->config('champs21');
+            
+            $email_config = $this->config->config['contact_email_addr'];
+            
+            $contact_model = new Contact_us();
+            
+            $contact_model->full_name = $this->input->post('full_name');
+            $contact_model->email = $this->input->post('email');
+            $contact_model->contact_type = $this->input->post('contact_type');
+            $contact_model->description = $this->input->post('ques_description');
+            $contact_model->created_date = date('Y-m-d H:i:s', time());
+            
+            $ar_email['sender_full_name'] = $contact_model->full_name;
+            $ar_email['sender_email'] = $contact_model->email;
+            $ar_email['to_name'] = $email_config[$contact_model->contact_type]['to']['full_name'];
+            $ar_email['to_email'] = $email_config[$contact_model->contact_type]['to']['email'];
+            $ar_email['cc_name'] = $email_config[$contact_model->contact_type]['cc']['full_name'];
+            $ar_email['cc_email'] = $email_config[$contact_model->contact_type]['cc']['email'];
+            $ar_email['bcc_name'] = $email_config[$contact_model->contact_type]['bcc']['full_name'];
+            $ar_email['bcc_email'] = $email_config[$contact_model->contact_type]['bcc']['email'];
+            
+            $ar_email['subject'] = $email_config[$contact_model->contact_type]['subject'];
+            $ar_email['message'] = $contact_model->description;
+            
+            if($contact_model->validate()){
+                
+                if(send_mail($ar_email)){
+                    
+                    if($contact_model->save()){
+                        $data['saved'] = TRUE;
+                        $data['errors'][] = 'Seccessfully Saved.';
+                    }else{
+                        $data['saved'] = FALSE;
+                        $data['errors'] = $contact_model->error->all;
+                    }
+                }
+            }
+            
+            echo json_encode($data);
+            exit;
+        }
+        
+        $s_content = $this->load->view('createpage', $data, true);
+        
+        $s_right_view = "";
+        $cache_name = "common/right_view";
+        if ( ! $s_widgets = $this->cache->file->get($cache_name)  )
+        {
+            $this->db->where('is_enabled', 1);
+            $query = $this->db->get('widget');
+            
+            $obj_widgets = $query->result();
+            
+            if ($obj_widgets )
+            {
+               $data2['free_user_types'] = $this->get_free_user_types();
+            }
+        }
+        
+        $str_title = WEBSITE_NAME . " | Create Page";
         
         $meta_description = META_DESCRIPTION;
         $keywords = KEYWORDS;

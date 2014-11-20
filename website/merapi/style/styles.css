@@ -175,7 +175,7 @@ li.carrosel_news div.carrosel-news div.carrosel-news-content div.post-title{
 }
 
 .loading-box .loading{
-    background: url(../img/bx_loader.gif);
+    background: url(/merapi/img/bx_loader.gif);
     height: 32px;
     width: 32px;
     margin: 0 auto;

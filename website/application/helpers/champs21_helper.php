@@ -241,20 +241,20 @@ if ( !function_exists("getimage_link") )
                 }
                 
             }
-            error_log("LOLAPOPO ".$image_link);
+            
             $s_thumb_url = str_replace("gallery/", "gallery/".$layout."/", $image_link);
             
             if(! file_exists($image_link) )
             {
-                error_log("LITU");
+                
                 $image_link = str_replace(FCPATH, $url_base, $image_link);
             }
             else
             {
-                error_log("PITU");
+               
                 if(file_exists($s_thumb_url) )
                 {
-                    error_log("BITU");
+                    
                    $image_link =  $s_thumb_url;
                 }
 
@@ -262,7 +262,7 @@ if ( !function_exists("getimage_link") )
             }
             
         }
-        error_log("\nLOLAPOPOfe5 ".$image_link);
+        
         return  $image_link; 
         
     }

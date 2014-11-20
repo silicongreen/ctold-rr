@@ -49,8 +49,8 @@ $route['404_override'] = '';
 
 
 
-$route['js/(:any)'] = "min/$1"; 
-$route['css/(:any)'] = "min/$1";
+$route['js/(:any)'] = "minify/$1"; 
+$route['css/(:any)'] = "minify/$1";
 $route['css1/(:any)'] = "front/ajax/minify_css/$1";
 #$route['tds-adm-master/ad/datatable'] = "ad/datatable";
 #$route['tds-adm-master/ad/add'] = "ad/add";

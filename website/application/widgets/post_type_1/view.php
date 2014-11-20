@@ -166,9 +166,9 @@
 <!--                                    <div class="fb">
                                         <iframe src="//www.facebook.com/plugins/like.php?href=<?php echo base_url() . sanitize($news->headline) . "-" . $news->post_id; ?>&amp;width&amp;layout=button&amp;action=like&amp;show_faces=false&amp;share=true&amp;height=35&amp;appId=210972602426467" scrolling="no" frameborder="0" style="border:none; overflow:hidden; padding: 8px 8px; height:35px; " allowTransparency="true"></iframe>
                                     </div>-->
-									<div style="width:25%;float:left;padding:0 10px;margin-left:10px;margin-top:8px;">
-										<div class="seen-image col-lg-6"><img src="<?php echo base_url("styles/layouts/tdsfront/images/social/seen.png"); ?>" /></div>
-										<div class="seen col-lg-6"><span style="font-size:12px;margin-left:5px;margin-top:6px;color:#666"><?php echo $news->user_view_count; ?></span></div>
+									<div style="width:30%;float:left;padding:0 10px;margin-left:10px;margin-top:8px;">
+										<div class="seen-image col-lg-3"><img src="<?php echo base_url("styles/layouts/tdsfront/images/social/seen.png"); ?>" /></div>
+										<div class="seen col-lg-9"><span style="font-size:12px;margin-left:5px;margin-top:6px;color:#666"><?php echo $news->user_view_count; ?></span></div>
 									</div>
                                     <div data="read_later" id="read_later_<?php echo $news->post_id; ?>" class="read_later <?php echo ( free_user_logged_in() ) ? "" : "before-login-user"; ?>">Read Later</div>
                                 </div>

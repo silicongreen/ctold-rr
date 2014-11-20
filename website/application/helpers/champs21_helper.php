@@ -225,6 +225,7 @@ if ( !function_exists("getimage_link") )
         {
             if( strpos($image_link, $url_base) !== false)
             {
+                $image_link = str_replace($url, FCPATH, $image_link);
                 
             }
             else
@@ -238,22 +239,23 @@ if ( !function_exists("getimage_link") )
                 {
                     $image_link = FCPATH . $image_link;
                 }
-                $s_thumb_url = str_replace("gallery/", "gallery/".$layout."/", $image_link);
+                
+            }
+            $s_thumb_url = str_replace("gallery/", "gallery/".$layout."/", $image_link);
 
 
-                if(! file_exists($image_link) )
+            if(! file_exists($image_link) )
+            {
+                $image_link = str_replace(FCPATH, $url_base, $image_link);
+            }
+            else
+            {
+                if(file_exists($s_thumb_url) )
                 {
-                    $image_link = str_replace(FCPATH, $url_base, $image_link);
+                   $image_link =  $s_thumb_url;
                 }
-                else
-                {
-                    if(file_exists($s_thumb_url) )
-                    {
-                       $image_link =  $s_thumb_url;
-                    }
 
-                    $image_link = str_replace(FCPATH, $url, $image_link);
-                }
+                $image_link = str_replace(FCPATH, $url, $image_link);
             }
             
         }

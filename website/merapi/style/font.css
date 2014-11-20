@@ -2,11 +2,11 @@
 
 @font-face {
   font-family: "maca-theme";
-  src:url("fonts/maca-theme.eot");
-  src:url("fonts/maca-theme.eot?#iefix") format("embedded-opentype"),
-    url("fonts/maca-theme.woff") format("woff"),
-    url("fonts/maca-theme.ttf") format("truetype"),
-    url("fonts/maca-theme.svg#maca-theme") format("svg");
+  src:url("/merapi/style/fonts/maca-theme.eot");
+  src:url("/merapi/style/fonts/maca-theme.eot?#iefix") format("embedded-opentype"),
+    url("/merapi/style/fonts/maca-theme.woff") format("woff"),
+    url("/merapi/style/fonts/maca-theme.ttf") format("truetype"),
+    url("/merapi/style/fonts/maca-theme.svg#maca-theme") format("svg");
   font-weight: normal;
   font-style: normal;
 

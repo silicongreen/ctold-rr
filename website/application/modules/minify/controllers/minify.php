@@ -138,9 +138,13 @@ class minify extends CI_Controller {
                 # loop on each file to grab it content
                 $cache['content'] = '';
                 foreach($files as $file){
-                       
-                    $cache['content'] .= file_get_contents($file);
-                           
+                    
+                    if($this->_type == 'css'){
+                        $cache['content'] .= file_get_contents($file);
+                    }  else {
+                        $cache['content'] .= \JShrink\Minifier::minify(file_get_contents($file));
+                    }
+                    
                 }
                 
 		return $cache;

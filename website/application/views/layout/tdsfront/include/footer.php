@@ -34,42 +34,9 @@ $widget = new Widget;
     <!--###############################################################################-->
     <div class="poweredby f5">    
         <p>Powered by <a href="http://www.team-creative.net" style="color:red;">Team Creative</a></p>
-
-
-
-
-           
-        
-<!--<script type="text/javascript" src="<?= base_url() ?>merapi/jquery_002.js"></script>-->
-<!--<script type="text/javascript" src="<?= base_url() ?>merapi/scripts.js"></script>
-<script type="text/javascript" src="<?= base_url() ?>merapi/devicepx-jetpack.js"></script>
-<script type="text/javascript" src="<?= base_url() ?>merapi/pluginsFoot.js"></script>
-<script type="text/javascript" src="<?= base_url() ?>merapi/main.js"></script>
-<script type="text/javascript" src="<?= base_url() ?>merapi/loopJs.js"></script>
-
-<script type="text/javascript" src="<?= base_url() ?>Profiler/jquery.form.min.js"></script>
-<script type="text/javascript" src="<?= base_url() ?>Profiler/bootstrap.js"></script>
-<script type="text/javascript" src="<?= base_url() ?>Profiler/jquery.easing.min.js"></script>
-<script type="text/javascript" src="<?= base_url() ?>Profiler/jquery.tinyscrollbar.min.js"></script>
-<script type="text/javascript" src="<?= base_url() ?>Profiler/custom_theme.js"></script>
-<script type="text/javascript" src="<?= base_url() ?>Profiler/menu.js"></script>
-<script type="text/javascript" src="<?= base_url() ?>Profiler/profile_script_resize.js"></script>
-<script src="<?php //echo base_url('scripts/jquery/jquery.carouFredSel-6.2.1-packed.js'); ?>"></script>
-<script src="<?php //echo base_url('scripts/layouts/tdsfront/js/jquery.scrollUp.min.js'); ?>"></script>
-<script src="<?php //echo base_url('scripts/layouts/tdsfront/js/jquery.scrollUp_custom.js'); ?>"></script>
-<script src="<?php //echo base_url('scripts/jquery/jquery.lazyload.js'); ?>"></script>
-<script src="<?php //echo base_url('scripts/jquery/imgLiquid-min.js'); ?>"></script>
-
-<script src="<?php //echo base_url('scripts/layouts/tdsfront/js/index.js'); ?>"></script>
-<script src="<?php //echo base_url('scripts/layouts/tdsfront/js/index-req.js'); ?>"></script>
-<script src="<?php //echo base_url('scripts/jquery/jquery.tree.js'); ?>"></script>
-<script src="<?php //echo base_url('scripts/custom/customTree.js'); ?>"></script>-->
-<script src="<?php echo base_url('scripts/fancybox/fancybox.js'); ?>"></script>
-<script src="<?php echo base_url('scripts/layouts/tdsfront/js/jquery.liteuploader.js'); ?>"></script>
+    </div>
+    
 <script type="text/javascript" src="<?php echo base_url('js/main-bottom.js'); ?>"></script>
-<script src="<?php echo base_url('gallery/html5gallery.js'); ?>"></script>
-<!--<script src="<?php echo base_url('scripts/layouts/tdsfront/js/lib.js'); ?>"></script>-->
-
 
 <script type="text/javascript">
     (function() {

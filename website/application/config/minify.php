@@ -98,10 +98,10 @@ $config['js_groups']            = Array(
                                 'scripts/layouts/tdsfront/js/bootstrap-datepicker.js'
                         ),
                         'main-bottom.js' => Array( // when loading example.com/js/example1.js you will load javascript1.js and javascript2.js into one single file
+                                'merapi/main.js',
                                 'merapi/scripts.js',                            
                                 'merapi/devicepx-jetpack.js',
                                 'merapi/pluginsFoot.js',
-                                'merapi/main.js',
                                 'Profiler/jquery.form.min.js',
                                 'Profiler/bootstrap.js',
                                 'Profiler/jquery.easing.min.js',
@@ -111,13 +111,15 @@ $config['js_groups']            = Array(
                                 'Profiler/profile_script_resize.js',
                                 'scripts/jquery/jquery.carouFredSel-6.2.1-packed.js',
                                 'scripts/layouts/tdsfront/js/jquery.scrollUp.min.js',
-                                'scripts/layouts/tdsfront/js/jquery.scrollUp_custom.js',                               
+                                'scripts/layouts/tdsfront/js/jquery.scrollUp_custom.js',
                                 'scripts/fancybox/fancybox.js',
                                 'scripts/layouts/tdsfront/js/lib.js',
                                 'scripts/layouts/tdsfront/js/index.js',
                                 'scripts/layouts/tdsfront/js/index-req.js',
                                 'scripts/jquery/jquery.tree.js',
-                                'scripts/custom/customTree.js'
+                                'scripts/custom/customTree.js',
+                                'scripts/layouts/tdsfront/js/jquery.liteuploader.js',
+                                'gallery/html5gallery.js',
                         )
                         
 );

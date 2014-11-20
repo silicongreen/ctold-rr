@@ -39,11 +39,11 @@
                     ?>
 					
         <meta property="og:<?php echo $key; ?>" content="<?php echo str_replace('"', "", $value); ?>" />
-              <meta name="twitter:<?php echo $key; ?>" content="<?php echo str_replace('"', "", $value); ?>" />
+        <meta name="twitter:<?php echo $key; ?>" content="<?php echo str_replace('"', "", $value); ?>" />
             <?php endforeach; ?>
 			
-            <meta name="twitter:card" content="summary" />
-            <meta name="twitter:site" content="@champs21" />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:site" content="@champs21" />
         <?php endif; ?>
 		<meta property="og:image" content="http://www.champs21.com/styles/layouts/tdsfront/images/logo-new.png">
     <link rel="icon" href=<?php echo base_url("styles/layouts/tdsfront/images/favicon.ico"); ?> type="image/x-icon">
@@ -78,9 +78,9 @@
     
     <link rel="stylesheet" id="bootstrap-css" href="<?php echo base_url('css/champs21.css'); ?>" type="text/css" media="all" />
     <link rel="stylesheet" id="contact-form-7-css" href="<?php echo base_url('css/styles.css'); ?>" type="text/css" media="all" />
-    <!--link rel="stylesheet" id="bootstrap-css" href="<?= base_url('css1/all.css'); ?>" type="text/css" media="all" /-->
-    <!--link rel="stylesheet" id="contact-form-7-css" href="<?= base_url() ?>css/styles.css?v=1" type="text/css" media="all" /-->
-    <link rel="stylesheet" href="<?= base_url('styles/plugins/fancybox/fancybox.css'); ?>" type="text/css" media="all" />
+    <!--link rel="stylesheet" id="bootstrap-css" href="<?php //echo base_url('css1/all.css'); ?>" type="text/css" media="all" /-->
+    <!--link rel="stylesheet" id="contact-form-7-css" href="<?php //echo base_url() ?>css/styles.css?v=1" type="text/css" media="all" /-->
+<!--    <link rel="stylesheet" href="<?php //echo base_url('styles/plugins/fancybox/fancybox.css'); ?>" type="text/css" media="all" />-->
     
     <style>
         .fluid-width-video-wrapper{
@@ -96,9 +96,8 @@
             height:100%;
         }
     </style>
-   <script type="text/javascript" src="<?php echo base_url('js/top-main.js') ?>"></script> 
+   <script type="text/javascript" src="<?php echo base_url('js/top-main.js'); ?>"></script> 
 
-    
     
     <?php if ( isset($name) && file_exists(FCPATH . "styles\\layouts\\tdsfront\\css\\" . strtolower($name) . ".css") ) : ?>
     <?php $extra_css = base_url() . "styles/layouts/tdsfront/css/" . strtolower($name) . ".css"; ?>

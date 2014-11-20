@@ -7,7 +7,8 @@
     "require": {
         "aws/aws-sdk-php": "2.*",
         "monolog/monolog": "1.7.0",
-        "swiftmailer/swiftmailer": "@stable"
+        "swiftmailer/swiftmailer": "@stable",
+        "tedivm/jshrink": "~1.0"
     },
     "scripts": {
         "post-install-cmd": [

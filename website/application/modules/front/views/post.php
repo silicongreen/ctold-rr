@@ -82,8 +82,8 @@
         <div class="inner-container" style="margin: 10px 20px;">
             
             <!-- Ad sense Place Top -->
-            <div class="add-wrapper-top">
-<!--                <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!--            <div class="add-wrapper-top">
+                <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
                  champs21-single-page-top 
                 <ins class="adsbygoogle"
                      style="display: inline-block; width:100%; height:90px; background-color: transparent;"
@@ -92,9 +92,9 @@
                 </ins>
                 <script>
                     (adsbygoogle = window.adsbygoogle || []).push({});
-                </script>-->
+                </script>
                 <img src="/styles/ads/ksrm.jpg" />
-            </div>
+            </div>-->
             <!-- Ad sense Place Top -->
             
         <!-- AddThis Smart Layers END -->
@@ -491,8 +491,8 @@
     <?php if ( $b_layout) : ?>
     
         <!-- Ad Sense Place Bottom -->
-            <div class="add-wrapper-bottom">
-<!--                <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!--            <div class="add-wrapper-bottom">
+                <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
                  champs21-single-page-bottom 
                 <ins class="adsbygoogle"
                      style="display:inline-block; width:100%; height:90px; background-color: transparent;"
@@ -501,9 +501,9 @@
                 </ins>
                 <script>
                     (adsbygoogle = window.adsbygoogle || []).push({});
-                </script>-->
+                </script>
                 <img src="/styles/ads/ad.png" />
-            </div>
+            </div>-->
             <!-- Ad Sense Place Bottom -->
         
     <hr  /> 

@@ -1,36 +1,36 @@
 @font-face {
       font-family: "Steelfish Outline";
-      src: url("/home/champs21/public_html/website/styles/fonts/steelfish/steelfish-outline.ttf");      
+      src: url("/styles/fonts/steelfish/steelfish-outline.ttf");      
     }
 	@font-face {
       font-family: "Steelfish Rg";
-      src: url("/home/champs21/public_html/website/styles/fonts/steelfish/steelfish-rg.otf");      
+      src: url("/styles/fonts/steelfish/steelfish-rg.otf");      
     }
 	@font-face {
       font-family: "Steelfish Rg it";
-      src: url("/home/champs21/public_html/website/styles/fonts/steelfish/steelfish-rg-it.ttf");      
+      src: url("/styles/fonts/steelfish/steelfish-rg-it.ttf");      
     }
 	
 	
     @font-face {
       font-family: "Aliquam";
-      src: url("/home/champs21/public_html/website/styles/fonts/aliquam/Aliquam_0.ttf");      
+      src: url("/styles/fonts/aliquam/Aliquam_0.ttf");      
     }@font-face {
       font-family: "Aliquam Rg";
-      src: url("/home/champs21/public_html/website/styles/fonts/aliquam/AliquamREG_0.ttf");      
+      src: url("/styles/fonts/aliquam/AliquamREG_0.ttf");      
     }@font-face {
       font-family: "Aliquam Rit";
-      src: url("/home/champs21/public_html/website/styles/fonts/aliquam/AliquamRit_0.ttf");      
+      src: url("/styles/fonts/aliquam/AliquamRit_0.ttf");      
     }@font-face {
       font-family: "Aliquam ulti";
-      src: url("/home/champs21/public_html/website/styles/fonts/aliquam/Aliquamulti_0.ttf");      
+      src: url("/styles/fonts/aliquam/Aliquamulti_0.ttf");      
     }
 	
 	
 	
 	@font-face {
       font-family: "SolaimanLipi";
-      src: url("/home/champs21/public_html/website/styles/fonts/aliquam/SolaimanLipi_20-04-07.ttf");      
+      src: url("/styles/fonts/aliquam/SolaimanLipi_20-04-07.ttf");      
     }
 	
 	

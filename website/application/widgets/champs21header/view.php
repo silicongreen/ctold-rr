@@ -697,9 +697,9 @@ height: 46px;
                 <!-- onclick="location.href='//<?php echo base_url('/market'); ?>'" -->
                     <div class="icon-magic-mart">&nbsp;</div> 
                 </li>
-                <li data="create-page" class="before-login-user-back" onclick="location.href='<?php echo base_url('/createpage'); ?>'">                        
+<!--                <li data="create-page" class="before-login-user-back" onclick="location.href='<?php echo base_url('/createpage'); ?>'">                        
                     <div class="icon-create-page">&nbsp;</div> 
-                </li>
+                </li>-->
             </ul>
                
         </div>

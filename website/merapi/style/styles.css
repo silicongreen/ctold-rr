@@ -135,7 +135,7 @@ li.carrosel_news div.carrosel-news{
 }
 
 .close-carrosel{
-    background: url("../merapi/img/close.png");
+    background: url("/merapi/img/close.png");
     height: 32px;
     width: 32px;
     position: absolute;
@@ -197,7 +197,7 @@ li.menu-item
     margin:5px 0px;
 }
 .action-box .read_later{
-    background: url("../img/read_later.png") no-repeat scroll 0 0 transparent;
+    background: url("/merapi/img/read_later.png") no-repeat scroll 0 0 transparent;
     background-size:20px;
     letter-spacing:0px;
     
@@ -218,7 +218,7 @@ li.menu-item
 }
 .play_btn_ch
 {
-    background: url("../img/play_btn.png") no-repeat scroll 0 0 transparent;
+    background: url("/merapi/img/play_btn.png") no-repeat scroll 0 0 transparent;
     margin: -225px 0px 0px 235px;
     height: 140px;
     width:105px;
@@ -333,7 +333,7 @@ li.menu-item
     z-index: 6000;
 }
 div.loader {
-    background: url("../merapi/img/bx_loader.gif") no-repeat scroll 0 0 transparent;
+    background: url("/merapi/img/bx_loader.gif") no-repeat scroll 0 0 transparent;
     height: 32px;
     width: 32px;
 	display: none;
@@ -344,7 +344,7 @@ div.loader {
 	margin-left: -10px;
 }
 div.close {
-    background: url("../merapi/img/close.png") no-repeat scroll 0 0 transparent;
+    background: url("/merapi/img/close.png") no-repeat scroll 0 0 transparent;
     bottom: 30px;
     cursor: pointer;
     float: right;

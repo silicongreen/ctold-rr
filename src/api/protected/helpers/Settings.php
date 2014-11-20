@@ -2,11 +2,11 @@
 
 class Settings {
 
-    public static $domain_name = 'http://champs21-school.com/';
+    public static $domain_name = 'http://www.champs21.com/';
 //    public static $domain_name = 'http://www.champs21.dev/';
     public static $image_path = 'http://www.champs21.com/';
-    public static $real_path = '/var/www/html/champion/';
-    public static $main_path = "../__champs21_free/";
+    public static $real_path = '/home/champs21/public_html/website/';
+    public static $main_path = "../website/";
     public static $inner_post_to_show = 15;
     public static $news_in_index = array(
         'show_old_news' => TRUE,

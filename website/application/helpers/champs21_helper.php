@@ -243,21 +243,19 @@ if ( !function_exists("getimage_link") )
             }
             error_log("LOLAPOPO ".$image_link);
             $s_thumb_url = str_replace("gallery/", "gallery/".$layout."/", $image_link);
-            error_log("\nLOLAPOPOTHUMB ".$s_thumb_url);
-
+            
             if(! file_exists($image_link) )
             {
-                error_log("\nLOLAPOPOfe ".$image_link);
+                error_log("LITU");
                 $image_link = str_replace(FCPATH, $url_base, $image_link);
-                error_log("\nLOLAPOPOfe2 ".$image_link);
             }
             else
             {
-                error_log("\nLOLAPOPOfe3 ".$image_link);
+                error_log("PITU");
                 if(file_exists($s_thumb_url) )
                 {
+                    error_log("BITU");
                    $image_link =  $s_thumb_url;
-                   error_log("\nLOLAPOPOfe4 ".$image_link);
                 }
 
                 $image_link = str_replace(FCPATH, $url, $image_link);

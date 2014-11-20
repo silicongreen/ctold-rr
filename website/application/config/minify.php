@@ -19,10 +19,10 @@
 | use_minify : set if minify is used or not
 |
 */
-$config['minify_lib_path']         = APPPATH.'/libraries/minify_2.1.3/lib/';
-$config['use_minify']             = TRUE;
-$config['use_ci_cache']             = FALSE; // set to TRUE if you use phil's cache lib
-$config['use_min_cache']         = TRUE;
+$config['minify_lib_path']        = APPPATH.'/libraries/minify_2.1.3/lib/';
+$config['use_minify']             = FALSE;
+$config['use_ci_cache']           = FALSE; // set to TRUE if you use phil's cache lib
+$config['use_min_cache']          = FALSE;
 
 $config['CSS_JS_V'] = 1;	
 
@@ -42,7 +42,7 @@ $config['CSS_JS_V'] = 1;
 $config['css_route_segment']         = 'css';
 $config['css_local_path']         = FCPATH.'/';
 $config['css_cache_path']         = APPPATH.'/cache/'; // for minify cache only
-$config['css_cache_max_age']         = 3600 * 24 * 7 * 4; // 4 week cache header
+$config['css_cache_max_age']      = 3600 * 24 * 7 * 4; // 4 week cache header
 $config['css_groups']            = Array(
                         'champs21.css' => Array( // when loading example.com/css/example1.css you will load stylesheet1.css and stylesheet2.css into one single file
                                     'merapi/style/bootstrap.css',

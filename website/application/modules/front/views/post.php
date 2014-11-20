@@ -83,8 +83,8 @@
             
             <!-- Ad sense Place Top -->
             <div class="add-wrapper-top">
-                <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                <!-- champs21-single-page-top -->
+<!--                <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                 champs21-single-page-top 
                 <ins class="adsbygoogle"
                      style="display: inline-block; width:100%; height:90px; background-color: transparent;"
                      data-ad-client="ca-pub-2246193625592975"
@@ -92,8 +92,8 @@
                 </ins>
                 <script>
                     (adsbygoogle = window.adsbygoogle || []).push({});
-                </script>
-<!--                <img src="/styles/ads/ksrm.jpg" />-->
+                </script>-->
+                <img src="/styles/ads/ksrm.jpg" />
             </div>
             <!-- Ad sense Place Top -->
             
@@ -261,7 +261,7 @@
                         
                         $gallery_html = '</p><div  class="ym-grid"> 
                         <div style="text-align:center; width:95%; margin: 0 auto;">
-                            <div style="display:none;" class="html5gallery" data-responsive="true" data-skin="horizontal" data-thumbshowtitle="false" data-width="600" data-height="270"  data-showsocialmedia="false"  
+                            <div style="display:none;" class="html5gallery" data-responsive="true" data-skin="horizontal "data-thumbshowtitle="false" data-width="600" data-height="270"  data-showsocialmedia="false"  
                          data-resizemode="fill" 
                          data-xml="'.base_url().'gallery/xml/post/post_'.$post_id.'.xml" >
                         </div>
@@ -492,8 +492,8 @@
     
         <!-- Ad Sense Place Bottom -->
             <div class="add-wrapper-bottom">
-                <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                <!-- champs21-single-page-bottom -->
+<!--                <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                 champs21-single-page-bottom 
                 <ins class="adsbygoogle"
                      style="display:inline-block; width:100%; height:90px; background-color: transparent;"
                      data-ad-client="ca-pub-2246193625592975"
@@ -501,8 +501,8 @@
                 </ins>
                 <script>
                     (adsbygoogle = window.adsbygoogle || []).push({});
-                </script>
-<!--                <img src="/styles/ads/ad.png" />-->
+                </script>-->
+                <img src="/styles/ads/ad.png" />
             </div>
             <!-- Ad Sense Place Bottom -->
         

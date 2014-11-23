@@ -997,24 +997,24 @@ class browser extends uploader {
             chmod($target, $this->config['filePerms']);
         }
         
-//        if(strpos($target,".jpg") || strpos($target,".JPG") )
-//        {
-//           $target_url = "http://jpgoptimiser.com/optimise"; 
-//           $image_path = str_replace("../../", "/var/www/dsdata/", $target);
-//           $image_path = str_replace("/./", "/", $image_path);
-//           $dest_path  = "/".$image_path;
-//           $this->super_compress($target_url, $image_path, $dest_path);
-//        } 
+        if(strpos($target,".jpg") || strpos($target,".JPG") )
+        {
+           $target_url = "http://jpgoptimiser.com/optimise"; 
+           $image_path = str_replace("../../", "/home/champs21/public_html/website/", $target);
+           $image_path = str_replace("/./", "/", $image_path);
+           $dest_path  = "/".$image_path;
+           $this->super_compress($target_url, $image_path, $dest_path);
+       } 
         
-//        if(strpos($target,".png") || strpos($target,".PNG") )
-//        {
-//           $target_url = 'http://pngcrush.com/crush';
-//           $image_path = str_replace("../../", "/var/www/dsdata/", $target);
-//           $image_path = str_replace("/./", "/", $image_path);
-//           $dest_path  = "/".$image_path;
-//           $this->super_compress($target_url,$image_path, $dest_path);
-//           
-//        } 
+        if(strpos($target,".png") || strpos($target,".PNG") )
+        {
+           $target_url = 'http://pngcrush.com/crush';
+           $image_path = str_replace("../../", "/home/champs21/public_html/website/", $target);
+           $image_path = str_replace("/./", "/", $image_path);
+           $dest_path  = "/".$image_path;
+           $this->super_compress($target_url,$image_path, $dest_path);
+           
+        } 
         $this->makeThumb($target);
         
       

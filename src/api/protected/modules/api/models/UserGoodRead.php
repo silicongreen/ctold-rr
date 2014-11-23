@@ -106,9 +106,12 @@ class UserGoodRead extends CActiveRecord
 
     public function getGoodRead($folder_id, $post_id)
     {
+        $folderObj = new UserFolder();
+        $folder = $folderObj->getFolder("unread", $user_id);
         $criteria = new CDbCriteria;
         $criteria->select = 't.id';
-        $criteria->compare("folder_id", $folder_id);
+        $criteria->compare("folder_id !", $folder->id);
+        //$criteria->compare("folder_id", $folder_id);
         $criteria->compare("post_id", $post_id);
         $criteria->limit = 1;
         $obj_goodread = $this->find($criteria);
@@ -123,7 +126,8 @@ class UserGoodRead extends CActiveRecord
         $criteria->compare("user_id", $user_id);
         $criteria->compare("post_id", $post_id);
         $criteria->compare("folder_id !", $folder->id);
-        $obj_goodread = $this->findAll($criteria);
+        $criteria->limit = 1;
+        $obj_goodread = $this->find($criteria);
         return $obj_goodread;
     }
 

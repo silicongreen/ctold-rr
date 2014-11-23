@@ -139,13 +139,13 @@
                     
             </div>
 
-            <div class="clearfix" style="margin-left: auto; margin-right: auto; margin-top: 20px; text-align: center; margin-bottom: 20px;">
+<!--            <div class="clearfix" style="margin-left: auto; margin-right: auto; margin-top: 20px; text-align: center; margin-bottom: 20px;">
                 <button id="btn_submit_user_join" class="red" type="submit">
                     <span class="clearfix f2">
                         <?php echo 'Join In'; ?>
                     </span>
                 </button>
-            </div>
+            </div>-->
 
         </div>
 

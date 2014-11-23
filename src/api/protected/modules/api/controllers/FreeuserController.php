@@ -910,21 +910,20 @@ class FreeuserController extends Controller
 
         $id = Yii::app()->request->getPost('id');
         
-        $good_read = array();
+        $good_read = "";
 
         if ($user_id)
         {
             $goodreadObj = new UserGoodRead();
             $goodreadObj->removeGoodRead($id, $user_id);
             
-            $all_good_read_folder = getGoodReadUser($id, $user_id);
+            $all_good_read_folder = $goodreadObj->getGoodReadUser($id, $user_id);
             
             if($all_good_read_folder)
             {
-                foreach($all_good_read_folder as $value)
-                {
-                    $good_read[] = $value->folder_id;
-                }    
+                
+                $good_read = $all_good_read_folder->folder_id;
+                    
             }
         }
 

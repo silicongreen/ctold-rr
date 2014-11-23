@@ -909,11 +909,23 @@ class FreeuserController extends Controller
         }
 
         $id = Yii::app()->request->getPost('id');
+        
+        $good_read = array();
 
         if ($user_id)
         {
             $goodreadObj = new UserGoodRead();
             $goodreadObj->removeGoodRead($id, $user_id);
+            
+            $all_good_read_folder = getGoodReadUser($id, $user_id);
+            
+            if($all_good_read_folder)
+            {
+                foreach($all_good_read_folder as $value)
+                {
+                    $good_read[] = $value->folder_id;
+                }    
+            }
         }
 
 
@@ -952,6 +964,7 @@ class FreeuserController extends Controller
         //$subcategory = $categoryModel->getSubcategory($category_id);
         //$response['data']['subcategory'] = $subcategory;
         $response['data']['allpostid'] = $allpostid;
+        $response['data']['good_read'] = $good_read;
         $response['data']['previous_id'] = $previous_id;
         $response['data']['next_id'] = $next_id;
 

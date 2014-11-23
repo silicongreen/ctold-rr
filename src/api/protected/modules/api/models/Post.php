@@ -699,6 +699,7 @@ class Post extends CActiveRecord
         {
             $post_array['title'] = $postValue->headline;
             $post_array['title_color'] = $postValue->headline_color;
+            $post_array['short_title'] = $postValue->short_title;
 
 
             $post_array['video_file'] = "";

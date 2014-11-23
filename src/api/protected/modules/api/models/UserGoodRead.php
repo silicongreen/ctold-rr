@@ -114,6 +114,18 @@ class UserGoodRead extends CActiveRecord
         $obj_goodread = $this->find($criteria);
         return $obj_goodread;
     }
+    public function getGoodReadUser($post_id,$user_id)
+    {
+        $folderObj = new UserFolder();
+        $folder = $folderObj->getFolder("unread", $user_id);
+        $criteria = new CDbCriteria;
+        $criteria->select = 't.folder_id';
+        $criteria->compare("user_id", $user_id);
+        $criteria->compare("post_id", $post_id);
+        $criteria->compare("folder_id !", $folder->id);
+        $obj_goodread = $this->findAll($criteria);
+        return $obj_goodread;
+    }
 
     public function removeGoodRead($post_id,$user_id,$folder = "unread")
     {

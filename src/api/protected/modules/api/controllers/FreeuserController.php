@@ -523,7 +523,9 @@ class FreeuserController extends Controller
         $user_id = Yii::app()->request->getPost('user_id');
         $post_id = Yii::app()->request->getPost('post_id');
         $folder_name = Yii::app()->request->getPost('folder_name');
-        if (!$user_id || !$folder_name || !$post_id)
+        $folder_id = Yii::app()->request->getPost('folder_id');
+        
+        if (!$user_id || (!$folder_name && !$folder_id)  || !$post_id)
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
@@ -531,7 +533,7 @@ class FreeuserController extends Controller
         else
         {
             $obj_good_read = new UserGoodRead();
-            $obj_good_read->removeGoodRead($post_id, $user_id, $folder_name);
+            $obj_good_read->removeGoodRead($post_id, $user_id, $folder_name, $folder_id);
             $response['status']['code'] = 200;
             $response['status']['msg'] = "DATA_FOUND";
         }

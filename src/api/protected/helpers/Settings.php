@@ -206,7 +206,7 @@ class Settings {
         if (!file_exists($image)) {
             return $url;
         }
-        return str_replace(self::$real_path, self::$image_path, $url);
+        return str_replace(self::$real_path, self::$image_path, $image);
 
 //       var_dump($image);exit;
 //       list($width, $height, $type, $attr) = @getimagesize($image);

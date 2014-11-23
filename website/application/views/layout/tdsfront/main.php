@@ -66,7 +66,7 @@
         <script type='text/javascript'> 
             
         var _gaq = _gaq || [];
-         _gaq.push(['_setAccount', 'UA-7243260-2']);
+         _gaq.push(['_setAccount', 'UA-19173520-2']);
          _gaq.push(['_setDomainName', 'www.champs21.com']);
          _gaq.push(['_trackPageview']);
          (function() {

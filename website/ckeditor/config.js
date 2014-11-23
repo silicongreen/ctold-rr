@@ -11,6 +11,6 @@ CKEDITOR.editorConfig = function( config ) {
     config.filebrowserUploadUrl = base_url + 'upload.php?type=files';
     config.filebrowserImageUploadUrl = base_url + 'upload.php?type=images';
     config.filebrowserFlashUploadUrl = base_url + 'upload.php?type=flash';
-    config.extraPlugins = 'simpleLink,solution,gallery';
+    config.extraPlugins = 'simpleLink,solution,gallery,eqneditor';
 };
 

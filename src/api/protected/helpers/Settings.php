@@ -201,12 +201,7 @@ class Settings {
     public static function get_mobile_image($url, $replace_url = "gallery/mobile/") {
         $image = str_replace("gallery/", $replace_url, $url);
 
-        $image_path = str_replace("src/api/protected", "website/", Yii::app()->basePath);
-        Yii::log($image_path, "error", "settings");
-        
-        $image = str_replace(self::$image_path, $image_path, $url);
-        Yii::log($image, "error", "settings");
-        //$image = str_replace(self::$image_path, $image_path, $url);
+        $image = str_replace(self::$image_path, $image_path, $image);
 
         if (!file_exists($image)) {
             return $url;

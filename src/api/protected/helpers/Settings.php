@@ -202,8 +202,11 @@ class Settings {
         $image = str_replace("gallery/", $replace_url, $url);
 
         $image_path = str_replace("src/api/protected", "website/", Yii::app()->basePath);
-       
+        error_log($image_path);
+        
         $image = str_replace(self::$image_path, $image_path, $url);
+        error_log($image);
+        //$image = str_replace(self::$image_path, $image_path, $url);
 
         if (!file_exists($image)) {
             return $url;

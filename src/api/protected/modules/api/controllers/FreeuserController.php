@@ -626,13 +626,13 @@ class FreeuserController extends Controller
             $goodreadObj->post_id = $post_id;
             $goodreadObj->save();
             
-            $response['status']['folder_id'] = $folder_id;
+            $response['data']['folder_id'] = $folder_id;
             $response['status']['code'] = 200;
             $response['status']['msg'] = "DATA_FOUND";
         }
         else if($folder_id)
         {
-            $response['status']['folder_id'] = $folder_id;
+            $response['data']['folder_id'] = $folder_id;
             $response['status']['code'] = 200;
             $response['status']['msg'] = "DATA_FOUND";
         }

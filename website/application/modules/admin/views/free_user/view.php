@@ -16,7 +16,7 @@
                                 <label for="required_field"><?php echo $v; ?></label>
                                 <div>
                                     <?php if($k == 'dob') {?>
-                                        <?php echo date('d-m-Y', strtotime($model->$k)); ?>
+                                        <?php echo ( !empty($model->$k) && ($model->$k != '0000-00-00') ) ? date('d-m-Y', strtotime($model->$k)) : 'N/A'; ?>
                                     <?php } else if ($k == 'medium') { ?>
                                         <?php echo ( !is_null($model->$k) ) ? $medium[$model->$k] : 'N/A'; ?>
                                     <?php } else if($k == 'user_type') { ?>

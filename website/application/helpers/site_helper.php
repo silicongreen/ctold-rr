@@ -364,7 +364,7 @@ if (! function_exists("create_link_url") )
         
         $s_link_text = ( is_null($s_ci_key) ) ? sanitize($str) : sanitize($s_ci_key) . '/' . sanitize($str);
         
-        $s_link_text = urldecode($s_link_text);
+        //$s_link_text = urldecode($s_link_text);
         
         if ( $i_post_id > 0 && $b_md5 )
         {

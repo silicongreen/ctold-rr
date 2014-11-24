@@ -941,12 +941,19 @@ class home extends MX_Controller {
             $s_image = str_replace("http://bd.", "http://www.", $s_image);
         }
 
+        $url_main = create_link_url(NULL, $obj_post_data->headline,$obj_post_data->post_id);
+        
+        $only_link = str_replace(base_url(), "", $url_main);
+        
+        $only_link_encoded = urlencode($only_link);
+        
+        $encoded_url = base_url().$only_link_encoded;
         $ar_fb = array(
             "type"          => "website",
             "site_name"     => WEBSITE_NAME,
             "title"         => $obj_post_data->headline,
             "image"         => $s_image,
-            "url"           => create_link_url(NULL, $obj_post_data->headline,$obj_post_data->post_id),
+            "url"           => $encoded_url,
             "description"   => trim($s_content)
         );
 

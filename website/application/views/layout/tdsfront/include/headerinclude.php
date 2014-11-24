@@ -4,7 +4,7 @@
 <!--[if IE 8 ]><html class="ie ie8" lang="en-US"> <![endif]-->
 <!--[if (gte IE 9)|!(IE)]><!-->
 <html><!--<![endif]-->
-<head>
+<head prefix="og: http://ogp.me/ns#">
     <meta charset="UTF-8">
 	<meta name = "viewport" content = "width=device-width, minimum-scale=1, maximum-scale=1">
 		<meta name = "apple-mobile-web-app-capable" content = "yes" /> 

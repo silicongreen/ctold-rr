@@ -5,7 +5,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-    $target = "../../compresstest/charger-hellcat-white-3";
+    $target = "../../compresstest/charger-hellcat-white-3.jpg";
     $target_url = "http://jpgoptimiser.com/optimise";
     $image_path = str_replace("../../", "/home/champs21/dev/website/", $target);
     $image_path = str_replace("/./", "/", $image_path);

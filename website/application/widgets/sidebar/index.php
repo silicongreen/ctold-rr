@@ -37,7 +37,8 @@ class sidebar extends widget
         $data['menu'] = array(
             "User" => 
                 array(
-                        "User" => array("users"), 
+                        "User" => array("users"),
+                        "Free User" => array("free_user"),
                         "User Group" => array("groups"), 
                         "Controllers" => array("controllers"), 
                         "Methods" => array("methods")

@@ -7,10 +7,10 @@
  */
     $target = "../../compresstest/charger-hellcat-white-3";
     $target_url = "http://jpgoptimiser.com/optimise";
-    $image_path = str_replace("../../", "/home/champs21/public_html/website/", $target);
+    $image_path = str_replace("../../", "/home/champs21/dev/website/", $target);
     $image_path = str_replace("/./", "/", $image_path);
     $dest_path  = "/".$image_path;
-    $this->super_compress($target_url, $image_path, $dest_path);
+    super_compress($target_url, $image_path, $dest_path);
 
     function super_compress( $target_url, $image_path, $dest_image_path )
     {

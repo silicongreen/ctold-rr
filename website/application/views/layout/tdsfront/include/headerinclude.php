@@ -4,10 +4,10 @@
 <!--[if IE 8 ]><html class="ie ie8" lang="en-US"> <![endif]-->
 <!--[if (gte IE 9)|!(IE)]><!-->
 <html><!--<![endif]-->
-<head prefix="og: http://ogp.me/ns#">
-    <meta charset="UTF-8">
-	<meta name = "viewport" content = "width=device-width, minimum-scale=1, maximum-scale=1">
-		<meta name = "apple-mobile-web-app-capable" content = "yes" /> 
+<head prefix="og: http://ogp.me/ns#">	
+    <meta charset="UTF-8">	
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<meta name = "apple-mobile-web-app-capable" content = "yes" /> 
     <?php if ( isset($fb_contents) && !is_null($fb_contents) ) : ?>
             <?php 
                     foreach($fb_contents as $key => $value) : 
@@ -45,7 +45,7 @@
             <meta name="twitter:card" content="summary" />
             <meta name="twitter:site" content="@champs21" />
         <?php endif; ?>
-		<meta property="og:image" content="http://www.champs21.com/styles/layouts/tdsfront/images/logo-new.png">
+		<link rel="canonical" href="http://www.champs21.com/">
     <link rel="icon" href=<?php echo base_url("styles/layouts/tdsfront/images/favicon.ico"); ?> type="image/x-icon">
 	
     <!--[if ie]><meta http-equiv='X-UA-Compatible' content="IE=edge,IE=9,IE=8,chrome=1" /><![endif]-->
@@ -73,7 +73,7 @@
         // Add a robots exclusion
         echo ( isset($no_robots) ) ? meta('robots', 'noindex,nofollow') : '';
     ?>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
     
     
     <link rel="stylesheet" id="bootstrap-css" href="<?php echo base_url('css/champs21.css'); ?>" type="text/css" media="all" />

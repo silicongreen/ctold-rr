@@ -458,6 +458,14 @@ class home extends MX_Controller {
         
         $meta_description = META_DESCRIPTION;
         $keywords = KEYWORDS;
+				
+		$fb_contents['title'] = META_DESCRIPTION;
+		$fb_contents['site_name'] = "Champs21";
+		$fb_contents['description'] = META_DESCRIPTION;
+		$fb_contents['type'] = "website";
+		$fb_contents['url'] = "http://www.champs21.com/";
+		$fb_contents['image'] = base_url()."styles/layouts/tdsfront/images/c-21.jpg";
+		
         $ar_params = array(
             "javascripts"           => $ar_js,
             "css"                   => $ar_css,
@@ -467,7 +475,7 @@ class home extends MX_Controller {
             "keywords"              => $keywords,
             "side_bar"              => $s_right_view,
             "target"                => "index",
-            "fb_contents"           => NULL,
+            "fb_contents"           => $fb_contents,
             "content"               => $s_content
         );
         

@@ -1009,7 +1009,7 @@ class home extends MX_Controller {
             "site_name"     => WEBSITE_NAME,
             "title"         => $obj_post_data->headline,
             "image"         => $s_image,
-            "url"           => create_link_url(NULL, $obj_post_data->headline,$obj_post_data->post_id),
+            "url"           => urlencode(create_link_url(NULL, $obj_post_data->headline,$obj_post_data->post_id)),
             "description"   => trim($s_content)
         );
 

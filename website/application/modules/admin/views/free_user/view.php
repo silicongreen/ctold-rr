@@ -22,7 +22,7 @@
                                     <?php } else if($k == 'user_type') { ?>
                                         <?php echo $user_type[$model->$k]; ?>
                                     <?php } else if (strpos($model->$k, 'image') !== false) { ?>
-                                        <img src="<?php echo $model->$k; ?>" alt="No image found" />
+                                        <img src="<?php echo $model->$k; ?>" alt="No image found" height="120" />
                                     <?php } else if($k == 'status') { ?>
                                         <?php echo ($model->$k == 1) ? 'Active' : 'Inactive'; ?>
                                     <?php } else if($k == 'gender') { ?>

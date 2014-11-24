@@ -45,7 +45,12 @@
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:site" content="@champs21" />
         <?php endif; ?>
-		<link rel="canonical" href="http://www.champs21.com/">
+        <?php if(isset($fb_contents['url'])): ?>
+            <link rel="canonical" href="<?php echo $fb_contents['url']; ?>">
+        <?php else: ?>
+            <link rel="canonical" href="http://www.champs21.com/">
+        <?php endif; ?>    
+		
     <link rel="icon" href=<?php echo base_url("styles/layouts/tdsfront/images/favicon.ico"); ?> type="image/x-icon">
 	
     <!--[if ie]><meta http-equiv='X-UA-Compatible' content="IE=edge,IE=9,IE=8,chrome=1" /><![endif]-->

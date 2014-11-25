@@ -1,3 +1,19 @@
+<div id="tz_mainmenu" style="top: 0px; margin-left: 0px; width: 210px;" class="col-xs-3">
+    <div class="scrollbar" style="height: 136px;">
+        <div class="track" style="height: 136px;">
+            <div class="thumb" style="top: 0px; height: 100.7091988130563px;">
+                <div class="end"></div><!--end class end-->
+            </div><!--end class thumb-->
+        </div><!--end class track-->
+    </div><!--end class scrollbar-->
+    <div class="viewport">
+        <div class="overview" style="top: 0px;">
+            <nav id="plazart-mainnav" class="wrap plazart-mainnav navbar-collapse-fixed-top vertical-nav">
+                <div class="navbar">
+                    <div class="navbar-inner">
+
+                        <div class="nav-collapse always-show">
+                            <div class="plazart-megamenu" style="padding: 0px;">
 <ul class="ca-menu">
     <?php if ($slidemenu) : ?>
         <?php
@@ -28,8 +44,21 @@
            
 
 </ul>
-<div style="height:100px;"> </div>
+<div style="height:100px;"></div>
+</div><!--end class plazart-megamenu-->
+                        </div><!--end class nav-collapse-->
+                    </div><!--end class navbar-inner-->
+                </div><!--end class navbar-->
+            </nav><!--end id plazart-mainnav-->
+        </div><!--end class overview--> 
+    </div><!--end class viewport-->
+</div><!--end id tz_mainmenu-->	
+<script type="text/javascript">
+    jQuery(function($) {
 
+        $('#tz_mainmenu').tinyscrollbar();
+    });
+</script>
 <style>
 .ca-menu{
     padding:0;
@@ -38,7 +67,7 @@
 .ca-menu li{
     float:left;
     width: 80px;
-    height: 60px;
+    height: 70px;
     overflow: hidden;
     position: relative;
     display: block;

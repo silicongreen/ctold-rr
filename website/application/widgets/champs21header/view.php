@@ -1692,6 +1692,7 @@ if($('.header-logo-div').is(':visible')) {
     position:fixed;
     right:0px;
     z-index:1000;
+    height:100%;
 }
 .category-fixed-menu-box
 {    
@@ -1722,12 +1723,13 @@ if($('.header-logo-div').is(':visible')) {
     top:170px;
 }
 .category-fixed-menu-list{
-    padding: 21px;
+    
     display: block;
     background:#414952;
     float:right;
     clear:both;
     width:210px;
+    overflow:hidden;
     -webkit-box-shadow: 0 8px 6px -6px black;
     -moz-box-shadow: 0 8px 6px -6px black;
     box-shadow: 0 8px 6px -6px black;
@@ -2844,3 +2846,4 @@ if($('.header-logo-div').is(':visible')) {
     }
     
 </style>
+

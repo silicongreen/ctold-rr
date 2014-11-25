@@ -38,7 +38,7 @@
 .ca-menu li{
     float:left;
     width: 80px;
-    height: 60px;
+    height: 70px;
     overflow: hidden;
     position: relative;
     display: block;

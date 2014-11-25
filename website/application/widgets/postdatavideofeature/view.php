@@ -27,7 +27,7 @@
                                 <div class="post-title" style="margin-left:0px!important;">
 									<h2 class="f2" style="font-size:33px;">
 											<a href="<?php echo $link_array['url']; ?>" target="<?php echo $link_array['target'] ?>" title="<?php echo $news->headline; ?>">
-                                                                                            <strong style="color: #000;font-weight: 400;"><?php echo $news->headline."The controls attribute adds video "; ?></strong>                                           
+                                                                                            <strong style="color: #000;font-weight: 400;"><?php echo $news->headline; ?></strong>                                           
 											</a>
 										</h2>
 										<span class="brown-subtitle">

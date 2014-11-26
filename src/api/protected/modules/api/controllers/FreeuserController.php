@@ -5,7 +5,7 @@ class FreeuserController extends Controller
 
     /**
      * @return array action filters
-     */cd /var
+    */
     public function filters()
     {
         return array(

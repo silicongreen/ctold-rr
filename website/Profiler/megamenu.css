@@ -743,15 +743,16 @@
     }
 }
 #tz_mainmenu {
-    position: fixed;
-    top: 0;
+    position: absolute;
+    top: 65px !important;
     bottom: 0;
     z-index: 1000;
-    box-shadow: 0 9px 0 0 #e7e7e7, 0 -9px 0 0 #e7e7e7, 2px 0 3px #c5c4c4, -2px 0 3px #c5c4c4;
+	overflow:hidden;
+    /*box-shadow: 0 9px 0 0 #e7e7e7, 0 -9px 0 0 #e7e7e7, 2px 0 3px #c5c4c4, -2px 0 3px #c5c4c4;
     -moz-box-shadow: 0 9px 0 0 #e7e7e7, 0 -9px 0 0 #e7e7e7, 2px 0 3px #c5c4c4, -2px 0 3px #c5c4c4;
     -ms-box-shadow: 0 9px 0 0 #e7e7e7, 0 -9px 0 0 #e7e7e7, 2px 0 3px #c5c4c4, -2px 0 3px #c5c4c4;
     -webkit-box-shadow: 0 9px 0 0 #e7e7e7, 0 -9px 0 0 #e7e7e7, 2px 0 3px #c5c4c4, -2px 0 3px #c5c4c4;
-    -o-box-shadow: 0 9px 0 0 #e7e7e7, 0 -9px 0 0 #e7e7e7, 2px 0 3px #c5c4c4, -2px 0 3px #c5c4c4;
+    -o-box-shadow: 0 9px 0 0 #e7e7e7, 0 -9px 0 0 #e7e7e7, 2px 0 3px #c5c4c4, -2px 0 3px #c5c4c4;*/
 }
 #tz_mainmenu #plazart-mainnav {
     position: relative;

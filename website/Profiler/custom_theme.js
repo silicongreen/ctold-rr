@@ -1,6 +1,6 @@
 jQuery(document).ready(function () {
     var sidebar = 300;
-    var menu = 88;
+    var menu = 210;
 
     resizefunction(sidebar, menu);
 
@@ -18,7 +18,7 @@ jQuery(document).ready(function () {
     var sidebar_width = "300";
 
 
-    var menu_width = "88";
+    var menu_width = "210";
 
     var left_width = parseInt(sidebar_width) + parseInt(menu_width);
 
@@ -188,7 +188,7 @@ jQuery(document).ready(function () {
                 var left_html = jQuery('#sidebar-left').html();
                 jQuery('body').append('<aside class="left-sidebar  tablet-sidebar" id="sidebar-left">' +  left_html + '</div>');
                 jQuery('#sidebar-left').remove();
-                var menu_width = "88";
+                var menu_width = "210";
                 var content_width = win_width - menu_width;
                 jQuery('#tz-main #tz-content, #tz-main #sidebar-right ').css({
                 'margin-left': 0 + 'px',

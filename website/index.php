@@ -218,7 +218,7 @@ if (defined('ENVIRONMENT'))
  * --------------------------------------------------------------------
  */
 require_once APPPATH.'third_party/datamapper/bootstrap.php';
-
+require_once '../vendor/autoload.php';
 /*
  * --------------------------------------------------------------------
  * LOAD THE BOOTSTRAP FILE

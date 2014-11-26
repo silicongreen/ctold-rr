@@ -40,11 +40,15 @@
                         </div>
                         
                         <div class="join-wrapper">
+                            
+                            <?php if ( !isset($user_school_ids) || empty($user_school_ids) || !in_array($row['id'], $user_school_ids)) { ?>
                             <button id="<?php echo $row['id']; ?>" data="school_join" class="red <?php echo (free_user_logged_in()) ? 'btn_user_join_school' : 'before-login-user'; ?>" type="button">
                                 <span class="clearfix f2">
                                     Join In
                                 </span>
                             </button>
+                            <?php } ?>
+                            
                         </div>
                         
                     </div>
@@ -111,11 +115,11 @@
                 <?php } ?>
 
                 <fieldset class="grades_ul">
-                    <label class="select_grades">Select Grades <span>(you may choose multiple grades)</span></label>
+                    <label class="select_grades">Select Your Grade</label>
                     <ul class="radio-holder">
                         <?php $i = 0; foreach ($grades as $value) { ?>
                             <li<?php echo ($i == 0) ? ' style="padding-left: 20px !important;"' : ''; ?>>
-                                <input class="custom_checkbox" id="<?php echo $value->id; ?>" name="grade_ids[]" value="<?php echo $value->id; ?>" type="checkbox"
+                                <input class="custom_checkbox" id="<?php echo $value->id; ?>" name="grade_ids" value="<?php echo $value->id; ?>" type="radio"
                                     <?php
                                         $ar_grade_ids = explode(',', $model->grade_ids);
 
@@ -132,8 +136,14 @@
                 
                 <fieldset>
                     <div class="center">
-                        <input placeholder="Admission NO." class="f5 email_txt" id="admission_no" name="admission_no" value="" type="text" maxlength="15" />
+                        <input placeholder="Section" class="f5 email_txt" id="user_section" name="user_section" value="" type="text" maxlength="25" />
                         <input placeholder="Class Roll NO." class="f5 email_txt" id="roll_no" name="roll_no" value="" type="text" maxlength="15" />
+                    </div>
+                </fieldset>
+                    
+                <fieldset>
+                    <div class="center">
+                        <input placeholder="Admission NO." class="f5 email_txt large" id="admission_no" name="admission_no" value="" type="text" maxlength="15" />
                     </div>
                 </fieldset>
                     
@@ -238,13 +248,25 @@
         color: #000000 !important;
         font-size: 13px !important;
         height: 45px !important;
-        width: 49%;
+        width: 49.52%;
     }
     .center{
         margin-left: auto;
         margin-right: auto;
         padding-top: 15px;
         text-align: center;
+        width: 100%;
+    }
+    fieldset input.custom_checkbox[type="radio"] {
+        clear: both;
+        cursor: pointer;
+        display: block;
+        float: left;
+        height: 15px;
+        margin-top: 8px !important;
+        width: 15px;
+    }
+    .large{
         width: 100%;
     }
 </style>

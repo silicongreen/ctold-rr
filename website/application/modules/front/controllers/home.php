@@ -28,10 +28,65 @@ class home extends MX_Controller {
         
         if($this->input->is_ajax_request()){
             
-            echo( json_encode($_POST));
+            $additional_info = array();
+            $response = array(
+                'saved' => false,
+            );
+            
+            $user_id = get_free_user_session('id');
+            $school_id = $this->input->post('schl_id');
+            $grade = $this->input->post('grade_ids');
+            $user_type = get_free_user_session('type');
+            
+            $user_section = $this->input->post('user_section');
+            $roll_no = $this->input->post('roll_no');
+            $admission_no = $this->input->post('admission_no');
+            
+            if ( empty($user_type) || ($user_type == 1) ) {
+                $user_type = $this->input->post('user_type');
+            }
+            
+            if(!empty($user_section)){
+                $additional_info['user_section'] = $user_section;
+            }
+            
+            if(!empty($roll_no)){
+                $additional_info['roll_no'] = $roll_no;
+            }
+            
+            if(!empty($admission_no)){
+                $additional_info['admission_no'] = $admission_no;
+            }
+            
+            $additional_info = json_encode($additional_info);
+            
+            $user_school = new User_school();
+            $user_school_data = $user_school->get_user_school($user_id, $school_id);
+            
+            if($user_school_data === FALSE){
+                
+                $User_school = new User_school;
+                $User_school->user_id = $user_id;
+                $User_school->school_id = $school_id;
+                $User_school->grade = $grade;
+                $User_school->type = $user_type;
+                $User_school->information = $additional_info;
+
+                if($User_school->save()){
+                   $response = array(
+                        'saved' => true,
+                    );
+                   
+                } else {
+                    $response['errors'] = $User_school->error->all;
+                }
+                
+            } else {
+                $response['errors'][] = 'You are already a member of this school.';
+            }
+            
+            echo( json_encode($response));
             exit;
-            
-            
             
         }
         
@@ -39,7 +94,6 @@ class home extends MX_Controller {
     
     function schools()
     {
-       
         $ar_segmens = $this->uri->segment_array();
         if(count($ar_segmens) < 2)
         {            
@@ -73,7 +127,16 @@ class home extends MX_Controller {
             $data['medium'] = $this->get_medium();
 
             $data['edit'] = (free_user_logged_in()) ? TRUE : FALSE;
+            
+            $user_school = new User_school();
+            $user_school_data = $user_school->get_user_school($user_id);
 
+            if($user_school_data){
+                foreach ($user_school_data as $row) {
+                    $data['user_school_ids'][] = $row->school_id;
+                }
+            }
+            
             $obj_post = new Posts();
             $data['category_tree'] = $obj_post->user_preference_tree_for_pref();
             // User Data

@@ -778,7 +778,6 @@ $(document).ready(function(){
         
     });
     
-    
     $(document).on('submit', 'form#school_join_frm', function(event) {
         
         event.preventDefault();
@@ -795,6 +794,35 @@ $(document).ready(function(){
             contentType: false,
             processData: false,
             success: function(data) {
+                
+                if ( data.saved == true ){
+                    
+                    $('button#' + $('#schl_id').val()).remove();
+                    $('.fancybox-close').trigger('click');
+                    
+                } else {
+                    
+                    var err_html = '<ul class="err-list">';
+                    
+                    $.each(data.errors, function(i, v) {
+                        err_html += '<li>' + v + '</li>';
+                        $( "form#school_join_frm #" + i ).css( "border", "1px solid #DE3427" );
+                    });
+                    err_html += '</ul>';
+                    
+                    $('.err-list-wrap').html('');
+                    $('.err-list-wrap').html(err_html);
+                    
+                    $('.fancybox-wrap').css({
+                        "opacity": 0.20,
+                        "background-color": "#000000"
+                    });
+                    
+                    $('#alert-errors').show();
+                    $('#alert-errors').css({'opacity': 1, 'z-index': 8031});
+                    
+                    return false;
+                }
                 
             },
             error: function(e) {

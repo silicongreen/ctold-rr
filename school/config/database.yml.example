@@ -1,0 +1,25 @@
+development:
+      host: localhost
+      adapter: mysql
+      database: champs21_school
+      port: 3306
+      username: root
+      password: 079366
+
+test: &test
+      host: localhost
+      adapter: mysql
+      database: champs21_school
+      port: 3306
+      username: root
+      password: 079366
+
+production:
+      host: localhost
+      adapter: mysql
+      database: champs21_school
+      port: 3306
+      username: root
+      password: 079366
+cucumber:
+  <<: *test

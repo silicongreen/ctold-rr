@@ -1791,7 +1791,7 @@ class news extends MX_Controller
         if($save_type == "publish" && date("Y-m-d",strtotime($obj_post->published_date))==date("Y-m-d") && $send_notification)
         {
             $messegefornotification = $obj_post->headline;
-            $data = array("key"=>"news","id"=>$obj_post->id);
+            $data = array("key"=>"news", "id"=>$obj_post->id);
             send_notification($messegefornotification,$data);
         }
         

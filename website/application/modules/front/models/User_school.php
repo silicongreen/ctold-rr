@@ -17,4 +17,5 @@ class User_school extends DataMapper {
         $data = $this->db->get('user_school')->result();
         return (count($data) > 0) ? $data : FALSE;
     }
+    
 }

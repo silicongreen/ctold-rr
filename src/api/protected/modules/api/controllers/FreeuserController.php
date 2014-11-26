@@ -46,7 +46,7 @@ class FreeuserController extends Controller
             if ($response === false)
             {
 
-                $gcmobj = new Gcm();
+                $gcmobj   = new Gcm();
                 $response = $gcmobj->getAllGcm();         
                 Yii::app()->cache->set($cache_name, $response);
             }

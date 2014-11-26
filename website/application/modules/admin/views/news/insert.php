@@ -89,6 +89,16 @@
                         </fieldset>
                         <input type="hidden" name="referance_id" id="referance_id" value="0" />
                     <?php endif; ?>
+                    
+<!--                    <fieldset class="label_side top">
+                        <label for="required_field">Send Notification</label>
+                        <div class="clearfix">
+                            <?php
+                                //$f_array = array(0 => "No", 1 => "Yes");
+                                //echo form_dropdown('send_notification', $f_array);
+                            ?>
+                        </div>
+                    </fieldset>-->
 
                     <fieldset class="label_side top">
                         <label for="required_field">Title</label>
@@ -642,9 +652,10 @@
                     <div class="jqui_radios">
                         <input type="radio" name="priority_type" value="1" <?= ($model->priority_type == 1) ? 'checked="checked"' : ""; ?> id="carousel_news"/><label for="carousel_news">Home Page</label>
                         <input type="radio" name="priority_type" value="5" <?= ($model->priority_type == 5) ? 'checked="checked"' : ""; ?> id="na_news"/><label for="na_news">N/A</label>
-
                     </div>
                 </fieldset>
+                
+                
 
                 <fieldset class="top">
                     <label for="required_field">Tags</label>

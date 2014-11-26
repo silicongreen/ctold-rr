@@ -394,6 +394,58 @@ if ( ! function_exists("get_diff_date"))
         return $a_out;
     }
 }
+if( !function_exists("send_notification"))
+{
+    function send_notification($messege, $key="NEWS")
+    {
+        $CI = &get_instance();
+        $CI->load->library('gcm');
+        $this->gcm->setMessage($messege);
+        $url = get_curl_url("getallgcm");
+        $fields_string = "request_llicence=fa@#25896321";  
+        
+        //start curl
+        
+        $ch = curl_init();
+        curl_setopt($ch,CURLOPT_URL, $url);
+
+        curl_setopt($ch,CURLOPT_POST, count($fields));
+        curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER, 1);
+
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
+            'Accept: application/json',
+            'Content-Length: ' . strlen($fields_string)
+            )                                                                       
+        );    
+        //execute post
+        $result = curl_exec($ch);
+
+        //close connection
+        curl_close($ch);
+        
+        //end curl
+        
+        $registrationids = json_decode($result);
+        
+        if(count($registrationids)>0)
+        {
+            $this->gcm->addRecepient($registrationids);
+            $this->gcm->setData(array(
+                'key' => $key
+            ));
+            if ($this->gcm->send())
+                return true;
+            else
+                return false;
+        }
+        else
+        {
+            return false;
+        }    
+    }
+}    
+    
 
 if ( !function_exists("get_api_data_from_yii") )
 {

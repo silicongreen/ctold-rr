@@ -90,15 +90,15 @@
                         <input type="hidden" name="referance_id" id="referance_id" value="0" />
                     <?php endif; ?>
                     
-<!--                    <fieldset class="label_side top">
+                    <fieldset class="label_side top">
                         <label for="required_field">Send Notification</label>
                         <div class="clearfix">
                             <?php
-                                //$f_array = array(0 => "No", 1 => "Yes");
-                                //echo form_dropdown('send_notification', $f_array);
+                                $f_array = array(0 => "No", 1 => "Yes");
+                                echo form_dropdown('send_notification', $f_array);
                             ?>
                         </div>
-                    </fieldset>-->
+                    </fieldset>
 
                     <fieldset class="label_side top">
                         <label for="required_field">Title</label>

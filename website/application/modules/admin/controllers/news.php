@@ -1782,10 +1782,16 @@ class news extends MX_Controller
                 $b_check_priority = false;
             }
         }
-        
+        if($save_type == "publish" && date("Y-m-d",strtotime($obj_post->published_date))==date("Y-m-d") && $obj_post->send_notification)
+        {
+            //$messegefornotification = $obj_post->headline;
+            //send_notification($messegefornotification);
+        }
         //$obj_post->priority_type = $this->get_priority_type($post_id,$obj_post->priority_type,$obj_post->published_date);
         
         $obj_post->save();
+        
+                
         
           
         

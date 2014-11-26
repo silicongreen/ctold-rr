@@ -47,7 +47,7 @@ class FreeuserController extends Controller
             {
 
                 $gcmobj = new Gcm();
-                $response['ids'] = $gcmobj->getAllGcm();         
+                $response = $gcmobj->getAllGcm();         
                 Yii::app()->cache->set($cache_name, $response);
             }
             echo CJSON::encode($response);

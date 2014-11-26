@@ -396,7 +396,7 @@ if ( ! function_exists("get_diff_date"))
 }
 if( !function_exists("send_notification"))
 {
-    function send_notification($messege, $key="NEWS")
+    function send_notification($messege, $data = array())
     {
         $CI = &get_instance();
         $CI->load->library('gcm');
@@ -431,9 +431,7 @@ if( !function_exists("send_notification"))
         if(count($registrationids)>0)
         {
             $this->gcm->addRecepient($registrationids);
-            $this->gcm->setData(array(
-                'key' => $key
-            ));
+            $this->gcm->setData($data);
             if ($this->gcm->send())
                 return true;
             else

@@ -108,7 +108,7 @@ class Gcm extends CActiveRecord
 
             return false;
         }
-        public function getAllGcm($gcm_id)
+        public function getAllGcm()
         {
             $criteria = new CDbCriteria;
             $criteria->select = 't.gcm_id';

@@ -5,7 +5,7 @@ class FreeuserController extends Controller
 
     /**
      * @return array action filters
-     */
+     */cd /var
     public function filters()
     {
         return array(
@@ -28,7 +28,7 @@ class FreeuserController extends Controller
                     "getuserinfo", "goodread", "readlater", "goodreadall", "goodreadfolder", "removegoodread"
                     , "schoolsearch", "school", "createschool", "schoolpage", "schoolactivity", "candle"
                     , "products", "garbagecollector","getschoolteacherbylinepost", "categoryproducts", "productinfo", 
-                    "cartproduct", 'set_preference', 'get_preference'),
+                    "cartproduct", 'set_preference', 'get_preference','addgcm','getallgcm'),
                 'users' => array('*'),
             ),
             array('deny', // deny all users
@@ -36,6 +36,56 @@ class FreeuserController extends Controller
             ),
         );
     }
+    public function actionGetAllGcm()
+    {
+        $cache_name = "YII-RESPONSE-GCM";
+        $request_llicence = Yii::app()->request->getPost('request_llicence');
+        if(Settings::$api_llicence_key == $request_llicence)
+        {
+            $response = Yii::app()->cache->get($cache_name);
+            if ($response === false)
+            {
+
+                $gcmobj = new Gcm();
+                $response['ids'] = $gcmobj->getAllGcm();         
+                Yii::app()->cache->set($cache_name, $response);
+            }
+            echo CJSON::encode($response);
+            Yii::app()->end();
+        }
+
+    }        
+    public function actionAddGcm()
+    {
+        $gcm_id = Yii::app()->request->getPost('gcm_id');
+        $device_id = Yii::app()->request->getPost('device_id');
+        if($gcm_id)
+        {
+            $gcmobj = new Gcm();
+
+            $gcm_added = $gcmobj->getGcm($gcm_id);
+
+            if(!$gcm_added)
+            {
+                $gcmobj->gcm_id = $gcm_id;
+                $gcmobj->device_id = $device_id;
+                $gcmobj->save();  
+                $cache_name = "YII-RESPONSE-GCM";
+                Yii::app()->cache->delete($cache_name);
+            } 
+            $response['data']['id'] = $gcm_id;
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "SUCCESFULLY_SAVED";
+        }
+        else
+        {
+            $response['data']['id']     = 0;
+            $response['status']['code'] = 400;
+            $response['status']['msg']  = "Bad Request";
+        }    
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    }        
 
     public function actionProductinfo()
     {

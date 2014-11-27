@@ -433,10 +433,10 @@ if( !function_exists("send_notification"))
         {
             $CI->gcm->addRecepient($registrationids);
             $CI->gcm->setData($data);
-            if ($CI->gcm->send())
-                return true;
-            else
-                return false;
+            $CI->gcm->send();
+            print_r($CI->gcm->status);
+            print_r($CI->gcm->messagesStatuses);
+               
         }
         else
         {

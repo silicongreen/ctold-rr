@@ -1792,7 +1792,12 @@ class news extends MX_Controller
         {
             $messegefornotification = $obj_post->headline;
             $data = array("key"=>"news", "id"=>$obj_post->id);
-            send_notification($messegefornotification,$data);
+            $return = send_notification($messegefornotification,$data);
+            echo "processing";
+            if($return)
+            {
+                echo "done";
+            }
         }
         
                 

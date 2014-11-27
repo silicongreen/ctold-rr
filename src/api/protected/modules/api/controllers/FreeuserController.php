@@ -826,7 +826,8 @@ class FreeuserController extends Controller
 
         $postobj = $postModel->findByPk($id);
 
-        $postobj->view_count = $postobj->view_count + 1;
+        $postobj->user_view_count = $postobj->user_view_count + Settings::$count_update_by;
+        $postobj->view_count = $postobj->view_count + Settings::$count_update_by;
         $postobj->save();
 
         $categoryModel = new Categories();
@@ -962,7 +963,7 @@ class FreeuserController extends Controller
             $response['status']['msg'] = "DATA_FOUND";
 
 
-            Yii::app()->cache->set($cache_name, $response);
+            Yii::app()->cache->set($cache_name, $response, 1800);
         }
 
         if (!$callded_for_cache)
@@ -1020,7 +1021,7 @@ class FreeuserController extends Controller
                 $response['data']['post'] = $post;
                 $response['status']['code'] = 200;
                 $response['status']['msg'] = "DATA_FOUND";
-                Yii::app()->cache->set($cache_name, $response);
+                Yii::app()->cache->set($cache_name, $response, 1800);
             }
         }
         else
@@ -1105,7 +1106,7 @@ class FreeuserController extends Controller
             $response['data']['post'] = $post;
             $response['status']['code'] = 200;
             $response['status']['msg'] = "DATA_FOUND";
-            Yii::app()->cache->set($cache_name, $response);
+            Yii::app()->cache->set($cache_name, $response, 1800);
         }
         if (!$callded_for_cache)
             echo CJSON::encode($response);

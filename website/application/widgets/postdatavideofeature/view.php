@@ -35,7 +35,7 @@
 									<?php if($news->title!=""):?><div class="by_line" >By <span class="f4"><?php echo $news->title; ?></span></div><?php endif;?>
 								</div><!-- post-title --> 							
 							
-                            <div class="akmanda-excerpt f5" style="margin-left:0px;"> <?php echo $arCustomNews['content']; ?></div>
+                            <div class="akmanda-excerpt f5" style="margin-left:0px;height:135px;"> <?php echo $arCustomNews['content']; ?></div>
 							<?php if($news->user_view_count>0):?>
 							<div style="width:25%;float:right;">
 								<div class="seen-image col-lg-3"><img src="<?php echo base_url("styles/layouts/tdsfront/images/social/seen.png"); ?>" /></div>
@@ -273,7 +273,7 @@
         }
         .by_line span
 		{
-			color:red !important;
+			
 			font-style:italic;
 		}
 		.button_div

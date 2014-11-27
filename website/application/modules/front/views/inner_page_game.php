@@ -292,7 +292,7 @@ $widget = new Widget;
     .geme_type
     {
         font-weight: lighter;
-        font-size:25px;
+        font-size:20px;
         margin-top: -4px;
         color:#95989D;
 

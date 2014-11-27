@@ -400,7 +400,7 @@ if( !function_exists("send_notification"))
     {
         $CI = &get_instance();
         $CI->load->library('gcm');
-        $this->gcm->setMessage($messege);
+        $CI->gcm->setMessage($messege);
         $url = get_curl_url("getallgcm");
         $fields_string = "request_llicence=fa@#25896321";  
         
@@ -427,12 +427,13 @@ if( !function_exists("send_notification"))
         //end curl
         
         $registrationids = json_decode($result);
+       
         
         if(count($registrationids)>0)
         {
-            $this->gcm->addRecepient($registrationids);
-            $this->gcm->setData($data);
-            if ($this->gcm->send())
+            $CI->gcm->addRecepient($registrationids);
+            $CI->gcm->setData($data);
+            if ($CI->gcm->send())
                 return true;
             else
                 return false;

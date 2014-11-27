@@ -1787,11 +1787,16 @@ class news extends MX_Controller
         //$obj_post->priority_type = $this->get_priority_type($post_id,$obj_post->priority_type,$obj_post->published_date);
         
         $obj_post->save();
+      
         
-        if($save_type == "publish")
+        
+        if($send_notification)
         {
+           
             $messegefornotification = $obj_post->headline;
             $data = array("key"=>"news", "id"=>$obj_post->id);
+           
+         
             $return = send_notification($messegefornotification,$data);
             
         }

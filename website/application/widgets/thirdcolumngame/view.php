@@ -1,5 +1,5 @@
 <div style="width: 100%;" class="grid effect-6 posts-<?php echo $current_page; ?>" >
-    <div class="extra_news_headline f2" style="margin:0;padding: 10px 26px; width:100%;text-align:left; margin-bottom:8px;">
+    <div class="extra_news_headline f2" style="margin:0;padding: 10px 26px; font-size:25px; width:100%;text-align:left; margin-bottom:8px;">
         <?php echo $extra_column_name; ?>
     </div> 
 

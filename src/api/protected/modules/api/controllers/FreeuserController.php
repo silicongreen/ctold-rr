@@ -762,6 +762,7 @@ class FreeuserController extends Controller
         }
 
         $id = Yii::app()->request->getPost('id');
+        $main_id = Yii::app()->request->getPost('main_id');
         
         $good_read = "";
 
@@ -786,7 +787,10 @@ class FreeuserController extends Controller
         $postModel = new Post();
         if (!$category_id)
         {
+            if(!$main_id)
             $category_id = $postModel->getCategoryId($id);
+            else
+            $category_id = $postModel->getCategoryId($main_id);   
         }
 
         $postcategoryObj = new PostCategory();
@@ -797,14 +801,28 @@ class FreeuserController extends Controller
 
         $singlepost = $postModel->getSinglePost($id);
 
-        $next_id = $postcategoryObj->nextpreviousid($category_id, $user_type, $id, $singlepost['published_date'], $singlepost['inner_priority']);
-
-        $previous_id = $postcategoryObj->nextpreviousid($category_id, $user_type, $id, $singlepost['published_date'], $singlepost['inner_priority'], "previous");
-
-        if ($next_id == $previous_id)
+        if(!$main_id)
         {
-            $next_id = $postcategoryObj->nextpreviousid($category_id, $user_type, $next_id, $singlepost['published_date'], $singlepost['inner_priority'], "next", $id);
+            $next_id = $postcategoryObj->nextpreviousid($category_id, $user_type, $id, $singlepost['published_date'], $singlepost['inner_priority']);
+
+            $previous_id = $postcategoryObj->nextpreviousid($category_id, $user_type, $id, $singlepost['published_date'], $singlepost['inner_priority'], "previous");
+
+            if ($next_id == $previous_id)
+            {
+                $next_id = $postcategoryObj->nextpreviousid($category_id, $user_type, $next_id, $singlepost['published_date'], $singlepost['inner_priority'], "next", $id);
+            }
         }
+        else
+        {
+            $next_id = $postcategoryObj->nextpreviousid($category_id, $user_type, $main_id, $singlepost['published_date'], $singlepost['inner_priority']);
+
+            $previous_id = $postcategoryObj->nextpreviousid($category_id, $user_type, $main_id, $singlepost['published_date'], $singlepost['inner_priority'], "previous");
+
+            if ($next_id == $previous_id)
+            {
+                $next_id = $postcategoryObj->nextpreviousid($category_id, $user_type, $next_id, $singlepost['published_date'], $singlepost['inner_priority'], "next", $id);
+            }
+        }    
 
         $postobj = $postModel->findByPk($id);
 
@@ -819,6 +837,25 @@ class FreeuserController extends Controller
         $response['data']['good_read'] = $good_read;
         $response['data']['previous_id'] = $previous_id;
         $response['data']['next_id'] = $next_id;
+        
+        if($main_id)
+        {
+            $response['data']['language'] = $postModel->getLanguage($main_id);
+        }
+        else
+        {
+            $response['data']['language'] = $postModel->getLanguage($id);
+        }   
+        
+        if($main_id)
+        {
+            $response['data']['main_id'] = $main_id;
+        }
+        else
+        {
+            $response['data']['main_id'] = $id;
+        }    
+        
 
         $response['data']['post'] = $singlepost;
         $response['status']['code'] = 200;

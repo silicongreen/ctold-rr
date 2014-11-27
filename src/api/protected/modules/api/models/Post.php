@@ -358,12 +358,34 @@ class Post extends CActiveRecord
         $obj_post = $this->find($criteria);
         return $obj_post['postCategories'][0]->category_id;
     }
+    public function getLanguage($id)
+    {
+        $criteria = new CDbCriteria;
+        $criteria->compare("t.referance_id", $id);
+        $criteria->addCondition("t.id = $id ","OR");
+        $criteria->compare("t.status", 5);
+        $criteria->select = 't.id,t.language';
+        $obj_post = $this->findAll($criteria);
+        
+        $olanguage = array();
+        
+        $i = 0;
+        foreach($obj_post as $value)
+        {
+            $olanguage[$i]['language'] = $value->language;
+            $olanguage[$i]['id'] = $value->id;
+            $i++;
+        }  
+        return $olanguage;
+        
+        
+    } 
 
     public function getSinglePost($id)
     {
         $criteria = new CDbCriteria;
         $criteria->compare("t.id", $id);
-        $criteria->select = 't.id,t.headline,t.attach,t.mobile_view_type,t.video_file,t.view_count,t.content,t.mobile_content,t.headline_color,t.lead_material,t.mobile_image,t.is_breaking,t.breaking_expire,t.is_exclusive,t.exclusive_expired,t.published_date,t.short_title,t.post_layout,t.sort_title_type,t.inside_image';
+        $criteria->select = 't.id,t.headline,t.referance_id,t.attach,t.language,t.mobile_view_type,t.video_file,t.view_count,t.content,t.mobile_content,t.headline_color,t.lead_material,t.mobile_image,t.is_breaking,t.breaking_expire,t.is_exclusive,t.exclusive_expired,t.published_date,t.short_title,t.post_layout,t.sort_title_type,t.inside_image';
         $criteria->order = "category.id ASC";
         $criteria->with = array(
             'postCategories' => array(
@@ -526,6 +548,7 @@ class Post extends CActiveRecord
             foreach ($obj_post as $postValue)
             {
                 $post_array[$i]['title'] = $postValue->headline;
+            
 
                 $post_array[$i]['post_type'] = $postValue->post_type;
 
@@ -700,6 +723,9 @@ class Post extends CActiveRecord
             $post_array['title'] = $postValue->headline;
             $post_array['title_color'] = $postValue->headline_color;
             $post_array['short_title'] = $postValue->short_title;
+            $post_array['language'] = $postValue->language;
+            $post_array['referance_id'] = $postValue->referance_id;
+            
 
 
             $post_array['video_file'] = "";

@@ -14,7 +14,7 @@ $config['api_url']   = 'http://api.champs21.com/api/freeuser';
 
 $config[ 'from_api' ] = TRUE;
 
-$config[ 'normal_view_count_add' ] = 3;
+$config[ 'normal_view_count_add' ] = 1;
 
 $config[ 'api_index' ] = array('index','inner','inner-popular');
 

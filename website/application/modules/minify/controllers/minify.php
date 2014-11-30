@@ -142,7 +142,7 @@ class minify extends CI_Controller {
                     if($this->_type == 'css'){
                         $cache['content'] .= file_get_contents($file);
                     }  else {
-                        $cache['content'] .= file_get_contents($file);
+                        $cache['content'] .=  \JShrink\Minifier::minify(file_get_contents($file));
                     }
                     
                 }

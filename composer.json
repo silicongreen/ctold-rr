@@ -8,7 +8,8 @@
         "aws/aws-sdk-php": "2.*",
         "monolog/monolog": "1.7.0",
         "swiftmailer/swiftmailer": "@stable",
-        "tedivm/jshrink": "~1.0"
+        "tedivm/jshrink": "~1.0",
+        "tubalmartin/cssmin": "~2.4.8"
     },
     "scripts": {
         "post-install-cmd": [

@@ -71,7 +71,7 @@
         <?php //$j = -1; ?> 
 
         <ul style="position: relative; width:100%; " class="grid effect-6 posts-<?php echo $current_page; ?>" id="grid">
-            <?php $is_breaking_found = false; $count_show = 3; ?>
+            <?php $is_breaking_found = false; $count_show = 6; ?>
             <?php $found_slider = 0; ?>
             <?php $ar_slider_amount = array(); ?>
             <?php $i = 0; $ka = 0; if ($obj_post_news) foreach ($obj_post_news as $news) :?>

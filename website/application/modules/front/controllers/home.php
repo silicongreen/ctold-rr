@@ -2769,6 +2769,13 @@ class home extends MX_Controller {
             
             if($contact_model->validate()){
                 
+//                try{
+//                    send_mail($ar_email);
+//                }catch(Exception $e){
+//                    var_dump($e);
+//                    exit;
+//                }
+                
                 if(send_mail($ar_email)){
                     
                     if($contact_model->save()){

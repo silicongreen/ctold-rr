@@ -91,6 +91,7 @@ var runScrool = true;
                       animationDuration:randDuration
                   });
                   $obj.addClass('animate');
+                  $("#grid").masonry('reload');
                 }, 25 );
               }
             });

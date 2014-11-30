@@ -2769,16 +2769,23 @@ class home extends MX_Controller {
             
             if($contact_model->validate()){
                 
-                if(send_mail($ar_email)){
-                    
-                    if($contact_model->save()){
-                        $data['saved'] = TRUE;
-                        $data['errors'][] = 'Seccessfully Saved.';
-                    }else{
-                        $data['saved'] = FALSE;
-                        $data['errors'] = $contact_model->error->all;
-                    }
+                try{
+                    send_mail($ar_email);
+                }catch(Exception $e){
+                    var_dump($e);
+                    exit;
                 }
+                
+//                if(send_mail($ar_email)){
+//                    
+//                    if($contact_model->save()){
+//                        $data['saved'] = TRUE;
+//                        $data['errors'][] = 'Seccessfully Saved.';
+//                    }else{
+//                        $data['saved'] = FALSE;
+//                        $data['errors'] = $contact_model->error->all;
+//                    }
+//                }
             }
             
             echo json_encode($data);

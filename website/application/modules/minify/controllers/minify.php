@@ -137,12 +137,31 @@ class minify extends CI_Controller {
 
                 # loop on each file to grab it content
                 $cache['content'] = '';
+                if($this->config->item("use_css_compress"))
+                {
+                    $compressor = new CSSmin();
+                }
+                
                 foreach($files as $file){
                     
                     if($this->_type == 'css'){
-                        $cache['content'] .= file_get_contents($file);
+                        if($this->config->item("use_css_compress"))
+                        {
+                            $cache['content'] .= $compressor->run(file_get_contents($file));
+                        }
+                        else
+                        {
+                            $cache['content'] .= file_get_contents($file);
+                        }    
                     }  else {
-                        $cache['content'] .=  \JShrink\Minifier::minify(file_get_contents($file));
+                        if($this->config->item("use_js_compress"))
+                        {
+                            $cache['content'] .=  \JShrink\Minifier::minify(file_get_contents($file));
+                        }
+                        else
+                        {
+                            $cache['content'] .=  file_get_contents($file);
+                        }    
                     }
                     
                 }

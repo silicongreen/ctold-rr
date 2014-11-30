@@ -20,9 +20,9 @@
 |
 */
 $config['minify_lib_path']        = APPPATH.'/libraries/minify_2.1.3/lib/';
-$config['use_minify']             = FALSE;
-$config['use_ci_cache']           = FALSE; // set to TRUE if you use phil's cache lib
-$config['use_min_cache']          = FALSE;
+
+$config['use_js_compress']        = TRUE;
+$config['use_css_compress']        = TRUE;
 
 $config['CSS_JS_V'] = 1;	
 

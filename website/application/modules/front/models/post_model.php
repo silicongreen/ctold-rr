@@ -770,9 +770,9 @@ class Post_model extends DataMapper
     
     public function updateCount($news_id)
     {
-        
+        $this->load->config("tds");
         $i_user_view_count_inc_no = 1;
-        if ( $this->config->config['user_modified_view_count'] )
+        if ( isset($this->config->config['user_modified_view_count']) )
         {
             $i_user_view_count_inc_no = rand($this->config->config['user_modified_view_min'], $this->config->config['user_modified_view_max']);
         }

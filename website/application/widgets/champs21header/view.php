@@ -1136,6 +1136,7 @@ if($('.header-logo-div').is(':visible')) {
         {
             height:134px;
             border-bottom:2px solid red;
+            background-size:auto;
         }
         .header-new
         {
@@ -1289,6 +1290,7 @@ if($('.header-logo-div').is(':visible')) {
         {
             height:154px;
             border-bottom:2px solid red;
+            background-size:auto;
         }
         .header-new
         {
@@ -1497,6 +1499,7 @@ if($('.header-logo-div').is(':visible')) {
         {
             height:154px;
             border-bottom:2px solid red;
+            background-size:auto;
         }
         .header-new
         {

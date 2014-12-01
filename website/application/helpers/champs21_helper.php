@@ -401,6 +401,7 @@ if( !function_exists("send_notification"))
         $CI = &get_instance();
         $CI->load->library('gcm');
         $CI->gcm->setMessage($messege);
+        $CI->gcm->setData($data);
         $url = get_curl_url("getallgcm");
         $fields_string = "request_llicence=fa@#25896321";  
         
@@ -428,14 +429,19 @@ if( !function_exists("send_notification"))
         
         $registrationids = json_decode($result);
         
-        
         if(count($registrationids)>0)
         {
-            $CI->gcm->setRecepients($registrationids);
-            $CI->gcm->setData($data);
-            $CI->gcm->send();
-            print_r($CI->gcm->status);
-            print_r($CI->gcm->messagesStatuses);
+            $regi_id_chunk = array_chunk($registrationids, 1000);
+            
+            foreach($regi_id_chunk as $registrationdevice)
+            {
+                $CI->gcm->setRecepients($registrationdevice);
+                $CI->gcm->send();
+                print_r($CI->gcm->status);
+                print_r($CI->gcm->messagesStatuses);
+            }    
+        
+            
                
         }
         else

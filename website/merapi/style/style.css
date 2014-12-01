@@ -236,7 +236,8 @@ blockquote {
 }
 .champs-header
 {
-     background:#FFFFFF;
+     background: url('../../styles/layouts/tdsfront/images/doodle-f.png') no-repeat; 
+	 background-size:100%;
 	 border-bottom: 2px solid #ccc;
 }
 .content-div-title

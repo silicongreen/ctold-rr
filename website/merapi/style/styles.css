@@ -319,7 +319,7 @@ li.menu-item
 	left:0px;
 }
 #toPopup {
-	font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
+    font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
     background: none repeat scroll 0 0 #FFFFFF;
     padding: 40px 20px;	
     border-radius: 3px 3px 3px 3px;
@@ -382,7 +382,7 @@ span.arrow {
 div#popup_content {
     margin: 4px 7px;
 }
-#popup_content li{float:left;display:inline;padding:4px;font-family: "Aliquam Rg";font-size:17px;color:red;cursor:pointer;}
+#popup_content li{float:left;display:inline;padding:4px;font-family: "Aliquam Rg";font-size:13px;color:red;cursor:pointer;}
 #popup_content .bar{color:#ccc;}
 #popup_content li a:hover{font-size:22px;color:#000;text-decoration:underline;font-weight:bold;}
 .btn_myschool {

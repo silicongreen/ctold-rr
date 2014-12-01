@@ -2,87 +2,91 @@
         <img src="<?php echo base_url('upload/gallery/image/category/icon-info.png'); ?>" alt="<?php echo $row->name ?>" style="margin: 0 auto;display: block;">
 </a>-->
 
-<div id="toPopup"> 
+<div id="toPopup" class="school_search_box"> 
 
     <div class="close"></div>
     <div style="clear:both;"></div>
     <div id="popup_content"> <!--your content start-->
-        <div style="float:left;width:55%;height:300px;">
+        <div style="float:left;width:45%;height:200px;margin-top:100px;">
             <?php echo form_open('schoolsearch', array('class' => 'white-pink', 'enctype' => "multipart/form-data")); ?>
 
 <!--<form action="<?php #echo site_url('home/schoolsearch');  ?>" method="post" class="white-pink"><h1>Contact Form<span>Please fill all the texts in the fields.</span></h1>-->
-            <p>
-                <label><span>Name :</span><input id="name" type="text" name="name" placeholder="Your Full Name"></label>
-                <label><span>Division</span><input id="division" type="text" name="division" placeholder="Valid Division"></label>		
-                <label><span>Level</span><input id="level" type="text" name="level" placeholder="Valid Level"></label>		
-                <label><span>&nbsp;</span><input type="submit" class="button" value="Search"></label>
+            <p class="search_form_box">
+                <label><input id="name" type="text" name="name" placeholder="Name"></label>
+                <label><input id="division" type="text" name="division" placeholder="Division"></label>		
+                <label><input id="level" type="text" name="level" placeholder="Level"></label>		
+                <label><input type="submit" value=""></label>
             </p>
             <?php echo form_close(); ?> 
 
         </div>
-        <div style="float:right;width:45%;border-left:1px solid #ccc;height:300px;padding-left:20px;">
-            <p class="f2" style="color:red;font-size:25px;line-height:30px;">We are the Bridge Between Schools & Parents</p>
+        <div style="float:right;width:55%;height:230px;padding-left:20px;">
+<!--            <p class="f2" style="color:red;font-size:25px;line-height:30px;">We are the Bridge Between Schools & Parents</p>
             <p class="f5" style="color:#CACACA;font-size:17px;line-height:21x;">Search & find information on 100+ schools in the Dhaka and around the nation</p>
             <hr style="border:dashed grey; border-width:1px 0 0 0; height:0;line-height:0px;font-size:0;margin:0;padding:0;"></hr>
             <p class="f5" style="color:#000;font-size:15px;line-height:20px;margin-top:30px;">Share your School's information on Champs21.com now!!</p>
 
-            <p><input type="button" class="btn_myschool" value="My School"></p>
+            <p><input type="button" class="btn_myschool" value="My School"></p>-->
+            <p style='position:relative; top:100%;'><input type="button" class="btn_school_entry" value=""></p>
         </div>
         <div style="clear:both;"></div>
-        <div style="width:100%;">
-            <ul>
-                <li><a href="<?php echo base_url() . 'schoolsearch?str=A'; ?>">A</a></li>
-                <li class="bar">|</li>
-                <li><a href="<?php echo base_url() . 'schoolsearch?str=B'; ?>">B</a></li>
-                <li class="bar">|</li>
-                <li><a href="<?php echo base_url() . 'schoolsearch?str=C'; ?>">C</a></li>
-                <li class="bar">|</li>
-                <li><a href="<?php echo base_url() . 'schoolsearch?str=D'; ?>">D</a></li>
-                <li class="bar">|</li>
-                <li><a href="<?php echo base_url() . 'schoolsearch?str=E'; ?>">E</a></li>
-                <li class="bar">|</li>
-                <li><a href="<?php echo base_url() . 'schoolsearch?str=F'; ?>">F</a></li>
-                <li class="bar">|</li>
-                <li><a href="<?php echo base_url() . 'schoolsearch?str=G'; ?>">G</a></li>
-                <li class="bar">|</li>
-                <li><a href="<?php echo base_url() . 'schoolsearch?str=H'; ?>">H</a></li>
-                <li class="bar">|</li>
-                <li><a href="<?php echo base_url() . 'schoolsearch?str=I'; ?>">I</a></li>
-                <li class="bar">|</li>
-                <li><a href="<?php echo base_url() . 'schoolsearch?str=J'; ?>">J</a></li>
-                <li class="bar">|</li>
-                <li><a href="<?php echo base_url() . 'schoolsearch?str=K'; ?>">K</a></li>
-                <li class="bar">|</li>
-                <li><a href="<?php echo base_url() . 'schoolsearch?str=L'; ?>">L</a></li>
-                <li class="bar">|</li>
-                <li><a href="<?php echo base_url() . 'schoolsearch?str=M'; ?>">M</a></li>
-                <li class="bar">|</li>
-                <li><a href="<?php echo base_url() . 'schoolsearch?str=N'; ?>">N</a></li>
-                <li class="bar">|</li>
-                <li><a href="<?php echo base_url() . 'schoolsearch?str=O'; ?>">O</a></li>
-                <li class="bar">|</li>
-                <li><a href="<?php echo base_url() . 'schoolsearch?str=P'; ?>">P</a></li>
-                <li class="bar">|</li>
-                <li><a href="<?php echo base_url() . 'schoolsearch?str=Q'; ?>">Q</a></li>
-                <li class="bar">|</li>
-                <li><a href="<?php echo base_url() . 'schoolsearch?str=R'; ?>">R</a></li>
-                <li class="bar">|</li>
-                <li><a href="<?php echo base_url() . 'schoolsearch?str=S'; ?>">S</a></li>
-                <li class="bar">|</li>
-                <li><a href="<?php echo base_url() . 'schoolsearch?str=T'; ?>">T</a></li>
-                <li class="bar">|</li>
-                <li><a href="<?php echo base_url() . 'schoolsearch?str=U'; ?>">U</a></li>
-                <li class="bar">|</li>
-                <li><a href="<?php echo base_url() . 'schoolsearch?str=V'; ?>">V</a></li>
-                <li class="bar">|</li>
-                <li><a href="<?php echo base_url() . 'schoolsearch?str=W'; ?>">W</a></li>
-                <li class="bar">|</li>
-                <li><a href="<?php echo base_url() . 'schoolsearch?str=X'; ?>">X</a></li>
-                <li class="bar">|</li>
-                <li><a href="<?php echo base_url() . 'schoolsearch?str=Y'; ?>">Y</a></li>
-                <li class="bar">|</li>
-                <li><a href="<?php echo base_url() . 'schoolsearch?str=Z'; ?>">Z</a></li>					
-            </ul>
+        <div style="width:105.7%;height:61px;position:relative;bottom:-35px;background: #fff;opacity: .9;margin: 0px -27px;">
+            <div class="school_arrow">OR, SEARCH BY ALPHABET</div>
+            <div style="float:right;padding-top:16px;margin-right:15px;">
+                <ul>
+                    <li><a href="<?php echo base_url() . 'schoolsearch?str=A'; ?>">A</a></li>
+                    <li class="bar">|</li>
+                    <li><a href="<?php echo base_url() . 'schoolsearch?str=B'; ?>">B</a></li>
+                    <li class="bar">|</li>
+                    <li><a href="<?php echo base_url() . 'schoolsearch?str=C'; ?>">C</a></li>
+                    <li class="bar">|</li>
+                    <li><a href="<?php echo base_url() . 'schoolsearch?str=D'; ?>">D</a></li>
+                    <li class="bar">|</li>
+                    <li><a href="<?php echo base_url() . 'schoolsearch?str=E'; ?>">E</a></li>
+                    <li class="bar">|</li>
+                    <li><a href="<?php echo base_url() . 'schoolsearch?str=F'; ?>">F</a></li>
+                    <li class="bar">|</li>
+                    <li><a href="<?php echo base_url() . 'schoolsearch?str=G'; ?>">G</a></li>
+                    <li class="bar">|</li>
+                    <li><a href="<?php echo base_url() . 'schoolsearch?str=H'; ?>">H</a></li>
+                    <li class="bar">|</li>
+                    <li><a href="<?php echo base_url() . 'schoolsearch?str=I'; ?>">I</a></li>
+                    <li class="bar">|</li>
+                    <li><a href="<?php echo base_url() . 'schoolsearch?str=J'; ?>">J</a></li>
+                    <li class="bar">|</li>
+                    <li><a href="<?php echo base_url() . 'schoolsearch?str=K'; ?>">K</a></li>
+                    <li class="bar">|</li>
+                    <li><a href="<?php echo base_url() . 'schoolsearch?str=L'; ?>">L</a></li>
+                    <li class="bar">|</li>
+                    <li><a href="<?php echo base_url() . 'schoolsearch?str=M'; ?>">M</a></li>
+                    <li class="bar">|</li>
+                    <li><a href="<?php echo base_url() . 'schoolsearch?str=N'; ?>">N</a></li>
+                    <li class="bar">|</li>
+                    <li><a href="<?php echo base_url() . 'schoolsearch?str=O'; ?>">O</a></li>
+                    <li class="bar">|</li>
+                    <li><a href="<?php echo base_url() . 'schoolsearch?str=P'; ?>">P</a></li>
+                    <li class="bar">|</li>
+                    <li><a href="<?php echo base_url() . 'schoolsearch?str=Q'; ?>">Q</a></li>
+                    <li class="bar">|</li>
+                    <li><a href="<?php echo base_url() . 'schoolsearch?str=R'; ?>">R</a></li>
+                    <li class="bar">|</li>
+                    <li><a href="<?php echo base_url() . 'schoolsearch?str=S'; ?>">S</a></li>
+                    <li class="bar">|</li>
+                    <li><a href="<?php echo base_url() . 'schoolsearch?str=T'; ?>">T</a></li>
+                    <li class="bar">|</li>
+                    <li><a href="<?php echo base_url() . 'schoolsearch?str=U'; ?>">U</a></li>
+                    <li class="bar">|</li>
+                    <li><a href="<?php echo base_url() . 'schoolsearch?str=V'; ?>">V</a></li>
+                    <li class="bar">|</li>
+                    <li><a href="<?php echo base_url() . 'schoolsearch?str=W'; ?>">W</a></li>
+                    <li class="bar">|</li>
+                    <li><a href="<?php echo base_url() . 'schoolsearch?str=X'; ?>">X</a></li>
+                    <li class="bar">|</li>
+                    <li><a href="<?php echo base_url() . 'schoolsearch?str=Y'; ?>">Y</a></li>
+                    <li class="bar">|</li>
+                    <li><a href="<?php echo base_url() . 'schoolsearch?str=Z'; ?>">Z</a></li>					
+                </ul>
+            </div>
         </div>
     </div> <!--your content end-->
 
@@ -216,7 +220,7 @@
         });
 
 
-        $('input.btn_myschool').click(function() {
+        $('input.btn_school_entry').click(function() {
             checkLogin();
             loading();
             if (alreadyopen == 1)
@@ -369,11 +373,39 @@
     .innerTop, .innerBottom { display:none;   z-index: -1;  }
 
     #button-bottom { width: 100px; position: absolute; left: 75%; top: 240px; padding-left: 100px;overflow: hidden;}
-
-
-
-
-
+    .school_search_box{
+        background: url("<?php echo base_url('Profiler/images/right/schools_bg.png')?>") no-repeat !important;
+        background-size: 100% !important;
+    }
+    .search_form_box{margin-left:110px;}
+    
+    .search_form_box input[type="text"] {
+        height: 35px;
+        margin-bottom: 5px;
+        width: 90%;
+        font-size: 15px;
+    }
+    .search_form_box input[type="submit"]{
+        background:url("<?php echo base_url('Profiler/images/right/btn-schools-search.png')?>") no-repeat !important;
+        background-size:100% !important;
+        border: medium none;
+        border-radius: 0;
+        float: right;
+        height: 40px;
+        margin-right: 122px;
+        width: 110px;
+        
+    }
+    .btn_school_entry
+    {
+        background:url("<?php echo base_url('Profiler/images/right/btn-schools-entry.png')?>") no-repeat !important;
+        background-size:100% !important;
+        border: medium none;
+        border-radius: 0;        
+        height: 48px;        
+        width: 82%;
+        margin-left:30px;        
+    }
 
     input[type=checkbox].css-checkbox {
         position: absolute; 
@@ -435,7 +467,38 @@
     }					
 
 
-
+.school_arrow {
+    float:left;
+    height: 61px;
+    width:23%;    
+    background-color: #a7abb0;    
+    padding: 20px 0;
+    padding-left: 20px;
+    position: relative;
+    font-size:15px;
+    font-family: "Bree Serif";
+    color: #fff;
+}
+.school_arrow:after {
+  content: '';
+  position: absolute;
+  top: 0px;
+  left: 100%;
+  width: 0;
+  height: 0;
+  border: 30px solid transparent;
+  border-left: 40px solid #a7abb0;
+}
+.school_arrow:before {
+  content: '';
+  position: absolute;
+  top: 0px;
+  left: 100%;
+  width: 0;
+  height: 0;
+  border: 30px solid transparent;
+  border-left: 40px solid #a7abb0;
+}
 
 
 

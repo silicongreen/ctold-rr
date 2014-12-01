@@ -428,6 +428,7 @@ if( !function_exists("send_notification"))
         
         $registrationids = json_decode($result);
        
+        print_r($registrationids);
         
         if(count($registrationids)>0)
         {

@@ -427,8 +427,8 @@ if( !function_exists("send_notification"))
         //end curl
         
         $registrationids = json_decode($result);
-        $registrationids[0] = trim($registrationids);
-        print_r($registrationids);
+        $registrationids[0] = trim($registrationids[0]);
+       
         print_r($registrationids);
         
         if(count($registrationids)>0)

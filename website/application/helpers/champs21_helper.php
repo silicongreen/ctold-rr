@@ -563,6 +563,7 @@ if ( !function_exists("send_mail") )
 {
     function send_mail( $ar_email )
     {
+        $CI = &get_instance();
         
         $headers   = array();
         $headers[] = "MIME-Version: 1.0";
@@ -584,6 +585,42 @@ if ( !function_exists("send_mail") )
         $headers[] = "Subject: {$ar_email['subject']}";
         $headers[] = "X-Mailer: PHP/".phpversion();
        
-        return mail($ar_email['to_email'], $ar_email['subject'], $ar_email['message'], implode("\r\n", $headers));
+        $CI->load->config('champs21');
+        if($CI->config->config['mail_mode']['test']){
+            return save_mail($ar_email, $headers);
+        }else{
+            return mail($ar_email['to_email'], $ar_email['subject'], $ar_email['message'], implode("\r\n", $headers));
+        }
+    }
+}
+
+if(!function_exists('save_mail')){
+    function save_mail($ar_email, $headers)
+    {
+        $filename = date('YmdHis') . '_' . uniqid() . '.eml';
+        $dir = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'upload' . DIRECTORY_SEPARATOR . 'email';
+        
+        // Create a directory
+        if (!is_dir($dir)) {
+            $oldmask = @umask(0);
+            $result = @mkdir($dir, 0777);
+            @umask($oldmask);
+            if (!$result) {
+                throw new Exception('Unable to create the directory ' . $dir);
+            }
+        }
+        
+        try {
+            $file = fopen($dir . DIRECTORY_SEPARATOR . $filename, 'w+');
+            fwrite($file, implode("\r\n", $headers) . "\r\n" . $ar_email['message']);
+            
+            fclose($file);
+
+            return true;
+        } catch (Exception $e) {
+            $e->getMessage();
+
+            return false;
+        }
     }
 }

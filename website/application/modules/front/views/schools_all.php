@@ -19,7 +19,13 @@
     $widget->run('champs21schoolsearch', $ci_key);
     ?>
     <div style="">
+        
         <ul style="margin: 30px 20px;">
+            <li>
+                    <div style="background: #fff;padding: 30px 20px;font-size:35px;font-family:'Bree Serif';margin-top:-40px;">
+                        <span style="color:#dadada">Our featured</span><span style="color:#60cb97">&nbsp;SCHOOLS</span>
+                    </div>
+            </li>
             <?php foreach ($schooldata as $row) : ?>
                 <?php
                 if (isset($row['picture']) && $row['picture']) {
@@ -28,15 +34,20 @@
                 ?>
                 <li style="list-style:none;">
                     <div style="background: #FFF; padding: 20px; height: 200px; overflow: hidden;">
-                        <div style="float:left;width:20%;">
-                            <img src="<?php echo base_url($row['logo']); ?>" width="160">
+                        <div style="float:left;width:25%;height:160px;overflow: hidden;">
+                            <img src="<?php echo base_url($row['logo']); ?>" width="220">
                         </div>
-                        <div style="float:left;width:50%;">
-                            <p class="f2" style="font-size:30px;"><a href="<?php echo base_url() . 'schools/' . sanitize($row['name']); ?>"><?php echo $row['name']; ?></a></p>
-                            <p class="f5" style="font-size:16px;color:#9CD64E;"><?php echo $row['district']; ?></p>
-                            <p class="f5" style="font-size:16px;color:#000;"><?php echo $row['medium']; ?></p>
-                            <p class="f5" style="font-size:16px;color:#000;"><?php echo $row['level']; ?></p>
-                            <p class="f5" style="font-size:14px;"><?php echo $row['location']; ?></p>
+                        <div style="float:left;width:45%;">
+                            <p class="f2" style="font-size:22px;"><a style="color:#60cb97;" href="<?php echo base_url() . 'schools/' . sanitize($row['name']); ?>"><?php echo $row['name']; ?></a></p>                            
+                            <p class="f5" style="font-size:16px;color:#9CD64E;"><?php echo $row['medium']; ?>,<?php echo $row['level']; ?></p>                            
+                            <p class="f5" style="font-size:14px;color:#000;"><?php echo $row['district']; ?>, <?php echo $row['location']; ?></p>
+                            <p>
+                                <button class="red" type="button" style="width:20%;">
+                                    <span class="clearfix f2">
+                                        Visit
+                                    </span>
+                                </button>
+                            </p>
                         </div>
                         
                         <div class="join-wrapper">
@@ -185,7 +196,7 @@
         position: relative !important;
         left: 0px !important;
         top: 0px !important;
-        width: 96% !important;
+        width: 96.2% !important;
         z-index: 6000 !important;
         margin:30px 20px !important;
     }
@@ -218,7 +229,7 @@
         text-align: right;
     }
     .red{
-        background-color: #DE3427;
+        background-color: #BBBBBB;
         border: none;
         line-height: 15px;
         color: #fff;
@@ -231,7 +242,7 @@
         -webkit-box-shadow: 0 3px 2px 0 #bbb;
     }
     .red:hover{
-        background-color: #BBBBBB;
+        background-color: #60cb97;
         -webkit-transition: background-color 0.5s ease;
         -moz-transition: background-color 0.5s ease;
         -o-transition: background-color 0.5s ease;

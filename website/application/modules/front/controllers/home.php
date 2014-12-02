@@ -2755,18 +2755,7 @@ class home extends MX_Controller {
             $contact_model->description = $this->input->post('ques_description');
             $contact_model->created_date = date('Y-m-d H:i:s', time());
             
-            
-            $this->load->library('email');
-
-            $this->email->from($contact_model->email, $contact_model->full_name);
-            $this->email->to($email_config[$contact_model->contact_type]['to']['email']);
-            $this->email->cc($email_config[$contact_model->contact_type]['cc']['email']);
-            $this->email->bcc($email_config[$contact_model->contact_type]['bcc']['email']);
-
-            $this->email->subject($email_config[$contact_model->contact_type]['subject']);
-            $this->email->message($contact_model->description);
-
-            /* $ar_email['sender_full_name'] = $contact_model->full_name;
+            $ar_email['sender_full_name'] = $contact_model->full_name;
             $ar_email['sender_email'] = $contact_model->email;
             $ar_email['to_name'] = $email_config[$contact_model->contact_type]['to']['full_name'];
             $ar_email['to_email'] = $email_config[$contact_model->contact_type]['to']['email'];
@@ -2776,31 +2765,23 @@ class home extends MX_Controller {
             $ar_email['bcc_email'] = $email_config[$contact_model->contact_type]['bcc']['email'];
             
             $ar_email['subject'] = $email_config[$contact_model->contact_type]['subject'];
-            $ar_email['message'] = $contact_model->description; */
+            $ar_email['message'] = $contact_model->description;
             
             if($contact_model->validate()){
                 
-//                try{
-//                    send_mail($ar_email);
-//                }catch(Exception $e){
-//                    var_dump($e);
-//                    exit;
-//                }
-                
-//                if(send_mail($ar_email)){
-                if($this->email->send()){
+                if(send_mail($ar_email)){
                     
                     if($contact_model->save()){
                         $data['saved'] = TRUE;
-                        $data['errors'][] = 'Seccessfully Saved.';
+                        $data['errors'][] = 'We appreciate that you’ve taken the time to write us. We’ll get back to you very soon. Please come back and see us often.';
                     }else{
                         $data['saved'] = FALSE;
                         $data['errors'] = $contact_model->error->all;
                     }
                 }
                 else{
-                    var_dump($this->email->print_debugger());
-                    exit;
+                    $data['saved'] = FALSE;
+                    $data['errors'][] = 'Something bad happend. Your message could not be sent at the moment. Please try again after sometime.';
                 }
             }
             

@@ -334,8 +334,8 @@
             
             <div class="col-lg-6" style="border-left: 1px solid #ddd; border-right: 1px solid #ddd; padding: 5px 15px 8px 0;">
                 <div class="col-md-12">
-                    <div class="seen-image col-lg-6"><img src="<?php echo base_url("styles/layouts/tdsfront/images/social/seen.png"); ?>" /></div>
-                    <div class="seen col-lg-6"><h2 class=""><?php echo $user_view_count; ?></h2></div>
+                    <div class="seen-image col-lg-3"><img src="<?php echo base_url("styles/layouts/tdsfront/images/social/seen.png"); ?>" /></div>
+                    <div class="seen col-lg-9"><h2 class=""><?php echo $user_view_count; ?></h2></div>
                 </div>
                 <div class="col-md-12">
                     <a class="addthis_button_facebook_like" fb:like:layout="button_count" fb:like:href="<?php echo create_link_url(NULL, $headline,$post_id,false,true,false); ?>"></a>

@@ -3,7 +3,6 @@
 class Settings {
 
     public static $domain_name = 'http://www.champs21.com/';
-//    public static $domain_name = 'http://www.champs21.dev/';
     public static $image_path = 'http://www.champs21.com/';
     public static $real_path = '/home/champs21/public_html/website/';
     public static $main_path = "../website/";
@@ -331,6 +330,224 @@ class Settings {
         }
 
         return $soultion;
+    }
+    public static function formatData($postValue)
+    {
+        $post_array = array();
+        if($postValue)
+        {
+            $post_array['title']     = $postValue->headline;
+            
+            $post_array['post_type'] = $postValue->post_type;
+            
+            //need to change into single news
+            $post_array['post_type_mobile'] = $postValue->mobile_view_type;
+            
+            $post_array['video_file'] = "";
+
+            if ($postValue->video_file)
+                $post_array['video_file'] = Settings::$image_path . $postValue->video_file;
+            
+            $post_array['seen'] = $postValue->view_count;
+            
+            $post_array['title_color'] = $postValue->headline_color;
+            
+            $post_array['id'] = $postValue->id;
+            
+            $post_array['post_layout'] = $postValue->post_layout;
+
+            $post_array['sort_title_type'] = $postValue->sort_title_type;
+            $post_array['inside_image'] = "";
+
+            if ($postValue->inside_image)
+                $post_array['inside_image'] = Settings::get_mobile_image(Settings::$image_path . $postValue->inside_image);
+
+
+            $post_array['normal_post_type'] = Settings::get_simple_post_layout($postValue);
+
+
+            $post_array['author'] = "";
+            $post_array['author_image'] = "";
+            if (isset($postValue['postAuthor']))
+            {
+                $post_array['author'] = $postValue['postAuthor']->title;
+                if ($postValue['postAuthor']->image)
+                    $post_array['author_image'] = Settings::$image_path . $postValue['postAuthor']->image;
+            }
+            
+            $post_array['post_id'] = $postValue->id;
+            
+            $post_array['headline']= $postValue->headline;
+            
+            $post_array['content'] = $postValue->content;
+            
+            $post_array['is_featured'] = $postValue->is_featured;
+            $post_array['show_byline_image'] = $postValue->show_byline_image;
+            $post_array['headline_color'] = $postValue->headline_color;
+
+
+            $post_array['short_title'] = $postValue->short_title;
+            $post_array['shoulder'] = $postValue->shoulder;
+            $post_array['other_language'] = $postValue->other_language;
+
+            $post_array['sub_head'] = $postValue->sub_head;
+            $post_array['lead_material'] = $postValue->lead_material;
+
+            $post_array['lead_caption'] = $postValue->lead_caption;
+            $post_array['is_breaking'] = $postValue->is_breaking;
+            $post_array['breaking_expire'] = $postValue->breaking_expire;
+            $post_array['is_exclusive'] = $postValue->is_exclusive;
+            $post_array['exclusive_expired'] = $postValue->exclusive_expired;
+
+
+            $post_array['language'] = $postValue->language;
+            $post_array['lead_link'] = $postValue->lead_link;
+            $post_array['view_count'] = $postValue->view_count;
+
+            $post_array['user_view_count'] = $postValue->user_view_count;
+            $post_array['embedded'] = $postValue->embedded;
+            
+            $post_array['embedded_url'] = "";
+            if($postValue->embedded)
+            $post_array['embedded_url'] = Settings::get_embeded_url($postValue->embedded);
+          
+            $post_array['layout_color'] = $postValue->layout_color;
+
+            $post_array['referance_id'] = $postValue->referance_id;
+            $post_array['attach'] = $postValue->attach;
+            $post_array['layout'] = $postValue->layout;
+            
+            $post_array['images'] = array();
+            $post_array['add_images'] = array();
+            $post_array['web_images'] = array();
+            if ($postValue['postGalleries'])
+            {
+                $j = 0;
+                $k = 0;
+                foreach ($postValue['postGalleries'] as $value)
+                {
+                    if (trim($value['material']->material_url) && $value->type==2)
+                    {
+                        $post_array['images'][] = Settings::get_mobile_image(Settings::$image_path . $value['material']->material_url);
+                    
+                        $post_array['add_images'][$j]['ad_image'] = Settings::get_mobile_image(Settings::$image_path . $value['material']->material_url);
+                        $post_array['add_images'][$j]['ad_image_link'] = $value->source;
+                        $post_array['add_images'][$j]['ad_image_caption'] = $value->caption;
+                        $j++;
+                    }
+                    else if(trim($value['material']->material_url) && $value->type==1)
+                    {
+                        $post_array['web_images'][$k]['image'] = Settings::$image_path . $value['material']->material_url;
+                        $post_array['web_images'][$k]['source'] = $value->source;
+                        $post_array['web_images'][$k]['caption'] =  $value->caption;
+                        $k++;
+                    }    
+                }
+            }
+            
+            
+            //need to change 2
+            if (isset($postValue->mobile_content) && strlen(Settings::substr_with_unicode($postValue->mobile_content, true)) > 0)
+            {
+                $post_array['mobile_content'] = $postValue->mobile_content;
+                $post_array['full_content'] = Settings::substr_with_unicode($postValue->mobile_content, true);
+                $post_array['solution'] = Settings::get_solution($postValue->mobile_content);
+            }
+            else
+            {
+                $post_array['mobile_content'] = $postValue->content;
+                $post_array['full_content'] = Settings::substr_with_unicode($postValue->content, true);
+                $post_array['solution'] = Settings::get_solution($postValue->content);
+            }
+            
+            $post_array['summary'] = "";
+            
+            
+            if ($postValue->summary)
+            {
+                $post_array['has_summary'] = 1;
+                $post_array['summary'] = $postValue->summary;
+            }
+            else
+            {
+                $post_array['has_summary'] = 0;
+                $post_array['summary'] = Settings::substr_with_unicode($postValue->content);
+            }
+            
+            $post_array['share_link'] = Settings::get_post_link_url($postValue);
+            $post_array['mobile_image'] = "";
+            if ($postValue->mobile_image)
+                $post_array['mobile_image'] = Settings::$image_path . $postValue->mobile_image;
+
+            $datestring = Settings::get_post_time($postValue->published_date);
+
+            $post_array['published_date'] = $postValue->published_date;
+            //$post_array['attachment'] = $postValue->attach_file;
+            $post_array['current_date'] = date("Y-m-d H:i:s");
+            $post_array['published_date_string'] = $datestring;
+
+            $post_array['category_menu_icon'] = "";
+            $post_array['category_icon'] = "";
+
+
+            if ($postValue['postCategories'][0]['category']->menu_icon)
+                $post_array['category_menu_icon'] = Settings::$image_path . $postValue['postCategories'][0]['category']->menu_icon;
+
+            if ($postValue['postCategories'][0]['category']->icon)
+                $post_array['category_icon'] = Settings::$image_path . $postValue['postCategories'][0]['category']->icon;
+
+            $post_array['category_name'] = $postValue['postCategories'][0]['category']->name;
+            $post_array['category_id'] = $postValue['postCategories'][0]['category']->id;
+
+            $post_array['inner_priority'] = $postValue['postCategories'][0]->inner_priority;
+
+            $post_array['second_category_name'] = "";
+            $post_array['second_category_id'] = $postValue['postCategories'][0]['category']->id;
+
+            if (isset($postValue['postCategories'][1]['category']->name))
+            {
+                $post_array['second_category_name'] = $postValue['postCategories'][1]['category']->name;
+                $post_array['second_category_id'] = $postValue['postCategories'][1]['category']->id;
+            }
+            $post_array['tags'] = array();
+
+            $j = 0;
+            if ($postValue['postTags'])
+                foreach ($postValue['postTags'] as $value)
+                {
+                    $post_array['tags'][$j]['name'] = $value['tag']->tags_name;
+                    $post_array['tags'][$j]['id'] = $value['tag']->id;
+                    $j++;
+                }
+                
+            $post_array['attach'] = "";
+            $post_array['attach_content'] = "";
+            $post_array['attach_download_link'] = "";
+            $post_array['attachment'] = array();
+
+            if ($postValue['postAttachment'] && count($postValue['postAttachment']) > 0)
+            {
+                $ai = 0;
+                foreach ($postValue['postAttachment'] as $avalue)
+                {
+                    $post_array['attachment'][$ai]['attach'] = Settings::$image_path . $avalue->file_name;
+
+                    $post_array['attachment'][$ai]['content'] = '<iframe frameborder="0" style="width: 100%; height: 500px;" src="http://docs.google.com/gview?url=' . Settings::$image_path . $avalue->file_name . '&embedded=true"></iframe>';
+                    $post_array['attachment'][$ai]['download_link'] = 'http://www.champs21.com/download?f_path=' . $avalue->file_name;
+
+                    $post_array['attachment'][$ai]['caption'] = $avalue->caption;
+                    $post_array['attachment'][$ai]['show'] = $avalue->show;
+                    $ai++;
+                }
+            }
+            
+            return $post_array;
+            
+        }
+        else
+        {
+            return false;
+        }    
     }
 
     public static function content_images($content, $first_image = true, $lead_material = false) {

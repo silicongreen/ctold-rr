@@ -790,6 +790,9 @@ class Post_model extends DataMapper
         $this->db->set('ip_address', $_SERVER['REMOTE_ADDR']);
         $this->db->where('id', $news_id);
         $this->db->update('post');
+        
+        update_cache_single($news_id, $i_user_view_count_inc_no, $normal_view_count_add);
+        
         $insert_array['news_id']    = $news_id;
         $insert_array['ip_address'] = $_SERVER['REMOTE_ADDR'];
         $insert_array['country'] = $this->visitor_country();

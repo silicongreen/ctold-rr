@@ -2071,6 +2071,8 @@ class news extends MX_Controller
         }
         garbage_collector_block( 0,true );
         
+        create_cache_single($obj_post->id);
+        
         garbage_collector();
       
         

@@ -42,11 +42,13 @@
                             <p class="f5" style="font-size:16px;color:#9CD64E;"><?php echo $row['medium']; ?><?php echo " ".$row['level']; ?></p>                            
                             <p class="f5" style="font-size:14px;color:#000;"><?php echo $row['district']; ?> <?php echo " ".$row['location']; ?></p>
                             <p>
-                                <button class="red" type="button" style="width:20%;">
-                                    <span class="clearfix f2">
-                                        Visit
-                                    </span>
-                                </button>
+                                <a style="color:#60cb97;" href="<?php echo base_url() . 'schools/' . sanitize($row['name']); ?>">
+                                    <button class="red" type="button" style="width:20%;">
+                                        <span class="clearfix f2">
+                                            Visit
+                                        </span>
+                                    </button>
+                                </a>
                             </p>
                         </div>
                         

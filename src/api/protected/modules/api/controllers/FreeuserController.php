@@ -777,7 +777,7 @@ class FreeuserController extends Controller
            $singlepost = $postModel->getSinglePost($id);
        }    
        
-       Yii::app()->cache->set($cache_name, $singlepost, 86400);
+       Yii::app()->cache->set($cache_name, $singlepost, 5184000);
     }        
     
     private function getSingleNewsFromCache($id)
@@ -787,7 +787,7 @@ class FreeuserController extends Controller
        {
           $postModel = new Post();
           $singlepost = $postModel->getSinglePost($id);
-          Yii::app()->cache->set($cache_name, $singlepost, 86400); 
+          Yii::app()->cache->set($cache_name, $singlepost, 5184000); 
        }
        return $singlepost;
     }        
@@ -823,7 +823,7 @@ class FreeuserController extends Controller
             
             
             
-            Yii::app()->cache->set($cache_name, $singlepost, 86400);
+            Yii::app()->cache->set($cache_name, $singlepost, 5184000);
             //CREATE CACHE FOR SINGLE NEWS
             
             

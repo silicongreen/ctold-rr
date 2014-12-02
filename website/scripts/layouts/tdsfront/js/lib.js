@@ -1043,10 +1043,10 @@ $(document).ready(function(){
             processData: false,
             success: function(data) {
                 
-                var exclamation = 'Oops!';
+                var exclamation = 'Sorry!';
                 
                 if(data.saved == true) {
-                    exclamation = 'Hooray!';
+                    exclamation = 'Thank you for your time!';
                     $('#frm_contact_us')[0].reset();
                     $( "#frm_contact_us input:text, textarea").css( "border", "1px solid #d9dbdc" );
                 }else{

@@ -565,6 +565,17 @@ if ( !function_exists("send_mail") )
     {
         $CI = &get_instance();
         
+        $CI->load->config('champs21');
+        
+        $headers   = array();
+        $headers[] = "MIME-Version: 1.0";
+        
+        if(!$ar_email['html']){
+            $headers[] = "Content-type: text/plain; charset=utf-8";
+        }else{
+            $headers[] = "Content-type: text/html; charset=utf-8";
+        }
+        
         $headers   = array();
         $headers[] = "MIME-Version: 1.0";
         $headers[] = "Content-type: text/plain; charset=utf-8";
@@ -584,8 +595,7 @@ if ( !function_exists("send_mail") )
         $headers[] = "Reply-To: ".$ar_email['sender_full_name']." <".$ar_email['sender_email'].">";
         $headers[] = "Subject: {$ar_email['subject']}";
         $headers[] = "X-Mailer: PHP/".phpversion();
-       
-        $CI->load->config('champs21');
+        
         if($CI->config->config['mail_mode']['test']){
             return save_mail($ar_email, $headers);
         }else{

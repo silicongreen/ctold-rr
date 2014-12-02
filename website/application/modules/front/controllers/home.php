@@ -2763,9 +2763,11 @@ class home extends MX_Controller {
             $ar_email['cc_email'] = $email_config[$contact_model->contact_type]['cc']['email'];
             $ar_email['bcc_name'] = $email_config[$contact_model->contact_type]['bcc']['full_name'];
             $ar_email['bcc_email'] = $email_config[$contact_model->contact_type]['bcc']['email'];
+            $ar_email['html'] = true;
             
             $ar_email['subject'] = $email_config[$contact_model->contact_type]['subject'];
-            $ar_email['message'] = $contact_model->description;
+//            $ar_email['message'] = $contact_model->description;
+            $ar_email['message'] = $this->get_welcome_message();
             
             if($contact_model->validate()){
                 
@@ -2773,7 +2775,7 @@ class home extends MX_Controller {
                     
                     if($contact_model->save()){
                         $data['saved'] = TRUE;
-                        $data['errors'][] = 'We appreciate that you’ve taken the time to write us. We’ll get back to you very soon. Please come back and see us often.';
+                        $data['errors'][] = 'We appreciate that you have taken the time to write us. We’ll get back to you very soon. Please come back and see us often.';
                     }else{
                         $data['saved'] = FALSE;
                         $data['errors'] = $contact_model->error->all;
@@ -2825,6 +2827,7 @@ class home extends MX_Controller {
         
         $this->extra_params = $ar_params;
     }
+    
     public function createpage()
     {
         
@@ -2923,5 +2926,74 @@ class home extends MX_Controller {
         );
         
         $this->extra_params = $ar_params;
+    }
+    
+    private function get_welcome_message(){
+        
+        $message = '<!DOCTYPE HTML>';
+        
+        $message .= '<head>';
+            $message .= '<meta http-equiv="content-type" content="text/html">';
+            $message .= '<title>Welcome to Champs21.com</title>';
+        $message .= '<body>';
+        
+            $message .= '<div id="header" style="width: 50%; height: 60px; margin: 0 auto; padding: 10px; color: #fff; text-align: center; background-color: #E0E0E0;font-family: Open Sans,Arial,sans-serif;">';
+                $message .= '<img height="50" width="220" style="border-width:0" src="'.  base_url('styles/layouts/tdsfront/images/logo-new.png').'" alt="Champs21.com" title="Champs21.com">';
+            $message .= '</div>';
+            
+            $message .= '<p>Thank you for joining Champs21.com and welcome to country&#39;s largest portal for Students | Teachers | Parents. I&#39;m writing this mail to Thank You and giving you a little brief on our services and features.</p>';
+            $message .= '<p>
+                Champs21.com, the pioneer eLearning program of Bangladesh, has been dedicatedly and very
+                humbly working with the objectives to better prepare our students as the Champions of 21st Century. 
+                The portal offers various educational and non-educational contents on daily basis for every family 
+                that has a school going student.</p>';
+            
+            $message .= '<p>
+                <a href="'.base_url('resource-centre').'" style="color:#000000; text-decoration: underline; font-weight: bold; ">Resource Centre</a> is the most important section where you will find education content not for students 
+                but also teaching and learning resources for teachers and parents on various subjects. All the 
+                education contents are developed by professional pool of teachers from Champs21.com. Please feel 
+                free and <a href="'.base_url().'" style="color:#000000; text-decoration: underline; ">apply</a>, if you want to join us as a teacher. Education resources uploaded by others are 
+                carefully checked and modified before it is uploaded for our respected users. Please <a href="'.base_url().'" style="color:#000000; text-decoration: underline; font-weight: bold; ">Candle</a> now if 
+                you want to share any resources with our education community.</p>';
+            
+            $message .= '<p>
+                Our non-education contents i.e. Tech News, Sports News, Entertainment, Health & Nutrition, 
+                Literature, Travel, Games and Videos are also very popular among our family members. Our 
+                continued efforts are always there to research and develop contents in order to make them truly 
+                useful for you.</p>';
+            
+            $message .= '<p>
+                <a href="'.base_url('schools').'" style="color:#000000; text-decoration: underline; font-weight: bold; ">Schools</a> section offers and extensive database of schools in the country. This makes your life simpler 
+                to collect information about any particular school. If you are a teacher, create your <a href="'.base_url('schools').'" style="color:#000000; text-decoration: underline; ">School</a> if it is not 
+                already there.</p>';
+            
+            $message .= '<p>
+                <strong>Good Read</strong> allows you to save the articles and create your own library of resources. You can save 
+                your favourite articles and read them again and again at later dates at your convenience.</p>';
+            
+            $message .= '<p>
+                Do you think you can contribute to our Students | Teachers | Parents community? <a href="'.base_url().'" style="color:#000000; text-decoration: underline; font-weight: bold; ">Candle</a> us your 
+                article now and spread light. Other than only education, you can write and Candle on any available 
+                sections of Champs21.com.</p>';
+            
+            $message .= '<p>
+                As a registered user, you can now make <strong>preference settings</strong> and get only favourite content feeding 
+                on your home page.</p>';
+            
+            $message .= '<p>
+                You are very important to us. So is our every other student, teacher and parent of our beloved 
+                country. If you like our resources, please do <span style="text-decoration: underline; ">spread</span> this message among your near and dear ones.</p>';
+            
+            $message .= '<p>Thank you once again for your time and patience.</p>';
+            $message .= '<p>Best Regards,</p>';
+            $message .= '<p>&nbsp;</p>';
+            $message .= '<p>&nbsp;</p>';
+            $message .= '<p>Russell T. Ahmed</p>';
+            $message .= '<p>Founder &amp; CEO</p>';
+            
+        $message .= '</body>';
+        $message .= '</head>';
+        
+        return $message;
     }
 }

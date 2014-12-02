@@ -1053,7 +1053,7 @@ class FreeuserController extends Controller
             $response['status']['msg'] = "DATA_FOUND";
 
 
-            Yii::app()->cache->set($cache_name, $response, 1800);
+            Yii::app()->cache->set($cache_name, $response, 86400);
             
         }
         
@@ -1125,7 +1125,7 @@ class FreeuserController extends Controller
                 $response['data']['post'] = $post;
                 $response['status']['code'] = 200;
                 $response['status']['msg'] = "DATA_FOUND";
-                Yii::app()->cache->set($cache_name, $response, 1800);
+                Yii::app()->cache->set($cache_name, $response, 86400);
             }
             if(isset($response['data']['post']) && count($response['data']['post'])>0)
             {
@@ -1224,7 +1224,7 @@ class FreeuserController extends Controller
             $response['data']['post'] = $post;
             $response['status']['code'] = 200;
             $response['status']['msg'] = "DATA_FOUND";
-            Yii::app()->cache->set($cache_name, $response, 1800);
+            Yii::app()->cache->set($cache_name, $response, 86400);
         }
         if(isset($response['data']['post']) && count($response['data']['post'])>0)
         {

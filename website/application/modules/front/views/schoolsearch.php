@@ -6,7 +6,7 @@
 <div class="container" style="width: 77%;min-height:250px;">
 	<div style="">
 		<ul style="margin: 30px 20px 20px 35px;">
-			<li>
+                        <li>
                                 <div style="background: #fff;padding: 30px 20px;font-size:35px;font-family:'Bree Serif';margin-top:-40px;">
                                     <span style="color:#dadada">Searched</span><span style="color:#60cb97">&nbsp;SCHOOLS</span>
                                 </div>
@@ -23,7 +23,7 @@
 					<div style="float:left;width:25%;height:160px;overflow: hidden;">
                                             <img src="<?php echo base_url($row['logo']); ?>" width="220">
                                         </div>
-					<div style="float:left;width:45%;">
+				<div style="float:left;width:45%;">
 						<p class="f2" style="font-size:22px;"><a style="color:#60cb97;" href="<?php echo base_url() . 'schools/' . sanitize($row['name']); ?>"><?php echo $row['name']; ?></a></p>                            
                                                 <p class="f5" style="font-size:16px;color:#9CD64E;"><?php echo $row['medium']; ?><?php echo " ".$row['level']; ?></p>                            
                                                 <p class="f5" style="font-size:14px;color:#000;"><?php echo $row['district']; ?><?php echo " ".$row['location']; ?></p>
@@ -36,8 +36,8 @@
                                                         </button>
                                                     </a>
                                                 </p>
-					</div>
-					<div class="join-wrapper">
+                                        </div>
+ 				<div class="join-wrapper">
                             
                                             <?php if ( !isset($user_school_ids) || empty($user_school_ids) || !in_array($row['id'], $user_school_ids)) { ?>
                                             <button id="<?php echo $row['id']; ?>" data="school_join" class="red <?php echo (free_user_logged_in()) ? 'btn_user_join_school' : 'before-login-user'; ?>" type="button">

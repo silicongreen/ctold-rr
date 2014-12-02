@@ -39,8 +39,8 @@
                         </div>
                         <div style="float:left;width:45%;">
                             <p class="f2" style="font-size:22px;"><a style="color:#60cb97;" href="<?php echo base_url() . 'schools/' . sanitize($row['name']); ?>"><?php echo $row['name']; ?></a></p>                            
-                            <p class="f5" style="font-size:16px;color:#9CD64E;"><?php echo $row['medium']; ?>,<?php echo $row['level']; ?></p>                            
-                            <p class="f5" style="font-size:14px;color:#000;"><?php echo $row['district']; ?>, <?php echo $row['location']; ?></p>
+                            <p class="f5" style="font-size:16px;color:#9CD64E;"><?php echo $row['medium']; ?><?php echo " ".$row['level']; ?></p>                            
+                            <p class="f5" style="font-size:14px;color:#000;"><?php echo $row['district']; ?> <?php echo " ".$row['location']; ?></p>
                             <p>
                                 <button class="red" type="button" style="width:20%;">
                                     <span class="clearfix f2">

@@ -1421,6 +1421,77 @@ if(!function_exists('get_curl_url'))
     }
 }
 
+if(!function_exists('update_cache_single'))
+{
+    function update_cache_single($id,$user_view_count,$view_count)
+    {
+        $url = get_curl_url("createcachesinglenews");
+        $cache_name = "YII-RESPONSE-HOME";
+        $fields = array(
+            'id' => $id,
+            'delete_cache'  => "no",
+            'user_view_count'  => $user_view_count,
+            'view_count'  => $view_count,
+            
+	);
+        foreach($fields as $key=>$value) { 
+            $fields_string .= $key.'='.$value.'&'; 
+            
+        }
+        rtrim($fields_string, '&');
+        $ch = curl_init();
+
+        //set the url, number of POST vars, POST data
+        curl_setopt($ch,CURLOPT_URL, $url);
+        curl_setopt($ch,CURLOPT_POST, count($fields));
+        curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
+            'Accept: application/json',
+            'Content-Length: ' . strlen($fields_string)
+            )                                                                       
+        );  
+        $result = curl_exec($ch);
+        curl_close($ch);
+        
+        
+    }
+}
+
+if(!function_exists('create_cache_single'))
+{
+    function create_cache_single($id)
+    {
+        $url = get_curl_url("createcachesinglenews");
+        $cache_name = "YII-RESPONSE-HOME";
+        $fields = array(
+            'id' => $id,
+            'delete_cache'  => "yes"
+	);
+        foreach($fields as $key=>$value) { 
+            $fields_string .= $key.'='.$value.'&'; 
+            
+        }
+        rtrim($fields_string, '&');
+        $ch = curl_init();
+
+        //set the url, number of POST vars, POST data
+        curl_setopt($ch,CURLOPT_URL, $url);
+        curl_setopt($ch,CURLOPT_POST, count($fields));
+        curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
+            'Accept: application/json',
+            'Content-Length: ' . strlen($fields_string)
+            )                                                                       
+        );  
+        $result = curl_exec($ch);
+        curl_close($ch);
+        
+        
+    }
+}
+
 if(!function_exists('garbage_collector'))
 {
     function garbage_collector()
@@ -1447,39 +1518,8 @@ if(!function_exists('garbage_collector'))
             'Content-Length: ' . strlen($fields_string)
             )                                                                       
         );  
-
-        //execute post
         $result = curl_exec($ch);
-
-        //close connection
         curl_close($ch);
-        
-        
-////        //creating first page cache for visitor
-//        $url = get_curl_url();
-//        $fields = array(
-//            'page_number' => 1,
-//            'callded_for_cache' =>true
-//	);
-//        foreach($fields as $key=>$value) { 
-//            $fields_string .= $key.'='.$value.'&'; 
-//            
-//        }
-//        rtrim($fields_string, '&');
-//        $ch = curl_init();
-//
-//        //set the url, number of POST vars, POST data
-//        curl_setopt($ch,CURLOPT_URL, $url);
-//        curl_setopt($ch,CURLOPT_POST, count($fields));
-//        curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
-//
-//        //execute post
-//        $result = curl_exec($ch);
-//
-//        //close connection
-//        curl_close($ch);
-        
-        
         
         
     }

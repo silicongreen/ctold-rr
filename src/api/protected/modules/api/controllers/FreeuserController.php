@@ -27,7 +27,7 @@ class FreeuserController extends Controller
                     , "gettagpost", "getbylinepost", "getmenu",
                     "getuserinfo", "goodread", "readlater", "goodreadall", "goodreadfolder", "removegoodread"
                     , "schoolsearch", "school", "createschool", "schoolpage", "schoolactivity", "candle"
-                    , "garbagecollector","getschoolteacherbylinepost", 
+                    , "garbagecollector","getschoolteacherbylinepost","createcachesinglenews", 
                     'set_preference', 'get_preference','addgcm','getallgcm'),
                 'users' => array('*'),
             ),
@@ -414,7 +414,6 @@ class FreeuserController extends Controller
     {
         $user_id = Yii::app()->request->getPost('user_id');
         $folderObj = new UserFolder();
-        $goodreadObj = new UserGoodRead();
         if (!$user_id)
         {
             $response['status']['code'] = 400;
@@ -426,6 +425,23 @@ class FreeuserController extends Controller
             $response['status']['code'] = 200;
             $response['status']['msg'] = "DATA_FOUND";
         }
+        if(isset($response['data']['post']) && count($response['data']['post'])>0)
+        {
+           
+            $post_data = array();
+            $j = 0;
+            foreach($response['data']['post'] as $value)
+            {
+                $i = 0;
+                foreach($value['post'] as $postvalue)
+                {
+                   $response['data']['post'][$j]['post'][$i] = $this->getSingleNewsFromCache($postvalue['id']); 
+                   $i++;
+                }   
+                $j++;
+            } 
+            
+        } 
         echo CJSON::encode($response);
         Yii::app()->end();
     }
@@ -702,26 +718,7 @@ class FreeuserController extends Controller
         if ($term)
         {
             $postObj = new Post();
-
             $response['data']['post'] = $postObj->getSearchPost($term);
-
-//            $categoryObj = new Categories();
-//
-//            $response['data']['categories'] = $categoryObj->getSearchCategory($term);
-//
-//            $tagObj = new Tag();
-//
-//            $response['data']['tags'] = $tagObj->getSearchTags($term);
-//
-//            $keywordObj = new Keywords();
-//
-//            $response['data']['keywords'] = $keywordObj->getSearchKeywords($term);
-//
-//
-//            $bylineobj = new Bylines();
-//
-//            $response['data']['authors'] = $bylineobj->getSearchBylines($term);
-
             $response['status']['code'] = 200;
             $response['status']['msg'] = "DATA_FOUND";
         }
@@ -745,122 +742,213 @@ class FreeuserController extends Controller
         echo CJSON::encode($response);
         Yii::app()->end();
     }
+    
+    public function actionCreateCacheSingleNews()
+    {
+       $id = Yii::app()->request->getPost('id');
+       $user_view_count = Yii::app()->request->getPost('user_view_count');
+       $view_count = Yii::app()->request->getPost('user_view_count');
+       $delete_cache = Yii::app()->request->getPost('delete_cache');
+       
+       $cache_name = "YII-SINGLE-POST-CACHE-".$id;
+       $cache_data = Yii::app()->cache->get($cache_name);
+       if ($cache_data !== false && $delete_cache=="yes")
+       {   
+           $postModel = new Post();
+           Yii::app()->cache->delete($cache_name);
+           $singlepost = $postModel->getSinglePost($id);
+       }
+       else if($cache_data !== false && $delete_cache=="no" && $user_view_count && $view_count)
+       {
+           $cache_data['seen'] = $cache_data['seen']+$view_count;
+           $cache_data['view_count'] = $cache_data['seen']+$view_count;
+           $cache_data['user_view_count'] = $cache_data['user_view_count']+$user_view_count;
+           $singlepost = $cache_data;
+       }
+       else if($cache_data !== false)
+       {
+           $postModel = new Post();
+           Yii::app()->cache->delete($cache_name);
+           $singlepost = $postModel->getSinglePost($id);
+       } 
+       else
+       {
+           $postModel = new Post();
+           $singlepost = $postModel->getSinglePost($id);
+       }    
+       
+       Yii::app()->cache->set($cache_name, $singlepost, 86400);
+    }        
+    
+    private function getSingleNewsFromCache($id)
+    {
+       $cache_name = "YII-SINGLE-POST-CACHE-".$id; 
+       if(!$singlepost = Yii::app()->cache->get($cache_name))
+       {
+          $postModel = new Post();
+          $singlepost = $postModel->getSinglePost($id);
+          Yii::app()->cache->set($cache_name, $singlepost, 86400); 
+       }
+       return $singlepost;
+    }        
 
     public function actionGetSingleNews()
     {
-
-        $user_id = Yii::app()->request->getPost('user_id');
-        if (!$user_id)
-        {
-            $user_type = 1;
-        }
-        else
-        {
-            $freeuserObj = new Freeusers();
-            $user_info = $freeuserObj->getUserInfo($user_id);
-            $user_type = $user_info['user_type'];
-        }
-
         $id = Yii::app()->request->getPost('id');
-        $main_id = Yii::app()->request->getPost('main_id');
-        
-        $good_read = "";
-
-        if ($user_id)
+        if($id)
         {
-            $goodreadObj = new UserGoodRead();
-            $goodreadObj->removeGoodRead($id, $user_id);
+            //update view count
+            $postModel = new Post();
+            $postobj = $postModel->findByPk($id);
+            $postobj->user_view_count = $postobj->user_view_count + Settings::$count_update_by;
+            $postobj->view_count = $postobj->view_count + Settings::$count_update_by;
+            $postobj->save();
             
-            $all_good_read_folder = $goodreadObj->getGoodReadUser($id, $user_id);
+            //CREATE CACHE FOR SINGLE NEWS
+            $cache_name = "YII-SINGLE-POST-CACHE-".$id;
             
-            if($all_good_read_folder)
-            {
+            $cache_data = Yii::app()->cache->get($cache_name);
+            if ($cache_data !== false)
+            { 
                 
-                $good_read = $all_good_read_folder->folder_id;
-                    
+                $cache_data['seen'] = $cache_data['seen']+Settings::$count_update_by;
+                $cache_data['view_count'] = $cache_data['seen']+Settings::$count_update_by;
+                $cache_data['user_view_count'] = $cache_data['user_view_count']+Settings::$count_update_by;
+                $singlepost = $cache_data;
             }
-        }
-
-
-
-        $category_id = Yii::app()->request->getPost('category_id');
-        $postModel = new Post();
-        if (!$category_id)
-        {
-            if(!$main_id)
-            $category_id = $postModel->getCategoryId($id);
             else
-            $category_id = $postModel->getCategoryId($main_id);   
-        }
-
-        $postcategoryObj = new PostCategory();
-        $allpostid = $postcategoryObj->getPostAll($category_id, $user_type);
-
-
-
-
-        $singlepost = $postModel->getSinglePost($id);
-
-        if(!$main_id)
-        {
-            $next_id = $postcategoryObj->nextpreviousid($category_id, $user_type, $id, $singlepost['published_date'], $singlepost['inner_priority']);
-
-            $previous_id = $postcategoryObj->nextpreviousid($category_id, $user_type, $id, $singlepost['published_date'], $singlepost['inner_priority'], "previous");
-
-            if ($next_id == $previous_id)
             {
-                $next_id = $postcategoryObj->nextpreviousid($category_id, $user_type, $next_id, $singlepost['published_date'], $singlepost['inner_priority'], "next", $id);
-            }
-        }
-        else
-        {
-            $next_id = $postcategoryObj->nextpreviousid($category_id, $user_type, $main_id, $singlepost['published_date'], $singlepost['inner_priority']);
-
-            $previous_id = $postcategoryObj->nextpreviousid($category_id, $user_type, $main_id, $singlepost['published_date'], $singlepost['inner_priority'], "previous");
-
-            if ($next_id == $previous_id)
+                $singlepost = $postModel->getSinglePost($id);
+            }     
+            
+            
+            
+            Yii::app()->cache->set($cache_name, $singlepost, 86400);
+            //CREATE CACHE FOR SINGLE NEWS
+            
+            
+            $singlepost['content'] = $singlepost['mobile_content'];
+            $singlepost['post_type'] = $singlepost['post_type_mobile'];
+            
+            unset($singlepost['mobile_content']);
+            unset($singlepost['post_type_mobile']);
+            
+            
+            
+            $user_id = Yii::app()->request->getPost('user_id');
+            if (!$user_id)
             {
-                $next_id = $postcategoryObj->nextpreviousid($category_id, $user_type, $next_id, $singlepost['published_date'], $singlepost['inner_priority'], "next", $id);
+                $user_type = 1;
             }
-        }    
+            else
+            {
+                $freeuserObj = new Freeusers();
+                $user_info = $freeuserObj->getUserInfo($user_id);
+                $user_type = $user_info['user_type'];
+            }
+            $main_id = Yii::app()->request->getPost('main_id');
 
-        $postobj = $postModel->findByPk($id);
+            $good_read = "";
 
-        $postobj->user_view_count = $postobj->user_view_count + Settings::$count_update_by;
-        $postobj->view_count = $postobj->view_count + Settings::$count_update_by;
-        $postobj->save();
+            if ($user_id)
+            {
+                $goodreadObj = new UserGoodRead();
+                $goodreadObj->removeGoodRead($id, $user_id);
 
-        $categoryModel = new Categories();
+                $all_good_read_folder = $goodreadObj->getGoodReadUser($id, $user_id);
 
-        //$subcategory = $categoryModel->getSubcategory($category_id);
-        //$response['data']['subcategory'] = $subcategory;
-        $response['data']['allpostid'] = $allpostid;
-        $response['data']['good_read'] = $good_read;
-        $response['data']['previous_id'] = $previous_id;
-        $response['data']['next_id'] = $next_id;
-        
-        if($main_id)
-        {
-            $response['data']['language'] = $postModel->getLanguage($main_id);
+                if($all_good_read_folder)
+                {
+
+                    $good_read = $all_good_read_folder->folder_id;
+
+                }
+            }
+
+
+
+            $category_id = Yii::app()->request->getPost('category_id');
+            
+            if (!$category_id)
+            {
+                if(!$main_id)
+                $category_id = $postModel->getCategoryId($id);
+                else
+                $category_id = $postModel->getCategoryId($main_id);   
+            }
+
+            $postcategoryObj = new PostCategory();
+            $allpostid = $postcategoryObj->getPostAll($category_id, $user_type);
+
+
+
+
+            
+            
+            
+
+            if(!$main_id)
+            {
+                $next_id = $postcategoryObj->nextpreviousid($category_id, $user_type, $id, $singlepost['published_date'], $singlepost['inner_priority']);
+
+                $previous_id = $postcategoryObj->nextpreviousid($category_id, $user_type, $id, $singlepost['published_date'], $singlepost['inner_priority'], "previous");
+
+                if ($next_id == $previous_id)
+                {
+                    $next_id = $postcategoryObj->nextpreviousid($category_id, $user_type, $next_id, $singlepost['published_date'], $singlepost['inner_priority'], "next", $id);
+                }
+            }
+            else
+            {
+                $next_id = $postcategoryObj->nextpreviousid($category_id, $user_type, $main_id, $singlepost['published_date'], $singlepost['inner_priority']);
+
+                $previous_id = $postcategoryObj->nextpreviousid($category_id, $user_type, $main_id, $singlepost['published_date'], $singlepost['inner_priority'], "previous");
+
+                if ($next_id == $previous_id)
+                {
+                    $next_id = $postcategoryObj->nextpreviousid($category_id, $user_type, $next_id, $singlepost['published_date'], $singlepost['inner_priority'], "next", $id);
+                }
+            }    
+
+           
+
+            $categoryModel = new Categories();
+
+            //$subcategory = $categoryModel->getSubcategory($category_id);
+            //$response['data']['subcategory'] = $subcategory;
+            $response['data']['allpostid'] = $allpostid;
+            $response['data']['good_read'] = $good_read;
+            $response['data']['previous_id'] = $previous_id;
+            $response['data']['next_id'] = $next_id;
+
+            if($main_id)
+            {
+                $response['data']['language'] = $postModel->getLanguage($main_id);
+            }
+            else
+            {
+                $response['data']['language'] = $postModel->getLanguage($id);
+            }   
+
+            if($main_id)
+            {
+                $response['data']['main_id'] = $main_id;
+            }
+            else
+            {
+                $response['data']['main_id'] = $id;
+            }    
+
+
+            $response['data']['post'] = $singlepost;
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "DATA_FOUND";
         }
         else
         {
-            $response['data']['language'] = $postModel->getLanguage($id);
-        }   
-        
-        if($main_id)
-        {
-            $response['data']['main_id'] = $main_id;
-        }
-        else
-        {
-            $response['data']['main_id'] = $id;
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "BAD_REQUEST";
         }    
-        
-
-        $response['data']['post'] = $singlepost;
-        $response['status']['code'] = 200;
-        $response['status']['msg'] = "DATA_FOUND";
 
         //echo json_encode($response, JSON_HEX_QUOT | JSON_HEX_TAG);
         echo CJSON::encode($response);
@@ -889,7 +977,7 @@ class FreeuserController extends Controller
         $page_number = Yii::app()->request->getPost('page_number');
         $page_size = Yii::app()->request->getPost('page_size');
         $user_id = Yii::app()->request->getPost('user_id');
-
+       
 
         $already_showed = Yii::app()->request->getPost('already_showed');
         $from_main_site = Yii::app()->request->getPost('from_main_site');
@@ -935,10 +1023,11 @@ class FreeuserController extends Controller
         $cache_name = "YII-RESPONSE-HOME-" . $page_number . "-" . $page_size . "-" . $content_showed_for_caching . "-" . $category_filter . "-" . $user_type;
         $this->createAllCache($cache_name);
         $response = Yii::app()->cache->get($cache_name);
+        
         if ($response === false)
         {
 
-
+             
             $homepageObj = new HomepageData();
 
             if ($already_showed)
@@ -956,6 +1045,7 @@ class FreeuserController extends Controller
             {
                 $has_next = true;
             }
+           
             $response['data']['has_next'] = $has_next;
 
             $response['data']['post'] = $homepage_post;
@@ -964,7 +1054,21 @@ class FreeuserController extends Controller
 
 
             Yii::app()->cache->set($cache_name, $response, 1800);
+            
         }
+        
+        if(isset($response['data']['post']) && count($response['data']['post'])>0)
+        {
+           
+            $post_data = array();
+            $i = 0;
+            foreach($response['data']['post'] as $value)
+            {
+                $post_data[$i] = $this->getSingleNewsFromCache($value['id']);
+                $i++;
+            } 
+            $response['data']['post'] = $post_data;
+        }    
 
         if (!$callded_for_cache)
             echo CJSON::encode($response);
@@ -1023,6 +1127,20 @@ class FreeuserController extends Controller
                 $response['status']['msg'] = "DATA_FOUND";
                 Yii::app()->cache->set($cache_name, $response, 1800);
             }
+            if(isset($response['data']['post']) && count($response['data']['post'])>0)
+            {
+
+                $post_data = array();
+                $i = 0;
+                foreach($response['data']['post'] as $value)
+                {
+                    $post_data[$i] = $this->getSingleNewsFromCache($value['id']);
+                    $i++;
+                } 
+                $response['data']['post'] = $post_data;
+            }
+            
+            
         }
         else
         {
@@ -1108,6 +1226,19 @@ class FreeuserController extends Controller
             $response['status']['msg'] = "DATA_FOUND";
             Yii::app()->cache->set($cache_name, $response, 1800);
         }
+        if(isset($response['data']['post']) && count($response['data']['post'])>0)
+        {
+           
+            $post_data = array();
+            $i = 0;
+            foreach($response['data']['post'] as $value)
+            {
+                $post_data[$i] = $this->getSingleNewsFromCache($value['id']);
+                $i++;
+            } 
+            $response['data']['post'] = $post_data;
+        }
+        
         if (!$callded_for_cache)
             echo CJSON::encode($response);
         Yii::app()->end();

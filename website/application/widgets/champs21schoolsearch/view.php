@@ -500,7 +500,18 @@
   border-left: 40px solid #a7abb0;
 }
 
-
+@media all and (min-width: 200px) and (max-width: 314px) {
+    #toPopup
+    {
+        width:auto !important;
+        z-index:1 !important;
+    }
+    .school_search_box
+    {
+        background-size: 130% !important;
+        background-position: center center !important;
+    }
+}
 
 
 

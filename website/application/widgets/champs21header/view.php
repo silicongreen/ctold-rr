@@ -1042,7 +1042,7 @@ if($('.header-logo-div').is(':visible')) {
             margin:0px !important;
         }
         .settings-btn {
-            background: url("/styles/layouts/tdsfront/image/menu-icon.svg") no-repeat scroll center center / 100% auto transparent !important;
+            background: url("/styles/layouts/tdsfront/image/menu-icon.png") no-repeat scroll center center / 100% auto transparent !important;
             cursor: pointer;
             height: 40px !important;
             width: 40px !important;

@@ -656,7 +656,15 @@ height: 46px;
                         </li>
                     </ul>
                     <?php }?>
-                </div>                
+                </div> 
+				<div class="search_box_head">
+					<div style="float: left;margin:5px;">                
+						<form method="get" class="searchform" action="<?php echo base_url('search'); ?>" role="search">                    
+							<input class="field" name="s" id="s" class='search' placeholder="Search this site" type="search" style="border-radius: 6px; -moz-border-radius: 6px; -webkit-border-radius: 6px; width: 220px; margin-top: 3px;">
+							<input class="submit search-button" value="" type="submit" />
+						</form>                
+					</div>
+				</div>
             </div>
             
             
@@ -923,6 +931,10 @@ if($('.header-logo-div').is(':visible')) {
 {
     display:none;
 }
+.search_box_head
+{
+	display:block;
+}
 @media all and (min-width: 200px) and (max-width: 314px) {
     .fancybox-wrap
     {
@@ -946,6 +958,10 @@ if($('.header-logo-div').is(':visible')) {
         width: 52% !important;
         
     }
+	.search_box_head
+	{
+		display:none;
+	}
 }
 @media all and (min-width: 315px) and (max-width: 449px) {
     .fancybox-wrap
@@ -1188,6 +1204,10 @@ if($('.header-logo-div').is(':visible')) {
         {
             width:100%
         }
+		.search_box_head
+		{
+			display:none;
+		}
         
 } 
 @media all and (min-width: 450px) and (max-width: 599px) {
@@ -1419,7 +1439,10 @@ if($('.header-logo-div').is(':visible')) {
         {
            float:left;
         }
-        
+        .search_box_head
+		{
+			display:none;
+		}
         
         
 }
@@ -1626,6 +1649,10 @@ if($('.header-logo-div').is(':visible')) {
             font-size:50px !important;
             line-height:50px !important;
         }
+		.search_box_head
+		{
+			display:none;
+		}
         
 }
 @media all and (min-width: 800px) and (max-width: 991px) {
@@ -2587,8 +2614,10 @@ if($('.header-logo-div').is(':visible')) {
         content: '|';
 		color:#ccc;
     }
+
     .tz_social li {
         display: inline-block;
+		margin:0px;
     }
     .tz_social a{
         font-size: 14px;

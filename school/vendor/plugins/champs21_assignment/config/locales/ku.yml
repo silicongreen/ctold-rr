@@ -1,0 +1,81 @@
+# Sample localization file for English. Add more files in this directory for other locales.
+# See http://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+ku:
+  activerecord:
+    attributes:
+      assignment:
+        title: "ناونیشان"
+        content: "ناوەڕۆک"
+        student_list: "لیستەی فێرخوازەکان"
+        duedate: "ڕۆژی تەواوکردن"
+
+      assignment_answer:
+        title: "ناونیشان"
+        content: "ناوەڕۆک"
+
+
+    errors:
+      messages:
+        date_cant_be_past_date : "Date can't be past date"
+
+
+  new_assignment_sucessfuly_created: "هاوتایەکی نوێ سەرکەوتووانە دروست کرا"
+  assignment_details_updated: "درێژەی هاوتاکردن نوێکرایەوە"
+  assignment_sucessfully_deleted: "هاوتاکردن سەرکەوتووانە سڕایەوە"
+  you_do_not_have_permission_to_delete_this_assignment: "دەسەڵاتی سڕینەوەی ئەم هاوتاکردنەت نیە"
+  you_are_not_allowed_to_download_that_file: "ڕێگەت پێ نەدراوە کە ئەو پەڕگەیە دابگریت"
+  assignment_text: "هاوتاکردن"
+  assignments_text: "هاوتاکردن"
+  submit_answer: "وەڵامێک بنێرە"
+  attach_a_file: "پەڕگەیەک هاوپێچ بکە"
+  on: "لە"
+  deleted_student: "Deleted Student"
+
+  assignments:
+    on_text: "لە "
+    change_subject: "بابەت بگۆڕە"
+    create_new_assignment: "هاوتاکردنێکی نوێ دابنێ"
+    all_assignments: "هەموو هاوتاکردنەکان"
+    there_are_no_subjects_assigned_to_this_employee: "هیچ بەبەتێک هاوتای ئەم فەرمانبەرە نەکراوە"
+    you_have_not_been_assigned_any_assignments: "هیچ هاوتایەکت بۆ نەکراوە"
+    create_a_new_assignment: "هاوتای نوێ دروست بکە"
+    assignment_already_due: "هاوتاکردن ئیتر تەواوبووە"
+    due_in: "تەواوبووە لە"
+    delete_assignment: "سڕینەوەی هاوتاکردن"
+    delete_this_assignment: "دڵنیایت لە سڕیننەوەی ئەم هاوتایە؟ چونکە بەسڕینەوەی ئەم، هەموو وەڵامەکانیشی دەسڕرێنەوە."
+    assigned: "هاوتاکرا"
+    answered: "وەڵامدرایەوە"
+    resubmit: "بینێرەوە"
+    answer_this_assignment: "وەڵامێک بۆ ئەم هاوتایی کردنە بنووسە"
+    rejected: "ڕێگەی نەدرا"
+    hostel_accepted: "وەرگیرا"
+    update_assignment: "نوێکردنەوەی هاوتاکردن"
+    edit_assignment: "دەستکاریی کردنی هاوتاکردن"
+    no_assignments_for_this_subject_have_been_created: "هیچ هاوتاییەک بۆ ئەم بابەتە دانەنراوە"
+    no_students: "هیچ فێرخوازێک"
+    you_cannot_edit_this_assignment: "ناتوانیت دەستکاری ئەم هاوتاکردنە بکەیت"
+
+  assignment_answers:
+    assignment_submitted: "هاوتاکردن نێررا"
+    you_are_not_allowed_to_view_that_page: "ڕێت پێ نەدراوە تەماشای ئەو پەڕەیە بکەیت"
+    you_cannot_edit_the_assignment_once_it_is_accepted: "ناتوانیت دەستکاریی هاوتاکردنەکە بکەیت لە کاتێکدا وەرگیراوە"
+    you_cannot_edit_this_assignment: "ناتوانیت دەستکاری ئەم هاوتاکردنە بکەیت"
+    assignment_successfuly_updated: "هاوتاکردنەکە سەرکەوتووانە کۆتایی هات"
+    failed_to_update_assignment: "نەتوانرا هاوتاکردنەکە نوێ بکرێتەوە"
+    failed_to_set_status_of_assignment: "هەڵە ڕویدا لەکاتی گۆڕینی ئاستی هاوتاکردنەکە"
+    you_cannot_approve_or_reject_this_assignment: "تۆ ناتوانیت ئەم هاوتاکردنە قبوڵ یا ڕەت بکەیتەوە"
+    assignment_text: "هاوتاکردن"
+    edit_answer: "دەستکاری وەڵام بکە"
+    submit_an_answer: "وەڵام بنێرە"
+    reject_answer: "وەڵام وەرمەگرە"
+    accept_answer: "وەڵام وەربگرە"
+    the_assignment_is: "هاوتاکردنەکە بریتیە لە: "
+    resubmit_answer: "وەڵامەکە بنێرەوە"
+    this_answer_yet_to_be_evaluated: "ئەم وەڵامە هەڵسەنگاندنی دەوێت"
+    submitted_on: "خرایە بەردەست لە: "
+    submitted_by: "نێرراوە لە لایەن: "
+    answer: "وەڵام"
+    already_answered: "You have already answered"
+    this_answer_is_not_for_the_assignment: "This is not the answer for this assignment"
+

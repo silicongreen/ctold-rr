@@ -1,0 +1,82 @@
+fr: # locale
+  activerecord:
+    attributes:
+    #validation errors
+             
+      online_exam_attendance:
+        online_exam_score_detail: "Détails du score d'examen en ligne"
+
+      online_exam_group:
+        name: "Nom"
+        start_date: "Date de début"
+        end_date: "Date fin"
+        maximum_time: "Temps Maximum"
+        pass_percentage: "Pourcentage de réussite"
+
+      online_exam_option:
+        option: "Option"
+
+      online_exam_question:
+        question: "Question"
+        mark: "Marquer"
+        online_exam_options: "Options d'examen en ligne"
+    errors:
+      messages:
+        atleast_one_option_must_be_answer: "Au moins une option doit être répondue"
+        end_date_should_be_after_start_date: "End date should be after Start date"
+        should_not_be_less_than_today: "Date should not be less than today's date"
+#common
+  online_exam_text: "Exam en ligne"
+  select_exam: "Sélectionner un Examen"
+  exam_result_text: "Résultat de l'Examen"
+  failed: "Echec"
+  passed: "Réussite"
+  question: "Question"
+  options: "Options"
+  question_created_successfully: "Question créée avec succès"
+  exam_group_successfully_deleted: "Groupe d'Examen supprimé avec succès"
+  sorry_cannot_publish_an_exam_without_questions_please_add_minimum_one_question: "Désolé! Impossible de publier un examen sans poser de questions. S'il vous plaît ajouter au minimum une question"
+  exam_reset_successful_for_selected_students: "Examen réinitialisé avec succès pour les étudiants sélectionnés"
+  sorry_no_students_selected: "Désolé! Aucun étudiant sélectionné"
+  enter_options_here: "Entrer les options ici"
+  is_answer: "est réponse"
+  edit_option: "Modifier l'option"
+  edit_question_text: "Modifier la question"
+  delete_question: "Supprimer la question"
+  add_question: "Ajouter une question"
+  new_online_exam_text: "Nouvel examen en ligne"
+  maximum_time_minutes: "Temps Maximum (Minutes)"
+  pass_percentage: "Pourcentage de réussite(%)"
+  create_questions: "Créer des questions"
+  reset_exam: "Examen réussi"
+  view_online_exams: "Voir les examens en ligne"
+  are_you_sure_to_delete_this_exam_group: "Êtes-vous sûr de supprimer ce group d'examens"
+  no_exam_created_for_selected_batch: "Aucun examen créé pour le lot sélectionné"
+  view_result_text: "Voir le résultat"
+  select_student: "Sélectionner un étudiant"
+  no_students_has_atended_the_selcted_exam_group: "Aucun étudiant n'a participé au groupe d'examen sélectionné"
+  add_questions: "Ajouter des questions"
+  no_question_added_to_this_exam_group: "Aucune question ajoutée à ce groupe d'examen"
+  this_will_delete_the_question_and_associated_answers_are_you_sure: "Cela supprimera la question et les réponses associées. Êtes-vous sûr?"
+  no_student_attended_this_exam: "Aucun étudiant a participé à cet examen"
+  online_examination_result: "Résultat de l'examen en ligne"
+  create_new_online_exam: "Créer un nouveau examen en ligne"
+  view_existing_online_exam: "Voir un examen en ligne existant"
+  view_exam_results: "Voir les résultats de l'examen"
+  view_online_exam_results: "Voir les résultats de l'examen en ligne"
+  reset_exam_for_a_student: "Réinitialiser un examen pour un étudiant"
+  option_per_question: "Option par Question"
+  view_results: "Voir les Résultats"
+  you_have_successfully_completed_the_exam: "Vous avez terminé l'examen avec succès"
+  sorry_you_have_already_attended_this_exam: "Désolé! Vous avez déjà participé à cet examen"
+  exam_name: "Nom de l'examen"
+  minutes: "Minutes"
+  start_exam: "Commencer un examen"
+  sorry_your_answers_are_not_acepted_as_the_maximum_time_exeeded_please_contact_the_exam_admin: "Désolé! Vos réponses ne sont pas acceptées comme le temps maximum est dépassé. SVP, contactez l'admin de l'examen"
+  total_score: "Score Total"
+  time_left: "Temps restant"
+  manage_online_exam_system: "Gérer le système de l'examen en ligne"
+  exam_group_successfully_updated: "Groupe d'examen mis à jour avec succès"
+  exam_published: "Exam Published"
+  finsih_exam_confirm : "You are finshing exam, once finsihed you cannot redo"
+  please_select_one_exam : "Please select one exam"

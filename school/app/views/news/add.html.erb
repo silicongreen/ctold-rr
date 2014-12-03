@@ -37,7 +37,18 @@
         <label for="title"><%= t('title') %></label>
         <div id="news_title_text_field_bg"><%= f.text_field :title %></div>
       </div>
-
+      
+      <div class="news_label_field">
+        <label for="title"><%= t('category') %></label>
+        <div class="text-input-bg">
+          <select name="news[category_id]">
+            <option value="1">general</option>
+            <option value="2">circular</option>
+            <option value="3">announcement</option>
+          </select>
+        </div>
+      </div>
+      </br></br>
       <div class="news_label_field">
         <label for="news_content"><%= t('content') %></label>
         <div id="news_content_text_field_bg">

@@ -9,11 +9,10 @@ Version 1.5.7
 */
 
 /* You can change these values */
-
 var image_path = "";
-var image_up = "/images/pin_groups/arrow-up.gif";
-var image_down = "/images/pin_groups/arrow-down.gif";
-var image_none = "/images/pin_groups/arrow-none.gif";
+var image_up = "/images/arrow-up.gif";
+var image_down = "/images/arrow-down.gif";
+var image_none = "/images/arrow-none.gif";
 var europeandate = true;
 var alternate_row_colors = true;
 
@@ -22,6 +21,19 @@ addEvent(window, "load", sortables_init);
 
 var SORT_COLUMN_INDEX;
 var thead = false;
+
+function isNumber (o) {
+    return ! isNaN (o-0);
+}
+function sl_no_reassign(lnk) {
+    var td = lnk.parentNode;
+    var t = getParent(td,'TABLE');
+    var i = 1;
+    while (i < t.tBodies[0].rows.length) {
+       (t.tBodies[0].rows[i].cells[0]).innerHTML = i
+        i++;
+    }
+}
 
 function sortables_init() {
     // Find all tables with class sortable and make them sortable
@@ -45,7 +57,7 @@ function ts_makeSortable(t) {
         }
     }
     if (!firstRow) return;
-	
+
     // We have a first row: assume it's the header, and make its contents clickable links
     for (var i=0;i<firstRow.cells.length;i++) {
         var cell = firstRow.cells[i];
@@ -66,7 +78,7 @@ function ts_getInnerText(el) {
     };
     if (el.innerText) return el.innerText;	//Not needed but it is faster
     var str = "";
-	
+
     var cs = el.childNodes;
     var l = cs.length;
     for (var i = 0; i < l; i++) {
@@ -94,21 +106,28 @@ function ts_resortTable(lnk, clid) {
     // Work out a type for the column
     if (t.rows.length <= 1) return;
     var itm = "";
-    var i = 0;
-    while (itm == "" && i < t.tBodies[0].rows.length) {
-        var itm = ts_getInnerText(t.tBodies[0].rows[i].cells[column]);
-        itm = trim(itm);
-        if (itm.substr(0,4) == "<!--" || itm.length == 0) {
-            itm = "";
-        }
+    var i = 1;
+    while (i < t.tBodies[0].rows.length) {
+        itm1 = ts_getInnerText(t.tBodies[0].rows[i].cells[column]);
+        itm += trim(itm1);
         i++;
     }
     if (itm == "") return;
-    sortfn = ts_sort_caseinsensitive;
-    if (itm.match(/^\d\d[\/\.-][a-zA-z][a-zA-Z][a-zA-Z][\/\.-]\d\d\d\d$/)) sortfn = ts_sort_date;
-    if (itm.match(/^\d\d[\/\.-]\d\d[\/\.-]\d\d\d{2}?$/)) sortfn = ts_sort_date;
-    if (itm.match(/^-?[�$�ۢ�]\d/)) sortfn = ts_sort_numeric;
-    if (itm.match(/^-?(\d+[,\.]?)+(E[-+][\d]+)?%?$/)) sortfn = ts_sort_numeric;
+    var sortfn;
+    /*check for number start*/
+    if (isNumber (itm)==true)
+    {
+        sortfn = ts_sort_numeric;
+    }
+    else
+    {
+        sortfn = ts_sort_caseinsensitive;
+    }
+    /*check for number end*/
+    /*if (itm.match(/^\d\d[\/\.-][a-zA-z][a-zA-Z][a-zA-Z][\/\.-]\d\d\d\d$/)) sortfn = ts_sort_date;
+	if (itm.match(/^\d\d[\/\.-]\d\d[\/\.-]\d\d\d{2}?$/)) sortfn = ts_sort_date;
+	if (itm.match(/^-?[£$€Û¢´]\d/)) alert(); sortfn = ts_sort_numeric;
+	if (itm.match(/^-?(\d+[,\.]?)+(E[-+][\d]+)?%?$/)) sortfn = ts_sort_numeric;*/
     SORT_COLUMN_INDEX = column;
     var firstRow = new Array();
     var newRows = new Array();
@@ -141,7 +160,7 @@ function ts_resortTable(lnk, clid) {
     }
     // We appendChild rows that already exist to the tbody, so it moves them rather than creating new ones
     // don't do sortbottom rows
-    for (i=0; i<newRows.length; i++) { 
+    for (i=0; i<newRows.length; i++) {
         if (!newRows[i].className || (newRows[i].className && (newRows[i].className.indexOf('sortbottom') == -1))) {
             t.tBodies[0].appendChild(newRows[i]);
         }
@@ -162,6 +181,7 @@ function ts_resortTable(lnk, clid) {
     }
     span.innerHTML = ARROW;
     alternate(t);
+    sl_no_reassign(lnk);
 }
 
 function getParent(el, pTagName) {
@@ -174,7 +194,7 @@ function getParent(el, pTagName) {
     }
 }
 
-function sort_date(date) {	
+function sort_date(date) {
     // y2k notes: two digit years less than 50 are treated as 20XX, greater than 50 are treated as 19XX
     dt = "00000000";
     if (date.length == 11) {
@@ -250,7 +270,7 @@ function sort_date(date) {
 function ts_sort_date(a,b) {
     dt1 = sort_date(ts_getInnerText(a.cells[SORT_COLUMN_INDEX]));
     dt2 = sort_date(ts_getInnerText(b.cells[SORT_COLUMN_INDEX]));
-	
+
     if (dt1==dt2) {
         return 0;
     }

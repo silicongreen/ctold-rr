@@ -160,5 +160,97 @@ class StudentAttendanceController < ApplicationController
     end
 
   end
+  
+  def leaves
+     @student = Student.find(params[:id])
+     #@employee = Employee.find(:all)
+     
+     if @student.class_teacher_id == 0
+      @general_subjects = Subject.find_all_by_batch_id(@student.batch_id, :conditions=>"elective_group_id IS NULL and is_deleted=false")
+      puts @student.batch_id
+      #puts @employee.length
+      puts @general_subjects.length
 
+      @reporting_manager_id = []
+
+      reporting_managers = []
+      employee_user_ids = []
+      @general_subjects.each do |s|
+         @assigned_employee = EmployeesSubject.find_all_by_subject_id(s.id)
+         if @assigned_employee.present?
+           @assigned_employee.each do |ae|
+             @employee = Employee.find(ae.employee_id)
+             reporting_managers.push(@employee.reporting_manager_id)
+             puts @employee.reporting_manager_id.to_s + "  "  + @employee.id.to_s
+             employee_user_ids.push(@employee.id)
+           end
+         end
+      end
+
+     found_nil = false
+     i = 0
+     index = nil
+     reporting_managers.each do |rm|
+         i = i + 1
+         if rm == nil and ! found_nil
+           found_nil = true
+           index = i
+         end
+      end
+
+      if found_nil
+        @reporting_teacher = Employee.find(employee_user_ids[index])
+      else
+        @admin_for_school = MultiSchool.current_school.code + "-admin"
+        @user_reporting = User.find_by_username(@admin_for_school)
+        @reporting_teacher = Employee.find_by_user_id(@user_reporting.id)
+      end
+      @student.update_attributes(:class_teacher_id=>@reporting_teacher.id)
+     else
+       @reporting_teacher = Employee.find(@student.class_teacher_id)
+     end  
+     @total_leave_count = 0
+     
+    @app_leaves = ApplyLeaveStudent.count(:conditions=>["student_id =? AND viewed_by_teacher =?", @reporting_teacher.id, false])
+    @total_leave_count = @total_leave_count + @app_leaves
+    
+    @leave_apply = ApplyLeaveStudent.new(params[:leave_apply])
+    puts @total_leave_count;
+     
+    if request.post?
+      applied_dates = (@leave_apply.start_date..@leave_apply.end_date).to_a.uniq
+      detect_overlaps = ApplyLeaveStudent.find(:all, :conditions => ["student_id = ? AND (start_date IN (?) OR end_date IN (?))",@student.id, applied_dates, applied_dates])
+      if detect_overlaps.present? and detect_overlaps.map(&:approved).include? true
+        @leave_apply.errors.add_to_base("#{t('range_conflict')}") and return
+      end
+      leaves = ApplyLeaveStudent.count(:all,:conditions=>{:approved => true, :student_id=>params[:leave_apply][:student_id],:start_date=>params[:leave_apply][:start_date],:end_date=>params[:leave_apply][:end_date]})
+      puts leaves
+      already_apply = ApplyLeaveStudent.count(:all,:conditions=>{:approved => nil, :student_id=>params[:leave_apply][:student_id],:start_date=>params[:leave_apply][:start_date],:end_date=>params[:leave_apply][:end_date]})
+      if(leaves == 0 and already_apply == 0) or (leaves <= 1 )
+          if @leave_apply.save
+            ApplyLeaveStudent.update(@leave_apply, :approved=> nil, :viewed_by_teacher=> false, :approving_teacher => @reporting_teacher.id)
+            flash[:notice]=t('flash5')
+            redirect_to :controller => "student_attendance", :action=> "leaves", :id=>@student.id
+          end
+      else
+        @leave_apply.errors.add_to_base("#{t('already_applied')}")
+      end
+    end
+  end
+  
+  def leave_history
+    @student = Student.find(params[:id])
+  end
+  
+  def update_leave_history
+    @student = Student.find(params[:id])
+    @start_date = (params[:period][:start_date])
+    @end_date = (params[:period][:end_date])
+    
+    @student_attendances = Attendance.find_all_by_student_id(@student.id,:conditions=> "is_leave = 1 AND month_date between '#{@start_date.to_date}' and '#{@end_date.to_date}'")
+    
+    render :update do |page|
+      page.replace_html "attendance-report", :partial => 'update_leave_history'
+    end
+  end
 end

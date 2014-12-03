@@ -670,7 +670,10 @@ authorization do
       :to =>[
       :student,
       :month,
-      :student_report
+      :student_report,
+      :leaves,
+      :leave_history,
+      :update_leave_history
     ]
   end
 
@@ -760,7 +763,10 @@ authorization do
       :to =>[
       :student,
       :month,
-      :student_report
+      :student_report,
+      :leaves,
+      :leave_history,
+      :update_leave_history
     ]
   end
 
@@ -1482,6 +1488,28 @@ authorization do
       :add_batch,
       :remove_batch
     ]
+     has_permission_on [:club],
+      :to => [
+      :index,
+      :addclub,
+      :delete_event,
+      :club_member,
+      :event_group,
+      :select_course,
+      :course_event,
+      :remove_batch,
+      :select_employee_department,
+      :department_event,
+      :remove_department,
+      :show,
+      :confirm_event,
+      :cancel_event,
+      :edit_event,
+      :categories,
+      :category_delete,
+      :category_edit,
+      :category_update
+    ]
     has_permission_on [:event],
       :to => [
       :index,
@@ -1495,7 +1523,11 @@ authorization do
       :show,
       :confirm_event,
       :cancel_event,
-      :edit_event
+      :edit_event,
+      :categories,
+      :category_delete,
+      :category_edit,
+      :category_update
     ]
     has_permission_on [:academic_year],
       :to => [
@@ -2507,6 +2539,21 @@ authorization do
       :select_weightages,
       :update_course_weightages
     ]
+	has_permission_on [:syllabus],
+	:to => [
+      :index,
+      :add,
+      :add_comment,
+      :all,
+      :delete,
+      :delete_comment,
+      :comment_approved,
+      :edit,
+      :search_news_ajax,
+      :view,
+	  :show,
+	  :showall,
+      :comment_view]
   end
 
   # student- privileges
@@ -2594,7 +2641,7 @@ authorization do
     has_permission_on [:subject], :to => [:index,:list_subjects]
     has_permission_on [:timetable], :to => [:student_view,:update_timetable_view]
     has_permission_on [:attendance], :to => [:student_report]
-    has_permission_on [:student_attendance], :to => [:student, :month, :student_report]
+    has_permission_on [:student_attendance], :to => [:student, :month, :student_report, :leaves, :leave_history, :update_leave_history]
     has_permission_on [:finance], :to => [:student_fees_structure,:refund_student_view,:refund_student_view_pdf]
     has_permission_on [:cce_reports], :to => [:student_transcript,:student_report_pdf]
   end

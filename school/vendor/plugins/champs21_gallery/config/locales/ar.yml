@@ -1,0 +1,58 @@
+ar:
+  activerecord:
+    attributes:
+      gallery_category:
+        name: "الاسم"
+
+      gallery_photo:
+        name: "الاسم"
+        gallery_category_id: "غاليري الفئة"
+        photo_file_name: "اسم ملف الصورة"
+
+      gallery_tag:
+        gallery_photo_id: "معرض الصور"
+    errors:
+      messages:
+        must_be_less_than_5_mb : "must be less than 5 MB"
+
+
+#controller
+  successfully_updated: "تحديث بنجاح"
+  successfully_deleted: "حذف بنجاح"
+  photo_uploaded: "صورة تم الرفع"
+  photo_updated: "صورة تحديث"
+#view
+  photo_text: "معرض"
+  categoriess: "فئات"
+  gallery: "معرض"
+  add_photo: "إضافة صورة"
+  neew: "جديد"
+  photos: "صور"
+  gallery_category: "غاليري الفئة"
+  name: "الاسم"
+  savee: "► حفظ"
+  pictures: "صور"
+  editt: "تحرير"
+  delete: "حذف"
+  are_you_sure: "هل أنت متأكد؟"
+  edit_photo: "تحرير الصور"
+  delete_photo: "حذف الصور"
+  upload_photo: "تحميل الصور"
+  select_category: "حدد الفئة"
+  select_photo: "تحديد الصورة (5MB)"
+  photo_name: "صورة الاسم"
+  updatee: "► تحديث"
+  employees: "الموظفين"
+  students: "طلاب"
+  department: "وزارة"
+  batchess: "دفعات"
+  select_employees: "الموظفين حدد"
+  select_students: "طلاب حدد"
+  select_department: "حدد قسم"
+  select_course: "حدد ملعب"
+  select_all: "تحديد جميع"
+  add: "إضافة"
+  no_category: "لا الفئة"
+  photo_uploaded: "صورة تم الرفع"
+  category_created: "تصنيف خلق"
+  gallery_privilege: "Gallery Admin"

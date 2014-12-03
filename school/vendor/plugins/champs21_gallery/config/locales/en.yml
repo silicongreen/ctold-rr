@@ -1,0 +1,56 @@
+en:
+  activerecord:
+    attributes:
+      gallery_category:
+        name: "Name"
+
+      gallery_photo:
+        name: "Name"
+        gallery_category_id: "Gallery Category"
+        photo_file_name: "Photo File Name"
+
+      gallery_tag:
+        gallery_photo_id: "Gallery Photo"
+    errors:
+      messages:
+        must_be_less_than_5_mb : "must be less than 5 MB"
+#controller
+  successfully_updated: "Successfully updated"
+  successfully_deleted: "Successfully deleted"
+  photo_uploaded: "Photo uploaded"
+  photo_updated: "Photo updated"
+#view
+  photo_text: "Gallery"
+  categoriess: "Categories"
+  gallery: "Gallery"
+  add_photo: "Add photo"
+  neew: "New"
+  photos: " Photos"
+  gallery_category: "Gallery Category"
+  name: "Name"
+  savee: "► Save"
+  pictures: "Pictures"
+  editt: "Edit"
+  delete: "Delete"
+  are_you_sure: "Are you sure?"
+  edit_photo: "Edit Photo"
+  delete_photo: "Delete Photo"
+  upload_photo: "Upload Photo"
+  select_category: "Select Category"
+  select_photo: "Select photo (5MB)"
+  photo_name: "Photo Name"
+  updatee: "► Update"
+  employees: "Employees"
+  students: "Students"
+  department: "Department"
+  batchess: "Batches"
+  select_employees: "Select Employees"
+  select_students: "Select Students"
+  select_department: "Select Department"
+  select_course: "Select Course"
+  select_all: "Select all"
+  add: "add"
+  no_category: "No Category"
+  photo_uploaded: "Photo uploaded"
+  category_created: "Category created"
+  gallery_privilege: "Gallery Admin"

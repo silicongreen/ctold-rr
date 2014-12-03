@@ -72,15 +72,25 @@ class Guardian < ActiveRecord::Base
     user = User.new do |u|
       u.first_name = self.first_name
       u.last_name = self.last_name
-      u_name="p"+student.admission_no.to_s
+      g_start = "p1"
+      u_name=g_start+student.admission_no.to_s
+      
+      if u_name.index(MultiSchool.current_school.code.to_s+"-")==nil
+        u_name = MultiSchool.current_school.code.to_s+"-"+u_name
+      end 
+      
       begin
         user_record=User.find_by_username(u_name)
         if user_record.present?
-          u_name=u_name.next
+          g_start = g_start.next
+          u_name=g_start+student.admission_no.to_s
+          if u_name.index(MultiSchool.current_school.code.to_s+"-")==nil
+            u_name = MultiSchool.current_school.code.to_s+"-"+u_name
+          end
         end
       end while user_record.present?
       u.username = u_name
-      u.password = "#{u_name}123"
+      u.password = "123456"
       u.role = 'Parent'
       u.email = ( email == '' or User.active.find_by_email(self.email) ) ? self.email.to_s : ""
     end

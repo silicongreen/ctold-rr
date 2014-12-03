@@ -1,0 +1,92 @@
+fr:
+  activerecord:
+    attributes:
+
+    #validation errors
+      group:
+        group_name: "Nom du groupe"
+        members: "Membres"
+
+      group_file:
+        doc_file_name: "Nom du fichier du Doc"
+
+      group_post:
+        post_title: "Titre du post"
+        post_body: "Corps du post"
+
+      group_post_comment:
+        comment_body: "Corps du commentaire"
+
+    errors:
+      messages :
+        member_required: " sont requis. (au moins 1) "
+        required: " est requis."
+        cant_be_blank: " ne peut pas être vide "
+        is_empty: "est vide"
+
+  discuss: "Discuter"
+  confirm_comment: "Voulez-vous vraiment supprimer ce commentaire?"
+  confirm_post: "Voulez-vous vraiment supprimer ce post?"
+  confirm_group: "Voulez-vous vraiment supprimer ce groupe?"
+  deleted_user: "Utilisateur supprimé"
+  discussion: "Discussion"
+  my_group: "Mon Groupe"
+  no_group: "Aucun groupe"
+  by: "par "
+  posted_by: "Posté par "
+  on_text: "activé"
+  member: "Membres"
+  comments: "Commentaires"
+  no_comment: "Aucun récent commentaire trouvé."
+  group_created_successfully: "Groupe créé avec succès"
+  group_updated_successfully: "Groupe mis à jour avec succès"
+  group_delete: "Groupe supprimé avec succès"
+  no_permission: "Vous n'avez pas la permission à acceder à cette page"
+  post_created: "Post créé avec succès"
+  post_deleted: "Post supprimé avec succès"
+  see_all_members: "Voir tous les membres"
+  data_not_found: "Donnée non trouvée"
+  GroupCreate: "Créer un groupe"
+  select_course: "Sélectionner un cours"
+  share: "Partager"
+  new_group: "Nouveau groupe"
+  congrats: "Félicitations!"
+  you_have_been_added_to_this_group: "Vous avez été ajouté à ce groupe."
+  new_post: "Nouveau post"
+  under: "Sous"
+  group: "Groupe"
+
+  groups:
+    add_admin: "Ajouter comme Admin"
+    select_member: "Sélectionner un membre"
+    delete_from_group: "Supprimer du groupe"
+    emp_no: "Numéro Emp/Numéro d'Admission"
+    dept_name: "Nom du Dept/Nom du Cours"
+    delete_from_admin: "Supprimer de l'Admin"
+    select_school: "Sélectionner une école"
+    admins: "Admins"
+    select_principals: "Sélection un Directeur"
+    select_master_app_users: "Sélectionner des utilisateurs d'application Master"
+    create_group: "Créer un groupe"
+    comment: "Commentaire"
+    activity: "Activité"
+    all_discussion: "Toutes les discussions"
+    no_discussion: " Aucune récente discussion"
+    groups_text: "Groupes"
+    group_name: "Nom du groupe"
+    all_posts: "Voir tous les posts"
+    post: "Post"
+    view_recent_activities: "Voir les activités récentes"
+    image_docu: "Télécharger une image ou un document (5MB)"
+    create_new_group: "Créer un nouveau groupe"
+    filter_by: "Filtrer par"
+    group_members: "Membres du groupe"
+    add_member: "Ajouter un nouveau membre"
+  
+  group_posts:
+     view_post: "Voir le Post"
+     posted_by_deleted_member: "Posté par un membre supprimé le"
+     add_comment: "Ajouter vos commentaires"
+     
+     
+ 

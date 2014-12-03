@@ -15,13 +15,20 @@
 #"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
-#under the License. -%>
+#under the License.
+#.champs21-school.com -%>
 
+<div class="site_logo"></div>
+<div class="stp_banner"></div>
 <div id="wrapper">
+  <% unless flash[:notice].nil? %>
+    <p class="flash-msg"> <%= flash[:notice] %> </p>
+  <% end %>
   <div id="login_box">
-    <div id="school-name"><%= current_school_name %></div>
+    
     <div id="login-input-box">
       <div id="logo_area">
+        <div id="school-name"><%= current_school_name %></div>
         <div id="top_logo">
           <%= image_tag current_school_detail.logo.url %>
         </div>
@@ -29,25 +36,29 @@
       <% form_for :user do |form| %>
 
         <div id="login_area">
+          <div class="login_fields">
+            <div id="username_textbox_bg">
+              <%= form.text_field :username,
+                :maxlength => 40, :placeholder=>"Username"%>
+            </div>
+            <div id="password_textbox_bg">
+              <%= form.password_field :password,:placeholder=>"Password" %>
+            </div>
+            <div id="notice">
 
-          <div id="username_textbox_bg">
-            <%= form.text_field :username,
-              :maxlength => 40, :placeholder=>"Username"%>
+            </div>
           </div>
-          <div id="password_textbox_bg">
-            <%= form.password_field :password,:placeholder=>"Password" %>
-          </div>
-          <div id="notice">
-            <% if !flash.empty? %>
-              <%= flash[:notice] %>
-            <% end %>
-          </div>
+          
 
-          <div id="submit_area">
-            <%= submit_tag t('login'), :class => "submit themed_bg themed-dark-hover-background" %>
+          <div id="submit_area">            
             <%= link_to t('forgot_password'),
               {:controller => "user",
               :action => "forgot_password"}, :class=>"forgot_pwd themed_hover_text" %>
+            
+            <!--<%= link_to 'Student Registration',
+              {:controller => "user",
+              :action => "new_student_registration"}, :class=>"forgot_pwd themed_hover_text" %>-->
+            <%= submit_tag t('login'), :class => "submit themed_bg themed-dark-hover-background" %>
           </div>
 
         </div>

@@ -59,6 +59,7 @@ class Batch < ActiveRecord::Base
   has_many :finance_fee_collections,:through=>:fee_collection_batches, :conditions => { :is_deleted => false }
   has_many :fee_collection_batches
   has_many :fee_discounts
+  accepts_nested_attributes_for :subjects
   delegate :course_name,:section_name, :code, :to => :course
   delegate :grading_type, :cce_enabled?, :observation_groups, :cce_weightages, :to=>:course
 

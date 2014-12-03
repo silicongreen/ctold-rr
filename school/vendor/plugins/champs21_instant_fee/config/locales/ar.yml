@@ -1,0 +1,62 @@
+ar:
+  activerecord:
+    attributes:
+
+      instant_fee:
+        amount: "كمية"
+        pay_date: "تاريخ الدفع"
+
+      instant_fee_category:
+        name: "اسم"
+        description: "وصف"
+
+      instant_fee_particular:
+        name: "اسم"
+        description: "وصف"
+        amount: "كمية"
+        instant_fee_category_id: "فئة الرسم الفورية"
+
+
+  payee: "المستفيد"
+  reciept: "استلام"
+  guest: "ضيف"
+  guest_name: "اسم الضيف"
+  payee_name: "اسم المستفيد"
+  net_amount: "المبلغ الصافي"
+  custom: "عرف"
+  add_category: "إضافة فئة"
+  instant_fee_text: "لحظة الرسم"
+  instant_fees_text: "لحظة الرسوم"
+  particular_name: "اسم معين"
+  particular_list: "تفاصيل قائمة"
+  pay_instant_fees: "دفع رسوم الفورية"
+  select_payee: "حدد المستفيد"
+  create_instant_fee: "إنشاء رسوم فورية"
+  instant_fee_reciept: "لحظة استلام الرسوم"
+  manage_instant_fees: "إدارة الرسوم فورية"
+  category_description: "الفئة الوصف"
+  select_category_type: "حدد نوع الفئة"
+  instant_fee_management: "المثال رسوم الإدارة"
+  saving_problem_occured: "حدثت مشكلة في حفظ"
+  view_created_instant_fee: "عرض رسوم فورية أنشاء"
+  no_default_category_exist: "لا توجد فئات الافتراضي"
+  instant_fee_saved_succesfully: "حفظ الرسوم الفورية بنجاح"
+  instant_fees_transaction_report: "رسوم المعاملات الفورية تقرير"
+  edit_instant_category_for_fees: "تعديل الفئة فورية للرسوم"
+  create_instant_category_for_fee: "إنشاء عناوين فورية للرسوم"
+  create_instant_particular_for_fee: "إنشاء خاص فورية للرسوم"
+  update_instant_particular_for_fees: "تحديث معين فورية للرسوم"
+  no_default_particular_exist: "لا توجد تفاصيل الافتراضية تحت هذه الفئة"
+  are_you_want_to_delete_category: "هل أنت متأكد أنك تريد حذف هذه الفئة؟"
+  are_you_want_to_delete_particular: "هل أنت متأكد أنك تريد حذف هذا الخصوص؟"
+  instant_fee_category_created_successfully: "خلقت الفورية فئة الرسم بنجاح"
+  instant_fee_category_updated_successfully: "فئة الرسم الفورية تحديثها بنجاح"
+  instant_fee_particular_created_successfully: "خلقت لحظة معينة الرسوم بنجاح"
+  instant_fee_particular_deleted_successfully: "لحظة معينة رسوم حذف بنجاح"
+  instant_fee_particular_updated_successfully: "لحظة معينة رسوم تحديثها بنجاح"
+  InstantFee_account : "فورية حساب رسوم"
+  champs21_instant_fee_module : "Champs21 الوحدة رسوم فورية"
+  manage_and_pay_instant_fees : "إدارة ودفع الرسوم لحظة"
+  instant_fee_reciept: "Instant fee rciept"
+  net_amount: "Total"
+  instant_fee_payed: "Instant Fee payed successfully"

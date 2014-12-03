@@ -18,8 +18,8 @@
 class SchoolDetail < ActiveRecord::Base
   has_attached_file :logo,
     :styles => { :original=> "150x110#"},
-    :url => "/uploads/:class/:id/:attachment/:attachment_fullname?:timestamp",
-    :path => "uploads/:class/:attachment/:id_partition/:style/:basename.:extension",
+    :url => "/uploads/:class/:attachment/:id/:style/:attachment_fullname?:timestamp",
+    :path => "public/uploads/:class/:attachment/:id/:style/:basename.:extension",
     :default_url  => '/images/application/dummy_logo.png',
     :default_path  => ':rails_root/public/images/application/dummy_logo.png'
 
@@ -29,5 +29,15 @@ class SchoolDetail < ActiveRecord::Base
     :message=>'Image can only be GIF, PNG, JPG',:if=> Proc.new { |p| !p.logo_file_name.blank? }
   validates_attachment_size :logo, :less_than => 512000,
     :message=>'must be less than 500 KB.',:if=> Proc.new { |p| p.logo_file_name_changed? }
-
+  
+  
+  has_attached_file :cover,
+    :styles => { :original=> "800x200#"},
+    :url => "/uploads/:class/:attachment/:id/:style/:attachment_fullname?:timestamp",
+    :path => "public/uploads/:class/:attachment/:id/:style/:basename.:extension"
+  
+  validates_attachment_content_type :cover, :content_type =>VALID_IMAGE_TYPES,
+    :message=>'Image can only be GIF, PNG, JPG',:if=> Proc.new { |p| !p.cover_file_name.blank? }
+  validates_attachment_size :cover, :less_than => 512000,
+    :message=>'must be less than 500 KB.',:if=> Proc.new { |p| p.cover_file_name_changed? }
 end

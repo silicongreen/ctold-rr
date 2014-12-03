@@ -343,16 +343,21 @@ class EmployeeAttendanceController < ApplicationController
       page.replace_html "attendance-report", :partial => 'update_leave_history'
     end
   end
+  
   def leaves
     @leave_types = EmployeeLeaveType.find(:all, :conditions=>"status = true")
     @employee = Employee.find(params[:id])
     @reporting_employees = Employee.find_all_by_reporting_manager_id(@employee.user_id)
     @total_leave_count = 0
     @reporting_employees.each do |e|
+      puts e.id
       @app_leaves = ApplyLeave.count(:conditions=>["employee_id =? AND viewed_by_manager =?", e.id, false])
       @total_leave_count = @total_leave_count + @app_leaves
     end
-
+ @total_leave_count = 0
+    @app_leaves = ApplyLeaveStudent.count(:conditions=>["approving_teacher =? AND viewed_by_teacher =?", @employee.id, false])
+    @total_leave_count = @total_leave_count + @app_leaves
+    
     @leave_apply = ApplyLeave.new(params[:leave_apply])
     if request.post?
       if(@leave_apply.start_date.to_date != @leave_apply.end_date.to_date and @leave_apply.is_half_day == true)
@@ -383,11 +388,21 @@ class EmployeeAttendanceController < ApplicationController
   end
   
   def leave_application
-    @applied_leave = ApplyLeave.find(params[:id])
-    @applied_employee = Employee.find(@applied_leave.employee_id)
-    @leave_type = EmployeeLeaveType.find(@applied_leave.employee_leave_types_id)
-    @manager = @applied_employee.reporting_manager_id
-    @leave_count = EmployeeLeave.find_by_employee_id(@applied_employee.id,:conditions=> "employee_leave_type_id = '#{@leave_type.id}'")
+    @target = params[:target]
+    @request_from = params[:request_from]
+    if @target == "employee"
+      @applied_leave = ApplyLeave.find(params[:id])
+      @applied_employee = Employee.find(@applied_leave.employee_id)
+      @leave_type = EmployeeLeaveType.find(@applied_leave.employee_leave_types_id)
+      @manager = @applied_employee.reporting_manager_id
+      @leave_count = EmployeeLeave.find_by_employee_id(@applied_employee.id,:conditions=> "employee_leave_type_id = '#{@leave_type.id}'")
+    else
+      @applied_leave = ApplyLeaveStudent.find(params[:id])
+      @applied_employee = Student.find(@applied_leave.student_id)
+      @leave_type = ""
+      @manager = ""
+      @leave_count = ApplyLeaveStudent.count(:conditions=>["student_id =? AND approved =?", @applied_leave.student_id, true])
+    end  
   end
 
   def leave_app
@@ -399,105 +414,186 @@ class EmployeeAttendanceController < ApplicationController
   end
 
   def approve_remarks
-    @applied_leave = ApplyLeave.find(params[:id])
+    @target = params[:target]
+    @request_from = params[:request_from]
+    if @target == "student"
+      @applied_leave = ApplyLeaveStudent.find(params[:id])
+    else
+      @applied_leave = ApplyLeave.find(params[:id])
+    end  
+    if params[:target] == "student"
+      render :action => "approve_remarks_student.rjs"
+    else
+      render :action => "approve_remarks.rjs"
+    end
   end
 
   def deny_remarks
-    @applied_leave = ApplyLeave.find(params[:id])
+    @target = params[:target]
+    @request_from = params[:request_from]
+    if @target == "student"
+      @applied_leave = ApplyLeaveStudent.find(params[:id])
+    else
+      @applied_leave = ApplyLeave.find(params[:id])
+    end  
+    if params[:target] == "student"
+      render :action => "deny_remarks_student.rjs"
+    else
+      render :action => "deny_remarks.rjs"
+    end
   end
 
   def approve_leave
-    @applied_leave = ApplyLeave.find(params[:applied_leave])
-    @applied_employee = Employee.find(@applied_leave.employee_id)
-    @employee_leave = EmployeeLeave.find_by_employee_id_and_employee_leave_type_id(@applied_employee.id,@applied_leave.employee_leave_types_id)
-    @manager = @applied_employee.reporting_manager_id    
-    start_date = @applied_leave.start_date
-    end_date = @applied_leave.end_date
-    reset_date = @employee_leave.reset_date || @applied_employee.joining_date - 1.day
-    @leave_count = 0
-    (start_date..end_date).each do |date|
-      @leave_count += @applied_leave.is_half_day == true ? 0.5 : 1.0
-    end
-    if @employee_leave.leave_count >= (@employee_leave.leave_taken + @leave_count)
-      if start_date >= reset_date.to_date
-        (start_date..end_date).each do |d|
-          emp_attendance = EmployeeAttendance.find_by_employee_id_and_attendance_date(@applied_employee.id, d)
-          unless emp_attendance.present?
-            att = EmployeeAttendance.new(:attendance_date=> d, :employee_id=>@applied_employee.id,:employee_leave_type_id=>@applied_leave.employee_leave_types_id, :reason => @applied_leave.reason, :is_half_day => @applied_leave.is_half_day)
-            if att.save
-              att.update_attributes(:is_half_day => @applied_leave.is_half_day)
+    @request_from = params[:request_from]
+    if params[:target] == "student"
+      @applied_leave = ApplyLeaveStudent.find(params[:applied_leave])
+      @applied_student = Student.find(@applied_leave.student_id)
+      @approving_teacher = Employee.find_by_user_id(current_user.id) 
+      start_date = @applied_leave.start_date
+      end_date = @applied_leave.end_date
+
+      (start_date..end_date).each do |d|
+        emp_attendance = Attendance.find_by_student_id_and_month_date(@applied_student.id, d)
+        unless emp_attendance.present?
+          att = Attendance.new(:afternoon => 1, :is_leave => 1, :month_date=> d, :student_id=>@applied_student.id, :batch_id=>@applied_student.batch.id, :reason => @applied_leave.reason)
+          if att.save
+
+          end
+        end
+      end
+      @applied_leave.update_attributes(:approved => true, :teacher_remark => params[:manager_remark],:viewed_by_teacher => true, :approving_teacher => @approving_teacher.id)
+      flash[:notice]="#{t('flash6')} #{@applied_student.first_name} from #{@applied_leave.start_date} to #{@applied_leave.end_date}"
+      if @request_from == "admin"
+        redirect_to :controller=>"employee", :action=>"employee_attendance" and return
+      else
+        redirect_to :controller=>"employee_attendance", :action=>"leaves", :id=>@approving_teacher.id and return
+      end
+    else
+      @applied_leave = ApplyLeave.find(params[:applied_leave])
+      @applied_employee = Employee.find(@applied_leave.employee_id)
+      @employee_leave = EmployeeLeave.find_by_employee_id_and_employee_leave_type_id(@applied_employee.id,@applied_leave.employee_leave_types_id)
+      @manager = @applied_employee.reporting_manager_id    
+      start_date = @applied_leave.start_date
+      end_date = @applied_leave.end_date
+      reset_date = @employee_leave.reset_date || @applied_employee.joining_date - 1.day
+      @leave_count = 0
+      (start_date..end_date).each do |date|
+        @leave_count += @applied_leave.is_half_day == true ? 0.5 : 1.0
+      end
+      if @employee_leave.leave_count >= (@employee_leave.leave_taken + @leave_count)
+        if start_date >= reset_date.to_date
+          (start_date..end_date).each do |d|
+            emp_attendance = EmployeeAttendance.find_by_employee_id_and_attendance_date(@applied_employee.id, d)
+            unless emp_attendance.present?
+              att = EmployeeAttendance.new(:attendance_date=> d, :employee_id=>@applied_employee.id,:employee_leave_type_id=>@applied_leave.employee_leave_types_id, :reason => @applied_leave.reason, :is_half_day => @applied_leave.is_half_day)
+              if att.save
+                att.update_attributes(:is_half_day => @applied_leave.is_half_day)
+                @reset_count = EmployeeLeave.find_by_employee_id(@applied_leave.employee_id, :conditions=> "employee_leave_type_id = '#{@applied_leave.employee_leave_types_id}'")
+                leave_taken = @reset_count.leave_taken
+                if @applied_leave.is_half_day
+                  leave_taken += 0.5
+                  @reset_count.update_attributes(:leave_taken=> leave_taken)
+                else
+                  leave_taken += 1
+                  @reset_count.update_attributes(:leave_taken=> leave_taken)
+                end
+              end
+            else
+              already_half_day = emp_attendance.is_half_day
+              emp_attendance.update_attributes(:is_half_day => false)
               @reset_count = EmployeeLeave.find_by_employee_id(@applied_leave.employee_id, :conditions=> "employee_leave_type_id = '#{@applied_leave.employee_leave_types_id}'")
               leave_taken = @reset_count.leave_taken
-              if @applied_leave.is_half_day
-                leave_taken += 0.5
-                @reset_count.update_attributes(:leave_taken=> leave_taken)
-              else
-                leave_taken += 1
-                @reset_count.update_attributes(:leave_taken=> leave_taken)
-              end
-            end
-          else
-            already_half_day = emp_attendance.is_half_day
-            emp_attendance.update_attributes(:is_half_day => false)
-            @reset_count = EmployeeLeave.find_by_employee_id(@applied_leave.employee_id, :conditions=> "employee_leave_type_id = '#{@applied_leave.employee_leave_types_id}'")
-            leave_taken = @reset_count.leave_taken
-            if already_half_day == true
-              if @applied_leave.is_half_day
-                leave_taken += 0.5
-                @reset_count.update_attributes(:leave_taken=> leave_taken)
-              else
-                leave_taken += 0.5
-                @reset_count.update_attributes(:leave_taken=> leave_taken)
+              if already_half_day == true
+                if @applied_leave.is_half_day
+                  leave_taken += 0.5
+                  @reset_count.update_attributes(:leave_taken=> leave_taken)
+                else
+                  leave_taken += 0.5
+                  @reset_count.update_attributes(:leave_taken=> leave_taken)
+                end
               end
             end
           end
+          @applied_leave.update_attributes(:approved => true, :manager_remark => params[:manager_remark],:viewed_by_manager => true, :approving_manager => current_user.id)
+          flash[:notice]="#{t('flash6')} #{@applied_employee.first_name} from #{@applied_leave.start_date} to #{@applied_leave.end_date}"
+          if @request_from == "admin"
+            redirect_to :controller=>"employee", :action=>"employee_attendance" and return
+          else
+            redirect_to :controller=>"employee_attendance", :action=>"leaves", :id=>@applied_employee.reporting_manager.employee_record.id and return
+          end  
+        else
+          flash[:notice] = "The application contains dates which are earlier than reset date."
+          if @request_from == "admin"
+            redirect_to :controller=>"employee", :action=>"employee_attendance" and return
+          else
+            redirect_to :controller=>"employee_attendance", :action=>"leaves", :id=>@applied_employee.reporting_manager.employee_record.id and return
+          end  
         end
-        @applied_leave.update_attributes(:approved => true, :manager_remark => params[:manager_remark],:viewed_by_manager => true, :approving_manager => current_user.id)
-        flash[:notice]="#{t('flash6')} #{@applied_employee.first_name} from #{@applied_leave.start_date} to #{@applied_leave.end_date}"
-        redirect_to :controller=>"employee_attendance", :action=>"leaves", :id=>@applied_employee.reporting_manager.employee_record.id and return
       else
-        flash[:notice] = "The application contains dates which are earlier than reset date."
-        redirect_to :controller=>"employee_attendance", :action=>"leaves", :id=>@applied_employee.reporting_manager.employee_record.id and return
+        flash[:notice] = "Total amount of leave exceeded."
+        if @request_from == "admin"
+            redirect_to :controller=>"employee", :action=>"employee_attendance" and return
+        else
+            redirect_to :controller => "employee_attendance", :action => "leave_application", :id => @applied_leave.id and return
+        end    
       end
-    else
-      flash[:notice] = "Total amount of leave exceeded."
-      redirect_to :controller => "employee_attendance", :action => "leave_application", :id => @applied_leave.id and return
-    end  
+    end 
   end
 
   def deny_leave
-    @applied_leave = ApplyLeave.find(params[:applied_leave])
-    start_date = @applied_leave.start_date
-    end_date = @applied_leave.end_date
-    @applied_employee = Employee.find(@applied_leave.employee_id)
-    @employee_leave = EmployeeLeave.find_by_employee_id_and_employee_leave_type_id(@applied_employee.id,@applied_leave.employee_leave_types_id)
-    @manager = @applied_employee.reporting_manager_id
-    @employee_attendances = EmployeeAttendance.find(:all, :conditions => ["((attendance_date = ?) OR (attendance_date = ?) or (attendance_date BETWEEN ? and ?)) AND employee_id = ?",start_date,end_date,start_date,end_date,@applied_employee.id])
-    @employee_half_day_attendances = EmployeeAttendance.count(:all, :conditions => ["((attendance_date = ?) OR (attendance_date = ?) or (attendance_date BETWEEN ? and ?)) AND (is_half_day = ? AND employee_id = ?)",start_date,end_date,start_date,end_date,true, @applied_employee.id])
-    count = @employee_attendances.count.to_f - (@employee_half_day_attendances.to_f / 2)
-    @employee_attendances.each do |attendance|
-      if attendance.created_at < @employee_leave.reset_date
-        update_value = @applied_leave.is_half_day == true ? 0.5 : 1.0
-        @employee_leave.update_attributes(:leave_count => @employee_leave.leave_count + update_value)
+    @request_from = params[:request_from]
+    if params[:target] == "student"
+      @applied_leave = ApplyLeaveStudent.find(params[:applied_leave])
+      start_date = @applied_leave.start_date
+      end_date = @applied_leave.end_date
+      @applied_student = Student.find(@applied_leave.student_id)
+      @approving_teacher = Employee.find_by_user_id(current_user.id) 
+      
+      @applied_leave.update_attributes(:approved => false,:viewed_by_teacher => true, :teacher_remark =>params[:manager_remark], :approving_teacher => current_user.id)
+      flash[:notice]="#{t('flash7')} #{@applied_student.first_name} from #{@applied_leave.start_date} to #{@applied_leave.end_date}"
+      if @request_from == "admin"
+         redirect_to :controller=>"employee", :action=>"employee_attendance" and return
       else
-        update_value = @applied_leave.is_half_day == true ? 0.5 : 1.0
-        @employee_leave.update_attributes(:leave_taken => @employee_leave.leave_taken - update_value)
+         redirect_to :action=>"leaves", :id=>@approving_teacher.id
+      end   
+    else
+      @applied_leave = ApplyLeave.find(params[:applied_leave])
+      start_date = @applied_leave.start_date
+      end_date = @applied_leave.end_date
+      @applied_employee = Employee.find(@applied_leave.employee_id)
+      @employee_leave = EmployeeLeave.find_by_employee_id_and_employee_leave_type_id(@applied_employee.id,@applied_leave.employee_leave_types_id)
+      @manager = @applied_employee.reporting_manager_id
+      @employee_attendances = EmployeeAttendance.find(:all, :conditions => ["((attendance_date = ?) OR (attendance_date = ?) or (attendance_date BETWEEN ? and ?)) AND employee_id = ?",start_date,end_date,start_date,end_date,@applied_employee.id])
+      @employee_half_day_attendances = EmployeeAttendance.count(:all, :conditions => ["((attendance_date = ?) OR (attendance_date = ?) or (attendance_date BETWEEN ? and ?)) AND (is_half_day = ? AND employee_id = ?)",start_date,end_date,start_date,end_date,true, @applied_employee.id])
+      count = @employee_attendances.count.to_f - (@employee_half_day_attendances.to_f / 2)
+      @employee_attendances.each do |attendance|
+        if attendance.created_at < @employee_leave.reset_date
+          update_value = @applied_leave.is_half_day == true ? 0.5 : 1.0
+          @employee_leave.update_attributes(:leave_count => @employee_leave.leave_count + update_value)
+        else
+          update_value = @applied_leave.is_half_day == true ? 0.5 : 1.0
+          @employee_leave.update_attributes(:leave_taken => @employee_leave.leave_taken - update_value)
+        end
       end
-    end
-    @employee_attendances.each do |employee_attendance|
-      if @applied_leave.is_half_day == true and employee_attendance.is_half_day == true
-        employee_attendance.destroy
-      elsif @applied_leave.is_half_day == true and employee_attendance.is_half_day == false
-        employee_attendance.update_attributes(:is_half_day => true)
-      elsif @applied_leave.is_half_day == false and employee_attendance.is_half_day == false
-        employee_attendance.destroy
-      elsif @applied_leave.is_half_day == false and employee_attendance.is_half_day == true
-        employee_attendance.destroy
+      @employee_attendances.each do |employee_attendance|
+        if @applied_leave.is_half_day == true and employee_attendance.is_half_day == true
+          employee_attendance.destroy
+        elsif @applied_leave.is_half_day == true and employee_attendance.is_half_day == false
+          employee_attendance.update_attributes(:is_half_day => true)
+        elsif @applied_leave.is_half_day == false and employee_attendance.is_half_day == false
+          employee_attendance.destroy
+        elsif @applied_leave.is_half_day == false and employee_attendance.is_half_day == true
+          employee_attendance.destroy
+        end
       end
-    end
-    @applied_leave.update_attributes(:approved => false,:viewed_by_manager => true, :manager_remark =>params[:manager_remark], :approving_manager => current_user.id)
-    flash[:notice]="#{t('flash7')} #{@applied_employee.first_name} from #{@applied_leave.start_date} to #{@applied_leave.end_date}"
-    redirect_to :action=>"leaves", :id=>@applied_employee.reporting_manager.employee_record.id
+      @applied_leave.update_attributes(:approved => false,:viewed_by_manager => true, :manager_remark =>params[:manager_remark], :approving_manager => current_user.id)
+      flash[:notice]="#{t('flash7')} #{@applied_employee.first_name} from #{@applied_leave.start_date} to #{@applied_leave.end_date}"
+      if @request_from == "admin"
+         redirect_to :controller=>"employee", :action=>"employee_attendance" and return
+      else
+         redirect_to :action=>"leaves", :id=>@applied_employee.reporting_manager.employee_record.id
+      end   
+    end  
   end
 
   def cancel
@@ -505,11 +601,16 @@ class EmployeeAttendanceController < ApplicationController
   end
 
   def new_leave_applications
+    @target = params[:target]
     @employee = Employee.find(params[:id])
     @reporting_employees = Employee.find_all_by_reporting_manager_id(@employee.user_id)
-    render :partial => "new_leave_applications"
+    if @target == "no-popup"
+      render "new_leave_applications_admin"
+    else
+      render :partial => "new_leave_applications"
+    end
   end
-
+  
   def all_employee_new_leave_applications
     @employee = Employee.find(params[:id])
     @all_employees = Employee.find(:all)

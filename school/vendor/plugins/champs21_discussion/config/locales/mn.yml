@@ -1,0 +1,91 @@
+mn:
+  activerecord:
+    attributes:
+
+    #validation errors
+      group:
+        group_name: "Бүлэгийн нэр"
+        members: "Гишүүд"
+
+      group_file:
+        doc_file_name: "Хавтас хэргийн нэр"
+
+      group_post:
+        post_title: "Нийтлэлийн гарчиг"
+        post_body: "Нийтлэлийн бичвэр эх"
+
+      group_post_comment:
+        comment_body: "Шүүмт тайлбар"
+
+    errors:
+      messages :
+        required : "Шаардсан"
+        member_required : " ,,зүйлс шаардсан. (хамгийн багадаа 1)"
+        cant_be_blank: " Хоосон байж болохгүй"
+        is_empty: "Хоосон байна"
+
+  discuss: "Хэлэлцэх"
+  confirm_comment: "Та энэ шүүмж тайлбарыг устгахыг хүсч байна уу?"
+  confirm_post: "Та энэ нийтлэлийг устгахыг үнэхээр хүсч байна уу ?"
+  confirm_group: "Та энэ бүлэгийг устгахыг хүсч байна уу ?"
+  deleted_user: "Устасан хэрэглэгч "
+  discussion: "Хэлэлцээр"
+  my_group: "Миний груп"
+  no_group: "Груп байхгүй байна"
+  by: "-аар "
+  posted_by: "-р нийтлэгдсэн"
+  on_text: "on"
+  member: "Гишүүд"
+  comments: "Шүүмжүүд тайлбарууд"
+  no_comment: "Сүүлийн шүүмж тайлбар олдсонгүй."
+  group_created_successfully: "Груп амжилттай үүслээ"
+  group_updated_successfully: "Груп амжилттай шинэчлэгдлээ"
+  group_delete: "Груп амжилттай усталаа"
+  no_permission: "Таньд энэ хуудасруу орох зөвшөөрөл айхгүй байна"
+  post_created: "Нийтлэл амжилттэй үүслээ"
+  post_deleted: "Нийтлэл амжилттай усталаа"
+  see_all_members: "бүх гишүүдийг харах"
+  data_not_found: "Өгөдөл олдсонгүй"
+  GroupCreate: "Груп үүсгэх"
+  select_course: "Ангийг сонгох"
+  share: "Хуваах"
+  new_group: "Шинэ груп"
+  congrats: "Баяр хүргэе!"
+  you_have_been_added_to_this_group: "Та энэ групт нэмэгдлээ."
+  new_post: "Шинэ групt"
+  under: "Under"
+  group: "Груп"
+
+  groups:
+    add_admin: "Админ нэмэх оруулах"
+    select_member: "Select Member"
+    delete_from_group: "Групээс устгах"
+    emp_no: "Ажилтаны дугаар / Элсэлтийн дугаар"
+    dept_name: "Хэлтсийн нэр / Ангийн нэр"
+    delete_from_admin: "Админаас устгах"
+    select_school: "Сургууль сонгох"
+    admins: "Админууд"
+    select_principals: "Журамыг сонгох"
+    select_master_app_users: "Ахлах хэрэглэгчийг сонгох"
+    create_group: "Груп үүсгэх"
+    comment: "Шүүмж/Тайлбар"
+    activity: "Үйл ажиллагаа"
+    all_discussion: "Бүх хэлэлцээрүүд"
+    no_discussion: " Сүүлийн хэлэлцээр олдсонгүй"
+    groups_text: "Групууд"
+    group_name: "Груп нэр"
+    all_posts: "Бүх нийтлэлийг харах"
+    post: "Нийтлэл"
+    view_recent_activities: "Сүүлийн үйл ажиллагаануудыг харах"
+    image_docu: "Дүрс зураг эсвэл материал байршуулах (5MB)"
+    create_new_group: "Шинэ груп үүсгэх"
+    filter_by: "-р шүүгдсэн"
+    group_members: "Групын гишүүд"
+    add_member: "Шинэ гишүүн нэмэх"
+
+  group_posts:
+     view_post: "Нийтлэлийг харах"
+     posted_by_deleted_member: "Утгасан хэрэглэгчэээр нийтлэгдсэн байна"
+     add_comment: "Та өөрийн шүүмж тайлбараа нэмэх оруулах"
+
+

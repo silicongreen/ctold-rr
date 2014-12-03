@@ -1,0 +1,73 @@
+ch:
+  activerecord:
+    attributes:
+
+       poll_option:
+        option: "選項"
+
+       poll_question:
+         title: "標題"
+         description: "説明"
+         poll_options: "投票選項"
+
+       poll_vote:
+         user_id: "用户"
+    errors:
+      messages:
+        has_already_voted : "已经投票"
+        you_havent_selected_an_option_yet: "你没有选择一个选项"
+        options_cant_blank : "Option can't be blank"
+
+
+  poll_label: "投票"
+  poll_control_privilege: "投票控制"
+  new_poll_created: "新的投票已經創建"
+  poll_msg: "一項新的投票已經在 hr.champs21.com 創建。點擊以下的鏈接進行投票:"
+  regards: "謝謝"
+  question: "問題"
+  answers: "答案"
+  add_another: "添加另一個"
+  allow_other_answer: "允許其他答案"
+  open_for_polling: "開放可投票"
+  members: "成員"
+  post_poll: "發布投票"
+  answer: "答案"
+  online_poll: "在綫投票"
+  edit_poll: "編輯投票"
+  new_poll: "新的投票"
+  view_all_polls: "查看所有投票"
+  listing_all_polls: "列出所有投票"
+  poll: "投票"
+  posted_on: "已發布在"
+  votes: "投票"
+  results: "結果"
+  vote: "投票"
+  close: "結束"
+  no_polls_are_active: "没有活動的投票"
+  closed: "結束"
+  open: "開放"
+  closed_polls_are_not_present: "不會出現已結束投票。"
+  create_new_poll: "創建新的投票"
+  view_all_polls: "查看所有投票"
+  view_poll: "查看投票"
+  others: "其他的"
+  votting_page: "投票頁面"
+  poll_option: "投票選項"
+  write_own_answer: "寫自己的答案"
+  view_results: "查看結果"
+
+  flash_poll1: "你没有權限查看這個投票問題"
+  flash_poll2: "你没有權限編輯這個投票問題"
+  flash_poll3: "投票問題已經成功創建"
+  flash_poll4: "投票已經成功編輯。"
+  flash_poll5: "你没有權限編輯這個任務"
+  flash_poll6: "投票問題已經被成功删除"
+  flash_poll7: "你没有權限删除投票問題"
+  flash_poll8: "投票成功。"
+  flash_poll9: "你没有權限在這個投票中投票"
+  flash_poll10: "投票已經成功結束"
+  flash_poll11: "你没有權限結束這個投票"
+  flash_poll12: "投票已經成功開放"
+  flash_poll13: "你没有權限開放這個投票"
+  flash_poll14: "投票已經結束"
+  flash_poll15: "没有找到請求的投票"

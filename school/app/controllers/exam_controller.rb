@@ -48,6 +48,8 @@ class ExamController < ApplicationController
     @batch = Batch.find(params[:batch])
     @name = params[:exam_option][:name]
     @type = params[:exam_option][:exam_type]
+    @exam_category = params[:exam_option][:exam_category]
+    @topic = params[:exam_option][:topic]
     name=@batch.exam_groups.collect(&:name)
     if name.include?@name
       @error=true

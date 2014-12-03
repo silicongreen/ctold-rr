@@ -5,6 +5,9 @@ class CreateSchoolDetails < ActiveRecord::Migration
       t.string :logo_file_name
       t.string :logo_content_type
       t.string :logo_file_size
+	  t.string :cover_file_name
+      t.string :cover_content_type
+      t.string :cover_file_size
       t.timestamps
     end
   end

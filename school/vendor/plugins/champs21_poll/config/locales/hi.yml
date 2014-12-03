@@ -1,0 +1,73 @@
+hi:
+  activerecord:
+    attributes:
+
+       poll_option:
+        option: "विकल्प"
+
+       poll_question:
+         title: "शीर्षक"
+         description: "विवरण"
+         poll_options: "पोल विकल्प"
+
+       poll_vote:
+         user_id: "उपयोगकर्ता"
+    errors:
+      messages:
+        has_already_voted : "पहले से ही मतदान किया"
+        you_havent_selected_an_option_yet: "आप अभी तक एक विकल्प का चयन नहीं किया"
+        options_cant_blank : "Option can't be blank"
+
+
+  poll_label: "मतदान"
+  poll_control_privilege: "पोल नियंत्रण"
+  new_poll_created: "नई पोल बनाया गया है"
+  poll_msg: "एक नया जनमत hr.champs21.com.Click पर किया गया सर्वेक्षण के जाने निम्न लिंक बनाया गया है:"
+  regards: "सादर"
+  question: "प्रश्न"
+  answers: "जवाब"
+  add_another: "अन्य जोड़ें"
+  allow_other_answer: "अन्य जवाब की अनुमति दें"
+  open_for_polling: "मतदान के लिए खोलें"
+  members: "सदस्य"
+  post_poll: "पोस्ट पोल"
+  answer: "जवाब"
+  online_poll: "ऑनलाइन पोल"
+  edit_poll: "संपादित करें जनमत"
+  new_poll: "नया जनमत"
+  view_all_polls: "सब जनमत देखें"
+  listing_all_polls: "सभी चुनाव लिस्टिंग"
+  poll: "मतदान"
+  posted_on: "पर पोस्ट"
+  votes: "वोट"
+  results: "परिणाम"
+  vote: "वोट"
+  close: "पास"
+  no_polls_are_active: "कोई चुनाव सक्रिय हैं"
+  closed: "बंद"
+  open: "खुला"
+  closed_polls_are_not_present: "बंद चुनावों मौजूद नहीं हैं."
+  create_new_poll: "नया जनमत बनाएँ"
+  view_all_polls: "सब जनमत देखें"
+  view_poll: "देखें जनमत"
+  others: "दूसरों"
+  votting_page: "Votting पृष्ठ"
+  poll_option: "poll_option"
+  write_own_answer: "अपना जवाब लिखने"
+  view_results: "परिणाम देखें"
+
+  flash_poll1: "आप इस जनमत के प्रश्न को देखने की अनुमति नहीं है"
+  flash_poll2: "आप इस जनमत के प्रश्न को संपादित करने की अनुमति नहीं है"
+  flash_poll3: "पोल प्रश्न सफलतापूर्वक बनाया"
+  flash_poll4: "पोल सफल संपादन."
+  flash_poll5: "आप इस कार्य को संपादित करने की अनुमति नहीं है"
+  flash_poll6: "जनमत के प्रश्न सफलतापूर्वक हटा दिया गया है"
+  flash_poll7: "आप जनमत के प्रश्न को हटाने की अनुमति नहीं है"
+  flash_poll8: "सफल मतदान."
+  flash_poll9: "आप इस सर्वेक्षण में मतदान करने की अनुमति नहीं है"
+  flash_poll10: "पोल सफलतापूर्वक बंद कर दिया गया है"
+  flash_poll11: "आप इस पोल को बंद करने की अनुमति नहीं है"
+  flash_poll12: "पोल सफलतापूर्वक खोल दिया गया है"
+  flash_poll13: "आप इस पोल खोलने की अनुमति नहीं है"
+  flash_poll14: "मतदान बंद"
+  flash_poll15: "अनुरोधित जनमत सर्वेक्षण नहीं मिला था"

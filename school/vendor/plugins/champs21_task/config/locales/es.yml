@@ -1,0 +1,94 @@
+es:
+  activerecord:
+    attributes:
+
+      task:
+        user_id: "Usuario"
+        title: "Título"
+        description: "Descripción"
+        status: "Estado"
+        due_date: "Vencimiento"
+
+      task_assignee:
+        assignee_id: "Beneficiario"
+
+      task_comment:
+        user_id: "Usuario"
+        description: "Descripción"
+        task_id: "Tarea"
+
+    errors:
+      messages:
+        invalid_status: "Estado Inválido"
+        should_be_less_than: "debe ser menor de 500 kb"
+        should_be_assigned_only_once: "debe ser asignada una sola vez."
+        cannot_be_before_start_date: "No puede ser antes de la fecha inicial"
+        should_be_in_the_future: "debe ser en el futuro"
+        cannot_be_before_start_date: "Cannot be before start date"
+
+  required_fields: "Campos Obligatorios."
+  edit_privileges: "Editar Privilegios"
+  master_admin: "Master Admin"
+  tasks_label: "Tareas"
+  TaskManagement: "Gestión de Tareas"
+  download_attachment: "Descargar Adjunto"
+  new_task: "Nueva Tarea"
+  new_task_description: "Nueva descripción de tarea"
+  task_status_changed: "Estado de la tarea cambiado"
+  task_status_changed_to: "Estado de la tarea cambiado a"
+  task_updated: "Tarea Actualizada"
+  task_comment_deleted_successfully: "Comentario de tareas eliminado correctamente"
+  task_management: "Gestión de Tareas"
+
+  tasks:
+
+    max_size: "500KB max"
+    tasks_assigned_to_me: "Tareas Asignadas a Mí"
+    deleted_user: "Usuario Eliminado"
+    assigned: "Asignada"
+    completed: "Completada"
+    tasks_assigned_by_me: "Tareas Asignadas por Mí"
+    attach_a_file: "Adjuntar Archivo (500 KB max)"
+    select_principals: "Seleccionar Directores"
+    select_master_app_users: "Seleccionar Usuarios Master"
+    select_school: "Seleccionar Institución"
+    select_course: "Seleccionar Curso"
+    select_members: "Seleccionar Miembros"
+    members: "Miembros"
+    select_employees: "Seleccionar Empleados"
+    task_status: "Estado de la Tarea"
+    task_text: "Tarea"
+    task_creation_successful: "Tarea creada correctamente"
+    task_updation_successful: "Tarea actualizada correctamente"
+    no_permission_to_view_task: "Usted no tiene permiso para ver esta tarea"
+    task_deletion_successful: "Tarea eliminada correctamente"
+    no_permission_to_delete_task: "Usted no tiene permiso para eliminar esta tarea"
+    no_permission_to_download_file: "Usted no tiene permiso para descargar este archivo"
+    status_updated_successfully: "El estado de esta tarea se ha actualizado correctamente."
+    all_tasks: "Todas las tareas"
+    filter_by: "Filtrar por"
+    create_new_task: "Crear Nueva Tarea"
+    edit_task: "Editar Tarea"
+    view_task: "Ver Tareas"
+    delete_confirmation: "¿Está seguro que desea eliminar esta tarea?"
+    mark_as_completed: "Marcar como completada"
+    mark_as_assigned: "Marcar como Asignada"
+    by: "Por"
+    no_file_attached: "No hay archivo adjunto."
+    post_an_update: "Publicar una Actualización"
+    created_on: "Creado el "
+    attach_a_file: "Adjuntar Archivo"
+    updates: "Actualizaciones"
+    no_updates: "No hay actualizaciones todavía."
+    assigned_to: "Asignado a"
+    listing_assignees: "Lista de Beneficiarios"
+    emp_code_admssn_no: "Admisión del empleado No."
+    dept_name_course_name: "Nombre del departamento / Nombre del curso"
+    discription_cant_be_blank : "Discription can't be blank"
+
+  task_comments:
+    deleted_user: "Usuario Eliminado"
+    delete_comment_confirmation: "¿Está seguro que desea eliminar esta actualización?"
+    posted: "Publicado"
+    no_permission_to_download_file: "Usted no tiene permiso para descargar este archivo"
+    update_creation_successful: "Actualización publicada correctamente"

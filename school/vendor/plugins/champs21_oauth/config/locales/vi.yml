@@ -1,0 +1,8 @@
+vi:
+  login_with_google: "Đăng nhập sử dụng"
+  account: "tài khoản"
+  select_user: "Chọn người sử dụng"
+  enter_user_email: "Nhập email của bạn"
+  no_user_with_email: "Không có người sử dụng với email "
+  could_not_authenticate_with: "Xin lỗi, không thể xác nhận là đúng sử dụng "
+  enable_oauth: "Khởi động Oauth"

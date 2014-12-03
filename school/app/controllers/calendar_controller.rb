@@ -39,15 +39,25 @@ class CalendarController < ApplicationController
     @notifications = Hash.new{|h,k| h[k]=Array.new}
     first_day = @show_month.beginning_of_month
     last_day =  @show_month.end_of_month
+    
+    event_categories = EventCategory.find(:all,:conditions=>{:is_club=>1})
+    categories = []
+    event_categories.each do |event_category|
+      categories << event_category.id
+    end 
+    
+    
     if @user.admin? or privilege.include?("EventManagement")
-      @events = Event.find(:all,:conditions => ["(start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?) ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day],:include=>[:origin])
+      @events = Event.find(:all,:conditions => ["((start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?)) and event_category_id NOT IN (?) ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day,categories],:include=>[:origin])
     end
     if @user.employee? and !privilege.include?("EventManagement")
-      @events = Event.find(:all,:conditions => ["(start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?) ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day],:include=>[:origin,:employee_department_events]) 
+      @events = Event.find(:all,:conditions => ["((start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?))  and event_category_id NOT IN (?)", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day,categories],:include=>[:origin,:employee_department_events]) 
     end
     if @user.student? or @user.parent?
-      @events = Event.find(:all,:conditions => ["(start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?) ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day],:include=>[:origin,:batch_events])  
+      @events = Event.find(:all,:conditions => ["((start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?))  and event_category_id NOT IN (?)", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day,categories],:include=>[:origin,:batch_events])  
     end
+    
+    
     load_notifications
   end
 
@@ -66,7 +76,12 @@ class CalendarController < ApplicationController
     @notifications = Hash.new{|h,k| h[k]=Array.new}
     first_day = @show_month.beginning_of_month
     last_day =  @show_month.end_of_month
-    @events = Event.find(:all,:conditions => ["(start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?) ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day])
+    event_categories = EventCategory.find(:all,:conditions=>{:is_club=>1})
+    categories = []
+    event_categories.each do |event_category|
+      categories << event_category.id
+    end 
+    @events = Event.find(:all,:conditions => ["((start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?)) and event_category_id NOT IN (?)", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day,categories])
     load_notifications
     render :update do |page|
       page.replace_html 'calendar', :partial => 'month',:object => @show_month

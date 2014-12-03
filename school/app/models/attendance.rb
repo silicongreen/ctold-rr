@@ -35,14 +35,20 @@ class Attendance < ActiveRecord::Base
         errors.add('batch_id',"attendance is not marked for present batch")
       end
     end
-    errors.add(:month_date, :future_attendance_cannot_be_marked) if (month_date.present? and month_date > Configuration.default_time_zone_present_time.to_date)
+    if self.is_leave == nil
+      errors.add(:month_date, :future_attendance_cannot_be_marked) if (month_date.present? and month_date > Configuration.default_time_zone_present_time.to_date)
+      puts "falto2"
+    end
+    
   end
 
   def after_validate
     unless self.month_date.nil?
       errors.add :attendance_before_the_date_of_admission  if self.student.present? and self.month_date < self.student.admission_date
+      puts "falto3"
     else
       errors.add :month_date_cant_be_blank
+      puts "falto4"
     end
   end
 

@@ -37,7 +37,14 @@
         <label for="news_title"><%= t('title') %></label>
         <div id="news_title_text_field_bg"><%= f.text_field :title, :value => @news.title %></div>
       </div>
-
+      <div class="news_label_field">
+        <label for="news_title"><%= t('category') %></label>
+        <div class="text-input-bg">
+          
+          <%= select :news, :category_id, [["general",1],["circular",2],["announcement",3]], :selected => @news.category_id %>
+        </div>
+      </div>
+      </br></br>
       <div class="news_label_field">
         <label for="news_content"><%= t('content') %></label>
         <div id="news_content_text_field_bg">

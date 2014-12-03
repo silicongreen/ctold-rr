@@ -20,7 +20,7 @@ class ConfigurationController < ApplicationController
   before_filter :login_required
   filter_access_to :all
 
-  FILE_EXTENSIONS = [".jpg",".jpeg",".png"]#,".gif",".png"]
+  FILE_EXTENSIONS = [".jpg",".jpeg",".png",".gif",".png"]
   FILE_MAXIMUM_SIZE_FOR_FILE=1048576
 
   def settings
@@ -36,8 +36,10 @@ class ConfigurationController < ApplicationController
     if request.post?
       Configuration.set_config_values(params[:configuration])
       session[:language] = nil unless session[:language].nil?
-      @school_detail.logo = params[:school_detail][:school_logo] if params[:school_detail].present?
-      unless @school_detail.save
+      @school_detail.logo = params[:school_detail][:school_logo] if params[:school_detail][:school_logo].present?      
+      @school_detail.cover = params[:school_detail][:school_cover] if params[:school_detail][:school_cover].present?      
+      
+	  unless @school_detail.save
         @config = Configuration.get_multiple_configs_as_hash ['InstitutionName', 'InstitutionAddress', 'InstitutionPhoneNo', \
             'StudentAttendanceType', 'CurrencyType', 'ExamResultType', 'AdmissionNumberAutoIncrement','EmployeeNumberAutoIncrement', \
             'Locale','FinancialYearStartDate','FinancialYearEndDate','EnableNewsCommentModeration','DefaultCountry','TimeZone','FirstTimeLoginEnable','EnableSibling']

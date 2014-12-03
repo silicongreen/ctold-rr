@@ -1,0 +1,39 @@
+<div id="content-header">
+<%= show_header_icon %>
+  <h1><%= t('transport_text') %></h1>
+<div class='header-sep'>|</div>
+<div class='sub-header'><%= t('edit_route_details') %></div>
+<div id="inner-tab-menu">
+  <ul>
+    <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('view_all')}", routes_path %></li>
+  </ul>
+</div>
+</div>
+<div id="page-yield">
+  <div id="vehicle_form">
+    <% form_for(@route) do |r| %>
+      <%= error_messages_for :route  %>
+      <% if @route.errors.any? %>
+      <% end %>
+
+      <div class="label-field-pair">
+        <label for="vehicle_no"><%= t('destination') %><span class="necessary-field">*</span> </label>
+        <div class="text-input-bg"><%= r.text_field :destination %></div>
+      </div>
+
+      <div class="label-field-pair">
+        <label for="vehicle_no"><%= t('cost') %><span class="necessary-field">*</span> </label>
+        <div class="text-input-bg"><%= r.text_field :cost, :class=>'precision_text',:value=>precision_label(@route.cost) %></div>
+      </div>
+
+      <div class="label-field-pair">
+        <label for="vehicle_no"><%=t('main_route')%><span class="necessary-field">*</span> </label>
+        <% route = @route.main_route_id.blank? ? "" : @route.main_route_id %>
+        <div class="text-input-bg"><%= r.select  :main_route_id,[["#{t('new_main_route')}",""]]+@main_routes.map{|r| [r.destination, r.id]},{:prompt => "#{t('select_main_route')}",:selected=>route}%></div>
+      </div>
+
+
+      <%= submit_tag "", :value => "► #{t('update')}", :class => "submit_button" %>
+    <% end %>
+  </div>
+</div>

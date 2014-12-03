@@ -1,0 +1,135 @@
+ku:
+#model
+  activerecord:
+    attributes:
+       applicant:
+          first_name: "ناوی یەکەم"
+          date_of_birth: "ڕێکەوتی لەدایکبوون"
+
+  date:
+    formats:
+      default: "%e-%m-%Y"
+      normal: "%B %e, %Y"
+      short: "%e. %b"
+      month_year: "%B %Y"
+      long: "%A, %e %B, %Y"
+      only_day: "%e"
+      month: "%B"
+      day: "%a"
+      mont: "%d"
+      day_mon: "%a %d"
+
+    
+    day_names: [یەکشەممە, دووشەممە, سێشەممە, چوارشەممە, پێنجشەممە, هەینی, شەممە]
+    abbr_day_names: [یەکش, دووش, سێش, چوارش, پێنجش, هەینش, شەممە]
+    month_names: [~, کانونی دووەم, شوبات, ئازار, نیسان, مایس, حوزەیران, تەمموز, ئاب, ئەیلول, تشرینی یەکەم, تشرینی دووەم, کانونی یەکەم]
+    abbr_month_names: [~, ک٢, شب, مارت, نیس, میس, حو, ئەیل, ئاب, ئەلول, ت١, ت٢, ک١]
+    order: [ :ڕۆژ, :مانگ, :ساڵ ]
+
+  time:
+    formats:
+      default: "%A, %d. %B %Y, %H:%M Uhr"
+      short: "%d. %B, %H:%M Uhr"
+      long: "%A, %d. %B %Y, %H:%M Uhr"
+      time: "%H:%M"
+
+    am: "پن"
+    pm: "دن"
+
+#general translation
+  blog_text: "بلۆگ"
+  blog_admin_privilege: "بلۆگی چاودێر"
+  manage_blog: "پۆستی بلۆگ و بینینی بلۆگەکانی بەکاهێنەرەکانی تر"
+
+#controller specific
+  blogs:
+    error_prohibited: "هەڵەیەک ناهێڵێت ئەم کارە پاشەکەوت بکرێت"
+    problem_fields: "هەڵەیەک هەیە لەگەڵ ئەم خانانەدا: "
+    flash1: "بلۆگێک بۆ خۆت دروست بکە"
+    not_authorized: "ڕێت پێ نەدراوە ناوەڕۆکی ئەمە ببینیت"
+    blogs_text: "بلۆگ"
+    register: "تۆمارکردن"
+    my_blogs: "بلۆگەکانی من"
+    no_post: "هیچ بلۆگێکت پۆست نەکردوە"
+    my_blog: "بلۆگی خۆم"
+    commented: " لێدوان لەسەر پۆستەکەت"
+    on_text: " لە"
+    activities: "چالاکیەکان"
+    flash_admin: "Administrator can not participate in blogging."
+    no_notification: "هیچ چالاکییەکی نوێ نییە"
+    deleted_user: "بەکارهێنەری سڕاوە"
+    flash_update: "بلۆگەکە سەرکەوتووانە نوێ کرایەوە"
+    notifications: "چالاکییەکان"
+    search: "گەڕان"
+    flash_blog_status: "ئاستی بلۆگەکە نوێ کرایەوە"
+    blog_activated: "User's blog is activated successfully"
+    blog_deactivated: "User's blog is deactivated successfully"
+
+  blog_posts:
+    flash_no_blog: "هیچ بلۆگێکی بۆ ئەم بەکارهێنەرە نیە"
+    flash_no_user: "بەکارهێنەر نەدۆزرایەوە"
+    not_authorized: "ڕێت پێ نەدراوە ناوەڕۆکی ئەم بابەتە ببینیت"
+    admin_deactivated:
+    flash_edit: "پۆستەکەت سەرکەوتووانە دەستکاری بۆ کرا"
+    flash_not_available: "ئەم ناوەڕۆکە هێشتا بەردەست نیە"
+    flash2: "Your blog post has been saved successfully."
+    flash3: "Your blog post has been posted successfully."
+    home: 'ماڵەوە'
+    new_post: "+ پۆستی نوێ"
+    my_blog: "بلۆگەکەم"
+    edit_blog: "دەستکاریی بلۆگ"
+    by: "لەلایەن"
+    date_text: "ڕێکەوت"
+    blogs_text: "بلۆگ"
+    comments: "لێدوانەکان"
+    unpublish: "بڵآونەکراوە"
+    publish: "بڵاوکردنەوە"
+    no_post: "هیچ بلۆگێکیت نیە"
+    search: "گەڕان"
+    search_blogs: "گەڕانی بلۆگەکان"
+    blog_name: "ناوی بلۆگ"
+    not_created_yet: "هیشتا دروست نەکراوە"
+    activate: "چالاککردن"
+    deactivate: "ناچالاک"
+    notifications: "چالاکیەکان"
+    like: "ئارەزوومە"
+    likes: "ئارەزووەکانم"
+    you_have_liked: "You have liked"
+    post: "پۆستە"
+    flash_inactive: "بۆت نیە لایک لەم پۆستە بکەیت"
+    flash_not_published: "ئەم پۆستە هێشتا بۆ لێدوان دانەندراوە، چاوەڕێ بە"
+    flash_deleted: "ئەم پۆستە سڕایەوە"
+    blog_directory: "بوخچەی بلۆگەکە"
+    save_as_draft: "وەک ڕەشنووس پاشەکەوتی بکە"
+    posted_by: "نێررا لەلایەن: "
+    on_text: "لە"
+    favourites: "دڵخوازەکان"
+    flash_admin: "Administrator can not participate in blogging."
+    posts: "بێرراوەکان"
+    prev_page: "< پەڕەی پێشوو"
+    next_page: "پەڕەی داهاتوو >"
+    deleted_user: "بەکارهێنەرە سڕاوەکان "
+    create_post: "پۆستێک زۆر بکە"
+    deleted_blog: "بلۆگە سڕاوەکە"
+    latest_posts: "دواترین"
+    popular_posts: "گشتی"
+    no_blog_found: "هیچ بلۆگێک نەدۆزرایەوە"
+    flash_blog_ban: "ئاستی پۆستە بلۆگ کراوەکان نوێ کرایەوە"
+    delete_post: "دڵنیایت لە سڕینەوەی ئەم پۆستە؟"
+    ban_post: "پۆستەکە بەند بکە"
+    un_ban: "بەند لابەرە"
+    published_successfully: "Published Successfully"
+    unpublished_successfully: "Unpublished Successfully"
+    blog_post_deleted_successfully: "Post deleted successfully"
+    no_blog_posts: "No blog posts"
+    ban_blog_post: "Blog post is banned successfully"
+    unban_blog_post: "Blog post is un-banned successfully"
+
+  blog_comments:
+    post_a_comment: "لێدوانێک بنێرە"
+    flash1: "لێدوانەکەت نێررا"
+    commented: "لێدوان درا"
+    ago: "پێش"
+    delete_comment_confirmation: "دڵنیایت کە دەتەوێت ئەم لێدوانە بسڕیتەوە"
+    flash_admin: "Administrator can not participate in blogging."
+    deleted_user: "بەکارهێنەرە سڕاوەکان"

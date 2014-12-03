@@ -61,15 +61,15 @@ class Employee < ActiveRecord::Base
   before_save :save_biometric_info
   before_save :status_true
 #  after_create :create_default_menu_links
-  has_attached_file :photo,
+has_attached_file :photo,
     :styles => {:original=> "125x125#"},
-    :url => "/uploads/:class/:id/:attachment/:attachment_fullname?:timestamp",
-    :path => "uploads/:class/:attachment/:id_partition/:style/:basename.:extension"
+    :url => "/uploads/:class/:attachment/:id/:style/:attachment_fullname?:timestamp",
+    :path => "public/uploads/:class/:attachment/:id/:style/:basename.:extension"
 
   VALID_IMAGE_TYPES = ['image/gif', 'image/png','image/jpeg', 'image/jpg']
 
   validates_attachment_content_type :photo, :content_type =>VALID_IMAGE_TYPES,
-    :message=>'Image can only be GIF, PNG, JPG',:if=> Proc.new { |p| !p.photo_file_name.blank? }
+    :message=>'Image can only be GIF, PNG, JPG, JPEG',:if=> Proc.new { |p| !p.photo_file_name.blank? }
   validates_attachment_size :photo, :less_than => 512000,\
     :message=>'must be less than 500 KB.',:if=> Proc.new { |p| p.photo_file_name_changed? }
 
@@ -126,8 +126,15 @@ class Employee < ActiveRecord::Base
       user_record = self.build_user
       user_record.first_name = self.first_name
       user_record.last_name = self.last_name
-      user_record.username = self.employee_number.to_s
-      user_record.password = self.employee_number.to_s + "123"
+      
+      str_employee = self.employee_number.to_s
+      
+      if str_employee.index(MultiSchool.current_school.code.to_s+"-")==nil
+        str_employee = MultiSchool.current_school.code.to_s+"-"+self.employee_number.to_s
+      end  
+      
+      user_record.username = str_employee
+      user_record.password = "123456"
       user_record.role = 'Employee'
       user_record.email = self.email.blank? ? "" : self.email.to_s
       check_user_errors(user_record)
@@ -137,8 +144,15 @@ class Employee < ActiveRecord::Base
       #      self.user.role ||= "Employee"
       unless check_changes.blank?
         emp_user = self.user
-        emp_user.username = self.employee_number if check_changes.include?('employee_number')
-        emp_user.password = self.employee_number.to_s + "123" if check_changes.include?('employee_number')
+        str_employee = self.employee_number.to_s
+      
+        if str_employee.index(MultiSchool.current_school.code.to_s+"-")==nil
+          str_employee = MultiSchool.current_school.code.to_s+"-"+self.employee_number.to_s
+        end 
+         
+        
+        emp_user.username = str_employee if check_changes.include?('employee_number')
+        emp_user.password = "123456" if check_changes.include?('employee_number')
         emp_user.first_name = self.first_name if check_changes.include?('first_name')
         emp_user.last_name = self.last_name if check_changes.include?('last_name')
         emp_user.email = self.email.to_s if check_changes.include?('email')

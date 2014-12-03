@@ -3,7 +3,7 @@
   {"config_key" => "InstitutionAddress"              ,"config_value" => ""},
   {"config_key" => "InstitutionPhoneNo"              ,"config_value" => ""},
   {"config_key" => "StudentAttendanceType"           ,"config_value" => "Daily"},
-  {"config_key" => "CurrencyType"                    ,"config_value" => "$"},
+  {"config_key" => "CurrencyType"                    ,"config_value" => "BDT"},
   {"config_key" => "Locale"                          ,"config_value" => "en"},
   {"config_key" => "AdmissionNumberAutoIncrement"    ,"config_value" => "1"},
   {"config_key" => "EmployeeNumberAutoIncrement"     ,"config_value" => "1"},
@@ -13,16 +13,26 @@
   {"config_key" => "AutomaticLeaveReset"             ,"config_value" => "0"},
   {"config_key" => "LeaveResetPeriod"                ,"config_value" => "4"},
   {"config_key" => "LastAutoLeaveReset"              ,"config_value" => nil},
-  {"config_key" => "GPA"                             ,"config_value" => "0"},
+  {"config_key" => "GPA"                             ,"config_value" => "1"},
   {"config_key" => "CWA"                             ,"config_value" => "0"},
   {"config_key" => "CCE"                             ,"config_value" => "0"},
-  {"config_key" => "DefaultCountry"                  ,"config_value" => Country.find_by_name('Bangladesh')? "#{Country.find_by_name('Bangladesh').id}" : "76"},
-  {"config_key" => "FirstTimeLoginEnable"            ,"config_value" => "0"},
+  {"config_key" => "DefaultCountry"                  ,"config_value" => Country.find_by_name('Bangladesh')? "#{Country.find_by_name('Bangladesh').id}" : "14"},
+  {"config_key" => "FirstTimeLoginEnable"            ,"config_value" => "0"}, #PRODUCTION == 1
   {"config_key" => "FeeReceiptNo"                    ,"config_value" => nil},
-  {"config_key" => "PrecisionCount"                  ,"config_value" => "2"}
+  {"config_key" => "PrecisionCount"                  ,"config_value" => "2"},
+  {"config_key" => "EnableSibling"                   ,"config_value" => "1"},
+  {"config_key" => "EnableNewsCommentModeration"     ,"config_value" => "1"},
+  {"config_key" => "TimeZone"                        ,"config_value" => "10"}
 ].each do |param|
   Configuration.find_or_create_by_config_key(param)
 end
+
+[
+  {"name" => "General"}
+].each do |param|
+  StudentCategory.create(param)
+end
+
 
 [
   {"config_key" => "AvailableModules"                ,"config_value" => "HR"},
@@ -56,7 +66,7 @@ if User.first( :conditions=>{:admin=>true}).blank?
   employee_grade = EmployeeGrade.find_or_create_by_name(:name => 'System Admin',:priority => 0 ,:status => true,:max_hours_day=>nil,:max_hours_week=>nil)
 
   employee = Employee.find_or_create_by_employee_number(:employee_number => 'admin',:joining_date => Date.today,:first_name => 'Admin',:last_name => 'User',
-    :employee_department_id => employee_department.id,:employee_grade_id => employee_grade.id,:employee_position_id => employee_position.id,:employee_category_id => employee_category.id,:status => true,:nationality_id =>'76', :date_of_birth => Date.today-365, :email => 'noreply@champs21.com',:gender=> 'm')
+    :employee_department_id => employee_department.id,:employee_grade_id => employee_grade.id,:employee_position_id => employee_position.id,:employee_category_id => employee_category.id,:status => true,:nationality_id =>'14', :date_of_birth => Date.today-365, :email => 'noreply@champs21.com',:gender=> 'm')
 
   employee.user.update_attributes(:admin=>true,:employee=>false)
 

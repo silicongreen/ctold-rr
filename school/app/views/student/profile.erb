@@ -82,7 +82,6 @@
   <% unless flash[:notice].nil? %> <p class="flash-msg"> <%= flash[:notice] %> </p> <% end %>
 
   <div id="student_profile_heading">
-
     <div id="profile_picture_display">
       <% if @student.photo.file? %>
         <%= image_tag @student.photo.url %>

@@ -1,8 +1,8 @@
 class AdditionalReportCsv < ActiveRecord::Base
   serialize :parameters, Hash
-  has_attached_file :csv_report,
-    :url => "/report/csv_report_download/:id",
-    :path => "uploads/:class/:attachment/:id_partition/:style/:basename.:extension"
+  has_attached_file :csv_report,    
+	:url => "/uploads/report/csv_report_download/:class/:attachment/:id/:style/:attachment_fullname?:timestamp",
+    :path => "public/uploads/report/csv_report_download/:class/:attachment/:id/:style/:basename.:extension"
 
   def csv_generation
     method_name=self.method_name
@@ -20,4 +20,5 @@ class AdditionalReportCsv < ActiveRecord::Base
   end
 
 end
-
+#:url => "/report/csv_report_download/:id",
+#:path => "uploads/:class/:attachment/:id_partition/:style/:basename.:extension"

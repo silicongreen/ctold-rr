@@ -1,0 +1,56 @@
+hi:
+  activerecord:
+    attributes:
+      gallery_category:
+        name: "नाम"
+
+      gallery_photo:
+        name: "नाम"
+        gallery_category_id: "गैलरी श्रेणी"
+        photo_file_name: "फोटो फ़ाइल का नाम"
+
+      gallery_tag:
+        gallery_photo_id: "फोटो गैलरी"
+    errors:
+      messages:
+        must_be_less_than_5_mb : "must be less than 5 MB"
+#controller
+  successfully_updated: "सफलतापूर्वक अद्यतन"
+  successfully_deleted: "सफलतापूर्वक नष्ट कर दिया"
+  photo_uploaded: "फोटो अपलोड"
+  photo_updated: "फोटो अद्यतन"
+#view
+  photo_text: "गैलरी"
+  categoriess: "चैनल"
+  gallery: "गैलरी"
+  add_photo: "फोटो जोड़ें"
+  neew: "नया"
+  photos: "तस्वीरें"
+  gallery_category: "गैलरी श्रेणी"
+  name: "नाम"
+  savee: "► सहेजें"
+  pictures: "चित्र"
+  editt: "संपादन"
+  delete: "हटाएँ"
+  are_you_sure: "तुम्हें यकीन है?"
+  edit_photo: "संपादित करें फोटो"
+  delete_photo: "हटाएँ फोटो"
+  upload_photo: "फोटो अपलोड"
+  select_category: "श्रेणी का चयन करें"
+  select_photo: "चुनें फोटो (5MB)"
+  photo_name: "फोटो नाम"
+  updatee: "► अद्यतन"
+  employees: "कर्मचारी"
+  students: "छात्र"
+  department: "विभाग"
+  batchess: "बैच"
+  select_employees: "कर्मचारी चयन करें"
+  select_students: "का चयन छात्र"
+  select_department: "चुनें विभाग"
+  select_course: "कोर्स का चयन करें"
+  select_all: "सभी का चयन करें"
+  add: "जोड़ें"
+  no_category: "नहीं श्रेणी"
+  photo_uploaded: "फोटो अपलोड"
+  category_created: "श्रेणी बनाया"
+  gallery_privilege: "Gallery Admin"

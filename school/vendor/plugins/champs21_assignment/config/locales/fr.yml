@@ -1,0 +1,79 @@
+fr:
+  activerecord:
+    attributes:
+      assignment:
+        title: "Titre"
+        content: "Contenu"
+        student_list: "Liste des Étudiants"
+        duedate: "Date juste"
+
+      assignment_answer:
+        title: "Titre"
+        content: "Contenu"
+
+
+    errors:
+      messages:
+        date_cant_be_past_date : "Date can't be past date"
+
+
+  new_assignment_sucessfuly_created: "Nouvelle attribution créée avec succès"
+  assignment_details_updated: "Détails de l'attribution mis à jour"
+  assignment_sucessfully_deleted: "Attribution supprimée avec succès"
+  you_do_not_have_permission_to_delete_this_assignment: "Vous n'avez pas la permission de supprimer cette attribution"
+  you_are_not_allowed_to_download_that_file: "Vous n'êtes pas autorisé à télécharger ce fichier"
+  assignment_text: "Attribution"
+  assignments_text: "Attributions"
+  submit_answer: "Envoyer la réponse"
+  attach_a_file: "Joindre un fichier"
+  on: "Marche"
+  deleted_student: "Deleted Student"
+
+  assignments:
+    max_size: "500KB max"
+    on_text: "Sur "
+    change_subject: "Changer le Sujet"
+    create_new_assignment: "Créer une nouvelle attribution"
+    all_assignments: "Toutes les attributions"
+    there_are_no_subjects_assigned_to_this_employee: "Il n'y a pas de sujets attribués à cet employé"
+    you_have_not_been_assigned_any_assignments: "Vous n'avez pas été attribué à toutes les attributions"
+    create_a_new_assignment: "Créer une nouvelle attribution"
+    assignment_already_due: "Attribution déjà faite"
+    due_in: "En raison de"
+    delete_assignment: "Supprimer l'Attribution"
+    delete_this_assignment: "Êtes-vous sûr de vouloir supprimer cette attribution? Cela permettra également de supprimer toutes les réponses soumises à cette attribution."
+    assigned: "Attribué"
+    answered: "Répondu"
+    resubmit: "Renvoyer"
+    answer_this_assignment: "Répondre à cette attribution"
+    rejected: "Rejeté"
+    hostel_accepted: "ACCEPTÉ"
+    update_assignment: "Mettre à jour l'Attribution"
+    edit_assignment: "Modifier l'attribution"
+    no_assignments_for_this_subject_have_been_created: "Aucune attribution pour ce sujet n'a été créée"
+    no_students: "Aucun étudiant"
+    you_cannot_edit_this_assignment: "Vous ne pouvez pas modifier cette attribution"
+
+  assignment_answers:
+    assignment_submitted: "Attribution soumise"
+    you_are_not_allowed_to_view_that_page: "Vous n'êtes pas autorisé à voir cette page"
+    you_cannot_edit_the_assignment_once_it_is_accepted: "Vous ne pouvez pas modifier l'attribution une fois qu'elle est acceptée"
+    you_cannot_edit_this_assignment: "Vous ne pouvez pas modifier cette attribution"
+    assignment_successfuly_updated: "Attribution mise à jour avec succès"
+    failed_to_update_assignment: "Impossible de mettre à jour l'attribution"
+    failed_to_set_status_of_assignment: "Impossible de définir l'état de l'attribution"
+    you_cannot_approve_or_reject_this_assignment: "Vous ne pouvez pas approuver ou refuser cette attribution"
+    assignment_text: "Attribution"
+    edit_answer: "Modifier la réponse"
+    submit_an_answer: "Envoyer une réponse"
+    reject_answer: "Refuser la réponse"
+    accept_answer: "Accepter la réponse"
+    the_assignment_is: "L'attribution est"
+    resubmit_answer: "Renvoyer la réponse"
+    this_answer_yet_to_be_evaluated: "Cette réponse reste à évaluer"
+    submitted_on: "Soumis le"
+    submitted_by: "Soumis par"
+    answer: "Répondre"
+    already_answered: "Vous avez déjà répondu"
+    this_answer_is_not_for_the_assignment: "This is not the answer for this assignment"
+

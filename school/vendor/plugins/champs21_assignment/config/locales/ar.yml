@@ -1,0 +1,78 @@
+ar:
+  activerecord:
+    attributes:
+      assignment:
+        title: "العنوان"
+        content: "المحتوى"
+        student_list: "قائمة الطلاب"
+        duedate: "تاريخ الاستحقاق"
+
+      assignment_answer:
+        title: "العنوان"
+        content: "المحتوى"
+
+
+    errors:
+      messages:
+        date_cant_be_past_date : "التاريخ لا يمكن أن يكون تاريخاً سابقاً"
+
+
+  new_assignment_sucessfuly_created: "المهمة الجديد تم إنشاؤها بنجاح"
+  assignment_details_updated: "تفاصيل المهمة حُدثت بنجاح"
+  assignment_sucessfully_deleted: "تم حذف المهمة بنجاح"
+  you_do_not_have_permission_to_delete_this_assignment: "ليس لديك صلاحية لحذف هذه المهمة"
+  you_are_not_allowed_to_download_that_file: "غير مسموح لك بتحميل هذا الملف"
+  assignment_text: "مهمة"
+  assignments_text: "مهام"
+  submit_answer: "إرسال الإجابة"
+  attach_a_file: "إرفاق ملف"
+  on: "في"
+  deleted_student: "Deleted Student"
+
+  assignments:
+    max_size: "500KB الحد الاقصى"
+    on_text: "في "
+    change_subject: "تغيير المقرر"
+    create_new_assignment: "إنشاء مهمة جديدة"
+    all_assignments: "جميع المهام"
+    there_are_no_subjects_assigned_to_this_employee: "لا يوجد مقررات مسندة الى هذا المعلم"
+    you_have_not_been_assigned_any_assignments: "أنت لم تلحق أي مهام"
+    create_a_new_assignment: "إنشاء مهمة جديدة"
+    assignment_already_due: "المهمة مستحقة بالفعل"
+    due_in: "مستحق في"
+    delete_assignment: "حذف المهمة"
+    delete_this_assignment: "هل أنت متأكد أنك تريد حذف هذه المهمة؟ هذا من شأنه أيضا حذف جميع الأجوبة المقدمة لهذه المهمة"
+    assigned: "إلحق"
+    answered: "أجاب"
+    resubmit: "إعادة إرسال"
+    answer_this_assignment: "الإجابة على هذه المهمة"
+    rejected: "رُفض"
+    hostel_accepted: "قُبل"
+    update_assignment: "تحديث المهمة"
+    edit_assignment: "تحرير المهمة"
+    no_assignments_for_this_subject_have_been_created: "لم يتم إنشاء أي مهام لهذا المقرر"
+    no_students: "لا يوجد طلاب"
+    you_cannot_edit_this_assignment: "لا يمكنك تحرير هذه المهمة"
+
+  assignment_answers:
+    assignment_submitted: "المهمة قد أرسل"
+    you_are_not_allowed_to_view_that_page: "لا يسمح لك بمشاهدة هذه الصفحة"
+    you_cannot_edit_the_assignment_once_it_is_accepted: "لا يمكنك تحرير المهمة بمجرد أنك قبلته"
+    you_cannot_edit_this_assignment: "لا يمكنك تحرير هذا المهمة"
+    assignment_successfuly_updated: "تم تحديث المهمة بنجاح"
+    failed_to_update_assignment: "فشل فى تحديث المهمة"
+    failed_to_set_status_of_assignment: "فشل في تغيير حالة المهمة"
+    you_cannot_approve_or_reject_this_assignment: "لا يمكنك قبول أو رفض هذه المهمة"
+    assignment_text: "مهمة"
+    edit_answer: "تعديل الإجابة"
+    submit_an_answer: "إرسل جواباً"
+    reject_answer: "رفض الإجابة"
+    accept_answer: "أقبل الإجابة"
+    the_assignment_is: "المهمة تكون"
+    resubmit_answer: "إعادة  إرسال الإجابة"
+    this_answer_yet_to_be_evaluated: "هذه الإجابة لم يتم تقييمها"
+    submitted_on: "أرسل في"
+    submitted_by: "مقدم من"
+    answer: "إجابة"
+    already_answered: "لقد أجبت بالفعل"
+    this_answer_is_not_for_the_assignment: "This is not the answer for this assignment"

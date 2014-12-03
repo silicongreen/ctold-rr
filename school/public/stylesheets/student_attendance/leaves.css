@@ -1,0 +1,32 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Jun 23, 2014, 5:34:59 PM
+    Author     : admin
+*/
+
+ .redactor_editor {
+      height: 192px !important;
+      width: 463px !important;
+  }
+  .redactor_toolbar{
+      width: 482px;
+  }
+  .redactor_box{
+    float: left;
+    padding-top: 10px;
+  }
+  #submit-button{
+    clear: both;
+  }
+  .label-field-pair-redactor {
+      height: 300px !important;
+      width: 900px;
+      padding-top: 3px;
+  }
+  .label-field-pair-redactor label {
+      width: 212px;
+  }

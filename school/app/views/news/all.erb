@@ -47,6 +47,9 @@
         <td>
          <%= t('title') %>
         </td>
+		<td>
+         <%= t('type') %>
+        </td>
         <td>
           <%= t('author') %>
         </td>
@@ -67,6 +70,18 @@
           </td>
           <td class="col-3">
             <%=  link_to link_value, :controller => 'news', :action => 'view', :id => r.id%>
+          </td>
+          <td class="col-3">           
+            <% if r.category_id == 1
+              @category = "General"
+            elsif r.category_id == 2
+              @category = "Circular"
+            elsif r.category_id == 3
+              @category = "Announcement"
+            else
+              @category = "None"
+            end %>
+            <%= @category %>
           </td>
           <td class="col-3">
             <% unless r.author.blank?  %>

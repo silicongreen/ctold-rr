@@ -1,0 +1,10 @@
+gl: # locale
+  class_timings_empty:  "No class timings have been selected."
+  no_subjects_to_show:  "No subjects"
+  no_tte_entries:  "No timetable entries for selected date"
+  show_more_entries:  "Show more"
+  select_weekday:  "Select a weekday"
+  no_events:  "No events"
+  mark_absent:  "Mark as absent"
+  no_reminders: "No reminders"
+  attendance_marked_for:  "Attendance marked for"

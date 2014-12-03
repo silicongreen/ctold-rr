@@ -1,0 +1,42 @@
+<% if !@hostel_fee.empty? %>
+<% unless flash[:notice].nil? %>
+  <p class="flash-msg"> <%= flash[:notice] %> </p>
+<% end %>
+<div id="fee-collections-list">
+  <table id="listing">
+    <tr class="tr-head">
+      <td><%= "#{t('sl_no')}"%></td>
+      <td><%= "#{t('student_name')}"%></td>
+      <td><%= "#{t('hostel_fee_text')}"%></td>
+      <td></td>
+    </tr>
+    <% unless @hostel_fee.nil? %>
+      <% unless @hostel_fee.empty? %>
+        <% i = 0 %>
+        <% @hostel_fee.each do |h| %>
+
+          <tr class="tr-<%= cycle('odd', 'even')%> ">
+            <td class="col-1"><%= i+=1 %></td>
+            <td class="col-2"><%= h.student.full_name %></td>
+            <td class="col-4"><%#= h.rent %><%= precision_label(h.rent) %></td>
+
+            <td class="col-7">
+
+
+              <%if h.finance_transaction_id.nil? %>
+                <%= link_to_remote "► #{t('pay_fees')}",:class=>'submit_button' ,:url=>{:action=>'hostel_fee_submission_student', :id => h.student.id, :date => h.hostel_fee_collection_id } %>
+              <% else %>
+              <%= link_to_remote " #{t('fees_paid')}",:class=>'submit_button' ,:url=>{:action=>'hostel_fee_submission_student', :id => h.student.id, :date => h.hostel_fee_collection_id } %>
+                <h3><%#= "#{t('fees_paid')}"%></h3>
+              <%end%>
+
+            </td>
+          </tr>
+        <% end %>
+      <% end %>
+    <% end %>
+  </table>
+</div>
+<% else %>
+  <div class= "msg"><p class = "flash-msg"><%= t('no_fee_defaulters')%></p></div>
+<% end %>

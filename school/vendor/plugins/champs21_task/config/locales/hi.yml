@@ -1,0 +1,92 @@
+hi:
+  activerecord:
+    attributes:
+
+      task:
+        user_id: "उपयोगकर्ता"
+        title: "शीर्षक"
+        description: "विवरण"
+        status: "हैसियत"
+        due_date: "नियत तारीख"
+
+      task_assignee:
+        assignee_id: "अभिहस्तांकिती"
+
+      task_comment:
+        user_id: "उपयोगकर्ता"
+        description: "विवरण"
+        task_id: "कार्य"
+    errors:
+      messages:
+        invalid_status: "अवैध स्थिति"
+        should_be_less_than: "कम से कम 500 केबी होना चाहिए"
+        should_be_assigned_only_once: "केवल एक बार सौंपा जा चाहिए."
+        cannot_be_before_start_date: "Cannot be before start date"
+        should_be_in_the_future: "भविष्य में किया जाना चाहिए"
+
+
+  required_fields: "फ़ील्ड आवश्यक है."
+  edit_privileges: "विशेषाधिकार संपादित करें"
+  master_admin: "मास्टर व्यवस्थापक"
+  tasks_label: "कार्य"
+  TaskManagement: "कार्य प्रबंध"
+  download_attachment: "डाउनलोड अनुलग्नक"
+  new_task: "नई टास्क"
+  new_task_description: "नया कार्य विवरण"
+  task_status_changed: "कार्य स्थिति परिवर्तित"
+  task_status_changed_to: "टास्क स्थिति को बदला गया"
+  task_updated: "टास्क अद्यतित"
+  task_comment_deleted_successfully: "टास्क टिप्पणी सफलतापूर्वक हटा दिया गया है"
+  task_management: "कार्य प्रबंध"
+  tasks:
+    
+    max_size: "500KB अधिकतम"
+    tasks_assigned_to_me: "मुझे सौंपा कार्य"
+    deleted_user: "हटाए गए उपयोगकर्ता"
+    assigned: "सौंपा गया"
+    completed: "पूरा"
+    tasks_assigned_by_me: "मेरे द्वारा असाइन किए गए कार्य"
+    attach_a_file: "कोई फ़ाइल अनुलग्न (500KB अधिकतम)"
+    select_principals: "प्रधानाध्यापकों का चयन करें"
+    select_master_app_users: "चुनें मास्टर App के उपयोगकर्ताओं"
+    select_school: "चुनें स्कूल"
+    select_course: "पाठ्यक्रम का चयन करें"
+    select_members: "सदस्य का चयन करें"
+    members: "सदस्य"
+    select_employees: "कर्मचारी चयन करें"
+    task_status: "टास्क स्थिति"
+    task_text: "कार्य"
+    task_creation_successful: "टास्क सफलतापूर्वक बनाया गया है"
+    task_updation_successful: "कार्य सफलतापूर्वक अद्यतन किया गया है"
+    no_permission_to_view_task: "आप इस कार्य को देखने की अनुमति नहीं है"
+    task_deletion_successful: "काम को सफलतापूर्वक हटा दिया गया है"
+    no_permission_to_delete_task: "आप इस कार्य को नष्ट करने की अनुमति नहीं है"
+    no_permission_to_download_file: "आप इस फाइल को डाउनलोड करने की अनुमति नहीं है"
+    status_updated_successfully: "इस कार्य की स्थिति को सफलतापूर्वक अद्यतन किया गया है."
+    all_tasks: "करेंसभी"
+    filter_by: "द्वारा फ़िल्टर करें"
+    create_new_task: "नया कार्य बनाएँ"
+    edit_task: "संपादन टास्क"
+    view_task: "देखें टास्क"
+    delete_confirmation: "क्या आप सुनिश्चित हैं कि आप इस कार्य को हटाना चाहते हैं?"
+    mark_as_completed: "मार्क के रूप में पूर्ण"
+    mark_as_assigned: "मार्क के रूप में निरुपित"
+    by: "द्वारा"
+    no_file_attached: "कोई फ़ाइल संलग्न."
+    post_an_update: "कोई अपडेट पोस्ट करें"
+    created_on: "पर बनाया गया"
+    attach_a_file: "कोई फ़ाइल अनुलग्न करें"
+    updates: "अद्यतन"
+    no_updates: "अभी तक कोई अद्यतन."
+    assigned_to: "करने के लिए निरुपित"
+    listing_assignees: "लिस्टिंग assignees"
+    emp_code_admssn_no: "Emp नहीं / कोड प्रवेश."
+    dept_name_course_name: "विभाग का नाम / नाम कोर्स"
+    discription_cant_be_blank : "Discription can't be blank"
+
+  task_comments:
+    deleted_user: "हटाए गए उपयोगकर्ता"
+    delete_comment_confirmation: "क्या आप सुनिश्चित हैं कि आप इस अद्यतन को हटाना चाहते हैं?"
+    posted: "तैनात"
+    no_permission_to_download_file: "आप इस फाइल को डाउनलोड करने की अनुमति नहीं है"
+    update_creation_successful: "अद्यतन सफलतापूर्वक तैनात किया गया है"

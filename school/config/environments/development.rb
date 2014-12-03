@@ -3,7 +3,7 @@
 # In the development environment your application's code is reloaded on
 # every request.  This slows down response time but is perfect for development
 # since you don't have to restart the webserver when you make code changes.
-config.cache_classes = false
+config.cache_classes = true
 
 # Log error messages when you accidentally call methods on nil.
 config.whiny_nils = true
@@ -16,6 +16,7 @@ config.action_controller.perform_caching             = true
 # Don't care if the mailer can't send
 config.action_mailer.raise_delivery_errors = false
 config.reload_plugins = true
+Paperclip.options[:command_path] = "C:/ImageMagick"
 #config.after_initialize do
 #  Bullet.enable = true
 #  Bullet::Association.alert = true

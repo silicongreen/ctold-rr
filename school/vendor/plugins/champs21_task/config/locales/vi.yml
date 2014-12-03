@@ -1,0 +1,91 @@
+vi:
+  activerecord:
+    attributes:
+
+      task:
+        user_id: "Người sử dụng"
+        title: "Chủ đề"
+        description: "Nội dung"
+        status: "Tình trạng"
+        due_date: "Ngày hết hạn"
+
+      task_assignee:
+        assignee_id: "Người được giao nhiệm vụ"
+
+      task_comment:
+        user_id: "Người sử dụng"
+        description: "Nội dung"
+        task_id: "Nhiệm vụ"
+    errors:
+      messages:
+        invalid_status: "Tình trạng không hợp lệ"
+        should_be_less_than: "phải nhỏ hơn 500 kb"
+        should_be_assigned_only_once: "chỉ được giao một lần."
+        cannot_be_before_start_date: "Không thể trước ngày bắt đầu"
+        should_be_in_the_future: "phải trong tương lai"
+  
+  required_fields: "Các lĩnh vực được yêu cầu."
+  edit_privileges: "Chỉnh sửa quyền"
+  master_admin: "Người quản trị chính"
+  tasks_label: "Nhiệm vụ"
+  TaskManagement: "Quản lý công việc"
+  download_attachment: "Tài tệp đính kèm xuống"
+  new_task: "Nhiệm vụ mới"
+  new_task_description: "Nội dung nhiệm vụ mới"
+  task_status_changed: "Tình trạng công việc đã thay đổi"
+  task_status_changed_to: "Tình trạng công việc đã chuyển sang"
+  task_updated: "Nhiệm vụ đã được cập nhật"
+  task_comment_deleted_successfully: "Nhận xét công việc đã được xóa thành công"
+  task_management: "Quản lý công việc"
+  
+  tasks:
+
+    tasks_assigned_to_me: "Công việc đã giao cho tôi"
+    deleted_user: "Người sử dụng đã bị xóa"
+    assigned: "Đã giao"
+    completed: "Đã hoàn thành"
+    tasks_assigned_by_me: "Công việc đã giao bởi tôi"
+    attach_a_file: "Đính kèm tệp (tối đa 500KB)"
+    select_principals: "Chọn người đứng đầu"
+    select_master_app_users: "Chọn người sử dụng ứng dụng chính"
+    select_school: "Chọn trường"
+    select_course: "Chọn khóa học"
+    select_members: "Chọn các thành viên"
+    members: "Các thành viên"
+    select_employees: "Chọn các nhân viên"
+    task_status: "Tình trạng công việc"
+    task_text: "Nhiệm vụ"
+    task_creation_successful: "Nhiệm vụ đã được tạo thành công"
+    task_updation_successful: "Nhiệm vụ đã được cập nhật thành công"
+    no_permission_to_view_task: "Bạn không được phép xem nhiệm vụ này"
+    task_deletion_successful: "Nhiệm vụ đã được xóa thành công"
+    no_permission_to_delete_task: "Bạn không được phép xóa nhiệm vụ này"
+    no_permission_to_download_file: "Bạn không được phép tải tệp này xuống"
+    status_updated_successfully: "Tình trạng công việc này đã được cập nhật thành công."
+    all_tasks: "Tất cả nhiệm vụ"
+    filter_by: "Lọc theo "
+    create_new_task: "Tạo nhiệm vụ mới"
+    edit_task: "Chỉnh sửa nhiệm vụ"
+    view_task: "Xem nhiệm vụ"
+    delete_confirmation: "Bạn có chắc chắn muốn xóa nhiệm vụ này không?"
+    mark_as_completed: "Đánh dấu là đã hoàn thành"
+    mark_as_assigned: "Đánh dấu là đã giao"
+    by: "bởi "
+    no_file_attached: "Không có tệp đính kèm."
+    post_an_update: "Đăng cập nhật"
+    created_on: "Tạo vào "
+    attach_a_file: "Đính kèm một tệp "
+    updates: "Cập nhật"
+    no_updates: "Chưa cập nhật."
+    assigned_to: "Giao cho"
+    listing_assignees: "Danh sách người được giao nhiệm vụ"
+    emp_code_admssn_no: "Mã nhân viên / Mã số học sinh."
+    dept_name_course_name: "Tên Bộ phận / Tên khóa học"
+    discription_cant_be_blank : "Discription can't be blank"
+
+  task_comments:
+    deleted_user: "Người sử dụng đã bị xóa"
+    delete_comment_confirmation: "Bạn có chắc chắn muốn xóa sự cập nhật này không?"
+    posted: "đã đăng "
+    no_permission_to_download_file: "Bạn không được phép tải tệp này xuống"
+    update_creation_successful: "Sự cập nhật đã được đăng thành công"

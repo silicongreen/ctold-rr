@@ -1,0 +1,44 @@
+<div id="content-header">
+<%= show_header_icon %>
+  <h1><%= "#{t('hostel_text')}"%></h1>
+<div class='header-sep'>|</div>
+<div class='sub-header'><%= "#{t('add_new_room')}"%></div>
+<div id="inner-tab-menu">
+  <ul>
+    <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('view_all')}", :action => "index" %></li>
+  </ul>
+</div>
+
+</div>
+<div id="page-yield">
+  <div id="vehicle_form">
+    <% form_for(@room_detail) do |rd| %>
+      <%= error_messages_for :room_detail %>
+
+      <div class="label-field-pair">
+        <label for="vehicle_no"><%= "#{t('hostel_name')}"%><span class="necessary-field">*</span> </label>
+        <div class="text-input-bg"><%= rd.select :hostel_id, @hostel.map { |h| [h.name, h.id] },
+            {:prompt => "#{t('select_a_hostel')}"} %></div>
+      </div>
+
+      <div class="label-field-pair">
+        <label for="vehicle_no"><%= "#{t('room_number')}"%><span class="necessary-field">*</span> </label>
+        <div class="text-input-bg"><%= rd.text_field :room_number %></div>
+      </div>
+
+      <div class="label-field-pair">
+        <label for="vehicle_no"><%= "#{t('students_per_room')}"%><span class="necessary-field">*</span> </label>
+        <div class="text-input-bg"><%= rd.text_field :students_per_room %></div>
+      </div>
+      <div class="label-field-pair">
+        <label for="vehicle_no"><%= "#{t('rent')}"%><span class="necessary-field">*</span> </label>
+        <div class="text-input-bg"><%= rd.text_field :rent, :class=>'precision_text' %></div>
+      </div>
+      <div class="label-field-pair">
+        <label for="vehicle_no"><%= "#{t('no_of_rooms')}"%></label>
+        <div class="text-input-bg"><%= text_field :room, :count %></div>
+      </div>
+      <%= submit_tag "", :value =>"► #{t('save')}", :class => "submit_button", :disable_with => "#{t('please_wait')}" %>
+    <% end %>
+  </div>
+</div>

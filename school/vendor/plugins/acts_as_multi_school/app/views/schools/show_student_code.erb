@@ -1,0 +1,24 @@
+<h1>Student Code <%= @school.name %></h1>
+<div class='well'>
+<% unless @student_code.empty? %>
+   <label><%= link_to "Download Student Code", {:controller=>"schools", :action=>"download_student_code", :id=>@school.id} %></label>
+   <br/><br/>
+  <table class="table table-bordered table-striped">
+    <thead>
+    <th>Activation Code</th><th>Status</th>
+    </thead>
+   
+   
+    <% @student_code.each do |code| %>
+      <tr>
+        <td><%= code.code %><br/></td>
+        <td><%= code.is_active %><br/></td>
+      </tr>
+    <% end %>
+  </table>   
+<% end %>
+<%= will_paginate @student_code %>
+  </br>
+  </br>
+
+</div>

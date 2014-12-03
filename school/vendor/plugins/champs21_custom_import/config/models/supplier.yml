@@ -1,0 +1,12 @@
+ supplier:
+    overrides:
+      supplier_type_id: "Supplier Type Code"
+    associations:
+     - :supplier_type
+    associated_columns:
+      supplier_type: "code"
+    filters:
+     - :school_id
+     - :is_deleted
+
+

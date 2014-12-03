@@ -1,0 +1,56 @@
+pt:
+  activerecord:
+    attributes:
+      gallery_category:
+        name: "Nome"
+
+      gallery_photo:
+        name: "Nome"
+        gallery_category_id: "Categoria de Galeria"
+        photo_file_name: "Nome do arquivo da foto"
+
+      gallery_tag:
+        gallery_photo_id: "Galeria de Fotos"
+    errors:
+      messages:
+        must_be_less_than_5_mb : "must be less than 5 MB"
+#controller
+  successfully_updated: "Atualizado com sucesso"
+  successfully_deleted: "APAGADO com sucesso"
+  photo_uploaded: "Foto carregada"
+  photo_updated: "Foto atualizado"
+#view
+  photo_text: "Galeria"
+  categoriess: "Categorias"
+  gallery: "Galeria"
+  add_photo: "Adicionar foto"
+  neew: "Novo"
+  photos: " Fotos"
+  gallery_category: "Categoria de Galeria"
+  name: "Nome"
+  savee: "âº Salvar"
+  pictures: "Fotos"
+  editt: "Editat"
+  delete: "Apagar"
+  are_you_sure: "Tem certeza?"
+  edit_photo: "Editar Foto"
+  delete_photo: "APAGAR foto"
+  upload_photo: "Carregar Foto"
+  select_category: "Selecione Categoria"
+  select_photo: "Selecione foto (5MB)"
+  photo_name: "Nome da Foto"
+  updatee: "âº Actualizar"
+  employees: "Funcionário"
+  students: "Alunos"
+  department: "Departamento"
+  batchess: "LOTES"
+  select_employees: "Selecionar Funcionário"
+  select_students: "Selecione Aluno"
+  select_department: "Selecionar Departamento"
+  select_course: "Selecionar Curso"
+  select_all: "Selecinar Tudo/Todas"
+  add: "adicionar"
+  no_category: "Sem Categoria"
+  photo_uploaded: "Carregar Foto"
+  category_created: "Categoria criada"
+  gallery_privilege: "Admin Galeria"

@@ -61,6 +61,16 @@
             <% end  %>
             <div class="text-input-bg"><%= form.text_field :name, :value=>@ename%></div>
           </div>
+          <div class="label-field-pair">
+            <label >Exam Category</label>
+            <div  class="text-input-bg" id="exam-category-select">
+              <%= select :exam_option,:exam_category, [['Class Test',1],['Project',2],['Term',3]] %>
+            </div>
+          </div>
+          <div class="label-field-pair" id="exam_topic" style="display:none;">
+            <label for="topic">Topic :</label>
+          </div>
+          <%= form.text_area "topic" %>
           <% if @batch.gpa_enabled? or @batch.cwa_enabled? %>
             <div class="label-field-pair">
               <label for="exam_type"><%= t('exam_type') %></label>
@@ -88,3 +98,33 @@
 
 
   </div></div>
+<script type="text/javascript">
+      var j = jQuery.noConflict();
+      j(document).ready(function() {
+        j("#exam-category-select select").change(function(){
+          if(j(this).val() == 2)
+          {
+            j("#exam_topic").show();
+            j("#exam_option_topic").show();
+          }  
+          else
+          {
+            j("#exam_topic").hide();
+            j("#exam_option_topic").val("");
+            j("#exam_option_topic").hide();
+          }  
+        });
+      });
+</script> 
+<style>
+  #exam_option_topic
+  {
+    display:none;
+    background: none repeat scroll 0 0 #eeeeee;
+    border: 1px solid #c6c6c6;
+    font-family: Arial;
+    height: 190px;
+    padding: 5px;
+    width: 520px;
+  }
+</style>  

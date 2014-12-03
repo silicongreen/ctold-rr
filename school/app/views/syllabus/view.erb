@@ -1,0 +1,57 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<div id="content-header">
+<%= show_header_icon %>
+  <h1><%= t('syllabus_text') %></h1>
+<div class='header-sep'>|</div>
+<div class='sub-header'><%= t('read_syllabus') %></div>
+
+<% if @is_moderator %>
+  <div id="inner-tab-menu">
+    <ul>
+      <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('edit_text')}",{:controller => "news",  :action => "edit", :id => @news.id } %></li>
+      <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('delete_text')}",{:controller => "news", :action => "delete", :id => @news.id },:confirm => "#{t('delete_confirm_msg')}" %></li>
+    </ul>
+  </div>
+<% end %>
+
+</div>
+<div id="page-yield">
+
+  <% unless flash[:notice].nil? %> <p class="flash-msg"> <%= flash[:notice] %> </p> <% end %>
+
+  <div id="news_title">
+    <%= @syllabus.title %>
+  </div>
+  <div id="create_date" class="themed_text">
+    <%= t('posted_on') %> <%= I18n.l(@syllabus.created_at,:format=>"%A, %d %B, %Y") %>
+
+  </div>
+  <div id="news_content">
+    <%= sanitize @syllabus.content , :tags => %w[b i a h1 h2 h3 u li ol strike p img font span sup sub tr td table th tbody thead strong em iframe], :attributes => %w[href src style border cellspacing cellpadding height width align]%>
+  </div>
+
+
+
+
+
+
+</div>
+

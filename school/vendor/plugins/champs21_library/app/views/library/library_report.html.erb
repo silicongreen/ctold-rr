@@ -1,0 +1,70 @@
+<%-#
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+<div id="content-header">
+<%= show_header_icon %>
+  <h1><%= "#{t('finance_transactions')}"%></h1>
+<div class='header-sep'>|</div>
+<div class='sub-header'><%= "#{t('fees_report')}"%></div>
+<div id="inner-tab-menu">
+  <ul>
+    <li class='themed_bg themed-dark-hover-background'><%= link_to t('pdf_report'),{:action=>"library_report_pdf",:start_date => @start_date,:end_date => @end_date}, :target => '_blank' %></li>
+    
+  </ul>
+</div>
+</div>
+<div id="page-yield">
+  <div class="bread_crumb">
+    <%= link_to t('finance_text'), :controller => "finance", :action=>"index" %> <div class = "bread-crumb-separator"> > </div>
+   <%= link_to "#{t('finance_reports')}", :controller => "finance", :action => "finance_reports" %><div class = "bread-crumb-separator"> > </div>
+    <%= link_to "#{t('monthly_transactions')}", :controller => "finance", :action => "monthly_report" %> <div class = "bread-crumb-separator"> > </div>
+    <%= link_to "#{t('finance_transactions_view')}", :controller => "finance", :action => "update_monthly_report", :start_date=>@start_date, :end_date=>@end_date %> <div class = "bread-crumb-separator"> > </div>
+    <%= t('fees_report') %>
+  </div>
+  <% total =0 %>
+
+  <b id="fee-report-title"><%= "#{t('library_transaction_report')}"%>  </b>
+  <div id="fees-table">
+    <div class="fees-th">
+      <div class="fees-table-description"><%= "#{t('description')}"%></div>
+      <div class="fees-table-expenses"><%= "#{t('amount')}"%></div>
+    </div>
+    <% @batch.each do |b| %>
+      <% amount = 0 %>
+      <% @transactions.each do |t| %>
+        <% s = t.student_payee %>
+        <% if s.batch_id == b.id %>
+          <% amount+=t.amount %>
+        <% end %>
+      <% end %>
+      <% unless amount == 0 %>
+        <div class="fees-tr">
+          <div class="fees-table-description"><%= link_to b.full_name, :action => 'batch_library_report',:id =>b.id,:start_date => @start_date,:end_date => @end_date %></div>
+          <div class="fees-table-income"> <%= precision_label amount %> </div>
+        </div>
+        <% total += amount %>
+      <% end %>
+    <% end %>
+    <br/>
+    <div class="fees-th">
+      <div class="fees-table-description"><%= "#{t('total_fees')}"%> </div>
+      <div class="fees-table-expenses"><%= precision_label total %></div>
+    </div>
+
+  </div>
+</div>

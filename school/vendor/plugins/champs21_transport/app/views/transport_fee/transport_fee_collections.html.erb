@@ -1,0 +1,24 @@
+<div id="content-header">
+<%= show_header_icon %>
+  <h1><%= t('transport_text') %></h1>
+<div class='header-sep'>|</div>
+<div class='sub-header'><%= t('manage_fee_collection') %></div>
+</div>
+<div id="page-yield">
+  <div class="box">
+    <div id ="message"></div>
+
+    <div class ="link-box">
+      <div class="link-heading">
+        <%= link_to "#{t('create_fee_collection')}", :action => 'transport_fee_collection_new' %>
+      </div>
+      <div class="link-descr"><%= t('create_new_fee_collection_dates') %> </div>
+    </div>
+    <div class="link-box">
+      <div class="link-heading"><%= link_to "#{t('view')}",:action => "transport_fee_collection_view" %></div>
+      <div class="link-descr"><%= t('display_fee_collection_dates') %></div>
+    </div>
+
+    <div id="modal-box" style="display:none;"></div>
+  </div>
+</div>

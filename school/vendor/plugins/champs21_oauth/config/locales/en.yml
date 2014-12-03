@@ -1,0 +1,8 @@
+en:
+  login_with_google: "Sign in using your"
+  account: "account"
+  select_user: "Select User"
+  enter_user_email: "Enter your email"
+  no_user_with_email: "No user with email "
+  could_not_authenticate_with: "Sorry, could not authenticate using "
+  enable_oauth: "Enable Oauth"

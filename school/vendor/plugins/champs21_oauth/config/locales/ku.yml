@@ -1,0 +1,8 @@
+ku:
+  login_with_google: "بچۆ ناوەوە بە"
+  account: "هەژمار"
+  select_user: "دەستنیشان کردنی بەکارهێنەر"
+  enter_user_email: "ئیمەیلەکەت بنووسە"
+  no_user_with_email: "بەکارهێنەری بێ ئیمەیل "
+  could_not_authenticate_with: "ببورە، ناتوانرێت ڕێگە بدرێت بە "
+  enable_oauth: "چالاک کردنی"

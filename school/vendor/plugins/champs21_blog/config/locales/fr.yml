@@ -1,0 +1,135 @@
+fr:
+#model
+  activerecord:
+    attributes:
+       applicant:
+          first_name: "Prénom"
+          date_of_birth: "Date de naissance"
+
+  date:
+    formats:
+      default: "%e-%m-%Y"
+      normal: "%B %e, %Y"
+      short: "%e. %b"
+      month_year: "%B %Y"
+      long: "%A, %e %B, %Y"
+      only_day: "%e"
+      month: "%B"
+      day: "%a"
+      mont: "%d"
+      day_mon: "%a %d"
+
+
+    day_names: [Dimance, Lundi, Mardi, Mercredi, Jeudi, Vendredi, Samedi]
+    abbr_day_names: [Dim, Lun, Mar, Mer, Jeu, Ven, Sam]
+    month_names: [~, Janvier, Février, Mars, Avril, Mai, Juin, Juillet, Août, Septembre, Octobre, Novembre, Décembre]
+    abbr_month_names: [~, Jan, Fév, Mar, Avr, Mai, Juin, Juil, Août, Sept, Oct, Nov, Déc]
+    order: [ :Jour, :Mois, :Année ]
+
+  time:
+    formats:
+      default: "%A, %d. %B %Y, %H:%M Uhr"
+      short: "%d. %B, %H:%M Uhr"
+      long: "%A, %d. %B %Y, %H:%M Uhr"
+      time: "%H:%M"
+
+    am: "AM"
+    pm: "PM"
+
+#general translation
+  blog_text: "Blog"
+  blog_admin_privilege: "Admin du Blog"
+  manage_blog: "Publier un blog et voir les blogs par d'autres utilisateurs"
+
+#controller specific
+  blogs:
+    error_prohibited: "Des erreurs l'ont interdit d'être enregistré"
+    problem_fields: "Il y a eu des problèmes avec les champs suivants:"
+    flash1: "SVP, créez d'abord un blog pour vous-même"
+    not_authorized: "Vous n'êtes pas autorisé à voir ce contenu"
+    blogs_text: "Blog"
+    register: "S'inscrire"
+    my_blogs: "Mes Blogs"
+    no_post: "Aucun blog n'est publié par vous."
+    my_blog: "Mon Blog"
+    commented: " a commenté sur votre publication"
+    on_text: " sur"
+    activities: "Activités"
+    flash_admin: "L'Administrateur ne peut pas participer au blogging."
+    no_notification: "Aucune activité récente trouvée"
+    deleted_user: "Utilisateur supprimé"
+    flash_update: "Le Blog a été mis a jour avec succès"
+    notifications: "Activités"
+    search: "Rechercher"
+    flash_blog_status: "L'état du Blog mis à jour avec succès"
+    blog_activated: "User's blog is activated successfully"
+    blog_deactivated: "User's blog is deactivated successfully"
+
+  blog_posts:
+    flash_no_blog: "Aucun blog trouvé pour cet utilisateur"
+    flash_no_user: "Utilisateur non trouvé"
+    not_authorized: "Vous n'êtes pas autorisé à voir ce contenu"
+    admin_deactivated:
+    flash_edit: "Votre post à été modifié avec succès"
+    flash_not_available: "Ce contenu est actuellement indisponible"
+    flash2: "Your blog post has been saved successfully."
+    flash3: "Your blog post has been posted successfully."
+    home: 'Accueil'
+    new_post: "+ Nouveau post"
+    my_blog: "Mon Blog"
+    edit_blog: "Modifier le blog"
+    by: "Par"
+    date_text: "Date"
+    blogs_text: "Blog"
+    comments: "Commentaires"
+    unpublish: "Ne pas publier"
+    publish: "Publier"
+    no_post: "Aucun blog n'est posté par vous."
+    search: "Rechercher"
+    search_blogs: "Rechercher des Blogs"
+    blog_name: "Nom du Blog"
+    not_created_yet: "Pas encore créé"
+    activate: "Activer"
+    deactivate: "Désactiver"
+    notifications: "Activités"
+    like: "Aime"
+    likes: "Aimes"
+    you_have_liked: "Vous avez aimé"
+    post: "Post"
+    flash_inactive: "Vous n'avez la permission d'aimer ce post"
+    flash_not_published: "Ce post est actuellement indisponible pour aimer et commenter"
+    flash_deleted: "Ce post a été supprimé."
+    blog_directory: "Annuaire de Blog"
+    save_as_draft: "Enregistrer comme brouillon"
+    posted_by: "Posté par"
+    on_text: "activer"
+    favourites: "Favoris"
+    flash_admin: "L'Administrateur ne peut pas participer au blogging."
+    posts: "Publications"
+    prev_page: "< Page précédente"
+    next_page: "Page suivante >"
+    deleted_user: "Utilisateur supprimé "
+    create_post: "Créer un Post"
+    deleted_blog: "Blog supprimé"
+    latest_posts: "Dernier"
+    popular_posts: "Populaire"
+    no_blog_found: "Aucun blog trouvé"
+    flash_blog_ban: "État de la publication de Blog mis à jour avec succès"
+    delete_post: "Êtes-vous sûr de vouloir supprimer ce post?"
+    ban_post: "Interdir le post"
+    un_ban: "Une interdiction"
+    published_successfully: "Published Successfully"
+    unpublished_successfully: "Unpublished Successfully"
+    blog_post_deleted_successfully: "Post deleted successfully"
+    no_blog_posts: "No blog posts"
+    ban_blog_post: "Blog post is banned successfully"
+    unban_blog_post: "Blog post is un-banned successfully"
+
+  blog_comments:
+    post_a_comment: "Poster un commentaire"
+    flash1: "Votre commentaire a été posté avec succès"
+    commented: "Commenté"
+    ago: "il y a"
+    delete_comment_confirmation: "Êtes-vous sûr de vouloir supprimer ce commentaire?"
+    flash_admin: "L'Administrateur ne peut pas participer au blogging."
+    deleted_user: "Utilisateur supprimé"

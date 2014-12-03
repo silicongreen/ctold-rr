@@ -1,0 +1,89 @@
+hi:
+  activerecord:
+    attributes:
+
+    #validation errors
+      group:
+        group_name: "समूह नाम"
+        members: "सदस्य"
+
+      group_file:
+        doc_file_name: "Doc फ़ाइल का नाम"
+
+      group_post:
+        post_title: "पोस्ट शीर्षक"
+        post_body: "शरीर पोस्ट"
+
+      group_post_comment:
+        comment_body: "शरीर टिप्पणी"
+    errors:
+      messages :
+        member_required: "आवश्यक हैं. (कम से कम 1)"
+        required: "आवश्यक है."
+        cant_be_blank: "रिक्त नहीं किया जा सकता"
+        is_empty: "खाली है"
+
+
+  discuss: "चर्चा"
+  confirm_comment: "क्या आप वास्तव में इस टिप्पणी को हटाना चाहते हैं?"
+  confirm_post: "क्या आप वास्तव में इस पोस्ट को हटाना चाहते हैं?"
+  confirm_group: "क्या आप वास्तव में इस समूह को हटाना चाहते हैं?"
+  deleted_user: "हटाए गए उपयोगकर्ता"
+  discussion: "चर्चा"
+  my_group: "मेरे समूह"
+  no_group: "कोई समूह (ओं)"
+  by: "द्वारा"
+  posted_by: "पोस्ट करनेवाले"
+  on_text: "पर"
+  member: "सदस्य"
+  comments: "टिप्पणियाँ"
+  no_comment: "नहीं मिला हाल की टिप्पणियाँ."
+  group_created_successfully: "समूह सफलतापूर्वक बनाया गया"
+  group_updated_successfully: "समूह सफलतापूर्वक अपडेट"
+  group_delete: "समूह सफलतापूर्वक हटाया"
+  no_permission: "आप उस पृष्ठ का उपयोग करने की अनुमति नहीं है"
+  post_created: "डाक सफलतापूर्वक बनाया गया"
+  post_deleted: "सफलतापूर्वक हटाए गए पोस्ट"
+  see_all_members: "सभी सदस्यों देखें"
+  data_not_found: "नहीं मिला डेटा"
+  group_create: "समूह बनाएँ"
+  select_course: "पाठ्यक्रम का चयन करें"
+  share: "शेयर"
+  new_group: "नया समूह"
+  congrats: "बधाई हो!"
+  you_have_been_added_to_this_group: "आप इस समूह के लिए जोड़ा गया है."
+  new_post: "नई पोस्ट"
+  under: "नीचे"
+  group: "समूह"
+
+  groups:
+    add_admin: "व्यवस्थापक के रूप में जोड़ें"
+    select_member: "सदस्य का चयन करें"
+    delete_from_group: "समूह से हटाएँ"
+    emp_no: "Emp सं / कोई प्रवेश"
+    dept_name: "विभाग का नाम / नाम कोर्स"
+    delete_from_admin: "व्यवस्थापक से हटाएँ"
+    select_school: "चुनें स्कूल"
+    admins: "व्यवस्थापक"
+    select_principals: "प्रधानाचार्य का चयन करें"
+    select_master_app_users: "चुनें मास्टर App उपयोगकर्ता"
+    create_group: "समूह बनाएँ"
+    comment: "टिप्पणी"
+    activity: "गतिविधि"
+    all_discussion: "सभी विचार - विमर्श"
+    no_discussion: "हाल ही में चर्चा नहीं"
+    groups_text: "समूह"
+    group_name: "समूह नाम"
+    all_posts: "सभी पोस्ट देखें"
+    post: "पद"
+    view_recent_activities: "हाल ही क्रियाएँ"
+    image_docu: "छवि या एक दस्तावेज़ अपलोड करें (5MB)"
+    create_new_group: "नया समूह बनाएँ"
+    filter_by: "द्वारा फ़िल्टर करें"
+    group_members: "समूह के सदस्यों"
+    add_member: "नया सदस्य जोड़ें"
+
+  group_posts:
+     view_post: "पोस्ट देखें"
+     posted_by_deleted_member: "प्रकाशित किया गया था पर सदस्य द्वारा हटाए गए"
+     add_comment: "अपनी टिप्पणी जोड़ें"

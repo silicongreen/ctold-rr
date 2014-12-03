@@ -503,7 +503,8 @@ class TimetableController < ApplicationController
       @today = @local_tzone_time.to_date
     end
   end
-
+  
+  
 end
 class Hash
   def delete_blank

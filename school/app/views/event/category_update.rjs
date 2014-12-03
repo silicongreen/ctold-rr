@@ -1,0 +1,11 @@
+
+#page.visual_effect(:highlight, 'student-category-list')
+unless @event_category.errors.full_messages.present?
+  page.replace_html 'event-category-form', :partial => 'event_category_create_form'
+  page.replace_html 'event-category-list', :partial => 'event_category_list'
+  page.replace_html 'flash_box', :text => "<p class='flash-msg'>#{t('event_category_updated_succesfully')}</p>"
+else
+  page.replace_html 'event-category-form', :partial => 'event_category_edit_form'
+  page.replace_html 'event-category-list',""
+  page.replace_html 'flash_box', :text => ""
+end

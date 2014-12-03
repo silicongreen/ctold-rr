@@ -1,0 +1,92 @@
+ku:
+  activerecord:
+    attributes:
+
+    #validation errors
+      group:
+        group_name: "ناوی گروپ"
+        members: "ئەندامەکان"
+
+      group_file:
+        doc_file_name: "ناوی پەڕگەی بەڵگەنامە"
+
+      group_post:
+        post_title: "ناونیشانی پۆستە"
+        post_body: "ناوەڕۆکی پۆستە"
+
+      group_post_comment:
+        comment_body: "ناوەڕۆکی لێدوان"
+
+    errors:
+      messages :
+        member_required: " پێوستن (لانی کەم یەک دانە)"
+        required: " پێویستن"
+        cant_be_blank: " ناکرێت بەتاڵ بێت "
+        is_empty: "بەتاڵە"
+        
+  discuss: "گفتوگۆ"
+  confirm_comment: "دڵنیایت لە سڕینەوەی ئەم لێدوانە؟"
+  confirm_post: "دڵنیایت لە سڕینەوەی ئەم پۆستە؟"
+  confirm_group: "دڵنیایت لە سڕینەوەی ئەم گروپە"
+  deleted_user: "بەکارهێنەر بسڕەوە "
+  discussion: "گفتوگۆ"
+  my_group: "گروپەکەم"
+  no_group: "هیچ گروپێک"
+  by: "لەلایەن "
+  posted_by: "نێررا لەلایەن"
+  on_text: "لە"
+  member: "ئەندامان"
+  comments: "لێدوانەکان"
+  no_comment: "هیچ لێدوانێکی نوێ نیە"
+  group_created_successfully: "گروپ سەرکەوتووانە دروست کرا"
+  group_updated_successfully: "گروپەکە سەرکەوتووانە نوێکرایەوە"
+  group_delete: "گروپ سەرکەوتووانە سڕایەوە"
+  no_permission: "ڕێ پێدراو نیت بچیتە سەر ئەو لاپەڕەیە"
+  post_created: "پۆستێک سەرکەوتووانە دروست کرا"
+  post_deleted: "پۆستەکە سەرکەوتووانە سڕایەوە"
+  see_all_members: "هەموو ئەندامان ببینە"
+  data_not_found: "هیچ داتایەک نەدۆزرایەوە"
+  GroupCreate: "گروپ دروست کردن"
+  select_course: "قۆناغێک هەڵبژێرە"
+  share: "هاوبەشی"
+  new_group: "گروپی نوێ"
+  congrats: "پیرۆزە!"
+  you_have_been_added_to_this_group: "تۆ زیادکراویت بۆ ئەم گروپە"
+  new_post: "پۆستی نوێ"
+  under: "لەژێر"
+  group: "گروپ"
+
+  groups:
+    add_admin: "وەکو بەڕێوەبەر زۆری بکە"
+    select_member: "ئەندام دیاری بکە"
+    delete_from_group: "لە گروپەکە بیسڕەوە"
+    emp_no: "ژ. فەرمانبەر / ژ. ئەندام"
+    dept_name: "ناوی بەش / ناوی پۆل"
+    delete_from_admin: "لە بەڕێوەبەری لایبەرە"
+    select_school: "فێرگە دیاری بکە"
+    admins: "بەڕێوەبەران"
+    select_principals: "سەرەکی هەڵبژێرە"
+    select_master_app_users: "بەکارهێنەرانی داوانامەی سەرەکی دیاری بکە"
+    create_group: "گروپ دروست کردن"
+    comment: "لێدوان"
+    activity: "چالاکی"
+    all_discussion: "هەموو گفتوگۆکان"
+    no_discussion: " هیچ گفتوگۆیەک بەردەست نیە"
+    groups_text: "گروپەکان"
+    group_name: "ناوی گروپ"
+    all_posts: "هەموو پۆستەکان نیشان بدە"
+    post: "پۆستە"
+    view_recent_activities: "دوا چالاکیەکان ببینە"
+    image_docu: "وێنە یان بەڵگەنامە بەرزبکەرەوە تا ٥مێگا"
+    create_new_group: "دروست کردنی گروپی نوێ"
+    filter_by: "پاڵێواراوە بە"
+    group_members: "ئەندامانی گروپ"
+    add_member: "ئەندامی نوێ زۆر بکە"
+
+  group_posts:
+     view_post: "پۆستە ببینە"
+     posted_by_deleted_member: "پۆست کراوە لە لایەن ئەندامی سڕاوە "
+     add_comment: "لێدوانەکانت زۆر بکە"
+
+
+ 

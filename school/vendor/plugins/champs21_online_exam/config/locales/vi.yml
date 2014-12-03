@@ -1,0 +1,82 @@
+vi: # locale
+  activerecord:
+    attributes:
+    #validation errors
+
+      online_exam_attendance:
+        online_exam_score_detail: "Chi tiết điểm thi trực tuyến"
+
+      online_exam_group:
+        name: "Tên"
+        start_date: "Ngày bắt đầu"
+        end_date: "Ngày kết thúc"
+        maximum_time: "Thời gian tối đa"
+        pass_percentage: "Phần trăm đỗ"
+
+      online_exam_option:
+        option: "Sự chọn lựa"
+
+      online_exam_question:
+        question: "Câu hỏi"
+        mark: "Điểm"
+        online_exam_options: "Các chọn lựa thi trực tuyến"
+    errors:
+      messages:
+        atleast_one_option_must_be_answer: "Phải trả lời ít nhất một chọn lựa"
+        end_date_should_be_after_start_date: "End date should be after Start date"
+        should_not_be_less_than_today: "Date should not be less than today's date"
+#common
+  online_exam_text: "Thi trực tuyến"
+  select_exam: "Chọn bài thi"
+  exam_result_text: "Kết quả thi"
+  failed: "Trượt"
+  passed: "Đỗ"
+  question: "Câu hỏi"
+  options: "Các chọn lựa"
+  question_created_successfully: "Câu hỏi đã được tạo thành công"
+  exam_group_successfully_deleted: "Nhóm bài thi đã được xóa thành công"
+  sorry_cannot_publish_an_exam_without_questions_please_add_minimum_one_question: "Xin lỗi ! Không thể đưa ra một bài thi mà không có các câu hỏi. Xin vui lòng đặt ra ít nhất một câu hỏi"
+  exam_reset_successful_for_selected_students: "Đề thi đã được soạn lại thành công cho các học sinh đã chọn"
+  sorry_no_students_selected: "Xin lỗi ! Không học sinh nào đã được chọn"
+  enter_options_here: "Nhập các chọn lựa tại đây"
+  is_answer: "Là câu trả lời"
+  edit_option: "Chỉnh sửa các chọn lựa"
+  edit_question_text: "Chỉnh sửa câu hỏi"
+  delete_question: "Xóa câu hỏi"
+  add_question: "Thêm câu hỏi"
+  new_online_exam_text: "Bài thi trực tuyến mới"
+  maximum_time_minutes: "Thời gian tối đa (Phút)"
+  pass_percentage: "Phần trăm đỗ(%)"
+  create_questions: "Tạo các câu hỏi"
+  reset_exam: "Soạn lại đề thi"
+  view_online_exams: "Xem các bài thi trực tuyến"
+  are_you_sure_to_delete_this_exam_group: "Bạn có chắc chắn muốn xóa nhóm bài thi này không"
+  no_exam_created_for_selected_batch: "Không có bài thi nào được tạo cho lớp đã chọn"
+  view_result_text: "Xem kết quả"
+  select_student: "Chọn học sinh"
+  no_students_has_atended_the_selcted_exam_group: "Không có học sinh nào đã tham dự vào nhóm bài thi đã chọn"
+  add_questions: "Thêm câu hỏi"
+  no_question_added_to_this_exam_group: "Không có câu hỏi nào được thêm vào nhóm bài thi này"
+  this_will_delete_the_question_and_associated_answers_are_you_sure: "Nó sẽ xóa câu hỏi và các câu trả lời tương ứng. Bạn có chắc chắn không?"
+  no_student_attended_this_exam: "Không có học sinh nào tham dự bài thi này"
+  online_examination_result: "Kết quả thi trực tuyến"
+  create_new_online_exam: "Tạo bài thi trực tuyến mới"
+  view_existing_online_exam: "Xem các bài thi trực tuyến hiện có"
+  view_exam_results: "Xem các kết quả thi"
+  view_online_exam_results: "Xem các kết quả thi trực tuyến"
+  reset_exam_for_a_student: "Soạn lại đề thi cho một học sinh"
+  option_per_question: "Các chọn lựa trong một câu hỏi"
+  view_results: "Xem các kết quả"
+  you_have_successfully_completed_the_exam: "Bạn đã hoàn thành thành công bài thi"
+  sorry_you_have_already_attended_this_exam: "Xin lỗi ! Bạn đã tham dự bài thi này rồi"
+  exam_name: "Tên bài thi"
+  minutes: "Phút"
+  start_exam: "Bắt đầu thi"
+  sorry_your_answers_are_not_acepted_as_the_maximum_time_exeeded_please_contact_the_exam_admin: "Xin lỗi ! Các câu trả lời không được chấp nhận vì vượt quá thời gian làm bài tối đa. Xin vui lòng liên hệ người quản trị bài thi"
+  total_score: "Tổng điểm"
+  time_left: "Thời gian còn lại"
+  manage_online_exam_system: "Quản lý hệ thống thi trực tuyến"
+  exam_group_successfully_updated: "Nhóm bài thi đã được cập nhật thành công"
+  exam_published: "Exam Published"
+  finsih_exam_confirm : "You are finshing exam, once finsihed you cannot redo"
+  please_select_one_exam : "Please select one exam"

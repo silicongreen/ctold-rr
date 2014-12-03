@@ -17,7 +17,7 @@ website/market/var/
 webhook-deploy
 .vagrant
 composer.lock
-vendor
+vendor/
 log
 nbproject
 website/git_pull
@@ -35,4 +35,10 @@ website/gallery/jquery.js
 website/gallery/xml/post/
 website/market/error_log
 website/market/media/catalog/category/cache/
-
+school/config/database.yml
+school/index.php
+school/public/uploads/000/
+school/public/uploads/assignments/
+school/public/uploads/feed_category/
+school/realchamps.sql
+school/tmp/

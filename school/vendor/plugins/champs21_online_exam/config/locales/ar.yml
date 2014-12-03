@@ -1,0 +1,85 @@
+ar: # locale
+  activerecord:
+    attributes:
+    #validation errors
+
+      online_exam_attendance:
+        online_exam_score_detail: "امتحان على الانترنت تفاصيل نقاط"
+
+      online_exam_group:
+        name: "اسم"
+        start_date: "تاريخ بدء"
+        end_date: "نهاية التاريخ"
+        maximum_time: "أقصى وقت"
+        pass_percentage: "تمرير النسبة المئوية"
+
+      online_exam_option:
+        option: "خيار"
+
+      online_exam_question:
+        question: "سؤال"
+        mark: "علامة"
+        online_exam_options: "خيارات امتحان على الانترنت"
+    errors:
+      messages:
+        atleast_one_option_must_be_answer : "ما لا يقل عن خيار واحد يجب أن يكون الجواب"
+        end_date_should_be_after_start_date: "End date should be after Start date"
+        should_not_be_less_than_today: "Date should not be less than today's date"
+
+#common
+  online_exam_text: "امتحان على الانترنت"
+  select_exam: "حدد الامتحان"
+  exam_result_text: "امتحان النتيجة"
+  failed: "فشل"
+  passed: "مرت"
+  question: "سؤال"
+  options: "خيارات"
+  question_created_successfully: "أنشاء السؤال بنجاح"
+  exam_group_successfully_deleted: "المجموعة الامتحان بنجاح المحذوفة"
+  sorry_cannot_publish_an_exam_without_questions_please_add_minimum_one_question: "آسف! لا يمكن نشر امتحان بدون أسئلة. الرجاء إضافة الحد الأدنى سؤال واحد"
+  exam_reset_successful_for_selected_students: "إعادة الامتحان للطلاب النجاح المختارة"
+  sorry_no_students_selected: "آسف! أي الطلاب الذين يختارون"
+  enter_options_here: "أدخل الخيارات هنا"
+  is_answer: "الجواب هو"
+  edit_option: "تحرير الخيار"
+  edit_question_text: "تحرير مخالفه"
+  delete_question: "حذف سؤال"
+  add_question: "إضافة أسئلة"
+  new_online_exam_text: "امتحان جديد على الانترنت"
+  maximum_time_minutes: "الحد الأقصى الوقت (دقيقة)"
+  pass_percentage: "النسبة المئوية تمرير (٪)"
+  create_questions: "إنشاء الأسئلة"
+  reset_exam: "إعادة الامتحان"
+  view_online_exams: "عرض الامتحانات على الانترنت"
+  are_you_sure_to_delete_this_exam_group: "هل أنت متأكد من حذف هذه المجموعة الامتحان"
+  no_exam_created_for_selected_batch: "أي امتحان لخلق دفعة مختارة"
+  view_result_text: "عرض النتيجة"
+  select_student: "حدد الطلاب"
+  no_students_has_atended_the_selcted_exam_group: "وقد atended أي طالب المجموعة الامتحان selcted"
+  add_questions: "إضافة أسئلة"
+  no_question_added_to_this_exam_group: "واضاف لا شك في أن هذه المجموعة الامتحان"
+  this_will_delete_the_question_and_associated_answers_are_you_sure: "سيؤدي ذلك إلى حذف السؤال والأجوبة المرتبطة بها. هل أنت متأكد؟"
+  no_student_attended_this_exam: "وحضر هذا الامتحان أي طالب"
+  online_examination_result: "نتيجة الفحص على الانترنت"
+  create_new_online_exam: "إنشاء امتحان جديد على الانترنت"
+  view_existing_online_exam: "عرض امتحان الموجودة على الانترنت"
+  view_exam_results: "عرض نتائج الامتحانات"
+  view_online_exam_results: "عرض نتائج الامتحانات على الانترنت"
+  reset_exam_for_a_student: "إعادة الامتحان للطالب"
+  option_per_question: "الخيار لكل سؤال"
+  view_results: "عرض النتائج"
+  you_have_successfully_completed_the_exam: "كنت قد أكملت بنجاح الامتحان"
+  sorry_you_have_already_attended_this_exam: "آسف! هل قمت بالفعل حضر هذا الامتحان"
+  exam_name: "اسم الامتحان"
+  minutes: "دقيقة"
+  start_exam: "بدء الامتحانات"
+  sorry_your_answers_are_not_acepted_as_the_maximum_time_exeeded_please_contact_the_exam_admin: "آسف! لا acepted إجاباتك والحد الأقصى للوقت exeeded. يرجى الاتصال المشرف الامتحان"
+  total_score: "مجموع نقاط"
+  time_left: "بقي من الوقت"
+  online_exam: "امتحان على الانترنت"
+  manage_online_exam_system: "إدارة نظام الامتحانات على الانترنت"
+  exam_group_successfully_updated : "مجموعة الامتحان بنجاح تحديث"
+  exam_published: "Exam Published"
+  finsih_exam_confirm : "You are finshing exam, once finsihed you cannot redo"
+  please_select_one_exam : "Please select one exam"
+  

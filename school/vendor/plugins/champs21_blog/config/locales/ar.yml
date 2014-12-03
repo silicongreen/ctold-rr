@@ -1,0 +1,135 @@
+ar:
+#model
+  activerecord:
+    attributes:
+       applicant:
+          first_name: "الاسم الأول"
+          date_of_birth: "تاريخ الميلاد"
+
+  date:
+    formats:
+      default: "%e-%m-%Y"
+      normal: "%B %e, %Y"
+      short: "%e. %b"
+      month_year: "%B %Y"
+      long: "%A, %e %B, %Y"
+      only_day: "%e"
+      month: "%B"
+      day: "%a"
+      mont: "%d"
+      day_mon: "%a %d"
+
+
+    day_names: [الأحد, الأثنين, الثلاثاء, الأربعاء, الخميس, الجمعة, السبت]
+    abbr_day_names: [أحد, أثنين, ثلاثاء, أربعاء, خميس, جمعة, سبت]
+    month_names: [~, يناير, فبراير, مارس, أبريل, مايو, يونيو, يوليو, أغسطس, سبتمبر, أكتوبر, نوفمبر, ديسمبر]
+    abbr_month_names: [~, يناير, فبراير, مارس, أبريل, مايو, يونيو, يوليو, أغسطس, سبتمبر, أكتوبر, نوفمبر, ديسمبر]
+    order: [ :يوم, :شهر, :سنة ]
+
+  time:
+    formats:
+      default: "%A, %d. %B %Y, %H:%M Uhr"
+      short: "%d. %B, %H:%M Uhr"
+      long: "%A, %d. %B %Y, %H:%M Uhr"
+      time: "%H:%M"
+
+    am: "صباحاً"
+    pm: "مساءً"
+
+#general translation
+  blog_text: "المدونة"
+  blog_admin_privilege: "مدير المدونة"
+  manage_blog: "أضف لمدونتك وأستعرض مدونات الآخرين"
+
+#controller specific
+  blogs:
+    error_prohibited: "توجد أخطاء تمنع من البدء فى عملية الحفظ"
+    problem_fields: "هناك مشاكل مع الحقول التالية:"
+    flash1: "فضلاً .. إنشئ المدونة الخاصة بك أولاً"
+    not_authorized: "غير مصرح لك برؤية هذا المحتوي"
+    blogs_text: "المدونة"
+    register: "سجل"
+    my_blogs: "مدونتي"
+    no_post: "لا يوجد مشاركات نُشرت بواسطتك"
+    my_blog: "مدونتي"
+    commented: " التعليقات على مشاركتك"
+    on_text: " في"
+    activities: "الأنشطة"
+    flash_admin: "مدير النظام لا يمكن أن يشارك فى المدونات!"
+    no_notification: "لا يوجد أنشطة حالية"
+    deleted_user: "تم حذف المستخدم"
+    flash_update: "تم تحديث مشاركتك بنجاح"
+    notifications: "الأنشطة"
+    search: "بحث"
+    flash_blog_status: "تم التحديث بنجاح"
+    blog_activated: "User's blog is activated successfully"
+    blog_deactivated: "User's blog is deactivated successfully"
+
+  blog_posts:
+    flash_no_blog: "لا يوجد مدونة لهذا المستخدم"
+    flash_no_user: "المستخدم غير موجود"
+    not_authorized: "غير مصرح لك برؤية هذا المحتوي"
+    admin_deactivated:
+    flash_edit: "تم تحرير مشاركتك بنجاح"
+    flash_not_available: "هذا المحتوي غير متاح الآن"
+    flash2: "Your blog post has been saved successfully."
+    flash3: "Your blog post has been posted successfully."
+    home: 'الرئيسية'
+    new_post: "+ مشاركة جديدة"
+    my_blog: "مدونتي"
+    edit_blog: "تحرير المدونة"
+    by: "بواسطة"
+    date_text: "التاريخ"
+    blogs_text: "المدونة"
+    comments: "التعليقات"
+    unpublish: "غير منشور"
+    publish: "نشر"
+    no_post: "لا يوجد مشاركات خاصة بك"
+    search: "البحث"
+    search_blogs: "البحث عن مدونات"
+    blog_name: "اسم المدونة"
+    not_created_yet: "لم تنشأ إلى الآن"
+    activate: "نشط"
+    deactivate: "غير نشط"
+    notifications: "الأنشطة"
+    like: "أعجبني"
+    likes: "الإعجابات"
+    you_have_liked: "لديك معجبون"
+    post: "مشاركة"
+    flash_inactive: "لا تمتلك صلاحيات للإعجاب بهذه المشاركة"
+    flash_not_published: "هذه المشاركة غير متاحة حالياً للإعجاب أو التعليق"
+    flash_deleted: "تم حذف هذه المشاركة"
+    blog_directory: "دليل المدونة"
+    save_as_draft: "أحفظ كمسودة"
+    posted_by: "تمت المشاركة بواسطة"
+    on_text: "في"
+    favourites: "التفضيلات"
+    flash_admin: "مدير النظام لا يمكن أن يشارك فى المدونات!"
+    posts: "المشاركات"
+    prev_page: "< الصفحة السابقة"
+    next_page: "الصفحة التالية >"
+    deleted_user: "تم حذف المستخدم "
+    create_post: "إنشأ مشاركة"
+    deleted_blog: "تم حذف المدونة"
+    latest_posts: "الأحدث"
+    popular_posts: "الشائع"
+    no_blog_found: "لا يوجد مدونة"
+    flash_blog_ban: "تم تحديث حالة المدونة بنجاح"
+    delete_post: "هل أنت متأكد من حذف هذه المشاركة؟"
+    ban_post: "حظر المشاركة"
+    un_ban: "فك الحظر"
+    published_successfully: "تم النشر بنجاح"
+    unpublished_successfully: "تم حجبها بنجاح"
+    blog_post_deleted_successfully: "تم الحذف بنجاح"
+    no_blog_posts: "No blog posts"
+    ban_blog_post: "Blog post is banned successfully"
+    unban_blog_post: "Blog post is un-banned successfully"
+
+  blog_comments:
+    post_a_comment: "أضف تعليقاً"
+    flash1: "تم مشاركة تعليقك بنجاح"
+    commented: "تم التعليق"
+    ago: "مضى"
+    delete_comment_confirmation: "هل أنت متأكذ من حذف هذا التعليق؟"
+    flash_admin: "مدير النظام لا يمكن أن يشارك فى المدونات!"
+    deleted_user: "تم حذف المستخدم"

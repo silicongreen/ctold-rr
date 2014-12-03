@@ -1,0 +1,10 @@
+settings:
+ max_school_count: 3000
+ tld_sizes:
+   development: 1
+   test: 0
+   production: 1
+ domain: www.realchamps.net
+ organization_details:
+   name: Champs21
+   whitelabel: false

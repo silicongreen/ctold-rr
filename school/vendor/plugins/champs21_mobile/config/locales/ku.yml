@@ -1,0 +1,10 @@
+ku: # locale
+  class_timings_empty:  "هیچ پۆلێک دیاری نەکراوە بۆ خشتەی کاتەکان"
+  no_subjects_to_show:  "هیچ بابەتێک نیە"
+  no_tte_entries:  "هیچ خشتەیەک بۆ ڕۆژی دیاری کراو بەردەست نیە"
+  show_more_entries:  "زۆرتر نیشان بدە"
+  select_weekday:  "ڕۆژێکی هەفتە دیاری بکە"
+  no_events:  "هیچ ڕووداوێک نیە"
+  mark_absent:  "وەکو نەهاتوو نیشانی بکە"
+  no_reminders: "هیچ بیرخستنەوەیەک نیە"
+  attendance_marked_for:  "هاتن نیشانە کرا بۆ"

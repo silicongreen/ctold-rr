@@ -1,0 +1,62 @@
+mn:
+  activerecord:
+    attributes:
+
+      instant_fee:
+        amount: "Хэмжээ нийт дүн"
+        pay_date: "Төлөлтийн сар өдөр"
+
+      instant_fee_category:
+        name: "Нэр"
+        description: "Тодорхойлолт"
+
+      instant_fee_particular:
+        name: "Нэр"
+        description: "тодорхойлолт"
+        amount: "Хэмжээ нийт дүн"
+        instant_fee_category_id: "Бэлэн төлбөрийн ангилал"
+
+
+  payee: "Төлбөр хүлээн авагч"
+  reciept: "Баримт"
+  guest: "Зочин"
+  guest_name: "Зочины нэр"
+  payee_name: "Төлбөр хүлээн авагчийн нэр"
+  net_amount: "Цэвэр нийт дүн"
+  custom: "Custom"
+  add_category: "Ангилал оруулах нэмэх"
+  instant_fee_text: "Яаралтай төлбөр"
+  instant_fees_text: "Яаралтай төлбөрүүд"
+  particular_name: "Тодорхой нэр"
+  particular_list: "Тодорхойлолын жагсаалт"
+  pay_instant_fees: "Яаралтай төлбөрүүдийг төлөх"
+  select_payee: "Төлбөр хүлээн авагчийг сонгох"
+  create_instant_fee: "Бэлэнтөлбөр үүсгэх"
+  instant_fee_reciept: "Бэлэнтөлбөрийн баримт"
+  manage_instant_fees: "Бэлэн төлбөрийг удирдах"
+  category_description: "Ангилалын тодорхойлолт"
+  select_category_type: "Ангилал сонгох"
+  instant_fee_management: "Бэлэн төлбөрийн удирдлага зохион байгуулалт"
+  saving_problem_occured: "Хадгалалтын асуудал үүссэн"
+  view_created_instant_fee: "Үүссэн бэлэн төлбөрийг харах"
+  no_default_category_exist: "Ангилалын байрлал зөрчилгүй байна"
+  instant_fee_saved_succesfully: "Бэлэн төлбөр амжилттай хадаглагдлаа"
+  instant_fees_transaction_report: "Бэлэн төлбөрийн шилжүүлэг гүйлгээний тайлан мэдээ"
+  edit_instant_category_for_fees: "Бэлэн төлбөрийн ангилалыг засварлах"
+  create_instant_category_for_fee: "Бэлэн  төлбөрийн ангилалыг үүсгэх"
+  create_instant_particular_for_fee: "Create Instant Particular for Fees"
+  update_instant_particular_for_fees: "Update Instant Particular for Fees"
+  no_default_particular_exist: " No default particulars exist under this category"
+  are_you_want_to_delete_category: "энэ ангилалыг устгахдаа итгэлтэй байна уу?"
+  are_you_want_to_delete_particular: "Энэ тодорхойлсон хэсгийг устгахдаа итгэлтэй байна уу?"
+  instant_fee_category_created_successfully: "Бэлэн төлбөрийн ангилал амжилттай үүслээ"
+  instant_fee_category_updated_successfully: "Бэлэн  төлбөрийн ангилал амжилттай шинэчлэгдлээ"
+  instant_fee_particular_created_successfully: "Бэлэн төлбөрийн тодорхойлол амжилттай үүслээ"
+  instant_fee_particular_deleted_successfully: "Бэлэн төлбөрийн тодорхойлол амжилттай усталаа"
+  instant_fee_particular_updated_successfully: "Бэлэн төлбөрийн тодорхойлол амжилттай шинэчлэгдлээ"
+  InstantFee_account: " Бэлэн  төлбөрийн данс"
+  champs21_instant_fee_module: "Champs21 Бэлэн  төлбөрийн модуль"
+  manage_and_pay_instant_fees: "Бэлэн төлбөрийг төлөх, удирдах зохицуулах"
+  instant_fee_reciept: "Instant fee rciept"
+  net_amount: "Total"
+  instant_fee_payed: "Instant Fee payed successfully"

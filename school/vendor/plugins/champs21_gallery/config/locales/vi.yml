@@ -1,0 +1,56 @@
+vi:
+  activerecord:
+    attributes:
+      gallery_category:
+        name: "Tên"
+
+      gallery_photo:
+        name: "Tên"
+        gallery_category_id: "Loại bộ ảnh"
+        photo_file_name: "Tên file ảnh"
+
+      gallery_tag:
+        gallery_photo_id: "Bộ ảnh"
+    errors:
+      messages:
+        must_be_less_than_5_mb : "must be less than 5 MB"
+#controller
+  successfully_updated: "Đã cập nhật thành công"
+  successfully_deleted: "Đã xóa thành công"
+  photo_uploaded: "Ảnh đã được tải lên"
+  photo_updated: "Ảnh đã được cập nhật"
+#view
+  photo_text: "Bộ ảnh"
+  categoriess: "Loại"
+  gallery: "Bộ ảnh"
+  add_photo: "Thêm ảnh"
+  neew: "Mới"
+  photos: " Ảnh"
+  gallery_category: "Loại bộ ảnh"
+  name: "Tên"
+  savee: "► Lưu"
+  pictures: "Ảnh"
+  editt: "Chỉnh sửa"
+  delete: "Xóa"
+  are_you_sure: "Bạn có chắc chắn không?"
+  edit_photo: "Chỉnh sửa ảnh"
+  delete_photo: "Xóa ảnh"
+  upload_photo: "Tải ảnh lên"
+  select_category: "Chọn loại"
+  select_photo: "Chọn ảnh (5MB)"
+  photo_name: "Tên ảnh"
+  updatee: "► Cập nhật"
+  employees: "Nhân viên"
+  students: "Học sinh"
+  department: "Bộ phận"
+  batchess: "Lớp"
+  select_employees: "Chọn nhân viên"
+  select_students: "Chọn học sinh"
+  select_department: "Chọn Bộ phận"
+  select_course: "Chọn khóa học"
+  select_all: "Chọn tất cả"
+  add: "Thêm"
+  no_category: "Không có loại nào"
+  photo_uploaded: "Ảnh đã được tải lên"
+  category_created: "Loại ảnh đã được tạo"
+  gallery_privilege: "Quản trị bộ ảnh"

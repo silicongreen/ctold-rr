@@ -1,0 +1,83 @@
+ja: # locale
+  activerecord:
+    attributes:
+    #validation errors
+
+      online_exam_attendance:
+        online_exam_score_detail: "オンライン試験詳細"
+
+      online_exam_group:
+        name: "名称"
+        start_date: "開始日"
+        end_date: "終了日"
+        maximum_time: "制限時間"
+        pass_percentage: "合格点"
+
+      online_exam_option:
+        option: "オプション"
+
+      online_exam_question:
+        question: "質問"
+        mark: "得点"
+        online_exam_options: "オンライン試験オプション"
+    errors:
+      messages:
+        atleast_one_option_must_be_answer: "少なくとも一つのオプションは正答です。"
+        end_date_should_be_after_start_date: "End date should be after Start date"
+        should_not_be_less_than_today: "Date should not be less than today's date"
+#common
+  online_exam_text: "オンライン試験"
+  select_exam: "試験を選択"
+  exam_result_text: "試験結果"
+  failed: "不合格"
+  passed: "合格"
+  question: "質問"
+  options: "オプション"
+  question_created_successfully: "質問の作成は成功しました。"
+  exam_group_successfully_deleted: "試験グループの削除は成功しました。"
+  sorry_cannot_publish_an_exam_without_questions_please_add_minimum_one_question: "試験を有効にする為には、最低一つは質問が必要です。"
+  exam_reset_successful_for_selected_students: "選択した生徒の試験のリセットは成功しました。"
+  sorry_no_students_selected: "生徒が誰も選択されていません。"
+  enter_options_here: "ここにオプションを入力"
+  is_answer: "解答"
+  edit_option: "オプションを編集"
+  edit_question_text: "質問を編集"
+  delete_question: "質問を削除"
+  add_question: "質問を追加"
+  new_online_exam_text: "新規オンライン試験"
+  maximum_time_minutes: "制限時間(分)"
+  pass_percentage: "合格点(%)"
+  create_questions: "質問を作成"
+  reset_exam: "試験をリセット"
+  view_online_exams: "オンライン試験を閲覧"
+  are_you_sure_to_delete_this_exam_group: "この試験グループを削除してもいいですか？"
+  no_exam_created_for_selected_batch: "選択したクラスへの試験は作成されていません。"
+  view_result_text: "結果を閲覧"
+  select_student: "生徒を選択"
+  no_students_has_atended_the_selcted_exam_group: "選択した試験グループには、生徒が参加していません。"
+  add_questions: "質問を追加"
+  no_question_added_to_this_exam_group: "この試験グループには質問が追加されていません。"
+  this_will_delete_the_question_and_associated_answers_are_you_sure: "質問とその解答が削除されます。よろしいですか？"
+  no_student_attended_this_exam: "この試験には生徒が参加していません。"
+  online_examination_result: "オンライン試験結果"
+  create_new_online_exam: "新規オンライン試験作成"
+  view_existing_online_exam: "現在実施されているオンライン試験を閲覧"
+  view_exam_results: "試験結果を閲覧"
+  view_online_exam_results: "オンライン試験結果を閲覧"
+  reset_exam_for_a_student: "試験をリセット"
+  option_per_question: "質問ごとのオプション"
+  view_results: "結果を閲覧"
+  you_have_successfully_completed_the_exam: "試験完了"
+  sorry_you_have_already_attended_this_exam: "すでにこの試験を受けています。"
+  exam_name: "試験名称"
+  minutes: "分"
+  start_exam: "試験開始"
+  sorry_your_answers_are_not_acepted_as_the_maximum_time_exeeded_please_contact_the_exam_admin: "解答が受け付けられません。制限時間を超えています。試験監督に連絡してください。"
+  total_score: "総得点"
+  time_left: "残り時間"
+  manage_online_exam_system: "オンライン試験を管理"
+  exam_group_successfully_updated: "試験グループのアップデートは成功しました。"
+  exam_published: "Exam Published"
+  finsih_exam_confirm : "You are finshing exam, once finsihed you cannot redo"
+  please_select_one_exam : "Please select one exam"
+  

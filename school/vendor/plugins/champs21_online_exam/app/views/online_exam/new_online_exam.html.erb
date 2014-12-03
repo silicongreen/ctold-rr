@@ -1,0 +1,63 @@
+<div id="content-header">
+<%= show_header_icon %>
+  <h1><%= t('online_exam_text') %></h1>
+<div class='header-sep'>|</div>
+<div class='sub-header'><%= t('new_online_exam_text') %></div>
+<div id="inner-tab-menu">
+  <ul>
+    <%# if permitted_to? :new, :additional_exam_groups %>
+      <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('view')}", :action=>'view_online_exam' %></li>
+    <%# end %>
+  </ul>
+</div>
+</div>
+<div id="page-yield">
+  <div id="box">
+  <% unless flash[:notice].nil? %>
+    <p class="flash-msg"> <%= flash[:notice] %> </p>
+  <% end %>
+  <%= error_messages_for 'online_exam_group' %>
+  <%form_for :online_exam_group do |form| %>
+
+    <div class="label-field-pair">
+      <label><%= t('name') %></label>
+      <div class="text-input-bg"><%= form.text_field :name %></div>
+    </div>
+    <div class="label-field-pair">
+      <label><%= t('start_date') %></label>
+      <div class="text-input-bg"><%= form.calendar_date_select :start_date ,:readonly=>true,:popup=>:force%></div>
+    </div>
+    <div class="label-field-pair">
+      <label><%= t('end_date') %></label>
+      <div class="text-input-bg"><%= form.calendar_date_select :end_date,:readonly=>true,:popup=>:force%></div>
+    </div>
+    <div class="label-field-pair">
+      <label><%= t('maximum_time_minutes') %></label>
+      <div class="text-input-bg"><%= form.text_field :maximum_time %></div>
+    </div>
+    <div class="label-field-pair">
+      <label><%= t('pass_percentage') %></label>
+      <div class="text-input-bg"><%= form.text_field :pass_percentage %></div>
+    </div>
+    <div class="label-field-pair">
+      <label><%= t('option_per_question') %></label>
+      <div class="text-input-bg"><%= form.select :option_count, [2,3,4,5,6] %></div>
+   </div>
+    <div class="label-field-pair"><label> <%= t('select_a_batch') %>: </label></div>
+    <div class="fee_category_scroll">
+      <div class="sel-list">
+        Select: <%= link_to_function "#{t('all')}", "$$('input.batches_box').each(function(checkbox) { checkbox.checked = true; });" %>,
+        <%= link_to_function "#{t('none')}", "$$('input.batches_box').each(function(checkbox) { checkbox.checked = false; });" %>
+      </div>
+      <% @batches.each do |f| %>
+        <div class="each_batch">
+            <%= check_box_tag "batch_ids[]", f.id, (@batch_ids.include?("#{f.id}") unless @batch_ids.nil?) ,:class=>'batches_box'%> <span><%= f.full_name %></span>
+        </div>
+      <% end %>
+    </div>
+    <div id="submit-button">
+      <%=form.submit("► #{t('create_text')}", :disable_with => "► #{t('please_wait')}" )%>
+    </div>
+  <% end %>
+  </div>
+</div>

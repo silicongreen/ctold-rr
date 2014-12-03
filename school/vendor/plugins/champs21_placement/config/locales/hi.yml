@@ -1,0 +1,91 @@
+hi:
+  activerecord:
+    attributes:
+      placement_registration:
+        student_id: "छात्र"
+
+      placementevent:
+        title: "शीर्षक"
+        date: "तारीख"
+
+    errors:
+      messages:
+        date_cant_be_past_date : "Date can't be past date"
+        
+  placed: "रखा"
+  attended: "में भाग लिया"
+  placements: "नियुक्तियाँ"
+  registrations: "पंजीकरण"
+  placement: "नियुक्ति"
+  PlacementActivities: "नियुक्ति क्रियाएँ"
+  resubmitted_application: "पुनः प्रस्तुत आवेदन"
+    
+#placement registration controller
+  placement_registrations:
+    the_student_has: "छात्र है"
+    the_recruitment_process: "भर्ती प्रक्रिया."
+    the_placement_is: "नियुक्ति है"
+    registration: "पंजीकरण"
+    placement_status: "नियुक्ति स्थिति"
+    approve_registration: "पंजीकरण स्वीकृत"
+    reject_registration: "पंजीकरण अस्वीकार"
+    awaiting_response: "छात्र से प्रतिक्रिया की प्रतीक्षा में"
+    not_attended: "नहीं भाग लिया"
+    disapprove_placement: "नियुक्ति अस्वीकृत"
+    approve_placement: "नियुक्ति स्वीकृत"
+    no_students_were_invited: "कोई छात्र आमंत्रित किया गया."
+    company_name: "कंपनी का नाम"
+    your_application_is_waiting_approval: "आपका आवेदन मंजूरी का इंतजार है"
+    your_registration_is_approved: "आपका पंजीकरण स्वीकृत है"
+    your_registration_is_rejected: "आपका पंजीकरण अस्वीकार कर दिया है"
+
+    flash1: "सफलतापूर्वक प्लेसमेंट घटना के लिए पंजीकृत है."
+    flash2: "पंजीकृत करने में विफल"
+    flash3: "आप इस आमंत्रण का उपयोग नहीं रजिस्टर कर सकते हैं."
+    flash4: "प्लेसमेंट घटना संग्रहीत किया गया है. पंजीकरण बंद कर दिया हैं."
+    flash5: "प्लेसमेंट पंजीकरण"
+
+#placement registration controller
+  placementevents:
+    no_students_added_yet: "अभी तक छात्रों को जोडी गयी"
+    company: "कंपनी"
+    are_you_sure: "क्या आप यकीन है कि आप इस नियुक्ति और अपने सभी पंजीकरण हटाना चाहते हैं?"
+    no_placement_events_has_been_anounced: "कोई नियुक्ति आयोजन की घोषणा की गई है"
+    no_batch_selected: "कोई चयनित बैच नहीं"
+    archived_placements: "संग्रहीत प्लेसमेंट"
+    no_students_selected: "कोई चयनित छात्र"
+    no: "नहीं"
+    placement_report: "नियुक्ति रिपोर्ट"
+    invite_students: "छात्रों को आमंत्रित करें"
+    placement: "नियुक्ति"
+    on: "पर"
+    you_have_invited_the_placement_event: "तुम पर नियुक्ति घटना के लिए आमंत्रित किया गया है"
+    confirm_your_registration: "प्लेसमेंट पृष्ठ से आपके पंजीकरण की पुष्टि"
+    all_placements: "सभी नियुक्तियाँ"
+    announce_new_placements: "नई नियुक्ति की घोषणा"
+    edit_placement_event: "प्लेसमेंट घटना संपादित करें"
+    update_placement_event: "अद्यतन प्लेसमेंट इवेंट"
+    select_recipient: "प्राप्तकर्ता का चयन करें"
+    students_to_invite: "निमंत्रण छात्र"
+    invite: "आमंत्रण"
+    new_placement_event: "नई नियुक्ति घटना"
+    create_placement_event: "प्लेसमेंट इवेंट बनाएँ"
+    placement_events: "नियुक्ति इवेंट"
+    archive_this_event: "इस घटना पुरालेख"
+    are_you_sure_to_archive: "क्या आप यकीन है कि आप इस नियुक्ति का संग्रह करना चाहते हैं?"
+    view_invitation: "निमंत्रण देखें"
+    generate_report: "रिपोर्ट उत्पन्न"
+    invited: "आमंत्रित"
+    applied: "लागू"
+    select_type: "प्रकार का चयन करें"
+
+    flash1: "आप इस नियुक्ति की घटना के लिए आमंत्रित नहीं कर रहे हैं"
+    flash2: "नियुक्ति घटना सफलतापूर्वक अद्यतन"
+    flash3: "नई नियुक्ति घटना सफलतापूर्वक बनाया गया"
+    flash4: "नियुक्ति की घटना और इसकी पंजीकरण हटा दिया गया है"
+    flash5: "प्लेसमेंट घटना निष्क्रिय किया गया है और संग्रहीत"
+    flash6: "प्लेसमेंट घटना के लिए आमंत्रित छात्रों को सफलतापूर्वक"
+    flash7: "कृपया एक प्रकार चुनें"
+    flash8: "Please select atleast one student"
+
+  

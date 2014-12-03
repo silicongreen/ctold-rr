@@ -1,0 +1,60 @@
+es:
+  activerecord:
+    attributes:
+
+      instant_fee:
+        amount: "Cantidad"
+        pay_date: "Fecha de Pago"
+
+      instant_fee_category:
+        name: "Nombre"
+        description: "Descripción"
+
+      instant_fee_particular:
+        name: "Nombre"
+        description: "Descripción"
+        amount: "Cantidad"
+        instant_fee_category_id: "Categoría Recibos Instantáneos"
+
+
+  payee: "Beneficiario"
+  reciept: "Recibo"
+  guest: "Invitado"
+  guest_name: "Nombre del Invitado"
+  payee_name: "Nombre del Beneficiario"
+  net_amount: "Cantidad Neta"
+  custom: "Personalizado"
+  add_category: "Agregar Categoría"
+  instant_fee_text: "Recibos Instantáneos"
+  instant_fees_text: "Recibos instantáneos"
+  particular_name: "Nombre del Particular"
+  particular_list: "Lista de Particulares"
+  pay_instant_fees: "Pagar Recibos Istantáneos"
+  select_payee: "Seleccionar Beneficiario"
+  create_instant_fee: "Crear Recibo Instantáneo"
+  instant_fee_reciept: "Recibo Instantáneo"
+  manage_instant_fees: "Gestionar Recibo Instantáneo"
+  category_description: "Descripción"
+  select_category_type: "Seleccionar Tipo de Categoría"
+  instant_fee_management: "Gestión Recibos Instantáneos"
+  saving_problem_occured: "Ocurrió un problema al guardar"
+  view_created_instant_fee: "Ver Recibos Instantáneos"
+  no_default_category_exist: "No existen categorías por defecto"
+  instant_fee_saved_succesfully: "Recibo Instantáneo guardado correctamente"
+  instant_fees_transaction_report: "Reporte Transacciones de Recibos"
+  edit_instant_category_for_fees: "Editar Categoría para Recibos Instantáneos"
+  create_instant_category_for_fee: "Crear Categoría para Recibos Instantáneos"
+  create_instant_particular_for_fee: "Crear Particular para Recibos Instantáneos"
+  update_instant_particular_for_fees: "Actualizar Particular para Recibos Instantáneos"
+  no_default_particular_exist: "No existen Particulares configurados para esta Categoría"
+  are_you_want_to_delete_category: "¿Está seguro que desea eliminar esta Categoría?"
+  are_you_want_to_delete_particular: "¿Está seguro que desea eliminar este Particular?"
+  instant_fee_category_created_successfully: "Categoría para Recibos Instantáneos creada correctamente"
+  instant_fee_category_updated_successfully: "Categoría para Recibos Instantáneos actualizada correctamente"
+  instant_fee_particular_created_successfully: "Particular del Recibo Instantáneo creado correctamente"
+  instant_fee_particular_deleted_successfully: "Particular del Recibo Instantáneo eliminado correctamente"
+  instant_fee_particular_updated_successfully: "Particular del Recibo Instantáneo actualizado correctamente"
+  InstantFee_account: "Cuenta Recibos Instantáneos"
+  champs21_instant_fee_module: "Recibos Instanténeos Globoschool"
+  manage_and_pay_instant_fees: "Gestionar y Pagar Recibos Instantáneos"
+  instant_fee_payed: "Recibo Instantáneo pagado correctamente"

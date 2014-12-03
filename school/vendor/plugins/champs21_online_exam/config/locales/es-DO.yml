@@ -1,0 +1,82 @@
+es-DO:
+  activerecord:
+    attributes:
+    #validation errors
+
+      online_exam_attendance:
+        online_exam_score_details: "Puntajes de exámenes online"
+
+      online_exam_group:
+        name: "Nombre"
+        start_date: "Fecha de Inicio"
+        end_date: "Fecha Final"
+        maximum_time: "Tiempo Máximo"
+        pass_percentage: "Porcentaje para Pasar"
+
+      online_exam_option:
+        option: "Opción"
+
+      online_exam_question:
+        question: "Pregunta"
+        mark: "Nota"
+        online_exam_options: "Opciones de examen online"
+    errors:
+      messages:
+         atleast_one_option_must_be_answer: "Debe contestar al menos una (1) de las opciones"
+         should_not_be_less_than_today: "Date should not be less than today's date"
+#common
+  online_exam_text: "Examen Online"
+  select_exam: "Seleccionar Examen"
+  exam_result_text: "Resultados de Examen"
+  failed: "Reprobado"
+  passed: "Aprobado"
+  question: "Pregunta"
+  options: "Opciones"
+  question_created_successfully: "Pregunta creada exitosamente"
+  exam_group_successfully_deleted: "Grupo de examen eliminado exitosamente"
+  sorry_cannot_publish_an_exam_without_questions_please_add_minimum_one_question: "¡Lo sentimos! No se puede publicar un examen sin preguntas. Por favor, agregue al menos una (1) pregunta"
+  exam_reset_successful_for_selected_students: "Reinicio de examen exitoso para los estudiantes seleccionados"
+  sorry_no_students_selected: "¡Lo sentimos! No hay estudiantes seleccionados"
+  enter_options_here: "Ingrese las opciones aquí"
+  is_answer: "Respuesta"
+  edit_option: "Editar opción"
+  edit_question_text: "Editar pregunta"
+  delete_question: "Eliminar Pregunta"
+  add_question: "Agregar Pregunta"
+  new_online_exam_text: "Nuevo examen online"
+  maximum_time_minutes: "Tiempo Máximo (en minutos)"
+  pass_percentage: "Porcentaje que Aprobó"
+  create_questions: "Crear Preguntas"
+  reset_exam: "Restablecer Examen"
+  view_online_exams: "Ver Exámenes Online"
+  are_you_sure_to_delete_this_exam_group: "¿Está seguro de eliminar este grupo de exámenes?"
+  no_exam_created_for_selected_batch: "No hay examen creado para el grupo seleccionado"
+  view_result_text: "Ver Resultados"
+  select_student: "Seleccionar Estudiante"
+  no_students_has_atended_the_selcted_exam_group: "Ningún estudiante ha asistido al grupo de exámenes seleccionado"
+  add_questions: "Agregar Preguntas"
+  no_question_added_to_this_exam_group: "No hay preguntas agregadas a este grupo de exámenes"
+  this_will_delete_the_question_and_associated_answers_are_you_sure: "Esto eliminará la pregunta y sus respuestas asociadas. ¿Está seguro?"
+  no_student_attended_this_exam: "Ningún estudiante asistió a este examen"
+  online_examination_result: "Resultado de Examen Online"
+  create_new_online_exam: "Crear Nuevo Examen Online"
+  view_existing_online_exam: "Ver exámenes existentes online"
+  view_exam_results: "Ver resultado de exámenes"
+  view_online_exam_results: "Ver resultado de exámenes online"
+  reset_exam_for_a_student: "Reiniciar examen para un estudiante"
+  option_per_question: "Opción por pregunta"
+  view_results: "Ver resultados"
+  you_have_successfully_completed_the_exam: "Ha completado exitosamente el examen"
+  sorry_you_have_already_attended_this_exam: "¡Lo sentimos! Usted ya ha asistido a este examen"
+  exam_name: "Nombre del Examen"
+  minutes: "Minutos"
+  start_exam: "Iniciar Examen"
+  sorry_your_answers_are_not_acepted_as_the_maximum_time_exeeded_please_contact_the_exam_admin: "¡Lo sentimos! Sus respuestas no son aceptadas ya que excedió el tiempo límite para contestar. Por favor, póngase en contacto con el administrador del examen"
+  total_score: "Puntaje Total"
+  time_left: "Tiempo Restante"
+  manage_online_exam_system: "Administrar Sistema de Exámenes Online"
+  exam_group_successfully_updated: "Grupo de Exámenes Actualizado Exitosamente"
+  exam_published: "Exam Published"
+  finsih_exam_confirm : "You are finshing exam, once finsihed you cannot redo"
+  please_select_one_exam : "Please select one exam"
+ 

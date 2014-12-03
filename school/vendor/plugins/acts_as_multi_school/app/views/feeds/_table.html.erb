@@ -1,0 +1,13 @@
+{
+"sEcho": <%=h @sEcho %>,
+"iTotalRecords": <%= @iTotalRecords %>,
+"iTotalDisplayRecords": <%= @iTotalDisplayRecords %>,
+"aaData" : [ 
+<% @feeds_category.each do |category| %>
+   [   "<%=h category.name %>",
+       "<%=h category.description %>", 
+   <%= "]," unless category == @feeds_category.last %>
+<% end %>
+   ]
+]
+}

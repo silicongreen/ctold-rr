@@ -1,0 +1,175 @@
+vi: # locale
+  activerecord:
+    attributes:
+            #validation errors
+      transport:
+        route_id: "Tuyến"
+        vehicle_id: "Xe"
+
+      transport_fee_collection:
+        name: "Tên"
+        start_date: "Ngày bắt đầu"
+        end_date: "Ngày kết thúc"
+        due_date: "Ngày hết hạn"
+
+      route:
+        destination: "Điểm đón/trả"
+        cost: "Phí"
+
+      vehicle:
+        vehicle_no: "Số xe"
+        main_route: "Tuyến chính"
+        no_of_seats: "Số chỗ"
+    errors:
+      messages:
+        travellers_exist_cannot_delete_vehicle: "Có người đi xe. Không thể xóa xe."
+        travellers_exist_in_the_main_route: "Có người đi xe trên tuyến chính đó. Không thể chỉnh sửa xe."
+        main_route_contains_travellers: "Tuyến chính có người đi. Không thể chỉnh sửa."
+        end_date_before_start_date: "Ngày kết thúc trước ngày bắt đầu"
+        due_date_before_start_date: "Ngày hết hạn trước ngày bắt đầu"
+        due_date_before_end_date: "Ngày hết hạn trước ngày kết thúc"
+
+#common
+  transport_text: "Xe Bus"
+  transport_fee_text: "Phí xe Bus"
+  destination: "Điểm đón/trả"
+  route: "Tuyến"
+  vehicle_details: "Thông tin xe"
+  select_main_route: "Chọn tuyến chính"
+  main_route: "Tuyến chính"
+  vehicle_no: "Số xe"
+  fare: "Phí xe Bus"
+  student_did_not_avail_transport: "Học sinh không đi xe Bus"
+  employee_did_not_avail_transport: "Nhân viên không đi xe Bus"
+  transport_label: "Xe Bus"
+  transport_account: "Tài khoản xe Bus"
+  manage_transport: "Quản lý xe Bus"
+  TransportAdmin: "Người quản trị xe Bus"
+  available_seats: "Chỗ trống"
+  no_users: "No users"
+  no_students: "No students found"
+  no_of_seats: "No of seats"
+  vehicles_text: "Các xe"
+
+  #transport controller translation
+  transport:
+    total_no_of_seats: "Tổng số chỗ"
+    available_seats: "Chỗ trống"
+    all_seats_filled_in_vehicle: "Xe đã kín chỗ"
+    select_destination: "Chọn điểm đón/trả"
+    select_vehicle: "Chọn xe"
+    add_transport_text: "Thêm xe"
+    vehicle: "Xe"
+    user_details: "Thông tin người sử dụng"
+    add_transport_details: "Thêm thông tin xe"
+    set_routes: "Lập tuyến"
+    set_routes_for_vehicle: "Lập các tuyến cho các xe"
+    vehicles: "Các xe"
+    transport_details_text: "Thông tin xe Bus"
+    transport_fee_details: "Thông tin phí xe Bus"
+    transport_details: "Thông tin xe Bus"
+    transportation_details: "Thông tin đón trả"
+    select_a_vehicle: "Chọn xe Bus"
+    out_of: "%{start_value} / %{end_value}"
+    seat_occupancy: "Seat Occupancy"
+
+    flash1: "Xe Bus đã được ấn định thành công"
+    flash2: "Xe Bus đã được xóa"
+    flash3: "Xe Bus đã được chỉnh sửa thành công"
+
+ #transport controller translation
+  transport_fee:
+    select_batch: "Chọn lớp"
+    create_fee_collection_dates: "Tạo ngày thu phí"
+    select_details_for: "Chọn thông tin về"
+    bus_fare: "PHÍ XE BUS"
+    fine_paid: "Đã thanh toán tiền phạt"
+    transport_fee_name: "Tên phí xe Bus"
+    include_employee: "Có bao gồm nhân viên không?"
+    no_students_in_selected_batch: "Không có học sinh trong lớp đã chọn"
+    edit_transport_fee_collection: "Chỉnh sửa thu phí xe Bus"
+    select_fee_collection_date: "Chọn ngày thu phí"
+    transport_fee_submission: "Nộp phí xe Bus"
+    manage_fee_collection: "Quản lý thu phí"
+    student_defaulters: "Học sinh chưa nộp phí"
+    employee_defaulters: "Nhân viên chưa nộp phí"
+    select_class: "Chọn lớp"
+    fee_collection: "Thu phí"
+    please_select_a_batch_or_emp: "Xin vui lòng chọn lớp hoặc nhân viên"
+    name_cant_be_blank: "Không thể bỏ trống tên"
+    create_new_fee_collection_dates: "Tạo ngày thu phí mới"
+    display_fee_collection_dates: "Hiển thị ngày thu phí"
+    set_transport_fee_collection_date: "Lập ngày thu phí xe Bus"
+    employee_transport_fee_collection: "Thu phí xe Bus của nhân viên"
+    employee_fees_report: "Báo cáo phí của nhân viên"
+    employee_transaction_report: "BÁO CÁO GIAO DỊCH CỦA NHÂN VIÊN "
+    transport_fee: "Phí xe Bus"
+    transaction_report: "Báo cáo giao dịch"
+    create_and_view_fee_collection: "Tạo và xem thu phí"
+    search_for_users_to_pay: "Tìm kiếm người sử dụng để thanh toán phí xe Bus"
+    users_with_fees_due: "Người sử dụng đến hạn phải thanh toán phí "
+    view_transport_fee_collection_dates: "Xem ngày thu phí xe Bus"
+    select_a_user_type: "Chọn người sử dụng"
+    select_one: "Chọn một"
+    transport_fees_report: "BÁO CÁO PHÍ XE BUS"
+
+    flash1: "Ngày thu phí xe Bus đã được cập nhật thành công"
+    flash2: "Thu phí xe Bus đã được cập nhật thành công"
+    flash3: "Phí xe Bus đã được xóa"
+    flash4: "Đã xóa thành công"
+    flash5: "Xin lỗi! Bạn không thể xóa ngày thu phí mà có giao dịch."
+
+#routes controller translation
+
+  routes:
+    cost: "Phí"
+    new_main_route: "Tuyến chính mới"
+    edit_route_details: "Chỉnh sửa thông tin tuyến"
+    route_details: "Thông tin tuyến"
+    add_route: "Thêm tuyến"
+    add_new_route: "Thêm tuyến mới"
+    view_route: "Xem tuyến"
+    route_detail: "Thông tin tuyến"
+
+    flash1: "Tuyến đã được thêm thành công."
+    flash2: "Tuyến đã được cập nhật thành công."
+    flash3: "Tuyến đã được xóa thành công."
+    flash4: "Không thể xóa tuyến. Xin vui lòng xóa tất cả lộ trình đón trả trước."
+    flash5: "Không thể xóa tuyến. Xin vui lòng xóa tất cả các xe trước."
+
+#routes controller translation
+
+  vehicles:
+    no_of_seats: "Số chỗ"
+    add_new_vehicle: "Thêm xe mới"
+    select_main_route: "Chọn tuyến chính"
+    add_vehicle: "Thêm xe"
+    edit_vehicle_details: "Chỉnh sửa thông tin xe"
+    deleted_route: "Tuyến đã bị xóa"
+
+    flash1: "Xe đã được thêm thành công."
+    flash2: "Thông tin xe đã được cập nhật thành công."
+    flash3: "Xe đã được xóa thành công"
+
+  autosuggest_menu:
+    transport_text: "Xe"
+    set_routes: "Lập tuyến"
+    add_routes: "Thêm tuyến"
+    vehicles: "Xe"
+    add_vehicle: "Thêm xe"
+    search_transport_details: "Tìm kiếm thông tin xe"
+    transportation_details: "Thông tin đón trả"
+    transport_fee: "Phí xe Bus"
+    transport_fee_collections: "Thu phí xe Bus"
+    view_transport_fee_collection: "Xem thu phí xe Bus"
+    transport_fee_search: "Tìm kiếm phí xe Bus"
+    transport_fee_student_defaulters: "Học sinh chưa nộp phí xe Bus"
+    transport_fee_employee_defaulters: "Nhân viên chưa nộp phí xe Bus"
+
+
+
+
+
+
+
+

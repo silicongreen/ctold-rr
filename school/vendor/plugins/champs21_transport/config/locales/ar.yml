@@ -1,0 +1,164 @@
+ar: # locale
+  activerecord:
+    attributes:
+            #validation errors
+      transport:
+        route_id: "طريق"
+        vehicle_id: "مركبة"
+
+      transport_fee_collection:
+        name: "اسم"
+        start_date: "تاريخ بدء"
+        end_date: "نهاية التاريخ"
+        due_date: "يرجع تاريخ"
+
+      route:
+        destination: "الوجهة"
+        cost: "كلفة"
+
+      vehicle:
+        vehicle_no: "عدد المركبات"
+        main_route: "الطريق الرئيسي"
+        no_of_seats: "عدد المقاعد"
+    errors:
+      messages:
+        travellers_exist_cannot_delete_vehicle: "المسافرون موجود. لا يمكن حذف مركبة."
+        travellers_exist_in_the_main_route: "المسافرون على الطرق التي توجد في متناول اليد. لا يمكن تحرير مركبة."
+        main_route_contains_travellers: "الطريق الرئيسي الذي يحتوي على الرحل. لا يمكن تحريرها."
+        end_date_before_start_date: "قبل تاريخ البدء تاريخ الانتهاء"
+        due_date_before_start_date: "قبل تاريخ الاستحقاق تاريخ البدء"
+        due_date_before_end_date: "المستحقة قبل تاريخ نهاية التاريخ"
+
+  #common
+  transport_text: "نقل"
+  transport_fee_text: "رسوم النقل"
+  destination: "الوجهة"
+  route: "طريق"
+  vehicle_details: "تفاصيل السيارة"
+  select_main_route: "حدد الطريق العام"
+  main_route: "الطريق الرئيسي"
+  vehicle_no: "عدد المركبات"
+  fare: "أجرة"
+  student_did_not_avail_transport: "هل الطلاب لا جدوى مرفق النقل"
+  employee_did_not_avail_transport: "هل الموظف لا جدوى مرفق النقل"
+  transport_label: "نقل"
+  transport_account: "نقل الحساب"
+  manage_transport: "إدارة النقل"
+  available_seats: "المقاعد المتاحة"
+  no_users: "No users"
+  no_students: "No students found"
+  no_of_seats: "No of seats"
+  vehicles_text: "المركبات"
+
+  #transport controller translation
+  transport:
+    total_no_of_seats: "الكل لا. من المقاعد"
+    available_seats: "المقاعد المتاحة"
+    all_seats_filled_in_vehicle: "شغل جميع المقاعد في السيارة"
+    select_destination: "حدد الوجهة"
+    select_vehicle: "اختر السيارة"
+    add_transport_text: "إضافة النقل"
+    vehicle: "مركبة"
+    user_details: "تفاصيل المستخدم"
+    add_transport_details: "إضافة تفاصيل النقل"
+    set_routes: "تعيين الدروب"
+    set_routes_for_vehicle: "تعيين الطرق للسيارات"
+    vehicles: "المركبات"
+    transport_details_text: "تفاصيل النقل"
+    transport_fee_details: "تفاصيل رسوم النقل"
+    transport_details: "تفاصيل النقل"
+    transportation_details: "تفاصيل النقل"
+    select_a_vehicle: "اختيار سيارة"
+    out_of: "%{start_value} / %{end_value}"
+    seat_occupancy: "مقعد المؤجر"
+
+    flash1: "الحافلة المخصصة بنجاح"
+    flash2: "وقد نقل ، تم حذف"
+    flash3: "حافلة التعديل بنجاح"
+
+ #transport controller translation
+  transport_fee:
+    select_details_for: "حدد لمزيد من التفاصيل"
+    bus_fare: "BUS FARE"
+    fine_paid: "غرامة يتحملها"
+    transport_fee_name: "رسوم نقل الاسم"
+    include_employee: "وتشمل الموظف؟"
+    no_students_in_selected_batch: "الطلاب في الدفعة رقم المحدد"
+    edit_transport_fee_collection: "تحرير النقل جمع الرسوم"
+    select_fee_collection_date: "حدد تاريخ جمع الرسوم"
+    transport_fee_submission: "رسوم النقل التقديم"
+    manage_fee_collection: "إدارة مجموعات الرسوم"
+    student_defaulters: "طالب المقصرون"
+    employee_defaulters: "الموظف المقصرون"
+    select_class: "حدد فئة"
+    fee_collection: "رسوم تحصيل"
+    please_select_a_batch_or_emp: "الرجاء اختيار الدفعة أو موظف"
+    name_cant_be_blank: "هل يمكن ألا يكون الاسم فارغا"
+    create_new_fee_collection_dates: "يخلق تواريخ جمع رسوم جديدة"
+    display_fee_collection_dates: "يعرض تواريخ جمع الرسوم"
+    set_transport_fee_collection_date: "تعيين تاريخ النقل جمع الرسوم"
+    employee_transport_fee_collection: "جمع الموظف رسوم النقل"
+    employee_fees_report: "تقرير الموظفين الرسوم"
+    employee_transaction_report: "تقرير موظفيها TRANSACTION"
+    transport_fee: "رسوم النقل"
+    transaction_report: "تقرير المعاملات"
+    create_and_view_fee_collection: "إنشاء مجموعات وعرض رسوم"
+    search_for_users_to_pay: "بحث للمستخدمين لدفع رسوم النقل"
+    users_with_fees_due: "الرسوم المستحقة للمستخدمين"
+    view_transport_fee_collection_dates: "عرض تحصيل رسوم نقل التواريخ"
+    select_a_user_type: "تحديد نوع المستخدم"
+    select_one: "حدد واحد"
+    transport_fees_report: "تقرير رسوم النقل"
+
+    flash1: "تاريخ النقل جمع الرسوم تحديثها بنجاح"
+    flash2: "تحصيل رسوم النقل تحديثها بنجاح"
+    flash3: "رسوم النقل قد تم حذفها ،"
+    flash4: "حذف بنجاح"
+    flash5: "آسف! لا يمكنك حذف موعد مع جمع المعاملات."
+
+#routes controller translation
+
+  routes:
+    cost: "كلفة"
+    new_main_route: "الطريق الرئيسي الجديد"
+    edit_route_details: "تعديل تفاصيل الطريق"
+    route_details: "تفاصيل الطريق"
+    add_route: "إضافة المسار"
+    add_new_route: "إضافة مسار جديد"
+    view_route: "عرض الطريق"
+    route_detail: "الطريق التفاصيل"
+
+    flash1: "واضاف الطريق بنجاح."
+    flash2: "تحديث الطريق بنجاح."
+    flash3: "طريق حذف بنجاح."
+    flash4: "لا يمكن حذف الطريق. يرجى حذف جميع وسائل نقل أولا."
+    flash5: "لا يمكن حذف الطريق. يرجى حذف جميع المركبات الأولى."
+
+#routes controller translation
+
+  vehicles:
+    no_of_seats: "عدد المقاعد"
+    add_new_vehicle: "إضافة المركبة الجديدة"
+    select_main_route: "حدد الطريق الرئيسي"
+    add_vehicle: "إضافة المركبة"
+    edit_vehicle_details: "تعديل تفاصيل السيارة"
+
+    flash1: "واضاف السيارة بنجاح."
+    flash2: "تفاصيل السيارة المحدثة بنجاح."
+    flash3: "حذف السيارة بنجاح"
+
+
+  autosuggest_menu:
+    transport_text: "نقل"
+    set_routes: "تعيين الدروب"
+    add_routes: "إضافة الدروب"
+    vehicles: "المركبات"
+    add_vehicle: "إضافة المركبة"
+    search_transport_details: "ابحث عن تفاصيل النقل"
+    transportation_details: "تفاصيل النقل"
+    transport_fee: "رسوم النقل"
+    transport_fee_collections: "مجموعات رسوم النقل"
+    view_transport_fee_collection: "عرض مجموعة رسوم النقل"
+    transport_fee_search: "رسوم النقل البداية"
+    transport_fee_student_defaulters: "المقصرون الطالب رسوم النقل"
+    transport_fee_employee_defaulters: "المقصرون الموظف رسوم النقل"

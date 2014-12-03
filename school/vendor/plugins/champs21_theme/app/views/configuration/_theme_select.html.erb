@@ -1,0 +1,7 @@
+<div class="label-field-pair">
+  <label for="configuration_currency_type"><%= t('select_theme') %></label>
+  <div class="text-input-bg">
+
+    <%= select(:configuration, :current_theme, Champs21Theme.available_themes, :selected => Champs21Theme.selected_theme) %>
+  </div>
+</div>

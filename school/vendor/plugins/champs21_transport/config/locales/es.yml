@@ -1,0 +1,170 @@
+es:
+  activerecord:
+    attributes:
+            #validation errors
+      transport:
+        route_id: "Camino"
+        vehicle_id: "Vehículo"
+
+      transport_fee_collection:
+        name: "Nombre"
+        start_date: "Fecha de inicio"
+        end_date: "Fecha de finalización"
+        due_date: "Fecha de vencimiento"
+
+      route:
+        destination: "Destino"
+        cost: "Costo"
+
+      vehicle:
+        vehicle_no: "Vehículo No."
+        main_route: "Ruta Principal"
+        no_of_seats: "No. de Asientos"
+    errors:
+      messages:
+        main_route_contains_travellers: "La ruta principal contiene pasajeros. No puede editar."
+        travellers_exist_cannot_delete_vehicle: "La ruta principal contiene Pasajeros. No puede eliminar vehículos."
+        travellers_exist_in_the_main_route: "Existen Pasajeros. No puede editar el vehículo."
+        end_date_before_start_date: "Fecha final antes de la Fecha inicial"
+        due_date_before_start_date: "Fecha de vencimiento antes de la Fecha inicial"
+        due_date_before_end_date: "Fecha de vencimiento antes de la Fecha Final"
+
+#common
+  transport_text: "Transporte"
+  transport_fee_text: "Tarifa de Transporte"
+  destination: "Destino"
+  route: "Ruta"
+  vehicle_details: "Información del Vehículo"
+  select_main_route: "Seleccionar Ruta Principal"
+  main_route: "Ruta Principal"
+  vehicle_no: "Número del Vehículo"
+  fare: "Tiquete"
+  student_did_not_avail_transport: "El estudiante no usa el servicio de transporte"
+  employee_did_not_avail_transport: "El empleado no usa el servicio de transporte"
+  transport_label: "Transporte"
+  transport_account: "Cuenta de Transporte"
+  manage_transport: "Gestionar Transporte"
+  TransportAdmin: "Admin de Transporte"
+  available_seats: "Sillas Disponibles"
+  no_users: "No users"
+  no_students: "No students found"
+  no_of_seats: "No of seats"
+  vehicles_text: "Vehículos"
+
+  #transport controller translation
+  transport:
+    total_no_of_seats: "Cantidad Total de Sillas"
+    available_seats: "Sillas Disponibles"
+    all_seats_filled_in_vehicle: "Sillas Ocupadas del Vehículo"
+    select_destination: "Seleccionar Destino"
+    select_vehicle: "Seleccionar Vehículo"
+    add_transport_text: "Agregar Transporte"
+    vehicle: "Vehículo"
+    user_details: "Información de Usuario"
+    add_transport_details: "Agregar Información de Transporte"
+    set_routes: "Configurar Rutas"
+    set_routes_for_vehicle: "Configurar Rutas de los Vehículos"
+    vehicles: "Vehículos"
+    transport_details_text: "Información de Transporte"
+    transport_fee_details: "Tarifas de Transporte"
+    transport_details: "Información de Transporte"
+    transportation_details: "Información de Transporte"
+    select_a_vehicle: "Seleccionar Vehículo"
+
+    flash1: "Bus Asignado Correctamente"
+    flash2: "El transporte ha sido eliminado"
+    flash3: "Bus Editado Correctamente"
+
+ #transport controller translation
+  transport_fee:
+    select_batch: "Seleccionar Grupo"
+    create_fee_collection_dates: "Crear Recibo de Pago"
+    select_details_for: "Seleccionar Información para"
+    bus_fare: "Tiquete del BUS"
+    fine_paid: "Multa Pagada"
+    transport_fee_name: "Nombre de la Tarifa"
+    include_employee: "Incluir Empleados?"
+    no_students_in_selected_batch: "No hay estudiantes en el grupo seleccionado"
+    edit_transport_fee_collection: "Editar Recibos de Pago del transporte"
+    select_fee_collection_date: "Seleccionar Recibo de Pago"
+    transport_fee_submission: "Ingreso de Pagos"
+    manage_fee_collection: "Gestionar Recibos de Pago"
+    student_defaulters: "Estudiantes Morosos"
+    employee_defaulters: "Empleados Morosos"
+    select_class: "Seleccionar Clase"
+    fee_collection: "Recibos de Pago"
+    please_select_a_batch_or_emp: "Por favor seleccione un grupo o empleado"
+    name_cant_be_blank: "El nombre no puede estar en blanco"
+    create_new_fee_collection_dates: "Crear nuevos Recibos de Pago"
+    display_fee_collection_dates: "Mostrar Recibos de Pagos"
+    set_transport_fee_collection_date: "Configurar Recibos de Pago"
+    employee_transport_fee_collection: "Recibos de Pago para transporte de empleados"
+    employee_fees_report: "Reporte Pagos de Empleados"
+    employee_transaction_report: "REPORTE TRANSACCIÓN DE EMPLEADOS"
+    transport_fee: "Tarifa de Transporte"
+    transaction_report: "Reporte Transacción"
+    create_and_view_fee_collection: "Crear y Ver Recibos de Pago"
+    search_for_users_to_pay: "Buscar Usarios para Pagar Transporte"
+    users_with_fees_due: "Usuarios con Deudas"
+    view_transport_fee_collection_dates: "Ver Recibos de Transporte"
+    select_a_user_type: "Seleeccionar un tipo de Usuario"
+    select_one: "Seleccionar Uno"
+    transport_fees_report: "REPORTE PAGOS DE TRANSPORTE"
+
+    flash1: "Recibos de pago actualizados correctamente"
+    flash2: "Recibos de pago actualizados correctamente"
+    flash3: "Las tarifas del transporte han sido eliminadas"
+    flash4: "Eliminado correctamente"
+    flash5: "¡Lo sientimos! No puede eliminar recibos de pago con transacciones."
+
+#routes controller translation
+
+  routes:
+    cost: "Costo"
+    new_main_route: "Nueva Ruta Principal"
+    edit_route_details: "Editar Información de la Ruta"
+    route_details: "Información de la Ruta"
+    add_route: "Agregar Ruta"
+    add_new_route: "Añadir Nueva Ruta"
+    view_route: "Ver Ruta"
+    route_detail: "Información de la Ruta"
+
+    flash1: "Ruta Agregada Correctamente."
+    flash2: "Ruta Actualizada Correctamente."
+    flash3: "Ruta Eliminada Correctamente."
+    flash4: "No puede eliminar la ruta. Por favor, elimine todos los datos dependientes primero."
+    flash5: "No puede eliminar la ruta. Por favor, elimine todos los vehículos primero."
+
+#routes controller translation
+
+  vehicles:
+    no_of_seats: "Cantidad de Sillas"
+    add_new_vehicle: "Añadir Nuevo Vehículo"
+    select_main_route: "Seleccionar Ruta Principal"
+    add_vehicle: "Añadir Vehículo"
+    edit_vehicle_details: "Editar Información del Vehículo"
+    deleted_route: "Ruta Eliminada"
+
+    flash1: "Vehículo Añadido Correctamente."
+    flash2: "Información del Vehículo Actualizado Correctamente."
+    flash3: "Vehículo Eliminado Correctamente"
+
+  autosuggest_menu:
+    transport_text: "Transporte"
+    set_routes: "Configurar Rutas"
+    add_routes: "Añadir Rutas"
+    vehicles: "Vehículos"
+    add_vehicle: "Añadir Vehículo"
+    search_transport_details: "Buscar Información de Transporte"
+    transportation_details: "Información de Transporte"
+    transport_fee: "Tarifa de Transporte"
+    transport_fee_collections: "Recibos de Transporte"
+    view_transport_fee_collection: "Ver Recibos de Transporte"
+    transport_fee_search: "Buscar Tarifas de Transporte"
+    transport_fee_student_defaulters: "Estudiantes Morosos"
+    transport_fee_employee_defaulters: "Empleados Morosos"
+
+
+
+
+

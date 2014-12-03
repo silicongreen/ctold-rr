@@ -1,0 +1,2 @@
+paypal_url: "https://www.paypal.com/cgi-bin/webscr"
+authorize_net_url: "AuthorizeNet::SIM::Transaction::Gateway::LIVE"

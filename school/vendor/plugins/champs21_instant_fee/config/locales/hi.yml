@@ -1,0 +1,62 @@
+hi:
+  activerecord:
+    attributes:
+
+      instant_fee:
+        amount: "राशि"
+        pay_date: "तारीख पे"
+
+      instant_fee_category:
+        name: "नाम"
+        description: "विवरण"
+
+      instant_fee_particular:
+        name: "नाम"
+        description: "विवरण"
+        amount: "राशि"
+        instant_fee_category_id: "त्वरित शुल्क वर्ग"
+
+
+  payee: "आदाता"
+  reciept: "रसीद"
+  guest: "अतिथि"
+  guest_name: "अतिथि का नाम"
+  payee_name: "आदाता का नाम"
+  net_amount: "शुद्ध राशि"
+  custom: "रिवाज"
+  add_category: "श्रेणी जोड़ें"
+  instant_fee_text: "तुरंत शुल्क"
+  instant_fees_text: "तुरंत शुल्क"
+  particular_name: "खास नाम"
+  particular_list: "ब्योरे सूची"
+  pay_instant_fees: "त्वरित फीस का भुगतान"
+  select_payee: "चुनें आदाता"
+  create_instant_fee: "तुरंत शुल्क बनाएँ"
+  instant_fee_reciept: "त्वरित शुल्क रसीद"
+  manage_instant_fees: "तुरंत शुल्क प्रबंधित करें"
+  category_description: "श्रेणी वर्णन"
+  select_category_type: "श्रेणी प्रकार का चयन करें"
+  instant_fee_management: "उदाहरण शुल्क प्रबंधन"
+  saving_problem_occured: "सेविंग समस्या आई."
+  view_created_instant_fee: "बनाया तुरंत शुल्क देखें"
+  no_default_category_exist: "कोई डिफ़ॉल्ट श्रेणियों मौजूद"
+  instant_fee_saved_succesfully: "तुरंत शुल्क सफलतापूर्वक बचाया"
+  instant_fees_transaction_report: "तुरंत शुल्क लेनदेन रिपोर्ट"
+  edit_instant_category_for_fees: "शुल्क के लिए तुरंत श्रेणी संपादित करें"
+  create_instant_category_for_fee: "शुल्क के लिए तुरंत श्रेणी बनाएँ"
+  create_instant_particular_for_fee: "शुल्क के लिए तुरंत विशेष बनाएँ"
+  update_instant_particular_for_fees: "शुल्क के लिए तुरंत विशेष अद्यतन"
+  no_default_particular_exist: "इस श्रेणी के अंतर्गत कोई डिफ़ॉल्ट ब्यौरे मौजूद"
+  are_you_want_to_delete_category: "क्या आप यकीन है कि आप इस श्रेणी हटाना चाहते हैं?"
+  are_you_want_to_delete_particular: "क्या आप यकीन है कि आप इस विशेष हटाना चाहते हैं?"
+  instant_fee_category_created_successfully: "तुरंत शुल्क श्रेणी सफलतापूर्वक बनाया गया"
+  instant_fee_category_updated_successfully: "तुरंत शुल्क श्रेणी सफलतापूर्वक अपडेट"
+  instant_fee_particular_created_successfully: "त्वरित शुल्क विशेष सफलतापूर्वक बनाया गया"
+  instant_fee_particular_deleted_successfully: "त्वरित शुल्क विशेष सफलतापूर्वक नष्ट कर दिया"
+  instant_fee_particular_updated_successfully: "त्वरित शुल्क विशेष सफलतापूर्वक अपडेट"
+  InstantFee_account: "तुरंत शुल्क खाता"
+  champs21_instant_fee_module: "Champs21 तुरंत शुल्क मॉड्यूल"
+  manage_and_pay_instant_fees: "प्रबंधित और तत्काल शुल्क का भुगतान"
+  instant_fee_reciept: "Instant fee rciept"
+  net_amount: "Total"
+  instant_fee_payed: "Instant Fee payed successfully"

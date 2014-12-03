@@ -1,0 +1,15 @@
+<div id ="student_main_info">
+  <h3><%= t('vehicle_details') %></h3>
+  <table>
+    <tr>
+      <td>
+      <div><%= t('vehicle_no') %> :  <%= @vehicle.vehicle_no %></div>
+      <div><%= t('route') %>: <%= @vehicle.route %></div>
+      <div><%= t('no_of_sears') %>:  <%= @vehicle.no_of_seats %></div>
+      <div><%= t('status') %> :  <%= @vehicle.status %></div>
+      </td>
+    </tr>
+
+  </table>
+  <%= link_to "#{t('view_all')}", vehicles_path %>
+</div>

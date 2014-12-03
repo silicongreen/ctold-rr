@@ -1,0 +1,91 @@
+fr: # locale
+  activerecord:
+    attributes:
+      placement_registration:
+        student_id: "Étudiant"
+
+      placementevent:
+        title: "Titre"
+        date:  "Date"
+    errors:
+      messages:
+        date_cant_be_past_date : "Date can't be past date"
+        
+  placed: "mis"
+  attended: "Assisté"
+  placements: "Placements"
+  registrations: "Inscriptions"
+  placement: "Placement"
+  PlacementActivities: "Activités de placement"
+  resubmitted_application: "demande re-soumise"
+    
+#placement registration controller
+  placement_registrations:
+    the_student_has: "L'étudiant a"
+    the_recruitment_process: "La processus de recrutement."
+    the_placement_is: "Le Placement est"
+    registration: "Inscription"
+    placement_status: "État de Placement"
+    approve_registration: "Approuver l'inscription"
+    reject_registration: "Refuser l'inscription"
+    awaiting_response: "Attendre la réponse de l'étudiant"
+    not_attended: "Non assisté"
+    disapprove_placement: "Refuser le placement"
+    approve_placement: "Accepter le placement"
+    no_students_were_invited: "Aucun étudiant n'était invité."
+    company_name: "Nom de l'entreprise"
+    your_application_is_waiting_approval: "Votre demande est en attente d'approbation"
+    your_registration_is_approved: "Votre inscription est approuvée"
+    your_registration_is_rejected: "Votre inscription est refusée"
+
+    flash1: "Inscrit avec succès pour l'événement de placement."
+    flash2: "Impossible de s'inscrire"
+    flash3: "Vous ne pouvez pas vous inscrire utilisant cette invitation."
+    flash4: "L'événement le placement a été archivé. Les inscriptions sont fermées."
+    flash5: "L'inscription de placement est"
+
+#placement registration controller
+  placementevents:
+    placement_cell: "Cellule de placement"
+    no_students_added_yet: "Aucun étudiant ajouté encore"
+    company: "Entreprise"
+    are_you_sure: "Êtes-vous sûr de vouloir supprimer ce placement et toutes ses inscriptions?"
+    no_placement_events_has_been_anounced: "Aucun événement de placement ont été annoncés"
+    no_batch_selected: "Aucun lot sélectionné"
+    archived_placements: "Placement archivés"
+    no_students_selected: "Aucun étudiant sélectionné"
+    no: "Aucun"
+    placement_report: "Rapport de Placement"
+    invite_students: "Inviter des étudiants"
+    placement: "Placement"
+    on: "Activé"
+    you_have_invited_the_placement_event: "Vous êtes invité à l'événement de placement le"
+    confirm_your_registration: "Confirmez votre inscription de la page de placements"
+    all_placements: "Tous les Placements"
+    announce_new_placements: "Annoncer un nouveau placement"
+    edit_placement_event: "Modifier l'événement de placement"
+    update_placement_event: "Mettre à jour l'événement de placement"
+    select_recipient: "Sélectionner un bénéficiaire"
+    students_to_invite: "Étudiants à inviter"
+    invite: "Inviter"
+    new_placement_event: "Nouvel événement de placement"
+    create_placement_event: "Créer un événement de placement"
+    placement_events: "Événement de Placement"
+    archive_this_event: "Archiver cet événement"
+    are_you_sure_to_archive: "Êtes-vous sûr de vouloir archiver ce placement?"
+    view_invitation: "Voir l'Invitation"
+    generate_report: "Générer le rapport"
+    invited: "Invité"
+    applied: "Appliqué"
+    select_type: "Sélectionner un type"
+
+    flash1: "Vous n'êtes pas invité à cet événement de placement"
+    flash2: "Évenement de placement mis à jour avec succès"
+    flash3: "Nouveau événement de placement créé avec succès"
+    flash4: "Événement de placement et ses inscriptions ont été supprimés"
+    flash5: "L'événement de placement a été desactivé et archivé"
+    flash6: "Étudiants invités avec succès pour l'événement de placement"
+    flash7: "SVP, choisissez un type"
+    flash8: "Please select atleast one student"
+
+  

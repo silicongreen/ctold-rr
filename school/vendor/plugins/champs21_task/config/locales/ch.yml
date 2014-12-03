@@ -1,0 +1,93 @@
+ch:
+  activerecord:
+    attributes:
+
+      task:
+        user_id: "用户"
+        title: "標題"
+        description: "説明"
+        status: "狀態"
+        due_date: "截止日期"
+
+      task_assignee:
+        assignee_id: "受托人"
+
+      task_comment:
+        user_id: "用户"
+        description: "説明"
+        task_id: "任務"
+    errors:
+      messages:
+        invalid_status: "無效的狀態"
+        should_be_less_than: "應當小于 500 kb"
+        should_be_assigned_only_once: "應當僅可以分配一次。"
+        cannot_be_before_start_date: "不能在開始日期之前"
+        should_be_in_the_future: "應當是將來"
+
+
+  required_fields: "必填項。"
+  edit_privileges: "編輯權限"
+  master_admin: "主管理員"
+  tasks_label: "任務"
+  TaskManagement: "任務管理"
+  download_attachment: "下載附件"
+  new_task: "新任務"
+  new_task_description: "新任務説明"
+  task_status_changed: "任務狀態已更改"
+  task_status_changed_to: "任務狀態更改爲"
+  task_updated: "任務已更新"
+  task_comment_deleted_successfully: "任務評價已經被成功删除"
+  task_management: "任務管理"
+  
+  tasks:
+
+    max_size: "最大500KB"
+    tasks_assigned_to_me: "給我分配的任務"
+    deleted_user: "已删除用户"
+    assigned: "已分配"
+    completed: "已完成"
+    tasks_assigned_by_me: "我分配的任務"
+    attach_a_file: "附加一個文件(最大爲500KB)"
+    select_principals: "選擇校長"
+    select_master_app_users: "選擇主應用程序用户"
+    select_school: "選擇學校"
+    select_course: "選擇課程"
+    select_members: "選擇成員"
+    members: "成員"
+    select_employees: "選擇員工"
+    task_status: "任務狀態"
+    task_text: "任務"
+    task_creation_successful: "任務已經成功創建"
+    task_updation_successful: "任務已經成功更新"
+    no_permission_to_view_task: "你没有權限查看這個任務"
+    task_deletion_successful: "任務已經被成功删除"
+    no_permission_to_delete_task: "你没有權限删除這個任務"
+    no_permission_to_download_file: "你没有權限下載這個文件"
+    status_updated_successfully: "這個任務狀態已經被成功更新。"
+    all_tasks: "所有任務"
+    filter_by: "過濾按照 "
+    create_new_task: "創建新的任務"
+    edit_task: "編輯任務"
+    view_task: "查看任務"
+    delete_confirmation: "你確定要删除這個任務嗎？"
+    mark_as_completed: "標注爲已完成"
+    mark_as_assigned: "標注爲已分配"
+    by: "由 "
+    no_file_attached: "没有附加文件。"
+    post_an_update: "發布一項更新"
+    created_on: "已創建在 "
+    attach_a_file: "附加一個文件"
+    updates: "更新"
+    no_updates: "還没有更新"
+    assigned_to: "被分配給"
+    listing_assignees: "列出受托人"
+    emp_code_admssn_no: "員工號碼/ 入學號碼"
+    dept_name_course_name: "系名稱/課程名稱"
+    discription_cant_be_blank : "Discription can't be blank"
+
+  task_comments:
+    deleted_user: "已删除用户"
+    delete_comment_confirmation: "你確定要删除這個更新嗎?"
+    posted: "已發布的 "
+    no_permission_to_download_file: "你没有權限下載這個文件"
+    update_creation_successful: "更新已經成功發布"

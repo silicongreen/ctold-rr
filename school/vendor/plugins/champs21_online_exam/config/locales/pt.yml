@@ -1,0 +1,83 @@
+pt: # locale
+  activerecord:
+    attributes:
+    #validation errors
+
+      online_exam_attendance:
+        online_exam_score_detail: "Detalhes da pontuação do Exame on-line"
+
+      online_exam_group:
+        name: "Nome"
+        start_date: "Data de Início"
+        end_date: "Data de término"
+        maximum_time: "Tempo Máximo"
+        pass_percentage: "Porcentagem para aprovar"
+
+      online_exam_option:
+        option: "Opção"
+
+      online_exam_question:
+        question: "Pergunta"
+        mark: "Notas"
+        online_exam_options: "Opções de Exame Online"
+    errors:
+      messages:
+        atleast_one_option_must_be_answer: "Pelo menos uma opção deve ser a resposta"
+        end_date_should_be_after_start_date: "End date should be after Start date"
+        should_not_be_less_than_today: "Date should not be less than today's date"
+#common
+  online_exam_text: "Exame Online"
+  select_exam: "Selecione Exame"
+  exam_result_text: "Resultado do Exame"
+  failed: "Reprovado"
+  passed: "Aprovado"
+  question: "Perguntas"
+  options: "Opções"
+  question_created_successfully: "Perguntas Criada com sucesso"
+  exam_group_successfully_deleted: "Grupo de exames APAGADO com sucesso"
+  sorry_cannot_publish_an_exam_without_questions_please_add_minimum_one_question: "Lamentamos! Não podemos publicar um exame sem perguntas. Por favor, crie pelo menos uma pergunta"
+  exam_reset_successful_for_selected_students: "O exame foi desfeito com sucesso, para o aluno selecionado"
+  sorry_no_students_selected: "Lamento ! Nenhum aluno foi selecionado"
+  enter_options_here: "Digite as opçõe aqui"
+  is_answer: "É uma pergunta"
+  edit_option: "Editar Opções"
+  edit_question_text: "Editar Perguntas"
+  delete_question: "APAGAR Pergunta"
+  add_question: "Adicionar Pergunta"
+  new_online_exam_text: "Novo Exame Online"
+  maximum_time_minutes: "Tempo Máximo (Minutos"
+  pass_percentage: "Percentagem de passagem(%)"
+  create_questions: "Criar Perguntas"
+  reset_exam: "Reset Exame"
+  view_online_exams: "Ver Exame Online"
+  are_you_sure_to_delete_this_exam_group: "Tem a certeza que pretende eliminar este grupo de exame"
+  no_exam_created_for_selected_batch: "Nenhum exame criado para grupo selecionado"
+  view_result_text: "Ver Resultado"
+  select_student: "Selecionar Estudante"
+  no_students_has_atended_the_selcted_exam_group: "Nenhum estudante participou no Exame do grupo selecionado"
+  add_questions: "Adicionar Perguntas"
+  no_question_added_to_this_exam_group: "Nenhuma pergunta adicionada a esse grupo de exame"
+  this_will_delete_the_question_and_associated_answers_are_you_sure: "Isto irá apagar a pergunta e as respostas associadas. Tem certeza?"
+  no_student_attended_this_exam: "Nenhum estudante participou neste exame"
+  online_examination_result: "Resultado de Exame Online"
+  create_new_online_exam: "Criar novo exame online"
+  view_existing_online_exam: "Ver exame online existente"
+  view_exam_results: "Ver resultados do exame"
+  view_online_exam_results: "Ver resultados de exames on-line"
+  reset_exam_for_a_student: "Redefinir exame para um estudante"
+  option_per_question: "Opção por Pergunta"
+  view_results: "Ver Resultados"
+  you_have_successfully_completed_the_exam: "Você concluiu com Sucesso o exame"
+  sorry_you_have_already_attended_this_exam: "Desculpe! Você já participou deste exame"
+  exam_name: "Nome do Exame"
+  minutes: "Minutos"
+  start_exam: "niciar o exame"
+  sorry_your_answers_are_not_acepted_as_the_maximum_time_exeeded_please_contact_the_exam_admin: "Desculpe! Suas respostas não foram aceitas porque o tempo máximo foi ultrapassado. Contacte o administrador deste exame"
+  total_score: "Pontuação Total"
+  time_left: "Tempo Restante"
+  manage_online_exam_system: "Gerir Sistema Exame Online"
+  exam_group_successfully_updated: "Grupo de Exame atualizado com sucesso"
+  exam_published: "Exam Published"
+  finsih_exam_confirm : "You are finshing exam, once finsihed you cannot redo"
+  please_select_one_exam : "Please select one exam"
+  

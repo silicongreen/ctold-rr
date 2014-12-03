@@ -1,0 +1,135 @@
+it:
+#model
+  activerecord:
+    attributes:
+       applicant:
+          first_name: "First name"
+          date_of_birth: "Date of birth"
+
+  date:
+    formats:
+      default: "%e-%m-%Y"
+      normal: "%B %e, %Y"
+      short: "%e. %b"
+      month_year: "%B %Y"
+      long: "%A, %e %B, %Y"
+      only_day: "%e"
+      month: "%B"
+      day: "%a"
+      mont: "%d"
+      day_mon: "%a %d"
+
+
+    day_names: [Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]
+    abbr_day_names: [Sun, Mon, Tue, Wed, Thur, Fri, Sat]
+    month_names: [~, January, February, March, April, May, June, July, August, September, October, November, December]
+    abbr_month_names: [~, Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec]
+    order: [ :day, :month, :year ]
+
+  time:
+    formats:
+      default: "%A, %d. %B %Y, %H:%M Uhr"
+      short: "%d. %B, %H:%M Uhr"
+      long: "%A, %d. %B %Y, %H:%M Uhr"
+      time: "%H:%M"
+
+    am: "AM"
+    pm: "PM"
+
+#general translation
+  blog_text: "Blog"
+  blog_admin_privilege: "Blog Admin"
+  manage_blog: "Post blog and view blogs by other users"
+
+#controller specific
+  blogs:
+    error_prohibited: "errors prohibited this from being saved"
+    problem_fields: "there were problems with the following fields:"
+    flash1: "Please create a blog for yourself first"
+    not_authorized: "You are not authorized to view this content"
+    blogs_text: "Blog"
+    register: "Register"
+    my_blogs: "My Blogs"
+    no_post: "No blog is posted by you."
+    my_blog: "My Blog"
+    commented: " commented on your post"
+    on_text: " on"
+    activities: "Activities"
+    flash_admin: "Administrator can not participate in blogging."
+    no_notification: "No recent activities found"
+    deleted_user: "Deleted User"
+    flash_update: "Blog has been updated successfully"
+    notifications: "Activities"
+    search: "Search"
+    flash_blog_status: "Blog status updated successfully"
+    blog_activated: "User's blog is activated successfully"
+    blog_deactivated: "User's blog is deactivated successfully"
+
+  blog_posts:
+    flash_no_blog: "No blog found for this user"
+    flash_no_user: "User not found"
+    not_authorized: "You are not authorized to view this content"
+    admin_deactivated:
+    flash_edit: "Your post has been edited successfully"
+    flash_not_available: "This content is currently unavailable"
+    flash2: "Your blog post has been saved successfully."
+    flash3: "Your blog post has been posted successfully."
+    home: 'Home'
+    new_post: "+ New Post"
+    my_blog: "My Blog"
+    edit_blog: "Edit blog"
+    by: "By"
+    date_text: "Date"
+    blogs_text: "Blog"
+    comments: "Comments"
+    unpublish: "Unpublish"
+    publish: "Publish"
+    no_post: "No blog is posted by you."
+    search: "Search"
+    search_blogs: "Search Blogs"
+    blog_name: "Blog Name"
+    not_created_yet: "Not created yet"
+    activate: "Activate"
+    deactivate: "Deactivate"
+    notifications: "Activities"
+    like: "Like"
+    likes: "Likes"
+    you_have_liked: "You have liked"
+    post: "Post"
+    flash_inactive: "You have not permission to like ths post"
+    flash_not_published: "This post is currently unavailable for liking and commenting"
+    flash_deleted: "This post was deleted."
+    blog_directory: "Blog Directory"
+    save_as_draft: "Save as draft"
+    posted_by: "Posted by"
+    on_text: "on"
+    favourites: "Favourites"
+    flash_admin: "Administrator can not participate in blogging."
+    posts: "Posts"
+    prev_page: "< Previous Page"
+    next_page: "Next Page >"
+    deleted_user: "Deleted User "
+    create_post: "Create Post"
+    deleted_blog: "Deleted Blog"
+    latest_posts: "Latest"
+    popular_posts: "Popular"
+    no_blog_found: "No blog found"
+    flash_blog_ban: "Blog post status updated successfully"
+    delete_post: "Are you sure want to delete this post?"
+    ban_post: "Ban the post"
+    un_ban: "Un ban"
+    published_successfully: "Published Successfully"
+    unpublished_successfully: "Unpublished Successfully"
+    blog_post_deleted_successfully: "Post deleted successfully"
+    no_blog_posts: "No blog posts"
+    ban_blog_post: "Blog post is banned successfully"
+    unban_blog_post: "Blog post is un-banned successfully"
+
+  blog_comments:
+    post_a_comment: "Post a comment"
+    flash1: "Your comment has been posted sucessfully"
+    commented: "commented"
+    ago: "ago"
+    delete_comment_confirmation: "Are you sure want to delete this comment?"
+    flash_admin: "Administrator can not participate in blogging."
+    deleted_user: "Deleted User"

@@ -1,0 +1,56 @@
+ku:
+  activerecord:
+    attributes:
+      gallery_category:
+        name: "ناو"
+
+      gallery_photo:
+        name: "ناو"
+        gallery_category_id: "هاوپۆلی گەلەری"
+        photo_file_name: "ناوی پەڕگەی وێنە"
+
+      gallery_tag:
+        gallery_photo_id: "گەلەری وێنەکان"
+    errors:
+      messages:
+        must_be_less_than_5_mb : "must be less than 5 MB"
+#controller
+  successfully_updated: "سەرکەوتووانە نوێکرایەوە"
+  successfully_deleted: "سەرکەوتووانە سڕایەوە "
+  photo_uploaded: "وێنە بەرزکراوەتەوە"
+  photo_updated: "بەرزکردنەوەی وێنەکان"
+#view
+  photo_text: "گەلەری"
+  categoriess: "هاوپۆلەکان"
+  gallery: "گەلەری"
+  add_photo: "زۆرکردنی وێنە"
+  neew: "نوێ"
+  photos: " وێنەکان"
+  gallery_category: "هاوپۆلی گەلەرییەکە"
+  name: "ناو"
+  savee: "► پاشەکەت"
+  pictures: "وێنەکان"
+  editt: "دەستکاریی"
+  delete: "سڕینەوە"
+  are_you_sure: "دڵنیایت؟"
+  edit_photo: "دەستکاریی کردنی وێنە"
+  delete_photo: "سڕینەوەی وێنە"
+  upload_photo: "زۆرکردنی وێنە"
+  select_category: "هاوپۆل دیاری بکە"
+  select_photo: "وێنە هەڵبژێرە (5MB)"
+  photo_name: "ناوی وێنە"
+  updatee: "► نوێکردنەوە"
+  employees: "فەرمانبەر"
+  students: "فێرخوازەکان"
+  department: "بەش"
+  batchess: "قۆناغ"
+  select_employees: "فەرمانبەرەکان دیاری بکە"
+  select_students: "دیاری کردنی خوێندکارەکان"
+  select_department: "بەسێک دیاری بکە"
+  select_course: "کۆرسێک هەڵبژێرە"
+  select_all: "هەموو دەستنیشان بکە"
+  add: "زۆرکردن"
+  no_category: "هاوپۆلی نیە"
+  photo_uploaded: "وێنە بەرزکرایەوە"
+  category_created: "هاوپۆل دروست کرا"
+  gallery_privilege: "ڕێکخستنی گەلەری"

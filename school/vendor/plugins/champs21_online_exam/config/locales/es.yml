@@ -1,0 +1,83 @@
+es:
+  activerecord:
+    attributes:
+    #validation errors
+
+      online_exam_attendance:
+        online_exam_score_details: "Puntajes de Exámenes Online"
+
+      online_exam_group:
+        name: "Nombre"
+        start_date: "Fecha de Inicio"
+        end_date: "Fecha Final"
+        maximum_time: "Tiempo Máximo"
+        pass_percentage: "Porcentaje Para Pasar"
+
+      online_exam_option:
+        option: "Opción"
+
+      online_exam_question:
+        question: "Pregunta"
+        mark: "Puntaje"
+        online_exam_options: "Opciones del Examen en Línea"
+    errors:
+      messages:
+         atleast_one_option_must_be_answer: "Debe responder  al menos una de las opciones"
+         should_not_be_less_than_today: "Date should not be less than today's date"
+
+#common
+  online_exam_text: "Examen en Línea"
+  select_exam: "Seleccionar Examen"
+  exam_result_text: "Resultado del Examen"
+  failed: "Falló"
+  passed: "Pasó"
+  question: "Pregunta"
+  options: "Opciones"
+  question_created_successfully: "Pregunta creada correctamente"
+  exam_group_successfully_deleted: "Grupo de examenes eliminado correctamente"
+  sorry_cannot_publish_an_exam_without_questions_please_add_minimum_one_question: "Lo sentimos! No se puede publicar un examen sin preguntas. Por favor agregue al menos una pregunta"
+  exam_reset_successful_for_selected_students: "Reinicio de exámenes exitoso para los estudiantes seleccionados"
+  sorry_no_students_selected: "Lo sentimos! No hay estudiantes seleccionados"
+  enter_options_here: "Ingrese las Opciones Aquí"
+  is_answer: "Es la Respuesta"
+  edit_option: "Editar opción"
+  edit_question_text: "Editar Pregunta"
+  delete_question: "Eliminar Pregunta"
+  add_question: "Agregar Pregunta"
+  new_online_exam_text: "Nuevo Examen en Línea"
+  maximum_time_minutes: "Tiempo Máximo (Minutos)"
+  pass_percentage: "Porcentaje Para Pasar"
+  create_questions: "Crear Preguntas"
+  reset_exam: "Restablecer Examen"
+  view_online_exams: "Ver Exámenes en Línea"
+  are_you_sure_to_delete_this_exam_group: "¿Estás seguro de eliminar este grupo de exámenes"
+  no_exam_created_for_selected_batch: "No se ha creado un examen para el Grupo seleccionado"
+  view_result_text: "Ver Resultado"
+  select_student: "Seleccionar Estudiante"
+  no_students_has_atended_the_selcted_exam_group: "Ningún estudiante ha atendido los exámenes seleccionados"
+  add_questions: "Agregar Preguntas"
+  no_question_added_to_this_exam_group: "No se han agregado preguntas a este grupo de exámenes"
+  this_will_delete_the_question_and_associated_answers_are_you_sure: "Esto eliminará la pregunta y las respuestas asociadas. ¿Está seguro?"
+  no_student_attended_this_exam: "Ningún estudiante atendió este examen"
+  online_examination_result: "Resultado de Exámenes en Línea"
+  create_new_online_exam: "Crear Nuevo Examen en Línea"
+  view_existing_online_exam: "Ver Exámenes en Línea Existentes"
+  view_exam_results: "Ver Resultado de Exámenes"
+  view_online_exam_results: "Ver Resultado de Exámenes en Línea"
+  reset_exam_for_a_student: "Reiniciar Examen para un Estudiante"
+  option_per_question: "Opción por Pregunta"
+  view_results: "Ver Resultados"
+  you_have_successfully_completed_the_exam: "Ha completado el examen correctamente"
+  sorry_you_have_already_attended_this_exam: "Lo sentimos! Usted ya ha atendido este examen"
+  exam_name: "Nombre del Examen"
+  minutes: "Minutos"
+  start_exam: "Iniciar Examen"
+  sorry_your_answers_are_not_acepted_as_the_maximum_time_exeeded_please_contact_the_exam_admin: "Lo sentimos! Sus respuestas no son aceptadas ya que se excedió en el tiempo máximo. Por favor contacte el administrador del examen"
+  total_score: "Puntaje Total"
+  time_left: "Tiempo Restante"
+  manage_online_exam_system: "Gestionar Sistema de Exámenes en Línea"
+  exam_group_successfully_updated: "Grupo de exámenes actualizado correctamente"
+  exam_published: "Exam Published"
+  finsih_exam_confirm : "You are finshing exam, once finsihed you cannot redo"
+  please_select_one_exam : "Please select one exam"
+ 

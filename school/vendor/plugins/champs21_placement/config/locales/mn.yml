@@ -1,0 +1,91 @@
+mn: # locale
+  activerecord:
+    attributes:
+      placement_registration:
+        student_id: "Оюутан"
+
+      placementevent:
+        title: "Гарчиг"
+        date:  "Сар өдөр"
+
+    errors:
+      messages:
+        date_cant_be_past_date : "Date can't be past date"
+
+  placed: "Байрласан"
+  attended: "Хамрагдсан"
+  placements: "Байршуулалт"
+  registrations: "Бүртгэлүүд"
+  placement: "Байршуулалт"
+  PlacementActivities: "Байршуулах үйл явцууд/ үйл ажиллагаанууд"
+  resubmitted_application: "Дахин оруулсан анкет / маягт"
+
+#placement registration controller
+  placement_registrations:
+    the_student_has: "Оюутанд байгаа"
+    the_recruitment_process: "Нэмэлт үйл явцууд."
+    the_placement_is: "Байршуулалт бол "
+    registration: "Бүртгэл"
+    placement_status: "Байршуулалтын статус"
+    approve_registration: "Бүртгэлийг баталгаажуулах"
+    reject_registration: "Бүртгэлийг цуцлах"
+    awaiting_response: "Оюутанаас хариу хүлээх"
+    not_attended: "хамрагдаагүй"
+    disapprove_placement: "Бүртгэлийн дэмжихгүй байх"
+    approve_placement: "Байршуулалтыг баталгаажуулах"
+    no_students_were_invited: "Оюутан тавигдаагүй байсан"
+    company_name: "Компани нэр"
+    your_application_is_waiting_approval: "Таны маягтын баталгаажилт хүлээгдэж байна"
+    your_registration_is_approved: "Таны бүртгүүлэлт баталгаажсан"
+    your_registration_is_rejected: "Таны бүртгүүлэлт цуцлагдсан"
+
+    flash1: "Байршуулсан үйл ажиллагаанд амжилттай бүртгэгдлээ."
+    flash2: "Бүртгэл амжилтгүй боллоо"
+    flash3: "Та нэн урилгыг ашиглаж бүртгэх боломжгүй"
+    flash4: "Энэхүү айл авц архивлагдсан байна бүртгэл хаагдлаа."
+    flash5: "Байршуулалтын бүртгэл бол "
+
+#placement registration controller
+  placementevents:
+    placement_cell: "Placement Cell"
+    no_students_added_yet: "Оюутан хараахан нэмэгдээгүй байна"
+    company: "Компани"
+    are_you_sure: "Та энэ байршуулалт болон үүний бүртгэлийг устгахдаа итгэлтэй байна уу ?"
+    no_placement_events_has_been_anounced: "Зарлагдсан байрлуулалтын үйл ажиллагаа байхгүй байна"
+    no_batch_selected: "Салбар бүлэг сонгогдоогүй байна"
+    archived_placements: "Архивласан байршуулалт"
+    no_students_selected: "Сонгогдсон оюутан байхгүй байна"
+    no: "No"
+    placement_report: "Байршуулалттын тайлан мэдээ"
+    invite_students: "Оюутан урих оруулах"
+    placement: "Байршуулалт"
+    on: "On"
+    you_have_invited_the_placement_event: "Та энэхүү байрлуулалтын үйл явцад уригдсан байна"
+    confirm_your_registration: "байршуулалтын хуудаснаас өөрийн бүртгэлийг баталгаажуулах"
+    all_placements: "бүх байршуулалт"
+    announce_new_placements: "шинэ байршуулалтыг зарлах"
+    edit_placement_event: "Байршуулалтын үйл ажиллагааг засварлах"
+    update_placement_event: "Байршуулалтын үйл ажиллагааг шинэчлэх"
+    select_recipient: "Хүлээн авагчийн сонгох"
+    students_to_invite: "Урих Оюутанууд"
+    invite: "Урих"
+    new_placement_event: "Шинэ байршуулалтын үйл ажиллагаа"
+    create_placement_event: "байршуулалтын үйл ажиллагаа үүсгэх"
+    placement_events: "Байршуулалтын үйл ажиллагаа"
+    archive_this_event: "Энэ үйл ажиллагааг архивлах"
+    are_you_sure_to_archive: "Энэ байршуулалтыг архивлахдаа та итгэлтэй байна уу?"
+    view_invitation: "Урилгыг харах"
+    generate_report: "Тайлан мэдээ боловсруулах"
+    invited: "Урисан"
+    applied: "Applied"
+    select_type: "Төрөл хэлбэрийг сонгох"
+
+    flash1: "Та энэхүү байршуулалтын үйл ажиллагаанд уригдаагүй байна"
+    flash2: "байршуулалтын үйл ажиллагаа амжилттай шинэчлэгдлээ"
+    flash3: "Шинэ байршуулалтын үйл ажиллагаа амжилттай үүслээ"
+    flash4: "байршуулалтын үйл ажиллагаа ба түүний бүртгэл амжилттай усталаа"
+    flash5: "байршуулалтын үйл ажиллагаа идэвхижилгүй болж архивлагдлаа"
+    flash6: "байршуулалтын үйл ажиллагаанд оюутан амжилттай уригдлаа "
+    flash7: "Хэлбэрийг сонгох"
+    flash8: "Please select atleast one student"
+

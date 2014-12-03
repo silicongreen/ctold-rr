@@ -1,0 +1,91 @@
+vi: # locale
+  activerecord:
+    attributes:
+      placement_registration:
+        student_id: "Học sinh"
+
+      placementevent:
+        title: "Chủ đề"
+        date:  "Ngày"
+
+    errors:
+      messages:
+        date_cant_be_past_date : "Date can't be past date"
+        
+  placed: "Đã sắp xếp"
+  attended: "Đã tham dự"
+  placements: "Giới thiệu việc làm"
+  registrations: "Đăng ký"
+  placement: "Giới thiệu việc làm"
+  PlacementActivities: "Hoạt động giới thiệu việc làm"
+  resubmitted_application: "Nộp lại đơn xin việc"
+
+#placement registration controller
+  placement_registrations:
+    the_student_has: "Học sinh có"
+    the_recruitment_process: "Quy trình tuyển dụng."
+    the_placement_is: "Giới thiệu việc làm là"
+    registration: "Đăng ký"
+    placement_status: "Tình trạng giới thiệu việc làm"
+    approve_registration: "Chấp nhận đăng ký"
+    reject_registration: "Từ chối đăng ký"
+    awaiting_response: "Đợi phản hồi từ học sinh"
+    not_attended: "Không tham dự"
+    disapprove_placement: "Không chấp nhận giới thiệu việc làm"
+    approve_placement: "Chấp nhận giới thiệu việc làm"
+    no_students_were_invited: "Không có học sinh nào được mời."
+    company_name: "Tên công ty"
+    your_application_is_waiting_approval: "Đơn xin việc của bạn đang chờ phê duyệt"
+    your_registration_is_approved: "Đăng ký của bạn đã được chấp nhận"
+    your_registration_is_rejected: "Đăng ký của bạn đã bị từ chối"
+
+    flash1: "Đã đăng ký tham dự buổi giới thiệu việc làm thành công."
+    flash2: "Đăng ký không thành công"
+    flash3: "Bạn không thể đăng ký mà sử dụng thư mời này."
+    flash4: "Buổi giới thiệu việc làm đã được lưu. Không đăng ký được nữa."
+    flash5: "Đăng ký tham dự buổi giới thiệu việc làm là"
+
+#placement registration controller
+  placementevents:
+    placement_cell: "Phòng giới thiệu việc làm"
+    no_students_added_yet: "Chưa có học sinh nào được thêm vào"
+    company: "Công ty"
+    are_you_sure: "Bạn có chắc chắn muốn xóa buổi giới thiệu việc làm này và tất cả các đăng ký tham dự buổi này không?"
+    no_placement_events_has_been_anounced: "Không có buổi giới thiệu việc làm nào được thông báo"
+    no_batch_selected: "Không lớp nào được chọn"
+    archived_placements: "Các buổi giới thiệu việc làm đã được lưu"
+    no_students_selected: "Không học sinh nào được chọn"
+    no: "Không"
+    placement_report: "Báo cáo giới thiệu việc làm"
+    invite_students: "Mời học sinh"
+    placement: "Giới thiệu việc làm"
+    on: "Vào"
+    you_have_invited_the_placement_event: "Bạn đã được mời tham dự buổi giới thiệu việc làm vào"
+    confirm_your_registration: "Xác nhận đăng ký tham dự của bạn từ trang giới thiệu việc làm"
+    all_placements: "Tất cả các buổi giới thiệu việc làm"
+    announce_new_placements: "Thông báo buổi giới thiệu việc làm mới"
+    edit_placement_event: "Chỉnh sửa buổi giới thiệu việc làm"
+    update_placement_event: "Cập nhật buổi giới thiệu việc làm"
+    select_recipient: "Chọn người nhận"
+    students_to_invite: "Học sinh được mời"
+    invite: "Mời"
+    new_placement_event: "Buổi giới thiệu việc làm mới"
+    create_placement_event: "Tạo buổi giới thiệu việc làm"
+    placement_events: "Buổi giới thiệu việc làm"
+    archive_this_event: "Lưu sự kiện này"
+    are_you_sure_to_archive: "Bạn có chắc chắn muốn lưu buổi giới thiệu việc làm này không?"
+    view_invitation: "Xem giấy mời"
+    generate_report: "Tạo báo cáo"
+    invited: "Đã mời"
+    applied: "Đã nộp"
+    select_type: "Chọn loại"
+
+    flash1: "Bạn không được mời tham dự buổi giới thiệu việc làm này"
+    flash2: "Buổi giới thiệu việc làm đã được cập nhật thành công"
+    flash3: "Buổi giới thiệu việc làm mới đã được tạo thành công"
+    flash4: "Buổi giới thiệu việc làm và các đăng ký tham dự buổi này đã bị xóa"
+    flash5: "Buổi giới thiệu việc làm đã bị ngừng hoạt động và đã được lưu"
+    flash6: "Đã mời học sinh tham dự buổi giới thiệu việc làm thành công"
+    flash7: "Xin vui lòng chọn một loại"
+    flash8: "Please select atleast one student"
+

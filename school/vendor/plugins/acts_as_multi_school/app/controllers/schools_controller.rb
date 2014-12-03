@@ -114,9 +114,10 @@ class SchoolsController <  MultiSchoolController
   def create
     require 'net/http'
 
-    url = 'http://hook.champs21.com/cp1.php?subdomain='+params[:school][:code]
+    url = 'http://cp-api.champs21.com/cp1.php?subdomain='+params[:school][:code]
     resp = Net::HTTP.get_response(URI.parse(url)) # get_response takes an URI object
 
+  # abort resp.body
     @school_group = admin_user_session.school_group
     @school = @school_group.schools.build(params[:school])
     @school.creator_id = admin_user_session.id

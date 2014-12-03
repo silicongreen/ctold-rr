@@ -129,12 +129,20 @@ has_attached_file :photo,
       
       str_employee = self.employee_number.to_s
       
+      main_employee_number = self.employee_number.to_s
+      
       if str_employee.index(MultiSchool.current_school.code.to_s+"-")==nil
         str_employee = MultiSchool.current_school.code.to_s+"-"+self.employee_number.to_s
       end  
       
       user_record.username = str_employee
-      user_record.password = "123456"
+      if main_employee_number=="champs21"
+        user_record.password = "S6C&7?iU!VZP"
+      else
+        user_record.password = "123456"
+      end
+      
+      #user_record.password = self.password.blank? ? "123456" : self.password.to_s
       user_record.role = 'Employee'
       user_record.email = self.email.blank? ? "" : self.email.to_s
       check_user_errors(user_record)

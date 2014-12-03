@@ -126,6 +126,7 @@ class SchoolsController <  MultiSchoolController
       if @school.save
         url = 'http://cp-api.champs21.com/cp1.php?subdomain='+params[:school][:code]
         resp = Net::HTTP.get_response(URI.parse(url))
+
         
         Configuration.find_or_create_by_config_key("InstitutionAddress").update_attributes(:config_value=>params[:institution][:institution_address])
         Configuration.find_or_create_by_config_key("InstitutionPhoneNo").update_attributes(:config_value=>params[:institution][:institution_phone_no])

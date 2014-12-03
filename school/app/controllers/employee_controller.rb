@@ -327,6 +327,13 @@ class EmployeeController < ApplicationController
         @employee.employee_number= "E" + params[:employee][:employee_number].to_s
       end
       unless @employee.employee_number.to_s.downcase == 'admin'
+        
+        str_employee = @employee.employee_number.to_s
+      
+        if str_employee.index(MultiSchool.current_school.code.to_s+"-")==nil
+          @employee.employee_number = MultiSchool.current_school.code.to_s+"-"+@employee.employee_number
+        end 
+        
         if @employee.save
           flash[:notice] = "#{t('flash15')} #{@employee.first_name} #{t('flash16')}"
           redirect_to :controller =>"employee" ,:action => "admission2", :id => @employee.id
@@ -396,7 +403,7 @@ class EmployeeController < ApplicationController
       sms_setting = SmsSetting.new()
       if sms_setting.application_sms_active and sms_setting.employee_sms_active
         recipient = ["#{@employee.mobile_phone}"]
-        message = "#{t('joining_info')} #{@employee.first_name}. #{t('username')}: #{@employee.employee_number}, #{t('password')}: #{@employee.employee_number}123. #{t('change_password_after_login')}"
+        message = "#{t('joining_info')} #{@employee.first_name}. #{t('username')}: #{@employee.employee_number}, #{t('password')}: 123456. #{t('change_password_after_login')}"
         Delayed::Job.enqueue(SmsManager.new(message,recipient))
       end
       flash[:notice] = "#{t('flash20')} #{ @employee.first_name}"
@@ -963,6 +970,19 @@ class EmployeeController < ApplicationController
     end
     flash[:notice]= "#{t('flash30')} #{params[:id2]}"
     redirect_to :controller=>"employee", :action=>"profile", :id=>params[:id]
+  end
+  
+  def employee_attendance
+    @employee = Employee.find_by_user_id(current_user.id)
+    @reporting_employees = Employee.find_all_by_reporting_manager_id(@employee.user_id)
+    @total_leave_count = 0
+    @reporting_employees.each do |e|
+      @app_leaves = ApplyLeave.count(:conditions=>["employee_id =? AND viewed_by_manager =?", e.id, false])
+      @total_leave_count = @total_leave_count + @app_leaves
+    end
+
+    @app_leaves = ApplyLeaveStudent.count(:conditions=>["approving_teacher =? AND viewed_by_teacher =?", @employee.id, false])
+    @total_leave_count = @total_leave_count + @app_leaves
   end
 
   def view_attendance

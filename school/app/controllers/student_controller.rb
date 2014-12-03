@@ -65,7 +65,7 @@ class StudentController < ApplicationController
         sms_setting = SmsSetting.new()
         if sms_setting.application_sms_active and @student.is_sms_enabled
           recipients = []
-          message = "#{t('student_admission_done')} #{@student.admission_no} #{t('password_is')} #{@student.admission_no}123"
+          message = "#{t('student_admission_done')} #{@student.admission_no} #{t('password_is')} 123456"
           if sms_setting.student_admission_sms_active
             recipients.push @student.phone2 unless @student.phone2.blank?
           end
@@ -135,7 +135,7 @@ class StudentController < ApplicationController
       @student = Student.update(@student.id, :immediate_contact_id => params[:immediate_contact][:contact])
       if sms_setting.application_sms_active and sms_setting.student_admission_sms_active and @student.is_sms_enabled
         recipients = []
-        message = "#{t('student_admission_done')}  #{@student.admission_no} #{t('password_is')} #{@student.admission_no}123"
+        message = "#{t('student_admission_done')}  #{@student.admission_no} #{t('password_is')} 123456"
         if sms_setting.parent_sms_active
           guardian = Guardian.find(@student.immediate_contact_id)
           recipients.push guardian.mobile_phone unless guardian.mobile_phone.nil?
@@ -160,7 +160,7 @@ class StudentController < ApplicationController
       @student.update_attributes(:immediate_contact_id=>params[:immediate_contact][:contact])
       if sms_setting.application_sms_active and sms_setting.student_admission_sms_active and @student.is_sms_enabled
         recipients = []
-        message = "#{t('student_admission_done')}   #{@student.admission_no} #{t('password_is')}#{@student.admission_no}123"
+        message = "#{t('student_admission_done')}   #{@student.admission_no} #{t('password_is')} 123456"
         if sms_setting.parent_sms_active
           guardian = Guardian.find(@student.immediate_contact_id)
           recipients.push guardian.mobile_phone unless guardian.mobile_phone.nil?

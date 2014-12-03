@@ -47,15 +47,25 @@
 
       <div id="autofill-area">
 
-        <div class="student_admission_date">
+        <div class="student_admission_date" style="display: none;">
           <label for="student_admission_no"><%= t('admission_number') %> <span class="necessary-field">*</span> </label>
           <div class="text-input-bg-admission">
             <% unless @config.config_value == '0' or @last_admitted_student.nil? %>
               <%= s.text_field :admission_no , :value=> @last_admitted_student.admission_no.next%>
             <% else %>
-              <%= s.text_field :admission_no %>
+              <%= s.text_field :admission_no, :value=> "ST0001" %>
             <% end %>
           </div>
+        </div>
+        
+       <div class="student_admission_date" >
+          <label><b>Username : 
+            <% unless @config.config_value == '0' or @last_admitted_student.nil? %>
+              <%= MultiSchool.current_school.code.to_s+"-"+@last_admitted_student.admission_no.next%>
+            <% else %>
+              <%= MultiSchool.current_school.code.to_s+"-"+"ST0001" %>
+            <% end %>  
+          <b></label>
         </div>
 
         <div class="student_admission_date">
@@ -65,6 +75,7 @@
               :year_range => 15.years.ago..5.years.from_now, :readonly=>true, :popup=>"force" %>
           </div>
         </div>
+        
 
       </div>
 
@@ -121,16 +132,16 @@
           </div>
         </div>
 
-        <hr class="label-underline"></hr>
+        <hr class="label-underline"  style="display: none;"></hr>
 
-        <div class="label-field-pair">
+        <div class="label-field-pair"  style="display: none;">
           <label for="student_blood_group"><%= t('blood_group') %></label>
           <div class="text-input-bg"><%= select :student, :blood_group, ["A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"],{:prompt=> "#{t('unknown')}"} %></div>
         </div>
 
-        <hr class="label-underline"></hr>
+        <hr class="label-underline"  style="display: none;"></hr>
 
-        <div class="label-field-pair">
+        <div class="label-field-pair"  style="display: none;">
           <label for="student_birth_place"><%= t('birth_place') %></label>
           <div class="text-input-bg"><%= s.text_field :birth_place %></div>
         </div>
@@ -144,9 +155,9 @@
           </div>
         </div>
 
-        <hr class="label-underline"></hr>
+        <hr class="label-underline"  style="display: none;"></hr>
 
-        <div class="label-field-pair">
+        <div class="label-field-pair" style="display: none;">
           <label for="student_birth_place"><%= t("mother_tongue") %></label>
           <div class="text-input-bg"><%= s.text_field :language %></div>
         </div>
@@ -186,15 +197,15 @@
           <label for="student_city"><%= t('city') %></label>
           <div class="text-input-bg"><%= s.text_field :city %></div>
         </div>
-        <hr class="label-underline"></hr>
+        <hr class="label-underline"  style="display: none;"></hr>
 
-        <div class="label-field-pair">
+        <div class="label-field-pair"  style="display: none;">
           <label for="student_state"><%= t('state') %></label>
           <div class="text-input-bg"><%= s.text_field :state %></div>
         </div>
-        <hr class="label-underline"></hr>
+        <hr class="label-underline"  style="display: none;"></hr>
 
-        <div class="label-field-pair">
+        <div class="label-field-pair"  style="display: none;">
           <label for="student_pin_code"><%= t('zip') %></label>
           <div class="text-input-bg"><%= s.text_field :pin_code %></div>
         </div>
@@ -205,9 +216,9 @@
           <div class="text-input-bg"> <%= select :student, :country_id, Country.all.map {|c| [c.name, c.id]}, :selected=> @student.country_id || @selected_value.to_i %> </div>
         </div>
 
-        <hr class="label-underline"></hr>
+        <hr class="label-underline" style="display: none;"></hr>
 
-        <div class="label-field-pair">
+        <div class="label-field-pair" style="display: none;">
           <label for="student_phone1"><%= t('phone') %></label>
           <div class="text-input-bg"><%= s.text_field :phone1 %></div>
         </div>
@@ -224,7 +235,7 @@
           <div class="text-input-bg"><%= s.text_field :email %></div>
         </div>
         <br />
-        <div id="admission1_form_vertical_block_right">
+        <div id="admission1_form_vertical_block_right"  style="display: none;">
           <span class="span-sub-heading"><%= t('settings') %></span>
           <hr class="sub-heading"></hr>
           <div class="label-field-pair">

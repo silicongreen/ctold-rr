@@ -105,9 +105,9 @@
               :year_range => 60.years.ago..20.years.ago, :readonly=>true, :popup=>"force" %></div>
         </div>
 
-        <hr class="label-underline"></hr>
+        <hr class="label-underline"  style="display: none;"></hr>
 
-        <div class="label-field-pair">
+        <div class="label-field-pair"  style="display: none;">
           <label for="parent_detail_education"><%= t('education') %></label>
           <div class="text-input-bg"><%= f.text_field :education %></div>
         </div>
@@ -119,9 +119,9 @@
           <div class="text-input-bg"><%= f.text_field :occupation %></div>
         </div>
 
-        <hr class="label-underline"></hr>
+        <hr class="label-underline"  style="display: none;"></hr>
 
-        <div class="label-field-pair">
+        <div class="label-field-pair"  style="display: none;">
           <label for="parent_detail_income"><%= t('income') %></label>
           <div class="text-input-bg"><%= f.text_field :income %></div>
         </div>
@@ -173,9 +173,9 @@
           <% end %>
         </div>
 
-        <hr class="label-underline"></hr>
+        <hr class="label-underline" style="display: none;"></hr>
 
-        <div class="label-field-pair">
+        <div class="label-field-pair" style="display: none;">
           <label for="parent_detail_state"><%= t('state') %></label>
           <% unless @student.state.empty? %>
             <div class="text-input-bg"><%= f.text_field :state,:value=>@student.state %></div>
@@ -191,7 +191,7 @@
           <% unless @student.country.nil? %>
             <div class="text-input-bg"> <%= select :guardian, :country_id, Country.all.map {|c| [c.name, c.id]}, :selected => @student.country_id %> </div>
           <% else %>
-            <div class="text-input-bg"> <%= select :guardian, :country_id, Country.all.map {|c| [c.name, c.id]}, :selected => 76 %> </div>
+            <div class="text-input-bg"> <%= select :guardian, :country_id, Country.all.map {|c| [c.name, c.id]}, :selected => 14 %> </div>
           <% end %>
         </div>
 

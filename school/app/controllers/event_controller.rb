@@ -22,6 +22,7 @@ class EventController < ApplicationController
   
   def index
     @events = Event.new(params[:events])
+    @event_categories = EventCategory.active_for_event
     if params[:id].nil?
       @date = Time.now
     else
@@ -271,11 +272,45 @@ class EventController < ApplicationController
 
   def edit_event
     @event = Event.find_by_id(params[:id])
+    @event_categories = EventCategory.active_for_event
     if @event.nil?
       page_not_found
     end
     if request.post? and @event.update_attributes(params[:event])
       redirect_to :action=>"show", :id=>@event.id, :cmd=>'edit'
+    end
+  end
+  
+  def categories
+    @event_categories = EventCategory.active_for_event
+    @event_category = EventCategory.new(params[:event_category])
+    @images = Dir.glob("#{RAILS_ROOT}/public/images/icons/events/*.png")
+    if request.post?
+      params[:event_category].each_value(&:strip!)
+      if @event_category.save
+        flash[:notice] = "#{t('flash7')}"
+        redirect_to :action => 'categories'
+      end
+    end
+  end
+
+  def category_delete
+    @event_category = EventCategory.update(params[:id], :status=>0)
+    @event_categories = EventCategory.active_for_event
+  end
+
+  def category_edit
+    @event_category = EventCategory.find(params[:id])
+    @images = Dir.glob("#{RAILS_ROOT}/public/images/icons/events/*.png")
+  end
+
+  def category_update
+    @event_category = EventCategory.find(params[:id])
+    @event_category_name = @event_category.name
+    @images = Dir.glob("#{RAILS_ROOT}/public/images/icons/events/*.png")
+    if @event_category.update_attributes(:name => params[:name], :icon_number => params[:icon_number])
+      @event_categories = EventCategory.active_for_event
+      @event_category = EventCategory.new
     end
   end
 

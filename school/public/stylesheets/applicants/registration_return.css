@@ -133,8 +133,8 @@
     font-family: arial;
     font-size: 14px;
     font-weight: bold;
-    margin-left: 171px;
-    margin-right: 220px;
+    margin-left: 0px;
+    margin-right: 0px;
     margin-top: 30px;
     padding: 7px 10px;
 }
@@ -423,7 +423,7 @@ input[type="checkbox"] {
     padding-top: 4px;
 }
 .submit-button_print {
-    margin-left: 232px;
+    margin-left: 0px;
 }
 
 
@@ -465,13 +465,6 @@ input[type="checkbox"] {
     width:198px;
 }
 
-#institution-name{
-    margin: 27px 0 0 0;
-    float: left;
-    color: white;
-    font-size: 19px;
-    font-weight: bold;
-}
 
 .label_field_pair2 {
     width: 320px;

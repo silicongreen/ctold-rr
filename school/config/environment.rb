@@ -5,7 +5,7 @@ RAILS_GEM_VERSION = '2.3.5' unless defined? RAILS_GEM_VERSION
 Rails::Initializer.run do |config|
   config.time_zone = 'UTC'
   config.gem 'declarative_authorization', :source => 'http://gemcutter.org'
-  config.action_controller.session_store = :active_record_store
+  config.action_controller.session_store = :active_record_store if RAILS_ENV != "development"
   
   config.gem 'fastercsv'
   config.load_once_paths += %W( #{RAILS_ROOT}/lib )
@@ -13,7 +13,7 @@ Rails::Initializer.run do |config|
 
   config.reload_plugins = true if RAILS_ENV =="development"
   config.plugins = [:paperclip,:all]
-
+  #config.gem "paperclip", :version => "~> 2.3"
   if (File.exist?('config/smtp_settings.yml'))
     SMTP_SETTINGS = YAML.load_file('config/smtp_settings.yml')[RAILS_ENV]
     if SMTP_SETTINGS      

@@ -79,8 +79,8 @@ class Student < ActiveRecord::Base
 
   has_attached_file :photo,
     :styles => {:original=> "125x125#"},
-    :url => "/uploads/:class/:id/:attachment/:attachment_fullname?:timestamp",
-    :path => "uploads/:class/:attachment/:id_partition/:style/:basename.:extension"
+	:url => "/uploads/:class/:attachment/:id/:style/:attachment_fullname?:timestamp",
+    :path => "public/uploads/:class/:attachment/:id/:style/:basename.:extension"
 
   VALID_IMAGE_TYPES = ['image/gif', 'image/png','image/jpeg', 'image/jpg']
 
@@ -129,8 +129,8 @@ class Student < ActiveRecord::Base
       user_record = self.build_user
       user_record.first_name = self.first_name
       user_record.last_name = self.last_name
-      user_record.username = self.admission_no.to_s
-      user_record.password = self.admission_no.to_s + "123"
+      user_record.username = MultiSchool.current_school.code.to_s+"-"+self.admission_no.to_s
+      user_record.password = "123456"
       user_record.role = 'Student'
       user_record.email = self.email.blank? ? "" : self.email.to_s
       check_user_errors(user_record)
@@ -144,11 +144,11 @@ class Student < ActiveRecord::Base
       changes_to_be_checked = ['admission_no','first_name','last_name','email','immediate_contact_id']
       check_changes = self.changed & changes_to_be_checked
       unless check_changes.blank?
-        self.user.username = self.admission_no if check_changes.include?('admission_no')
+        self.user.username = MultiSchool.current_school.code.to_s+"-"+self.admission_no.to_s if check_changes.include?('admission_no')
         self.user.first_name = self.first_name if check_changes.include?('first_name')
         self.user.last_name = self.last_name if check_changes.include?('last_name')
         self.user.email = self.email if check_changes.include?('email')
-        self.user.password = (self.admission_no.to_s + "123") if check_changes.include?('admission_no')
+        self.user.password = ("123456") if check_changes.include?('admission_no')
         self.user.save if check_user_errors(self.user)
       end
 

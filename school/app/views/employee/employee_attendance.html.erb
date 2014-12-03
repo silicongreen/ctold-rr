@@ -49,7 +49,15 @@
       <div class="link-heading"><%= link_to "#{t('reset_leave')}", :controller=>"employee_attendance", :action=>"manual_reset" %></div>
       <div class="link-descr"><%= t('reset_employee_leaves') %></div>
     </div>
+    
+    <% if @total_leave_count == 0 %>
 
+    <% else %>
+      <div class="link-box">
+        <div class="link-heading"><%= link_to "#{t('new_leaves')} (#{@total_leave_count})", :controller=>"employee_attendance", :action=>"new_leave_applications", :id=>@employee.id, :target=>"no-popup" %></div>
+        <div class="link-descr"><%= t('new_leaves') %> </div>
+      </div>
+    <% end %>
 
   </div>
 

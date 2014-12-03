@@ -22,4 +22,5 @@ class EmployeeCategory < ActiveRecord::Base
   named_scope :active, :conditions => {:status => true }
   has_many :employee_positions
   has_many :employees
+  accepts_nested_attributes_for :employee_positions
 end

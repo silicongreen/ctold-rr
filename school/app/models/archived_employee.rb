@@ -47,8 +47,8 @@ class ArchivedEmployee < ActiveRecord::Base
     :styles => {
     :thumb=> "100x100#",
     :small  => "150x150>"},
-    :url => "/uploads/:class/:id/:attachment/:attachment_fullname?:timestamp",
-    :path => "uploads/:class/:attachment/:id_partition/:style/:basename.:extension"
+    :url => "/uploads/:class/:attachment/:id/:style/:attachment_fullname?:timestamp",
+    :path => "public/uploads/:class/:attachment/:id/:style/:basename.:extension"
 
   def full_name
     "#{first_name} #{middle_name} #{last_name}"

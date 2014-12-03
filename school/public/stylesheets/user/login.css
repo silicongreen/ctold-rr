@@ -27,13 +27,13 @@
     margin-top: 0 !important;
 }*/
 .themed_text{
-    color: #9c0000;
+    color: #D92127;
 }
 .themed_hover_text:hover{
-    color: #9c0000;
+    color: #D92127;
 }
 .themed_bg {
-    background-color: #9c0000;
+    background-color: #D92127;
 }
 #login-input-box {
     height:140px !important;

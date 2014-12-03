@@ -38,7 +38,7 @@
 
       <div class="label-field-pair">
         <label for="user_username"><%= t('username') %><span class="necessary-field">*</span></label>
-        <div class="text-input-bg"><%= f.text_field :username %></div>
+        <div class="text-input-bg"><span><%= @school_code %>-</span><%= f.text_field :username %></div>
       </div>
 
       <div class="label-field-pair">

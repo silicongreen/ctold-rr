@@ -24,6 +24,7 @@ class ApplyLeave < ActiveRecord::Base
   
   cattr_reader :per_page
   @@per_page = 12
+  
 
   def validate
     employee_leave = EmployeeLeave.find_by_employee_leave_type_id_and_employee_id(employee_leave_types_id,employee_id)

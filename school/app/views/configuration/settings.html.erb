@@ -75,7 +75,7 @@
         </div>
       </div>
 
-      <div class="label-field-pair">
+      <div class="label-field-pair" style="display:none;">
         <label><%= t('start_receipt_no')%></label>
         <div class="text-input-bg">
           <%= text_field :configuration, :fee_receipt_no, :value => @config[:fee_receipt_no] %>
@@ -99,7 +99,7 @@
       <div class="label-field-pair">
         <label for="configuration_default_country"><%= t('country') %></label>
         <div class="text-input-bg">
-          <% selected_value = @config[:default_country].present? ? @config[:default_country].to_i : 76 %>
+          <% selected_value = @config[:default_country].present? ? @config[:default_country].to_i : 14 %>
           <%= select :configuration, :default_country, @countries.map {|c| [c.name, c.id]}, :selected=> selected_value.to_i %>
         </div>
       </div>
@@ -109,16 +109,28 @@
           <%= text_field :configuration, :currency_type, :value => @config[:currency_type] %>
         </div>
       </div>
-      <div class="label-field-pair">
+      <div class="label-field-pair" style="display:none;">
         <label for="configuration_precision"><%= t('precision_count') %></label>
         <div class="text-input-bg">
           <%= text_field :configuration, :precision_count, :value => @config[:precision_count] %>
         </div>
       </div>
+      <% if @school_detail.logo.file? %>
+        <%= image_tag @school_detail.logo.url %>      
+      <% end %>
       <div class="label-field-pair">
         <label for="configuration_currency_type"><%= t('upload_logo') %> (<%= t('max_size') %>, <%= t('height_width') %>).</label>
         <div class="text-input-bg">
           <%= file_field 'school_detail','school_logo', :size=>12 %>
+        </div>
+      </div>
+      <% if @school_detail.cover.file? %>
+        <%= image_tag @school_detail.cover.url %>      
+      <% end %>
+      <div class="label-field-pair">
+        <label for="configuration_currency_type"><%= t('upload_cover') %> (<%= t('max_size') %>, <%= t('cover_height_width') %>).</label>
+        <div class="text-input-bg">
+          <%= file_field 'school_detail','school_cover', :size=>15 %>
         </div>
       </div>
       <div class="grades">
@@ -141,9 +153,9 @@
   <%# Champs21Plugin::REGISTERED_HOOKS[:general_settings_form].each do |mod| %>
   <%#= render :partial=>mod.camelize.constantize.send("general_settings_form") %>
   <%# end %>
-      <% Champs21Plugin.deliver_registered_hook(:general_settings_form).each do |mod| %>
-        <%= render :partial=>mod.camelize.constantize.send("general_settings_form") %>
-      <% end %>
+      <%# Champs21Plugin.deliver_registered_hook(:general_settings_form).each do |mod| %>
+        <%#= render :partial=>mod.camelize.constantize.send("general_settings_form") %>
+      <%# end %>
 
       <div class="label-field-pair">
         <label for="student_admission_auto"><%= t('student_admission_auto') %></label>

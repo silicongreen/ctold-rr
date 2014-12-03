@@ -36,6 +36,10 @@
       <div class="text-input-bg"><%= calendar_date_select_tag 'events[end_date]', I18n.localize(@end_date || @date, :format=>("%Y-%m-%d %H:%M")), :time => true , :readonly=>true, :popup=>"force" %></div>
     </div>
     <div class="label-field-pair">
+          <label for="event_category"><%= t('category') %></label>
+          <div class="text-input-bg"><%= f.select :event_category_id, @event_categories.map {|c| [c.name, c.id]} %></div>
+    </div>
+    <div class="label-field-pair">
       <label for="title"><%= t('title') %>:</label>
       <div class="text-input-bg"><%= f.text_field :title %></div>
     </div>

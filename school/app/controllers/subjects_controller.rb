@@ -27,6 +27,7 @@ class SubjectsController < ApplicationController
     @subject = Subject.new
     @batch = Batch.find params[:id] if request.xhr? and params[:id]
     @elective_group = ElectiveGroup.find params[:id2] unless params[:id2].nil?
+    @images = Dir.glob("#{RAILS_ROOT}/public/images/icons/subjects/*.png")
     respond_to do |format|
       format.js { render :action => 'new' }
     end
@@ -56,6 +57,7 @@ class SubjectsController < ApplicationController
     @subject = Subject.find params[:id]
     @batch = @subject.batch
     @elective_group = ElectiveGroup.find params[:id2] unless params[:id2].nil?
+    @images = Dir.glob("#{RAILS_ROOT}/public/images/icons/subjects/*.png")
     respond_to do |format|
       format.html { }
       format.js { render :action => 'edit' }

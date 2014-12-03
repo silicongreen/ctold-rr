@@ -194,6 +194,9 @@ body {
 .examination-icon,.assessment_scores-icon,.cce_exam_categories-icon,.cce_grade_sets-icon,.cce_reports-icon,.cce_settings-icon,.cce_weightages-icon,.class_designations-icon,.descriptive_indicators-icon,.exam-icon,.exam_groups-icon,.exam_reports-icon,.exam_scores-icon,.exams-icon,.fa_criterias-icon,.fa_groups-icon,.grading_levels-icon,.observation_groups-icon,.observations-icon,.ranking_levels-icon,.online_exam-icon,.online_student_exam-icon {
     background-position: 0px -260px !important;
 }
+.club-icon {
+    background-position: -20px -260px !important;
+}
 .news-icon {
     background-position: -20px -260px !important;
 }

@@ -26,7 +26,7 @@ module ApplicationHelper
   def get_stylesheets
     @direction = (rtl?) ? 'rtl/' : ''
     stylesheets = [] unless stylesheets
-    if controller.controller_path == 'user' and controller.action_name == 'dashboard'
+    if controller.controller_path == 'user' and (controller.action_name == 'dashboard' || controller.action_name == 'new_student_registration' )
       stylesheets << @direction+'_layouts/dashboard'
     elsif controller.controller_path == 'user' and (controller.action_name == 'login' or controller.action_name == 'set_new_password' )
       stylesheets << @direction+"_layouts/login"

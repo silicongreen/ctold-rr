@@ -43,7 +43,7 @@
             <% @subject_exams= Exam.find_by_subject_id(subject.id) %>
             <% @subject_timetable = TimetableEntry.find_all_by_subject_id(subject.id) %>
             <% if @subject_exams.blank? and @subject_timetable.blank?%>
-             <%= link_to_remote(t('delete_text'),
+              <%= link_to_remote(t('delete_text'),
                 :url => subject_path(subject),
                 :method => 'delete',
                 :confirm => t('delete_confirm_msg'),
@@ -88,7 +88,7 @@
               <% @subject_exams= Exam.find_by_subject_id(subject.id) %>
               <% @subject_timetable = TimetableEntry.find_by_subject_id(subject.id) %>
               <% if @subject_exams.nil? and @subject_timetable.nil? and subject.students.empty?%>
-               <%= link_to_remote( t('delete_text'),
+                <%= link_to_remote( t('delete_text'),
                   :url => subject_path(subject),
                   :method => 'delete',
                   :confirm =>  t('delete_confirm_msg'),
@@ -108,3 +108,4 @@
     </ul>
   <% end %>
 <% end %>
+

@@ -7,7 +7,7 @@ CHAMPS21_DEFAULTS = {
   :mathjaxurl => 'http://latex.uzity.com/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
 }
 
-USER_SETTINGS = {}
+#USER_SETTINGS = {} 
 
 if File.exists?("#{RAILS_ROOT}/config/company_details.yml")
   company_settings = YAML.load_file(File.join(RAILS_ROOT,"config","company_details.yml"))

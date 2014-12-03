@@ -6,7 +6,8 @@ html, body {
 height:auto !important;
 }
 body {
-    font-family:arial;
+    background:#fff url(../../images/login/bg.png) no-repeat;
+	font-family:arial;
     margin: 0;
     background-color:#eeeeee;
     height:auto !important;
@@ -16,7 +17,7 @@ body {
 }
 #top_logo {
     float:left;
-    height:115px; width:155px;
+    height:115px; width:270px;
     margin-top:15px;
     /*background:#fff url(../../images/login/champs21_logo.jpg) no-repeat;*/
 }
@@ -37,12 +38,15 @@ body {
 /*    background: #B00 url(/images/application/bg_pattern.png) repeat;*/
 }
 /*#login_area_bg{margin-top: -175px; height:362px;}*/
-#login_area {width:255px;float:left;padding-left:30px;}
+#login_area {background: url(/images/login/login_bg.png) no-repeat;width:310px;height:260px;float:right;/*padding-left:30px;*/}
 #login_area label {display:block;width:200px;margin-left:25px;padding-top:20px;font-weight:bold;color:#333333;padding-bottom:5px;font-size:13px;}
 
-#username_textbox_bg, #password_textbox_bg {height:30px;margin:0px auto;margin-left:10px;width:250px;}
+#username_textbox_bg, #password_textbox_bg {height:30px;margin:0px auto;margin-left:35px;width:250px;}
 #username_textbox_bg input{width:235px;height:25px;font-family:arial !important;margin:0 0 20px 0px;float:left;background-color:#f9f9f9;border:1px solid #d9d9d9;border-top:1px solid #c0c0c0;font-size:13px;color:#333333;padding-left:5px;padding-right:5px;}
-
+.login_fields
+{
+	margin-top:80px;
+}
 #password_textbox_bg input {
     width:235px;
     height:25px;
@@ -59,38 +63,40 @@ body {
 
 #login_box {
     margin:0px auto;
-    margin-top:150px;
-    background-color:#ffffff;
-    border: 1px solid #CCCCCC;
+    margin-top:50px;
+    /*border: 1px solid #CCCCCC;*/
     border-radius:3px;
-    width:540px;
+    width:800px;
 }
 #login-input-box {
     height:170px;
     padding:30px;
-    width:480px;
+    width:680px;
 }
 #school-name {
-    font-weight:bold;
+    float:left;
+	width:270px;
+	margin-bottom:10px;
+	font-weight:bold;
     font-size:15px;
-    text-align:center;
-    color:#333333;
+    text-align:left;
+    color:#fff;
     padding-left:30px;
     padding-right:30px;
     padding-top:20px;
 }
 #logo_area {
     float:left;
-    width:160px;
+    width:280px;
     padding-right:30px;
-    border-right: 1px solid #CCCCCC;
+    /*border-right: 1px solid #CCCCCC;*/
     height:170px;
 }
 
 #submit_area {
-    padding-left:10px;
+    padding-right:30px;
     margin-top:10px;
-    float:left;
+    float:right;
     width:245px;
 }
 .openid_identifier {
@@ -105,7 +111,7 @@ body {
     color: #FFFFFF;
     cursor: pointer;
     display: block;
-    float: left;
+    float: right;
     font-size: 15px;
     font-weight:bold;
     padding: 5px 10px;
@@ -114,7 +120,7 @@ body {
 
 }
 .forgot_pwd {
-  float:right;
+  float:left;
   text-decoration:none;
   display:block;
   font-size:11px;
@@ -123,7 +129,7 @@ body {
   padding-top:10px;
 }
 #powered_by_div{
-    color: #666666;
+    color: #fff;
     float: left;
     font-size: 11px;
     height: 20px;
@@ -209,19 +215,46 @@ input[type="text"], input[type="password"], textarea, select {outline: none;}
     font-size:13px;
     text-decoration:underline;
 }
-#wrapper {
-    min-height: 100%;
+#wrapper {    
+	min-height: 100%;
     margin-bottom:-55px;
     position:relative;
+}
+.site_logo
+{
+	background:url(../../images/login/site_logo.png) no-repeat center;
+	height: 59px;
+    margin: 30px auto 0;
+}
+.stp_banner
+{
+	background:url(../../images/login/stp.png) no-repeat center;
+	height: 59px;
+    margin: 40px auto 0;
+
 }
 .clearfooter {
 height: 25px;
 clear: both;
 }
 #username_textbox_bg input:focus,#password_textbox_bg input:focus{
-    border: 1px solid #9e0f15;
+    border: 1px solid #D92127;
     background: #fff;
 }
 .themed-dark-hover-background:hover{
     background-color: #7e0000;
+}
+p.flash-msg {
+    background-color : #fff1ab;
+    padding : 5px;
+    font-weight: bold;
+    border:1px solid #EFDF95 ;
+    text-align : center;
+}
+p.flash-msg {
+    background-color : #fff1ab;
+    padding : 5px;
+    font-weight: bold;
+    border:1px solid #EFDF95 ;
+    text-align : center;
 }

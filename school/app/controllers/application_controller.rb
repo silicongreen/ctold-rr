@@ -250,7 +250,7 @@ class ApplicationController < ActionController::Base
       params[:id].nil?? student_id=session[:student_id]: student_id=params[:id]
       unless params[:id].to_i == student.id or params[:student].to_i == student.id or params[:student_id].to_i == student.id or student.siblings.select{|s| s.immediate_contact_id==current_user.guardian_entry.id}.collect(&:id).include?student_id.to_i
        
-        flash[:notice] = "#{t('flash_msg5')}"
+        flash[:notice] = "#{t('flash_msg5')}" + params.to_s + "  " + params[:id].to_s + "  " + student.id.to_s
         redirect_to :controller=>"user", :action=>"dashboard"
       end
     end
@@ -345,16 +345,33 @@ class ApplicationController < ActionController::Base
       redirect_to :controller=>"user", :action=>"dashboard"
     end
   end
-
+  
+#  rescue_from ActiveRecord::RecordNotFound do
+#    flash[:notice]="#{t('flash_msg3')}"
+#    redirect_to :controller=>"user", :action=>"dashboard"
+#  end
+  
   def protect_manager_leave_application_view
-    applied_leave = ApplyLeave.find(params[:id])
-    applied_employee = applied_leave.employee
-    applied_employees_manager = Employee.find_by_user_id(applied_employee.reporting_manager_id)
-    applied_employees_manager_user = applied_employees_manager.user
-    unless applied_employees_manager_user.id == current_user.id or current_user.admin? or current_user.privileges.map(&:name).include? 'HrBasics' or current_user.privileges.map(&:name).include? 'EmployeeAttendance'
-      flash[:notice]="#{t('flash_msg5')}"
-      redirect_to :controller=>"user", :action=>"dashboard"
+    if (action_name == "leave_application" and params[:target] == "student") or (action_name == "leave_application" and params[:url][:target] == "student")
+      applied_leave = ApplyLeaveStudent.find(params[:id])
+      applied_student = Student.find(applied_leave.student_id)
+      applied_leave_approving_teacher_id = applied_student.class_teacher_id
+      
+      unless applied_leave_approving_teacher_id == current_user.id or current_user.admin? or current_user.privileges.map(&:name).include? 'HrBasics' or current_user.privileges.map(&:name).include? 'EmployeeAttendance'
+        flash[:notice]="#{t('flash_msg5')}"
+        redirect_to :controller=>"user", :action=>"dashboard"
+      end
+    else
+      applied_leave = ApplyLeave.find(params[:id])
+      applied_employee = applied_leave.employee
+      applied_employees_manager = Employee.find_by_user_id(applied_employee.reporting_manager_id)
+      applied_employees_manager_user = applied_employees_manager.user
+      unless applied_employees_manager_user.id == current_user.id or current_user.admin? or current_user.privileges.map(&:name).include? 'HrBasics' or current_user.privileges.map(&:name).include? 'EmployeeAttendance'
+        flash[:notice]="#{t('flash_msg5')}"
+        redirect_to :controller=>"user", :action=>"dashboard"
+      end
     end
+    
   end
 
   def render(options = nil, extra_options = {}, &block)

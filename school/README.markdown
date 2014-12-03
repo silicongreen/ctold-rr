@@ -22,8 +22,3 @@ Visit  http://champs21.com/install for detailed installation instruction.
 #Community Support:
 
 Visit www.champs21.com for community support.
-
-#GIT Getting start
-Please check the following two wikis
-https://github.com/ahmabdullah/champs21/wiki/Gitflow---Getting-Started
-https://github.com/ahmabdullah/champs21/wiki/Git-----Geting-start,-in-case-you-use-command-line

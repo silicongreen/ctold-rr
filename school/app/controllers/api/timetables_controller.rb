@@ -16,6 +16,5 @@ class Api::TimetablesController < ApiController
     end
   end
 
-  private
 
 end

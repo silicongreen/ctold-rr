@@ -17,7 +17,6 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 
-
 <div id="grading-levels-form">
   <h4><%= @batch.full_name unless @batch.nil? %></h4>
 
@@ -27,7 +26,8 @@
     <% elective_group_id = (@elective_group.nil? ? nil : @elective_group.id) %>
     <%= f.hidden_field :batch_id, :value => batch_id %>
     <%= f.hidden_field :elective_group_id, :value => elective_group_id %>
-
+    <%= f.hidden_field :icon_number %>
+    
     <div id="form-errors"></div>
 
     <div class="label-field-pair">
@@ -61,3 +61,43 @@
 
   <% end %>
 </div>
+
+<div id="icons">
+  <ul>
+    <% @images.each do |im| %>
+      <li><%= image_tag "/images/icons/subjects/#{im.split('/').last}", :class => 'custom_icon', :id => "#{im.split('/').last}" %></li>
+    <% end %>
+  </ul>
+</div>
+
+<style type="text/css">
+  #grading-levels-form{
+    float: left;
+    width: 450px;
+  }
+  #icons{
+    background-color: #eee;
+    border: 1px solid #c6c6c6;
+    float: right;
+    height: 270px;
+    margin-right: 10px;
+    margin-top: 30px;
+    overflow: auto;
+    width: 390px;
+  }
+  #icons ul{
+    padding-left: 12px;
+  }
+  #icons ul li{
+    cursor: pointer;
+    display: inline;
+  }
+  .custom_icon{
+    border: 1px solid #ccc;
+    height: 60px;
+    padding: 3px;
+    width: 60px;
+  }
+
+</style>
+

@@ -49,3 +49,11 @@
     font-weight : bold;
     padding : 10px 0 10px 0;
 }
+.text-input-bg span{
+	clear: both;
+    float: left;
+    font-size: 14px;
+    margin-left: -40px;
+    margin-top: 10px;
+    width: 23px;
+}

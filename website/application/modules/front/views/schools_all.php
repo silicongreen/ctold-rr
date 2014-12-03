@@ -5,14 +5,14 @@
         <div style="float:left">
             <h2 class="f2">School Information</h2>
         </div>
-        <div class="header-bg" style="display:block;float:right;  margin-top:5px;">
+        <!--<div class="header-bg" style="display:block;float:right;  margin-top:5px;">
             <div style="float: left;margin:5px;">                
                 <form method="get" class="searchform" action="<?php echo base_url('search'); ?>" role="search">                    
                     <input class="field" name="s" id="s" class='search' placeholder="Search this site" type="search" style="border-radius: 6px; -moz-border-radius: 6px; -webkit-border-radius: 6px; width: 220px; margin-top: 3px;">
                     <input class="submit search-button" value="" type="submit" />
                 </form>                
             </div>
-        </div>
+        </div>-->
     </div>
     <?php
     $widget = new Widget;

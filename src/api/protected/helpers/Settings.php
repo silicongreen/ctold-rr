@@ -4,6 +4,7 @@ class Settings {
 
     public static $domain_name = 'http://www.champs21.com/';
     public static $image_path = 'http://www.champs21.com/';
+    public static $url_array  = array("http://www.champs21.com/","http://champs21.com/","http://stage.champs21.com");
     public static $real_path = '/home/champs21/public_html/website/';
     public static $main_path = "../website/";
     public static $inner_post_to_show = 15;
@@ -202,24 +203,15 @@ class Settings {
     public static function get_mobile_image($url, $replace_url = "gallery/mobile/") {
         $image = str_replace("gallery/", $replace_url, $url);
 
-        $image = str_replace(self::$image_path, self::$real_path, $image);
-
-        Yii::log($image);
+        foreach(self::$url_array as $value)
+        {
+           $image = str_replace($value, self::$real_path, $image); 
+        }
+        
         if (!file_exists($image)) {
             return $url;
         }
         return str_replace(self::$real_path, self::$image_path, $image);
-
-//       var_dump($image);exit;
-//       list($width, $height, $type, $attr) = @getimagesize($image);
-//       
-//       
-//       
-//       if(!isset($width))
-//       {
-//           return $url;
-//       }
-//       return $image;
     }
 
     public static function sanitize($str, $char = '-') {

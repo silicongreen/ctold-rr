@@ -114,9 +114,9 @@ class SchoolsController <  MultiSchoolController
   def create
     require 'net/http'
 
-    url = 'http://hook.champs21.com/cp1.php?subdomain='+params[:school][:code]
-    resp = Net::HTTP.get_response(URI.parse(url)) # get_response takes an URI object
+    
 
+  # abort resp.body
     @school_group = admin_user_session.school_group
     @school = @school_group.schools.build(params[:school])
     @school.creator_id = admin_user_session.id
@@ -124,6 +124,9 @@ class SchoolsController <  MultiSchoolController
     respond_to do |format|
       @school.build_available_plugin(:plugins=>[]) unless @school.available_plugin
       if @school.save
+        #url = 'http://cp-api.champs21.com/cp1.php?subdomain='+params[:school][:code]
+        #resp = Net::HTTP.get_response(URI.parse(url))
+        
         Configuration.find_or_create_by_config_key("InstitutionAddress").update_attributes(:config_value=>params[:institution][:institution_address])
         Configuration.find_or_create_by_config_key("InstitutionPhoneNo").update_attributes(:config_value=>params[:institution][:institution_phone_no])
         flash[:notice] = "<span style='color: black;'>School was successfully created.<span><br /> <span style='color:#666666 !important;'>You can access this school at <a href='http://#{@school.school_domains.first.try(:domain)}' style='color:#990000 !important;font-weight: normal;' target='_blank'>#{@school.school_domains.first.try(:domain)}</a>&nbsp; &nbsp; Username: <b style='font-weight: normal;color: black;'>"+params[:school][:code]+"-admin</b>&nbsp;&nbsp Password: <b style='font-weight: normal;color: black;'>123456</b></span>"

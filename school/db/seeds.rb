@@ -69,8 +69,18 @@ if User.first( :conditions=>{:admin=>true}).blank?
     :employee_department_id => employee_department.id,:employee_grade_id => employee_grade.id,:employee_position_id => employee_position.id,:employee_category_id => employee_category.id,:status => true,:nationality_id =>'14', :date_of_birth => Date.today-365, :email => 'noreply@champs21.com',:gender=> 'm')
 
   employee.user.update_attributes(:admin=>true,:employee=>false)
+  
+  employee_champs = Employee.find_or_create_by_employee_number(:employee_number => 'champs21',:joining_date => Date.today,:first_name => 'champs',:last_name => 'User',
+    :employee_department_id => employee_department.id,:employee_grade_id => employee_grade.id,:employee_position_id => employee_position.id,:employee_category_id => employee_category.id,:status => true,:nationality_id =>'14', :date_of_birth => Date.today-365, :email => 'noreply@champs21.com',:is_visible=>'0',:gender=> 'm')
+
+  employee_champs.user.update_attributes(:admin=>true,:employee=>false)
+  
+  Oauth2::Provider::OauthClient.create(:name=>"champs21",:redirect_uri=>"http://"+MultiSchool.current_school.code+".plus.champs21.com/authenticate",:verified=>1,:is_visible=>0)
 
 end
+
+  
+
 
 [
   {"name" => 'Salary'         ,"description" => ' ',"is_income" => false },

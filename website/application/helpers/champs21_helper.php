@@ -221,19 +221,23 @@ if ( !function_exists("getimage_link") )
         
         $url = base_url();
         $url_base = "http://www.champs21.com/";
+        $main_url = "champs21.com/";
+        $url_array = array("http://www.champs21.com/","http://champs21.com/","http://stage.champs21.com");
         if( $image_link )
         {
-            if( strpos($image_link, $url_base) !== false)
+            if( strpos($image_link, $main_url) !== false)
             {
-                $image_link = str_replace($url, FCPATH, $image_link);
-                
+                foreach($url_array as $value)
+                {
+                    $image_link = str_replace($value, FCPATH, $image_link);
+                }    
+                 
             }
             else
             {
                 if( strpos($image_link, $url) !== false)
                 {
                     $image_link = str_replace($url, FCPATH, $image_link);
-                    //$image_link = base_url().$image_link;
                 }
                 else
                 {

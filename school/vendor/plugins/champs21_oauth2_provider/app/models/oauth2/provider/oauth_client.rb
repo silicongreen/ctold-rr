@@ -33,14 +33,14 @@ module Oauth2
       end
       
       def before_create
-#        if self.name=="champs21"
-#          self.client_id   = Base64.encode64('champs21$#@!')
-#          self.client_secret   = Base64.encode64('champs21!@#$')
-#        else
+        if self.name=="champs21"
+          require 'digest/sha1'
+          self.client_id   = Digest::SHA1.hexdigest 'champs21$#@!'
+          self.client_secret   = Digest::SHA1.hexdigest 'champs21!@#$'
+        else
           self.client_id = ActiveSupport::SecureRandom.hex(32)
           self.client_secret = ActiveSupport::SecureRandom.hex(32)
-#        end
-        
+        end
       end
       
       def before_destroy

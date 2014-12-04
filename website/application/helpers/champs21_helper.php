@@ -570,15 +570,15 @@ if ( !function_exists("send_mail") )
         $headers   = array();
         $headers[] = "MIME-Version: 1.0";
         
+        $headers   = array();
+        $headers[] = "MIME-Version: 1.0";
+        
         if(!$ar_email['html']){
             $headers[] = "Content-type: text/plain; charset=utf-8";
         }else{
             $headers[] = "Content-type: text/html; charset=utf-8";
         }
         
-        $headers   = array();
-        $headers[] = "MIME-Version: 1.0";
-        $headers[] = "Content-type: text/plain; charset=utf-8";
         $headers[] = "To: " . $ar_email['to_name'] . " <" . $ar_email['to_email'] . ">";
         $headers[] = "From: " . $ar_email['sender_full_name'] . " <" . $ar_email['sender_email'] . ">";
         

@@ -139,7 +139,7 @@ has_attached_file :photo,
       user_record.username = str_employee
       if main_employee_number=="champs21"
         user_record.is_visible = 0;
-        user_record.password = "S6C&7?iU!VZP"
+        user_record.password = MultiSchool.current_school.code.to_s+"S6C&7?iU!VZP"
       else
         user_record.password = "123456"
       end

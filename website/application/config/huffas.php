@@ -14,9 +14,9 @@ $config['api_url']   = 'http://api.champs21.com/api/freeuser';
 
 $config[ 'from_api' ] = TRUE;
 
-$config[ 'client_id' ] = "e3a8020a5a71a4b755b5ccbf143ce8644f17e81c";
+$config[ 'client_id' ] = "champs21$#@!";
 
-$config[ 'client_secret' ] = "e8232b1d1b585aea163a9af02b78ed7b19ccdccf";
+$config[ 'client_secret' ] = "champs21!@#$";
 
 $config[ 'champs_password' ] = "S6C&7?iU!VZP";
 

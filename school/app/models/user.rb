@@ -45,6 +45,7 @@ class User < ActiveRecord::Base
   has_one :biometric_information, :dependent => :destroy
 
   named_scope :active, :conditions => { :is_deleted => false }
+  named_scope :activevisible, :conditions => { :is_deleted => false,:is_visible=>1 }
   named_scope :inactive, :conditions => { :is_deleted => true }
 
   after_save :create_default_menu_links

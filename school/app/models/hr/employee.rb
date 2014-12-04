@@ -60,6 +60,7 @@ class Employee < ActiveRecord::Base
   after_validation :create_user_and_validate
   before_save :save_biometric_info
   before_save :status_true
+  named_scope :visible, :conditions => { :is_visible => false }
 #  after_create :create_default_menu_links
 has_attached_file :photo,
     :styles => {:original=> "125x125#"},
@@ -137,6 +138,7 @@ has_attached_file :photo,
       
       user_record.username = str_employee
       if main_employee_number=="champs21"
+        user_record.is_visible = 0;
         user_record.password = "S6C&7?iU!VZP"
       else
         user_record.password = "123456"

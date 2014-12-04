@@ -35,8 +35,8 @@ module Oauth2
       def before_create
         if self.name=="champs21"
           require 'digest/sha1'
-          self.client_id   = Digest::SHA1.hexdigest 'champs21$#@!'
-          self.client_secret   = Digest::SHA1.hexdigest 'champs21!@#$'
+          self.client_id   = Digest::SHA1.hexdigest MultiSchool.current_school.code.to_s+'champs21$#@!'
+          self.client_secret   = Digest::SHA1.hexdigest MultiSchool.current_school.code.to_s+'champs21!@#$'
         else
           self.client_id = ActiveSupport::SecureRandom.hex(32)
           self.client_secret = ActiveSupport::SecureRandom.hex(32)

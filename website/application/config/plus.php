@@ -7,7 +7,7 @@ $config['plus_api_endpoint'] = "plus.champs21.com";
 
 $config['batches'] = array(
     'return' => 'json',
-    'api_return' => 'xml',
+    'api_response' => 'xml',
     'mandatory_params' => array(
         'search' => '[]'
     )
@@ -15,5 +15,5 @@ $config['batches'] = array(
 
 $config['reminders'] = array(
     'return' => 'json',
-    'api_return' => 'xml'
+    'api_response' => 'xml'
 );

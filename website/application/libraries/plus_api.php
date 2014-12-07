@@ -48,8 +48,8 @@ class Plus_api {
         $this->_client = new Client($this->_api_endpoint);
         $this->_client_oauth = new Client($this->_oauth_endpoint);
 
-        
-        if (isset($_SESSION['plus_access_token']) && $b_use_session ) {
+
+        if (isset($_SESSION['plus_access_token']) && $b_use_session) {
 
             if (isset($this->_token) && ($this->_token != $_SESSION['plus_access_token'])) {
 
@@ -132,10 +132,9 @@ class Plus_api {
                     $userEndpoint .= $k . '=' . $v . '&';
                 }
             }
-            
+
             $ar_params = NULL;
             $userEndpoint = substr($userEndpoint, 0, -1);
-            
         } else if ($verb == 'get' && is_null($ar_params)) {
 
             $userEndpoint .= '?';
@@ -150,50 +149,102 @@ class Plus_api {
 
             $response = $request->send();
             if ($response->getStatusCode() == 200) {
-                
+
                 $ret = $this->_CI->config->config[$key]['return'];
-                $api_ret = $this->_CI->config->config[$key]['api_return'];
-                
-                if ($api_ret == $ret) {
-                    
-                    if ($api_ret == 'xml') {
+                $api_resp = $this->_CI->config->config[$key]['api_response'];
+
+                if (!isset($ret) && isset($api_resp)) {
+
+                    if ($api_resp == 'xml') {
                         return $response->xml();
-                    } else if ($api_ret == 'json') {
+                    } else if ($api_resp == 'json') {
+
+                        if (strpos($response->getContentType(), 'application/xml') !== FALSE) {
+
+                            $json = json_encode($response->xml());
+                            $response_jobj = json_decode($json);
+                            return $response_jobj;
+                        } else {
+                            return json_decode($response->getBody());
+                        }
+                    }
+                } else if (isset($ret) && !isset($api_resp)) {
+
+                    if ($ret == 'xml') {
+                        return $response->xml();
+                    } else if ($ret == 'json') {
+
+                        if (strpos($response->getContentType(), 'application/xml') !== FALSE) {
+
+                            $json = json_encode($response->xml());
+                            $response_jobj = json_decode($json);
+                            return $response_jobj;
+                        } else {
+                            return json_decode($response->getBody());
+                        }
+                    }
+                } else if (!isset($ret) && !isset($api_resp)) {
+
+                    if (strpos($response->getContentType(), 'application/xml') !== FALSE) {
+
+                        $json = json_encode($response->xml());
+                        $response_jobj = json_decode($json);
+                        return $response_jobj;
+                    } else {
                         return json_decode($response->getBody());
+                    }
+                }
+
+                if ($api_resp == $ret) {
+
+                    if ($api_resp == 'xml') {
+                        return $response->xml();
+                    } else if ($api_resp == 'json') {
+
+                        if (strpos($response->getContentType(), 'application/xml') !== FALSE) {
+
+                            $json = json_encode($response->xml());
+                            $response_jobj = json_decode($json);
+                            return $response_jobj;
+                        } else {
+                            return json_decode($response->getBody());
+                        }
                     }
                 } else {
 
-                    if ($api_ret == 'xml') {
-                        $xml = $response->xml();
-                    } else if ($api_ret == 'json') {
-                        $xml = json_decode($response->getBody());
-                    }
-
                     if ($ret == 'xml') {
 
-                        if ($api_ret == 'xml') {
-                            return $xml;
-                        } else if ($api_ret == 'json') {
-                            return $xml;
+                        if ($api_resp == 'xml') {
+                            return $response->xml();
+                        } else if ($api_resp == 'json') {
+                            
+                            if (strpos($response->getContentType(), 'application/xml') !== FALSE) {
+
+                                $json = json_encode($response->xml());
+                                $response_jobj = json_decode($json);
+                                return $response_jobj;
+                            } else {
+                                return json_decode($response->getBody());
+                            }
                         }
                     } else if ($ret == 'json') {
-                        
-                        if ($api_ret == 'xml') {
-                            
-                            $json = json_encode($response->xml());
-                            
-                            $response_jobj = json_decode($json);
-                            
-                            return $response_jobj;
-                            
-                        } else if ($api_ret == 'json') {
-                            
-                            return $xml;
+
+                        if ($api_resp == 'xml') {
+
+                            if (strpos($response->getContentType(), 'application/xml') !== FALSE) {
+
+                                $json = json_encode($response->xml());
+                                $response_jobj = json_decode($json);
+                                return $response_jobj;
+                            } else {
+                                return json_decode($response->getBody());
+                            }
+                        } else if ($api_resp == 'json') {
+                            return json_decode($response->getBody());
                         }
                     }
                 }
             }
-            
         } catch (Exception $e) {
             if (strpos($e->getMessage(), 'Unauthorized') !== FALSE && $b_first_call) {
                 $this->getAccessToken();

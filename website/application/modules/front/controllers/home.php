@@ -2996,4 +2996,39 @@ class home extends MX_Controller {
         
         return $message;
     }
+    
+    public function plus_api($param) {
+        
+        $this->load->library('plus_api');
+        
+        /**
+         * ONLY set username and password where needed otherwise don't event think to set the username
+         * and password keys
+         * 
+         * USE AT YOUR OWN RISK { BEST OF LUCK :D :D :P }
+         * 
+         * Regards,
+         * NIslam :D :D :P
+         */
+        
+        $ar_params = array(
+            'school_code' => 'ais',
+            'username' => 'ST0001',
+            'password' => '123456'
+        );
+        
+        $int_response = $this->plus_api->init($ar_params, false);
+        
+        if($int_response != FALSE){
+            
+//            $res = $this->plus_api->call__('get', 'student_attendance', 'get_data_student_attendance');
+            $res = $this->plus_api->call__('get', 'reminders', 'get_data_reminder');
+//            $res = $this->plus_api->call__('get', 'batches');
+            
+            var_dump($res);
+            
+        }
+        exit;
+        
+    }
 }

@@ -209,6 +209,10 @@ class Freeusers extends CActiveRecord {
             $user_info['location'] = $value->location;
             $user_info['teaching_for'] = $value->teaching_for;
             $user_info['occupation'] = $value->occupation;
+           
+            $schooluser = new SchoolUser();
+            $user_info['user_schools'] = $schooluser->userSchool($value->id);
+       
             
         }
         if($user_info)

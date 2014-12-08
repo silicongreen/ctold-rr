@@ -166,15 +166,25 @@ class SchoolPage extends CActiveRecord
 
     public function getSchoolPages($school_id)
     {
+       
+        
         $criteria = new CDbCriteria();
-        $criteria->select = "t.id";
+        $criteria->select = "t.title,t.content,t.mobile_content";
         $criteria->compare("t.school_id", $school_id);
 
         $criteria->with = array(
             "schoolmenu" => array(
                 "select" => "schoolmenu.id,schoolmenu.title",
                 'joinType' => "INNER JOIN"
-            )
+            ),
+            'pageGalleries' => array(
+                'select' => '',
+                'with' => array(
+                    "material" => array(
+                        "select" => "material.material_url",
+                    )
+                )
+            ),
         );
         $criteria->order = "schoolmenu.id ASC";
         $scholl_pages = $this->findAll($criteria);
@@ -188,6 +198,35 @@ class SchoolPage extends CActiveRecord
                 $page_array[$i]['id'] = $value->id;
                 $page_array[$i]['menu_id'] = $value['schoolmenu']->id;
                 $page_array[$i]['name'] = $value['schoolmenu']->title;
+                $page_array[$i]['gallery'] = array();
+                if ($value['pageGalleries'])
+                {
+                    foreach ($value['pageGalleries'] as $gvalue)
+                    {
+                        if (trim($gvalue['material']->material_url))
+                        {
+                            $page[$i]['gallery'][] = Settings::get_mobile_image(Settings::$image_path . $gvalue['material']->material_url);
+                        }
+                    }
+                }
+                if(isset($value->mobile_content) && strlen(Settings::substr_with_unicode($value->mobile_content))>0)
+                {
+                   $page_array[$i]['content'] = Settings::substr_with_unicode($value->mobile_content,true);
+                   $page_array[$i]['web-view'] = $value->mobile_content;
+                   $all_image = Settings::content_images($value->mobile_content);
+                }
+                else
+                {
+                   $page['content'] = Settings::substr_with_unicode($value->content,true);
+                   $page_array[$i]['web-view'] = $value->content;
+                   $all_image = Settings::content_images($value->content);
+                }
+                $page_array[$i]['title'] = $value->title;
+                $page_array[$i]['image'] = "";
+                if(isset($all_image[0]))
+                $page_array[$i]['image'] = $all_image[0];
+                
+                
                 $i++;
             }
         }

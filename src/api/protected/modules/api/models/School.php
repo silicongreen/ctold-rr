@@ -141,8 +141,21 @@ class School extends CActiveRecord
             }
         }
         
-        public function Schools($page_size = 10,$page = 1)
+        public function Schools($page_size = 10,$page = 1, $user_id=0)
         {
+            $school_join = array();
+            if($user_id)
+            {
+                $schooluser = new SchoolUser();
+                $school_user = $schooluser->userSchool($user_id);
+                if(count($school_user)>0)
+                {
+                    foreach($school_user as $value)
+                    {
+                       $school_join[$value['school_id']] = $value['status'];
+                    }    
+                }    
+            }    
             $criteria = new CDbCriteria();
             $criteria->compare("status",1);
             $start = ($page - 1) * $page_size;
@@ -165,6 +178,21 @@ class School extends CActiveRecord
                     if($school_pages)
                     {
                         $school_array[$i]["school_pages"]       = $school_pages;
+                        $school_array[$i]["is_join"] = 0;
+                        
+                        if(isset($school_join[$value->id]))
+                        {
+                            if($school_join[$value->id] == 0)
+                            {
+                               $school_array[$i]["is_join"] = 1; 
+                            }    
+                            else
+                            {
+                                $school_array[$i]["is_join"] = 2; 
+                            }    
+                            
+                        }
+                        
                         $school_array[$i]["id"]                 = $value->id;
                         $school_array[$i]["name"]               = $value->name;
                         $school_array[$i]["division"]           = $value->district;

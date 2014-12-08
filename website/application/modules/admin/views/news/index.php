@@ -45,7 +45,7 @@
                 
                 $filter_array[6] = array("Language", "form_dropdown",$language);
                 
-                $status = array(NULL=>"Select",1=>"Admin",2=>"Web User");
+                $status = array(1=>"Admin",2=>"Web User");
                 $filter_array[7] = array("User Type", "form_dropdown", $status);
                 
                 

@@ -454,6 +454,7 @@ class ajax extends MX_Controller
                 if ($this->upload->do_upload('attach_file'))
                 {
                     $post_obj->attach = $config_cover['upload_path'] . $this->upload->file_name;
+                    $related_attached_file = $config_cover['upload_path'] . $this->upload->file_name;
                 }
             }
             if (!empty($_FILES['leadimage']['name']))
@@ -493,6 +494,87 @@ class ajax extends MX_Controller
                     $free_user->skip_validation();
                     $free_user->save();
                 }
+                
+                $data_post_class = array(
+                    array(
+                       'post_id' => $post_obj->id ,
+                       'class_id' => 1
+                    ),
+                    array(
+                       'post_id' => $post_obj->id ,
+                       'class_id' => 2
+                    ),
+                    array(
+                       'post_id' => $post_obj->id ,
+                       'class_id' => 3
+                    ),
+                    array(
+                       'post_id' => $post_obj->id ,
+                       'class_id' => 4
+                    ),
+                    array(
+                       'post_id' => $post_obj->id ,
+                       'class_id' => 5
+                    ),
+                    array(
+                       'post_id' => $post_obj->id ,
+                       'class_id' => 6
+                    ),
+                    array(
+                       'post_id' => $post_obj->id ,
+                       'class_id' => 7
+                    ),
+                    array(
+                       'post_id' => $post_obj->id ,
+                       'class_id' => 8
+                    ),
+                    array(
+                       'post_id' => $post_obj->id ,
+                       'class_id' => 9
+                    ),
+                    array(
+                       'post_id' => $post_obj->id ,
+                       'class_id' => 10
+                    )
+                 );
+
+                 $this->db->insert_batch('post_class', $data_post_class);
+                 
+                 
+                 $data_post_type = array(
+                    array(
+                       'post_id' => $post_obj->id ,
+                       'type_id' => 1
+                    ),
+                    array(
+                       'post_id' => $post_obj->id ,
+                       'type_id' => 2
+                    ),
+                    array(
+                       'post_id' => $post_obj->id ,
+                       'type_id' => 3
+                    ),
+                    array(
+                       'post_id' => $post_obj->id ,
+                       'type_id' => 4
+                    )
+                 );
+
+                 $this->db->insert_batch('post_type', $data_post_type);
+                 
+                 $data_post_attached = array(
+                    array(
+                       'post_id' => $post_obj->id ,
+                       'file_name' => $related_attached_file,
+                       'show' => 1,
+                       'caption' => "Download Content"
+                    )
+                 );
+
+                 $this->db->insert_batch('post_attachment', $data_post_attached);
+                
+                
+                
                 
                 //sending email
                 $category_model = new Category($array['category_id']);

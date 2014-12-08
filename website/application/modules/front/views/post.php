@@ -131,7 +131,7 @@
             
             <?php if (strlen($title) > 0) : ?>
                 <?php $datediff = get_post_time($published_date); ?>
-                <div class="by_line" >By <i class="f4"><?php echo $title; ?></i> <span class="f5"><?php echo $datediff; ?> ago</span></div>
+                <div class="by_line" ><?php if($user_type == 2): ?>Candled&nbsp;<?php endif;?>By <i class="f4"><?php echo $title; ?></i> <span class="f5"><?php echo $datediff; ?> ago</span></div>
                 <div style="clear: both;"></div>
             <?php endif; ?>
 

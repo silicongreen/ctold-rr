@@ -312,7 +312,7 @@
                                    {
                                         $file_name_array = explode("/",$value->file_name);
                                         $file_name = $file_name_array[count($file_name_array)-1];
-                                        $title = "<a style='float:left;margin-top:15px;vertical-align:middle'  href='" . base_url() . $value->file . "'>" . $file_name . "</a>";
+                                        $title = "<a style='float:left;margin-top:15px;vertical-align:middle' target='_blank'  href='" . base_url() . $value->file_name . "'>" . $file_name . "</a>";
                                         ?>
                                         <div style="float:left;height:30px; padding:5px;clear:both; width:100%;"><?= $title ?>
                                             <select style="float:left;margin-left:20px;margin-top:14px;" name="attach_checked[]"><option value="1">Show</option><option <?php if($value->show==0): ?>selected="selected"<?php endif; ?> value="0">Hide</option></select>
@@ -337,7 +337,7 @@
                             <div  id="lead_material_box">
                                 <?php
                                 if ($model->lead_material):
-                                    $title = '<img src="' . base_url() . $model->lead_material . '" width="70">';
+                                    $title = '<a href="' . base_url() . $model->lead_material . '" target="_blank"><img src="' . base_url() . $model->lead_material . '" width="70"></a>';
                                     ?>
                                     <div><?= $title ?><input type="hidden" name="lead_material" value="<?= $model->lead_material ?>"><a class="text-remove"></a></div>
                                     <?php

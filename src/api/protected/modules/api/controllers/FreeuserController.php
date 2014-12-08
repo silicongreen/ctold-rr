@@ -298,6 +298,11 @@ class FreeuserController extends Controller
 
         $page_size = Yii::app()->request->getPost('page_size');
         $page_number = Yii::app()->request->getPost('page_number');
+        $user_id = Yii::app()->request->getPost('user_id');
+        if(!$user_id)
+        {
+            $user_id = 0;
+        }
         if (empty($page_number))
         {
             $page_number = 1;
@@ -318,7 +323,7 @@ class FreeuserController extends Controller
         }
         $response['data']['has_next'] = $has_next;
 
-        $response['data']['schools'] = $schoolobj->Schools($page_size, $page_number);
+        $response['data']['schools'] = $schoolobj->Schools($page_size, $page_number, $user_id);
 
         $response['status']['code'] = 200;
         $response['status']['msg'] = "DATA_FOUND";

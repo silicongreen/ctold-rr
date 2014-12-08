@@ -45,6 +45,14 @@
             ?>
             
             <div class="login_reg_div">
+                <div class="search_box_head">
+                        <div style="float: left;margin:5px;">                
+                                <form method="get" class="searchform" action="<?php echo base_url('search'); ?>" role="search">                    
+                                        <input class="field" name="s" id="s" class='search' placeholder="Search this site" type="search" style="border-radius: 6px; -moz-border-radius: 6px; -webkit-border-radius: 6px; width: 220px; margin-top: 3px;">
+                                        <input class="submit search-button" value="" type="submit" />
+                                </form>                
+                        </div>
+                </div>
                 <div class="login_reg_div_box">
                     
                     <?php if( !free_user_logged_in() ){ ?>
@@ -657,14 +665,7 @@ height: 46px;
                     </ul>
                     <?php }?>
                 </div> 
-				<div class="search_box_head">
-					<div style="float: left;margin:5px;">                
-						<form method="get" class="searchform" action="<?php echo base_url('search'); ?>" role="search">                    
-							<input class="field" name="s" id="s" class='search' placeholder="Search this site" type="search" style="border-radius: 6px; -moz-border-radius: 6px; -webkit-border-radius: 6px; width: 220px; margin-top: 3px;">
-							<input class="submit search-button" value="" type="submit" />
-						</form>                
-					</div>
-				</div>
+				
             </div>
             
             
@@ -934,6 +935,7 @@ if($('.header-logo-div').is(':visible')) {
 .search_box_head
 {
 	display:block;
+        float:left;
 }
 @media all and (min-width: 200px) and (max-width: 314px) {
     .fancybox-wrap

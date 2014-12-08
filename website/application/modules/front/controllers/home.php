@@ -157,15 +157,28 @@ class home extends MX_Controller {
         } 
         else
         {
+            
             $school_name = unsanitize($ar_segmens[2]);
             $school_obj = new schools();
             $school_menu_id = 0;
             if($school_details = $school_obj->find_school_by_name($school_name))
             {
+                $userschool = get_user_school($school_details->id);
                 if(!isset($ar_segmens[3]))
                 {
-                    $school_menu_id = 1;
-                    $menu_details = $school_obj->find_default_school_menu($school_details->id);
+                    
+                    if($userschool)
+                    {
+                        if($userschool->is_approved==1)
+                        {
+                            redirect("schools/".$ar_segmens[2]."/feed");
+                        }     
+                    }
+                    else
+                    {    
+                        $school_menu_id = 1;
+                        $menu_details = $school_obj->find_default_school_menu($school_details->id);
+                    }
                    
                 } 
                 else
@@ -188,7 +201,16 @@ class home extends MX_Controller {
                     }
                     else if($ar_segmens[3] == "feed")
                     {
-                        $feed = true;
+                        if(!$userschool || $userschool->is_approved==0)
+                        {
+                            
+                            redirect("schools/".$ar_segmens[2]);
+                                 
+                        }
+                        else
+                        {    
+                            $feed = true;
+                        }
                     }    
                     else
                     {

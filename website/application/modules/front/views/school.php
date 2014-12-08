@@ -24,6 +24,8 @@
         }  
         
     } 
+    $userschool = get_user_school($school_details->id);
+    $ar_segmens = $this->uri->segment_array();
    
  ?>
 <div class="container" style="width: 73%;min-height:250px;">
@@ -69,6 +71,19 @@
    -moz-box-shadow: 0 10px 25px -2px gray;
         box-shadow: 0 10px 25px -2px gray;">
 				<ul>
+                                    <?php
+                                    
+                                    if($userschool)
+                                    {
+                                        if($userschool->is_approved==1)
+                                        {
+                                            ?>
+                                              <li><a <?php if(isset($feeds)): ?> class="red_menu"<?php endif; ?> href="<?php echo base_url()."schools/".sanitize($school_details->name)."/feed"; ?>">Feeds</a></li>  
+                                              <li>|</li>
+                                              <?php
+                                        }    
+                                    }
+                                    ?>
 					<?php 
 					$count = count($schools_pages);
 					$ci = 1;

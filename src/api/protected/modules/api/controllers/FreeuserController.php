@@ -28,7 +28,7 @@ class FreeuserController extends Controller
                     "getuserinfo", "goodread", "readlater", "goodreadall", "goodreadfolder", "removegoodread"
                     , "schoolsearch", "school", "createschool", "schoolpage", "schoolactivity", "candle"
                     , "garbagecollector","getschoolteacherbylinepost","createcachesinglenews", 
-                    'set_preference', 'get_preference','addgcm','getallgcm','getschoolinfo'),
+                    'set_preference', 'get_preference','addgcm','getallgcm','getschoolinfo','joinschool'),
                 'users' => array('*'),
             ),
             array('deny', // deny all users
@@ -36,6 +36,69 @@ class FreeuserController extends Controller
             ),
         );
     }
+    public function actionJoinSchool()
+    {
+        $school_id = Yii::app()->request->getPost('school_id');
+        $user_id = Yii::app()->request->getPost('user_id');
+        $type = Yii::app()->request->getPost('type');
+        $information = Yii::app()->request->getPost('information');
+        
+        if (!$school_id || !$user_id || !$type || !$information || !isset(Settings::$school_join_approved[$type]))
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        else
+        {
+
+            $is_approved = 0;
+            
+            if(Settings::$school_join_approved[$type]===false)
+            {
+                $is_approved = 1;
+            }    
+            $school_join = array();
+            
+            $schooluser = new SchoolUser();
+            $school_user = $schooluser->userSchool($user_id,$school_id);
+            if(count($school_user)>0)
+            {
+                foreach($school_user as $value)
+                {
+                   $school_join[$value['school_id']] = $value['status'];
+                }    
+            } 
+            
+            if(isset($school_join[$school_id]))
+            {
+                //do nothing
+            }
+            else
+            {
+               $schooluser->user_id = $user_id;  
+               $schooluser->school_id = $school_id;
+               $schooluser->is_approved = $is_approved;
+               $schooluser->type = $type;
+               $schooluser->information = $information;
+               $schooluser->save();
+            } 
+            
+            $freeuserObj = new Freeusers();
+            $user_info = $freeuserObj->getUserInfo($user_id);
+             
+            
+            
+
+            $response['data']['userinfo'] = $user_info;
+        
+
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "SUCCESSFULLY-SAVED";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    }
+    
     public function actionGetAllGcm()
     {
         $cache_name = "YII-RESPONSE-GCM";

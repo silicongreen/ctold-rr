@@ -10,6 +10,12 @@ class Settings {
     public static $inner_post_to_show = 15;
     public static $api_llicence_key = "fa@#25896321";
     public static $count_update_by = 3;
+    public static $school_join_approved = array(
+        1 => false,
+        2 => false,
+        3 => false,
+        4 => false
+    );
     public static $news_in_index = array(
         'show_old_news' => TRUE,
         'days_to_retrieve_news' => "-10 days"

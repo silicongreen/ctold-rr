@@ -117,6 +117,8 @@ class PostCategory extends CActiveRecord
         $criteria->together = true;
         $criteria->compare("postType.type_id", $user_type);
         $criteria->compare("t.category_id", $category_id);
+        $criteria->compare("post.school_id", 0);
+        $criteria->compare("post.teacher_id", 0);
         $criteria->addCondition("DATE(post.published_date) <= '" . date("Y-m-d") . "'");
         $criteria->with = array(
             'post' => array(
@@ -151,6 +153,8 @@ class PostCategory extends CActiveRecord
         $criteria->compare("post.status", 5);
         $criteria->compare("t.category_id", $category_id);
         $criteria->compare("post.id !", $current_id);
+        $criteria->compare("post.school_id", 0);
+        $criteria->compare("post.teacher_id", 0);
         if($another_id!=0)
         {
             $criteria->compare("post.id !", $another_id);
@@ -223,6 +227,8 @@ class PostCategory extends CActiveRecord
         $criteria->compare("post.status", 5);
         $criteria->compare("t.category_id", $category_id);
         $criteria->compare("postType.type_id", $user_type);
+        $criteria->compare("post.school_id", 0);
+        $criteria->compare("post.teacher_id", 0);
         $criteria->addCondition("DATE(post.published_date) <= '" . date("Y-m-d") . "'");
         $criteria->order = 'DATE(post.published_date) DESC, t.inner_priority ASC';
 
@@ -303,6 +309,8 @@ class PostCategory extends CActiveRecord
         $criteria->limit = $page_size;
 
         $criteria->offset = $start;
+        $criteria->compare("post.school_id", 0);
+        $criteria->compare("post.teacher_id", 0);
         $criteria->compare("post.status", 5);
         $criteria->compare("t.category_id", $category_id);
         $criteria->compare("postType.type_id", $user_type);

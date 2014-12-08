@@ -193,6 +193,8 @@ class news extends MX_Controller
                 ->join("users as pre_user", "pre_post_user_activity.user_id=pre_user.id", 'LEFT')
                 ->where("tds_post.status!=", "6", false)
                 ->where("tds_post.show",1)
+                ->where("tds_post.school_id",0)
+                ->where("tds_post.teacher_id",0)
                 ->group_by("post.id");
 
 

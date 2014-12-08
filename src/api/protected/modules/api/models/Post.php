@@ -441,12 +441,14 @@ class Post extends CActiveRecord
         $criteria->compare("postType.type_id", $user_type);
         if ($target == "school")
         {
-            $criteria->compare("t.school_id", $id);
+            $criteria->addInCondition('t.school_id', explode(",",$id));
+            //$criteria->compare("t.school_id", $id);
             $criteria->compare("t.teacher_id", 0);
         }
         else if ($target == "teacher")
         {
-            $criteria->compare("t.teacher_id", $id);
+            $criteria->addInCondition('t.teacher_id', explode(",",$id));
+            //$criteria->compare("t.teacher_id", $id);
             $criteria->compare("t.school_id", 0);
         }
         else

@@ -756,9 +756,47 @@ $(document).ready(function(){
         });
     });
     
+    $(document).on("click", '.user_type_radio',function(){
+        var user_type = $(this).find('input[type=radio]').val();
+        var add_html_1 = '';
+        var add_html_2 = '';
+        
+        $('#addition_row_1 div.center').html('');
+        $('#addition_row_2 div.center').html('');
+        
+        if(user_type != 1){
+            $('.grades_ul').slideDown(500);
+            
+            add_html_1 += '<input placeholder="' + (user_type == 4 ? "Student " : "") + 'Section" class="f5 email_txt" id="sections" name="sections" value="" type="text" maxlength="25" />';
+            
+            if(user_type == 2) {
+                add_html_1 += '<input placeholder="Class Roll NO." class="f5 email_txt" id="roll_no" name="roll_no" value="" type="text" maxlength="15" />';
+                add_html_2 += '<input placeholder="Admission NO." class="f5 email_txt large" id="admission_no" name="admission_no" value="" type="text" maxlength="15" />';
+            }
+            else if(user_type == 3) {
+                add_html_1 += '<input placeholder="Employee ID." class="f5 email_txt" id="employee_id" name="employee_id" value="" type="text" maxlength="15" />';
+                add_html_2 += '<input placeholder="Contact NO." class="f5 email_txt large" id="contact_no" name="contact_no" value="" type="text" maxlength="15" />';
+            }
+            else {
+                add_html_1 += '<input placeholder="Student ID." class="f5 email_txt" id="roll_no" name="student_id" value="" type="text" maxlength="15" />';
+                add_html_2 += '<input placeholder="Contact NO." class="f5 email_txt large" id="contact_no" name="contact_no" value="" type="text" maxlength="15" />';
+            }
+            
+        }else{
+            $('.grades_ul').slideUp(500);
+            
+            add_html_1 += '<input placeholder="Your Batch" class="f5 email_txt large" id="batch" name="batch" value="" type="text" maxlength="15" />';
+            add_html_2 += '<input placeholder="Contact NO." class="f5 email_txt large" id="contact_no" name="contact_no" value="" type="text" maxlength="15" />';
+        }
+        
+        $('#addition_row_1 div.center').html(add_html_1);
+        $('#addition_row_2 div.center').html(add_html_2);
+        
+    });
+    
     $(document).on("click",'.btn_user_join_school',function(){
         
-        $('#schl_id').attr('value', $(this).attr('id'));
+        $('#school_id').attr('value', $(this).attr('id'));
         
         var html_frm_reg = $('#school_join_frm_wrapper').html();
         
@@ -797,7 +835,7 @@ $(document).ready(function(){
                 
                 if ( data.saved == true ){
                     
-                    $('button#' + $('#schl_id').val()).remove();
+                    $('button#' + $('#school_id').val()).remove();
                     $('.fancybox-close').trigger('click');
                     
                 } else {

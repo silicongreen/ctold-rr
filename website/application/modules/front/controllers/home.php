@@ -34,31 +34,17 @@ class home extends MX_Controller {
             );
             
             $user_id = get_free_user_session('id');
-            $school_id = $this->input->post('schl_id');
-            $grade = $this->input->post('grade_ids');
             $user_type = get_free_user_session('type');
             
-            $user_section = $this->input->post('user_section');
-            $roll_no = $this->input->post('roll_no');
-            $admission_no = $this->input->post('admission_no');
+            $school_id = $this->input->post('school_id');
+            $grade = $this->input->post('grade_ids');
             
-            if ( empty($user_type) || ($user_type == 1) ) {
-                $user_type = $this->input->post('user_type');
-            }
+            unset($_POST['school_id']);
+            unset($_POST['grade_ids']);
             
-            if(!empty($user_section)){
-                $additional_info['user_section'] = $user_section;
-            }
-            
-            if(!empty($roll_no)){
-                $additional_info['roll_no'] = $roll_no;
-            }
-            
-            if(!empty($admission_no)){
-                $additional_info['admission_no'] = $admission_no;
-            }
-            
-            $additional_info = json_encode($additional_info);
+            /* Additional Information */
+            $additional_info = json_encode($this->input->post());
+            /* Additional Information */
             
             $user_school = new User_school();
             $user_school_data = $user_school->get_user_school($user_id, $school_id);
@@ -68,7 +54,7 @@ class home extends MX_Controller {
                 $User_school = new User_school;
                 $User_school->user_id = $user_id;
                 $User_school->school_id = $school_id;
-                $User_school->grade = $grade;
+                $User_school->grade = implode(',', $grade);
                 $User_school->type = $user_type;
                 $User_school->information = $additional_info;
 

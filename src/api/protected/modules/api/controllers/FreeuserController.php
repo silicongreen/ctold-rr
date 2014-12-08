@@ -42,8 +42,9 @@ class FreeuserController extends Controller
         $user_id = Yii::app()->request->getPost('user_id');
         $type = Yii::app()->request->getPost('type');
         $information = Yii::app()->request->getPost('information');
+        $grade = Yii::app()->request->getPost('grade');
         
-        if (!$school_id || !$user_id || !$type || !$information || !isset(Settings::$school_join_approved[$type]))
+        if (!$school_id || !$user_id || !$type || !$grade || !$information || !isset(Settings::$school_join_approved[$type]))
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
@@ -79,6 +80,7 @@ class FreeuserController extends Controller
                $schooluser->school_id = $school_id;
                $schooluser->is_approved = $is_approved;
                $schooluser->type = $type;
+               $schooluser->grade = $grade;
                $schooluser->information = $information;
                $schooluser->save();
             } 

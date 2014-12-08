@@ -28,7 +28,7 @@ class FreeuserController extends Controller
                     "getuserinfo", "goodread", "readlater", "goodreadall", "goodreadfolder", "removegoodread"
                     , "schoolsearch", "school", "createschool", "schoolpage", "schoolactivity", "candle"
                     , "garbagecollector","getschoolteacherbylinepost","createcachesinglenews", 
-                    'set_preference', 'get_preference','addgcm','getallgcm'),
+                    'set_preference', 'get_preference','addgcm','getallgcm','getschoolinfo'),
                 'users' => array('*'),
             ),
             array('deny', // deny all users
@@ -291,6 +291,30 @@ class FreeuserController extends Controller
         }
         echo CJSON::encode($response);
         Yii::app()->end();
+    }
+    public function actionGetSchoolInfo()
+    {
+        $user_id = Yii::app()->request->getPost('user_id');
+        $school_id = Yii::app()->request->getPost('school_id');
+        if(!$user_id)
+        {
+            $user_id = 0;
+        }
+        if(!$school_id)
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        else
+        {
+            $schoolobj = new School();
+            $response['data']['schools'] = $schoolobj->getSchoolInfo($school_id, $user_id);
+
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "DATA_FOUND";
+        }    
+        echo CJSON::encode($response);
+        Yii::app()->end(); 
     }
 
     public function actionSchool()

@@ -121,6 +121,90 @@ class School extends CActiveRecord
 		return parent::model($className);
 	}
         
+        public function getSchoolInfo($id,$user_id=0)
+        {
+            $school_join = array();
+            if($user_id)
+            {
+                $schooluser = new SchoolUser();
+                $school_user = $schooluser->userSchool($user_id);
+                if(count($school_user)>0)
+                {
+                    foreach($school_user as $value)
+                    {
+                       $school_join[$value['school_id']] = $value['status'];
+                    }    
+                }    
+            }    
+            $criteria = new CDbCriteria();
+            $criteria->compare("status",1);
+            $criteria->compare("id",$id);
+            
+            $criteria->limit = 1;
+            
+            $value = $this->find($criteria);
+            
+            $school_array = array();
+          
+            if($value)
+            {
+                 
+                $pageObject = new SchoolPage();
+                $school_pages = $pageObject->getSchoolPages($value->id);
+                if($school_pages)
+                {
+                    $school_array["school_pages"]       = $school_pages;
+                    $school_array["is_join"] = 0;
+
+                    if(isset($school_join[$value->id]))
+                    {
+                        if($school_join[$value->id] == 0)
+                        {
+                           $school_array["is_join"] = 1; 
+                        }    
+                        else
+                        {
+                            $school_array["is_join"] = 2; 
+                        }    
+
+                    }
+
+                    $school_array["id"]                 = $value->id;
+                    $school_array["name"]               = $value->name;
+                    $school_array["division"]           = $value->district;
+                    $school_array["location"]           = $value->location;
+                    $school_array["views"]              = $value->views;
+                    $school_array["boys"]               = $value->boys;
+                    $school_array["girls"]              = $value->girls;
+                    $school_array["logo"]               = "";
+                    if($value->logo)
+                    $school_array["logo"]               = Settings::$image_path.$value->logo;
+
+                    $school_array["cover"]              = "";
+
+                    if($value->cover)
+                    $school_array["cover"]              = Settings::$image_path.$value->cover; 
+
+                    $school_array["picture"]            = "";
+                    if($value->picture)
+                    {
+                        $school_array["picture"]        = Settings::$image_path.$value->picture;
+                    }
+                    else
+                    {
+                        $school_array["picture"]        = Settings::$image_path.$value->logo;
+                    }
+
+                    $school_array["like_link"]          = Settings::$image_path."schools".str_replace(" ","-", $value->name);
+
+                    
+                }
+                
+            }
+            
+            return $school_array;
+        }
+        
         public function getSchoolTotal()
         {
 

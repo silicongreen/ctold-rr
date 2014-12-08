@@ -421,6 +421,7 @@ class ajax extends MX_Controller
     {
         if (free_user_logged_in())
         {
+            $related_attached_file = "";
             $byline_string = get_free_user_session("full_name");
             
             $user_id = get_free_user_session("id");
@@ -437,7 +438,7 @@ class ajax extends MX_Controller
             $post_obj->user_type = 2;
             $post_obj->language = "en";
             $post_obj->byline_id = $this->generate_byline_id($byline_string);
-
+            $post_obj->school_id = !empty($this->input->post("school_id"))?$this->input->post("school_id") : 0 ;
 
             $this->load->library('upload');
             if (!empty($_FILES['attach_file']['name']))
@@ -562,18 +563,20 @@ class ajax extends MX_Controller
 
                  $this->db->insert_batch('post_type', $data_post_type);
                  
-                 $data_post_attached = array(
-                    array(
-                       'post_id' => $post_obj->id ,
-                       'file_name' => $related_attached_file,
-                       'show' => 1,
-                       'caption' => "Download Content"
-                    )
-                 );
+                 if($related_attached_file != "")
+                 {
+                    $data_post_attached = array(
+                       array(
+                          'post_id' => $post_obj->id ,
+                          'file_name' => $related_attached_file,
+                          'show' => 1,
+                          'caption' => "Download Content"
+                       )
+                    );
 
-                 $this->db->insert_batch('post_attachment', $data_post_attached);
+                    $this->db->insert_batch('post_attachment', $data_post_attached);
                 
-                
+                 }
                 
                 
                 //sending email

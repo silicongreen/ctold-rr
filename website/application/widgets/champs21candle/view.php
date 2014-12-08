@@ -152,14 +152,22 @@
 
 
         $(".candlepopup").click(function() {
+                        
             if (t == 0)
-            {
+            {                
+                var sc_id = "";
+                sc_id = $('#school_didi').text();
+                                    
                 loading(); // loading
                 loadCategory();
                 if (t == 1)
                 {
                     setTimeout(function() { // then show popup, deley in .5 second
                         loadPopup(); // function show popup 
+                        if(sc_id != "")
+                        {
+                            $('#section_form').append('<input type="hidden" id="school_id" name="school_id" value="'+ sc_id +'">');
+                        }
                     }, 500);
                 }
                 else

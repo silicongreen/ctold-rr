@@ -172,7 +172,12 @@ class home extends MX_Controller {
                         if($userschool->is_approved==1)
                         {
                             redirect("schools/".$ar_segmens[2]."/feed");
-                        }     
+                        }
+                        else
+                        {    
+                            $school_menu_id = 1;
+                            $menu_details = $school_obj->find_default_school_menu($school_details->id);
+                        }
                     }
                     else
                     {    

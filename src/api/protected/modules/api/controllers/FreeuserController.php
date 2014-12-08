@@ -1314,11 +1314,11 @@ class FreeuserController extends Controller
                 $user_type = $user_info['user_type'];
             }
 
-            $cache_name = "YII-RESPONSE-STB-" . $id . "-" . $target . "-" . $page_number . "-" . $page_size . "-" . $user_type;
-            $this->createAllCache($cache_name);
-            $response = Yii::app()->cache->get($cache_name);
-            if ($response === false)
-            {
+            //$cache_name = "YII-RESPONSE-STB-" . $id . "-" . $target . "-" . $page_number . "-" . $page_size . "-" . $user_type;
+            //$this->createAllCache($cache_name);
+            //$response = Yii::app()->cache->get($cache_name);
+//            if ($response === false)
+//            {
 
                 $postObj = new Post();
                 $post = $postObj->getPosts($id, $user_type, $target, $page = 1, $page_size = 10);
@@ -1333,8 +1333,8 @@ class FreeuserController extends Controller
                 $response['data']['post'] = $post;
                 $response['status']['code'] = 200;
                 $response['status']['msg'] = "DATA_FOUND";
-                Yii::app()->cache->set($cache_name, $response, 86400);
-            }
+                //Yii::app()->cache->set($cache_name, $response, 86400);
+//            }
             if(isset($response['data']['post']) && count($response['data']['post'])>0)
             {
 

@@ -16,6 +16,14 @@ class Settings {
         3 => false,
         4 => false
     );
+    public static $post_type = 4;
+    public static $allclass = 10;
+    public static $school_candle_publish = array(
+        1 => false,
+        2 => false,
+        3 => true,
+        4 => false
+    );
     public static $news_in_index = array(
         'show_old_news' => TRUE,
         'days_to_retrieve_news' => "-10 days"

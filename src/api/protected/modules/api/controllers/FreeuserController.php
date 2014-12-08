@@ -28,7 +28,7 @@ class FreeuserController extends Controller
                     "getuserinfo", "goodread", "readlater", "goodreadall", "goodreadfolder", "removegoodread"
                     , "schoolsearch", "school", "createschool", "schoolpage", "schoolactivity", "candle"
                     , "garbagecollector","getschoolteacherbylinepost","createcachesinglenews", 
-                    'set_preference', 'get_preference','addgcm','getallgcm','getschoolinfo','joinschool'),
+                    'set_preference', 'get_preference','addgcm','getallgcm','getschoolinfo','joinschool','candleschool'),
                 'users' => array('*'),
             ),
             array('deny', // deny all users
@@ -203,6 +203,116 @@ class FreeuserController extends Controller
         echo CJSON::encode($response);
         Yii::app()->end();
     }
+    public function actionCandleSchool()
+    {
+        $username = Yii::app()->request->getPost('username');
+        $headline = Yii::app()->request->getPost('headline');
+        $content = Yii::app()->request->getPost('content');
+        $category_id = Yii::app()->request->getPost('category_id');
+        $school_id = Yii::app()->request->getPost('school_id');
+        $user_id = Yii::app()->request->getPost('user_id');
+        
+        if (!$username || !$headline || !$content || !$category_id || !$school_id || !$user_id)
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        else
+        {
+            $user_school = new SchoolUser();
+            $userschool = $user_school->userSchoolSingle($user_id, $school_id);
+            if(isset($userschool->is_approved) && $userschool->is_approved==1)
+            {
+            
+                $postobj = new Post();
+                $postobj->headline = $headline;
+                $postobj->content = $content;
+                $postobj->published_date = date("Y-m-d H:i:s");
+                $postobj->status = 1;
+                if(Settings::$school_candle_publish[$userschool->type]===true)
+                {
+                    $postobj->status = 5;
+                }    
+                
+                $postobj->type = "Print";
+                $postobj->user_type = 2;
+                $postobj->language = "en";
+                $postobj->school_id = $school_id;
+                
+                $objbyline = new Bylines();
+                $postobj->byline_id = $objbyline->generate_byline_id($username);
+
+                if (!empty($_FILES['leadimage']['name']))
+                {
+                    $main_dir = 'upload/user_submitted_image/';
+                    $uploads_dir = Settings::$main_path . 'upload/user_submitted_image/';
+                    $tmp_name = $_FILES["leadimage"]["tmp_name"];
+                    $name = "image_" . time() . "_" . str_replace(" ", "-", $_FILES["leadimage"]["name"]);
+
+                    move_uploaded_file($tmp_name, "$uploads_dir/$name");
+                    $postobj->lead_material = $main_dir . $name;
+                }
+                $postobj->save();
+
+                if (!empty($_FILES['attach_file']['name']))
+                {
+                    $main_dir = 'upload/user_submitted_image/';
+                    $uploads_dir = Settings::$main_path . 'upload/user_submitted_image/';
+                    $tmp_name = $_FILES["attach_file"]["tmp_name"];
+                    $name = "file_" . time() . "_" . str_replace(" ", "-", $_FILES["attach_file"]["name"]);
+
+                    move_uploaded_file($tmp_name, "$uploads_dir/$name");
+
+                    $postAttachmentObj = new PostAttachment();
+
+                    $postAttachmentObj->file_name = $main_dir . $name;
+                    $postAttachmentObj->post_id = $postobj->id;
+                    $postAttachmentObj->show = 1;
+                    $postAttachmentObj->save();
+                }
+
+                $objpostcategory = new PostCategory();
+
+                $objpostcategory->post_id = $postobj->id;
+                $objpostcategory->category_id = $category_id;
+
+                $objpostcategory->save();
+                
+                
+
+                for($i = 1; $i<=Settings::$allclass; $i++)
+                {
+                    $objpostclass = new PostClass();
+                    $objposttype->post_id = $postobj->id;
+                    $objposttype->class_id = $i;
+                    $objposttype->save();
+                }
+
+
+                if (Yii::app()->request->getPost('type'))
+                {
+                    foreach (Yii::app()->request->getPost('type') as $value)
+                    {
+                        $objposttype = new PostType();
+                        $objposttype->post_id = $postobj->id;
+                        $objposttype->type_id = $value;
+                        $objposttype->save();
+                    }
+                }
+
+                $response['status']['code'] = 200;
+                $response['status']['msg'] = "Successfully Saved";
+            }
+            else
+            {
+                $response['status']['code'] = 400;
+                $response['status']['msg'] = "Bad Request";
+            }    
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    }
+    
 
     public function actionCandle()
     {
@@ -264,7 +374,13 @@ class FreeuserController extends Controller
 
             $objpostcategory->save();
 
-
+            for($i = 1; $i<=Settings::$allclass; $i++)
+            {
+                $objpostclass = new PostClass();
+                $objposttype->post_id = $postobj->id;
+                $objposttype->class_id = $i;
+                $objposttype->save();
+            }
 
             if (Yii::app()->request->getPost('type'))
             {

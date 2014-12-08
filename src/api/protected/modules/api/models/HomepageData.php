@@ -114,6 +114,8 @@ class HomepageData extends CActiveRecord
         $criteria->together = true;
         $criteria->select = 'count(DISTINCT t.post_id) as total';
         $criteria->compare("post.status", 5);
+        $criteria->compare("post.school_id", 0);
+        $criteria->compare("post.teacher_id", 0);
         if($category_not_to_show)
         {
             //$criteria->addInCondition('postCategories.category_id', explode(",",$category_not_to_show));
@@ -185,6 +187,8 @@ class HomepageData extends CActiveRecord
         $criteria->together = false;
         $criteria->select = 'MAX(t.priority) as maxorder';
         $criteria->compare("post.status", 5);
+        $criteria->compare("post.school_id", 0);
+        $criteria->compare("post.teacher_id", 0);
         
         $criteria->compare("t.status", 1);
         if($category_not_to_show)

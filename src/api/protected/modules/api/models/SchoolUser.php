@@ -66,7 +66,7 @@ class SchoolUser extends CActiveRecord
     public function userSchool($user_id, $school_id=0)
     {
         $criteria = new CDbCriteria();
-        $criteria->select = "t.is_approved,t.school_id";
+        $criteria->select = "t.is_approved,t.school_id,t.type";
         if($school_id)
         {
            $criteria->compare("t.school_id", $school_id); 
@@ -80,13 +80,31 @@ class SchoolUser extends CActiveRecord
         {
             $user_schools[$i]['school_id'] = $value->school_id;
             $user_schools[$i]['status'] = $value->is_approved;
+            $user_schools[$i]['type'] = $value->type;
             $i++;
         }
         
         return $user_schools;
         
         
-    }        
+    } 
+    
+    public function userSchoolSingle($user_id, $school_id)
+    {
+        $criteria = new CDbCriteria();
+        $criteria->select = "t.is_approved,t.school_id,t.type";
+        if($school_id)
+        {
+           $criteria->compare("t.school_id", $school_id); 
+        }    
+        $criteria->compare("t.user_id", $user_id);
+        $userschools = $this->find($criteria);
+        
+        
+        return $userschools;
+        
+        
+    } 
 
     
 

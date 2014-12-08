@@ -63,10 +63,14 @@ class SchoolUser extends CActiveRecord
     {
         return parent::model($className);
     }
-    public function userSchool($user_id)
+    public function userSchool($user_id, $school_id=0)
     {
         $criteria = new CDbCriteria();
         $criteria->select = "t.is_approved,t.school_id";
+        if($school_id)
+        {
+           $criteria->compare("t.school_id", $school_id); 
+        }    
         $criteria->compare("t.user_id", $user_id);
         $userschools = $this->findAll($criteria);
         

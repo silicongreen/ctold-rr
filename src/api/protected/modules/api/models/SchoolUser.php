@@ -92,7 +92,7 @@ class SchoolUser extends CActiveRecord
     public function userSchoolSingle($user_id, $school_id)
     {
         $criteria = new CDbCriteria();
-        $criteria->select = "t.is_approved,t.school_id,t.type";
+        $criteria->select = "t.id,t.is_approved,t.school_id,t.type";
         if($school_id)
         {
            $criteria->compare("t.school_id", $school_id); 

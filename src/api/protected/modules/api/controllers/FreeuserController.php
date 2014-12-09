@@ -28,7 +28,7 @@ class FreeuserController extends Controller
                     "getuserinfo", "goodread", "readlater", "goodreadall", "goodreadfolder", "removegoodread"
                     , "schoolsearch", "school", "createschool", "schoolpage", "schoolactivity", "candle"
                     , "garbagecollector","getschoolteacherbylinepost","createcachesinglenews", 
-                    'set_preference', 'get_preference','addgcm','getallgcm','getschoolinfo','joinschool','candleschool'),
+                    'set_preference', 'get_preference','addgcm','getallgcm','getschoolinfo','joinschool','candleschool','leaveschool'),
                 'users' => array('*'),
             ),
             array('deny', // deny all users
@@ -36,6 +36,33 @@ class FreeuserController extends Controller
             ),
         );
     }
+    public function actionLeaveSchool()
+    {
+        $school_id = Yii::app()->request->getPost('school_id');
+        $user_id = Yii::app()->request->getPost('user_id');
+        if (!$school_id || !$user_id )
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        else
+        {
+            $schooluser = new SchoolUser();
+            $userschool = $schooluser->userSchoolSingle($user_id, $school_id);
+            if($userschool)
+            {
+                $schooluser->deleteByPk($userschool->id);
+            }
+            $freeuserObj = new Freeusers();
+            $user_info = $freeuserObj->getUserInfo($user_id);
+
+            $response['data']['userinfo'] = $user_info;
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "success";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    }        
     public function actionJoinSchool()
     {
         $school_id = Yii::app()->request->getPost('school_id');

@@ -438,7 +438,9 @@ class ajax extends MX_Controller
             $post_obj->user_type = 2;
             $post_obj->language = "en";
             $post_obj->byline_id = $this->generate_byline_id($byline_string);
-            $post_obj->school_id = !empty($this->input->post("school_id"))?$this->input->post("school_id") : 0 ;
+            
+            $i_school_id = $this->input->post("school_id");
+            $post_obj->school_id = (!empty($i_school_id)) ? $i_school_id : 0 ;
             
             $post_obj->can_comment = $this->input->post("can_comment");
             $post_obj->show_comment_to_all = $this->input->post("show_comment_to_all");

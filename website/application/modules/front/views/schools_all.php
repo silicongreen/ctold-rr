@@ -124,7 +124,7 @@
                     <fieldset class="hell_box">
 
                         <div style="text-align: left; padding: 15px 0 0 51px;">
-                            <label class="user_type_dialob_label">I am a... </label>
+                            <label class="user_type_dialob_label">Joining as... </label>
                         </div>
 
                         <div class="user_type_div">

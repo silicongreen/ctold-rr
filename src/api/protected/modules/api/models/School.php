@@ -52,7 +52,8 @@ class School extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-		);
+                        'schooluser' => array(self::HAS_MANY, 'SchoolUser', 'school_id'),
+                );
 	}
 
 	/**
@@ -205,12 +206,23 @@ class School extends CActiveRecord
             return $school_array;
         }
         
-        public function getSchoolTotal()
+        public function getSchoolTotal($user_id=0, $user_school = false)
         {
 
             $criteria = new CDbCriteria();
             $criteria->select = 'count(t.id) as total';
             $criteria->compare("status",1);
+            if($user_school && $user_id!=0)
+            {
+                $criteria->together = true;
+                $criteria->with = array(
+                    'schooluser' => array(
+                        'select' => ''
+                    ),
+                );
+                $criteria->compare("schooluser.user_id",$user_id);
+                $criteria->compare("schooluser.is_approved",1);
+            }
 
             $criteria->group = "t.status";
             $data = $this->find($criteria);
@@ -225,7 +237,7 @@ class School extends CActiveRecord
             }
         }
         
-        public function Schools($page_size = 10,$page = 1, $user_id=0)
+        public function Schools($page_size = 10,$page = 1, $user_id=0, $user_school = false)
         {
             $school_join = array();
             if($user_id)
@@ -239,9 +251,21 @@ class School extends CActiveRecord
                        $school_join[$value['school_id']] = $value['status'];
                     }    
                 }    
-            }    
+            }
+            
             $criteria = new CDbCriteria();
             $criteria->compare("status",1);
+            if($user_school && $user_id!=0)
+            {
+                $criteria->together = true;
+                $criteria->with = array(
+                    'schooluser' => array(
+                        'select' => ''
+                    ),
+                );
+                $criteria->compare("schooluser.user_id",$user_id);
+                $criteria->compare("schooluser.is_approved",1);
+            }
             $start = ($page - 1) * $page_size;
             $criteria->limit = $page_size;
 
@@ -270,10 +294,14 @@ class School extends CActiveRecord
                             {
                                $school_array[$i]["is_join"] = 1; 
                             }    
-                            else
+                            else if($school_join[$value->id] == 1)
                             {
                                 $school_array[$i]["is_join"] = 2; 
-                            }    
+                            }
+                            else
+                            {
+                                $school_array[$i]["is_join"] = 3; 
+                            }
                             
                         }
                         

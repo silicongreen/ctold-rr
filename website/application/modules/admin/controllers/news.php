@@ -27,10 +27,10 @@ class news extends MX_Controller
      * @defination use for showing table header and setting table id and filtering for News
      * @author Fahim
      */
-    public function index()
+    public function index($school_id=0)
     {
 
-            
+          
         //set table id in table open tag
         $tmpl = array('table_open' => '<table id="big_table" border="1" cellpadding="2" cellspacing="1" class="mytable">');
         $this->table->set_template($tmpl);
@@ -73,7 +73,18 @@ class news extends MX_Controller
         {
             $language[$key] = $value;
         }
+        if($school_id>0)
+        {    
+            $schoolobj = new schools($school_id);
+            if(isset($schoolobj->name))
+            {
+                $data['school_name'] = $schoolobj->name;
+            }
+        
+        }
         $data['language'] = $language;
+        
+        $data['school_id'] = $school_id;
 
         $data['categoryMenu'] = $select_categoryMenu;
         $data['users'] = $select_users;
@@ -154,7 +165,7 @@ class news extends MX_Controller
         }
       
     }        
-    public function datatable()
+    public function datatable($school_id=0)
     {
         if (!$this->input->is_ajax_request())
         {
@@ -166,9 +177,12 @@ class news extends MX_Controller
         $this->datatables->set_buttons("statictis");
         $this->load->config("champs21");
         
-        $this->datatables->set_buttons("set_home_today","ajax",false,array("field"=>"reference","value"=>false));
+        if($school_id == 0)
+        {
+            $this->datatables->set_buttons("set_home_today","ajax",false,array("field"=>"reference","value"=>false));
         
-        $this->datatables->set_buttons("set_home_date","model2",false,array("field"=>"reference","value"=>false));
+            $this->datatables->set_buttons("set_home_date","model2",false,array("field"=>"reference","value"=>false));
+        }
         
         $this->datatables->set_controller_name("news");
         $this->datatables->set_primary_key("primary_id");
@@ -192,10 +206,17 @@ class news extends MX_Controller
                 ->join("post_user_activity as pre_post_user_activity", "post.id=pre_post_user_activity.post_id", 'LEFT')
                 ->join("users as pre_user", "pre_post_user_activity.user_id=pre_user.id", 'LEFT')
                 ->where("tds_post.status!=", "6", false)
-                ->where("tds_post.show",1)
-                ->where("tds_post.school_id",0)
-                ->where("tds_post.teacher_id",0)
-                ->group_by("post.id");
+                ->where("tds_post.show",1);
+                if($school_id>0)
+                {
+                   $this->datatables->where("tds_post.school_id",$school_id); 
+                }   
+                else
+                {
+                    $this->datatables->where("tds_post.school_id",0); 
+                }
+                $this->datatables->where("tds_post.teacher_id",0);
+                $this->datatables->group_by("post.id");
 
 
         echo $this->datatables->generate();
@@ -496,7 +517,7 @@ class news extends MX_Controller
      * @defination use for show insert News form
      * @author Fahim
      */
-    public function add()
+    public function add($school_id = 0)
     {
         $obj_post = new Posts();
 
@@ -523,6 +544,8 @@ class news extends MX_Controller
         $user_data = $this->session->userdata("admin");
 
         $data['user_id'] = $user_data['id'];
+        
+        $data['school_id'] = $school_id;
 
         $data['users'] = $select_user;
         

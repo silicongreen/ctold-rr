@@ -27,6 +27,10 @@
     <?= form_open('', array('id' => 'valid_check_news', 'enctype' => 'multipart/form-data')); ?>
     <input type="hidden" name="id" value="<?= ($model->id) ? $model->id : 0; ?>" />
     <input type="hidden" id="current_date_for_publish" value="<?= $model->published_date ?>" />
+    <?php if(!$model->id): ?>
+         <input type="hidden" name="school_id" value="<?php echo $school_id; ?>" />
+    <?php endif; ?>
+    
     <div id="wrapper" data-adminica-nav-top="1" data-adminica-side-top="1">
         <?php
         $widget = new Widget;

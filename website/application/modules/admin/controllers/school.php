@@ -49,6 +49,8 @@ class school extends MX_Controller
         }
         $this->datatables->set_buttons("edit");
         $this->datatables->set_buttons("delete");
+        $this->datatables->set_buttons("feeds", false,true);
+        $this->datatables->set_buttons("add_feed", false,true);
         $this->datatables->set_controller_name("school");
         $this->datatables->set_primary_key("id");
 
@@ -57,6 +59,15 @@ class school extends MX_Controller
                 ->from('school');
 
         echo $this->datatables->generate();
+    }
+    function feeds($id)
+    {
+        redirect("admin/news/index/".$id);
+    }
+    
+    function add_feed($id)
+    {
+        redirect("admin/news/add/".$id);
     }
 
     /**

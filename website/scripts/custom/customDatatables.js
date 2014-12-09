@@ -16,6 +16,8 @@ $(document).ready(function() {
     }
     if ( $('.mytable_gallery').html() != null )
     {
+        
+        
         oTable = $('.mytable_gallery').dataTable( {
             "bJQueryUI": true,
             "sScrollX": "",
@@ -161,12 +163,20 @@ $(document).ready(function() {
     } 	
     if ( $('#dt1 .mytable').html() != null )
     {
+        var extra = "";
+        if($("#school_id_feed").length>0)
+        {
+            if($("#school_id_feed").val()!=0)
+            {
+               extra =  $("#school_id_feed").val();
+            }    
+        } 
         oTable = $('#dt1 .mytable').dataTable( {
             "bJQueryUI": true,
             "sScrollX": "",
             "bProcessing": true,
             "bServerSide": true,
-            "sAjaxSource": $("#base_url").val()+"admin/"+$("#controllername").val()+"/datatable/",
+            "sAjaxSource": $("#base_url").val()+"admin/"+$("#controllername").val()+"/datatable/"+extra,
             "bSortClasses": false,
             "aaSorting": [[sortindex,sorttype]],
             "bAutoWidth": true,

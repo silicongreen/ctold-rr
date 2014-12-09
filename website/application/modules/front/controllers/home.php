@@ -28,6 +28,7 @@ class home extends MX_Controller {
         
         if($this->input->is_ajax_request()){
             
+            $b_need_approval = TRUE;
             $additional_info = array();
             $response = array(
                 'saved' => false,
@@ -35,6 +36,10 @@ class home extends MX_Controller {
             
             $user_id = get_free_user_session('id');
             $user_type = get_free_user_session('type');
+            
+            if($user_type == 1){
+                $user_type = $this->input->post('user_type');
+            }
             
             $school_id = $this->input->post('school_id');
             $grade = $this->input->post('grade_ids');
@@ -46,6 +51,9 @@ class home extends MX_Controller {
             $additional_info = json_encode($this->input->post());
             /* Additional Information */
             
+            $this->load->config('user_register');
+            $b_need_approval = $this->config->config['join_user_approval'][$user_type];
+            
             $user_school = new User_school();
             $user_school_data = $user_school->get_user_school($user_id, $school_id);
             
@@ -56,11 +64,13 @@ class home extends MX_Controller {
                 $User_school->school_id = $school_id;
                 $User_school->grade = implode(',', $grade);
                 $User_school->type = $user_type;
+                $User_school->is_approved = ( $b_need_approval ) ? '0' : '1';
                 $User_school->information = $additional_info;
-
+                
                 if($User_school->save()){
                    $response = array(
                         'saved' => true,
+                        'is_approved' => $User_school->is_approved,
                     );
                    
                 } else {
@@ -72,10 +82,44 @@ class home extends MX_Controller {
             }
             
             echo( json_encode($response));
-            exit;
-            
+            exit;   
         }
+    }
+    
+    function leave_school(){
         
+        if($this->input->is_ajax_request()){
+            
+            $b_need_approval = TRUE;
+            $additional_info = array();
+            $response = array(
+                'saved' => false,
+                'left' => false
+            );
+            
+            $user_id = get_free_user_session('id');
+            $school_id = $this->input->post('school_id');
+            
+            unset($_POST['school_id']);
+            
+            $this->db->where('user_id', $user_id);
+            $this->db->where('school_id', $school_id);
+            $this->db->delete('user_school');
+                
+            if ( $this->db->affected_rows() > 0 ) {
+               $response = array(
+                    'saved' => true,
+                    'left' => true
+                );
+
+            } else {
+                $response['errors'] = $user_school->error->all;
+            }
+
+
+            echo( json_encode($response));
+            exit;   
+        }
     }
     
     function schools()
@@ -120,6 +164,10 @@ class home extends MX_Controller {
             if($user_school_data){
                 foreach ($user_school_data as $row) {
                     $data['user_school_ids'][] = $row->school_id;
+                }
+                
+                foreach ($user_school_data as $row) {
+                    $data['user_school_status'][$row->school_id] = $row->is_approved;
                 }
             }
             

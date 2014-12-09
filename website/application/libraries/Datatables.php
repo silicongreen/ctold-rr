@@ -516,8 +516,26 @@
             {
                 if(in_array($a_custom_string_field_position,array_keys($aaData[$row_key])))
                 {
-                    if(isset($aaData[$row_key][$a_custom_string_field_position]) && $aaData[$row_key][$a_custom_string_field_position])
-                    $aaData[$row_key][$a_custom_string_field_position] = "<img src='".base_url().$aaData[$row_key][$a_custom_string_field_position]."' width='100' />";
+                    if(isset($aaData[$row_key][$a_custom_string_field_position]) && $aaData[$row_key][$a_custom_string_field_position]){
+                        
+                        $img_url = $aaData[$row_key][$a_custom_string_field_position];
+                        
+                        if(strpos($img_url, base_url()) !== FALSE){
+                            str_replace(base_url(), '', $img_url);
+                        }
+                        
+                        if(strpos($img_url, 'http://champs21.com/') !== FALSE){
+                            $img_url = str_replace('http://champs21.com/', '', $img_url);
+                        }
+                        
+                        if(strpos($img_url, 'http://www.champs21.com/') !== FALSE){
+                            $img_url = str_replace('http://www.champs21.com/', '', $img_url);
+                        }
+                        
+                        $img_url = 'http://www.champs21.com/' . $img_url;
+                        
+                        $aaData[$row_key][$a_custom_string_field_position] = "<img src='".$img_url."' height='100' />";
+                    }
                 }
             }
                 

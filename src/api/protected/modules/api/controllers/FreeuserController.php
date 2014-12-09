@@ -504,6 +504,13 @@ class FreeuserController extends Controller
         $page_size = Yii::app()->request->getPost('page_size');
         $page_number = Yii::app()->request->getPost('page_number');
         $user_id = Yii::app()->request->getPost('user_id');
+        $myschool = Yii::app()->request->getPost('myschool');
+        $userschool = false;
+        if($myschool==1)
+        {
+            $userschool = true;
+            
+        }    
         if(!$user_id)
         {
             $user_id = 0;
@@ -520,7 +527,14 @@ class FreeuserController extends Controller
 
         $schoolobj = new School();
 
-        $response['data']['total'] = $schoolobj->getSchoolTotal();
+        if($user_id && $userschool)
+        {
+           $response['data']['total'] = $schoolobj->getSchoolTotal($user_id,$userschool); 
+        }
+        else
+        {    
+            $response['data']['total'] = $schoolobj->getSchoolTotal();
+        }
         $has_next = false;
         if ($response['data']['total'] > $page_number * $page_size)
         {
@@ -528,7 +542,7 @@ class FreeuserController extends Controller
         }
         $response['data']['has_next'] = $has_next;
 
-        $response['data']['schools'] = $schoolobj->Schools($page_size, $page_number, $user_id);
+        $response['data']['schools'] = $schoolobj->Schools($page_size, $page_number, $user_id, $userschool);
 
         $response['status']['code'] = 200;
         $response['status']['msg'] = "DATA_FOUND";

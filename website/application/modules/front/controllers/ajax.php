@@ -439,7 +439,13 @@ class ajax extends MX_Controller
             $post_obj->language = "en";
             $post_obj->byline_id = $this->generate_byline_id($byline_string);
             $post_obj->school_id = !empty($this->input->post("school_id"))?$this->input->post("school_id") : 0 ;
-
+            
+            $post_obj->can_comment = $this->input->post("can_comment");
+            $post_obj->show_comment_to_all = $this->input->post("show_comment_to_all");
+            $post_obj->user_id = get_free_user_session("id");
+            $post_obj->candle_type = $this->input->post("candle_type");
+            
+            
             $this->load->library('upload');
             if (!empty($_FILES['attach_file']['name']))
             {
@@ -484,7 +490,7 @@ class ajax extends MX_Controller
             if($post_obj->id)
             {
                 $array['post_id'] = $post_obj->id;
-                $array['category_id'] = $this->input->post("category");
+                $array['category_id'] = 1;
                 $this->db->insert("post_category", $array);
 
                 if(!$user_mobile_number)

@@ -22,35 +22,52 @@
     <div class="slide innerTop">
         <?= form_open('', array('id' => 'validate_form', 'class' => 'validate_form', 'enctype' => "multipart/form-data")); ?>
         <div id="section_form">
-            <p><img src="<?php echo base_url('Profiler/images/right/candle_text.png'); ?>" alt="Candle" style="width:90%;margin: 0 auto;display: block;"> </p>
-            <label class="candle-checkbox">
-                <input id="demo_box_4" name="type_post[]" value="1" class="css-checkbox" type="checkbox" checked="checked" />
-                <label for="demo_box_4" class="css-label f5">Visitor</label>
+            <p class="candle_form_title"><img src="<?php echo base_url('Profiler/images/right/candle_text.png'); ?>" alt="Candle" style="width:90%;margin: 0 auto;display: block;"> </p>
+            <p class="candle_school_form_title" style="display:none;margin-bottom: 20px;"><span style="color:rgba(45, 39, 39, 0.87);font-family:'Bree Serif','SolaimanLipi' !important;font-size: 50px;font-weight: bold;">Candling for School</span> </p>
+            <div class="candle_form_left">
+                <label class="candle-checkbox">
+                    <input id="demo_box_4" name="type_post[]" value="1" class="css-checkbox" type="checkbox" checked="checked" />
+                    <label for="demo_box_4" class="css-label f5">Visitor</label>
 
-                <input id="demo_box_1" name="type_post[]" value="2" class="css-checkbox" type="checkbox" checked="checked" />
-                <label for="demo_box_1"  class="css-label f5">Student</label>
+                    <input id="demo_box_1" name="type_post[]" value="2" class="css-checkbox" type="checkbox" checked="checked" />
+                    <label for="demo_box_1"  class="css-label f5">Student</label>
 
-                <input id="demo_box_2" name="type_post[]" value="3"  class="css-checkbox" type="checkbox" checked="checked" />
-                <label for="demo_box_2"  class="css-label f5">Parents</label>
+                    <input id="demo_box_2" name="type_post[]" value="3"  class="css-checkbox" type="checkbox" checked="checked" />
+                    <label for="demo_box_2"  class="css-label f5">Parents</label>
 
 
-                <input id="demo_box_3" name="type_post[]"  value="4"    class="css-checkbox" type="checkbox" checked="checked" />
-                <label for="demo_box_3"  class="css-label f5">Teacher</label>
+                    <input id="demo_box_3" name="type_post[]"  value="4"    class="css-checkbox" type="checkbox" checked="checked" />
+                    <label for="demo_box_3"  class="css-label f5">Teacher</label>
 
-            </label>
-            <label class="candle-selectbox" id="category_select_box">
+                </label>
+                <label class="candle-selectbox" id="category_select_box">
 
-            </label>
-            <label class="candle-input">
-                <input type="text" name="headline" id="headline" class="cd-input f5" placeholder="title">
-            </label>
-            <label class="candle-input">
-                <input type="text" name="mobile_num" id="mobile_num" value="<?php echo $user_mobile_number; ?>" class="cd-input f5" placeholder="Your Mobile Number">
-            </label>
-            <label class="candle-textarea">
-                <textarea class="cd-textarea f5" id="content" name="content" placeholder="content"></textarea>
-            </label>
+                </label>
+                
+                <label id="candle_type_select_box" style="display:none;">
+                    
+                </label>
+                <label class="candle-input">
+                    <input type="text" name="headline" id="headline" class="cd-input f5" placeholder="title">
+                </label>
+                <label class="candle-input" id="candle_input_mobile">
+                    <input type="text" name="mobile_num" id="mobile_num" value="<?php echo $user_mobile_number; ?>" class="cd-input f5" placeholder="Your Mobile Number">
+                </label>
+                <label class="candle-textarea">
+                    <textarea class="cd-textarea f5" id="content" name="content" placeholder="content"></textarea>
+                </label>
+            </div>
+            <div class="candle_form_right" style=display:none;">
+                <p class="candle_form_settings" style="padding-left:0px;text-align: left;color:#616161;"><img src="<?php echo base_url('Profiler/images/right/settings.png'); ?>" alt="Settings" style="width:30%;margin: 0 auto;display: block;cursor: pointer;"> </p>
+                <div class="candle_form_settings_data" style="display:none;margin-top:30px;margin-left: 30px;">
+                    <p style="padding-left:0px;text-align: left;color:#616161;"><b>Settings</b></p>
+                    <input id="demo_box_5" name="can_comment" value="1" class="css-checkbox" type="checkbox" />
+                    <label for="demo_box_5" class="css-label f5">Can Comment?</label>
 
+                    <input id="demo_box_6" name="show_comment_to_all" value="1" class="css-checkbox" type="checkbox" />
+                    <label for="demo_box_6"  class="css-label f5">Show comment to all?</label>
+                </div>
+            </div>
             <label class="candle-btn">
 
 
@@ -104,6 +121,13 @@
                 }
             }
         });
+    }
+    function loadCandleType()
+    {
+        t = 1;
+        $("#category_select_box").html('<div class="select-style"><select class="f5" name="category"><option value="<?php echo $this->config->config["school_candle_category_id"];?>" checked="checked">school category</option>');
+        $("#candle_type_select_box").html('<div class="select-style"><select class="f5" name="candle_type"><option value="1" checked="checked">Common</option><option value="2">Question</option></select></div>');
+        return true;
     }
     jQuery(function($) {
 
@@ -159,14 +183,26 @@
                 sc_id = $('#school_didi').text();
                                     
                 loading(); // loading
-                loadCategory();
+                if(sc_id != "")
+                {
+                    loadCandleType();                    
+                }
+                else
+                {
+                    loadCategory();                    
+                }
                 if (t == 1)
                 {
                     setTimeout(function() { // then show popup, deley in .5 second
-                        loadPopup(); // function show popup 
+                        
                         if(sc_id != "")
-                        {
+                        {                            
+                            loadPopupSchool(); // function show popup 
                             $('#section_form').append('<input type="hidden" id="school_id" name="school_id" value="'+ sc_id +'">');
+                        }
+                        else
+                        {
+                            loadPopup(); // function show popup 
                         }
                     }, 500);
                 }
@@ -279,6 +315,18 @@
             return false;
         });
 
+        $("p.candle_form_settings").click(function() {
+            $('.candle_form_left').animate({'width': '65%'}, {
+                duration: 1000,
+                step: function() {
+                    setTimeout(function(){
+                    $('.candle_form_settings').css("display", 'none');
+                    $('.candle_form_right').css("width", '35%');
+                    $('.candle_form_settings_data').delay(1000).css("display", 'block');
+                    }, 1000); 
+                }
+            });
+        });
 
         /************** start: functions. **************/
         function loading() {
@@ -304,11 +352,72 @@
                 popupStatus = 1; // and set value to 1
             }
         }
+        
+        function loadPopupSchool() {
+            if (popupStatus == 0) { // if value is 0, show popup
+                closeloading(); // fadeout loading
+                $("#candletoPopup").fadeIn(0500); // fadein popup div
+                $("#candlebackgroundPopup").css("opacity", "0.7"); // css opacity, supports IE7, IE8
+                $("#candlebackgroundPopup").fadeIn(0001);
+                $('#popup_content').css("display", 'none');
+                
+                $('div.close').css("display", 'block');
+                $('div.goto').css("display", 'none');
+                $("#section_thanks").css("display", 'none');
+                popupStatus = 1; // and set value to 1
+                
+                
+                $('.innerTop').animate({'left': '3px'}, {
+                duration: 1000,
+                step: function() {
+                    $(".candle_form_left").css("float", "left");
+                    $(".candle_form_left").css("width", "85%");
+                    
+                    $(".candle_form_right").css("float", "right");
+                    $(".candle_form_right").css("width", "15%");
+        
+                    $('.innerTop').css("display", 'block');
+                    $('.candle_form_title').css("display", 'none');
+                    $('.candle_school_form_title').css("display", 'block');
+                    $('#section_form').css("display", 'block');
+                    $('#candle_type_select_box').css("display", 'block');
+                    $('#category_select_box').css("display", 'none');
+                    $( "#candle_input_mobile" ).css("display", 'none');
+                    $('#popup_content').css("display", 'none');
+                    $('.candle_form_right').css("display", 'block');
+                    
+                    
+                }
+            });
+            }
+        }
 
         function disablePopup() {
             if (popupStatus == 1) { // if value is 1, close popup
                 $("#candletoPopup").fadeOut("normal");
                 $("#candlebackgroundPopup").fadeOut("normal");
+                
+                $('.innerTop').css("display", 'none');
+                $('div.close').css("display", 'none');
+                $('#popup_content').css("display", 'none');
+                $('div.goto').css("display", 'none');
+                $("#section_thanks").css("display", 'none');
+                $('.candle_school_form_title').css("display", 'none');
+                $('.candle_form_title').css("display", 'block');
+                //$( "#category_select_box" ).css("display", 'block');
+                $( "#candle_input_mobile" ).css("display", 'block');
+                
+                $( ".candle_form_right" ).css("display", 'none');
+                $(".candle_form_left").css("width", '100%');
+                
+                
+                $('.candle_form_settings').css("display", 'block');
+                $('.candle_form_right').css("width", '15%');
+                $('.candle_form_left').css("width", '85%');
+                $('.candle_form_settings_data').css("display", 'none');
+                $('#candle_type_select_box').css("display", 'none');
+                $('#category_select_box').css("display", 'block');
+                
                 popupStatus = 0;  // and set value to 0
             }
         }
@@ -340,15 +449,15 @@
 
     .candle-btn a.button.icon-attach{
         padding-left: 30px;
-        background: url("Profiler/images/right/icon-attach.png") no-repeat 0 4px;
+        background: url("/Profiler/images/right/icon-attach.png") no-repeat 0 4px;
     }
     .candle-btn a.button.icon-upload{
         padding-left: 30px;
-        background: url("Profiler/images/right/icon-photo.png") no-repeat 0 5px;
+        background: url("/Profiler/images/right/icon-photo.png") no-repeat 0 5px;
     }
     .candle-btn a.button.icon-send{
         padding-left: 30px;
-        background: url("Profiler/images/right/icon-send.png") no-repeat 0 4px;
+        background: url("/Profiler/images/right/icon-send.png") no-repeat 0 4px;
     }
     .cd-input{width:100%;background: #E7EBEE;font-size:13px !important;}
     .cd-textarea{width:100%;background: #E7EBEE;font-size:13px !important;}
@@ -388,7 +497,7 @@
         background-position: 0 -20px;
     }
 
-    .css-label{ background-image:url("Profiler/images/right/checkbox.png"); width:auto !important;}
+    .css-label{ background-image:url("/Profiler/images/right/checkbox.png"); width:auto !important;}
 
 
 
@@ -398,7 +507,7 @@
         height:35px;
         border-radius: 2px;
         overflow: hidden;
-        background: #E7EBEE url("Profiler/images/right/downarrow.png") no-repeat 100% 50%;
+        background: #E7EBEE url("/Profiler/images/right/downarrow.png") no-repeat 100% 50%;
     }
 
     .select-style select {

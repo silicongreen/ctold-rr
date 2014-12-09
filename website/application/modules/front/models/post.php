@@ -165,7 +165,7 @@ class post extends CI_Model{
                                tds_post.sub_head,tds_post.pdf_top, tds_post.lead_material, tds_post.lead_caption, tds_post.is_breaking, tds_post.breaking_expire, tds_post.language, tds_post.lead_link,
                                tds_post.published_date, tds_post.view_count, postCategories.id, tds_post.user_view_count, tds_post.embedded, tds_post.layout_color, tds_post.is_exclusive, tds_post.exclusive_expired,
                                category.id, category.menu_icon, category.icon, category.name, byline.title, byline.image as author_image, tds_post.referance_id, tds_post.attach, tds_post.layout,
-                               tds_post.sort_title_type,tds_post.mobile_view_type, tds_post.inside_image, tds_post.post_layout, tds_post.video_file, tds_post.user_type'.$extra_select,false )
+                               tds_post.sort_title_type,tds_post.mobile_view_type, tds_post.inside_image, tds_post.post_layout, tds_post.video_file, tds_post.user_type,tds_post.school_id,tds_post.teacher_id, tds_post.can_comment,tds_post.show_comment_to_all,tds_post.user_id'.$extra_select,false )
                     ->from('post');
 
             if ( $target == "index" )

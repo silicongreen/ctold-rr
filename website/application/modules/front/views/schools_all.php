@@ -52,19 +52,38 @@
                             </p>
                         </div>
 
+                        <?php
+                        $ex_class = 'before-login-user';
+                        if (free_user_logged_in()) {
+                            if( !isset($user_school_status[$row['id']]) ) {
+                                $ex_class = 'btn_user_join_school';
+                            } else {
+                                if ( $user_school_status[$row['id']] == '1') {
+                                    $ex_class = 'btn_leave_school';
+                                }
+                                if ( $user_school_status[$row['id']] == '0') {
+                                    $ex_class = '';
+                                }   
+                            }
+                        }
+                        ?>
+
                         <div class="join-wrapper">
-                            
-                            <button id="<?php echo $row['id']; ?>" data="school_join" class="red <?php echo ( free_user_logged_in() ) ? (($user_school_status[$row['id']] != '1') && ($user_school_status[$row['id']] != '0') ) ? 'btn_user_join_school' : ($user_school_status[$row['id']] == '1') ? 'btn_leave_school' : '' : 'before-login-user'; ?>" type="button">
+
+                            <button id="<?php echo $row['id']; ?>" data="school_join" class="red <?php echo $ex_class; ?>" type="button">
+
                                 <span class="clearfix f2">
-                                    <?php if ( !free_user_logged_in() || !isset($user_school_ids) || empty($user_school_ids) || !in_array($row['id'], $user_school_ids)) { ?>
-                                        Join In
-                                    <?php } else if ( free_user_logged_in() && ($user_school_status[$row['id']] == '1') ) { ?>
-                                        Leave
-                                    <?php } else if ( free_user_logged_in() && ($user_school_status[$row['id']] == '2') ) { ?>
-                                        Join In
-                                    <?php } else if ( free_user_logged_in() && ($user_school_status[$row['id']] == '0') ) { ?>
-                                        Processing
-                                    <?php } ?>
+                                    
+                                    <?php
+                                        if(empty($ex_class)) {
+                                            echo 'Processing';
+                                        } else if ($ex_class == 'btn_leave_school') {
+                                            echo 'Leave';
+                                        } else {
+                                            echo 'Join In';
+                                        }
+                                    ?>
+                                    
                                 </span>
                             </button>
 

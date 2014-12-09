@@ -16,6 +16,8 @@ $(document).ready(function() {
     }
     if ( $('.mytable_gallery').html() != null )
     {
+        
+        
         oTable = $('.mytable_gallery').dataTable( {
             "bJQueryUI": true,
             "sScrollX": "",
@@ -161,12 +163,20 @@ $(document).ready(function() {
     } 	
     if ( $('#dt1 .mytable').html() != null )
     {
+        var extra = "";
+        if($("#school_id_feed").length>0)
+        {
+            if($("#school_id_feed").val()!=0)
+            {
+               extra =  $("#school_id_feed").val();
+            }    
+        } 
         oTable = $('#dt1 .mytable').dataTable( {
             "bJQueryUI": true,
             "sScrollX": "",
             "bProcessing": true,
             "bServerSide": true,
-            "sAjaxSource": $("#base_url").val()+"admin/"+$("#controllername").val()+"/datatable/",
+            "sAjaxSource": $("#base_url").val()+"admin/"+$("#controllername").val()+"/datatable/"+extra,
             "bSortClasses": false,
             "aaSorting": [[sortindex,sorttype]],
             "bAutoWidth": true,
@@ -206,6 +216,45 @@ $(document).ready(function() {
             "bProcessing": true,
             "bServerSide": true,
             "sAjaxSource": $("#base_url").val()+"admin/"+$("#controllername").val()+"/datatable_pdf/"+$("#category_id_pdf").val(),
+            "bSortClasses": false,
+            "aaSorting": [[sortindex,sorttype]],
+            "bAutoWidth": true,
+            "bInfo": true,
+            "bScrollCollapse": true,
+            "sPaginationType": "full_numbers",
+            "bRetrieve": true,
+            "fnInitComplete": function () {
+
+                $(".mytable_gallery .dataTables_length > label > select").uniform();
+                $(".mytable_gallery .dataTables_filter input[type=text]").addClass("text");
+                $(".mytable_gallery").css("visibility","visible");
+                this.fnAdjustColumnSizing(true);
+
+            },
+            'fnServerData': function(sSource, aoData, fnCallback)
+            {
+                $.ajax
+                ({
+                    'dataType': 'json',
+                    'type'    : 'POST',
+                    'url'     : sSource,
+                    'data'    : aoData,
+                    'success' : fnCallback
+                });
+            } 
+        });
+        
+    }
+    
+    if ( $('#dt1 .members_table').html() != null )
+    {
+         oTable = $('#dt1 .members_table').dataTable( {
+            "bJQueryUI": true,
+            "sScrollX": "",
+            "sScrollY": "300px",
+            "bProcessing": true,
+            "bServerSide": true,
+            "sAjaxSource": $("#base_url").val()+"admin/"+$("#controllername").val()+"/datatable_members/"+$("#school_id").val(),
             "bSortClasses": false,
             "aaSorting": [[sortindex,sorttype]],
             "bAutoWidth": true,
@@ -350,6 +399,12 @@ $(document).ready(function() {
         
         if($(this).html()=="Set home tommorow")
             $confirm_messege = "Do you really want to add this news to home page of tommorow?";
+          
+        if($(this).html()=="Approve")
+            $confirm_messege = "Do you really want to approve the member?";
+          
+        if($(this).html()=="Deny")
+            $confirm_messege = "Do you really want to deny the member?";
           
         if(confirm($confirm_messege))
         {

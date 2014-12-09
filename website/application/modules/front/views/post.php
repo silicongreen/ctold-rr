@@ -3,6 +3,7 @@
 <?php if ( ! $b_layout ) :?>
 <div class="noPrint" style="float: left;"><img src="<?php echo base_url('styles/layouts/tdsfront/images/printer1.png'); ?>" class="pinter_page noPrint" style="cursor: pointer;" onClick="print_page();" />
 <?php endif; ?>
+<?php  if($school_id==0): ?>
 <div class="sports-inner-news yesPrint" style="padding: 5px 25px 0 25px;">    
         <?php if ( $b_layout ) : ?>
         <div style="float:left;">
@@ -72,6 +73,8 @@
         <?php endif; ?>
 </div>
     
+<?php endif; ?>    
+    
 <?php if ( $b_layout ) : ?>
 
 <?php endif; ?>    
@@ -115,11 +118,22 @@
         <?php endif; ?>
         <?php endif; ?>
         
-        <div class="col-md-9">
+        
+        
+        <div <?php  if($school_id!=0): ?> class="col-md-12" <?php else: ?> class="col-md-9" <?php endif; ?>>
             
             <?php if ( $post_type == 1 || $post_type == 3) : ?>    
             <h1 id="headline" class="f2" style="font-size: 30px;">
+                <?php  if($school_id!=0): ?>
+                        <?php $school_obj = new Schools($school_id); ?>
+                        <span>
+                                <?php echo $school_obj->name; ?>
+                         </span>
+                <?php else: ?> 
+                
                 <span><?php echo $name; ?></span>
+                <?php endif; ?>
+                
                 <?php echo $headline; ?>
                 <?php if (isset($is_breaking) && $is_breaking && (!isset($breaking_expire) || ($breaking_expire == null) || ($breaking_expire > date("Y-m-d H:i:s")))): ?><sup style="color: #f00; font-size: 10px; padding-left:5px;">Breaking</sup><?php endif; ?>
             </h1>
@@ -131,12 +145,14 @@
             
             <?php if (strlen($title) > 0) : ?>
                 <?php $datediff = get_post_time($published_date); ?>
-                <div class="by_line" >By <i class="f4"><?php echo $title; ?></i> <span class="f5"><?php echo $datediff; ?> ago</span></div>
+                <div class="by_line" ><?php if($user_type == 2): ?>Candled&nbsp;<?php endif;?>By <i class="f4"><?php echo $title; ?></i> <span class="f5"><?php echo $datediff; ?> ago</span></div>
                 <div style="clear: both;"></div>
             <?php endif; ?>
 
         </div>
         
+        
+        <?php  if($school_id==0): ?>
         <div class="col-md-3 social-bar">
             <div class="col-lg-3 language_box">
                 
@@ -202,6 +218,9 @@
             <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-52bca22436b47685"></script>
             
         </div>
+        <?php endif; ?>
+        
+        
         
         <div class="clearfix"></div>
         
@@ -509,7 +528,7 @@
     <hr  /> 
     
     <!--Next and Previous Button-->
-    
+    <?php  if($school_id==0): ?>
     <div class="next-previous col-lg-2">
         <?php if ( $has_more ) : ?>
         
@@ -528,6 +547,7 @@
         <?php endif; ?> 
        
     </div>
+    <?php endif; ?>
     
     
     <!--Next and Previous Button-->
@@ -544,7 +564,7 @@
     </div>
 <?php endif; ?>
 <?php if ( $post_type == 1 || $post_type == 3) : ?>
-<?php if ( $has_related && $b_layout ) : ?>
+<?php if ( $has_related && $b_layout && $school_id==0) : ?>
 <div class="inner-container_related" style="margin: 20px; width: 96%;">
     <div class="related_news_headline f2">
         Related Post

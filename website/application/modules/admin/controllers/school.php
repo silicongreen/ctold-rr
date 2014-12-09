@@ -49,6 +49,9 @@ class school extends MX_Controller
         }
         $this->datatables->set_buttons("edit");
         $this->datatables->set_buttons("delete");
+        $this->datatables->set_buttons("feeds", false,true);
+        $this->datatables->set_buttons("add_feed", false,true);
+        $this->datatables->set_buttons("members");
         $this->datatables->set_controller_name("school");
         $this->datatables->set_primary_key("id");
 
@@ -57,6 +60,15 @@ class school extends MX_Controller
                 ->from('school');
 
         echo $this->datatables->generate();
+    }
+    function feeds($id)
+    {
+        redirect("admin/news/index/".$id);
+    }
+    
+    function add_feed($id)
+    {
+        redirect("admin/news/add/".$id);
     }
 
     /**
@@ -172,9 +184,105 @@ class school extends MX_Controller
             
         }
     }
-
     
+    public function members($school_id)
+    {
+        //set table id in table open tag
+        $tmpl = array('table_open' => '<table id="big_table" border="1" cellpadding="2" cellspacing="1" class="members_table">');
+        $this->table->set_template($tmpl);
 
+        $this->table->set_heading('Full Name', 'Photo', 'Type', 'Class', 'Status', 'Action');
+        
+        $this->load->config('user_register');
+        
+        $ar_member_type = array(NULL => 'Select');
+        $ar_config_member_type = $this->config->config['join_user_types'];
+        
+        $data['school_id'] = $school_id;
+        $data['member_type'] = array_merge($ar_member_type, $ar_config_member_type);
+        $data['member_status'] = array( NULL => 'Select', '0' => 'Pending', '1' => 'Approved', '2' => 'Denied');
+        
+        $this->render('admin/school/members', $data);
+    }
+    
+    public function datatable_members($school_id)
+    {
+        if (!$this->input->is_ajax_request())
+        {
+            exit('No direct script access allowed');
+        }
+        
+        $this->load->config('user_register');
+        
+        $this->datatables->set_buttons("approve", 'ajax');
+        $this->datatables->set_buttons("deny", 'ajax');
+        
+        $this->datatables->set_controller_name("school");
+        $this->datatables->set_primary_key("primary_id");
+        $this->datatables->set_image_field_position(2);
+        
+        $this->datatables->set_custom_string(3, $this->config->config['join_user_types']);
+        $this->datatables->set_custom_string(5, array(0 => 'Pending', 1 => 'Approved', 2 => 'Denied'));
+
+        $this->datatables->select('user_school.id as primary_id, CONCAT_WS(" ", free_users.first_name, free_users.middle_name, free_users.last_name) AS full_name, free_users.profile_image, user_school.type, user_school.grade, user_school.is_approved', FALSE)
+                ->unset_column('primary_id')
+                ->from('user_school')
+                ->join('free_users', 'free_users.id = user_school.user_id', 'INNER')
+                ->where('user_school.school_id', $school_id);
+         
+        echo $this->datatables->generate();
+    }
+    
+    public function approve(){
+        
+        if (!$this->input->is_ajax_request())
+        {
+            exit('No direct script access allowed');
+        }
+        
+        $id = $this->input->post('primary_id');
+        
+        $user_school = new User_school($id);
+        $user_school->approved_date = date('Y-m-d');
+        $user_school->approved_by = 'admin';
+        $user_school->is_approved = '1';
+        
+        if (!$user_school->save() || !$_POST)
+        {
+            $this->render('admin/school/members');
+        }
+        else
+        {
+            echo "<script>parent.oTable.fnClearTable(true); parent.$.fancybox.close();</script>";
+        }
+    }
+    
+    public function deny($id){
+        
+        if (!$this->input->is_ajax_request())
+        {
+            exit('No direct script access allowed');
+        }
+        
+        $id = $this->input->post('primary_id');
+        
+        $user_school = new User_school($id);
+        
+        /*$user_school->deny_date = date('Y-m-d');
+        $user_school->deny_by = 'admin';
+        $user_school->is_approved = '2';
+        */
+        
+        if (!$user_school->delete() || !$_POST)
+        {
+            $this->render('admin/school/members');
+        }
+        else
+        {
+            echo "<script>parent.oTable.fnClearTable(true); parent.$.fancybox.close();</script>";
+        }
+    }
+    
 }
 
 ?>

@@ -53,14 +53,20 @@
                         </div>
 
                         <div class="join-wrapper">
-
-                            <?php if (!isset($user_school_ids) || empty($user_school_ids) || !in_array($row['id'], $user_school_ids)) { ?>
-                                <button id="<?php echo $row['id']; ?>" data="school_join" class="red <?php echo (free_user_logged_in()) ? 'btn_user_join_school' : 'before-login-user'; ?>" type="button">
-                                    <span class="clearfix f2">
+                            
+                            <button id="<?php echo $row['id']; ?>" data="school_join" class="red <?php echo ( free_user_logged_in() ) ? (($user_school_status[$row['id']] != '1') && ($user_school_status[$row['id']] != '0') ) ? 'btn_user_join_school' : ($user_school_status[$row['id']] == '1') ? 'btn_leave_school' : '' : 'before-login-user'; ?>" type="button">
+                                <span class="clearfix f2">
+                                    <?php if ( !free_user_logged_in() || !isset($user_school_ids) || empty($user_school_ids) || !in_array($row['id'], $user_school_ids)) { ?>
                                         Join In
-                                    </span>
-                                </button>
-                            <?php } ?>
+                                    <?php } else if ( free_user_logged_in() && ($user_school_status[$row['id']] == '1') ) { ?>
+                                        Leave
+                                    <?php } else if ( free_user_logged_in() && ($user_school_status[$row['id']] == '2') ) { ?>
+                                        Join In
+                                    <?php } else if ( free_user_logged_in() && ($user_school_status[$row['id']] == '0') ) { ?>
+                                        Processing
+                                    <?php } ?>
+                                </span>
+                            </button>
 
                         </div>
 
@@ -302,8 +308,6 @@
     .large{
         width: 100%;
     }
-
-
 
     .srch_page_title
     {

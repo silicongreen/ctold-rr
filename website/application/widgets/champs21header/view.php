@@ -729,7 +729,7 @@ height: 46px;
 
                 <div class="before-login-user-body">
 
-                    <p class="custom_message"></p>
+                    <div class="custom_message"></div>
                     <p class="common_message">This feature is only for registered users. Please register with us and get many more interesting features.</p>
 
                     <div class="login-user-btn-wrapper">

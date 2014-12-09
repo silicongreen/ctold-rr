@@ -671,17 +671,17 @@ $(document).ready(function(){
             'good_read' : {
                 'icon' : 'good_read_red_icon.png',
                 'header_label' : 'Good Read',
-                'custom_message' : 'Save/collect articles that you like using "Good Read" feature.'
+                'custom_message' : '<p>Save/collect articles that you like using "Good Read" feature.</p>'
             },
             'candle' : {
                 'icon' : 'candle_red_icon.png',
                 'header_label' : 'Candle',
-                'custom_message' : 'This is where you make your voice heard. Candle lets user to publish their articles and give feedback.'
+                'custom_message' : '<p>This is where you make your voice heard. Candle lets user to publish their articles and give feedback.</p>'
             },
             'read_later' : {
                 'icon' : 'read_later_red_icon.png',
                 'header_label' : 'Read Later',
-                'custom_message' : 'We know how busy you are. Use "Read Later" to save interesting articles to read them later at a more convenient time.'
+                'custom_message' : '<p>We know how busy you are. Use "Read Later" to save interesting articles to read them later at a more convenient time.</p>'
             },
             'magic_mart' : {
                 'icon' : 'magic_mart_red.png',
@@ -689,9 +689,9 @@ $(document).ready(function(){
                 'custom_message' : 'Coming Soon.'
             },
             'school_join' : {
-                'icon' : 'magicmart_red.png',
+                'icon' : 'school_red.png',
                 'header_label' : 'Join To School',
-                'custom_message' : "This is where you'll see your schools specific feeds."
+                'custom_message' : "<p>Join your school's page today and stay connected!</p><p>Get updates on recent on goings and feeds from your school teachers.</p>"
             }
         };
         
@@ -708,8 +708,8 @@ $(document).ready(function(){
         $('.before-login-user-icon-wrapper').html('');
         $('.before-login-user-icon-wrapper').html('<img src="/styles/layouts/tdsfront/image/' + pop_up_data[key].icon + '" width="75" />');
         
-        $('.custom_message').text('');
-        $('.custom_message').text(pop_up_data[key].custom_message);
+        $('.custom_message').html('');
+        $('.custom_message').html(pop_up_data[key].custom_message);
         
         var html_before_login_popup = $('#before-login-user-fancy').html();
 
@@ -821,6 +821,7 @@ $(document).ready(function(){
         event.preventDefault();
         
         var formData = new FormData($(this)[0]);
+        var school_id = $('#school_id').val();
         
         $.ajax({
             url: $('#base_url').val() + 'join_to_school',
@@ -835,7 +836,70 @@ $(document).ready(function(){
                 
                 if ( data.saved == true ){
                     
-                    $('button#' + $('#school_id').val()).remove();
+                    if(data.is_approved == 1) {
+                        $('button#' + school_id + ' span').text('Leave');
+                        $('button#' + school_id).removeClass('btn_user_join_school');
+                        $('button#' + school_id).addClass('btn_leave_school');
+                    } else {
+                        $('button#' + school_id + ' span').text('Processing');
+                    }
+                    
+                    $('.fancybox-close').trigger('click');
+                    
+                } else {
+                    
+                    var err_html = '<ul class="err-list">';
+                    
+                    $.each(data.errors, function(i, v) {
+                        err_html += '<li>' + v + '</li>';
+                        $( "form#school_join_frm #" + i ).css( "border", "1px solid #DE3427" );
+                    });
+                    err_html += '</ul>';
+                    
+                    $('.err-list-wrap').html('');
+                    $('.err-list-wrap').html(err_html);
+                    
+                    $('.fancybox-wrap').css({
+                        "opacity": 0.20,
+                        "background-color": "#000000"
+                    });
+                    
+                    $('#alert-errors').show();
+                    $('#alert-errors').css({'opacity': 1, 'z-index': 8031});
+                    
+                    return false;
+                }
+                
+            },
+            error: function(e) {
+                
+            }
+        });
+        
+        return false;
+        
+    });
+    
+    $(document).on('click', '.btn_leave_school', function(event) {
+        
+        var school_id = $(this).attr('id');
+        
+        $.ajax({
+            
+            url     : $('#base_url').val() + 'leave_school',
+            type    : 'post',
+            data    : {school_id: school_id},
+            dataType: 'json',
+            success : function(data) {
+                
+                if ( data.saved == true ){
+                    
+                    if(data.left == true) {
+                        $('button#' + school_id + ' span').text('Join In');
+                        $('button#' + school_id).removeClass('btn_leave_school');
+                        $('button#' + school_id).addClass('btn_user_join_school');
+                    }
+                    
                     $('.fancybox-close').trigger('click');
                     
                 } else {
@@ -1660,7 +1724,7 @@ function processAndSaveGoogleInfo(resp){
         gender          : resp.gender,
         profile_url     : resp.url,
         profile_image   : image_url,
-        source          : 'g',
+        source          : 'g'
     };
     
     if(g_call_counter < 1){
@@ -1690,7 +1754,7 @@ function processAndSaveGoogleInfo(resp){
                     
                     $('.fancybox-wrap').css({
                         "opacity": 0.20,
-                        "background-color": "#000000",
+                        "background-color": "#000000"
                     });
                     
                     $('#alert-errors').show();
@@ -1743,7 +1807,7 @@ function processGoogleLogin(resp){
     var data = {
         id              : resp.id,
         email           : primaryEmail,
-        source          : 'g',
+        source          : 'g'
     };
     
     if(g_call_counter < 1){
@@ -1777,7 +1841,7 @@ function processGoogleLogin(resp){
 
                         $('.fancybox-wrap').css({
                             "opacity": 0.20,
-                            "background-color": "#000000",
+                            "background-color": "#000000"
                         });
 
                         $('#alert-errors').show();
@@ -1824,7 +1888,7 @@ function processAndSaveFbInfo(resp, profileImage){
         country         : country,
         location        : str_location,
         profile_image   : profileImage.data.url,
-        source          : 'f',
+        source          : 'f'
     };
     
     if(f_call_counter < 1){
@@ -1853,7 +1917,7 @@ function processAndSaveFbInfo(resp, profileImage){
                     
                     $('.fancybox-wrap').css({
                         "opacity": 0.20,
-                        "background-color": "#000000",
+                        "background-color": "#000000"
                     });
                     
                     $('#alert-errors').show();
@@ -1875,7 +1939,7 @@ function processAndLoginFb(resp, profileImage){
     var data = {
         id              : resp.id,
         email           : resp.email,
-        source          : 'f',
+        source          : 'f'
     };
     
     if(f_call_counter < 1){

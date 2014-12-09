@@ -16,6 +16,9 @@
         <input type="hidden" id="modelheight2" value="55%" >
         
         
+        <input type="hidden" id="school_id_feed" value="<?php echo $school_id ?>" >
+        
+        
 
         <input type="hidden" id="sorttype" value="desc" >
 
@@ -23,7 +26,7 @@
 
 
             <div class="flat_area grid_16">
-                <h2>Manage News</h2>
+                <h2><?php if(isset($school_name)): ?><?php echo $school_name; ?> Feeds <?php else :?> Manage News <?php endif; ?></h2>
 
             </div>
              <?php echo form_open('',array('class' => 'validate_form'));?>
@@ -45,7 +48,7 @@
                 
                 $filter_array[6] = array("Language", "form_dropdown",$language);
                 
-                $status = array(NULL=>"Select",1=>"Admin",2=>"Web User");
+                $status = array(1=>"Admin",2=>"Web User");
                 $filter_array[7] = array("User Type", "form_dropdown", $status);
                 
                 

@@ -632,7 +632,7 @@
         <?php if(!free_user_logged_in()): ?>
             $(".check_login").addClass("before-login-user");
             $(".check_login").attr("href","#");
-//            $(".check_login").attr("data","good_read");
+            $(".check_login").removeClass("candlepopup");
         <?php endif;  ?> 
     })
     

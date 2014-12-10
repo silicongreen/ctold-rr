@@ -1307,9 +1307,11 @@ class FreeuserController extends Controller
             Yii::app()->cache->set($cache_name, $response, 86400);
             
         }
+        if($page_number)
         
         if(isset($response['data']['post']) && count($response['data']['post'])>0)
         {
+           
            
             $post_data = array();
             $i = 0;

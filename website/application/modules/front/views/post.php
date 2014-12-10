@@ -164,7 +164,7 @@
                     </a>
                 </div>
                 
-                <?php if (!empty($other_language)) : ?>
+                <?php if (!empty($other_language) && $s_lang) : ?>
                     <?php
                     $ar_lang = explode(",", $s_lang);
                     foreach ($ar_lang as $lang) {

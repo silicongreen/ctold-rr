@@ -924,7 +924,7 @@ class Post_model extends DataMapper
             $this->db->where("( tds_post.all_country = 1 OR pc.country_id = " . $country_id . ")", '', FALSE);
             
             $this->db->where("tds_post.referance_id", $i_post_id, false);
-            $this->db->where("tds_post.status",1);
+            $this->db->where("tds_post.status",5);
             
             $query = $this->db->get(); 
             if ( $query->num_rows() > 0 )

@@ -103,6 +103,16 @@
                             ?>
                         </div>
                     </fieldset>
+                        
+                    <fieldset class="label_side top">
+                        <label for="required_field">Force Web View(Mobile)<span>Show web view on mobile. it's not depend on any type</span></label>
+                        <div class="clearfix">
+                            <?php
+                                $f_array = array(0 => "No", 1 => "Yes");
+                                echo form_dropdown('force_web_view_mobie', $f_array);
+                            ?>
+                        </div>
+                    </fieldset>
 
                     <fieldset class="label_side top">
                         <label for="required_field">Title</label>

@@ -1,7 +1,11 @@
 /* Button panel */
 /* Button panel */
 /* Button panel */
-
+.social_box
+{
+    min-height:99px;
+}
+ 
 .tags{
     padding:12px 12px;
     -webkit-border-top-left-radius:6px;
@@ -215,6 +219,7 @@
     {
         float:left;
         width:60%;
+       
         display:inline-block;        
         border-right:0px !important;
         border-left:0px !important;

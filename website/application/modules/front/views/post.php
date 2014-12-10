@@ -201,10 +201,10 @@
                 </div>
 <!--                <div class="col-md-12" style="clear:both;">
                     <a class="addthis_button_facebook_like" fb:like:layout="button_count" fb:like:href="<?php echo create_link_url(NULL, $headline,$post_id,false,true,false); ?>"></a>
-                </div>
+                </div>-->
                 <div class="col-md-12">
                     <a class="addthis_button_facebook_share" fb:share:layout="horizontal"  addthis:title="<?php echo $headline; ?>" addthis:url="<?php echo create_link_url(NULL, $headline,$post_id); ?>" addthis:description="<?php echo $fb_desc; ?>"></a>
-                </div>-->
+                </div>
             </div>
             <div class="col-lg-3 good-read-column">
                 <div class="good-read-button normal <?php echo ( free_user_logged_in() ) ? "" : "login-user"; ?>">

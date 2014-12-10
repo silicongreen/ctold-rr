@@ -1,6 +1,7 @@
  var sent_request = false;
  var current_page = 0;
  var msnroy;
+ var pageSizeDefault = 9;
 function setCookie() {
     var exdays = 1;
     var d = new Date();
@@ -168,7 +169,7 @@ function format_date(obj_date, yesterday) {
         }
     });
     
-    var pageSizeDefault = 9;
+    
     
     $( window ).scroll(function() {
         var screen_height = $(document).innerHeight() - 400;

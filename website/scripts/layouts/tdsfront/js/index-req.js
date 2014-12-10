@@ -1,6 +1,7 @@
  var sent_request = false;
  var current_page = 0;
  var msnroy;
+ var pageSizeDefault = 9;
 function setCookie() {
     var exdays = 1;
     var d = new Date();
@@ -168,6 +169,8 @@ function format_date(obj_date, yesterday) {
         }
     });
     
+    
+    
     $( window ).scroll(function() {
         var screen_height = $(document).innerHeight() - 400;
         
@@ -225,7 +228,7 @@ function format_date(obj_date, yesterday) {
                     success: function(data) {
 			runScrool = true;			
 			callcount += 1;
-                        page_size += page_size;
+                        page_size += pageSizeDefault;
                         $("#page-size").val(page_size);
                         if ( page_size >= total_post )
                         {

@@ -266,8 +266,7 @@
             <?php endif; ?>
             <div id="content" class="content-post">
                 <?php 
-                $content = str_replace("[[[", "<?", $content);
-                $content = str_replace("]]]", "?>", $content);
+                
                 $already_showed = false;
                 if(strpos($content,"bd.thedailystar.")!==false)
                 {
@@ -629,6 +628,13 @@
             window.print();
             return false;
     }
+    $(document).ready(function(){
+        <?php if(!free_user_logged_in()): ?>
+            $(".check_login").addClass("before-login-user");
+            $(".check_login").attr("href","#");
+//            $(".check_login").attr("data","good_read");
+        <?php endif;  ?> 
+    })
     
     //addthis_toolbox
     

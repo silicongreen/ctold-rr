@@ -354,6 +354,27 @@ class Settings {
             if ($postValue->video_file)
                 $post_array['video_file'] = Settings::$image_path . $postValue->video_file;
             
+            
+            
+            
+            $post_array['school_id'] = $postValue->school_id;
+            
+            $post_array['teacher_id'] = $postValue->teacher_id;
+            
+            $post_array['candle_type'] = $postValue->candle_type;
+            
+            $post_array['subject'] = $postValue->subject;
+
+            $post_array['show_comment_to_all'] = $postValue->show_comment_to_all;
+            
+            $post_array['user_id'] = $postValue->user_id;
+            
+            $post_array['force_web_view_mobie'] = $postValue->force_web_view_mobie;
+            
+            
+            
+            
+            
             $post_array['seen'] = $postValue->view_count;
             
             $post_array['title_color'] = $postValue->headline_color;

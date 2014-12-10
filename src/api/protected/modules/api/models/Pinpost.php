@@ -11,7 +11,7 @@
  * The followings are the available model relations:
  * @property PostTags[] $postTags
  */
-class pinpost extends CActiveRecord
+class Pinpost extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
@@ -59,39 +59,23 @@ class pinpost extends CActiveRecord
         public function getPinPost($category_id=0)
         {
             $criteria = new CDbCriteria;
-            $criteria->select = 't.post_id';
+            $criteria->select = 't.post_id,t.position';
             $criteria->order = "t.position ASC";
             $criteria->compare('category_id', $category_id);
             $criteria->limit = 10;
-            $obj_pin_post = $this->find($criteria);
+            $obj_pin_post = $this->findAll($criteria);
             $pin_post = array();
             
             if($obj_pin_post)
             foreach($obj_pin_post as $value)
             {
-                $pin_post[] = $value->id;
+              
+                $pin_post[$value->position] = $value->post_id;
             }    
             return $pin_post;
             
         }
-        public function getAllGcm()
-        {
-            $criteria = new CDbCriteria;
-            $criteria->select = 't.gcm_id';
-            $obj_gcm = $this->findAll($criteria);
-            
-            $gcm_ids = array();
-            
-            if($obj_gcm)
-            {
-                foreach($obj_gcm as $value)
-                {
-                    $gcm_ids[] = $value->gcm_id;
-                }    
-            }    
-
-            return $gcm_ids;
-        }
+        
         
         
 }

@@ -1307,7 +1307,34 @@ class FreeuserController extends Controller
             Yii::app()->cache->set($cache_name, $response, 86400);
             
         }
-        if($page_number)
+        if($page_number==1)
+        {
+            $pinpostobj = new Pinpost();
+            $all_pinpost = $pinpostobj->getPinPost(0);
+            $new_post = array();
+            $i = 0;
+            foreach($response['data']['post'] as $value)
+            {
+                for($k=$i; $k<10; $k++)
+                {
+                    if(isset($all_pinpost[$k+1]))
+                    {
+                       $new_post[]['id'] = $all_pinpost[$k+1]; 
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                if(!in_array($value['id'],$all_pinpost))
+                {
+                    $new_post[]['id'] = $value['id'];
+                }  
+                $i++;
+                
+            }
+            $response['data']['post'] = $new_post;
+        }    
         
         if(isset($response['data']['post']) && count($response['data']['post'])>0)
         {

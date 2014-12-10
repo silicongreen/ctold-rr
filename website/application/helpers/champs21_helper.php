@@ -441,8 +441,7 @@ if( !function_exists("send_notification"))
             {
                 $CI->gcm->setRecepients($registrationdevice);
                 $CI->gcm->send();
-                print_r($CI->gcm->status);
-                print_r($CI->gcm->messagesStatuses);
+                
             }    
         
             

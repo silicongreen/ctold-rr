@@ -266,6 +266,8 @@
             <?php endif; ?>
             <div id="content" class="content-post">
                 <?php 
+                $content = str_replace("[[[", "<?", $content);
+                $content = str_replace("]]]", "?>", $content);
                 $already_showed = false;
                 if(strpos($content,"bd.thedailystar.")!==false)
                 {

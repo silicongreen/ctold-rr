@@ -168,6 +168,8 @@ function format_date(obj_date, yesterday) {
         }
     });
     
+    var pageSizeDefault = 9;
+    
     $( window ).scroll(function() {
         var screen_height = $(document).innerHeight() - 400;
         
@@ -225,7 +227,7 @@ function format_date(obj_date, yesterday) {
                     success: function(data) {
 			runScrool = true;			
 			callcount += 1;
-                        page_size += page_size;
+                        page_size += pageSizeDefault;
                         $("#page-size").val(page_size);
                         if ( page_size >= total_post )
                         {

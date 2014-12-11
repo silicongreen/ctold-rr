@@ -10,6 +10,7 @@ class Settings {
     public static $inner_post_to_show = 15;
     public static $api_llicence_key = "fa@#25896321";
     public static $count_update_by = 3;
+    public static $school_category_id = 58;
     public static $school_join_approved = array(
         1 => false,
         2 => false,
@@ -356,6 +357,7 @@ class Settings {
             
             
             
+            $post_array['wow_count'] = $postValue->wow_count;
             
             $post_array['school_id'] = $postValue->school_id;
             

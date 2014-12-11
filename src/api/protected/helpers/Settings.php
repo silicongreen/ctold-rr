@@ -6,7 +6,7 @@ class Settings {
     public static $image_path = 'http://www.champs21.com/';
     public static $url_array  = array("http://www.champs21.com/","http://champs21.com/","http://stage.champs21.com");
     public static $real_path = '/home/champs21/public_html/website/';
-    public static $main_path = "../website/";
+    public static $main_path = "../../website/";
     public static $inner_post_to_show = 15;
     public static $api_llicence_key = "fa@#25896321";
     public static $count_update_by = 3;

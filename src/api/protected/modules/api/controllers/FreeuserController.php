@@ -56,8 +56,8 @@ class FreeuserController extends Controller
                 
                 $postModel = new Post();
                 $postobj = $postModel->findByPk($post_id);
-                $objPost->wow_count = $objPost->wow_count+1;
-                $objPost->save();
+                $postobj->wow_count = $postobj->wow_count+1;
+                $postobj->save();
                 
                 $response['data']['wow_count'] = $objPost->wow_count;
                 $response['status']['code'] = 200;

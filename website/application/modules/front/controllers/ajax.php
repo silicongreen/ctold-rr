@@ -782,6 +782,94 @@ class ajax extends MX_Controller
 
         $this->load->view("post_datas", $data);
     }
+    
+    public function addWow()
+    {
+        if (free_user_logged_in())
+        {
+           
+            $user_id = get_free_user_session("id");
+            $post_id = $this->input->post("post_id");
+            
+            if($post_id && $user_id)
+            {
+                $url = get_curl_url("addwow");
+                $fields = array(
+                    'user_id' => $user_id,
+                    'post_id' => $post_id
+                );
+                
+                $fields_string = "";
+
+                foreach($fields as $key=>$value) { 
+                    $fields_string .= $key.'='.$value.'&'; 
+
+                }
+
+                rtrim($fields_string, '&');
+                $ch = curl_init();
+
+                //set the url, number of POST vars, POST data
+                curl_setopt($ch,CURLOPT_URL, $url);
+
+                curl_setopt($ch,CURLOPT_POST, count($fields));
+                curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+                curl_setopt($ch,CURLOPT_RETURNTRANSFER, 1);
+
+                curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
+                    'Accept: application/json',
+                    'Content-Length: ' . strlen($fields_string)
+                    )                                                                       
+                );    
+               
+                $result = curl_exec($ch);
+
+                curl_close($ch);
+
+                $a_data = json_decode($result);
+               
+                if(isset($a_data->data->wow_count))
+                {
+                    $count = $a_data->data->wow_count;
+                    if($count<1000)
+                    {
+                        $count_string = $count;
+                    }    
+                    else if($count>=1000 && $count<1000000)
+                    {
+                       $new_count = round($count/1000);
+                       $count_string = $new_count."k";
+                      
+
+                    } 
+                    else if($count>=100000)
+                    {
+                       $new_count = round($count/100000);
+                       $count_string = $new_count."M";
+                      
+                    }  
+                   echo "wow (".$count_string.")"; 
+                }
+                else
+                {
+                    echo "0";
+                }
+                
+                
+        
+            }
+            else
+            {
+                echo "0";
+            }    
+
+           
+        }
+        else
+        {
+            echo "0";
+        }
+    }
 
     public function addPostToGoodRead()
     {

@@ -474,6 +474,11 @@ class Settings {
                 }
             }
             
+            if( empty($post_array['images']) ) {
+                if( !empty($post_array['lead_material']) ) {
+                    $post_array['images'][] = Settings::get_mobile_image(Settings::$image_path . $post_array['lead_material']);
+                }
+            }
             
             //need to change 2
             if (isset($postValue->mobile_content) && strlen(Settings::substr_with_unicode($postValue->mobile_content, true)) > 0)

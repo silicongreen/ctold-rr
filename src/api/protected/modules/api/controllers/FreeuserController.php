@@ -376,9 +376,9 @@ class FreeuserController extends Controller
                 for($i = 1; $i<=Settings::$allclass; $i++)
                 {
                     $objpostclass = new PostClass();
-                    $objposttype->post_id = $postobj->id;
-                    $objposttype->class_id = $i;
-                    $objposttype->save();
+                    $objpostclass->post_id = $postobj->id;
+                    $objpostclass->class_id = $i;
+                    $objpostclass->save();
                 }
 
 
@@ -470,9 +470,9 @@ class FreeuserController extends Controller
             for($i = 1; $i<=Settings::$allclass; $i++)
             {
                 $objpostclass = new PostClass();
-                $objposttype->post_id = $postobj->id;
-                $objposttype->class_id = $i;
-                $objposttype->save();
+                $objpostclass->post_id = $postobj->id;
+                $objpostclass->class_id = $i;
+                $objpostclass->save();
             }
 
             if (Yii::app()->request->getPost('type'))

@@ -59,10 +59,10 @@ class FreeuserController extends Controller
                 $postobj->wow_count = $postobj->wow_count+1;
                 $postobj->save();
                 
+                $cache_name = "YII-SINGLE-POST-CACHE-".$post_id;
                 $cache_data = Yii::app()->cache->get($cache_name);
                 if ($cache_data !== false)
-                { 
-                    $cache_name = "YII-SINGLE-POST-CACHE-".$post_id;
+                {  
                     $cache_data['wow_count'] = $cache_data['wow_count']+1;
                     $singlepost = $cache_data;
                     Yii::app()->cache->set($cache_name, $singlepost, 5184000);

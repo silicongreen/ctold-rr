@@ -2,24 +2,32 @@ body {
     font-family:Arial;
     margin:0;
     padding:0px;
+	background: url("http://www.champs21.com/styles/layouts/tdsfront/images/BG.png") no-repeat;
+	background-position:0px 80px;
+	background-size:100%;
 }
 .extender {
     height:1px;
     clear:both;
 }
 #header_bg {
-    height : 40px;
+    height : 100px;
     /*    position: fixed;*/
     /*    top: 0;*/
     width: 100%;
     z-index: 10;
     position:fixed;
-    /*    background : #9c0000 url(../../images/application/bg_pattern.png) repeat;*/
+    background: url("http://www.champs21.com/styles/layouts/tdsfront/images/doodle-f.png") no-repeat;
+	background-size:100%;
+    border-bottom: 2px solid #ccc;
 }
+
 .header_content {
     width : 980px;
     margin:0 auto;
     overflow:hidden;
+	background: url("http://www.champs21.com/styles/layouts/tdsfront/images/logo-new.png") no-repeat;	
+	background-position:10px;
 }
 
 #upper-menu-div {
@@ -528,12 +536,10 @@ body {
 }
 
 #header_bottom {
-    background-color:#9c0000;
+    /*background: url("http://champs21.dev/styles/layouts/tdsfront/images/logo-new.png") no-repeat scroll 10px center / 10% auto #9c0000;*/
     height:35px;
-    border-top: 1px solid #df2020;
+    /*border-top: 1px solid #df2020;*/
 }
-
-
 #header a {
     text-decoration:none;
     color:#fff;
@@ -1524,7 +1530,7 @@ tr.tr-blank{
 }
 #outer-autosuggest-menu{
     float: right;
-    margin-top: 4px;
+    margin-top: 30px;
     width: 290px;
 }
 #outer-autosuggest-menu a{
@@ -1537,10 +1543,11 @@ tr.tr-blank{
     height: 20px;
 }
 #institution-name{
-    margin: 0px 0 0;
+    margin-top:30px;
     float: left;
     color: #ffffff;
     font-size: 13px;
+	font-weight:bold;
     border-radius:3px;
     -moz-border-radius:3px;
     -webkit-border-radius:3px;
@@ -1642,9 +1649,11 @@ tr.tr-blank{
     background-color:#232323;
 }
 .top-left-links {
-    width:auto;
-    overflow:hidden;
-    float:left;
+  float: left;
+  margin-left: 300px;
+  margin-top: 30px;
+  overflow: hidden;
+  width: auto;
 }
 .top-left-links a{
     display:block;
@@ -1723,7 +1732,7 @@ tr.tr-blank{
     width:auto;
     float:right;
     margin-left:10px;
-    margin-top:4px;
+    margin-top:30px;
 }
 .top-right-link {
     width:auto;

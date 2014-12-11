@@ -27,7 +27,7 @@ class FreeuserController extends Controller
                     , "gettagpost", "getbylinepost", "getmenu",
                     "getuserinfo", "goodread", "readlater", "goodreadall", "goodreadfolder", "removegoodread"
                     , "schoolsearch", "school", "createschool", "schoolpage", "schoolactivity", "candle"
-                    , "garbagecollector","getschoolteacherbylinepost","createcachesinglenews", 
+                    , "garbagecollector","getschoolteacherbylinepost","createcachesinglenews","addwow", 
                     'set_preference', 'get_preference','addgcm','getallgcm','getschoolinfo','joinschool','candleschool','leaveschool'),
                 'users' => array('*'),
             ),
@@ -36,6 +36,46 @@ class FreeuserController extends Controller
             ),
         );
     }
+    public function actionAddWow()
+    {
+        $post_id = Yii::app()->request->getPost('post_id');
+        $user_id = Yii::app()->request->getPost('user_id');
+        if (!$post_id || !$user_id )
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        else
+        {
+            $objwow = new Wow();
+            if(!$objwow->wowexists($post_id, $user_id))
+            {
+                $objwow->post_id = $post_id;
+                $objwow->user_id = $user_id;
+                $objwow->save();
+                
+                $postModel = new Post();
+                $postobj = $postModel->findByPk($post_id);
+                $objPost->wow_count = $objPost->wow_count+1;
+                $objPost->save();
+                
+                $response['data']['wow_count'] = $objPost->wow_count;
+                $response['status']['code'] = 200;
+                $response['status']['msg'] = "success";
+                
+            } 
+            else
+            {
+                $postModel = new Post();
+                $postobj = $postModel->findByPk($post_id);
+                $response['data']['wow_count'] = $objPost->wow_count;
+                $response['status']['code'] = 200;
+                $response['status']['msg'] = "success";
+            }    
+        } 
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    }        
     public function actionLeaveSchool()
     {
         $school_id = Yii::app()->request->getPost('school_id');
@@ -237,9 +277,12 @@ class FreeuserController extends Controller
         $username = Yii::app()->request->getPost('username');
         $headline = Yii::app()->request->getPost('headline');
         $content = Yii::app()->request->getPost('content');
-        $category_id = Yii::app()->request->getPost('category_id');
+        $category_id = Settings::$school_category_id;
+        $show_comment_to_all = Yii::app()->request->getPost('show_comment_to_all');
+        $can_comment = Yii::app()->request->getPost('can_comment');
         $school_id = Yii::app()->request->getPost('school_id');
         $user_id = Yii::app()->request->getPost('user_id');
+        $candle_type = Yii::app()->request->getPost('candle_type');
         
         if (!$username || !$headline || !$content || !$category_id || !$school_id || !$user_id)
         {
@@ -261,7 +304,18 @@ class FreeuserController extends Controller
                 if(Settings::$school_candle_publish[$userschool->type]===true)
                 {
                     $postobj->status = 5;
-                }    
+                }
+                if($show_comment_to_all)
+                {
+                    $postobj->show_comment_to_all = $show_comment_to_all;
+                } 
+                
+                if($can_comment)
+                {
+                    $postobj->can_comment = $can_comment;
+                }
+                
+                $postobj->user_id = $user_id;
                 
                 $postobj->type = "Print";
                 $postobj->user_type = 2;
@@ -1046,6 +1100,7 @@ class FreeuserController extends Controller
     public function actionGetSingleNews()
     {
         $id = Yii::app()->request->getPost('id');
+        $user_id = Yii::app()->request->getPost('user_id');
         if($id)
         {
             //update view count
@@ -1165,12 +1220,23 @@ class FreeuserController extends Controller
 
             $categoryModel = new Categories();
 
+            $can_wow = 1;
+            if($user_id)
+            {
+                $obj_wow = new Wow();
+                $wowexists = $obj_wow->wowexists($id, $user_id);
+                if($wowexists)
+                {
+                    $can_wow = 0;
+                }
+            }    
             //$subcategory = $categoryModel->getSubcategory($category_id);
             //$response['data']['subcategory'] = $subcategory;
             $response['data']['allpostid'] = $allpostid;
             $response['data']['good_read'] = $good_read;
             $response['data']['previous_id'] = $previous_id;
             $response['data']['next_id'] = $next_id;
+            $response['data']['can_wow'] = $can_wow;
 
             if($main_id)
             {
@@ -1338,13 +1404,23 @@ class FreeuserController extends Controller
         
         if(isset($response['data']['post']) && count($response['data']['post'])>0)
         {
-           
+            $wow = array();
+            if($user_id)
+            {    
+                $obj_wow = new Wow();
+                $wow = $obj_wow->userwow($user_id);
+            }
            
             $post_data = array();
             $i = 0;
             foreach($response['data']['post'] as $value)
             {
                 $post_data[$i] = $this->getSingleNewsFromCache($value['id']);
+                $post_data[$i]['can_wow'] = 1;
+                if(in_array($value['id'], $wow))
+                {
+                   $post_data[$i]['can_wow'] = 0; 
+                }        
                 $i++;
             } 
             $response['data']['post'] = $post_data;
@@ -1354,6 +1430,8 @@ class FreeuserController extends Controller
             echo CJSON::encode($response);
         Yii::app()->end();
     }
+    
+          
 
     public function actionGetSchoolTeacherBylinePost()
     {
@@ -1361,6 +1439,7 @@ class FreeuserController extends Controller
         $page_size = Yii::app()->request->getPost('page_size');
         $id = Yii::app()->request->getPost('id');
         $target = Yii::app()->request->getPost('target');
+        $user_id = Yii::app()->request->getPost('user_id');
 
 
         if($target && $id)
@@ -1410,11 +1489,23 @@ class FreeuserController extends Controller
             if(isset($response['data']['post']) && count($response['data']['post'])>0)
             {
 
+                $wow = array();
+                if($user_id)
+                {    
+                    $obj_wow = new Wow();
+                    $wow = $obj_wow->userwow($user_id);
+                }
+
                 $post_data = array();
                 $i = 0;
                 foreach($response['data']['post'] as $value)
                 {
                     $post_data[$i] = $this->getSingleNewsFromCache($value['id']);
+                    $post_data[$i]['can_wow'] = 1;
+                    if(in_array($value['id'], $wow))
+                    {
+                       $post_data[$i]['can_wow'] = 0; 
+                    }        
                     $i++;
                 } 
                 $response['data']['post'] = $post_data;
@@ -1509,11 +1600,23 @@ class FreeuserController extends Controller
         if(isset($response['data']['post']) && count($response['data']['post'])>0)
         {
            
+            $wow = array();
+            if($user_id)
+            {    
+                $obj_wow = new Wow();
+                $wow = $obj_wow->userwow($user_id);
+            }
+
             $post_data = array();
             $i = 0;
             foreach($response['data']['post'] as $value)
             {
                 $post_data[$i] = $this->getSingleNewsFromCache($value['id']);
+                $post_data[$i]['can_wow'] = 1;
+                if(in_array($value['id'], $wow))
+                {
+                   $post_data[$i]['can_wow'] = 0; 
+                }        
                 $i++;
             } 
             $response['data']['post'] = $post_data;

@@ -663,6 +663,15 @@ $(document).ready(function(){
         $('.upload-msg').stop().fadeOut(100);
         $('.upload-icon img').stop().animate({width: "60%"}, 100);
     });
+    $(document).on("hover",".wow_class" , function(){
+        var post_id = this.id.replace("wow_",""); 
+        $("#wow_"+post_id+" .seen-image img").attr("src",$("#base_url").val()+"styles/layouts/tdsfront/images/social/wow-hover.png");
+     },
+     function(){
+        var post_id = this.id.replace("wow_",""); 
+        $("#wow_"+post_id+" .seen-image img").attr("src",$("#base_url").val()+"styles/layouts/tdsfront/images/social/wow.png");
+     }
+    );
     
     $(document).on("click",".wow_class" , function(){
        var post_id = this.id.replace("wow_","");
@@ -671,8 +680,8 @@ $(document).ready(function(){
                 if ( data != 0  )
                 {
                    $("#wow_"+post_id+" .seen span").html(data);
-                   $("#wow_"+post_id).removeClass("wow_class");
-                   $("#wow_"+post_id+" .seen-image img").attr("src",$("#base_url").val()+"styles/layouts/tdsfront/images/social/wow-hover.png");
+                   //$("#wow_"+post_id).removeClass("wow_class");
+                  // $("#wow_"+post_id+" .seen-image img").attr("src",$("#base_url").val()+"styles/layouts/tdsfront/images/social/wow-hover.png");
                 }
                     
             }

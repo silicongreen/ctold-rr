@@ -16,6 +16,8 @@ $config[ 'from_api' ] = TRUE;
 
 $config[ 'normal_view_count_add' ] = 1;
 
+$config[ 'wow_login' ] = false;
+
 $config[ 'api_index' ] = array('index','inner','inner-popular');
 
 $config[ 'school_candle_category_id' ] = 58;

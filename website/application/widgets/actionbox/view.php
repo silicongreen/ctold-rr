@@ -26,6 +26,6 @@ $wow_class = getclassactionbox($news->wow_count);
         </div>
     </div>
     <div class="col-lg-4" >
-        <div style="margin:9px auto !important; float:none !important; display:block !important;"  data="read_later" id="read_later_<?php echo $news->post_id; ?>" class="f2 read_later <?php echo ( free_user_logged_in() ) ? "" : "before-login-user"; ?>">&nbsp;&nbsp;Read Later</div>
+        <div style="margin:9px auto !important; float:none !important; display:block !important;"  data="read_later" id="read_later_<?php echo $news->post_id; ?>" class="f2 read_later <?php echo ( free_user_logged_in() ) ? "" : "before-login-user"; ?>">&nbsp;&nbsp;&nbsp;Read Later</div>
     </div>
  </div>   

@@ -664,6 +664,22 @@ $(document).ready(function(){
         $('.upload-icon img').stop().animate({width: "60%"}, 100);
     });
     
+    $(document).on("click",".wow_class" , function(){
+       var post_id = this.id.replace("wow_","");
+       $.post($("#base_url").val() + 'front/ajax/addWow/',
+            {post_id: post_id}, function(data){
+                if ( data != 0  )
+                {
+                   $("#wow_"+post_id+" .seen span").html(data);
+                   $("#wow_"+post_id).removeClass("wow_class");
+                   //$("#wow_"+post_id+" .seen-image img").attr("src",<?php echo base_url("styles/layouts/tdsfront/images/social/wow-hover.png"); ?>);
+                }
+                    
+            }
+        );
+    });
+    
+    
     
     $(document).on("click",'.before-login-user',function(){
         

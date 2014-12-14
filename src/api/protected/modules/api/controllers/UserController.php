@@ -106,7 +106,7 @@ class UserController extends Controller {
                     $attendance = new Attendances();
                     $response['data']['weekend'] = $attendance->getWeekend(Yii::app()->user->schoolId);
 
-                    $response['data']['children'] = $array();
+                    $response['data']['children'] = array();
                     if (Yii::app()->user->isParent) {
                         $response['data']['children'] = $user->studentList(Yii::app()->user->profileId);
                     }
@@ -129,7 +129,7 @@ class UserController extends Controller {
                     //for paid
                     $response['data']['paid_user'] = array();
                     $response['data']['weekend'] = array();
-                    $response['data']['children'] = $array();
+                    $response['data']['children'] = array();
                     $response['data']['session'] =  Yii::app()->session->getSessionID();
                     //for paid
                     

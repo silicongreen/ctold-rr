@@ -785,13 +785,13 @@ class ajax extends MX_Controller
     
     public function addWow()
     {
-        if (free_user_logged_in())
+        if (free_user_logged_in() || wow_login()==false)
         {
            
             $user_id = get_free_user_session("id");
             $post_id = $this->input->post("post_id");
             
-            if($post_id && $user_id)
+            if($post_id && ($user_id || wow_login()==false) )
             {
                 $url = get_curl_url("addwow");
                 $fields = array(

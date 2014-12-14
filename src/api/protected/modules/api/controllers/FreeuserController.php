@@ -40,7 +40,7 @@ class FreeuserController extends Controller
     {
         $post_id = Yii::app()->request->getPost('post_id');
         $user_id = Yii::app()->request->getPost('user_id');
-        if (!$post_id || !$user_id )
+        if (!$post_id || (!$user_id && Settings::$wow_login==true) )
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
@@ -48,11 +48,14 @@ class FreeuserController extends Controller
         else
         {
             $objwow = new Wow();
-            if(!$objwow->wowexists($post_id, $user_id))
+            if(Settings::$wow_login==false || !$objwow->wowexists($post_id, $user_id))
             {
-                $objwow->post_id = $post_id;
-                $objwow->user_id = $user_id;
-                $objwow->save();
+                if(Settings::$wow_login==true)
+                {
+                    $objwow->post_id = $post_id;
+                    $objwow->user_id = $user_id;
+                    $objwow->save();
+                }
                 
                 $postModel = new Post();
                 $postobj = $postModel->findByPk($post_id);
@@ -1231,7 +1234,7 @@ class FreeuserController extends Controller
             $categoryModel = new Categories();
 
             $can_wow = 1;
-            if($user_id)
+            if($user_id && Settings::$wow_login==true)
             {
                 $obj_wow = new Wow();
                 $wowexists = $obj_wow->wowexists($id, $user_id);
@@ -1427,7 +1430,7 @@ class FreeuserController extends Controller
             {
                 $post_data[$i] = $this->getSingleNewsFromCache($value['id']);
                 $post_data[$i]['can_wow'] = 1;
-                if(in_array($value['id'], $wow))
+                if(in_array($value['id'], $wow) && Settings::$wow_login==true)
                 {
                    $post_data[$i]['can_wow'] = 0; 
                 }        
@@ -1512,7 +1515,7 @@ class FreeuserController extends Controller
                 {
                     $post_data[$i] = $this->getSingleNewsFromCache($value['id']);
                     $post_data[$i]['can_wow'] = 1;
-                    if(in_array($value['id'], $wow))
+                    if(in_array($value['id'], $wow) && Settings::$wow_login==true)
                     {
                        $post_data[$i]['can_wow'] = 0; 
                     }        
@@ -1623,7 +1626,7 @@ class FreeuserController extends Controller
             {
                 $post_data[$i] = $this->getSingleNewsFromCache($value['id']);
                 $post_data[$i]['can_wow'] = 1;
-                if(in_array($value['id'], $wow))
+                if(in_array($value['id'], $wow)  && Settings::$wow_login==true)
                 {
                    $post_data[$i]['can_wow'] = 0; 
                 }        

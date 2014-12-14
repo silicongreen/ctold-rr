@@ -673,6 +673,11 @@ $(document).ready(function(){
                 'header_label' : 'Good Read',
                 'custom_message' : '<p>Save/collect articles that you like using "Good Read" feature.</p>'
             },
+            'wow' : {
+                'icon' : 'good_read_red_icon.png',
+                'header_label' : 'WOW',
+                'custom_message' : '<p>Use this feature to appreciate a content .</p>'
+            },
             'candle' : {
                 'icon' : 'candle_red_icon.png',
                 'header_label' : 'Candle',

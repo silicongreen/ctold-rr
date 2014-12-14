@@ -95,6 +95,9 @@ class UserController extends Controller {
                         $exam_category = new ExamGroups;
                         $exam_category = $exam_category->getExamCategory(Yii::app()->user->schoolId, Yii::app()->user->batchId, 3);
 
+                        $response['data']['paid_user']['terms'] = array();
+                        
+                        if($exam_category)
                         $response['data']['paid_user']['terms'] = $exam_category;
                     }
 

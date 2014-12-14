@@ -71,47 +71,48 @@ class UserController extends Controller {
 
                 if ($user->login()) {
 
-                    if($data = $free_user->login($username,$password))
+                    if($data = $free_user->login($username,$password, true))
                     {
                         $folderObj = new UserFolder();
                     
                         $folderObj->createGoodReadFolder($data->id);
                         $response['data']['free_id'] = $data->id;
-                        $response['data']['free_user']  = $free_user->getUserInfo($data->id);
+                        $response['data']['user']  = $free_user->getUserInfo($data->id);
                     }   
                     else
                     {
                        $response['data']['free_id'] = "";
-                       $response['data']['free_user'] = array();
+                       $response['data']['user'] = array();
                     }    
                     $response['data']['user_type'] = 1;
-                    $response['data']['user']['id'] = Yii::app()->user->id;
-                    $response['data']['user']['is_admin'] = Yii::app()->user->isAdmin;
-                    $response['data']['user']['is_student'] = Yii::app()->user->isStudent;
+                    $response['data']['paid_user']['id'] = Yii::app()->user->id;
+                    $response['data']['paid_user']['is_admin'] = Yii::app()->user->isAdmin;
+                    $response['data']['paid_user']['is_student'] = Yii::app()->user->isStudent;
 
                     if (Yii::app()->user->isStudent) {
-                        $response['data']['user']['batch_id'] = Yii::app()->user->batchId;
+                        $response['data']['paid_user']['batch_id'] = Yii::app()->user->batchId;
 
                         $exam_category = new ExamGroups;
                         $exam_category = $exam_category->getExamCategory(Yii::app()->user->schoolId, Yii::app()->user->batchId, 3);
 
-                        $response['data']['user']['terms'] = $exam_category;
+                        $response['data']['paid_user']['terms'] = $exam_category;
                     }
 
-                    $response['data']['user']['profile_id'] = Yii::app()->user->profileId;
-                    $response['data']['user']['is_parent'] = Yii::app()->user->isParent;
-                    $response['data']['user']['is_teacher'] = Yii::app()->user->isTeacher;
-                    $response['data']['user']['school_id'] = Yii::app()->user->schoolId;
+                    $response['data']['paid_user']['profile_id'] = Yii::app()->user->profileId;
+                    $response['data']['paid_user']['is_parent'] = Yii::app()->user->isParent;
+                    $response['data']['paid_user']['is_teacher'] = Yii::app()->user->isTeacher;
+                    $response['data']['paid_user']['school_id'] = Yii::app()->user->schoolId;
 
                     $attendance = new Attendances();
                     $response['data']['weekend'] = $attendance->getWeekend(Yii::app()->user->schoolId);
 
+                    $response['data']['children'] = $array();
                     if (Yii::app()->user->isParent) {
                         $response['data']['children'] = $user->studentList(Yii::app()->user->profileId);
                     }
 
                     if (!isset($user_secret)) {
-                        $response['data']['user']['secret'] = Yii::app()->user->user_secret;
+                        $response['data']['paid_user']['secret'] = Yii::app()->user->user_secret;
                     }
 
                     $response['data']['session'] = Yii::app()->session->getSessionID();
@@ -125,7 +126,12 @@ class UserController extends Controller {
                     $folderObj = new UserFolder();
                    
                     $folderObj->createGoodReadFolder($data->id);
-                    
+                    //for paid
+                    $response['data']['paid_user'] = array();
+                    $response['data']['weekend'] = array();
+                    $response['data']['children'] = $array();
+                    $response['data']['session'] =  Yii::app()->session->getSessionID();
+                    //for paid
                     
                     $response['data']['user_type'] = 0;
                     $response['data']['free_id'] = $data->id;

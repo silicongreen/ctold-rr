@@ -663,11 +663,12 @@ $(document).ready(function(){
         $('.upload-msg').stop().fadeOut(100);
         $('.upload-icon img').stop().animate({width: "60%"}, 100);
     });
-    $(document).on("hover",".wow_class" , function(){
+   
+    $(document).on("mouseenter",".wow_class" , function(){
         var post_id = this.id.replace("wow_",""); 
         $("#wow_"+post_id+" .seen-image img").attr("src",$("#base_url").val()+"styles/layouts/tdsfront/images/social/wow-hover.png");
-     },
-     function(){
+     });
+     $(document).on("mouseleave",".wow_class" , function(){
         var post_id = this.id.replace("wow_",""); 
         $("#wow_"+post_id+" .seen-image img").attr("src",$("#base_url").val()+"styles/layouts/tdsfront/images/social/wow.png");
      }

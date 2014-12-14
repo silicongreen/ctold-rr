@@ -356,6 +356,7 @@ class Settings {
                 $post_array['video_file'] = Settings::$image_path . $postValue->video_file;
             
             
+            $post_array['sub_head'] = $postValue->sub_head;
             
             $post_array['wow_count'] = $postValue->wow_count;
             

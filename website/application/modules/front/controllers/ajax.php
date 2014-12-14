@@ -848,7 +848,7 @@ class ajax extends MX_Controller
                        $count_string = $new_count."M";
                       
                     }  
-                   echo "wow ".$count_string.""; 
+                   echo "WoW ".$count_string.""; 
                 }
                 else
                 {

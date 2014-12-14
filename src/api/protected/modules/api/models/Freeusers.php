@@ -135,22 +135,37 @@ class Freeusers extends CActiveRecord {
         }
         return false;
     }
-    public function login($username,$password)
+    public function login($username,$password, $paid=false)
     {
-        $data = $this->getFreeuser($username);
-        if($data)
+        if($paid==false)
+        {    
+            $data = $this->getFreeuser($username);
+            if($data)
+            {
+                $pass = hash('sha512', $data->salt . $password);
+                $criteria = new CDbCriteria;
+                $criteria->compare('password', $pass);
+
+                $validdata = $this->find($criteria);
+                if($validdata)
+                {
+                    return $validdata;
+                }
+
+            } 
+        }
+        else
         {
-            $pass = hash('sha512', $data->salt . $password);
             $criteria = new CDbCriteria;
-            $criteria->compare('password', $pass);
+            $criteria->compare('paid_password', $password);
+            $criteria->compare('paid_username', $username);
 
             $validdata = $this->find($criteria);
             if($validdata)
             {
                 return $validdata;
             }
-            
-        } 
+        }    
         return false;
         
     }        

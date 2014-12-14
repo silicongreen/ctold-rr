@@ -18,6 +18,8 @@ $config['free_user_folders'] = array(
     '3' => 'Resources'
 );
 
+$config['multi_school_join'] = FALSE;
+
 //$config['google'] = array(
 //    'client_id_1' => '650847745730-ijbdhl82is942vboamrb2lqradnqk23v.apps.googleusercontent.com',
 //    'client_secret_1' => 'V4lv34OdU7sTJGUQx4sM_F2E',

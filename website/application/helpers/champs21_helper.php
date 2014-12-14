@@ -84,6 +84,60 @@ if (!function_exists('get_post_image_type_content'))
 
 }
 
+if (!function_exists('getclassactionbox'))
+{
+
+    function getclassactionbox($count)
+    {
+        $value = array();
+        $new_count = 0;
+        $count_string = "";
+        if($count<1000)
+        {
+            $new_count = $count;
+            $checkcount = $count;
+        }    
+        else if($count>=1000 && $count<1000000)
+        {
+           $new_count = round($count/1000);
+           $count_string = "k";
+           $checkcount = (int)$new_count."0";
+           
+        } 
+        else if($count>=100000)
+        {
+           $new_count = round($count/100000);
+           $count_string = "M";
+           $checkcount = (int)$new_count."0";
+        }  
+        
+        if($checkcount<100)
+        {
+           $value['width'] = 85;
+           $value['class1'] = 4;
+           $value['class2'] = 8;
+           $value['new_count'] = $new_count.$count_string;
+        }
+        else if($checkcount>=100 && $checkcount<1000)
+        {
+           $value['width'] = 90;
+           $value['class1'] = 3;
+           $value['class2'] = 9;
+           $value['new_count'] = $new_count.$count_string;
+        }
+        else if($checkcount>=1000)
+        {
+           $value['width'] = 100;
+           $value['class1'] = 3;
+           $value['class2'] = 9;
+           $value['new_count'] = $new_count.$count_string;
+        }
+        
+        return $value;
+        
+    }
+
+}
 
 if (!function_exists('substr_with_unicode'))
 {

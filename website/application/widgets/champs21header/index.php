@@ -60,6 +60,18 @@ class champs21header extends widget
         
         $obj_post = new Posts();
         $data['category_tree'] = $obj_post->user_preference_tree_for_pref();
+        
+        $user_school = new User_school();
+        $user_school_data = $user_school->get_user_school($user_id);
+        
+        if($user_school_data != FALSE) {
+            
+            $school_obj = new schools($user_school_data[0]->school_id);
+            $data['my_school_menu_uri'] = 'schools/' . sanitize($school_obj->name);
+        } else {
+            $data['my_school_menu_uri'] = 'schools';
+        }
+        
         // User Data
         
         $this->render($data);

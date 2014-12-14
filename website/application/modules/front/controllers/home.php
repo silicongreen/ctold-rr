@@ -53,12 +53,14 @@ class home extends MX_Controller {
             
             $this->load->config('user_register');
             $b_need_approval = $this->config->config['join_user_approval'][$user_type];
+            $b_mulit_school_join = $this->config->config['multi_school_join'];
             
             $user_school = new User_school();
-            $user_school_data = $user_school->get_user_school($user_id, $school_id);
+            
+            $user_school_data = ($b_mulit_school_join) ? $user_school->get_user_school($user_id, $school_id) : $user_school->get_user_school($user_id);
             
             if($user_school_data === FALSE){
-                
+
                 $User_school = new User_school;
                 $User_school->user_id = $user_id;
                 $User_school->school_id = $school_id;
@@ -66,19 +68,20 @@ class home extends MX_Controller {
                 $User_school->type = $user_type;
                 $User_school->is_approved = ( $b_need_approval ) ? '0' : '1';
                 $User_school->information = $additional_info;
-                
+
                 if($User_school->save()){
                    $response = array(
                         'saved' => true,
                         'is_approved' => $User_school->is_approved,
                     );
-                   
+
                 } else {
                     $response['errors'] = $User_school->error->all;
                 }
-                
+
             } else {
-                $response['errors'][] = 'You are already a member of this school.';
+                $response['errors'][] = 'You cannot join more than one school. Please leave the previous school to join new school.';
+//                $response['errors'][] = 'You are already a member of this school.';
             }
             
             echo( json_encode($response));
@@ -126,8 +129,7 @@ class home extends MX_Controller {
     {
         $ar_segmens = $this->uri->segment_array();
         if(count($ar_segmens) < 2)
-        {            
-            
+        {
             //$this->show_404_custom();
             $this->db->select('*');
             $this->db->from('tds_school');
@@ -148,7 +150,7 @@ class home extends MX_Controller {
 
             $data['free_user_types'] = $this->get_free_user_types();
             $data['join_user_types'] = $this->get_school_join_user_types();
-
+            
             $data['country'] = $this->get_country();
             $data['country']['id'] = $data['model']->tds_country_id;
 
@@ -164,9 +166,6 @@ class home extends MX_Controller {
             if($user_school_data){
                 foreach ($user_school_data as $row) {
                     $data['user_school_ids'][] = $row->school_id;
-                }
-                
-                foreach ($user_school_data as $row) {
                     $data['user_school_status'][$row->school_id] = $row->is_approved;
                 }
             }
@@ -205,7 +204,6 @@ class home extends MX_Controller {
         } 
         else
         {
-            
             $school_name = unsanitize($ar_segmens[2]);
             $school_obj = new schools();
             $school_menu_id = 0;

@@ -199,10 +199,14 @@
                     <div class="seen"><h2 class=""><?php echo $user_view_count; ?></h2></div>
                     <div class="seen-image"><img src="<?php echo base_url("styles/layouts/tdsfront/images/social/seen.png"); ?>" /></div>
                 </div>
+                <div id="wow_<?php echo $post_id; ?>" style="width:auto; cursor: pointer; float:right; clear: both;" class="seen_box wow_class_single" style="cursor: pointer;">                    
+                    <div class="seen"><h2 class=""><?php echo $wow_count; ?></h2></div>
+                    <div class="seen-image"><img src="<?php echo base_url("styles/layouts/tdsfront/images/social/wow.png"); ?>" /></div>
+                </div>
 <!--                <div class="col-md-12" style="clear:both;">
                     <a class="addthis_button_facebook_like" fb:like:layout="button_count" fb:like:href="<?php echo create_link_url(NULL, $headline,$post_id,false,true,false); ?>"></a>
                 </div>-->
-                <div class="col-md-12">
+                <div class="col-md-12" style="float:right; clear: both; margin-top: 10px;">
                     <a class="addthis_button_facebook_share" fb:share:layout="horizontal"  addthis:title="<?php echo $headline; ?>" addthis:url="<?php echo create_link_url(NULL, $headline,$post_id); ?>" addthis:description="<?php echo $fb_desc; ?>"></a>
                 </div>
             </div>

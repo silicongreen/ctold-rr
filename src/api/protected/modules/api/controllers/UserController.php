@@ -130,10 +130,10 @@ class UserController extends Controller {
                    
                     $folderObj->createGoodReadFolder($data->id);
                     //for paid
-                    $response['data']['paid_user'] = array();
-                    $response['data']['weekend'] = array();
-                    $response['data']['children'] = array();
-                    $response['data']['session'] =  Yii::app()->session->getSessionID();
+//                    $response['data']['paid_user'] = array();
+//                    $response['data']['weekend'] = array();
+//                    $response['data']['children'] = array();
+//                    $response['data']['session'] =  Yii::app()->session->getSessionID();
                     //for paid
                     
                     $response['data']['user_type'] = 0;

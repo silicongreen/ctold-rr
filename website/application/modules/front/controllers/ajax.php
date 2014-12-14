@@ -790,6 +790,7 @@ class ajax extends MX_Controller
            
             $user_id = get_free_user_session("id");
             $post_id = $this->input->post("post_id");
+            $single = $this->input->post("single");
             
             if($post_id && ($user_id || wow_login()==false) )
             {
@@ -847,8 +848,16 @@ class ajax extends MX_Controller
                        $new_count = round($count/100000);
                        $count_string = $new_count."M";
                       
-                    }  
-                   echo "WoW ".$count_string.""; 
+                    } 
+                    if($single)
+                    {
+                        echo $a_data->data->wow_count;
+                    }
+                    else
+                    {
+                        echo "WoW ".$count_string.""; 
+                    }    
+                   
                 }
                 else
                 {

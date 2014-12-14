@@ -28,21 +28,4 @@ $wow_class = getclassactionbox($news->wow_count);
     <div class="col-lg-4" >
         <div style="margin:9px auto !important; float:none !important; display:block !important;"  data="read_later" id="read_later_<?php echo $news->post_id; ?>" class="read_later <?php echo ( free_user_logged_in() ) ? "" : "before-login-user"; ?>">Read Later</div>
     </div>
- </div>
-<script>
-    $(document).on("click",".wow_class" , function(){
-       var post_id = this.id.replace("wow_","");
-       $.post($("#base_url").val() + 'front/ajax/addWow/',
-            {post_id: post_id}, function(data){
-                if ( data != 0  )
-                {
-                   $("#wow_"+post_id+" .seen span").html(data);
-                   $("#wow_"+post_id).removeClass("wow_class");
-                   $("#wow_"+post_id+" .seen-image img").attr("src",<?php echo base_url("styles/layouts/tdsfront/images/social/wow-hover.png"); ?>);
-                }
-                    
-            }
-        );
-    });
-    
-</script>    
+ </div>   

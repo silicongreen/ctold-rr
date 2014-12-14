@@ -897,6 +897,8 @@ $(document).ready(function(){
                         $('button#' + school_id).removeClass('btn_user_join_school');
                         $('button#' + school_id).addClass('btn_leave_school');
                     } else {
+                        $('button#' + school_id).removeClass('btn_user_join_school');
+                        $('button#' + school_id).addClass('processing');
                         $('button#' + school_id + ' span').text('Processing');
                     }
                     

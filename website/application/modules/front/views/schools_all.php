@@ -53,37 +53,30 @@
                         </div>
 
                         <?php
-                        $ex_class = 'before-login-user';
-                        if (free_user_logged_in()) {
-                            if( !isset($user_school_status[$row['id']]) ) {
-                                $ex_class = 'btn_user_join_school';
-                            } else {
-                                if ( $user_school_status[$row['id']] == '1') {
-                                    $ex_class = 'btn_leave_school';
+                            $ex_class = ' before-login-user';
+                            $str_join_btn_text = 'Join In +';
+                            if (free_user_logged_in()) {
+                                if (!isset($user_school_status[$row['id']])) {
+                                    $ex_class = ' btn_user_join_school';
+                                } else {
+                                    if ($user_school_status[$row['id']] == '1') {
+                                        $ex_class = ' btn_leave_school';
+                                        $str_join_btn_text = 'Leave';
+                                    }
+                                    if ($user_school_status[$row['id']] == '0') {
+                                        $ex_class = ' processing';
+                                        $str_join_btn_text = 'Processing';
+                                    }
                                 }
-                                if ( $user_school_status[$row['id']] == '0') {
-                                    $ex_class = '';
-                                }   
                             }
-                        }
                         ?>
 
                         <div class="join-wrapper">
 
-                            <button id="<?php echo $row['id']; ?>" data="school_join" class="red <?php echo $ex_class; ?>" type="button">
+                            <button id="<?php echo $row['id']; ?>" data="school_join" class="red<?php echo $ex_class; ?>" type="button">
 
                                 <span class="clearfix f2">
-                                    
-                                    <?php
-                                        if(empty($ex_class)) {
-                                            echo 'Processing';
-                                        } else if ($ex_class == 'btn_leave_school') {
-                                            echo 'Leave';
-                                        } else {
-                                            echo 'Join In';
-                                        }
-                                    ?>
-                                    
+                                    <?php echo $str_join_btn_text; ?>
                                 </span>
                             </button>
 
@@ -326,6 +319,13 @@
     }
     .large{
         width: 100%;
+    }
+    .processing {
+        background-image: url('/styles/layouts/tdsfront/image/processing.png');
+        background-position: right 7px center;
+        background-repeat: no-repeat;
+        background-size: 25px auto;
+        text-align: left;
     }
 
     .srch_page_title

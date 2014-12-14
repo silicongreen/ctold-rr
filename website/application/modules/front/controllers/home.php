@@ -350,13 +350,7 @@ class home extends MX_Controller {
                         else if(isset($activities) &&  count($activities)>0)
                         {
                             $data['activities'] = $activities;
-                        }    
-
-                        $data['ci_key'] = $school_details->name;
-                        $data['ci_key_for_cover'] = $school_details->name;
-
-
-                        $s_content = $this->load->view('school',$data, true);
+                        }
                         
                         // User Data
                         $user_id = (free_user_logged_in()) ? get_free_user_session('id') : NULL;
@@ -364,16 +358,33 @@ class home extends MX_Controller {
                         $data['model'] = $this->get_free_user($user_id);
 
                         $data['free_user_types'] = $this->get_free_user_types();
+                        $data['join_user_types'] = $this->get_school_join_user_types();
 
                         $data['country'] = $this->get_country();
-                        $data['country']['id'] = $data2['model']->tds_country_id;
+                        $data['country']['id'] = $data['model']->tds_country_id;
 
                         $data['grades'] = $this->get_grades();
 
                         $data['medium'] = $this->get_medium();
 
                         $data['edit'] = (free_user_logged_in()) ? TRUE : FALSE;
+
+                        $user_school = new User_school();
+                        $user_school_data = $user_school->get_user_school($user_id);
+                        
+                        if($user_school_data){
+                            foreach ($user_school_data as $row) {
+                                $data['user_school_ids'][] = $row->school_id;
+                                $data['user_school_status'][$row->school_id] = $row->is_approved;
+                            }
+                        }
                         // User Data
+                        
+                        $data['ci_key'] = $school_details->name;
+                        $data['ci_key_for_cover'] = $school_details->name;
+
+
+                        $s_content = $this->load->view('school',$data, true);
                         
                         $obj_post = new Posts();
                         $data['category_tree'] = $obj_post->user_preference_tree_for_pref();

@@ -39,7 +39,21 @@ if( !function_exists("get_user_school") )
         }    
         
     }        
-}   
+} 
+
+if (!function_exists('wow_login')) {
+
+    function wow_login() {
+        
+        $CI = &get_instance();
+        
+        $CI->load->config("huffas");
+        
+        return $CI->config->config['wow_login'];
+        
+       
+    }
+}
 
 if (!function_exists('get_free_user_session')) {
 

@@ -133,6 +133,7 @@ class post extends CI_Model{
         }
         else
         {
+           
             $s_country = visitor_country();
             $country_id = 14; //By Default Bangladesh
             if ($this->config->config['country_filter'])

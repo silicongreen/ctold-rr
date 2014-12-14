@@ -121,7 +121,7 @@
                             <div class="required_tag"></div>
                         </div>
                     </fieldset>
-                    <fieldset class="label_side top"  style="display:none;">
+                    <fieldset class="label_side top">
                         <label for="required_field">Subhead</label>
                         <div>
                             <input id="sub_head" name="sub_head" value="<?= $model->sub_head ?>"  type="text"  maxlength="255"  >  
@@ -223,7 +223,7 @@
 
                             <?php
                             $f_array = array(0 => "None", 1 => "Inside Image"
-                                ,2=>"Bottom Gallery",3=>"Half Image Text");
+                                ,2=>"Bottom Gallery",3=>"Half Image Text",4=>"Left align post");
 
 
                             echo form_dropdown('post_layout', $f_array, $model->post_layout);

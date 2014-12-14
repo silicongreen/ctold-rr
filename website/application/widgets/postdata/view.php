@@ -132,6 +132,8 @@
                     <?php if ($i > $j) : ?>
                         <?php if($is_exclusive_found===true): ?>
                         <?php $arCustomNews = getFormatedContentAll($news, 210); ?>
+                        <?php elseif($news->post_layout==4): ?>
+                         <?php $arCustomNews = getFormatedContentAll($news, 210); ?>
                         <?php else: ?>
                         <?php $arCustomNews = getFormatedContentAll($news, 125); ?>
                         <?php endif; ?>
@@ -217,7 +219,7 @@
                                     <div class="post-entry">     
                                         <div class="post-title">
                                             <h2 class="f2" style="font-size: 32px;">
-                                                <a href="<?php echo base_url() . sanitize($news->headline) . "-" . $news->post_id; ?>" title="<?php echo $news->headline; ?>">
+                                                <a  href="<?php echo base_url() . sanitize($news->headline) . "-" . $news->post_id; ?>" title="<?php echo $news->headline; ?>">
                                                     <?php echo $news->headline; ?>
                                                 </a>
                                             </h2>
@@ -283,7 +285,7 @@
                                                 <?php $showed = true;
                                             endif; ?>
                                         <div class="post-title" <?php if($is_exclusive_found===true): ?>style="margin: 24px 0px;"<?php endif; ?>>
-                                            <?php if ($target == "index") : ?>
+                                            <?php if ($target == "index" && $news->post_layout!=4) : ?>
                                                 <?php if ($showed): ?>
                                                     <!--                                                don nothing-->
                                                 <?php elseif ($news->show_byline_image) : ?>
@@ -301,23 +303,29 @@
                                                 <?php endif; ?>
 
                                             <?php endif; ?>
-                                            <h2 class="f2">
-                                                <a href="<?php echo base_url() . sanitize($news->headline) . "-" . $news->post_id; ?>" title="<?php echo $news->headline; ?>">
-                                            <?php echo $news->headline; ?>
+                                            <h2 class="f2" <?php if($news->post_layout==4): ?> style="text-align:left !important;" <?php endif; ?>>
+                                                <a <?php if($news->post_layout==4): ?> style="margin-left:17px;" <?php endif; ?> href="<?php echo base_url() . sanitize($news->headline) . "-" . $news->post_id; ?>" title="<?php echo $news->headline; ?>">
+                                                    <?php echo $news->headline; ?>
                                                 </a>
                                             </h2>
-                                                <?php if ($target == "inner") : ?>
+                                                <?php if ($target == "inner" && $news->post_layout!=4) : ?>
                                                 <span class="brown-subtitle">
                                                 <?php //echo $news->name . ' | '; ?><?php echo date("d M", strtotime($news->published_date)); ?>
                                                 </span>
-                                                <?php elseif ($target == "index") : ?>
+                                                <?php elseif ($target == "index" && $news->post_layout!=4) : ?>
                                                 <span class="brown-subtitle">
                                                 <?php echo get_post_time($news->published_date); ?>
                                                 </span>
-                    <?php endif; ?>
+                                                <?php endif; ?>
                                         </div><!-- post-title --> 
 
-                                        <div class="akmanda-excerpt" <?php if($is_exclusive_found===true): ?>style="margin: 20px 30px;"<?php endif; ?>> <?php echo $arCustomNews['content']; ?></div>
+                                        <div class="akmanda-excerpt" <?php if($is_exclusive_found===true): ?>style="margin: 20px 30px;"<?php endif; ?>> 
+                                           <?php if($news->sub_head): ?>
+                                               <p><?php echo $news->sub_head; ?></p>
+                                            <?php endif; ?>
+                                             <?php echo $arCustomNews['content']; ?>
+                                        
+                                        </div>
                                     </div>
                                 </div><!-- post-content -->    
 

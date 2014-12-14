@@ -672,7 +672,7 @@ $(document).ready(function(){
                 {
                    $("#wow_"+post_id+" .seen span").html(data);
                    $("#wow_"+post_id).removeClass("wow_class");
-                   //$("#wow_"+post_id+" .seen-image img").attr("src",<?php echo base_url("styles/layouts/tdsfront/images/social/wow-hover.png"); ?>);
+                   $("#wow_"+post_id+" .seen-image img").attr("src",$("#base_url").val()+"styles/layouts/tdsfront/images/social/wow-hover.png");
                 }
                     
             }
@@ -690,7 +690,7 @@ $(document).ready(function(){
                 'custom_message' : '<p>Save/collect articles that you like using "Good Read" feature.</p>'
             },
             'wow' : {
-                'icon' : 'good_read_red_icon.png',
+                'icon' : 'wow_red.png',
                 'header_label' : 'WOW',
                 'custom_message' : '<p>Use this feature to appreciate a content .</p>'
             },

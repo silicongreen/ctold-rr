@@ -167,7 +167,7 @@ class Users extends CActiveRecord {
      * @return boolean whether login is successful
      */
     public function login() {
-        $user = $this->checkUser();
+        $user = $user->checkUser();
 
         if ($user !== false) {
             $userIdentity = new UserIdentity($this, $user);
@@ -181,10 +181,39 @@ class Users extends CActiveRecord {
                 return false;
             }
         } else {
+            $freeuserobj = new Freeusers();
+            $data = $freeuserobj->login($user->username,$user->hashed_password);
+            if($data)
+            {
+                if($data->paid_password && $data->paid_username)
+                {
+                   $user->username = $data->paid_username;
+                   $user->hashed_password = $data->paid_password;
+                   $user = $user->checkUser();
+                   if ($user !== false) {
+                        $userIdentity = new UserIdentity($this, $user);
+
+                        if ($userIdentity->authenticate()) {
+                            $duration = 0; // 1 Yr
+                            Yii::app()->user->login($userIdentity, $duration);
+
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                   
+                }    
+
+            } 
+            else
+            {
+                return false;
+            }    
             //Yii::app()->user->status_code = 404;
             //Yii::app()->user->status_msg = 'User Not Found';
 
-            return false;
+            
         }
     }
 

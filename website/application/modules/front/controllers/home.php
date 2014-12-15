@@ -1083,8 +1083,8 @@ class home extends MX_Controller {
         if($obj_post_data->referance_id > 0)
         {
           $url_segment = $this->uri->segment(1);
-          $only_link = $url_segment;
-          $only_link_encoded = urlencode($only_link);
+          $only_link_encoded = $url_segment;
+          //$only_link_encoded = urlencode($only_link);
           $only_link_encoded = $only_link_encoded."/". $obj_post_data->language; 
         } 
         

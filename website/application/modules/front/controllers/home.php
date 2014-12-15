@@ -1061,7 +1061,6 @@ class home extends MX_Controller {
         
         $strContent = preg_replace('/<div (.*?)>Source:(.*?)<\/div>/', '', $obj_post_data->content);
         $strContent = preg_replace('/<div class="img_caption" (.*?)>(.*?)<\/div>/', '', $strContent);
-        
         $strContent = strip_tags($strContent);
         $s_content = ( strlen($strContent) > 200 ) ? substr($strContent, 0, 200) . "..." : $strContent;
 
@@ -1080,6 +1079,11 @@ class home extends MX_Controller {
         $only_link = str_replace(base_url(), "", $url_main);
         
         $only_link_encoded = urlencode($only_link);
+        
+        if($obj_post_data->referance_id > 0)
+        {
+          $only_link_encoded = $only_link_encoded."/". $obj_post_data->language; 
+        } 
         
         $encoded_url = base_url().$only_link_encoded;
         $ar_fb = array(
@@ -1324,26 +1328,7 @@ class home extends MX_Controller {
             {    
                 $str_title = (isset($str_title)) ? $str_title: getCommonTitle();
             }
-            
-//            preg_match_all('/<img[^>]+\>/i', $s_content, $images);
-//            $l = 0;
-//            foreach($images[0] as $value)
-//            {
-//                if(strpos($value, "upload/gallery")!==false)
-//                {
-//                   $new_image_src = '<div class="image">
-//                                        <img src="/image?f=image/category/badminton.jpg" alt="Image" />
-//                                        <div class="cover"><img src="/imageCover.gif" alt=""  /></div>
-//                                    </div>';
-//                   $s_content = str_replace($value, $new_image_src, $s_content);
-//                   $l++; 
-//                }        
-//                
-//            }    
-            
-            
-            
-            
+
             $ar_params = array(
                 "javascripts"           => $ar_js,
                 "css"                   => $ar_css,
@@ -1364,18 +1349,6 @@ class home extends MX_Controller {
             print $s_content;
         }
     }
-//    function image()
-//    {
-//        $_GET['f'] = base_url()."upload/gallery" . $_GET['f'];
-//            $type = getFileType($_GET['f']);
-//            if (acceptableType($type)) {
-//                header("Content-type: $type");
-//                echo file_get_contents($_GET['f']);
-//                exit;
-//            }
-//            header('HTTP/1.1 403 Forbidden');
-//            exit;
-//    }
     
     function delete_cache()
     {

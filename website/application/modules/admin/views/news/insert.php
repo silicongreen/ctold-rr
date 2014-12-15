@@ -109,7 +109,7 @@
                         <div class="clearfix">
                             <?php
                                 $f_array = array(0 => "No", 1 => "Yes");
-                                echo form_dropdown('force_web_view_mobie', $f_array);
+                                echo form_dropdown('force_web_view_mobie', $f_array,$model->force_web_view_mobie);
                             ?>
                         </div>
                     </fieldset>

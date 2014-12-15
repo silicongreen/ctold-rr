@@ -18,7 +18,7 @@
                             {
                                 if($value=="")
                                 {
-                                   $value = "styles/layouts/tdsfront/images/no_image/fb.jpg"; 
+                                   $value = "styles/layouts/tdsfront/images/no_image/fb-new.jpg"; 
                                 }    
                                 $value = base_url().$value;
                                 

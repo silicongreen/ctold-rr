@@ -83,6 +83,50 @@ if (!function_exists('get_post_image_type_content'))
     }
 
 }
+if (!function_exists('getFileType'))
+{
+
+    function getFileType($file)
+    {
+        //Deprecated, but still works if defined...<br>
+        if (function_exists("mime_content_type"))
+            return mime_content_type($file);
+        //New way to get file type, but not supported by all yet.<br>
+        else if (function_exists("finfo_open"))
+        {
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $type = finfo_file($finfo, $file);
+            finfo_close($finfo);
+            return $type;
+        }
+//Otherwise...just use the file extension<br>
+        else
+        {
+            $types = array(
+                'jpg' => 'image/jpeg', 'jpeg' => 'image/jpeg', 'png' => 'image/png',
+                'gif' => 'image/gif', 'bmp' => 'image/bmp'
+            );
+            $ext = substr($file, strrpos($file, '.') + 1);
+            if (key_exists($ext, $types))
+                return $types[$ext];
+            return "unknown";
+        }
+    }
+
+}
+
+if (!function_exists('getclassactionbox'))
+{
+
+    function acceptableType($type)
+    {
+        $array = array("image/jpeg", "image/jpg", "image/png", "image/png", "image/gif");
+        if (in_array($type, $array))
+            return true;
+        return false;
+    }
+
+}
 
 if (!function_exists('getclassactionbox'))
 {

@@ -1082,6 +1082,11 @@ class home extends MX_Controller {
         
         if($obj_post_data->referance_id > 0)
         {
+          $url_main = create_link_url(NULL, $obj_post_data->headline,$obj_post_data->referance_id);
+        
+          $only_link = str_replace(base_url(), "", $url_main);
+        
+          $only_link_encoded = urlencode($only_link);
           $only_link_encoded = $only_link_encoded."/". $obj_post_data->language; 
         } 
         

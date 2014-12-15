@@ -64,7 +64,7 @@ class champs21header extends widget
         $user_school = new User_school();
         $user_school_data = $user_school->get_user_school($user_id);
         
-        if($user_school_data != FALSE) {
+        if( $user_school_data != FALSE && !empty($user_id) ) {
             
             $school_obj = new schools($user_school_data[0]->school_id);
             $data['my_school_menu_uri'] = 'schools/' . sanitize($school_obj->name);

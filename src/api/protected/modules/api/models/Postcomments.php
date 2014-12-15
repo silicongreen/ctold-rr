@@ -75,15 +75,19 @@ class Postcomments extends CActiveRecord
             $criteria->limit = 30;
             $obj_comments_post = $this->findAll($criteria);
             $comments_post = array();
-            
+            $i = 0;
             if($obj_comments_post)
-            foreach($obj_comments_post as $value)
             {
-                $comments_post[$i]['id'] = $value->id;
-                $comments_post[$i]['title'] = $value->title;
-                $comments_post[$i]['details'] = $value->details;
-                $comments_post[$i]['created_date'] = $value->created_date;
-            }    
+                $i = 0;
+                foreach($obj_comments_post as $value)
+                {
+                    $comments_post[$i]['id'] = $value->id;
+                    $comments_post[$i]['title'] = $value->title;
+                    $comments_post[$i]['details'] = $value->details;
+                    $comments_post[$i]['created_date'] = $value->created_date;
+                    $i++;
+                } 
+            }
             return $comments_post;
             
         }

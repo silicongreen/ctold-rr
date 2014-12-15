@@ -28,7 +28,7 @@ class FreeuserController extends Controller
                     "getuserinfo", "goodread", "readlater", "goodreadall", "goodreadfolder", "removegoodread"
                     , "schoolsearch", "school", "createschool", "schoolpage", "schoolactivity", "candle"
                     , "garbagecollector","getschoolteacherbylinepost","createcachesinglenews","addwow", 
-                    'set_preference', 'get_preference','addgcm','getallgcm','getschoolinfo','joinschool','candleschool','leaveschool'),
+                    'set_preference','addcomments', 'get_preference','addgcm','getallgcm','getschoolinfo','joinschool','candleschool','leaveschool'),
                 'users' => array('*'),
             ),
             array('deny', // deny all users

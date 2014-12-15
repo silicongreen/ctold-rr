@@ -1144,8 +1144,18 @@ class FreeuserController extends Controller
                         $comments_data = $coments_obj_for_all->getCommentsPost($post_id,$page_number,$page_size);
                     }    
                 }
-                $response['status']['total'] = $comments_total;
-                $response['status']['comments_data'] = $comments_data;
+                
+                
+                $response['data']['total'] = $comments_total;
+                $has_next = false;
+                if ($response['data']['total'] > $page_number * $page_size)
+                {
+                    $has_next = true;
+                }
+
+                $response['data']['has_next'] = $has_next;
+                
+                $response['data']['comments'] = $comments_data;
                 $response['status']['code'] = 200;
                 $response['status']['msg'] = "Success"; 
             }
@@ -1194,7 +1204,7 @@ class FreeuserController extends Controller
                         $comments_data = $coments_obj_for_all->getCommentsTotal($post_id);
                     }    
                 }
-                $response['status']['comments_total'] = $comments_data;
+                $response['data']['total'] = $comments_data;
                 $response['status']['code'] = 200;
                 $response['status']['msg'] = "Success"; 
             }

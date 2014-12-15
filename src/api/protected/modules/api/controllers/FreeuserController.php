@@ -1119,7 +1119,7 @@ class FreeuserController extends Controller
         
         if($post_id && $user_id && $title && $details)
         {
-            $post_value = $this->getSingleNewsFromCache($id);
+            $post_value = $this->getSingleNewsFromCache($post_id);
             if($post_value['can_comment']==1)
             {
                 $coments_obj = new Postcomments();

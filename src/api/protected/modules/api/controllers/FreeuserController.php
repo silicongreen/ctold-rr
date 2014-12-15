@@ -1145,7 +1145,7 @@ class FreeuserController extends Controller
                     }    
                 }
                 $response['status']['total'] = $comments_total;
-                $response['status']['comments_total'] = $comments_data;
+                $response['status']['comments_data'] = $comments_data;
                 $response['status']['code'] = 200;
                 $response['status']['msg'] = "Success"; 
             }

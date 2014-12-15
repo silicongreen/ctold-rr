@@ -28,7 +28,7 @@ class FreeuserController extends Controller
                     "getuserinfo", "goodread", "readlater", "goodreadall", "goodreadfolder", "removegoodread"
                     , "schoolsearch", "school", "createschool", "schoolpage", "schoolactivity", "candle"
                     , "garbagecollector","getschoolteacherbylinepost","createcachesinglenews","addwow", 
-                    'set_preference','addcomments', 'get_preference','addgcm','getallgcm','getschoolinfo','joinschool','candleschool','leaveschool'),
+                    'set_preference','addcomments','getcomments', 'get_preference','addgcm','getallgcm','getschoolinfo','joinschool','candleschool','leaveschool'),
                 'users' => array('*'),
             ),
             array('deny', // deny all users
@@ -1109,6 +1109,57 @@ class FreeuserController extends Controller
        }
        return $singlepost;
     }
+    public function actionGetComments()
+    {
+        $post_id = Yii::app()->request->getPost('post_id');
+        $user_id = Yii::app()->request->getPost('user_id');
+        $page_number = Yii::app()->request->getPost('page_number');
+        $page_size = Yii::app()->request->getPost('page_size');
+        if (empty($page_number))
+        {
+            $page_number = 1;
+        }
+        if (empty($page_size))
+        {
+            $page_size = 9;
+        }
+        
+        
+        if($post_id)
+        {
+            $post_value = $this->getSingleNewsFromCache($post_id);
+            if($post_value['can_comment']==1)
+            { 
+                if($post_value['show_comment_to_all'] || ($user_id && $user_id = $post_value['user_id']))
+                {
+                    $coments_obj_for_all = new Postcomments();
+                    if(($user_id && $user_id = $post_value['user_id']))
+                    {
+                        $comments_data = $coments_obj_for_all->getCommentsPost($post_id,$page_number,$page_size,true);
+                    } 
+                    else
+                    {
+                        $comments_data = $coments_obj_for_all->getCommentsPost($post_id,$page_number,$page_size);
+                    }    
+                }
+                $response['status']['comments_total'] = $comments_data;
+                $response['status']['code'] = 200;
+                $response['status']['msg'] = "Success"; 
+            }
+            else
+            {
+                $response['status']['code'] = 400;
+                $response['status']['msg'] = "Success";  
+            }    
+        }
+        else
+        {
+           $response['status']['code'] = 400;
+           $response['status']['msg'] = "BAD_REQUEST"; 
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    }   
     
     public function actionAddComments()
     {
@@ -1133,14 +1184,14 @@ class FreeuserController extends Controller
                     $coments_obj_for_all = new Postcomments();
                     if(($user_id && $user_id = $post_value['user_id']))
                     {
-                        $comments_data = $coments_obj_for_all->getCommentsPost($post_id,true);
+                        $comments_data = $coments_obj_for_all->getCommentsTotal($post_id,true);
                     } 
                     else
                     {
-                        $comments_data = $coments_obj_for_all->getCommentsPost($post_id);
+                        $comments_data = $coments_obj_for_all->getCommentsTotal($post_id);
                     }    
                 }
-                $response['status']['comments_data'] = $comments_data;
+                $response['status']['comments_total'] = $comments_data;
                 $response['status']['code'] = 200;
                 $response['status']['msg'] = "Success"; 
             }
@@ -1201,11 +1252,11 @@ class FreeuserController extends Controller
                     $coments_obj = new Postcomments();
                     if(($user_id && $user_id = $singlepost['user_id']))
                     {
-                        $comments_data = $coments_obj->getCommentsPost($id,true);
+                        $comments_data = $coments_obj->getCommentsTotal($id,true);
                     } 
                     else
                     {
-                        $comments_data = $coments_obj->getCommentsPost($id);
+                        $comments_data = $coments_obj->getCommentsTotal($id);
                     }    
                 }
             }
@@ -1337,7 +1388,7 @@ class FreeuserController extends Controller
 
 
             $response['data']['post']           = $singlepost;
-            $response['data']['comments_data']  = $comments_data;
+            $response['data']['comments_total']  = $comments_data;
             $response['status']['code']         = 200;
             $response['status']['msg']          = "DATA_FOUND";
         }

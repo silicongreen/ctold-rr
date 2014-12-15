@@ -16,6 +16,7 @@ class Postcomments extends CActiveRecord
 	/**
 	 * @return string the associated database table name
 	 */
+        public $total = 0;
 	public function tableName()
 	{
 		return 'tds_post_comments';
@@ -56,7 +57,34 @@ class Postcomments extends CActiveRecord
 	{
 		return parent::model($className);
 	}
-        public function getCommentsPost($post_id,$user_post=false)
+        public function getCommentsTotal($post_id,$user_post=false)
+        {
+
+            $criteria = new CDbCriteria();
+            $criteria->select = 'count(t.id) as total';
+            $criteria->compare('post_id', $post_id);
+            if($user_post==false)
+            {
+                $criteria->compare('show_comment', 1);
+            }  
+            $criteria->with = array(
+                        'post' => array(
+                            'select' => '',
+                            'joinType' => "INNER JOIN"
+                        )
+            );
+            $criteria->group = "t.post_id";
+            $data = $this->find($criteria);
+            if ($data)
+            {
+                return $data->total;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+        public function getCommentsPost($post_id,$page = 1, $page_size = 10,$user_post=false)
         {
             $criteria = new CDbCriteria;
             $criteria->select = 't.id,t.title,t.details,t.created_date';
@@ -72,7 +100,11 @@ class Postcomments extends CActiveRecord
                             'joinType' => "INNER JOIN"
                         )
             );
-            $criteria->limit = 30;
+            
+            $start = ($page - 1) * $page_size;
+            $criteria->limit = $page_size;
+
+            $criteria->offset = $start;
             $obj_comments_post = $this->findAll($criteria);
             $comments_post = array();
             $i = 0;

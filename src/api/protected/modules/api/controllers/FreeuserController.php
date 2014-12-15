@@ -1108,6 +1108,55 @@ class FreeuserController extends Controller
           Yii::app()->cache->set($cache_name, $singlepost, 5184000); 
        }
        return $singlepost;
+    }
+    
+    public function actionAddComments()
+    {
+        $post_id = Yii::app()->request->getPost('post_id');
+        $user_id = Yii::app()->request->getPost('user_id');
+        $title = Yii::app()->request->getPost('title');
+        $details = Yii::app()->request->getPost('details');
+        
+        if($post_id && $user_id && $title && $details)
+        {
+            $post_value = getSingleNewsFromCache($id);
+            if($post_value['can_comment']==1)
+            {
+                $coments_obj = new Postcomments();
+                $coments_obj->post_id = $post_id;
+                $coments_obj->user_id = $user_id;
+                $coments_obj->title = $title;
+                $coments_obj->details = $details;
+                $coments_obj->save(); 
+                if($post_value['show_comment_to_all'] || ($user_id = $post_value['user_id']))
+                {
+                    $coments_obj_for_all = new Postcomments();
+                    if(($user_id && $user_id = $post_value['user_id']))
+                    {
+                        $comments_data = $coments_obj_for_all->getCommentsPost($post_id,true);
+                    } 
+                    else
+                    {
+                        $comments_data = $coments_obj_for_all->getCommentsPost($post_id);
+                    }    
+                }
+                $response['status']['comments_data'] = $comments_data;
+                $response['status']['code'] = 200;
+                $response['status']['msg'] = "Success"; 
+            }
+            else
+            {
+                $response['status']['code'] = 400;
+                $response['status']['msg'] = "Success";  
+            }    
+        }
+        else
+        {
+           $response['status']['code'] = 400;
+           $response['status']['msg'] = "BAD_REQUEST"; 
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
     }        
 
     public function actionGetSingleNews()
@@ -1143,6 +1192,23 @@ class FreeuserController extends Controller
             
             
             Yii::app()->cache->set($cache_name, $singlepost, 5184000);
+            
+            $comments_data = array();
+            if($singlepost['can_comment']==1)
+            {
+                if($singlepost['show_comment_to_all'] || ($user_id && $user_id = $singlepost['user_id']))
+                {
+                    $coments_obj = new Postcomments();
+                    if(($user_id && $user_id = $singlepost['user_id']))
+                    {
+                        $comments_data = $coments_obj->getCommentsPost($id,true);
+                    } 
+                    else
+                    {
+                        $comments_data = $coments_obj->getCommentsPost($id);
+                    }    
+                }
+            }
             //CREATE CACHE FOR SINGLE NEWS
             
             
@@ -1197,7 +1263,7 @@ class FreeuserController extends Controller
             }
 
             $postcategoryObj = new PostCategory();
-            $allpostid = $postcategoryObj->getPostAll($category_id, $user_type);
+            //$allpostid = $postcategoryObj->getPostAll($category_id, $user_type);
 
 
 
@@ -1245,7 +1311,7 @@ class FreeuserController extends Controller
             }    
             //$subcategory = $categoryModel->getSubcategory($category_id);
             //$response['data']['subcategory'] = $subcategory;
-            $response['data']['allpostid'] = $allpostid;
+            //$response['data']['allpostid'] = $allpostid;
             $response['data']['good_read'] = $good_read;
             $response['data']['previous_id'] = $previous_id;
             $response['data']['next_id'] = $next_id;
@@ -1270,9 +1336,10 @@ class FreeuserController extends Controller
             }    
 
 
-            $response['data']['post'] = $singlepost;
-            $response['status']['code'] = 200;
-            $response['status']['msg'] = "DATA_FOUND";
+            $response['data']['post']           = $singlepost;
+            $response['data']['comments_data']  = $comments_data;
+            $response['status']['code']         = 200;
+            $response['status']['msg']          = "DATA_FOUND";
         }
         else
         {

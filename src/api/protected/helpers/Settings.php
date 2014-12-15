@@ -352,6 +352,10 @@ class Settings {
             //need to change into single news
             $post_array['post_type_mobile'] = $postValue->mobile_view_type;
             
+            $post_array['can_comment'] = $postValue->can_comment;
+            
+            $post_array['show_comment_to_all'] = $postValue->show_comment_to_all;
+            
             $post_array['video_file'] = "";
 
             if ($postValue->video_file)

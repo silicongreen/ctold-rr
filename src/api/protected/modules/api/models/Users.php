@@ -167,7 +167,7 @@ class Users extends CActiveRecord {
      * @return boolean whether login is successful
      */
     public function login() {
-        $user = $user->checkUser();
+        $user = $this->checkUser();
 
         if ($user !== false) {
             $userIdentity = new UserIdentity($this, $user);
@@ -187,9 +187,9 @@ class Users extends CActiveRecord {
             {
                 if($data->paid_password && $data->paid_username)
                 {
-                   $user->username = $data->paid_username;
-                   $user->hashed_password = $data->paid_password;
-                   $user = $user->checkUser();
+                   $this->username = $data->paid_username;
+                   $this->hashed_password = $data->paid_password;
+                   $user = $this->checkUser();
                    if ($user !== false) {
                         $userIdentity = new UserIdentity($this, $user);
 

@@ -77,7 +77,7 @@ class Postcomments extends CActiveRecord
             $comments_post = array();
             
             if($obj_comments_post)
-            foreach($comments_post as $value)
+            foreach($obj_comments_post as $value)
             {
                 $comments_post[$i]['id'] = $value->id;
                 $comments_post[$i]['title'] = $value->title;

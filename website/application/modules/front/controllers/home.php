@@ -1080,6 +1080,11 @@ class home extends MX_Controller {
         
         $only_link_encoded = urlencode($only_link);
         
+        if($obj_post_data->referance_id > 0)
+        {
+          $only_link_encoded = $only_link_encoded."/". $obj_post_data->language; 
+        } 
+        
         $encoded_url = base_url().$only_link_encoded;
         $ar_fb = array(
             "type"          => "website",

@@ -38,16 +38,16 @@ return array(
 
         'user' => array(
             // enable cookie-based authentication
-            'allowAutoLogin' => false,
+            'allowAutoLogin' => true,
         ),
         // uncomment the following to enable URLs in path-format
-        'session' => array(
-            'autoStart' => true,
-            'cookieMode' => 'none',
-            'useTransparentSessionID' => true,
-            'sessionName' => 'session',
-            'timeout' => 3600 * 24 * 30 * 12,
-        ),
+//        'session' => array(
+//            'autoStart' => true,
+//            'cookieMode' => 'none',
+//            'useTransparentSessionID' => true,
+//            'sessionName' => 'session',
+//            'timeout' => 3600 * 24 * 30 * 12,
+//        ),
         'urlManager' => array(
             'urlFormat' => 'path',
             'showScriptName' => false,

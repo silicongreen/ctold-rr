@@ -1135,13 +1135,16 @@ class FreeuserController extends Controller
                     $coments_obj_for_all = new Postcomments();
                     if(($user_id && $user_id = $post_value['user_id']))
                     {
+                        $comments_total = $coments_obj_for_all->getCommentsTotal($post_id,true);
                         $comments_data = $coments_obj_for_all->getCommentsPost($post_id,$page_number,$page_size,true);
                     } 
                     else
                     {
+                        $comments_total = $coments_obj_for_all->getCommentsTotal($post_id);
                         $comments_data = $coments_obj_for_all->getCommentsPost($post_id,$page_number,$page_size);
                     }    
                 }
+                $response['status']['total'] = $comments_total;
                 $response['status']['comments_total'] = $comments_data;
                 $response['status']['code'] = 200;
                 $response['status']['msg'] = "Success"; 

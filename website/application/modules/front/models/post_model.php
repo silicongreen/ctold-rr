@@ -912,6 +912,7 @@ class Post_model extends DataMapper
         $this->db->set_dbprefix('tds_');
         $s_country = visitor_country();
         $country_id = 14; //By Default Bangladesh
+        
         if ($this->config->config['country_filter'])
         {
             $a_country = get_id_by_country($s_country);
@@ -923,7 +924,15 @@ class Post_model extends DataMapper
             $this->db->join("post_country as pc", "post.id = pc.post_id", 'LEFT');
             $this->db->where("( tds_post.all_country = 1 OR pc.country_id = " . $country_id . ")", '', FALSE);
             
-            $this->db->where("tds_post.referance_id", $i_post_id, false);
+            if($referance_id==0)
+            {
+                $this->db->where("tds_post.referance_id", $i_post_id, false);
+            }
+            else
+            {
+                $this->db->where("tds_post.id", $i_post_id, false);
+            } 
+            
             $this->db->where("tds_post.status",5);
             
             $query = $this->db->get(); 
@@ -931,23 +940,14 @@ class Post_model extends DataMapper
             {
                 $rows = $query->result();
                 $s_languages = "";
-                if ( $referance_id > 0 )
-                {
-                    $s_languages .= "en-0,";
-                }    
+   
                 foreach ($rows as $lang)
                 {
-                    if ( $referance_id > 0 && $lang->language == $s_lang )
-                    {
-                        
-                    }
-                    else
-                    {
-                        $s_languages .= $lang->language . "-1,";
-                    }
+
+                    $s_languages .= $lang->language . "-1,";
+
                 }
                 $s_languages = substr($s_languages, 0, -1);
-                
                 
                 
                 return $s_languages;

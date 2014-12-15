@@ -182,7 +182,7 @@ class Users extends CActiveRecord {
             }
         } else {
             $freeuserobj = new Freeusers();
-            $data = $freeuserobj->login($user->username,$user->hashed_password);
+            $data = $freeuserobj->login($this->username,$this->hashed_password);
             if($data)
             {
                 if($data->paid_password && $data->paid_username)

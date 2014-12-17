@@ -42,7 +42,10 @@ class Postcomments extends CActiveRecord
 	{
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
-		return array('post' => array(self::BELONGS_TO, 'Post', 'post_id'),);
+		return array(
+                    'post' => array(self::BELONGS_TO, 'Post', 'post_id'),
+                    'user' => array(self::BELONGS_TO, 'Freeusers', 'post_id')
+                 );
 	}
 
 	
@@ -98,6 +101,10 @@ class Postcomments extends CActiveRecord
                         'post' => array(
                             'select' => '',
                             'joinType' => "INNER JOIN"
+                        ),
+                        'user' => array(
+                            'select' => 'user.first_name,user.middle_name,user.last_neme.user.email',
+                            'joinType' => "INNER JOIN"
                         )
             );
             
@@ -117,6 +124,15 @@ class Postcomments extends CActiveRecord
                     $comments_post[$i]['title'] = $value->title;
                     $comments_post[$i]['details'] = $value->details;
                     $comments_post[$i]['created_date'] = $value->created_date;
+                    
+                    $username = ($value['user']->first_name)?$value['user']->first_name." ":"";
+                    $username.= ($value['user']->middle_name)?$value['user']->middle_name." ":"";
+                    $username.= ($value['user']->last_neme)?$value['user']->last_neme:"";
+                    if($username == "")
+                    {
+                       $username =  $value['user']->email;
+                    }    
+                    $comments_post[$i]['username'] = $username;
                     $i++;
                 } 
             }

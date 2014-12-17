@@ -69,7 +69,7 @@ class UserController extends Controller {
             
             if ($user->validate()) {
 
-                if ($user->login()) {
+                if ($user_paid_login_data = $user->login()) {
 
                     if($data = $free_user->login($username,$password, true))
                     {
@@ -105,7 +105,23 @@ class UserController extends Controller {
                     $response['data']['paid_user']['is_parent'] = Yii::app()->user->isParent;
                     $response['data']['paid_user']['is_teacher'] = Yii::app()->user->isTeacher;
                     $response['data']['paid_user']['school_id'] = Yii::app()->user->schoolId;
-
+                    
+                    $school_obj  = new Schools();
+                    
+                    $school_details = $school_obj->findByPk(Yii::app()->user->schoolId);
+                    
+                  
+                    
+                    $school_code = $school_details->code;
+                    
+                    if(is_array($user_paid_login_data))
+                    {
+                      $username =  $user_paid_login_data[1]; 
+                      $password =  $user_paid_login_data[0];
+                    }
+                    
+                      
+                    
                     $attendance = new Attendances();
                     $response['data']['weekend'] = $attendance->getWeekend(Yii::app()->user->schoolId);
 
@@ -117,8 +133,20 @@ class UserController extends Controller {
                     if (!isset($user_secret)) {
                         $response['data']['paid_user']['secret'] = Yii::app()->user->user_secret;
                     }
-
+                    
                     $response['data']['session'] = Yii::app()->session->getSessionID();
+                    $fedenatoken = Settings::getFedenaToken($school_code, $username, $password);
+                    
+                    if(isset($fedenatoken->access_token))
+                    {
+                        Yii::app()->user->setState("access_token_user",$fedenatoken->access_token);
+                    }
+                    else
+                    {
+                        $response['data'] = array();
+                        $response['status']['code'] = 404;
+                        $response['status']['msg'] = "USER_NOT_FOUND";
+                    }  
 
                     $response['status']['code'] = 200;
                     $response['status']['msg'] = "USER_FOUND";

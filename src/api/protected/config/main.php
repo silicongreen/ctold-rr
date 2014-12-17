@@ -48,6 +48,10 @@ return array(
 //            'sessionName' => 'session',
 //            'timeout' => 3600 * 24 * 30 * 12,
 //        ),
+        'curl' => array(
+            'class' => 'ext.curl.Curl',
+            'options' => array(/* additional curl options */),
+        ),
         'urlManager' => array(
             'urlFormat' => 'path',
             'showScriptName' => false,

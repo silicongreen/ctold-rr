@@ -20,7 +20,7 @@ class HomeworkController extends Controller
     {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'Done', 'getproject'),
+                'actions' => array('index', 'Done', 'getproject','getsubject','addhomework'),
                 'users' => array('*'),
             ),
             array('deny', // deny all users
@@ -181,6 +181,106 @@ class HomeworkController extends Controller
         }
         echo CJSON::encode($response);
         Yii::app()->end();
+    }
+    public function actionGetSubject()
+    {
+        $user_secret = Yii::app()->request->getPost('user_secret');
+        
+        if(Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher)
+        {
+            $emplyee_subject = new EmployeesSubjects();
+            $url_end = "api/batches";
+            $data = array("search[]"=>"");
+            $subjects = $emplyee_subject->getSubject(Yii::app()->user->profileId);
+            $response['data']['subjects'] = $subjects;
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "EVENTS_FOUND";
+            
+        }
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+        
+    }
+    public function actionAddHomework()
+    {
+        $user_secret = Yii::app()->request->getPost('user_secret');
+        $subject_id = Yii::app()->request->getPost('subject_id');
+        $content = Yii::app()->request->getPost('content');
+        $title = Yii::app()->request->getPost('title');
+        $duedate = Yii::app()->request->getPost('duedate');
+        $school_id = Yii::app()->user->schoolId;
+        
+        if(Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher && $subject_id
+         && $content && $title && $duedate && $school_id)
+        {
+            $homework = new Assignments();
+            $homework->subject_id = $subject_id;
+            $homework->content = $content;
+            $homework->title = $title;
+            $homework->duedate = $duedate;
+            $homework->school_id = Yii::app()->user->schoolId;
+            $homework->employee_id = Yii::app()->user->profileId;
+            
+            $homework->created_at = date("Y-m-d H:i:s");
+            
+            $homework->updated_at = date("Y-m-d H:i:s");
+            
+           
+            
+            
+            $studentsubjectobj = new StudentsSubjects();
+            
+            $subobj = new Subjects();
+            $subject_details = $subobj->findByPk($subject_id);
+            
+            
+            
+            $stdobj = new Students();
+            
+            $students1 = $stdobj->getStudentByBatch($subject_details->batch_id);
+            $students2 = $studentsubjectobj->getSubjectStudent($subject_id);
+            
+            $students = array_unique(array_merge($students1,$students2));
+            $homework->student_list = implode(",", $students);
+            $homework->save();
+            
+            
+            
+            foreach($students as $value)
+            {
+                $reminder = new Reminders();
+                $reminder->sender = Yii::app()->user->id;
+                $reminder->subject = Settings::$HomeworkText.":".$title;
+                $reminder->body = Settings::$HomeworkText." Added for ".$subject_details->name." Please check the homework For details";
+                $reminder->recipient = $value;
+                $reminder->school_id = Yii::app()->user->schoolId;
+            
+            
+                $reminder->created_at = date("Y-m-d H:i:s");
+            
+                $reminder->updated_at = date("Y-m-d H:i:s");
+                $reminder->save();
+            }    
+            
+            
+            
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "SUCCESS";
+            
+        }
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+        
     }
     public function actionDone()
     {

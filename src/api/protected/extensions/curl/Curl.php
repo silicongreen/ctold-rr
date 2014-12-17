@@ -121,7 +121,10 @@ class Curl
         $this->_info = null;
         $this->_status = null;
 
+        $url = urldecode($url);
+      
         $ch = curl_init($url);
+        
         curl_setopt_array($ch, $options);
 
         $output = curl_exec($ch);

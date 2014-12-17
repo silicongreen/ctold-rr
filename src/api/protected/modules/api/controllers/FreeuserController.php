@@ -1178,10 +1178,10 @@ class FreeuserController extends Controller
     {
         $post_id = Yii::app()->request->getPost('post_id');
         $user_id = Yii::app()->request->getPost('user_id');
-        $title = Yii::app()->request->getPost('title');
+        //$title = Yii::app()->request->getPost('title');
         $details = Yii::app()->request->getPost('details');
         
-        if($post_id && $user_id && $title && $details)
+        if($post_id && $user_id  && $details)
         {
             $post_value = $this->getSingleNewsFromCache($post_id);
             if($post_value['can_comment']==1)
@@ -1189,7 +1189,7 @@ class FreeuserController extends Controller
                 $coments_obj = new Postcomments();
                 $coments_obj->post_id = $post_id;
                 $coments_obj->user_id = $user_id;
-                $coments_obj->title = $title;
+                //$coments_obj->title = $title;
                 $coments_obj->details = $details;
                 $coments_obj->save(); 
                 if($post_value['show_comment_to_all'] || ($user_id = $post_value['user_id']))
@@ -1211,7 +1211,7 @@ class FreeuserController extends Controller
             else
             {
                 $response['status']['code'] = 400;
-                $response['status']['msg'] = "Success";  
+                $response['status']['msg'] = "BAD_REQUEST";  
             }    
         }
         else

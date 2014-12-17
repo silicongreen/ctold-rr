@@ -103,7 +103,7 @@ class Postcomments extends CActiveRecord
                             'joinType' => "INNER JOIN"
                         ),
                         'user' => array(
-                            'select' => 'user.first_name,user.middle_name,user.last_neme.user.email',
+                            'select' => 'user.first_name,user.middle_name,user.last_name.user.email',
                             'joinType' => "INNER JOIN"
                         )
             );

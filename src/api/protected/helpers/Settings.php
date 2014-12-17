@@ -12,6 +12,9 @@ class Settings {
     public static $count_update_by = 3;
     public static $school_category_id = 58;
     public static $wow_login = false;
+    public static $client_id = "champs21$#@!";
+    public static $client_secret = "champs21!@#$";
+    
     
     public static $school_join_approved = array(
         1 => false,
@@ -108,6 +111,33 @@ class Settings {
             'operator' => "AND",
         ),
     );
+    
+    public static function getFedenaToken($school_code,$username,$password)
+    {
+        $endPoint = "plus.champs21.com";
+        
+        $client_id = sha1($school_code . Settings::$client_id);
+        $client_secret = sha1($school_code . Settings::$client_secret);
+        $redirect_url = 'http://' . $school_code . '.' . $endPoint . '/authenticate';
+        $url = 'http://' . $school_code . '.' . $endPoint . '/oauth/token';
+        $data = array(
+                "client_id"=>$client_id,
+                "client_secret"=>$client_secret,
+                "username"=>$username,
+                "password"=>$password,
+                "redirect_uri"=>$redirect_url,
+                "grant_type"=>"password"
+        );
+        
+        
+       
+        $output = Yii::app()->curl->post($url,$data);
+       
+        $joutput = json_decode(($output));
+      
+        return $joutput;
+        
+    }        
 
     public static function getCurrentDay($date = '') {
 

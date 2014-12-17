@@ -137,6 +137,9 @@ class UserController extends Controller {
                     $response['data']['session'] = Yii::app()->session->getSessionID();
                     $fedenatoken = Settings::getFedenaToken($school_code, $username, $password);
                     
+                    
+                    Yii::app()->user->setState("school_code",$school_code);
+                    
                     if(isset($fedenatoken->access_token))
                     {
                         Yii::app()->user->setState("access_token_user",$fedenatoken->access_token);

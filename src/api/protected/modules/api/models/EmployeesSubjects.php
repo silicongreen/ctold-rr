@@ -45,7 +45,9 @@ class EmployeesSubjects extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-		);
+                        'employee' => array(self::BELONGS_TO, 'Employees', 'employee_id'),
+                        'subject' => array(self::BELONGS_TO, 'Subjects', 'subject_id'),
+                );
 	}
 
 	/**
@@ -103,4 +105,46 @@ class EmployeesSubjects extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        public function getSubject($employee_id)
+        {
+            $criteria = new CDbCriteria;
+            $criteria->select = 't.*';
+            $criteria->compare("t.employee_id", $employee_id);
+           
+            $criteria->with = array(
+                'subject' => array(
+                    'select' => 'subject.id,subject.name',
+                    'joinType' => "INNER JOIN",
+                    'with' => array(
+                        "Subjectbatch" => array(
+                            "select" => "Subjectbatch.name",
+                            'joinType' => "INNER JOIN",
+                            'with' => array(
+                                "courseDetails" => array(
+                                    "select" => "courseDetails.course_name",
+                                    'joinType' => "INNER JOIN",
+                                )
+                            )
+                        )
+                    )
+                )
+            );
+           
+
+
+            
+            $obj_subject = $this->findAll($criteria);
+        
+            $subject = array();
+            $i = 0; 
+            foreach ($obj_subject as $value)
+            {
+               $subject[$i]['id'] = $value['subject']->id;
+               $subject[$i]['name'] = $value['subject']->name." ".$value['subject']['Subjectbatch']->name." ".$value['subject']['Subjectbatch']['courseDetails']->course_name;
+               $i++; 
+            }
+
+            return $subject;
+        }
+        
 }

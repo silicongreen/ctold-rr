@@ -128,4 +128,21 @@ class StudentsSubjects extends CActiveRecord
             }    
             return $subject_array;
         }
+        
+        public function getSubjectStudent($subject_id)
+        {
+            $criteria = new CDbCriteria();
+            $criteria->select = 't.student_id';
+            $criteria->compare('t.subject_id', $subject_id);
+            $students = $this->findAll($criteria); 
+            $students_array = array();
+            
+            foreach($students as $value)
+            {
+                $students_array[] = $value->student_id;
+            } 
+            
+            return $students_array;
+        }
+        
 }

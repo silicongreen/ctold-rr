@@ -20,7 +20,7 @@ class CalenderController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('getAttendence', 'academic'),
+                'actions' => array('getAttendence', 'academic','getbatch'),
                 'users' => array('*'),
             ),
             array('deny', // deny all users
@@ -217,6 +217,55 @@ class CalenderController extends Controller {
 
         echo CJSON::encode($response);
         Yii::app()->end();
+    }
+    public function actionGetBatch() 
+    {
+       
+        $user_secret = Yii::app()->request->getPost('user_secret');
+        if(Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher)
+        {
+            $url_end = "api/batches";
+            $data = array("search[]"=>"");
+            $batches = Settings::getDataApi($data,$url_end);
+            $response['data'] = $batches;
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "EVENTS_FOUND";
+            
+        }
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+        
+        
+    }
+    public function actionGetBatchStudent() 
+    {
+       
+        $user_secret = Yii::app()->request->getPost('user_secret');
+        $user_secret = Yii::app()->request->getPost('user_secret');
+        if(Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher)
+        {
+            $url_end = "api/batches";
+            $data = array("search[]"=>"");
+            $batches = Settings::getDataApi($data,$url_end);
+            $response['data'] = $batches;
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "EVENTS_FOUND";
+            
+        }
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+        
+        
     }
 
 }

@@ -1,5 +1,4 @@
 <?php
-
 class Settings {
 
     public static $domain_name = 'http://www.champs21.com/';
@@ -14,6 +13,11 @@ class Settings {
     public static $wow_login = false;
     public static $client_id = "champs21$#@!";
     public static $client_secret = "champs21!@#$";
+    public static $endPoint = "plus.champs21.com";
+    public static $HomeworkText = "New Homework";
+    public static $AssignmentText = "New Assignment";
+    
+    
     
     
     public static $school_join_approved = array(
@@ -118,8 +122,8 @@ class Settings {
         
         $client_id = sha1($school_code . Settings::$client_id);
         $client_secret = sha1($school_code . Settings::$client_secret);
-        $redirect_url = 'http://' . $school_code . '.' . $endPoint . '/authenticate';
-        $url = 'http://' . $school_code . '.' . $endPoint . '/oauth/token';
+        $redirect_url = 'http://' . $school_code . '.' . self::$endPoint . '/authenticate';
+        $url = 'http://' . $school_code . '.' . self::$endPoint . '/oauth/token';
         $data = array(
                 "client_id"=>$client_id,
                 "client_secret"=>$client_secret,
@@ -137,7 +141,29 @@ class Settings {
       
         return $joutput;
         
-    }        
+    }   
+    public static function getDataApi($data,$url_end,$type="get")
+    {
+        $url = 'http://' . Yii::app()->user->school_code . '.' . self::$endPoint ."/". $url_end;
+      
+        $headers = array('Content-type'=>'application/x-www-form-urlencoded',
+            'Authorization'=>'Token token="' . Yii::app()->user->access_token_user.'"'
+        ); 
+        
+        if($type=="post")
+        {
+            $output = Yii::app()->curl->setHeaders($headers)->post($url,$data);
+        }   
+        else
+        {
+            $output = Yii::app()->curl->setHeaders($headers)->get($url,$data);
+        } 
+     
+        $xml = simplexml_load_string($output);
+        $json = json_encode($xml);
+        $array = json_decode($json,TRUE);
+        return $array;
+    }
 
     public static function getCurrentDay($date = '') {
 

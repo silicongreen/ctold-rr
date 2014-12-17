@@ -230,6 +230,25 @@ class Students extends CActiveRecord {
         $criteria->compare('sibling_id', $sibling_id);
         return $this->findAll($criteria);
     }
+    
+    public function getStudentByBatch($batch_id) {
+
+        $criteria = new CDbCriteria();
+        
+        $criteria->select = 't.id';
+        $criteria->compare('batch_id',$batch_id);
+        
+        $students = $this->findAll($criteria);
+        
+        $students_array = array();
+            
+        foreach($students as $value)
+        {
+            $students_array[] = $value->id;
+        } 
+
+        return $students_array;
+    }
 
     public function getParentId($student_id) {
 

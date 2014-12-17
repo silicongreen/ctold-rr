@@ -1,3 +1,11 @@
+.ch_homework_answers_wrapper
+{
+    float: left;
+    width: 95%;
+    background-color: #fff;
+    padding:0px 30px 30px;  
+    border:1px solid #CCC;
+}
 .assignment-question{
     background-color: #EEE;
     padding:10px;
@@ -65,7 +73,7 @@
     margin-left:40px;
     padding: 7px 10px;
     color: #fff;
-    background: #27292B;
+    background: #db3434;
     -moz-border-radius:10px;
     -webkit-border-radius:10px;
     font-weight: bold;
@@ -75,8 +83,8 @@
     cursor:pointer;
     text-decoration: none;
 }
-.submit-button:hover{
-    background:  #373B3F;
+.submit_button:hover {
+    background:#7e0000;
 }
 #evaluate-answer{
     height:40px;

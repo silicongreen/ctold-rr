@@ -1,3 +1,11 @@
+.ch_homework_answers_wrapper
+{
+    float: left;
+    width: 95%;
+    background-color: #fff;
+    padding:0px 30px 30px;  
+    border:1px solid #CCC;
+}
 .text-input-bg textarea  {
     -moz-border-radius:10px 10px 10px 10px;
     -webkit-border-radius:10px;

@@ -12,6 +12,11 @@ class AssignmentsController < ApplicationController
       student=current_user.student_record
       @assignments = Assignment.active.for_student student.id
       @assignments=@assignments.select{|assignment| assignment.subject.batch_id==student.batch_id}
+    elsif    @current_user.parent?
+      target = @current_user.guardian_entry.current_ward_id      
+      student = Student.find_by_id(target)
+      @assignments = Assignment.active.for_student student.id
+      @assignments=@assignments.select{|assignment| assignment.subject.batch_id==student.batch_id}
     end
   end
 

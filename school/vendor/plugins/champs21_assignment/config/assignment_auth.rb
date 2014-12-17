@@ -1,5 +1,24 @@
 authorization do
 
+  role :parent do
+    has_permission_on [:assignment_answers],
+      :to=>[      
+      :download_attachment,            
+      :show]
+    has_permission_on [:assignments],
+      :to=>[
+      :assignment_student_list,
+      :download_attachment,
+      :index,
+      :subject_assignments,
+      :subjects_students_list,
+       ]
+        has_permission_on :assignments, :to=>:show, :join_by=> :or do
+        if_attribute :assignment_student_ids=> contains {user.student_record.id}
+     end
+     
+  end
+  
   role :student do
     has_permission_on [:assignment_answers],
       :to=>[

@@ -1,3 +1,11 @@
+.ch_homework_wrapper
+{
+    float: left;
+    width: 95%;
+    background-color: #fff;
+    padding:0px 30px 30px; 
+    border:1px solid #CCC;
+}
 .student-options a {
     text-decoration: none;
     color: #BB0000
@@ -149,8 +157,13 @@
     float: right;
 }
 .user_button{
+    background:#db3434 !important;
     margin-top: 20px;
     margin-left: 35px;
+}
+.user_button:hover
+{
+    background:#7e0000 !important;
 }
 .answer
 {

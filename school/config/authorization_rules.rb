@@ -2637,7 +2637,18 @@ authorization do
       :view,
       :comment_view,
       :add_comment,
-      :delete_comment]
+      :delete_comment]    
+    has_permission_on [:syllabus],
+      :to => [
+      :index, 
+      :all,
+      :search_news_ajax,
+      :view,
+      :show,
+      :showall,
+      :comment_view,
+      :add_comment,
+      :delete_comment]   
     has_permission_on [:subject], :to => [:index,:list_subjects]
     has_permission_on [:timetable], :to => [:student_view,:update_timetable_view]
     has_permission_on [:attendance], :to => [:student_report]

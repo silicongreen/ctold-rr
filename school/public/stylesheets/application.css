@@ -711,8 +711,8 @@ p.flash-msg {
 #content_wrapper {
     width:980px;
     margin:0 auto 32px;
-    background-color:#fff;
-	padding:0px 25px;
+    /*background-color:#fff;*/
+    padding:0px 25px;
 }
 #side_bar { float:left; width:200px; }
 #champs21_logo {
@@ -1288,14 +1288,14 @@ body > #content_wrapper {
 */
 
 table#listing{
-    background: #c3d9ff;
+    background: #D7D7D7;
     -moz-border-radius:10px;
     -webkit-border-radius:10px;
-    padding:20px 20px 40px;
+    padding:30px 30px 50px;
 }
 table#listing tr.tr-head{
     background: #fff;
-    color:#990a10;
+    color:#000;
     font-weight:bold;
     text-align:left;
 }
@@ -1309,16 +1309,16 @@ table#listing .tr-odd{
     text-align:left;
     padding:50px;
     color:#27292b;
-    font-weight:600;
-    font-size:14px;
+    font-weight:400;
+    font-size:12px;
 }
 table#listing .tr-even{
-    background: #f1f6ff;
+    background: #F5F5F5;
     text-align:left;
     padding:50px;
     color:#27292b;
-    font-weight:600;
-    font-size:14px;
+    font-weight:400;
+    font-size:12px;
 }
 table#listing .tr-read-odd{
     background: #fff;
@@ -1326,7 +1326,7 @@ table#listing .tr-read-odd{
     padding:50px;
     color:#27292b;
     font-weight:normal;
-    font-size:14px;
+    font-size:12px;
 }
 table#listing .tr-read-even{
     background: #f1f6ff;
@@ -1334,7 +1334,7 @@ table#listing .tr-read-even{
     padding:50px;
     color:#27292b;
     font-weight:normal;
-    font-size:14px;
+    font-size:12px;
 }
 table#listing td.col-1{
     width:10%;
@@ -1357,7 +1357,7 @@ table#listing td a:hover{
 }
 table#listing td.col-3{
     width:13%;
-    padding: 5px;
+    padding: 8px;
     padding-left:10px;
 }
 table#listing td.col-4{

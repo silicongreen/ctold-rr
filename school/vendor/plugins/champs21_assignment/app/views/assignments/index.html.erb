@@ -10,10 +10,10 @@
     <% end %>
   </ul>
 </div>
-
+<%#= debug @current_user %>
 </div>
 <div id="page-yield">
-  <% unless flash[:notice].nil? %>
+  <!--<% unless flash[:notice].nil? %>
     <p class="flash-msg"> <%= flash[:notice] %> </p>
   <% end %>
   <% if @current_user.employee?  %>
@@ -74,4 +74,124 @@
     </table>
   <% end %>
 
+</div>
+
+<div class="likhon">LIKHON</div>-->
+
+<div id="page-yield">
+  <% unless flash[:notice].nil? %>
+    <p class="flash-msg"> <%= flash[:notice] %> </p>
+  <% end %>
+  <% if @current_user.employee?  %>
+    <div class="label-field-pair">
+      <label for="assignment_subject"><%= "#{t('subject')}"%></label>
+      <div class="text-input-bg">
+        <% unless @subjects.nil? %>
+          <%= select :assignment, :subject,
+            @subjects.map {|s| ["#{s.name}  - #{s.batch.full_name}",s.id]},
+            {:prompt => "#{t('select_a_subject')}"},
+            {:onChange => "#{remote_function(:url => {:action => "subject_assignments"},
+            :with => "'subject_id='+ value",
+            :before => "Element.show('loader')",
+            :success => "Element.hide('loader')"
+            )}"} %>
+        </div>
+        <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader", :style =>"display: none;" ) %>
+      </div>
+
+
+    <div id="subject_assignments_list" ><div style="height:200px;background-color: #fff;padding: 30px;border:1px solid #CCC;">Please select batch for Search </div></div>
+    <% else %>
+      <p class="flash-msg"> <%= "#{t('there_are_no_subjects_assigned_to_this_employee')}"%> </p>
+    <% end %>
+  <% elsif @current_user.student? %>
+    <div id="listing">
+      <% unless @assignments.empty? %>
+        <ul class="ch_homework">
+        <% @assignments.each_with_index do |assignment,i| %>
+          <%#= debug @assignments %>
+          <li>
+            <div class="ch_homework_content">
+              <div style="float:left;width:100%;">
+                <div style="float:left;width:35%;">
+                    <%= image_tag("icons/subjects/"+assignment.subject.icon_number , :size=> "83x60", :alt=> assignment.subject.name) %>                  
+                </div>
+                <div style="float:right;width:65%;">
+                  <span style="color:#999;font-size:15px;line-height: 20px;font-weight:bold;">
+                    <%  if assignment.assignment_type==1 %>
+                        Homework
+                    <%  end %>
+                    <%  if  assignment.assignment_type==2 %>
+                        Assignment
+                    <%  end %>
+                    </span>
+                    <br />
+                    <span style="color:#000;font-size:12px;line-height: 20px;">
+                      <%=  assignment.subject.name.to_s unless assignment.subject.nil?%>
+                    </span>
+                </div>
+              </div>
+              
+              <div style="float:left;width:100%;margin:20px 0px;">
+                <%=  link_to assignment.title, assignment%>
+              </div>
+              <div style="width:100%;text-align: right;">
+                <span style="color:#aaa;font-size:12px;line-height: 20px;">
+                  <%= I18n.l(assignment.duedate,:format=>"%A, %d %B, %Y") %>
+                </span>
+              </div>
+            </div>
+          </li>
+        <% end %>
+        </ul>
+      <% else %>
+        <div class="tr-odd"><h2><%= "#{t('you_have_not_been_assigned_any_assignments')}"%></h2></div>
+      <% end %>
+    </div>
+  <% elsif @current_user.parent? %>
+    <div id="listing">
+      <% unless @assignments.empty? %>
+        <ul class="ch_homework">
+        <% @assignments.each_with_index do |assignment,i| %>
+          <%#= debug @assignments %>
+          <li>
+            <div class="ch_homework_content">
+              <div style="float:left;width:100%;">
+                <div style="float:left;width:35%;">
+                    <%= image_tag("icons/subjects/"+assignment.subject.icon_number , :size=> "83x60", :alt=> assignment.subject.name) %>                  
+                </div>
+                <div style="float:right;width:65%;">
+                  <span style="color:#999;font-size:15px;line-height: 20px;font-weight:bold;">
+                    <%  if assignment.assignment_type==1 %>
+                        Homework
+                    <%  end %>
+                    <%  if  assignment.assignment_type==2 %>
+                        Assignment
+                    <%  end %>
+                    </span>
+                    <br />
+                    <span style="color:#000;font-size:12px;line-height: 20px;">
+                      <%=  assignment.subject.name.to_s unless assignment.subject.nil?%>
+                    </span>
+                </div>
+              </div>
+              
+              <div style="float:left;width:100%;margin:20px 0px;">
+                <%=  link_to assignment.title, assignment%>
+              </div>
+              <div style="width:100%;text-align: right;">
+                <span style="color:#aaa;font-size:12px;line-height: 20px;">
+                  <%= I18n.l(assignment.duedate,:format=>"%A, %d %B, %Y") %>
+                </span>
+              </div>
+            </div>
+          </li>
+        <% end %>
+        </ul>
+      <% else %>
+        <div class="tr-odd"><h2><%= "#{t('you_have_not_been_assigned_any_assignments')}"%></h2></div>
+      <% end %>
+    </div>      
+  <% end %>
+  
 </div>

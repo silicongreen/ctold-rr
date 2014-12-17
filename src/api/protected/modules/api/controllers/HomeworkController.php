@@ -212,11 +212,12 @@ class HomeworkController extends Controller
         $subject_id = Yii::app()->request->getPost('subject_id');
         $content = Yii::app()->request->getPost('content');
         $title = Yii::app()->request->getPost('title');
+        $assignment_type = Yii::app()->request->getPost('type');
         $duedate = Yii::app()->request->getPost('duedate');
         $school_id = Yii::app()->user->schoolId;
         
         if(Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher && $subject_id
-         && $content && $title && $duedate && $school_id)
+         && $content && $title && $duedate && $school_id && $assignment_type)
         {
             $homework = new Assignments();
             $homework->subject_id = $subject_id;
@@ -225,6 +226,8 @@ class HomeworkController extends Controller
             $homework->duedate = $duedate;
             $homework->school_id = Yii::app()->user->schoolId;
             $homework->employee_id = Yii::app()->user->profileId;
+            $homework->assignment_type = $assignment_type;
+            
             
             $homework->created_at = date("Y-m-d H:i:s");
             

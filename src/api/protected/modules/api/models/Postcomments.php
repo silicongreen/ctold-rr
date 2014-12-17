@@ -44,7 +44,7 @@ class Postcomments extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
                     'post' => array(self::BELONGS_TO, 'Post', 'post_id'),
-                    'user' => array(self::BELONGS_TO, 'Freeusers', 'post_id')
+                    'user' => array(self::BELONGS_TO, 'Freeusers', 'user_id')
                  );
 	}
 

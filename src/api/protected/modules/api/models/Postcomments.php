@@ -30,7 +30,7 @@ class Postcomments extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('user_id,post_id,title,details', 'required'),
+			array('user_id,post_id,details', 'required'),
 			array('user_id,post_id,title,details,created_date,show_comment', 'safe', 'on'=>'search'),
 		);
 	}

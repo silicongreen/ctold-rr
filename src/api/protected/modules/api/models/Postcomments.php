@@ -127,7 +127,7 @@ class Postcomments extends CActiveRecord
                     
                     $username = ($value['user']->first_name)?$value['user']->first_name." ":"";
                     $username.= ($value['user']->middle_name)?$value['user']->middle_name." ":"";
-                    $username.= ($value['user']->last_neme)?$value['user']->last_neme:"";
+                    $username.= ($value['user']->last_name)?$value['user']->last_name:"";
                     if($username == "")
                     {
                        $username =  $value['user']->email;

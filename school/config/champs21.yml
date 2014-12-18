@@ -1,0 +1,4 @@
+champs21:
+ api_url: "http://api.champs21.com/"
+ username: "nbs-ST0001"
+ password: "123456"

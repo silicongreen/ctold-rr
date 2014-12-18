@@ -151,7 +151,91 @@ class Attendances extends CActiveRecord {
             }
         }
         return array_keys($ar_weekdays);
-    }        
+    } 
+    public function getAttendence($batch_id,$student_id,$date)
+    {
+        $criteria = new CDbCriteria;
+        $criteria->select="t.id";
+        $criteria->compare('month_date', date("Y-m-d"));
+        $criteria->compare('batch_id', $batch_id); 
+        $criteria->compare('student_id', $student_id);
+        $data = $this->find($criteria);
+        return $data;
+    }
+          
+    
+    public function getBatchStudentTodayAttendence($batch_id,$date)
+    {
+        $criteria = new CDbCriteria;
+        $criteria->select="t.student_id,t.forenoon,t.afternoon,t.reason";
+        $criteria->compare('month_date', $date);
+        $criteria->compare('batch_id', $batch_id);
+        $data = $this->findAll($criteria);
+        
+        $student_ids = array();
+        $all_data = array();
+        $i = 0;
+        foreach($data as $value)
+        {
+            $student_ids[$i] = $value->student_id;
+            $all_data[$value->student_id]['fullday'] = 0;
+            if($value->forenoon == 1 && $value->afternoon == 1)
+            {
+                $all_data[$value->student_id]['fullday'] = 1;
+            }
+            $all_data[$value->student_id]['reason'] = $value->reason;
+            $i++;
+        } 
+        
+        $leaveStudent = new ApplyLeaveStudents();
+        
+        $leave_today = $leaveStudent->getleaveStudentsDate($date);
+        
+        $stdobj = new Students();
+        $students = $stdobj->getStudentByBatchFull($batch_id);
+        
+        $attendence = array();
+        $i = 0;
+        foreach($students as $value)
+        {
+            $fullname = ($value->first_name)?$value->first_name." ":"";
+            $fullname.= ($value->middle_name)?$value->middle_name." ":"";
+            $fullname.= ($value->last_name)?$value->last_name:"";
+            
+            $attendence[$i]['student_name'] = $fullname;
+            
+            $attendence[$i]['student_id'] = $value->id;
+            
+            $attendence[$i]['status'] = 1;
+            
+            $attendence[$i]['reason'] = "";
+            
+            if(in_array($value->id, $student_ids))
+            {
+                if($all_data[$value->id]['fullday']==1)
+                {
+                     $attendence[$i]['status'] = 0;
+                } 
+                else
+                {
+                     $attendence[$i]['status'] = 2;
+                }
+                $attendence[$i]['reason'] =$all_data[$value->id]['reason'];
+                
+            } 
+            if(in_array($value->id, $leave_today))
+            {
+                $attendence[$i]['status'] = 3;
+                $attendence[$i]['reason'] = "On Leave";
+            }
+            
+            $i++;
+            
+        }  
+        
+        return $attendence;
+        
+    }
 
     public function getAbsentStudentMonth($start_date, $end_date, $student_id) {
 

@@ -20,7 +20,8 @@ class CalenderController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('getAttendence', 'academic','getbatch'),
+                'actions' => array('getAttendence', 'academic','getbatch','getbatchstudentattendence','addattendence',
+                    'studentattendencereport'),
                 'users' => array('*'),
             ),
             array('deny', // deny all users
@@ -218,6 +219,159 @@ class CalenderController extends Controller {
         echo CJSON::encode($response);
         Yii::app()->end();
     }
+    
+    public function actionAddAttendence()
+    {
+        $user_secret = Yii::app()->request->getPost('user_secret');
+        $batch_id = Yii::app()->request->getPost('batch_id');
+        $student_id = Yii::app()->request->getPost('student_id');
+        $late = Yii::app()->request->getPost('late');
+        $date = Yii::app()->request->getPost('date');
+        $reason = Yii::app()->request->getPost('reason');
+        if(Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher && $batch_id && $student_id)
+        {
+            $attendence = new Attendances();
+            if(!$date)
+            {
+                $date = date("Y-m-d");
+            }
+            $attendence_present = $attendence->getAttendence($batch_id, $student_id, $date);
+            
+            if($attendence_present)
+            {
+                $previous_attendence = $attendence->findbypk($attendence_present->id);
+                $previous_attendence->delete();
+            }
+            
+            if(!$reason)
+            {
+                $reason = "";
+            }
+            
+            $newattendence = new Attendances();
+            
+            $newattendence->batch_id = $batch_id;
+            $newattendence->student_id = $student_id;
+            $newattendence->reason = $reason;
+            $newattendence->month_date = $date;
+            $newattendence->created_at = date("Y-m-d H:i:s");
+            $newattendence->updated_at = date("Y-m-d H:i:s");
+            $newattendence->school_id = Yii::app()->user->schoolId;
+            if($late && $late==1)
+            {
+                $newattendence->forenoon = 1;
+                $newattendence->afternoon = 0;
+            } 
+            else
+            {
+                $newattendence->forenoon = 1;
+                $newattendence->afternoon = 1;
+            }    
+            $newattendence->save();
+          
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "Success";
+            
+        }
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    }
+    
+   public function actionStudentAttendenceReport()
+    {
+        $user_secret = Yii::app()->request->getPost('user_secret');
+        $batch_id = Yii::app()->request->getPost('batch_id');
+        $date = Yii::app()->request->getPost('date');
+        
+        if(Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher && $batch_id )
+        {
+            if(!$date)
+            {
+                $date = date("Y-m-d");
+            }
+            $attendence = new Attendances();
+            $bacthes = $attendence->getBatchStudentTodayAttendence($batch_id,$date);
+            $total = count($bacthes);
+            $present = 0;
+            $late = 0;
+            $absent = 0;
+            $leave = 0;
+            foreach($bacthes as $value)
+            {
+                if($value['status']==1)
+                {
+                   $present++; 
+                }    
+                else if($value['status']==0)
+                {
+                   $absent++; 
+                } 
+                else if($value['status']==2)
+                {
+                   $late++; 
+                } 
+                else if($value['status']==0)
+                {
+                   $leave++; 
+                } 
+                    
+            }    
+            
+            $response['data']['total'] = $total;
+            $response['data']['present'] = $present;
+            $response['data']['late'] = $late;
+            $response['data']['absent'] = $absent;
+            $response['data']['leave'] = $leave;
+            
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "DATA_FOUND";
+            
+        }
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+        
+        
+    } 
+    
+    public function actionGetBatchStudentAttendence()
+    {
+        $user_secret = Yii::app()->request->getPost('user_secret');
+        $batch_id = Yii::app()->request->getPost('batch_id');
+        $date = Yii::app()->request->getPost('date');
+        
+        if(Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher && $batch_id)
+        {
+            if(!$date)
+            {
+                $date = date("Y-m-d");
+            }
+            $attendence = new Attendances();
+            $bacthes = $attendence->getBatchStudentTodayAttendence($batch_id,$date);
+            $response['data']['batch_attendence'] = $bacthes;
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "DATA_FOUND";
+            
+        }
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+        
+        
+    }        
     public function actionGetBatch()
     {
         $user_secret = Yii::app()->request->getPost('user_secret');
@@ -264,30 +418,30 @@ class CalenderController extends Controller {
 //        
 //        
 //    }
-    public function actionGetBatchStudent() 
-    {
-       
-        $user_secret = Yii::app()->request->getPost('user_secret');
-        $user_secret = Yii::app()->request->getPost('user_secret');
-        if(Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher)
-        {
-            $url_end = "api/batches";
-            $data = array("search[]"=>"");
-            $batches = Settings::getDataApi($data,$url_end);
-            $response['data'] = $batches;
-            $response['status']['code'] = 200;
-            $response['status']['msg'] = "EVENTS_FOUND";
-            
-        }
-        else
-        {
-            $response['status']['code'] = 400;
-            $response['status']['msg'] = "Bad Request";
-        }
-        echo CJSON::encode($response);
-        Yii::app()->end();
-        
-        
-    }
+//    public function actionGetBatchStudent() 
+//    {
+//       
+//        $user_secret = Yii::app()->request->getPost('user_secret');
+//        
+//        if(Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher)
+//        {
+//            $url_end = "api/batches";
+//            $data = array("search[]"=>"");
+//            $batches = Settings::getDataApi($data,$url_end);
+//            $response['data'] = $batches;
+//            $response['status']['code'] = 200;
+//            $response['status']['msg'] = "EVENTS_FOUND";
+//            
+//        }
+//        else
+//        {
+//            $response['status']['code'] = 400;
+//            $response['status']['msg'] = "Bad Request";
+//        }
+//        echo CJSON::encode($response);
+//        Yii::app()->end();
+//        
+//        
+//    }
 
 }

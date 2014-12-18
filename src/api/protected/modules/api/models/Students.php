@@ -85,7 +85,7 @@ class Students extends CActiveRecord {
             ),
             'guradianDetails' => array(self::BELONGS_TO, 'Guardians', 'immediate_contact_id',
                 'joinType' => 'INNER JOIN',
-            ),
+            )
         );
     }
 
@@ -229,6 +229,16 @@ class Students extends CActiveRecord {
         $criteria = new CDbCriteria();
         $criteria->compare('sibling_id', $sibling_id);
         return $this->findAll($criteria);
+    }
+    public function getStudentByBatchFull($batch_id) {
+
+        $criteria = new CDbCriteria();
+        
+        $criteria->select = 't.id,t.first_name,t.middle_name,t.last_name';
+        $criteria->compare('batch_id',$batch_id);
+        $students = $this->findAll($criteria);
+       
+        return $students;
     }
     
     public function getStudentByBatch($batch_id) {

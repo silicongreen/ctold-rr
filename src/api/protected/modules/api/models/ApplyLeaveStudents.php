@@ -119,6 +119,24 @@ class ApplyLeaveStudents extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        public function getleaveStudentsDate($date)
+        {
+            $criteria = new CDbCriteria;
+            $criteria->select = "t.student_id";
+            $criteria->addCondition("DATE(start_date) >= '" . $date . "'");
+            $criteria->addCondition("DATE(end_date) <= '" . $date . "'");
+            $criteria->compare('approved', 1);
+           
+            $return_array = array();
+            $data = $this->findAll($criteria);
+            foreach ($data as $value) 
+            {
+                $merge = array();
+                $merge = $value->student_id;
+                $return_array[] = $merge;
+            }
+            return $return_array;
+        }
         
         public function getleaveStudentMonth($start_date, $end_date, $student_id)
         {

@@ -380,7 +380,7 @@ class CalenderController extends Controller {
         {
             $emplyee_subject = new EmployeesSubjects();
             $bacthes = $emplyee_subject->getBatch(Yii::app()->user->profileId);
-            $response['data']['subjects'] = $bacthes;
+            $response['data']['batches'] = $bacthes;
             $response['status']['code'] = 200;
             $response['status']['msg'] = "EVENTS_FOUND";
             

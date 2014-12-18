@@ -162,10 +162,12 @@ module Champs21DataPalette
       base.class_eval do
         def examinations_palette_text
           exam_group = self.exam_group
-          "<div class='subcontent-header themed_text'>#{exam_group.name}</div>
+          "<div class='timetable_left'><img src='images/icons/subjects/#{self.subject.icon_number}'></div>
+          <div class='timetable_right'>
+          <div class='subcontent-header themed_text'>#{exam_group.name}</div>
           <div class='subcontent-info'>#{t("subject_text")} : #{self.subject.name} (#{self.subject.code})</div>
           <div class='subcontent-info'>#{I18n.l(self.start_time,:format=>"%I.%M%p")} - #{I18n.l(self.end_time,:format=>"%I.%M%p")}</div>
-          <div class='subcontent-info'>#{t("batch")} : #{exam_group.batch.full_name}</div>".html_safe
+          <div class='subcontent-info'>#{t("batch")} : #{exam_group.batch.full_name}</div></div>".html_safe
         end
       end
     end
@@ -237,10 +239,10 @@ module Champs21DataPalette
   module TimetablePaletteText
     def self.included(base)
       base.class_eval do
-        def timetable_palette_text
-          "<div class='subcontent-info'>#{I18n.l(self.class_timing.start_time,:format=>"%I.%M%p")} - #{I18n.l(self.class_timing.end_time,:format=>"%I.%M%p")}</div>
+        def timetable_palette_text     
+          "<div class='timetable_left'><img src='images/icons/subjects/#{self.subject.icon_number}'></div><div class='timetable_right'><div class='subcontent-info'>#{I18n.l(self.class_timing.start_time,:format=>"%I.%M%p")} - #{I18n.l(self.class_timing.end_time,:format=>"%I.%M%p")}</div>
           <div class='subcontent-header themed_text'>#{self.subject.name}</div>
-          <div class='subcontent-info'>#{self.batch.full_name}</div>".html_safe
+          <div class='subcontent-info'>#{self.batch.full_name}</div></div>".html_safe
         end
       end
     end

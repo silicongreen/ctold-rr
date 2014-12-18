@@ -67,6 +67,79 @@ class Assignments extends CActiveRecord
                     ),
 		);
 	}
+        
+        public function getAssignmentTotalTeacher($employee_id)
+        {
+            
+            $criteria = new CDbCriteria();
+            $criteria->select = 'count(t.id) as total';
+            $criteria->compare('t.employee_id', $employee_id);
+            
+            $data = $this->find($criteria);
+            return $data->total;
+        }        
+        
+        public function getAssignmentTeacher($employee_id,$page=1,$page_size=10)
+        {
+            
+            
+            $criteria = new CDbCriteria();
+            $criteria->select = 't.*';
+            $criteria->compare('t.employee_id', $employee_id);
+            $criteria->order = "duedate DESC";          
+            $start = ($page-1)*$page_size;
+            $criteria->limit = $page_size;
+            
+            $criteria->offset = $start;
+            
+            $criteria->with = array(
+                'subjectDetails' => array(
+                    'select' => 'subjectDetails.id,subjectDetails.name,subjectDetails.icon_number',
+                    'joinType' => "INNER JOIN",
+                    'with' => array(
+                        "Subjectbatch" => array(
+                            "select" => "Subjectbatch.name",
+                            'joinType' => "INNER JOIN",
+                            'with' => array(
+                                "courseDetails" => array(
+                                    "select" => "courseDetails.course_name",
+                                    'joinType' => "INNER JOIN",
+                                )
+                            )
+                        )
+                    )
+                )
+            );
+            
+            $data = $this->findAll($criteria);
+            $response_array = array();
+            if($data != NULL)
+            foreach($data as $value)
+            {
+                $marge = array();
+              
+                $marge['subjects'] = $value["subjectDetails"]->name;
+                $marge['batch'] = $value["subjectDetails"]['Subjectbatch']->name;
+                $marge['course'] = $value["subjectDetails"]['Subjectbatch']['courseDetails']->course_name;
+                $marge['subjects_id'] = $value["subjectDetails"]->id;
+                $marge['subjects_icon'] = $value["subjectDetails"]->icon_number;
+                $marge['duedate'] = $value->duedate;
+                $marge['name'] = $value->title;
+                $marge['content'] = $value->content;
+                $marge['type'] = $value->assignment_type;
+                $marge['id'] = $value->id;
+                $assignment_answer = new AssignmentAnswers();
+                $marge['done'] = $assignment_answer->doneTotal($value->id);
+                $response_array[] = $marge;     
+                
+            }
+            return $response_array;
+            
+        }
+        
+        
+        
+        
         public function getAssignmentTotal($batch_id, $student_id, $date = '', $subject_id=NULL, $type)
         {
             $date = (!empty($date)) ? $date : \date('Y-m-d', \time());

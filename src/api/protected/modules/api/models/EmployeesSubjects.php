@@ -105,6 +105,49 @@ class EmployeesSubjects extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        
+        public function getBatch($employee_id)
+        {
+            $criteria = new CDbCriteria;
+            $criteria->select = 't.*';
+            $criteria->compare("t.employee_id", $employee_id);
+           
+            $criteria->with = array(
+                'subject' => array(
+                    'select' => '',
+                    'joinType' => "INNER JOIN",
+                    'with' => array(
+                        "Subjectbatch" => array(
+                            "select" => "Subjectbatch.id,Subjectbatch.name",
+                            'joinType' => "INNER JOIN",
+                            'with' => array(
+                                "courseDetails" => array(
+                                    "select" => "Subjectbatch.id,courseDetails.course_name",
+                                    'joinType' => "INNER JOIN",
+                                )
+                            )
+                        )
+                    )
+                )
+            );
+           
+            $criteria->group = "Subjectbatch.id";
+
+            
+            $obj_subject = $this->findAll($criteria);
+        
+            $subject = array();
+            $i = 0; 
+            foreach ($obj_subject as $value)
+            {
+               $subject[$i]['id'] = $value['subject']['Subjectbatch']->id;
+               $subject[$i]['name'] = $value['subject']['Subjectbatch']->name." ".$value['subject']['Subjectbatch']['courseDetails']->course_name;
+               $i++; 
+            }
+
+            return $subject;
+        }
+        
         public function getSubject($employee_id)
         {
             $criteria = new CDbCriteria;

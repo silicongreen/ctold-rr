@@ -218,16 +218,15 @@ class CalenderController extends Controller {
         echo CJSON::encode($response);
         Yii::app()->end();
     }
-    public function actionGetBatch() 
+    public function actionGetBatch()
     {
-       
         $user_secret = Yii::app()->request->getPost('user_secret');
+        
         if(Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher)
         {
-            $url_end = "api/batches";
-            $data = array("search[]"=>"");
-            $batches = Settings::getDataApi($data,$url_end);
-            $response['data'] = $batches;
+            $emplyee_subject = new EmployeesSubjects();
+            $bacthes = $emplyee_subject->getBatch(Yii::app()->user->profileId);
+            $response['data']['subjects'] = $bacthes;
             $response['status']['code'] = 200;
             $response['status']['msg'] = "EVENTS_FOUND";
             
@@ -240,8 +239,31 @@ class CalenderController extends Controller {
         echo CJSON::encode($response);
         Yii::app()->end();
         
-        
     }
+//    public function actionGetBatch() 
+//    {
+//       
+//        $user_secret = Yii::app()->request->getPost('user_secret');
+//        if(Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher)
+//        {
+//            $url_end = "api/batches";
+//            $data = array("search[]"=>"");
+//            $batches = Settings::getDataApi($data,$url_end);
+//            $response['data'] = $batches;
+//            $response['status']['code'] = 200;
+//            $response['status']['msg'] = "EVENTS_FOUND";
+//            
+//        }
+//        else
+//        {
+//            $response['status']['code'] = 400;
+//            $response['status']['msg'] = "Bad Request";
+//        }
+//        echo CJSON::encode($response);
+//        Yii::app()->end();
+//        
+//        
+//    }
     public function actionGetBatchStudent() 
     {
        

@@ -23,6 +23,7 @@ class AssignmentAnswers extends CActiveRecord
 	/**
 	 * @return string the associated database table name
 	 */
+        public $total = 0;
 	public function tableName()
 	{
 		return 'assignment_answers';
@@ -53,7 +54,10 @@ class AssignmentAnswers extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-		);
+                                'Students' => array(self::BELONGS_TO, 'Students', 'student_id',
+                                    'joinType' => 'INNER JOIN',
+                                )
+                            );
 	}
 
 	/**
@@ -114,6 +118,56 @@ class AssignmentAnswers extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+        function homeworkStatus($assignment_id)
+        {
+            $criteria = new CDbCriteria();
+            $criteria->select = 't.status';
+            $criteria->compare('t.assignment_id', $assignment_id);
+            $criteria->order = "t.created_at ASC";
+            $criteria->group = 't.student_id';
+            
+            $criteria->with = array(
+                'Students' => array(
+                    'select' => 'Students.class_roll_no,Students.first_name,Students.middle_name,Students.last_name',
+                    'joinType' => "INNER JOIN",
+                    
+                )
+            );
+            
+            $data = $this->findAll($criteria);
+            
+            $return = "";
+            $i = 0;
+            foreach($data as $value)
+            {
+                $fullname = ($value['Students']->first_name)?$value['Students']->first_name." ":"";
+                $fullname.= ($value['Students']->middle_name)?$value['Students']->middle_name." ":"";
+                $fullname.= ($value['Students']->last_name)?$value['Students']->last_name:"";
+                
+                $return[$i]['student_name'] = $fullname;
+                $return[$i]['student_roll'] = $value['Students']->class_roll_no;
+                $return[$i]['home_work_status'] = $value->status;
+                $i++;
+                
+                
+                
+            }
+            
+            return $return;
+            
+        }
+        
+        
+        function doneTotal($assignment_id)
+        {
+            $criteria = new CDbCriteria();
+            $criteria->select = 'count(t.id) as total';
+            $criteria->compare('t.assignment_id', $assignment_id);
+            $criteria->compare('t.status', "ACCEPTED");
+            $data = $this->find($criteria);
+            return $data->total;
+            
+        }
         function isAlreadyDone($assignment_id, $student_id)
         {
              $criteria = new CDbCriteria();

@@ -20,7 +20,7 @@ class HomeworkController extends Controller
     {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'Done', 'getproject','getsubject','addhomework'),
+                'actions' => array('index', 'Done', 'getproject','getsubject','addhomework','teacherhomework','homeworkstatus'),
                 'users' => array('*'),
             ),
             array('deny', // deny all users
@@ -189,8 +189,6 @@ class HomeworkController extends Controller
         if(Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher)
         {
             $emplyee_subject = new EmployeesSubjects();
-            $url_end = "api/batches";
-            $data = array("search[]"=>"");
             $subjects = $emplyee_subject->getSubject(Yii::app()->user->profileId);
             $response['data']['subjects'] = $subjects;
             $response['status']['code'] = 200;
@@ -206,6 +204,75 @@ class HomeworkController extends Controller
         Yii::app()->end();
         
     }
+    public function actionHomeworkStatus()
+    {
+        $user_secret = Yii::app()->request->getPost('user_secret');
+        $assignment_id = Yii::app()->request->getPost('assignment_id');
+        if(Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher && $assignment_id)
+        {
+            $assignment_answer = new AssignmentAnswers();
+            $homework_status =$assignment_answer->homeworkStatus($assignment_id);
+            $response['data']['homework_status']    = $homework_status;
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "Data Found";
+        }
+        else
+        {
+          $response['status']['code'] = 400;
+          $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    }        
+    public function actionTeacherHomework()
+    {
+       $user_secret = Yii::app()->request->getPost('user_secret');
+       $employee_id = Yii::app()->user->profileId;
+       if(Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher)
+       {
+            $homework = new Assignments();
+            $page_number = Yii::app()->request->getPost('page_number');
+            $page_size = Yii::app()->request->getPost('page_size');
+            if(empty($page_number))
+            {
+                $page_number = 1;
+            }
+            if(empty($page_size))
+            {
+                $page_size = 10;
+            }
+            $homework_data = $homework->getAssignmentTeacher($employee_id,$page_number,$page_size);
+            if ($homework_data)
+            {
+
+                $response['data']['total'] = $homework->getAssignmentTotalTeacher($employee_id);
+                $has_next = false;
+                if($response['data']['total']>$page_number*$page_size)
+                {
+                    $has_next = true;
+                }
+                $response['data']['has_next']    = $has_next;
+                $response['data']['homework']    = $homework_data;
+                $response['status']['code'] = 200;
+                $response['status']['msg'] = "Data Found";
+            }
+            else
+            {
+                $response['status']['code'] = 404;
+                $response['status']['msg'] = "Data Not Found";
+            }
+           
+       }
+       else
+       {
+          $response['status']['code'] = 400;
+          $response['status']['msg'] = "Bad Request";
+       }
+       
+       echo CJSON::encode($response);
+       Yii::app()->end();
+       
+    }        
     public function actionAddHomework()
     {
         $user_secret = Yii::app()->request->getPost('user_secret');

@@ -20,13 +20,56 @@ class EventController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'acknowledge','meetingrequest'),
+                'actions' => array('index', 'acknowledge','meetingrequest','meetingstatus'),
                 'users' => array('@'),
             ),
             array('deny', // deny all users
                 'users' => array('*'),
             ),
         );
+    }
+    
+    public function actionMeetingStatus()
+    {
+         $user_secret = Yii::app()->request->getPost('user_secret');
+         $meeting_id = Yii::app()->request->getPost('meeting_id');
+         $status = Yii::app()->request->getPost('status');
+         if(Yii::app()->user->user_secret === $user_secret && ( Yii::app()->user->isTeacher || Yii::app()->user->isParent ) && $meeting_id && $status)
+         {
+             $meetingreq = new Meetingrequest();
+             $updatemeeting = $meetingreq->findByPk($meeting_id);
+              
+             if( ( isset($updatemeeting->parent_id) 
+                     && Yii::app()->user->isParent 
+                     && Yii::app()->user->profileId==$updatemeeting->parent_id
+                     && $updatemeeting->type==2) ||
+                     ( isset($updateleave->teacher_id) 
+                     && Yii::app()->user->isTeacher 
+                     && Yii::app()->user->profileId==$updatemeeting->teacher_id
+                     && $updatemeeting->type==1))
+             {
+                 
+                 $updatemeeting->status = $status;
+                 
+                 $updatemeeting->save(false);
+                 $response['status']['code'] = 200;
+                 $response['status']['msg'] = "Success";
+            
+             }
+             else
+             {
+                 $response['status']['code'] = 400;
+                 $response['status']['msg'] = "Bad Request";
+             }    
+           
+        }
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
     }
     
     public function actionMeetingRequest()

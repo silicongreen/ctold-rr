@@ -162,6 +162,7 @@ class Attendances extends CActiveRecord {
         $data = $this->find($criteria);
         return $data;
     }
+   
           
     
     public function getBatchStudentTodayAttendence($batch_id,$date)
@@ -189,7 +190,11 @@ class Attendances extends CActiveRecord {
         
         $leaveStudent = new ApplyLeaveStudents();
         
-        $leave_today = $leaveStudent->getleaveStudentsDate($date);
+      
+        $leave_today = $leaveStudent->getallleaveStudentsDate($date);
+        
+     
+        //$unapproved_leave = $leaveStudent->getUnapprovedleaveStudentsDate($date);
         
         $stdobj = new Students();
         $students = $stdobj->getStudentByBatchFull($batch_id);
@@ -210,6 +215,8 @@ class Attendances extends CActiveRecord {
             
             $attendence[$i]['reason'] = "";
             
+            $attendence[$i]['leave_id'] = 0;
+            
             if(in_array($value->id, $student_ids))
             {
                 if($all_data[$value->id]['fullday']==1)
@@ -220,13 +227,35 @@ class Attendances extends CActiveRecord {
                 {
                      $attendence[$i]['status'] = 2;
                 }
-                $attendence[$i]['reason'] =$all_data[$value->id]['reason'];
+                $reason = "";
+                if($all_data[$value->id]['reason'])
+                {
+                    $reason = $all_data[$value->id]['reason'];
+                }   
+                $attendence[$i]['reason'] =$reason;
                 
             } 
-            if(in_array($value->id, $leave_today))
+          
+            if(isset($leave_today['approved']) && in_array($value->id, $leave_today['approved']))
             {
+                $key = array_search($value->id, $leave_today['approved']);
                 $attendence[$i]['status'] = 3;
-                $attendence[$i]['reason'] = "On Leave";
+                if($leave_today['reason'][$key])
+                {
+                    $attendence[$i]['reason'] = $leave_today['reason'][$key];
+                }
+                $attendence[$i]['leave_id'] = $leave_today['leave_id'][$key];
+            }
+            if(isset($leave_today['unapproved']) && in_array($value->id, $leave_today['unapproved']))
+            {
+                $key = array_search($value->id, $leave_today['unapproved']);
+                $attendence[$i]['status'] = 4;
+                $attendence[$i]['reason'] = $leave_today['reason'][$key];
+                if($leave_today['reason'][$key])
+                {
+                    $attendence[$i]['leave_id'] = $leave_today['leave_id'][$key];
+                }
+                
             }
             
             $i++;

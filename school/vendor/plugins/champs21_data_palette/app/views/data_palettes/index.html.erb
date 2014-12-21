@@ -373,7 +373,7 @@
 </div>
   <div class="school_feed_box">
     <div class="champs21_feed_title">School Feeds</div>
-    <% unless @events.empty? %>
+    <% unless @events.nil? %>
       <ul class="champs21_feed">
         <% @events.each_with_index do |event,i| %>        
           <li>

@@ -20,7 +20,7 @@ class EventController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'acknowledge'),
+                'actions' => array('index', 'acknowledge','meetingrequest'),
                 'users' => array('@'),
             ),
             array('deny', // deny all users
@@ -28,6 +28,88 @@ class EventController extends Controller {
             ),
         );
     }
+    
+    public function actionMeetingRequest()
+    {
+        $user_secret = Yii::app()->request->getPost('user_secret');
+        $type = Yii::app()->request->getPost('type');
+        $start_date = Yii::app()->request->getPost('start_date');
+        $end_date = Yii::app()->request->getPost('end_date');
+        $page_number = Yii::app()->request->getPost('page_number');
+        $page_size = Yii::app()->request->getPost('page_size');
+        
+        if(Yii::app()->user->user_secret === $user_secret && ( Yii::app()->user->isTeacher || Yii::app()->user->isParent))
+        {
+            $meetingreq = new Meetingrequest();
+            
+            
+            if(!$type)
+            {
+                $type = 1;
+            }    
+             
+            if(Yii::app()->user->isTeacher)
+            {
+                $type2 = 1;
+                if($type==1)
+                {
+                    $type =2;
+                }
+                else
+                {
+                    $type =1;
+                }
+            }
+            else
+            {
+                $type2 = 2;
+            } 
+            
+
+            if(!$start_date)
+            {
+                $start_date = "";
+            }
+            if(!$end_date)
+            {
+                $end_date = "";
+            }
+            
+            if (empty($page_number))
+            {
+                $page_number = 1;
+            }
+            if (empty($page_size))
+            {
+                $page_size = 10;
+            }
+            
+            $meetings = $meetingreq->getInboxOutbox(Yii::app()->user->profileId,$type,$type2,$start_date,$end_date,$page_number,$page_size);
+            
+            $response['data']['total'] = $meetingreq->getall(Yii::app()->user->profileId,$type,$type2,$start_date,$end_date);
+            $has_next = false;
+            if ($response['data']['total'] > $page_number * $page_size)
+            {
+                $has_next = true;
+            }
+            
+            $response['data']['has_next'] = $has_next;
+            $response['data']['meetings'] = $meetings;
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "Success";
+            
+                 
+           
+        }
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+        
+    }       
 
     public function actionIndex() {
 

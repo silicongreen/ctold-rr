@@ -374,6 +374,7 @@
   <div class="school_feed_box">
     <div class="champs21_feed_title">School Feeds</div>
     <% unless @events.nil? %>
+
       <ul class="champs21_feed">
         <% @events.each_with_index do |event,i| %>        
           <li>
@@ -401,6 +402,6 @@
     <% else %>
       <h2>NO DATA</h2>
     <% end  %>
-      <div class="champs21_feed_title"><a href="http://www.champs21.com/" target="_blank">VIEW MOEW</a></div>
+      <div class="champs21_feed_title"><a href="http://www.champs21.com/" target="_blank">VIEW MORE</a></div>
   </div>  
 <%#= debug  @events %>

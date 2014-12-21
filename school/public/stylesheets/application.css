@@ -788,9 +788,62 @@ p.flash-msg {
 
 #page-yield {
     margin : 30px 0;
+    float: left;
+    width: 95%;
+    background-color: #fff;
+    padding:30px; 
+    border:1px solid #CCC;
     /*    margin-left: 10px;*/
 }
-
+.submit_button
+{
+    background: #db3434 !important;
+}
+.submit_button:hover{
+    background:  #7e0000 !important;
+}
+.submit-button
+{
+    background: #db3434 !important;
+}
+.submit-button:hover{
+    background:  #7e0000 !important;
+}
+#submit-button input
+{
+    background: #db3434 !important;
+}
+#submit-button input:hover{
+    background:  #7e0000 !important;
+}
+.return_button
+{
+    background: #db3434 !important;
+}
+.return_button:hover{
+    background:  #7e0000 !important;
+}
+.user_button
+{
+    background: #db3434 !important;
+}
+.user_button:hover{
+    background:  #7e0000 !important;
+}
+.renew_button
+{
+    background: #db3434 !important;
+}
+.renew_button:hover{
+    background:  #7e0000 !important;
+}
+#go input
+{
+    background: #db3434 !important;
+}
+#go input:hover{
+    background:  #7e0000 !important;
+}
 /* News block */
 
 #news_feed {

@@ -1,4 +1,11 @@
-
+.ch_book_wrapper
+{
+    float: left;
+    width: 95%;
+    background-color: #fff;
+    padding:30px; 
+    border:1px solid #CCC;
+}
 .name{
     color: #999999;
     float: left;
@@ -20,7 +27,7 @@
 .submit_button {
     padding: 7px 10px;
     color: #fff;
-    background: #27292B;
+    background: #db3434;
     -moz-border-radius:10px;
     -webkit-border-radius:10px;
     font-weight: bold;
@@ -33,12 +40,12 @@
     float:left;
 }
 .submit_button:hover{
-    background:  #373B3F;
+    background:  #7e0000;
 }
 .reserve_button {
     padding: 7px 10px;
     color: #fff;
-    background: #27292B;
+    background: #db3434;
     -moz-border-radius:10px;
     -webkit-border-radius:10px;
     font-weight: bold;
@@ -52,7 +59,7 @@
     float:left;
 }
 .reserve_button:hover{
-    background:  #373B3F;
+    background:  #7e0000;
 }
 .links{
     width:540px;

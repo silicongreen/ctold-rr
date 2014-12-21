@@ -20,7 +20,7 @@ class CalenderController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('getAttendence', 'academic','getbatch','getbatchstudentattendence','addattendence',
+                'actions' => array('getAttendence', 'academic','getbatch','getbatchstudentattendence','approveLeave','addattendence',
                     'studentattendencereport'),
                 'users' => array('*'),
             ),
@@ -223,6 +223,40 @@ class CalenderController extends Controller {
             $response['status']['msg'] = "Bad Request";
         }
 
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    }
+    public function actionapproveLeave()
+    {
+         $user_secret = Yii::app()->request->getPost('user_secret');
+         $leave_id = Yii::app()->request->getPost('leave_id');
+         $student_id = Yii::app()->request->getPost('student_id');
+         if(Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher && $leave_id && $student_id)
+         {
+             $leaveStudent = new ApplyLeaveStudents();
+             $updateleave = $leaveStudent->findByPk($leave_id);
+             if(isset($updateleave->student_id) && $updateleave->student_id==$student_id)
+             {
+                 
+                 $updateleave->approved = 1;
+                 
+                 $updateleave->save(false);
+                 $response['status']['code'] = 200;
+                 $response['status']['msg'] = "Success";
+            
+             }
+             else
+             {
+                 $response['status']['code'] = 400;
+                 $response['status']['msg'] = "Bad Request";
+             }    
+           
+        }
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
         echo CJSON::encode($response);
         Yii::app()->end();
     }

@@ -119,12 +119,42 @@ class ApplyLeaveStudents extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        public function getallleaveStudentsDate($date)
+        {
+            $criteria = new CDbCriteria;
+            $criteria->select = "t.id,t.student_id,t.approved,t.reason";
+            $criteria->addCondition("DATE(start_date) <= '" . $date . "'");
+            $criteria->addCondition("DATE(end_date) >= '" . $date . "'");
+            
+           
+            $return_array = array();
+            $data = $this->findAll($criteria);
+            
+            $i = 0;
+            foreach ($data as $value) 
+            {
+                
+                if($value->approved && $value->approved==1)
+                {
+                    $return_array['approved'][$i] = $value->student_id;
+                }
+                else
+                {
+                    $return_array['unapproved'][$i] = $value->student_id;
+                }  
+              
+                $return_array['reason'][$i] = $value->reason;
+                $return_array['leave_id'][$i] = $value->id;
+                $i++;
+            }
+            return $return_array;
+        }
         public function getleaveStudentsDate($date)
         {
             $criteria = new CDbCriteria;
             $criteria->select = "t.student_id";
-            $criteria->addCondition("DATE(start_date) >= '" . $date . "'");
-            $criteria->addCondition("DATE(end_date) <= '" . $date . "'");
+            $criteria->addCondition("DATE(start_date) <= '" . $date . "'");
+            $criteria->addCondition("DATE(end_date) >= '" . $date . "'");
             $criteria->compare('approved', 1);
            
             $return_array = array();

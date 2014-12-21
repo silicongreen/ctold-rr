@@ -114,7 +114,11 @@
             <div class="ch_homework_content">
               <div style="float:left;width:100%;">
                 <div style="float:left;width:35%;">
-                    <%= image_tag("icons/subjects/"+assignment.subject.icon_number , :size=> "83x60", :alt=> assignment.subject.name) %>                  
+                  <% if assignment.subject.icon_number? %>
+                    <%= image_tag("icons/subjects/"+assignment.subject.icon_number , :size=> "83x60", :alt=> assignment.subject.name) %>
+                  <% else %>
+                    <%= image_tag("icons/subjects/8.png" , :size=> "83x60", :alt=> assignment.subject.name) %>
+                  <% end %>
                 </div>
                 <div style="float:right;width:65%;">
                   <span style="color:#999;font-size:15px;line-height: 20px;font-weight:bold;">
@@ -127,7 +131,7 @@
                     </span>
                     <br />
                     <span style="color:#000;font-size:12px;line-height: 20px;">
-                      <%=  assignment.subject.name.to_s unless assignment.subject.nil?%>
+                      <%= assignment.subject.name.to_s unless assignment.subject.nil?%>
                     </span>
                 </div>
               </div>

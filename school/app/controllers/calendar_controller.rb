@@ -342,7 +342,7 @@ class CalendarController < ApplicationController
   def event_list
     require 'net/http'
     require 'uri'
-    require "yaml"
+    require "yaml"    
     
     @user = current_user
     champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/champs21.yml")['champs21']

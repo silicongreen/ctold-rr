@@ -5,6 +5,7 @@ class DataPalettesController < ApplicationController
   def index
     @user_palettes = current_user.own_palettes
     @cur_date = Date.today
+    @events = get_school_feed_champs21    
   end
 
   def update_palette
@@ -102,5 +103,74 @@ class DataPalettesController < ApplicationController
     cur_date = params[:palette][:cur_date].to_date
     render :partial=>"palette_subcontent", :locals=>{:palette=>current_palette, :cur_date=>cur_date, :off=>offset, :lim=>4}
   end
+  
+  def get_school_feed_champs21
+    require 'net/http'
+    require 'uri'
+    require "yaml"
+    
+    @user = current_user
+    champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/champs21.yml")['champs21']
+    api_endpoint = champs21_api_config['api_url']
+    username = champs21_api_config['username']
+    password = champs21_api_config['password']
+    
+    if File.file?("#{RAILS_ROOT.to_s}/public/user_configs/" + @user.id.to_s + "_config.yml")
+      user_info = YAML.load_file("#{RAILS_ROOT.to_s}/public/user_configs/" + @user.id.to_s + "_config.yml")
+      
+      if Time.now.to_i >= user_info[0]['api_info'][0]['user_cookie_exp'].to_i
+        
+        uri = URI(api_endpoint + "api/user/auth")
+        http = Net::HTTP.new(uri.host, uri.port)
+        auth_req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})
+        auth_req.set_form_data({"username" => username, "password" => password})
+        auth_res = http.request(auth_req)
+        auth_response = ActiveSupport::JSON.decode(auth_res.body)
 
+        ar_user_cookie = auth_res.response['set-cookie'].split('; ');
+        
+        user_info = [
+          "api_info" => [
+            "user_secret" => auth_response['data']['paid_user']['secret'],
+            "user_cookie" => ar_user_cookie[0],
+            "user_cookie_exp" => ar_user_cookie[2].split('=')[1].to_time.to_i
+          ]
+        ]        
+        File.open("#{RAILS_ROOT.to_s}/public/user_configs/" + @user.id.to_s + "_config.yml", 'w') {|f| f.write(YAML.dump(user_info)) }
+      end
+    else
+      
+      uri = URI(api_endpoint + "api/user/auth")
+      http = Net::HTTP.new(uri.host, uri.port)
+      auth_req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})
+      auth_req.set_form_data({"username" => username, "password" => password})
+      auth_res = http.request(auth_req)
+      @auth_response = ActiveSupport::JSON.decode(auth_res.body)
+
+      ar_user_cookie = auth_res.response['set-cookie'].split('; ');
+      
+      user_info = [
+        "api_info" => [
+          "user_secret" => @auth_response['data']['paid_user']['secret'],
+          "user_cookie" => ar_user_cookie[0],
+          "user_cookie_exp" => ar_user_cookie[2].split('=')[1].to_time.to_i
+        ]
+      ]
+      File.open("#{RAILS_ROOT.to_s}/public/user_configs/" + @user.id.to_s + "_config.yml", 'w') {|f| f.write(YAML.dump(user_info)) }
+    end
+    
+    event_uri = URI(api_endpoint + "api/freeuser")
+    http = Net::HTTP.new(event_uri.host, event_uri.port)
+    event_req = Net::HTTP::Post.new(event_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => user_info[0]['api_info'][0]['user_cookie'] })
+    event_req.set_form_data({"user_secret" => user_info[0]['api_info'][0]['user_secret']})
+    
+    event_res = http.request(event_req)
+    event_response = JSON::parse(event_res.body)
+    
+    if event_response['status']['code'].to_i == 200
+      events = event_response['data']['post']
+    end
+    
+    return events
+  end
 end

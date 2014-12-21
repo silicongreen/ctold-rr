@@ -371,3 +371,36 @@
 <div id="palettes-main">
   <%= render :partial=>"palettes_main", :locals=>{:user_palettes=>@user_palettes, :cur_date=>@cur_date} %>
 </div>
+  <div class="school_feed_box">
+    <div class="champs21_feed_title">School Feeds</div>
+    <% unless @events.empty? %>
+      <ul class="champs21_feed">
+        <% @events.each_with_index do |event,i| %>        
+          <li>
+            <div class="champs21_feed_item_box">
+              <div class="timetable_left">
+                <%  if event['images'].empty? %>  
+                  <%= image_tag("/images/application/c.png" , :alt=> event['title']) %>
+                <% else %>
+                  <%= image_tag("#{event['images'][0]}" , :alt=> event['title']) %>
+                <% end %>
+              </div>
+              <div class="timetable_right" style="font-size: 12px;">
+                <div style=""><a href="<%= event['share_link']['link'] %>" target="_blank"><%= event['title'] %></a></div>
+                <div class="champs21_summery"><%= truncate(event['summary'], :length => 100) %></div>
+                <div class="champs_view_wow_box">
+                  <div class="champs_seen"><%= event['view_count'] %></div>       
+                  <div class="champs_wow"><%= event['wow_count'] %></div>              
+                </div>              
+                
+              </div>
+            </div>
+          </li>
+        <% end  %>
+      </ul>
+    <% else %>
+      <h2>NO DATA</h2>
+    <% end  %>
+      <div class="champs21_feed_title"><a href="http://www.champs21.com/" target="_blank">VIEW MOEW</a></div>
+  </div>  
+<%#= debug  @events %>

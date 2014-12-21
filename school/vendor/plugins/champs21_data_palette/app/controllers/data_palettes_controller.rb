@@ -107,7 +107,7 @@ class DataPalettesController < ApplicationController
   def get_school_feed_champs21
     require 'net/http'
     require 'uri'
-    require "yaml"
+    require "yaml"    
     
     @user = current_user
     champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/champs21.yml")['champs21']
@@ -115,8 +115,8 @@ class DataPalettesController < ApplicationController
     username = champs21_api_config['username']
     password = champs21_api_config['password']
     
-    if File.file?("#{RAILS_ROOT.to_s}/public/user_configs/" + @user.id.to_s + "_config.yml")
-      user_info = YAML.load_file("#{RAILS_ROOT.to_s}/public/user_configs/" + @user.id.to_s + "_config.yml")
+    if File.file?("#{RAILS_ROOT.to_s}/public/user_configs/feed_" + @user.id.to_s + "_config.yml")
+      user_info = YAML.load_file("#{RAILS_ROOT.to_s}/public/user_configs/feed_" + @user.id.to_s + "_config.yml")
       
       if Time.now.to_i >= user_info[0]['api_info'][0]['user_cookie_exp'].to_i
         
@@ -136,7 +136,7 @@ class DataPalettesController < ApplicationController
             "user_cookie_exp" => ar_user_cookie[2].split('=')[1].to_time.to_i
           ]
         ]        
-        File.open("#{RAILS_ROOT.to_s}/public/user_configs/" + @user.id.to_s + "_config.yml", 'w') {|f| f.write(YAML.dump(user_info)) }
+        File.open("#{RAILS_ROOT.to_s}/public/user_configs/feed_" + @user.id.to_s + "_config.yml", 'w') {|f| f.write(YAML.dump(user_info)) }
       end
     else
       
@@ -156,7 +156,7 @@ class DataPalettesController < ApplicationController
           "user_cookie_exp" => ar_user_cookie[2].split('=')[1].to_time.to_i
         ]
       ]
-      File.open("#{RAILS_ROOT.to_s}/public/user_configs/" + @user.id.to_s + "_config.yml", 'w') {|f| f.write(YAML.dump(user_info)) }
+      File.open("#{RAILS_ROOT.to_s}/public/user_configs/feed_" + @user.id.to_s + "_config.yml", 'w') {|f| f.write(YAML.dump(user_info)) }
     end
     
     event_uri = URI(api_endpoint + "api/freeuser")

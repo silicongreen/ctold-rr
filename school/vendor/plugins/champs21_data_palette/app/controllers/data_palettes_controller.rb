@@ -124,7 +124,7 @@ class DataPalettesController < ApplicationController
     auth_res = http.request(auth_req)
     @auth_response = ActiveSupport::JSON.decode(auth_res.body)
 
-
+    ar_user_cookie = auth_res.response['set-cookie'].split('; ');
 
     user_info = [
       "api_info" => [

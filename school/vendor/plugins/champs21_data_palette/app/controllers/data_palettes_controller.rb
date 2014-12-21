@@ -105,6 +105,7 @@ class DataPalettesController < ApplicationController
   end
   
   def get_school_feed_champs21
+    abort("heredukse");
     require 'net/http'
     require 'uri'
     require "yaml"    

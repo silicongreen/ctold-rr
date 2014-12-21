@@ -105,7 +105,6 @@ class DataPalettesController < ApplicationController
   end
   
   def get_school_feed_champs21
-    abort("heredukse");
     require 'net/http'
     require 'uri'
     require "yaml"    
@@ -140,7 +139,7 @@ class DataPalettesController < ApplicationController
         File.open("#{RAILS_ROOT.to_s}/public/user_configs/feed_" + @user.id.to_s + "_config.yml", 'w') {|f| f.write(YAML.dump(user_info)) }
       end
     else
-      
+      abort(api_endpoint);
       uri = URI(api_endpoint + "api/user/auth")
       http = Net::HTTP.new(uri.host, uri.port)
       auth_req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})
@@ -148,7 +147,7 @@ class DataPalettesController < ApplicationController
       auth_res = http.request(auth_req)
       @auth_response = ActiveSupport::JSON.decode(auth_res.body)
 
-      ar_user_cookie = auth_res.response['set-cookie'].split('; ');
+      
       
       user_info = [
         "api_info" => [
@@ -159,6 +158,7 @@ class DataPalettesController < ApplicationController
       ]
       File.open("#{RAILS_ROOT.to_s}/public/user_configs/feed_" + @user.id.to_s + "_config.yml", 'w') {|f| f.write(YAML.dump(user_info)) }
     end
+    
     
     event_uri = URI(api_endpoint + "api/freeuser")
     http = Net::HTTP.new(event_uri.host, event_uri.port)

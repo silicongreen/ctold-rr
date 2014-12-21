@@ -529,11 +529,89 @@ a.submit_button:hover {
     margin-left: 20px;
     margin-top: 15px;
 }
-.school_feed_box
+.champs21_feed_title
 {
     float: left;
-    padding-bottom: 50px;
+    width: 100%;
+    height: 30px;
+    background-color: #ED1C24;
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+    text-align:center;
+    padding: 10px 0px;
+}
+.champs21_feed_title a
+{
+    text-decoration: none;
+    color: #fff;
+}
+.school_feed_box
+{
+    float: left;    
     width: 332px;
-    border: 1px solid;
+    border: 1px solid #aaaaaa;
     background-color: #fff;
+}
+.champs21_feed
+{
+    display: block;
+    float:left;
+    padding: 0px;
+    margin: 0px;
+}
+.champs21_feed li
+{
+    display: block;
+    float:left;
+    width: 100%;
+    list-style: none;
+}
+.champs21_feed_item_box
+{
+    float: left;
+    width: 100%;
+    padding:10px 0px;
+}
+.champs21_feed_item_box:hover
+{
+    background-color: #eee;
+}
+.timetable_right div a
+{
+    font-size: 14px;
+    font-weight: bold;
+    color: #000;
+    text-decoration: none;
+}
+.timetable_right div a:hover
+{
+    color: #ED1C24;
+}
+.champs21_summery
+{
+    color: #999
+}
+.champs_view_wow_box
+{
+    height: 20px;
+    padding: 3px 5px;
+    color: #999;
+}
+.champs_seen
+{
+    float: left;
+    background: url("/images/application/seen.png") no-repeat;
+    padding-left: 25px;
+}
+.champs_wow
+{
+    float: right;
+    background: url("/images/application/wow.png") no-repeat;
+    background-size: 18px;
+    float: right;
+    height: 18px;
+    padding-left: 25px;
+    padding-top: 2px;
+    padding-right:10px;
 }

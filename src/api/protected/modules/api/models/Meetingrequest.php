@@ -192,6 +192,7 @@ class Meetingrequest extends CActiveRecord
                         $full_name.= ($value['employee']->last_name)?$value['employee']->last_name:"";
                         $meeting[$i]['name'] = $full_name;
                     } 
+                    $meeting[$i]['id'] = $value->id;
                     $meeting[$i]['date'] = $value->datetime;
                     $meeting[$i]['status'] = $value->status;
                 }    

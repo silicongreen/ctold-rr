@@ -31,7 +31,7 @@
     </ul>
   </div>
 </div>
-<div id="page-yield">
+<div id="page-yield" class="ch_book_wrapper">
   <% unless flash[:notice].nil? %>
     <p class="flash-msg"> <%= flash[:notice] %> </p>
   <% end %>
@@ -75,10 +75,10 @@
   <div class="links">
     <% unless @book.tags.collect{|t| t.name}.include?("Reference Book")%>
       <% if @book_reserved.nil? && @book.status!='Lost'%>
-        <%= link_to_remote "#{t('reserve_this_book')}", {:url=>{:controller=>'book_movement', :action=>'reserve_book', :id=>@book.id},:confirm => "#{t('are_you_sure')}"}, :class=>'user_button' %>
+        <%= link_to_remote "#{t('reserve_this_book')}", {:url=>{:controller=>'book_movement', :action=>'reserve_book', :id=>@book.id},:confirm => "#{t('are_you_sure')}"}, :class=>'submit_button' %>
       <% end %>
       <% if permitted_to? :issue_book, :book_movement %>
-        <%= link_to "#{t('issue_this_book')}",{ :controller=>'book_movement', :action=>'issue_book', :id=>@book.id}, :class=>'user_button' if @book.status == 'Available' or @book.status == 'Reserved' %>
+        <%= link_to "#{t('issue_this_book')}",{ :controller=>'book_movement', :action=>'issue_book', :id=>@book.id}, :class=>'submit_button' if @book.status == 'Available' or @book.status == 'Reserved' %>
       <%  end %>
     <%  end %>
     <div class="extender"></div>

@@ -1,7 +1,7 @@
 .assigned_batches_section{
-    width: 405px;
-    min-width: 405px;
-    max-width: 405px;
+    width: 385px;
+    min-width: 385px;
+    max-width: 385px;
     float: left;
     height: 350px;
     min-height: 350px;
@@ -12,9 +12,9 @@
 .select_all_section{
     margin-bottom: 20px;
     margin-left: 10px;
-    width: 405px;
-    min-width: 405px;
-    max-width: 405px;
+    width: 385px;
+    min-width: 385px;
+    max-width: 385px;
     float: left;
 }
 
@@ -31,9 +31,9 @@
 }
 
 #assigned_batches{
-    width: 405px;
-    min-width: 405px;
-    max-width: 405px;
+    width: 385px;
+    min-width: 385px;
+    max-width: 385px;
     background-color: #f1f1f1;
     border-radius: 8px;
     -moz-border-radius: 8px;
@@ -52,9 +52,9 @@
     font-size: 13px;
     color: #484848;
     float: left;
-    width: 405px;
-    max-width: 405px;
-    min-width: 405px;
+    width: 385px;
+    max-width: 385px;
+    min-width: 385px;
     height: 30px;
     min-height: 30px;
     max-height: 30px;
@@ -125,9 +125,9 @@
 
 
 .all_batches_section{
-    width: 405px;
-    min-width: 405px;
-    max-width: 405px;
+    width: 385px;
+    min-width: 385px;
+    max-width: 385px;
     float: left;
     height: 350px;
     min-height: 350px;
@@ -137,8 +137,8 @@
 
 #all_batches{
     width: 420px;
-    min-width: 405px;
-    max-width: 405px;
+    min-width: 385px;
+    max-width: 385px;
     background-color: #f1f1f1;
     border-radius: 8px;
     -moz-border-radius: 8px;
@@ -157,9 +157,9 @@
     font-size: 13px;
     color: #484848;
     float: left;
-    width: 405px;
-    max-width: 405px;
-    min-width: 405px;
+    width: 385px;
+    max-width: 385px;
+    min-width: 385px;
     height: 30px;
     min-height: 30px;
     max-height: 30px;

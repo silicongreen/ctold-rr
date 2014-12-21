@@ -13,25 +13,26 @@
 
 #category-list {
     clear : both;
-    padding : 10px 0 40px 0px;
+    background: #d7d7d7;
+    padding : 20px;
     width:600px;
     margin:0px auto;
 }
 
 #category-list .listeven{
-    background : #EEF2FD;
-    border-bottom:1px solid #BECFFB;
+    background : #FFFFFF;
+    border-bottom:1px solid #D7D7D7;
     color : #444;
-    height : 1.5em; width : 30em;
+    height : 1.5em; 
     list-style-type : none;
     padding : 0.5em 0 0 5em;
 }
 
 #category-list .listodd{
-    background : #DFEAFF;
-    border-bottom:1px solid #BECFFB;
+    background : #F5F5F5;
+    border-bottom:1px solid #D7D7D7;
     color : #444;
-    height : 1.5em; width : 30em;
+    height : 1.5em; 
     list-style-type : none;
     padding : 0.5em 0 0 5em;
 }

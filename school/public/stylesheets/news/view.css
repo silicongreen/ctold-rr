@@ -1,4 +1,11 @@
-
+.ch_news_wrapper
+{
+    float: left;
+    width: 95%;
+    background-color: #fff;
+    padding:30px; 
+    border:1px solid #CCC;
+}
 #news_area {
     margin-top:50px;
 }
@@ -24,7 +31,7 @@
 .edit_button {
     -moz-border-radius:10px;
     -webkit-border-radius:10px;
-    background:#27292B none repeat scroll 0 0;
+    background:#db3434; none repeat scroll 0 0;
     color:#FFFFFF;
     font-family:arial;
     font-size:14px;
@@ -42,12 +49,12 @@
     color:#fff;
 }
 .edit_button:hover, .delete_button:hover, #submit-button input:hover{
-    background:  #373B3F;
+    background:  #7e0000;
 }
 .delete_button {
     -moz-border-radius:10px;
     -webkit-border-radius:10px;
-    background:#27292B none repeat scroll 0 0;
+    background:#db3434 none repeat scroll 0 0;
     color:#FFFFFF;
     font-family:arial;
     font-size:14px;
@@ -129,7 +136,7 @@
 #submit-button input{
     -moz-border-radius:10px;
     -webkit-border-radius:10px;
-    background:#27292B none repeat scroll 0 0;
+    background:#db3434 none repeat scroll 0 0;
     color:#FFFFFF;
     font-family:arial;
     font-size:14px;
@@ -143,6 +150,7 @@
     cursor:pointer;
     margin-left: 510px;
 }
+
 .approve
 {
     float: left;

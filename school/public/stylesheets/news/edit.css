@@ -1,4 +1,11 @@
-
+.ch_news_wrapper
+{
+    float: left;
+    width: 95%;
+    background-color: #fff;
+    padding:30px; 
+    border:1px solid #CCC;
+}
 #add_news_form {
     padding-left:50px;
 }
@@ -54,7 +61,7 @@
 .news_publish_button {
     -moz-border-radius:10px;
     -webkit-border-radius:10px;
-    background:#27292B none repeat scroll 0 0;
+    background:#db3434 none repeat scroll 0 0;
     color:#FFFFFF;
     font-family:arial;
     font-size:14px;
@@ -66,7 +73,7 @@
     cursor:pointer;
 }
 .news_publish_button:hover{
-   background:  #373B3F;
+   background:  #7e0000;
 }
 .fieldWithErrors {
     height: 42px;

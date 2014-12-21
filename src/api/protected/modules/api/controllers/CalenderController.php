@@ -45,12 +45,19 @@ class CalenderController extends Controller {
             $response = array();
             if (Yii::app()->user->user_secret === $user_secret && $start_date != "" && $end_date != "" &&
                     ( Yii::app()->user->isStudent ||
-                    (Yii::app()->user->isParent && Yii::app()->request->getPost('batch_id') && Yii::app()->request->getPost('student_id') && Yii::app()->request->getPost('school')))) {
+                    (Yii::app()->user->isParent  && Yii::app()->request->getPost('batch_id') && Yii::app()->request->getPost('student_id') && Yii::app()->request->getPost('school')) ||
+                    (Yii::app()->user->isTeacher  && Yii::app()->request->getPost('batch_id')  && Yii::app()->request->getPost('student_id')))) 
+                {
                 if (Yii::app()->user->isParent) {
                     $batch_id = Yii::app()->request->getPost('batch_id');
                     $student_id = Yii::app()->request->getPost('student_id');
                     $school_id = Yii::app()->request->getPost('school');
-                } else {
+                } else if(Yii::app()->user->isTeacher) {
+                    $batch_id = Yii::app()->request->getPost('batch_id');
+                    $student_id = Yii::app()->request->getPost('student_id');
+                    $school_id = Yii::app()->user->schoolId;
+                }
+                else {
                     $batch_id = Yii::app()->user->batchId;
                     $student_id = Yii::app()->user->profileId;
                     $school_id = Yii::app()->user->schoolId;
@@ -227,47 +234,56 @@ class CalenderController extends Controller {
         $student_id = Yii::app()->request->getPost('student_id');
         $late = Yii::app()->request->getPost('late');
         $date = Yii::app()->request->getPost('date');
-        $reason = Yii::app()->request->getPost('reason');
+        //$reason = Yii::app()->request->getPost('reason');
+        
         if(Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher && $batch_id && $student_id)
         {
-            $attendence = new Attendances();
-            if(!$date)
+            $student_ids = explode(",", $student_id);
+            $lates = explode(",", $late);
+            foreach($student_ids as $key=>$student_id)
             {
-                $date = date("Y-m-d");
+                $attendence = new Attendances();
+                if(!$date)
+                {
+                    $date = date("Y-m-d");
+                }
+                $attendence_present = $attendence->getAttendence($batch_id, $student_id, $date);
+
+                if($attendence_present)
+                {
+                    $previous_attendence = $attendence->findbypk($attendence_present->id);
+                    $previous_attendence->delete();
+                }
+
+//                if(!$reason)
+//                {
+//                    $reason = "";
+//                }
+            
+           
+                $late = (isset($lates[$key]))?$lates[$key]:0;
+            
+                $newattendence = new Attendances();
+
+                $newattendence->batch_id = $batch_id;
+                $newattendence->student_id = $student_id;
+               // $newattendence->reason = $reason;
+                $newattendence->month_date = $date;
+                $newattendence->created_at = date("Y-m-d H:i:s");
+                $newattendence->updated_at = date("Y-m-d H:i:s");
+                $newattendence->school_id = Yii::app()->user->schoolId;
+                if($late && $late==1)
+                {
+                    $newattendence->forenoon = 1;
+                    $newattendence->afternoon = 0;
+                } 
+                else
+                {
+                    $newattendence->forenoon = 1;
+                    $newattendence->afternoon = 1;
+                }    
+                $newattendence->save();
             }
-            $attendence_present = $attendence->getAttendence($batch_id, $student_id, $date);
-            
-            if($attendence_present)
-            {
-                $previous_attendence = $attendence->findbypk($attendence_present->id);
-                $previous_attendence->delete();
-            }
-            
-            if(!$reason)
-            {
-                $reason = "";
-            }
-            
-            $newattendence = new Attendances();
-            
-            $newattendence->batch_id = $batch_id;
-            $newattendence->student_id = $student_id;
-            $newattendence->reason = $reason;
-            $newattendence->month_date = $date;
-            $newattendence->created_at = date("Y-m-d H:i:s");
-            $newattendence->updated_at = date("Y-m-d H:i:s");
-            $newattendence->school_id = Yii::app()->user->schoolId;
-            if($late && $late==1)
-            {
-                $newattendence->forenoon = 1;
-                $newattendence->afternoon = 0;
-            } 
-            else
-            {
-                $newattendence->forenoon = 1;
-                $newattendence->afternoon = 1;
-            }    
-            $newattendence->save();
           
             $response['status']['code'] = 200;
             $response['status']['msg'] = "Success";

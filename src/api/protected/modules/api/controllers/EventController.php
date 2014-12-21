@@ -42,11 +42,11 @@ class EventController extends Controller {
              if( ( isset($updatemeeting->parent_id) 
                      && Yii::app()->user->isParent 
                      && Yii::app()->user->profileId==$updatemeeting->parent_id
-                     && $updatemeeting->type==2) ||
+                     && $updatemeeting->type==1) ||
                      ( isset($updateleave->teacher_id) 
                      && Yii::app()->user->isTeacher 
                      && Yii::app()->user->profileId==$updatemeeting->teacher_id
-                     && $updatemeeting->type==1))
+                     && $updatemeeting->type==2))
              {
                  
                  $updatemeeting->status = $status;

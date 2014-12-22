@@ -38,18 +38,11 @@ class EventController extends Controller {
          {
              $meetingreq = new Meetingrequest();
              $updatemeeting = $meetingreq->findByPk($meeting_id);
-             
-             echo $updatemeeting->teacher_id;
-             echo Yii::app()->user->profileId;
-             echo $updatemeeting->type;
-             
-             
-              
              if( ( isset($updatemeeting->parent_id) 
                      && Yii::app()->user->isParent 
                      && Yii::app()->user->profileId==$updatemeeting->parent_id
                      && $updatemeeting->type==1) ||
-                     ( isset($updateleave->teacher_id) 
+                     ( isset($updatemeeting->teacher_id) 
                      && Yii::app()->user->isTeacher 
                      && Yii::app()->user->profileId==$updatemeeting->teacher_id
                      && $updatemeeting->type==2))

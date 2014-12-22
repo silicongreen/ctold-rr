@@ -21,7 +21,11 @@
         foreach ($slidemenu as $row) :
             ?>			
 				<li>
-					<a href="<?php echo base_url() . sanitize($row->name); ?>">
+                                        <?php if($row->id==7):?>
+                                            <a href="https://www.youtube.com/channel/UCywQj51MiCqHzQAa0Mg4KXg" target="_blank">
+                                        <?php else: ?>
+                                            <a href="<?php echo base_url() . sanitize($row->name); ?>">
+                                        <?php endif; ?>
 						<span class="ca-icon" style="background: url(<?php echo base_url($row->menu_icon); ?>) no-repeat;background-size:40px;top:10px;left:20px;"></span>
 						<div class="ca-content">
 							<h2 class="ca-main f5"><?php echo (isset($row->display_name) && $row->display_name != "") ? $row->display_name : $row->name; ?></h2>

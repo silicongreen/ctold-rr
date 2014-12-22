@@ -151,7 +151,7 @@
                                         <div class="post-entry">     
                                             <?php $l=0;foreach( $images as $image ) :?>
                                             <div style="float: left; width: 33%;">
-                                                <img width="100%" style="height:89px;"  src="<?php echo $image->image; ?>">
+                                                <img width="100%" style="height:89px;"  src="<?php echo getimage_link($image->image,"main"); ?>">
                                             </div>
                                             <?php if ( $l == 2 ) break; ?>
                                             <?php $l++; endforeach;?>

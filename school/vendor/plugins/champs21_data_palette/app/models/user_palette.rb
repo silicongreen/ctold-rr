@@ -18,9 +18,8 @@ class UserPalette < ActiveRecord::Base
   def assign_position
     all_palettes = UserPalette.find_all_by_user_id(self.user_id)
     first_column = all_palettes.select{|c| c.column_number==1}.count
-    second_column = all_palettes.select{|c| c.column_number==2}.count
-    third_column = all_palettes.select{|c| c.column_number==3}.count
-    count_array = [[first_column,1],[second_column,2],[third_column,3]].sort
+    second_column = all_palettes.select{|c| c.column_number==2}.count    
+    count_array = [[first_column,1],[second_column,2]].sort
     assigned_column = count_array[0][1]
     assigned_position = (count_array[0][0] + 1)
     self.update_attributes(:column_number=>assigned_column,:position=>assigned_position)

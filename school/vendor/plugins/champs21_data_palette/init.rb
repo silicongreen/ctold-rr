@@ -41,4 +41,5 @@ Dispatcher.to_prepare :champs21_data_palette do
   User.send :include, Champs21DataPalette::UserMethod
   Attendance.send :include, Champs21DataPalette::AttendancePaletteText
   UserController.send :include, Champs21DataPalette::DashboardOverride
+  Assignment.send :include, Champs21DataPalette::AssignmentPaletteText if Champs21Plugin.plugin_installed?("champs21_assignment")
 end

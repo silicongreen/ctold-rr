@@ -217,6 +217,9 @@ class Attendances extends CActiveRecord {
             
             $attendence[$i]['leave_id'] = 0;
             
+            $attendence[$i]['leave_start_date'] = "";
+            $attendence[$i]['leave_end_date'] = "";
+            
             if(in_array($value->id, $student_ids))
             {
                 if($all_data[$value->id]['fullday']==1)
@@ -245,16 +248,20 @@ class Attendances extends CActiveRecord {
                     $attendence[$i]['reason'] = $leave_today['reason'][$key];
                 }
                 $attendence[$i]['leave_id'] = $leave_today['leave_id'][$key];
+                $attendence[$i]['leave_start_date'] = $leave_today['start_date'][$key];
+                $attendence[$i]['leave_end_date'] = $leave_today['end_date'][$key];
             }
             if(isset($leave_today['unapproved']) && in_array($value->id, $leave_today['unapproved']))
             {
                 $key = array_search($value->id, $leave_today['unapproved']);
                 $attendence[$i]['status'] = 4;
-                $attendence[$i]['reason'] = $leave_today['reason'][$key];
                 if($leave_today['reason'][$key])
                 {
-                    $attendence[$i]['leave_id'] = $leave_today['leave_id'][$key];
+                    $attendence[$i]['reason'] = $leave_today['reason'][$key];
                 }
+                $attendence[$i]['leave_id'] = $leave_today['leave_id'][$key];
+                $attendence[$i]['leave_start_date'] = $leave_today['start_date'][$key];
+                $attendence[$i]['leave_end_date'] = $leave_today['end_date'][$key];
                 
             }
             

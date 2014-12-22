@@ -122,7 +122,7 @@ class ApplyLeaveStudents extends CActiveRecord
         public function getallleaveStudentsDate($date)
         {
             $criteria = new CDbCriteria;
-            $criteria->select = "t.id,t.student_id,t.approved,t.reason";
+            $criteria->select = "t.id,t.student_id,t.approved,t.reason,t.start_date,t.end_date";
             $criteria->addCondition("DATE(start_date) <= '" . $date . "'");
             $criteria->addCondition("DATE(end_date) >= '" . $date . "'");
             
@@ -145,6 +145,8 @@ class ApplyLeaveStudents extends CActiveRecord
               
                 $return_array['reason'][$i] = $value->reason;
                 $return_array['leave_id'][$i] = $value->id;
+                $return_array['start_date'][$i] = $value->start_date;
+                $return_array['end_date'][$i] = $value->end_date;
                 $i++;
             }
             return $return_array;

@@ -1,6 +1,8 @@
 <?php
 
 use Guzzle\Http\Client;
+use Guzzle\Plugin\Cookie\CookiePlugin;
+use Guzzle\Plugin\Cookie\CookieJar\ArrayCookieJar;
 
 class Plus_api {
 
@@ -92,6 +94,10 @@ class Plus_api {
     
     public function call__($verb = 'post', $userEndpoint = 'reminders', $function_name = '', $b_first_call = true) {
 
+        $cookiePlugin = new CookiePlugin(new ArrayCookieJar());
+        
+        $this->_client->addSubscriber($cookiePlugin);
+        
         $key = $userEndpoint;
         $ar_params = NULL;
         $b_found = false;

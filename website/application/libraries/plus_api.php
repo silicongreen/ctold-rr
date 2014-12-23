@@ -137,117 +137,54 @@ class Plus_api {
             $userEndpoint = substr($userEndpoint, 0, -1);
         }
 
-        try {
-            $request = $this->_client->$verb($userEndpoint, $headers, $ar_params);
-
-            $response = $request->send();
-            if ($response->getStatusCode() == 200) {
-
-                $ret = $this->_CI->config->config[$key]['return'];
-                $api_resp = $this->_CI->config->config[$key]['api_response'];
-
-                if (!isset($ret) && isset($api_resp)) {
-
-                    if ($api_resp == 'xml') {
-                        return $response->xml();
-                    } else if ($api_resp == 'json') {
-
-                        if (strpos($response->getContentType(), 'application/xml') !== FALSE) {
-
-                            $json = json_encode($response->xml());
-                            $response_jobj = json_decode($json);
-                            return $response_jobj;
-                        } else {
-                            return json_decode($response->getBody());
-                        }
-                    }
-                } else if (isset($ret) && !isset($api_resp)) {
-
-                    if ($ret == 'xml') {
-                        return $response->xml();
-                    } else if ($ret == 'json') {
-
-                        if (strpos($response->getContentType(), 'application/xml') !== FALSE) {
-
-                            $json = json_encode($response->xml());
-                            $response_jobj = json_decode($json);
-                            return $response_jobj;
-                        } else {
-                            return json_decode($response->getBody());
-                        }
-                    }
-                } else if (!isset($ret) && !isset($api_resp)) {
-
-                    if (strpos($response->getContentType(), 'application/xml') !== FALSE) {
-
-                        $json = json_encode($response->xml());
-                        $response_jobj = json_decode($json);
-                        return $response_jobj;
-                    } else {
-                        return json_decode($response->getBody());
-                    }
-                }
-
-                if ($api_resp == $ret) {
-
-                    if ($api_resp == 'xml') {
-                        return $response->xml();
-                    } else if ($api_resp == 'json') {
-
-                        if (strpos($response->getContentType(), 'application/xml') !== FALSE) {
-
-                            $json = json_encode($response->xml());
-                            $response_jobj = json_decode($json);
-                            return $response_jobj;
-                        } else {
-                            return json_decode($response->getBody());
-                        }
-                    }
-                } else {
-
-                    if ($ret == 'xml') {
-
-                        if ($api_resp == 'xml') {
-                            return $response->xml();
-                        } else if ($api_resp == 'json') {
-                            
-                            if (strpos($response->getContentType(), 'application/xml') !== FALSE) {
-
-                                $json = json_encode($response->xml());
-                                $response_jobj = json_decode($json);
-                                return $response_jobj;
-                            } else {
-                                return json_decode($response->getBody());
-                            }
-                        }
-                    } else if ($ret == 'json') {
-
-                        if ($api_resp == 'xml') {
-
-                            if (strpos($response->getContentType(), 'application/xml') !== FALSE) {
-
-                                $json = json_encode($response->xml());
-                                $response_jobj = json_decode($json);
-                                return $response_jobj;
-                            } else {
-                                return json_decode($response->getBody());
-                            }
-                        } else if ($api_resp == 'json') {
-                            return json_decode($response->getBody());
-                        }
-                    }
-                }
-            }
-        } catch (Exception $e) {
-            if (strpos($e->getMessage(), 'Unauthorized') !== FALSE && $b_first_call) {
-                $this->getAccessToken();
-
-                $this->call__($verb, $userEndpoint, $function_name, false);
-            }
-            return false;
-        }
+        
 
         return false;
+    }
+    
+    public function get_data_login() {
+
+        $login_ar = array(
+            'username' => get_free_user_session('paid_username'),
+            'password' => get_free_user_session('paid_password')
+        );
+
+//        $ar_ex_param = array('created_at' => '2013-03-04');
+        //return 'search:' . json_encode($search_ar);
+        return $login_ar;
+    }
+
+    public function get_data_reminder() {
+
+        $search_ar = array(
+            'search' => array(
+                'to_user_username_equals' => $this->_username
+            ),
+            'created_at' => date('Y-m-d')
+        );
+
+//        $ar_ex_param = array('created_at' => '2013-03-04');
+        //return 'search:' . json_encode($search_ar);
+        return $search_ar;
+    }
+
+    public function get_data_student_attendance() {
+
+        return array(
+            'student_admisson_no_equals' => 'JKL124',
+            'batch_name_equals' => 'BATCH2001',
+            'month_date_gt' => '2013-07-06',
+            'month_date_lt' => '2013-07-06',
+            'month_date_equals' => '2013-07-06'
+        );
+    }
+
+    public function get_data_batch() {
+
+        $search_ar = array(
+            'search' => array()
+        );
+        return $search_ar;
     }
 
 }

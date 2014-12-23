@@ -259,6 +259,7 @@ class Plus_api {
 
                 $this->call__($verb, $userEndpoint, $function_name, false);
             }
+            print $e->getMessage();
             return false;
         }
 

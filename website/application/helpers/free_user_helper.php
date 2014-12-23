@@ -122,7 +122,12 @@ if (!function_exists('set_user_sessions')) {
         $sessionData['free_user']['paid_school_code'] = $obj_user->paid_school_code;
         $sessionData['free_user']['paid_school_id'] = $obj_user->paid_school_id;
         $sessionData['free_user']['profile_image'] = $obj_user->profile_image;
-        
+        if($remeber)
+        {
+           $CI->session->sess_expiration = (60*60*24*30);
+        }
+
+        $CI->session->set_userdata($sessionData);
         if($obj_user->paid_school_code && $obj_user->paid_username && $obj_user->paid_password)
         {
                 $CI->load->library('plus_api');
@@ -141,11 +146,6 @@ if (!function_exists('set_user_sessions')) {
                 }
         }
         
-        if($remeber)
-        {
-           $CI->session->sess_expiration = (60*60*24*30);
-        }
-
-        $CI->session->set_userdata($sessionData);
+        
     }
 }

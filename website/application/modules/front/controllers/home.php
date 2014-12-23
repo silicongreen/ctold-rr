@@ -3091,17 +3091,14 @@ class home extends MX_Controller {
          */
         
         $ar_params = array(
-            'school_code' => 'nbs',
-            'username' => 'ST0001',
-            'password' => '123456'
+            'school_code' => 'nbs'
         );
 //        
        $int_response = $this->plus_api->init($ar_params, false);
         
        if($int_response != FALSE){
             
-            $res = $this->plus_api->call__('get', 'student_attendance', 'get_data_student_attendance');
-            $res = $this->plus_api->call__('get', 'reminders', 'get_data_reminder');
+            $res = $CI->plus_api->call__('get', 'users/loginhook', 'get_data_login');
 //            $res = $this->plus_api->call__('get', 'batches');
             
             var_dump($res);

@@ -89,6 +89,166 @@ class Plus_api {
             return false;
         }
     }
+    
+    public function call__($verb = 'post', $userEndpoint = 'reminders', $function_name = '', $b_first_call = true) {
+
+        $key = $userEndpoint;
+        $ar_params = NULL;
+        $b_found = false;
+
+        $str_fnc = end(explode('/', $userEndpoint));
+
+        if (method_exists($this, $str_fnc)) {
+            $b_found = true;
+            $ar_params = $this->$str_fnc();
+        } else if (!empty(trim($function_name))) {
+            $ar_params = $this->$function_name();
+        }
+
+        $headers = array(
+            'Content-type' => 'application/x-www-form-urlencoded',
+            'Authorization' => 'Token token="' . $this->_token . '"'
+        );
+
+        if ($verb == 'get' && !is_null($ar_params)) {
+            $userEndpoint .= '?';
+            foreach ($ar_params as $k => $v) {
+                if ($k == 'search') {
+                    if (is_array($ar_params['search'])) {
+                        foreach ($ar_params['search'] as $k1 => $v1) {
+                            $userEndpoint .= 'search[' . $k1 . ']=' . $v1 . '&';
+                        }
+                    } else {
+                        $userEndpoint .= 'search[' . $v . ']=' . $v . '&';
+                    }
+                } else {
+                    $userEndpoint .= $k . '=' . $v . '&';
+                }
+            }
+
+            $ar_params = NULL;
+            $userEndpoint = substr($userEndpoint, 0, -1);
+        } else if ($verb == 'get' && is_null($ar_params)) {
+
+            $userEndpoint .= '?';
+            foreach ($this->_CI->config->config[$key]['mandatory_params'] as $k => $v) {
+                $userEndpoint .= $k . $v . '=&';
+            }
+            $userEndpoint = substr($userEndpoint, 0, -1);
+        }
+
+        try {
+            $request = $this->_client->$verb($userEndpoint, $headers, $ar_params);
+
+            $response = $request->send();
+            if ($response->getStatusCode() == 200) {
+
+                $ret = $this->_CI->config->config[$key]['return'];
+                $api_resp = $this->_CI->config->config[$key]['api_response'];
+
+                if (!isset($ret) && isset($api_resp)) {
+
+                    if ($api_resp == 'xml') {
+                        return $response->xml();
+                    } else if ($api_resp == 'json') {
+
+                        if (strpos($response->getContentType(), 'application/xml') !== FALSE) {
+
+                            $json = json_encode($response->xml());
+                            $response_jobj = json_decode($json);
+                            return $response_jobj;
+                        } else {
+                            return json_decode($response->getBody());
+                        }
+                    }
+                } else if (isset($ret) && !isset($api_resp)) {
+
+                    if ($ret == 'xml') {
+                        return $response->xml();
+                    } else if ($ret == 'json') {
+
+                        if (strpos($response->getContentType(), 'application/xml') !== FALSE) {
+
+                            $json = json_encode($response->xml());
+                            $response_jobj = json_decode($json);
+                            return $response_jobj;
+                        } else {
+                            return json_decode($response->getBody());
+                        }
+                    }
+                } else if (!isset($ret) && !isset($api_resp)) {
+
+                    if (strpos($response->getContentType(), 'application/xml') !== FALSE) {
+
+                        $json = json_encode($response->xml());
+                        $response_jobj = json_decode($json);
+                        return $response_jobj;
+                    } else {
+                        return json_decode($response->getBody());
+                    }
+                }
+
+                if ($api_resp == $ret) {
+
+                    if ($api_resp == 'xml') {
+                        return $response->xml();
+                    } else if ($api_resp == 'json') {
+
+                        if (strpos($response->getContentType(), 'application/xml') !== FALSE) {
+
+                            $json = json_encode($response->xml());
+                            $response_jobj = json_decode($json);
+                            return $response_jobj;
+                        } else {
+                            return json_decode($response->getBody());
+                        }
+                    }
+                } else {
+
+                    if ($ret == 'xml') {
+
+                        if ($api_resp == 'xml') {
+                            return $response->xml();
+                        } else if ($api_resp == 'json') {
+                            
+                            if (strpos($response->getContentType(), 'application/xml') !== FALSE) {
+
+                                $json = json_encode($response->xml());
+                                $response_jobj = json_decode($json);
+                                return $response_jobj;
+                            } else {
+                                return json_decode($response->getBody());
+                            }
+                        }
+                    } else if ($ret == 'json') {
+
+                        if ($api_resp == 'xml') {
+
+                            if (strpos($response->getContentType(), 'application/xml') !== FALSE) {
+
+                                $json = json_encode($response->xml());
+                                $response_jobj = json_decode($json);
+                                return $response_jobj;
+                            } else {
+                                return json_decode($response->getBody());
+                            }
+                        } else if ($api_resp == 'json') {
+                            return json_decode($response->getBody());
+                        }
+                    }
+                }
+            }
+        } catch (Exception $e) {
+            if (strpos($e->getMessage(), 'Unauthorized') !== FALSE && $b_first_call) {
+                $this->getAccessToken();
+
+                $this->call__($verb, $userEndpoint, $function_name, false);
+            }
+            return false;
+        }
+
+        return false;
+    }
 
 }
 

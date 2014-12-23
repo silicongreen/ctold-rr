@@ -3113,8 +3113,8 @@ class home extends MX_Controller {
             curl_setopt ($ch, CURLOPT_COOKIEJAR, $cookie); 
             curl_setopt ($ch, CURLOPT_COOKIEFILE, $cookie);
             $headers = array("Authorization"=>'Token token="'.$int_response.'"');
+            curl_setopt ($ch, CURLOPT_HEADER, true);
             curl_setopt ($ch, CURLOPT_HTTPHEADER, $headers);
-            curl_setopt ($ch, CURLOPT_REFERER, $url);
             $result = curl_exec ($ch); 
 
             echo $result;  

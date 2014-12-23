@@ -3078,6 +3078,7 @@ class home extends MX_Controller {
     public function plus_api($param) {
         
         $this->load->library('plus_api');
+        echo "here";
         
         /**
          * ONLY set username and password where needed otherwise don't event think to set the username
@@ -3089,23 +3090,23 @@ class home extends MX_Controller {
          * NIslam :D :D :P
          */
         
-        $ar_params = array(
-            'school_code' => 'nbs',
-            'username' => 'ST0001',
-            'password' => '123456'
-        );
-        
-        $int_response = $this->plus_api->init($ar_params, false);
-        
-        if($int_response != FALSE){
+//        $ar_params = array(
+//            'school_code' => 'nbs',
+//            'username' => 'ST0001',
+//            'password' => '123456'
+//        );
+//        
+//        $int_response = $this->plus_api->init($ar_params, false);
+//        
+//        if($int_response != FALSE){
             
 //            $res = $this->plus_api->call__('get', 'student_attendance', 'get_data_student_attendance');
-            $res = $this->plus_api->call__('get', 'reminders', 'get_data_reminder');
+           // $res = $this->plus_api->call__('get', 'reminders', 'get_data_reminder');
 //            $res = $this->plus_api->call__('get', 'batches');
             
-            var_dump($res);
+          //  var_dump($res);
             
-        }
+       // }
         exit;
         
     }

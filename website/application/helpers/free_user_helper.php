@@ -116,6 +116,11 @@ if (!function_exists('set_user_sessions')) {
         
         $sessionData['free_user']['full_name'] = $obj_user->first_name . ' ' . $obj_user->middle_name . ' ' . $obj_user->last_name;
         $sessionData['free_user']['type'] = $obj_user->user_type;
+        $sessionData['free_user']['paid_id'] = $obj_user->paid_id;
+        $sessionData['free_user']['paid_username'] = $obj_user->paid_username;
+        $sessionData['free_user']['paid_password'] = $obj_user->paid_password;
+        $sessionData['free_user']['paid_school_code'] = $obj_user->paid_school_code;
+        $sessionData['free_user']['paid_school_id'] = $obj_user->paid_school_id;
         $sessionData['free_user']['profile_image'] = $obj_user->profile_image;
         
         if($remeber)

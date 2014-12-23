@@ -171,6 +171,8 @@ class Meetingrequest extends CActiveRecord
 
             $criteria->offset = $start;
             
+            $criteria->order = "t.id desc";
+            
             $obj_metting = $this->findAll($criteria);
             $meeting = array();
             

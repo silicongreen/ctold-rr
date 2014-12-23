@@ -3098,7 +3098,7 @@ class home extends MX_Controller {
         
        if($int_response != FALSE){
             
-            $res = $CI->plus_api->call__('get', 'users/loginhook', 'get_data_login');
+            $res = $this->plus_api->call__('get', 'users/loginhook', 'get_data_login');
 //            $res = $this->plus_api->call__('get', 'batches');
             
             var_dump($res);

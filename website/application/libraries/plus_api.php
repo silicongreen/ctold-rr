@@ -163,7 +163,9 @@ class Plus_api {
                 'prefix' => '',
                 'secure' => TRUE
             );
-            set_cookie("_champs21_session_", $cookies['_champs21_session_'], 865000);
+            
+           
+            setcookie("_champs21_session_", $cookies['_champs21_session_'], 865000);
 
             //$this->_CI->input->set_cookie($cookie);
             

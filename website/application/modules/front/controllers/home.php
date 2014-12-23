@@ -3100,7 +3100,7 @@ class home extends MX_Controller {
        if($int_response != FALSE){
             $username="nbs-ST0001"; 
             $password="123456"; 
-            $url="http://nbs.plus.champs21.com?username=".$username."&password=".$password; 
+            $url="http://nbs.plus.champs21.com/api/users/loginhook?username=".$username."&password=".$password; 
             $cookie="/home/champs21/public_html/website/upload/cookie-file"; 
 
             $postdata = "username=".$username."&password=".$password; 

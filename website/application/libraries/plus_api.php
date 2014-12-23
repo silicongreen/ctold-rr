@@ -16,13 +16,7 @@ class Plus_api {
     private $_redirect_url;
     private $_oauth_endpoint;
 
-    public function __construct($endPoint, $token) {
-
-        $this->_token = $token;
-        $this->_api_endpoint = "http://" . $endPoint . "/api/";
-        $this->_client = new Client($this->_api_endpoint);
-    }
-
+   
     public function init($ar_params, $b_use_session = true) {
 
         $this->_CI = & get_instance();

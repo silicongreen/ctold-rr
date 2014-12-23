@@ -125,7 +125,7 @@ if (!function_exists('set_user_sessions')) {
         
         if($obj_user->paid_school_code && $obj_user->paid_username && $obj_user->paid_password)
         {
-             //    $CI->load->library('plus_api');
+                 $CI->load->library('plus_api');
 
 //                $ar_params = array(
 //                    'school_code' => $obj_user->paid_school_code

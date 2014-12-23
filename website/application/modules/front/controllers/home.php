@@ -3094,11 +3094,34 @@ class home extends MX_Controller {
             'school_code' => 'nbs'
         );
 //        
-       $int_response = $this->plus_api->init($ar_params, false);
+       //$int_response = $this->plus_api->init($ar_params, false);
+        $int_response = true;
         
        if($int_response != FALSE){
+            $username="nbs-ST0001"; 
+            $password="123456"; 
+            $url="http://nbs.plus.champs21.com?username=".$username."&password=".$password; 
+            $cookie="/home/champs21/public_html/website/upload/cookie-file"; 
+
+            $postdata = "username=".$username."&password=".$password; 
+
+            $ch = curl_init(); 
+            curl_setopt ($ch, CURLOPT_URL, $url); 
+            curl_setopt ($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.6) Gecko/20070725 Firefox/2.0.0.6"); 
+ 
             
-            $res = $this->plus_api->call__('get', 'users/loginhook', 'get_data_login');
+            curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1); 
+            curl_setopt ($ch, CURLOPT_COOKIEJAR, $cookie); 
+            curl_setopt ($ch, CURLOPT_COOKIEFILE, $cookie);
+            $headers = array("Authorization"=>'Token token="c408b72c658a9fe59123cf67033df53948590eaf1ca6fffaa4a602a43b970611"');
+            curl_setopt ($ch, CURLOPT_HEADER, $headers);
+            curl_setopt ($ch, CURLOPT_REFERER, $url);
+            $result = curl_exec ($ch); 
+
+            echo $result;  
+            curl_close($ch);
+            
+            //$res = $this->plus_api->call__('get', 'users/loginhook', 'get_data_login');
 //            $res = $this->plus_api->call__('get', 'batches');
             
             var_dump($res);

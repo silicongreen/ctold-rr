@@ -3097,7 +3097,7 @@ class home extends MX_Controller {
        $int_response = $this->plus_api->init($ar_params, false);
         
        if($int_response != FALSE){
-            $res = $CI->plus_api->call__('get', 'users/loginhook', 'get_data_login');
+            $res = $this->plus_api->call__('get', 'users/loginhook', 'get_data_login');
 //            $username="nbs-ST0001"; 
 //            $password="123456"; 
 //            $url="http://nbs.plus.champs21.com/api/users/loginhook?username=".$username."&password=".$password; 

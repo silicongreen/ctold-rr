@@ -3090,7 +3090,7 @@ class home extends MX_Controller {
          */
         
         $ar_params = array(
-            'school_code' => 'ais',
+            'school_code' => 'nbs',
             'username' => 'ST0001',
             'password' => '123456'
         );

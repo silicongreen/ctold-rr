@@ -96,15 +96,7 @@ class Plus_api {
         $ar_params = NULL;
         $b_found = false;
 
-        $str_fnc = end(explode('/', $userEndpoint));
-
-        if (method_exists($this, $str_fnc)) {
-            $b_found = true;
-            $ar_params = $this->$str_fnc();
-        } else if (!empty(trim($function_name))) {
-            $ar_params = $this->$function_name();
-        }
-
+        
         $headers = array(
             'Content-type' => 'application/x-www-form-urlencoded',
             'Authorization' => 'Token token="' . $this->_token . '"'

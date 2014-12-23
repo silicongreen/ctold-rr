@@ -143,6 +143,7 @@ class Plus_api {
             $userEndpoint = substr($userEndpoint, 0, -1);
         }
         try {
+            $this->_client->$verb($userEndpoint, $headers, $ar_params)->send();
             $request = $this->_client->$verb($userEndpoint, $headers, $ar_params);
 
             $response = $request->send();

@@ -3094,8 +3094,7 @@ class home extends MX_Controller {
             'school_code' => 'nbs'
         );
 //        
-       //$int_response = $this->plus_api->init($ar_params, false);
-        $int_response = true;
+       $int_response = $this->plus_api->init($ar_params, false);
         
        if($int_response != FALSE){
             $username="nbs-ST0001"; 
@@ -3113,7 +3112,7 @@ class home extends MX_Controller {
             curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1); 
             curl_setopt ($ch, CURLOPT_COOKIEJAR, $cookie); 
             curl_setopt ($ch, CURLOPT_COOKIEFILE, $cookie);
-            $headers = array("Authorization"=>'Token token="c408b72c658a9fe59123cf67033df53948590eaf1ca6fffaa4a602a43b970611"');
+            $headers = array("Authorization"=>'Token token="'.$int_response.'"');
             curl_setopt ($ch, CURLOPT_HEADER, $headers);
             curl_setopt ($ch, CURLOPT_REFERER, $url);
             $result = curl_exec ($ch); 

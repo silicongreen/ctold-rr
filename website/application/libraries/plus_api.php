@@ -86,7 +86,7 @@ class Plus_api {
                 $this->_token = $obj_response->access_token;
                 $this->_CI->session->set_userdata('plus_access_token', $this->_token);
 
-                return true;
+                return $this->_token;
             }
         } catch (Exception $e) {
 

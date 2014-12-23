@@ -3110,8 +3110,7 @@ class home extends MX_Controller {
  
             
             curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1); 
-            curl_setopt ($ch, CURLOPT_COOKIEJAR, $cookie); 
-            curl_setopt ($ch, CURLOPT_COOKIEFILE, $cookie);
+            curl_setopt ($ch, CURLOPT_COOKIEJAR, $cookie);
             $headers = array('Authorization: Token token="'.$int_response.'"');
             curl_setopt ($ch, CURLOPT_HTTPHEADER, $headers);
             curl_setopt ($ch, CURLOPT_HEADER, true);
@@ -3122,10 +3121,7 @@ class home extends MX_Controller {
             echo $result;  
             curl_close($ch);
             
-            //$res = $this->plus_api->call__('get', 'users/loginhook', 'get_data_login');
-//            $res = $this->plus_api->call__('get', 'batches');
-            
-            var_dump($res);
+
             
         }
         exit;

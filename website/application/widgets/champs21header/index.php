@@ -65,9 +65,9 @@ class champs21header extends widget
         $user_school_data = $user_school->get_user_school($user_id);
         
         if( $user_school_data != FALSE && !empty($user_id) ) {
-            if(get_free_user_session('paid_id') && get_free_user_session('paid_school_id'))
+            if(get_free_user_session('paid_id') && get_free_user_session('paid_school_code'))
             {
-                $data['my_school_menu_uri'] = "http://".get_free_user_session('paid_school_id')."plus.champs21.com";
+                $data['my_school_menu_uri'] = "http://".get_free_user_session('paid_school_code')."plus.champs21.com";
             } 
             else
             {    

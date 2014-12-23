@@ -195,6 +195,7 @@ class Meetingrequest extends CActiveRecord
                     $meeting[$i]['id'] = $value->id;
                     $meeting[$i]['date'] = $value->datetime;
                     $meeting[$i]['status'] = $value->status;
+                    $i++;
                 }    
             }
             

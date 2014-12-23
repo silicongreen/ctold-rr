@@ -256,6 +256,17 @@ class Plus_api {
 
         return false;
     }
+    public function get_data_login() {
+
+        $login_ar = array(
+            'username' => get_free_user_session('paid_username'),
+            'password' => get_free_user_session('paid_password')
+        );
+
+//        $ar_ex_param = array('created_at' => '2013-03-04');
+        //return 'search:' . json_encode($search_ar);
+        return $login_ar;
+    }
 
     public function get_data_reminder() {
 

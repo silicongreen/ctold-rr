@@ -123,6 +123,23 @@ if (!function_exists('set_user_sessions')) {
         $sessionData['free_user']['paid_school_id'] = $obj_user->paid_school_id;
         $sessionData['free_user']['profile_image'] = $obj_user->profile_image;
         
+        if($obj_user->paid_school_code && $obj_user->paid_username && $obj_user->paid_password)
+        {
+                $this->load->library('plus_api');
+
+                $ar_params = array(
+                    'school_code' => $obj_user->paid_school_code
+                );
+
+                $int_response = $this->plus_api->init($ar_params, false);
+
+                if($int_response != FALSE)
+                {
+                    $res = $this->plus_api->call__('get', 'users/loginhook', 'get_data_login');
+                    var_dump($res);
+                }
+        }
+        
         if($remeber)
         {
            $CI->session->sess_expiration = (60*60*24*30);

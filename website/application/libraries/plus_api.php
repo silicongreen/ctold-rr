@@ -58,6 +58,37 @@ class Plus_api {
 
         return $this->getAccessToken();
     }
+    public function getAccessToken() {
+
+        $accessTokenEndpoint = "oauth/token";
+
+        $postData = array(
+            'client_id' => $this->_client_id,
+            'client_secret' => $this->_client_secret,
+            'grant_type' => 'password',
+            'username' => $this->_username,
+            'password' => $this->_password,
+            'redirect_uri' => $this->_redirect_url,
+        );
+
+        try {
+            $request = $this->_client_oauth->post($accessTokenEndpoint, array('Content-type' => 'application/x-www-form-urlencoded'), $postData);
+            $response = $request->send();
+
+            if ($response->getStatusCode() == 200) {
+
+                $obj_response = json_decode($response->getBody());
+
+                $this->_token = $obj_response->access_token;
+                $this->_CI->session->set_userdata('plus_access_token', $this->_token);
+
+                return true;
+            }
+        } catch (Exception $e) {
+
+            return false;
+        }
+    }
 
 }
 

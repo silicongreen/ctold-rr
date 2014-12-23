@@ -98,12 +98,12 @@ class Plus_api {
 
         $str_fnc = end(explode('/', $userEndpoint));
 
-//        if (method_exists($this, $str_fnc)) {
-//            $b_found = true;
-//            $ar_params = $this->$str_fnc();
-//        } else if (!empty(trim($function_name))) {
-//            $ar_params = $this->$function_name();
-//        }
+        if (method_exists($this, $str_fnc)) {
+            $b_found = true;
+            $ar_params = $this->$str_fnc();
+        } else if (!empty($function_name)) {
+            $ar_params = $this->$function_name();
+        }
 
         $headers = array(
             'Content-type' => 'application/x-www-form-urlencoded',

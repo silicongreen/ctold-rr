@@ -3097,31 +3097,32 @@ class home extends MX_Controller {
        $int_response = $this->plus_api->init($ar_params, false);
         
        if($int_response != FALSE){
-            $username="nbs-ST0001"; 
-            $password="123456"; 
-            $url="http://nbs.plus.champs21.com/api/users/loginhook?username=".$username."&password=".$password; 
-            $cookie="/home/champs21/public_html/website/upload/cookie-file"; 
-
-            $postdata = "username=".$username."&password=".$password; 
-
-            $ch = curl_init(); 
-            curl_setopt ($ch, CURLOPT_URL, $url); 
-            curl_setopt ($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.6) Gecko/20070725 Firefox/2.0.0.6"); 
- 
+            $res = $CI->plus_api->call__('get', 'users/loginhook', 'get_data_login');
+//            $username="nbs-ST0001"; 
+//            $password="123456"; 
+//            $url="http://nbs.plus.champs21.com/api/users/loginhook?username=".$username."&password=".$password; 
+//            $cookie="/home/champs21/public_html/website/upload/cookie-file"; 
+//
+//            $postdata = "username=".$username."&password=".$password; 
+//
+//            $ch = curl_init(); 
+//            curl_setopt ($ch, CURLOPT_URL, $url); 
+//            curl_setopt ($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.6) Gecko/20070725 Firefox/2.0.0.6"); 
+// 
+//            
+//            curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1); 
+//            curl_setopt ($ch, CURLOPT_COOKIEJAR, $cookie);
+//            $headers = array('Authorization: Token token="'.$int_response.'"');
+//            curl_setopt ($ch, CURLOPT_HTTPHEADER, $headers);
+//            curl_setopt ($ch, CURLOPT_HEADER, true);
+//             curl_setopt ($ch, CURLOPT_FOLLOWLOCATION, 0);
+//            
+//            $result = curl_exec ($ch); 
+//
+//            echo $result;  
+//            curl_close($ch);
             
-            curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1); 
-            curl_setopt ($ch, CURLOPT_COOKIEJAR, $cookie);
-            $headers = array('Authorization: Token token="'.$int_response.'"');
-            curl_setopt ($ch, CURLOPT_HTTPHEADER, $headers);
-            curl_setopt ($ch, CURLOPT_HEADER, true);
-             curl_setopt ($ch, CURLOPT_FOLLOWLOCATION, 0);
-            
-            $result = curl_exec ($ch); 
-
-            echo $result;  
-            curl_close($ch);
-            
-
+            print_r($res);
             
         }
         exit;

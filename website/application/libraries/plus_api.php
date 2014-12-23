@@ -148,11 +148,23 @@ class Plus_api {
             
             $this->_client->$verb($userEndpoint, $headers, $ar_params)->send();
             
-            print_r($headers);
-            print $userEndpoint;
+           
             $request = $this->_client->$verb($userEndpoint, $headers, $ar_params);
 
             $response = $request->send();
+            $cookies = $request->getCookies();
+            
+            $cookie = array(
+                'name'   => "_champs21_session_",
+                'value'  => $cookies['_champs21_session_'],
+                'expire' => '865000',
+                'domain' => 'nbs.plus.champs21.com',
+                'path'   => '/',
+                'prefix' => '',
+                'secure' => TRUE
+            );
+
+            $this->_CI->input->set_cookie($cookie);
             
             print_r ($request->getCookies());
             

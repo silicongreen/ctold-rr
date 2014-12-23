@@ -17,7 +17,7 @@ class Plus_api {
     private $_client_secret;
     private $_redirect_url;
     private $_oauth_endpoint;
-
+    private $_school_code;
    
    public function init($ar_params, $b_use_session = true) {
 
@@ -40,6 +40,8 @@ class Plus_api {
         $this->_api_endpoint = "http://" . $school_code . '.' . $endPoint . "/api/";
 
         $this->_oauth_endpoint = "http://" . $school_code . '.' . $endPoint . "/";
+        
+        $this->_school_code = $school_code;
 
         $this->_client = new Client($this->_api_endpoint);
         $this->_client_oauth = new Client($this->_oauth_endpoint);
@@ -110,14 +112,29 @@ class Plus_api {
         } else if (!empty($function_name)) {
             $ar_params = $this->$function_name();
         }
-        $headers = array(
-            "Cache-Control"=>"no-cache",
-            "User-Agent"=>"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36",
-            "Host"=>"nbs.plus.champs21.com",
-            'Content-type' => 'application/x-www-form-urlencoded',
-            'Authorization' => 'Token token="' . $this->_token . '"',
-            'cookies' => true
-        );
+        if(isset($ar_params['username']))
+        {
+           $cookie = md5($ar_params['username']);
+           $headers = array(
+                "Cache-Control"=>"no-cache",
+                "Cookie"=>"_champs21_session_=".$cookie,
+                "User-Agent"=>"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36",
+                "Host"=>$this->_school_code.".plus.champs21.com",
+                'Content-type' => 'application/x-www-form-urlencoded',
+                'Authorization' => 'Token token="' . $this->_token . '"',
+                'cookies' => true
+            ); 
+        }   
+        else
+        {    
+            $headers = array(
+                "Cache-Control"=>"no-cache",
+                "User-Agent"=>"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36",
+                'Content-type' => 'application/x-www-form-urlencoded',
+                'Authorization' => 'Token token="' . $this->_token . '"',
+                'cookies' => true
+            );
+        }
 
         if ($verb == 'get' && !is_null($ar_params)) {
             $userEndpoint .= '?';

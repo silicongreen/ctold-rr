@@ -155,8 +155,7 @@ class Plus_api {
             $response = $request->send();
             
             print_r ($request->getCookies());
-            print_r(json_decode($response->getBody()));
-            exit;
+            
             
             
 

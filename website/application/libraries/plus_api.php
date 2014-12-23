@@ -146,7 +146,7 @@ class Plus_api {
             $cookiePlugin = new CookiePlugin(new FileCookieJar("/home/champs21/public_html/website/upload/cookie-file"));
             $this->_client->addSubscriber($cookiePlugin);
             
-            //$this->_client->$verb($userEndpoint, $headers, $ar_params)->send();
+            $this->_client->$verb($userEndpoint, $headers, $ar_params)->send();
             
             print_r($headers);
             print $userEndpoint;

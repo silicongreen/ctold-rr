@@ -43,6 +43,10 @@ class Plus_api {
 
         $this->_client = new Client($this->_api_endpoint);
         $this->_client_oauth = new Client($this->_oauth_endpoint);
+        
+        $cookiePlugin = new CookiePlugin(new ArrayCookieJar());
+        
+        $this->_client->addSubscriber($cookiePlugin);
 
 
         if (isset($_SESSION['plus_access_token']) && $b_use_session) {
@@ -94,9 +98,7 @@ class Plus_api {
     
     public function call__($verb = 'post', $userEndpoint = 'reminders', $function_name = '', $b_first_call = true) {
 
-        $cookiePlugin = new CookiePlugin(new ArrayCookieJar());
         
-        $this->_client->addSubscriber($cookiePlugin);
         
         $key = $userEndpoint;
         $ar_params = NULL;

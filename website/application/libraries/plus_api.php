@@ -147,11 +147,15 @@ class Plus_api {
             $this->_client->addSubscriber($cookiePlugin);
             
             //$this->_client->$verb($userEndpoint, $headers, $ar_params)->send();
+            
+            print_r($headers);
+            print_r($ar_params);
             $request = $this->_client->$verb($userEndpoint, $headers, $ar_params);
 
             $response = $request->send();
             
             print_r ($request->getCookies());
+            print_r(json_decode($response->getBody()));
             exit;
             
             

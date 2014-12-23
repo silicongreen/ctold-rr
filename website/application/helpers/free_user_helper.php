@@ -125,20 +125,20 @@ if (!function_exists('set_user_sessions')) {
         
         if($obj_user->paid_school_code && $obj_user->paid_username && $obj_user->paid_password)
         {
-                 $CI->load->library('plus_api');
+                $CI->load->library('plus_api');
 
-//                $ar_params = array(
-//                    'school_code' => $obj_user->paid_school_code
-//                );
+                $ar_params = array(
+                    'school_code' => $obj_user->paid_school_code
+                );
 
-//                $int_response = $CI->plus_api->init($ar_params, true);
-//
-//                if($int_response != FALSE)
-//                {
-//                    echo "here";
-//                    $res = $CI->plus_api->call__('get', 'users/loginhook', 'get_data_login');
-//                    var_dump($res);
-//                }
+                $int_response = $CI->plus_api->init($ar_params, true);
+
+                if($int_response != FALSE)
+                {
+                    echo "here";
+                    $res = $CI->plus_api->call__('get', 'users/loginhook', 'get_data_login');
+                    var_dump($res);
+                }
         }
         
         if($remeber)

@@ -158,7 +158,7 @@ class Plus_api {
                 'name'   => "_champs21_session_",
                 'value'  => $cookies['_champs21_session_'],
                 'expire' => '865000',
-                'domain' => 'nbs.plus.champs21.com',
+                'domain' => '.champs21.com',
                 'path'   => '/',
                 'prefix' => '',
                 'secure' => TRUE

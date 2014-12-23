@@ -2,7 +2,7 @@
 
 use Guzzle\Http\Client;
 use Guzzle\Plugin\Cookie\CookiePlugin;
-use Guzzle\Plugin\Cookie\CookieJar\ArrayCookieJar;
+use Guzzle\Plugin\Cookie\CookieJar\FileCookieJar;
 
 class Plus_api {
 
@@ -44,9 +44,7 @@ class Plus_api {
         $this->_client = new Client($this->_api_endpoint);
         $this->_client_oauth = new Client($this->_oauth_endpoint);
         
-        $cookiePlugin = new CookiePlugin(new ArrayCookieJar());
         
-        $this->_client->addSubscriber($cookiePlugin);
 
 
         if (isset($_SESSION['plus_access_token']) && $b_use_session) {
@@ -145,10 +143,19 @@ class Plus_api {
             $userEndpoint = substr($userEndpoint, 0, -1);
         }
         try {
-            $this->_client->$verb($userEndpoint, $headers, $ar_params)->send();
+            $cookiePlugin = new CookiePlugin(new FileCookieJar("/home/champs21/public_html/website/upload/cookie-file"));
+            $this->_client->addSubscriber($cookiePlugin);
+            
+            //$this->_client->$verb($userEndpoint, $headers, $ar_params)->send();
             $request = $this->_client->$verb($userEndpoint, $headers, $ar_params);
 
             $response = $request->send();
+            
+            
+
+            // Save in session or cache of your app.
+            // In example laravel:
+           
             if ($response->getStatusCode() == 200) {
 
                 $ret = $this->_CI->config->config[$key]['return'];

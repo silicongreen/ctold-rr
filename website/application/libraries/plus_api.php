@@ -113,7 +113,8 @@ class Plus_api {
 
         $headers = array(
             'Content-type' => 'application/x-www-form-urlencoded',
-            'Authorization' => 'Token token="' . $this->_token . '"'
+            'Authorization' => 'Token token="' . $this->_token . '"',
+            'cookies' => true
         );
 
         if ($verb == 'get' && !is_null($ar_params)) {

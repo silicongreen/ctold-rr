@@ -65,39 +65,10 @@ class champs21header extends widget
         $user_school_data = $user_school->get_user_school($user_id);
         
         if( $user_school_data != FALSE && !empty($user_id) ) {
-            if(get_free_user_session('paid_id') && get_free_user_session('paid_school_code'))
-            {
-                $paid_id = get_free_user_session('paid_id');
-                $paid_username = get_free_user_session('paid_username');
-                $paid_password = get_free_user_session('paid_password');
                 
-                $user_rand = $this->CI->cache->file->get("auth_".$paid_id);
-                if($user_rand)
-                {
-                    $random = $user_rand;
-                }  
-                else
-                {    
-                    $random = md5(rand());
-
-                    $insert['auth_id'] = $random;
-                    $insert['user_id'] = $paid_id;
-                    $insert['expire'] = date("Y-m-d H:i:s",  strtotime("+1 Day"));
-
-                    $this->CI->db->insert("user_auth",$insert);
-                    
-                    $this->CI->cache->file->save("auth_".$paid_id, $random, 82800);
-
-                }
-                
-                $params = "?username=".$paid_username."&password=".$paid_password."&auth_id=".$random."&user_id=".$paid_id;
-                $data['my_school_menu_uri'] = "http://".get_free_user_session('paid_school_code').".plus.champs21.com".$params;
-            } 
-            else
-            {    
-                $school_obj = new schools($user_school_data[0]->school_id);
-                $data['my_school_menu_uri'] = base_url().'schools/' . sanitize($school_obj->name);
-            }
+        $school_obj = new schools($user_school_data[0]->school_id);
+        $data['my_school_menu_uri'] = base_url().'schools/' . sanitize($school_obj->name);
+            
         } else {
             $data['my_school_menu_uri'] = base_url().'schools';
         }

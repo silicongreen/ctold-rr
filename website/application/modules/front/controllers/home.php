@@ -127,6 +127,36 @@ class home extends MX_Controller {
     
     function schools()
     {
+        if(get_free_user_session('paid_id') && get_free_user_session('paid_school_code'))
+        {
+            $paid_id = get_free_user_session('paid_id');
+            $paid_username = get_free_user_session('paid_username');
+            $paid_password = get_free_user_session('paid_password');
+
+            $user_rand = $this->cache->file->get("auth_".$paid_id);
+            if($user_rand)
+            {
+                $random = $user_rand;
+            }  
+            else
+            {    
+                $random = md5(rand());
+
+                $insert['auth_id'] = $random;
+                $insert['user_id'] = $paid_id;
+                $insert['expire'] = date("Y-m-d H:i:s",  strtotime("+1 Day"));
+
+                $this->db->insert("user_auth",$insert);
+
+                $this->cache->file->save("auth_".$paid_id, $random, 82800);
+
+            }
+
+            $params = "?username=".$paid_username."&password=".$paid_password."&auth_id=".$random."&user_id=".$paid_id;
+            $url = "http://".get_free_user_session('paid_school_code').".plus.champs21.com".$params;
+            
+            header("Location: ".$url);
+        } 
         $ar_segmens = $this->uri->segment_array();
         if(count($ar_segmens) < 2)
         {

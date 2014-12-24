@@ -104,13 +104,10 @@ class Plus_api {
         }
         $ar_params = NULL;
         $userEndpoint = substr($userEndpoint, 0, -1);
-        echo "<iframe style='display:none' src='nbs.plus.champs21.com' />";
-        
-        echo $_COOKIE['_champs21_session_'];
-        exit;
+       
         $headers = array(
                 "Cache-Control"=>"no-cache",
-                "Cookie"=>"_champs21_session_=".$cookies['_champs21_session_'],
+                "Cookie"=>"_champs21_session_=4b7cd4cc882a145b578f279dc44c1650",
                 "User-Agent"=>"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36",
                 "Host"=>"nbs.plus.champs21.com",
                 'Content-type' => 'application/x-www-form-urlencoded',
@@ -119,11 +116,8 @@ class Plus_api {
             );
         
         $request = $this->_client->get($userEndpoint, $headers, $ar_params);
-        $request->getParams()->set('cookies.disable', true);
-        $response = $request->send();  
         
-        $cookies = $request->getCookies();
-        echo $cookies['_champs21_session_'];
+        $response = $request->send();  
        
         
         
@@ -196,33 +190,14 @@ class Plus_api {
             $userEndpoint = substr($userEndpoint, 0, -1);
         }
         try {
-            $cookiePlugin = new CookiePlugin(new FileCookieJar("/home/champs21/public_html/website/upload/cookie-file"));
-            //$this->_client->addSubscriber($cookiePlugin);
             
-            //$this->_client->$verb($userEndpoint, $headers, $ar_params)->send();
+         
             
            
             $request = $this->_client->$verb($userEndpoint, $headers, $ar_params);
 
             $response = $request->send();
-//            $cookies = $request->getCookies();
-//            
-//            $cookie = array(
-//                'name'   => "_champs21_session_",
-//                'value'  => $cookies['_champs21_session_'],
-//                'expire' => '865000',
-//                'domain' => '.champs21.com',
-//                'path'   => '/',
-//                'prefix' => '',
-//                'secure' => TRUE
-//            );
-//            
-//           
-//            setcookie("_champs21_session_", $cookies['_champs21_session_'], 865000);
 
-            //$this->_CI->input->set_cookie($cookie);
-            
-            print_r ($request->getCookies());
             
             
             

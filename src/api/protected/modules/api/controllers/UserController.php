@@ -20,7 +20,7 @@ class UserController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('auth'),
+                'actions' => array('auth','check_auth'),
                 'users' => array('*'),
             ),
 //            array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -35,6 +35,41 @@ class UserController extends Controller {
                 'users' => array('*'),
             ),
         );
+    }
+    public function check_auth() 
+    {
+       if (isset($_POST) && !empty($_POST)) 
+       {
+           $user_id = Yii::app()->request->getPost('user_id');
+           $auth_id = Yii::app()->request->getPost('auth_id');
+           if($user_id && $auth_id)
+           {
+               $authobj = new Userauth();
+               if($authobj->getAuth($user_id, $auth_id))
+               {
+                  $response['status']['code'] = 200;
+                  $response['status']['msg'] = "Success"; 
+               } 
+               else
+               {
+                  $response['status']['code'] = 400;
+                  $response['status']['msg'] = "Bad Request";
+               }    
+           }
+           else
+           {
+               $response['status']['code'] = 400;
+               $response['status']['msg'] = "Bad Request";
+           }    
+       }
+       else
+       {
+           $response['status']['code'] = 400;
+           $response['status']['msg'] = "Bad Request";
+       }   
+       echo CJSON::encode($response);
+       Yii::app()->end();
+       
     }
 
     public function actionAuth() {

@@ -116,8 +116,8 @@ class Plus_api {
             
         $prerequest = $this->_client->get($userEndpoint, $headers, $ar_params)->send();
             
-        $cookies = $prerequest->getCookies();  
-        print_r($cookies);
+        //$cookies = $prerequest->getCookies();  
+        print_r($prerequest->cookies);
         exit;
         $request = $this->_client->$verb($userEndpoint, $headers, $ar_params);
 

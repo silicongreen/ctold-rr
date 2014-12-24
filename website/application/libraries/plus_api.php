@@ -116,7 +116,7 @@ class Plus_api {
             );
         
         $request = $this->_client->get($userEndpoint, $headers, $ar_params);
-        $request->getParams()->set('cookies.disable', true);
+        
         $response = $request->send();  
         
         $cookies = $request->getCookies();
@@ -193,7 +193,7 @@ class Plus_api {
             $userEndpoint = substr($userEndpoint, 0, -1);
         }
         try {
-            $cookiePlugin = new CookiePlugin(new FileCookieJar("/home/champs21/public_html/website/upload/cookie-file"));
+            
             //$this->_client->addSubscriber($cookiePlugin);
             
             //$this->_client->$verb($userEndpoint, $headers, $ar_params)->send();

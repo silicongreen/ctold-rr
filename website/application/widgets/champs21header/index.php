@@ -71,7 +71,7 @@ class champs21header extends widget
                 $paid_username = get_free_user_session('paid_username');
                 $paid_password = get_free_user_session('paid_password');
                 
-                $user_rand = $this->input->cookie($paid_id."_auth");
+                $user_rand = $this->CI->input->cookie($paid_id."_auth");
                 if($user_rand)
                 {
                     $random = $user_rand;
@@ -93,7 +93,7 @@ class champs21header extends widget
                         'path'   => '/'
                     );
 
-                    $this->input->set_cookie($cookie);
+                    $this->CI->input->set_cookie($cookie);
                    
                 }
                 

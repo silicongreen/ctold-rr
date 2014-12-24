@@ -118,9 +118,18 @@ class Plus_api {
         
         $request = $this->_client->get($userEndpoint);
         $response = $request->send();  
-        print_r ($request->getCookies());
-        echo "here";
-        exit;
+        $cookies = $request->getCookies();
+        $headers = array(
+                "Cache-Control"=>"no-cache",
+                "Cookie"=>"_champs21_session_=".$cookies['_champs21_session_'],
+                "User-Agent"=>"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36",
+                "Host"=>$this->_school_code.".plus.champs21.com",
+                'Content-type' => 'application/x-www-form-urlencoded',
+                'Authorization' => 'Token token="' . $this->_token . '"',
+                'cookies' => true
+            );
+        $res = $this->_client->get($userEndpoint, $headers, $ar_params)->send();
+       
         
         
     }        

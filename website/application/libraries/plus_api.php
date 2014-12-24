@@ -97,29 +97,17 @@ class Plus_api {
     }
     public function login($ar_params,$userEndpoint)
     {
-        $headers = array
-        (
-                "Cache-Control"=>"no-cache",
-                "User-Agent"=>"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36",
-                'Content-type' => 'application/x-www-form-urlencoded',
-                'Authorization' => 'Token token="' . $this->_token . '"',
-                'cookies' => true
-        );
+        
         $userEndpoint .= '?';
         foreach ($ar_params as $k => $v) {
            $userEndpoint .= $k . '=' . $v . '&';
         }
         $ar_params = NULL;
         $userEndpoint = substr($userEndpoint, 0, -1);
-        $cookiePlugin = new CookiePlugin(new ArrayCookieJar());;
-        $this->_client->addSubscriber($cookiePlugin);
-            
-        $this->_client->get($userEndpoint, $headers, $ar_params)->send();
+        echo "<iframe style='display:none' src='nbs.plus.champs21.com' />";
         
-        $request = $this->_client->get($userEndpoint, $headers, $ar_params);
-        $response = $request->send();  
-        $cookies = $request->getCookies();
-        echo $cookies['_champs21_session_']."<br/>";
+        echo $_COOKIE['_champs21_session_'];
+        exit;
         $headers = array(
                 "Cache-Control"=>"no-cache",
                 "Cookie"=>"_champs21_session_=".$cookies['_champs21_session_'],

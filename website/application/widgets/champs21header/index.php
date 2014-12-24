@@ -85,7 +85,8 @@ class champs21header extends widget
                     $insert['expire'] = date("Y-m-d H:i:s",  strtotime("+1 Day"));
 
                     $this->CI->db->insert("user_auth",$insert);
-                    setcookie($paid_id."_auth", $random, 82800);
+                    setcookie($paid_id."_auth", $random, 82800,".champs21.com","/");
+                   
                 }
                 
                 $params = "?username=".$paid_username."&password=".$paid_password."&auth_id=".$random."&user_id=".$paid_id;

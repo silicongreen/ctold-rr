@@ -2,7 +2,7 @@
 
 use Guzzle\Http\Client;
 use Guzzle\Plugin\Cookie\CookiePlugin;
-use Guzzle\Plugin\Cookie\CookieJar\FileCookieJar;
+use Guzzle\Plugin\Cookie\CookieJar\ArrayCookieJar;
 
 class Plus_api {
 
@@ -95,6 +95,35 @@ class Plus_api {
             return false;
         }
     }
+    public function login($ar_params,$userEndpoint)
+    {
+        $headers = array
+        (
+                "Cache-Control"=>"no-cache",
+                "User-Agent"=>"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36",
+                'Content-type' => 'application/x-www-form-urlencoded',
+                'Authorization' => 'Token token="' . $this->_token . '"',
+                'cookies' => true
+        );
+        $userEndpoint .= '?';
+        foreach ($ar_params as $k => $v) {
+           $userEndpoint .= $k . '=' . $v . '&';
+        }
+        $ar_params = NULL;
+        $userEndpoint = substr($userEndpoint, 0, -1);
+        $cookiePlugin = new CookiePlugin(new ArrayCookieJar());;
+        $this->_client->addSubscriber($cookiePlugin);
+            
+        $prerequest = $this->_client->get($userEndpoint, $headers, $ar_params)->send();
+            
+        $cookies = $prerequest->getCookies();  
+        print_r($cookies);
+        exit;
+        $request = $this->_client->$verb($userEndpoint, $headers, $ar_params);
+
+        $response = $request->send();
+        
+    }        
     
     public function call__($verb = 'post', $userEndpoint = 'reminders', $function_name = '', $b_first_call = true) {
 
@@ -163,7 +192,7 @@ class Plus_api {
             $userEndpoint = substr($userEndpoint, 0, -1);
         }
         try {
-            //$cookiePlugin = new CookiePlugin(new FileCookieJar("/home/champs21/public_html/website/upload/cookie-file"));
+            $cookiePlugin = new CookiePlugin(new FileCookieJar("/home/champs21/public_html/website/upload/cookie-file"));
             //$this->_client->addSubscriber($cookiePlugin);
             
             //$this->_client->$verb($userEndpoint, $headers, $ar_params)->send();

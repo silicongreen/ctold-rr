@@ -89,7 +89,7 @@ class champs21header extends widget
                         'name'   => "auth_".$paid_id,
                         'value'  => $random,
                         'expire' => '82800',
-                        'domain' => '.stage.champs21.com',
+                        'domain' => 'stage.champs21.com',
                         'path'   => '/'
                     );
 

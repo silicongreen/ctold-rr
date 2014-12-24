@@ -116,12 +116,15 @@ class Plus_api {
             
         $request = $this->_client->get($userEndpoint, $headers, $ar_params);
         $response = $request->send();  
-        $cookies = $request->getCookies();  
-        print_r($cookies);
+       
+        
+        $cookiePlugin->addCookiesFromResponse($response,$request);
+        $request = $this->_client->get($userEndpoint, $headers, $ar_params);
+        $response = $request->send();  
+        
+        echo "here";
         exit;
-        $request = $this->_client->$verb($userEndpoint, $headers, $ar_params);
-
-        $response = $request->send();
+        
         
     }        
     

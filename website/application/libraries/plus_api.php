@@ -114,10 +114,10 @@ class Plus_api {
         $cookiePlugin = new CookiePlugin(new ArrayCookieJar());;
         $this->_client->addSubscriber($cookiePlugin);
             
-        $prerequest = $this->_client->get($userEndpoint, $headers, $ar_params)->send();
-            
-        //$cookies = $prerequest->getCookies();  
-        print_r($cookiePlugin->all());
+        $request = $this->_client->get($userEndpoint, $headers, $ar_params);
+        $response = $request->send();  
+        $cookies = $response->getCookies();  
+        print_r($cookies);
         exit;
         $request = $this->_client->$verb($userEndpoint, $headers, $ar_params);
 

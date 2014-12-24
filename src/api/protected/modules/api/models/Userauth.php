@@ -81,7 +81,6 @@ class Userauth extends CActiveRecord
             $criteria->compare('user_id', $user_id);
             $criteria->compare('auth_id', $auth_id);
             $criteria->addCondition("expire>='".$date."'");
-            $criteria->order("t.id desc");
             $criteria->limit = 1;
             
             $obj_auth = $this->find($criteria);

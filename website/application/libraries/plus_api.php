@@ -111,15 +111,15 @@ class Plus_api {
         }
         $ar_params = NULL;
         $userEndpoint = substr($userEndpoint, 0, -1);
-        $cookiePlugin = new CookiePlugin(new ArrayCookieJar());;
-        $this->_client->addSubscriber($cookiePlugin);
-            
-        $this->_client->get($userEndpoint, $headers, $ar_params)->send();
-        
-        $request = $this->_client->get($userEndpoint, $headers, $ar_params);
-        $response = $request->send();  
-        $cookies = $request->getCookies();
-        echo $cookies['_champs21_session_'];
+//        $cookiePlugin = new CookiePlugin(new ArrayCookieJar());;
+//        $this->_client->addSubscriber($cookiePlugin);
+//            
+//        $this->_client->get($userEndpoint, $headers, $ar_params)->send();
+//        
+//        $request = $this->_client->get($userEndpoint, $headers, $ar_params);
+//        $response = $request->send();  
+//        $cookies = $request->getCookies();
+//        echo $cookies['_champs21_session_'];
         $headers = array(
                 "Cache-Control"=>"no-cache",
                 "Cookie"=>"_champs21_session_=4b7cd4cc882a145b578f279dc44c1650",
@@ -129,12 +129,12 @@ class Plus_api {
                 'Authorization' => 'Token token="' . $this->_token . '"',
                 'cookies' => true
             );
-        $request->getParams()->set('cookies.disable', true);
+        
         $request = $this->_client->get($userEndpoint, $headers, $ar_params);
         $response = $request->send();  
         
-        $cookies = $request->getCookies();
-        echo $cookies['_champs21_session_'];
+//        $cookies = $request->getCookies();
+//        echo $cookies['_champs21_session_'];
        
         
         

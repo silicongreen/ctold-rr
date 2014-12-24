@@ -95,7 +95,8 @@ $config['js_groups']            = Array(
                                 'merapi/script/jquery.masonry.ordered.js',
                                 'merapi/jquery-migrate.js',
                                 'merapi/pluginsHead.js',
-                                'scripts/layouts/tdsfront/js/bootstrap-datepicker.js'
+                                'scripts/layouts/tdsfront/js/bootstrap-datepicker.js',
+                                'merapi/script/snowstorm.js',
                         ),
                         'main-bottom.js' => Array( // when loading example.com/js/example1.js you will load javascript1.js and javascript2.js into one single file
                                 'merapi/main.js',

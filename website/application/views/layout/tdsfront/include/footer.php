@@ -35,7 +35,13 @@ $widget = new Widget;
     <div class="poweredby f5">    
         <p>Powered by <a href="http://www.team-creative.net" style="color:red;">Team Creative</a></p>
     </div>
-    
+<script type="text/javascript">
+snowStorm.snowColor = '#fff'; // blue-ish snow!?
+snowStorm.autoStart = true;
+snowStorm.flakesMaxActive = 165;  // show more snow on screen at once
+snowStorm.useTwinkleEffect = true; // let the snow flicker in and out of view
+snowStorm.snowCharacter = '•';
+</script>   
 <script type="text/javascript" src="<?php echo base_url('js/main-bottom.js'); ?>"></script>
 
 <script type="text/javascript">

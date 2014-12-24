@@ -2,7 +2,7 @@
 
 use Guzzle\Http\Client;
 use Guzzle\Plugin\Cookie\CookiePlugin;
-use Guzzle\Plugin\Cookie\CookieJar\ArrayCookieJar;
+use Guzzle\Plugin\Cookie\CookieJar\FileCookieJar;
 
 class Plus_api {
 
@@ -111,7 +111,7 @@ class Plus_api {
         }
         $ar_params = NULL;
         $userEndpoint = substr($userEndpoint, 0, -1);
-        $cookiePlugin = new CookiePlugin(new ArrayCookieJar());;
+        $cookiePlugin = new CookiePlugin(new FileCookieJar("/home/champs21/public_html/website/upload/cookie-file"));;
         $this->_client->addSubscriber($cookiePlugin);
             
         $request = $this->_client->get($userEndpoint, $headers, $ar_params);

@@ -22,7 +22,7 @@ $wow_class = getclassactionbox($news->wow_count);
     <div class="col-lg-4" style="border-right:1px solid #DADEDF; min-height: 39px;">
             <div style="width:<?php echo $seen_class['width']; ?>px; margin: 0 auto;">
                 <div class="seen-image col-lg-<?php echo $seen_class['class1']; ?>" style="text-align:right;margin-top:8px;" ><img src="<?php echo base_url("styles/layouts/tdsfront/images/social/seen.png"); ?>" /></div>
-                <div class="seen col-lg-<?php echo $seen_class['class2']; ?>" style="margin-top:8px;" ><span  class="f2"  style="font-size:12px;margin-left:5px;margin-top:6px;color:#666">seen <?php echo $seen_class['new_count']; ?></span></div>
+                <div class="seen col-lg-<?php echo $seen_class['class2']; ?>" style="margin-top:8px;" ><span  class="f2"  style="font-size:12px;margin-left:5px;margin-top:6px;color:#666">Seen <?php echo $seen_class['new_count']; ?></span></div>
             </div>
     </div>
     

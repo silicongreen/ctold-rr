@@ -67,7 +67,21 @@ class champs21header extends widget
         if( $user_school_data != FALSE && !empty($user_id) ) {
             if(get_free_user_session('paid_id') && get_free_user_session('paid_school_code'))
             {
-                $data['my_school_menu_uri'] = "http://".get_free_user_session('paid_school_code').".plus.champs21.com";
+                $paid_id = get_free_user_session('paid_id');
+                $paid_username = get_free_user_session('paid_username');
+                $paid_password = get_free_user_session('paid_password');
+                
+                
+                $random = md5(rand());
+                
+                $insert['auth_id'] = $random;
+                $insert['user_id'] = $paid_id;
+                $insert['expire'] = date("Y-m-d H:i:s",  strtotime("+1 Day"));
+                
+                $this->CI->db->insert("user_auth",$insert);
+                
+                $params = "?username=".$paid_username."&password=".$paid_password."&auth_id=".$random."&user_id=".$paid_id;
+                $data['my_school_menu_uri'] = "http://".get_free_user_session('paid_school_code').".plus.champs21.com".$params;
             } 
             else
             {    

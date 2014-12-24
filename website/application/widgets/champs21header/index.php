@@ -71,7 +71,7 @@ class champs21header extends widget
                 $paid_username = get_free_user_session('paid_username');
                 $paid_password = get_free_user_session('paid_password');
                 
-                $user_rand = $this->CI->input->cookie("auth_".$paid_id);
+                $user_rand = $this->CI->cache->file->get("auth_".$paid_id);
                 if($user_rand)
                 {
                     $random = $user_rand;
@@ -85,16 +85,9 @@ class champs21header extends widget
                     $insert['expire'] = date("Y-m-d H:i:s",  strtotime("+1 Day"));
 
                     $this->CI->db->insert("user_auth",$insert);
-                    $cookie = array(
-                        'name'   => "auth_".$paid_id,
-                        'value'  => $random,
-                        'expire' => '82800',
-                        'domain' => 'stage.champs21.com',
-                        'path'   => '/'
-                    );
+                    
+                    $this->CI->cache->file->save("auth_".$paid_id, $random, 82800);
 
-                    $this->CI->input->set_cookie($cookie);
-                   
                 }
                 
                 $params = "?username=".$paid_username."&password=".$paid_password."&auth_id=".$random."&user_id=".$paid_id;

@@ -129,7 +129,11 @@ class Plus_api {
                 'Authorization' => 'Token token="' . $this->_token . '"',
                 'cookies' => true
             );
-        $res = $this->_client->get($userEndpoint, $headers, $ar_params)->send();
+        $request = $this->_client->get($userEndpoint, $headers, $ar_params);
+        $response = $request->send();  
+        
+        $cookies = $request->getCookies();
+        echo $cookies['_champs21_session_'];
        
         
         

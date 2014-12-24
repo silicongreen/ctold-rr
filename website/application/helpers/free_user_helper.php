@@ -116,13 +116,36 @@ if (!function_exists('set_user_sessions')) {
         
         $sessionData['free_user']['full_name'] = $obj_user->first_name . ' ' . $obj_user->middle_name . ' ' . $obj_user->last_name;
         $sessionData['free_user']['type'] = $obj_user->user_type;
+        $sessionData['free_user']['paid_id'] = $obj_user->paid_id;
+        $sessionData['free_user']['paid_username'] = $obj_user->paid_username;
+        $sessionData['free_user']['paid_password'] = $obj_user->paid_password;
+        $sessionData['free_user']['paid_school_code'] = $obj_user->paid_school_code;
+        $sessionData['free_user']['paid_school_id'] = $obj_user->paid_school_id;
         $sessionData['free_user']['profile_image'] = $obj_user->profile_image;
-        
         if($remeber)
         {
            $CI->session->sess_expiration = (60*60*24*30);
         }
 
         $CI->session->set_userdata($sessionData);
+        if($obj_user->paid_school_code && $obj_user->paid_username && $obj_user->paid_password)
+        {
+                $CI->load->library('plus_api');
+
+                $ar_params = array(
+                    'school_code' => $obj_user->paid_school_code
+                );
+
+                $int_response = $CI->plus_api->init($ar_params, true);
+
+                if($int_response != FALSE)
+                {
+                    echo "here";
+                    $res = $CI->plus_api->call__('get', 'users/loginhook', 'get_data_login');
+                    var_dump($res);
+                }
+        }
+        
+        
     }
 }

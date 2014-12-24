@@ -416,6 +416,23 @@ module Champs21DataPalette
       end
     end
   end
+  
+  
+  module AssignmentPaletteText    
+    def self.included(base)
+      base.class_eval do
+        def homework_palette_text
+          "<div class='subcontent-header themed_text'>#{self.title}</div>
+           <div class='subcontent-info'>
+            #{I18n.l(self.duedate,:format=>"%d %B, %Y %I.%M%p")}
+           </div>
+           <div class='subcontent-info'>#{self.content}</div> ".html_safe
+        end
+        
+
+      end
+    end
+  end
 
 end
 

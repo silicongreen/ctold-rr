@@ -1,6 +1,8 @@
 <?php
 
 use Guzzle\Http\Client;
+use Guzzle\Plugin\Cookie\CookiePlugin;
+use Guzzle\Plugin\Cookie\CookieJar\ArrayCookieJar;
 
 class Plus_api {
 
@@ -15,15 +17,9 @@ class Plus_api {
     private $_client_secret;
     private $_redirect_url;
     private $_oauth_endpoint;
-
-    public function __construct($endPoint, $token) {
-
-        $this->_token = $token;
-        $this->_api_endpoint = "http://" . $endPoint . "/api/";
-        $this->_client = new Client($this->_api_endpoint);
-    }
-
-    public function init($ar_params, $b_use_session = true) {
+    private $_school_code;
+   
+   public function init($ar_params, $b_use_session = true) {
 
         $this->_CI = & get_instance();
 
@@ -44,9 +40,13 @@ class Plus_api {
         $this->_api_endpoint = "http://" . $school_code . '.' . $endPoint . "/api/";
 
         $this->_oauth_endpoint = "http://" . $school_code . '.' . $endPoint . "/";
+        
+        $this->_school_code = $school_code;
 
         $this->_client = new Client($this->_api_endpoint);
         $this->_client_oauth = new Client($this->_oauth_endpoint);
+        
+        
 
 
         if (isset($_SESSION['plus_access_token']) && $b_use_session) {
@@ -64,7 +64,6 @@ class Plus_api {
 
         return $this->getAccessToken();
     }
-
     public function getAccessToken() {
 
         $accessTokenEndpoint = "oauth/token";
@@ -96,9 +95,44 @@ class Plus_api {
             return false;
         }
     }
-
+    public function login($ar_params,$userEndpoint)
+    {
+        
+        $userEndpoint .= '?';
+        foreach ($ar_params as $k => $v) {
+           $userEndpoint .= $k . '=' . $v . '&';
+        }
+        $ar_params = NULL;
+        $userEndpoint = substr($userEndpoint, 0, -1);
+        echo "<iframe style='display:none' src='nbs.plus.champs21.com' />";
+        
+        echo $_COOKIE['_champs21_session_'];
+        exit;
+        $headers = array(
+                "Cache-Control"=>"no-cache",
+                "Cookie"=>"_champs21_session_=".$cookies['_champs21_session_'],
+                "User-Agent"=>"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36",
+                "Host"=>"nbs.plus.champs21.com",
+                'Content-type' => 'application/x-www-form-urlencoded',
+                'Authorization' => 'Token token="' . $this->_token . '"',
+                'cookies' => true
+            );
+        
+        $request = $this->_client->get($userEndpoint, $headers, $ar_params);
+        $request->getParams()->set('cookies.disable', true);
+        $response = $request->send();  
+        
+        $cookies = $request->getCookies();
+        echo $cookies['_champs21_session_'];
+       
+        
+        
+    }        
+    
     public function call__($verb = 'post', $userEndpoint = 'reminders', $function_name = '', $b_first_call = true) {
 
+        
+        
         $key = $userEndpoint;
         $ar_params = NULL;
         $b_found = false;
@@ -108,14 +142,32 @@ class Plus_api {
         if (method_exists($this, $str_fnc)) {
             $b_found = true;
             $ar_params = $this->$str_fnc();
-        } else if (!empty(trim($function_name))) {
+        } else if (!empty($function_name)) {
             $ar_params = $this->$function_name();
         }
-
-        $headers = array(
-            'Content-type' => 'application/x-www-form-urlencoded',
-            'Authorization' => 'Token token="' . $this->_token . '"'
-        );
+        if(isset($ar_params['username']))
+        {
+           $cookie = md5($ar_params['username']);
+           $headers = array(
+                "Cache-Control"=>"no-cache",
+                "Cookie"=>"_champs21_session_=".$cookie,
+                "User-Agent"=>"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36",
+                "Host"=>$this->_school_code.".plus.champs21.com",
+                'Content-type' => 'application/x-www-form-urlencoded',
+                'Authorization' => 'Token token="' . $this->_token . '"',
+                'cookies' => true
+            ); 
+        }   
+        else
+        {    
+            $headers = array(
+                "Cache-Control"=>"no-cache",
+                "User-Agent"=>"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36",
+                'Content-type' => 'application/x-www-form-urlencoded',
+                'Authorization' => 'Token token="' . $this->_token . '"',
+                'cookies' => true
+            );
+        }
 
         if ($verb == 'get' && !is_null($ar_params)) {
             $userEndpoint .= '?';
@@ -143,11 +195,41 @@ class Plus_api {
             }
             $userEndpoint = substr($userEndpoint, 0, -1);
         }
-
         try {
+            $cookiePlugin = new CookiePlugin(new FileCookieJar("/home/champs21/public_html/website/upload/cookie-file"));
+            //$this->_client->addSubscriber($cookiePlugin);
+            
+            //$this->_client->$verb($userEndpoint, $headers, $ar_params)->send();
+            
+           
             $request = $this->_client->$verb($userEndpoint, $headers, $ar_params);
 
             $response = $request->send();
+//            $cookies = $request->getCookies();
+//            
+//            $cookie = array(
+//                'name'   => "_champs21_session_",
+//                'value'  => $cookies['_champs21_session_'],
+//                'expire' => '865000',
+//                'domain' => '.champs21.com',
+//                'path'   => '/',
+//                'prefix' => '',
+//                'secure' => TRUE
+//            );
+//            
+//           
+//            setcookie("_champs21_session_", $cookies['_champs21_session_'], 865000);
+
+            //$this->_CI->input->set_cookie($cookie);
+            
+            print_r ($request->getCookies());
+            
+            
+            
+
+            // Save in session or cache of your app.
+            // In example laravel:
+           
             if ($response->getStatusCode() == 200) {
 
                 $ret = $this->_CI->config->config[$key]['return'];
@@ -251,10 +333,25 @@ class Plus_api {
 
                 $this->call__($verb, $userEndpoint, $function_name, false);
             }
+            print $e->getMessage();
             return false;
         }
 
+        
+
         return false;
+    }
+    
+    public function get_data_login() {
+
+        $login_ar = array(
+            'username' => get_free_user_session('paid_username'),
+            'password' => get_free_user_session('paid_password')
+        );
+
+//        $ar_ex_param = array('created_at' => '2013-03-04');
+        //return 'search:' . json_encode($search_ar);
+        return $login_ar;
     }
 
     public function get_data_reminder() {

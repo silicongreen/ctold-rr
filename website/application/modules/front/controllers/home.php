@@ -3088,6 +3088,8 @@ class home extends MX_Controller {
 
 
         if($int_response != FALSE){
+             $res = $this->plus_api->call__("get", 'users/sessionhook');
+             print_r($res);
              $ar_params = array("username"=>"nbs-ST0001","password"=>"123456"); 
              $res = $this->plus_api->login($ar_params, 'users/loginhook');
 

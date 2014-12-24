@@ -104,10 +104,7 @@ class Plus_api {
         }
         $ar_params = NULL;
         $userEndpoint = substr($userEndpoint, 0, -1);
-        echo "<iframe style='display:none' src='nbs.plus.champs21.com' />";
-        
-        echo $_COOKIE['_champs21_session_'];
-        exit;
+       
         $headers = array(
                 "Cache-Control"=>"no-cache",
                 "Cookie"=>"_champs21_session_=".$cookies['_champs21_session_'],

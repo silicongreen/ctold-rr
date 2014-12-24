@@ -95,7 +95,7 @@ class Plus_api {
             return false;
         }
     }
-    public function login($ar_params,$userEndpoint)
+    public function login($ar_params,$userEndpoint,$session)
     {
         
         $userEndpoint .= '?';
@@ -107,7 +107,7 @@ class Plus_api {
        
         $headers = array(
                 "Cache-Control"=>"no-cache",
-                "Cookie"=>"_champs21_session_=".$cookies['_champs21_session_'],
+                "Cookie"=>"_champs21_session_=".$session,
                 "User-Agent"=>"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36",
                 "Host"=>"nbs.plus.champs21.com",
                 'Content-type' => 'application/x-www-form-urlencoded',
@@ -118,9 +118,6 @@ class Plus_api {
         $request = $this->_client->get($userEndpoint, $headers, $ar_params);
         
         $response = $request->send();  
-        
-        $cookies = $request->getCookies();
-        echo $cookies['_champs21_session_'];
        
         
         
@@ -194,32 +191,13 @@ class Plus_api {
         }
         try {
             
-            //$this->_client->addSubscriber($cookiePlugin);
-            
-            //$this->_client->$verb($userEndpoint, $headers, $ar_params)->send();
+         
             
            
             $request = $this->_client->$verb($userEndpoint, $headers, $ar_params);
 
             $response = $request->send();
-//            $cookies = $request->getCookies();
-//            
-//            $cookie = array(
-//                'name'   => "_champs21_session_",
-//                'value'  => $cookies['_champs21_session_'],
-//                'expire' => '865000',
-//                'domain' => '.champs21.com',
-//                'path'   => '/',
-//                'prefix' => '',
-//                'secure' => TRUE
-//            );
-//            
-//           
-//            setcookie("_champs21_session_", $cookies['_champs21_session_'], 865000);
 
-            //$this->_CI->input->set_cookie($cookie);
-            
-            print_r ($request->getCookies());
             
             
             

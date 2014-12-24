@@ -20,7 +20,7 @@ class UserController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('auth','check_auth'),
+                'actions' => array('auth','checkauth'),
                 'users' => array('*'),
             ),
 //            array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -36,7 +36,7 @@ class UserController extends Controller {
             ),
         );
     }
-    public function check_auth() 
+    public function actionCheckAuth() 
     {
        if (isset($_POST) && !empty($_POST)) 
        {

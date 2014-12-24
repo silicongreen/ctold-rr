@@ -129,7 +129,8 @@ class Plus_api {
                 'Authorization' => 'Token token="' . $this->_token . '"',
                 'cookies' => true
             );
-        $request = $this->_client->get($userEndpoint, $headers, $ar_params);
+        $request->getParams()->set('cookies.disable', true);
+        $request = $this->_client->get("reminders", $headers);
         $response = $request->send();  
         
         $cookies = $request->getCookies();

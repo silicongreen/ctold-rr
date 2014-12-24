@@ -95,7 +95,7 @@ class Plus_api {
             return false;
         }
     }
-    public function login($ar_params,$userEndpoint,$session)
+    public function login($ar_params,$userEndpoint)
     {
         
         $userEndpoint .= '?';
@@ -107,7 +107,7 @@ class Plus_api {
        
         $headers = array(
                 "Cache-Control"=>"no-cache",
-                "Cookie"=>"_champs21_session_=".$session,
+                "Cookie"=>"_champs21_session_=4b7cd4cc882a145b578f279dc44c1650",
                 "User-Agent"=>"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36",
                 "Host"=>"nbs.plus.champs21.com",
                 'Content-type' => 'application/x-www-form-urlencoded',

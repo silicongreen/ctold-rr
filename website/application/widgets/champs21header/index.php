@@ -88,7 +88,9 @@ class champs21header extends widget
                     $cookie = array(
                         'name'   => "auth_".$paid_id,
                         'value'  => $random,
-                        'expire' => '82800'
+                        'expire' => '82800',
+                        'domain' => '.stage.champs21.com',
+                        'path'   => '/'
                     );
 
                     $this->CI->input->set_cookie($cookie);

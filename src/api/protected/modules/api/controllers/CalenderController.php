@@ -352,26 +352,26 @@ class CalenderController extends Controller {
             
             foreach($bacthes as $value)
             {
-                if($value['status']==1)
+                if($value['main_status']==1)
                 {
                    $student['present'][$present]['student_name'] = $value['student_name'];
                    $student['present'][$present]['roll_no'] = $value['roll_no'];
                    $present++; 
                   
                 }    
-                else if($value['status']==0)
+                else if($value['main_status']==0)
                 {
                    $student['absent'][$absent]['student_name'] = $value['student_name'];
                    $student['absent'][$absent]['roll_no'] = $value['roll_no'];
                    $absent++;
                 } 
-                else if($value['status']==2)
+                else if($value['main_status']==2)
                 {
                    $student['late'][$late]['student_name'] = $value['student_name'];
                    $student['late'][$late]['roll_no'] = $value['roll_no'];
                    $late++; 
                 } 
-                else if($value['status']==3)
+                else if($value['main_status']==3)
                 {
                    $student['leave'][$leave]['student_name'] = $value['student_name'];
                    $student['leave'][$leave]['roll_no'] = $value['roll_no'];

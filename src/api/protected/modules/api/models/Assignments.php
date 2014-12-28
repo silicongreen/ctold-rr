@@ -176,7 +176,7 @@ class Assignments extends CActiveRecord
             if($subject_id!=NULL)
             {
                 $criteria->compare('subjectDetails.id', $subject_id);
-                $criteria->addCondition("DATE(duedate) <= '".$date."' ");
+                $criteria->addCondition("DATE(duedate) < '".$date."' ");
                 $criteria->order = "duedate DESC";
             }   
             else

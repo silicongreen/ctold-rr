@@ -20,7 +20,7 @@ class EventController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'acknowledge','meetingrequest','meetingstatus','getstudentparent'),
+                'actions' => array('index', 'acknowledge','meetingrequest','meetingstatus','getstudentparent','addmeetingrequest'),
                 'users' => array('@'),
             ),
             array('deny', // deny all users

@@ -344,11 +344,12 @@ class CalenderController extends Controller {
             $attendence = new Attendances();
             $bacthes = $attendence->getBatchStudentTodayAttendence($batch_id,$date);
             $total = count($bacthes);
-            $student = array();
+            $student = array("present"=>array(),"absent"=>array(),"late"=>array(),"leave"=>array());
             $present = 0;
             $late = 0;
             $absent = 0;
             $leave = 0;
+            
             foreach($bacthes as $value)
             {
                 if($value['status']==1)

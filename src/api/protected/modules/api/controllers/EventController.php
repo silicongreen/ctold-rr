@@ -43,6 +43,7 @@ class EventController extends Controller {
             $meetingreq->datetime = $datetime;
             $meetingreq->teacher_id = Yii::app()->user->profileId;
             $meetingreq->parent_id = $parent_id;
+            $meetingreq->save();
             
             $response['status']['code'] = 200;
             $response['status']['msg'] = "Success";

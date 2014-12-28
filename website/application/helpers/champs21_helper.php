@@ -735,3 +735,31 @@ if(!function_exists('save_mail')){
         }
     }
 }
+if(!function_exists('plus_api2')){
+    
+    function plus_api2(){
+        
+        $CI = &get_instance();
+        
+        $CI->load->library('plus_api');
+        
+        $ar_params = array(
+            'username' => get_free_user_session('paid_username'),
+            'password' => get_free_user_session('paid_password'),
+            'school_code' => get_free_user_session('paid_school_code')
+        );     
+        
+        $int_response = $CI->plus_api->init($ar_params, false);
+        if($int_response != FALSE){
+             //
+             
+            //$ar_params = array("username"=>"nbs-ST0001","password"=>"123456"); 
+            //echo $res = $this->plus_api->login($ar_params, 'users/loginhook');
+            
+            return $res = $CI->plus_api->call__("get", 'reminders','get_data_reminder');
+            
+             
+         }
+         exit;
+    }
+}

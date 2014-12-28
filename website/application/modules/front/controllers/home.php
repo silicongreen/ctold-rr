@@ -3108,22 +3108,28 @@ class home extends MX_Controller {
     public function plus_api($param) {
      
         
-//        $this->load->library('plus_api');
-//
-//
-//        $ar_params = array(
-//            'school_code' => 'nbs'
-//        );        
-//        $int_response = $this->plus_api->init($ar_params, false);
-//
-//
-//        if($int_response != FALSE){
-//             //$res = $this->plus_api->call__("get", 'users/sessionhook');
-//             
-//             $ar_params = array("username"=>"nbs-ST0001","password"=>"123456"); 
-//             $res = $this->plus_api->login($ar_params, 'users/loginhook');
-//         }
-//         exit;
+        $this->load->library('plus_api');
+        $ar_user_dt = $this->plus_api->get_data_login();
+        $ar_params = array(
+            'school_code' => $ar_user_dt['school_code'],
+            "username"=>$ar_user_dt['username'],
+            "password"=>$ar_user_dt['password']
+        );        
+        $int_response = $this->plus_api->init($ar_params, false);
+
+        
+        if($int_response != FALSE){
+             //
+             
+            //$ar_params = array("username"=>"nbs-ST0001","password"=>"123456"); 
+            //echo $res = $this->plus_api->login($ar_params, 'users/loginhook');
+            
+            $res = $this->plus_api->call__("get", 'reminders','get_data_reminder');
+            echo "<pre>";
+            print_r($res);
+             
+         }
+         exit;
         
     }
 }

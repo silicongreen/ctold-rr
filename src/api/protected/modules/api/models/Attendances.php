@@ -151,7 +151,16 @@ class Attendances extends CActiveRecord {
             }
         }
         return array_keys($ar_weekdays);
-    } 
+    }
+    public function getAttendenceBatch($batch_id,$date)
+    {
+        $criteria = new CDbCriteria;
+        $criteria->select="t.id";
+        $criteria->compare('month_date', date("Y-m-d"));
+        $criteria->compare('batch_id', $batch_id);
+        $data = $this->findAll($criteria);
+        return $data;
+    }
     public function getAttendence($batch_id,$student_id,$date)
     {
         $criteria = new CDbCriteria;

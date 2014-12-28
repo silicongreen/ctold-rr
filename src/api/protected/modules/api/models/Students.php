@@ -236,7 +236,7 @@ class Students extends CActiveRecord {
         
         $criteria->select = 't.id,t.first_name,t.middle_name,t.last_name,t.immediate_contact_id,t.class_roll_no';
         $criteria->compare('batch_id',$batch_id);
-        $criteria->order = "t.first_name ASC";
+        $criteria->order = "t.class_roll_no ASC";
         $students = $this->findAll($criteria);
        
         return $students;

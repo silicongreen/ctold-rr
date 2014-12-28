@@ -28,6 +28,32 @@ class EventController extends Controller {
             ),
         );
     }
+    public function actionAddMeetingRequest()
+    {
+        $user_secret = Yii::app()->request->getPost('user_secret');
+        $batch_id = Yii::app()->request->getPost('batch_id');
+        $description = Yii::app()->request->getPost('description');
+        $datetime = Yii::app()->request->getPost('datetime');
+        $parent_id = Yii::app()->request->getPost('parent_id');
+        if(Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher && $batch_id && $description && $datetime  && $parent_id )
+        {
+           
+            $meetingreq = new Meetingrequest();
+            $meetingreq->description = $description;
+            $meetingreq->datetime = $datetime;
+            $meetingreq->parent_id = $parent_id;
+            
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "Success";
+        } 
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    }        
     public function actionGetStudentParent()
     {
         $user_secret = Yii::app()->request->getPost('user_secret');
@@ -53,7 +79,10 @@ class EventController extends Controller {
                     $i++;
                     
                 }
-            }    
+            }
+            $response['status']['student'] = $st_array;
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "Success";
         } 
         else
         {

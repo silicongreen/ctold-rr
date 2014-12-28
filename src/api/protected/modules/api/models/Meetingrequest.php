@@ -139,15 +139,19 @@ class Meetingrequest extends CActiveRecord
         {
             $criteria = new CDbCriteria;
             $criteria->select = 't.id,t.description,t.datetime,t.status';
+            $today = date("Y-m-d");
             if($type2==1)
             {
                 $criteria->compare('teacher_id', $id);
             }
             else
             {
-               $criteria->compare('parent_id', $id); 
+                $criteria->compare('parent_id', $id); 
             }
             $criteria->compare('type', $type);
+            
+           
+            
             if($start_date)
             {
                 $criteria->addCondition('DATE(datetime) >="'.$start_date.'"');
@@ -196,6 +200,12 @@ class Meetingrequest extends CActiveRecord
                     } 
                     $meeting[$i]['id'] = $value->id;
                     $meeting[$i]['date'] = $value->datetime;
+                    $datevalue = date("y-m-d",  strtotime($value->datetime));
+                    $meeting[$i]['timeover']  = 0;
+                    if($today>$datevalue)
+                    {
+                        $meeting[$i]['timeover'] = 1;
+                    }
                     $meeting[$i]['status'] = $value->status;
                     $i++;
                 }    

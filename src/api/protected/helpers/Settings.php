@@ -584,22 +584,35 @@ class Settings {
             $post_array['published_date_string'] = $datestring;
 
             $post_array['category_menu_icon'] = "";
-            $post_array['category_icon'] = "";
+            $post_array['category_icon'] = "http://www.champs21.com/upload/gallery/image/category/news_3.png";
 
 
-            if ($postValue['postCategories'][0]['category']->menu_icon)
+            if (isset($postValue['postCategories'][0]['category']->menu_icon) && $postValue['postCategories'][0]['category']->menu_icon)
                 $post_array['category_menu_icon'] = Settings::$image_path . $postValue['postCategories'][0]['category']->menu_icon;
 
-            if ($postValue['postCategories'][0]['category']->icon)
+            if (isset($postValue['postCategories'][0]['category']->icon) && $postValue['postCategories'][0]['category']->icon)
                 $post_array['category_icon'] = Settings::$image_path . $postValue['postCategories'][0]['category']->icon;
 
+            $post_array['category_name'] = "News and Articles";
+            $post_array['category_id'] = 38;
+            $post_array['inner_priority'] = 1;
+            
+            
+            
+            if(isset($postValue['postCategories'][0]['category']->name))
             $post_array['category_name'] = $postValue['postCategories'][0]['category']->name;
+            
+            if(isset($postValue['postCategories'][0]['category']->id))
             $post_array['category_id'] = $postValue['postCategories'][0]['category']->id;
 
+            if(isset($postValue['postCategories'][0]['category']->inner_priority))
             $post_array['inner_priority'] = $postValue['postCategories'][0]->inner_priority;
 
             $post_array['second_category_name'] = "";
-            $post_array['second_category_id'] = $postValue['postCategories'][0]['category']->id;
+            $post_array['second_category_id'] = 0;
+            
+            if(isset($postValue['postCategories'][1]['category']->id))
+                $post_array['second_category_id'] = $postValue['postCategories'][1]['category']->id;
 
             if (isset($postValue['postCategories'][1]['category']->name))
             {

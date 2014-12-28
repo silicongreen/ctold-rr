@@ -82,7 +82,7 @@ class EventController extends Controller {
                     
                 }
             }
-            $response['status']['student'] = $st_array;
+            $response['data']['student'] = $st_array;
             $response['status']['code'] = 200;
             $response['status']['msg'] = "Success";
         } 

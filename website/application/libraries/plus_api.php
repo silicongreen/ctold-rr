@@ -27,7 +27,7 @@ class Plus_api {
         $endPoint = $this->_CI->config->config['plus_api_endpoint'];
 
         $school_code = ( isset($ar_params['school_code']) && !empty($ar_params['school_code'])) ? $ar_params['school_code'] : '';
-        $username = ( isset($ar_params['username']) && !empty($ar_params['username'])) ? $school_code . '-' . $ar_params['username'] : $school_code . '-champs21';
+        $username = ( isset($ar_params['username']) && !empty($ar_params['username'])) ? $ar_params['username'] : $school_code . '-champs21';
         $password = ( isset($ar_params['password']) && !empty($ar_params['password'])) ? $ar_params['password'] : $school_code . $this->_CI->config->config['champs_password'];
 
         $this->_username = $username;
@@ -321,7 +321,8 @@ class Plus_api {
 
         $login_ar = array(
             'username' => get_free_user_session('paid_username'),
-            'password' => get_free_user_session('paid_password')
+            'password' => get_free_user_session('paid_password'),
+            'school_code' => get_free_user_session('paid_school_code')
         );
 
 //        $ar_ex_param = array('created_at' => '2013-03-04');

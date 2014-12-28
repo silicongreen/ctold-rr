@@ -110,7 +110,8 @@ class champs21plusreminder extends widget
 			</reminder>
 		</reminder_detail>';
 	
-		$reminder = new SimpleXMLElement($xmlstr);
+		//$reminder = new SimpleXMLElement($xmlstr);
+                $reminder = plus_api2();
 		$parsed_data = array();
 		$cars = array('homework' => "New Homework",
 					  'event' 	 => "New Event",
@@ -146,9 +147,10 @@ class champs21plusreminder extends widget
 		}
 		
 		$data['data'] = $ar_data;
-		//echo "<pre>";
-		//print_r($ar_data);
+
 	
+        //echo "<pre>";
+	//print_r($res_me);
         $this->render($data);
         
     }

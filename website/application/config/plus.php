@@ -14,6 +14,6 @@ $config['batches'] = array(
 );
 
 $config['reminders'] = array(
-    'return' => 'json',
-    'api_response' => 'xml'
+    'return' => 'xml',
+    'api_response' => 'xml',
 );

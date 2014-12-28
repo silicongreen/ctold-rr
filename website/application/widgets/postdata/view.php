@@ -146,6 +146,12 @@
                                 <li class="post shown col-md-6 ">
                                     <?php $widget->run('thirdcolumninnerlist', $ar_3rd_column_extra_data, $extra_column_name, $ar_extra_config); ?> 
                                 </li>
+                            <?php elseif (free_user_logged_in()): ?>
+                                <li class="post shown col-md-6 ">
+                                    <div id='mycustomscroll' class='flexcroll'>
+                                    <?php $widget->run('champs21plusreminder'); ?> 
+                                    </div>
+                                </li>
                             <?php endif; ?> 
                         <?php endif; ?>
                         
@@ -392,6 +398,46 @@
             {
                 display:block;
             }
+            
+            
+            
+            
+            
+.scrollgeneric {
+line-height: 1px;
+font-size: 1px;
+position: absolute;
+top: 0; left: 0;
+}
+
+.vscrollerbase {
+width: 10px;
+background-color: white;
+}
+.vscrollerbar {
+width: 10px;
+background-color: #C72329;
+}
+
+
+#mycustomscroll {
+/* Typical fixed height and fixed width example */
+height: 350px;
+overflow: auto;
+/* IE overflow fix, position must be relative or absolute*/
+position: relative;
+background-color: #fff;
+padding: 0px;
+}
+
+.fixedwidth {
+/* a wide div is used for creating horizontal scrollbars for demonstration purposes */
+width: 550px;
+height: auto;
+position: relative;
+color: black;
+padding: 1px;
+}
         </style>
         
         <?php //if ( $layout_type == 2 ) :  ?>

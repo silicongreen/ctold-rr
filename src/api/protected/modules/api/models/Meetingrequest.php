@@ -200,7 +200,7 @@ class Meetingrequest extends CActiveRecord
                     } 
                     $meeting[$i]['id'] = $value->id;
                     $meeting[$i]['date'] = $value->datetime;
-                    $datevalue = date("y-m-d",  strtotime($value->datetime));
+                    $datevalue = date("Y-m-d",  strtotime($value->datetime));
                     $meeting[$i]['timeover']  = 0;
                     if($today>$datevalue)
                     {

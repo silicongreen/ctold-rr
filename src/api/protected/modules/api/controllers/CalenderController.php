@@ -353,23 +353,28 @@ class CalenderController extends Controller {
             {
                 if($value['status']==1)
                 {
+                   $student['present'][$present]['name'] = $value['student_name'];
+                   $student['present'][$present]['roll'] = $value['roll_no'];
                    $present++; 
-                   $student['present'][] = $value['student_name'];
+                  
                 }    
                 else if($value['status']==0)
                 {
-                   $absent++; 
-                   $student['absent'][] = $value['student_name'];
+                   $student['absent'][$absent]['name'] = $value['student_name'];
+                   $student['absent'][$absent]['roll'] = $value['roll_no'];
+                   $absent++;
                 } 
                 else if($value['status']==2)
                 {
+                   $student['late'][$late]['name'] = $value['student_name'];
+                   $student['late'][$late]['roll'] = $value['roll_no'];
                    $late++; 
-                   $student['late'][] = $value['student_name'];
                 } 
                 else if($value['status']==0)
                 {
+                   $student['leave'][$leave]['name'] = $value['student_name'];
+                   $student['leave'][$leave]['roll'] = $value['roll_no'];
                    $leave++;
-                   $student['leave'][] = $value['student_name'];
                 } 
                     
             }    

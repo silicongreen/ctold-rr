@@ -289,20 +289,7 @@ class CalenderController extends Controller {
             
             foreach($student_ids as $key=>$student_id)
             {
-               // $attendence = new Attendances();
-                
-//                $attendence_present = $attendence->getAttendence($batch_id, $student_id, $date);
-//
-//                if($attendence_present)
-//                {
-//                    $previous_attendence = $attendence->findbypk($attendence_present->id);
-//                    $previous_attendence->delete();
-//                }
 
-//                if(!$reason)
-//                {
-//                    $reason = "";
-//                }
             
            
                 $late = (isset($lates[$key]))?$lates[$key]:0;
@@ -357,6 +344,7 @@ class CalenderController extends Controller {
             $attendence = new Attendances();
             $bacthes = $attendence->getBatchStudentTodayAttendence($batch_id,$date);
             $total = count($bacthes);
+            $student = array();
             $present = 0;
             $late = 0;
             $absent = 0;
@@ -366,18 +354,22 @@ class CalenderController extends Controller {
                 if($value['status']==1)
                 {
                    $present++; 
+                   $student['present'][] = $value['student_name'];
                 }    
                 else if($value['status']==0)
                 {
                    $absent++; 
+                   $student['absent'][] = $value['student_name'];
                 } 
                 else if($value['status']==2)
                 {
                    $late++; 
+                   $student['late'][] = $value['student_name'];
                 } 
                 else if($value['status']==0)
                 {
-                   $leave++; 
+                   $leave++;
+                   $student['leave'][] = $value['student_name'];
                 } 
                     
             }    
@@ -385,6 +377,7 @@ class CalenderController extends Controller {
             
             $response['data']['total'] = $total;
             $response['data']['current_date'] = $current_date;
+            $response['data']['student'] = $student;
             $response['data']['present'] = $present;
             $response['data']['late'] = $late;
             $response['data']['absent'] = $absent;

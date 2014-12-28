@@ -224,6 +224,8 @@ class Attendances extends CActiveRecord {
             
             $attendence[$i]['status'] = 1;
             
+            $attendence[$i]['main_status'] = 1;
+            
             $attendence[$i]['reason'] = "";
             
             $attendence[$i]['leave_id'] = 0;
@@ -236,10 +238,12 @@ class Attendances extends CActiveRecord {
                 if($all_data[$value->id]['fullday']==1)
                 {
                      $attendence[$i]['status'] = 0;
+                     $attendence[$i]['main_status'] = 0;
                 } 
                 else
                 {
                      $attendence[$i]['status'] = 2;
+                     $attendence[$i]['main_status'] = 2;
                 }
                 $reason = "";
                 if($all_data[$value->id]['reason'])
@@ -254,6 +258,7 @@ class Attendances extends CActiveRecord {
             {
                 $key = array_search($value->id, $leave_today['approved']);
                 $attendence[$i]['status'] = 3;
+                $attendence[$i]['main_status'] = 3;
                 if($leave_today['reason'][$key])
                 {
                     $attendence[$i]['reason'] = $leave_today['reason'][$key];

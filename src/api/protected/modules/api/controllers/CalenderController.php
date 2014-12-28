@@ -371,7 +371,7 @@ class CalenderController extends Controller {
                    $student['late'][$late]['roll_no'] = $value['roll_no'];
                    $late++; 
                 } 
-                else if($value['status']==0)
+                else if($value['status']==3)
                 {
                    $student['leave'][$leave]['student_name'] = $value['student_name'];
                    $student['leave'][$leave]['roll_no'] = $value['roll_no'];

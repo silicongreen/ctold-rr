@@ -218,6 +218,8 @@ class Attendances extends CActiveRecord {
             
             $attendence[$i]['student_name'] = $fullname;
             
+            $attendence[$i]['roll_no'] = $value->class_roll_no;
+            
             $attendence[$i]['student_id'] = $value->id;
             
             $attendence[$i]['status'] = 1;

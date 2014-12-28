@@ -6,7 +6,7 @@
 		<?php foreach($data['homework'] as $d):?>
 		<li>
 			<div class="reminderbox <?php if($d['is_read']==="false"):?>unread<?php endif;?>">
-			<?php echo $d['sender'];?>&nbsp;post&nbsp;<?php echo $d['subject'];?>
+                            <a href="<?php echo base_url().'schools';?>"><?php echo $d['sender'];?>&nbsp;post&nbsp;<?php echo $d['subject'];?></a>
 			</div>
 		</li>
 		<?php endforeach; ?>
@@ -18,7 +18,7 @@
 		<?php foreach($data['event'] as $d):?>
 		<li>
 			<div class="reminderbox <?php if($d['is_read']==="false"):?>unread<?php endif;?>">
-			<?php echo $d['sender'];?>&nbsp;post&nbsp;<?php echo $d['subject'];?>
+			<a href="<?php echo base_url().'schools';?>"><?php echo $d['sender'];?>&nbsp;post&nbsp;<?php echo $d['subject'];?></a>
 			</div>
 		</li>
 		<?php endforeach; ?>
@@ -30,7 +30,7 @@
 		<?php foreach($data['fee'] as $d):?>
 		<li>
 			<div class="reminderbox <?php if($d['is_read']==="false"):?>unread<?php endif;?>">
-			<?php echo $d['sender'];?>&nbsp;post&nbsp;<?php echo $d['subject'];?>
+			<a href="<?php echo base_url().'schools';?>"><?php echo $d['sender'];?>&nbsp;post&nbsp;<?php echo $d['subject'];?></a>
 			</div>
 		</li>
 		<?php endforeach; ?>
@@ -42,7 +42,7 @@
 		<?php foreach($data['result'] as $d):?>
 		<li>
 			<div class="reminderbox <?php if($d['is_read']==="false"):?>unread<?php endif;?>">
-			<?php echo $d['sender'];?>&nbsp;post&nbsp;<?php echo $d['subject'];?>
+			<a href="<?php echo base_url().'schools';?>"><?php echo $d['sender'];?>&nbsp;post&nbsp;<?php echo $d['subject'];?></a>
 			</div>
 		</li>
 		<?php endforeach; ?>
@@ -54,7 +54,7 @@
 		<?php foreach($data['exam'] as $d):?>
 		<li>
 			<div class="reminderbox <?php if($d['is_read']==="false"):?>unread<?php endif;?>">
-			<?php echo $d['sender'];?>&nbsp;post&nbsp;<?php echo $d['subject'];?>
+			<a href="<?php echo base_url().'schools';?>"><?php echo $d['sender'];?>&nbsp;post&nbsp;<?php echo $d['subject'];?></a>
 			</div>
 		</li>
 		<?php endforeach; ?>
@@ -66,7 +66,7 @@
 		<?php foreach($data['others'] as $d):?>
 		<li>
 			<div class="reminderbox <?php if($d['is_read']==="false"):?>unread<?php endif;?>">
-			<?php echo $d['sender'];?>&nbsp;post&nbsp;<?php echo $d['subject'];?>
+			<a href="<?php echo base_url().'schools';?>"><?php echo $d['sender'];?>&nbsp;post&nbsp;<?php echo $d['subject'];?></a>
 			</div>
 		</li>
 		<?php endforeach; ?>
@@ -106,4 +106,8 @@
 	{
 		background:#DEECF9;
 	}
+        .reminderbox a
+        {
+            color: #666666;
+        }
 </style>

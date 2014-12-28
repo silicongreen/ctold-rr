@@ -146,7 +146,7 @@
                                 <li class="post shown col-md-6 ">
                                     <?php $widget->run('thirdcolumninnerlist', $ar_3rd_column_extra_data, $extra_column_name, $ar_extra_config); ?> 
                                 </li>
-                            <?php elseif (free_user_logged_in()): ?>
+                            <?php elseif (free_user_logged_in()&& get_free_user_session('paid_id')): ?>
                                 <li class="post shown col-md-6 ">
                                     <div id='mycustomscroll' class='flexcroll'>
                                     <?php $widget->run('champs21plusreminder'); ?> 

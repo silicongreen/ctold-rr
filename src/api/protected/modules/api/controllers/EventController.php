@@ -74,8 +74,8 @@ class EventController extends Controller {
                     $fullname = ($value->first_name)?$value->first_name." ":"";
                     $fullname.= ($value->middle_name)?$value->middle_name." ":"";
                     $fullname.= ($value->last_name)?$value->last_name:"";
-                    $st_array['id'][$i] = $value->immediate_contact_id;
-                    $st_array['name'][$i] = $fullname;
+                    $st_array[$i]['id'] = $value->immediate_contact_id;
+                    $st_array[$i]['name'] = $fullname;
                     $i++;
                     
                 }

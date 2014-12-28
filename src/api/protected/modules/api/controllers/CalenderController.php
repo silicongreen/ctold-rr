@@ -274,20 +274,30 @@ class CalenderController extends Controller {
         {
             $student_ids = explode(",", $student_id);
             $lates = explode(",", $late);
+            if(!$date)
+            {
+                $date = date("Y-m-d");
+            }
+            $attendence = new Attendances();
+            $attendence_batch = $attendence->getAttendenceBatch($batch_id, $date);
+            if($attendence_batch)
+            foreach($attendence_batch as $value)
+            {
+                $previous_attendence = $attendence->findbypk($value->id);
+                $previous_attendence->delete();
+            }    
+            
             foreach($student_ids as $key=>$student_id)
             {
-                $attendence = new Attendances();
-                if(!$date)
-                {
-                    $date = date("Y-m-d");
-                }
-                $attendence_present = $attendence->getAttendence($batch_id, $student_id, $date);
-
-                if($attendence_present)
-                {
-                    $previous_attendence = $attendence->findbypk($attendence_present->id);
-                    $previous_attendence->delete();
-                }
+               // $attendence = new Attendances();
+                
+//                $attendence_present = $attendence->getAttendence($batch_id, $student_id, $date);
+//
+//                if($attendence_present)
+//                {
+//                    $previous_attendence = $attendence->findbypk($attendence_present->id);
+//                    $previous_attendence->delete();
+//                }
 
 //                if(!$reason)
 //                {
@@ -371,8 +381,10 @@ class CalenderController extends Controller {
                 } 
                     
             }    
+            $current_date = date("Y-m-d");
             
             $response['data']['total'] = $total;
+            $response['data']['current_date'] = $current_date;
             $response['data']['present'] = $present;
             $response['data']['late'] = $late;
             $response['data']['absent'] = $absent;

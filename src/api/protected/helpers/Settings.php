@@ -584,7 +584,7 @@ class Settings {
             $post_array['published_date_string'] = $datestring;
 
             $post_array['category_menu_icon'] = "";
-            $post_array['category_icon'] = "";
+            $post_array['category_icon'] = "http://www.champs21.com/upload/gallery/image/category/news_3.png";
 
 
             if (isset($postValue['postCategories'][0]['category']->menu_icon) && $postValue['postCategories'][0]['category']->menu_icon)
@@ -596,6 +596,8 @@ class Settings {
             $post_array['category_name'] = "News and Articles";
             $post_array['category_id'] = 38;
             $post_array['inner_priority'] = 1;
+            
+            
             
             if(isset($postValue['postCategories'][0]['category']->name))
             $post_array['category_name'] = $postValue['postCategories'][0]['category']->name;

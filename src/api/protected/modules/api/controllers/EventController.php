@@ -20,7 +20,7 @@ class EventController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'acknowledge','meetingrequest','meetingstatus'),
+                'actions' => array('index', 'acknowledge','meetingrequest','meetingstatus','getstudentparent'),
                 'users' => array('@'),
             ),
             array('deny', // deny all users
@@ -28,6 +28,41 @@ class EventController extends Controller {
             ),
         );
     }
+    public function actionGetStudentParent()
+    {
+        $user_secret = Yii::app()->request->getPost('user_secret');
+        $batch_id = Yii::app()->request->getPost('batch_id');
+        if(Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher && $batch_id )
+        {
+           
+            $stdobj = new Students();
+            $students = $stdobj->getStudentByBatchFull($batch_id);
+            
+            $st_array = array();
+            $i = 0;
+            if($students)
+            foreach($students as $value)
+            {
+                if($value->immediate_contact_id)
+                {
+                    $fullname = ($value->first_name)?$value->first_name." ":"";
+                    $fullname.= ($value->middle_name)?$value->middle_name." ":"";
+                    $fullname.= ($value->last_name)?$value->last_name:"";
+                    $st_array['id'][$i] = $value->immediate_contact_id;
+                    $st_array['name'][$i] = $fullname;
+                    $i++;
+                    
+                }
+            }    
+        } 
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    } 
     
     public function actionMeetingStatus()
     {

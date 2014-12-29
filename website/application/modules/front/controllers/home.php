@@ -3226,7 +3226,7 @@ class home extends MX_Controller {
 
         }
 
-        $params = '?user_id=' . $user_data['id'] . '&auth_id=' . $random . '&activation_code=' . $activation_code . '&first_name=' . $user_data['first_name'] . '&middle_name=' . $user_data['middle_name'] . '&last_name=' . $user_data['last_name'] . '&dob=' . $user_data['dob'] . '&bng=' . $user_data['bng_pwd'] . '&country_id=' . $user_data['country_id'] . '&gender=' . $user_data['gender'];
+        $params = '?user_id=' . $user_data['id'] . '&auth_id=' . $random . '&activation_code=' . $activation_code . '&first_name=' . $user_data['first_name'] . '&middle_name=' . $user_data['middle_name'] . '&last_name=' . $user_data['last_name'] . '&dob=' . $user_data['dob'] . '&bng=' . $user_data['bng_pwd'] . '&country_id=' . $user_data['country_id'] . '&gender=' . $user_data['gender'] . '&email=' . $user_data['email'];
         
         $url = "http://".$school_code.".plus.champs21.com/user/new_student_registration".$params;
 

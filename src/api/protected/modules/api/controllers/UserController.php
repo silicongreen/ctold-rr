@@ -40,23 +40,28 @@ class UserController extends Controller {
     {
         $user_id = Yii::app()->request->getPost('user_id');
         $paid_id = Yii::app()->request->getPost('paid_id');
-        $paid_username = Yii::app()->request->getPost('user_id');
-        $paid_password = Yii::app()->request->getPost('user_id');
-        $paid_school_id = Yii::app()->request->getPost('user_id');
-        $paid_school_code = Yii::app()->request->getPost('user_id');
+        $paid_username = Yii::app()->request->getPost('paid_username');
+        $paid_password = Yii::app()->request->getPost('paid_password');
+        $paid_school_id = Yii::app()->request->getPost('paid_school_id');
+        $paid_school_code = Yii::app()->request->getPost('paid_school_code');
+//        
+//        $user = new Users;
+//        $user->username = $paid_username;
+//        $user->hashed_password = $paid_password;
         
-        $user = new Users;
-        $user->username = $paid_username;
-        $user->hashed_password = $paid_password;
-        
-        if($user_id && $paid_id && $paid_username && $paid_password && $paid_school_id && $paid_school_code && $user->login())
+        if($user_id)
         {
             $freeuserObj = new Freeusers();
             $freeuserObj = $freeuserObj->findByPk($user_id);
+            if($paid_id)
             $freeuserObj->paid_id = $paid_id;
+            if($paid_username)
             $freeuserObj->paid_username = $paid_username;
+            if($paid_password)
             $freeuserObj->paid_password = $paid_password;
+            if($paid_school_id)
             $freeuserObj->paid_school_id = $paid_school_id;
+            if($paid_school_code)
             $freeuserObj->paid_school_code = $paid_school_code;
             if ($password)
             {
@@ -145,13 +150,31 @@ class UserController extends Controller {
        {
            $user_id = Yii::app()->request->getPost('user_id');
            $auth_id = Yii::app()->request->getPost('auth_id');
+           $activation_code = Yii::app()->request->getPost('activation_code');
            if($user_id && $auth_id)
            {
                $authobj = new Userauth();
                if($authobj->getAuth($user_id, $auth_id))
                {
-                  $response['status']['code'] = 200;
-                  $response['status']['msg'] = "Success"; 
+                  if($activation_code)
+                  {
+                    $activationCodeObj = new StudentActivationCodes();
+                    if($activationCodeObj->getAuth($activation_code))
+                    {
+                        $response['status']['code'] = 200;
+                        $response['status']['msg'] = "valid";
+                    }
+                    else
+                    {
+                       $response['status']['code'] = 400;
+                       $response['status']['msg'] = "Bad Request"; 
+                    }    
+                  }
+                  else
+                  {    
+                    $response['status']['code'] = 200;
+                    $response['status']['msg'] = "Success"; 
+                  }
                } 
                else
                {

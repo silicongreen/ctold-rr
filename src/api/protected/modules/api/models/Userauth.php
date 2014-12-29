@@ -73,13 +73,17 @@ class Userauth extends CActiveRecord
 	{
 		return parent::model($className);
 	}
-        public function getAuth($user_id,$auth_id)
+        public function getAuth($user_id,$auth_id,$activation_code="")
         {
             $date = date("Y-m-d H:i:s");
             $criteria = new CDbCriteria;
             $criteria->select = 't.auth_id';
             $criteria->compare('user_id', $user_id);
             $criteria->compare('auth_id', $auth_id);
+            
+            if($activation_code)
+                $criteria->compare('activation_code', $activation_code);
+            
             $criteria->addCondition("expire>='".$date."'");
             $criteria->limit = 1;
             

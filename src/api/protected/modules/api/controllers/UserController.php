@@ -44,6 +44,7 @@ class UserController extends Controller {
         $paid_password = Yii::app()->request->getPost('paid_password');
         $paid_school_id = Yii::app()->request->getPost('paid_school_id');
         $paid_school_code = Yii::app()->request->getPost('paid_school_code');
+        $first_name = Yii::app()->request->getPost('first_name');
 //        
 //        $user = new Users;
 //        $user->username = $paid_username;

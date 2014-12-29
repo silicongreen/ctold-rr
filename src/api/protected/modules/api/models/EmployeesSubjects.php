@@ -124,6 +124,7 @@ class EmployeesSubjects extends CActiveRecord
                     
                 )
             );
+            $criteria->group = "employee.id";
             
             $obj_employee = $this->findAll($criteria);
         

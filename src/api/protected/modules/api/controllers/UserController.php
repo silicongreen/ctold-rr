@@ -36,6 +36,10 @@ class UserController extends Controller {
             ),
         );
     }
+    private function encrypt($field, $salt)
+    {
+        return hash('sha512', $salt . $field);
+    }
     public function actionUpdateProfile()
     {
         $user_id = Yii::app()->request->getPost('user_id');

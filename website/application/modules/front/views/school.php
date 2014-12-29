@@ -340,7 +340,7 @@ $ar_segmens = $this->uri->segment_array();
                 <fieldset id="addition_row_2">
                     <div class="center">
                         <?php if ($model->user_type == 2) { ?>
-                            <input placeholder="Admission NO." class="f5 email_txt large" id="admission_no" name="admission_no" value="" type="text" maxlength="15" />
+                            <input placeholder="Activation Code" class="f5 email_txt large" id="admission_no" name="admission_no" value="" type="text" maxlength="100" />
                         <?php } else { ?>
                             <input placeholder="Contact NO." class="f5 email_txt large" id="contact_no" name="contact_no" value="" type="text" maxlength="15" />
                         <?php } ?>

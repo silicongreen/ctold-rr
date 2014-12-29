@@ -98,7 +98,7 @@ if (!function_exists('get_user_data')) {
 
 if (!function_exists('set_user_sessions')) {
 
-    function set_user_sessions($obj_user){
+    function set_user_sessions($obj_user, $pwd = NULL){
         
         $CI = &get_instance();
         
@@ -116,6 +116,15 @@ if (!function_exists('set_user_sessions')) {
         
         $sessionData['free_user']['full_name'] = $obj_user->first_name . ' ' . $obj_user->middle_name . ' ' . $obj_user->last_name;
         $sessionData['free_user']['type'] = $obj_user->user_type;
+        
+        $sessionData['free_user']['first_name'] = $obj_user->first_name;
+        $sessionData['free_user']['middle_name'] = $obj_user->middle_name;
+        $sessionData['free_user']['last_name'] = $obj_user->last_name;
+        $sessionData['free_user']['dob'] = $obj_user->dob;
+        $sessionData['free_user']['bng_pwd'] = $pwd;
+        $sessionData['free_user']['country_id'] = $obj_user->tds_country_id;
+        $sessionData['free_user']['gender'] = $obj_user->gender;
+        
         $sessionData['free_user']['paid_id'] = $obj_user->paid_id;
         $sessionData['free_user']['paid_username'] = $obj_user->paid_username;
         $sessionData['free_user']['paid_password'] = $obj_user->paid_password;

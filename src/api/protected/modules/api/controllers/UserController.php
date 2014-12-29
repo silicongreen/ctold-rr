@@ -158,8 +158,8 @@ class UserController extends Controller {
                {
                   if($activation_code)
                   {
-                    $activationCodeObj = new StudentActivationCodes();
-                    if($activationCodeObj->getAuth($activation_code))
+                    
+                    if($authobj->getAuth($user_id, $auth_id,$activation_code))
                     {
                         $response['status']['code'] = 200;
                         $response['status']['msg'] = "valid";

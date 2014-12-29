@@ -20,7 +20,7 @@ class EventController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'acknowledge','meetingrequest','meetingstatus','getstudentparent','addmeetingrequest'),
+                'actions' => array('index', 'acknowledge','meetingrequest','meetingstatus','getstudentparent','addmeetingrequest','addmeetingparent','getteacherparent'),
                 'users' => array('@'),
             ),
             array('deny', // deny all users
@@ -28,6 +28,70 @@ class EventController extends Controller {
             ),
         );
     }
+    
+    public function actionAddMeetingParent()
+    {
+        $user_secret = Yii::app()->request->getPost('user_secret');
+        $batch_id = Yii::app()->request->getPost('batch_id');
+        $description = Yii::app()->request->getPost('description');
+        $datetime = Yii::app()->request->getPost('datetime');
+        $parent_id = Yii::app()->request->getPost('parent_id');
+        if(Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isParent  && $batch_id && $description && $datetime  && $parent_id )
+        {
+           
+            $meetingreq = new Meetingrequest();
+            $meetingreq->description = $description;
+            $meetingreq->datetime = $datetime;
+            $meetingreq->teacher_id = $parent_id;
+            $meetingreq->parent_id = Yii::app()->user->profileId;
+            $meetingreq->type = 2;
+            $meetingreq->save();
+            
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "Success";
+        } 
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    }
+    
+    public function actionGetTeacherParent()
+    {
+        $user_secret = Yii::app()->request->getPost('user_secret');
+        $batch_id = Yii::app()->request->getPost('batch_id');
+        
+        
+        if(Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isParent  && $batch_id)
+        {
+            $employeesubject = new EmployeesSubjects();
+            $employees = $employeesubject->getEmployee($batch_id);
+            $em_array = array();
+            $i = 0;
+            if($employees)
+            foreach($employees as $value)
+            {   
+                $fullname = ($value['employee']->first_name)?$value['employee']->first_name." ":"";
+                $fullname.= ($value['employee']->middle_name)?$value['employee']->middle_name." ":"";
+                $fullname.= ($value['employee']->last_name)?$value['employee']->last_name:"";
+                $em_array[$i]['id'] = $value['employee']->id;
+                $em_array[$i]['name'] = $fullname;
+                $i++; 
+            }
+            $response['data']['student'] = $em_array;
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "Success";
+        }
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+    }
+    
     public function actionAddMeetingRequest()
     {
         $user_secret = Yii::app()->request->getPost('user_secret');

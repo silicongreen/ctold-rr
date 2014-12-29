@@ -63,10 +63,10 @@ class UserController extends Controller {
             $freeuserObj->paid_school_id = $paid_school_id;
             if($paid_school_code)
             $freeuserObj->paid_school_code = $paid_school_code;
-            if ($password)
+            if ($paid_password)
             {
                 $freeuserObj->salt = md5(uniqid(rand(), true));
-                $freeuserObj->password = $this->encrypt($password, $freeuserObj->salt);
+                $freeuserObj->password = $this->encrypt($paid_password, $freeuserObj->salt);
             }
 
             if (isset($_FILES['profile_image']['name']) && !empty($_FILES['profile_image']['name']))

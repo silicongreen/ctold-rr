@@ -157,24 +157,32 @@ class Events extends CActiveRecord {
     public function getHolidayMonth($start_date, $end_date, $school_id) {
 
         $criteria = new CDbCriteria;
-        $criteria->addCondition("DATE(start_date) >= '" . $start_date . "'");
-        $criteria->addCondition("DATE(start_date) <= '" . $end_date . "'");
         $criteria->compare('school_id', $school_id);
         $criteria->compare('is_holiday', 1);
-
+        $criteria->addCondition("DATE(end_date) >= '" . $start_date . "'");
+        $criteria->addCondition("DATE(start_date) <= '" . $end_date . "'");
+        
         $data = $this->findAll($criteria);
         $return_array = array();
         if ($data != NULL)
             foreach ($data as $value) {
+                if(date("Y-m-d", strtotime($value->end_date))>$end_date)
+                {
+                    $last_date = $end_date;
+                }
+                else
+                {
+                    $last_date = date("Y-m-d", strtotime($value->end_date));
+                }    
                 $merge = array();
-
                 $merge['title'] = $value->title;
                 $merge['description'] = $value->description;
                 $merge['start_date'] = date("Y-m-d", strtotime($value->start_date));
-                $merge['end_date'] = date("Y-m-d", strtotime($value->end_date));
+                $merge['end_date'] = $last_date;
 
                 $return_array[] = $merge;
             }
+           
         return $return_array;
     }
 

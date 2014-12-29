@@ -20,7 +20,7 @@ class UserController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('auth','checkauth'),
+                'actions' => array('auth','checkauth','updateprofile'),
                 'users' => array('*'),
             ),
 //            array('allow', // allow authenticated user to perform 'create' and 'update' actions

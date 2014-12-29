@@ -41,11 +41,41 @@ class home extends MX_Controller {
                 $user_type = $this->input->post('user_type');
             }
             
+            if($user_type == 2){
+                $activaiton_code = $this->input->post('admission_no');
+                $paid_school_id = $this->input->post('paid_school_id');
+                unset($_POST['admission_no']);
+            }
+            
             $school_id = $this->input->post('school_id');
             $grade = $this->input->post('grade_ids');
             
             unset($_POST['school_id']);
             unset($_POST['grade_ids']);
+            
+            if(!empty($activaiton_code) && !empty($paid_school_id)) {
+                
+                $this->db->dbprefix = '';
+                
+                $this->db->select('*');
+                $this->db->from('student_activation_codes');
+                $this->db->where('is_active', 1);
+                $this->db->where('student_id', 0);
+                $this->db->where('code', $activaiton_code);
+                $this->db->where('school_id', $paid_school_id);
+                $query = $this->db->get();
+                
+                if ( $query->num_rows() <= 0 ) {
+                    
+                    $response['errors'][] = 'Invalid Activation Code.';
+                    
+                    echo( json_encode($response));
+                    exit;
+                }
+                
+                $this->db->dbprefix = 'tds_';
+                
+            }
             
             /* Additional Information */
             $additional_info = json_encode($this->input->post());
@@ -73,6 +103,7 @@ class home extends MX_Controller {
                    $response = array(
                         'saved' => true,
                         'is_approved' => $User_school->is_approved,
+                        'activaiton_code' => $activaiton_code
                     );
 
                 } else {
@@ -85,7 +116,7 @@ class home extends MX_Controller {
             }
             
             echo( json_encode($response));
-            exit;   
+            exit;
         }
     }
     
@@ -156,21 +187,30 @@ class home extends MX_Controller {
             $url = "http://".get_free_user_session('paid_school_code').".plus.champs21.com".$params;
             
             header("Location: ".$url);
-        } 
+            exit;
+        }
+        
         $ar_segmens = $this->uri->segment_array();
         if(count($ar_segmens) < 2)
         {
             //$this->show_404_custom();
+            
             $this->db->select('*');
             $this->db->from('tds_school');
+            
             ($this->input->post('name') != "") ? $this->db->like('name', $this->input->post('name'), 'after') : '';
             ($this->input->post('district') != "") ? $this->db->or_like('division', $this->input->post('division'), 'after') : '';
             ($this->input->post('level') != "") ? $this->db->or_like('level', $this->input->post('level'), 'after') : '';
             ($this->input->get('str') != "") ? $this->db->like('name', $this->input->get('str'), 'after') : '';
+            
+            $this->db->order_by("is_paid DESC, name ASC");
+            
             $query = $this->db->get();
-            $data['schooldata'] = $query->result_array();
-
-
+            
+            $free_schools = $query->result_array();
+            
+            $data['schooldata'] = $free_schools;
+            
             $data['ci_key'] = 'schools';
             
             // User Data
@@ -1875,7 +1915,7 @@ class home extends MX_Controller {
                 
                 ($api_registration) ? $free_user->api_login() : $free_user->login();
                 
-                $this->set_user_session($free_user);
+                $this->set_user_session($free_user, $this->input->post('password'));
                 
                 $this->create_free_user_folders();
                 
@@ -1971,7 +2011,7 @@ class home extends MX_Controller {
             
                 if ($free_user->login()) {
                     
-                    $this->set_user_session($free_user);
+                    $this->set_user_session($free_user, $this->input->post('password'));
                     
                 }  else {
                     
@@ -2241,9 +2281,9 @@ class home extends MX_Controller {
         redirect(base_url());
     }
     
-    private function set_user_session($obj_user){
+    private function set_user_session($obj_user, $pwd = NULL){
         
-        set_user_sessions($obj_user);
+        set_user_sessions($obj_user, $pwd);
     }
     
     function upload_profile_image() {
@@ -3157,5 +3197,40 @@ class home extends MX_Controller {
             print_r($res); 
          }
          exit;
+    }
+    
+    public function paid_regiser(){
+        
+        $user_data = get_free_user_session();
+        
+        $activation_code = $this->uri->segment(2);
+        $school_code = $this->uri->segment(3);
+        
+        $user_rand = $this->cache->file->get("auth_".$activation_code);
+        if($user_rand)
+        {
+            $random = $user_rand;
+        }  
+        else
+        {    
+            $random = md5(rand());
+
+            $insert['auth_id'] = $random;
+            $insert['activation_code'] = $activation_code;
+            $insert['user_id'] = $user_data['id'];
+            $insert['expire'] = date("Y-m-d H:i:s",  strtotime("+1 Day"));
+            
+            $this->db->insert("user_auth",$insert);
+
+            $this->cache->file->save("auth_".$activation_code, $random, 82800);
+
+        }
+
+        $params = '?user_id=' . $user_data['id'] . '&auth_id=' . $random . '&activation_code=' . $activation_code . '&first_name=' . $user_data['first_name'] . '&middle_name=' . $user_data['middle_name'] . '&last_name=' . $user_data['last_name'] . '&dob=' . $user_data['dob'] . '&bng=' . $user_data['bng_pwd'] . '&country_id=' . $user_data['country_id'] . '&gender=' . $user_data['gender'];
+        
+        $url = "http://".$school_code.".plus.champs21.com/user/new_student_registration".$params;
+
+        header("Location: ".$url);
+        exit;
     }
 }

@@ -33,7 +33,7 @@
                 }
                 ?>
                 <li style="list-style:none;">
-                    <div class="srch_item_container">
+                    <div class="srch_item_container" <?php echo ($row['is_paid'] == 1) ? 'style="background-color: #FFF1E0"' : ''; ?>>
                         <div class="srch_item_pic">
                             <img src="<?php echo base_url($row['logo']); ?>" width="220">
                         </div>
@@ -53,27 +53,32 @@
                         </div>
 
                         <?php
-                            $ex_class = ' before-login-user';
-                            $str_join_btn_text = 'Join In +';
-                            if (free_user_logged_in()) {
-                                if (!isset($user_school_status[$row['id']])) {
-                                    $ex_class = ' btn_user_join_school';
-                                } else {
-                                    if ($user_school_status[$row['id']] == '1') {
-                                        $ex_class = ' btn_leave_school';
-                                        $str_join_btn_text = 'Leave';
-                                    }
-                                    if ($user_school_status[$row['id']] == '0') {
-                                        $ex_class = ' processing';
-                                        $str_join_btn_text = 'Processing';
-                                    }
+                        $ex_class = ' before-login-user';
+                        $str_join_btn_text = 'Join In +';
+                        if (free_user_logged_in()) {
+                            if (!isset($user_school_status[$row['id']])) {
+                                $ex_class = ' btn_user_join_school';
+                            } else {
+                                if ($user_school_status[$row['id']] == '1') {
+                                    $ex_class = ' btn_leave_school';
+                                    $str_join_btn_text = 'Leave';
+                                }
+                                if ($user_school_status[$row['id']] == '0') {
+                                    $ex_class = ' processing';
+                                    $str_join_btn_text = 'Processing';
                                 }
                             }
+                        }
                         ?>
 
                         <div class="join-wrapper">
 
-                            <button id="<?php echo $row['id']; ?>" data="school_join" class="red<?php echo $ex_class; ?>" type="button">
+                            <?php
+                            $paid_school_id = (!is_null($row['paid_school_id'])) ? $row['paid_school_id'] : 0;
+                            $paid_school_code = (!is_null($row['code'])) ? $row['code'] : 0;
+                            ?>
+
+                            <button id="<?php echo $row['id'] . '-' . $paid_school_id . '-' . $paid_school_code; ?>" data="school_join" class="red<?php echo $ex_class; ?>" type="button">
 
                                 <span class="clearfix f2">
                                     <?php echo $str_join_btn_text; ?>
@@ -98,7 +103,9 @@
 
             <div>
 
-                <input type="hidden" id="school_id" name="school_id" value="" />
+                <input type="hidden" id="school_id" name="school_id" value="">
+                <input type="hidden" id="paid_school_id" name="paid_school_id" value="">
+                <input type="hidden" id="paid_school_code" name="paid_school_code" value="">
 
                 <fieldset class="reg_logo">
                     <div>
@@ -172,15 +179,15 @@
                     <div class="center">
 
                         <?php if ($model->user_type == 1) { ?>
-                            <input placeholder="Your Batch" class="f5 email_txt large" id="batch" name="batch" value="" type="text" maxlength="15" />
+                            <input placeholder="Your Batch" class="f5 email_txt large" id="batch" name="batch" value="" type="text" maxlength="15">
                         <?php } else { ?>
-                            <input placeholder="<?php echo ($model->user_type == 4) ? 'Student ' : ''; ?>Section" class="f5 email_txt" id="sections" name="sections" value="" type="text" maxlength="25" />
+                            <input placeholder="<?php echo ($model->user_type == 4) ? 'Student ' : ''; ?>Section" class="f5 email_txt" id="sections" name="sections" value="" type="text" maxlength="25">
                             <?php if ($model->user_type == 3) { ?>
-                                <input placeholder="Employee ID." class="f5 email_txt" id="employee_id" name="employee_id" value="" type="text" maxlength="15" />
+                                <input placeholder="Employee ID." class="f5 email_txt" id="employee_id" name="employee_id" value="" type="text" maxlength="15">
                             <?php } else if ($model->user_type == 2) { ?>
-                                <input placeholder="Class Roll NO." class="f5 email_txt" id="roll_no" name="roll_no" value="" type="text" maxlength="15" />
+                                <input placeholder="Class Roll NO." class="f5 email_txt" id="roll_no" name="roll_no" value="" type="text" maxlength="15">
                             <?php } else if ($model->user_type == 4) { ?>
-                                <input placeholder="Student ID." class="f5 email_txt" id="roll_no" name="student_id" value="" type="text" maxlength="15" />
+                                <input placeholder="Student ID." class="f5 email_txt" id="roll_no" name="student_id" value="" type="text" maxlength="15">
                             <?php } ?>
                         <?php } ?>
 
@@ -190,9 +197,9 @@
                 <fieldset id="addition_row_2">
                     <div class="center">
                         <?php if ($model->user_type == 2) { ?>
-                            <input placeholder="Admission NO." class="f5 email_txt large" id="admission_no" name="admission_no" value="" type="text" maxlength="15" />
+                            <input placeholder="Activation Code" class="f5 email_txt large" id="admission_no" name="admission_no" value="" type="text" maxlength="100">
                         <?php } else { ?>
-                            <input placeholder="Contact NO." class="f5 email_txt large" id="contact_no" name="contact_no" value="" type="text" maxlength="15" />
+                            <input placeholder="Contact NO." class="f5 email_txt large" id="contact_no" name="contact_no" value="" type="text" maxlength="100">
                         <?php } ?>
 
                     </div>
@@ -215,6 +222,7 @@
 <?php } ?>
 
 <style>
+
     #backgroundPopup { 
         z-index:5000;
         position: fixed;
@@ -398,8 +406,5 @@
             margin-top: 30px;
             text-align: right;
         }
-
-
-
     }
 </style>

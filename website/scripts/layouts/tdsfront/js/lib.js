@@ -827,7 +827,7 @@ $(document).ready(function(){
             
             if(user_type == 2) {
                 add_html_1 += '<input placeholder="Class Roll NO." class="f5 email_txt" id="roll_no" name="roll_no" value="" type="text" maxlength="15" />';
-                add_html_2 += '<input placeholder="Admission NO." class="f5 email_txt large" id="admission_no" name="admission_no" value="" type="text" maxlength="15" />';
+                add_html_2 += '<input placeholder="Activation Code" class="f5 email_txt large" id="admission_no" name="admission_no" value="" type="text" maxlength="100" />';
             }
             else if(user_type == 3) {
                 add_html_1 += '<input placeholder="Employee ID." class="f5 email_txt" id="employee_id" name="employee_id" value="" type="text" maxlength="15" />';
@@ -852,7 +852,12 @@ $(document).ready(function(){
     
     $(document).on("click",'.btn_user_join_school',function(){
         
-        $('#school_id').attr('value', $(this).attr('id'));
+        $str_school_ids = $(this).attr('id');
+        $ar_school_ids = $str_school_ids.split('-');
+        
+        $('#school_id').attr('value', $ar_school_ids[0]);
+        $('#paid_school_id').attr('value', $ar_school_ids[1]);
+        $('#paid_school_code').attr('value', $ar_school_ids[2]);
         
         var html_frm_reg = $('#school_join_frm_wrapper').html();
         
@@ -878,6 +883,8 @@ $(document).ready(function(){
         
         var formData = new FormData($(this)[0]);
         var school_id = $('#school_id').val();
+        var paid_school_id = $('#paid_school_id').val();
+        var paid_school_code = $('#paid_school_code').val();
         
         $.ajax({
             url: $('#base_url').val() + 'join_to_school',
@@ -903,6 +910,10 @@ $(document).ready(function(){
                     }
                     
                     $('.fancybox-close').trigger('click');
+                    
+                    if(paid_school_id > 0) {
+                        window.location.href = $('#base_url').val() + 'paid_regiser/' + data.activaiton_code + '/' + paid_school_code;
+                    }
                     
                 } else {
                     

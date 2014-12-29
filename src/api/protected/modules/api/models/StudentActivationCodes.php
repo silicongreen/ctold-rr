@@ -98,4 +98,24 @@ class StudentActivationCodes extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        
+        public function getAuth($activation_code)
+        {
+            
+            $criteria = new CDbCriteria;
+            $criteria->select = 't.id';
+            $criteria->compare('code', trim($activation_code));
+            $criteria->compare('is_active', 1);
+            $criteria->compare('student_id', 0);
+            
+            $criteria->limit = 1;
+            
+            $obj_auth = $this->find($criteria);
+            if($obj_auth)
+            {
+                return true;
+            }    
+
+            return false;
+        }
 }

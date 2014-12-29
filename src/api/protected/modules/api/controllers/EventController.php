@@ -90,6 +90,8 @@ class EventController extends Controller {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
         }
+        echo CJSON::encode($response);
+        Yii::app()->end();
     }
     
     public function actionAddMeetingRequest()

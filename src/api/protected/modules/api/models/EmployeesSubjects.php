@@ -106,6 +106,32 @@ class EmployeesSubjects extends CActiveRecord
 		return parent::model($className);
 	}
         
+        public function getEmployee($batch_id)
+        {
+            $criteria = new CDbCriteria;
+            $criteria->select = 't.id';
+            $criteria->compare("subject.batch_id", $batch_id);
+           
+            $criteria->with = array(
+                'subject' => array(
+                    'select' => '',
+                    'joinType' => "INNER JOIN",
+                    
+                ),
+                'employee' => array(
+                    'select' => 'employee.id,employee.first_name,employee.middle_name,employee.last_name',
+                    'joinType' => "INNER JOIN",
+                    
+                )
+            );
+            
+            $obj_employee = $this->findAll($criteria);
+        
+           
+
+            return $obj_employee;
+        }
+        
         public function getBatch($employee_id)
         {
             $criteria = new CDbCriteria;

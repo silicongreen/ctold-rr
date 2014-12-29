@@ -290,8 +290,17 @@ class Subjects extends CActiveRecord
                             $report_class_test_merge['subject_exam']['class_test'][$i]['exam_id'] = $exam_details->id;
                             $report_class_test_merge['subject_exam']['class_test'][$i]['exam_name'] = $exam_details['Examgroup']->name;
                             $report_class_test_merge['subject_exam']['class_test'][$i]['exam_date'] = DATE("Y-m-d", strtotime($exam_details->start_time));
+                            
+                            $report_class_test_merge['subject_exam']['class_test'][$i]['your_grade'] = "-";
+                            $report_class_test_merge['subject_exam']['class_test'][$i]['grade_point'] = "-";
+                            
+                            if(isset($student_result['Examgrade']->name))
                             $report_class_test_merge['subject_exam']['class_test'][$i]['your_grade'] = $student_result['Examgrade']->name;
+                            
+                            if(isset($student_result['Examgrade']->name))
                             $report_class_test_merge['subject_exam']['class_test'][$i]['grade_point'] = $student_result['Examgrade']->credit_points;
+                            
+                            
                             $report_class_test_merge['subject_exam']['class_test'][$i]['your_mark'] = $student_result->marks;
                             $report_class_test_merge['subject_exam']['class_test'][$i]['your_percent'] = ($student_result->marks / $exam_details->maximum_marks) * 100;
 
@@ -307,7 +316,18 @@ class Subjects extends CActiveRecord
                             $report_class_test_merge['subject_exam']['project'][$j]['exam_id'] = $exam_details->id;
                             $report_class_test_merge['subject_exam']['project'][$j]['exam_name'] = $exam_details['Examgroup']->name;
                             $report_class_test_merge['subject_exam']['project'][$j]['exam_date'] = DATE("Y-m-d", strtotime($exam_details->start_time));
-                            $report_class_test_merge['subject_exam']['project'][$j]['your_grade'] = $student_result['Examgrade']->name;
+                            
+                            $report_class_test_merge['subject_exam']['project'][$i]['your_grade'] = "-";
+                            $report_class_test_merge['subject_exam']['project'][$i]['grade_point'] = "-";
+                            
+                            if(isset($student_result['Examgrade']->name))
+                            $report_class_test_merge['subject_exam']['project'][$i]['your_grade'] = $student_result['Examgrade']->name;
+                            
+                            if(isset($student_result['Examgrade']->name))
+                            $report_class_test_merge['subject_exam']['project'][$i]['grade_point'] = $student_result['Examgrade']->credit_points;
+                            
+                            
+                            
                             $report_class_test_merge['subject_exam']['project'][$j]['your_mark'] = $student_result->marks;
                             $report_class_test_merge['subject_exam']['project'][$j]['your_percent'] = ($student_result->marks / $exam_details->maximum_marks) * 100;
 

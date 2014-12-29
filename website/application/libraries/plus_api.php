@@ -362,6 +362,20 @@ class Plus_api {
         );
         return $search_ar;
     }
+    public function get_data_timetables() {
+
+        $search_ar = array(
+            'search' => array(
+                'start_date_equals' => date('Y-m-d'),
+                'end_date_equals' => date('Y-m-d')
+            ),
+            'username' => $this->_username
+        );
+
+//        $ar_ex_param = array('created_at' => '2013-03-04');
+        //return 'search:' . json_encode($search_ar);
+        return $search_ar;
+    }
 
 }
 

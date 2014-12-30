@@ -83,6 +83,9 @@ class Students extends CActiveRecord {
             'userDetails' => array(self::BELONGS_TO, 'Users', 'user_id',
                 'joinType' => 'INNER JOIN',
             ),
+            'batchDetails' => array(self::BELONGS_TO, 'Batches', 'batch_id',
+                'joinType' => 'INNER JOIN',
+            ),
             'guradianDetails' => array(self::BELONGS_TO, 'Guardians', 'immediate_contact_id',
                 'joinType' => 'INNER JOIN',
             )
@@ -226,9 +229,21 @@ class Students extends CActiveRecord {
     }
 
     public function getStudentBySiblings($sibling_id) {
-        $criteria = new CDbCriteria();
-        $criteria->compare('sibling_id', $sibling_id);
-        return $this->findAll($criteria);
+     $criteria = new CDbCriteria();
+     $criteria->compare('sibling_id', $sibling_id);
+     $criteria->with = array(
+            'batchDetails' => array(
+                'select' => 'batchDetails.name',
+                'joinType' => "INNER JOIN",
+                'with' => array(
+                    "courseDetails" => array(
+                        "select" => "courseDetails.course_name",
+                        'joinType' => "INNER JOIN",
+                    )
+                )
+            )
+      );
+      return $this->findAll($criteria);
     }
     public function getStudentByBatchFull($batch_id) {
 

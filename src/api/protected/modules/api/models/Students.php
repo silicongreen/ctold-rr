@@ -229,7 +229,7 @@ class Students extends CActiveRecord {
     }
     public function getStudentById($id) {
      $criteria = new CDbCriteria();
-     $criteria->compare('id', $id);
+     $criteria->compare('t.id', $id);
      $criteria->with = array(
             'batchDetails' => array(
                 'select' => 'batchDetails.name',

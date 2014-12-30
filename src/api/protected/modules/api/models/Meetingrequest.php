@@ -44,7 +44,7 @@ class Meetingrequest extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
                         'employee' => array(self::BELONGS_TO, 'Employees', 'teacher_id'),
-                        'guardians' => array(self::BELONGS_TO, 'Guardians', 'parent_id'),
+                        'students' => array(self::BELONGS_TO, 'Students', 'parent_id'),
                 );
 	}
 
@@ -128,8 +128,8 @@ class Meetingrequest extends CActiveRecord
                         'select' => 'employee.first_name,employee.middle_name,employee.last_name',
                         'joinType' => "LEFT JOIN"
                     ),
-                    'guardians' => array(
-                        'select' => 'guardians.id,guardians.first_name,guardians.last_name',
+                    'students' => array(
+                        'select' => 'students.immediate_contact_id,students.id,students.first_name,students.middle_name,students.last_name',
                         'joinType' => "LEFT JOIN"
                     )
             );
@@ -149,12 +149,14 @@ class Meetingrequest extends CActiveRecord
                 foreach($obj_metting as $value)
                 {
                     if($type2==1)
-                    {    
-                        $full_name = ($value['guardians']->first_name)?$value['guardians']->first_name." ":"";
-                        $full_name.= ($value['guardians']->last_name)?$value['guardians']->last_name:"";
+                    {                           
+                        $student_model = new Students();
+                        $student_batch = $student_model->getStudentById($value['students']->id);                    
+                        $full_name = ($value['students']->first_name)?$value['students']->first_name." ":"";
+                        $full_name = ($value['students']->middle_name)?$value['students']->middle_name." ":"";
+                        $full_name.= ($value['students']->last_name)?$value['students']->last_name:"";                       
                         $meeting[$i]['name'] = $full_name;
-                        $userModel = new Users();
-                        $meeting[$i]['child'] = $userModel->studentListParent($value['guardians']->id);
+                        $meeting[$i]['batch'] = $student_batch['batchDetails']['courseDetails']->name." ".$student_batch['batchDetails']->name;
                     }
                     else
                     {
@@ -162,7 +164,7 @@ class Meetingrequest extends CActiveRecord
                         $full_name.= ($value['employee']->middle_name)?$value['employee']->middle_name." ":"";
                         $full_name.= ($value['employee']->last_name)?$value['employee']->last_name:"";
                         $meeting[$i]['name'] = $full_name;
-                        $meeting[$i]['child'] = array();
+                        $meeting[$i]['batch'] = "";
                     } 
                     $meeting[$i]['id'] = $value->id;
                     $meeting[$i]['date'] = $value->datetime;

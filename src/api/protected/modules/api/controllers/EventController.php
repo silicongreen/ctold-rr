@@ -36,6 +36,7 @@ class EventController extends Controller {
         $description = Yii::app()->request->getPost('description');
         $datetime = Yii::app()->request->getPost('datetime');
         $parent_id = Yii::app()->request->getPost('parent_id');
+        $student_id = Yii::app()->request->getPost('student_id');
         if(Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isParent  && $batch_id && $description && $datetime  && $parent_id )
         {
            
@@ -43,7 +44,7 @@ class EventController extends Controller {
             $meetingreq->description = $description;
             $meetingreq->datetime = $datetime;
             $meetingreq->teacher_id = $parent_id;
-            $meetingreq->parent_id = Yii::app()->user->profileId;
+            $meetingreq->parent_id = $student_id;
             $meetingreq->type = 2;
             $meetingreq->save();
             
@@ -142,7 +143,7 @@ class EventController extends Controller {
                     $fullname = ($value->first_name)?$value->first_name." ":"";
                     $fullname.= ($value->middle_name)?$value->middle_name." ":"";
                     $fullname.= ($value->last_name)?$value->last_name:"";
-                    $st_array[$i]['id'] = $value->immediate_contact_id;
+                    $st_array[$i]['id'] = $value->id;
                     $st_array[$i]['name'] = $fullname;
                     $i++;
                     

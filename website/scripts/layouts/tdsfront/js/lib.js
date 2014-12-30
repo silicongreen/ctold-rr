@@ -72,6 +72,18 @@ String.prototype.in_array = function (haystack, argStrict)
 
 $(document).ready(function(){
     
+    var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
+    var eventer = window[eventMethod];
+
+    var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
+
+    eventer(messageEvent, function (e) {
+        if ( e.data.indexOf("SHOW_POST") > -1 )
+        {
+            getPostData();
+        }
+    }, false);
+    
     $(document).on("contextmenu", function(e){
         if(e.target.nodeName == "IMG"){
             e.preventDefault();
@@ -2081,5 +2093,149 @@ function uploadProfilePicture(event) {
     
     $.post($('#base_url').val() + 'upload_profile_image', {data: result, name: fileName, tds_csrf: $('input[name$="tds_csrf"]').val()}, function(data){
         console.log(data);
+    });
+}
+
+function getPostData(){
+    
+    $( window ).scroll(function() {
+        var screen_height = $(document).innerHeight() - 400;
+
+        var scroll_top = $(this).scrollTop();
+
+        var licount = 0;
+        $('#grid li').each(function(el,i){
+
+            if( !$(this).hasClass( 'shown' ) && !$(this).hasClass( 'animate' ))
+            {
+                licount++;
+            }
+        });
+
+        setTimeout(function(){
+            if ( (($("#content-wrapper").height()-$(window).height()) - scroll_top) <= 100 && licount == 0 )
+            {
+                if ( $(".loading-box").length != 0 && sent_request == false )
+                {
+                    var total_post = new Number( $("#total_data").val() );
+                    var page_size = new Number( $("#page-size").val() );
+                    var page_limit = new Number( $("#page-limit").val() );
+                    var q = $("#q").val();
+                    var callcount = 0;
+
+                    current_page = new Number( $("#current-page").val());
+                    //console.log(current_page);
+                    var page_to_load = current_page + 1;
+
+                    sent_request = true;
+                    $(".loading-box").show();
+                    runScrool = false;
+                    var content_showed = "";
+                    if($(".container ul#grid").length>0)
+                    {
+                        $(".container ul#grid li.post-content-showed").each(function()
+                        {
+                            if(this.id)
+                            {
+                                var post_id = this.id;
+                                var id_array = post_id.split("-");
+                                content_showed = content_showed+id_array[1]+"|";
+                            }
+                        });
+                    }    
+
+                    $.ajax({
+                        type: "GET",
+                        url: $("#base_url").val() + 'front/ajax/getPosts/' + $("#category").val() + "/" + $("#target").val() + "/" + $("#page").val() + "/" + $("#page-limit").val() + "/" + page_to_load,
+                        data: {
+                            content_showed:content_showed, 
+                            s: q
+                        },
+                        async: true,
+                        success: function(data) {
+                            runScrool = true;			
+                            callcount += 1;
+                            page_size += pageSizeDefault;
+                            $("#page-size").val(page_size);
+                            if ( page_size >= total_post )
+                            {
+                                $(".loading-box").remove();
+                            }
+                            //$(".posts-" + current_page).append("<div class='clear-box-" + current_page + "' style='clear:both;'></div>");
+                            //$("#grid").append(data);
+                            $("#grid").append(data);
+                            //                        if(callcount > 1)
+                            //                        {
+                            //                                alert(1);
+                            //                                var dataad1 = "<aside class='widget_contact_info' style='margin-bottom:20px;'><center><img src='/upload/ads/right-ad-07.png' ></center></aside>"
+                            //                                                                +"<aside class='widget_contact_info' style='margin-bottom:20px;'><center><img src='/upload/ads/right-ad-08.png' ></center></aside>";
+                            //                                $("div.sidebar-level1").append(dataad1);
+                            //                        }
+                            //                        if(callcount > 2)
+                            //                        {
+                            //                                alert(2);
+                            //                                var dataad2 = "<aside class='widget_contact_info' style='margin-bottom:20px;'><center><img src='/upload/ads/right-ad-09.png' ></center></aside>"
+                            //                                                                +"<aside class='widget_contact_info' style='margin-bottom:20px;'><center><img src='/upload/ads/right-ad-10.png' ></center></aside>";
+                            //                                $("div.sidebar-level1").append(dataad2);
+                            //                        }
+
+
+                            current_page += 1;
+                            $("#current-page").val(current_page);
+
+                            setTimeout(function(){
+                                var $container = jQuery("[id=grid]");  
+                                $container.imagesLoaded(function(){
+                                    $("#grid li").removeClass("ajax-hide");
+
+                                    jQuery('.flex-wrapper .flexslider').flexslider( {
+                                        slideshow : false,
+                                        animation : 'fade',
+                                        pauseOnHover: true,
+                                        animationSpeed : 400,
+                                        smoothHeight : false,
+                                        directionNav: true,
+                                        controlNav: false,
+                                        after: function(){
+                                            $("#grid").masonry('reload');
+                                            jQuery('#tz_mainmenu').tinyscrollbar();
+                                        }
+
+                                    });
+                                    if($(".flex-wrapper_news").length>0)
+                                    {   
+                                        jQuery('.flex-wrapper_news .flexslider_news').flexslider( {
+                                            slideshow : false,
+                                            animation : 'fade',
+                                            pauseOnHover: true,
+                                            animationSpeed : 400,
+                                            smoothHeight : false,
+                                            directionNav: false,
+                                            selector: ".slides_news > li.news_slides",
+                                            after: function(){
+                                                $("#grid").masonry('reload');
+                                                jQuery('#tz_mainmenu').tinyscrollbar();
+                                            }
+                                        });
+                                    }
+
+                                    $("#grid").masonry('reload');
+                                    scrollPage();
+                                    if($("#triangle-bottomright").length>0)
+                                    {
+                                        $("#triangle-bottomright").css("border-left-width", $("#post-image").width() + "px");
+                                    }
+
+                                    setTimeout(function(){
+                                        sent_request = false;
+                                        $(".loading-box").hide();
+                                    }, 500);
+                                });
+                            }, 200);
+                        }
+                    });
+                }
+            }
+        }, 200);
     });
 }

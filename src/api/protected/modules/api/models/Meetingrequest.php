@@ -153,7 +153,7 @@ class Meetingrequest extends CActiveRecord
                         $student_model = new Students();
                         $student_batch = $student_model->getStudentById($value['students']->id);                    
                         $full_name = ($value['students']->first_name)?$value['students']->first_name." ":"";
-                        $full_name = ($value['students']->middle_name)?$value['students']->middle_name." ":"";
+                        $full_name.= ($value['students']->middle_name)?$value['students']->middle_name." ":"";
                         $full_name.= ($value['students']->last_name)?$value['students']->last_name:"";                       
                         $meeting[$i]['name'] = $full_name;
                         $meeting[$i]['batch'] = $student_batch['batchDetails']['courseDetails']->course_name." ".$student_batch['batchDetails']->name;

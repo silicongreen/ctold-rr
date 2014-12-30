@@ -303,6 +303,33 @@ class Users extends CActiveRecord {
 
         return false;
     }
+    
+    public function studentListParent($profile_id)
+    {
+        $gurdianModel = new Guardians();
+        $gurdian = $gurdianModel->findBypk($profile_id);
+
+        $studentModel = new Students();
+        $first_student = $studentModel->findBypk($gurdian->ward_id);
+
+        $other_student = new Students();
+        $other_students = $other_student->getStudentBySiblings($first_student->id);
+
+        $user_array = array();
+
+        if ($other_students) {
+            $i = 0;
+            foreach ($other_students as $value) {
+                $middle_name = (!empty($value->middle_name)) ? $value->middle_name . ' ' : '';
+                $user_array[$i]['full_name'] = rtrim($value->first_name . ' ' . $middle_name . $value->last_name);
+                $user_array[$i]['batch_id'] = $value->batch_id;
+               
+                $i++;
+            }
+        }
+
+        return $user_array;
+    }
 
     public function studentList($profile_id) {
 

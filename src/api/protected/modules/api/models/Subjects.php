@@ -159,7 +159,7 @@ class Subjects extends CActiveRecord
            
            $report_term_merge['exam_name']    =  $value->name;
            $report_term_merge['acknowledge']  =  false;
-           if($value['Acknowledge'])
+           if($value['Acknowledge'] && !Yii::app()->user->isTeacher)
            {
                 if (Yii::app()->user->isStudent) {
                      $ack_by = '0';

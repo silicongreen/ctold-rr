@@ -35,9 +35,10 @@ class ReportController extends Controller
             $user_secret = Yii::app()->request->getPost('user_secret');
             $response = array();
             if (Yii::app()->user->user_secret === $user_secret && ( Yii::app()->user->isStudent || (Yii::app()->user->isParent 
-                   && Yii::app()->request->getPost('batch_id') && Yii::app()->request->getPost('student_id') )))
+                   && Yii::app()->request->getPost('batch_id') && Yii::app()->request->getPost('student_id') )
+                    || (Yii::app()->user->isTeacher  && Yii::app()->request->getPost('batch_id')  && Yii::app()->request->getPost('student_id'))))
             {
-                if(Yii::app()->user->isParent)
+                if(Yii::app()->user->isParent || Yii::app()->user->isTeacher)
                 {
                     $batch_id   = Yii::app()->request->getPost('batch_id');
                     $student_id = Yii::app()->request->getPost('student_id');
@@ -80,6 +81,7 @@ class ReportController extends Controller
         echo CJSON::encode($response);
         Yii::app()->end();
     }
+    
      public function actionAcknowledge() {
 
         if ((Yii::app()->request->isPostRequest) && !empty($_POST)) {

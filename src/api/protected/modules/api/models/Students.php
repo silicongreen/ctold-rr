@@ -227,6 +227,23 @@ class Students extends CActiveRecord {
 
         return $this->find($criteria);
     }
+    public function getStudentById($id) {
+     $criteria = new CDbCriteria();
+     $criteria->compare('id', $id);
+     $criteria->with = array(
+            'batchDetails' => array(
+                'select' => 'batchDetails.name',
+                'joinType' => "INNER JOIN",
+                'with' => array(
+                    "courseDetails" => array(
+                        "select" => "courseDetails.course_name",
+                        'joinType' => "INNER JOIN",
+                    )
+                )
+            )
+      );
+      return $this->find($criteria);
+    }
 
     public function getStudentBySiblings($sibling_id) {
      $criteria = new CDbCriteria();

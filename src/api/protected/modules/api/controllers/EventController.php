@@ -212,6 +212,7 @@ class EventController extends Controller {
         $end_date = Yii::app()->request->getPost('end_date');
         $page_number = Yii::app()->request->getPost('page_number');
         $page_size = Yii::app()->request->getPost('page_size');
+        $student_id = Yii::app()->request->getPost('student_id');
         
         if(Yii::app()->user->user_secret === $user_secret && ( Yii::app()->user->isTeacher || Yii::app()->user->isParent))
         {
@@ -259,7 +260,16 @@ class EventController extends Controller {
                 $page_size = 10;
             }
             
-            $meetings = $meetingreq->getInboxOutbox(Yii::app()->user->profileId,$type,$type2,$start_date,$end_date,$page_number,$page_size);
+            if(Yii::app()->user->isTeacher)
+            {
+                $main_id = Yii::app()->user->profileId;
+            }
+            else
+            {
+                $main_id = $student_id;
+            }
+            
+            $meetings = $meetingreq->getInboxOutbox($main_id,$type,$type2,$start_date,$end_date,$page_number,$page_size);
             
             $response['data']['total'] = $meetingreq->getall(Yii::app()->user->profileId,$type,$type2,$start_date,$end_date);
             $has_next = false;

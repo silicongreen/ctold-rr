@@ -156,7 +156,7 @@ class Meetingrequest extends CActiveRecord
                         $full_name = ($value['students']->middle_name)?$value['students']->middle_name." ":"";
                         $full_name.= ($value['students']->last_name)?$value['students']->last_name:"";                       
                         $meeting[$i]['name'] = $full_name;
-                        $meeting[$i]['batch'] = $student_batch['batchDetails']['courseDetails']->name." ".$student_batch['batchDetails']->course_name;
+                        $meeting[$i]['batch'] = $student_batch['batchDetails']['courseDetails']->course_name." ".$student_batch['batchDetails']->name;
                     }
                     else
                     {

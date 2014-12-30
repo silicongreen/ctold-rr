@@ -129,7 +129,7 @@ class Meetingrequest extends CActiveRecord
                         'joinType' => "LEFT JOIN"
                     ),
                     'guardians' => array(
-                        'select' => 'guardians.first_name,guardians.last_name',
+                        'select' => 'guardians.id,guardians.first_name,guardians.last_name',
                         'joinType' => "LEFT JOIN"
                     )
             );
@@ -153,6 +153,8 @@ class Meetingrequest extends CActiveRecord
                         $full_name = ($value['guardians']->first_name)?$value['guardians']->first_name." ":"";
                         $full_name.= ($value['guardians']->last_name)?$value['guardians']->last_name:"";
                         $meeting[$i]['name'] = $full_name;
+                        $userModel = new Users();
+                        $meeting[$i]['child'] = $userModel->studentListParent($value['guardians']->id);
                     }
                     else
                     {
@@ -160,6 +162,7 @@ class Meetingrequest extends CActiveRecord
                         $full_name.= ($value['employee']->middle_name)?$value['employee']->middle_name." ":"";
                         $full_name.= ($value['employee']->last_name)?$value['employee']->last_name:"";
                         $meeting[$i]['name'] = $full_name;
+                        $meeting[$i]['child'] = array();
                     } 
                     $meeting[$i]['id'] = $value->id;
                     $meeting[$i]['date'] = $value->datetime;

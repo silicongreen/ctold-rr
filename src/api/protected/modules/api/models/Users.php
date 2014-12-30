@@ -322,7 +322,7 @@ class Users extends CActiveRecord {
             foreach ($other_students as $value) {
                 $middle_name = (!empty($value->middle_name)) ? $value->middle_name . ' ' : '';
                 $user_array[$i]['full_name'] = rtrim($value->first_name . ' ' . $middle_name . $value->last_name);
-                $user_array[$i]['batch_id'] = $value->batch_id;
+                $user_array[$i]['batch'] = $value['batchDetails']['courseDetails']->course_name." ".$value['batchDetails']->name;
                
                 $i++;
             }

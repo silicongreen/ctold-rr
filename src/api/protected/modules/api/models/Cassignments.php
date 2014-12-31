@@ -84,7 +84,8 @@ class Cassignments extends CActiveRecord
                     $response_array['use_time'] = $data->use_time;
                     $response_array['time'] = $data->time; 
                     $response_array['played'] = $data->played; 
-                    $response_array['created_date'] = $data->created_date;
+                    $response_array['topic'] = $data->topic;
+                    $response_array['created_date'] = Settings::get_post_time($data->created_date);
                     
                     $response_array['question'] = array();
                     

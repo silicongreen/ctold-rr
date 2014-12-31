@@ -52,7 +52,7 @@ class Cmark extends CActiveRecord
                foreach($data as $value)
                {
                    $response_array[$i]['mark'] = $value->mark;
-                   $response_array[$i]['created_date'] = $value->created_date;
+                   $response_array[$i]['created_date'] = Settings::get_post_time($value->created_date);
                    $response_array[$i]['title'] = $value['assessment']->title;
                    $i++;
                }

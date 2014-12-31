@@ -410,6 +410,23 @@ class Settings {
             
             $post_array['can_comment'] = $postValue->can_comment;
             
+            $post_array['assessment_id'] = "";
+            
+            if($postValue->assessment_id)
+            $post_array['assessment_id'] = $postValue->assessment_id;
+            
+            $post_array['force_assessment'] = $postValue->force_assessment;
+            
+            $post_array['assessment_title'] = "";
+            
+            $post_array['assessment_played'] = 0;
+            
+            if(isset($postValue['postAssessment']->title) && $postValue['postAssessment']->title)
+            {
+                $post_array['assessment_title'] = $postValue['postAssessment']->title;
+                $post_array['assessment_played'] = $postValue['postAssessment']->played;
+            }
+            
             $post_array['show_comment_to_all'] = $postValue->show_comment_to_all;
             
             $post_array['video_file'] = "";

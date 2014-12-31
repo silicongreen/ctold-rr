@@ -24,7 +24,7 @@ class FreeuserController extends Controller
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
                 'actions' => array('index', 'create', 'getcategorypost', 'getsinglenews', 'search', "getkeywordpost"
-                    , "gettagpost", "getbylinepost", "getmenu","getassesment","addmark",
+                    , "gettagpost", "getbylinepost", "getmenu","getassesment","addmark","updateplayed","assesmenthistory",
                     "getuserinfo", "goodread", "readlater", "goodreadall", "goodreadfolder", "removegoodread"
                     , "schoolsearch", "school", "createschool", "schoolpage", "schoolactivity", "candle"
                     , "garbagecollector","getschoolteacherbylinepost","createcachesinglenews","addwow", 
@@ -36,12 +36,60 @@ class FreeuserController extends Controller
             ),
         );
     }
+    
+    public function actionAssesmentHistory()
+    {
+        
+        $user_id = Yii::app()->request->getPost('user_id');
+        if (!$user_id )
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        else
+        {
+            
+            $objcmark = new Cmark();
+            $objassessment = $objcmark->getUserMark($user_id);
+            $response['data']['assesment'] = $objassessment;
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "success";
+                
+               
+        } 
+        echo CJSON::encode($response);
+        Yii::app()->end();
+
+    }
+    public function actionUpdatePlayed()
+    {
+       $assessment_id = Yii::app()->request->getPost('assessment_id');
+       if (!$assessment_id)
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        else
+        {
+            
+            $assesmentObj = new Cassignments();          
+            $objassessment = $assesmentObj->findByPk($assessment_id);
+            $objassessment->played = $objassessment->played+1;
+            $objassessment->save();
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "success";
+                
+               
+        } 
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    }        
     public function actionAddMark()
     {
         $assessment_id = Yii::app()->request->getPost('assessment_id');
         $user_id = Yii::app()->request->getPost('user_id');
         $mark = Yii::app()->request->getPost('mark');
-        if (!$assessment_id || !$mark )
+        if (!$assessment_id || !$mark || !$user_id )
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
@@ -52,8 +100,7 @@ class FreeuserController extends Controller
             $assesmentObj = new Cassignments();
             
             $objassessment = $assesmentObj->findByPk($assessment_id);
-            $objassessment->played = $objassessment->played+1;
-            $objassessment->save();
+            
             if($user_id)
             {
                 $objcmark = new Cmark();

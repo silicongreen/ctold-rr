@@ -444,7 +444,7 @@ class CalenderController extends Controller {
             $studentsobj = new Students();
             $students = $studentsobj->getStudentById($student_id);          
             
-            $response['data']['batches'] = $this->formatStudent($students);
+            $response['data']['student'] = $this->formatStudent($students);
             $response['status']['code'] = 200;
             $response['status']['msg'] = "EVENTS_FOUND";
             

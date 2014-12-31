@@ -229,6 +229,7 @@ class Students extends CActiveRecord {
     }
     public function getStudentById($id) {
      $criteria = new CDbCriteria();
+     $criteria->select = 't.*';
      $criteria->compare('t.id', $id);
      $criteria->with = array(
             'batchDetails' => array(
@@ -240,7 +241,12 @@ class Students extends CActiveRecord {
                         'joinType' => "INNER JOIN",
                     )
                 )
-            )
+            ),
+            'guradianDetails' => array(
+                
+                'select' => 'guradianDetails.first_name,guradianDetails.last_name',
+                'joinType' => "LEFT JOIN"
+             )
       );
       return $this->find($criteria);
     }

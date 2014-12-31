@@ -213,6 +213,19 @@ class Freeusers extends CActiveRecord {
         }
         return false;
     }
+    public function getUserImage($paid_id)
+    {
+        $criteria = new CDbCriteria;
+        $criteria->compare('paid_id', $paid_id);
+
+        $value = $this->find($criteria);
+        $user_info = array();
+        if ($value != NULL)
+        { 
+           $user_info['profile_image'] = $value->profile_image; 
+        }
+        return $user_info;
+    }
     public function getUserInfo($id)
     {
         $criteria = new CDbCriteria;

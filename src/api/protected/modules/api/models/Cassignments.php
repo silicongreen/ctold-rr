@@ -46,7 +46,7 @@ class Cassignments extends CActiveRecord
             $criteria->compare('t.id', $id); 
             $criteria->with = array(
                 'question' => array(
-                    'select' => 'question.id,question.mark,question.style',
+                    'select' => 'question.id,question.mark,question.style,question.question',
                     'with' => array(
                         "option" => array(
                             "select" => "option.answer,option.answer_image,option.correct"

@@ -92,6 +92,7 @@ class Layout extends CI_Hooks
             }
             
             $view_data['target'] = isset($ar_params['target']) ? $ar_params['target'] : "index";
+            $view_data['full_template'] = ($ar_params['full_template'] === FALSE) ? FALSE: TRUE;
 		 
             $layout_file = $this->CI->config->config['front_layout'];
             $s_default_layout = BASEPATH . '../application/' . $layout_file;

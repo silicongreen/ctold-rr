@@ -16,7 +16,11 @@
         
         <div id="main" class="col-xs-12 site-main clearfix">
             <div id="content-wrapper" class="wrapper col-md-12 clearfix"><!-- Start header -->
-                <?php echo $header; ?>
+                <?php
+                    if($full_template) {
+                        echo $header;
+                    }
+                ?>
                 <?php echo $content; ?>
             </div> 
                     
@@ -31,10 +35,11 @@
         </div>
           
                 <div style="clear: both;" class="noPrint"></div>
-
-                <div class="ym-wbox footer noPrint">  <!-- Start Footer -->
-                    <?php echo $footer; ?>
-                </div>                        <!-- End Footer -->
+                <?php if($full_template) { ?>
+                    <div class="ym-wbox footer noPrint">  <!-- Start Footer -->
+                        <?php echo $footer; ?>
+                    </div>                        <!-- End Footer -->
+                <?php } ?>
             </div>                             <!-- End container -->
 
         </div>

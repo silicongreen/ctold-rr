@@ -16,4 +16,3 @@
     </div>
     <?php $widget->run('postdata', "index", $s_category_ids, 'index'); ?>
 </div>
-

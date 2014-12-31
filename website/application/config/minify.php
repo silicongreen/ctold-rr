@@ -97,6 +97,7 @@ $config['js_groups']            = Array(
                                 'merapi/pluginsHead.js',
                                 'scripts/layouts/tdsfront/js/bootstrap-datepicker.js',
                                 'merapi/script/flexcroll.js',
+                                //'merapi/script/jquery-canvas-sparkles.js',
                                 //'merapi/script/snowstorm.js',//THIS IS FOR ONLY SNOW FALL EFFECT
                         ),
                         'main-bottom.js' => Array( // when loading example.com/js/example1.js you will load javascript1.js and javascript2.js into one single file

@@ -186,7 +186,7 @@ class assessment extends MX_Controller
             exit('No direct script access allowed');
         }
         
-        $this->datatables->set_buttons("edit_question", 'ajax');
+        $this->datatables->set_buttons("edit_question");
         $this->datatables->set_buttons("delete_question", 'ajax');
         
         $this->datatables->set_controller_name("assessment");
@@ -218,10 +218,46 @@ class assessment extends MX_Controller
         
         $data['question'] = $obj_assesment_que;
         $data['answers'] = $obj_assesment_ans;
-        $data['style'] = array(NULL => 'Select', 1 => 'Boxed', 2 => 'List');
-//        $data['assessment_id'] = $assessment_id;
+        $data['edit'] = false;
+        
+        $data['style'] = array(NULL => 'Select', '1' => 'Boxed', '2' => 'List');
+        $data['ans_type'] = array(NULL => 'Select', '0' => 'True-Flase', '1' => 'MCQ');
         
         if (!$obj_assesment_que->save())
+        {
+            $this->render('admin/assessment/_question_form', $data);
+        }
+        else
+        {
+            echo "<script>parent.oTable.fnClearTable(true); parent.$.fancybox.close();</script>";
+        }
+    }
+    
+    function edit_question($question_id)
+    {
+        $obj_assesment_que = new Assessment_questions($question_id);
+        
+        $obj_assesment_ans = new Assessment_options();
+        $obj_assesment_ans = $obj_assesment_ans->get_assessment_option_by_q_id($question_id);
+        
+        $assessment_id = $assessment_id;
+        
+        if ($_POST)
+        {
+            foreach ($this->input->post() as $key => $value)
+            {
+                $obj_assesment_que->$key = $value;
+            }
+        }
+        
+        $data['question'] = $obj_assesment_que;
+        $data['answers'] = $obj_assesment_ans;
+        $data['edit'] = true;
+        
+        $data['style'] = array(NULL => 'Select', '1' => 'Boxed', '2' => 'List');
+        $data['ans_type'] = array(NULL => 'Select', '0' => 'True-Flase', '1' => 'MCQ');
+        
+        if (!$obj_assesment_que->save() || !$_POST)
         {
             $this->render('admin/assessment/_question_form', $data);
         }

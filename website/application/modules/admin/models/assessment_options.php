@@ -40,16 +40,20 @@ class Assessment_options extends DataMapper {
         return $fields;
     }
 
-    function get_assessment_option_by_id($id) {
+    public function get_assessment_option_by_id($id) {
         
         $this->db->select('*');
         $this->db->from("assessment_option");
         $this->db->where("assessment_option.id", $id);
-        $obj_assessment_opt = $this->db->get()->row();
-        
-        $data['data'] = $obj_assessment_opt;
+        return $this->db->get()->row();
+    }
 
-        return $data;
+    public function get_assessment_option_by_q_id($q_id) {
+        
+        $this->db->select('*');
+        $this->db->from("assessment_option");
+        $this->db->where("assessment_option.question_id", $q_id);
+        return $this->db->get()->result();
     }
 
     public function get_attributes() {

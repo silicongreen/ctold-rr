@@ -24,7 +24,7 @@ class FreeuserController extends Controller
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
                 'actions' => array('index', 'create', 'getcategorypost', 'getsinglenews', 'search', "getkeywordpost"
-                    , "gettagpost", "getbylinepost", "getmenu",
+                    , "gettagpost", "getbylinepost", "getmenu","getassesment","addmark",
                     "getuserinfo", "goodread", "readlater", "goodreadall", "goodreadfolder", "removegoodread"
                     , "schoolsearch", "school", "createschool", "schoolpage", "schoolactivity", "candle"
                     , "garbagecollector","getschoolteacherbylinepost","createcachesinglenews","addwow", 
@@ -35,6 +35,84 @@ class FreeuserController extends Controller
                 'users' => array('*'),
             ),
         );
+    }
+    public function actionAddMark()
+    {
+        $assessment_id = Yii::app()->request->getPost('assessment_id');
+        $user_id = Yii::app()->request->getPost('user_id');
+        $mark = Yii::app()->request->getPost('mark');
+        if (!$assessment_id || !$mark )
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        else
+        {
+            
+            $assesmentObj = new Cassignments();
+            
+            $objassessment = $assesmentObj->findByPk($assessment_id);
+            $objassessment->played = $objassessment->played+1;
+            $objassessment->save();
+            if($user_id)
+            {
+                $objcmark = new Cmark();
+                $objassessment = $objcmark->getUserMarkAssessment($user_id,$assessment_id);
+                $add = false;
+                if($objassessment)
+                {
+                    if($objassessment->mark<$mark)
+                    {
+                        $marksobj = $objcmark->findByPk($objassessment->id);
+                        $marksobj->delete();
+                        $add = true;
+                    }
+                }
+                else
+                {
+                    $add = true;
+                }  
+                if($add)
+                {
+                    $objcmark->mark = $mark;
+                    $objcmark->user_id = $user_id;
+                    $objcmark->assessment_id = $assessment_id;
+                    $objcmark->save();
+                    
+                }
+            }    
+            
+            
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "success";
+                
+               
+        } 
+        echo CJSON::encode($response);
+        Yii::app()->end();
+
+    }
+    public function actionGetAssesment()
+    {
+        $assesment_id = Yii::app()->request->getPost('assesment_id');
+        if (!$assesment_id )
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        else
+        {
+            
+            $assesmentObj = new Cassignments();
+            $response['data']['assesment'] = $assesmentObj->getAssessment($assesment_id);
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "success";
+                
+               
+        } 
+        echo CJSON::encode($response);
+        Yii::app()->end();
+
     }
     public function actionAddWow()
     {

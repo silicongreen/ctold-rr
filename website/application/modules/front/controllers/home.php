@@ -3233,4 +3233,45 @@ class home extends MX_Controller {
         header("Location: ".$url);
         exit;
     }
+    
+    public function school_feed_for_paid() {
+        
+        $ar_js = array();
+        $ar_css = array();
+        $extra_js = '';
+        
+        $data = array();
+        
+        $data['ci_key']    = "index";
+        $data['ci_key_for_cover'] = "index";
+        $data['s_category_ids'] = "0";
+        
+        $this->db->where('key', 'layout');
+        $query = $this->db->get('settings');
+        $layout_settings = $query->row();
+        
+        $s_content = $this->load->view('school_feed_for_paid', $data, true);
+        
+        $str_title = getCommonTitle();
+        
+        
+        $meta_description = META_DESCRIPTION;
+        $keywords = KEYWORDS;
+		
+        $ar_params = array(
+            "javascripts"           => $ar_js,
+            "css"                   => $ar_css,
+            "extra_head"            => $extra_js,
+            "title"                 => $str_title,
+            "description"           => $meta_description,
+            "keywords"              => $keywords,
+            "side_bar"              => $s_right_view,
+            "target"                => "index",
+            "full_template"         => FALSE,
+            "content"               => $s_content
+        );
+        
+        $this->extra_params = $ar_params;
+        
+    }
 }

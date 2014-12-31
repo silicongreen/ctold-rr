@@ -272,7 +272,7 @@ class EventController extends Controller {
             
             $meetings = $meetingreq->getInboxOutbox($main_id,$type,$type2,$start_date,$end_date,$page_number,$page_size);
             
-            $response['data']['total'] = $meetingreq->getall(Yii::app()->user->profileId,$type,$type2,$start_date,$end_date);
+            $response['data']['total'] = $meetingreq->getall($main_id,$type,$type2,$start_date,$end_date);
             $has_next = false;
             if ($response['data']['total'] > $page_number * $page_size)
             {

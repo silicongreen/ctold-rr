@@ -285,6 +285,45 @@ $(document).ready(function() {
         
     }
     
+    if ( $('#dt1 .question_table').html() != null )
+    {
+         oTable = $('#dt1 .question_table').dataTable( {
+            "bJQueryUI": true,
+            "sScrollX": "",
+            "sScrollY": "300px",
+            "bProcessing": true,
+            "bServerSide": true,
+            "sAjaxSource": $("#base_url").val()+"admin/"+$("#controllername").val()+"/datatable_question/"+$("#assessment_id").val(),
+            "bSortClasses": false,
+            "aaSorting": [[sortindex,sorttype]],
+            "bAutoWidth": true,
+            "bInfo": true,
+            "bScrollCollapse": true,
+            "sPaginationType": "full_numbers",
+            "bRetrieve": true,
+            "fnInitComplete": function () {
+
+                $(".mytable_gallery .dataTables_length > label > select").uniform();
+                $(".mytable_gallery .dataTables_filter input[type=text]").addClass("text");
+                $(".mytable_gallery").css("visibility","visible");
+                this.fnAdjustColumnSizing(true);
+
+            },
+            'fnServerData': function(sSource, aoData, fnCallback)
+            {
+                $.ajax
+                ({
+                    'dataType': 'json',
+                    'type'    : 'POST',
+                    'url'     : sSource,
+                    'data'    : aoData,
+                    'success' : fnCallback
+                });
+            } 
+        });
+        
+    }
+    
     
     if ( $('#dt1 .photo_table').html() != null )
     {

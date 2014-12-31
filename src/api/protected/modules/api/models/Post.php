@@ -101,6 +101,7 @@ class Post extends CActiveRecord
             'postCategories' => array(self::HAS_MANY, 'PostCategory', 'post_id'),
             'postAttachment' => array(self::HAS_MANY, 'PostAttachment', 'post_id'),
             'postAuthor' => array(self::BELONGS_TO, 'Bylines', 'byline_id'),
+            'postAssessment' => array(self::BELONGS_TO, 'Cassignments', 'assessment_id'),
             'postSchool' => array(self::BELONGS_TO, 'School', 'school_id'),
             'postGalleries' => array(self::HAS_MANY, 'PostGallery', 'post_id'),
             'postTags' => array(self::HAS_MANY, 'PostTags', 'post_id'),
@@ -293,7 +294,7 @@ class Post extends CActiveRecord
             ),
             'postAuthor' => array(
                 'select' => 'postAuthor.title'
-            ),
+            )
         );
         $criteria->limit = 20;
 
@@ -420,6 +421,10 @@ class Post extends CActiveRecord
             ),
             'postAuthor' => array(
                 'select' => 'postAuthor.title,postAuthor.image'
+            ),
+            'postAssessment' => array(
+                'select' => 'postAssessment.title,postAssessment.played',
+                'joinType' => "LEFT JOIN"
             ),
         );
         $obj_post = $this->find($criteria);

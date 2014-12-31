@@ -21,7 +21,7 @@ class CalenderController extends Controller {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
                 'actions' => array('getAttendence', 'academic','getbatch','getbatchstudentattendence','approveLeave','addattendence',
-                    'studentattendencereport'),
+                    'studentattendencereport','getstudentinfo'),
                 'users' => array('*'),
             ),
             array('deny', // deny all users
@@ -432,7 +432,67 @@ class CalenderController extends Controller {
         Yii::app()->end();
         
         
+    }  
+    
+    public function actionGetStudentInfo()
+    {
+        $user_secret = Yii::app()->request->getPost('user_secret');
+        $student_id = Yii::app()->request->getPost('student_id');
+        
+        if(Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher && $student_id)
+        {
+            $studentsobj = new Students();
+            $students = $studentsobj->getStudentById($student_id);          
+            
+            $response['data']['batches'] = $this->formatStudent($students);
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "EVENTS_FOUND";
+            
+        }
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+        
+    }
+    
+    private function formatStudent($std)
+    {
+        $fullname = ($std->first_name)?$std->first_name." ":"";
+        $fullname.= ($std->middle_name)?$std->middle_name." ":"";
+        $fullname.= ($std->last_name)?$std->last_name:"";
+        $student['name'] = $fullname;
+        $student['roll'] = $std->class_roll_no;
+        $student['admission_no'] = $std->admission_no;
+        $student['date_of_birth'] = $std->date_of_birth;
+        $student['gender'] = $std->gender;
+        $student['admission_no'] = $std->admission_no;
+        $student['class'] = $std['batchDetails']['courseDetails']->course_name;
+        $student['batch'] = $std['batchDetails']->name;
+        $fullname = "";
+        if(isset($std['guradianDetails']->first_name))
+        {
+            $fullname = ($std['guradianDetails']->first_name)?$std['guradianDetails']->first_name." ":"";
+            $fullname.= ($std['guradianDetails']->last_name)?$std['guradianDetails']->last_name:"";
+        }  
+        $free = new Freeusers();
+       
+        
+        $user_image = $free->getUserImage($std->user_id);
+        $student['user_image'] = "";
+        
+        if(isset($user_image['profile_image']))
+        {
+            $student['user_image'] = $user_image['profile_image'];
+        }    
+        
+        $student['guradian'] = $fullname;
+        return $student;
     }        
+    
     public function actionGetBatch()
     {
         $user_secret = Yii::app()->request->getPost('user_secret');

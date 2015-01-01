@@ -156,3 +156,28 @@ $config['css_champs21'] = Array(
                     'merapi/style/header-icon-animation.css'
         )
 );
+
+$config['post-ads'] = array(
+                            "add" => array(
+                                            "styles/layouts/tdsfront/images/ads/candle.png",
+                                            "styles/layouts/tdsfront/images/ads/entertainment.png",
+                                            "styles/layouts/tdsfront/images/ads/extra-curricular-activities.png",
+                                            "styles/layouts/tdsfront/images/ads/games.png",
+                                            "styles/layouts/tdsfront/images/ads/good-read.png",
+                                            "styles/layouts/tdsfront/images/ads/literature.png",
+                                            "styles/layouts/tdsfront/images/ads/news-and-articles.png",
+                                            "styles/layouts/tdsfront/images/ads/nutrition.png",
+                                            "styles/layouts/tdsfront/images/ads/personality.png",
+                                            "styles/layouts/tdsfront/images/ads/resource-center.png",
+                                            "styles/layouts/tdsfront/images/ads/schools-search.png",
+                                            "styles/layouts/tdsfront/images/ads/sports.png",
+                                            "styles/layouts/tdsfront/images/ads/travel.png"
+                                        ),
+                               "link" => array("#","entertainment","extra-curricular","games","good-read","literature",
+                                   "news-and-articles","nutrition","personality","resource-center","schools","sports","travel"),
+                               "check_login"=> array("1","entertainment","extra-curricular","games","1","literature",
+                                   "news-and-articles","nutrition","personality","resource-center","schools","sports","travel"),
+    
+                               "class"=> array("candlepopup","","","","","","","","","","","",""),
+                               "id"   => array("","","","","good_read","","","","","","","","")
+                            );

@@ -40,6 +40,7 @@ class RoutineController extends Controller {
                 $time_table = new TimetableEntries;
                 $time_table = $time_table->getNextTeacher($school_id, Yii::app()->user->profileId);
 
+                $response['data']['today'] = date("Y-m-d");
                 $response['data']['time_table'] = array();
                 if ($time_table) {
                     $response['data']['time_table'] = $time_table;

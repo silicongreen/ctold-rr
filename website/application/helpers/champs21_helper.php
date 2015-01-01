@@ -791,3 +791,25 @@ if(!function_exists('plus_api3')){
          exit;
     }
 }
+
+if(!function_exists('get_rand_images')){
+    
+    function get_rand_images( $ar_images, $i_first_image = "" ){
+        
+        $i_count_image = count($ar_images); 
+        if ( strlen($i_first_image) == 0 )
+        {
+            $i_first_image = rand(0, $i_count_image - 1);
+        }
+        $i_second_image = rand(0, $i_count_image - 1);
+        
+        if ( $i_second_image == $i_first_image )
+        {
+            get_rand_images($ar_images, $i_first_image);
+        }
+        else
+        {
+            return array($i_first_image, $i_second_image);
+        }
+    }
+}

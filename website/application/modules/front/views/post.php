@@ -304,6 +304,8 @@
                     
                 }
                 echo $content; ?>
+                <?php echo $s_ad_image; ?>
+                <div style="clear: both; height: 2px;"></div>
             </div>
             <?php else : ?>
             <div class="center">

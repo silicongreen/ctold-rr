@@ -1815,7 +1815,7 @@ class news extends MX_Controller
       
         
         
-        if($send_notification)
+        if($send_notification && !$send_notification)
         {
            
             $messegefornotification = $obj_post->headline;

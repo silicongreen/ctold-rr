@@ -636,7 +636,7 @@
         <?php if(!free_user_logged_in()): ?>
            
             
-            if($(".check_login").attr("id").length>0)
+            if(typeof $(".check_login").attr("id")!=undefined && $(".check_login").attr("id").length>0)
             {
                 $(".check_login").parent().attr("href","#");
                 $(".check_login").parent().addClass("before-login-user"); 

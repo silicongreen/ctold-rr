@@ -20,13 +20,86 @@ class RoutineController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'exam'),
+                'actions' => array('index', 'exam','teacher','nextclass'),
                 'users' => array('@'),
             ),
             array('deny', // deny all users
                 'users' => array('*'),
             ),
         );
+    }
+    
+     public function actionNextClass() {
+
+        if (isset($_POST) && !empty($_POST)) {
+
+            $user_secret = Yii::app()->request->getPost('user_secret');
+            $school_id = Yii::app()->request->getPost('school');
+            $response = array();
+            if (Yii::app()->user->isTeacher && $school_id && Yii::app()->user->user_secret === $user_secret) {
+                $time_table = new TimetableEntries;
+                $time_table = $time_table->getNextTeacher($school_id, Yii::app()->user->profileId);
+
+                $response['data']['time_table'] = array();
+                if ($time_table) {
+                    $response['data']['time_table'] = $time_table;
+                    
+                }
+                $response['status']['code'] = 200;
+                $response['status']['msg'] = "ROUTINE_FOUND";
+
+                
+            }
+            else
+            {
+                $response['status']['code'] = 400;
+                $response['status']['msg'] = "BAD_REQUEST";
+            }
+            echo CJSON::encode($response);
+            Yii::app()->end();
+        }
+    }
+    
+    public function actionTeacher() {
+
+        if (isset($_POST) && !empty($_POST)) {
+
+            $user_secret = Yii::app()->request->getPost('user_secret');
+            $school_id = Yii::app()->request->getPost('school');
+           
+            $date = Yii::app()->request->getPost('date');
+            $day_id = Yii::app()->request->getPost('day_id');
+            $date = (!empty($date)) ? $date : \date('Y-m-d', \time());
+            $response = array();
+            if (Yii::app()->user->isTeacher && $school_id && Yii::app()->user->user_secret === $user_secret) {
+                $time_table = new TimetableEntries;
+                $time_table = $time_table->getTimeTablesTeacher($school_id,$date, Yii::app()->user->profileId, $day_id);
+
+                $response['data']['time_table'] = array();
+                
+                $response['data']['weekdays'] = Settings::$ar_weekdays;
+                
+                $cur_day_name = Settings::getCurrentDay();
+                $cur_day_key = Settings::$ar_weekdays_key[$cur_day_name];
+                
+                $response['data']['cur_week'] = $cur_day_key;
+                if ($time_table) {
+                    $response['data']['time_table'] = $time_table;
+                    
+                }
+                $response['status']['code'] = 200;
+                $response['status']['msg'] = "ROUTINE_FOUND";
+
+                
+            }
+            else
+            {
+                $response['status']['code'] = 400;
+                $response['status']['msg'] = "BAD_REQUEST";
+            }
+            echo CJSON::encode($response);
+            Yii::app()->end();
+        }
     }
 
     public function actionIndex() {

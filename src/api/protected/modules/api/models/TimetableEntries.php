@@ -130,6 +130,112 @@ class TimetableEntries extends CActiveRecord {
     public static function model($className = __CLASS__) {
         return parent::model($className);
     }
+    
+    public function getNextTeacher($school_id,$emplyee_id,$cur_day_key = 0, $call=1)
+    {
+        $criteria = new CDbCriteria;
+        $criteria->select = 't.id, t.weekday_id';
+        $criteria->compare('t.school_id', $school_id);
+        $date = date("Y-m-d");
+        $time = date("h:i a");
+        if(!$cur_day_key)
+        {
+            $cur_day_name = Settings::getCurrentDay($date);
+            $cur_day_key = Settings::$ar_weekdays_key[$cur_day_name];
+        }
+        
+          
+        $criteria->compare('t.weekday_id', $cur_day_key);
+        
+        if($call==1)
+        {
+            $criteria->addCondition("classTimingDetails.start_time>'".$time."'");
+        }
+        $criteria->compare('t.employee_id', $emplyee_id);
+        $criteria->addCondition("timeTableDetails.start_date <= '" . $date . "' ");
+        $criteria->addCondition("timeTableDetails.end_date >= '" . $date . "' ");
+        //$criteria->addCondition("timeTableDetails.end_date >= '" . $date . "' ");
+        $criteria->order = 'classTimingDetails.start_time ASC';
+
+        $criteria->limit = 1;
+        $criteria->with=array('classTimingDetails',
+                               'batchDetails'=>array("with"=>"courseDetails"), 
+                                'subjectDetails', 
+                                'employeeDetails', 
+                                'timeTableDetails');
+
+        $data = $this->find($criteria);
+        if (!empty($data)) {
+            return $this->formatTimeNext($data);
+        }
+        else if($call<7)
+        {
+            if($cur_day_key == 6)
+            {
+                $next_day = 0;
+            }
+            else
+            {
+                $next_day = $cur_day_key+1;
+            } 
+            $call++;
+            $this->getNextTeacher($school_id,$emplyee_id,$next_day,$call);
+        }
+        else
+        {
+            return false;
+        }    
+
+        
+    }
+    public function formatTimeNext($row)
+    {
+        $_data['batch_name'] = rtrim($row['batchDetails']->name);
+        $_data['course_name'] = rtrim($row['batchDetails']['courseDetails']->course_name);
+        $_data['subject_code'] = $row['subjectDetails']->code;
+        $_data['subject_name'] = $row['subjectDetails']->name;
+        $_data['subject_icon_name'] = $row['subjectDetails']->icon_number;
+        $_data['subject_icon_path'] = (!empty($row['subjectDetails']->icon_number)) ? Settings::$domain_name . '/images/icons/subjects/' . $row['subjectDetails']->icon_number : null;
+        $_data['class_start_time'] = Settings::formatTime($row['classTimingDetails']->start_time);
+        $_data['class_end_time'] = Settings::formatTime($row['classTimingDetails']->end_time);
+        $_data['weekday_id'] = $row->weekday_id;
+        $_data['weekday_text'] = Settings::$ar_weekdays[$row->weekday_id];
+        return $_data;
+    }        
+    
+    public function getTimeTablesTeacher($school_id,$date,$emplyee_id,$day_id = null)
+    {
+        $criteria = new CDbCriteria;
+        $criteria->select = 't.id, t.weekday_id';
+        $criteria->compare('t.school_id', $school_id);
+        if (!$day_id) {
+            $cur_day_name = Settings::getCurrentDay($date);
+            $cur_day_key = Settings::$ar_weekdays_key[$cur_day_name];
+        }
+        else
+        {
+            $cur_day_key = $day_id;
+        }
+        $criteria->compare('t.weekday_id', $cur_day_key);
+        $criteria->compare('t.employee_id', $emplyee_id);
+        
+        $criteria->addCondition("timeTableDetails.start_date <= '" . $date . "' ");
+        $criteria->addCondition("timeTableDetails.end_date >= '" . $date . "' ");
+        $criteria->order = 't.weekday_id, t.class_timing_id ASC';
+       
+        $criteria->with=array('classTimingDetails',
+                               'batchDetails'=>array("with"=>"courseDetails"), 
+                                'subjectDetails', 
+                                'employeeDetails', 
+                                'timeTableDetails');
+
+        $data = $this->findAll($criteria);
+        if (!empty($data)) {
+            return $this->formatTimeTable($data, false, true);
+        }
+
+        return false;
+    }
 
     public function getTimeTables($school_id, $date = '', $b_full_week = false, $batch_id = null) {
 
@@ -165,7 +271,7 @@ class TimetableEntries extends CActiveRecord {
         return false;
     }
 
-    public function formatTimeTable($_obj_time_table, $b_full_week = false) {
+    public function formatTimeTable($_obj_time_table, $b_full_week = false, $teacher=false) {
 
         $ar_formatted_data = array();
 
@@ -175,8 +281,16 @@ class TimetableEntries extends CActiveRecord {
 
                 $middle_name = (!empty($row['employeeDetails']->middle_name)) ? $row['employeeDetails']->middle_name . ' ' : '';
 
-                $_data['teacher_first_name'] = rtrim($row['employeeDetails']->first_name);
-                $_data['teacher_full_name'] = rtrim($row['employeeDetails']->first_name . ' ' . $middle_name . $row['employeeDetails']->last_name);
+                if($teacher==false)
+                {
+                    $_data['teacher_first_name'] = rtrim($row['employeeDetails']->first_name);
+                    $_data['teacher_full_name'] = rtrim($row['employeeDetails']->first_name . ' ' . $middle_name . $row['employeeDetails']->last_name);
+                }
+                else
+                {
+                    $_data['batch_name'] = rtrim($row['batchDetails']->name);
+                    $_data['course_name'] = rtrim($row['batchDetails']['courseDetails']->course_name);
+                }    
                 $_data['subject_code'] = $row['subjectDetails']->code;
                 $_data['subject_name'] = $row['subjectDetails']->name;
                 $_data['subject_icon_name'] = $row['subjectDetails']->icon_number;

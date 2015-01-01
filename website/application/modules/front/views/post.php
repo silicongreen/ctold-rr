@@ -634,15 +634,20 @@
     }
     $(document).ready(function(){
         <?php if(!free_user_logged_in()): ?>
-            $(".check_login").addClass("before-login-user");
-            $(".check_login").attr("href","#");
-            $(".check_login").removeClass("candlepopup");
+           
             
             if($(".check_login").attr("id").length>0)
             {
                 $(".check_login").parent().attr("href","#");
                 $(".check_login").parent().addClass("before-login-user"); 
                 $(".check_login").parent().attr("data",$(".check_login").attr("id"));
+                $(".ads-image").removeClass("check_login");  
+            }    
+            else
+            {
+                 $(".check_login").addClass("before-login-user");
+                 $(".check_login").attr("href","#");
+                 $(".check_login").removeClass("candlepopup");
             }    
             
             

@@ -22,7 +22,7 @@ class EventController extends Controller {
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
                 'actions' => array('index', 'acknowledge','meetingrequest','meetingstatus',
                     'getstudentparent','addmeetingrequest','addmeetingparent','getteacherparent',
-                    'addleaveteacher','leavetype'),
+                    'addleaveteacher','leavetype','teacherleaves'),
                 'users' => array('@'),
             ),
             array('deny', // deny all users
@@ -30,6 +30,41 @@ class EventController extends Controller {
             ),
         );
     }
+    
+    public function actionTeacherLeaves()
+    {
+        $user_secret = Yii::app()->request->getPost('user_secret');
+       
+        if(Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher )
+        {
+           
+            $leave = new ApplyLeaves();
+            $leaveobj = $leave->getTeacherLeave(Yii::app()->user->profileId);
+            
+            $leave = array();
+            $i = 0;
+            if($leaveobj)
+            foreach($leaveobj as $value)
+            {
+                $leave[$i]['leave_type'] = $value['leavetype']->name;
+                $leave[$i]['start_date'] = $value->start_date;
+                $leave[$i]['end_date'] = $value->end_date;
+                $leave[$i]['status'] = $value->approved;
+                $leave[$i]['created_date'] = date("Y-m-d",  strtotime($value->created_at));
+                $i++;
+            } 
+            $response['data']['leaves'] = $leave;
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "Success";
+        } 
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end(); 
+    }        
     
     public function actionLeaveType()
     {
@@ -82,6 +117,8 @@ class EventController extends Controller {
             $leave->is_half_day = 0;
             $leave->employee_leave_types_id = $employee_leave_types_id;
             $leave->employee_id = Yii::app()->user->profileId;
+            $leave->created_at = date("Y-m-d H:i:s");
+            $leave->updated_at = date("Y-m-d H:i:s");
             $leave->save();
             $response['status']['code'] = 200;
             $response['status']['msg'] = "Success";

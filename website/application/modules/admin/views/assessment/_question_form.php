@@ -10,10 +10,11 @@
                     <div class="block">
                         <h2 class="section"><?php echo ($question->id) ? "Edit" : "Add"; ?> Question</h2>
 
-                        <?php echo form_open('', array('class' => 'validate_form form-inline')); ?>
+                        <?php echo form_open('', array('class' => 'validate_form form-inline', 'id' => 'assessments_q')); ?>
 
-                        <?php if (!empty($question->id)) { ?>
+                        <?php if ( $edit && !empty($question->id)) { ?>
                             <input type="hidden" id="question_id" name="question_id" value="<?php echo $question->id; ?>">
+                            <input type="hidden" id="assesment_id" name="assesment_id" value="<?php echo $question->assesment_id; ?>">
                         <?php } ?>
 
                         <fieldset class="label_side top">
@@ -39,30 +40,23 @@
                                 <div class="required_tag"></div>
                             </div>
                         </fieldset>
+                            
+                        <div id="answers_form_container">
+                            <?php for ($i = 0; $i <= 3; $i++) { ?>
 
-                        <div class="button_bar clearfix">
-                            <button id="add_answers" class="green" type="button">
-                                <span>Add Answers</span>
-                            </button>
+                                <fieldset class="label_side top">
+                                    <label for="required_field">Answer <?php echo $i + 1; ?></label>
+                                    <div>
+                                        <textarea class="ckeditor" id="answer_<?php echo $i; ?>" name="answer[]"><?php echo ($edit) ? $answers[$i]->answer : ''; ?></textarea>
+                                    </div>
+                                    <div>
+                                        <input name="correct[]" id="correct-<?php echo $i; ?>" value="<?php echo ( $edit && ($answers[$i]->correct == 1) ) ? $i : '0'; ?>" type="checkbox" class="form-control correct-chk" minlength="1" <?php echo ( $edit && ($answers[$i]->correct == 1) ) ? 'checked="checked"' : ''; ?>>
+                                    </div>
+                                </fieldset>
 
-                            <fieldset id="answers_wrapper" class="label_side top" style="display: none;">
-                                <label for="required_field">Answer Type</label>
-                                <div>
-                                    <?php
-                                    $ans_type_selected = '0';
-                                    if (count($answers) > 2) {
-                                        $ans_type_selected = '1';
-                                    }
-                                    echo form_dropdown('ans_type', $ans_type, $ans_type_selected, 'id="ans_type"');
-                                    ?>
-                                    <div class="required_tag"></div>
-                                </div>
-                            </fieldset>
-
+                            <?php } ?>
                         </div>
-
-                        <div id="answers_form_container"></div>
-
+                            
                         <div class="button_bar clearfix">
                             <button class="green" type="submit">
                                 <span>Submit</span>
@@ -78,40 +72,4 @@
     </div>
 </div>
 
-<div id="ans_enum" style="display: none;">
-
-    <?php for ($i = 0; $i <= 1; $i++) { ?>
-
-        <fieldset class="label_side top row">
-            <label for="required_field">Answer <?php echo $i + 1; ?></label>
-            <div>
-                <input name="answer[]" value="<?php echo ($edit) ? $answers[$i]->answer : ''; ?>" type="text" class="required form-control " minlength="1">
-            </div>
-            <div>
-                <input name="correct[]" value="<?php echo ( $edit && ($answers[$i]->correct == 1) ) ? '1' : '0'; ?>" type="checkbox" class="form-control correct-chk" minlength="1" <?php echo ( $edit && ($answers[$i]->correct == 1) ) ? 'checked="checked"' : ''; ?>>
-            </div>
-        </fieldset>
-
-    <?php } ?>
-
-</div>
-
-<div id="ans_mcq" style="display: none;">
-
-    <?php for ($i = 0; $i <= 3; $i++) { ?>
-
-        <fieldset class="label_side top">
-            <label for="required_field">Answer <?php echo $i + 1; ?></label>
-            <div>
-                <textarea class="ckeditor" id="answer" name="answer[]"><?php echo ($edit) ? $answers[$i]->answer : ''; ?></textarea>
-            </div>
-            <div>
-                <input name="correct[]" value="<?php echo ( $edit && ($answers[$i]->correct == 1) ) ? '1' : '0'; ?>" type="checkbox" class="form-control correct-chk" minlength="1" <?php echo ( $edit && ($answers[$i]->correct == 1) ) ? 'checked="checked"' : ''; ?>>
-            </div>
-        </fieldset>
-
-    <?php } ?>
-
-</div>
-
-<script src="<?= base_url('scripts/custom/customAssesment.js'); ?>"></script>
+<script src="<?php echo base_url('scripts/custom/customAssesment.js'); ?>"></script>

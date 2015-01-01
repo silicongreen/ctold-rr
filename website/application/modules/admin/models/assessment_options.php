@@ -24,7 +24,6 @@ class Assessment_options extends DataMapper {
             'rules' => array('number'),
         ),
     );
-    
     private $ar_fields = array(
         'id',
         'question_id',
@@ -41,7 +40,7 @@ class Assessment_options extends DataMapper {
     }
 
     public function get_assessment_option_by_id($id) {
-        
+
         $this->db->select('*');
         $this->db->from("assessment_option");
         $this->db->where("assessment_option.id", $id);
@@ -49,11 +48,23 @@ class Assessment_options extends DataMapper {
     }
 
     public function get_assessment_option_by_q_id($q_id) {
-        
+
         $this->db->select('*');
         $this->db->from("assessment_option");
         $this->db->where("assessment_option.question_id", $q_id);
         return $this->db->get()->result();
+    }
+
+    public function del_assessment_option_by_q_id($q_id) {
+
+        $this->db->delete('assessment_option', array('question_id' => $q_id));
+        if ($this->db->_error_message()) {
+            return false;
+        } else if (!$this->db->affected_rows()) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     public function get_attributes() {

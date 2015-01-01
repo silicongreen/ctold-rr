@@ -17,10 +17,12 @@ class EventController extends Controller {
      * This method is used by the 'accessControl' filter.
      * @return array access control rules
      */
-    public function accessRules() {
+     public function accessRules() {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'acknowledge','meetingrequest','meetingstatus','getstudentparent','addmeetingrequest','addmeetingparent','getteacherparent'),
+                'actions' => array('index', 'acknowledge','meetingrequest','meetingstatus',
+                    'getstudentparent','addmeetingrequest','addmeetingparent','getteacherparent',
+                    'addleaveteacher','leavetype'),
                 'users' => array('@'),
             ),
             array('deny', // deny all users
@@ -28,6 +30,70 @@ class EventController extends Controller {
             ),
         );
     }
+    
+    public function actionLeaveType()
+    {
+        $user_secret = Yii::app()->request->getPost('user_secret');
+       
+        if(Yii::app()->user->user_secret === $user_secret)
+        {
+           
+            $leave = new EmployeeLeaveTypes();
+            $leaveobj = $leave->findAll("school_id=".Yii::app()->user->schoolId." AND status=1");
+            
+            $leaveType = array();
+            $i = 0;
+            if($leaveobj)
+            foreach($leaveobj as $value)
+            {
+                $leaveType[$i]['type'] = $value->name;
+                $leaveType[$i]['id'] = $value->id;
+                $i++;
+            } 
+            $response['data']['type'] = $leaveType;
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "Success";
+        } 
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    } 
+    
+    public function actionAddLeaveTeacher()
+    {
+        $user_secret = Yii::app()->request->getPost('user_secret');
+        $reason = Yii::app()->request->getPost('reason');
+        $start_date = Yii::app()->request->getPost('start_date');
+        $end_date = Yii::app()->request->getPost('end_date');
+        $employee_leave_types_id = Yii::app()->request->getPost('employee_leave_types_id');
+        if(Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher 
+         && $reason && $start_date && $end_date && $employee_leave_types_id)
+        {
+           
+            $leave = new ApplyLeaves();
+            $leave->school_id = Yii::app()->user->schoolId;
+            $leave->reason = $reason;
+            $leave->start_date = $start_date;
+            $leave->end_date = $end_date;
+            $leave->is_half_day = 0;
+            $leave->employee_leave_types_id = $employee_leave_types_id;
+            $leave->employee_id = Yii::app()->user->profileId;
+            $leave->save();
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "Success";
+        } 
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    } 
     
     public function actionAddMeetingParent()
     {

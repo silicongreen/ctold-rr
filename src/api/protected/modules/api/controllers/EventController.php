@@ -17,12 +17,12 @@ class EventController extends Controller {
      * This method is used by the 'accessControl' filter.
      * @return array access control rules
      */
-     public function accessRules() {
+    public function accessRules() {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
                 'actions' => array('index', 'acknowledge','meetingrequest','meetingstatus',
                     'getstudentparent','addmeetingrequest','addmeetingparent','getteacherparent',
-                    'addleaveteacher','leavetype','teacherleaves'),
+                    'addleaveteacher','leavetype','teacherleaves','studentleaves'),
                 'users' => array('@'),
             ),
             array('deny', // deny all users
@@ -30,6 +30,29 @@ class EventController extends Controller {
             ),
         );
     }
+    
+    public function actionStudentLeaves()
+    {
+        $user_secret = Yii::app()->request->getPost('user_secret');
+       
+        if(Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher )
+        {
+           
+            $leave = new ApplyLeaveStudents();
+            $leaveobj = $leave->getStudentLeave();      
+            $response['data']['today'] = date("Y-m-d"); 
+            $response['data']['leaves'] = $leaveobj;
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "Success";
+        } 
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end(); 
+    } 
     
     public function actionTeacherLeaves()
     {
@@ -52,7 +75,8 @@ class EventController extends Controller {
                 $leave[$i]['status'] = $value->approved;
                 $leave[$i]['created_date'] = date("Y-m-d",  strtotime($value->created_at));
                 $i++;
-            } 
+            }
+            $response['data']['today'] = date("Y-m-d"); 
             $response['data']['leaves'] = $leave;
             $response['status']['code'] = 200;
             $response['status']['msg'] = "Success";

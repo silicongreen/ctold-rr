@@ -134,8 +134,12 @@ class ApplyLeaves extends CActiveRecord
         
         public function getTeacherLeave($employee_id) 
         {
+                $today = date("Y-m-d"); 
                 $criteria = new CDbCriteria();
                 $criteria->compare('employee_id', $employee_id);
+                
+                $criteria->addCondition('date(t.start_date)>="'.$today.'"');
+                $criteria->order = 't.created_at DESC';
                 $criteria->with = array(
                        'leavetype' => array(
                            'select' => 'leavetype.name',

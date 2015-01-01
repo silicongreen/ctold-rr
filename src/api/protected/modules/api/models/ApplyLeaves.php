@@ -54,6 +54,9 @@ class ApplyLeaves extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+                    'leavetype' => array(self::BELONGS_TO, 'EmployeeLeaveTypes', 'employee_leave_types_id',
+                                'joinType' => 'INNER JOIN'
+                        )
 		);
 	}
 
@@ -128,4 +131,17 @@ class ApplyLeaves extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        
+        public function getTeacherLeave($employee_id) 
+        {
+                $criteria = new CDbCriteria();
+                $criteria->compare('employee_id', $employee_id);
+                $criteria->with = array(
+                       'leavetype' => array(
+                           'select' => 'leavetype.name',
+                           'joinType' => "INNER JOIN"
+                           )
+                 );
+                 return $this->findAll($criteria);
+        }
 }

@@ -94,7 +94,8 @@ $(document).ready(function(){
     if ( $(".post").length != 0 )
     {
         $(".post").find('img').addClass("toolbar");
-         $(".post").find('img').css("cursor","pointer");
+        $(".post").find('img').css("cursor","pointer");
+        $(".ads-image").removeClass("toolbar");  
     }
     
     if ( $(".featured").length === 0 )

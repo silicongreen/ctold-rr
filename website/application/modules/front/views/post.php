@@ -637,6 +637,8 @@
             $(".check_login").addClass("before-login-user");
             $(".check_login").attr("href","#");
             $(".check_login").removeClass("candlepopup");
+            
+            $(".check_login").parent().attr("href","#");
         <?php endif;  ?> 
        $(".ads-image").removeClass("toolbar");  
        $(document).on("mouseover",".ads-image",function(){

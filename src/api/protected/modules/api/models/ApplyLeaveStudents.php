@@ -45,6 +45,9 @@ class ApplyLeaveStudents extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+                    'students' => array(self::BELONGS_TO, 'Students', 'student_id',
+                                'joinType' => 'INNER JOIN'
+                        )
 		);
 	}
 
@@ -147,6 +150,52 @@ class ApplyLeaveStudents extends CActiveRecord
                 $return_array['leave_id'][$i] = $value->id;
                 $return_array['start_date'][$i] = $value->start_date;
                 $return_array['end_date'][$i] = $value->end_date;
+                $i++;
+            }
+            return $return_array;
+        }
+        public function getStudentLeave() 
+        {
+            $today = date("Y-m-d"); 
+            $criteria = new CDbCriteria;
+            $criteria->select = "t.id,t.student_id,t.approved,t.reason,t.start_date,t.end_date,t.created_at";
+            $criteria->addCondition("DATE(t.start_date) >= '" . $today . "'");
+            
+            $criteria->with = array(
+                       'students' => array(
+                           'select' => 'students.first_name,students.middle_name,students.last_name',
+                           'joinType' => "INNER JOIN",
+                           'with' => array(
+                                    "batchDetails" => array(
+                                        "select" => "batchDetails.name",
+                                        'joinType' => "INNER JOIN",
+                                        'with' => array(
+                                            "courseDetails" => array(
+                                                "select" => "courseDetails.course_name",
+                                                'joinType' => "INNER JOIN",
+                                            )
+                                        )
+                                    )
+                                )
+                           )
+                 );
+            
+            $data = $this->findAll($criteria);
+            $return_array = array();
+            $i = 0;
+            foreach ($data as $value) 
+            {
+                $middle_name = (!empty($value["students"]->middle_name)) ? $value["students"]->middle_name.' ' : '';
+                $students_name = rtrim($value["students"]->first_name.' '.$middle_name.$value["students"]->last_name);
+                $return_array[$i]['student_id'] = $value->student_id;
+                $return_array[$i]['students_name'] = $students_name;
+                $return_array[$i]['batch'] = $value['students']['batchDetails']['courseDetails']->course_name." ".$value['students']['batchDetails']->name;
+                $return_array[$i]['approved'] = $value->approved;
+                $return_array[$i]['reason'] = $value->reason;
+                $return_array[$i]['leave_id'] = $value->id;
+                $return_array[$i]['start_date'] = $value->start_date;
+                $return_array[$i]['end_date'] = $value->end_date;
+                $return_array[$i]['created_at'] = date("Y-m-d",  strtotime($value->created_at));
                 $i++;
             }
             return $return_array;

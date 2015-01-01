@@ -638,7 +638,7 @@
             $(".check_login").attr("href","#");
             $(".check_login").removeClass("candlepopup");
         <?php endif;  ?> 
-            
+       $(".ads-image").removeClass("toolbar");  
        $(document).on("mouseover",".ads-image",function(){
            var sourcesrc = $(this).attr("src");
            

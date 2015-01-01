@@ -638,7 +638,14 @@
             $(".check_login").attr("href","#");
             $(".check_login").removeClass("candlepopup");
             
-            $(".check_login").parent().attr("href","#");
+            if($(".check_login").attr("id").length>0)
+            {
+                $(".check_login").parent().attr("href","#");
+                $(".check_login").parent().addClass("before-login-user"); 
+                $(".check_login").parent().attr("data",$(".check_login").attr("id"));
+            }    
+            
+            
         <?php endif;  ?> 
        $(".ads-image").removeClass("toolbar");  
        $(document).on("mouseover",".ads-image",function(){

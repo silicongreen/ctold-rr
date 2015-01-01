@@ -151,7 +151,7 @@ class TimetableEntries extends CActiveRecord {
         {
             $criteria->addCondition("classTimingDetails.start_time>'".$time."'");
         }
-        
+        $criteria->compare('t.employee_id', $emplyee_id);
         $criteria->addCondition("timeTableDetails.start_date <= '" . $date . "' ");
         $criteria->addCondition("timeTableDetails.end_date >= '" . $date . "' ");
         //$criteria->addCondition("timeTableDetails.end_date >= '" . $date . "' ");
@@ -176,7 +176,7 @@ class TimetableEntries extends CActiveRecord {
             }
             else
             {
-                $next_day = $next_day+1;
+                $next_day = $cur_day_key+1;
             } 
             $call++;
             $this->getNextTeacher($school_id,$emplyee_id,$next_day,$call);
@@ -200,6 +200,7 @@ class TimetableEntries extends CActiveRecord {
         $_data['class_end_time'] = Settings::formatTime($row['classTimingDetails']->end_time);
         $_data['weekday_id'] = $row->weekday_id;
         $_data['weekday_text'] = Settings::$ar_weekdays[$row->weekday_id];
+        return $_data;
     }        
     
     public function getTimeTablesTeacher($school_id,$date,$emplyee_id,$day_id = null)
@@ -216,10 +217,12 @@ class TimetableEntries extends CActiveRecord {
             $cur_day_key = $day_id;
         }
         $criteria->compare('t.weekday_id', $cur_day_key);
+        $criteria->compare('t.employee_id', $emplyee_id);
+        
         $criteria->addCondition("timeTableDetails.start_date <= '" . $date . "' ");
         $criteria->addCondition("timeTableDetails.end_date >= '" . $date . "' ");
         $criteria->order = 't.weekday_id, t.class_timing_id ASC';
-
+       
         $criteria->with=array('classTimingDetails',
                                'batchDetails'=>array("with"=>"courseDetails"), 
                                 'subjectDetails', 

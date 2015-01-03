@@ -3266,7 +3266,7 @@ class home extends MX_Controller {
         header("Location: ".$url);
         exit;
     }
-    
+
     public function school_feed_for_paid() {
         
         $ar_js = array();
@@ -3305,6 +3305,5 @@ class home extends MX_Controller {
         );
         
         $this->extra_params = $ar_params;
-        
     }
 }

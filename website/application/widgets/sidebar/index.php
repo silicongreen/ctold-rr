@@ -69,7 +69,10 @@ class sidebar extends widget
                     "User Submitted School"    => array("userschool"),
                     "Arrange School"    => array("school","sort_school")
                 ),
-            
+            "Assessment" => 
+                array(
+                    "Assessment"    => array("assessment"),
+                ),
 	    "Ads Management"=>array(
                     "Ads"=>array("ad"),
                     "Ad to Category"=>array("ad","adassignsection"),

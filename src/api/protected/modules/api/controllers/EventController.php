@@ -39,7 +39,7 @@ class EventController extends Controller {
         {
            
             $leave = new ApplyLeaveStudents();
-            $leaveobj = $leave->getStudentLeave();      
+            $leaveobj = $leave->getStudentLeave(Yii::app()->user->profileId);      
             $response['data']['today'] = date("Y-m-d"); 
             $response['data']['leaves'] = $leaveobj;
             $response['status']['code'] = 200;

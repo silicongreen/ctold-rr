@@ -133,6 +133,41 @@ class EmployeesSubjects extends CActiveRecord
             return $obj_employee;
         }
         
+        public function getBatchId($employee_id)
+        {
+            $criteria = new CDbCriteria;
+            $criteria->select = 't.*';
+            $criteria->compare("t.employee_id", $employee_id);
+           
+            $criteria->with = array(
+                'subject' => array(
+                    'select' => '',
+                    'joinType' => "INNER JOIN",
+                    'with' => array(
+                        "Subjectbatch" => array(
+                            "select" => "Subjectbatch.id",
+                            'joinType' => "INNER JOIN"
+                        )
+                    )
+                )
+            );
+           
+            $criteria->group = "Subjectbatch.id";
+
+            
+            $obj_subject = $this->findAll($criteria);
+        
+            $subject = array();
+            $i = 0; 
+            foreach ($obj_subject as $value)
+            {
+               $subject[$i] = $value['subject']['Subjectbatch']->id;
+               $i++; 
+            }
+
+            return $subject;
+        }
+        
         public function getBatch($employee_id)
         {
             $criteria = new CDbCriteria;

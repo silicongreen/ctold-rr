@@ -9,6 +9,10 @@
         <input type="hidden" id="modelwidth" value="80%" >
 
         <input type="hidden" id="modelheight" value="98%" >
+        
+        <input type="hidden" id="model2width2" value="30%" >
+
+        <input type="hidden" id="modelheight2" value="25%" >
 
         <div id="main_container" class="main_container container_16 clearfix">
 

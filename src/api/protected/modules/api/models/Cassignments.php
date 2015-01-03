@@ -102,7 +102,7 @@ class Cassignments extends CActiveRecord
                                 $q_image = $qimages[0];
                             }    
                              
-                            
+                            $response_array['question'][$i]['id'] = $questions->id;
                             $response_array['question'][$i]['question'] = Settings::substr_with_unicode($questions->question);
                             $response_array['question'][$i]['image'] = $q_image;
                             if($webview)

@@ -138,7 +138,7 @@ class ApplyLeaves extends CActiveRecord
                 $criteria = new CDbCriteria();
                 $criteria->compare('employee_id', $employee_id);
                 
-                $criteria->addCondition('date(t.start_date)>="'.$today.'"');
+                //$criteria->addCondition('date(t.start_date)>="'.$today.'"');
                 $criteria->order = 't.created_at DESC';
                 $criteria->with = array(
                        'leavetype' => array(

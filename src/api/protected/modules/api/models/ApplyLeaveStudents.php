@@ -156,7 +156,7 @@ class ApplyLeaveStudents extends CActiveRecord
         }
         public function getStudentLeave() 
         {
-            $today = date("Y-m-d"); 
+            $today = date("Y-m-d",  strtotime("-1 Month")); 
             $criteria = new CDbCriteria;
             $criteria->select = "t.id,t.student_id,t.approved,t.reason,t.start_date,t.end_date,t.created_at";
             $criteria->addCondition("DATE(t.start_date) >= '" . $today . "'");

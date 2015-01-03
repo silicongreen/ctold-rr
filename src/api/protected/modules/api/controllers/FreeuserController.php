@@ -28,7 +28,8 @@ class FreeuserController extends Controller
                     "getuserinfo", "goodread", "readlater", "goodreadall", "goodreadfolder", "removegoodread"
                     , "schoolsearch", "school", "createschool", "schoolpage", "schoolactivity", "candle"
                     , "garbagecollector","getschoolteacherbylinepost","createcachesinglenews","addwow", 
-                    'set_preference','addcomments','getcomments', 'get_preference','addgcm','getallgcm','getschoolinfo','joinschool','candleschool','leaveschool'),
+                    'set_preference','addcomments','getcomments', 'get_preference','addgcm','getallgcm',
+                    'getschoolinfo','joinschool','candleschool','leaveschool'),
                 'users' => array('*'),
             ),
             array('deny', // deny all users
@@ -142,6 +143,7 @@ class FreeuserController extends Controller
     public function actionGetAssesment()
     {
         $assesment_id = Yii::app()->request->getPost('assesment_id');
+        $webview = Yii::app()->request->getPost('webview');
         if (!$assesment_id )
         {
             $response['status']['code'] = 400;
@@ -149,9 +151,18 @@ class FreeuserController extends Controller
         }
         else
         {
+           
+            if($webview==1)
+            {
+                $webview = TRUE;
+            }
+            else
+            {
+                $webview = FALSE;
+            }    
             
             $assesmentObj = new Cassignments();
-            $response['data']['assesment'] = $assesmentObj->getAssessment($assesment_id);
+            $response['data']['assesment'] = $assesmentObj->getAssessment($assesment_id,$webview);
             $response['status']['code'] = 200;
             $response['status']['msg'] = "success";
                 

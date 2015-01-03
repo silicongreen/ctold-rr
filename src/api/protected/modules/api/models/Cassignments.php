@@ -38,7 +38,7 @@ class Cassignments extends CActiveRecord
         
                
         
-        public function getAssessment($id)
+        public function getAssessment($id,$webview=false)
         {   
            
             $criteria = new CDbCriteria();
@@ -46,7 +46,7 @@ class Cassignments extends CActiveRecord
             $criteria->compare('t.id', $id); 
             $criteria->with = array(
                 'question' => array(
-                    'select' => 'question.id,question.mark,question.style,question.question',
+                    'select' => 'question.id,question.mark,question.style,question.question,question.created_date',
                     'with' => array(
                         "option" => array(
                             "select" => "option.answer,option.answer_image,option.correct"
@@ -95,7 +95,20 @@ class Cassignments extends CActiveRecord
                     {
                         if(isset($questions['option']) && count($questions['option']>1))
                         {
-                            $response_array['question'][$i]['question'] = $questions->question;
+                            $q_image = "";
+                            $qimages = Settings::content_images($questions->question);
+                            if(count($qimages)>0)
+                            {
+                                $q_image = $qimages[0];
+                            }    
+                             
+                            
+                            $response_array['question'][$i]['question'] = Settings::substr_with_unicode($questions->question);
+                            $response_array['question'][$i]['image'] = $q_image;
+                            if($webview)
+                            {
+                                $response_array['question'][$i]['question_webview'] = $questions->question;
+                            }
                             $response_array['question'][$i]['mark'] = $questions->mark;
                             $response_array['question'][$i]['style'] = $questions->style;
                             $response_array['question'][$i]['created_date'] = $questions->created_date;
@@ -105,8 +118,25 @@ class Cassignments extends CActiveRecord
                             $j = 0;
                             foreach($questions['option'] as $options)
                             {
-                               $response_array['question'][$i]['option'][$j]['answer'] = $options->answer;
-                               $response_array['question'][$i]['option'][$j]['answer_image'] = $options->answer_image;
+                               $a_image = "";
+                               $images = Settings::content_images($options->answer);
+                               if(!$options->answer_image)
+                               {
+                                   if(count($images)>0)
+                                   {
+                                       $a_image = $images[0];
+                                   }    
+                               }  
+                               else if($options->answer_image)
+                               {
+                                   $a_image = $options->answer_image;
+                               }
+                               $response_array['question'][$i]['option'][$j]['answer'] = Settings::substr_with_unicode($options->answer);
+                               $response_array['question'][$i]['option'][$j]['answer_image'] = $a_image;
+                               if($webview)
+                               {
+                                  $response_array['question'][$i]['option'][$j]['answer_webview'] = $options->answer;
+                               }
                                $response_array['question'][$i]['option'][$j]['correct'] = $options->correct;
                                
                                $j++;

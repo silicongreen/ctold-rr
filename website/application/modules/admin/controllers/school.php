@@ -84,7 +84,10 @@ class school extends MX_Controller
         {
             foreach ($this->input->post() as $key => $value)
             {
-                $obj_school->$key = $value;
+                if($value)
+                {
+                    $obj_school->$key = $value;
+                }
             }
         }
 
@@ -114,7 +117,10 @@ class school extends MX_Controller
         {
             foreach ($this->input->post() as $key => $value)
             {
-                $obj_school->$key = $value;
+                if($value)
+                {
+                    $obj_school->$key = $value;
+                }
             }
         }
 

@@ -154,12 +154,15 @@ class ApplyLeaveStudents extends CActiveRecord
             }
             return $return_array;
         }
-        public function getStudentLeave() 
+        public function getStudentLeave($profile_id) 
         {
+            $esubject = new EmployeesSubjects();
+            $batches = $esubject->getBatchId($profile_id);
             $today = date("Y-m-d",  strtotime("-1 Month")); 
             $criteria = new CDbCriteria;
             $criteria->select = "t.id,t.student_id,t.approved,t.reason,t.start_date,t.end_date,t.created_at";
             $criteria->addCondition("DATE(t.start_date) >= '" . $today . "'");
+            $criteria->addInCondition("students.batch_id", $batches);
             
             $criteria->with = array(
                        'students' => array(

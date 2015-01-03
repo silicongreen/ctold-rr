@@ -1317,7 +1317,7 @@ class home extends MX_Controller {
         {
             $i_first_image_text .= '"';
         }   
-        $i_first_image_text .= 'style="width: 48%; float: left; margin-left: 10px; margin-right: 10px; cursor: pointer;" src="' . base_url() . $ar_images[$i_first_image] . '" /></a>';
+        $i_first_image_text .= 'style="width: 48%; float: left; margin-left: 1%; margin-right: 1%; cursor: pointer;" src="' . base_url() . $ar_images[$i_first_image] . '" /></a>';
         
         $i_second_image_text = '<a href="' . base_url() . $ar_ad_images['link'][$i_second_image] . '">';
         $i_second_image_text .= '<img id="'. $ar_ad_images['id'][$i_second_image] .'" class="ads ads-image ' . $ar_ad_images['class'][$i_second_image] . ' ';
@@ -1329,7 +1329,7 @@ class home extends MX_Controller {
         {
             $i_second_image_text .= '"';
         }   
-        $i_second_image_text .= 'style="width: 48%; float: left; margin-left: 10px; margin-right: 10px; cursor: pointer;" src="' . base_url() . $ar_images[$i_second_image] . '" /></a>';
+        $i_second_image_text .= 'style="width: 48%; float: left; margin-left: 1%; margin-right: 1%; cursor: pointer;" src="' . base_url() . $ar_images[$i_second_image] . '" /></a>';
         
         $s_ad_image = "<p>" . $i_first_image_text . "" . $i_second_image_text . "</p>";
         

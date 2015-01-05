@@ -56,7 +56,7 @@ class Cmark extends CActiveRecord
             $i = 0;
             foreach ($data as $value)
             {
-                $response_array[$i]['id'] = $value->id;
+                $response_array[$i]['id'] = $value['assessment']->id;
                 $response_array[$i]['mark'] = $value->mark;
                 $response_array[$i]['created_date'] = $value->created_date;
                 $response_array[$i]['title'] = $value['assessment']->title;

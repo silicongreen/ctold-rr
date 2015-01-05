@@ -70,8 +70,8 @@ class EventController extends Controller {
             foreach($leaveobj as $value)
             {
                 $leave[$i]['leave_type'] = $value['leavetype']->name;
-                $leave[$i]['start_date'] = $value->start_date;
-                $leave[$i]['end_date'] = $value->end_date;
+                $leave[$i]['leave_start_date'] = $value->start_date;
+                $leave[$i]['leave_end_date'] = $value->end_date;
                 if(!$value->approving_manager)
                 {
                    $leave[$i]['status'] = 2; 
@@ -84,7 +84,7 @@ class EventController extends Controller {
                 {
                     $leave[$i]['status'] = 0; 
                 }
-                $leave[$i]['created_date'] = date("Y-m-d",  strtotime($value->created_at));
+                $leave[$i]['created_at'] = date("Y-m-d",  strtotime($value->created_at));
                 $i++;
             }
             $response['data']['today'] = date("Y-m-d"); 

@@ -72,17 +72,17 @@ class EventController extends Controller {
                 $leave[$i]['leave_type'] = $value['leavetype']->name;
                 $leave[$i]['start_date'] = $value->start_date;
                 $leave[$i]['end_date'] = $value->end_date;
-                if($value->approved===0)
+                if(!$value->approving_manager)
                 {
-                   $leave[$i]['status'] = 0; 
+                   $leave[$i]['status'] = 2; 
                 }   
-                else if($value->approved===1)
+                else if($value->approved==1)
                 {
                     $leave[$i]['status'] = 1; 
                 }
                 else
                 {
-                    $leave[$i]['status'] = 2; 
+                    $leave[$i]['status'] = 0; 
                 }
                 $leave[$i]['created_date'] = date("Y-m-d",  strtotime($value->created_at));
                 $i++;

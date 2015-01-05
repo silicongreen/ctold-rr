@@ -71,7 +71,7 @@
         <?php //$j = -1; ?> 
 
         <ul style="position: relative; width:100%; " class="grid effect-6 posts-<?php echo $current_page; ?>" id="grid">
-            <?php $is_breaking_found = false; $count_show = 6; ?>
+            <?php $is_breaking_found = false; $count_show = 20; ?>
             <?php $found_slider = 0; ?>
             <?php $ar_slider_amount = array(); ?>
             <?php $i = 0; $ka = 0; if ($obj_post_news) foreach ($obj_post_news as $news) :?>
@@ -145,13 +145,6 @@
                             <?php elseif ($has_3rd_column && count($ar_3rd_column_extra_data) > 0 && $ar_extra_config['type'] == "list"): ?>
                                 <li class="post shown col-md-6 ">
                                     <?php $widget->run('thirdcolumninnerlist', $ar_3rd_column_extra_data, $extra_column_name, $ar_extra_config); ?> 
-                                </li>
-                            <?php elseif (free_user_logged_in()&& get_free_user_session('paid_id')): ?>
-                                <li class="post shown col-md-6 ">
-                                    <div class="champs21_feed_title f2">My School</div>
-                                    <div id='mycustomscroll' class='flexcroll'>
-                                    <?php $widget->run('champs21plusreminder'); ?> 
-                                    </div>
                                 </li>
                             <?php endif; ?> 
                         <?php endif; ?>

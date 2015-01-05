@@ -243,6 +243,7 @@ class CalenderController extends Controller {
                      $status = 1;
                  }
                  $updateleave->approved = $status;
+                 $updateleave->approving_teacher = Yii::app()->user->profileId;
                  
                  $updateleave->save(false);
                  $response['status']['code'] = 200;

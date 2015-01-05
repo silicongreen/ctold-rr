@@ -163,7 +163,7 @@ class ApplyLeaveStudents extends CActiveRecord
             $criteria->select = "t.id,t.student_id,t.approved,t.reason,t.start_date,t.end_date,t.created_at";
             $criteria->addCondition("DATE(t.start_date) >= '" . $today . "'");
             $criteria->addInCondition("students.batch_id", $batches);
-            $criteria->addCondition("t.approved IS NULL");
+            $criteria->addCondition("t.approving_teacher IS NULL");
             
             $criteria->with = array(
                        'students' => array(

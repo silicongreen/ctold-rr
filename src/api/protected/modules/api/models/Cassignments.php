@@ -49,7 +49,7 @@ class Cassignments extends CActiveRecord
                     'select' => 'question.id,question.mark,question.style,question.question,question.created_date',
                     'with' => array(
                         "option" => array(
-                            "select" => "option.answer,option.answer_image,option.correct"
+                            "select" => "option.id,option.answer,option.answer_image,option.correct"
                         )
                     )
                 )
@@ -131,6 +131,7 @@ class Cassignments extends CActiveRecord
                                {
                                    $a_image = $options->answer_image;
                                }
+                               $response_array['question'][$i]['option'][$j]['id'] = $options->id;
                                $response_array['question'][$i]['option'][$j]['answer'] = Settings::substr_with_unicode($options->answer);
                                $response_array['question'][$i]['option'][$j]['answer_image'] = $a_image;
                                if($webview)

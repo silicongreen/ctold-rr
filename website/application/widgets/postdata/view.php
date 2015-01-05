@@ -148,6 +148,7 @@
                                 </li>
                             <?php elseif (free_user_logged_in()&& get_free_user_session('paid_id')): ?>
                                 <li class="post shown col-md-6 ">
+                                    <div class="champs21_feed_title f2">My School</div>
                                     <div id='mycustomscroll' class='flexcroll'>
                                     <?php $widget->run('champs21plusreminder'); ?> 
                                     </div>
@@ -438,6 +439,17 @@ position: relative;
 color: black;
 padding: 1px;
 }
+.champs21_feed_title {
+            background-color: #DC3434;
+            color: #fff;
+            float: left;
+            font-size: 25px;
+            font-weight: bold;
+            height: 47px;
+            padding: 10px 0 10px 20px;
+            text-align: left;
+            width: 100%;
+          }
         </style>
         
         <?php //if ( $layout_type == 2 ) :  ?>

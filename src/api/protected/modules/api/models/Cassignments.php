@@ -46,7 +46,7 @@ class Cassignments extends CActiveRecord
             $criteria->compare('t.id', $id); 
             $criteria->with = array(
                 'question' => array(
-                    'select' => 'question.id,question.mark,question.style,question.question,question.created_date',
+                    'select' => 'question.id,question.explanation,question.mark,question.style,question.question,question.created_date',
                     'with' => array(
                         "option" => array(
                             "select" => "option.id,option.answer,option.answer_image,option.correct"
@@ -104,9 +104,11 @@ class Cassignments extends CActiveRecord
                              
                             $response_array['question'][$i]['id'] = $questions->id;
                             $response_array['question'][$i]['question'] = Settings::substr_with_unicode($questions->question);
+                            $response_array['question'][$i]['explanation'] = Settings::substr_with_unicode($questions->explanation);
                             $response_array['question'][$i]['image'] = $q_image;
                             if($webview)
                             {
+                                $response_array['question'][$i]['explanation_webview'] = $questions->explanation;
                                 $response_array['question'][$i]['question_webview'] = $questions->question;
                             }
                             $response_array['question'][$i]['mark'] = $questions->mark;

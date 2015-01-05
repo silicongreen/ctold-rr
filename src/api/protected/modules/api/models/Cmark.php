@@ -41,7 +41,7 @@ class Cmark extends CActiveRecord
         $criteria->compare('t.user_id', $user_id);
         $criteria->with = array(
             'assessment' => array(
-                'select' => 'assessment.title,assessment.topic',
+                'select' => 'assessment.id,assessment.title,assessment.topic',
                 'with' =>array('question' => array(
                         'select' => 'question.mark'
                     )
@@ -56,6 +56,7 @@ class Cmark extends CActiveRecord
             $i = 0;
             foreach ($data as $value)
             {
+                $response_array[$i]['id'] = $value->id;
                 $response_array[$i]['mark'] = $value->mark;
                 $response_array[$i]['created_date'] = $value->created_date;
                 $response_array[$i]['title'] = $value['assessment']->title;

@@ -47,6 +47,7 @@ class Cassignments extends CActiveRecord
             $criteria->with = array(
                 'question' => array(
                     'select' => 'question.id,question.explanation,question.mark,question.style,question.question,question.created_date',
+                    'order' => "RAND()",
                     'with' => array(
                         "option" => array(
                             "select" => "option.id,option.answer,option.answer_image,option.correct"

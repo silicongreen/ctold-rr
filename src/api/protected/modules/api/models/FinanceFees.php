@@ -127,8 +127,7 @@ class FinanceFees extends CActiveRecord
             $criteria->select = 't.id, t.is_paid, t.balance';
 
             $criteria->compare("t.student_id", $student_id);
-            $criteria->compare("t.is_paid", 1);
-            $criteria->addCondition("collection.due_date<'".date("Y-m-d")."'", "OR");
+            $criteria->addCondition("(t.is_paid=1 OR collection.due_date<'".date("Y-m-d")."')");
             $criteria->with = array(
                 'collection' => array(
                     'select' => 'collection.name,collection.due_date'

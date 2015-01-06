@@ -2373,7 +2373,17 @@ class FreeuserController extends Controller
             $response['data']['all_categories'] = $all_categoires;
 
             $response['data']['preferred_categories'] = (!empty($user_pref_mod)) ? $user_pref_mod->category_ids : '';
-            $response['status']['code'] = (!empty($user_pref_mod) && !empty($all_categoires) ) ? 200 : (!empty($all_categoires)) ? 202 : 404;
+            $status = 404;
+            if(!empty($user_pref_mod) && !empty($all_categoires))
+            {
+                $status = 200;
+            }
+            else if(!empty($all_categoires))
+            {
+                $status = 202;
+            }
+            
+            $response['status']['code'] = $status;
             $response['status']['msg'] = (!empty($user_pref_mod)) ? "USER_PREFERENCE_FOUND" : "USER_PREFERENCE_NOT_FOUND";
         }
         else

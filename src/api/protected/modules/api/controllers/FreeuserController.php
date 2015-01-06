@@ -431,6 +431,7 @@ class FreeuserController extends Controller
         $can_comment = Yii::app()->request->getPost('can_comment');
         $school_id = Yii::app()->request->getPost('school_id');
         $user_id = Yii::app()->request->getPost('user_id');
+        $mobile_num = Yii::app()->request->getPost('mobile_num');
         $candle_type = Yii::app()->request->getPost('candle_type');
         
         if (!$username || !$headline || !$content || !$category_id || !$school_id || !$user_id)
@@ -448,6 +449,18 @@ class FreeuserController extends Controller
                 $postobj = new Post();
                 $postobj->headline = $headline;
                 $postobj->content = $content;
+                if($mobile_num)
+                {
+                    $postobj->mobile_num = $mobile_num;
+                    $objfreeuser = new Freeusers();
+                    
+                    $freeobj = $objfreeuser->findByPk($user_id);
+                    if(!$freeobj->mobile_no)
+                    {
+                        $freeobj->mobile_no = $mobile_num;
+                        $freeobj->save();
+                    }
+                }
                 $postobj->published_date = date("Y-m-d H:i:s");
                 $postobj->status = 1;
                 if(Settings::$school_candle_publish[$userschool->type]===true)
@@ -551,6 +564,7 @@ class FreeuserController extends Controller
         $username = Yii::app()->request->getPost('username');
         $headline = Yii::app()->request->getPost('headline');
         $content = Yii::app()->request->getPost('content');
+        $mobile_num = Yii::app()->request->getPost('mobile_num');
         $category_id = Yii::app()->request->getPost('category_id');
         if (!$username || !$headline || !$content || !$category_id)
         {
@@ -567,6 +581,19 @@ class FreeuserController extends Controller
             $postobj->type = "Print";
             $postobj->user_type = 2;
             $postobj->language = "en";
+            
+            if($mobile_num)
+            {
+                $postobj->mobile_num = $mobile_num;
+                $objfreeuser = new Freeusers();
+                $freeobj = $objfreeuser->findByPk($user_id);
+                if(!$freeobj->mobile_no)
+                {
+                    $freeobj->mobile_no = $mobile_num;
+                    $freeobj->save();
+                }
+            }
+            
             $objbyline = new Bylines();
             $postobj->byline_id = $objbyline->generate_byline_id($username);
 

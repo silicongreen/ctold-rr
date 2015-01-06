@@ -199,6 +199,19 @@ class Freeusers extends CActiveRecord {
         }
         return false;
     }
+    public function getFreeuserPaid($paid_id) {
+
+        $criteria = new CDbCriteria;
+        $criteria->compare('paid_id', $paid_id);
+
+        $data = $this->find($criteria);
+       
+        if ($data != NULL)
+        {
+            return $data->id;
+        }
+        return false;
+    }
     
     public function getFreeuser($email) {
 

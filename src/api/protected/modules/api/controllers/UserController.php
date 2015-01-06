@@ -20,7 +20,7 @@ class UserController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('auth','checkauth','updateprofile'),
+                'actions' => array('auth','checkauth','updateprofile','updateprofilepaiduser','createuser'),
                 'users' => array('*'),
             ),
 //            array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -40,6 +40,192 @@ class UserController extends Controller {
     {
         return hash('sha512', $salt . $field);
     }
+    public function actionCreateUser()
+    {
+        
+        $email = Yii::app()->request->getPost('email');
+        $password = Yii::app()->request->getPost('password');
+        $first_name = Yii::app()->request->getPost('first_name');
+        if(Yii::app()->request->getPost('user_type') && $email && !$freeuserObj->getFreeuser($email) && $password && $first_name)
+        {
+            $freeuserObj = new Freeusers();
+            $freeuserObj->salt = md5(uniqid(rand(), true));
+            $freeuserObj->password = $this->encrypt($password, $freeuserObj->salt);
+            $freeuserObj->email = Yii::app()->request->getPost('email');
+            $freeuserObj->user_type = Yii::app()->request->getPost('user_type');
+            
+            if (isset($_FILES['profile_image']['name']) && !empty($_FILES['profile_image']['name']))
+            {
+                $main_dir = Settings::$image_path . 'upload/free_user_profile_images/';
+                $uploads_dir = Settings::$main_path . 'upload/free_user_profile_images/';
+                $tmp_name = $_FILES["profile_image"]["tmp_name"];
+                $name = "file_" . $user_id . "_" . time() . "_" . str_replace(" ", "-", $_FILES["profile_image"]["name"]);
+
+                move_uploaded_file($tmp_name, "$uploads_dir/$name");
+                $freeuserObj->profile_image = $main_dir . $name;
+            }
+            
+            $freeuserObj->first_name = $first_name;
+
+            if (Yii::app()->request->getPost('last_name'))
+                $freeuserObj->last_name = Yii::app()->request->getPost('last_name');
+
+            if (Yii::app()->request->getPost('middle_name'))
+                $freeuserObj->middle_name = Yii::app()->request->getPost('middle_name');
+
+            if (Yii::app()->request->getPost('gender'))
+                $freeuserObj->gender = Yii::app()->request->getPost('gender');
+
+            if (Yii::app()->request->getPost('nick_name'))
+                $freeuserObj->nick_name = Yii::app()->request->getPost('nick_name');
+
+            if (Yii::app()->request->getPost('user_type'))
+                $freeuserObj->user_type = Yii::app()->request->getPost('user_type');
+
+            if (Yii::app()->request->getPost('medium'))
+                $freeuserObj->medium = Yii::app()->request->getPost('medium');
+
+            if (Yii::app()->request->getPost('country'))
+                $freeuserObj->tds_country_id = Yii::app()->request->getPost('country');
+
+            if (Yii::app()->request->getPost('district'))
+                $freeuserObj->district = Yii::app()->request->getPost('district');
+
+            if (Yii::app()->request->getPost('grade_ids'))
+                $freeuserObj->grade_ids = Yii::app()->request->getPost('grade_ids');
+
+            if (Yii::app()->request->getPost('mobile_no'))
+                $freeuserObj->mobile_no = Yii::app()->request->getPost('mobile_no');
+
+            if (Yii::app()->request->getPost('dob'))
+                $freeuserObj->dob = Yii::app()->request->getPost('dob');
+
+            if (Yii::app()->request->getPost('school_name'))
+                $freeuserObj->school_name = Yii::app()->request->getPost('school_name');
+
+            if (Yii::app()->request->getPost('location'))
+                $freeuserObj->location = Yii::app()->request->getPost('location');
+
+            if (Yii::app()->request->getPost('teaching_for'))
+                $freeuserObj->teaching_for = Yii::app()->request->getPost('teaching_for');
+
+            if (Yii::app()->request->getPost('occupation'))
+                $freeuserObj->occupation = Yii::app()->request->getPost('occupation');
+
+            $freeuserObj->save();
+            $folderObj = new UserFolder();
+
+            $folderObj->createGoodReadFolder($freeuserObj->id);
+
+
+            $freeuserObj->save();
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "Successfully Saved";
+        }   
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }    
+        
+        
+        echo CJSON::encode($response);
+        Yii::app()->end();
+       
+    }  
+    public function actionUpdateProfilePaidUser()
+    {
+        $freeuserObj = new Freeusers();
+        $paid_id = Yii::app()->request->getPost('paid_id');
+        $paid_password = Yii::app()->request->getPost('paid_password');
+        $first_name = Yii::app()->request->getPost('first_name');
+        if($paid_id && $user_id = $freeuserObj->getFreeuserPaid($paid_id))
+        {
+            
+            $freeuserObj = $freeuserObj->findByPk($user_id);
+            
+            if ($paid_password)
+            {
+                $freeuserObj->salt = md5(uniqid(rand(), true));
+                $freeuserObj->password = $this->encrypt($paid_password, $freeuserObj->salt);
+            }
+
+            if (isset($_FILES['profile_image']['name']) && !empty($_FILES['profile_image']['name']))
+            {
+                $main_dir = Settings::$image_path . 'upload/free_user_profile_images/';
+                $uploads_dir = Settings::$main_path . 'upload/free_user_profile_images/';
+                $tmp_name = $_FILES["profile_image"]["tmp_name"];
+                $name = "file_" . $user_id . "_" . time() . "_" . str_replace(" ", "-", $_FILES["profile_image"]["name"]);
+
+                move_uploaded_file($tmp_name, "$uploads_dir/$name");
+                $freeuserObj->profile_image = $main_dir . $name;
+            }
+
+            if ($first_name)
+                $freeuserObj->first_name = $first_name;
+
+            if (Yii::app()->request->getPost('last_name'))
+                $freeuserObj->last_name = Yii::app()->request->getPost('last_name');
+
+            if (Yii::app()->request->getPost('middle_name'))
+                $freeuserObj->middle_name = Yii::app()->request->getPost('middle_name');
+
+            if (Yii::app()->request->getPost('gender'))
+                $freeuserObj->gender = Yii::app()->request->getPost('gender');
+
+            if (Yii::app()->request->getPost('nick_name'))
+                $freeuserObj->nick_name = Yii::app()->request->getPost('nick_name');
+
+            if (Yii::app()->request->getPost('user_type'))
+                $freeuserObj->user_type = Yii::app()->request->getPost('user_type');
+
+            if (Yii::app()->request->getPost('medium'))
+                $freeuserObj->medium = Yii::app()->request->getPost('medium');
+
+            if (Yii::app()->request->getPost('country'))
+                $freeuserObj->tds_country_id = Yii::app()->request->getPost('country');
+
+            if (Yii::app()->request->getPost('district'))
+                $freeuserObj->district = Yii::app()->request->getPost('district');
+
+            if (Yii::app()->request->getPost('grade_ids'))
+                $freeuserObj->grade_ids = Yii::app()->request->getPost('grade_ids');
+
+            if (Yii::app()->request->getPost('mobile_no'))
+                $freeuserObj->mobile_no = Yii::app()->request->getPost('mobile_no');
+
+            if (Yii::app()->request->getPost('dob'))
+                $freeuserObj->dob = Yii::app()->request->getPost('dob');
+
+            if (Yii::app()->request->getPost('school_name'))
+                $freeuserObj->school_name = Yii::app()->request->getPost('school_name');
+
+            if (Yii::app()->request->getPost('location'))
+                $freeuserObj->location = Yii::app()->request->getPost('location');
+
+            if (Yii::app()->request->getPost('teaching_for'))
+                $freeuserObj->teaching_for = Yii::app()->request->getPost('teaching_for');
+
+            if (Yii::app()->request->getPost('occupation'))
+                $freeuserObj->occupation = Yii::app()->request->getPost('occupation');
+
+
+            $freeuserObj->save();
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "Successfully Saved";
+        }   
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }    
+        
+        
+        echo CJSON::encode($response);
+        Yii::app()->end();
+       
+    }  
+    
     public function actionUpdateProfile()
     {
         $user_id = Yii::app()->request->getPost('user_id');

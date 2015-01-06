@@ -2115,8 +2115,20 @@ class FreeuserController extends Controller
 
                 if ($password)
                 {
-                    $freeuserObj->salt = md5(uniqid(rand(), true));
-                    $freeuserObj->password = $this->encrypt($password, $freeuserObj->salt);
+                    if(Yii::app()->request->getPost('previous_password') && $this->encrypt(Yii::app()->request->getPost('previous_password'), $freeuserObj->salt)==$freeuserObj->password)
+                    {
+                        $freeuserObj->salt = md5(uniqid(rand(), true));
+                        $freeuserObj->password = $this->encrypt($password, $freeuserObj->salt);
+                    }
+                    else
+                    {
+                        $response['status']['code'] = 402;
+                        $response['status']['msg'] = "Password Missmatch";
+                        echo CJSON::encode($response);
+                        Yii::app()->end();
+                        eit;
+                        
+                    }
                 }
 
                 if (isset($_FILES['profile_image']['name']) && !empty($_FILES['profile_image']['name']))

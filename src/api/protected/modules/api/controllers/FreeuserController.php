@@ -41,7 +41,7 @@ class FreeuserController extends Controller
     {
         $user_id = Yii::app()->request->getPost('user_id');
         $folder_name = Yii::app()->request->getPost('folder_name');
-        if (!$user_id || !$folder_id)
+        if (!$user_id || !$folder_name)
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";

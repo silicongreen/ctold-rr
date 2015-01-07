@@ -194,6 +194,30 @@ class UserFolder extends CActiveRecord
             }
         return $post_array;
     }
+    public function removeFolder($folder_name,$user_id,$folders)
+    {
+       
+        $criteria = new CDbCriteria;
+        $criteria->select = 't.id';
+        $criteria->compare("title", $folder_name);
+        $criteria->compare("user_id", $user_id);
+        foreach($folders as $value)
+        {
+           $criteria->addCondition("title !='".rtrim($value)."'");
+        } 
+        $criteria->limit = 1;
+        $obj_folder = $this->find($criteria);
+        if ($obj_folder)
+        {
+            $obj_folder->deleteByPk($obj_folder->id);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+        
+    }
     function createGoodReadFolder($user_id)
     {
         $folder_array = Settings::$ar_default_folder;

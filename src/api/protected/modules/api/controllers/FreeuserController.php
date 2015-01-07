@@ -29,7 +29,7 @@ class FreeuserController extends Controller
                     , "schoolsearch", "school", "createschool", "schoolpage", "schoolactivity", "candle"
                     , "garbagecollector","getschoolteacherbylinepost","createcachesinglenews","addwow", 
                     'set_preference','addcomments','getcomments', 'get_preference','addgcm','getallgcm',
-                    'getschoolinfo','joinschool','candleschool','leaveschool'),
+                    'getschoolinfo','joinschool','candleschool','leaveschool','folderdelete'),
                 'users' => array('*'),
             ),
             array('deny', // deny all users
@@ -37,7 +37,37 @@ class FreeuserController extends Controller
             ),
         );
     }
-    
+    public function actionFolderDelete()
+    {
+        $user_id = Yii::app()->request->getPost('user_id');
+        $folder_name = Yii::app()->request->getPost('folder_name');
+        if (!$user_id || !$folder_id)
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        else
+        {       
+            $folders = Settings::$ar_default_folder;
+            $fobj = new UserFolder();        
+            $return = $fobj->removeFolder($folder_name, $user_id, $folders);
+            if($return)
+            {
+                $response['status']['code'] = 200;
+                $response['status']['msg'] = "success";
+            }
+            else
+            {
+                $response['status']['code'] = 404;
+                $response['status']['msg'] = "Cant delete this folder";
+            }
+            
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    }        
+
+
     public function actionAssesmentHistory()
     {
         

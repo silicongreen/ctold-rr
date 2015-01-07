@@ -566,7 +566,8 @@ class FreeuserController extends Controller
         $content = Yii::app()->request->getPost('content');
         $mobile_num = Yii::app()->request->getPost('mobile_num');
         $category_id = Yii::app()->request->getPost('category_id');
-        if (!$username || !$headline || !$content || !$category_id)
+        $user_id = Yii::app()->request->getPost('user_id');
+        if (!$username || !$headline || !$content || !$category_id || !$user_id)
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";

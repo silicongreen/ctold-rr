@@ -171,7 +171,7 @@ $config['post-ads'] = array(
                                             "styles/layouts/tdsfront/images/ads/final/resource_centre.png",
                                             "styles/layouts/tdsfront/images/ads/final/schools_search.png",
                                             "styles/layouts/tdsfront/images/ads/final/sports.png",
-                                            "styles/layouts/tdsfront/images/ads/final/travel.png"
+                                            "styles/layouts/tdsfront/images/ads/final/Travel.png"
                                         ),
                                "link" => array("#","entertainment","extra-curricular","games","good-read","literature",
                                    "news-and-articles","nutrition","personality","resource-center","schools","sports","travel"),

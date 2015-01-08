@@ -38,7 +38,7 @@ class Cmark extends CActiveRecord
     {
         $criteria = new CDbCriteria();
         $criteria->select = 'MAX(t.mark) as maxmark';
-        $criteria->compare('t.assessment_id', $user_id);
+        $criteria->compare('t.assessment_id', $id);
         
         $data = $this->find($criteria); 
         if($data)

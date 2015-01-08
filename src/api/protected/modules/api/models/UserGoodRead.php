@@ -114,8 +114,8 @@ class UserGoodRead extends CActiveRecord
         }
         $criteria = new CDbCriteria;
         $criteria->select = 't.id';
-        $criteria->compare("folder_id !", $folder->id);
-        //$criteria->compare("folder_id", $folder_id);
+        //$criteria->compare("folder_id !", $folder_id);
+        $criteria->compare("folder_id", $folder_id);
         $criteria->compare("post_id", $post_id);
         $criteria->limit = 1;
         $obj_goodread = $this->find($criteria);

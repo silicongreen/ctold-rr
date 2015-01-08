@@ -120,7 +120,7 @@ class FreeuserController extends Controller
         $assessment_id = Yii::app()->request->getPost('assessment_id');
         $user_id = Yii::app()->request->getPost('user_id');
         $mark = Yii::app()->request->getPost('mark');
-        if (!$assessment_id || !$mark || !$user_id )
+        if (!$assessment_id || (!$mark && $mark!==0) || !$user_id )
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
@@ -192,6 +192,8 @@ class FreeuserController extends Controller
             }    
             
             $assesmentObj = new Cassignments();
+            $cmark = new Cmark();
+            $response['data']['higistmark'] = $cmark->assessmentHighistMark($assesment_id); 
             $response['data']['assesment'] = $assesmentObj->getAssessment($assesment_id,$webview);
             $response['status']['code'] = 200;
             $response['status']['msg'] = "success";

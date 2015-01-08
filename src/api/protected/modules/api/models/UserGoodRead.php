@@ -104,10 +104,14 @@ class UserGoodRead extends CActiveRecord
         return parent::model($className);
     }
 
-    public function getGoodRead($folder_id, $post_id)
+    public function getGoodRead($folder_id, $post_id, $user_id =0)
     {
-        $folderObj = new UserFolder();
-        $folder = $folderObj->getFolder("unread", $user_id);
+        if(!$folder_id)
+        {
+            $folderObj = new UserFolder();
+            $folder = $folderObj->getFolder("unread", $user_id);
+            $folder_id = $folder->id;
+        }
         $criteria = new CDbCriteria;
         $criteria->select = 't.id';
         $criteria->compare("folder_id !", $folder->id);

@@ -194,8 +194,8 @@ class FreeuserController extends Controller
             $assesmentObj = new Cassignments();
             $cmark = new Cmark();
             $response['data']['higistmark'] = $cmark->assessmentHighistMark($assesment_id); 
-            $response['data']['assesment']['higistmark'] = $response['data']['higistmark'];
             $response['data']['assesment'] = $assesmentObj->getAssessment($assesment_id,$webview);
+            $response['data']['assesment']['higistmark'] = $response['data']['higistmark'];
             $response['status']['code'] = 200;
             $response['status']['msg'] = "success";
                 

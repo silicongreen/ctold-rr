@@ -168,7 +168,7 @@ $config['post-ads'] = array(
                                             "styles/layouts/tdsfront/images/ads/final/news_and_articles.png",
                                             "styles/layouts/tdsfront/images/ads/final/nutrition.png",
                                             "styles/layouts/tdsfront/images/ads/final/personality.png",
-                                            "styles/layouts/tdsfront/images/ads/final/resource_center.png",
+                                            "styles/layouts/tdsfront/images/ads/final/resource_centre.png",
                                             "styles/layouts/tdsfront/images/ads/final/schools_search.png",
                                             "styles/layouts/tdsfront/images/ads/final/sports.png",
                                             "styles/layouts/tdsfront/images/ads/final/travel.png"

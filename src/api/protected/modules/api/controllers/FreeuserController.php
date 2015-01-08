@@ -576,6 +576,16 @@ class FreeuserController extends Controller
                         $objposttype->save();
                     }
                 }
+                else
+                {
+                    for($i = 1; $i<=4; $i++)
+                    {
+                        $objposttype = new PostType();
+                        $objposttype->post_id = $postobj->id;
+                        $objposttype->type_id = $i;
+                        $objposttype->save();
+                    }
+                }    
 
                 $response['status']['code'] = 200;
                 $response['status']['msg'] = "Successfully Saved";
@@ -1634,6 +1644,7 @@ class FreeuserController extends Controller
         $page_number = Yii::app()->request->getPost('page_number');
         $page_size = Yii::app()->request->getPost('page_size');
         $user_id = Yii::app()->request->getPost('user_id');
+        $user_type_set = Yii::app()->request->getPost('user_type');
        
 
         $already_showed = Yii::app()->request->getPost('already_showed');
@@ -1674,6 +1685,11 @@ class FreeuserController extends Controller
         {
             $page_size = 9;
         }
+        
+        if($user_type_set && $user_type_set>0 && $user_type_set<5)
+        {
+            $user_type = $user_type_set;
+        }    
 
 
 
@@ -1870,6 +1886,7 @@ class FreeuserController extends Controller
         $popular_sort = Yii::app()->request->getPost('popular_sort');
         $fetaured = Yii::app()->request->getPost('fetaured');
         $game_type = Yii::app()->request->getPost('game_type');
+        $user_type_set = Yii::app()->request->getPost('user_type');
         $callded_for_cache = Yii::app()->request->getPost('callded_for_cache');
 
         $extra = "";
@@ -1909,6 +1926,11 @@ class FreeuserController extends Controller
             $user_info = $freeuserObj->getUserInfo($user_id);
             $user_type = $user_info['user_type'];
         }
+        
+        if($user_type_set && $user_type_set>0 && $user_type_set<5)
+        {
+            $user_type = $user_type_set;
+        }  
 
         $cache_name = "YII-RESPONSE-CATEGORY-" . $category_id . "-" . $page_number . "-" . $page_size . "-" . $user_type . $extra;
         $this->createAllCache($cache_name);

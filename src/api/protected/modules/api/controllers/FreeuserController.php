@@ -482,17 +482,21 @@ class FreeuserController extends Controller
                 $postobj = new Post();
                 $postobj->headline = $headline;
                 $postobj->content = $content;
+                $objfreeuser = new Freeusers();
+                $freeobj = $objfreeuser->findByPk($user_id);
                 if($mobile_num)
                 {
                     $postobj->mobile_num = $mobile_num;
-                    $objfreeuser = new Freeusers();
                     
-                    $freeobj = $objfreeuser->findByPk($user_id);
                     if(!$freeobj->mobile_no)
                     {
                         $freeobj->mobile_no = $mobile_num;
                         $freeobj->save();
                     }
+                }
+                if($freeobj->profile_image)
+                {
+                    $postobj->author_image_post = $freeobj->profile_image;
                 }
                 $postobj->published_date = date("Y-m-d H:i:s");
                 $postobj->status = 1;
@@ -626,16 +630,21 @@ class FreeuserController extends Controller
             $postobj->user_type = 2;
             $postobj->language = "en";
             
+            $objfreeuser = new Freeusers();
+            $freeobj = $objfreeuser->findByPk($user_id);
             if($mobile_num)
             {
                 $postobj->mobile_num = $mobile_num;
-                $objfreeuser = new Freeusers();
-                $freeobj = $objfreeuser->findByPk($user_id);
+
                 if(!$freeobj->mobile_no)
                 {
                     $freeobj->mobile_no = $mobile_num;
                     $freeobj->save();
                 }
+            }
+            if($freeobj->profile_image)
+            {
+                $postobj->author_image_post = $freeobj->profile_image;
             }
             
             $objbyline = new Bylines();

@@ -22,6 +22,7 @@
 class Cmark extends CActiveRecord
 {
 
+    public $maxmark = 0;
     public function tableName()
     {
         return 'tds_assesment_mark';
@@ -33,7 +34,23 @@ class Cmark extends CActiveRecord
             'assessment' => array(self::BELONGS_TO, 'Cassignments', 'assessment_id')
         );
     }
-
+    public function assessmentHighistMark($id)
+    {
+        $criteria = new CDbCriteria();
+        $criteria->select = 'MAX(t.mark) as maxmark';
+        $criteria->compare('t.assessment_id', $user_id);
+        
+        $data = $this->find($criteria); 
+        if($data)
+        {
+           return  $data->maxmark;
+        }
+        else
+        {
+           return 0;
+        }
+         
+    }
     public function getUserMark($user_id)
     {
         $criteria = new CDbCriteria();
@@ -57,6 +74,7 @@ class Cmark extends CActiveRecord
             foreach ($data as $value)
             {
                 $response_array[$i]['id'] = $value['assessment']->id;
+                $response_array[$i]['highist_mark'] = $this->assessmentHighistMark($value['assessment']->id);
                 $response_array[$i]['mark'] = $value->mark;
                 $response_array[$i]['created_date'] = $value->created_date;
                 $response_array[$i]['title'] = $value['assessment']->title;

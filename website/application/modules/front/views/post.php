@@ -663,11 +663,11 @@
            var ar_src = sourcesrc.split("/");
            var imagename = ar_src[ar_src.length-1];
            var ar_image = imagename.split(".");
-           var hover_image = $("#base_url").val()+"styles/layouts/tdsfront/images/ads/"+ar_image[0]+"-2."+ar_image[1];
+           var hover_image = $("#base_url").val()+"styles/layouts/tdsfront/images/ads/"+ar_image[0]+"_hover."+ar_image[1];
            $(this).attr("src",hover_image);
        });
        $(document).on("mouseout",".ads-image",function(){
-           var sourcesrc = $(this).attr("src").replace("-2","");
+           var sourcesrc = $(this).attr("src").replace("_hover","");
            $(this).attr("src",sourcesrc);
        });
     });

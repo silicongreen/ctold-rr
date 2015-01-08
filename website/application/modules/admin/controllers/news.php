@@ -1590,8 +1590,7 @@ class news extends MX_Controller
             $ar_old_post_cate[$obj_post_cat->category_id."_".$obj_post_cat->post_id] = $obj_post_cat->inner_priority;
         }
         
-        $this->db->where("post_id", $id);
-        $this->db->delete("post_category");
+        
       
 
         
@@ -1637,7 +1636,11 @@ class news extends MX_Controller
         
         
         if ($reletad_category)
+        {
+            $this->db->where("post_id", $id);
+            $this->db->delete("post_category");
             $this->db->insert_batch('post_category', $reletad_category);
+        }
         
         return $publish_date_type;
     }

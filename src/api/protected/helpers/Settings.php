@@ -476,7 +476,14 @@ class Settings {
 
 
             $post_array['author'] = "";
-            $post_array['author_image'] = "";
+            if(isset($postValue->author_image_post))
+            {
+                $post_array['author_image'] = $postValue->author_image_post;
+            }
+            else
+            {
+                $post_array['author_image'] = "";
+            }    
             if (isset($postValue['postAuthor']))
             {
                 $post_array['author'] = $postValue['postAuthor']->title;

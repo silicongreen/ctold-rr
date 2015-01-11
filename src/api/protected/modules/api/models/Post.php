@@ -425,7 +425,7 @@ class Post extends CActiveRecord
             )
             ,
             'freeUser' => array(
-                'select' => 'freeUser.first_name,freeUser.middle_name,freeUser.last_neme,freeUser.email,freeUser.profile_image',
+                'select' => 'freeUser.first_name,freeUser.middle_name,freeUser.last_name,freeUser.email,freeUser.profile_image',
                 'joinType' => "LEFT JOIN"
             ),
             'postAssessment' => array(

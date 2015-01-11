@@ -16,6 +16,7 @@ class Settings {
     public static $endPoint = "plus.champs21.com";
     public static $HomeworkText = "New Homework";
     public static $AssignmentText = "New Assignment";
+    public static $education_changes_life = 59;
     
     
     
@@ -404,6 +405,23 @@ class Settings {
             $post_array['title']     = $postValue->headline;
             
             $post_array['post_type'] = $postValue->post_type;
+            
+            $post_array['category_id_to_use'] = "";
+            $post_array['school_id'] = "";
+            $post_array['education_changes_life'] = 0;
+            if(isset($postValue->school_id) && $postValue->school_id)
+            {
+                $post_array['school_id'] = $postValue->school_id;
+            }
+            
+            if(isset($postValue->category_id) && $postValue->category_id)
+            {
+                $post_array['category_id_to_use'] = $postValue->category_id;
+                if(self::$education_changes_life==$postValue->category_id)
+                {
+                    $post_array['education_changes_life'] = 1;
+                }
+            }
             
             //need to change into single news
             $post_array['post_type_mobile'] = $postValue->mobile_view_type;

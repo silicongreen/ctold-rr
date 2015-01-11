@@ -483,7 +483,36 @@ class Settings {
             else
             {
                 $post_array['author_image'] = "";
+            } 
+            
+            if(isset($postValue['freeUser']))
+            {
+                $auther_name = "";
+                if(isset($postValue['freeUser']->profile_image))
+                {
+                    $post_array['author_image'] = $postValue['freeUser']->profile_image;
+                } 
+                if(isset($postValue['freeUser']->first_name) && $postValue['freeUser']->first_name)
+                {
+                    $auther_name .= $postValue['freeUser']->first_name." ";
+                }
+                if(isset($postValue['freeUser']->middle_name) && $postValue['freeUser']->middle_name)
+                {
+                    $auther_name .= $postValue['freeUser']->middle_name." ";
+                }
+                if(isset($postValue['freeUser']->last_neme) && $postValue['freeUser']->last_neme)
+                {
+                    $auther_name .= $postValue['freeUser']->last_neme;
+                }
+                if(!$auther_name)
+                {
+                    if(isset($postValue['freeUser']->email))
+                    $auther_name = $postValue['freeUser']->email;
+                }
+                $post_array['author'] = $auther_name;
             }    
+            
+            
             if (isset($postValue['postAuthor']))
             {
                 $post_array['author'] = $postValue['postAuthor']->title;

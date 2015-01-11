@@ -500,9 +500,9 @@ class Settings {
                 {
                     $auther_name .= $postValue['freeUser']->middle_name." ";
                 }
-                if(isset($postValue['freeUser']->last_neme) && $postValue['freeUser']->last_neme)
+                if(isset($postValue['freeUser']->last_name) && $postValue['freeUser']->last_name)
                 {
-                    $auther_name .= $postValue['freeUser']->last_neme;
+                    $auther_name .= $postValue['freeUser']->last_name;
                 }
                 if(!$auther_name)
                 {

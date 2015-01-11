@@ -11,6 +11,7 @@ $config[ 'news_in_index' ] = array(
 );
 
 $config['api_url']   = 'http://api.champs21.com/api/freeuser';
+$config['education_changes_life'] = FALSE;
 
 $config[ 'from_api' ] = TRUE;
 

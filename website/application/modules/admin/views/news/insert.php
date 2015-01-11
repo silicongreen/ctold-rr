@@ -167,7 +167,7 @@
                         <div class="clearfix">
 
                             <?php
-                            echo form_dropdown('post_type', $category_array, $model->category_id);
+                            echo form_dropdown('category_id', $category_array, $model->category_id);
                             ?>
                             
                         </div>

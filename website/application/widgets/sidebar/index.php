@@ -82,6 +82,7 @@ class sidebar extends widget
                     "General Knowledge"=>array("gk"),
                     "Gallery"=>array("gallery"),
                     "Layout"=>array("setting"),
+                    "Doodle Upload"=>array("doodle"),
                     //"What to Watch "=>array("watch"),
                     //"Poll"=>array("polls"),
                     //"Voice Box"=>array("voice_box"),

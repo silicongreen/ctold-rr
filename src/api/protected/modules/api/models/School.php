@@ -406,5 +406,28 @@ class School extends CActiveRecord
             
             return $school_array;
             
-        }        
+        }
+        
+    public function getFreeSchoolByPaidId($paid_id, $ar_fields = array()){
+        
+        $select = '*';
+        if(!empty($ar_fields)) {
+            $select = implode(',', $ar_fields);
+        }
+        
+        $criteria = new CDbCriteria();
+        $criteria->select = $select;
+        $criteria->compare('t.id', $paid_id);
+        
+        $data_obj = $this->find($criteria);
+        
+        $data_arr = $this->foramtFreeSchoolData($data_obj);
+        return $data_arr;
+        
+    }
+    
+    public function foramtFreeSchoolData($obj){
+        
+        return $obj->attributes;
+    }
 }

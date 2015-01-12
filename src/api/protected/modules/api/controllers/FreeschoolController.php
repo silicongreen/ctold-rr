@@ -35,7 +35,6 @@ class FreeschoolController extends Controller
     public function actionGetbanner()
     {
         $school_id = Yii::app()->request->getPost('school_id');
-        $school_id = 41;
         
         if (!$school_id)
         {

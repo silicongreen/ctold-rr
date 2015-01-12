@@ -193,7 +193,8 @@ class assessment extends MX_Controller {
                 }
             }
 
-            $loop_limit = count($_POST['answer']);
+            $answer = $this->input->post('answer');
+            $loop_limit = count($answer);
 
             if (($loop_limit != 2) && ($loop_limit != 4)) {
                 $data['custom_error'] = 'Invalid number of answers. There should be two or four answers.';
@@ -202,9 +203,10 @@ class assessment extends MX_Controller {
             if (empty($data['custom_error'])) {
 
                 $obj_assesment_que->assesment_id = $assessment_id;
-                $obj_assesment_que->question = $_POST['question'];
-                $obj_assesment_que->mark = $_POST['mark'];
-                $obj_assesment_que->style = $_POST['style'];
+                $obj_assesment_que->question = $this->input->post('question');
+                $obj_assesment_que->mark = $this->input->post('mark');
+                $obj_assesment_que->style = $this->input->post('style');
+                $obj_assesment_que->time = $this->input->post('time');
 
                 if ($obj_assesment_que->save()) {
 
@@ -213,8 +215,10 @@ class assessment extends MX_Controller {
                         $obj_assesment_ans = new Assessment_options();
 
                         $obj_assesment_ans->question_id = $obj_assesment_que->id;
-                        $obj_assesment_ans->answer = $_POST['answer'][$i];
-                        $obj_assesment_ans->correct = ($i == $_POST['correct'][0]) ? 1 : 0;
+                        $obj_assesment_ans->answer = $answer[$i];
+                        
+                        $correct = $this->input->post('correct');
+                        $obj_assesment_ans->correct = ($i == $correct[0]) ? 1 : 0;
 
                         if ($obj_assesment_ans->save()) {
                             $saved = true;
@@ -255,8 +259,9 @@ class assessment extends MX_Controller {
                     unset($_POST['answer'][$i]);
                 }
             }
-
-            $loop_limit = count($_POST['answer']);
+            
+            $answer = $this->input->post('answer');
+            $loop_limit = count($answer);
 
             if (($loop_limit != 2) && ($loop_limit != 4)) {
                 $data['custom_error'] = 'Invalid number of answers. There should be two or four answers.';
@@ -265,9 +270,10 @@ class assessment extends MX_Controller {
             if (empty($data['custom_error'])) {
 
                 $obj_assesment_que->assesment_id = $assessment_id;
-                $obj_assesment_que->question = $_POST['question'];
-                $obj_assesment_que->mark = $_POST['mark'];
-                $obj_assesment_que->style = $_POST['style'];
+                $obj_assesment_que->question = $this->input->post('question');
+                $obj_assesment_que->mark = $this->input->post('mark');
+                $obj_assesment_que->style = $this->input->post('style');
+                $obj_assesment_que->time = $this->input->post('time');
                 
                 if ($obj_assesment_que->save()) {
                     
@@ -276,13 +282,15 @@ class assessment extends MX_Controller {
                     
                     if ($del_answers) {
                         $i = 0;
-                        foreach ($_POST['answer'] as $answer) {
+                        foreach ($answer as $answer) {
 
                             $obj_assesment_ans = new Assessment_options();
 
                             $obj_assesment_ans->question_id = $obj_assesment_que->id;
-                            $obj_assesment_ans->answer = $_POST['answer'][$i];
-                            $obj_assesment_ans->correct = ($i == $_POST['correct'][0]) ? 1 : 0;
+                            $obj_assesment_ans->answer = $answer[$i];
+                            
+                            $correct = $this->input->post('answer');
+                            $obj_assesment_ans->correct = ($i == $correct[0]) ? 1 : 0;
 
                             if ($obj_assesment_ans->save()) {
                                 $i++;
@@ -309,48 +317,6 @@ class assessment extends MX_Controller {
 
         if (!$saved) {
             $this->render('admin/assessment/_question_form', $data);
-        } else {
-            echo "<script>parent.oTable.fnClearTable(true); parent.$.fancybox.close();</script>";
-        }
-    }
-
-    public function approve() {
-
-        if (!$this->input->is_ajax_request()) {
-            exit('No direct script access allowed');
-        }
-
-        $id = $this->input->post('primary_id');
-
-        $user_school = new User_school($id);
-        $user_school->approved_date = date('Y-m-d');
-        $user_school->approved_by = 'admin';
-        $user_school->is_approved = '1';
-
-        if (!$user_school->save() || !$_POST) {
-            $this->render('admin/school/members');
-        } else {
-            echo "<script>parent.oTable.fnClearTable(true); parent.$.fancybox.close();</script>";
-        }
-    }
-
-    public function deny($id) {
-
-        if (!$this->input->is_ajax_request()) {
-            exit('No direct script access allowed');
-        }
-
-        $id = $this->input->post('primary_id');
-
-        $user_school = new User_school($id);
-
-        /* $user_school->deny_date = date('Y-m-d');
-          $user_school->deny_by = 'admin';
-          $user_school->is_approved = '2';
-         */
-
-        if (!$user_school->delete() || !$_POST) {
-            $this->render('admin/school/members');
         } else {
             echo "<script>parent.oTable.fnClearTable(true); parent.$.fancybox.close();</script>";
         }

@@ -46,7 +46,7 @@ class Cassignments extends CActiveRecord
             $criteria->compare('t.id', $id); 
             $criteria->with = array(
                 'question' => array(
-                    'select' => 'question.id,question.explanation,question.mark,question.style,question.question,question.created_date',
+                    'select' => 'question.id,question.explanation,question.mark,question.time,question.style,question.question,question.created_date',
                     'order' => "RAND()",
                     'with' => array(
                         "option" => array(
@@ -113,6 +113,7 @@ class Cassignments extends CActiveRecord
                                 $response_array['question'][$i]['question_webview'] = $questions->question;
                             }
                             $response_array['question'][$i]['mark'] = $questions->mark;
+                            $response_array['question'][$i]['mark'] = $questions->time;
                             $response_array['question'][$i]['style'] = $questions->style;
                             $response_array['question'][$i]['created_date'] = $questions->created_date;
                             

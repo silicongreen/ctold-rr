@@ -417,7 +417,7 @@ class School extends CActiveRecord
         
         $criteria = new CDbCriteria();
         $criteria->select = $select;
-        $criteria->compare('t.id', $paid_id);
+        $criteria->compare('t.paid_school_id', $paid_id);
         
         $data_obj = $this->find($criteria);
         

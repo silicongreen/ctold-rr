@@ -74,15 +74,15 @@ class Post extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('headline, content', 'required'),
-            array('byline_id, can_comment, status, for_all, is_featured, is_breaking, is_developing, is_exclusive, priority_type, priority, has_image, has_video, has_pdf, has_related_news', 'numerical', 'integerOnly' => true),
-            array('shoulder', 'length', 'max' => 100),
-            array('headline', 'length', 'max' => 150),
-            array('headline_color, type', 'length', 'max' => 6),
-            array('sub_head, google_short_url, lead_material, mobile_image, latitude, longitude, lead_source', 'length', 'max' => 255),
-            array('short_title', 'length', 'max' => 80),
-            array('view_count', 'length', 'max' => 20),
-            array('ip_address', 'length', 'max' => 15),
+            array('headline', 'required'),
+     //       array('byline_id, can_comment, status, for_all, is_featured, is_breaking, is_developing, is_exclusive, priority_type, priority, has_image, has_video, has_pdf, has_related_news', 'numerical', 'integerOnly' => true),
+//            array('shoulder', 'length', 'max' => 100),
+//            array('headline', 'length', 'max' => 150),
+//            array('headline_color, type', 'length', 'max' => 6),
+//            array('sub_head, google_short_url, lead_material, mobile_image, latitude, longitude, lead_source', 'length', 'max' => 255),
+//            array('short_title', 'length', 'max' => 80),
+//            array('view_count', 'length', 'max' => 20),
+//            array('ip_address', 'length', 'max' => 15),
             array('summary, embedded, breaking_expire, exclusive_expired, published_date, publish_date_only, created, updated, news_expire_date, lead_caption, meta_description', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
@@ -101,6 +101,7 @@ class Post extends CActiveRecord
             'postCategories' => array(self::HAS_MANY, 'PostCategory', 'post_id'),
             'postAttachment' => array(self::HAS_MANY, 'PostAttachment', 'post_id'),
             'postAuthor' => array(self::BELONGS_TO, 'Bylines', 'byline_id'),
+            'freeUser' => array(self::BELONGS_TO, 'Freeusers', 'user_id'),
             'postAssessment' => array(self::BELONGS_TO, 'Cassignments', 'assessment_id'),
             'postSchool' => array(self::BELONGS_TO, 'School', 'school_id'),
             'postGalleries' => array(self::HAS_MANY, 'PostGallery', 'post_id'),
@@ -421,11 +422,16 @@ class Post extends CActiveRecord
             ),
             'postAuthor' => array(
                 'select' => 'postAuthor.title,postAuthor.image'
+            )
+            ,
+            'freeUser' => array(
+                'select' => 'freeUser.first_name,freeUser.middle_name,freeUser.last_name,freeUser.email,freeUser.profile_image',
+                'joinType' => "LEFT JOIN"
             ),
             'postAssessment' => array(
                 'select' => 'postAssessment.title,postAssessment.played',
                 'joinType' => "LEFT JOIN"
-            ),
+            )
         );
         $obj_post = $this->find($criteria);
 

@@ -16,6 +16,7 @@ class Settings {
     public static $endPoint = "plus.champs21.com";
     public static $HomeworkText = "New Homework";
     public static $AssignmentText = "New Assignment";
+    public static $education_changes_life = 59;
     
     
     
@@ -405,6 +406,23 @@ class Settings {
             
             $post_array['post_type'] = $postValue->post_type;
             
+            $post_array['category_id_to_use'] = "";
+            $post_array['school_id'] = "";
+            $post_array['education_changes_life'] = 0;
+            if(isset($postValue->school_id) && $postValue->school_id)
+            {
+                $post_array['school_id'] = $postValue->school_id;
+            }
+            
+            if(isset($postValue->category_id) && $postValue->category_id)
+            {
+                $post_array['category_id_to_use'] = $postValue->category_id;
+                if(self::$education_changes_life==$postValue->category_id)
+                {
+                    $post_array['education_changes_life'] = 1;
+                }
+            }
+            
             //need to change into single news
             $post_array['post_type_mobile'] = $postValue->mobile_view_type;
             
@@ -476,7 +494,43 @@ class Settings {
 
 
             $post_array['author'] = "";
-            $post_array['author_image'] = "";
+            if(isset($postValue->author_image_post))
+            {
+                $post_array['author_image'] = $postValue->author_image_post;
+            }
+            else
+            {
+                $post_array['author_image'] = "";
+            } 
+            
+            if(isset($postValue['freeUser']))
+            {
+                $auther_name = "";
+                if(isset($postValue['freeUser']->profile_image))
+                {
+                    $post_array['author_image'] = $postValue['freeUser']->profile_image;
+                } 
+                if(isset($postValue['freeUser']->first_name) && $postValue['freeUser']->first_name)
+                {
+                    $auther_name .= $postValue['freeUser']->first_name." ";
+                }
+                if(isset($postValue['freeUser']->middle_name) && $postValue['freeUser']->middle_name)
+                {
+                    $auther_name .= $postValue['freeUser']->middle_name." ";
+                }
+                if(isset($postValue['freeUser']->last_name) && $postValue['freeUser']->last_name)
+                {
+                    $auther_name .= $postValue['freeUser']->last_name;
+                }
+                if(!$auther_name)
+                {
+                    if(isset($postValue['freeUser']->email))
+                    $auther_name = $postValue['freeUser']->email;
+                }
+                $post_array['author'] = $auther_name;
+            }    
+            
+            
             if (isset($postValue['postAuthor']))
             {
                 $post_array['author'] = $postValue['postAuthor']->title;

@@ -22,13 +22,36 @@ class EventController extends Controller {
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
                 'actions' => array('index', 'acknowledge','meetingrequest','meetingstatus',
                     'getstudentparent','addmeetingrequest','addmeetingparent','getteacherparent',
-                    'addleaveteacher','leavetype','teacherleaves','studentleaves'),
+                    'addleaveteacher','leavetype','teacherleaves','studentleaves','fees'),
                 'users' => array('@'),
             ),
             array('deny', // deny all users
                 'users' => array('*'),
             ),
         );
+    }
+    
+    public function actionFees()
+    {
+        $user_secret = Yii::app()->request->getPost('user_secret');
+        
+        $student_id = Yii::app()->request->getPost('student_id');
+        if(Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isParent  && $student_id )
+        {
+            $objFees = new FinanceFees();
+            
+            $response['data']['due'] = $objFees->feesStudentDue($student_id);
+            $response['data']['history'] = $objFees->feesStudentDueHistory($student_id);
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "Success";
+        } 
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
     }
     
     public function actionStudentLeaves()
@@ -39,7 +62,7 @@ class EventController extends Controller {
         {
            
             $leave = new ApplyLeaveStudents();
-            $leaveobj = $leave->getStudentLeave();      
+            $leaveobj = $leave->getStudentLeave(Yii::app()->user->profileId);      
             $response['data']['today'] = date("Y-m-d"); 
             $response['data']['leaves'] = $leaveobj;
             $response['status']['code'] = 200;
@@ -70,10 +93,21 @@ class EventController extends Controller {
             foreach($leaveobj as $value)
             {
                 $leave[$i]['leave_type'] = $value['leavetype']->name;
-                $leave[$i]['start_date'] = $value->start_date;
-                $leave[$i]['end_date'] = $value->end_date;
-                $leave[$i]['status'] = $value->approved;
-                $leave[$i]['created_date'] = date("Y-m-d",  strtotime($value->created_at));
+                $leave[$i]['leave_start_date'] = $value->start_date;
+                $leave[$i]['leave_end_date'] = $value->end_date;
+                if(!$value->approving_manager)
+                {
+                   $leave[$i]['status'] = 2; 
+                }   
+                else if($value->approved==1)
+                {
+                    $leave[$i]['status'] = 1; 
+                }
+                else
+                {
+                    $leave[$i]['status'] = 0; 
+                }
+                $leave[$i]['created_at'] = date("Y-m-d",  strtotime($value->created_at));
                 $i++;
             }
             $response['data']['today'] = date("Y-m-d"); 

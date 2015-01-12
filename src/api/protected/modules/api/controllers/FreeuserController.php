@@ -29,7 +29,7 @@ class FreeuserController extends Controller
                     , "schoolsearch", "school", "createschool", "schoolpage", "schoolactivity", "candle"
                     , "garbagecollector","getschoolteacherbylinepost","createcachesinglenews","addwow", 
                     'set_preference','addcomments','getcomments', 'get_preference','addgcm','getallgcm',
-                    'getschoolinfo','joinschool','candleschool','leaveschool'),
+                    'getschoolinfo','joinschool','candleschool','leaveschool','folderdelete'),
                 'users' => array('*'),
             ),
             array('deny', // deny all users
@@ -37,7 +37,37 @@ class FreeuserController extends Controller
             ),
         );
     }
-    
+    public function actionFolderDelete()
+    {
+        $user_id = Yii::app()->request->getPost('user_id');
+        $folder_name = Yii::app()->request->getPost('folder_name');
+        if (!$user_id || !$folder_name)
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        else
+        {       
+            $folders = Settings::$ar_default_folder;
+            $fobj = new UserFolder();        
+            $return = $fobj->removeFolder($folder_name, $user_id, $folders);
+            if($return)
+            {
+                $response['status']['code'] = 200;
+                $response['status']['msg'] = "success";
+            }
+            else
+            {
+                $response['status']['code'] = 404;
+                $response['status']['msg'] = "Cant delete this folder";
+            }
+            
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    }        
+
+
     public function actionAssesmentHistory()
     {
         
@@ -90,7 +120,7 @@ class FreeuserController extends Controller
         $assessment_id = Yii::app()->request->getPost('assessment_id');
         $user_id = Yii::app()->request->getPost('user_id');
         $mark = Yii::app()->request->getPost('mark');
-        if (!$assessment_id || !$mark || !$user_id )
+        if (!$assessment_id || (!$mark && $mark!==0) || !$user_id )
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
@@ -162,7 +192,10 @@ class FreeuserController extends Controller
             }    
             
             $assesmentObj = new Cassignments();
+            $cmark = new Cmark();
+            $response['data']['higistmark'] = $cmark->assessmentHighistMark($assesment_id); 
             $response['data']['assesment'] = $assesmentObj->getAssessment($assesment_id,$webview);
+            $response['data']['assesment']['higistmark'] = $response['data']['higistmark'];
             $response['status']['code'] = 200;
             $response['status']['msg'] = "success";
                 
@@ -431,6 +464,7 @@ class FreeuserController extends Controller
         $can_comment = Yii::app()->request->getPost('can_comment');
         $school_id = Yii::app()->request->getPost('school_id');
         $user_id = Yii::app()->request->getPost('user_id');
+        $mobile_num = Yii::app()->request->getPost('mobile_num');
         $candle_type = Yii::app()->request->getPost('candle_type');
         
         if (!$username || !$headline || !$content || !$category_id || !$school_id || !$user_id)
@@ -448,6 +482,22 @@ class FreeuserController extends Controller
                 $postobj = new Post();
                 $postobj->headline = $headline;
                 $postobj->content = $content;
+                $objfreeuser = new Freeusers();
+                $freeobj = $objfreeuser->findByPk($user_id);
+                if($mobile_num)
+                {
+                    $postobj->mobile_num = $mobile_num;
+                    
+                    if(!$freeobj->mobile_no)
+                    {
+                        $freeobj->mobile_no = $mobile_num;
+                        $freeobj->save();
+                    }
+                }
+                if($freeobj->profile_image)
+                {
+                    $postobj->author_image_post = $freeobj->profile_image;
+                }
                 $postobj->published_date = date("Y-m-d H:i:s");
                 $postobj->status = 1;
                 if(Settings::$school_candle_publish[$userschool->type]===true)
@@ -531,6 +581,16 @@ class FreeuserController extends Controller
                         $objposttype->save();
                     }
                 }
+                else
+                {
+                    for($i = 1; $i<=4; $i++)
+                    {
+                        $objposttype = new PostType();
+                        $objposttype->post_id = $postobj->id;
+                        $objposttype->type_id = $i;
+                        $objposttype->save();
+                    }
+                }    
 
                 $response['status']['code'] = 200;
                 $response['status']['msg'] = "Successfully Saved";
@@ -551,8 +611,10 @@ class FreeuserController extends Controller
         $username = Yii::app()->request->getPost('username');
         $headline = Yii::app()->request->getPost('headline');
         $content = Yii::app()->request->getPost('content');
+        $mobile_num = Yii::app()->request->getPost('mobile_num');
         $category_id = Yii::app()->request->getPost('category_id');
-        if (!$username || !$headline || !$content || !$category_id)
+        $user_id = Yii::app()->request->getPost('user_id');
+        if (!$username || !$headline || !$content || !$category_id || !$user_id)
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
@@ -567,6 +629,24 @@ class FreeuserController extends Controller
             $postobj->type = "Print";
             $postobj->user_type = 2;
             $postobj->language = "en";
+            
+            $objfreeuser = new Freeusers();
+            $freeobj = $objfreeuser->findByPk($user_id);
+            if($mobile_num)
+            {
+                $postobj->mobile_num = $mobile_num;
+
+                if(!$freeobj->mobile_no)
+                {
+                    $freeobj->mobile_no = $mobile_num;
+                    $freeobj->save();
+                }
+            }
+            if($freeobj->profile_image)
+            {
+                $postobj->author_image_post = $freeobj->profile_image;
+            }
+            
             $objbyline = new Bylines();
             $postobj->byline_id = $objbyline->generate_byline_id($username);
 
@@ -1574,6 +1654,7 @@ class FreeuserController extends Controller
         $page_number = Yii::app()->request->getPost('page_number');
         $page_size = Yii::app()->request->getPost('page_size');
         $user_id = Yii::app()->request->getPost('user_id');
+        $user_type_set = Yii::app()->request->getPost('user_type');
        
 
         $already_showed = Yii::app()->request->getPost('already_showed');
@@ -1614,6 +1695,11 @@ class FreeuserController extends Controller
         {
             $page_size = 9;
         }
+        
+        if($user_type_set && $user_type_set>0 && $user_type_set<5)
+        {
+            $user_type = $user_type_set;
+        }    
 
 
 
@@ -1745,27 +1831,22 @@ class FreeuserController extends Controller
                 $user_type = $user_info['user_type'];
             }
 
-            //$cache_name = "YII-RESPONSE-STB-" . $id . "-" . $target . "-" . $page_number . "-" . $page_size . "-" . $user_type;
-            //$this->createAllCache($cache_name);
-            //$response = Yii::app()->cache->get($cache_name);
-//            if ($response === false)
-//            {
 
-                $postObj = new Post();
-                $post = $postObj->getPosts($id, $user_type, $target, $page = 1, $page_size = 10);
 
-                $response['data']['total'] = $postObj->getPostTotal($id, $user_type, $target);
-                $has_next = false;
-                if ($response['data']['total'] > $page_number * $page_size)
-                {
-                    $has_next = true;
-                }
-                $response['data']['has_next'] = $has_next;
-                $response['data']['post'] = $post;
-                $response['status']['code'] = 200;
-                $response['status']['msg'] = "DATA_FOUND";
-                //Yii::app()->cache->set($cache_name, $response, 86400);
-//            }
+            $postObj = new Post();
+            $post = $postObj->getPosts($id, $user_type, $target, $page_number, $page_size);
+
+            $response['data']['total'] = $postObj->getPostTotal($id, $user_type, $target);
+            $has_next = false;
+            if ($response['data']['total'] > $page_number * $page_size)
+            {
+                $has_next = true;
+            }
+            $response['data']['has_next'] = $has_next;
+            $response['data']['post'] = $post;
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "DATA_FOUND";
+  
             if(isset($response['data']['post']) && count($response['data']['post'])>0)
             {
 
@@ -1810,6 +1891,7 @@ class FreeuserController extends Controller
         $popular_sort = Yii::app()->request->getPost('popular_sort');
         $fetaured = Yii::app()->request->getPost('fetaured');
         $game_type = Yii::app()->request->getPost('game_type');
+        $user_type_set = Yii::app()->request->getPost('user_type');
         $callded_for_cache = Yii::app()->request->getPost('callded_for_cache');
 
         $extra = "";
@@ -1849,6 +1931,11 @@ class FreeuserController extends Controller
             $user_info = $freeuserObj->getUserInfo($user_id);
             $user_type = $user_info['user_type'];
         }
+        
+        if($user_type_set && $user_type_set>0 && $user_type_set<5)
+        {
+            $user_type = $user_type_set;
+        }  
 
         $cache_name = "YII-RESPONSE-CATEGORY-" . $category_id . "-" . $page_number . "-" . $page_size . "-" . $user_type . $extra;
         $this->createAllCache($cache_name);
@@ -2088,8 +2175,20 @@ class FreeuserController extends Controller
 
                 if ($password)
                 {
-                    $freeuserObj->salt = md5(uniqid(rand(), true));
-                    $freeuserObj->password = $this->encrypt($password, $freeuserObj->salt);
+                    if(Yii::app()->request->getPost('previous_password') && $this->encrypt(Yii::app()->request->getPost('previous_password'), $freeuserObj->salt)==$freeuserObj->password)
+                    {
+                        $freeuserObj->salt = md5(uniqid(rand(), true));
+                        $freeuserObj->password = $this->encrypt($password, $freeuserObj->salt);
+                    }
+                    else
+                    {
+                        $response['status']['code'] = 402;
+                        $response['status']['msg'] = "Password Missmatch";
+                        echo CJSON::encode($response);
+                        Yii::app()->end();
+                        eit;
+                        
+                    }
                 }
 
                 if (isset($_FILES['profile_image']['name']) && !empty($_FILES['profile_image']['name']))
@@ -2334,7 +2433,17 @@ class FreeuserController extends Controller
             $response['data']['all_categories'] = $all_categoires;
 
             $response['data']['preferred_categories'] = (!empty($user_pref_mod)) ? $user_pref_mod->category_ids : '';
-            $response['status']['code'] = (!empty($user_pref_mod) && !empty($all_categoires) ) ? 200 : (!empty($all_categoires)) ? 202 : 404;
+            $status = 404;
+            if(!empty($user_pref_mod) && !empty($all_categoires))
+            {
+                $status = 200;
+            }
+            else if(!empty($all_categoires))
+            {
+                $status = 202;
+            }
+            
+            $response['status']['code'] = $status;
             $response['status']['msg'] = (!empty($user_pref_mod)) ? "USER_PREFERENCE_FOUND" : "USER_PREFERENCE_NOT_FOUND";
         }
         else

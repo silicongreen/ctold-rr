@@ -345,6 +345,21 @@ class Posts extends DataMapper {
         
         return $html;
     }
+    function category_array()
+    {
+       $obj_category = new Category();
+       $array = array('parent_id' => null, 'status' => 1,'show'=>1);
+       $obj_category->where($array)->order_by('name', 'asc')->get(); 
+       $select_category[0] = "Select";
+       if (count($obj_category) > 0)
+       {
+           foreach ($obj_category as $value)
+           {
+               $select_category[$value->id] = $value->name;
+           }
+       }
+       return $select_category;
+    }
     
     function category_tree_news($id=0,$parent_id=NULL)
     {

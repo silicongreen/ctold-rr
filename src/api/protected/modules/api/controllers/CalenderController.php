@@ -231,14 +231,19 @@ class CalenderController extends Controller {
          $user_secret = Yii::app()->request->getPost('user_secret');
          $leave_id = Yii::app()->request->getPost('leave_id');
          $student_id = Yii::app()->request->getPost('student_id');
+         $status = Yii::app()->request->getPost('status');
          if(Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher && $leave_id && $student_id)
          {
              $leaveStudent = new ApplyLeaveStudents();
              $updateleave = $leaveStudent->findByPk($leave_id);
              if(isset($updateleave->student_id) && $updateleave->student_id==$student_id)
              {
-                 
-                 $updateleave->approved = 1;
+                 if(!$status)
+                 {
+                     $status = 1;
+                 }
+                 $updateleave->approved = $status;
+                 $updateleave->approving_teacher = Yii::app()->user->profileId;
                  
                  $updateleave->save(false);
                  $response['status']['code'] = 200;

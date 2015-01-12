@@ -154,12 +154,16 @@ class ApplyLeaveStudents extends CActiveRecord
             }
             return $return_array;
         }
-        public function getStudentLeave() 
+        public function getStudentLeave($profile_id) 
         {
+            $esubject = new EmployeesSubjects();
+            $batches = $esubject->getBatchId($profile_id);
             $today = date("Y-m-d",  strtotime("-1 Month")); 
             $criteria = new CDbCriteria;
             $criteria->select = "t.id,t.student_id,t.approved,t.reason,t.start_date,t.end_date,t.created_at";
             $criteria->addCondition("DATE(t.start_date) >= '" . $today . "'");
+            $criteria->addInCondition("students.batch_id", $batches);
+            $criteria->addCondition("t.approving_teacher IS NULL");
             
             $criteria->with = array(
                        'students' => array(
@@ -188,13 +192,13 @@ class ApplyLeaveStudents extends CActiveRecord
                 $middle_name = (!empty($value["students"]->middle_name)) ? $value["students"]->middle_name.' ' : '';
                 $students_name = rtrim($value["students"]->first_name.' '.$middle_name.$value["students"]->last_name);
                 $return_array[$i]['student_id'] = $value->student_id;
-                $return_array[$i]['students_name'] = $students_name;
+                $return_array[$i]['student_name'] = $students_name;
                 $return_array[$i]['batch'] = $value['students']['batchDetails']['courseDetails']->course_name." ".$value['students']['batchDetails']->name;
                 $return_array[$i]['approved'] = $value->approved;
                 $return_array[$i]['reason'] = $value->reason;
                 $return_array[$i]['leave_id'] = $value->id;
-                $return_array[$i]['start_date'] = $value->start_date;
-                $return_array[$i]['end_date'] = $value->end_date;
+                $return_array[$i]['leave_start_date'] = $value->start_date;
+                $return_array[$i]['leave_end_date'] = $value->end_date;
                 $return_array[$i]['created_at'] = date("Y-m-d",  strtotime($value->created_at));
                 $i++;
             }

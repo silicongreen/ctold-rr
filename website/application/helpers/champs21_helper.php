@@ -637,8 +637,16 @@ if ( !function_exists("format_data") )
         $a_data = array();
         $a_data['total'] = $a_raw_data->data->total;
         $a_data['data'] = array();
+        $CI = & get_instance();
+                
+        $CI->load->config("huffas");
         foreach( $a_raw_data->data->post as $post )
         {
+            if($CI->config->config['education_changes_life']===FALSE && isset($post->education_changes_life) && $post->education_changes_life==1)
+            {
+                continue;
+            }  
+            
             $post->title = $post->author;
             unset($post->author);
             $post->id = $post->category_id;

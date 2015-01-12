@@ -31,7 +31,7 @@ class school extends MX_Controller
         $tmpl = array('table_open' => '<table id="big_table" border="1" cellpadding="2" cellspacing="1" class="mytable">');
         $this->table->set_template($tmpl);
 
-        $this->table->set_heading('Name','Location', 'District','Medium','Action');
+        $this->table->set_heading('Name','Location', 'District','Medium','Is paid','Action');
         $this->render('admin/school/index');
     }
 
@@ -49,13 +49,15 @@ class school extends MX_Controller
         }
         $this->datatables->set_buttons("edit");
         $this->datatables->set_buttons("delete");
+        
         $this->datatables->set_buttons("feeds", false,true);
         $this->datatables->set_buttons("add_feed", false,true);
         $this->datatables->set_buttons("members");
+        $this->datatables->set_buttons("assign_as_paid","model2",false,array("field"=>"is_paid","value"=>0));
         $this->datatables->set_controller_name("school");
         $this->datatables->set_primary_key("id");
 
-        $this->datatables->select('id,name,location,district,medium')
+        $this->datatables->select('id,name,location,district,medium,is_paid')
                 ->unset_column('id')
                 ->from('school');
 
@@ -69,6 +71,80 @@ class school extends MX_Controller
     function add_feed($id)
     {
         redirect("admin/news/add/".$id);
+    }
+    
+    private function getPaidSchool($id)
+    {
+       $schools = array();
+       $this->db->dbprefix = "";
+       $this->db->select("name,code,id");
+       $this->db->where("is_deleted",0);
+       $this->db->where("access_locked",0);
+       $pschools = $this->db->get("schools")->result();
+       
+       
+       $this->db->dbprefix = "tds_";
+       $this->db->select("paid_school_id");
+       $this->db->where("is_paid",1);
+       $upschools = $this->db->get("school")->result();
+       
+       $apschools = array();
+       
+       if($upschools && count($upschools)>0)
+       foreach($upschools as $value)
+       {
+           $apschools[] = $value->paid_school_id;
+       }
+       
+       if($pschools && count($pschools)>0)
+       foreach($pschools as $pvalue)
+       {
+           if(!in_array($pvalue->id, $apschools))
+           {
+                $schools[$pvalue->id."::".$pvalue->code] = $pvalue->name;
+           }
+       }
+       
+       return $schools;
+    }
+    
+    function assign_as_paid($id)
+    {
+        $obj_school = new Schools($id);
+        if($obj_school->is_paid==1)
+        {
+           echo "<script>parent.oTable.fnClearTable(true); parent.$.fancybox.close();</script>";
+           
+        } 
+        else
+        {
+            if ($_POST)
+            {
+               
+                if($_POST['school'])
+                {
+                    $schools_inofrmation = $this->input->post("school");
+                    $a_school = explode("::", $schools_inofrmation);
+                    $obj_school->is_paid = 1;
+                    $obj_school->paid_school_id = $a_school[0];
+                    $obj_school->code = $a_school[1];
+                    
+                }
+                
+                
+            }
+
+            $data['paid_school'] = $this->getPaidSchool($id);
+            $data['model'] = $obj_school;
+            if (!$obj_school->save() || !$_POST)
+            {
+                $this->render('admin/school/assign_as_paid', $data);
+            }
+            else
+            {
+                echo "<script>parent.oTable.fnClearTable(true); parent.$.fancybox.close();</script>";
+            }
+        }
     }
 
     /**

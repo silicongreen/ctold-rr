@@ -162,6 +162,17 @@
                         </div>
 
                     </fieldset>
+                    <fieldset class="label_side top">
+                        <label for="required_field">For Category Type Add<span>Select only if ad type post and its a category</span></label>
+                        <div class="clearfix">
+
+                            <?php
+                            echo form_dropdown('category_id', $category_array, $model->category_id);
+                            ?>
+                            
+                        </div>
+
+                    </fieldset>
                     <fieldset class="top">
                         <label for="required_field">Lead Link<span>Leave Empty if not needed(Game Link, Ad Link etc)</span></label>
                         <div>
@@ -610,11 +621,11 @@
                     <?php endif; ?>
 
 
-                    <fieldset class="label_side top" style=" display: none;">
+                    <fieldset class="label_side top">
                         <label for="required_field">Can Comment</label>
                         <div class="jqui_radios">
                             <?php
-                            $is_comment = ($model->can_comment == 0 && $model->can_comment != "") ? "" : 'checked="checked"';
+                            $is_comment = ($model->can_comment == 0 || $model->can_comment == "") ? "" : 'checked="checked"';
                             ?>
                             <input type="radio" name="can_comment" value="1" id="comment_yes" <?= $is_comment ?> /><label for="comment_yes">Yes</label>
                             <input type="radio" name="can_comment" value="0" id="comment_no" <?= ($is_comment) ? "" : 'checked="checked"'; ?>/><label for="comment_no">No</label>

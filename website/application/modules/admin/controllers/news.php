@@ -552,6 +552,8 @@ class news extends MX_Controller
         $this->load->config("champs21");
         
         $data['all_language'] = $this->config->config["language_codes"];
+        
+        $data['category_array'] = $obj_post->category_array();
 
         $data['category_tree'] = $obj_post->category_tree_news();
         $data['class_tree'] = $obj_post->class_tree_news();
@@ -667,6 +669,7 @@ class news extends MX_Controller
         $data['tag_string'] = $obj_post->get_tag_string($id);
         $data['country_string'] = $obj_post->get_country_string($id);
 
+        $data['category_array'] = $obj_post->category_array();
         $data['keyword_string'] = $obj_post->get_keyword_string($id);
 
         $data['related_news']   = $obj_post->get_related_news($id);
@@ -1590,8 +1593,7 @@ class news extends MX_Controller
             $ar_old_post_cate[$obj_post_cat->category_id."_".$obj_post_cat->post_id] = $obj_post_cat->inner_priority;
         }
         
-        $this->db->where("post_id", $id);
-        $this->db->delete("post_category");
+        
       
 
         
@@ -1637,7 +1639,11 @@ class news extends MX_Controller
         
         
         if ($reletad_category)
+        {
+            $this->db->where("post_id", $id);
+            $this->db->delete("post_category");
             $this->db->insert_batch('post_category', $reletad_category);
+        }
         
         return $publish_date_type;
     }

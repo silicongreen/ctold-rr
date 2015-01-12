@@ -32,6 +32,13 @@
                                 <div class="required_tag"></div>
                             </div>
                         </fieldset>
+                            
+                        <fieldset class="label_side top">
+                            <label for="required_field">Time</label>
+                            <div>
+                                <input id="time" name="time" value="<?php echo $question->time; ?>" type="text" class="required" minlength="1">
+                            </div>
+                        </fieldset>
 
                         <fieldset class="label_side top">
                             <label for="required_field">Style</label>

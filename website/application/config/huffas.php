@@ -11,6 +11,7 @@ $config[ 'news_in_index' ] = array(
 );
 
 $config['api_url']   = 'http://api.champs21.com/api/freeuser';
+$config['education_changes_life'] = FALSE;
 
 $config[ 'from_api' ] = TRUE;
 
@@ -159,19 +160,19 @@ $config['css_champs21'] = Array(
 
 $config['post-ads'] = array(
                             "add" => array(
-                                            "styles/layouts/tdsfront/images/ads/candle.png",
-                                            "styles/layouts/tdsfront/images/ads/entertainment.png",
-                                            "styles/layouts/tdsfront/images/ads/extra-curricular-activities.png",
-                                            "styles/layouts/tdsfront/images/ads/games.png",
-                                            "styles/layouts/tdsfront/images/ads/good-read.png",
-                                            "styles/layouts/tdsfront/images/ads/literature.png",
-                                            "styles/layouts/tdsfront/images/ads/news-and-articles.png",
-                                            "styles/layouts/tdsfront/images/ads/nutrition.png",
-                                            "styles/layouts/tdsfront/images/ads/personality.png",
-                                            "styles/layouts/tdsfront/images/ads/resource-center.png",
-                                            "styles/layouts/tdsfront/images/ads/schools-search.png",
-                                            "styles/layouts/tdsfront/images/ads/sports.png",
-                                            "styles/layouts/tdsfront/images/ads/travel.png"
+                                            "styles/layouts/tdsfront/images/ads/final/candle.png",
+                                            "styles/layouts/tdsfront/images/ads/final/entertainment.png",
+                                            "styles/layouts/tdsfront/images/ads/final/extra_curricular_activities.png",
+                                            "styles/layouts/tdsfront/images/ads/final/games.png",
+                                            "styles/layouts/tdsfront/images/ads/final/good_read.png",
+                                            "styles/layouts/tdsfront/images/ads/final/literature.png",
+                                            "styles/layouts/tdsfront/images/ads/final/news_and_articles.png",
+                                            "styles/layouts/tdsfront/images/ads/final/nutrition.png",
+                                            "styles/layouts/tdsfront/images/ads/final/personality.png",
+                                            "styles/layouts/tdsfront/images/ads/final/resource_centre.png",
+                                            "styles/layouts/tdsfront/images/ads/final/schools.png",
+                                            "styles/layouts/tdsfront/images/ads/final/sports.png",
+                                            "styles/layouts/tdsfront/images/ads/final/Travel.png"
                                         ),
                                "link" => array("#","entertainment","extra-curricular","games","good-read","literature",
                                    "news-and-articles","nutrition","personality","resource-center","schools","sports","travel"),

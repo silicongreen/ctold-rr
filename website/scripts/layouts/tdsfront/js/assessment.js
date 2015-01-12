@@ -23,10 +23,10 @@ $(document).ready(function(){
     
     var user_score = 0;
     var time_up = false;
-    var has_next = 0;
     var assessment_time = 10;
     var total_time_taken = 0;
     var assess_finished = false;
+    var num_assessments = 0;
     //        var assessment_time = parseInt($('#assess_time').val()) * 60 - 1;
         
     var clock = $('.clock').FlipClock({
@@ -37,39 +37,65 @@ $(document).ready(function(){
             stop: function() {
                 
                 time_up = true;
+                
                 var html_expl_nxt_popup = '';
                 var key = '';
                 var btn_html = '';
                 var pop_up_data = '';
                 
-                if(assess_finished) {
+                console.log(time_up);
+                console.log(assess_finished);
+                
+                if( (assess_finished == true) && (time_up == false) ) {
                     
                     key = 'assessment_score';
-        
+                    
                     $('.assessment-popup-btn-wrapper').html('');
-        
-                    $('.nxt-btn').removeClass('show-assessment-score');
-                    $('.nxt-btn span').text('Save Score');
+                    
+                    $('.nxt-btn span').text('View Score');
                     $('.nxt-btn').removeAttr('id');
-        
-                    if($('#asses_id').length < 1) {
-                        $('.nxt-btn').addClass('before-login-user');
-                        $('.nxt-btn').attr('data', 'assessment_save_score');
-            
-                        get_user_score();
-                        total_time_taken += parseInt(clock.time);
-                    } else {
-                        $('.nxt-btn').addClass('btn-assessment-submit');
-                    }
-        
-                    btn_html = $('.assessment-popup-btn-wrapper-explanation').children().eq(1);
+                    $('.nxt-btn').addClass('show-assessment-score');
+                    $('.nxt-btn').attr('data', 'assessment_score');
+                    
+                } else if( (assess_finished == true) && (time_up == true) ) {
+                    
+                    key = 'ques_time_up';
+                    
+                    $('.assessment-popup-btn-wrapper').html('');
+                    
+                    $('.nxt-btn span').text('View Score');
+                    $('.nxt-btn').removeAttr('id');
+                    $('.nxt-btn').addClass('show-assessment-score');
+                    $('.nxt-btn').attr('data', 'assessment_score');
                     
                 } else {
                     
+                    var next_question_id = 0;
+                    
+                    $('.materials_and_byline').each(function() {
+            
+                        if( ($(this).attr('style').contains('display: block;')) ||($(this).attr('style').contains('opacity: 1;')) ) {
+                
+                            next_question_id = parseInt($(this).attr('id').split('-')[1]) + 1;
+                        }
+                    });
+                    
+                    $('#assessment_next').attr('nxt_q_id', next_question_id.toString());
+                    
                     key = 'ques_time_up';
-                    btn_html = $('.assessment-popup-btn-wrapper-explanation').html();
+                    
+                    if(next_question_id == num_assessments) {
+                        
+                        $('.assessment-popup-btn-wrapper').html('');
+                    
+                        $('.nxt-btn span').text('View Score');
+                        $('.nxt-btn').removeAttr('id');
+                        $('.nxt-btn').addClass('show-assessment-score');
+                        $('.nxt-btn').attr('data', 'assessment_score');
+                    }
                 }
                 
+                btn_html = $('.assessment-popup-btn-wrapper-explanation').html();
                 pop_up_data = get_popup_data(key, user_score);
                 
                 $('.assessment-popup-header-label').html('');
@@ -101,8 +127,7 @@ $(document).ready(function(){
             }
         }
     });
-        
-    var num_assessments = 0;
+    
     $('.materials_and_byline').each(function() {
              
         num_assessments = num_assessments + 1;
@@ -163,9 +188,10 @@ $(document).ready(function(){
         
         var ques_time = get_ques_time(next_q_id);
         clock.setTime(ques_time);
-        clock.start();
+        clock.start(function() {
+            time_up = false;
+        });
         
-        console.log(total_time_taken);
         $('#q_id-'+curr_q_id).hide('slow', function() {
             $('#q_id-'+curr_q_id).attr('style', 'display: none;');
         });
@@ -175,7 +201,7 @@ $(document).ready(function(){
                         
             var set_height = setTimeout(function() {
                             
-                if( ($('#q_id-'+next_q_id).attr('style').contains('display: block;')) |($('#q_id-'+next_q_id).attr('style').contains('opacity: 1;')) ) {
+                if( ($('#q_id-'+next_q_id).attr('style').contains('display: block;')) || ($('#q_id-'+next_q_id).attr('style').contains('opacity: 1;')) ) {
                     
                     var height = 0;
                     $('#q_id-'+next_q_id).find('.content-post .answer-wrapper ul li').each(function() {
@@ -266,6 +292,7 @@ $(document).ready(function(){
         clock.stop(function(){
             time_up = false;
             total_time_taken += parseInt(clock.time);
+            return;
         });
         
         var current = $(this).parent('ul').parent('.answer-wrapper').parent('.content-post').parent('.materials_and_byline');
@@ -287,18 +314,12 @@ $(document).ready(function(){
         
         if( next_q_id == num_assessments ) {
             
-            assess_finished = true;
-            
-            $('.nxt-btn span').text('View Score');
-            $('.nxt-btn').removeAttr('id');
-            $('.nxt-btn').addClass('show-assessment-score');
-            $('.nxt-btn').attr('data', 'assessment_score');
-            
             clock.stop(function(){
                 time_up = false;
+                assess_finished = true;
             });
         }
-                
+        
         if(!checked) {
             $(this).attr('checked', 'checked');
             $(this).css('background-color', '#FFFDDC');
@@ -492,13 +513,13 @@ function get_popup_data(key, explanation){
         },
         'assess_time_out' : {
             'icon' : 'assessment_popup.png',
-            'header_label' : 'Time Out',
+            'header_label' : 'Game Over',
             'custom_message' : '<p style="color: #999; font-size: 30px; font-weight: 900; letter-spacing: 3px; text-align: center;">YOUR SCORE IS</p><p style="color: #000; font-size: 70px; font-weight: 900; letter-spacing: -1; margin: 35px 0; text-align: center; "> '+ explanation + ' / ' + $('#total_mark').val() + '</p>'
         },
         'ques_time_up' : {
             'icon' : 'assessment_popup.png',
-            'header_label' : 'Game Over',
-            'custom_message' : '<p style="color: #999; font-size: 30px; font-weight: 900; letter-spacing: 3px; text-align: center;">YOUR SCORE IS</p><p style="color: #000; font-size: 70px; font-weight: 900; letter-spacing: -1; margin: 35px 0; text-align: center; "> '+ explanation + ' / ' + $('#total_mark').val() + '</p>'
+            'header_label' : 'Time Up',
+            'custom_message' : '<p style="text-align: center;">Oops! Time up</p>'
         },
         'assess_explanation' : {
             'icon' : 'assessment_popup.png',

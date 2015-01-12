@@ -3306,4 +3306,121 @@ class home extends MX_Controller {
         
         $this->extra_params = $ar_params;
     }
+    
+    public function assessment() {
+        
+        $ar_js = array();
+        $ar_css = array(
+                "styles/layouts/tdsfront/css/post/social.css" => "screen"
+        );
+        $extra_js = '';
+        
+        $str_assesment = $this->uri->segment(2);
+        $assesment_id = end(explode('-', $str_assesment));
+        
+        $assessment = get_assessment($assesment_id);
+        
+        $data['assessment'] = (!$assessment) ? array() : $assessment;
+        
+        $s_content = $this->load->view('assessment', $data, true);
+        
+        $str_title = getCommonTitle();
+        
+        $meta_description = META_DESCRIPTION;
+        $keywords = KEYWORDS;
+        
+        $ar_params = array(
+            "javascripts"           => $ar_js,
+            "css"                   => $ar_css,
+            "extra_head"            => $extra_js,
+            "title"                 => $str_title,
+            "description"           => $meta_description,
+            "keywords"              => $keywords,
+            "side_bar"              => '',
+            "target"                => "index",
+            "content"               => $s_content
+        );
+        
+        $this->extra_params = $ar_params;
+//        var_dump();
+//        exit;
+        
+    }
+    
+    public function save_assessment() {
+        
+        $response = array();
+        if(!$this->input->is_ajax_request()){
+            $response['saved'] = false;
+            $response['error'] = 'Bad Request';
+            echo json_encode($response);
+            exit;
+        }
+        
+        $data = trim($_POST['data'], ',');
+        
+        $ar_data = explode('_', $data);
+        
+        $assessment_id = $ar_data[0];
+        $assessment = get_assessment($assessment_id);
+        
+        $total_mark = 0;
+        $user_mark = 0;
+        $ar_q_a = explode(',', $ar_data[1]);
+        
+        foreach($assessment->question as $question) {
+            $total_mark += $question->mark;
+            
+            foreach ($ar_q_a as $str_q_a) {
+                $q_a = explode('-', $str_q_a);
+
+                $q = $q_a[0];
+                $a = $q_a[1];
+                
+                if($question->id == $q) {
+                    
+                    foreach ($question->option as $option) {
+                        
+                        if ($option->id == $a) {
+                            
+                            if ($option->correct == 1) {
+                                $user_mark += $question->mark;
+                            }   
+                        }   
+                    }
+                }
+            }
+        }
+        
+        if(free_user_logged_in()) {
+            
+            $user_id = get_free_user_session('id');
+            
+            $obj_assessment_mark = new Assesment_mark();
+            $assessment_mark = $obj_assessment_mark->find_assessment_mark($user_id, $assessment_id, array('id','mark'));
+            
+            if ( ($assessment_mark != false) && ($user_mark > $assessment_mark->mark) ) {
+                
+                $this->db->update('assesment_mark', array('mark' => $user_mark, 'created_date' => date('Y-m-d H:i:s')), array('user_id' => $user_id, 'assessment_id' => $assessment_id));
+                $response['highest_score'] = $user_mark;
+                
+            } elseif ( ($assessment_mark != false) && ($user_mark <= $assessment_mark->mark) ) {
+                $response['highest_score'] = $assessment_mark->mark;
+                
+            } else {
+                $obj_assessment_mark->user_id = $user_id;
+                $obj_assessment_mark->assessment_id = $assessment_id;
+                $obj_assessment_mark->mark = $user_mark;
+                $obj_assessment_mark->save();
+                
+                $response['highest_score'] = $user_mark;
+            }
+            $response['saved'] = true;
+        }
+        
+        $response['score'] = $user_mark;
+        $response['total_score'] = $total_mark;
+        echo json_encode($response);
+        exit;
+    }
 }

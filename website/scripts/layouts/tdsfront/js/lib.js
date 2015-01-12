@@ -757,6 +757,11 @@ $(document).ready(function(){
                 'header_label' : 'Magic Mart',
                 'custom_message' : 'Coming Soon.'
             },
+            'assessment_save_score' : {
+                'icon' : 'assessment_popup.png',
+                'header_label' : 'Save Score',
+                'custom_message' : ''
+            },
             'school_join' : {
                 'icon' : 'school_red.png',
                 'header_label' : 'Join To School',

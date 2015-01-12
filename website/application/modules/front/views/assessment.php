@@ -60,7 +60,7 @@
 
                     <div id="content" class="content-post">
                         <div class="answer-wrapper">
-                            <ul explanation="<?php echo (!empty($question->explanation)) ? $question->explanation : ''; ?>">
+                            <ul explanation="<?php echo (!empty($question->explanation)) ? $question->explanation : ''; ?>" time="<?php echo $question->time; ?>">
                                 <?php
                                 $j = 0;
 
@@ -163,6 +163,8 @@
     </button>
 </div>
 <!--   Assessment Pop up     -->
+
+<div id="assess_ladder_board"></div>
 
 <script type="text/javascript">var addthis_config = {"data_track_addressbar":false, "data_track_clickback" : false};</script>
 <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-52bca22436b47685" type="text/javascript"></script>

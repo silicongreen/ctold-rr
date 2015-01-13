@@ -32,7 +32,7 @@ class Cassignments extends CActiveRecord
           
 		return array(
                     'question' => array(self::HAS_MANY, 'Cquestion', 'assesment_id'),
-                    'post' => array(self::HAS_MANY, 'Post', 'assesment_id'),
+                    'post' => array(self::HAS_MANY, 'Post', 'assessment_id'),
 		);
 	}
         

@@ -112,7 +112,7 @@ class Cmark extends CActiveRecord
                 $response_array[$i]['school'] = $school;
                 $response_array[$i]['profile_image'] = $image;
                 
-                $response_array[$i]['id'] = $value['assessment']->id;
+                $response_array[$i]['assessment_id'] = $value['assessment']->id;
                 
                 //$response_array[$i]['highist_mark'] = $this->assessmentHighistMark($value['assessment']->id);
                 $response_array[$i]['mark'] = $value->mark;

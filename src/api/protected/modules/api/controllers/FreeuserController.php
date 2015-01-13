@@ -72,7 +72,7 @@ class FreeuserController extends Controller
         
         $id = Yii::app()->request->getPost('id');
         $limit = Yii::app()->request->getPost('limit');
-        if (!$user_id )
+        if (!$id )
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";

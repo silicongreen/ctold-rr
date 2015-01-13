@@ -150,6 +150,8 @@ class FreeuserController extends Controller
         $assessment_id = Yii::app()->request->getPost('assessment_id');
         $user_id = Yii::app()->request->getPost('user_id');
         $mark = Yii::app()->request->getPost('mark');
+        $time_taken = Yii::app()->request->getPost('time_taken');
+        $avg_time = Yii::app()->request->getPost('avg_time');
         if (!$assessment_id || (!$mark && $mark!==0) || !$user_id )
         {
             $response['status']['code'] = 400;
@@ -167,23 +169,54 @@ class FreeuserController extends Controller
                 $objcmark = new Cmark();
                 $objassessment = $objcmark->getUserMarkAssessment($user_id,$assessment_id);
                 $add = false;
+                $new = false;
                 if($objassessment)
                 {
+                    $marksobj = $objcmark->findByPk($objassessment->id);
                     if($objassessment->mark<$mark)
                     {
-                        $marksobj = $objcmark->findByPk($objassessment->id);
                         $marksobj->delete();
                         $add = true;
                     }
+                    else if($objassessment->mark==$mark && 
+                            ($objassessment->time_taken>$time_taken || 
+                            ($objassessment->time_taken==$time_taken &&  $objassessment->avg_time_per_ques>$avg_time))
+                            )
+                    { 
+                       $marksobj->delete();
+                       $add = true; 
+                    } 
+                    else
+                    {
+                        $marksobj->no_played = $marksobj->no_played+1;
+                        $marksobj->save();
+                    }     
                 }
                 else
                 {
                     $add = true;
+                    $new = true;
                 }  
                 if($add)
                 {
                     $objcmark->mark = $mark;
                     $objcmark->user_id = $user_id;
+                    if($time_taken)
+                    {
+                        $objcmark->time_taken = $time_taken;
+                    } 
+                    if($avg_time)
+                    {
+                        $objcmark->avg_time_per_ques = $avg_time;
+                    }
+                    if($new)
+                    {
+                        $objcmark->no_played = 1;
+                    }
+                    else
+                    {
+                        $objcmark->no_played = $marksobj->no_played+1;
+                    }    
                     $objcmark->assessment_id = $assessment_id;
                     $objcmark->save();
                     
@@ -1421,7 +1454,10 @@ class FreeuserController extends Controller
             }
             else
             {
-                $response['status']['code'] = 400;
+                $response['data']['total'] = 0;
+                $response['data']['has_next'] = false;
+                $response['data']['comments'] = array();
+                $response['status']['code'] = 200;
                 $response['status']['msg'] = "Success";  
             }    
         }

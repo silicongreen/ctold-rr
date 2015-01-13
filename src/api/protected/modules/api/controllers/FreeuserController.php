@@ -168,60 +168,73 @@ class FreeuserController extends Controller
             {
                 $objcmark = new Cmark();
                 $objassessment = $objcmark->getUserMarkAssessment($user_id,$assessment_id);
-                $add = false;
-                $new = false;
-                if($objassessment)
+                $can_play = true;
+                if(isset($objassessment->created_date))
                 {
-                    $marksobj = $objcmark->findByPk($objassessment->id);
-                    if($objassessment->mark<$mark)
+                   
+                    $can_play_date = date("Y-m-d H:i:s",  strtotime("-1 Day"));
+                    if($objassessment->created_date>$can_play_date)
                     {
-                        $marksobj->delete();
+                        $can_play = false;
+                    }
+                } 
+                if($can_play)
+                {
+                    $add = false;
+                    $new = false;
+                    if($objassessment)
+                    {
+                        $marksobj = $objcmark->findByPk($objassessment->id);
+                        if($objassessment->mark<$mark)
+                        {
+                            $marksobj->delete();
+                            $add = true;
+                        }
+                        else if($objassessment->mark==$mark && 
+                                ($objassessment->time_taken>$time_taken || 
+                                ($objassessment->time_taken==$time_taken &&  $objassessment->avg_time_per_ques>$avg_time))
+                                )
+                        { 
+                           $marksobj->delete();
+                           $add = true; 
+                        } 
+                        else
+                        {
+                            $marksobj->created_date = date("Y-m-d H:i:s");
+                            $marksobj->no_played = $marksobj->no_played+1;
+                            $marksobj->save();
+                        }     
+                    }
+                    else
+                    {
                         $add = true;
+                        $new = true;
+                    }  
+                    if($add)
+                    {
+                        $objcmark->mark = $mark;
+                        $objcmark->user_id = $user_id;
+                        if($time_taken)
+                        {
+                            $objcmark->time_taken = $time_taken;
+                        } 
+                        if($avg_time)
+                        {
+                            $objcmark->avg_time_per_ques = $avg_time;
+                        }
+                        if($new)
+                        {
+                            $objcmark->no_played = 1;
+                        }
+                        else
+                        {
+                            $objcmark->no_played = $marksobj->no_played+1;
+                        }    
+                        $objcmark->assessment_id = $assessment_id;
+                        $objcmark->save();
+
                     }
-                    else if($objassessment->mark==$mark && 
-                            ($objassessment->time_taken>$time_taken || 
-                            ($objassessment->time_taken==$time_taken &&  $objassessment->avg_time_per_ques>$avg_time))
-                            )
-                    { 
-                       $marksobj->delete();
-                       $add = true; 
-                    } 
-                    else
-                    {
-                        $marksobj->created_date = date("Y-m-d H:i:s");
-                        $marksobj->no_played = $marksobj->no_played+1;
-                        $marksobj->save();
-                    }     
-                }
-                else
-                {
-                    $add = true;
-                    $new = true;
-                }  
-                if($add)
-                {
-                    $objcmark->mark = $mark;
-                    $objcmark->user_id = $user_id;
-                    if($time_taken)
-                    {
-                        $objcmark->time_taken = $time_taken;
-                    } 
-                    if($avg_time)
-                    {
-                        $objcmark->avg_time_per_ques = $avg_time;
-                    }
-                    if($new)
-                    {
-                        $objcmark->no_played = 1;
-                    }
-                    else
-                    {
-                        $objcmark->no_played = $marksobj->no_played+1;
-                    }    
-                    $objcmark->assessment_id = $assessment_id;
-                    $objcmark->save();
-                    
-                }
+                }    
             }    
             
             

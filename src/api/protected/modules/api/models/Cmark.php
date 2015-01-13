@@ -64,6 +64,9 @@ class Cmark extends CActiveRecord
                 'select' => 'assessment.id,assessment.title,assessment.topic',
                 'with' =>array('question' => array(
                         'select' => 'question.mark'
+                    ),
+                    'post' => array(
+                        'select' => 'post.id'
                     )
                 )
             ),
@@ -111,7 +114,11 @@ class Cmark extends CActiveRecord
                 $response_array[$i]['user_name'] = $user_name;
                 $response_array[$i]['school'] = $school;
                 $response_array[$i]['profile_image'] = $image;
-                
+                $response_array[$i]['pid'] = 0;
+                if(isset($value['assessment']['post']) && count($value['assessment']['post'])>0)
+                {
+                    $response_array[$i]['pid'] = $value['assessment']['post'][0]->id;
+                }
                 $response_array[$i]['assessment_id'] = $value['assessment']->id;
                 
                 //$response_array[$i]['highist_mark'] = $this->assessmentHighistMark($value['assessment']->id);
@@ -144,8 +151,12 @@ class Cmark extends CActiveRecord
         $criteria->with = array(
             'assessment' => array(
                 'select' => 'assessment.id,assessment.title,assessment.topic',
-                'with' =>array('question' => array(
+                'with' =>array(
+                    'question' => array(
                         'select' => 'question.mark'
+                    ),
+                    'post' => array(
+                        'select' => 'post.id'
                     )
                 )
             )
@@ -158,6 +169,11 @@ class Cmark extends CActiveRecord
             $i = 0;
             foreach ($data as $value)
             {
+                $response_array[$i]['pid'] = 0;
+                if(isset($value['assessment']['post']) && count($value['assessment']['post'])>0)
+                {
+                    $response_array[$i]['pid'] = $value['assessment']['post'][0]->id;
+                }
                 $response_array[$i]['id'] = $value['assessment']->id;
                 $response_array[$i]['highist_mark'] = $this->assessmentHighistMark($value['assessment']->id);
                 $response_array[$i]['mark'] = $value->mark;

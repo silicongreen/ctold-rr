@@ -1,9 +1,9 @@
 <link rel="stylesheet" href="<?php echo base_url('scripts/FlipClock/compiled/flipclock.css') ?>">
 <link rel="stylesheet" href="<?php echo base_url('styles/layouts/tdsfront/css/assessment.css') ?>">
 <div style="width: 77%; min-height:250px;" class="container">
-    
+
     <?php if (free_user_logged_in()) { ?>
-    <input type="hidden" value="<?php echo get_free_user_session('id'); ?>" id="asses_id">
+        <input type="hidden" value="<?php echo get_free_user_session('id'); ?>" id="asses_id">
     <?php } ?>
     <input type="hidden" value="<?php echo (!empty($assessment->use_time) ) ? $assessment->time : 0; ?>" id="assess_time">
     <input type="hidden" value="<?php echo (!empty($assessment->higistmark) ) ? $assessment->higistmark : 0; ?>" id="highest_score">
@@ -78,17 +78,17 @@
                                 } ?>
                             </ul>
 
-<!--                            <div class="assessment-next-previous col-lg-2">
-
-                                <div class="assessment-previous">
-                                    <div class="assessment-previous-arrow"></div>
-                                </div>
-
-                                <div class="assessment-next">
-                                    <div class="assessment-next-arrow"></div>
-                                </div>
-
-                            </div>-->
+                            <!--                            <div class="assessment-next-previous col-lg-2">
+                            
+                                                            <div class="assessment-previous">
+                                                                <div class="assessment-previous-arrow"></div>
+                                                            </div>
+                            
+                                                            <div class="assessment-next">
+                                                                <div class="assessment-next-arrow"></div>
+                                                            </div>
+                            
+                                                        </div>-->
 
                         </div>
 
@@ -108,7 +108,7 @@
                     Submit
                 </button>
             </div>
-            
+
             <hr> 
 
 
@@ -123,9 +123,7 @@
     <div id="assessment-popup-wrapper">
 
         <div class="assessment-popup-header">
-            <div class="f2 assessment-popup-header-label">
-
-            </div>
+            <div class="f2 assessment-popup-header-label"></div>
             <div class="assessment-popup-icon-wrapper">
                 <img src="/styles/layouts/tdsfront/image/good_read_red_icon.png" width="75" />
             </div>
@@ -136,7 +134,7 @@
 
             <div class="assessment_custom_message"></div>
             <div class="assessment_common_message"></div>
-
+            <div class="clearfix"></div>
             <div class="assessment-popup-btn-wrapper">
                 <button class="red" type="button" id="start_assessment_now">
                     <span class="clearfix f2">
@@ -162,9 +160,87 @@
         </span>
     </button>
 </div>
+
+<div class="assessment-popup-btn-wrapper-explanation" style="display: none;">
+    <button class="red" type="button" id="assessment_explanation">
+        <span class="clearfix f2">
+            Explanation
+        </span>
+    </button>
+
+    <button class="red nxt-btn" type="button" id="assessment_next">
+        <span class="clearfix f2">
+            Next
+        </span>
+    </button>
+</div>
 <!--   Assessment Pop up     -->
 
-<div id="assess_ladder_board"></div>
+<div id="assess_ladder_board">
+    <div class="col-lg-12 ladder_board_title">
+        Current Leader Board
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Score</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <div>Arif Lira Rahman</div>
+                    <div>Notre Dame College</div>
+                </td>
+                <td>
+                    <div>50</div>
+                    <div>Time : 2 Min</div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>Ehsanur Rahman Abir</div>
+                    <div>Notre Dame College</div>
+                </td>
+                <td>
+                    <div>50</div>
+                    <div>Time : 1 . 49 Min</div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>Arif Lira Rahman</div>
+                    <div>Notre Dame College</div>
+                </td>
+                <td>
+                    <div>50</div>
+                    <div>Time : 2 Min</div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>Ehsanur Rahman Abir</div>
+                    <div>Notre Dame College</div>
+                </td>
+                <td>
+                    <div>50</div>
+                    <div>Time : 1 . 49 Min</div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>Ehsanur Rahman Abir</div>
+                    <div>Notre Dame College</div>
+                </td>
+                <td>
+                    <div>50</div>
+                    <div>Time : 1 . 49 Min</div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
 <script type="text/javascript">var addthis_config = {"data_track_addressbar":false, "data_track_clickback" : false};</script>
 <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-52bca22436b47685" type="text/javascript"></script>

@@ -829,7 +829,7 @@ if( !function_exists("get_assessment"))
         $CI = &get_instance();
         
         $url = get_curl_url("getassesment");
-        $fields_string = "request_llicence=fa@#25896321&assesment_id=" . $assesment_id . "&webview=" . $webview;
+        $fields_string = "request_llicence=fa@#25896321&assesment_id=" . $assesment_id . "&webview=" . $webview . "&limit=5";
         
         //start curl
         $ch = curl_init();

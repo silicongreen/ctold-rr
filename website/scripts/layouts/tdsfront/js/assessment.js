@@ -98,6 +98,7 @@ $(document).ready(function(){
                 btn_html = $('.assessment-popup-btn-wrapper-explanation').html();
                 pop_up_data = get_popup_data(key, user_score);
                 
+                $('#assessment-popup-wrapper').css('width', '450px');
                 $('.assessment-popup-header-label').html('');
                 $('.assessment-popup-header-label').html(pop_up_data.header_label);
                     
@@ -153,7 +154,8 @@ $(document).ready(function(){
     var key = 'asssessment_start_now';
             
     var pop_up_data =  get_popup_data(key, '');
-        
+    
+    $('#assessment-popup-wrapper').css('width', '700px');
     $('.assessment-popup-header-label').html('');
     $('.assessment-popup-header-label').html(pop_up_data.header_label);
             
@@ -167,7 +169,7 @@ $(document).ready(function(){
     
     $.fancybox({
         'content' : html_before_login_popup,
-        'width': 450,
+        'width': 700,
         'transitionIn': 'fade',
         'transitionOut': 'fade',
         'openEffect': 'elastic',
@@ -335,7 +337,8 @@ $(document).ready(function(){
             }
             
             var pop_up_data =  get_popup_data(key, '');
-    
+            
+            $('#assessment-popup-wrapper').css('width', '450px');
             $('.assessment-popup-header-label').html('');
             $('.assessment-popup-header-label').html(pop_up_data.header_label);
         
@@ -387,7 +390,8 @@ $(document).ready(function(){
         
         var btn_html = $('.assessment-popup-btn-wrapper-explanation').children().eq(1);
         var pop_up_data =  get_popup_data(key, user_score);
-    
+        
+        $('#assessment-popup-wrapper').css('width', '450px');
         $('.assessment-popup-header-label').html('');
         $('.assessment-popup-header-label').html(pop_up_data.header_label);
         
@@ -432,6 +436,7 @@ $(document).ready(function(){
         
         var pop_up_data =  get_popup_data(key, explanation);
         
+        $('#assessment-popup-wrapper').css('width', '450px');
         $('.assessment-popup-header-label').html('');
         $('.assessment-popup-header-label').html(pop_up_data.header_label);
         
@@ -494,7 +499,7 @@ function get_popup_data(key, explanation){
         'asssessment_start_now' : {
             'icon' : 'assessment_popup.png',
             'header_label' : 'Quiz',
-            'custom_message' : '<p>No. of Question&nbsp;: ' + $('#nos_questions').val() + '</p><p>Total Score&nbsp;: ' + $('#total_mark').val() + '</p><p>Highest Score&nbsp;: ' + $('#highest_score').val() + '</p><p>Quiz Time&nbsp;: ' + $('#assess_time').val() + ' : 00 Minute</p><p>Total Played&nbsp;: ' + $('#total_played').val() + '</p>'
+            'custom_message' : '<div id="pre_assessment_details"><p>No. of Question&nbsp;: ' + $('#nos_questions').val() + '</p><p>Total Score&nbsp;: ' + $('#total_mark').val() + '</p><p>Highest Score&nbsp;: ' + $('#highest_score').val() + '</p><p>Quiz Time&nbsp;: ' + $('#assess_time').val() + ' : 00 Minute</p><p>Total Played&nbsp;: ' + $('#total_played').val() + '</p></div><div id="leader_board" >' + $('#assess_ladder_board').html() + '</div>'
         },
         'assess_wrong' : {
             'icon' : 'assessment_popup.png',

@@ -171,7 +171,7 @@ class FreeuserController extends Controller
                 $can_play = true;
                 if(isset($objassessment->created_date))
                 {
-                   
+                    $last_played = $objassessment->created_date;
                     $can_play_date = date("Y-m-d H:i:s",  strtotime("-1 Day"));
                     if($objassessment->created_date>$can_play_date)
                     {
@@ -214,6 +214,7 @@ class FreeuserController extends Controller
                     {
                         $objcmark->mark = $mark;
                         $objcmark->user_id = $user_id;
+                        $objcmark->created_date = date("Y-m-d H:i:s");
                         if($time_taken)
                         {
                             $objcmark->time_taken = $time_taken;
@@ -234,12 +235,25 @@ class FreeuserController extends Controller
                         $objcmark->save();
 
                     }
+                    $response['data']['last_played'] = date("Y-m-d H:i:s");
+                    $response['status']['code'] = 200;
+                    $response['status']['msg'] = "success";
+                }  
+                else
+                {
+                   $response['data']['last_played'] = $last_played;
+                   $response['status']['code'] = 404;
+                   $response['status']['msg'] = "Can-play-now";  
                 }    
+            }
+            else
+            {
+                $response['status']['code'] = 400;
+                $response['status']['msg'] = "Bad Request";
             }    
             
             
-            $response['status']['code'] = 200;
-            $response['status']['msg'] = "success";
+            
                 
                
         } 

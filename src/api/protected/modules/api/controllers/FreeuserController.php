@@ -29,7 +29,7 @@ class FreeuserController extends Controller
                     , "schoolsearch", "school", "createschool", "schoolpage", "schoolactivity", "candle"
                     , "garbagecollector","getschoolteacherbylinepost","createcachesinglenews","addwow", 
                     'set_preference','addcomments','getcomments', 'get_preference','addgcm','getallgcm',
-                    'getschoolinfo','joinschool','candleschool','leaveschool','folderdelete'),
+                    'getschoolinfo','joinschool','candleschool','leaveschool','folderdelete','assesmenttopscore'),
                 'users' => array('*'),
             ),
             array('deny', // deny all users
@@ -65,7 +65,37 @@ class FreeuserController extends Controller
         }
         echo CJSON::encode($response);
         Yii::app()->end();
-    }        
+    } 
+    
+    public function actionAssesmentTopScore()
+    {
+        
+        $id = Yii::app()->request->getPost('id');
+        $limit = Yii::app()->request->getPost('limit');
+        if (!$user_id )
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        else
+        {
+            
+            $objcmark = new Cmark();
+            if(!$limit)
+            {
+                $limit = 100;
+            }    
+            $objassessment = $objcmark->getTopMark($id,$limit);
+            $response['data']['assesment'] = $objassessment;
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "success";
+                
+               
+        } 
+        echo CJSON::encode($response);
+        Yii::app()->end();
+
+    }
 
 
     public function actionAssesmentHistory()
@@ -174,6 +204,7 @@ class FreeuserController extends Controller
     {
         $assesment_id = Yii::app()->request->getPost('assesment_id');
         $webview = Yii::app()->request->getPost('webview');
+        $limit = Yii::app()->request->getPost('limit');
         if (!$assesment_id )
         {
             $response['status']['code'] = 400;
@@ -193,6 +224,19 @@ class FreeuserController extends Controller
             
             $assesmentObj = new Cassignments();
             $cmark = new Cmark();
+            if(!$limit)
+            {
+                if($webview)
+                {
+                    $limit = 10;
+                } 
+                else
+                {
+                    $limit = 3;
+                } 
+            }
+                
+            $response['data']['score_board'] = $cmark->getTopMark($assesment_id,$limit); 
             $response['data']['higistmark'] = $cmark->assessmentHighistMark($assesment_id); 
             $response['data']['assesment'] = $assesmentObj->getAssessment($assesment_id,$webview);
             $response['data']['assesment']['higistmark'] = $response['data']['higistmark'];

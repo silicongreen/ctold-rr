@@ -14,7 +14,11 @@
         </div>
         <div class="intro-post <?php if($is_exclusive_found===true): ?>col-xs-6<?php endif; ?>">
             <div class="post-thumb " style="width: 50%; padding: 10px 10px; float: left;">
-                <img class="ad" src="<?php echo $arCustomNews['image']; ?>" class="attachment-post-thumbnail wp-post-image" alt="<?php echo $news->headline; ?>" <?php if($is_exclusive_found===true): ?>style="width:475px;height:265px; "<?php endif; ?>>
+                <?php if (!is_null($news->lead_material) && strlen(trim($news->lead_material)) > 0) : ?>
+                    <img class="ad" src="<?php echo $arCustomNews['lead_material']; ?>" class="attachment-post-thumbnail wp-post-image" alt="<?php echo $news->headline; ?>" <?php if($is_exclusive_found===true): ?>style="width:475px;height:265px; "<?php endif; ?>>
+                <?php else: ?>
+                    <img class="ad" src="<?php echo $arCustomNews['image']; ?>" class="attachment-post-thumbnail wp-post-image" alt="<?php echo $news->headline; ?>" <?php if($is_exclusive_found===true): ?>style="width:475px;height:265px; "<?php endif; ?>>
+                <?php endif; ?>
             </div><!-- post thumb -->
             <div class="post-thumb " style="width: 50%; padding: 10px 10px; float: left; position: relative;">
                 <div style="background: url('<?php echo base_url('styles/layouts/tdsfront/images/bg-quote-box.png'); ?>') no-repeat; position: absolute; top: 0; left: 0; width: 38px; height: 31px; "></div>

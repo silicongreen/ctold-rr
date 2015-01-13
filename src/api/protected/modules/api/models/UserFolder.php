@@ -210,7 +210,7 @@ class UserFolder extends CActiveRecord
         if ($obj_folder)
         {
             $obj_folder->deleteByPk($obj_folder->id);
-            return true;
+            return $obj_folder->id;
         }
         else
         {

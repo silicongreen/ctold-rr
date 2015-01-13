@@ -53,6 +53,8 @@ class FreeuserController extends Controller
             $return = $fobj->removeFolder($folder_name, $user_id, $folders);
             if($return)
             {
+                $goodread = new UserGoodRead();
+                $goodread->deleteAll("folder_id=:folder_id",array(':folder_id'=>$return));
                 $response['status']['code'] = 200;
                 $response['status']['msg'] = "success";
             }

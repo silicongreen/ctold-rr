@@ -39,7 +39,7 @@ class FreeschoolController extends Controller
         if (!$school_id)
         {
             $response['status']['code'] = 400;
-            $response['status']['msg'] = "Bad Request";
+            $response['status']['msg'] = "BAD_REQUEST";
         }
         else
         {       
@@ -48,14 +48,15 @@ class FreeschoolController extends Controller
             
             if(!$school)
             {
-                $response['status']['code'] = 404;
-                $response['status']['msg'] = "NO_DATA_FOUND";
+                $response['data'] = NULL;
+                $response['status']['code'] = 200;
+                $response['status']['msg'] = "NO_SCHOOL_FOUND";
             }
             else
             {
                 $response['data'] = (!empty($school['cover'])) ? $school : NULL;
                 $response['status']['code'] = 200;
-                $response['status']['msg'] = "success";
+                $response['status']['msg'] = "SUCCESS";
             }
         }
         

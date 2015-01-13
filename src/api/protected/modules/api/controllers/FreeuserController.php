@@ -188,6 +188,7 @@ class FreeuserController extends Controller
                     } 
                     else
                     {
+                        $marksobj->created_date = date("Y-m-d H:i:s");
                         $marksobj->no_played = $marksobj->no_played+1;
                         $marksobj->save();
                     }     
@@ -237,6 +238,7 @@ class FreeuserController extends Controller
     {
         $assesment_id = Yii::app()->request->getPost('assesment_id');
         $webview = Yii::app()->request->getPost('webview');
+        $user_id = Yii::app()->request->getPost('user_id');
         $limit = Yii::app()->request->getPost('limit');
         if (!$assesment_id )
         {
@@ -268,7 +270,27 @@ class FreeuserController extends Controller
                     $limit = 3;
                 } 
             }
-                
+            $last_played = "";
+            $can_play = true;
+            if($user_id)
+            {
+                $objcmark = new Cmark();
+                $objassessment = $objcmark->getUserMarkAssessment($user_id,$assesment_id);
+                if(isset($objassessment->created_date))
+                {
+                    $last_played = $objassessment->created_date;
+                    
+                    $can_play_date = date("Y-m-d H:i:s",  strtotime("-1 Day"));
+                    if($objassessment->created_date>$can_play_date)
+                    {
+                        $can_play = false;
+                    }
+                }     
+            }
+            
+            $response['data']['current_date'] = date("Y-m-d H:i:s");
+            $response['data']['last_played'] = $last_played;
+            $response['data']['can_play'] = $can_play;
             $response['data']['score_board'] = $cmark->getTopMark($assesment_id,$limit); 
             $response['data']['higistmark'] = $cmark->assessmentHighistMark($assesment_id); 
             $response['data']['assesment'] = $assesmentObj->getAssessment($assesment_id,$webview);

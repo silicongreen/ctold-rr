@@ -183,7 +183,7 @@ class Cmark extends CActiveRecord
     public function getUserMarkAssessment($user_id, $assessment_id)
     {
         $criteria = new CDbCriteria();
-        $criteria->select = 't.mark,t.id,t.no_played,t.time_taken,t.avg_time_per_ques';
+        $criteria->select = 't.mark,t.id,t.no_played,t.time_taken,t.avg_time_per_ques,t.created_date';
         $criteria->compare('t.user_id', $user_id);
         $criteria->compare('t.assessment_id', $assessment_id);
 

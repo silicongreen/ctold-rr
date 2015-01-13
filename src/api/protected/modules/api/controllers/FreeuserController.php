@@ -1697,7 +1697,8 @@ class FreeuserController extends Controller
 
 
             $response['data']['post']           = $singlepost;
-            $response['data']['comments_total']  = $comments_data;
+            $response['data']['post']['comments_total'] = $comments_data;
+            //$response['data']['comments_total']  = $comments_data;
             $response['status']['code']         = 200;
             $response['status']['msg']          = "DATA_FOUND";
         }

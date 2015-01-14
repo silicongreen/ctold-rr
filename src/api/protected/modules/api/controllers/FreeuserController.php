@@ -41,7 +41,7 @@ class FreeuserController extends Controller
     public function actionRelatedNews()
     {
         $id = Yii::app()->request->getPost('id');
-        if (!$user_id)
+        if (!$id)
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
@@ -50,7 +50,7 @@ class FreeuserController extends Controller
         {       
             
             $objrelated = new RelatedNews();
-            $rnews = $objrelated->getRelatedNews();
+            $rnews = $objrelated->getRelatedNews($id);
             $post_data = array();
             $i = 0;
             foreach($rnews as $value)

@@ -2311,7 +2311,9 @@ class home extends MX_Controller {
         $array_items = array('free_user' => array());
         $this->session->unset_userdata($array_items);
         $this->session->sess_destroy();
+        set_type_cookie(1);
         redirect(base_url());
+        
     }
     
     private function set_user_session($obj_user, $pwd = NULL){

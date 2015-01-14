@@ -2015,6 +2015,40 @@ if(!function_exists('get_notification'))
     }
 }
 
+if(!function_exists('set_type_cookie'))
+{
+    function set_type_cookie($user_type) 
+    {
+        $cookie = array(
+                'name'   => 'user_type',
+                'value'  =>  $user_type,
+                'expire' => '86500'
+        );
+        $CI = & get_instance();
+        $CI->input->set_cookie($cookie);
+        
+    }
+}
+
+if(!function_exists('get_type_cookie'))
+{
+    function get_type_cookie() 
+    {
+        $CI = & get_instance();
+        $user_type = $CI->input->cookie('user_type');
+        if($user_type)
+        {
+           return $user_type; 
+        }
+        else
+        {
+           return 1;
+        }    
+        
+        
+    }
+}
+
 if(!function_exists('get_language'))
 {
     function get_language( $lng = NULL) 

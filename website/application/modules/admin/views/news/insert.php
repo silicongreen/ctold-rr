@@ -173,6 +173,17 @@
                         </div>
 
                     </fieldset>
+                    <fieldset class="label_side top">
+                        <label for="required_field">Assessment<span>Select only if post has assessment</span></label>
+                        <div class="clearfix">
+
+                            <?php
+                            echo form_dropdown('assessment_id', $assessment_array, $model->assessment_id);
+                            ?>
+                            
+                        </div>
+
+                    </fieldset>
                     <fieldset class="top">
                         <label for="required_field">Lead Link<span>Leave Empty if not needed(Game Link, Ad Link etc)</span></label>
                         <div>

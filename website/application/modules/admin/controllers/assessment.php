@@ -204,6 +204,7 @@ class assessment extends MX_Controller {
 
                 $obj_assesment_que->assesment_id = $assessment_id;
                 $obj_assesment_que->question = $this->input->post('question');
+                $obj_assesment_que->explanation = $this->input->post('explanation');
                 $obj_assesment_que->mark = $this->input->post('mark');
                 $obj_assesment_que->style = $this->input->post('style');
                 $obj_assesment_que->time = $this->input->post('time');
@@ -271,6 +272,7 @@ class assessment extends MX_Controller {
 
                 $obj_assesment_que->assesment_id = $assessment_id;
                 $obj_assesment_que->question = $this->input->post('question');
+                $obj_assesment_que->explanation = $this->input->post('explanation');
                 $obj_assesment_que->mark = $this->input->post('mark');
                 $obj_assesment_que->style = $this->input->post('style');
                 $obj_assesment_que->time = $this->input->post('time');

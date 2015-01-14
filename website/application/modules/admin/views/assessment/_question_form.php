@@ -24,6 +24,14 @@
                                 <div class="required_tag"></div>
                             </div>
                         </fieldset>
+                            
+                        <fieldset class="label_side top">
+                            <label for="required_field">Explanation</label>
+                            <div>
+                                <textarea class="ckeditor" id="explanation" name="explanation"><?php echo $question->explanation; ?></textarea>
+                                <div class="required_tag"></div>
+                            </div>
+                        </fieldset>
 
                         <fieldset class="label_side top">
                             <label for="required_field">Mark</label>

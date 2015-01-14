@@ -828,3 +828,87 @@ if(!function_exists('get_rand_images')){
         }
     }
 }
+
+if( !function_exists("get_assessment"))
+{
+    function get_assessment($assesment_id, $user_id = 0, $webview = 1)
+    {
+        $CI = &get_instance();
+        
+        $url = get_curl_url("getassesment");
+        $fields_string = "assesment_id=" . $assesment_id . "&webview=" . $webview . "&limit=5";
+        
+        if($user_id > 0) {
+            $fields_string .= "&user_id=" . $user_id;
+        }
+        
+        //start curl
+        $ch = curl_init();
+        curl_setopt($ch,CURLOPT_URL, $url);
+
+        curl_setopt($ch,CURLOPT_POST, count($fields));
+        curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER, 1);
+
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
+            'Accept: application/json',
+            'Content-Length: ' . strlen($fields_string)
+            )                                                                       
+        );    
+        //execute post
+        $result = curl_exec($ch);
+
+        //close connection
+        curl_close($ch);
+        //end curl
+        
+        $assesments = json_decode($result);
+        
+        if(count($assesments->data->assesment) > 0)
+        {
+            return $assesments->data;
+        }
+        
+        return false;
+    }
+}
+    
+if( !function_exists("get_assessment_leader_board"))
+{
+    function get_assessment_leader_board($assesment_id, $limit = 100)
+    {
+        $CI = &get_instance();
+        
+        $url = get_curl_url("assesmenttopscore");
+        $fields_string = "id=" . $assesment_id . "&limit=" . $limit;
+        
+        //start curl
+        $ch = curl_init();
+        curl_setopt($ch,CURLOPT_URL, $url);
+
+        curl_setopt($ch,CURLOPT_POST, count($fields));
+        curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER, 1);
+
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
+            'Accept: application/json',
+            'Content-Length: ' . strlen($fields_string)
+            )                                                                       
+        );    
+        //execute post
+        $result = curl_exec($ch);
+
+        //close connection
+        curl_close($ch);
+        //end curl
+        
+        $assesments = json_decode($result);
+        
+        if(count($assesments->data->assesment) > 0)
+        {
+            return $result;
+        }
+        
+        return false;
+    }
+}

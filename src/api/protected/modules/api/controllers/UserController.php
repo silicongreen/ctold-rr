@@ -46,6 +46,11 @@ class UserController extends Controller {
         $email = Yii::app()->request->getPost('email');
         $password = Yii::app()->request->getPost('password');
         $first_name = Yii::app()->request->getPost('first_name');
+        $paid_id = Yii::app()->request->getPost('paid_id');
+        $paid_username = Yii::app()->request->getPost('paid_username');
+        $paid_password = Yii::app()->request->getPost('paid_password');
+        $paid_school_id = Yii::app()->request->getPost('paid_school_id');
+        $paid_school_code = Yii::app()->request->getPost('paid_school_code');
         if(Yii::app()->request->getPost('user_type') && $email && !$freeuserObj->getFreeuser($email) && $password && $first_name)
         {
             $freeuserObj = new Freeusers();
@@ -53,6 +58,16 @@ class UserController extends Controller {
             $freeuserObj->password = $this->encrypt($password, $freeuserObj->salt);
             $freeuserObj->email = Yii::app()->request->getPost('email');
             $freeuserObj->user_type = Yii::app()->request->getPost('user_type');
+            if($paid_id)
+            $freeuserObj->paid_id = $paid_id;
+            if($paid_username)
+            $freeuserObj->paid_username = $paid_username;
+            if($paid_password)
+            $freeuserObj->paid_password = $paid_password;
+            if($paid_school_id)
+            $freeuserObj->paid_school_id = $paid_school_id;
+            if($paid_school_code)
+            $freeuserObj->paid_school_code = $paid_school_code;
             
             if (isset($_FILES['profile_image']['name']) && !empty($_FILES['profile_image']['name']))
             {

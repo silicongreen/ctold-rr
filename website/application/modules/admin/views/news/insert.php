@@ -767,7 +767,7 @@
                         Related  News Box
                     </h2>
                     <fieldset class="label_side top">
-                        <label for="required_field">Post Layout</label>
+                        <label for="required_field">Related News Type<span>Change for Assessment</span></label>
                         <div class="clearfix">
 
                             <?php

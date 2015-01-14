@@ -23,11 +23,9 @@ $(document).ready(function(){
     
     var user_score = 0;
     var time_up = false;
-    var assessment_time = 10;
     var total_time_taken = 0;
     var assess_finished = false;
     var num_assessments = 0;
-    //        var assessment_time = parseInt($('#assess_time').val()) * 60 - 1;
         
     var clock = $('.clock').FlipClock({
         clockFace: 'MinuteCounter',
@@ -42,9 +40,6 @@ $(document).ready(function(){
                 var key = '';
                 var btn_html = '';
                 var pop_up_data = '';
-                
-                console.log(time_up);
-                console.log(assess_finished);
                 
                 if( (assess_finished == true) && (time_up == false) ) {
                     
@@ -268,7 +263,10 @@ $(document).ready(function(){
             
     $(document).on('click', '.btn-assessment-submit', function() {
         
-        var assessment = get_user_score();
+        var assessment = get_user_score(total_time_taken);
+        
+        console.log(total_time_taken);
+        return false;
         
         $.ajax({
             url : $('#base_url').val() + 'save_assessment',
@@ -291,17 +289,22 @@ $(document).ready(function(){
             return false;
         }
         
-        clock.stop(function(){
-            time_up = false;
-            total_time_taken += parseInt(clock.time);
-            return;
-        });
-        
         var current = $(this).parent('ul').parent('.answer-wrapper').parent('.content-post').parent('.materials_and_byline');
         var current_id = current.attr('id').split('-')[1];
         var current_q_id = parseInt(current_id);
         var next_q_id = current_q_id + 1;
         $('#assessment_next').attr('nxt_q_id', next_q_id.toString());
+        
+        clock.stop(function(){
+            time_up = false;
+            
+            var ques_time = get_ques_time(current_q_id);
+            var clock_time = parseInt(clock.time);
+            var time_taken = ques_time - clock_time;
+            
+            total_time_taken += time_taken;
+            return;
+        });
         
         var checked = false; 
         var this_ul = $(this).parent('ul');
@@ -382,8 +385,8 @@ $(document).ready(function(){
             $('.nxt-btn').addClass('before-login-user');
             $('.nxt-btn').attr('data', 'assessment_save_score');
             
-            get_user_score();
             total_time_taken += parseInt(clock.time);
+            get_user_score(total_time_taken);
         } else {
             $('.nxt-btn').addClass('btn-assessment-submit');
         }
@@ -477,6 +480,96 @@ $(document).ready(function(){
         $.fancybox.close();
         clock.start();
     });
+    
+    $(document).on('click', '#full_leader_board', function(){
+        
+        var assessment_id = $('#assessment_title').attr('data');
+        
+        $.ajax({
+            url : $('#base_url').val() + 'assessment_leader_board',
+            type : 'post',
+            dataType : 'json',
+            data : {
+                assessment_id : assessment_id
+            },
+            success : function(data) {
+                
+                var response = JSON.parse(data.leader_board);
+                var lb_rows = ''
+                
+                $.each(response.data.assesment,function(k, v) {
+                    
+                    var time = parseInt(v.time_taken);
+                    var minutes = Math.floor(time / 60);
+                    var seconds = time - minutes * 60;
+                    var profile_img = $('#base_url').val() + 'styles/layouts/tdsfront/image/C.png';
+                    
+                    if(v.profile_image != '') {
+                        profile_img = v.profile_image;
+                    }
+                    
+                    lb_rows += '<tr>' +
+                                    '<td>' +
+                                        '<div class="ladder_board_user_name f2">' +
+                                            '<img src="' + profile_img + '">' +
+                                            v.user_name +
+                                        '</div>' +
+                                        '<div class="ladder_board_school_name f2">'+ v.school +'</div>' +
+                                    '</td>' +
+                                    '<td>' +
+                                        '<div class="ladder_board_mark f2">'+ v.mark +'</div>' +
+                                        '<div class="ladder_board_time f2">' + minutes + ':' + seconds + ' Minute</div>' +
+                                    '</td>' +
+                                '</tr>';
+                    
+                });
+                
+                $('.ladder_board_title').text('');
+                $('.ladder_board_title').html('Top 100');
+                
+                $('#assess_ladder_board table tbody').html('');
+                $('#assess_ladder_board table tbody').html(lb_rows);
+                
+                var pop_up_data = get_popup_data('assess_full_leader_board', '');
+                
+                $('.assessment-popup-btn-wrapper').html('');
+                
+                var btn_html = '<button class="red" type="button" id="start_assessment_now" style="float: none;"><span class="clearfix f2">Start Now</span></button>';
+                
+                $('#assessment-popup-wrapper').css('width', '700px');
+                $('.assessment-popup-header-label').html('');
+                $('.assessment-popup-header-label').html(pop_up_data.header_label);
+        
+                $('.assessment-popup-icon-wrapper').html('');
+                $('.assessment-popup-icon-wrapper').html('<img src="/styles/layouts/tdsfront/image/' + pop_up_data.icon + '" width="75" />');
+        
+                $('.assessment_custom_message').html('');
+                $('.assessment_custom_message').html(pop_up_data.custom_message);
+            
+                $('.assessment-popup-btn-wrapper').html('');
+                $('.assessment-popup-btn-wrapper').html(btn_html);
+        
+                var html_before_login_popup = $('#assessment-popup-fancy').html();
+
+                $.fancybox({
+                    'content' : html_before_login_popup,
+                    'width': 700,
+                    'transitionIn': 'fade',
+                    'transitionOut': 'fade',
+                    'openEffect': 'elastic',
+                    'openSpeed' : 350,
+                    'fitToView' : true,
+                    'autoSize' : true,
+                    'padding': 0,
+                    'margin': 0
+                });
+                
+            },
+            error : function() {}
+        });
+        
+        
+    });
             
 //    var myEvent = window.attachEvent || window.addEventListener;
 //    var chkevent = window.attachEvent ? 'onbeforeunload' : 'beforeunload'; /// make IE7, IE8 compatable
@@ -499,46 +592,56 @@ function get_popup_data(key, explanation){
         'asssessment_start_now' : {
             'icon' : 'assessment_popup.png',
             'header_label' : 'Quiz',
-            'custom_message' : '<div id="pre_assessment_details"><p>No. of Question&nbsp;: ' + $('#nos_questions').val() + '</p><p>Total Score&nbsp;: ' + $('#total_mark').val() + '</p><p>Highest Score&nbsp;: ' + $('#highest_score').val() + '</p><p>Quiz Time&nbsp;: ' + $('#assess_time').val() + ' : 00 Minute</p><p>Total Played&nbsp;: ' + $('#total_played').val() + '</p></div><div id="leader_board" >' + $('#assess_ladder_board').html() + '</div>'
+            'custom_message' : '<div id="pre_assessment_details"><p class="f2">No. of Question&nbsp;: ' + $('#nos_questions').val() + '</p><p class="f2">Total Score&nbsp;: ' + $('#total_mark').val() + '</p><p class="f2">Highest Score&nbsp;: ' + $('#highest_score').val() + '</p><p class="f2">Quiz Time&nbsp;: ' + $('#assess_time').val() + ' : 00 Minute</p><p class="f2">Total Played&nbsp;: ' + $('#total_played').val() + '</p></div><div id="leader_board" >' + $('#assess_ladder_board').html() + '</div>'
         },
         'assess_wrong' : {
             'icon' : 'assessment_popup.png',
             'header_label' : 'Quiz',
-            'custom_message' : '<p style="text-align: center;">Oops! Wrong answer.</p>'
+            'custom_message' : '<p class="f2" style="text-align: center;">Oops! Wrong answer.</p>'
         },
         'assess_correct' : {
             'icon' : 'assessment_popup.png',
             'header_label' : 'Quiz',
-            'custom_message' : '<p style="text-align: center;">Congratulations! You got it right.</p>'
+            'custom_message' : '<p class="f2" style="text-align: center;">Congratulations! You got it right.</p>'
         },
         'assessment_score' : {
             'icon' : 'assessment_popup.png',
             'header_label' : 'Game Over',
-            'custom_message' : '<p style="color: #999; font-size: 30px; font-weight: 900; letter-spacing: 3px; text-align: center;">YOUR SCORE IS</p><p style="color: #000; font-size: 70px; font-weight: 900; letter-spacing: -1; margin: 35px 0; text-align: center; "> '+ explanation + ' / ' + $('#total_mark').val() + '</p>'
+            'custom_message' : '<p class="f2" style="color: #999; font-size: 30px; font-weight: 900; letter-spacing: 3px; text-align: center;">YOUR SCORE IS</p><p style="color: #000; font-size: 70px; font-weight: 900; letter-spacing: -1; margin: 35px 0; text-align: center; "> '+ explanation + ' / ' + $('#total_mark').val() + '</p>'
         },
         'assess_time_out' : {
             'icon' : 'assessment_popup.png',
             'header_label' : 'Game Over',
-            'custom_message' : '<p style="color: #999; font-size: 30px; font-weight: 900; letter-spacing: 3px; text-align: center;">YOUR SCORE IS</p><p style="color: #000; font-size: 70px; font-weight: 900; letter-spacing: -1; margin: 35px 0; text-align: center; "> '+ explanation + ' / ' + $('#total_mark').val() + '</p>'
+            'custom_message' : '<p class="f2" style="color: #999; font-size: 30px; font-weight: 900; letter-spacing: 3px; text-align: center;">YOUR SCORE IS</p><p style="color: #000; font-size: 70px; font-weight: 900; letter-spacing: -1; margin: 35px 0; text-align: center; "> '+ explanation + ' / ' + $('#total_mark').val() + '</p>'
         },
         'ques_time_up' : {
             'icon' : 'assessment_popup.png',
             'header_label' : 'Time Up',
-            'custom_message' : '<p style="text-align: center;">Oops! Time up</p>'
+            'custom_message' : '<p class="f2" style="text-align: center;">Oops! Time up</p>'
+        },
+        'assess_full_leader_board' : {
+            'icon' : 'assessment_popup.png',
+            'header_label' : 'Leader Board',
+            'custom_message' : '<div class="full_leader_board_wrapper" id="leader_board">' + $('#assess_ladder_board').html() + '</div>'
         },
         'assess_explanation' : {
             'icon' : 'assessment_popup.png',
             'header_label' : 'Explanation',
-            'custom_message' : '<p>' + explanation + '</p>'
+            'custom_message' : '<p class="f2">' + explanation + '</p>'
         }
     };
     
     return pop_up_data[key];
 }
 
-function get_user_score() {
+function get_user_score(total_time_taken) {
     
     var assessment = $('#assessment_title').attr('data') + '_';
+    
+    if(total_time_taken > 0) {
+        assessment += total_time_taken + '_';
+    }
+    
     $('.materials_and_byline .content-post .answer-wrapper ul li').each(function() {
         if($(this).attr('checked') == 'checked') {
             var q_id = $(this).parent('ul').parent('.answer-wrapper').parent('.content-post').siblings('.ques_id').attr('data');
@@ -559,8 +662,8 @@ function get_ques_time(ques_id) {
         
     var ques_time = $('#q_id-' + ques_id).find('.content-post .answer-wrapper ul').attr('time');
     
-    //    return parseInt(ques_time);
-    return 5;
+    return parseInt(ques_time);
+//    return 5;
 }
 
 function createCookie(name,value,days) {

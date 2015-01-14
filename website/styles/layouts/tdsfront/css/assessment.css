@@ -1,3 +1,14 @@
+#start_assessment_now {
+    float: left;
+    width: 49%;
+}
+#full_leader_board {
+    float: right;
+    width: 49%;
+}
+#assess_ladder_board {
+    display: none;
+}
 #assessment-popup-wrapper{
     border-bottom: 3.5px solid #db3434;
     height: auto;
@@ -408,7 +419,7 @@
 
 /* Assessment Leader Board */
 .ladder_board_title{
-    color: #bbbbbb;
+    color: #dc3131;
     font-size: 25px;
     font-weight: bold;
     padding: 0 0 10px;
@@ -423,11 +434,22 @@
     float: right;
     width: 60%;
 }
+.full_leader_board_wrapper {
+    float: none !important;
+    height: 350px !important;
+    overflow: scroll !important;
+    width: 100% !important;
+}
 #leader_board table{
     width: 100%;
 }
+#leader_board table img{
+    float: left;
+    margin-right: 8px;
+    width: 50px;
+}
 #leader_board table th{
-    border-bottom: 2px solid #ccc;
+    border-bottom: 1px solid #ddd;
     color: #666;
 }
 #leader_board table thead tr th:first-child{
@@ -444,6 +466,23 @@
 }
 #leader_board table td:nth-child(2) {
     text-align: center;
+}
+.ladder_board_user_name {
+    font-size: 14px;
+    font-weight: bold;
+}
+.ladder_board_mark {
+    font-size: 25px;
+    margin-bottom: 5px;
+}
+.ladder_board_time {
+    color: #999;
+    font-size: 14px;
+}
+.ladder_board_school_name {
+    color: #777;
+    font-family: georgia;
+    font-size: 11px;
 }
 
 /* Assessment Leader Board */

@@ -103,11 +103,11 @@
             } ?>
 
             <input type="hidden" value="<?php echo $total_mark; ?>" id="total_mark">
-            <div class="assessment-submit col-lg-2">
+<!--            <div class="assessment-submit col-lg-2">
                 <button type="button" class="red btn-assessment-submit">
                     Submit
                 </button>
-            </div>
+            </div>-->
 
             <hr> 
 
@@ -139,6 +139,11 @@
                 <button class="red" type="button" id="start_assessment_now">
                     <span class="clearfix f2">
                         Start Now
+                    </span>
+                </button>
+                <button class="red" type="button" id="full_leader_board">
+                    <span class="clearfix f2">
+                        Full Leader Board
                     </span>
                 </button>
             </div>
@@ -177,67 +182,39 @@
 <!--   Assessment Pop up     -->
 
 <div id="assess_ladder_board">
-    <div class="col-lg-12 ladder_board_title">
-        Current Leader Board
+    <div class="col-lg-12 ladder_board_title f2">
+        Top 5
     </div>
     <table>
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Score</th>
+                <th class="f2">Name</th>
+                <th class="f2">Score</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>
-                    <div>Arif Lira Rahman</div>
-                    <div>Notre Dame College</div>
-                </td>
-                <td>
-                    <div>50</div>
-                    <div>Time : 2 Min</div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div>Ehsanur Rahman Abir</div>
-                    <div>Notre Dame College</div>
-                </td>
-                <td>
-                    <div>50</div>
-                    <div>Time : 1 . 49 Min</div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div>Arif Lira Rahman</div>
-                    <div>Notre Dame College</div>
-                </td>
-                <td>
-                    <div>50</div>
-                    <div>Time : 2 Min</div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div>Ehsanur Rahman Abir</div>
-                    <div>Notre Dame College</div>
-                </td>
-                <td>
-                    <div>50</div>
-                    <div>Time : 1 . 49 Min</div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div>Ehsanur Rahman Abir</div>
-                    <div>Notre Dame College</div>
-                </td>
-                <td>
-                    <div>50</div>
-                    <div>Time : 1 . 49 Min</div>
-                </td>
-            </tr>
+            <?php foreach ($score_board as $sb) { ?>
+                <tr>
+                    <td>
+                        <div class="ladder_board_user_name f2">
+                            <?php
+                                $profile_img = base_url('styles/layouts/tdsfront/image/C.png');
+                                
+                                if( !empty($sb->profile_image) ) {
+                                    $profile_img = $sb->profile_image;
+                                }
+                            ?>
+                            <img src="<?php echo $profile_img; ?>">
+                            <?php echo $sb->user_name; ?>
+                        </div>
+                        <div class="ladder_board_school_name f2"><?php echo $sb->school; ?></div>
+                    </td>
+                    <td>
+                        <div class="ladder_board_mark f2"><?php echo $sb->mark; ?></div>
+                        <div class="ladder_board_time f2"><?php echo gmdate('i:s', (int)$sb->time_taken); ?> Minute</div>
+                    </td>
+                </tr>
+            <?php } ?>
         </tbody>
     </table>
 </div>

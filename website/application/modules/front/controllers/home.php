@@ -3320,7 +3320,13 @@ class home extends MX_Controller {
         
         $assessment = get_assessment($assesment_id);
         
-        $data['assessment'] = (!$assessment) ? array() : $assessment;
+        if ((!$assessment)) {
+            $data['assessment'] = array();
+            $data['score_board'] = array();
+        } else {
+            $data['assessment'] = $assessment->assesment;
+            $data['score_board'] = $assessment->score_board;
+        }
         
         $s_content = $this->load->view('assessment', $data, true);
         
@@ -3364,9 +3370,12 @@ class home extends MX_Controller {
         $assessment_id = $ar_data[0];
         $assessment = get_assessment($assessment_id);
         
+        var_dump($ar_data);
+        exit;
+        
         $total_mark = 0;
         $user_mark = 0;
-        $ar_q_a = explode(',', $ar_data[1]);
+        $ar_q_a = explode(',', $ar_data[2]);
         
         foreach($assessment->question as $question) {
             $total_mark += $question->mark;
@@ -3420,6 +3429,24 @@ class home extends MX_Controller {
         
         $response['score'] = $user_mark;
         $response['total_score'] = $total_mark;
+        echo json_encode($response);
+        exit;
+    }
+    
+    public function assessment_leader_board() {
+        
+        $response = array();
+        if(!$this->input->is_ajax_request()){
+            $response['saved'] = false;
+            $response['error'] = 'Bad Request';
+            echo json_encode($response);
+            exit;
+        }
+        $assessment_id = $this->input->post('assessment_id');
+        
+        $assessment_leader_board = get_assessment_leader_board($assessment_id, 100);
+        
+        $response['leader_board'] = $assessment_leader_board;
         echo json_encode($response);
         exit;
     }

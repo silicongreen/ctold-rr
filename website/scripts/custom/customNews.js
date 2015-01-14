@@ -589,7 +589,7 @@ $(document).ready(function() {
         minLength: 2,
         source: function(request, response) {
            
-            $.getJSON($("#base_url").val() + "admin/news/releated_news?term="+request.term+"&related_post_type="+$("related_post_type").val(),"", function(data, status, xhr) {
+            $.getJSON($("#base_url").val() + "admin/news/releated_news?term="+request.term+"&related_post_type="+$("#related_post_type").val(),"", function(data, status, xhr) {
                 response(data);
             });
         }

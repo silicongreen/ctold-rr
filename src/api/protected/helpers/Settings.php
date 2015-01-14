@@ -308,9 +308,17 @@ class Settings {
         return $str;
     }
 
-    public static function get_simple_post_layout($postValue) {
+    public static function get_simple_post_layout($postValue,$education_changes_life) {
         $post_type = 0;
-        if ($postValue->post_layout == 1 && $postValue->inside_image != "" && $postValue->inside_image != null) {
+        if($postValue->school_id>0)
+        {
+           $post_type = 8; 
+        }
+        else if($education_changes_life==1)
+        {
+            $post_type = 9;
+        }
+        else if ($postValue->post_layout == 1 && $postValue->inside_image != "" && $postValue->inside_image != null) {
             $post_type = 2;
         } else if ($postValue->post_layout == 2 && $postValue['postGalleries'] && count($postValue['postGalleries']) > 2) {
             $post_type = 3;
@@ -490,7 +498,7 @@ class Settings {
                 $post_array['inside_image'] = Settings::get_mobile_image(Settings::$image_path . $postValue->inside_image);
 
 
-            $post_array['normal_post_type'] = Settings::get_simple_post_layout($postValue);
+            $post_array['normal_post_type'] = Settings::get_simple_post_layout($postValue,$post_array['education_changes_life']);
 
 
             $post_array['author'] = "";

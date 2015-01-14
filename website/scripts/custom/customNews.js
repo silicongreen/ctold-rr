@@ -588,13 +588,8 @@ $(document).ready(function() {
     $("#releated_search").autocomplete({
         minLength: 2,
         source: function(request, response) {
-            var term = request.term;
-            if (term in cache) {
-                response(cache_releated[ term ]);
-                return;
-            }
-            $.getJSON($("#base_url").val() + "admin/news/releated_news", request, function(data, status, xhr) {
-                cache_releated[ term ] = data;
+           
+            $.getJSON($("#base_url").val() + "admin/news/releated_news?term="+request.term+"&related_post_type="+$("related_post_type").val(),"", function(data, status, xhr) {
                 response(data);
             });
         }

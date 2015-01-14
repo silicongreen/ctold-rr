@@ -513,7 +513,7 @@ class news extends MX_Controller
     
     private function getAllassessment($id = 0)
     {
-        $sql = "select id,title from tds_assessment where id NOT IN (select DISTINCT assessment_id from tds_post where assessment_id NOT NULL "
+        $sql = "select id,title from tds_assessment where id NOT IN (select DISTINCT assessment_id from tds_post where assessment_id IS NOT NULL "
                 . " AND assessment_id!=0 AND id!=".$id.") ";
         $res = $this->db->query($sql)->result();
         $select[0] = "Select";

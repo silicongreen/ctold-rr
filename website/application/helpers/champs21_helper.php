@@ -559,6 +559,7 @@ if ( !function_exists("get_api_data_from_yii") )
     {
        
         $url = get_curl_url($link);
+           
         //print $url;
         $fields = array(
             'page_number' => $page_number,
@@ -596,6 +597,12 @@ if ( !function_exists("get_api_data_from_yii") )
             $fields['id'] = $stbid;
             $fields['target'] = $target;
         }
+        if($link=="")
+        {
+            $type_cookie = get_type_cookie();
+            $fields['user_type'] = $type_cookie;
+        } 
+        
         $fields_string = "";
 
         foreach($fields as $key=>$value) { 

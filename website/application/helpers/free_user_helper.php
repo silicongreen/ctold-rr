@@ -138,6 +138,8 @@ if (!function_exists('set_user_sessions')) {
 
         $CI->session->set_userdata($sessionData);
         
+        set_type_cookie($obj_user->user_type);
+        
         
         
     }

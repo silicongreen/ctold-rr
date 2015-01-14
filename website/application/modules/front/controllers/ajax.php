@@ -24,6 +24,18 @@ class ajax extends MX_Controller
         echo "getExclusiveNews";
     }
     
+    public function set_type_cookie($user_type)
+    {
+        set_type_cookie($user_type);
+        redirect(base_url());
+    } 
+    public function unset_type_cookie()
+    {
+        set_type_cookie(1);
+        redirect(base_url());
+    }
+    
+    
     function minify_css()
     {
         $s_css_key = $this->uri->segment(2);

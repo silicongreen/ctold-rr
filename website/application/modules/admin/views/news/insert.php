@@ -766,6 +766,18 @@
                     <h2 class="section">
                         Related  News Box
                     </h2>
+                    <fieldset class="label_side top">
+                        <label for="required_field">Post Layout</label>
+                        <div class="clearfix">
+
+                            <?php
+                            $f_array = array(1 => "NEWS", 2 => "ASSESSMENT");
+                            $js = "id='related_post_type'";
+
+                            echo form_dropdown('related_post_type', $f_array, $model->related_post_type,$js);
+                            ?>
+                        </div>
+                    </fieldset>
                     <fieldset class="top" id="related_news_box">
                         &nbsp; 
                         <?php if (isset($related_news)) : ?>

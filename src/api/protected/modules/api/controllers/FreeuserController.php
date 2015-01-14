@@ -29,7 +29,7 @@ class FreeuserController extends Controller
                     , "schoolsearch", "school", "createschool", "schoolpage", "schoolactivity", "candle"
                     , "garbagecollector","getschoolteacherbylinepost","createcachesinglenews","addwow", 
                     'set_preference','addcomments','getcomments', 'get_preference','addgcm','getallgcm',
-                    'getschoolinfo','joinschool','candleschool','leaveschool','folderdelete','assesmenttopscore'),
+                    'getschoolinfo','joinschool','candleschool','leaveschool','folderdelete','assesmenttopscore','relatednews'),
                 'users' => array('*'),
             ),
             array('deny', // deny all users
@@ -37,6 +37,34 @@ class FreeuserController extends Controller
             ),
         );
     }
+    
+    public function actionRelatedNews()
+    {
+        $id = Yii::app()->request->getPost('id');
+        if (!$user_id)
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        else
+        {       
+            
+            $objrelated = new RelatedNews();
+            $rnews = $objrelated->getRelatedNews();
+            $post_data = array();
+            $i = 0;
+            foreach($rnews as $value)
+            {
+                $post_data[$i] = $this->getSingleNewsFromCache($value['id']);
+                $i++;
+            }
+            $response['data']['post'] = $post_data;
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "success";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    } 
     public function actionFolderDelete()
     {
         $user_id = Yii::app()->request->getPost('user_id');

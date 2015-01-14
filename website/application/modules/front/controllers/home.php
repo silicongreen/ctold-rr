@@ -1331,7 +1331,7 @@ class home extends MX_Controller {
         }   
         $i_second_image_text .= 'style="width: 48%; float: left; margin-left: 1%; margin-right: 1%; cursor: pointer;" src="' . base_url() . $ar_images[$i_second_image] . '" /></a>';
         
-        $s_ad_image = "<p>" . $i_first_image_text . "" . $i_second_image_text . "</p>";
+        $s_ad_image = "<p style='float:left; clear:both; margin-top:10px;'>" . $i_first_image_text . "" . $i_second_image_text . "</p>";
         
         $obj_post_data->s_ad_image = $s_ad_image;
         

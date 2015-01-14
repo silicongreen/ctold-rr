@@ -29,7 +29,7 @@ class FreeuserController extends Controller
                     , "schoolsearch", "school", "createschool", "schoolpage", "schoolactivity", "candle"
                     , "garbagecollector","getschoolteacherbylinepost","createcachesinglenews","addwow", 
                     'set_preference','addcomments','getcomments', 'get_preference','addgcm','getallgcm',
-                    'getschoolinfo','joinschool','candleschool','leaveschool','folderdelete'),
+                    'getschoolinfo','joinschool','candleschool','leaveschool','folderdelete','assesmenttopscore'),
                 'users' => array('*'),
             ),
             array('deny', // deny all users
@@ -53,6 +53,8 @@ class FreeuserController extends Controller
             $return = $fobj->removeFolder($folder_name, $user_id, $folders);
             if($return)
             {
+                $goodread = new UserGoodRead();
+                $goodread->deleteAll("folder_id=:folder_id",array(':folder_id'=>$return));
                 $response['status']['code'] = 200;
                 $response['status']['msg'] = "success";
             }
@@ -65,7 +67,37 @@ class FreeuserController extends Controller
         }
         echo CJSON::encode($response);
         Yii::app()->end();
-    }        
+    } 
+    
+    public function actionAssesmentTopScore()
+    {
+        
+        $id = Yii::app()->request->getPost('id');
+        $limit = Yii::app()->request->getPost('limit');
+        if (!$id )
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        else
+        {
+            
+            $objcmark = new Cmark();
+            if(!$limit)
+            {
+                $limit = 100;
+            }    
+            $objassessment = $objcmark->getTopMark($id,$limit);
+            $response['data']['assesment'] = $objassessment;
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "success";
+                
+               
+        } 
+        echo CJSON::encode($response);
+        Yii::app()->end();
+
+    }
 
 
     public function actionAssesmentHistory()
@@ -120,6 +152,8 @@ class FreeuserController extends Controller
         $assessment_id = Yii::app()->request->getPost('assessment_id');
         $user_id = Yii::app()->request->getPost('user_id');
         $mark = Yii::app()->request->getPost('mark');
+        $time_taken = Yii::app()->request->getPost('time_taken');
+        $avg_time = Yii::app()->request->getPost('avg_time');
         if (!$assessment_id || (!$mark && $mark!==0) || !$user_id )
         {
             $response['status']['code'] = 400;
@@ -136,33 +170,92 @@ class FreeuserController extends Controller
             {
                 $objcmark = new Cmark();
                 $objassessment = $objcmark->getUserMarkAssessment($user_id,$assessment_id);
-                $add = false;
-                if($objassessment)
+                $can_play = true;
+                if(isset($objassessment->created_date))
                 {
-                    if($objassessment->mark<$mark)
+                    $last_played = $objassessment->created_date;
+                    $can_play_date = date("Y-m-d H:i:s",  strtotime("-1 Day"));
+                    if($objassessment->created_date>$can_play_date)
+                    {
+                        $can_play = false;
+                    }
+                } 
+                if($can_play)
+                {
+                    $add = false;
+                    $new = false;
+                    if($objassessment)
                     {
                         $marksobj = $objcmark->findByPk($objassessment->id);
-                        $marksobj->delete();
-                        $add = true;
+                        if($objassessment->mark<$mark)
+                        {
+                            $marksobj->delete();
+                            $add = true;
+                        }
+                        else if($objassessment->mark==$mark && 
+                                ($objassessment->time_taken>$time_taken || 
+                                ($objassessment->time_taken==$time_taken &&  $objassessment->avg_time_per_ques>$avg_time))
+                                )
+                        { 
+                           $marksobj->delete();
+                           $add = true; 
+                        } 
+                        else
+                        {
+                            $marksobj->created_date = date("Y-m-d H:i:s");
+                            $marksobj->no_played = $marksobj->no_played+1;
+                            $marksobj->save();
+                        }     
                     }
-                }
+                    else
+                    {
+                        $add = true;
+                        $new = true;
+                    }  
+                    if($add)
+                    {
+                        $objcmark->mark = $mark;
+                        $objcmark->user_id = $user_id;
+                        $objcmark->created_date = date("Y-m-d H:i:s");
+                        if($time_taken)
+                        {
+                            $objcmark->time_taken = $time_taken;
+                        } 
+                        if($avg_time)
+                        {
+                            $objcmark->avg_time_per_ques = $avg_time;
+                        }
+                        if($new)
+                        {
+                            $objcmark->no_played = 1;
+                        }
+                        else
+                        {
+                            $objcmark->no_played = $marksobj->no_played+1;
+                        }    
+                        $objcmark->assessment_id = $assessment_id;
+                        $objcmark->save();
+
+                    }
+                    $response['data']['last_played'] = date("Y-m-d H:i:s");
+                    $response['status']['code'] = 200;
+                    $response['status']['msg'] = "success";
+                }  
                 else
                 {
-                    $add = true;
-                }  
-                if($add)
-                {
-                    $objcmark->mark = $mark;
-                    $objcmark->user_id = $user_id;
-                    $objcmark->assessment_id = $assessment_id;
-                    $objcmark->save();
-                    
-                }
+                   $response['data']['last_played'] = $last_played;
+                   $response['status']['code'] = 404;
+                   $response['status']['msg'] = "Can-play-now";  
+                }    
+            }
+            else
+            {
+                $response['status']['code'] = 400;
+                $response['status']['msg'] = "Bad Request";
             }    
             
             
-            $response['status']['code'] = 200;
-            $response['status']['msg'] = "success";
+            
                 
                
         } 
@@ -174,6 +267,8 @@ class FreeuserController extends Controller
     {
         $assesment_id = Yii::app()->request->getPost('assesment_id');
         $webview = Yii::app()->request->getPost('webview');
+        $user_id = Yii::app()->request->getPost('user_id');
+        $limit = Yii::app()->request->getPost('limit');
         if (!$assesment_id )
         {
             $response['status']['code'] = 400;
@@ -193,6 +288,39 @@ class FreeuserController extends Controller
             
             $assesmentObj = new Cassignments();
             $cmark = new Cmark();
+            if(!$limit)
+            {
+                if($webview)
+                {
+                    $limit = 10;
+                } 
+                else
+                {
+                    $limit = 3;
+                } 
+            }
+            $last_played = "";
+            $can_play = true;
+            if($user_id)
+            {
+                $objcmark = new Cmark();
+                $objassessment = $objcmark->getUserMarkAssessment($user_id,$assesment_id);
+                if(isset($objassessment->created_date))
+                {
+                    $last_played = $objassessment->created_date;
+                    
+                    $can_play_date = date("Y-m-d H:i:s",  strtotime("-1 Day"));
+                    if($objassessment->created_date>$can_play_date)
+                    {
+                        $can_play = false;
+                    }
+                }     
+            }
+            
+            $response['data']['current_date'] = date("Y-m-d H:i:s");
+            $response['data']['last_played'] = $last_played;
+            $response['data']['can_play'] = $can_play;
+            $response['data']['score_board'] = $cmark->getTopMark($assesment_id,$limit); 
             $response['data']['higistmark'] = $cmark->assessmentHighistMark($assesment_id); 
             $response['data']['assesment'] = $assesmentObj->getAssessment($assesment_id,$webview);
             $response['data']['assesment']['higistmark'] = $response['data']['higistmark'];
@@ -1377,7 +1505,10 @@ class FreeuserController extends Controller
             }
             else
             {
-                $response['status']['code'] = 400;
+                $response['data']['total'] = 0;
+                $response['data']['has_next'] = false;
+                $response['data']['comments'] = array();
+                $response['status']['code'] = 200;
                 $response['status']['msg'] = "Success";  
             }    
         }
@@ -1617,7 +1748,8 @@ class FreeuserController extends Controller
 
 
             $response['data']['post']           = $singlepost;
-            $response['data']['comments_total']  = $comments_data;
+            $response['data']['post']['comments_total'] = $comments_data;
+            //$response['data']['comments_total']  = $comments_data;
             $response['status']['code']         = 200;
             $response['status']['msg']          = "DATA_FOUND";
         }

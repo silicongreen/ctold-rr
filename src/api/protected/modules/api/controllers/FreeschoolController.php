@@ -39,23 +39,24 @@ class FreeschoolController extends Controller
         if (!$school_id)
         {
             $response['status']['code'] = 400;
-            $response['status']['msg'] = "Bad Request";
+            $response['status']['msg'] = "BAD_REQUEST";
         }
         else
         {       
             $school = new School();
             $school = $school->getFreeSchoolByPaidId($school_id, array('t.id, t.logo, t.cover'));
             
-            if(!empty($school))
+            if(!$school)
             {
-                $response['data'] = $school;
+                $response['data'] = NULL;
                 $response['status']['code'] = 200;
-                $response['status']['msg'] = "success";
+                $response['status']['msg'] = "NO_SCHOOL_FOUND";
             }
             else
             {
-                $response['status']['code'] = 404;
-                $response['status']['msg'] = "NO_DATA_FOUND";
+                $response['data'] = (!empty($school['cover'])) ? $school : NULL;
+                $response['status']['code'] = 200;
+                $response['status']['msg'] = "SUCCESS";
             }
         }
         

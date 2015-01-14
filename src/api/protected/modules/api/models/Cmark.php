@@ -31,7 +31,8 @@ class Cmark extends CActiveRecord
     public function relations()
     {
         return array(
-            'assessment' => array(self::BELONGS_TO, 'Cassignments', 'assessment_id')
+            'assessment' => array(self::BELONGS_TO, 'Cassignments', 'assessment_id'),
+            'freeUser' => array(self::BELONGS_TO, 'Freeusers', 'user_id')
         );
     }
     public function assessmentHighistMark($id)
@@ -51,6 +52,97 @@ class Cmark extends CActiveRecord
         }
          
     }
+    public function getTopMark($id, $limit = 100)
+    {
+        $criteria = new CDbCriteria();
+        $criteria->select = 't.mark,t.created_date,t.time_taken,t.no_played';
+        $criteria->compare('assessment_id', $id);
+        $criteria->order = "t.mark DESC,t.time_taken ASC,t.no_played ASC, t.avg_time_per_ques ASC, t.created_date ASC";
+        $criteria->limit = $limit;
+        $criteria->with = array(
+            'assessment' => array(
+                'select' => 'assessment.id,assessment.title,assessment.topic',
+                'with' =>array('question' => array(
+                        'select' => 'question.mark'
+                    ),
+                    'post' => array(
+                        'select' => 'post.id'
+                    )
+                )
+            ),
+            'freeUser' => array(
+                'select' => 'freeUser.first_name,freeUser.middle_name,freeUser.last_name,freeUser.email,freeUser.profile_image,freeUser.school_name'
+            )        
+        );
+        $data = $this->findAll($criteria);
+        $response_array = array();
+
+        if ($data != NULL)
+        {
+            $i = 0;
+            foreach ($data as $value)
+            {
+                $user_name = "";
+                $image = "";
+                $school = "";
+                if(isset($value['freeUser']->profile_image))
+                {
+                    $image = $value['freeUser']->profile_image;
+                } 
+                if(isset($value['freeUser']->first_name) && $value['freeUser']->first_name)
+                {
+                    $user_name .= $value['freeUser']->first_name." ";
+                }
+                if(isset($value['freeUser']->middle_name) && $value['freeUser']->middle_name)
+                {
+                    $user_name .= $value['freeUser']->middle_name." ";
+                }
+                if(isset($value['freeUser']->last_name) && $value['freeUser']->last_name)
+                {
+                    $user_name .= $value['freeUser']->last_name;
+                }
+                if(!$user_name)
+                {
+                    if(isset($value['freeUser']->email))
+                    $user_name = $value['freeUser']->email;
+                }
+                if(isset($value['freeUser']->school_name) && $value['freeUser']->school_name)
+                {
+                    $school = $value['freeUser']->school_name;
+                }
+                
+                $response_array[$i]['user_name'] = $user_name;
+                $response_array[$i]['school'] = $school;
+                $response_array[$i]['profile_image'] = $image;
+                $response_array[$i]['pid'] = 0;
+                if(isset($value['assessment']['post']) && count($value['assessment']['post'])>0)
+                {
+                    $response_array[$i]['pid'] = $value['assessment']['post'][0]->id;
+                }
+                $response_array[$i]['assessment_id'] = $value['assessment']->id;
+                
+                //$response_array[$i]['highist_mark'] = $this->assessmentHighistMark($value['assessment']->id);
+                $response_array[$i]['mark'] = $value->mark;
+                $response_array[$i]['time_taken'] = $value->time_taken;
+                $response_array[$i]['number_of_attempt'] = $value->no_played;
+                $response_array[$i]['created_date'] = $value->created_date;
+                $response_array[$i]['title'] = $value['assessment']->title;
+                $response_array[$i]['topic'] = $value['assessment']->topic;
+                $totalmark = 0;
+                if(isset($value['assessment']['question']) && count($value['assessment']['question'])>0)
+                {
+                    foreach($value['assessment']['question'] as $qvalue)
+                    {
+                        $totalmark = $totalmark+$qvalue->mark;
+                    }    
+                }  
+                $response_array[$i]['total'] = $totalmark;
+                
+                $i++;
+            }
+        }
+        return $response_array;
+    }
     public function getUserMark($user_id)
     {
         $criteria = new CDbCriteria();
@@ -59,8 +151,12 @@ class Cmark extends CActiveRecord
         $criteria->with = array(
             'assessment' => array(
                 'select' => 'assessment.id,assessment.title,assessment.topic',
-                'with' =>array('question' => array(
+                'with' =>array(
+                    'question' => array(
                         'select' => 'question.mark'
+                    ),
+                    'post' => array(
+                        'select' => 'post.id'
                     )
                 )
             )
@@ -73,6 +169,11 @@ class Cmark extends CActiveRecord
             $i = 0;
             foreach ($data as $value)
             {
+                $response_array[$i]['pid'] = 0;
+                if(isset($value['assessment']['post']) && count($value['assessment']['post'])>0)
+                {
+                    $response_array[$i]['pid'] = $value['assessment']['post'][0]->id;
+                }
                 $response_array[$i]['id'] = $value['assessment']->id;
                 $response_array[$i]['highist_mark'] = $this->assessmentHighistMark($value['assessment']->id);
                 $response_array[$i]['mark'] = $value->mark;
@@ -98,7 +199,7 @@ class Cmark extends CActiveRecord
     public function getUserMarkAssessment($user_id, $assessment_id)
     {
         $criteria = new CDbCriteria();
-        $criteria->select = 't.mark,t.id';
+        $criteria->select = 't.mark,t.id,t.no_played,t.time_taken,t.avg_time_per_ques,t.created_date';
         $criteria->compare('t.user_id', $user_id);
         $criteria->compare('t.assessment_id', $assessment_id);
 

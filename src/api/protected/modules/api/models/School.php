@@ -421,9 +421,7 @@ class School extends CActiveRecord
         
         $data_obj = $this->find($criteria);
         
-        $data_arr = $this->foramtFreeSchoolData($data_obj);
-        return $data_arr;
-        
+        return (!empty($data_obj)) ? $this->foramtFreeSchoolData($data_obj) : false;
     }
     
     public function foramtFreeSchoolData($obj){

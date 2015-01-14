@@ -510,7 +510,22 @@ class news extends MX_Controller
         garbage_collector();
         echo 1;
     }
-
+    
+    private function getAllassessment($id = 0)
+    {
+        $sql = "select id,title from tds_assessment where id NOT IN (select DISTINCT assessment_id from tds_post where assessment_id NOT NULL "
+                . " AND assessment_id!=0 AND id!=".$id.") ";
+        $res = $this->db->query($sql)->result();
+        $select[0] = "Select";
+        if (count($res) > 0)
+        {
+            foreach ($res as $value)
+            {
+                $select[$value->id] = $value->title;
+            }
+        }
+        return $select;
+    }        
     /**
      * add function
      * @param none
@@ -554,6 +569,8 @@ class news extends MX_Controller
         $data['all_language'] = $this->config->config["language_codes"];
         
         $data['category_array'] = $obj_post->category_array();
+        
+        $data['assessment_array'] = $this->getAllassessment();
 
         $data['category_tree'] = $obj_post->category_tree_news();
         $data['class_tree'] = $obj_post->class_tree_news();
@@ -670,6 +687,7 @@ class news extends MX_Controller
         $data['country_string'] = $obj_post->get_country_string($id);
 
         $data['category_array'] = $obj_post->category_array();
+        $data['assessment_array'] = $this->getAllassessment($id);
         $data['keyword_string'] = $obj_post->get_keyword_string($id);
 
         $data['related_news']   = $obj_post->get_related_news($id);

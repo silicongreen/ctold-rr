@@ -84,7 +84,7 @@ class Postcomments extends CActiveRecord
             }
             else
             {
-                return 0;
+                return "0";
             }
         }
         public function getCommentsPost($post_id,$page = 1, $page_size = 10,$user_post=false)

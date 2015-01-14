@@ -3317,15 +3317,25 @@ class home extends MX_Controller {
         
         $str_assesment = $this->uri->segment(2);
         $assesment_id = end(explode('-', $str_assesment));
+        $user_id = 0;
         
-        $assessment = get_assessment($assesment_id);
+        if(free_user_logged_in()) {
+            
+            $user_id = get_free_user_session('id');
+        }
+        
+        $assessment = get_assessment($assesment_id, $user_id);
         
         if ((!$assessment)) {
             $data['assessment'] = array();
             $data['score_board'] = array();
+            $data['can_play'] = false;
+            $data['last_played'] = false;
         } else {
             $data['assessment'] = $assessment->assesment;
             $data['score_board'] = $assessment->score_board;
+            $data['can_play'] = $assessment->can_play;
+            $data['last_played'] = $assessment->last_played;
         }
         
         $s_content = $this->load->view('assessment', $data, true);
@@ -3358,7 +3368,7 @@ class home extends MX_Controller {
         $response = array();
         if(!$this->input->is_ajax_request()){
             $response['saved'] = false;
-            $response['error'] = 'Bad Request';
+            $response['error'] = 'BAD_ASSESSMENT';
             echo json_encode($response);
             exit;
         }
@@ -3368,17 +3378,24 @@ class home extends MX_Controller {
         $ar_data = explode('_', $data);
         
         $assessment_id = $ar_data[0];
-        $assessment = get_assessment($assessment_id);
         
-        var_dump($ar_data);
-        exit;
+        $user_id = 0;
+        
+        if(free_user_logged_in()) {
+            
+            $user_id = get_free_user_session('id');
+        }
+        
+        $assessment = get_assessment($assessment_id, $user_id);
         
         $total_mark = 0;
         $user_mark = 0;
         $ar_q_a = explode(',', $ar_data[2]);
         
-        foreach($assessment->question as $question) {
+        $i = 0;
+        foreach($assessment->assesment->question as $question) {
             $total_mark += $question->mark;
+            $i++;
             
             foreach ($ar_q_a as $str_q_a) {
                 $q_a = explode('-', $str_q_a);
@@ -3394,37 +3411,77 @@ class home extends MX_Controller {
                             
                             if ($option->correct == 1) {
                                 $user_mark += $question->mark;
-                            }   
+                            }
                         }   
                     }
                 }
             }
         }
         
+        $avg_time = $ar_data[1] / $i;
+        
         if(free_user_logged_in()) {
             
             $user_id = get_free_user_session('id');
             
             $obj_assessment_mark = new Assesment_mark();
-            $assessment_mark = $obj_assessment_mark->find_assessment_mark($user_id, $assessment_id, array('id','mark'));
+            $assessment_mark = $obj_assessment_mark->find_assessment_mark($user_id, $assessment_id);
             
-            if ( ($assessment_mark != false) && ($user_mark > $assessment_mark->mark) ) {
+            $next_play_time = strtotime(date('Y-m-d H:i:s', strtotime($assessment_mark->created_date . "+1 Day")));
+            $now = date('Y-m-d H:i:s');
+            $now_time = strtotime($now);
+            
+            $can_play = TRUE;
+            
+            if($now_time < $next_play_time) {
+                $can_play = FALSE;
+            }
+            
+            if($can_play) {
                 
-                $this->db->update('assesment_mark', array('mark' => $user_mark, 'created_date' => date('Y-m-d H:i:s')), array('user_id' => $user_id, 'assessment_id' => $assessment_id));
-                $response['highest_score'] = $user_mark;
+                if ( ($assessment_mark != false) ) {
+                    
+                    $ar_lb = array(
+                        'created_date' => $now,
+                        'no_played' => $assessment_mark->no_played + 1,
+                    );
+
+                    if($user_mark > $assessment_mark->mark) {
+                        $ar_lb['mark'] = $user_mark;
+                    }
+
+                    if( (empty($assessment_mark->time_taken)) || ($ar_data[1] < $assessment_mark->time_taken) ) {
+                        $ar_lb['time_taken'] = $ar_data[1];
+                    }
+
+                    if( (empty($assessment_mark->avg_time_per_ques)) || ($avg_time < $assessment_mark->avg_time_per_ques) ) {
+                        $ar_lb['avg_time_per_ques'] = number_format($avg_time, 2);
+                    }
+                    
+                    $this->db->update('assesment_mark', $ar_lb, array('user_id' => $user_id, 'assessment_id' => $assessment_id));
+                    $response['highest_score'] = $user_mark;
+
+                } else {
+                    
+                    $obj_assessment_mark->user_id = $user_id;
+                    $obj_assessment_mark->assessment_id = $assessment_id;
+                    $obj_assessment_mark->mark = $user_mark;
+                    $obj_assessment_mark->created_date = $now;
+                    $obj_assessment_mark->time_taken = $ar_data[1];
+                    $obj_assessment_mark->avg_time_per_ques = number_format($avg_time, 2);
+                    $obj_assessment_mark->no_played = 1;
+                    
+                    $obj_assessment_mark->save();
+                    
+                    $response['highest_score'] = $user_mark;
+                }
                 
-            } elseif ( ($assessment_mark != false) && ($user_mark <= $assessment_mark->mark) ) {
-                $response['highest_score'] = $assessment_mark->mark;
+                $response['saved'] = true;
                 
             } else {
-                $obj_assessment_mark->user_id = $user_id;
-                $obj_assessment_mark->assessment_id = $assessment_id;
-                $obj_assessment_mark->mark = $user_mark;
-                $obj_assessment_mark->save();
                 
-                $response['highest_score'] = $user_mark;
             }
-            $response['saved'] = true;
+            
         }
         
         $response['score'] = $user_mark;

@@ -1,3 +1,6 @@
+.cann_play{
+    color: #DC3131;
+}
 #start_assessment_now {
     float: left;
     width: 49%;
@@ -237,13 +240,17 @@
 .inner-container .question {
     font-size: 20px;
 }
-.inner-container .question span{
+.ques_no{
     color: #FB3C2D;
 }
-.inner-container .question span:after{
+.ques_no:after{
     padding-left: 10px;
     content: "|";
     color: #ccc;
+}
+.ques_text:before{
+    padding-left: 5px;
+    content: " ";
 }
 .answer-wrapper {
     margin: auto;
@@ -427,7 +434,7 @@
 }
 #pre_assessment_details{
     float: left;
-    padding-left: 25px;
+    padding-left: 5px;
     width: 35%;
 }
 #leader_board {
@@ -436,7 +443,7 @@
 }
 .full_leader_board_wrapper {
     float: none !important;
-    height: 350px !important;
+    height: 350px;
     overflow: scroll !important;
     width: 100% !important;
 }
@@ -484,8 +491,50 @@
     font-family: georgia;
     font-size: 11px;
 }
-
 /* Assessment Leader Board */
+
+/* Assessment Leader summary */
+.assess_summary_wrapper {
+    height: 302px;
+    overflow: scroll;
+}
+#assess_summary table{
+    width: 100%;
+}
+#assess_summary table img{
+    width: 30px;
+}
+#assess_summary table th{
+    border-bottom: 1px solid #ddd;
+    color: #666;
+}
+#assess_summary table thead tr th:first-child{
+    width: 40%;
+}
+#assess_summary table thead tr th:nth-child(2){
+    width: 5%;
+}
+#assess_summary table thead tr th:nth-child(3){
+    width: 22%;
+}
+#assess_summary table thead tr th:nth-child(4){
+    width: 33%;
+}
+#assess_summary table thead tr td:nth-child(2){
+    text-align: center;
+    vertical-align: middle;
+}
+#assess_summary table td {
+    color: #666;
+    padding: 8px;
+    text-align: left;
+    vertical-align: top;
+}
+#assess_summary table td:nth-child(2) {
+    text-align: center;
+}
+/* Assessment Leader summary */
+
 
 @media all and (min-width: 319px) and (max-width: 479px){
     .next-previous {

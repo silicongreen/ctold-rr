@@ -22,10 +22,10 @@
     </div>
 
     <div style="margin: 10px 20px;" class="inner-container">
-
+        
         <div class="col-md-9">
             <h1 data="<?php echo $assessment->id; ?>" style="font-size: 30px;" class="f2" id="assessment_title">
-                <span id="assessment_topic"><?php echo (!empty($assessment)) ? $assessment->topic : 'No Assessment'; ?></span> <span id="assessment_title_span"><?php echo (!empty($assessment)) ? $assessment->title : 'No Assessment'; ?></span>
+                <span id="assessment_topic"><?php echo (!empty($assessment)) ? $assessment->topic : 'No Assessment'; ?></span> <span id="assessment_title_span" lpd="<?php echo (!$last_played) ? 'Not Available' : date("M j, y, g:i A", strtotime($last_played)); ?>" cp="<?php echo (!$can_play) ? '0' : '1'; ?>"><?php echo (!empty($assessment)) ? $assessment->title : 'No Assessment'; ?></span>
             </h1>
 <!--            <div class="by_line">By <i class="f4">Jobayer Ahmed</i> <span class="f5">23 Hours ago</span></div>-->
             <div style="clear: both;"></div>
@@ -52,7 +52,7 @@
                             <?php
                             $k = ( strlen($i + 1) < 2 ) ? '0' . ($i + 1) : ($i + 1);
                             ?>
-                            <span><?php echo 'Question ' . $k; ?></span> <?php echo $question->question; ?>
+                            <span class="ques_no"><?php echo 'Question ' . $k; ?></span><span class="ques_text"><?php echo $question->question; ?></span>
                         </h5>
                     </div>
 
@@ -64,7 +64,7 @@
                                 <?php
                                 $j = 0;
 
-                                $li_style = ($question->style == 1) ? '' : 'style="float: none;"';
+                                $li_style = ($question->style == 1) ? '' : 'style="float: none; width: 90%;"';
 
                                 foreach ($question->option as $option) {
                                     ?>

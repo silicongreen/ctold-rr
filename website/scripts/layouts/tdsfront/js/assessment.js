@@ -147,8 +147,19 @@ $(document).ready(function(){
     $('#nos_questions').val(num_assessments);
         
     var key = 'asssessment_start_now';
-            
-    var pop_up_data =  get_popup_data(key, '');
+    
+    var extra_html = '<p class="f2">Last Played: ' + $('#assessment_title_span').attr('lpd') + '</p>';
+    var cp = '';
+    
+    if($('#assessment_title_span').attr('cp') == 0 ) {
+        cp = '<p class="f2 cann_play">*** You should not participate in the same quiz within 24 hour. You&rsquo;ll not be able to save your score.</p>';
+    }
+    
+    if(cp != '') {
+        extra_html += cp;
+    }
+    
+    var pop_up_data =  get_popup_data(key, extra_html);
     
     $('#assessment-popup-wrapper').css('width', '700px');
     $('.assessment-popup-header-label').html('');
@@ -164,7 +175,7 @@ $(document).ready(function(){
     
     $.fancybox({
         'content' : html_before_login_popup,
-        'width': 700,
+        'width': 718,
         'transitionIn': 'fade',
         'transitionOut': 'fade',
         'openEffect': 'elastic',
@@ -264,9 +275,6 @@ $(document).ready(function(){
     $(document).on('click', '.btn-assessment-submit', function() {
         
         var assessment = get_user_score(total_time_taken);
-        
-        console.log(total_time_taken);
-        return false;
         
         $.ajax({
             url : $('#base_url').val() + 'save_assessment',
@@ -373,6 +381,21 @@ $(document).ready(function(){
     
     $(document).on('click', '.show-assessment-score', function(){
         
+        var last_q_time = 0;
+        var user_clicked = false;
+        
+        $('.materials_and_byline:visible .content-post .answer-wrapper ul li').each(function() {
+            if($(this).attr('checked') == 'checked') {
+                user_clicked = true;
+            }
+        });
+        
+        if(!user_clicked) {
+            last_q_time = get_ques_time($('.materials_and_byline:visible').attr('id').split('-')[1]) - parseInt(clock.time);
+        }
+        
+        total_time_taken += last_q_time
+        
         var key = $(this).attr('data');
         
         $('.assessment-popup-btn-wrapper').html('');
@@ -381,20 +404,27 @@ $(document).ready(function(){
         $('.nxt-btn span').text('Save Score');
         $('.nxt-btn').removeAttr('id');
         
+        get_user_score(total_time_taken);
+        
         if($('#asses_id').length < 1) {
             $('.nxt-btn').addClass('before-login-user');
             $('.nxt-btn').attr('data', 'assessment_save_score');
             
-            total_time_taken += parseInt(clock.time);
-            get_user_score(total_time_taken);
         } else {
             $('.nxt-btn').addClass('btn-assessment-submit');
         }
         
-        var btn_html = $('.assessment-popup-btn-wrapper-explanation').children().eq(1);
-        var pop_up_data =  get_popup_data(key, user_score);
+        var assess_summary = populate_assessment_summary();
+        var assess_summary_table = '<div class="assess_summary_wrapper" id="assess_summary">' + assess_summary + '</div>';
+        var user_assess_scroe_html = '<p class="f2" style="color: #999; font-size: 30px; font-weight: 900; letter-spacing: 3px; text-align: center;">YOUR SCORE IS</p><p style="color: #000; font-size: 70px; font-weight: 900; letter-spacing: -1; margin: 35px 0; text-align: center; "> '+ user_score + ' / ' + $('#total_mark').val() + '</p>';
         
-        $('#assessment-popup-wrapper').css('width', '450px');
+        var assess_summary_html = user_assess_scroe_html + assess_summary_table;
+        
+        var btn_html = $('.assessment-popup-btn-wrapper-explanation').children().eq(1);
+        var pop_up_data =  get_popup_data(key, assess_summary_html);
+        
+        $('#assessment-popup-wrapper').css('width', '100%');
+        
         $('.assessment-popup-header-label').html('');
         $('.assessment-popup-header-label').html(pop_up_data.header_label);
         
@@ -410,13 +440,13 @@ $(document).ready(function(){
 
         $.fancybox({
             'content' : html_expl_nxt_popup,
-            'width': 450,
+            'width': '75%',
             'transitionIn': 'fade',
             'transitionOut': 'fade',
             'openEffect': 'elastic',
             'openSpeed' : 350,
             'fitToView' : true,
-            'autoSize' : true,
+            'autoSize' : false,
             'padding': 0,
             'margin': 0
         });
@@ -427,17 +457,29 @@ $(document).ready(function(){
         
         var key = 'assess_explanation';
         var explanation = '';
-        var btn_html = $('.assessment-popup-btn-wrapper-explanation').html();
+        var correct_html = '';
         
         $('.materials_and_byline').each(function() {
             
-            if( ($(this).attr('style').contains('display: block;')) ||($(this).attr('style').contains('opacity: 1;')) ) {
+            if( ($(this).attr('style').contains('display: block;')) || ($(this).attr('style').contains('opacity: 1;')) ) {
                 
-                explanation = $(this).find('.content-post .answer-wrapper ul').attr('explanation');
+                explanation = '<p class="f2">Explanation: ' + $(this).find('.content-post .answer-wrapper ul').attr('explanation') + '</p>';
+                $(this).find('.content-post .answer-wrapper ul li').each(function() {
+                    var option = $(this).attr('option');
+//                    var opt_num = $(this).find('.opt-wrapper .opt-num').text();
+                    
+                    if(option == 1) {
+                        correct_html = '<p class="f2">Right answer is : ' + $(this).find('.opt-wrapper .opt-ans').text() + '</p>';
+                    }
+                    
+                });
+                
             }
         });
         
-        var pop_up_data =  get_popup_data(key, explanation);
+        var explanation_html = correct_html + explanation;
+        
+        var pop_up_data =  get_popup_data(key, explanation_html);
         
         $('#assessment-popup-wrapper').css('width', '450px');
         $('.assessment-popup-header-label').html('');
@@ -448,27 +490,14 @@ $(document).ready(function(){
         
         $('.assessment_custom_message').html('');
         $('.assessment_custom_message').html(pop_up_data.custom_message);
-            
-        $('.assessment-popup-btn-wrapper').html('');
-        $('.assessment-popup-btn-wrapper').html(btn_html);
-        
-        var html_before_login_popup = $('#assessment-popup-fancy').html();
-
-        $.fancybox({
-            'content' : html_before_login_popup,
-            'width': 450,
-            'transitionIn': 'fade',
-            'transitionOut': 'fade',
-            'openEffect': 'elastic',
-            'openSpeed' : 350,
-            'fitToView' : true,
-            'autoSize' : true,
-            'padding': 0,
-            'margin': 0
-        });
     });
     
     $(document).on('click', '#start_assessment_now', function(){
+        
+        if($('#assessment_title_span').attr('cp') == 0 ) {
+            return false;
+        }
+        
         var ques_time = get_ques_time(0);
         time_up = false;
         $.fancybox.close();
@@ -536,7 +565,7 @@ $(document).ready(function(){
                 
                 var btn_html = '<button class="red" type="button" id="start_assessment_now" style="float: none;"><span class="clearfix f2">Start Now</span></button>';
                 
-                $('#assessment-popup-wrapper').css('width', '700px');
+                $('#assessment-popup-wrapper').css('width', '718px');
                 $('.assessment-popup-header-label').html('');
                 $('.assessment-popup-header-label').html(pop_up_data.header_label);
         
@@ -592,7 +621,7 @@ function get_popup_data(key, explanation){
         'asssessment_start_now' : {
             'icon' : 'assessment_popup.png',
             'header_label' : 'Quiz',
-            'custom_message' : '<div id="pre_assessment_details"><p class="f2">No. of Question&nbsp;: ' + $('#nos_questions').val() + '</p><p class="f2">Total Score&nbsp;: ' + $('#total_mark').val() + '</p><p class="f2">Highest Score&nbsp;: ' + $('#highest_score').val() + '</p><p class="f2">Quiz Time&nbsp;: ' + $('#assess_time').val() + ' : 00 Minute</p><p class="f2">Total Played&nbsp;: ' + $('#total_played').val() + '</p></div><div id="leader_board" >' + $('#assess_ladder_board').html() + '</div>'
+            'custom_message' : '<div id="pre_assessment_details"><p class="f2">No. of Question&nbsp;: ' + $('#nos_questions').val() + '</p><p class="f2">Total Score&nbsp;: ' + $('#total_mark').val() + '</p><p class="f2">Highest Score&nbsp;: ' + $('#highest_score').val() + '</p><p class="f2">Quiz Time&nbsp;: ' + $('#assess_time').val() + ' : 00 Minute</p><p class="f2">Total Played&nbsp;: ' + $('#total_played').val() + '</p>' + explanation + '</div><div id="leader_board" >' + $('#assess_ladder_board').html() + '</div>'
         },
         'assess_wrong' : {
             'icon' : 'assessment_popup.png',
@@ -607,7 +636,7 @@ function get_popup_data(key, explanation){
         'assessment_score' : {
             'icon' : 'assessment_popup.png',
             'header_label' : 'Game Over',
-            'custom_message' : '<p class="f2" style="color: #999; font-size: 30px; font-weight: 900; letter-spacing: 3px; text-align: center;">YOUR SCORE IS</p><p style="color: #000; font-size: 70px; font-weight: 900; letter-spacing: -1; margin: 35px 0; text-align: center; "> '+ explanation + ' / ' + $('#total_mark').val() + '</p>'
+            'custom_message' : explanation
         },
         'assess_time_out' : {
             'icon' : 'assessment_popup.png',
@@ -634,6 +663,44 @@ function get_popup_data(key, explanation){
     return pop_up_data[key];
 }
 
+function populate_assessment_summary() {
+    
+    var assessment_summary_html = '<table><thead><tr><th class="f2">Question</th><th></th><th class="f2">Correct Answer</th><th class="f2">Explanation</th></tr></thead><tbody>';
+    $('.ques_text');
+    //.content-post .answer-wrapper ul li
+    $('.materials_and_byline').each(function() {
+        var ques = '<p class="f2">' + $(this).find('.ques_text').text() + '</p>';
+        
+        var explanation = '<p class="f2">' + $(this).find('.content-post .answer-wrapper ul').attr('explanation') + '</p>';
+        var correct_ans = '';
+        var user_ans = '';
+        var mark = 0
+        
+        $(this).find('.content-post .answer-wrapper ul li').each(function() {
+            var option = $(this).attr('option');
+            mark = '<p class="f2">Mark: ' + $(this).attr('mark') + '</p>';
+
+            if(option == 1) {
+                correct_ans = '<p class="f2">' + $(this).find('.opt-wrapper .opt-ans').text() + '</p>';
+                
+                if ($(this).attr('checked') == 'checked') {
+                    user_ans = 'right.png';
+                } else {
+                    user_ans = 'wrong.png';
+                }
+            }
+            
+        });
+        console.log(user_ans);
+        assessment_summary_html += '<tr><td><div class="ladder_board_user_name f2">' + ques + '</div></td><td><img src="/styles/layouts/tdsfront/image/' + user_ans + '"></td><td><div class="ladder_board_mark f2">' + correct_ans + '</div></td><td><div class="ladder_board_mark f2">' + explanation + '</div></td></tr>';
+        
+    });
+    
+    assessment_summary_html += '</tbody></table>';
+    
+    return assessment_summary_html;
+}
+
 function get_user_score(total_time_taken) {
     
     var assessment = $('#assessment_title').attr('data') + '_';
@@ -646,7 +713,7 @@ function get_user_score(total_time_taken) {
         if($(this).attr('checked') == 'checked') {
             var q_id = $(this).parent('ul').parent('.answer-wrapper').parent('.content-post').siblings('.ques_id').attr('data');
             var a_id = $(this).attr('data');
-                        
+            
             assessment += q_id + '-' + a_id + ',';
         }
     });

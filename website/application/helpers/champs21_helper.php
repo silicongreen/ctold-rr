@@ -824,12 +824,16 @@ if(!function_exists('get_rand_images')){
 
 if( !function_exists("get_assessment"))
 {
-    function get_assessment($assesment_id, $webview = 1)
+    function get_assessment($assesment_id, $user_id = 0, $webview = 1)
     {
         $CI = &get_instance();
         
         $url = get_curl_url("getassesment");
         $fields_string = "assesment_id=" . $assesment_id . "&webview=" . $webview . "&limit=5";
+        
+        if($user_id > 0) {
+            $fields_string .= "&user_id=" . $user_id;
+        }
         
         //start curl
         $ch = curl_init();

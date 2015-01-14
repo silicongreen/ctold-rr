@@ -473,7 +473,7 @@ class Settings {
             
             
             
-            
+            $post_array['related_post_type'] = $postValue->related_post_type;
             
             $post_array['seen'] = $postValue->view_count;
             

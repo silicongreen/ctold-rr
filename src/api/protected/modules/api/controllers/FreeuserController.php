@@ -1604,7 +1604,7 @@ class FreeuserController extends Controller
             
             Yii::app()->cache->set($cache_name, $singlepost, 5184000);
             
-            $comments_data = array();
+            $comments_data = 0;
             if($singlepost['can_comment']==1)
             {
                 if($singlepost['show_comment_to_all'] || ($user_id && $user_id = $singlepost['user_id']))

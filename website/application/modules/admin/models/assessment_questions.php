@@ -29,6 +29,7 @@ class Assessment_questions extends DataMapper {
         'id',
         'assesment_id',
         'question',
+        'explanation',
         'mark',
         'style',
         'time',
@@ -59,6 +60,7 @@ class Assessment_questions extends DataMapper {
         return array(
             'assesment_id' => 'Assesment',
             'question' => 'Question',
+            'explanation' => 'Explanation',
             'mark' => 'Mark',
             'time' => 'Time',
             'style' => 'style'

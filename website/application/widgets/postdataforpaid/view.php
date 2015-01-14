@@ -381,7 +381,7 @@
 
         <style>
             .flex-wrapper_news .flex-control-nav {
-                    bottom: 0;
+                    bottom: 33;
                     height: 36px;
             } 
             .flex-wrapper_news ul > li.news_slides

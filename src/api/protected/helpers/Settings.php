@@ -314,7 +314,7 @@ class Settings {
         {
            $post_type = 8; 
         }
-        else if($education_changes_life==1)
+        else if(self::$education_changes_life==$education_changes_life)
         {
             $post_type = 9;
         }
@@ -498,7 +498,7 @@ class Settings {
                 $post_array['inside_image'] = Settings::get_mobile_image(Settings::$image_path . $postValue->inside_image);
 
 
-            $post_array['normal_post_type'] = Settings::get_simple_post_layout($postValue,$post_array['education_changes_life']);
+            
 
 
             $post_array['author'] = "";
@@ -699,6 +699,8 @@ class Settings {
                 $post_array['second_category_id'] = $postValue['postCategories'][1]['category']->id;
             }
             $post_array['tags'] = array();
+            
+            $post_array['normal_post_type'] = Settings::get_simple_post_layout($postValue,$post_array['category_id']);
 
             $j = 0;
             if ($postValue['postTags'])

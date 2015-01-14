@@ -2573,8 +2573,14 @@ class news extends MX_Controller
         {
             exit('No direct script access allowed');
         }
+        $related_post_type = $this->input->get("related_post_type");
         $this->db->select("headline");
         $this->db->like("headline", $this->input->get("term"));
+        if(isset($related_post_type) && $related_post_type==2)
+        {
+           $st = " assessment_id IS NOT NULL AND assessment_id!=0 ";
+           $this->db->where($st, NULL, FALSE);  
+        }    
         $this->db->where("status", 5);
         
         $this->db->order_by("published_date", "DESC");

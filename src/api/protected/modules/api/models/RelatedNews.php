@@ -99,6 +99,25 @@ class RelatedNews extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+        public function getRelatedNews($post_id)
+        {
+            $criteria=new CDbCriteria;
+            $criteria->compare('post_id',$post_id);
+            $obj_releted = $this->findAll($criteria);
+                    
+            $post_array = array();
+            $i = 0;
+            if($obj_releted)
+            foreach ($obj_releted as $postValue)
+            {
+                $news_link_array = explode("-", $postValue->new_link);
+                $news_id = $news_link_array[count($news_link_array)-1];
+                
+                $post_array[$i]['id']     = $news_id;           
+                $i++;
+            }
+            return $post_array;
+        }        
 
 	/**
 	 * Returns the static model of the specified AR class.

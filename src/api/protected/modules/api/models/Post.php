@@ -110,6 +110,7 @@ class Post extends CActiveRecord
             'postClass' => array(self::HAS_MANY, 'PostClass', 'post_id'),
             'postType' => array(self::HAS_MANY, 'PostType', 'post_id'),
             'postKeyword' => array(self::HAS_MANY, 'PostKeyword', 'post_id'),
+            'postSchool' => array(self::HAS_MANY, 'PostSchoolShare', 'post_id'),
             'relatedNews' => array(self::HAS_MANY, 'RelatedNews', 'post_id'),
         );
     }
@@ -470,26 +471,32 @@ class Post extends CActiveRecord
         $criteria->compare("postType.type_id", $user_type);
         if ($target == "school")
         {
-            $criteria->addInCondition('t.school_id', explode(",",$id));
+            $criteria->addCondition('(t.school_id='.$id.' OR postSchool.school_id='.$id.')');
+            
             //$criteria->compare("t.school_id", $id);
             $criteria->compare("t.teacher_id", 0);
         }
         else if ($target == "teacher")
         {
             $criteria->addInCondition('t.teacher_id', explode(",",$id));
+            
             //$criteria->compare("t.teacher_id", $id);
             $criteria->compare("t.school_id", 0);
         }
         else
         {
             $criteria->compare("t.byline_id", $id);
+            
         }
-
         $criteria->addCondition("DATE(t.published_date) <= '" . date("Y-m-d") . "'");
+        
         $criteria->with = array(
             'postType' => array(
                 'select' => '',
                 'joinType' => "INNER JOIN"
+            ),
+            "postSchool" =>array(
+                'select' => ''
             )
         );
         $criteria->group = "t.school_id";
@@ -515,7 +522,7 @@ class Post extends CActiveRecord
 
         if ($target == "school")
         {
-            $criteria->addInCondition('t.school_id', explode(",",$id));
+            $criteria->addCondition('(t.school_id='.$id.' OR postSchool.school_id='.$id.')');
             //$criteria->compare("t.school_id", $id);
             $criteria->compare("t.teacher_id", 0);
         }
@@ -538,6 +545,9 @@ class Post extends CActiveRecord
             "postType" => array(
                 "select" => "",
                 'joinType' => "INNER JOIN",
+            ),
+            "postSchool" =>array(
+                'select' => ''
             )
         );
         $start = ($page - 1) * $page_size;

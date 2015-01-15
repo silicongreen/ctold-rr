@@ -161,7 +161,7 @@ class post extends CI_Model{
             {
                 //$extra_select = " ,MAX(t.date) as maxorder,MIN(t.priority) as minorder";
             }
-            $this->db->select('SQL_CALC_FOUND_ROWS DISTINCT tds_post.id as post_id, tds_post.headline, tds_post.content, tds_post.is_featured, tds_post.show_byline_image,
+            $this->db->select('SQL_CALC_FOUND_ROWS DISTINCT tds_post.id as post_id, tds_post.headline, tds_post.assessment_id, tds_post.content, tds_post.is_featured, tds_post.show_byline_image,
                                tds_post.headline_color, tds_post.summary, tds_post.short_title, tds_post.shoulder, tds_post.other_language, tds_post.post_type,
                                tds_post.sub_head,tds_post.pdf_top, tds_post.lead_material, tds_post.lead_caption, tds_post.is_breaking, tds_post.breaking_expire, tds_post.language, tds_post.lead_link,
                                tds_post.published_date, tds_post.view_count, postCategories.id, tds_post.user_view_count, tds_post.embedded, tds_post.layout_color, tds_post.is_exclusive, tds_post.exclusive_expired,

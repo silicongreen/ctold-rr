@@ -14,6 +14,7 @@ $config['api_url']   = 'http://api.champs21.com/api/freeuser';
 $config['education_changes_life'] = FALSE;
 
 $config[ 'from_api' ] = TRUE;
+$config[ 'go_to_assessment' ] = TRUE;
 
 $config[ 'normal_view_count_add' ] = 1;
 

@@ -1180,6 +1180,9 @@ class home extends MX_Controller {
         
         $related_news = $obj_post->get_related_news($obj_post_data->post_id);
         
+        $assessment = $obj_post->get_related_assessment($obj_post_data->assessment_id);
+        $obj_post_data->has_assessment = FALSE;
+        
         $data['all_attachment'] = $obj_post->get_related_attach($obj_post_data->post_id);
         
         $obj_post_data->has_related = FALSE;
@@ -1188,6 +1191,13 @@ class home extends MX_Controller {
         {
             $obj_post_data->has_related = TRUE;
         }
+        
+        if(!$related_assess) {
+            $obj_post_data->has_assessment = TRUE;
+            $obj_post_data->assessment = $assessment;
+            $obj_post_data->go_to_assessment = $this->config->config['go_to_assessment'];
+        }
+        
         foreach ($related_news as &$r_news)
         {
             if ( ! isset( $r_news->content ) )
@@ -1945,6 +1955,16 @@ class home extends MX_Controller {
             }
             
             if($free_user->save()){
+                
+                $ar_email['sender_full_name'] = 'Russell T. Ahmed';
+                $ar_email['sender_email'] = 'info@champs21.com';
+                $ar_email['to_name'] = $free_user->first_name . ' ' . $free_user->last_name;
+                $ar_email['to_email'] = $free_user->email;
+                $ar_email['html'] = true;
+
+                $ar_email['subject'] = 'Welcome to Champs21.com';
+                $ar_email['message'] = $this->get_welcome_message($ar_email['to_name']);
+                send_mail($ar_email);
                 
                 ($api_registration) ? $free_user->api_login() : $free_user->login();
                 
@@ -2949,8 +2969,7 @@ class home extends MX_Controller {
             $ar_email['html'] = true;
             
             $ar_email['subject'] = $email_config[$contact_model->contact_type]['subject'];
-//            $ar_email['message'] = $contact_model->description;
-            $ar_email['message'] = $this->get_welcome_message();
+            $ar_email['message'] = $contact_model->description;
             
             if($contact_model->validate()){
                 
@@ -3111,7 +3130,7 @@ class home extends MX_Controller {
         $this->extra_params = $ar_params;
     }
     
-    private function get_welcome_message(){
+    private function get_welcome_message($full_name = ''){
         
         $message = '<!DOCTYPE HTML>';
         
@@ -3123,6 +3142,10 @@ class home extends MX_Controller {
             $message .= '<div id="header" style="width: 50%; height: 60px; margin: 0 auto; padding: 10px; color: #fff; text-align: center; background-color: #E0E0E0;font-family: Open Sans,Arial,sans-serif;">';
                 $message .= '<img height="50" width="220" style="border-width:0" src="'.  base_url('styles/layouts/tdsfront/images/logo-new.png').'" alt="Champs21.com" title="Champs21.com">';
             $message .= '</div>';
+            
+            if(!empty($full_name)) {
+                $message .= '<p>Hi ' . $full_name . ',</p>';
+            }
             
             $message .= '<p>Thank you for joining Champs21.com and welcome to country&#39;s largest portal for Students | Teachers | Parents. I&#39;m writing this mail to Thank You and giving you a little brief on our services and features.</p>';
             $message .= '<p>

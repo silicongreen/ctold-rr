@@ -69,7 +69,7 @@ $(document).ready(function(){
                     
                     $('.materials_and_byline').each(function() {
             
-                        if( ($(this).attr('style').contains('display: block;')) ||($(this).attr('style').contains('opacity: 1;')) ) {
+                        if( ( $(this).attr('style').indexOf('display: block;') != -1 ) ||( $(this).attr('style').indexOf('opacity: 1;') != -1 ) ) {
                 
                             next_question_id = parseInt($(this).attr('id').split('-')[1]) + 1;
                         }
@@ -94,6 +94,8 @@ $(document).ready(function(){
                 pop_up_data = get_popup_data(key, user_score);
                 
                 $('#assessment-popup-wrapper').css('width', '450px');
+                $('.show-assessment-score').css('width', '49%');
+                
                 $('.assessment-popup-header-label').html('');
                 $('.assessment-popup-header-label').html(pop_up_data.header_label);
                     
@@ -128,7 +130,7 @@ $(document).ready(function(){
              
         num_assessments = num_assessments + 1;
         
-        if( $(this).attr('style') == 'display: block;' ) {
+        if( $(this).attr('style').indexOf('display: block;') != -1 ) {
                     
             var height = 0;
             $(this).find('.content-post .answer-wrapper ul li').each(function() {
@@ -209,7 +211,7 @@ $(document).ready(function(){
                         
             var set_height = setTimeout(function() {
                             
-                if( ($('#q_id-'+next_q_id).attr('style').contains('display: block;')) || ($('#q_id-'+next_q_id).attr('style').contains('opacity: 1;')) ) {
+                if( ($('#q_id-'+next_q_id).attr('style').indexOf('display: block;') != -1 ) || ($('#q_id-'+next_q_id).attr('style').indexOf('opacity: 1;') != -1) ) {
                     
                     var height = 0;
                     $('#q_id-'+next_q_id).find('.content-post .answer-wrapper ul li').each(function() {
@@ -461,7 +463,7 @@ $(document).ready(function(){
         
         $('.materials_and_byline').each(function() {
             
-            if( ($(this).attr('style').contains('display: block;')) || ($(this).attr('style').contains('opacity: 1;')) ) {
+            if( ($(this).attr('style').indexOf('display: block;') != -1) || ($(this).attr('style').indexOf('opacity: 1;') != -1) ) {
                 
                 explanation = '<p class="f2">Explanation: ' + $(this).find('.content-post .answer-wrapper ul').attr('explanation') + '</p>';
                 $(this).find('.content-post .answer-wrapper ul li').each(function() {

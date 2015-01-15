@@ -651,6 +651,15 @@ class Post_model extends DataMapper
         return (count($related_news) > 0) ? $related_news : FALSE;
     }
     
+    public function get_related_assessment($i_assessment_id)
+    {
+        $this->db->select("*");
+        $this->db->where("id", $i_assessment_id);
+
+        $related_assess = $this->db->get("assessment")->row();
+        return (count($related_assess) > 0) ? $related_assess : FALSE;
+    }
+    
     public function get_exclusive_news()
     {
         $arIssueDate = $this->getIssueDate();

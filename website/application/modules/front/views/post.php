@@ -304,6 +304,40 @@
                     
                 }
                 echo $content; ?>
+                
+                <!-- Assessment -->
+                <?php if ($has_assessment) { ?>
+                    <div class="inner-container_wrapper">
+                        <?php
+                            if($go_to_assessment) {
+                                $assess_url = base_url('assessment/' . sanitize($assessment->title) . '-' . $assessment->id);
+                            } else {
+                                $assess_url = '#';
+                            }
+                        ?>
+                        <a href="<?php echo $assess_url; ?>">
+                            <div class="assessment_icon">
+                                <img src="/styles/layouts/tdsfront/image/assesment_icon.png">
+                            </div>
+                            <div class="inner-container_assessment">
+                                <div class="assessment_dialogue">
+                                    <p class="f2" style="padding-top: 7px;">How smart are you?</p>
+                                    <div class="clearfix"></div>
+                                    <p class="f2">Take this quiz on and</p>
+                                </div>
+                                <div class="assessment_find_out">
+                                    <div class="find_out f5">Find Out</div>
+                                    <div class="assessment-next">
+                                        <div class="assessment-next-arrow"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                <div class="clearfix"></div>
+                <?php } ?>
+                <!-- Assessment -->
+                
                 <?php echo $s_ad_image; ?>
                 <div style="clear: both; height: 2px;"></div>
             </div>
@@ -570,6 +604,7 @@
         
     </div>
 <?php endif; ?>
+    
 <?php if ( $post_type == 1 || $post_type == 3) : ?>
 <?php if ( $has_related && $b_layout && $school_id==0) : ?>
 <div class="inner-container_related" style="margin: 20px; width: 96%;">
@@ -873,7 +908,65 @@
     .add-wrapper-bottom img{
         width: 100%
     }
-    
+    .inner-container_wrapper{
+        float: left;
+        margin: 20px 0;
+        width: 50%;
+    }
+    .inner-container_assessment{
+        border: 1px solid #ddd;
+        box-shadow: 0 4px 0 0 #ddd;
+        float: left;
+        width: 81%;
+    }
+    .assessment_dialogue{
+        border-right: 1px solid #ddd;
+        float: left;
+        width: 60%;
+    }
+    .assessment_icon{
+        float: left;
+    }
+    .assessment_icon img{
+        float: left;
+        width: 85px;
+    }
+    .assessment_dialogue p{
+        line-height: 20px;
+        padding: 0 10px;
+    }
+    .assessment_find_out{
+        float: left;
+    }
+    .find_out{
+        color: #ce1b22;
+        float: left;
+        font-size: 26px;
+        font-weight: bold;
+        letter-spacing: 2px;
+        margin: 0;
+        padding: 15px 0 0 15px;
+    }
+    .assessment-next {
+        cursor: pointer;
+        float: right;
+        margin: auto;
+        padding: 20px 0 0 10px;
+    }
+    .assessment-next-arrow {
+        border-color: transparent transparent transparent #b1b9bb;
+        border-style: solid;
+        border-width: 15px 0 15px 13px;
+        height: 0;
+        margin: auto;
+        width: 0;
+        
+        border-radius: 7px;
+        -moz-border-radius: 7px;
+        -webkit-border-radius: 7px;
+        -ms-border-radius: 7px;
+        -o-border-radius: 7px;
+    }
     @media all and (min-width: 319px) and (max-width: 479px){
         .next-previous {
             width: 65%;

@@ -600,11 +600,21 @@ class FreeuserController extends Controller
         if($gcm_id)
         {
             $gcmobj = new Gcm();
-
+            
+            
             $gcm_added = $gcmobj->getGcm($gcm_id);
 
             if(!$gcm_added)
             {
+                if($device_id)
+                {
+                    $gcm_device = $gcmobj->getGcmDeviceId($device_id);
+                    if($gcm_device)
+                    {
+                        $pobj = $gcmobj->findByPk($gcm_device);
+                        $pobj->delete();
+                    }
+                }
                 $gcmobj->gcm_id = $gcm_id;
                 $gcmobj->device_id = $device_id;
                 $gcmobj->save();  

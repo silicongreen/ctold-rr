@@ -93,6 +93,21 @@ class Gcm extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        public function getGcmDeviceId($device_id)
+        {
+            $criteria = new CDbCriteria;
+            $criteria->select = 't.id';
+            $criteria->compare('device_id', $device_id);
+            $criteria->limit = 1;
+            $obj_gcm = $this->find($criteria);
+            
+            if($obj_gcm)
+            {
+                $obj_gcm->id;
+            }    
+
+            return false;
+        }
         public function getGcm($gcm_id)
         {
             $criteria = new CDbCriteria;

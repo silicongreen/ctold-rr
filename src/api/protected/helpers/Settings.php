@@ -273,6 +273,20 @@ class Settings {
 
         return $time = ($b_12_hour) ? date('Y-m-d h:i a', strtotime($date_time)) : $time;
     }
+    
+     public static function get_crop_image($url, $replace_url = "gallery/facebook/") {
+        $image = str_replace("gallery/", $replace_url, $url);
+
+        foreach(self::$url_array as $value)
+        {
+           $image = str_replace($value, self::$real_path, $image); 
+        }
+        
+        if (!file_exists($image)) {
+            return $url;
+        }
+        return str_replace(self::$real_path, self::$image_path, $image);
+    }
 
     public static function get_mobile_image($url, $replace_url = "gallery/mobile/") {
         $image = str_replace("gallery/", $replace_url, $url);
@@ -588,6 +602,7 @@ class Settings {
             $post_array['attach'] = $postValue->attach;
             $post_array['layout'] = $postValue->layout;
             
+            $post_array['crop_images'] = array();
             $post_array['images'] = array();
             $post_array['add_images'] = array();
             $post_array['web_images'] = array();
@@ -599,6 +614,7 @@ class Settings {
                 {
                     if (trim($value['material']->material_url) && $value->type==2)
                     {
+                        $post_array['crop_images'][] = Settings::get_crop_image(Settings::$image_path . $value['material']->material_url);
                         $post_array['images'][] = Settings::get_mobile_image(Settings::$image_path . $value['material']->material_url);
                     
                         $post_array['add_images'][$j]['ad_image'] = Settings::get_mobile_image(Settings::$image_path . $value['material']->material_url);
@@ -619,6 +635,7 @@ class Settings {
             if( empty($post_array['images']) ) {
                 if( !empty($post_array['lead_material']) ) {
                     $post_array['images'][] = Settings::get_mobile_image(Settings::$image_path . $post_array['lead_material']);
+                    $post_array['crop_images'][] = Settings::get_crop_image(Settings::$image_path . $post_array['lead_material']);
                 }
             }
             

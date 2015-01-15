@@ -56,14 +56,19 @@ class FreeuserController extends Controller
                 $school_id = $user_schools[0]['school_id'];
                 $objpost = new PostSchoolShare();
                 $already_share = $objpost->getSchoolSharePost($school_id, $id);
+                 
                 if($already_share)
                 {
+                    
                     $response['status']['code'] = 404;
                     $response['status']['msg'] = "ALREADY_SHARE";
                 }
                 else
                 {
-                    $postData = $objpost->findByPk($id);
+                    $objpostmain = new Post();
+                   
+                    $postData = $objpostmain->findByPk($id);
+                    
                     if($postData)
                     {
                         if($postData->school_id)
@@ -76,7 +81,7 @@ class FreeuserController extends Controller
                             $objpost->post_id =  $id;
                             $objpost->school_id =  $school_id;
                             $objpost->user_id =  $user_id;
-                            $objpost->created_date =  $created_date;
+                            $objpost->created_date =  date("Y-m-d H:i:s");
                             $objpost->save();
                             $response['status']['code'] = 200;
                             $response['status']['msg'] = "Successfully Saved"; 

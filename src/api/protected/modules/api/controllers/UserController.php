@@ -51,9 +51,10 @@ class UserController extends Controller {
         $paid_password = Yii::app()->request->getPost('paid_password');
         $paid_school_id = Yii::app()->request->getPost('paid_school_id');
         $paid_school_code = Yii::app()->request->getPost('paid_school_code');
+        $freeuserObj = new Freeusers();
         if(Yii::app()->request->getPost('user_type') && $email && !$freeuserObj->getFreeuser($email) && $password && $first_name)
         {
-            $freeuserObj = new Freeusers();
+            
             $freeuserObj->salt = md5(uniqid(rand(), true));
             $freeuserObj->password = $this->encrypt($password, $freeuserObj->salt);
             $freeuserObj->email = Yii::app()->request->getPost('email');

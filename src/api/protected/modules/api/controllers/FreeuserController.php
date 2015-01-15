@@ -53,7 +53,8 @@ class FreeuserController extends Controller
             $user_schools = $schooluser->userSchool($user_id);
             if(isset($user_schools[0]['school_id']))
             {
-                $objpost = new Post();
+                $school_id = $user_schools[0]['school_id'];
+                $objpost = new PostSchoolShare();
                 $already_share = $objpost->getSchoolSharePost($school_id, $id);
                 if($already_share)
                 {
@@ -72,14 +73,14 @@ class FreeuserController extends Controller
                         }    
                         else
                         {
-                            foreach($postData as $key=>$value)
-                            {
-                                if($key=="id")
-                                {
-                                    continue;
-                                }
-
-                            }
+                            $objpost->post_id =  $id;
+                            $objpost->school_id =  $school_id;
+                            $objpost->user_id =  $user_id;
+                            $objpost->created_date =  $created_date;
+                            $objpost->save();
+                            $response['status']['code'] = 200;
+                            $response['status']['msg'] = "Successfully Saved"; 
+                            
                         }
                     }
                     else

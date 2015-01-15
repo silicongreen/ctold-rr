@@ -84,12 +84,12 @@ $(document).ready(function(){
         }
     }, false);
     
-    $(document).on("contextmenu", function(e){
-        if(e.target.nodeName == "IMG"){
-            e.preventDefault();
-            return false;
-        }
-     });
+//    $(document).on("contextmenu", function(e){
+//        if(e.target.nodeName == "IMG"){
+//            e.preventDefault();
+//            return false;
+//        }
+//     });
     
     if ( $(".post").length != 0 )
     {

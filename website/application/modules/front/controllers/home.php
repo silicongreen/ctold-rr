@@ -1963,7 +1963,7 @@ class home extends MX_Controller {
                 $ar_email['html'] = true;
 
                 $ar_email['subject'] = 'Welcome to Champs21.com';
-                $ar_email['message'] = $this->get_welcome_message($ar_email['to_name']);
+                $ar_email['message'] = $this->get_welcome_message($ar_email['to_name'], true);
                 send_mail($ar_email);
                 
                 ($api_registration) ? $free_user->api_login() : $free_user->login();
@@ -3130,7 +3130,7 @@ class home extends MX_Controller {
         $this->extra_params = $ar_params;
     }
     
-    private function get_welcome_message($full_name = ''){
+    private function get_welcome_message($full_name = '', $b_image_mail = false){
         
         $message = '<!DOCTYPE HTML>';
         
@@ -3139,6 +3139,8 @@ class home extends MX_Controller {
             $message .= '<title>Welcome to Champs21.com</title>';
         $message .= '<body>';
         
+        if(!$b_image_mail) {
+            
             $message .= '<div id="header" style="width: 50%; height: 60px; margin: 0 auto; padding: 10px; color: #fff; text-align: center; background-color: #E0E0E0;font-family: Open Sans,Arial,sans-serif;">';
                 $message .= '<img height="50" width="220" style="border-width:0" src="'.  base_url('styles/layouts/tdsfront/images/logo-new.png').'" alt="Champs21.com" title="Champs21.com">';
             $message .= '</div>';
@@ -3196,6 +3198,10 @@ class home extends MX_Controller {
             $message .= '<p>&nbsp;</p>';
             $message .= '<p>Russell T. Ahmed</p>';
             $message .= '<p>Founder &amp; CEO</p>';
+            
+        } else {
+            $message .= '<img src="' . base_url('/styles/layouts/tdsfront/image/welcome-email.png') . '">';
+        }
             
         $message .= '</body>';
         $message .= '</head>';

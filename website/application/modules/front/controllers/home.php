@@ -3341,7 +3341,11 @@ class home extends MX_Controller {
         $extra_js = '';
         
         $str_assesment = $this->uri->segment(2);
-        $assesment_id = end(explode('-', $str_assesment));
+        $str_post = $this->uri->segment(3);
+        
+        $ar_assessment = explode('-', $str_assesment);
+        $post_id = $ar_assessment[count($ar_assessment) - 2];
+        $assesment_id = end($ar_assessment);
         $user_id = 0;
         
         if(free_user_logged_in()) {
@@ -3349,6 +3353,7 @@ class home extends MX_Controller {
             $user_id = get_free_user_session('id');
         }
         
+        $data['post_uri'] = $str_post;
         $assessment = get_assessment($assesment_id, $user_id);
         
         if ((!$assessment)) {
@@ -3365,7 +3370,7 @@ class home extends MX_Controller {
         
         $s_content = $this->load->view('assessment', $data, true);
         
-        $str_title = getCommonTitle();
+        $str_title = WEBSITE_NAME . " | Assessment";
         
         $meta_description = META_DESCRIPTION;
         $keywords = KEYWORDS;

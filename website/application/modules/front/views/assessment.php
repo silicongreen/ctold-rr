@@ -9,7 +9,11 @@
     <input type="hidden" value="<?php echo (!empty($assessment->higistmark) ) ? $assessment->higistmark : 0; ?>" id="highest_score">
     <input type="hidden" value="<?php echo (!empty($assessment->played) ) ? $assessment->played : 0; ?>" id="total_played">
     <input type="hidden" value="" id="nos_questions">
-
+    
+    <div id="post_uri" style="display: none;">
+        <?php echo $post_uri; ?>
+    </div>
+    
     <div style="padding: 5px 25px 0 25px;" class="sports-inner-news yesPrint">    
         <div style="float:left;">
             <a href="<?php echo create_link_url(sanitize('assessment')); ?>">

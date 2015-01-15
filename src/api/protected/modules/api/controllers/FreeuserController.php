@@ -1193,7 +1193,11 @@ class FreeuserController extends Controller
                 $i = 0;
                 foreach($value['post'] as $postvalue)
                 {
+                   
                    $response['data']['post'][$j]['post'][$i] = $this->getSingleNewsFromCache($postvalue['id']); 
+                   $response['data']['post'][$j]['post'][$i]['can_wow'] = 1;
+                   $response['data']['post'][$j]['post'][$i]['can_share'] = $this->can_share($postvalue['id'],$user_id);
+                   
                    $i++;
                 }   
                 $j++;
@@ -1845,6 +1849,7 @@ class FreeuserController extends Controller
 
             $response['data']['post']           = $singlepost;
             $response['data']['post']['comments_total'] = $comments_data;
+            $post_data['data']['post']['can_share'] = $this->can_share($id,$user_id);
             //$response['data']['comments_total']  = $comments_data;
             $response['status']['code']         = 200;
             $response['status']['msg']          = "DATA_FOUND";
@@ -2011,6 +2016,7 @@ class FreeuserController extends Controller
             {
                 $post_data[$i] = $this->getSingleNewsFromCache($value['id']);
                 $post_data[$i]['can_wow'] = 1;
+                $post_data[$i]['can_share'] = $this->can_share($value['id'],$user_id);
                 if(in_array($value['id'], $wow) && Settings::$wow_login==true)
                 {
                    $post_data[$i]['can_wow'] = 0; 
@@ -2025,7 +2031,59 @@ class FreeuserController extends Controller
         Yii::app()->end();
     }
     
-          
+    private function can_share($id="",$user_id="")
+    {
+        if (!$id || !$user_id)
+        {
+            return 0;
+        }
+        else
+        {       
+            $schooluser = new SchoolUser();
+            $user_schools = $schooluser->userSchool($user_id);
+            if(isset($user_schools[0]['school_id']))
+            {
+                $school_id = $user_schools[0]['school_id'];
+                $objpost = new PostSchoolShare();
+                $already_share = $objpost->getSchoolSharePost($school_id, $id);
+                 
+                if($already_share)
+                {
+                    
+                    return 0;
+                }
+                else
+                {
+                    $objpostmain = new Post();
+                   
+                    $postData = $objpostmain->findByPk($id);
+                    
+                    if($postData)
+                    {
+                        if($postData->school_id)
+                        {
+                            return 0;
+                        }    
+                        else
+                        {
+                            return 1;
+                            
+                        }
+                    }
+                    else
+                    {
+                       return 0;
+                    }    
+                }    
+            }   
+            else
+            {
+                return 0;
+            }    
+            
+        }    
+       
+    }        
 
     public function actionGetSchoolTeacherBylinePost()
     {
@@ -2091,6 +2149,7 @@ class FreeuserController extends Controller
                 {
                     $post_data[$i] = $this->getSingleNewsFromCache($value['id']);
                     $post_data[$i]['can_wow'] = 1;
+                    $post_data[$i]['can_share'] = 0;
                     if(in_array($value['id'], $wow) && Settings::$wow_login==true)
                     {
                        $post_data[$i]['can_wow'] = 0; 
@@ -2208,6 +2267,7 @@ class FreeuserController extends Controller
             {
                 $post_data[$i] = $this->getSingleNewsFromCache($value['id']);
                 $post_data[$i]['can_wow'] = 1;
+                $post_data[$i]['can_share'] = $this->can_share($value['id'],$user_id);
                 if(in_array($value['id'], $wow)  && Settings::$wow_login==true)
                 {
                    $post_data[$i]['can_wow'] = 0; 

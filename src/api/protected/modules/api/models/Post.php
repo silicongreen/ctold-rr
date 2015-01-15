@@ -249,7 +249,25 @@ class Post extends CActiveRecord
     {
         return parent::model($className);
     }
-
+    
+    public function getSchoolSharePost($school_id,$id)
+    {
+        $criteria = new CDbCriteria;
+        $criteria->select = 't.id';
+        $criteria->compare("t.school_id", $school_id);
+        $criteria->compare("t.share_post_id", $id);
+        $criteria->limit = 1;
+        $obj_post = $this->find($criteria);
+        if($obj_post)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }    
+        
+    }        
     public function getSearchPost($term)
     {
         $criteria = new CDbCriteria;

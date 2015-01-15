@@ -508,8 +508,12 @@ $(document).ready(function(){
     });
     
     $(document).on('click', '.fancybox-close', function(){
-        $.fancybox.close();
-        clock.start();
+        
+        var post_uri = $('#post_uri').html();
+        var post_url = $('#base_url').val() + $.trim(post_uri);
+        
+        window.location.href = post_url;
+        return false;
     });
     
     $(document).on('click', '#full_leader_board', function(){

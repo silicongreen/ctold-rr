@@ -28,7 +28,7 @@ class FreeuserController extends Controller
                     "getuserinfo", "goodread", "readlater", "goodreadall", "goodreadfolder", "removegoodread"
                     , "schoolsearch", "school", "createschool", "schoolpage", "schoolactivity", "candle"
                     , "garbagecollector","getschoolteacherbylinepost","createcachesinglenews","addwow", 
-                    'set_preference','addcomments','getcomments', 'get_preference','addgcm','getallgcm',
+                    'set_preference','addcomments','getcomments', 'get_preference','addgcm','getallgcm','shareschoolfeed',
                     'getschoolinfo','joinschool','candleschool','leaveschool','folderdelete','assesmenttopscore','relatednews'),
                 'users' => array('*'),
             ),
@@ -37,6 +37,68 @@ class FreeuserController extends Controller
             ),
         );
     }
+    
+    public function actionShareSchoolFeed()
+    {
+        $id = Yii::app()->request->getPost('id');
+        $user_id = Yii::app()->request->getPost('user_id');
+        if (!$id || !$user_id)
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        else
+        {       
+            $schooluser = new SchoolUser();
+            $user_schools = $schooluser->userSchool($user_id);
+            if(isset($user_schools[0]['school_id']))
+            {
+                $objpost = new Post();
+                $already_share = $objpost->getSchoolSharePost($school_id, $id);
+                if($already_share)
+                {
+                    $response['status']['code'] = 404;
+                    $response['status']['msg'] = "ALREADY_SHARE";
+                }
+                else
+                {
+                    $postData = $objpost->findByPk($id);
+                    if($postData)
+                    {
+                        if($postData->school_id)
+                        {
+                            $response['status']['code'] = 400;
+                            $response['status']['msg'] = "Bad Request";
+                        }    
+                        else
+                        {
+                            foreach($postData as $key=>$value)
+                            {
+                                if($key=="id")
+                                {
+                                    continue;
+                                }
+
+                            }
+                        }
+                    }
+                    else
+                    {
+                       $response['status']['code'] = 400;
+                       $response['status']['msg'] = "Bad Request"; 
+                    }    
+                }    
+            }   
+            else
+            {
+                $response['status']['code'] = 400;
+                $response['status']['msg'] = "Bad Request";
+            }    
+            
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    } 
     
     public function actionRelatedNews()
     {

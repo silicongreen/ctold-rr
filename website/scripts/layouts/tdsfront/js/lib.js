@@ -10,7 +10,7 @@ function sharebrowser(id)
     
     $.fancybox({
             'width'		        : 280,
-            'height'                    : 200,
+            'height'                    : 136,
             'autoScale'                 : false,
             'autoSize'                  : false,
             'href'			: $("#base_url").val()+"front/ajax/sharepop/"+id,
@@ -716,6 +716,15 @@ $(document).ready(function(){
             }
         );
     });
+    $(document).on("mouseenter",".share_class" , function(){
+        var post_id = this.id.replace("share_",""); 
+        $("#share_"+post_id+" .seen-image img").attr("src",$("#base_url").val()+"styles/layouts/tdsfront/images/social/share_minicon_tap.png");
+     });
+     $(document).on("mouseleave",".share_class" , function(){
+        var post_id = this.id.replace("share_",""); 
+        $("#share_"+post_id+" .seen-image img").attr("src",$("#base_url").val()+"styles/layouts/tdsfront/images/social/share_minicon_normal.png");
+     }
+    );
    
     $(document).on("mouseenter",".wow_class" , function(){
         var post_id = this.id.replace("wow_",""); 

@@ -214,7 +214,7 @@
                             
                         </a> 
                         <?php if(can_sharepost($post_id)==1): ?> 
-                            <a id="school_share_<?php echo $news->post_id; ?>"  href="javascript:void(0);" onclick="sharebrowser(<?php echo $news->post_id;?>)">
+                            <a id="school_share_<?php echo $post_id; ?>"  href="javascript:void(0);" onclick="sharebrowser(<?php echo $post_id;?>)">
                                 
                                         <span class="clearfix f2" style="float:left;font-size:12px;color:#666">
                                             Share
@@ -236,8 +236,7 @@
                 <div class="f2 normal" style="cursor: pointer; text-align: center; font-size: 14px; color: #ffffff;">Good Read</div>
             </div>
             
-            <script type="text/javascript">var addthis_config = {"data_track_addressbar":false, "data_track_clickback" : false};</script>
-            <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-52bca22436b47685"></script>
+            
             
         </div>
         <?php endif; ?>

@@ -100,6 +100,7 @@ color: #DC3131;
 }
 .assessment-popup-body{
     padding: 40px 20px 50px;
+    background: black;
 }
 .assessment-popup-btn-wrapper{
     text-align: center;

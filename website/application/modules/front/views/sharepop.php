@@ -19,7 +19,7 @@
                     </span>
                 </button>
                 
-                <button type="button" class="red" id="start_assessment_now" onclick="openshare(<?php echo $post_id; ?>)" >
+                <button type="button" class="red" id="full_leader_board" onclick="openshare(<?php echo $post_id; ?>)" >
                     <span class="clearfix f2">
                        Share
                     </span>
@@ -62,11 +62,11 @@ color: #DC3131;
     float: left;
     width: 47%;
     color:black;
-    margin-right:10px;
+    margin-right:5%;
 }
 #full_leader_board {
     float: right;
-    width: 47%;
+    width: 45%;
 }
 #assess_ladder_board {
     display: none;
@@ -76,10 +76,10 @@ color: #DC3131;
     height: auto;
     margin-left: auto;
     margin-right: auto;
-    width: 240px;
+   
 }
 .assessment-popup-header{
-    background-color: #242021;
+    background-color: #DC3434;
     height: 45px;
     position: relative;
     width: 100%;

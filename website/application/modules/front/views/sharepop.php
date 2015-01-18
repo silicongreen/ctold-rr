@@ -13,7 +13,7 @@
             <div class="assessment_common_message"></div>
             <div class="clearfix"></div>
             <div class="assessment-popup-btn-wrapper">
-                <button type="button" class="red" id="start_assessment_now" onclick="window.location='<?php echo base_url()."front/ajax/sharepop/".$post_id; ?>'" >
+                <button type="button" class="red" id="start_assessment_now" onclick="window.location='<?php echo base_url()."front/ajax/sharepost/".$post_id; ?>'" >
                     <span class="clearfix f2">
                        School
                     </span>

@@ -1,0 +1,603 @@
+<link rel="stylesheet" id="bootstrap-css" href="<?php echo base_url('css/champs21.css'); ?>" type="text/css" media="all" />
+<link rel="stylesheet" id="contact-form-7-css" href="<?php echo base_url('css/styles.css'); ?>" type="text/css" media="all" />
+<div id="assessment-popup-fancy">
+    <div id="assessment-popup-wrapper">
+
+        <div class="assessment-popup-header">
+            <div class="f2 assessment-popup-header-label">Share</div>
+        </div>
+
+        <div class="assessment-popup-body">
+            <?php $scontent = getFormatedContentAll($post, 100); ?>
+            <div class="assessment_custom_message"><?php echo $post->headline; ?></div>
+            <div class="assessment_common_message"><p><?php echo $scontent['content']; ?></p></div>
+            <div class="clearfix"></div>
+            <div class="assessment-popup-btn-wrapper">
+                <button type="button" class="red" id="start_assessment_now" onclick="openschool_share('<?php echo base_url()."ajax/front/showsharepost/".$post_id; ?>')" >
+                    <span class="clearfix f2">
+                       Share
+                    </span>
+                </button>
+               
+            </div>
+        </div>
+
+    </div>
+</div>
+<script type="text/javascript">var addthis_config = {"data_track_addressbar":false, "data_track_clickback" : false};</script>
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-52bca22436b47685"></script>
+<script>
+function openshare(id)
+{
+    var clickshareid = parent.document.getElementById('addthis_'+id);
+    clickshareid.click();
+    //parent.$.fancybox.close();
+}
+function openschool_share(sharelink)
+{
+    
+    window.open(sharelink, "_blank", "toolbar=no, scrollbars=no, resizable=no, top=500, left=500, width=400, height=400");
+}
+</script>
+<style>
+    body
+    {
+        backgorund:none !important;
+    }
+    .cann_play{
+    color: #DC3131;
+}
+#start_assessment_now {
+    float: left;
+    width: 49%;
+    color:black;
+}
+#full_leader_board {
+    float: right;
+    width: 49%;
+}
+#assess_ladder_board {
+    display: none;
+}
+#assessment-popup-wrapper{
+  
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+    width: 240px;
+}
+.assessment-popup-header{
+    background-color: #242021;
+    height: 45px;
+    position: relative;
+    width: 100%;
+}
+.assessment-popup-header-label {
+    color: #ffffff;
+    font-size: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 5px;
+    text-align: center;
+    width: 90%;
+}
+.assessment-popup-icon-wrapper{
+    left: 15px;
+    position: absolute;
+    top: 15px;
+}
+.assessment-popup-body{
+    padding: 40px 20px 50px;
+}
+.assessment-popup-btn-wrapper{
+    text-align: center;
+}
+#assessment_topic{
+    color: #FB3C2D;
+}
+#assessment_topic:after{
+    padding-left: 10px;
+    content: "|";
+    color: #ccc;
+}
+.ques_id {
+    padding-left: 50px;
+}
+.post #content a
+{
+    margin-bottom: 0px;
+    margin-right: 0px;
+}
+.addthis_toolbox{
+    background: #F7F7F7;
+    border: 1px solid #ccc;
+    height: 60px;
+    position: relative;
+    border-radius: 10px 10px 0 0;
+}
+.addthis_toolbox div{
+    height: 60px;
+}
+.addthis_toolbox-float{
+    background: #F7F7F7;
+    border: 1px solid #ccc;
+    height: 60px;
+    position: fixed;
+    top: 0;
+    width: 68%;
+    margin: 0 20px 0 20px;
+    display: none;
+}    
+.addthis_toolbox-float div{
+    height: 60px;
+}
+.addthis_button_facebook_share iframe{
+    width: 105px;
+    height: 30px;
+}
+.addthis_button_facebook_like div{
+    width: 78px;
+    height: 30px;
+}
+.addthis_button_facebook_like div span {
+    height: 20px;
+    vertical-align: bottom;
+    /*        width: 450px !important;*/
+    z-index: 1001;
+}
+.seen-image{
+    padding-bottom: 7px;
+    padding-left: 0;
+}
+.seen-image img {
+    width: 22px;
+}
+.seen{
+    padding-top: 5px;
+}
+.seen h2{
+    color: #b1b8ba;
+    font-family: tahoma;
+    font-size: 14px;
+    line-height: 0;
+}
+.good-read-text{
+    float: left;
+    height: 60px;
+    padding-top: 2px;
+}
+.good-read-image{
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 8px;
+    text-align: center;
+}
+.good-read-text h2{
+    color: #FFF;
+    font-size: 25px;
+    font-weight: 600;
+}
+.good-read-button{
+    cursor: pointer;
+    padding: 0;
+}
+.content-post {
+    margin-top: 10px;
+}
+.next-previous {
+    float: right;
+    font-size: 16px;
+    letter-spacing: 0.08em;
+    margin: auto;
+    text-align: center;
+    width: 19%;
+}
+.next-previous a {
+    color: #ffffff;
+}
+.next {
+    background-color: #bfc3c6;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+    color: #ffffff;
+    cursor: pointer;
+    float: right;
+    padding: 10px 12px;
+}
+.previous {
+    background-color: #bfc3c6;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+    color: #ffffff;
+    cursor: pointer;
+    float: left;
+    padding: 10px 12px;
+}
+.next:hover, .previous:hover {
+    background-color: #373737;
+    -webkit-transition: background-color 0.5s ease;
+    -moz-transition: background-color 0.5s ease;
+    -o-transition: background-color 0.5s ease;
+    -ms-transition: background-color 0.5s ease;
+    transition: background-color 0.5s ease;
+}
+.inner-container {
+    padding: 0 30px 50px;
+}
+.language {
+    cursor: pointer;
+    padding: 0 0 11px 5px;
+}
+.language em {
+    background-color: #dfdfdf;
+    padding: 10px 10px 10px 8px;
+}
+.language a em {
+    color: #93989c;
+    font-size: 8px;
+}
+.language a em.active{
+    color: #FB3C2D;
+}
+.language a em:not(.active):hover {
+    color: #ffffff;
+    background-color: #93989C;
+    -webkit-transition: background-color 0.5s ease;
+    -moz-transition: background-color 0.5s ease;
+    -o-transition: background-color 0.5s ease;
+    -ms-transition: background-color 0.5s ease;
+    transition: background-color 0.5s ease;
+}
+.good-read-column {
+    background-color: #fb3c2d;
+    cursor: pointer;
+    padding: 0px 0;
+}
+.good-read-column:hover{
+    background-color: #93989C;
+    -webkit-transition: background-color 0.5s ease;
+    -moz-transition: background-color 0.5s ease;
+    -o-transition: background-color 0.5s ease;
+    -ms-transition: background-color 0.5s ease;
+    transition: background-color 0.5s ease;
+}
+.fancybox-wrap {
+    top: 50px !important;
+}
+.add-wrapper-top{
+    padding: 20px 0 10px;
+    width: 100%
+}
+.add-wrapper-top img{
+    width: 100%
+}
+.add-wrapper-bottom{
+    padding: 20px 0 10px;
+    width: 100%
+}
+.add-wrapper-bottom img{
+    width: 100%
+}
+.inner-container .question {
+    font-size: 20px;
+}
+.ques_no{
+    color: #FB3C2D;
+}
+.ques_no:after{
+    padding-left: 10px;
+    content: "|";
+    color: #ccc;
+}
+.ques_text:before{
+    padding-left: 5px;
+    content: " ";
+}
+.answer-wrapper {
+    margin: auto;
+    width: 95%;
+}
+.answer-wrapper ul {
+
+}
+.answer-wrapper ul li {
+    border: 1px solid #ccc;
+    float: left;
+    margin: 10px;
+    text-align: center;
+    width: 45%;
+    cursor: pointer;
+    /*            height: 250px;*/
+}
+.answer-wrapper ul li:hover {
+    background-color: #FFFDDC;
+    -webkit-transition: background-color 0.5s ease;
+    -moz-transition: background-color 0.5s ease;
+    -o-transition: background-color 0.5s ease;
+    -ms-transition: background-color 0.5s ease;
+    transition: background-color 0.5s ease;
+}
+.opt-wrapper {
+    padding: 50px;
+    position: relative;
+}
+.opt-wrapper .opt-num {
+    background-color: #e7e7e7;
+    float: left;
+    font-weight: bold;
+    height: 50px;
+    left: 0;
+    padding: 15px;
+    position: absolute;
+    top: 0;
+    vertical-align: middle;
+    width: 50px;
+}
+.opt-wrapper .opt-ans{
+    position: relative;
+}
+.opt-wrapper .opt-ans p {
+    text-align: center;
+}
+.opt-wrapper .opt-ans img {
+    height: 40%;
+    float: left;
+    margin-right: 5px;
+}
+
+.assessment-next-previous {
+    float: right;
+    width: 11.5%;
+    margin-right: 55px;
+}
+.assessment-previous {
+    background-color: #bfc3c6;
+    cursor: pointer;
+    float: left;
+    margin: auto;
+    padding: 15px;
+}
+.assessment-previous-arrow {
+    border-color: transparent #ffffff transparent transparent;
+    border-style: solid;
+    border-width: 10px 20px 10px 0;
+    height: 0;
+    margin: auto;
+    width: 0;
+}
+.assessment-next {
+    background-color: #bfc3c6;
+    cursor: pointer;
+    float: right;
+    margin: auto;
+    padding: 15px;
+}
+.assessment-next-arrow {
+    border-color: transparent transparent transparent #ffffff;
+    border-style: solid;
+    border-width: 10px 0 10px 20px;
+    height: 0;
+    margin: auto;
+    width: 0;
+}
+.assessment-next:hover, .assessment-previous:hover {
+    background-color: #DC3434;
+    -webkit-transition: background-color 0.5s ease;
+    -moz-transition: background-color 0.5s ease;
+    -o-transition: background-color 0.5s ease;
+    -ms-transition: background-color 0.5s ease;
+    transition: background-color 0.5s ease;
+}
+.assessment-submit {
+    display: block;
+    left: 55px;
+    top: -90px;
+}
+.red:hover{
+    background-color: #60cb97;
+    -webkit-transition: background-color 0.5s ease;
+    -moz-transition: background-color 0.5s ease;
+    -o-transition: background-color 0.5s ease;
+    -ms-transition: background-color 0.5s ease;
+    transition: background-color 0.5s ease;
+}
+#assessment_explanation{
+    float: left;
+    width: 49%;
+}
+#assessment_next{
+    float: right;
+    width: 49%;
+}
+
+/* Flip Clock Overwrite */
+.flip-clock-wrapper {
+    margin: 10px 5px;
+}
+.flip-clock-wrapper ul {
+    background: none repeat scroll 0 0 #fff;
+    border-radius: 6px;
+    float: left;
+    font-size: 13px;
+    font-weight: bold;
+    height: 55px;
+    line-height: 87px;
+    margin: 20px 5px 5px;
+    position: relative;
+    width: 40px;
+}
+.flip-clock-wrapper ul li {
+    height: 100%;
+    left: 0;
+    line-height: 53px;
+    position: absolute;
+    text-decoration: none !important;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+}
+.flip-clock-dot.top {
+    top: 30px;
+}
+.flip-clock-dot.bottom {
+    bottom: 35px;
+}
+.flip-clock-divider.seconds .flip-clock-label {
+    right: -75px;
+    top: -2px;
+}
+.flip-clock-divider.minutes .flip-clock-label {
+    right: -75px;
+    top: -2px;
+}
+.flip-clock-wrapper .flip {
+    box-shadow: 0 2px 5px #bbb;
+}
+.flip-clock-wrapper ul li a div div.inn {
+    background-color: #db3434;
+    color: #fff;
+    font-size: 45px;
+    text-shadow: 0 1px 2px #777;
+}
+.flip-clock-dot {
+    background: none repeat scroll 0 0 #db3434;
+    box-shadow: 0 0 2px #888;
+}
+/* Flip Clock Overwrite */
+
+/* Assessment Leader Board */
+.ladder_board_title{
+    color: #dc3131;
+    font-size: 25px;
+    font-weight: bold;
+    padding: 0 0 10px;
+    text-align: center;
+}
+#pre_assessment_details{
+    float: left;
+    padding-left: 5px;
+    width: 35%;
+}
+#leader_board {
+    float: right;
+    width: 60%;
+}
+.full_leader_board_wrapper {
+    float: none !important;
+    height: 350px;
+    overflow: scroll !important;
+    width: 100% !important;
+}
+#leader_board table{
+    width: 100%;
+}
+#leader_board table img{
+    float: left;
+    margin-right: 8px;
+    width: 50px;
+}
+#leader_board table th{
+    border-bottom: 1px solid #ddd;
+    color: #666;
+}
+#leader_board table thead tr th:first-child{
+    width: 65%;
+}
+#leader_board table thead tr th:nth-child(2){
+    width: 35%;
+}
+#leader_board table td {
+    color: #666;
+    padding: 8px;
+    text-align: left;
+    vertical-align: top;
+}
+#leader_board table td:nth-child(2) {
+    text-align: center;
+}
+.ladder_board_user_name {
+    font-size: 14px;
+    font-weight: bold;
+}
+.ladder_board_mark {
+    font-size: 25px;
+    margin-bottom: 5px;
+}
+.ladder_board_time {
+    color: #999;
+    font-size: 14px;
+}
+.ladder_board_school_name {
+    color: #777;
+    font-family: georgia;
+    font-size: 11px;
+}
+/* Assessment Leader Board */
+
+/* Assessment Leader summary */
+.assess_summary_wrapper {
+    height: 302px;
+    overflow: scroll;
+}
+#assess_summary table{
+    width: 100%;
+}
+#assess_summary table img{
+    width: 30px;
+}
+#assess_summary table th{
+    border-bottom: 1px solid #ddd;
+    color: #666;
+}
+#assess_summary table thead tr th:first-child{
+    width: 40%;
+}
+#assess_summary table thead tr th:nth-child(2){
+    width: 5%;
+}
+#assess_summary table thead tr th:nth-child(3){
+    width: 22%;
+}
+#assess_summary table thead tr th:nth-child(4){
+    width: 33%;
+}
+#assess_summary table thead tr td:nth-child(2){
+    text-align: center;
+    vertical-align: middle;
+}
+#assess_summary table td {
+    color: #666;
+    padding: 8px;
+    text-align: left;
+    vertical-align: top;
+}
+#assess_summary table td:nth-child(2) {
+    text-align: center;
+}
+/* Assessment Leader summary */
+
+
+@media all and (min-width: 319px) and (max-width: 479px){
+    .next-previous {
+        width: 65%;
+    }
+}
+
+@media all and (min-width: 480px) and (max-width: 800px){
+    .next-previous {
+        width: 40%;
+    }
+}
+
+@media all and (min-width: 801px) and (max-width: 1024px){
+    .next-previous {
+        width: 25%;
+    }
+}
+</style>

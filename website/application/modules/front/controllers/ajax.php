@@ -34,6 +34,71 @@ class ajax extends MX_Controller
         set_type_cookie(1);
         redirect(base_url());
     }
+    public function sharepop($id)
+    {
+        $data['post_id'] = $id;
+        $data['post'] = new Posts($id);
+        $this->load->view("sharepop",$data);
+        
+    } 
+    public function showsharepost($id)
+    {
+        $data['post_id'] = $id;
+        $data['post'] = new Posts($id);
+        $this->load->view("schoolsharepop",$data);
+        
+    }
+    public function sharepost($post_id)
+    {
+        if (free_user_logged_in() || wow_login()==false)
+        {
+           
+            $user_id = get_free_user_session("id");
+            
+            if($post_id && $user_id )
+            {
+                $url = get_curl_url("shareschoolfeed");
+                $fields = array(
+                    'user_id' => $user_id,
+                    'id' => $post_id
+                );
+                
+                $fields_string = "";
+
+                foreach($fields as $key=>$value) { 
+                    $fields_string .= $key.'='.$value.'&'; 
+
+                }
+
+                rtrim($fields_string, '&');
+                $ch = curl_init();
+
+                //set the url, number of POST vars, POST data
+                curl_setopt($ch,CURLOPT_URL, $url);
+
+                curl_setopt($ch,CURLOPT_POST, count($fields));
+                curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+                curl_setopt($ch,CURLOPT_RETURNTRANSFER, 1);
+
+                curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
+                    'Accept: application/json',
+                    'Content-Length: ' . strlen($fields_string)
+                    )                                                                       
+                );    
+               
+                $result = curl_exec($ch);
+
+                curl_close($ch);
+
+                $a_data = json_decode($result);
+               
+              
+                
+            }
+           
+        }
+         echo "<script>alert('Post shared to your school'); parent.$.fancybox.close(); parent.window.location='".base_url()."'</script>";
+    }
     
     
     function minify_css()

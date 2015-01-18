@@ -84,6 +84,7 @@ color: #DC3131;
 #full_leader_board {
     float: right;
     width: 45%;
+    color:black;
 }
 #assess_ladder_board {
     display: none;

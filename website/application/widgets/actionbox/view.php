@@ -36,7 +36,7 @@ $wow_class = getclassactionbox($news->wow_count);
             </div>    
         </a> 
         <?php if($news->can_share==1): ?> 
-            <a  href="javascript:void(0);" onclick="sharebrowser(<?php echo $news->post_id;?>)">
+            <a id="school_share_<?php echo $news->post_id; ?>"  href="javascript:void(0);" onclick="sharebrowser(<?php echo $news->post_id;?>)">
                 <div class="seen-image col-lg-2" style="text-align:right;margin-top:12px;margin-left:10px;" ><img src="<?php echo base_url("styles/layouts/tdsfront/images/social/share_minicon_normal.png"); ?>" /></div>
                     <div class="seen col-lg-8" >
                         <span class="clearfix f2" style="float:left;font-size:12px;margin-left:8px;margin-top:8px;color:#666">

@@ -55,6 +55,27 @@ body
 {
     background-image:none !important;
 }
+.red{
+        background-color: #BBBBBB;
+        border: none;
+        line-height: 15px;
+        color: #fff;
+        height: 40px;
+        width: 50%;
+        box-shadow: 0 3px 2px 0 #bbb;
+        -o-box-shadow: 0 3px 2px 0 #bbb;
+        -ms-box-shadow: 0 3px 2px 0 #bbb;
+        -moz-box-shadow: 0 3px 2px 0 #bbb;
+        -webkit-box-shadow: 0 3px 2px 0 #bbb;
+}
+.red:hover{
+    background-color: #60cb97;
+    -webkit-transition: background-color 0.5s ease;
+    -moz-transition: background-color 0.5s ease;
+    -o-transition: background-color 0.5s ease;
+    -ms-transition: background-color 0.5s ease;
+    transition: background-color 0.5s ease;
+}
 .cann_play{
 color: #DC3131;
 }

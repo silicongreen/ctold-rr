@@ -76,10 +76,10 @@ color: #DC3131;
     height: auto;
     margin-left: auto;
     margin-right: auto;
-    width: 240px;
+   
 }
 .assessment-popup-header{
-    background-color: #242021;
+    background-color: #DC3434;
     height: 45px;
     position: relative;
     width: 100%;

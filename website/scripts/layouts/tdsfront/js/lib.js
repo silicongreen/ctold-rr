@@ -763,7 +763,7 @@ $(document).ready(function(){
                 'custom_message' : ''
             },
             'school_join' : {
-                'icon' : 'school_red.png',
+                'icon' : 'schools-new.png',
                 'header_label' : 'Join To School',
                 'custom_message' : "<p>Join your school's page today and stay connected!</p><p>Get updates on recent on goings and feeds from your school teachers.</p>"
             }

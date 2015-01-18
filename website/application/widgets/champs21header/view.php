@@ -704,7 +704,7 @@ height: 46px;
                 </li>
                 <li data="magic_mart" class="before-login-user-back" onclick="location.href='<?php echo $my_school_menu_uri; ?>'">
                 <!-- onclick="location.href='//<?php echo base_url('/market'); ?>'" -->
-                    <div class="icon-magic-mart">&nbsp;</div> 
+                    <div class="icon-my-school">&nbsp;</div> 
                 </li>
 <!--                <li data="create-page" class="before-login-user-back" onclick="location.href='<?php echo base_url('/createpage'); ?>'">                        
                     <div class="icon-create-page">&nbsp;</div> 
@@ -1832,16 +1832,16 @@ if($('.header-logo-div').is(':visible')) {
     background: url(<?php echo base_url('styles/layouts/tdsfront/image/candle_black.png'); ?>) no-repeat;
     background-size:70%;    
 }
-.icon-magic-mart
+.icon-my-school
 {
-    background: url(<?php echo base_url('styles/layouts/tdsfront/image/magicmart_red.png'); ?>) no-repeat;
+    background: url(<?php echo base_url('styles/layouts/tdsfront/image/my_school.png'); ?>) no-repeat;
     background-size:70%;
     width:118px;
     height:79px;
 }
-.icon-magic-mart:hover
+.icon-my-school:hover
 {
-    background: url(<?php echo base_url('styles/layouts/tdsfront/image/magicmart_black.png'); ?>) no-repeat;
+    background: url(<?php echo base_url('styles/layouts/tdsfront/image/my_school_black.png'); ?>) no-repeat;
     background-size:70%;    
 }
 .icon-create-page

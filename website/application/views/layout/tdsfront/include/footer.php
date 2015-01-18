@@ -155,6 +155,6 @@ $widget = new Widget;
 <script>
     var addthis_config =
     {
-       ui_click: true
+       ui_cobrand: "Champs21"
     }
 </script>    

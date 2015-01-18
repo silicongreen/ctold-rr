@@ -97,7 +97,7 @@ class ajax extends MX_Controller
             }
            
         }
-         echo "<script>alert('Post shared to your school'); parent.$.fancybox.close(); parent.window.location='".base_url()."'</script>";
+          echo "<script>alert('Post shared to your school');var element = parent.document.getElementById('school_share_".$post_id."');element.parentNode.removeChild(element);parent.document.getElementById('addthis_".$post_id."').style.display = 'block'; parent.$.fancybox.close();</script>";
     }
     
     

@@ -440,11 +440,11 @@ class Post extends CActiveRecord
                 )
             ),
             'postAuthor' => array(
-                'select' => 'postAuthor.title,postAuthor.image'
+                'select' => 'postAuthor.title,postAuthor.image,postAuthor.designation'
             )
             ,
             'freeUser' => array(
-                'select' => 'freeUser.first_name,freeUser.middle_name,freeUser.last_name,freeUser.email,freeUser.profile_image',
+                'select' => 'freeUser.first_name,freeUser.middle_name,freeUser.last_name,freeUser.email,freeUser.profile_image,freeUser.designation',
                 'joinType' => "LEFT JOIN"
             ),
             'postAssessment' => array(

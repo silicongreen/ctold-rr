@@ -27,7 +27,7 @@ class FreeuserController extends Controller
                     , "gettagpost", "getbylinepost", "getmenu","getassesment","addmark","updateplayed","assesmenthistory",
                     "getuserinfo", "goodread", "readlater", "goodreadall", "goodreadfolder", "removegoodread"
                     , "schoolsearch", "school", "createschool", "schoolpage", "schoolactivity", "candle"
-                    , "garbagecollector","getschoolteacherbylinepost","createcachesinglenews","addwow", 
+                    , "garbagecollector","getschoolteacherbylinepost","createcachesinglenews","addwow","can_share_from_web", 
                     'set_preference','addcomments','getcomments', 'get_preference','addgcm','getallgcm','shareschoolfeed',
                     'getschoolinfo','joinschool','candleschool','leaveschool','folderdelete','assesmenttopscore','relatednews'),
                 'users' => array('*'),
@@ -2040,6 +2040,62 @@ class FreeuserController extends Controller
             echo CJSON::encode($response);
         Yii::app()->end();
     }
+    
+    function actioncan_share_from_web($id="",$user_id="")
+    {
+        $user_id = Yii::app()->request->getPost('user_id');
+        $id = Yii::app()->request->getPost('id');
+        if (!$id || !$user_id)
+        {
+            echo 0;
+        }
+        else
+        {       
+            $schooluser = new SchoolUser();
+            $user_schools = $schooluser->userSchool($user_id);
+            if(isset($user_schools[0]['school_id']))
+            {
+                $school_id = $user_schools[0]['school_id'];
+                $objpost = new PostSchoolShare();
+                $already_share = $objpost->getSchoolSharePost($school_id, $id);
+                 
+                if($already_share)
+                {
+                    
+                    echo 0;
+                }
+                else
+                {
+                    $objpostmain = new Post();
+                   
+                    $postData = $objpostmain->findByPk($id);
+                    
+                    if($postData)
+                    {
+                        if($postData->school_id)
+                        {
+                            echo 0;
+                        }    
+                        else
+                        {
+                            echo 1;
+                            
+                        }
+                    }
+                    else
+                    {
+                       echo 0;
+                    }    
+                }    
+            }   
+            else
+            {
+                echo 0;
+            }    
+            
+        }    
+       
+    } 
     
     private function can_share($id="",$user_id="")
     {

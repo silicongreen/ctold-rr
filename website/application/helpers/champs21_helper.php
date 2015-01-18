@@ -204,6 +204,61 @@ if (!function_exists('substr_with_unicode'))
     }
 
 }
+if (!function_exists('can_sharepost'))
+{
+    function can_sharepost($post_id)
+    {
+        if (free_user_logged_in() || wow_login()==false)
+        {
+           
+            $user_id = get_free_user_session("id");
+            
+            if($post_id && $user_id )
+            {
+                $url = get_curl_url("can_share_from_web");
+                $fields = array(
+                    'user_id' => $user_id,
+                    'id' => $post_id
+                );
+                
+                $fields_string = "";
+
+                foreach($fields as $key=>$value) { 
+                    $fields_string .= $key.'='.$value.'&'; 
+
+                }
+
+                rtrim($fields_string, '&');
+                $ch = curl_init();
+
+                //set the url, number of POST vars, POST data
+                curl_setopt($ch,CURLOPT_URL, $url);
+
+                curl_setopt($ch,CURLOPT_POST, count($fields));
+                curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+                curl_setopt($ch,CURLOPT_RETURNTRANSFER, 1);
+
+                curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
+                    'Accept: application/json',
+                    'Content-Length: ' . strlen($fields_string)
+                    )                                                                       
+                );    
+               
+                $result = curl_exec($ch);
+
+                curl_close($ch);
+
+                return $result;
+               
+              
+                
+            }
+           
+        }
+        return 0;
+          
+    }
+}    
 
 if (!function_exists("getFormatedContentAll"))
 {

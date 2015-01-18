@@ -203,12 +203,30 @@
                     <div class="seen"><h2 class=""><?php echo $wow_count; ?></h2></div>
                     <div class="seen-image"><img src="<?php echo base_url("styles/layouts/tdsfront/images/social/wow.png"); ?>" /></div>
                 </div>
-<!--                <div class="col-md-12" style="clear:both;">
-                    <a class="addthis_button_facebook_like" fb:like:layout="button_count" fb:like:href="<?php echo create_link_url(NULL, $headline,$post_id,false,true,false); ?>"></a>
-                </div>-->
-                <div class="col-md-12" style="float:right; clear: both; margin-top: 10px;">
-                    <a class="addthis_button_facebook_share" fb:share:layout="horizontal"  addthis:title="<?php echo $headline; ?>" addthis:url="<?php echo create_link_url(NULL, $headline,$post_id); ?>" addthis:description="<?php echo $fb_desc; ?>"></a>
+                
+                <div  style="margin-top:10px; width:auto; cursor: pointer; float:right; clear: both;" class="share_class" style="cursor: pointer;">                    
+                    <div class="seen">
+                        <a class="addthis_button_compact" id="addthis_<?php echo $post_id; ?>" <?php if(can_sharepost($post_id)==1): ?> style="display:none;" <?php endif; ?> addthis:url="<?php echo create_link_url(NULL, $headline,$post_id,false,true,false); ?>" addthis:title="<?php echo $headline; ?>" id="full_leader_board">
+                            
+                                <span class="clearfix f2" style="float:left;font-size:12px;color:#666">
+                                    Share
+                                </span>
+                            
+                        </a> 
+                        <?php if(can_sharepost($post_id)==1): ?> 
+                            <a id="school_share_<?php echo $news->post_id; ?>"  href="javascript:void(0);" onclick="sharebrowser(<?php echo $news->post_id;?>)">
+                                
+                                        <span class="clearfix f2" style="float:left;font-size:12px;color:#666">
+                                            Share
+                                        </span>
+                                    
+                            </a>
+                        <?php endif; ?>
+                    </div>
+                    <div class="seen-image"><img src="<?php echo base_url("styles/layouts/tdsfront/images/social/share_minicon_normal.png"); ?>" /></div>
                 </div>
+
+                
             </div>
             <div class="col-lg-3 good-read-column">
                 <div class="good-read-button normal <?php echo ( free_user_logged_in() ) ? "" : "login-user"; ?>">

@@ -516,6 +516,7 @@ class Settings {
 
 
             $post_array['author'] = "";
+            $post_array['designation'] = "";
             if(isset($postValue->author_image_post))
             {
                 $post_array['author_image'] = $postValue->author_image_post;
@@ -550,6 +551,11 @@ class Settings {
                     $auther_name = $postValue['freeUser']->email;
                 }
                 $post_array['author'] = $auther_name;
+                
+                if(isset($postValue['freeUser']->designation) && $postValue['freeUser']->designation)
+                {
+                    $post_array['designation']= $postValue['freeUser']->designation;
+                }
             }    
             
             
@@ -558,6 +564,11 @@ class Settings {
                 $post_array['author'] = $postValue['postAuthor']->title;
                 if ($postValue['postAuthor']->image)
                     $post_array['author_image'] = Settings::$image_path . $postValue['postAuthor']->image;
+                
+                if(isset($postValue['postAuthor']->designation) && $postValue['postAuthor']->designation)
+                {
+                    $post_array['designation']= $postValue['postAuthor']->designation;
+                }
             }
             
             $post_array['post_id'] = $postValue->id;

@@ -28,8 +28,8 @@ $wow_class = getclassactionbox($news->wow_count);
   
     <div class="share_class col-lg-3" id="share_<?php echo $news->post_id; ?>" style="border-right:1px solid #DADEDF; min-height: 39px;">
         <a class="addthis_button_compact" id="addthis_<?php echo $news->post_id; ?>" <?php if($news->can_share==1): ?> style="display:none;" <?php endif; ?> addthis:url="<?php echo create_link_url(NULL, $news->headline,$news->post_id,false,true,false); ?>" addthis:title="<?php echo $news->headline; ?>" id="full_leader_board">
-            <div class="seen-image col-lg-2" style="text-align:right;margin-top:12px;margin-left:16%;" ><img src="<?php echo base_url("styles/layouts/tdsfront/images/social/share_minicon_normal.png"); ?>" /></div>
-            <div class="seen col-lg-8" >
+            <div class="seen-image col-lg-2" style="text-align:right;margin-top:12px;margin-left:20%;" ><img src="<?php echo base_url("styles/layouts/tdsfront/images/social/share_minicon_normal.png"); ?>" /></div>
+            <div class="seen col-lg-7" >
                 <span class="clearfix f2" style="float:left;font-size:12px;margin-left:8px;margin-top:8px;color:#666">
                     Share
                 </span>
@@ -37,8 +37,8 @@ $wow_class = getclassactionbox($news->wow_count);
         </a> 
         <?php if($news->can_share==1): ?> 
             <a id="school_share_<?php echo $news->post_id; ?>"  href="javascript:void(0);" onclick="sharebrowser(<?php echo $news->post_id;?>)">
-                <div class="seen-image col-lg-2" style="text-align:right;margin-top:12px;margin-left:16%;" ><img src="<?php echo base_url("styles/layouts/tdsfront/images/social/share_minicon_normal.png"); ?>" /></div>
-                    <div class="seen col-lg-8" >
+                <div class="seen-image col-lg-2" style="text-align:right;margin-top:12px;margin-left:20%;" ><img src="<?php echo base_url("styles/layouts/tdsfront/images/social/share_minicon_normal.png"); ?>" /></div>
+                    <div class="seen col-lg-7" >
                         <span class="clearfix f2" style="float:left;font-size:12px;margin-left:8px;margin-top:8px;color:#666">
                             Share
                         </span>

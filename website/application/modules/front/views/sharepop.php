@@ -15,7 +15,7 @@
             <div class="assessment-popup-btn-wrapper">
                 <button type="button" class="red" id="start_assessment_now" onclick="window.location='<?php echo base_url()."front/ajax/sharepost/".$post_id; ?>'" >
                     <span class="clearfix f2">
-                       School
+                       My School
                     </span>
                 </button>
                 
@@ -51,21 +51,22 @@ function openshare(id)
 //}
 </script>
 <style>
-    body
-    {
-        backgorund:none;
-    }
-    .cann_play{
-    color: #DC3131;
+body
+{
+    background-image:none !important;
+}
+.cann_play{
+color: #DC3131;
 }
 #start_assessment_now {
     float: left;
-    width: 49%;
+    width: 47%;
     color:black;
+    margin-right:10px;
 }
 #full_leader_board {
     float: right;
-    width: 49%;
+    width: 47%;
 }
 #assess_ladder_board {
     display: none;

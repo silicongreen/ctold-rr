@@ -39,7 +39,7 @@
     <?php endif; ?>
 			<li class="schools topopup">
 				 <a href="<?php echo base_url() . "schools"; ?>">
-					<span class="ca-icon" style="background: url(<?php echo base_url('styles/layouts/tdsfront/image/schools.png'); ?>) no-repeat;background-size:40px;top:10px;left:20px;"></span>
+					<span class="ca-icon" style="background: url(<?php echo base_url('styles/layouts/tdsfront/image/schools_new.png'); ?>) no-repeat;background-size:40px;top:10px;left:20px;"></span>
 					<div class="ca-content">
 						<h2 class="ca-main f5">Schools</h2>
 					</div>

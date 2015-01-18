@@ -60,13 +60,9 @@ body
         border: none;
         line-height: 15px;
         color: #fff;
-        height: 40px;
+        height: 30px;
         width: 50%;
-        box-shadow: 0 3px 2px 0 #bbb;
-        -o-box-shadow: 0 3px 2px 0 #bbb;
-        -ms-box-shadow: 0 3px 2px 0 #bbb;
-        -moz-box-shadow: 0 3px 2px 0 #bbb;
-        -webkit-box-shadow: 0 3px 2px 0 #bbb;
+       
 }
 .red:hover{
     background-color: #60cb97;
@@ -120,7 +116,7 @@ color: #DC3131;
     top: 15px;
 }
 .assessment-popup-body{
-    padding: 40px 20px 50px;
+    padding: 20px 20px 50px;
     background: black;
 }
 .assessment-popup-btn-wrapper{

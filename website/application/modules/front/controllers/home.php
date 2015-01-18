@@ -1192,7 +1192,7 @@ class home extends MX_Controller {
             $obj_post_data->has_related = TRUE;
         }
         
-        if(!$related_assess) {
+        if($assessment) {
             $obj_post_data->has_assessment = TRUE;
             $obj_post_data->assessment = $assessment;
             $obj_post_data->go_to_assessment = $this->config->config['go_to_assessment'];

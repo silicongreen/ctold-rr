@@ -38,17 +38,17 @@
 <script type="text/javascript">var addthis_config = {"data_track_addressbar":false, "data_track_clickback" : false};</script>
 <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-52bca22436b47685"></script>
 <script>
-//function openshare(id)
-//{
-//    var clickshareid = parent.document.getElementById('addthis_'+id);
-//    clickshareid.click();
-//    //parent.$.fancybox.close();
-//}
-function openschool_share(sharelink)
+function openshare(id)
 {
-    
-    window.open(sharelink, "_blank", "toolbar=no, scrollbars=no, resizable=no, top=500, left=500, width=400, height=400");
+    var clickshareid = parent.document.getElementById('addthis_'+id);
+    clickshareid.click();
+    //parent.$.fancybox.close();
 }
+//function openschool_share(sharelink)
+//{
+//    
+//    window.open(sharelink, "_blank", "toolbar=no, scrollbars=no, resizable=no, top=500, left=500, width=400, height=400");
+//}
 </script>
 <style>
     body

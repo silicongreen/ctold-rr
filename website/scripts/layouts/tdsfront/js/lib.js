@@ -5,7 +5,22 @@ var scopes = 'https://www.googleapis.com/auth/plus.profile.emails.read';
 var g_call_counter = 0;
 var f_call_counter = 0;
 // Google API Details
-
+function sharebrowser(id)
+{
+    
+    $.fancybox({
+            'width'		        : 280,
+            'height'                    : 200,
+            'autoScale'                 : false,
+            'autoSize'                  : false,
+            'href'			: $("#base_url").val()+"front/ajax/sharepop/"+id,
+            'title'                     : false,
+            'transitionIn'		: 'none',
+            'transitionOut'		: 'none',
+            'type'		        : 'iframe'
+                    
+        });
+}
 function generate_result(current_page)
 {
     var type = $(".results").attr("id").replace("results_", "");

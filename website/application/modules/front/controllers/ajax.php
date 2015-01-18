@@ -41,6 +41,13 @@ class ajax extends MX_Controller
         $this->load->view("sharepop",$data);
         
     } 
+    public function showsharepost($id)
+    {
+        $data['post_id'] = $id;
+        $data['post'] = new Posts($id);
+        $this->load->view("schoolsharepop",$data);
+        
+    }
     public function sharepost($post_id)
     {
         if (free_user_logged_in() || wow_login()==false)
@@ -90,7 +97,7 @@ class ajax extends MX_Controller
             }
            
         }
-         echo "<script>alert('Post shared'); parent.$.fancybox.close(); parent.window.location='".base_url()."'</script>";
+         echo "<script>alert('Post shared to your school'); parent.$.fancybox.close(); parent.window.location='".base_url()."'</script>";
     }
     
     

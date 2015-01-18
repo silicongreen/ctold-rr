@@ -8,28 +8,17 @@
         </div>
 
         <div class="assessment-popup-body">
-
-            <div class="assessment_custom_message"></div>
-            <div class="assessment_common_message"></div>
+            <?php $scontent = getFormatedContentAll($post, 100); ?>
+            <div class="assessment_custom_message"><?php echo $post->headline; ?></div>
+            <div class="assessment_common_message"><p><?php echo $scontent['content']; ?></p></div>
             <div class="clearfix"></div>
             <div class="assessment-popup-btn-wrapper">
-                <button type="button" class="red" id="start_assessment_now" onclick="window.location='<?php echo base_url()."front/ajax/sharepop/".$post_id; ?>'" >
-                    <span class="clearfix f2">
-                       School
-                    </span>
-                </button>
-                
-                <button type="button" class="red" id="start_assessment_now" onclick="openshare(<?php echo $post_id; ?>)" >
+                <button type="button" class="red" id="start_assessment_now" onclick="openschool_share('<?php echo base_url()."ajax/front/showsharepost/".$post_id; ?>')" >
                     <span class="clearfix f2">
                        Share
                     </span>
                 </button>
-                
-                <a style="display:none;"  class="addthis_button_compact red" addthis:url="<?php echo create_link_url(NULL, $post->headline,$post_id,false,true,false); ?>" addthis:title="<?php echo $post->headline; ?>" id="full_leader_board">
-                    <span class="clearfix f2">
-                        Share
-                    </span>
-                </a> 
+               
             </div>
         </div>
 
@@ -38,12 +27,12 @@
 <script type="text/javascript">var addthis_config = {"data_track_addressbar":false, "data_track_clickback" : false};</script>
 <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-52bca22436b47685"></script>
 <script>
-//function openshare(id)
-//{
-//    var clickshareid = parent.document.getElementById('addthis_'+id);
-//    clickshareid.click();
-//    //parent.$.fancybox.close();
-//}
+function openshare(id)
+{
+    var clickshareid = parent.document.getElementById('addthis_'+id);
+    clickshareid.click();
+    //parent.$.fancybox.close();
+}
 function openschool_share(sharelink)
 {
     
@@ -53,7 +42,7 @@ function openschool_share(sharelink)
 <style>
     body
     {
-        backgorund:none;
+        backgorund:none !important;
     }
     .cann_play{
     color: #DC3131;

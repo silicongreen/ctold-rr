@@ -177,6 +177,9 @@ class UserController extends Controller {
                 $freeuserObj->profile_image = $main_dir . $name;
             }
 
+            if($paid_password)
+            $freeuserObj->paid_password = $paid_password;
+            
             if ($first_name)
                 $freeuserObj->first_name = $first_name;
 

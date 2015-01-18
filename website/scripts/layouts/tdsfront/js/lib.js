@@ -10,7 +10,7 @@ function sharebrowser(id)
     
     $.fancybox({
             'width'		        : 280,
-            'height'                    : 136,
+            'height'                    : 115,
             'autoScale'                 : false,
             'autoSize'                  : false,
             'href'			: $("#base_url").val()+"front/ajax/sharepop/"+id,

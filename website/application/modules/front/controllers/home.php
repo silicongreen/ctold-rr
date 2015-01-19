@@ -1144,21 +1144,21 @@ class home extends MX_Controller {
             $s_image = str_replace("http://bd.", "http://www.", $s_image);
         }
 
-        $url_main = create_link_url(NULL, $obj_post_data->headline,$obj_post_data->post_id);
+       $encoded_url = $url_main = create_link_url(NULL, $obj_post_data->headline,$obj_post_data->post_id);
         
-        $only_link = str_replace(base_url(), "", $url_main);
+//        $only_link = str_replace(base_url(), "", $url_main);
+//        
+//        $only_link_encoded = urlencode($only_link);
+//        
+//        if($obj_post_data->referance_id > 0)
+//        {
+//          $url_segment = $this->uri->segment(1);
+//          $only_link_encoded = $url_segment;
+//          //$only_link_encoded = urlencode($only_link);
+//          $only_link_encoded = $only_link_encoded."/". $obj_post_data->language; 
+//        } 
         
-        $only_link_encoded = urlencode($only_link);
-        
-        if($obj_post_data->referance_id > 0)
-        {
-          $url_segment = $this->uri->segment(1);
-          $only_link_encoded = $url_segment;
-          //$only_link_encoded = urlencode($only_link);
-          $only_link_encoded = $only_link_encoded."/". $obj_post_data->language; 
-        } 
-        
-        $encoded_url = base_url().$only_link_encoded;
+       // $encoded_url = base_url().$only_link_encoded;
         $ar_fb = array(
             "type"          => "website",
             "site_name"     => WEBSITE_NAME,

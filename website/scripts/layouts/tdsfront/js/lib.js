@@ -1528,6 +1528,10 @@ $(document).ready(function(){
         {
             return ;
         }
+        if ( $(this).hasClass('no_toolbar') )
+        {
+            return ;
+        }
         if ( $(this).parent().find("h1").children("a").attr("href") != undefined )
         {
             location.href = $(this).parent().find("h1").children("a").attr("href");

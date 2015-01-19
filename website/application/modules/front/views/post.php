@@ -206,7 +206,7 @@
                 
                 <div  style="margin-top:10px; width:auto; cursor: pointer; float:right; clear: both;" id="share_<?php echo $post_id; ?>" class="share_class" style="cursor: pointer;">                    
                     <div class="seen">
-                        <a class="addthis_button_compact" id="addthis_<?php echo $post_id; ?>" <?php if(can_sharepost($post_id)==1): ?> style="display:none;" <?php endif; ?> addthis:url="http://www.champs21.com/%E0%A6%86%E0%A6%97%E0%A7%8D%E0%A6%A8%E0%A7%87%E0%A7%9F%E0%A6%97%E0%A6%BF%E0%A6%B0%E0%A6%BF%E0%A6%B0-%E0%A6%9C%E0%A7%8D%E0%A6%AC%E0%A6%BE%E0%A6%B2%E0%A6%BE%E0%A6%AE%E0%A7%81%E0%A6%96%E0%A7%87-%E0%A6%A6%E0%A7%81%E0%A6%B0%E0%A7%8D%E0%A6%B2%E0%A6%AD-%E0%A6%96%E0%A6%A8%E0%A6%BF%E0%A6%9C-804" addthis:title="<?php echo $headline; ?>" id="full_leader_board">
+                        <a class="addthis_button_compact" id="addthis_<?php echo $post_id; ?>" <?php if(can_sharepost($post_id)==1): ?> style="display:none;" <?php endif; ?> addthis:url="<?php echo create_link_url(NULL, $headline,$post_id); ?>" addthis:title="<?php echo $headline; ?>" id="full_leader_board">
                             
                                 <span class="clearfix f2" style="float:left;font-size:12px;color:#666">
                                     Share

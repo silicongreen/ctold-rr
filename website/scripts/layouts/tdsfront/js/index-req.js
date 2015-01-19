@@ -54,7 +54,7 @@ function format_date(obj_date, yesterday) {
 }
 
 (function() {
-      
+    addthis.init() 
     if ($(".mygallery").length > 0)
     {
         var tn1 = $('.mygallery').tn3({
@@ -237,6 +237,7 @@ function format_date(obj_date, yesterday) {
                         //$(".posts-" + current_page).append("<div class='clear-box-" + current_page + "' style='clear:both;'></div>");
                         //$("#grid").append(data);
                         $("#grid").append(data);
+                        addthis.toolbox('.addthis_toolbox');
                         
 //                        if(callcount > 1)
 //                        {

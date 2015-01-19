@@ -103,7 +103,7 @@ class Gcm extends CActiveRecord
             
             if($obj_gcm)
             {
-                $obj_gcm->id;
+              return $obj_gcm->id;
             }    
 
             return false;

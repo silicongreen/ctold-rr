@@ -34,7 +34,10 @@
 function openshare(id)
 {
     var clickshareid = parent.document.getElementById('addthisbutton_'+id);
+    clickshareid.style.display = "block";
+    clickshareid.onmouseover();
     clickshareid.click();
+    clickshareid.style.display = "none";
     parent.$.fancybox.close();
 }
 

@@ -14,13 +14,13 @@
             <div class="clearfix"></div>
             <div class="assessment-popup-btn-wrapper">
                 <button type="button" class="red" id="start_assessment_now" onclick="window.location='<?php echo base_url()."front/ajax/sharepost/".$post_id; ?>'" >
-                    <span class="clearfix f2">
+                    <span class="clearfix f2" style="font-size:16px !important;">
                        My School
                     </span>
                 </button>
                 
                 <button type="button" class="red" id="full_leader_board" onclick="openshare(<?php echo $post_id; ?>)" >
-                    <span class="clearfix f2">
+                    <span class="clearfix f2" style="font-size:16px !important;">
                        Share
                     </span>
                 </button>

@@ -122,6 +122,11 @@ class post extends CI_Model{
                 }        
             }
             
+            if(isset($a_post_params['force_limit']) && $a_post_params['force_limit'])
+            {
+                $paze_size = 1;
+            }
+            
             if(isset($a_post_params['featured']) && $a_post_params['featured']===1)
             {
                 $fetaured = 1;

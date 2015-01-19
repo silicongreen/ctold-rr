@@ -58,7 +58,10 @@ class postdata extends widget
             {
                 $data['has_3rd_column'] = TRUE;
                 $data['ar_extra_config'] = $category_config['3rd-column'];
-                $ar_post_news_additional = $this->post->gePostNews( 0, "inner", "smaller", "tds_post.published_date, asc", $data['ar_extra_config']['category_id'], $data['ar_extra_config']['count'], 0, false, 0); 
+                
+                $ar_post_params = ( $category_config['3rd-column']['force_limit'] ) ? array('force_limit' => $category_config['3rd-column']['force_limit']) : 0;
+                
+                $ar_post_news_additional = $this->post->gePostNews( $ar_post_params, "inner", "smaller", "tds_post.published_date, asc", $data['ar_extra_config']['category_id'], $data['ar_extra_config']['count'], 0, false, 0);
                 $data['ar_3rd_column_extra_data'] = $ar_post_news_additional['data'];
                 $data['extra_column_name'] = $ar_post_news_additional['data'][0]->name;
             }
@@ -193,7 +196,6 @@ class postdata extends widget
         }
         
         $data['q'] = '';
-        
         $q = trim($q);
         if(!empty($q)) {
             $a_post_params['q'] = $q;
@@ -215,6 +217,7 @@ class postdata extends widget
         $data['is_game'] = $is_game;
         $data['page'] = $page;
         $data['category'] = (int) $s_category_ids;
+        $data['ecl'] = in_array($data['category'],  $CI->config->config['education-changes-life']['ids'] ) ? TRUE : FALSE;
         
         $data['obj_post_news'] = $ar_post_news["data"];
         

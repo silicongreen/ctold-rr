@@ -56,6 +56,18 @@
 
 
     <div style="position: relative; width: 97%;margin:0px auto;">
+        
+        <?php if($ecl) { ?>
+            <div class="ecl-banner">
+                <div class="ecl-banner-title f2">
+                    Education Changes Life
+                </div>
+                <div class="ecl-banner-logo">
+                    <img src="/styles/layouts/tdsfront/image/education-logo.png" />
+                </div>
+            </div>
+        <?php } ?>
+        
         <?php //endif; ?>   
         <?php $j = -1; ?>    
         <?php $news_to_show = count($obj_post_news); ?>   
@@ -175,7 +187,24 @@
                                         <?php else : ?>
 
                                         <?php endif; ?>
-                                        <div class="post-thumb ">
+                                        
+                                        <?php
+                                            if($ecl) {
+                                                $img_class = 'ecl-image';
+                                                $img_div_class = 'ecl-image-div';
+                                        ?>
+                                        
+                                        <div class="ecl-auther-name">
+                                            <?php echo $news->title; ?>
+                                        </div>
+                                            
+                                        <?php } else {
+                                                $img_class = '';
+                                                $img_div_class = '';
+                                        }
+                                        ?>
+                                        
+                                        <div class="post-thumb <?php echo $img_div_class; ?>">
                                             <?php if (strlen(trim($news->embedded)) > 0) : ?>
                                                 <?php echo $news->embedded; ?>
                                             <?php elseif (!is_null($news->lead_material) && strlen(trim($news->lead_material)) > 0) : ?>
@@ -183,16 +212,17 @@
                                                     <a class="add-link" title="<?php echo $news->lead_caption; ?>" href="<?php echo $news->lead_link; ?>" target="_blank">       
                                                     <?php endif; ?>     
 
-                                                        <img class="ad" src="<?php echo $arCustomNews['lead_material']; ?>" class="attachment-post-thumbnail wp-post-image <?php echo ( $news->post_type == 2 ) ? 'ad' : ''; ?>" alt="<?php echo $news->headline; ?>" <?php if($is_exclusive_found===true): ?>style="width:475px;height:265px; "<?php endif; ?>>
+                                                        <img class="ad <?php echo $img_class; ?>" src="<?php echo $arCustomNews['lead_material']; ?>" class="attachment-post-thumbnail wp-post-image <?php echo ( $news->post_type == 2 ) ? 'ad' : ''; ?>" alt="<?php echo $news->headline; ?>" <?php if($is_exclusive_found===true): ?>style="width:475px;height:265px; "<?php endif; ?>>
                                                     <?php if ($news->post_type == 2) : ?>   
                                                     </a>
                                                 <?php endif; ?>
                                             <?php elseif (strlen(trim($arCustomNews['image'])) > 0) : ?>
                                                 <?php if (count($arCustomNews['all_image']) == 1): ?>
                                                     <?php if ($news->post_type == 2) : ?>   
-                                                        <a class="add-link"   title="<?php echo $arCustomNews['all_image_title'][0]; ?>"  href="<?php echo $arCustomNews['all_image_url'][0]; ?>" target="_blank">       
-                                                        <?php endif; ?> 
-                                                        <img class="ad" src="<?php echo $arCustomNews['image']; ?>" class="attachment-post-thumbnail wp-post-image" alt="<?php echo $news->headline; ?>" <?php if($is_exclusive_found===true): ?>style="width:475px;height:265px; "<?php endif; ?>>
+                                                        <a class="add-link" title="<?php echo $arCustomNews['all_image_title'][0]; ?>"  href="<?php echo $arCustomNews['all_image_url'][0]; ?>" target="_blank">       
+                                                        <?php endif; ?>
+                                                            
+                                                        <img class="ad <?php echo $img_class; ?>" src="<?php echo ($ecl && !empty($news->author_image)) ? $news->author_image : $arCustomNews['image']; ?>" class="attachment-post-thumbnail wp-post-image" alt="<?php echo $news->headline; ?>" <?php if($is_exclusive_found===true): ?>style="width:475px;height:265px; "<?php endif; ?>>
                                                         <?php if ($news->post_type == 2) : ?>   
                                                         </a>
                                                     <?php endif; ?>
@@ -205,7 +235,7 @@
                                                                         <?php if ($news->post_type == 2) : ?>   
                                                                             <a class="add-link"  title="<?php echo $arCustomNews['all_image_title'][$key]; ?>" href="<?php echo $arCustomNews['all_image_url'][$key]; ?>" target="_blank">       
                                                                             <?php endif; ?>        
-                                                                            <img class="ad"    src="<?php echo $image; ?>" alt="<?php echo $news->headline; ?>" <?php if($is_exclusive_found===true): ?>style="width:475px;height:265px; "<?php endif; ?> />
+                                                                            <img <?php echo ($ecl) ? 'style="display: inline;"' : ''; ?> class="ad <?php echo $img_class; ?>" src="<?php echo $image; ?>" alt="<?php echo $news->headline; ?>" <?php if($is_exclusive_found===true): ?>style="width:475px;height:265px; "<?php endif; ?> />
                                                                             <?php if ($news->post_type == 2) : ?>   
                                                                             </a>
                                                                         <?php endif; ?>
@@ -312,9 +342,21 @@
                                             <?php endif; ?>
                                             <h2 class="f2" <?php if($news->post_layout==4): ?> style="text-align:left !important;" <?php endif; ?>>
                                                 <a <?php if($news->post_layout==4): ?> style="margin-left:17px;" <?php endif; ?> href="<?php echo base_url() . sanitize($news->headline) . "-" . $news->post_id; ?>" title="<?php echo $news->headline; ?>">
-                                                    <?php echo $news->headline; ?>
+                                                
+                                                    <?php if($ecl) { ?>
+                                                        <span class="ecl-headline">
+                                                            <div class="ecl-headline-lquote"><img src="/styles/layouts/tdsfront/image/lquote-gray.png" /></div>
+                                                    <?php } ?>
+                                                        <?php echo $news->headline;?>
+                                                    <?php if($ecl) { ?>
+                                                            <div class="ecl-headline-rquote"><img src="/styles/layouts/tdsfront/image/rquote-gray.png" /></div>
+                                                        </span>
+                                                    <?php } ?>
+                                                    
                                                 </a>
                                             </h2>
+                                                    
+                                            <?php if(!$ecl) { ?>
                                                 <?php if ($target == "inner" && $news->post_layout!=4) : ?>
                                                 <span class="brown-subtitle">
                                                 <?php //echo $news->name . ' | '; ?><?php echo date("d M", strtotime($news->published_date)); ?>
@@ -324,15 +366,19 @@
                                                 <?php echo get_post_time($news->published_date); ?>
                                                 </span>
                                                 <?php endif; ?>
+                                            <?php } ?>
+                                                    
                                         </div><!-- post-title --> 
 
-                                        <div class="akmanda-excerpt" <?php if($is_exclusive_found===true): ?>style="margin: 20px 30px;"<?php endif; ?>> 
-                                           <?php if($news->sub_head): ?>
-                                               <p><?php echo $news->sub_head; ?></p>
-                                            <?php endif; ?>
-                                             <?php echo $arCustomNews['content']; ?>
+                                        <?php if(!$ecl) { ?>
+                                            <div class="akmanda-excerpt" <?php if($is_exclusive_found===true): ?>style="margin: 20px 30px;"<?php endif; ?>> 
+                                               <?php if($news->sub_head): ?>
+                                                   <p><?php echo $news->sub_head; ?></p>
+                                                <?php endif; ?>
+                                                 <?php echo $arCustomNews['content']; ?>
+                                            </div>
+                                        <?php } ?>
                                         
-                                        </div>
                                     </div>
                                 </div><!-- post-content -->    
 
@@ -439,6 +485,63 @@ position: relative;
 color: black;
 padding: 1px;
 }
+.ecl-image{
+    border: 6px solid #dddddd;
+    border-radius: 80px;
+    height: 120px !important;
+    width: 120px !important;
+}
+.ecl-image-div {
+    width: 50%;
+    margin: 0 auto;
+    text-align: center;
+    margin-top: 15px;
+}
+.ecl-auther-name{
+    font-size: 18px;
+    font-weight: bold;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 15px;
+    text-align: center;
+    width: 90%;
+}
+.ecl-headline{
+    color: #777777;
+}
+.ecl-headline-lquote{
+    float: left;
+    margin: 0 5px 0 15px;
+}
+.ecl-headline-rquote{
+    float: right;
+    margin: 0 15px 0 5px;
+}
+.ecl-headline img{
+    height: 25px;
+}
+.ecl-banner{
+    background-color: #3b393a;
+    height: 167px;
+    margin: 10px 15px;
+    width: 97%;
+}
+.ecl-banner-title{
+    color: #ffffff;
+    float: left;
+    font-size: 45px;
+    padding: 47px;
+    text-align: center;
+    text-transform: uppercase;
+    width: 69%;
+}
+.ecl-banner-logo{
+    float: left;
+    width: 31%;
+}
+.ecl-banner-logo img{
+    height: 167px;
+}
 .champs21_feed_title {
             background-color: #DC3434;
             color: #fff;
@@ -449,6 +552,7 @@ padding: 1px;
             text-align: left;
             width: 100%;
           }
+          
         </style>
         
         <?php //if ( $layout_type == 2 ) :  ?>

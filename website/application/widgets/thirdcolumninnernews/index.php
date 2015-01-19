@@ -34,9 +34,14 @@ class thirdcolumninnernews extends widget
 
     function run( $ar_3rd_column_extra_data, $extra_column_name, $ar_extra_config)
     {
+        $CI = & get_instance();
+        $CI->load->config("huffas");
+        
         $data['ar_3rd_column_extra_data'] = $ar_3rd_column_extra_data;
         $data['extra_column_name'] = $extra_column_name;
         $data['ar_extra_config'] = $ar_extra_config;
+        
+        $data['ecl'] = in_array((int) $ar_extra_config['category_id'],  $CI->config->config['education-changes-life']['ids'] ) ? TRUE : FALSE;
         
         $this->render($data);
     }

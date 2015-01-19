@@ -151,10 +151,4 @@ $widget = new Widget;
 </style>
 
 <script type="text/javascript">var addthis_config = {"data_track_addressbar":false, "data_track_clickback" : false};</script>
-<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-52bca22436b47685"></script>
-<script>
-    var addthis_config =
-    {
-       ui_cobrand: "Champs21"
-    }
-</script>    
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-52bca22436b47685"></script>  

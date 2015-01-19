@@ -55,7 +55,7 @@ function format_date(obj_date, yesterday) {
 
 (function() {
 
-  
+    addthis.init();
     if ($(".mygallery").length > 0)
     {
         var tn1 = $('.mygallery').tn3({

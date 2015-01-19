@@ -24,31 +24,20 @@
                        Share
                     </span>
                 </button>
-                
-                <a style="display:none;"  class="addthis_button_compact red" addthis:url="<?php echo create_link_url(NULL, $post->headline,$post_id,false,true,false); ?>" addthis:title="<?php echo $post->headline; ?>" id="full_leader_board">
-                    <span class="clearfix f2">
-                        Share
-                    </span>
-                </a> 
+               
             </div>
         </div>
 
     </div>
 </div>
-<script type="text/javascript">var addthis_config = {"data_track_addressbar":false, "data_track_clickback" : false};</script>
-<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-52bca22436b47685"></script>
 <script>
 function openshare(id)
 {
-    var clickshareid = parent.document.getElementById('addthis_'+id);
+    var clickshareid = parent.document.getElementById('addthisbutton_'+id);
     clickshareid.click();
-    //parent.$.fancybox.close();
+    parent.$.fancybox.close();
 }
-//function openschool_share(sharelink)
-//{
-//    
-//    window.open(sharelink, "_blank", "toolbar=no, scrollbars=no, resizable=no, top=500, left=500, width=400, height=400");
-//}
+
 </script>
 <style>
 body

@@ -54,19 +54,6 @@ function format_date(obj_date, yesterday) {
 }
 
 (function() {
-
-    $(document).ajaxStop(function() {
-        if (window.addthis) {
-          window.addthis = null;
-          window._adr = null;
-          window._atc = null;
-          window._atd = null;
-          window._ate = null;
-          window._atr = null;
-          window._atw = null;
-        }
-        return $.getScript("http://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-52bca22436b47685");
-     });
       
     if ($(".mygallery").length > 0)
     {

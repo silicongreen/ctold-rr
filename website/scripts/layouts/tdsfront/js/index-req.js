@@ -259,6 +259,7 @@ function format_date(obj_date, yesterday) {
                         
                         
                         setTimeout(function(){
+                            addthis.init();
                             var $container = jQuery("[id=grid]");  
                             $container.imagesLoaded(function(){
                                 $("#grid li").removeClass("ajax-hide");

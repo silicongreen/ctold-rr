@@ -55,6 +55,7 @@ function format_date(obj_date, yesterday) {
 
 (function() {
 
+  
     if ($(".mygallery").length > 0)
     {
         var tn1 = $('.mygallery').tn3({
@@ -237,6 +238,7 @@ function format_date(obj_date, yesterday) {
                         //$(".posts-" + current_page).append("<div class='clear-box-" + current_page + "' style='clear:both;'></div>");
                         //$("#grid").append(data);
                         $("#grid").append(data);
+                        
 //                        if(callcount > 1)
 //                        {
 //                                alert(1);
@@ -259,7 +261,7 @@ function format_date(obj_date, yesterday) {
                         
                         
                         setTimeout(function(){
-                            addthis.toolbox('.addthis_toolbox');
+                           
                             var $container = jQuery("[id=grid]");  
                             $container.imagesLoaded(function(){
                                 $("#grid li").removeClass("ajax-hide");
@@ -307,6 +309,7 @@ function format_date(obj_date, yesterday) {
                                     
                                     sent_request = false;
                                     $(".loading-box").hide();
+                                    addthis.toolbox('.addthis_toolbox');
                                     
                                    
                                     

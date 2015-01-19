@@ -1148,7 +1148,7 @@ class home extends MX_Controller {
         
         $only_link = str_replace(base_url(), "", $url_main);
         
-        $only_link_encoded = urlencode($only_link);
+        $only_link_encoded = $only_link;
         
         if($obj_post_data->referance_id > 0)
         {

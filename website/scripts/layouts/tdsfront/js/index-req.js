@@ -309,6 +309,7 @@ function format_date(obj_date, yesterday) {
                                     
                                     sent_request = false;
                                     $(".loading-box").hide();
+                                    addthis.init();
                                     addthis.toolbox('.addthis_toolbox');
                                     
                                    

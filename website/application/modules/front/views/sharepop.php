@@ -37,6 +37,7 @@ function openshare(id)
     clickshareid.style.display = "block";
     clickshareid.onmouseover();
     clickshareid.click();
+    clickshareid.onmouseout();
     clickshareid.style.display = "none";
     parent.$.fancybox.close();
 }

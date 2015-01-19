@@ -203,7 +203,9 @@
                     <div class="seen"><h2 class=""><?php echo $wow_count; ?></h2></div>
                     <div class="seen-image"><img src="<?php echo base_url("styles/layouts/tdsfront/images/social/wow.png"); ?>" /></div>
                 </div>
-                
+                <div  style="margin-top:10px;float:right; clear: both;" >
+                    <a class="addthis_button_facebook_share" fb:share:layout="horizontal"  addthis:title="<?php echo $headline; ?>" addthis:url="<?php echo create_link_url(NULL, $headline,$post_id); ?>" addthis:description="<?php echo $fb_desc; ?>"></a>
+                </div>
                 <div  style="margin-top:10px; width:auto; cursor: pointer; float:right; clear: both;" id="share_<?php echo $post_id; ?>" class="share_class" style="cursor: pointer;">                    
                     <div class="seen">
                         <a class="addthis_button_compact" id="addthis_<?php echo $post_id; ?>" <?php if(can_sharepost($post_id)==1): ?> style="display:none;" <?php endif; ?> addthis:url="<?php echo create_link_url(NULL, $headline,$post_id); ?>" addthis:title="<?php echo $headline; ?>" id="full_leader_board">

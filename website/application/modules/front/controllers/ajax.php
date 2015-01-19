@@ -313,7 +313,7 @@ class ajax extends MX_Controller
                     ->where("tds_categories.status", 1)
                     ->where("tds_categories.show", 1)
                     ->where("tds_categories.parent_id", Null)
-                    ->where("tds_categories.menu_icon !=", "")
+//                    ->where("tds_categories.menu_icon !=", "")
                     ->order_by("id", "asc");
 
             $news_query = $this->db->get();

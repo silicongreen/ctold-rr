@@ -550,7 +550,7 @@ class news extends MX_Controller
             $category_array[0] = "Select"; 
         }
         
-        echo form_dropdown('subcategory_id', $category_array);  
+        echo form_dropdown('subcategory_id_to_use', $category_array);  
         
     }
     public function add($school_id = 0)

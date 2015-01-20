@@ -84,7 +84,9 @@
                         
                 </div><!-- post-title --> 
 
-                <div class="akmanda-excerpt" style="padding-top: 30px;"> <?php echo $arCustomNews['content']; ?></div>
+                <div class="akmanda-excerpt" style="padding-top: 30px;"> 
+                    <?php show_summary($arCustomNews['content'],$news); ?>
+                </div>
             </div>
         </div><!-- post-content -->    
 

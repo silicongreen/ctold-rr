@@ -28,7 +28,9 @@
                 <?php endif; ?>
                 <div style="width: 50%; background: #fff; height: 100%; position: absolute; top: 0; left: 0; opacity: 0.80;">
                     <div style="display: inline-table; vertical-align: bottom; position: absolute; bottom: 0px; margin-left: 10px;">
-                        <div class="akmanda-excerpt" style="color:black;"  <?php if($is_exclusive_found===true): ?>style="margin: 20px 30px;"<?php endif; ?>> <?php echo $arCustomNews['content']; ?></div>
+                        <div class="akmanda-excerpt" style="color:black;"  <?php if($is_exclusive_found===true): ?>style="margin: 20px 30px;"<?php endif; ?>> 
+                            <?php show_summary($arCustomNews['content'],$news); ?>
+                        </div>
                     </div>
                 </div>
                 <div style="width: 50%; height: 100%; position: absolute; top: 0; right: 0;">

@@ -147,7 +147,9 @@
                     <?php endif; ?>
                                         </div><!-- post-title --> 
 
-                                        <div class="akmanda-excerpt" <?php if($is_exclusive_found===true): ?>style="margin: 20px 30px;"<?php endif; ?>> <?php echo $arCustomNews['content']; ?></div>
+                                        <div class="akmanda-excerpt" <?php if($is_exclusive_found===true): ?>style="margin: 20px 30px;"<?php endif; ?>> 
+                                           <?php show_summary($arCustomNews['content'],$news); ?>
+                                        </div>
                                         <div class="post-entry">     
                                             <?php $l=0;foreach( $images as $image ) :?>
                                             <div style="float: left; width: 33%;">

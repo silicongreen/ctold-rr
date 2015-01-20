@@ -157,7 +157,9 @@ div.callout {
                         </h2>
                 </div><!-- post-title --> 
 
-                <div class="akmanda-excerpt" style="padding-top: 30px;margin: 5px 5px 20px;"> <?php echo $arCustomNews['content']; ?></div>
+                <div class="akmanda-excerpt" style="padding-top: 30px;margin: 5px 5px 20px;"> 
+                    <?php show_summary($arCustomNews['content'],$news); ?>
+                </div>
             </div>
         </div><!-- post-content -->    
 

@@ -532,6 +532,27 @@ class news extends MX_Controller
      * @defination use for show insert News form
      * @author Fahim
      */
+    function getsubcategory($parent_id)
+    {
+        if (!$this->input->is_ajax_request())
+        {
+            exit('No direct script access allowed');
+        }
+        
+        if($parent_id)
+        {
+            $obj_post = new Posts();
+            $category_array = $obj_post->category_array($parent_id);
+       
+        }
+        else
+        {
+            $category_array[0] = "Select"; 
+        }
+        
+        echo form_dropdown('subcategory_id', $category_array);  
+        
+    }
     public function add($school_id = 0)
     {
         $obj_post = new Posts();
@@ -569,6 +590,10 @@ class news extends MX_Controller
         $data['all_language'] = $this->config->config["language_codes"];
         
         $data['category_array'] = $obj_post->category_array();
+        
+        $select_category[0] = "Select";
+        
+        $data['subcategory_array'] = $select_category;
         
         $data['assessment_array'] = $this->getAllassessment();
 
@@ -685,6 +710,17 @@ class news extends MX_Controller
 
         $data['tag_string'] = $obj_post->get_tag_string($id);
         $data['country_string'] = $obj_post->get_country_string($id);
+        
+        if($obj_post->catgory_id)
+        {
+            $data['subcategory_array'] = $obj_post->category_array($obj_post->catgory_id);
+        }
+        else
+        {
+            $select_category[0] = "Select";
+            $data['subcategory_array'] = $select_category;
+        }    
+        
 
         $data['category_array'] = $obj_post->category_array();
         $data['assessment_array'] = $this->getAllassessment($id);

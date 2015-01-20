@@ -1034,6 +1034,8 @@ class FreeuserController extends Controller
         {
             $schoolobj = new School();
             $response['data']['schools'] = $schoolobj->getSchoolInfo($school_id, $user_id);
+            $schoolActivity = new SchoolActivities();
+            $response['data']['activity'] = $schoolActivity->getActivity($school_id);
 
             $response['status']['code'] = 200;
             $response['status']['msg'] = "DATA_FOUND";

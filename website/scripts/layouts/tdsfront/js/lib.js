@@ -86,20 +86,18 @@ String.prototype.in_array = function (haystack, argStrict)
 
 
 $(document).ready(function(){
-    $(document).on('mouseenter','.post', function() {
-        if($(this).find(".flexslider ul li:first-child").find("img").length>0 )
+    $(document).on('mouseenter','.post-entry', function() {
+        if($(this).parent().find(".flexslider ul li:first-child").find("img").length>0 )
         {
-            var event = jQuery.Event('mouseover');
-            event.stopPropagation();
-            $(this).find(".flexslider ul li:first-child").find("img").trigger(event);
+            
+            $(this).parent().find(".flexslider ul li:first-child").find("img").trigger("mouseenter");
         }
     });
-    $(document).on('mouseout','.post', function() {
-        if($(this).find(".flexslider ul li:first-child").find("img").length>0 )
+    $(document).on('mouseout','.post-entry', function() {
+        if($(this).parent().find(".flexslider ul li:first-child").find("img").length>0 )
         {
-           var event = jQuery.Event('mouseout');
-           event.stopPropagation();
-           $(this).find(".flexslider ul li:first-child").find("img").trigger('mouseout');
+           
+           $(this).parent().find(".flexslider ul li:first-child").find("img").trigger('mouseout');
         }
     });
   

@@ -711,9 +711,9 @@ class news extends MX_Controller
         $data['tag_string'] = $obj_post->get_tag_string($id);
         $data['country_string'] = $obj_post->get_country_string($id);
         
-        if($obj_post->catgory_id)
+        if($obj_post->category_id)
         {
-            $data['subcategory_array'] = $obj_post->category_array($obj_post->catgory_id);
+            $data['subcategory_array'] = $obj_post->category_array($obj_post->category_id);
         }
         else
         {

@@ -625,7 +625,7 @@
 <?php if ( $has_related && $b_layout && $school_id==0) : ?>
 <div class="inner-container_related" style="margin: 20px; width: 96%;">
     <div class="related_news_headline f2">
-        Related Post
+        You may also like
     </div>
     <div class="related_post">
     <?php $i = 0; foreach( $related_news as $news ): ?>

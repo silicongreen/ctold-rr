@@ -134,7 +134,7 @@ $widget = new Widget;
 	background: whiteSmoke;	
 	position:fixed;
 	bottom:80px;
-	left:4px;
+	right:4px;
 	display:none;
 	background: url('<?php echo base_url('styles/layouts/tdsfront/images/arrow_up.png'); ?>') no-repeat;
         background-size:40px;

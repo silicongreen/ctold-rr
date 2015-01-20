@@ -89,13 +89,13 @@ $(document).ready(function(){
     $(document).on('mouseenter','.post', function() {
         if($(this).find(".flexslider ul li:first-child").find("img").length>0 )
         {
-           $(this).find(".flexslider ul li:first-child").find("img").trigger('mouseenter');
+           $(this).find(".flexslider ul li:first-child").find("img").trigger('mouseover');
         }
     });
     $(document).on('mouseout','.post', function() {
         if($(this).find(".flexslider ul li:first-child").find("img").length>0 )
         {
-           $(this).find(".flexslider ul li:first-child").find("img").trigger('mouseout');
+           $(this).find(".flexslider ul li:first-child").find("img").trigger('mouseleave');
         }
     });
   

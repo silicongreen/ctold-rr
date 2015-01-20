@@ -86,6 +86,19 @@ String.prototype.in_array = function (haystack, argStrict)
 
 
 $(document).ready(function(){
+    $(document).on('mouseenter','.post', function() {
+        if($(this).find(".flexslider").children("img").length>0 && $(this).find(".flexslider").children("img") != undefined)
+        {
+           $(this).find(".flexslider").children("img").mouseover();
+        }
+    });
+    $(document).on('mouseout','.post', function() {
+        if($(this).find(".flexslider").children("img").length>0 && $(this).find(".flexslider").children("img") != undefined)
+        {
+           $(this).find(".flexslider").children("img").mouseout();
+        }
+    });
+  
     
     var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
     var eventer = window[eventMethod];

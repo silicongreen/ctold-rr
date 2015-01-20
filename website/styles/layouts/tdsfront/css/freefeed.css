@@ -1,9 +1,9 @@
 
-.intro-post:hover .flexslider .flex-prev {
+.post:hover .flexslider .flex-prev {
         opacity: .7;
         left: 10px;
 }
-.intro-post:hover .flexslider .flex-next {
+.post:hover .flexslider .flex-next {
         opacity: .7;
         right: 10px;
 }

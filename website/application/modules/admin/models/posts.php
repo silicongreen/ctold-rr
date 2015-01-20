@@ -345,10 +345,18 @@ class Posts extends DataMapper {
         
         return $html;
     }
-    function category_array()
+    function category_array($parent_id=null)
     {
        $obj_category = new Category();
-       $array = array('parent_id' => null, 'status' => 1,'show'=>1);
+       if($parent_id>1)
+       {
+          $array = array('parent_id' => $parent_id, 'status' => 1,'show'=>1);  
+       }   
+       else
+       {
+          $array = array('parent_id' => null, 'status' => 1,'show'=>1);  
+       }    
+       
        $obj_category->where($array)->order_by('name', 'asc')->get(); 
        $select_category[0] = "Select";
        if (count($obj_category) > 0)

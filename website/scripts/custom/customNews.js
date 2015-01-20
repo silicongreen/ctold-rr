@@ -143,6 +143,21 @@ $(document).ready(function() {
             $("#publish_date_div").hide();
         }
     });
+    $(document).on("change", "#category_id_for_subcategory", function()
+    {
+        var id = $(this).val();
+        $.ajax({
+                    type: "GET",
+                    url: $("#base_url").val() + "admin/news/getsubcategory/"+id,
+                    async: false,
+                    success: function(data) {
+                       $("#subcategory_id_div").html(data);
+                    }
+                });
+        
+    });
+    
+    
     $(document).on("change", "#published_date", function()
     {
         $("#published_date_button").val($("#published_date").val());

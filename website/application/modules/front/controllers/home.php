@@ -100,6 +100,17 @@ class home extends MX_Controller {
                 $User_school->information = $additional_info;
 
                 if($User_school->save()){
+                    
+                    $ar_email['sender_full_name'] = 'Champs21';
+                    $ar_email['sender_email'] = 'info@champs21.com';
+                    $ar_email['to_name'] = get_free_user_session('full_name');
+                    $ar_email['to_email'] = get_free_user_session('email');
+                    $ar_email['html'] = true;
+
+                    $ar_email['subject'] = 'Join to school';
+                    $ar_email['message'] = $this->get_welcome_message($ar_email['to_name'], false, true);
+                    send_mail($ar_email);
+                    
                    $response = array(
                         'saved' => true,
                         'is_approved' => $User_school->is_approved,
@@ -3130,74 +3141,99 @@ class home extends MX_Controller {
         $this->extra_params = $ar_params;
     }
     
-    private function get_welcome_message($full_name = '', $b_image_mail = false){
+    private function get_welcome_message($full_name = '', $b_image_mail = false, $b_join_school = false){
         
         $message = '<!DOCTYPE HTML>';
         
         $message .= '<head>';
             $message .= '<meta http-equiv="content-type" content="text/html">';
-            $message .= '<title>Welcome to Champs21.com</title>';
+            
+            if($b_join_school) {
+                $message .= '<title>Welcome to Champs21.com</title>';
+            } else {
+                $message .= '<title>Join to school</title>';
+            }
         $message .= '<body>';
         
         if(!$b_image_mail) {
             
-            $message .= '<div id="header" style="width: 50%; height: 60px; margin: 0 auto; padding: 10px; color: #fff; text-align: center; background-color: #E0E0E0;font-family: Open Sans,Arial,sans-serif;">';
+            if($b_join_school) {
+                
+                if(!empty($full_name)) {
+                    $message .= '<p>Hi ' . $full_name . ',</p>';
+                }
+                
+                $message .= '<p>Your request for joining to the school has been accepted and under processing.</p>';
+                $message .= '<p> We&#39;ll inform you as soon as your request is approved.</p>';
+                
+                $message .= '<p>Thank you once again for your time and patience.</p>';
+                $message .= '<p>Best Regards,</p>';
+                $message .= '<p>&nbsp;</p>';
+                $message .= '<p>&nbsp;</p>';
+                $message .= '<p>Champs21.com</p>';
+                
+            } else {
+                
+                $message .= '<div id="header" style="width: 50%; height: 60px; margin: 0 auto; padding: 10px; color: #fff; text-align: center; background-color: #E0E0E0;font-family: Open Sans,Arial,sans-serif;">';
                 $message .= '<img height="50" width="220" style="border-width:0" src="'.  base_url('styles/layouts/tdsfront/images/logo-new.png').'" alt="Champs21.com" title="Champs21.com">';
-            $message .= '</div>';
-            
-            if(!empty($full_name)) {
-                $message .= '<p>Hi ' . $full_name . ',</p>';
+                $message .= '</div>';
+
+                if(!empty($full_name)) {
+                    $message .= '<p>Hi ' . $full_name . ',</p>';
+                }
+
+                $message .= '<p>Thank you for joining Champs21.com and welcome to country&#39;s largest portal for Students | Teachers | Parents. I&#39;m writing this mail to Thank You and giving you a little brief on our services and features.</p>';
+                $message .= '<p>
+                    Champs21.com, the pioneer eLearning program of Bangladesh, has been dedicatedly and very
+                    humbly working with the objectives to better prepare our students as the Champions of 21st Century. 
+                    The portal offers various educational and non-educational contents on daily basis for every family 
+                    that has a school going student.</p>';
+
+                $message .= '<p>
+                    <a href="'.base_url('resource-centre').'" style="color:#000000; text-decoration: underline; font-weight: bold; ">Resource Centre</a> is the most important section where you will find education content not for students 
+                    but also teaching and learning resources for teachers and parents on various subjects. All the 
+                    education contents are developed by professional pool of teachers from Champs21.com. Please feel 
+                    free and <a href="'.base_url().'" style="color:#000000; text-decoration: underline; ">apply</a>, if you want to join us as a teacher. Education resources uploaded by others are 
+                    carefully checked and modified before it is uploaded for our respected users. Please <a href="'.base_url().'" style="color:#000000; text-decoration: underline; font-weight: bold; ">Candle</a> now if 
+                    you want to share any resources with our education community.</p>';
+
+                $message .= '<p>
+                    Our non-education contents i.e. Tech News, Sports News, Entertainment, Health & Nutrition, 
+                    Literature, Travel, Games and Videos are also very popular among our family members. Our 
+                    continued efforts are always there to research and develop contents in order to make them truly 
+                    useful for you.</p>';
+
+                $message .= '<p>
+                    <a href="'.base_url('schools').'" style="color:#000000; text-decoration: underline; font-weight: bold; ">Schools</a> section offers and extensive database of schools in the country. This makes your life simpler 
+                    to collect information about any particular school. If you are a teacher, create your <a href="'.base_url('schools').'" style="color:#000000; text-decoration: underline; ">School</a> if it is not 
+                    already there.</p>';
+
+                $message .= '<p>
+                    <strong>Good Read</strong> allows you to save the articles and create your own library of resources. You can save 
+                    your favourite articles and read them again and again at later dates at your convenience.</p>';
+
+                $message .= '<p>
+                    Do you think you can contribute to our Students | Teachers | Parents community? <a href="'.base_url().'" style="color:#000000; text-decoration: underline; font-weight: bold; ">Candle</a> us your 
+                    article now and spread light. Other than only education, you can write and Candle on any available 
+                    sections of Champs21.com.</p>';
+
+                $message .= '<p>
+                    As a registered user, you can now make <strong>preference settings</strong> and get only favourite content feeding 
+                    on your home page.</p>';
+
+                $message .= '<p>
+                    You are very important to us. So is our every other student, teacher and parent of our beloved 
+                    country. If you like our resources, please do <span style="text-decoration: underline; ">spread</span> this message among your near and dear ones.</p>';
+
+                $message .= '<p>Thank you once again for your time and patience.</p>';
+                $message .= '<p>Best Regards,</p>';
+                $message .= '<p>&nbsp;</p>';
+                $message .= '<p>&nbsp;</p>';
+                $message .= '<p>Russell T. Ahmed</p>';
+                $message .= '<p>Founder &amp; CEO</p>';
+
             }
             
-            $message .= '<p>Thank you for joining Champs21.com and welcome to country&#39;s largest portal for Students | Teachers | Parents. I&#39;m writing this mail to Thank You and giving you a little brief on our services and features.</p>';
-            $message .= '<p>
-                Champs21.com, the pioneer eLearning program of Bangladesh, has been dedicatedly and very
-                humbly working with the objectives to better prepare our students as the Champions of 21st Century. 
-                The portal offers various educational and non-educational contents on daily basis for every family 
-                that has a school going student.</p>';
-            
-            $message .= '<p>
-                <a href="'.base_url('resource-centre').'" style="color:#000000; text-decoration: underline; font-weight: bold; ">Resource Centre</a> is the most important section where you will find education content not for students 
-                but also teaching and learning resources for teachers and parents on various subjects. All the 
-                education contents are developed by professional pool of teachers from Champs21.com. Please feel 
-                free and <a href="'.base_url().'" style="color:#000000; text-decoration: underline; ">apply</a>, if you want to join us as a teacher. Education resources uploaded by others are 
-                carefully checked and modified before it is uploaded for our respected users. Please <a href="'.base_url().'" style="color:#000000; text-decoration: underline; font-weight: bold; ">Candle</a> now if 
-                you want to share any resources with our education community.</p>';
-            
-            $message .= '<p>
-                Our non-education contents i.e. Tech News, Sports News, Entertainment, Health & Nutrition, 
-                Literature, Travel, Games and Videos are also very popular among our family members. Our 
-                continued efforts are always there to research and develop contents in order to make them truly 
-                useful for you.</p>';
-            
-            $message .= '<p>
-                <a href="'.base_url('schools').'" style="color:#000000; text-decoration: underline; font-weight: bold; ">Schools</a> section offers and extensive database of schools in the country. This makes your life simpler 
-                to collect information about any particular school. If you are a teacher, create your <a href="'.base_url('schools').'" style="color:#000000; text-decoration: underline; ">School</a> if it is not 
-                already there.</p>';
-            
-            $message .= '<p>
-                <strong>Good Read</strong> allows you to save the articles and create your own library of resources. You can save 
-                your favourite articles and read them again and again at later dates at your convenience.</p>';
-            
-            $message .= '<p>
-                Do you think you can contribute to our Students | Teachers | Parents community? <a href="'.base_url().'" style="color:#000000; text-decoration: underline; font-weight: bold; ">Candle</a> us your 
-                article now and spread light. Other than only education, you can write and Candle on any available 
-                sections of Champs21.com.</p>';
-            
-            $message .= '<p>
-                As a registered user, you can now make <strong>preference settings</strong> and get only favourite content feeding 
-                on your home page.</p>';
-            
-            $message .= '<p>
-                You are very important to us. So is our every other student, teacher and parent of our beloved 
-                country. If you like our resources, please do <span style="text-decoration: underline; ">spread</span> this message among your near and dear ones.</p>';
-            
-            $message .= '<p>Thank you once again for your time and patience.</p>';
-            $message .= '<p>Best Regards,</p>';
-            $message .= '<p>&nbsp;</p>';
-            $message .= '<p>&nbsp;</p>';
-            $message .= '<p>Russell T. Ahmed</p>';
-            $message .= '<p>Founder &amp; CEO</p>';
             
         } else {
             $message .= '<img src="' . base_url('/styles/layouts/tdsfront/image/welcome-email.png') . '">';

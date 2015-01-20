@@ -554,7 +554,7 @@ height: 46px;
                                         <img src="<?php echo base_url('styles/layouts/tdsfront/image/Login.png'); ?>" width="60px" alt="Chmaps21.com" />
                                     </div>
                                     <div class="not_registered">
-                                        not registered yet?
+                                        Not registered yet?
                                     </div>
                                     <div class="sign_up_free">
                                         <label class="register-user">Sign Up Now!</label><span class="register-user">FREE</span>
@@ -599,7 +599,7 @@ height: 46px;
                                         <div class="login_remember_me_div">
                                             <input id="remember_me_chk" name="remember_me" value="1" type="checkbox" checked="checked">
                                             <!--<label class="login_checkbox_label" for="remember_me"></label>-->
-                                            <label for="remember_me_chk" class="f5 login_checkbox_label_txt">Remember Me</label>
+                                            <label for="remember_me_chk" class="f5 login_checkbox_label_txt">Remember me</label>
                                         </div>
 
                                         <div class="f5 login_reset_password">
@@ -620,7 +620,7 @@ height: 46px;
                                 </button>
                             </div>
 
-                            <div class="clearfix center" style="padding-top: 60px;"><strong>Or Login with </strong></div>
+                            <div class="clearfix center" style="padding-top: 60px;"><strong>Or, login with</strong></div>
 
                             <div class="sns-button-div" style="width: 100%">
                                 <div class="sns-button-box" style="height: 100%; margin-left: auto; margin-right: auto; width: 105px;">
@@ -890,7 +890,7 @@ if($('.header-logo-div').is(':visible')) {
 }
 });
 </script>
-<style>
+<style type="text/css">
 .image-logo
 {
     width:100%;
@@ -2879,5 +2879,19 @@ if($('.header-logo-div').is(':visible')) {
         cursor: pointer;
     }
     
+    ::-webkit-input-placeholder { /* WebKit browsers */
+        color: #444444 !important;
+    }
+    input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+       color: #444444 !important;
+       opacity: 1;
+    }
+    ::-moz-placeholder { /* Mozilla Firefox 19+ */
+       color: #444444 !important;
+       opacity: 1;
+    }
+    :-ms-input-placeholder { /* Internet Explorer 10+ */
+       color: #444444 !important;
+    }
 </style>
 

@@ -167,7 +167,19 @@
                         <div class="clearfix">
 
                             <?php
-                            echo form_dropdown('category_id', $category_array, $model->category_id);
+                            $js="id='category_id_for_subcategory'";
+                            echo form_dropdown('category_id', $category_array, $model->category_id,$js);
+                            ?>
+                            
+                        </div>
+
+                    </fieldset>
+                    <fieldset class="label_side top">
+                        <label for="required_field">For Sub Category Type Add<span>Select only if ad type category added</span></label>
+                        <div class="clearfix" id="subcategory_id_div">
+
+                            <?php
+                            echo form_dropdown('subcategory_id', $subcategory_array, $model->subcategory_id);
                             ?>
                             
                         </div>

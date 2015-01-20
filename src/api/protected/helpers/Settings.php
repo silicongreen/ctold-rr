@@ -444,10 +444,10 @@ class Settings {
                 {
                     $post_array['education_changes_life'] = 1;
                 }
-                $post_array['subcategory_id_to_use'] = $postValue->subcategory_id;
-                if(isset($postValue->subcategory_id) && $postValue->subcategory_id)
+                
+                if(isset($postValue->subcategory_id_to_use) && $postValue->subcategory_id_to_use)
                 {
-                    $post_array['subcategory_id_to_use'] = $postValue->subcategory_id;
+                    $post_array['subcategory_id_to_use'] = $postValue->subcategory_id_to_use;
                 }    
             }
             

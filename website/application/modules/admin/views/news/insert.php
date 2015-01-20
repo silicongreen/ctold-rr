@@ -179,7 +179,7 @@
                         <div class="clearfix" id="subcategory_id_div">
 
                             <?php
-                            echo form_dropdown('subcategory_id', $subcategory_array, $model->subcategory_id);
+                            echo form_dropdown('subcategory_id_to_use', $subcategory_array, $model->subcategory_id_to_use);
                             ?>
                             
                         </div>

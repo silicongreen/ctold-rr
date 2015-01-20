@@ -15,8 +15,9 @@ ul li {list-style:none;}
     width: 100%;
     padding: 30px 35px 20px 15px;
     z-index:1000;
-    position:absolute;
-	}
+    position:fixed;
+    bottom:0;
+}
 .footerlink{float:left;margin-top:5px;font-family: arial;font-size:14px;}
 .footerlink ul li {display:inline;padding: 10px 5px;margin-bottom:10px;}
 .footerlink ul li a{color: #999999;}

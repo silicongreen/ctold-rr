@@ -15,7 +15,7 @@
         <?php endif; ?>
         
         <div id="main" class="col-xs-12 site-main clearfix">
-            <div id="content-wrapper" class="wrapper col-md-12 clearfix"><!-- Start header -->
+            <div id="content-wrapper" style="margin-bottom:100px;" class="wrapper col-md-12 clearfix"><!-- Start header -->
                 <?php
                     if($full_template) {
                         echo $header;

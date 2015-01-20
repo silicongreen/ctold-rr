@@ -88,19 +88,19 @@ String.prototype.in_array = function (haystack, argStrict)
 $(document).ready(function(){
     $(document).on('mouseenter','.post-entry', function() {
         console.log("here i am 1");
-        if($(this).parent().find(".flexslider").length>0 )
+        if($(this).parent().find(".flexslider .flex-active-slide").length>0 )
         {
             console.log("here i am 2");
             
-            $(this).parent().find(".flexslider").trigger("mouseenter");
+            $(this).parent().find(".flexslider .flex-active-slide").trigger("mouseenter");
         }
     });
     $(document).on('mouseout','.post-entry', function() {
         console.log("here i out1 ");
-        if($(this).parent().find(".flexslider").length>0 )
+        if($(this).parent().find(".flexslider .flex-active-slide").length>0 )
         {
            console.log("here i out2");
-           $(this).parent().find(".flexslider").trigger('mouseout');
+           $(this).parent().find(".flexslider .flex-active-slide").trigger('mouseout');
         }
     });
   

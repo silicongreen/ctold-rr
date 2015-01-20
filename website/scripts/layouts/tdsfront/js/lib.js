@@ -86,21 +86,41 @@ String.prototype.in_array = function (haystack, argStrict)
 
 
 $(document).ready(function(){
-    $(document).on('mouseenter','.post-entry', function() {
+    $(document).on('mouseenter','.post-entry', function(event) {
         console.log("here i am 1");
-        if($(this).parent().find(".flexslider").length>0 )
+        if($(this).parent().find(".flexslider .flex-direction-nav").length>0 )
         {
+           
+            if($(this).parent().find(".flexslider  .flex-direction-nav .flex-prev").length>0 )
+           {
+              $(this).parent().find(".flexslider  .flex-direction-nav .flex-prev").css( "left", "10px" );
+              $(this).parent().find(".flexslider  .flex-direction-nav .flex-prev").css( "opacity", "0.7" );
+           } 
+           if($(this).parent().find(".flexslider  .flex-direction-nav .flex-next").length>0 )
+           {
+              $(this).parent().find(".flexslider  .flex-direction-nav .flex-next").css( "right", "10px" );
+              $(this).parent().find(".flexslider  .flex-direction-nav .flex-next").css( "opacity", "0.7" );
+           }
             console.log("here i am 2");
             
-            $(this).parent().find(".flexslider").trigger("mouseenter");
         }
     });
-    $(document).on('mouseout','.post-entry', function() {
+    $(document).on('mouseout','.post-entry', function(event) {
         console.log("here i out1 ");
-        if($(this).parent().find(".flexslider").length>0 )
+        if($(this).parent().find(".flexslider  .flex-direction-nav").length>0 )
         {
+          if($(this).parent().find(".flexslider  .flex-direction-nav .flex-prev").length>0 )
+          {
+              $(this).parent().find(".flexslider  .flex-direction-nav .flex-prev").css( "left", "-50px" );
+              $(this).parent().find(".flexslider  .flex-direction-nav .flex-prev").css( "opacity", "0" );
+          } 
+          if($(this).parent().find(".flexslider  .flex-direction-nav .flex-next").length>0 )
+          {
+              $(this).parent().find(".flexslider  .flex-direction-nav .flex-next").css( "right", "-50px" );
+              $(this).parent().find(".flexslider  .flex-direction-nav .flex-next").css( "opacity", "0" );
+          }
            console.log("here i out2");
-           $(this).parent().find(".flexslider").trigger('mouseout');
+           
         }
     });
   

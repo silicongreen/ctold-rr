@@ -429,6 +429,7 @@ class Settings {
             $post_array['post_type'] = $postValue->post_type;
             
             $post_array['category_id_to_use'] = "";
+            $post_array['subcategory_id_to_use'] = "";
             $post_array['school_id'] = "";
             $post_array['education_changes_life'] = 0;
             if(isset($postValue->school_id) && $postValue->school_id)
@@ -443,6 +444,10 @@ class Settings {
                 {
                     $post_array['education_changes_life'] = 1;
                 }
+                if(isset($postValue->subcategory_id) && $postValue->subcategory_id)
+                {
+                    $post_array['subcategory_id_to_use'] = $postValue->subcategory_id;
+                }    
             }
             
             //need to change into single news

@@ -148,5 +148,11 @@ $widget = new Widget;
 {
     min-height:650px !important;
 }
+a.summary_link:hover {
+color: #fb3c2d;
+}
+a.summary_link {
+color: #666;
+}
 </style>
  

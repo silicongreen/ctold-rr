@@ -534,6 +534,32 @@ if ( ! function_exists("get_post_time"))
     }
 }
 
+if ( ! function_exists("show_summary"))
+{
+    function show_summary($conetnt, $news=null, $return = false)
+    {
+        $str = "";
+        if($news)
+        {
+           $str = '<a class="summary_link" href="'.base_url() . sanitize($news->headline) . "-" . $news->post_id.'" title="'.$news->headline.'">'; 
+        }
+        $str .= $conetnt;
+        if($news)
+        {
+           $str .= "</a>"; 
+        }
+        if($return)
+        {
+            return $str;
+        }
+        else
+        {
+            echo $str;
+        }    
+        
+    }
+}
+
 if ( ! function_exists("get_diff_date"))
 {
     function get_diff_date($end, $out_in_array = true)

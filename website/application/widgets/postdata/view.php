@@ -370,16 +370,16 @@
                                                     
                                         </div><!-- post-title --> 
 
+
                                         <?php if(!$ecl) { ?>
                                             <div class="akmanda-excerpt" <?php if($is_exclusive_found===true): ?>style="margin: 20px 30px;"<?php endif; ?>> 
                                                <?php if($news->sub_head): ?>
                                                    <p><?php echo $news->sub_head; ?></p>
                                                 <?php endif; ?>
-                                                 <?php echo $arCustomNews['content']; ?>
+                                                 <?php show_summary($arCustomNews['content'],$news); ?>
                                             </div>
                                         <?php } ?>
-                                        
-                                    </div>
+
                                 </div><!-- post-content -->    
 
                                <?php

@@ -51,7 +51,7 @@
                             <?php if ($news->title): ?>
                                 <div>Developed By <font color="red" style="font-family:arial;"><?php echo $news->title; ?></font></div>
         <?php endif; ?>
-                            <div class="akmanda-excerpt" style="margin:5px 0px !important;"> <?php echo $arCustomNews['content']; ?></div>
+                            <div class="akmanda-excerpt" style="margin:5px 0px !important;"> <?php show_summary($arCustomNews['content'],$news); ?></div>
                             <div class="button-read-more"  style="margin:5px 0px">
                                 <a class="f5" style="color: #000;"  href="<?php echo base_url() . sanitize($news->headline) . "-" . $news->post_id; ?>" title="<?php echo $news->headline; ?>">
                                     Read More

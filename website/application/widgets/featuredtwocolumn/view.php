@@ -67,7 +67,7 @@
                     <?php endif; ?>
                 </div><!-- post-title --> 
 
-                <div class="akmanda-excerpt"> <?php echo $arCustomNews['content']; ?></div>
+                <div class="akmanda-excerpt"> <?php show_summary($arCustomNews['content'],$news); ?></div>
             </div>
 
         </div><!-- post-content -->    

@@ -23,7 +23,7 @@
                         
                 </div><!-- post-title --> 
 
-                <div class="akmanda-excerpt" style="padding-top: 30px;text-align:center;"> <?php echo $news->short_title; ?></div>
+                <div class="akmanda-excerpt" style="padding-top: 30px;text-align:center;"> <?php show_summary($news->short_title,$news); ?></div>
             </div>
         </div> 
 

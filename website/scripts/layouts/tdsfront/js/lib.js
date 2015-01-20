@@ -87,15 +87,15 @@ String.prototype.in_array = function (haystack, argStrict)
 
 $(document).ready(function(){
     $(document).on('mouseenter','.post', function() {
-        if($(this).find(".flexslider").length>0 )
+        if($(this).find(".flexslider ul li:first-child").find("img").length>0 )
         {
-           $(this).find(".flexslider").trigger('mouseenter');
+           $(this).find(".flexslider ul li:first-child").find("img").trigger('mouseenter');
         }
     });
     $(document).on('mouseout','.post', function() {
-        if($(this).find(".flexslider").length>0 )
+        if($(this).find(".flexslider ul li:first-child").find("img").length>0 )
         {
-           $(this).find(".flexslider").trigger('mouseout');
+           $(this).find(".flexslider ul li:first-child").find("img").trigger('mouseout');
         }
     });
   

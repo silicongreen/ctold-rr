@@ -89,13 +89,13 @@ $(document).ready(function(){
     $(document).on('mouseenter','.post', function() {
         if($(this).find(".flexslider").length>0 )
         {
-           $(this).find(".flexslider").mouseover();
+           $(this).find(".flexslider").trigger('mouseenter');
         }
     });
     $(document).on('mouseout','.post', function() {
         if($(this).find(".flexslider").length>0 )
         {
-           $(this).find(".flexslider").mouseout();
+           $(this).find(".flexslider").trigger('mouseout');
         }
     });
   

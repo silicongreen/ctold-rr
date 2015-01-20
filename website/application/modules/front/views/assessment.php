@@ -223,8 +223,5 @@
     </table>
 </div>
 
-<script type="text/javascript">var addthis_config = {"data_track_addressbar":false, "data_track_clickback" : false};</script>
-<script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-52bca22436b47685" type="text/javascript"></script>
-
 <script src="<?php echo base_url('scripts/FlipClock/compiled/flipclock.min.js') ?>"></script>
 <script src="<?php echo base_url('scripts/layouts/tdsfront/js/assessment.js') ?>"></script>

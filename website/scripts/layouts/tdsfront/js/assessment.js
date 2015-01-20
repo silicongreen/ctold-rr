@@ -119,6 +119,12 @@ $(document).ready(function(){
                     'openSpeed' : 350,
                     'fitToView' : true,
                     'autoSize' : true,
+                    'closeClick'  : false,
+                    helpers   : { 
+                        overlay : {
+                            closeClick: false
+                        }
+                    },
                     'padding': 0,
                     'margin': 0
                 });
@@ -184,6 +190,12 @@ $(document).ready(function(){
         'openSpeed' : 350,
         'fitToView' : true,
         'autoSize' : true,
+        'closeClick'  : false,
+        helpers   : { 
+            overlay : {
+                closeClick: false
+            }
+        },
         'padding': 0,
         'margin': 0
     });
@@ -375,6 +387,12 @@ $(document).ready(function(){
                 'openSpeed' : 350,
                 'fitToView' : true,
                 'autoSize' : true,
+                'closeClick'  : false,
+                helpers   : { 
+                    overlay : {
+                        closeClick: false
+                    }
+                },
                 'padding': 0,
                 'margin': 0
             });
@@ -449,6 +467,12 @@ $(document).ready(function(){
             'openSpeed' : 350,
             'fitToView' : true,
             'autoSize' : false,
+            'closeClick'  : false,
+            helpers   : { 
+                overlay : {
+                    closeClick: false
+                }
+            },
             'padding': 0,
             'margin': 0
         });
@@ -458,6 +482,7 @@ $(document).ready(function(){
     $(document).on('click', '#assessment_explanation', function(){
         
         var key = 'assess_explanation';
+        var question = '';
         var explanation = '';
         var correct_html = '';
         
@@ -465,6 +490,7 @@ $(document).ready(function(){
             
             if( ($(this).attr('style').indexOf('display: block;') != -1) || ($(this).attr('style').indexOf('opacity: 1;') != -1) ) {
                 
+                question = '<p class="f2"><span style="color: #DC3131;">Question: </span>' + $(this).find('.ques_id .question .ques_text').text() + '</p>';
                 explanation = '<p class="f2">Explanation: ' + $(this).find('.content-post .answer-wrapper ul').attr('explanation') + '</p>';
                 $(this).find('.content-post .answer-wrapper ul li').each(function() {
                     var option = $(this).attr('option');
@@ -479,7 +505,7 @@ $(document).ready(function(){
             }
         });
         
-        var explanation_html = correct_html + explanation;
+        var explanation_html = question + correct_html + explanation;
         
         var pop_up_data =  get_popup_data(key, explanation_html);
         
@@ -544,18 +570,18 @@ $(document).ready(function(){
                     }
                     
                     lb_rows += '<tr>' +
-                                    '<td>' +
-                                        '<div class="ladder_board_user_name f2">' +
-                                            '<img src="' + profile_img + '">' +
-                                            v.user_name +
-                                        '</div>' +
-                                        '<div class="ladder_board_school_name f2">'+ v.school +'</div>' +
-                                    '</td>' +
-                                    '<td>' +
-                                        '<div class="ladder_board_mark f2">'+ v.mark +'</div>' +
-                                        '<div class="ladder_board_time f2">' + minutes + ':' + seconds + ' Minute</div>' +
-                                    '</td>' +
-                                '</tr>';
+                    '<td>' +
+                    '<div class="ladder_board_user_name f2">' +
+                    '<img src="' + profile_img + '">' +
+                    v.user_name +
+                    '</div>' +
+                    '<div class="ladder_board_school_name f2">'+ v.school +'</div>' +
+                    '</td>' +
+                    '<td>' +
+                    '<div class="ladder_board_mark f2">'+ v.mark +'</div>' +
+                    '<div class="ladder_board_time f2">' + minutes + ':' + seconds + ' Minute</div>' +
+                    '</td>' +
+                    '</tr>';
                     
                 });
                 
@@ -595,6 +621,12 @@ $(document).ready(function(){
                     'openSpeed' : 350,
                     'fitToView' : true,
                     'autoSize' : true,
+                    'closeClick'  : false,
+                    helpers   : { 
+                        overlay : {
+                            closeClick: false
+                        }
+                    },
                     'padding': 0,
                     'margin': 0
                 });

@@ -419,6 +419,10 @@ class Settings {
 
         return $soultion;
     }
+    public static function remove_solution_button($content) {
+        $value = preg_replace('/<p(.*?)id=\"solution-\-p\"(.*?)>(.*?)<\/p>/s', "", $content);
+        return $value;
+    }
     public static function formatData($postValue)
     {
         $post_array = array();
@@ -659,13 +663,13 @@ class Settings {
             //need to change 2
             if (isset($postValue->mobile_content) && strlen(Settings::substr_with_unicode($postValue->mobile_content, true)) > 0)
             {
-                $post_array['mobile_content'] = $postValue->mobile_content;
+                $post_array['mobile_content'] = Settings::remove_solution_button($postValue->mobile_content);
                 $post_array['full_content'] = Settings::substr_with_unicode($postValue->mobile_content, true);
                 $post_array['solution'] = Settings::get_solution($postValue->mobile_content);
             }
             else
             {
-                $post_array['mobile_content'] = $postValue->content;
+                $post_array['mobile_content'] = Settings::remove_solution_button($postValue->content);
                 $post_array['full_content'] = Settings::substr_with_unicode($postValue->content, true);
                 $post_array['solution'] = Settings::get_solution($postValue->content);
             }

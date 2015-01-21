@@ -19,7 +19,7 @@
                     </span>
                 </button>
                 
-                <button type="button" class="red" id="full_leader_board" onclick="openshare(<?php echo $post_id; ?>)" >
+                <button type="button" class="red" id="full_leader_board" onclick="parent.triggershare(<?php echo $post_id; ?>)" >
                     <span class="clearfix f2" style="font-size:16px !important;">
                        Share
                     </span>
@@ -30,19 +30,7 @@
 
     </div>
 </div>
-<script>
-function openshare(id)
-{
-    var clickshareid = parent.document.getElementById('addthisbutton_'+id);
-    clickshareid.style.display = "block";
-    clickshareid.onmouseover();
-    clickshareid.click();
-    clickshareid.onmouseout();
-    clickshareid.style.display = "none";
-    parent.$.fancybox.close();
-}
 
-</script>
 <style>
 body
 {

@@ -1,4 +1,8 @@
 <header class="champs-header col-xs-12 clearfix">
+    
+    <?php if(!$user_profile_complete) { ?>
+        <input type="hidden" name="user_profile_complete" id="user_profile_complete" value="nai" >
+    <?php } ?>
 
     <div class="col-xs-12">
         <?php if (array_key_exists($ci_key_for_cover, $this->config->config['cover']) && $this->config->config['cover'][$ci_key_for_cover] ) : ?>
@@ -396,7 +400,7 @@ height: 46px;
                                     </ul>
 
                                 </fieldset>
-
+                                
                                 <?php if( ($user_data['type'] == 1) || ($user_data['type'] == 4) ) { ?>
                                 <fieldset>
                                     <div class="selectMedium">
@@ -485,11 +489,12 @@ height: 46px;
                                     <div>
                                         <label class="gender_label">I am a</label>
                                         <ul class="radio-holder gender_ul">
-                                            <li class="user_type_radio" style="padding-top: 0px;">
+                                            <li style="padding-top: 0px;">
                                                 <input class="css-checkbox" id="male" name="gender" value="1" type="radio" <?php echo ($model->gender == '1') ? 'checked="checked"' : ''; ?>>
                                                 <label for="male" class="user_type_label">Male</label>
                                             </li>
-                                            <li class="user_type_radio" style="padding-top: 0px;">
+                                            <!-- class="user_type_radio" -->
+                                            <li style="padding-top: 0px;">
                                                 <input class="css-checkbox" id="female" name="gender" value="0" type="radio" <?php echo ($model->gender == '0') ? 'checked="checked"' : ''; ?>>
                                                 <label for="female" class="user_type_label">Female</label>
                                             </li>
@@ -554,7 +559,7 @@ height: 46px;
                                         <img src="<?php echo base_url('styles/layouts/tdsfront/image/Login.png'); ?>" width="60px" alt="Chmaps21.com" />
                                     </div>
                                     <div class="not_registered">
-                                        not registered yet?
+                                        Not registered yet?
                                     </div>
                                     <div class="sign_up_free">
                                         <label class="register-user">Sign Up Now!</label><span class="register-user">FREE</span>
@@ -599,7 +604,7 @@ height: 46px;
                                         <div class="login_remember_me_div">
                                             <input id="remember_me_chk" name="remember_me" value="1" type="checkbox" checked="checked">
                                             <!--<label class="login_checkbox_label" for="remember_me"></label>-->
-                                            <label for="remember_me_chk" class="f5 login_checkbox_label_txt">Remember Me</label>
+                                            <label for="remember_me_chk" class="f5 login_checkbox_label_txt">Remember me</label>
                                         </div>
 
                                         <div class="f5 login_reset_password">
@@ -620,7 +625,7 @@ height: 46px;
                                 </button>
                             </div>
 
-                            <div class="clearfix center" style="padding-top: 60px;"><strong>Or Login with </strong></div>
+                            <div class="clearfix center" style="padding-top: 60px;"><strong>Or, login with</strong></div>
 
                             <div class="sns-button-div" style="width: 100%">
                                 <div class="sns-button-box" style="height: 100%; margin-left: auto; margin-right: auto; width: 105px;">
@@ -890,7 +895,7 @@ if($('.header-logo-div').is(':visible')) {
 }
 });
 </script>
-<style>
+<style type="text/css">
 .image-logo
 {
     width:100%;
@@ -2879,5 +2884,19 @@ if($('.header-logo-div').is(':visible')) {
         cursor: pointer;
     }
     
+    ::-webkit-input-placeholder { /* WebKit browsers */
+        color: #444444 !important;
+    }
+    input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+       color: #444444 !important;
+       opacity: 1;
+    }
+    ::-moz-placeholder { /* Mozilla Firefox 19+ */
+       color: #444444 !important;
+       opacity: 1;
+    }
+    :-ms-input-placeholder { /* Internet Explorer 10+ */
+       color: #444444 !important;
+    }
 </style>
 

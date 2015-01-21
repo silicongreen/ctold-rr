@@ -322,13 +322,27 @@ class Settings {
         return $str;
     }
 
-    public static function get_simple_post_layout($postValue,$education_changes_life) {
+    public static function get_simple_post_layout($postValue) {
         $post_type = 0;
+        $edu_check = false;
+        if(isset($postValue['postCategories']) && count($postValue['postCategories'])>0)
+        {
+            foreach($postValue['postCategories'] as $value)
+            {
+               if(self::$education_changes_life==$value['category']->id)
+               {
+                  $edu_check = true; 
+                  break;
+               }    
+            }    
+        }    
+        
+        
         if($postValue->school_id>0)
         {
            $post_type = 8; 
         }
-        else if(self::$education_changes_life==$education_changes_life)
+        else if($edu_check)
         {
             $post_type = 9;
         }
@@ -738,7 +752,7 @@ class Settings {
             }
             $post_array['tags'] = array();
             
-            $post_array['normal_post_type'] = Settings::get_simple_post_layout($postValue,$post_array['category_id']);
+            $post_array['normal_post_type'] = Settings::get_simple_post_layout($postValue);
 
             $j = 0;
             if ($postValue['postTags'])

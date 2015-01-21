@@ -19,7 +19,7 @@
                     </span>
                 </button>
                 
-                <button type="button" class="red" id="full_leader_board" onclick="openshare(<?php echo $post_id; ?>)" >
+                <button type="button" class="red" id="full_leader_board" onclick="parent.triggershare(<?php echo $post_id; ?>)" >
                     <span class="clearfix f2" style="font-size:16px !important;">
                        Share
                     </span>
@@ -30,48 +30,7 @@
 
     </div>
 </div>
-<script type="text/javascript" src="<?php echo base_url('scripts/jquery/jquery-min.js'); ?>"></script> 
-<script>
-function openshare(id)
-{
-    //var clickshareid = parent.document.getElementById('addthisbutton_'+id);
-    parent.$('#addthisbutton_'+id).show();
-    parent.$('#addthisbutton_'+id).mouseenter();
-    parent.$('#addthisbutton_'+id).click();
-    parent.$('#addthisbutton_'+id).mouseleave();
-    parent.$('#addthisbutton_'+id).hide();
-//    clickshareid.show();
-//    clickshareid.trigger( "mouseover" );
-//    clickshareid.trigger( "click" );
-//    clickshareid.trigger( "mouseout" );
-//    clickshareid.hide();
-//    clickshareid.style.display = "block";
-//    FireEvent(clickshareid,"mouseover");
-//    clickshareid.click();
-//    FireEvent(clickshareid,"mouseout");
-////    clickshareid.click();
-//    clickshareid.onmouseout();
-//    clickshareid.style.display = "none";
-    //parent.$.fancybox.close();
-}
-function FireEvent( ElementId, EventName )
-{
-    if( ElementId != null )    
-    {   
-        if( ElementId.fireEvent ) 
-        {
-            ElementId.fireEvent( 'on' + EventName );     
-        }
-        else 
-        {   
-            var evObj = parent.document.createEvent( 'Events' );
-            evObj.initEvent( EventName, true, false );
-            ElementId.dispatchEvent( evObj );
-        }
-    }
-}
 
-</script>
 <style>
 body
 {

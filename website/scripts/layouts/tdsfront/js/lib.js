@@ -4,6 +4,14 @@ var apiKey = 'AIzaSyAEZOSmfxFmROGdV2u9aCxGO5fW2AuGDmM';
 var scopes = 'https://www.googleapis.com/auth/plus.profile.emails.read';
 var g_call_counter = 0;
 var f_call_counter = 0;
+function triggershare(id)
+{
+    $('#addthisbutton_'+id).show();
+    $('#addthisbutton_'+id).mouseenter();
+    $('#addthisbutton_'+id).click();
+    $('#addthisbutton_'+id).mouseleave();
+    $('#addthisbutton_'+id).hide();
+}
 // Google API Details
 function sharebrowser(id)
 {

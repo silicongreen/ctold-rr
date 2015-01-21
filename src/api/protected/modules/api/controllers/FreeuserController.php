@@ -2243,11 +2243,18 @@ class FreeuserController extends Controller
         $page_number = Yii::app()->request->getPost('page_number');
         $page_size = Yii::app()->request->getPost('page_size');
         $category_id = Yii::app()->request->getPost('category_id');
+        $subcategory_id = Yii::app()->request->getPost('subcategory_id');
         $popular_sort = Yii::app()->request->getPost('popular_sort');
         $fetaured = Yii::app()->request->getPost('fetaured');
         $game_type = Yii::app()->request->getPost('game_type');
         $user_type_set = Yii::app()->request->getPost('user_type');
         $callded_for_cache = Yii::app()->request->getPost('callded_for_cache');
+        
+        $news_category = $category_id;
+        if($subcategory_id)
+        {
+            $news_category = $subcategory_id;
+        }    
 
         $extra = "";
         if ($popular_sort)
@@ -2292,16 +2299,16 @@ class FreeuserController extends Controller
             $user_type = $user_type_set;
         }  
 
-        $cache_name = "YII-RESPONSE-CATEGORY-" . $category_id . "-" . $page_number . "-" . $page_size . "-" . $user_type . $extra;
+        $cache_name = "YII-RESPONSE-CATEGORY-" . $news_category . "-" . $page_number . "-" . $page_size . "-" . $user_type . $extra;
         $this->createAllCache($cache_name);
         $response = Yii::app()->cache->get($cache_name);
         if ($response === false)
         {
 
             $postcategoryObj = new PostCategory();
-            $post = $postcategoryObj->getPost($category_id, $user_type, $page_number, $page_size, $popular_sort, $game_type, $fetaured);
+            $post = $postcategoryObj->getPost($news_category, $user_type, $page_number, $page_size, $popular_sort, $game_type, $fetaured);
 
-            $response['data']['total'] = $postcategoryObj->getPostTotal($category_id, $user_type);
+            $response['data']['total'] = $postcategoryObj->getPostTotal($news_category, $user_type);
             $has_next = false;
             if ($response['data']['total'] > $page_number * $page_size)
             {

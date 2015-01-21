@@ -1,3 +1,25 @@
+ .post:hover .assessment-seen-div {
+        display:block;
+        visibility:visible;
+        opacity:1;
+        transition-delay:0s;
+        
+        
+  } 
+  .assessment-seen-div
+  {
+      visibility:hidden; 
+      opacity:0;transition:visibility 0s linear 0.5s,opacity 0.5s linear;
+      z-index:10;position:absolute;
+      min-height: 39px;background: black;background: rgba(25, 25, 25, .5);
+  }
+  
+  .assessment-div > .assessment-span {
+        color:#ffffff;font-size:12px; 
+
+        margin: 7px;
+        float: left;
+  }
 
 .post:hover .flexslider .flex-prev {
         opacity: .7;

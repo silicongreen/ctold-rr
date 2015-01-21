@@ -4,6 +4,10 @@
 <?php else : ?>
 <li style="position: relative;" id="post-<?php echo $news->post_id; ?>" class="post-<?php echo $news->post_id; ?> post post-content-showed type-post status-publish format-image has-post-thumbnail hentry category-post-format tag-description tag-image tag-people tag-text post ajax-hide <?php echo $li_class_name; ?> <?php echo ($i < 3) ? "shown" : ""; ?>  <?php echo (!is_null($news->short_title) && strlen(trim($news->short_title)) > 0) ? " format-quote   tag-quote " : ""; ?>  ">    
 <?php endif; ?>    
+    <?php
+        $widget = new Widget;
+        $widget->run('seenassessment', $news);
+    ?>
     <div class="post-content clearfix" style="<?php echo ( $news->post_type == 4 || $news->post_type == 3) ? 'background: transparent;' : ''; ?><?php echo ($is_exclusive_found) ? 'height:278px;' : '' ?>">
         <div class="post-title" style="margin: 0px;">
             <h2 class="f2" style="text-align: left; padding: 5px;">

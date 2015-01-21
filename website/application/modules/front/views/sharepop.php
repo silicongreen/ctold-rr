@@ -34,17 +34,17 @@
 <script>
 function openshare(id)
 {
-    var clickshareid = $(document).parent().find('#addthisbutton_'+id);
-    clickshareid.show();
-    clickshareid.trigger( "mouseover" );
-    clickshareid.trigger( "click" );
-    clickshareid.trigger( "mouseout" );
-    clickshareid.hide();
-//    clickshareid.style.display = "block";
-//    clickshareid.onmouseover();
-//    clickshareid.click();
-//    clickshareid.onmouseout();
-//    clickshareid.style.display = "none";
+    var clickshareid = documet.parent.getElementById('addthisbutton_'+id);
+//    clickshareid.show();
+//    clickshareid.trigger( "mouseover" );
+//    clickshareid.trigger( "click" );
+//    clickshareid.trigger( "mouseout" );
+//    clickshareid.hide();
+    clickshareid.style.display = "block";
+    clickshareid.onmouseover();
+    clickshareid.click();
+    clickshareid.onmouseout();
+    clickshareid.style.display = "none";
     //parent.$.fancybox.close();
 }
 

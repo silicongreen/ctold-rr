@@ -30,16 +30,22 @@
 
     </div>
 </div>
+<script type="text/javascript" src="<?php echo base_url('scripts/jquery/jquery-min.js'); ?>"></script> 
 <script>
 function openshare(id)
 {
-    var clickshareid = parent.document.getElementById('addthisbutton_'+id);
-    clickshareid.style.display = "block";
-    clickshareid.onmouseover();
-    clickshareid.click();
-    clickshareid.onmouseout();
-    clickshareid.style.display = "none";
-    parent.$.fancybox.close();
+    var clickshareid = $(document).parent().find('#addthisbutton_'+id);
+    clickshareid.show();
+    clickshareid.trigger( "mouseover" );
+    clickshareid.trigger( "click" );
+    clickshareid.trigger( "mouseout" );
+    clickshareid.hide();
+//    clickshareid.style.display = "block";
+//    clickshareid.onmouseover();
+//    clickshareid.click();
+//    clickshareid.onmouseout();
+//    clickshareid.style.display = "none";
+    //parent.$.fancybox.close();
 }
 
 </script>

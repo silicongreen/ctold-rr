@@ -34,7 +34,7 @@
 <script>
 function openshare(id)
 {
-    var clickshareid = documet.parent.getElementById('addthisbutton_'+id);
+    var clickshareid = document.parent.getElementById('addthisbutton_'+id);
 //    clickshareid.show();
 //    clickshareid.trigger( "mouseover" );
 //    clickshareid.trigger( "click" );

@@ -1325,35 +1325,45 @@ class home extends MX_Controller {
         
         $ar_ad_images = $this->config->config['post-ads'];
         
-        $ar_images = $ar_ad_images['add'];
-        list($i_first_image, $i_second_image) = get_rand_images($ar_images);
-        
-        $i_first_image_text = '<a href="' . base_url() . $ar_ad_images['link'][$i_first_image] . '">';
-        $i_first_image_text .= '<img id="'. $ar_ad_images['id'][$i_first_image] .'" class="ads ads-image ' . $ar_ad_images['class'][$i_first_image] . ' ';
-        if ( $ar_ad_images['check_login'][$i_first_image] == "1" )
+        if(!isset($obj_post_data->post_id) || $obj_post_data->post_id!=824)
         {
-            $i_first_image_text .= 'check_login"';
+            $ar_images = $ar_ad_images['add'];
+            list($i_first_image, $i_second_image) = get_rand_images($ar_images);
+
+            $i_first_image_text = '<a href="' . base_url() . $ar_ad_images['link'][$i_first_image] . '">';
+            $i_first_image_text .= '<img id="'. $ar_ad_images['id'][$i_first_image] .'" class="ads ads-image ' . $ar_ad_images['class'][$i_first_image] . ' ';
+            if ( $ar_ad_images['check_login'][$i_first_image] == "1" )
+            {
+                $i_first_image_text .= 'check_login"';
+            }
+            else
+            {
+                $i_first_image_text .= '"';
+            }   
+            $i_first_image_text .= 'style="width: 48%; float: left; margin-left: 1%; margin-right: 1%; cursor: pointer;" src="' . base_url() . $ar_images[$i_first_image] . '" /></a>';
+
+            $i_second_image_text = '<a href="' . base_url() . $ar_ad_images['link'][$i_second_image] . '">';
+            $i_second_image_text .= '<img id="'. $ar_ad_images['id'][$i_second_image] .'" class="ads ads-image ' . $ar_ad_images['class'][$i_second_image] . ' ';
+            if ( $ar_ad_images['check_login'][$i_second_image] == "1" )
+            {
+                $i_second_image_text .= 'check_login"';
+            }
+            else
+            {
+                $i_second_image_text .= '"';
+            }   
+            $i_second_image_text .= 'style="width: 48%; float: left; margin-left: 1%; margin-right: 1%; cursor: pointer;" src="' . base_url() . $ar_images[$i_second_image] . '" /></a>';
+
+            $s_ad_image = "<p style='float:left; clear:both; margin-top:10px;'>" . $i_first_image_text . "" . $i_second_image_text . "</p>";
         }
         else
         {
-            $i_first_image_text .= '"';
-        }   
-        $i_first_image_text .= 'style="width: 48%; float: left; margin-left: 1%; margin-right: 1%; cursor: pointer;" src="' . base_url() . $ar_images[$i_first_image] . '" /></a>';
+            $i_first_image_text = '<a href="#">';
+            $i_first_image_text .= '<img  class="ads ads-image candlepopup check_login" ';
+            $i_first_image_text .= 'style="width: 98%; float: left; margin-left: 1%; margin-right: 1%; cursor: pointer;" src="' . base_url() .'styles/layouts/tdsfront/images/ads/final/candle.png" /></a>';
         
-        $i_second_image_text = '<a href="' . base_url() . $ar_ad_images['link'][$i_second_image] . '">';
-        $i_second_image_text .= '<img id="'. $ar_ad_images['id'][$i_second_image] .'" class="ads ads-image ' . $ar_ad_images['class'][$i_second_image] . ' ';
-        if ( $ar_ad_images['check_login'][$i_second_image] == "1" )
-        {
-            $i_second_image_text .= 'check_login"';
+            $s_ad_image = "<p style='float:left; clear:both; margin-top:10px;'>" . $i_first_image_text . "</p>";
         }
-        else
-        {
-            $i_second_image_text .= '"';
-        }   
-        $i_second_image_text .= 'style="width: 48%; float: left; margin-left: 1%; margin-right: 1%; cursor: pointer;" src="' . base_url() . $ar_images[$i_second_image] . '" /></a>';
-        
-        $s_ad_image = "<p style='float:left; clear:both; margin-top:10px;'>" . $i_first_image_text . "" . $i_second_image_text . "</p>";
-        
         $obj_post_data->s_ad_image = $s_ad_image;
         
         $s_related_news = "";

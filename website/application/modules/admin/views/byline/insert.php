@@ -38,7 +38,12 @@
                                     <div class="required_tag"></div>
                                 </div>
                             </fieldset>
-                        
+                            <fieldset class="label_side top">
+                                <label for="required_field">Designation</label>
+                                <div>
+                                    <input id="title" name="designation" value="<?php echo  $model->designation ?>"  type="text" >
+                                </div>
+                            </fieldset>
                             <fieldset class="label_side top">
                                 <label for="required_field">Columnist Image</label>
                                 <div>

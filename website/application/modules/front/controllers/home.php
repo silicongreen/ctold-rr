@@ -1362,7 +1362,7 @@ class home extends MX_Controller {
             $i_first_image_text .= '<img  class="ads ads-image candlepopup check_login" ';
             $i_first_image_text .= 'style="width: 98%; float: left; margin-left: 1%; margin-right: 1%; cursor: pointer;" src="' . base_url() .'styles/layouts/tdsfront/images/ads/final/candle.png" /></a>';
         
-            $s_ad_image = "<p style='float:left; clear:both; margin-top:10px;'>" . $i_first_image_text . "</p>";
+            $s_ad_image = "<p style='float:left; width:100%; clear:both; margin-top:10px;'>" . $i_first_image_text . "</p>";
         }
         $obj_post_data->s_ad_image = $s_ad_image;
         

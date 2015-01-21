@@ -54,16 +54,17 @@
 
 
 
-
-    <div style="position: relative; width: 97%;margin:0px auto;">
+    <div style="position: relative; width: 97%; margin:0px auto;">
         
         <?php if($ecl) { ?>
-            <div class="ecl-banner">
-                <div class="ecl-banner-title f2">
-                    Education Changes Life
-                </div>
-                <div class="ecl-banner-logo">
-                    <img src="/styles/layouts/tdsfront/image/education-logo.png" />
+            <div class="ecl-banner-wrapper">
+                <div class="ecl-banner">
+                    <div class="ecl-banner-title f2">
+                        Education Changes Life
+                    </div>
+                    <div class="ecl-banner-logo">
+                        <img src="/styles/layouts/tdsfront/image/education-logo.png" />
+                    </div>
                 </div>
             </div>
         <?php } ?>
@@ -201,6 +202,15 @@
                                         <div class="ecl-auther-name">
                                             <?php echo $news->title; ?>
                                         </div>
+                                        
+                                        <div class="clearfix"></div>
+                                        
+                                        <?php //if(!empty($news->designation)) { ?>
+                                            <div class="ecl-auther-designation">
+                                                Senior PHP Programmer
+                                                <?php //echo $news->designation; ?>
+                                            </div>
+                                        <?php //} ?>
                                             
                                         <?php } else {
                                                 $img_class = '';
@@ -214,8 +224,7 @@
                                             <?php elseif (!is_null($news->lead_material) && strlen(trim($news->lead_material)) > 0) : ?>
                                                 <?php if ($news->post_type == 2) : ?>   
                                                     <a class="add-link" title="<?php echo $news->lead_caption; ?>" href="<?php echo $news->lead_link; ?>" target="_blank">       
-                                                    <?php endif; ?>     
-
+                                                    <?php endif; ?>
                                                         <img class="ad <?php echo $img_class; ?>" src="<?php echo $arCustomNews['lead_material']; ?>" class="attachment-post-thumbnail wp-post-image <?php echo ( $news->post_type == 2 ) ? 'ad' : ''; ?>" alt="<?php echo $news->headline; ?>" <?php if($is_exclusive_found===true): ?>style="width:475px;height:265px; "<?php endif; ?>>
                                                     <?php if ($news->post_type == 2) : ?>   
                                                     </a>
@@ -350,11 +359,11 @@
                                                     <?php if($ecl) { ?>
                                                         <span class="ecl-headline">
                                                             <div class="ecl-headline-lquote"><img src="/styles/layouts/tdsfront/image/lquote-gray.png" /></div>
-                                                    <?php } ?>
-                                                        <?php echo $news->headline;?>
-                                                    <?php if($ecl) { ?>
+                                                            <div class="ecl-content"><?php $arCustomNews = getFormatedContentAll($news, 400); echo $arCustomNews['content']; ?></div>
                                                             <div class="ecl-headline-rquote"><img src="/styles/layouts/tdsfront/image/rquote-gray.png" /></div>
                                                         </span>
+                                                    <?php } else { ?>
+                                                        <?php echo $news->headline; ?>
                                                     <?php } ?>
                                                     
                                                 </a>
@@ -491,9 +500,9 @@ padding: 1px;
 }
 .ecl-image{
     border: 6px solid #dddddd;
-    border-radius: 80px;
-    height: 120px !important;
-    width: 120px !important;
+    border-radius: 50%;
+    height: 170px !important;
+    width: 170px !important;
 }
 .ecl-image-div {
     width: 50%;
@@ -502,16 +511,35 @@ padding: 1px;
     margin-top: 15px;
 }
 .ecl-auther-name{
-    font-size: 18px;
-    font-weight: bold;
+    color: #d70813;
+    font-family: arial;
+    font-size: 22px;
     margin-left: auto;
     margin-right: auto;
-    padding-top: 15px;
+    padding-top: 40px;
+    text-align: center;
+    width: 90%;
+}
+.ecl-auther-designation{
+    color: #a7a7a7;
+    font-family: arial;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px;
     text-align: center;
     width: 90%;
 }
 .ecl-headline{
     color: #777777;
+}
+.ecl-content{
+    font-size: 16px;
+    color: #a7a7a7;
+    font-weight: normal;
+    font-family: Tahoma, Arial;
+    padding: 15px;
+    text-align: left;
+    line-height: 30px;
 }
 .ecl-headline-lquote{
     float: left;
@@ -519,16 +547,19 @@ padding: 1px;
 }
 .ecl-headline-rquote{
     float: right;
-    margin: 0 15px 0 5px;
+    margin: -30px 30px 25px 5px;
 }
 .ecl-headline img{
     height: 25px;
+}
+.ecl-banner-wrapper{
+    padding: 0 10px 0 0;
 }
 .ecl-banner{
     background-color: #3b393a;
     height: 167px;
     margin: 10px 15px;
-    width: 97%;
+    width: 100%;
 }
 .ecl-banner-title{
     color: #ffffff;
@@ -545,6 +576,10 @@ padding: 1px;
 }
 .ecl-banner-logo img{
     height: 167px;
+    float: right;
+}
+.post-title {
+    margin: 15px 0 3px 0;
 }
 .champs21_feed_title {
             background-color: #DC3434;

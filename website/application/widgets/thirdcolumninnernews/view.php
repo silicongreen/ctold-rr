@@ -68,6 +68,6 @@
 
 <style type="text/css">
     .candel-ecl-banner img{
-        width: 335px;
+        width: 409px;
     }
 </style>

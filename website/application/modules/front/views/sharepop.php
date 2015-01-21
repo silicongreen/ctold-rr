@@ -41,11 +41,29 @@ function openshare(id)
 //    clickshareid.trigger( "mouseout" );
 //    clickshareid.hide();
     clickshareid.style.display = "block";
-    clickshareid.onmouseover();
-    clickshareid.click();
-    clickshareid.onmouseout();
+    FireEvent(clickshareid,"mouseover");
+    FireEvent(clickshareid,"click");
+    FireEvent(clickshareid,"mouseout");
+//    clickshareid.click();
+//    clickshareid.onmouseout();
     clickshareid.style.display = "none";
     //parent.$.fancybox.close();
+}
+function FireEvent( ElementId, EventName )
+{
+    if( ElementId != null )    
+    {   
+        if( ElementId.fireEvent ) 
+        {
+            ElementId.fireEvent( 'on' + EventName );     
+        }
+        else 
+        {   
+            var evObj = parent.document.createEvent( 'Events' );
+            evObj.initEvent( EventName, true, false );
+            ElementId.dispatchEvent( evObj );
+        }
+    }
 }
 
 </script>

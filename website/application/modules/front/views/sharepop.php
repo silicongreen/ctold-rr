@@ -42,7 +42,7 @@ function openshare(id)
 //    clickshareid.hide();
     clickshareid.style.display = "block";
     FireEvent(clickshareid,"mouseover");
-    FireEvent(clickshareid,"click");
+    clickshareid.click();
     FireEvent(clickshareid,"mouseout");
 //    clickshareid.click();
 //    clickshareid.onmouseout();

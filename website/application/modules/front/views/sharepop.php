@@ -36,9 +36,9 @@ function openshare(id)
 {
     //var clickshareid = parent.document.getElementById('addthisbutton_'+id);
     parent.$('#addthisbutton_'+id).show();
-    parent.$('#addthisbutton_'+id).trigger( 'mouseover' );
-    parent.$('#addthisbutton_'+id).trigger( 'click' );
-    parent.$('#addthisbutton_'+id).trigger( 'mouseout' );
+    parent.$('#addthisbutton_'+id).mouseenter();
+    parent.$('#addthisbutton_'+id).click();
+    parent.$('#addthisbutton_'+id).mouseleave();
     parent.$('#addthisbutton_'+id).hide();
 //    clickshareid.show();
 //    clickshareid.trigger( "mouseover" );

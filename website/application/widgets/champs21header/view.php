@@ -489,11 +489,12 @@ height: 46px;
                                     <div>
                                         <label class="gender_label">I am a</label>
                                         <ul class="radio-holder gender_ul">
-                                            <li class="user_type_radio" style="padding-top: 0px;">
+                                            <li style="padding-top: 0px;">
                                                 <input class="css-checkbox" id="male" name="gender" value="1" type="radio" <?php echo ($model->gender == '1') ? 'checked="checked"' : ''; ?>>
                                                 <label for="male" class="user_type_label">Male</label>
                                             </li>
-                                            <li class="user_type_radio" style="padding-top: 0px;">
+                                            <!-- class="user_type_radio" -->
+                                            <li style="padding-top: 0px;">
                                                 <input class="css-checkbox" id="female" name="gender" value="0" type="radio" <?php echo ($model->gender == '0') ? 'checked="checked"' : ''; ?>>
                                                 <label for="female" class="user_type_label">Female</label>
                                             </li>

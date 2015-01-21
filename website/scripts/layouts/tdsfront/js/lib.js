@@ -1128,7 +1128,7 @@ $(document).ready(function(){
             'transitionIn': 'fade',
             'transitionOut': 'fade',
             'openEffect': 'elastic',
-            'openSpeed' : 350,
+            'openSpeed' : 350
         }); 
     });
     
@@ -1311,7 +1311,7 @@ $(document).ready(function(){
         
         $('.fancybox-wrap').css({
             "opacity": 1,
-            "background-color": "",
+            "background-color": ""
         });
         
     });
@@ -1353,7 +1353,7 @@ $(document).ready(function(){
 
                     $('.fancybox-wrap').css({
                         "opacity": 0.20,
-                        "background-color": "#000000",
+                        "background-color": "#000000"
                     });
 
                     $('#alert-errors').show();
@@ -1801,6 +1801,31 @@ $(document).ready(function(){
         }
     
     });
+    
+    if( ($('#user_profile_complete').length > 0) && (window.location.pathname == '/' || window.location.pathname == '') ) {
+        
+        var profile_update = setTimeout(function() {
+            
+            var html_frm_reg = $('#frm_reg').html();
+        
+            $.fancybox({
+                'content' : html_frm_reg,
+                'width': 500,
+                'height': 'auto',
+                'transitionIn': 'fade',
+                'transitionOut': 'fade',
+                'openEffect': 'elastic',
+                'openSpeed' : 350,
+                'fitToView' : false,
+                'autoSize' : false,
+                'padding': 0,
+                'margin': 0
+            });
+            
+            clearTimeout(profile_update);
+            
+        }, 3000);
+    }
     
 });
 

@@ -73,6 +73,17 @@ class champs21header extends widget
             $data['my_school_menu_uri'] = base_url().'schools';
         }
         
+        $data['user_profile_complete'] = TRUE;
+
+        if(free_user_logged_in()) {
+        
+            $user_sess_data = get_free_user_session();
+            
+            if( empty($user_sess_data['full_name']) || empty($user_sess_data['dob']) || empty($user_sess_data['gender']) || empty($user_sess_data['country_id'])) {
+                $data['user_profile_complete'] = FALSE;
+            }
+        }
+        
         // User Data
         
         $this->render($data);

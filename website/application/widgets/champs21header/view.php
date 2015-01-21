@@ -1,4 +1,8 @@
 <header class="champs-header col-xs-12 clearfix">
+    
+    <?php if(!$user_profile_complete) { ?>
+        <input type="hidden" name="user_profile_complete" id="user_profile_complete" value="nai" >
+    <?php } ?>
 
     <div class="col-xs-12">
         <?php if (array_key_exists($ci_key_for_cover, $this->config->config['cover']) && $this->config->config['cover'][$ci_key_for_cover] ) : ?>
@@ -396,7 +400,7 @@ height: 46px;
                                     </ul>
 
                                 </fieldset>
-
+                                
                                 <?php if( ($user_data['type'] == 1) || ($user_data['type'] == 4) ) { ?>
                                 <fieldset>
                                     <div class="selectMedium">

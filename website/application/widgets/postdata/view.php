@@ -58,15 +58,25 @@
 
         <?php if ($ecl || $opinion) { ?>
             <div class="ecl-banner-wrapper" <?php echo ($opinion) ? 'style="margin-top: 75px;"' : ''; ?>>
-                <div class="ecl-banner">
-                    <div class="ecl-banner-title f2">
-                        <?php echo $category_banner_title; ?>
-                    </div>
+                <div class="<?php echo ($opinion) ? 'opinion-banner' : 'ecl-banner'?>">
+                    <?php if($ecl){?>
+                        <div class="ecl-banner-title f2">
+                            <?php echo $category_banner_title; ?>
+                        </div>
+                    <?php } ?>
+                    
+                    <?php if($opinion){?>
+                        <div class="opinion-banner-title">
+                            <img src="/styles/layouts/tdsfront/image/banner-opinoin.png" />
+                        </div>
+                    <?php } ?>
+                    
                     <div class="ecl-banner-logo">
                         <img src="/styles/layouts/tdsfront/image/education-logo.png" />
                     </div>
                 </div>
             </div>
+        <div class="clearfix"></div>
         <?php } ?>
 
         <?php //endif; ?>   
@@ -342,7 +352,7 @@
                                                 </div>
                                                 <?php $showed = true;
                                             endif; ?>
-                                            <div class="post-title" <?php if ($is_exclusive_found === true): ?>style="margin: 24px 0px;"<?php endif; ?>>
+                                            <div class="post-title" <?php if ($is_exclusive_found === true): ?>style="margin: 24px 0px;"<?php endif; ?><?php if(($ecl || $opinion)) {?>style="margin: 15px 0 3px 0;"<?php } ?>>
                                                 <?php if ($target == "index" && $news->post_layout != 4) : ?>
                                                     <?php if ($showed): ?>
                                                         <!--                                                don nothing-->
@@ -567,29 +577,48 @@
                 padding: 0 15px;
             }
             .ecl-banner{
-                background-color: #3b393a;
-                height: 167px;
+                width: 100%;
+            }
+            .opinion-banner{
+                background-color: #fff;
                 width: 100%;
             }
             .ecl-banner-title{
+                
+                background-color: #3b393a;
                 color: #ffffff;
+                float: left;
+                font-size: 45px;
+                padding: 44px 0 45px;
+                text-align: center;
+                text-transform: uppercase;
+                width: 68.5%;
+                
+/*                color: #ffffff;
                 float: left;
                 font-size: 45px;
                 padding: 47px;
                 text-align: center;
                 text-transform: uppercase;
+                width: 69%;*/
+            }
+            .opinion-banner-title{
+                color: #ffffff;
+                float: left;
+                text-align: center;
+                text-transform: uppercase;
                 width: 69%;
+            }
+            .opinion-banner-title img{
+                width: 100%;
             }
             .ecl-banner-logo{
                 float: left;
-                width: 31%;
+                width: 31.5%;
             }
             .ecl-banner-logo img{
-                height: 167px;
-                float: right;
-            }
-            .post-title {
-                margin: 15px 0 3px 0;
+                float: left;
+                width: 100%;
             }
             .champs21_feed_title {
                 background-color: #DC3434;

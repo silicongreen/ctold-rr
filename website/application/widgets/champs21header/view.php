@@ -435,7 +435,25 @@ height: 46px;
                                         ?>
                                     </div>
                                 </fieldset>
-
+                                
+                                <?php if( $user_data['type'] == 2 ) { ?>
+                                <fieldset>
+                                    <div class="selectMedium">
+                                        <?php
+                                        $ar_input_data_desig =array(
+                                            'class' => 'f5 text_field',
+                                            'placeholder' => 'Designation',
+                                            'maxlength' => '255',
+                                            'size' => '560',
+                                            'name' => 'designation',
+                                            'value' => $model->designation,
+                                        );
+                                        echo form_input($ar_input_data_desig);
+                                        ?>
+                                    </div>
+                                </fieldset>
+                                <?php } ?>
+                                
                                 <?php if( $user_data['type'] == 3 ) { ?>
                                 <fieldset>
                                     <div class="selectMedium">

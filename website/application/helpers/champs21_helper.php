@@ -157,21 +157,21 @@ if (!function_exists('getclassactionbox'))
         
         if($checkcount<100)
         {
-           $value['width'] = 90;
+           $value['width'] = 100;
            $value['class1'] = 4;
            $value['class2'] = 8;
            $value['new_count'] = $new_count.$count_string;
         }
         else if($checkcount>=100 && $checkcount<1000)
         {
-           $value['width'] = 90;
+           $value['width'] = 100;
            $value['class1'] = 4;
            $value['class2'] = 8;
            $value['new_count'] = $new_count.$count_string;
         }
         else if($checkcount>=1000)
         {
-           $value['width'] = 100;
+           $value['width'] = 120;
            $value['class1'] = 4;
            $value['class2'] = 8;
            $value['new_count'] = $new_count.$count_string;

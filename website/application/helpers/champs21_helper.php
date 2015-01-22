@@ -157,7 +157,7 @@ if (!function_exists('getclassactionbox'))
         
         if($checkcount<100)
         {
-           $value['width'] = 85;
+           $value['width'] = 90;
            $value['class1'] = 4;
            $value['class2'] = 8;
            $value['new_count'] = $new_count.$count_string;
@@ -165,15 +165,15 @@ if (!function_exists('getclassactionbox'))
         else if($checkcount>=100 && $checkcount<1000)
         {
            $value['width'] = 90;
-           $value['class1'] = 3;
-           $value['class2'] = 9;
+           $value['class1'] = 4;
+           $value['class2'] = 8;
            $value['new_count'] = $new_count.$count_string;
         }
         else if($checkcount>=1000)
         {
            $value['width'] = 100;
-           $value['class1'] = 3;
-           $value['class2'] = 9;
+           $value['class1'] = 4;
+           $value['class2'] = 8;
            $value['new_count'] = $new_count.$count_string;
         }
         

@@ -17,6 +17,7 @@ return array(
         'application.models.*',
         'application.components.*',
         'application.helpers.*',
+		'ext.YiiMailer.YiiMailer',
     ),
     'modules' => array(
         // uncomment the following to enable the Gii tool

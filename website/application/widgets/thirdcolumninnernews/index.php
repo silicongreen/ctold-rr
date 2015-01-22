@@ -41,7 +41,7 @@ class thirdcolumninnernews extends widget
         $data['extra_column_name'] = $extra_column_name;
         $data['ar_extra_config'] = $ar_extra_config;
         
-        $data['ecl'] = in_array((int) $ar_extra_config['category_id'],  $CI->config->config['education-changes-life']['ids'] ) ? TRUE : FALSE;
+        $data['ecl'] = in_array((int) $ar_extra_config['category_id'],  $CI->config->config['education-changes-life']['ecl_ids'] ) ? TRUE : FALSE;
         
         $this->render($data);
     }

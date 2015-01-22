@@ -169,7 +169,7 @@
                                 <li class="post shown col-md-6 ">
                                     <?php $widget->run('thirdcolumninnerlist', $ar_3rd_column_extra_data, $extra_column_name, $ar_extra_config); ?> 
                                 </li>
-                            <?php elseif (free_user_logged_in() && get_free_user_session('paid_id')): ?>
+                            <?php elseif (free_user_logged_in() && get_free_user_session('paid_id') && $target == 'index'): ?>
                                 <li class="post shown col-md-6 ">
                                     <div class="champs21_feed_title f2">My School</div>
                                     <div id='mycustomscroll' class='flexcroll'>
@@ -178,7 +178,7 @@
                                 </li>
                             <?php endif; ?> 
                             <?php if(isset($obj_selected_post_news) && count($obj_selected_post_news)>0): ?>
-                                <?php $widget->run('post_selected',$obj_selected_post_news); ?>
+                                <?php $widget->run('post_selected',$obj_selected_post_news, $category, $s_category_name); ?>
                             <?php endif; ?> 
                         <?php endif; ?>
 
@@ -600,14 +600,6 @@
                 text-align: center;
                 text-transform: uppercase;
                 width: 68.5%;
-                
-/*                color: #ffffff;
-                float: left;
-                font-size: 45px;
-                padding: 47px;
-                text-align: center;
-                text-transform: uppercase;
-                width: 69%;*/
             }
             .opinion-banner-title{
                 color: #ffffff;
@@ -635,6 +627,11 @@
             .op-banner-logo:hover
             {
                 background: #00AFF0;
+                -webkit-transition: background-color 0.5s ease;
+                -moz-transition: background-color 0.5s ease;
+                -o-transition: background-color 0.5s ease;
+                -ms-transition: background-color 0.5s ease;
+                transition: background-color 0.5s ease;
             }
             .op-banner-logo img{
                 float: left;
@@ -679,4 +676,8 @@
     <input type="hidden" name="current-page" id="current-page" value="<?php echo $current_page; ?>"  autocomplete="off" />
     <input type="hidden" name="page-size" id="page-size" value="<?php echo $page_size; ?>" autocomplete="off" />
     <input type="hidden" name="total_data" id="total_data" value="<?php echo $total_data; ?>" autocomplete="off" />
+<?php endif; ?>
+    
+<?php if ( !empty($candle_category_id) ) : ?>
+    <input type="hidden" name="candle_category_id" id="candle_category_id" value="<?php echo $candle_category_id; ?>" autocomplete="off" />
 <?php endif; ?>

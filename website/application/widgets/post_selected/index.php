@@ -32,8 +32,21 @@ if (!defined('BASEPATH'))
 class post_selected extends widget
 {
 
-    function run( $obj_post_news)
+    function run( $obj_post_news, $s_category_id = 0, $s_category_name = '')
     {
+        $CI = & get_instance();
+        $CI->load->config("huffas");
+        
+        $data['ecl'] = FALSE;
+        if(isset($CI->config->config[sanitize($s_category_name)]['ecl_ids'])) {
+            $data['ecl'] = in_array($s_category_id,  $CI->config->config[sanitize($s_category_name)]['ecl_ids'] ) ? TRUE : FALSE;
+        }
+        
+        $data['opinion'] = FALSE;
+        if(isset($CI->config->config[sanitize($s_category_name)]['op_ids'])) {
+            $data['opinion'] = in_array($s_category_id,  $CI->config->config[sanitize($s_category_name)]['op_ids'] ) ? TRUE : FALSE;
+        }
+        
         $data['obj_post_news'] = $obj_post_news;
         $this->render($data);
     }

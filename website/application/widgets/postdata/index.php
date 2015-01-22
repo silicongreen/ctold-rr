@@ -217,8 +217,21 @@ class postdata extends widget
         $data['is_game'] = $is_game;
         $data['page'] = $page;
         $data['category'] = (int) $s_category_ids;
-        $data['ecl'] = in_array($data['category'],  $CI->config->config['education-changes-life']['ids'] ) ? TRUE : FALSE;
-        $data['opinion'] = in_array($data['category'],  $CI->config->config['opinion']['ids'] ) ? TRUE : FALSE;
+        
+        $data['ecl'] = FALSE;
+        if(isset($CI->config->config[sanitize($s_category_name)]['ecl_ids'])) {
+            $data['ecl'] = in_array($data['category'],  $CI->config->config[sanitize($s_category_name)]['ecl_ids'] ) ? TRUE : FALSE;
+        }
+        
+        $data['opinion'] = FALSE;
+        if(isset($CI->config->config[sanitize($s_category_name)]['op_ids'])) {
+            $data['opinion'] = in_array($data['category'],  $CI->config->config[sanitize($s_category_name)]['op_ids'] ) ? TRUE : FALSE;
+        }
+        
+        $data['candle_category_id'] = NULL;
+        if(isset($CI->config->config[sanitize($s_category_name)]['candle_category_id'])) {
+            $data['candle_category_id'] = $CI->config->config[sanitize($s_category_name)]['candle_category_id'];
+        }
         
         if(is_string($mix_category)) {
             $data['category_banner_title'] = $mix_category;
@@ -232,6 +245,7 @@ class postdata extends widget
         }
         
         $data['obj_post_news'] = $ar_post_news["data"];
+        $data['s_category_name'] = $s_category_name;
         
         $data['obj_selected_post_news'] = array();
         

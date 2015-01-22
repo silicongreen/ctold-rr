@@ -641,6 +641,10 @@ class Settings {
             $post_array['images'] = array();
             $post_array['add_images'] = array();
             $post_array['web_images'] = array();
+            
+            $post_array['image_width'] = "";
+            $post_array['image_height'] = "";
+            
             if ($postValue['postGalleries'])
             {
                 $j = 0;
@@ -655,13 +659,24 @@ class Settings {
                         $post_array['add_images'][$j]['ad_image'] = Settings::get_mobile_image(Settings::$image_path . $value['material']->material_url);
                         $post_array['add_images'][$j]['ad_image_link'] = $value->source;
                         $post_array['add_images'][$j]['ad_image_caption'] = $value->caption;
+                        if($j==1)
+                        {
+                            list($image_width, $image_height, $image_type, $image_attr) = @getimagesize($post_array['images'][$j]);
+                            if(isset($image_width) && isset($image_height))
+                            {
+                                $post_array['image_width'] = $image_width;
+                                $post_array['image_height'] = $image_height;
+                            }
+                        }
                         $j++;
                     }
                     else if(trim($value['material']->material_url) && $value->type==1)
                     {
+                           
                         $post_array['web_images'][$k]['image'] = Settings::$image_path . $value['material']->material_url;
                         $post_array['web_images'][$k]['source'] = $value->source;
                         $post_array['web_images'][$k]['caption'] =  $value->caption;
+                         
                         $k++;
                     }    
                 }

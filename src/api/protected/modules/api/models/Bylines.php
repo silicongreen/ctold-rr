@@ -32,14 +32,7 @@ class Bylines extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('title, created', 'required'),
-            array('is_columnist, priority, is_feature', 'numerical', 'integerOnly' => true),
-            array('title', 'length', 'max' => 250),
-            array('image', 'length', 'max' => 255),
-            array('updated', 'safe'),
-            // The following rule is used by search().
-            // @todo Please remove those attributes that should not be searched.
-            array('id, title, created, updated, is_columnist, priority, image, is_feature', 'safe', 'on' => 'search'),
+            array('title', 'required')
         );
     }
 

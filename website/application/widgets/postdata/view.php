@@ -175,6 +175,9 @@
                                     </div>
                                 </li>
                             <?php endif; ?> 
+                            <?php if(isset($obj_selected_post_news) && count($obj_selected_post_news)>0): ?>
+                                <?php $widget->run('post_selected',$obj_selected_post_news); ?>
+                            <?php endif; ?> 
                         <?php endif; ?>
 
                         <?php

@@ -233,6 +233,13 @@ class postdata extends widget
         
         $data['obj_post_news'] = $ar_post_news["data"];
         
+        $data['obj_selected_post_news'] = array();
+        
+        if(isset($ar_post_news["selected_data"]) && count($ar_post_news["selected_data"])>0)
+        {
+            $data['obj_selected_post_news'] = $ar_post_news["selected_data"];
+        }
+        
 //        foreach($data['obj_post_news'] as $value)
 //        {
 //            echo $value->headline."<br/>";

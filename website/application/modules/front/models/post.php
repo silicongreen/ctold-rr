@@ -312,6 +312,10 @@ class post extends CI_Model{
                     {
                         $this->db->like('tds_post.headline', $value); 
                     }
+                    else if($key == "force_limit")
+                    {
+                        $i_limit = 1;
+                    }
                     else
                     {
                         $this->db->where($key, $value);
@@ -358,6 +362,7 @@ class post extends CI_Model{
             {
                 $i_page = 0;
             }    
+            
             $this->db->offset($i_limit * $i_page);
             $this->db->limit($i_limit);
 

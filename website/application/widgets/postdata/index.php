@@ -32,7 +32,7 @@ if (!defined('BASEPATH'))
 class postdata extends widget
 {
 
-    function run( $s_category_name, $s_category_ids = "", $target = "inner", $b_featured = FALSE, $i_featured_position = 0, $page = "index", $current_page = 0, $limit = 9,$is_game = 0, $q = '')
+    function run( $s_category_name, $s_category_ids = "", $target = "inner", $b_featured = FALSE, $i_featured_position = 0, $page = "index", $current_page = 0, $limit = 9,$is_game = 0, $q = '', $mix_category = NULL)
     {
        
         $CI = & get_instance();        
@@ -218,6 +218,18 @@ class postdata extends widget
         $data['page'] = $page;
         $data['category'] = (int) $s_category_ids;
         $data['ecl'] = in_array($data['category'],  $CI->config->config['education-changes-life']['ids'] ) ? TRUE : FALSE;
+        $data['opinion'] = in_array($data['category'],  $CI->config->config['opinion']['ids'] ) ? TRUE : FALSE;
+        
+        if(is_string($mix_category)) {
+            $data['category_banner_title'] = $mix_category;
+        } else {
+            $i = 0;
+            foreach ($mix_category as $category) {
+                if($i == 0) {
+                    $data['category_banner_title'] = (isset($category->display_name) && $category->display_name != "") ? $category->display_name : $category->name;
+                }
+            }
+        }
         
         $data['obj_post_news'] = $ar_post_news["data"];
         

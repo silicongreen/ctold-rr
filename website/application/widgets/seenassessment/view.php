@@ -12,7 +12,7 @@ $wow_class = getclassactionbox($news->wow_count);
         </div>
         <?php if($news->assessment_id): ?>
         <div class="assessment-div" style="width:150px;float:left; margin-left:5px;">
-            <img class="no_toolbar toolbar" height="30px" src="http://www.champs21.dev/styles/layouts/tdsfront/image/assessment-gray.png" style="cursor: pointer; height: 25px; margin-top:5px;float: left;"> 
+            <img class="no_toolbar toolbar" height="30px" src="<?php echo base_url(); ?>/styles/layouts/tdsfront/image/assessment-gray.png" style="cursor: pointer; height: 25px; margin-top:5px;float: left;"> 
             <span class="f2 assessment-span">Take Assessment</span>
         </div>
         <?php endif; ?>

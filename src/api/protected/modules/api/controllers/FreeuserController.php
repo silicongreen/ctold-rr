@@ -2328,6 +2328,7 @@ class FreeuserController extends Controller
             $response['status']['msg'] = "DATA_FOUND";
             Yii::app()->cache->set($cache_name, $response, 86400);
         }
+        $selected_post = array();
         if($page_number==1)
         {
             $pinpostobj = new Pinpost();
@@ -2355,7 +2356,29 @@ class FreeuserController extends Controller
                 
             }
             $response['data']['post'] = $new_post;
+            
+            $obj_selected = new Selectedpost();
+            $selected_post = $obj_selected->getSelectedPost($news_category);
         } 
+        $response['data']['selected_post'] = array();
+        
+        if($selected_post)
+        {
+            $selected_post_data = array();
+            $j = 0;
+            foreach($selected_post as $value)
+            {
+                $selected_post_data[$j] = $this->getSingleNewsFromCache($value);
+                $selected_post_data[$j]['can_wow'] = 1;
+                $selected_post_data[$j]['can_share'] = $this->can_share($value,$user_id);
+//                if(in_array($value, $wow)  && Settings::$wow_login==true)
+//                {
+//                   $selected_post_data[$j]['can_wow'] = 0; 
+//                } 
+                $j++;
+            }
+            $response['data']['selected_post'] = $selected_post_data;
+        }
         
         if(isset($response['data']['post']) && count($response['data']['post'])>0)
         {

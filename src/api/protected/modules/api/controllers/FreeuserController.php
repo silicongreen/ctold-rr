@@ -864,6 +864,8 @@ class FreeuserController extends Controller
             $postobj->user_type = 2;
             $postobj->language = "en";
             
+            $postobj->user_id = $user_id;
+            
             $objfreeuser = new Freeusers();
             $freeobj = $objfreeuser->findByPk($user_id);
             if($mobile_num)

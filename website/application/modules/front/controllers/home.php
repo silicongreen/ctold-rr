@@ -912,7 +912,7 @@ class home extends MX_Controller {
         }
         $data['popular'] = $b_popular;
         $data['s_category_ids'] = $i_category_id;
-        
+        $data['hide_top_breadcrumb'] = (isset($this->config->config['hide-top-breadcrumb'][sanitize($s_category_name)])) ? $this->config->config['hide-top-breadcrumb'][sanitize($s_category_name)] : FALSE;
         
         if($obj_parent_category->game_type==1)
         {

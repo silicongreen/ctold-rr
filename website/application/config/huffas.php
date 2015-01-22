@@ -13,7 +13,7 @@ $config[ 'news_in_index' ] = array(
 $config['api_url']   = 'http://api.champs21.com/api/freeuser';
 $config['education_changes_life'] = TRUE;
 
-$config[ 'from_api' ] = TRUE;
+$config[ 'from_api' ] = FALSE;
 $config[ 'go_to_assessment' ] = TRUE;
 
 $config[ 'normal_view_count_add' ] = 1;
@@ -34,6 +34,18 @@ $config['education-changes-life'] = array(
         "force_limit"   => TRUE,
         "char_count"    => 1
     )
+);
+
+$config['opinion'] = array(
+    'ids' => array(63, 64),
+//    "li-class-name" => 'col-sm-5',
+//    "3rd-column" => array(
+//        "category_id" =>   59,
+//        "type"          => "news",
+//        "count"         => 1,
+//        "force_limit"   => TRUE,
+//        "char_count"    => 1
+//    )
 );
 
 $config[ 'eca' ] = array(
@@ -97,6 +109,10 @@ $config['cover'] = array(
     "food-and-nutrutions"   => FALSE,
     "eca."                  => FALSE,
     "resource-center"       => FALSE
+);
+
+$config['hide-top-breadcrumb'] = array(
+    "opinion"                 => TRUE
 );
 
 $config['cover-image'] = array(

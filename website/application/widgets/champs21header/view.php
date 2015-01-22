@@ -435,25 +435,7 @@ height: 46px;
                                         ?>
                                     </div>
                                 </fieldset>
-                                
-                                <?php if( $user_data['type'] == 2 ) { ?>
-                                <fieldset>
-                                    <div class="selectMedium">
-                                        <?php
-                                        $ar_input_data_desig =array(
-                                            'class' => 'f5 text_field',
-                                            'placeholder' => 'Designation',
-                                            'maxlength' => '255',
-                                            'size' => '560',
-                                            'name' => 'designation',
-                                            'value' => $model->designation,
-                                        );
-                                        echo form_input($ar_input_data_desig);
-                                        ?>
-                                    </div>
-                                </fieldset>
-                                <?php } ?>
-                                
+
                                 <?php if( $user_data['type'] == 3 ) { ?>
                                 <fieldset>
                                     <div class="selectMedium">
@@ -1156,6 +1138,12 @@ if($('.header-logo-div').is(':visible')) {
             height:43px !important;
             top:-1px;
         }
+        .icon-my-school
+        {
+            width:66px !important;
+            height:43px !important;
+            top:-1px;
+        }
         .category-fixed-menu-box label {
             margin-bottom:0px;
             float:right;
@@ -1229,10 +1217,23 @@ if($('.header-logo-div').is(':visible')) {
         {
             width:100%
         }
-		.search_box_head
-		{
-			display:none;
-		}
+        .search_box_head
+        {
+            display:none;
+        }
+        .col-lg-4
+        {
+            width:33.33%;
+            float:left;
+        }
+        .read_later
+        {
+            font-size:9px !important;
+        }
+        .seen span
+        {
+            font-size:9px !important;
+        }
         
 } 
 @media all and (min-width: 450px) and (max-width: 599px) {
@@ -1309,6 +1310,12 @@ if($('.header-logo-div').is(':visible')) {
             top:-1px;
         }
         .icon-magic-mart
+        {
+            width:66px !important;
+            height:43px !important;
+            top:-1px;
+        }
+        .icon-my-school
         {
             width:66px !important;
             height:43px !important;
@@ -1465,10 +1472,22 @@ if($('.header-logo-div').is(':visible')) {
            float:left;
         }
         .search_box_head
-		{
-			display:none;
-		}
-        
+        {
+            display:none;
+        }
+        .col-lg-4
+        {
+            width:33.33%;
+            float:left;
+        }
+        .read_later
+        {
+            font-size:9px !important;
+        }
+        .seen span
+        {
+            font-size:9px !important;
+        }
         
 }
 @media all and (min-width: 600px) and (max-width: 799px) {
@@ -1521,6 +1540,12 @@ if($('.header-logo-div').is(':visible')) {
             top:-1px;
         }
         .icon-magic-mart
+        {
+            width:66px !important;
+            height:43px !important;
+            top:-1px;
+        }
+        .icon-my-school
         {
             width:66px !important;
             height:43px !important;
@@ -1674,10 +1699,15 @@ if($('.header-logo-div').is(':visible')) {
             font-size:50px !important;
             line-height:50px !important;
         }
-		.search_box_head
-		{
-			display:none;
-		}
+        .search_box_head
+        {
+                display:none;
+        }
+        .col-lg-4
+        {
+            width:33.33%;
+            float:left;
+        }
         
 }
 @media all and (min-width: 800px) and (max-width: 991px) {
@@ -1693,7 +1723,7 @@ if($('.header-logo-div').is(':visible')) {
         .logo-div
         {		
                 float:left;                
-                width: 40%;
+                width: 35%;
                 text-align:center;
                 margin:0px auto;
                 padding-left: 0px;
@@ -1715,6 +1745,11 @@ if($('.header-logo-div').is(':visible')) {
             padding-right: 20px !important;
             padding-left: 0px !important;
         }
+    .col-lg-4
+    {
+        width:33.33%;
+        float:left;
+    }
 }
 @media all and (min-width: 992px) and (max-width: 1251px) {
     .fancybox-wrap

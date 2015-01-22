@@ -9,7 +9,7 @@ $wow_class = getclassactionbox($news->wow_count);
     
     <div data="wow" id="wow_<?php echo $news->post_id; ?>" class="<?php if($news->can_wow==1): ?>wow_class<?php endif; ?> col-lg-4 <?php echo ( free_user_logged_in() || wow_login()==false ) ? "" : "before-login-user"; ?>" 
          style="border-right:1px solid #DADEDF;min-height: 39px; cursor: pointer;">
-        <div  style="width:<?php echo $wow_class['width']; ?>px; margin: 0 auto;">
+        <div>
             <div class="seen-image col-lg-<?php echo $wow_class['class1']; ?>" style="text-align:right;margin-top:8px;" >
                 <?php if($news->can_wow==1): ?>
                 <img class="no_toolbar" width="20" src="<?php echo base_url("styles/layouts/tdsfront/images/social/wow.png"); ?>" />

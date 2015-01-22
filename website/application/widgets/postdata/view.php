@@ -353,7 +353,7 @@
                                                 <?php endif; ?>
 
                                             <?php endif; ?>
-                                            <h2 class="f2" <?php if($news->post_layout==4): ?> style="text-align:left !important;" <?php endif; ?>>
+                                            <h2 class="f2" <?php if($news->post_layout==4): ?> style="text-align:center !important;" <?php endif; ?>>
                                                 <a <?php if($news->post_layout==4): ?> style="margin-left:17px;" <?php endif; ?> href="<?php echo base_url() . sanitize($news->headline) . "-" . $news->post_id; ?>" title="<?php echo $news->headline; ?>">
                                                 
                                                     <?php if($ecl) { ?>

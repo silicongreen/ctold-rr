@@ -79,7 +79,7 @@ class champs21header extends widget
         
             $user_sess_data = get_free_user_session();
             
-            if( empty($user_sess_data['full_name']) || empty($user_sess_data['dob']) || empty($user_sess_data['gender']) || empty($user_sess_data['country_id'])) {
+            if( empty($user_sess_data['full_name'])) {
                 $data['user_profile_complete'] = FALSE;
             }
         }

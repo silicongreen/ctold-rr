@@ -2357,9 +2357,11 @@ class FreeuserController extends Controller
             }
             $response['data']['post'] = $new_post;
             
-            $obj_selected = new Selectedpost();
-            $selected_post = $obj_selected->getSelectedPost($news_category);
+            
         } 
+        
+        $obj_selected = new Selectedpost();
+        $selected_post = $obj_selected->getSelectedPost($news_category);
         $response['data']['selected_post'] = array();
         
         if($selected_post)

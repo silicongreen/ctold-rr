@@ -63,17 +63,19 @@
                         <div class="ecl-banner-title f2">
                             <?php echo $category_banner_title; ?>
                         </div>
+                        <div class="ecl-banner-logo">
+                            <img src="/styles/layouts/tdsfront/image/education-logo.png" />
+                        </div>
                     <?php } ?>
                     
                     <?php if($opinion){?>
                         <div class="opinion-banner-title">
                             <img src="/styles/layouts/tdsfront/image/banner-opinoin.png" />
                         </div>
+                        <div data="candle" class="<?php echo ( free_user_logged_in() ) ? 'op-banner-logo candlepopup' : 'op-banner-logo before-login-user'; ?>">
+                            <img src="/styles/layouts/tdsfront/image/op_candle.png" />
+                        </div>
                     <?php } ?>
-                    
-                    <div class="ecl-banner-logo">
-                        <img src="/styles/layouts/tdsfront/image/education-logo.png" />
-                    </div>
                 </div>
             </div>
         <div class="clearfix"></div>
@@ -577,14 +579,16 @@
                 height: 25px;
             }
             .ecl-banner-wrapper{
-                padding: 0 15px;
+                padding: 0 13px;
+                float: left;
             }
             .ecl-banner{
                 width: 100%;
             }
             .opinion-banner{
-                background-color: #fff;
+                background-color: #D21F27;
                 width: 100%;
+                float: left;
             }
             .ecl-banner-title{
                 
@@ -610,7 +614,7 @@
                 float: left;
                 text-align: center;
                 text-transform: uppercase;
-                width: 69%;
+                width: 68.5%;
             }
             .opinion-banner-title img{
                 width: 100%;
@@ -622,6 +626,20 @@
             .ecl-banner-logo img{
                 float: left;
                 width: 100%;
+            }
+            .op-banner-logo{
+                float: left;
+                width: 31.5%;
+                cursor: pointer;
+            }
+            .op-banner-logo:hover
+            {
+                background: #00AFF0;
+            }
+            .op-banner-logo img{
+                float: left;
+                margin: 42px 47px;
+                width: 70%;
             }
             .champs21_feed_title {
                 background-color: #DC3434;

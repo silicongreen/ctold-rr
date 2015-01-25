@@ -1,6 +1,7 @@
-<li class="post col-md-6 type-post status-publish format-image has-post-thumbnail hentry category-post-format tag-description tag-image tag-people tag-text shown post-boxes ">
+<li class="post col-md-6 opinion-selected type-post status-publish format-image has-post-thumbnail hentry category-post-format tag-description tag-image tag-people tag-text shown post-boxes ">
     <div class="flex-wrapper_news">
-        <div id="slider" class="flexslider_news" style="margin-bottom:10px;">
+        <div id="slider" class="flexslider_news">
+            
             <ul class="slides_news" style="padding: 0px; margin: 0px;">
                 <?php
                 if ($obj_post_news)
@@ -10,21 +11,24 @@
                         <li style="<?php echo $style; ?>" id="post-<?php echo $news->post_id; ?>" class="news_slides post-<?php echo $news->post_id; ?> type-post post-content-showed status-publish format-image has-post-thumbnail hentry category-post-format tag-description tag-image tag-people tag-text col-md-12 shown  post-boxes ">
 
                             <?php
-//                            var_dump($opinion);exit;
-                            if (!$ecl && !$opinion) {
+                            if (!$ecl) {
                                 $widget = new Widget;
                                 $widget->run('seenassessment', $news);
                             }
                             ?>
 
                             <div class="post-content clearfix" >
-                                <div class="intro-post">	
+                                <div class="intro-post">
+                                    
+                                    <div class="selected_header">
+                                        Selected
+                                    </div>
 
                                     <a href="<?php echo base_url() . sanitize($news->headline) . "-" . $news->post_id; ?>" title="<?php echo $news->headline; ?>">   
 
 
 
-                                        <div class="post-thumb ">
+                                        <div class="post-thumb selected_thumb">
                                             <?php if (strlen(trim($news->embedded)) > 0) : ?>
                                                 <?php echo $news->embedded; ?>
                                             <?php elseif (!is_null($news->lead_material) && strlen(trim($news->lead_material)) > 0) : ?>
@@ -104,6 +108,7 @@
                                 $widget->run('actionbox', $news);
                                 ?>                                   
                         </li>
+                        
                         <?php
                     endforeach;
                 ?>
@@ -111,3 +116,34 @@
         </div>
     </div>
 </li>        
+
+<style type="text/css">
+    .opinion-selected .selected_header{
+        border-bottom: 1px solid #ccc;
+        padding: 15px;
+        width: 100%;
+    }
+    .opinion-selected .selected_thumb{
+        padding: 12px;
+    }
+    .opinion-selected .flex-control-nav{
+        top: 32px;
+        right: 20px;
+        text-align: right;
+    }
+    
+    .opinion-selected .flex-control-nav li{
+        list-style: square;
+    }
+    
+    .opinion-selected .flex-control-paging li a{
+        border-radius: 0px;
+        color: #4C4C4C;
+        font-size: 0;
+    }
+    .opinion-selected .flex-control-paging li a.flex-active{
+        color: #191919;
+        font-size: 0;
+    }
+    
+</style>

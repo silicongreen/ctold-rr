@@ -196,7 +196,7 @@
                             <li style="<?php echo $style; ?>" id="post-<?php echo $news->post_id; ?>" class="post-<?php echo $news->post_id; ?> <?php echo $s_post_class; ?> type-post post-content-showed status-publish format-image has-post-thumbnail hentry category-post-format tag-description tag-image tag-people tag-text <?php echo $li_class_name; ?> <?php echo ($i < $count_show) ? "shown" : ""; ?> <?php echo (!is_null($news->short_title) && strlen(trim($news->short_title)) > 0) ? " format-quote  tag-quote " : ""; ?> post-boxes ">
 
                                 <?php
-                                if (!$ecl && !$opinion ) {
+                                if (!$ecl) {
                                     $widget = new Widget;
                                     $widget->run('seenassessment', $news);
                                 }

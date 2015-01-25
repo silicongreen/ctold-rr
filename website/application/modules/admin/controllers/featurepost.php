@@ -35,7 +35,7 @@ class featurepost extends MX_Controller
         $tmpl = array('table_open' => '<table id="big_table" border="1" cellpadding="2" cellspacing="1" class="mytable">');
         $this->table->set_template($tmpl);
 
-        $this->table->set_heading('Title','Categories', 'Action');
+        $this->table->set_heading('Title','Categories','Position', 'Action');
 
         $obj_category = new Category();
         $obj_category->order_by('name');
@@ -69,12 +69,19 @@ class featurepost extends MX_Controller
         
         $this->load->config("champs21");
         
-       
+        $position_array = array(1=>"1st",2=>"2nd",3=>"3rd");
+        
+        for($i=4;$i<=10;$i++)
+        {
+            $position_array[$i] = $i."th";
+            
+        }
         
         $this->datatables->set_controller_name("featurepost");
         $this->datatables->set_primary_key("primary_id");
+        $this->datatables->set_custom_string(3, $position_array);
         $this->datatables->set_use_found_rows(true);
-        $this->datatables->select('SQL_CALC_FOUND_ROWS tds_selected_post.id as primary_id,post.headline,pre_cat.name', false)
+        $this->datatables->select('SQL_CALC_FOUND_ROWS tds_selected_post.id as primary_id,post.headline,pre_cat.name,tds_selected_post.position', false)
                 ->unset_column('primary_id')
                 ->from('selected_post')
                 ->join("categories as pre_cat", "selected_post.category_id=pre_cat.id", 'LEFT')

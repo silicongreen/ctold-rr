@@ -711,6 +711,14 @@ height: 46px;
                 <!-- onclick="location.href='//<?php echo base_url('/market'); ?>'" -->
                     <div class="icon-my-school">&nbsp;</div> 
                 </li>
+                <?php if($this->config->config['android_app_dl_popup_show'] == true):?>
+                    <?php $ua = strtolower($_SERVER['HTTP_USER_AGENT']); ?>
+                    <?php if(stripos($ua,'android') !== false): ?>
+                    <li data="android-app" class="pop-without-login">                        
+                        <div class="icon-mobile-app">&nbsp;</div> 
+                    </li>
+                    <?php endif; ?>
+                <?php endif; ?>
 <!--                <li data="create-page" class="before-login-user-back" onclick="location.href='<?php echo base_url('/createpage'); ?>'">                        
                     <div class="icon-create-page">&nbsp;</div> 
                 </li>-->
@@ -744,6 +752,30 @@ height: 46px;
                             </span>
                         </button>
                     </div>
+                </div>
+
+            </div>
+        </div>
+        
+        <div id="global-popup-box" style="display: none;">
+            <div id="before-login-user-wrapper">
+
+                <div class="before-login-user-header">
+                    <div class="f2 before-login-user-header-label">
+                        
+                    </div>
+                    <div class="before-login-user-icon-wrapper">
+                        <img src="/styles/layouts/tdsfront/image/good_read_red_icon.png" width="75" />
+                    </div>
+
+                </div>
+
+                <div class="before-login-user-body">
+
+                    <div class="custom_message"></div>
+                    <p class="common_message"><a href="<?php echo $this->config->config['android_app_dl_url']?>" target="_blank">Click Here</a></p>
+
+                    
                 </div>
 
             </div>
@@ -1144,6 +1176,12 @@ if($('.header-logo-div').is(':visible')) {
             height:43px !important;
             top:-1px;
         }
+        .icon-mobile-app
+        {
+            width:66px !important;
+            height:43px !important;
+            top:-1px;
+        }
         .category-fixed-menu-box label {
             margin-bottom:0px;
             float:right;
@@ -1316,6 +1354,12 @@ if($('.header-logo-div').is(':visible')) {
             top:-1px;
         }
         .icon-my-school
+        {
+            width:66px !important;
+            height:43px !important;
+            top:-1px;
+        }
+        .icon-mobile-app
         {
             width:66px !important;
             height:43px !important;
@@ -1546,6 +1590,12 @@ if($('.header-logo-div').is(':visible')) {
             top:-1px;
         }
         .icon-my-school
+        {
+            width:66px !important;
+            height:43px !important;
+            top:-1px;
+        }
+        .icon-mobile-app
         {
             width:66px !important;
             height:43px !important;
@@ -1914,6 +1964,18 @@ if($('.header-logo-div').is(':visible')) {
     background: url(<?php echo base_url('styles/layouts/tdsfront/image/createpage_black.png'); ?>) no-repeat;
     background-size:70%;    
 }
+.icon-mobile-app
+{
+    background: url(<?php echo base_url('styles/layouts/tdsfront/image/android_icon.png'); ?>) no-repeat;
+    background-size:70%;    
+    width:118px;
+    height:79px;
+}
+.icon-mobile-app:hover
+{
+    background: url(<?php echo base_url('styles/layouts/tdsfront/image/play_store_icon_hover.png'); ?>) no-repeat;
+    background-size:70%;    
+}       
 <!--</style>
 <style type="text/css">-->
 /* Nurul Islam   */

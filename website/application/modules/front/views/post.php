@@ -354,8 +354,16 @@
                 <?php } ?>
                 <!-- Assessment -->
                 
-                <?php echo $s_ad_image; ?>
-                <div style="clear: both; height: 2px;"></div>
+                <?php
+                    
+                    if( is_string($s_ad_image) && $s_ad_image != "" ) {
+                        echo $s_ad_image;
+                    } else if( is_array($s_ad_image) && $s_ad_image['visible'] && ($s_ad_image['position'] == 'bottom') ) {
+                        echo $s_ad_image['banner'];
+                    }
+                ?>
+                
+                <div class="clearfix"></div>
             </div>
             <?php else : ?>
             <div class="center">

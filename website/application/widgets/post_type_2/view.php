@@ -16,7 +16,7 @@
                     <?php echo $news->embedded; ?>
                 <?php elseif (!is_null($news->lead_material) && strlen(trim($news->lead_material)) > 0) : ?>
                     <?php if ($news->post_type == 2) : ?>   
-                        <a class="add-link" title="<?php echo $news->lead_caption; ?>" href="<?php echo $news->lead_link; ?>" target="_blank">       
+                        <a class="add-link" title="<?php echo $news->lead_caption; ?>" href="<?php echo $news->lead_link; ?>"   <?php if($news->ad_target!=2): ?> target="_blank"<?php endif; ?>>       
                         <?php endif; ?>     
 
                             <img class="ad" src="<?php echo $arCustomNews['lead_material']; ?>" class="attachment-post-thumbnail wp-post-image <?php echo ( $news->post_type == 2 ) ? 'ad' : ''; ?>" alt="<?php echo $news->headline; ?>" <?php if($is_exclusive_found===true): ?>style="width:475px;height:265px; "<?php endif; ?>>
@@ -26,7 +26,7 @@
                 <?php elseif (strlen(trim($arCustomNews['image'])) > 0) : ?>
                     <?php if (count($arCustomNews['all_image']) == 1): ?>
                         <?php if ($news->post_type == 2) : ?>   
-                            <a class="add-link"   title="<?php echo $arCustomNews['all_image_title'][0]; ?>"  href="<?php echo $arCustomNews['all_image_url'][0]; ?>" target="_blank">       
+                            <a class="add-link"   title="<?php echo $arCustomNews['all_image_title'][0]; ?>"  href="<?php echo $arCustomNews['all_image_url'][0]; ?>"   <?php if($news->ad_target!=2): ?> target="_blank"<?php endif; ?>>       
                             <?php endif; ?> 
                             <img class="ad" src="<?php echo $arCustomNews['image']; ?>" class="attachment-post-thumbnail wp-post-image" alt="<?php echo $news->headline; ?>" <?php if($is_exclusive_found===true): ?>style="width:475px;height:265px; "<?php endif; ?>>
                             <?php if ($news->post_type == 2) : ?>   
@@ -39,7 +39,7 @@
                                     <?php foreach ($arCustomNews['all_image'] as $key => $image): ?>
                                         <li style="padding:0px; margin:0px;">
                                             <?php if ($news->post_type == 2) : ?>   
-                                                <a class="add-link"  title="<?php echo $arCustomNews['all_image_title'][$key]; ?>" href="<?php echo $arCustomNews['all_image_url'][$key]; ?>" target="_blank">       
+                                                <a class="add-link"  title="<?php echo $arCustomNews['all_image_title'][$key]; ?>" href="<?php echo $arCustomNews['all_image_url'][$key]; ?>"  <?php if($news->ad_target!=2): ?> target="_blank"<?php endif; ?>>       
                                                 <?php endif; ?>        
                                                 <img class="ad"    src="<?php echo $image; ?>" alt="<?php echo $news->headline; ?>" <?php if($is_exclusive_found===true): ?>style="width:475px;height:265px; "<?php endif; ?> />
                                                 <?php if ($news->post_type == 2) : ?>   

@@ -446,6 +446,12 @@ class Settings {
             
             $post_array['post_type'] = $postValue->post_type;
             
+            $post_array['ad_target'] = 1;
+            if(isset($postValue->ad_target))
+            {
+                $post_array['ad_target'] = $postValue->ad_target;
+            }
+            
             $post_array['category_id_to_use'] = "";
             $post_array['subcategory_id_to_use'] = "";
             $post_array['school_id'] = "";

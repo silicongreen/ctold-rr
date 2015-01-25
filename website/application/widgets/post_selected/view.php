@@ -21,7 +21,7 @@
                                 <div class="intro-post">
                                     
                                     <div class="selected_header">
-                                        Selected
+                                        <img src="/styles/layouts/tdsfront/image/nirbachito.png">
                                     </div>
 
                                     <a href="<?php echo base_url() . sanitize($news->headline) . "-" . $news->post_id; ?>" title="<?php echo $news->headline; ?>">   
@@ -78,6 +78,33 @@
 
                                 <div class="post-entry" > 
                                     <?php $showed = false ?>
+                                    
+                                    <?php
+                                        if ($ecl || $opinion) {
+                                            $img_class = 'ecl-image';
+                                            $img_div_class = 'ecl-image-div';
+
+                                            if($opinion) {
+                                                $img_class = 'opinion-image';
+                                                $img_div_class = 'opinion-image-div';
+                                            }
+
+                                            ?>
+
+                                            <div class="f2 ecl-auther-name">
+                                                <?php echo $news->title; ?>
+                                            </div>
+
+                                            <div class="clearfix"></div>
+
+                                            <?php if (!empty($news->designation)) { ?>
+                                                <div class="f2 ecl-auther-designation">
+                                                    <?php echo $news->designation; ?>
+                                                </div>
+                                            <?php } ?>
+
+                                    <?php } ?>
+                                    
                                     <div class="post-title" >
 
                                         <h2 class="f2" <?php if ($news->post_layout == 4): ?> style="text-align:center !important;" <?php endif; ?>>
@@ -104,8 +131,8 @@
                                 </div><!-- post-content -->    
 
                                 <?php
-                                $widget = new Widget;
-                                $widget->run('actionbox', $news);
+//                                $widget = new Widget;
+//                                $widget->run('actionbox', $news);
                                 ?>                                   
                         </li>
                         
@@ -118,10 +145,26 @@
 </li>        
 
 <style type="text/css">
+    .opinion-selected .ecl-auther-name {
+        text-align: left;
+        padding-top: 20px;
+    }
+    .opinion-selected .ecl-auther-designation {
+        text-align: left;
+        padding-left: 0;
+    }
+    .opinion-selected .post-title {
+        margin: 15px 0 3px;
+        padding-left: 18px;
+        text-align: left;
+    }
     .opinion-selected .selected_header{
         border-bottom: 1px solid #ccc;
         padding: 15px;
         width: 100%;
+    }
+    .opinion-selected .selected_header img{
+        width: 25%;
     }
     .opinion-selected .selected_thumb{
         padding: 12px;

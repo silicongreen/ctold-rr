@@ -223,14 +223,14 @@
                                                 
                                                 ?>
 
-                                                <div class="ecl-auther-name">
+                                                <div class="f2 ecl-auther-name">
                                                     <?php echo $news->title; ?>
                                                 </div>
 
                                                 <div class="clearfix"></div>
 
                                                 <?php if (!empty($news->designation)) { ?>
-                                                    <div class="ecl-auther-designation">
+                                                    <div class="f2 ecl-auther-designation">
                                                         <?php echo $news->designation; ?>
                                                     </div>
                                                 <?php } ?>

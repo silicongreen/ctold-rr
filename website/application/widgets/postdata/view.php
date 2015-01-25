@@ -585,8 +585,7 @@
             .ecl-banner{
                 width: 100%;
             }
-            .opinion-banner{
-                background-color: #D21F27;
+            .opinion-banner{                
                 width: 100%;
                 float: left;
             }
@@ -622,6 +621,7 @@
             .op-banner-logo{
                 float: left;
                 width: 31.5%;
+                background-color: #D21F27;
                 cursor: pointer;
             }
             .op-banner-logo:hover
@@ -634,9 +634,8 @@
                 transition: background-color 0.5s ease;
             }
             .op-banner-logo img{
-                float: left;
-                margin: 42px 47px;
-                width: 70%;
+                float: left;               
+                width: 100%;
             }
             .champs21_feed_title {
                 background-color: #DC3434;

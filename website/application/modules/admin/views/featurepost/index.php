@@ -21,7 +21,8 @@
                 <?php
                 $filter_array = array();
                 $filter_array[0] = array("Title", "input");
-                $filter_array[1] = array("Category", "form_dropdown", $categoryMenu,'group_concate');
+                $filter_array[1] = array("Category", "form_dropdown", $categoryMenu);
+                $filter_array[2] = array("Position", "form_dropdown", $position);
                 
                
                 

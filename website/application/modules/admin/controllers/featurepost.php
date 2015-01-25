@@ -49,7 +49,17 @@ class featurepost extends MX_Controller
             $select_categoryMenu[$value->name] = $value->name;
         }
 
+        $position = array(NULL=>"Select",1=>"1st",2=>"2nd",3=>"3rd");
         
+        for($i=4;$i<=10;$i++)
+        {
+            $position[$i] = $i."th";
+            
+        }
+
+        
+        
+        $data['position'] = $position;
         
 
         $data['categoryMenu'] = $select_categoryMenu;

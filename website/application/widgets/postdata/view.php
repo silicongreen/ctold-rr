@@ -182,6 +182,18 @@
                                 <?php $widget->run('post_selected',$obj_selected_post_news, $category, $s_category_name); ?>
                             <?php endif; ?> 
                         <?php endif; ?>
+                       
+                        <?php if ($i == 5 && $opinion): ?>
+                                <li class="post shown col-md-6 ">
+                                    <div style="width: 100%;" class="grid effect-6" >
+                                        <div class="candel-ecl-banner candlepopup">
+                                            <img src="/styles/layouts/tdsfront/image/candle-bangla.jpg" style="width:100%;" >
+                                        </div> 
+                                     </div>
+                                 </li>   
+                                
+                        <?php endif; ?>
+                      
 
                         <?php
                         $li_class_name = 'col-md-6';

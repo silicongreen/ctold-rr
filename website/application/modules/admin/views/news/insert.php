@@ -163,7 +163,21 @@
 
                     </fieldset>
                     <fieldset class="label_side top">
-                        <label for="required_field">For Category Type Add<span>Select only if ad type post and its a category</span></label>
+                        <label for="required_field">Ad Target<span>Select only if ad type post</span></label>
+                        <div class="clearfix">
+
+                           <?php
+                            $f_array = array(1 => "New Window", 2 => "Same Window");
+
+
+                            echo form_dropdown('ad_target', $f_array, $model->ad_target);
+                            ?>
+                            
+                        </div>
+
+                    </fieldset>
+                    <fieldset class="label_side top">
+                        <label for="required_field">For Category Type Ad<span>Select only if ad type post and its a category</span></label>
                         <div class="clearfix">
 
                             <?php
@@ -175,7 +189,7 @@
 
                     </fieldset>
                     <fieldset class="label_side top">
-                        <label for="required_field">For Sub Category Type Add<span>Select only if ad type category added</span></label>
+                        <label for="required_field">For Sub Category Type Ad<span>Select only if ad type category added</span></label>
                         <div class="clearfix" id="subcategory_id_div">
 
                             <?php

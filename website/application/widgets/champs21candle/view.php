@@ -199,7 +199,7 @@
                 if (t == 1)
                 {
                     setTimeout(function() { // then show popup, deley in .5 second
-                        
+                        $("a.champs21_scrollToTop").trigger("click");
                         if(sc_id != "")
                         {                            
                             loadPopupSchool(); // function show popup 

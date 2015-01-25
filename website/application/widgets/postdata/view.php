@@ -610,7 +610,7 @@
                 width: 68.5%;
             }
             .opinion-banner-title img{
-                width: 98%;
+                width: 100%;
             }
             .ecl-banner-logo{
                 float: left;
@@ -637,7 +637,7 @@
             }
             .op-banner-logo img{
                 float: left;               
-                width: 100%;
+                width: 99.5%;
             }
             .champs21_feed_title {
                 background-color: #DC3434;

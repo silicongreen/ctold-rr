@@ -29,24 +29,28 @@ if (!defined('BASEPATH'))
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-class thirdcolumninnernews extends widget
+class post_selected extends widget
 {
 
-    function run( $ar_3rd_column_extra_data, $extra_column_name, $ar_extra_config)
+    function run( $obj_post_news, $s_category_id = 0, $s_category_name = '')
     {
         $CI = & get_instance();
         $CI->load->config("huffas");
         
-        $data['ar_3rd_column_extra_data'] = $ar_3rd_column_extra_data;
-        $data['extra_column_name'] = $extra_column_name;
-        $data['ar_extra_config'] = $ar_extra_config;
+        $data['ecl'] = FALSE;
+        if(isset($CI->config->config[sanitize($s_category_name)]['ecl_ids'])) {
+            $data['ecl'] = in_array($s_category_id,  $CI->config->config[sanitize($s_category_name)]['ecl_ids'] ) ? TRUE : FALSE;
+        }
         
-        $data['ecl'] = in_array((int) $ar_extra_config['category_id'],  $CI->config->config['education-changes-life']['ecl_ids'] ) ? TRUE : FALSE;
+        $data['opinion'] = FALSE;
+        if(isset($CI->config->config[sanitize($s_category_name)]['op_ids'])) {
+            $data['opinion'] = in_array($s_category_id,  $CI->config->config[sanitize($s_category_name)]['op_ids'] ) ? TRUE : FALSE;
+        }
         
+        $data['obj_post_news'] = $obj_post_news;
         $this->render($data);
     }
     
     
  
 }
-

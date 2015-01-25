@@ -102,10 +102,15 @@
     //var mobileTest = ^\+[1-9]{1}[0-9]{6,16}$;
     function loadCategory()
     {
+        var candle_category_id = '';
+        if($('#candle_category_id').length > 0) {
+            candle_category_id = $('#candle_category_id').val();
+        }
+        
         $.ajax({
             type: "GET",
             url: $("#base_url").val() + "front/ajax/get_category_main/",
-            data: {},
+            data: {candle_category_id: candle_category_id},
             async: false,
             success: function(data) {
                 if (data == 0)

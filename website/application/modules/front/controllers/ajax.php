@@ -308,13 +308,20 @@ class ajax extends MX_Controller
     {
         if (free_user_logged_in())
         {
+            $candle_candle_category_id = $this->input->get('candle_category_id');
+            $parent_category_id = NULL;
+            
             $this->db->select('categories.*')
                     ->from('categories')
                     ->where("tds_categories.status", 1)
                     ->where("tds_categories.show", 1)
-                    ->where("tds_categories.parent_id", Null)
-//                    ->where("tds_categories.menu_icon !=", "")
                     ->order_by("id", "asc");
+
+            if( !empty($candle_candle_category_id) ) {
+                $this->db->where("tds_categories.id", $candle_candle_category_id);
+            } else {
+                $this->db->where("tds_categories.parent_id", $parent_category_id);
+            }
 
             $news_query = $this->db->get();
             $data = array();

@@ -25,7 +25,7 @@ $config[ 'api_index' ] = array('index','inner','inner-popular');
 $config[ 'school_candle_category_id' ] = 58;
 
 $config['education-changes-life'] = array(
-    'ids' => array(59, 60, 61, 62),
+    'ecl_ids' => array(59, 60, 61, 62),
     "li-class-name" => 'col-sm-5',
     "3rd-column" => array(
         "category_id" =>   59,
@@ -37,7 +37,8 @@ $config['education-changes-life'] = array(
 );
 
 $config['opinion'] = array(
-    'ids' => array(63, 64),
+    'op_ids' => array(63, 64),
+    'candle_category_id' => 64,
 //    "li-class-name" => 'col-sm-5',
 //    "3rd-column" => array(
 //        "category_id" =>   59,

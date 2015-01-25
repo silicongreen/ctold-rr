@@ -1030,3 +1030,32 @@ if( !function_exists("get_assessment_leader_board"))
         return false;
     }
 }
+
+if( !function_exists("get_single_post_custom_banner"))
+{
+    function get_single_post_custom_banner($ar_params = array())
+    {
+        $CI = &get_instance();
+        $CI->load->config("huffas");
+        
+        $post_configs = $CI->config->config['single_post_cover']['post'];
+        $category_configs = $CI->config->config['single_post_cover']['category'];
+        
+        $banner = array();
+        foreach ($post_configs as $k => $v) {
+            if($ar_params['post_id'] == $k) {
+                $banner = $v;
+            }
+        }
+        
+        if( empty($banner) && !is_array($ar_params['category_id']) ) {
+            foreach ($category_configs as $k => $v) {
+                if($ar_params['category_id'] == $k) {
+                    $banner = $v;
+                }
+            }
+        }
+        
+        return (!empty($banner)) ? $banner : FALSE;
+    }
+}

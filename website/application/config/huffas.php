@@ -40,6 +40,29 @@ $config['education-changes-life'] = array(
     )
 );
 
+$config['single_post_cover'] = array(
+    'post' => array(
+        824 => array(
+            'banner' => '<p style="float:left; width:100%; clear:both; margin-top:10px;"><a href="#"><img id="candlepopup" class="ads ads-image candlepopup check_login" style="width: 98%; float: left; margin-left: 1%; margin-right: 1%; cursor: pointer;" src="/styles/layouts/tdsfront/images/ads/final/banner-candle.png" /></a></p>',
+            'visible' => TRUE,
+            'position' => 'bottom'
+        ),
+    ),
+    'category' => array(
+        63 => array(
+            'banner' => '<p style="float:left; width:100%; clear:both; margin-top:10px;"><a href="#"><img id="candlepopup" class="ads ads-image candlepopup check_login" style="width: 98%; float: left; margin-left: 1%; margin-right: 1%; cursor: pointer;" src="/styles/layouts/tdsfront/images/ads/final/candle-bangla-wide-banner.png" /></a></p>',
+            'visible' => TRUE,
+            'position' => 'bottom'
+        ),
+        64 => array(
+            'banner' => '<p style="float:left; width:100%; clear:both; margin-top:10px;"><a href="#"><img id="candlepopup" class="ads ads-image candlepopup check_login" style="width: 98%; float: left; margin-left: 1%; margin-right: 1%; cursor: pointer;" src="/styles/layouts/tdsfront/images/ads/final/candle-bangla-wide-banner.png" /></a></p>',
+            'visible' => TRUE,
+            'position' => 'bottom'
+        )
+    )
+);
+
+
 $config['opinion'] = array(
     'op_ids' => array(63, 64),
     'candle_category_id' => 64,

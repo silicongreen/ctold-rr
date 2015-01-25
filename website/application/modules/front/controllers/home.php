@@ -1106,7 +1106,7 @@ class home extends MX_Controller {
             $this->layout_front = false;
         }
         error_reporting(0);
-            
+        
         $meta_description = META_DESCRIPTION;
         $keywords = KEYWORDS;
         
@@ -1325,8 +1325,11 @@ class home extends MX_Controller {
         
         $ar_ad_images = $this->config->config['post-ads'];
         
-        if(!isset($obj_post_data->post_id) || $obj_post_data->post_id!=824)
-        {
+        $ar_post_banner = array('category_id' => $i_category_id, 'post_id' => $obj_post_data->post_id);
+        $s_ad_image = get_single_post_custom_banner($ar_post_banner);
+        
+        if(!$s_ad_image) {
+            
             $ar_images = $ar_ad_images['add'];
             list($i_first_image, $i_second_image) = get_rand_images($ar_images);
 
@@ -1356,14 +1359,7 @@ class home extends MX_Controller {
 
             $s_ad_image = "<p style='float:left; clear:both; margin-top:10px;'>" . $i_first_image_text . "" . $i_second_image_text . "</p>";
         }
-        else
-        {
-            $i_first_image_text = '<a href="#">';
-            $i_first_image_text .= '<img id="candlepopup"  class="ads ads-image candlepopup check_login" ';
-            $i_first_image_text .= 'style="width: 98%; float: left; margin-left: 1%; margin-right: 1%; cursor: pointer;" src="' . base_url() .'styles/layouts/tdsfront/images/ads/final/banner-candle.png" /></a>';
         
-            $s_ad_image = "<p style='float:left; width:100%; clear:both; margin-top:10px;'>" . $i_first_image_text . "</p>";
-        }
         $obj_post_data->s_ad_image = $s_ad_image;
         
         $s_related_news = "";

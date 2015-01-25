@@ -11,6 +11,10 @@ $config[ 'news_in_index' ] = array(
 );
 
 $config['api_url']   = 'http://api.champs21.com/api/freeuser';
+
+$config['android_app_dl_popup_show']   = TRUE;
+$config['android_app_dl_url']   = 'http://www.champs21.com/';
+
 $config['education_changes_life'] = TRUE;
 
 $config[ 'from_api' ] = TRUE;

@@ -172,11 +172,12 @@ class newsfeatures extends MX_Controller
             $select_categoryMenu[$value->id] = $value->name;
         }
         
-        $position = array();
+        $position = array(1=>"1st",2=>"2nd",3=>"3rd");
         
-        for($i=1; $i<=10; $i++)
+        for($i=4;$i<=10;$i++)
         {
-            $position[$i] = $i;
+            $position[$i] = $i."th";
+            
         }
         
         $data['position'] = $position;
@@ -229,12 +230,15 @@ class newsfeatures extends MX_Controller
             $select_categoryMenu[$value->id] = $value->name;
         }
         
-        $position = array();
+        $position = array(1=>"1st",2=>"2nd",3=>"3rd");
         
-        for($i=1; $i<=10; $i++)
+        for($i=4;$i<=10;$i++)
         {
-            $position[$i] = $i;
+            $position[$i] = $i."th";
+            
         }
+        
+        
         
         $data['position'] = $position;
         $data['select_categoryMenu'] = $select_categoryMenu;

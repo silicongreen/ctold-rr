@@ -61,7 +61,8 @@
                 <div class="<?php echo ($opinion) ? 'opinion-banner' : 'ecl-banner'?>">
                     <?php if($ecl){?>
                         <div class="ecl-banner-title f2">
-                            <?php echo $category_banner_title; ?>
+                            <?php #echo $category_banner_title; ?>
+                            <img src="/styles/layouts/tdsfront/image/edu_change_life.png" />
                         </div>
                         <div class="ecl-banner-logo">
                             <img src="/styles/layouts/tdsfront/image/education-logo.png" />
@@ -584,6 +585,7 @@
             }
             .ecl-banner{
                 width: 100%;
+                float: left;
             }
             .opinion-banner{                
                 width: 100%;
@@ -591,14 +593,14 @@
             }
             .ecl-banner-title{
                 
-                background-color: #3b393a;
                 color: #ffffff;
                 float: left;
-                font-size: 45px;
-                padding: 44px 0 45px;
                 text-align: center;
                 text-transform: uppercase;
                 width: 68.5%;
+            }
+            .ecl-banner-title img{
+                width: 100%;
             }
             .opinion-banner-title{
                 color: #ffffff;
@@ -608,7 +610,7 @@
                 width: 68.5%;
             }
             .opinion-banner-title img{
-                width: 100%;
+                width: 98%;
             }
             .ecl-banner-logo{
                 float: left;
@@ -616,7 +618,7 @@
             }
             .ecl-banner-logo img{
                 float: left;
-                width: 100%;
+                width: 99%;
             }
             .op-banner-logo{
                 float: left;

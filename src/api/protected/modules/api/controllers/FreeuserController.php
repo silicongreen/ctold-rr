@@ -1999,6 +1999,10 @@ class FreeuserController extends Controller
                     if(isset($all_pinpost[$k+1]))
                     {
                        $new_post[]['id'] = $all_pinpost[$k+1]; 
+                       if($k>$i)
+                       {
+                           $i = $k;
+                       }
                     }
                     else
                     {
@@ -2333,6 +2337,7 @@ class FreeuserController extends Controller
         {
             $pinpostobj = new Pinpost();
             $all_pinpost = $pinpostobj->getPinPost($news_category);
+            
             $new_post = array();
             $i = 0;
             foreach($response['data']['post'] as $value)
@@ -2341,13 +2346,19 @@ class FreeuserController extends Controller
                 {
                     if(isset($all_pinpost[$k+1]))
                     {
-                       $new_post[]['id'] = $all_pinpost[$k+1]; 
+                       $new_post[]['id'] = $all_pinpost[$k+1];
+                       if($k>$i)
+                       {
+                           $i = $k;
+                       }    
                     }
                     else
                     {
                         break;
                     }
                 }
+                
+                
                 if(!in_array($value['id'],$all_pinpost))
                 {
                     $new_post[]['id'] = $value['id'];

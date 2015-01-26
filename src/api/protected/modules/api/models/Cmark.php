@@ -42,7 +42,7 @@ class Cmark extends CActiveRecord
         $criteria->compare('t.assessment_id', $id);
         
         $data = $this->find($criteria); 
-        if($data)
+        if(isset($data->maxmark) && $data->maxmark)
         {
            return  $data->maxmark;
         }

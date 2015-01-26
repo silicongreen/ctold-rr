@@ -42,7 +42,7 @@
                         </fieldset>
                             
                         <fieldset class="label_side top">
-                            <label for="required_field">Time</label>
+                            <label for="required_field">Time (Second)</label>
                             <div>
                                 <input id="time" name="time" value="<?php echo $question->time; ?>" type="text" class="required" minlength="1">
                             </div>

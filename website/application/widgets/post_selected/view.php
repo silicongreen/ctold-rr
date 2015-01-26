@@ -26,8 +26,6 @@
 
                                     <a href="<?php echo base_url() . sanitize($news->headline) . "-" . $news->post_id; ?>" title="<?php echo $news->headline; ?>">   
 
-
-
                                         <div class="post-thumb selected_thumb">
                                             <?php if (strlen(trim($news->embedded)) > 0) : ?>
                                                 <?php echo $news->embedded; ?>
@@ -35,7 +33,7 @@
                                                 <?php if ($news->post_type == 2) : ?>   
                                                     <a class="add-link" title="<?php echo $news->lead_caption; ?>" href="<?php echo $news->lead_link; ?>"   <?php if($news->ad_target!=2): ?> target="_blank"<?php endif; ?>>       
                                                     <?php endif; ?>
-                                                    <img class="ad <?php echo $img_class; ?>" src="<?php echo $arCustomNews['lead_material']; ?>" class="attachment-post-thumbnail wp-post-image <?php echo ( $news->post_type == 2 ) ? 'ad' : ''; ?>" alt="<?php echo $news->headline; ?>" <?php if ($is_exclusive_found === true): ?>style="width:475px;height:265px; "<?php endif; ?>>
+                                                    <img class="ad" src="<?php echo $arCustomNews['lead_material']; ?>" class="attachment-post-thumbnail wp-post-image <?php echo ( $news->post_type == 2 ) ? 'ad' : ''; ?>" alt="<?php echo $news->headline; ?>" <?php if ($is_exclusive_found === true): ?>style="width:475px;height:265px; "<?php endif; ?>>
                                                     <?php if ($news->post_type == 2) : ?>   
                                                     </a>
                                                 <?php endif; ?>
@@ -45,7 +43,7 @@
                                                         <a class="add-link" title="<?php echo $arCustomNews['all_image_title'][0]; ?>"  href="<?php echo $arCustomNews['all_image_url'][0]; ?>"   <?php if($news->ad_target!=2): ?> target="_blank"<?php endif; ?>>       
                                                         <?php endif; ?>
 
-                                                        <img class="ad <?php echo $img_class; ?>" src="<?php echo ($ecl && !empty($news->author_image)) ? $news->author_image : $arCustomNews['image']; ?>" class="attachment-post-thumbnail wp-post-image" alt="<?php echo $news->headline; ?>" <?php if ($is_exclusive_found === true): ?>style="width:475px;height:265px; "<?php endif; ?>>
+                                                        <img class="ad" src="<?php echo ($ecl && !empty($news->author_image)) ? $news->author_image : $arCustomNews['image']; ?>" class="attachment-post-thumbnail wp-post-image" alt="<?php echo $news->headline; ?>" <?php if ($is_exclusive_found === true): ?>style="width:475px;height:265px; "<?php endif; ?>>
                                                         <?php if ($news->post_type == 2) : ?>   
                                                         </a>
                                                     <?php endif; ?>
@@ -80,16 +78,7 @@
                                     <?php $showed = false ?>
                                     
                                     <?php
-                                        if ($ecl || $opinion) {
-                                            $img_class = 'ecl-image';
-                                            $img_div_class = 'ecl-image-div';
-
-                                            if($opinion) {
-                                                $img_class = 'opinion-image';
-                                                $img_div_class = 'opinion-image-div';
-                                            }
-
-                                            ?>
+                                        if ($ecl || $opinion) { ?>
 
                                             <div class="f2 ecl-auther-name">
                                                 <?php echo $news->title; ?>
@@ -116,8 +105,6 @@
                                             </a>
                                         </h2>
 
-
-
                                     </div><!-- post-title --> 
 
                                     <div class="akmanda-excerpt" <?php if ($is_exclusive_found === true): ?>style="margin: 20px 30px;"<?php endif; ?>> 
@@ -131,8 +118,8 @@
                                 </div><!-- post-content -->    
 
                                 <?php
-//                                $widget = new Widget;
-//                                $widget->run('actionbox', $news);
+                                $widget = new Widget;
+                                $widget->run('actionbox', $news);
                                 ?>                                   
                         </li>
                         

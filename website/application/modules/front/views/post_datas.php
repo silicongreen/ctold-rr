@@ -35,7 +35,7 @@ if ($obj_post_news)
                                                     <a class="add-link" title="<?php echo $news->lead_caption; ?>" href="<?php echo $news->lead_link; ?>" <?php if($news->ad_target!=2): ?> target="_blank"<?php endif; ?>>       
                                                     <?php endif; ?>     
 
-                                                        <img class="ad" src="<?php echo $arCustomNews['lead_material']; ?>" class="attachment-post-thumbnail wp-post-image <?php echo ( $news->post_type == 2 ) ? 'ad' : ''; ?>" alt="<?php echo $news->headline; ?>" height="576" width="1024">
+                                                        <img class="no_toolbar" src="<?php echo $arCustomNews['lead_material']; ?>" class="attachment-post-thumbnail wp-post-image <?php echo ( $news->post_type == 2 ) ? 'no_toolbar' : ''; ?>" alt="<?php echo $news->headline; ?>" height="576" width="1024">
                                                     <?php if ($news->post_type == 2) : ?>   
                                                     </a>
                                                 <?php endif; ?>
@@ -44,7 +44,7 @@ if ($obj_post_news)
                                                     <?php if ($news->post_type == 2) : ?>   
                                                         <a class="add-link"   title="<?php echo $arCustomNews['all_image_title'][0]; ?>"  href="<?php echo $arCustomNews['all_image_url'][0]; ?>"  <?php if($news->ad_target!=2): ?> target="_blank"<?php endif; ?>>       
                                                         <?php endif; ?> 
-                                                        <img class="ad" src="<?php echo $arCustomNews['image']; ?>" class="attachment-post-thumbnail wp-post-image" alt="<?php echo $news->headline; ?>" height="576" width="1024">
+                                                        <img class="no_toolbar" src="<?php echo $arCustomNews['image']; ?>" class="attachment-post-thumbnail wp-post-image" alt="<?php echo $news->headline; ?>" height="576" width="1024">
                                                         <?php if ($news->post_type == 2) : ?>   
                                                         </a>
                                                     <?php endif; ?>
@@ -57,7 +57,7 @@ if ($obj_post_news)
                                                                         <?php if ($news->post_type == 2) : ?>   
                                                                             <a class="add-link"  title="<?php echo $arCustomNews['all_image_title'][$key]; ?>" href="<?php echo $arCustomNews['all_image_url'][$key]; ?>"  <?php if($news->ad_target!=2): ?> target="_blank"<?php endif; ?>>       
                                                                             <?php endif; ?>        
-                                                                            <img class="ad"    src="<?php echo $image; ?>" alt="<?php echo $news->headline; ?>" />
+                                                                            <img class="no_toolbar"    src="<?php echo $image; ?>" alt="<?php echo $news->headline; ?>" />
                                                                             <?php if ($news->post_type == 2) : ?>   
                                                                             </a>
                                                                         <?php endif; ?>

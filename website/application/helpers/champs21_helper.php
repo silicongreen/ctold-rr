@@ -52,7 +52,7 @@ if (!function_exists('get_post_image_type_content'))
     function get_post_image_type_content($news,$arCustomNews,$style="",$replace=false,$extra_class="",$show_slider = false)
     {
         $content = "";
-        $extra_class.= ( $news->post_type == 2 ) ? ' ad' : '';
+        $extra_class.= ( $news->post_type == 2 ) ? ' no_toolbar' : '';
         if ( strlen(trim($news->embedded)) > 0 )
         {
             $content = $news->embedded;

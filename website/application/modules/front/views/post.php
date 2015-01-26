@@ -339,7 +339,7 @@
                                 <div class="assessment_dialogue">
                                     <p class="f2" style="padding-top: 7px;">How smart are you?</p>
                                     <div class="clearfix"></div>
-                                    <p class="f2">Take this quiz on and</p>
+                                    <p class="f2">Take this quiz on and on this topic</p>
                                 </div>
                                 <div class="assessment_find_out">
                                     <div class="find_out f5">Find Out</div>
@@ -935,13 +935,13 @@
     .inner-container_wrapper{
         float: left;
         margin: 20px 0;
-        width: 50%;
+        width: 80%;
     }
     .inner-container_assessment{
         border: 1px solid #ddd;
         box-shadow: 0 4px 0 0 #ddd;
         float: left;
-        width: 81%;
+        width: 80%;
     }
     .assessment_dialogue{
         border-right: 1px solid #ddd;
@@ -960,7 +960,8 @@
         padding: 0 10px;
     }
     .assessment_find_out{
-        float: left;
+        float: right;
+        width: 40%;
     }
     .find_out{
         color: #ce1b22;
@@ -969,13 +970,16 @@
         font-weight: bold;
         letter-spacing: 2px;
         margin: 0;
-        padding: 15px 0 0 15px;
+        padding-top: 15px;
+        width: 85%;
+        text-align: center;
     }
     .assessment-next {
         cursor: pointer;
-        float: right;
         margin: auto;
         padding: 20px 0 0 10px;
+        float: left;
+        width: 10%;
     }
     .assessment-next-arrow {
         border-color: transparent transparent transparent #b1b9bb;

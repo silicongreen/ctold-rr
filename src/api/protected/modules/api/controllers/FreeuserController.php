@@ -2333,10 +2333,11 @@ class FreeuserController extends Controller
             Yii::app()->cache->set($cache_name, $response, 86400);
         }
         $selected_post = array();
+        $pinpostobj = new Pinpost();
+        $all_pinpost = $pinpostobj->getPinPost($news_category);
         if($page_number==1)
         {
-            $pinpostobj = new Pinpost();
-            $all_pinpost = $pinpostobj->getPinPost($news_category);
+            
             
             $new_post = array();
             $i = 0;
@@ -2370,6 +2371,21 @@ class FreeuserController extends Controller
             
             
         } 
+        else
+        {
+            $new_post = array();
+            $i = 0;
+            foreach($response['data']['post'] as $value)
+            {
+                if(!in_array($value['id'],$all_pinpost))
+                {
+                    $new_post[]['id'] = $value['id'];
+                }  
+                $i++;
+            }
+            $response['data']['post'] = $new_post;
+            
+        }
         
         $obj_selected = new Selectedpost();
         $selected_post = $obj_selected->getSelectedPost($news_category);

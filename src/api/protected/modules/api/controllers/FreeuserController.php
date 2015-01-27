@@ -2224,6 +2224,33 @@ class FreeuserController extends Controller
                     $post_data[$i] = $this->getSingleNewsFromCache($value['id']);
                     $post_data[$i]['can_wow'] = 1;
                     $post_data[$i]['can_share'] = 0;
+                    $shared_user_name = "";
+                    $shared_user_image = "";
+                    if(isset($value['freeUser']->profile_image))
+                    {
+                        $shared_user_image = $value['freeUser']->profile_image;
+                    } 
+                    if(isset($value['freeUser']->first_name) && $value['freeUser']->first_name)
+                    {
+                        $shared_user_name .= $value['freeUser']->first_name." ";
+                    }
+                    if(isset($value['freeUser']->middle_name) && $value['freeUser']->middle_name)
+                    {
+                        $shared_user_name .= $value['freeUser']->middle_name." ";
+                    }
+                    if(isset($value['freeUser']->last_name) && $value['freeUser']->last_name)
+                    {
+                        $shared_user_name .= $value['freeUser']->last_name;
+                    }
+                    if(!$shared_user_name)
+                    {
+                        if(isset($value['freeUser']->email))
+                        $shared_user_name = $value['freeUser']->email;
+                    }
+                    
+                    $post_data[$i]['shared_user_name'] = $shared_user_name;
+                    $post_data[$i]['shared_user_image'] = $shared_user_image;
+                    
                     if(in_array($value['id'], $wow) && Settings::$wow_login==true)
                     {
                        $post_data[$i]['can_wow'] = 0; 

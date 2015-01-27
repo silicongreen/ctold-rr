@@ -103,7 +103,7 @@ class Post extends CActiveRecord
             'postAuthor' => array(self::BELONGS_TO, 'Bylines', 'byline_id'),
             'freeUser' => array(self::BELONGS_TO, 'Freeusers', 'user_id'),
             'postAssessment' => array(self::BELONGS_TO, 'Cassignments', 'assessment_id'),
-            'postSchool' => array(self::BELONGS_TO, 'School', 'school_id'),
+            'postSchools' => array(self::BELONGS_TO, 'School', 'school_id'),
             'postGalleries' => array(self::HAS_MANY, 'PostGallery', 'post_id'),
             'postTags' => array(self::HAS_MANY, 'PostTags', 'post_id'),
             'postUserActivities' => array(self::HAS_MANY, 'PostUserActivity', 'post_id'),

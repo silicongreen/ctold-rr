@@ -548,6 +548,7 @@ class Post extends CActiveRecord
             ),
             "postSchool" =>array(
                 'select' => 'postSchool.user_id',
+                'joinType' => "LEFT JOIN",
                 'with' => 
                 array(
                       'freeUser' => array(

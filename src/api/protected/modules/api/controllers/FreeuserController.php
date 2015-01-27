@@ -2226,26 +2226,26 @@ class FreeuserController extends Controller
                     $post_data[$i]['can_share'] = 0;
                     $shared_user_name = "";
                     $shared_user_image = "";
-                    if(isset($value['freeUser']->profile_image))
+                    if(isset($value['postSchool']['freeUser']->profile_image))
                     {
-                        $shared_user_image = $value['freeUser']->profile_image;
+                        $shared_user_image = $value['postSchool']['freeUser']->profile_image;
                     } 
-                    if(isset($value['freeUser']->first_name) && $value['freeUser']->first_name)
+                    if(isset($value['postSchool']['freeUser']->first_name) && $value['postSchool']['freeUser']->first_name)
                     {
-                        $shared_user_name .= $value['freeUser']->first_name." ";
+                        $shared_user_name .= $value['postSchool']['freeUser']->first_name." ";
                     }
-                    if(isset($value['freeUser']->middle_name) && $value['freeUser']->middle_name)
+                    if(isset($value['postSchool']['freeUser']->middle_name) && $value['postSchool']['freeUser']->middle_name)
                     {
-                        $shared_user_name .= $value['freeUser']->middle_name." ";
+                        $shared_user_name .= $value['postSchool']['freeUser']->middle_name." ";
                     }
-                    if(isset($value['freeUser']->last_name) && $value['freeUser']->last_name)
+                    if(isset($value['postSchool']['freeUser']->last_name) && $value['postSchool']['freeUser']->last_name)
                     {
-                        $shared_user_name .= $value['freeUser']->last_name;
+                        $shared_user_name .= $value['postSchool']['freeUser']->last_name;
                     }
                     if(!$shared_user_name)
                     {
-                        if(isset($value['freeUser']->email))
-                        $shared_user_name = $value['freeUser']->email;
+                        if(isset($value['postSchool']['freeUser']->email))
+                        $shared_user_name = $value['postSchool']['freeUser']->email;
                     }
                     
                     $post_data[$i]['shared_user_name'] = $shared_user_name;

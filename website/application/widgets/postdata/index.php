@@ -267,9 +267,9 @@ class postdata extends widget
         $data['featured'] = $b_featured;
         $data['swf_external_url'] =  $CI->config->config['swf']['external_url'];
         
-        //print '<pre>';
-        //print_r($data);
-        //exit;
+//        print '<pre>';
+//        print_r($data);
+//        exit;
         $this->render($data);
         
     }

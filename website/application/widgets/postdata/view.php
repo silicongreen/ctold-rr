@@ -594,6 +594,7 @@
             .ecl-banner-wrapper{
                 padding: 0 13px;
                 float: left;
+                width: 100%;
             }
             .ecl-banner{
                 width: 100%;

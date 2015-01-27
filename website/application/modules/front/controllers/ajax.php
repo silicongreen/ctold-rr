@@ -861,7 +861,17 @@ class ajax extends MX_Controller
         $data['total_data'] = $ar_post_news['total'];
         $data['page_size'] = $i_limit;
         $data['current_page'] = $current_page;
-
+        
+        $data['ecl'] = FALSE;
+        if(isset($CI->config->config['education-changes-life']['ecl_ids'])) {
+            $data['ecl'] = in_array($data['category'],  $CI->config->config['education-changes-life']['ecl_ids'] ) ? TRUE : FALSE;
+        }
+        
+        $data['opinion'] = FALSE;
+        if(isset($CI->config->config['opinion']['op_ids'])) {
+            $data['opinion'] = in_array($data['category'],  $CI->config->config['opinion']['op_ids'] ) ? TRUE : FALSE;
+        }
+        
         $data['featured'] = $b_featured;
 
         $this->load->view("post_datas", $data);

@@ -2226,6 +2226,7 @@ class FreeuserController extends Controller
                     $post_data[$i]['can_share'] = 0;
                     $shared_user_name = "";
                     $shared_user_image = "";
+                    
                     if(isset($value['postSchool'][0]['freeUser']->profile_image))
                     {
                         $shared_user_image = $value['postSchool'][0]['freeUser']->profile_image;

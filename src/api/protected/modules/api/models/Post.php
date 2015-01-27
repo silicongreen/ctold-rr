@@ -547,10 +547,9 @@ class Post extends CActiveRecord
                 'joinType' => "INNER JOIN",
             ),
             "postSchool" =>array(
-                'select' => 'postSchool.user_id',
+                'select' => '',
                 'joinType' => "LEFT JOIN",
-                'with' => 
-                array(
+                'with' =>array(
                       'freeUser' => array(
                             'select' => 'freeUser.first_name,freeUser.middle_name,freeUser.last_name,freeUser.email,freeUser.profile_image,freeUser.designation',
                             'joinType' => "LEFT JOIN"
@@ -581,7 +580,8 @@ class Post extends CActiveRecord
         if($obj_post)
         foreach ($obj_post as $postValue)
         {
-            $post_array[$i]['id']     = $postValue->id;           
+            $post_array[$i]['id']             = $postValue->id; 
+            $post_array[$i]['postSchool']     = $postValue['postSchool'];
             $i++;
         }
         return $post_array;

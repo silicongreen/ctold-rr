@@ -547,7 +547,14 @@ class Post extends CActiveRecord
                 'joinType' => "INNER JOIN",
             ),
             "postSchool" =>array(
-                'select' => ''
+                'select' => 'postSchool.user_id',
+                'with' => 
+                array(
+                      'freeUser' => array(
+                            'select' => 'freeUser.first_name,freeUser.middle_name,freeUser.last_name,freeUser.email,freeUser.profile_image,freeUser.designation',
+                            'joinType' => "LEFT JOIN"
+                     )
+                )    
             )
         );
         $start = ($page - 1) * $page_size;

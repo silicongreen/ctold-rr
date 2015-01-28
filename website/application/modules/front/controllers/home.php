@@ -586,9 +586,9 @@ class home extends MX_Controller {
     {
         $str_f_path = filter_var($_GET['f_path'], FILTER_SANITIZE_STRING | FILTER_SANITIZE_SPECIAL_CHARS);
         
-        $finfo = new finfo(FILEINFO_MIME);
-        $type = $finfo->file($str_f_path);
-        
+//        $finfo = new finfo(FILEINFO_MIME);
+//        $type = $finfo->file($str_f_path);
+        $type = getFileType($str_f_path);
         $ar_str_f_path = end(explode('/', $str_f_path));
         
         header("Content-Disposition: attachment; filename=" . sanitize($ar_str_f_path));

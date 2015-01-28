@@ -1899,6 +1899,7 @@ class FreeuserController extends Controller
     public function actionIndex()
     {
         $page_number = Yii::app()->request->getPost('page_number');
+        $total_showed = Yii::app()->request->getPost('total_showed');
         $page_size = Yii::app()->request->getPost('page_size');
         $user_id = Yii::app()->request->getPost('user_id');
         $user_type_set = Yii::app()->request->getPost('user_type');
@@ -1946,11 +1947,13 @@ class FreeuserController extends Controller
         if($user_type_set && $user_type_set>0 && $user_type_set<5)
         {
             $user_type = $user_type_set;
-        }    
-
-
-
-        $cache_name = "YII-RESPONSE-HOME-" . $page_number . "-" . $page_size . "-" . $content_showed_for_caching . "-" . $category_filter . "-" . $user_type;
+        }  
+        
+        if(empty($total_showed))
+        {
+            $total_showed = ($page_number-1)*$page_size;
+        }
+        $cache_name = "YII-RESPONSE-HOME-" . $total_showed . "-" . $page_size . "-" . $content_showed_for_caching . "-" . $category_filter . "-" . $user_type;
         $this->createAllCache($cache_name);
         $response = Yii::app()->cache->get($cache_name);
         
@@ -2275,6 +2278,7 @@ class FreeuserController extends Controller
     public function actionGetCategoryPost()
     {
         $page_number = Yii::app()->request->getPost('page_number');
+        $total_showed = Yii::app()->request->getPost('total_showed');
         $page_size = Yii::app()->request->getPost('page_size');
         $category_id = Yii::app()->request->getPost('category_id');
         $subcategory_id = Yii::app()->request->getPost('subcategory_id');
@@ -2332,15 +2336,20 @@ class FreeuserController extends Controller
         {
             $user_type = $user_type_set;
         }  
+        
+        if(empty($total_showed))
+        {
+            $total_showed = ($page_number-1)*$page_size;
+        }
 
-        $cache_name = "YII-RESPONSE-CATEGORY-" . $news_category . "-" . $page_number . "-" . $page_size . "-" . $user_type . $extra;
+        $cache_name = "YII-RESPONSE-CATEGORY-" . $news_category . "-" . $total_showed . "-" . $page_size . "-" . $user_type . $extra;
         $this->createAllCache($cache_name);
         $response = Yii::app()->cache->get($cache_name);
         if ($response === false)
         {
 
             $postcategoryObj = new PostCategory();
-            $post = $postcategoryObj->getPost($news_category, $user_type, $page_number, $page_size, $popular_sort, $game_type, $fetaured);
+            $post = $postcategoryObj->getPost($news_category, $user_type, $total_showed, $page_size, $popular_sort, $game_type, $fetaured);
 
             $response['data']['total'] = $postcategoryObj->getPostTotal($news_category, $user_type);
             $has_next = false;

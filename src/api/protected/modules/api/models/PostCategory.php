@@ -305,7 +305,7 @@ class PostCategory extends CActiveRecord
                 
             )
         );
-        $start = ($page - 1) * $page_size;
+        $start = $page;
         $criteria->limit = $page_size;
 
         $criteria->offset = $start;

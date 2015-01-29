@@ -141,6 +141,39 @@ class newsfeatures extends MX_Controller
         echo $this->datatables->generate();
     }
     
+    private function sort_change_update($category_id=0)
+    {
+        $type_array = array(1,2,3,4);
+        if($category_id)
+        {
+            $this->db->where("category_id",$category_id);
+            $this->db->where("post_type",0);
+            $this->db->delete("sorting_change");
+
+            $data['post_type'] = 0;
+
+            $data['updated_date'] = date("Y-m-d H:i:s");
+            $data['category_id'] =$category_id;
+            $this->db->insert("sorting_change",$data);
+        }
+        else
+        {
+            foreach($type_array as $post_type)
+            {
+                $this->db->where("category_id",0);
+                $this->db->where("post_type",$post_type);
+                $this->db->delete("sorting_change");
+
+                $data['post_type'] = $post_type;
+
+                $data['updated_date'] = date("Y-m-d H:i:s");
+                $data['category_id'] =0;
+                $this->db->insert("sorting_change",$data);
+            }    
+        }    
+        
+    }
+    
     public function feature_post($id)
     {
         
@@ -158,6 +191,8 @@ class newsfeatures extends MX_Controller
             $insert['category_id']  = $this->input->post("category_id");
             $insert['position']  = $this->input->post("position");
             $this->db->insert("selected_post",$insert);
+            
+            $this->sort_change_update($this->input->post("category_id"));
             
             
         }
@@ -214,6 +249,7 @@ class newsfeatures extends MX_Controller
             $insert['category_id']  = $this->input->post("category_id");
             $insert['position']  = $this->input->post("position");
             $this->db->insert("pin_post",$insert);
+            $this->sort_change_update($this->input->post("category_id"));
             
             
         }

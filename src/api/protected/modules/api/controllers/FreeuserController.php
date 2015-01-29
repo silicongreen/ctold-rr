@@ -2076,7 +2076,7 @@ class FreeuserController extends Controller
             } 
             $response['data']['post'] = $post_data;
         }    
-        $response['data']['api_call_time'] = date("Y-m-d h:i:s");
+        $response['data']['api_call_time'] = date("Y-m-d H:i:s");
         if (!$callded_for_cache)
             echo CJSON::encode($response);
         Yii::app()->end();
@@ -2522,7 +2522,7 @@ class FreeuserController extends Controller
             $response['data']['post'] = $post_data;
         }
         
-        $response['data']['api_call_time'] = date("Y-m-d h:i:s");
+        $response['data']['api_call_time'] = date("Y-m-d H:i:s");
         
         if (!$callded_for_cache)
             echo CJSON::encode($response);

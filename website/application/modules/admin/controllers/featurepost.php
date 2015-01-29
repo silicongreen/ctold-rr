@@ -107,13 +107,52 @@ class featurepost extends MX_Controller
         {
             exit('No direct script access allowed');
         }
-        $post_model = new Posts($this->input->post('primary_id'));
+        $this->db->where("id",$this->input->post("primary_id"));
+        $data = $this->db->get("selected_post")->row();
+        
+        if(isset($data->category_id))
+        {
+            $this->sort_change_update($data->category_id);
+        } 
         
         $this->db->where("id",$this->input->post("primary_id"));
         $this->db->delete("selected_post");
          
 
         echo 1;
+    }
+    
+    private function sort_change_update($category_id=0)
+    {
+        $type_array = array(1,2,3,4);
+        if($category_id)
+        {
+            $this->db->where("category_id",$category_id);
+            $this->db->where("post_type",0);
+            $this->db->delete("sorting_change");
+
+            $data['post_type'] = 0;
+
+            $data['updated_date'] = date("Y-m-d H:i:s");
+            $data['category_id'] =$category_id;
+            $this->db->insert("sorting_change",$data);
+        }
+        else
+        {
+            foreach($type_array as $post_type)
+            {
+                $this->db->where("category_id",0);
+                $this->db->where("post_type",$post_type);
+                $this->db->delete("sorting_change");
+
+                $data['post_type'] = $post_type;
+
+                $data['updated_date'] = date("Y-m-d H:i:s");
+                $data['category_id'] =0;
+                $this->db->insert("sorting_change",$data);
+            }    
+        }    
+        
     }
     
     

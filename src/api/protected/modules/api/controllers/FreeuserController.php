@@ -1895,6 +1895,13 @@ class FreeuserController extends Controller
             Yii::app()->cache->set($cache_all, $cache_values);
         }
     }
+    
+    private function check_news_updated($update_date,$post_type=0,$category_id=0)
+    {
+        $objsortnews = new SortPostChange();
+        
+        return $objsortnews->checkNewsUpdated($update_date,$post_type,$category_id);
+    }
 
     public function actionIndex()
     {
@@ -1903,6 +1910,9 @@ class FreeuserController extends Controller
         $page_size = Yii::app()->request->getPost('page_size');
         $user_id = Yii::app()->request->getPost('user_id');
         $user_type_set = Yii::app()->request->getPost('user_type');
+        
+        $check_news_update = Yii::app()->request->getPost('check_news_update');
+        $last_api_call = Yii::app()->request->getPost('last_api_call');
        
 
         $already_showed = Yii::app()->request->getPost('already_showed');
@@ -1953,6 +1963,24 @@ class FreeuserController extends Controller
         {
             $total_showed = ($page_number-1)*$page_size;
         }
+        //check news update
+        
+        if($check_news_update && $last_api_call)
+        {
+            $news_update = $this->check_news_updated($update_date, $user_type);
+            if(!$news_update)
+            {
+                $response['status']['code'] = 401;
+                $response['status']['msg'] = "NO_NEWS_UPDATE_FOUND";
+                echo CJSON::encode($response);
+                Yii::app()->end();
+                exit;
+                
+            }
+            
+        }
+        
+        
         $cache_name = "YII-RESPONSE-HOME-" . $total_showed . "-" . $page_size . "-" . $content_showed_for_caching . "-" . $category_filter . "-" . $user_type;
         $this->createAllCache($cache_name);
         $response = Yii::app()->cache->get($cache_name);
@@ -1980,6 +2008,8 @@ class FreeuserController extends Controller
             }
            
             $response['data']['has_next'] = $has_next;
+            
+            
 
             $response['data']['post'] = $homepage_post;
             $response['status']['code'] = 200;
@@ -2046,7 +2076,7 @@ class FreeuserController extends Controller
             } 
             $response['data']['post'] = $post_data;
         }    
-
+        $response['data']['api_call_time'] = date("Y-m-d h:i:s");
         if (!$callded_for_cache)
             echo CJSON::encode($response);
         Yii::app()->end();
@@ -2288,6 +2318,10 @@ class FreeuserController extends Controller
         $user_type_set = Yii::app()->request->getPost('user_type');
         $callded_for_cache = Yii::app()->request->getPost('callded_for_cache');
         
+        $last_api_call = Yii::app()->request->getPost('last_api_call');
+        
+        $check_news_update = Yii::app()->request->getPost('check_news_update');
+        
         $news_category = $category_id;
         if($subcategory_id)
         {
@@ -2341,6 +2375,21 @@ class FreeuserController extends Controller
         {
             $total_showed = ($page_number-1)*$page_size;
         }
+        
+        if($check_news_update && $last_api_call)
+        {
+            $news_update = $this->check_news_updated($update_date,0,$news_category);
+            if(!$news_update)
+            {
+                $response['status']['code'] = 401;
+                $response['status']['msg'] = "NO_NEWS_UPDATE_FOUND";
+                echo CJSON::encode($response);
+                Yii::app()->end();
+                exit;
+                
+            }
+            
+        }
 
         $cache_name = "YII-RESPONSE-CATEGORY-" . $news_category . "-" . $total_showed . "-" . $page_size . "-" . $user_type . $extra;
         $this->createAllCache($cache_name);
@@ -2364,6 +2413,7 @@ class FreeuserController extends Controller
 
 
             $response['data']['subcategory'] = $categoryObj->getSubcategory($category_id);
+            
             $response['data']['post'] = $post;
             $response['status']['code'] = 200;
             $response['status']['msg'] = "DATA_FOUND";
@@ -2471,6 +2521,8 @@ class FreeuserController extends Controller
             } 
             $response['data']['post'] = $post_data;
         }
+        
+        $response['data']['api_call_time'] = date("Y-m-d h:i:s");
         
         if (!$callded_for_cache)
             echo CJSON::encode($response);

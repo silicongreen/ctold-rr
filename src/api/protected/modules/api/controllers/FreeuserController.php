@@ -1967,7 +1967,7 @@ class FreeuserController extends Controller
         
         if($check_news_update && $last_api_call)
         {
-            $news_update = $this->check_news_updated($update_date, $user_type);
+            $news_update = $this->check_news_updated($last_api_call, $user_type);
             if(!$news_update)
             {
                 $response['status']['code'] = 401;
@@ -2378,7 +2378,7 @@ class FreeuserController extends Controller
         
         if($check_news_update && $last_api_call)
         {
-            $news_update = $this->check_news_updated($update_date,0,$news_category);
+            $news_update = $this->check_news_updated($last_api_call,0,$news_category);
             if(!$news_update)
             {
                 $response['status']['code'] = 401;

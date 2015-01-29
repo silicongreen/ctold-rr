@@ -227,6 +227,37 @@ class news extends MX_Controller
      * @defination use for showing table header and setting table id and filtering for trash news
      * @author Fahim
      */
+    private function sort_change_update($value,$target="home")
+    {
+        if($target=="home")
+        {
+            $post_type = $value;
+            $this->db->where("category_id",0);
+            $this->db->where("post_type",$post_type);
+            $this->db->delete("sorting_change");
+            
+            $data['post_type'] = $value;
+            
+            $data['updated_date'] = date("Y-m-d H:i:s");
+            $data['category_id'] =0;
+            $this->db->insert("sorting_change",$data);
+               
+        } 
+        else
+        {
+            $category_id = $value;
+            $this->db->where("category_id",$category_id);
+            $this->db->where("post_type",0);
+            $this->db->delete("sorting_change");
+            
+            $data['category_id'] = $value;
+            $data['updated_date'] = date("Y-m-d H:i:s");
+            $data['post_type'] =0;
+            $this->db->insert("sorting_change",$data);
+        }   
+        
+    }
+    
     public function set_home_date($id)
     {
         
@@ -268,6 +299,8 @@ class news extends MX_Controller
                             
                             $insert['date'] = $date;
                             $this->db->insert("homepage_data",$insert);
+                            
+                            $this->sort_change_update($value);
                         } 
                     }
                     else
@@ -277,6 +310,7 @@ class news extends MX_Controller
                         $this->db->where("post_id",$id);
                         $this->db->where("post_type",$value);
                         $this->db->delete("homepage_data");
+                        $this->sort_change_update($value);
                     }    
                 }
            
@@ -344,6 +378,7 @@ class news extends MX_Controller
                     $insert['priority'] = $date."-".$priority;
                     $insert['date'] = $date;
                     $this->db->insert("homepage_data",$insert);
+                    $this->sort_change_update($value);
                 } 
             }
             else
@@ -354,6 +389,7 @@ class news extends MX_Controller
                 $this->db->where("post_id",$this->input->post("primary_id"));
                 $this->db->where("post_type",$value);
                 $this->db->delete("homepage_data");
+                $this->sort_change_update($value);
             }    
         }
         garbage_collector();   
@@ -459,7 +495,21 @@ class news extends MX_Controller
         else
         {
             $this->remove_home_page_post($this->input->post('primary_id'));
+        } 
+        
+        //post category
+        $this->db->where("post_id",$this->input->post('primary_id'));
+        $category_data = $this->db->get("post_category")->result();
+        
+        if(count($category_data)>0)
+        {
+            foreach($category_data as $value)
+            {    
+                $this->sort_change_update($value->category_id,"category");
+            }
         }    
+        
+        
         
         $this->db->where("post_id",$this->input->post('primary_id'));
         $this->db->delete("post_user_activity");
@@ -935,6 +985,7 @@ class news extends MX_Controller
         $this->db->where('post_type', $this->input->post('post_type'));
         $this->db->where('date', $this->input->post('date_running'));
         $this->db->delete('homepage_data'); 
+        $this->sort_change_update($this->input->post('post_type'));
         garbage_collector(); 
         echo 1;
     }
@@ -959,6 +1010,7 @@ class news extends MX_Controller
                 $this->db->where('post_id', $id);
                 $this->db->where('post_type', $value->type_id);
                 $this->db->delete('homepage_data');
+                $this->sort_change_update($value->type_id);
                 
             }
        
@@ -1679,7 +1731,9 @@ class news extends MX_Controller
                     if($category_object->category_type_id>1 && $publish_date_type==0)
                     {
                         $publish_date_type = 2;
-                    }   
+                    }  
+                    
+                    $this->sort_change_update($ar_data_vals[$keys],"category");
                     
                     $i_loop++;
                 }
@@ -1769,6 +1823,8 @@ class news extends MX_Controller
 	                           )
                                AND tds_post_category.category_id = '".$ar_data_vals[$keys]."'";
                     $this->db->query($sql);
+                    
+                    $this->sort_change_update($ar_data_vals[$keys],"category");
                 }
             }
         }
@@ -1982,6 +2038,8 @@ class news extends MX_Controller
                 $insert_home['post_type']= $value['type_id'];
 
                 $this->db->insert("homepage_data",$insert_home);
+                
+                $this->sort_change_update($value['type_id']);
             }
         } 
         
@@ -2001,6 +2059,8 @@ class news extends MX_Controller
                     $this->db->where('post_id', $obj_post->id);
                     $this->db->where('post_type', $value);
                     $this->db->delete('homepage_data');
+                    
+                    $this->sort_change_update($value);
                 }
             }
         }
@@ -2251,6 +2311,7 @@ class news extends MX_Controller
             $category_array[$i_loop]['category_id'] = $value->category_id;
             $category_array[$i_loop]['post_id'] = $id;
             $category_array[$i_loop]['inner_priority'] = $value->inner_priority;
+            $this->sort_change_update($value->category_id,"category");
             $i_loop++;
         } 
         
@@ -2813,6 +2874,8 @@ class news extends MX_Controller
         $post_category = new Post_category();
         $rows_num = $post_category->update_priority($post_ids, $cate_id, $post_publish);
         
+        $this->sort_change_update($cate_id,"category");
+        
         garbage_collector_category($cate_id);
         
         $html_header_cache = "common/HEADER_MENU";
@@ -2942,6 +3005,8 @@ class news extends MX_Controller
         }
         if($insert)
         $this->db->insert_batch("homepage_data",$insert);
+        
+        $this->sort_change_update($this->input->post("post_type"));
         
         
         

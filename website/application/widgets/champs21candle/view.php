@@ -20,7 +20,7 @@
 
     </div> <!--your content end-->
     <div class="slide innerTop">
-        <?= form_open('', array('id' => 'validate_form', 'class' => 'validate_form', 'enctype' => "multipart/form-data")); ?>
+        <?php echo form_open('', array('id' => 'validate_form', 'class' => 'validate_form', 'enctype' => "multipart/form-data")); ?>
         <div id="section_form">
             <p class="candle_form_title"><img src="<?php echo base_url('Profiler/images/right/candle_text.png'); ?>" alt="Candle" style="width:90%;margin: 0 auto;display: block;"> </p>
             <p class="candle_school_form_title" style="display:none;margin-bottom: 20px;"><span style="color:rgba(45, 39, 39, 0.87);font-family:'Bree Serif','SolaimanLipi' !important;font-size: 50px;font-weight: bold;">Candling for School</span> </p>
@@ -83,8 +83,10 @@
             <label class="candle-input">
                 <input type="file" style="display:none;"  id="leadimage" name="leadimage"  />
             </label>
+            <div class="clearfix"></div>
 
         </div>
+        <div class="clearfix"></div>
         <?= form_close(); ?>    
         <div id="section_thanks" style="display:none;">
             <p><img src="<?php echo base_url('Profiler/images/right/candle_thanks.png'); ?>" alt="Candle" style="width:100%;margin: 0 auto;display: block;"> </p>
@@ -129,9 +131,12 @@
     }
     function loadCandleType()
     {
+        var cnadle_popup_select_box_html = '<div class="select-style"><select class="f5" name="category"><option value="<?php echo $this->config->config["school_candle_category_id"];?>" checked="checked">school category</option>';
+        var cnadle_type_popup_select_box_html = '<div class="select-style"><select class="f5" name="candle_type"><option value="1" checked="checked">Common</option><option value="2">Question</option></select></div>';
+        
         t = 1;
-        $("#category_select_box").html('<div class="select-style"><select class="f5" name="category"><option value="<?php echo $this->config->config["school_candle_category_id"];?>" checked="checked">school category</option>');
-        $("#candle_type_select_box").html('<div class="select-style"><select class="f5" name="candle_type"><option value="1" checked="checked">Common</option><option value="2">Question</option></select></div>');
+        $("#category_select_box").html(cnadle_popup_select_box_html);
+        $("#candle_type_select_box").html(cnadle_type_popup_select_box_html);
         return true;
     }
     jQuery(function($) {
@@ -181,12 +186,12 @@
 
 
         $(".candlepopup").click(function() {
-                        
+            
             if (t == 0)
             {                
                 var sc_id = "";
                 sc_id = $('#school_didi').text();
-                                    
+                
                 loading(); // loading
                 if(sc_id != "")
                 {
@@ -384,6 +389,14 @@
                     $('.innerTop').css("display", 'block');
                     $('.candle_form_title').css("display", 'none');
                     $('.candle_school_form_title').css("display", 'block');
+                    
+                    
+                    if($('#can_school_canlde').length < 1) {
+                        $('#section_form').html('');
+                        $('#section_form').html('<p class="candle_school_form_title" style="display: block; margin-bottom: 20px;"><span class="f2" style="line-height: 1.5; color: #484343; font-size: 25px; font-weight: bold;">Your school join request is processing. You can candle to your school page after your request is approved.</span> </p>');
+                    }
+                    
+                    
                     $('#section_form').css("display", 'block');
                     $('#candle_type_select_box').css("display", 'block');
                     $('#category_select_box').css("display", 'none');
@@ -455,14 +468,17 @@
     .candle-btn a.button.icon-attach{
         padding-left: 30px;
         background: url("/Profiler/images/right/icon-attach.png") no-repeat 0 4px;
+        background-color: #fff;
     }
     .candle-btn a.button.icon-upload{
         padding-left: 30px;
         background: url("/Profiler/images/right/icon-photo.png") no-repeat 0 5px;
+        background-color: #fff;
     }
     .candle-btn a.button.icon-send{
         padding-left: 30px;
         background: url("/Profiler/images/right/icon-send.png") no-repeat 0 4px;
+        background-color: #fff;
     }
     .cd-input{width:100%;background: #E7EBEE;font-size:13px !important;}
     .cd-textarea{width:100%;background: #E7EBEE;font-size:13px !important;}
@@ -558,11 +574,6 @@
     font-size:21px;
     line-height:26px;
 }
-
-
-
-
-
 
 
 </style>

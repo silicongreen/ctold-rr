@@ -1,7 +1,11 @@
 <header class="champs-header col-xs-12 clearfix">
     
     <?php if(!$user_profile_complete) { ?>
-        <input type="hidden" name="user_profile_complete" id="user_profile_complete" value="nai" >
+        <input type="hidden" name="user_profile_complete" id="user_profile_complete" value="nai">
+    <?php } ?>
+    
+    <?php if($can_school_canlde) { ?>
+        <input type="hidden" name="can_school_canlde" id="can_school_canlde" value="ase">
     <?php } ?>
 
     <div class="col-xs-12">

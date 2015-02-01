@@ -296,7 +296,7 @@ class home extends MX_Controller {
                     
                     if($userschool)
                     {
-                        if($userschool->is_approved==1)
+                        if($userschool->is_approved == 1 || $userschool->is_approved == 0)
                         {
                             redirect("schools/".$ar_segmens[2]."/feed");
                         }
@@ -333,7 +333,8 @@ class home extends MX_Controller {
                     }
                     else if($ar_segmens[3] == "feed")
                     {
-                        if(!$userschool || $userschool->is_approved==0)
+//                        if(!$userschool || $userschool->is_approved==0)
+                        if(!$userschool)
                         {
                             
                             redirect("schools/".$ar_segmens[2]);

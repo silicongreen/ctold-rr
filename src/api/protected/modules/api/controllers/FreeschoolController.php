@@ -59,7 +59,9 @@ class FreeschoolController extends Controller
         }
         else
         {       
-            $school = new School($free_school_id);
+            $schoolobj = new School();
+            
+            $school = $schoolobj->findByPk($free_school_id);
            
             $school->paid_school_id = $paid_school_id;
             $school->name = $name;

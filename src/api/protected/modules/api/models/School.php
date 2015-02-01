@@ -355,9 +355,9 @@ class School extends CActiveRecord
                 $i = 0; 
                 foreach($schools as $value)
                 { 
-                    $school_array[$i]['id'] = $schools->id;
+                    $school_array[$i]['id'] = $value->id;
 
-                    $school_array[$i]['name'] = $schools->name;
+                    $school_array[$i]['name'] = $value->name;
                     $i++;
                 }
             } 

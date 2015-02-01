@@ -342,11 +342,15 @@ class School extends CActiveRecord
             
         }
         
-        public function getSchoolNotPaid()
+        public function getSchoolNotPaid($term="")
         {
             $criteria = new CDbCriteria(); 
             $criteria->select = "id,name";
             $criteria->addCondition ("is_paid != 1");
+            if($term)
+            {
+                $criteria->addCondition ("name like '".$term."%'");
+            }    
             $schools = $this->findAll($criteria);
             $school_array = array();
            

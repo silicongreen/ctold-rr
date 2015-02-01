@@ -349,7 +349,15 @@ class School extends CActiveRecord
             $criteria->addCondition ("is_paid != 1");
             if($term)
             {
-                $criteria->addCondition ("name like '".$term."%'");
+                $countletter = strlen($term);
+                if($countletter<4)
+                {
+                    $criteria->addCondition ("name like '".$term."%'");
+                }
+                else
+                {
+                    $criteria->addCondition ("name like '%".$term."%'");
+                }    
             }    
             $schools = $this->findAll($criteria);
             $school_array = array();

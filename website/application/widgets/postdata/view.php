@@ -187,7 +187,7 @@
                                 <li class="post shown col-md-6 ">
                                     <div style="width: 100%;" class="grid effect-6" >
                                         <div class="candel-ecl-banner candlepopup">
-                                            <img src="/styles/layouts/tdsfront/image/candle-bangla.jpg" style="width:100%;" >
+                                            <img src="/styles/layouts/tdsfront/image/candle-bangla-new.jpg" style="width:100%;" >
                                         </div> 
                                      </div>
                                  </li>   

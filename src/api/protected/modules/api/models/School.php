@@ -35,7 +35,7 @@ class School extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name, location, district, medium, level, shift, logo, cover', 'required'),
+			array('name', 'required'),
 			array('gender, views', 'numerical', 'integerOnly'=>true),
 			array('name, location, district, medium, level, shift, logo, cover', 'length', 'max'=>255),
 			// The following rule is used by search().
@@ -339,6 +339,31 @@ class School extends CActiveRecord
             }
             
             return $school_array;
+            
+        }
+        
+        public function getSchoolNotPaid()
+        {
+            $criteria = new CDbCriteria(); 
+            $criteria->select = "id,name";
+            $criteria->addCondition ("is_paid != 1");
+            $schools = $this->findAll($criteria);
+            $school_array = array();
+           
+            if($schools)
+            {
+                $i = 0; 
+                foreach($schools as $value)
+                { 
+                    $school_array[$i]['id'] = $schools->id;
+
+                    $school_array[$i]['name'] = $schools->name;
+                    $i++;
+                }
+            } 
+            return $school_array;
+            
+           
             
         }
                

@@ -35,8 +35,13 @@ class FreeschoolController extends Controller
     
     public function actionGetSchool()
     {
+        $term = Yii::app()->request->getPost('term');
+        if(!$term)
+        {
+          $term = ""; 
+        }    
         $school = new School();
-        $response['data']['schools'] = $school->getSchoolNotPaid();
+        $response['data']['schools'] = $school->getSchoolNotPaid($term);
         $response['status']['code'] = 200;
         $response['status']['msg'] = "SCHOOL_SAVED";
         echo CJSON::encode($response);

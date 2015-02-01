@@ -30,67 +30,23 @@
             <p style='position:relative; top:100%;'><input type="button" class="btn_school_entry" value=""></p>
         </div>
         <div style="clear:both;"></div>
-        <div style="width:105.7%;height:61px;position:relative;bottom:-35px;background: #fff;opacity: .9;margin: 0px -27px;">
-            <div class="school_arrow">OR, SEARCH BY ALPHABET</div>
-            <div style="float:right;padding-top:16px;margin-right:15px;">
-                <ul>
-                    <li><a href="<?php echo base_url() . 'schoolsearch?str=A'; ?>">A</a></li>
-                    <li class="bar">|</li>
-                    <li><a href="<?php echo base_url() . 'schoolsearch?str=B'; ?>">B</a></li>
-                    <li class="bar">|</li>
-                    <li><a href="<?php echo base_url() . 'schoolsearch?str=C'; ?>">C</a></li>
-                    <li class="bar">|</li>
-                    <li><a href="<?php echo base_url() . 'schoolsearch?str=D'; ?>">D</a></li>
-                    <li class="bar">|</li>
-                    <li><a href="<?php echo base_url() . 'schoolsearch?str=E'; ?>">E</a></li>
-                    <li class="bar">|</li>
-                    <li><a href="<?php echo base_url() . 'schoolsearch?str=F'; ?>">F</a></li>
-                    <li class="bar">|</li>
-                    <li><a href="<?php echo base_url() . 'schoolsearch?str=G'; ?>">G</a></li>
-                    <li class="bar">|</li>
-                    <li><a href="<?php echo base_url() . 'schoolsearch?str=H'; ?>">H</a></li>
-                    <li class="bar">|</li>
-                    <li><a href="<?php echo base_url() . 'schoolsearch?str=I'; ?>">I</a></li>
-                    <li class="bar">|</li>
-                    <li><a href="<?php echo base_url() . 'schoolsearch?str=J'; ?>">J</a></li>
-                    <li class="bar">|</li>
-                    <li><a href="<?php echo base_url() . 'schoolsearch?str=K'; ?>">K</a></li>
-                    <li class="bar">|</li>
-                    <li><a href="<?php echo base_url() . 'schoolsearch?str=L'; ?>">L</a></li>
-                    <li class="bar">|</li>
-                    <li><a href="<?php echo base_url() . 'schoolsearch?str=M'; ?>">M</a></li>
-                    <li class="bar">|</li>
-                    <li><a href="<?php echo base_url() . 'schoolsearch?str=N'; ?>">N</a></li>
-                    <li class="bar">|</li>
-                    <li><a href="<?php echo base_url() . 'schoolsearch?str=O'; ?>">O</a></li>
-                    <li class="bar">|</li>
-                    <li><a href="<?php echo base_url() . 'schoolsearch?str=P'; ?>">P</a></li>
-                    <li class="bar">|</li>
-                    <li><a href="<?php echo base_url() . 'schoolsearch?str=Q'; ?>">Q</a></li>
-                    <li class="bar">|</li>
-                    <li><a href="<?php echo base_url() . 'schoolsearch?str=R'; ?>">R</a></li>
-                    <li class="bar">|</li>
-                    <li><a href="<?php echo base_url() . 'schoolsearch?str=S'; ?>">S</a></li>
-                    <li class="bar">|</li>
-                    <li><a href="<?php echo base_url() . 'schoolsearch?str=T'; ?>">T</a></li>
-                    <li class="bar">|</li>
-                    <li><a href="<?php echo base_url() . 'schoolsearch?str=U'; ?>">U</a></li>
-                    <li class="bar">|</li>
-                    <li><a href="<?php echo base_url() . 'schoolsearch?str=V'; ?>">V</a></li>
-                    <li class="bar">|</li>
-                    <li><a href="<?php echo base_url() . 'schoolsearch?str=W'; ?>">W</a></li>
-                    <li class="bar">|</li>
-                    <li><a href="<?php echo base_url() . 'schoolsearch?str=X'; ?>">X</a></li>
-                    <li class="bar">|</li>
-                    <li><a href="<?php echo base_url() . 'schoolsearch?str=Y'; ?>">Y</a></li>
-                    <li class="bar">|</li>
-                    <li><a href="<?php echo base_url() . 'schoolsearch?str=Z'; ?>">Z</a></li>					
-                </ul>
-            </div>
-        </div>
     </div> <!--your content end-->
+    
+    <div style="width: 100%; height:61px; position:absolute; bottom:0px; background: #fff; opacity: .9; margin: 0px -20px;">
+        <div class="school_arrow f2">OR, SEARCH BY ALPHABET</div>
+        <div style="float:right; padding-top:16px; margin-right:15px;">
+            <ul class="school-search-ul">
+                <?php foreach (range('A', 'Z') as $alphabet){ ?>
+                    <li class="f2"><a href="<?php echo base_url() . 'schoolsearch?str=' . $alphabet; ?>"><?php echo $alphabet; ?></a></li>
+                    <?php if ($alphabet < 'Z') { ?>
+                    <li class="bar">|</li>
+                    <?php }?>
+                <?php } ?>
+            </ul>
+        </div>
+    </div>
 
-    <div class="slide innerTop">
+    <div class="slide innerTop-school">
         <?php echo form_open('', array('id' => 'validate_form_school', 'class' => 'validate_form', 'enctype' => "multipart/form-data")); ?>
         <div id="section_form_school">
             <h2 class="f2">My School</h2>
@@ -226,11 +182,11 @@
             if (alreadyopen == 1)
             {
                 closeloading();
-                $('.innerTop').animate({'left': '3px'}, {
+                $('.innerTop-school').animate({'left': '3px'}, {
                     duration: 1000,
                     step: function() {
                         $('div#popup_content').hide();
-                        $('.innerTop').css("display", 'block');
+                        $('.innerTop-school').css("display", 'block');
 
                     }
                 });
@@ -370,7 +326,7 @@
     .slide { position: relative;left:300px;margin: 0 auto; width: 550px;  text-align: center; }
     .slide img {position: relative; z-index: 100;}
     .slide p { padding:8px 16px; color: #fff; margin: 0; }
-    .innerTop, .innerBottom { display:none;   z-index: -1;  }
+    .innerTop-school, .innerBottom { display:none;   z-index: -1;  }
 
     #button-bottom { width: 100px; position: absolute; left: 75%; top: 240px; padding-left: 100px;overflow: hidden;}
     .school_search_box{
@@ -498,6 +454,37 @@
   height: 0;
   border: 30px solid transparent;
   border-left: 40px solid #a7abb0;
+}
+
+
+.candle-input {
+    float: left;
+    margin: 5px;
+}
+
+.candle-textarea {
+    float: left;
+    margin: 5px;
+}
+
+#section_form_school {
+    margin-top: 125px;
+    background-color: #fff;
+    padding: 25px;
+}
+
+.school-search-ul li {
+    display: inline-block;
+    float: left;
+    padding: 3px;
+    font-size: 13px;
+    cursor: pointer;
+}
+.school-search-ul li a:hover {
+    font-size: 18px;
+    color: #000;
+    text-decoration: underline;
+    font-weight: bold;
 }
 
 @media all and (min-width: 200px) and (max-width: 314px) {

@@ -943,12 +943,12 @@ $(document).ready(function(){
     
     $(document).on("click",'.btn_user_join_school',function(){
         
-        $str_school_ids = $(this).attr('id');
-        $ar_school_ids = $str_school_ids.split('-');
+        var str_school_ids = $(this).attr('id');
+        var ar_school_ids = str_school_ids.split('-');
         
-        $('#school_id').attr('value', $ar_school_ids[0]);
-        $('#paid_school_id').attr('value', $ar_school_ids[1]);
-        $('#paid_school_code').attr('value', $ar_school_ids[2]);
+        $('#school_id').attr('value', ar_school_ids[0]);
+        $('#paid_school_id').attr('value', ar_school_ids[1]);
+        $('#paid_school_code').attr('value', ar_school_ids[2]);
         
         var html_frm_reg = $('#school_join_frm_wrapper').html();
         
@@ -976,6 +976,7 @@ $(document).ready(function(){
         var school_id = $('#school_id').val();
         var paid_school_id = $('#paid_school_id').val();
         var paid_school_code = $('#paid_school_code').val();
+        var btn_id = school_id + '-' + paid_school_id + '-' + paid_school_code;
         
         $.ajax({
             url: $('#base_url').val() + 'join_to_school',
@@ -991,13 +992,13 @@ $(document).ready(function(){
                 if ( data.saved == true ){
                     
                     if(data.is_approved == 1) {
-                        $('button#' + school_id + ' span').text('Leave');
-                        $('button#' + school_id).removeClass('btn_user_join_school');
-                        $('button#' + school_id).addClass('btn_leave_school');
+                        $('button#' + btn_id + ' span').text('Leave');
+                        $('button#' + btn_id).removeClass('btn_user_join_school');
+                        $('button#' + btn_id).addClass('btn_leave_school');
                     } else {
-                        $('button#' + school_id).removeClass('btn_user_join_school');
-                        $('button#' + school_id).addClass('processing');
-                        $('button#' + school_id + ' span').text('Processing');
+                        $('button#' + btn_id).removeClass('btn_user_join_school');
+                        $('button#' + btn_id).addClass('processing');
+                        $('button#' + btn_id + ' span').text('Processing');
                     }
                     
                     $('.fancybox-close').trigger('click');

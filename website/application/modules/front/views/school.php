@@ -98,13 +98,18 @@ $ar_segmens = $this->uri->segment_array();
                 </div>
             </div> 
             <div class="headerlink f5">
-                <div style="width:790px;height:60px;margin:0px 99px;padding:20px 20px 0px 20px;position:absolute;border-radius:7px;background:linear-gradient(to bottom, #FEFEFE , #D9D9D9);-webkit-box-shadow: 0 10px 25px -2px gray;
+                <div style="width:820px; height:60px; margin:0px 99px; padding:20px 20px 0px 20px; position:absolute; background:linear-gradient(to bottom, #FEFEFE , #D9D9D9);
+                     -webkit-box-shadow: 0 10px 25px -2px gray;
                      -moz-box-shadow: 0 10px 25px -2px gray;
-                     box-shadow: 0 10px 25px -2px gray;">
+                     -ms-box-shadow: 0 10px 25px -2px gray;
+                     -o-box-shadow: 0 10px 25px -2px gray;
+                     box-shadow: 0 10px 25px -2px gray;
+                     border-radius:7px;
+                     ">
                     <ul>
                         <?php
                         if ($userschool) {
-                            if ($userschool->is_approved == 1) {
+                            if ($userschool->is_approved == 1 || $userschool->is_approved == 0) {
                                 ?>
                                 <li><a <?php if (isset($feeds)): ?> class="red_menu"<?php endif; ?> href="<?php echo base_url() . "schools/" . sanitize($school_details->name) . "/feed"; ?>">Feeds</a></li>  
                                 <li>|</li>

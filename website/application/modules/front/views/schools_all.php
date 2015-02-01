@@ -18,7 +18,8 @@
     $widget = new Widget;
     $widget->run('champs21schoolsearch', $ci_key);
     ?>
-    <div style="">
+    <div class="clearfix"></div>
+    <div>
 
         <ul style="margin: 30px 20px;">
             <li>
@@ -245,7 +246,6 @@
         left: 0px !important;
         top: 0px !important;
         width: 96.2% !important;
-        z-index: 6000 !important;
         margin:30px 20px !important;
     }
     div.loader {

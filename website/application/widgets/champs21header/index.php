@@ -39,6 +39,7 @@ class champs21header extends widget
 
     function run($ci_key, $ci_key_for_cover)
     {   
+        $can_school_canlde = FALSE;
         $this->CI->load->config("huffas");
         $data = array("ci_key"  => $ci_key, "ci_key_for_cover" => $ci_key_for_cover);
         
@@ -84,6 +85,21 @@ class champs21header extends widget
             }
         }
         
+        $this->CI->load->config('user_register');
+        $b_need_approval = $this->CI->config->config['join_user_approval'][$user_type];
+        $b_mulit_school_join = $this->CI->config->config['multi_school_join'];
+        
+        $user_school = new User_school();
+        
+        $user_school_data = ($b_mulit_school_join) ? $user_school->get_user_school($user_id, $school_id) : $user_school->get_user_school($user_id);
+        
+        if($user_school_data !== FALSE) {
+            if($user_school_data['0']->is_approved == 1) {
+                $can_school_canlde = TRUE;
+            }
+        }
+        
+        $data['can_school_canlde'] = $can_school_canlde;
         // User Data
         
         $this->render($data);

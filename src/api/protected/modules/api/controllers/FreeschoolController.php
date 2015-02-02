@@ -63,17 +63,33 @@ class FreeschoolController extends Controller
             $response['status']['msg'] = "BAD_REQUEST";
         }
         else
-        {       
+        {   
+            
             $schoolobj = new School();
+            
+            
+            $previous_school_id = $schoolobj->getSchoolPaid($paid_school_id);
+            
+            if($previous_school)
+            {
+                $previous_school = $schoolobj->findByPk($previous_school);
+                
+                $previous_school->is_paid = 0;
+                $previous_school->code = null;
+                $previous_school->paid_school_id = null;
+                $previous_school->save();
+            }
             
             $school = $schoolobj->findByPk($free_school_id);
            
-            $school->paid_school_id = $paid_school_id;
-            $school->name = $name;
-            $school->code = $code;
-            $school->is_paid = 1;
-            
-            $school->save();
+            if(isset($school->id) && $school->id)
+            {
+                $school->paid_school_id = $paid_school_id;
+                $school->name = $name;
+                $school->code = $code;
+                $school->is_paid = 1;
+                $school->save();
+            }
             $response['status']['code'] = 200;
             $response['status']['msg'] = "SCHOOL_SAVED";
             

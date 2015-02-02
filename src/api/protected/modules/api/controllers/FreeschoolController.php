@@ -70,9 +70,9 @@ class FreeschoolController extends Controller
             
             $previous_school_id = $schoolobj->getSchoolPaid($paid_school_id);
             
-            if($previous_school)
+            if($previous_school_id)
             {
-                $previous_school = $schoolobj->findByPk($previous_school);
+                $previous_school = $schoolobj->findByPk($previous_school_id);
                 
                 $previous_school->is_paid = 0;
                 $previous_school->code = null;

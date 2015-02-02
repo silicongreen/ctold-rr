@@ -57,7 +57,7 @@ class FreeschoolController extends Controller
         
         
         
-        if (!$name && !$code && $paid_school_id && !$free_school_id)
+        if (!$name || !$code || $paid_school_id || !$free_school_id)
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "BAD_REQUEST";
@@ -92,7 +92,7 @@ class FreeschoolController extends Controller
         
         
         
-        if (!$name && !$code && $paid_school_id)
+        if (!$name || !$code || $paid_school_id)
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "BAD_REQUEST";

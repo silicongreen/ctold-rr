@@ -1045,6 +1045,45 @@ if( !function_exists("get_assessment"))
     }
 }
     
+if( !function_exists("assessment_update_played"))
+{
+    function assessment_update_played($assesment_id)
+    {
+        $CI = &get_instance();
+        
+        $url = get_curl_url("updatePlayed");
+        $fields_string = "assessment_id=" . $assesment_id;
+        
+        //start curl
+        $ch = curl_init();
+        curl_setopt($ch,CURLOPT_URL, $url);
+
+        curl_setopt($ch,CURLOPT_POST, count($fields));
+        curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER, 1);
+
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
+            'Accept: application/json',
+            'Content-Length: ' . strlen($fields_string)
+            )                                                                       
+        );    
+        //execute post
+        $result = curl_exec($ch);
+
+        //close connection
+        curl_close($ch);
+        //end curl
+        
+        $assesments = json_decode($result);
+        
+        if($assesments->status->code == 200){
+            return TRUE;
+        }
+        
+        return FALSE;
+    }
+}
+    
 if( !function_exists("get_assessment_leader_board"))
 {
     function get_assessment_leader_board($assesment_id, $limit = 100)

@@ -326,7 +326,7 @@
                     <div class="inner-container_wrapper">
                         <?php
                             if($go_to_assessment) {
-                                $assess_url = base_url('assessment/' . sanitize($assessment->title) . '-' . $assessment->id) . $_SERVER['REQUEST_URI'];
+                                $assess_url = base_url('quiz/' . sanitize($assessment->title) . '-' . $assessment->id) . $_SERVER['REQUEST_URI'];
                             } else {
                                 $assess_url = '#';
                             }

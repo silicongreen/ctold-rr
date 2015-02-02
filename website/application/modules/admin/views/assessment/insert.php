@@ -18,7 +18,15 @@
                             <fieldset class="label_side top">
                                 <label for="required_field">Title</label>
                                 <div>
-                                    <input id="title" name="title" value="<?php echo $model->title ?>" type="text" class="required" minlength="3" required>
+                                    <input id="title" name="title" value="<?php echo $model->title; ?>" type="text" class="required" minlength="3" required>
+                                    <div class="required_tag"></div>
+                                </div>
+                            </fieldset>
+                            
+                            <fieldset class="label_side top">
+                                <label for="required_field">Type</label>
+                                <div>
+                                    <?php echo form_dropdown('type', $assessment_types, $model->type); ?>
                                     <div class="required_tag"></div>
                                 </div>
                             </fieldset>

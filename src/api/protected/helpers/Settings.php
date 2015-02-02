@@ -117,6 +117,18 @@ class Settings {
         ),
     );
     
+    public static $assessment_config = array(
+        'types' => array(
+            1 => 'Assessment',
+            2 => 'Quiz',
+        ),
+        'update_played' => array(
+            'before_start' => TRUE,
+            'after_finish' => FALSE,
+        )
+    );
+
+    
     public static function getFedenaToken($school_code,$username,$password)
     {
         $endPoint = "plus.champs21.com";

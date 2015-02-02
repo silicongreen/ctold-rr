@@ -3381,7 +3381,10 @@ class home extends MX_Controller {
         $this->extra_params = $ar_params;
     }
     
-    public function assessment() {
+    public function quiz() {
+        
+        $this->load->config("huffas");
+        $assessment_config = $this->config->config['assessment'];
         
         $ar_js = array();
         $ar_css = array(
@@ -3398,8 +3401,11 @@ class home extends MX_Controller {
         $user_id = 0;
         
         if(free_user_logged_in()) {
-            
             $user_id = get_free_user_session('id');
+        }
+        
+        if($assessment_config['update_played']['before_start']){
+            assessment_update_played($assesment_id);
         }
         
         $data['post_uri'] = $str_post;
@@ -3419,7 +3425,7 @@ class home extends MX_Controller {
         
         $s_content = $this->load->view('assessment', $data, true);
         
-        $str_title = WEBSITE_NAME . " | Assessment";
+        $str_title = WEBSITE_NAME . " | Quiz";
         
         $meta_description = META_DESCRIPTION;
         $keywords = KEYWORDS;
@@ -3444,6 +3450,9 @@ class home extends MX_Controller {
     
     public function save_assessment() {
         
+        $this->load->config("huffas");
+        $assessment_config = $this->config->config['assessment'];
+        
         $response = array();
         if(!$this->input->is_ajax_request()){
             $response['saved'] = false;
@@ -3461,8 +3470,11 @@ class home extends MX_Controller {
         $user_id = 0;
         
         if(free_user_logged_in()) {
-            
             $user_id = get_free_user_session('id');
+        }
+        
+        if($assessment_config['update_played']['after_finish']){
+            assessment_update_played($assesment_id);
         }
         
         $assessment = get_assessment($assessment_id, $user_id);
@@ -3512,7 +3524,7 @@ class home extends MX_Controller {
             
             $can_play = TRUE;
             
-            if($now_time < $next_play_time) {
+            if( ($now_time < $next_play_time) && $assessment_mark !== FALSE ) {
                 $can_play = FALSE;
             }
             

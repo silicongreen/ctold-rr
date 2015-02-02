@@ -57,7 +57,11 @@ class assessment extends MX_Controller {
     }
 
     function add() {
+        $this->load->config('huffas');
+        
         $obj_assesment = new Assessments();
+        $data['assessment_types'] = $this->config->config['assessment']['types'];
+        
         if ($_POST) {
             foreach ($this->input->post() as $key => $value) {
                 $obj_assesment->$key = $value;
@@ -79,6 +83,11 @@ class assessment extends MX_Controller {
      * @author Fahim
      */
     function edit($id) {
+        
+        $this->load->config('huffas');
+        
+        $data['assessment_types'] = $this->config->config['assessment']['types'];
+        
         $obj_assesment = new Assessments($id);
         if ($_POST) {
             foreach ($this->input->post() as $key => $value) {

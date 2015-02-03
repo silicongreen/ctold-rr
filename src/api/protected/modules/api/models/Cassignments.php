@@ -82,7 +82,7 @@ class Cassignments extends CActiveRecord
                     
                     $response_array['id'] = $data->id;
                     $response_array['title'] = $data->title;
-                    $response_array['type_id'] = $data->type;
+                    $response_array['type'] = $data->type;
                     $response_array['type_text'] = Settings::$assessment_config['types'][$data->type];
                     $response_array['use_time'] = $data->use_time;
                     $response_array['time'] = $data->time; 

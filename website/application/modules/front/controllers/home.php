@@ -557,13 +557,12 @@ class home extends MX_Controller {
         $data['edit'] = (free_user_logged_in()) ? TRUE : FALSE;
         // User Data
         $obj_post = new Posts();
+        
         $data['category_tree'] = $obj_post->user_preference_tree_for_pref();
                
         $s_right_view =  $this->load->view( 'right', $data, TRUE );  
         
         $str_title = getCommonTitle();
-        
-      
         
         $meta_description = META_DESCRIPTION;
         $keywords = KEYWORDS;
@@ -3411,38 +3410,45 @@ class home extends MX_Controller {
         $data['post_uri'] = $str_post;
         $assessment = get_assessment($assesment_id, $user_id);
         
-        if ((!$assessment)) {
-            $data['assessment'] = array();
-            $data['score_board'] = array();
-            $data['can_play'] = false;
-            $data['last_played'] = false;
+        if(!property_exists($assessment->assesment, 'id')) {
+            
+            $this->show_404_custom();
+            
         } else {
-            $data['assessment'] = $assessment->assesment;
-            $data['score_board'] = $assessment->score_board;
-            $data['can_play'] = $assessment->can_play;
-            $data['last_played'] = $assessment->last_played;
+            
+            if ((!$assessment)) {
+                $data['assessment'] = array();
+                $data['score_board'] = array();
+                $data['can_play'] = false;
+                $data['last_played'] = false;
+            } else {
+                $data['assessment'] = $assessment->assesment;
+                $data['score_board'] = $assessment->score_board;
+                $data['can_play'] = $assessment->can_play;
+                $data['last_played'] = $assessment->last_played;
+            }
+
+            $s_content = $this->load->view('assessment', $data, true);
+
+            $str_title = WEBSITE_NAME . " | Quiz";
+
+            $meta_description = META_DESCRIPTION;
+            $keywords = KEYWORDS;
+
+            $ar_params = array(
+                "javascripts"           => $ar_js,
+                "css"                   => $ar_css,
+                "extra_head"            => $extra_js,
+                "title"                 => $str_title,
+                "description"           => $meta_description,
+                "keywords"              => $keywords,
+                "side_bar"              => '',
+                "target"                => "index",
+                "content"               => $s_content
+            );
+
+            $this->extra_params = $ar_params;
         }
-        
-        $s_content = $this->load->view('assessment', $data, true);
-        
-        $str_title = WEBSITE_NAME . " | Quiz";
-        
-        $meta_description = META_DESCRIPTION;
-        $keywords = KEYWORDS;
-        
-        $ar_params = array(
-            "javascripts"           => $ar_js,
-            "css"                   => $ar_css,
-            "extra_head"            => $extra_js,
-            "title"                 => $str_title,
-            "description"           => $meta_description,
-            "keywords"              => $keywords,
-            "side_bar"              => '',
-            "target"                => "index",
-            "content"               => $s_content
-        );
-        
-        $this->extra_params = $ar_params;
 //        var_dump();
 //        exit;
         

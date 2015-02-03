@@ -5,11 +5,11 @@
  *
  * @author NIslam
  */
-class Assesment_mark extends DataMapper {
+class Assessment_school_mark extends DataMapper {
 
     public $my_errors = array();
     //put your code here
-    var $table = "assesment_mark";
+    var $table = "assessment_school_mark";
     
     private $ar_fields = array(
         'id',
@@ -17,6 +17,7 @@ class Assesment_mark extends DataMapper {
         'assessment_id',
         'mark',
         'level',
+        'school_id',
         'created_date'
     );
 
@@ -44,7 +45,9 @@ class Assesment_mark extends DataMapper {
         return array(
             'user_id' => 'User',
             'assessment_id' => 'Assessment',
-            'mark' => 'Mark'
+            'mark' => 'Mark',
+            'level' => 'Level',
+            'school_id' => 'School',
         );
     }
 

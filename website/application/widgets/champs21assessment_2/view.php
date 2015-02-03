@@ -8,6 +8,11 @@
     <input type="hidden" value="<?php echo (!empty($assessment->use_time) ) ? $assessment->time : 0; ?>" id="assess_time">
     <input type="hidden" value="<?php echo (!empty($assessment->higistmark) ) ? $assessment->higistmark : 0; ?>" id="highest_score">
     <input type="hidden" value="<?php echo (!empty($assessment->played) ) ? $assessment->played : 0; ?>" id="total_played">
+    
+    <?php if (!$b_explanation_popup) { ?>
+        <input type="hidden" value="" id="b_explanation_popup">
+    <?php } ?>
+    
     <input type="hidden" value="" id="nos_questions">
     
     <div id="post_uri" style="display: none;">
@@ -225,4 +230,4 @@
 </div>
 
 <script src="<?php echo base_url('scripts/FlipClock/compiled/flipclock.min.js') ?>"></script>
-<script src="<?php echo base_url('scripts/layouts/tdsfront/js/assessment.js') ?>"></script>
+<script src="<?php echo base_url('scripts/layouts/tdsfront/js/quiz.js') ?>"></script>

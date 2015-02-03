@@ -28,7 +28,7 @@ class assessment extends MX_Controller {
         $tmpl = array('table_open' => '<table id="big_table" border="1" cellpadding="2" cellspacing="1" class="mytable">');
         $this->table->set_template($tmpl);
 
-        $this->table->set_heading('Title', 'Time', 'Played', 'Topic', 'Created Date', 'Action');
+        $this->table->set_heading('Title', 'Type', 'Time', 'Played', 'Topic', 'Created Date', 'Action');
         $this->render('admin/assessment/index');
     }
 
@@ -42,14 +42,18 @@ class assessment extends MX_Controller {
         if (!$this->input->is_ajax_request()) {
             exit('No direct script access allowed');
         }
-
+        
+        $this->load->config('huffas');
+        
         $this->datatables->set_buttons("edit");
         $this->datatables->set_buttons("delete");
         $this->datatables->set_buttons("question");
         $this->datatables->set_controller_name("assessment");
         $this->datatables->set_primary_key("id");
-
-        $this->datatables->select('id, title, time, played, topic, created_date')
+        
+        $this->datatables->set_custom_string(2, $this->config->config['assessment']['types']);
+        
+        $this->datatables->select('id, title, type, time, played, topic, created_date')
                 ->unset_column('id')
                 ->from('assessment');
 
@@ -155,7 +159,7 @@ class assessment extends MX_Controller {
         $tmpl = array('table_open' => '<table id="big_table" border="1" cellpadding="2" cellspacing="1" class="question_table">');
         $this->table->set_template($tmpl);
 
-        $this->table->set_heading('Question', 'Mark', 'Style', 'Action');
+        $this->table->set_heading('Question', 'Mark', 'Level', 'Style', 'Action');
 
         $data['assessment_id'] = $assessment_id;
         $data['style'] = array(NULL => 'Select', '1' => 'Boxed', '2' => 'List');
@@ -167,16 +171,19 @@ class assessment extends MX_Controller {
         if (!$this->input->is_ajax_request()) {
             exit('No direct script access allowed');
         }
-
+        
+        $this->load->config('huffas');
+        
         $this->datatables->set_buttons("edit_question");
         $this->datatables->set_buttons("delete_question", 'ajax');
 
         $this->datatables->set_controller_name("assessment");
         $this->datatables->set_primary_key("primary_id");
 
-        $this->datatables->set_custom_string(3, array(NULL => 'Select', 1 => 'Boxed', 2 => 'List'));
-
-        $this->datatables->select('assessment_question.id as primary_id, assessment_question.question, assessment_question.mark, assessment_question.style')
+        $this->datatables->set_custom_string(3, $this->config->config['assessment']['levels']);
+        $this->datatables->set_custom_string(4, array(NULL => 'Select', 1 => 'Boxed', 2 => 'List'));
+        
+        $this->datatables->select('assessment_question.id as primary_id, assessment_question.question, assessment_question.mark, assessment_question.level, assessment_question.style')
                 ->unset_column('primary_id')
                 ->from('assessment_question')
                 ->where('assessment_question.assesment_id', $assessment_id);
@@ -185,6 +192,9 @@ class assessment extends MX_Controller {
     }
 
     function add_question($assessment_id) {
+        
+        $this->load->config('huffas');
+        
         $obj_assesment_que = new Assessment_questions();
         $obj_assesment_ans = new Assessment_options();
         $assessment_id = $assessment_id;
@@ -240,6 +250,7 @@ class assessment extends MX_Controller {
 
         $data['question'] = $obj_assesment_que;
         $data['answers'] = $obj_assesment_ans;
+        $data['level'] = $this->config->config['assessment']['levels'];
         $data['edit'] = false;
 
         $data['style'] = array(NULL => 'Select', '1' => 'Boxed', '2' => 'List');
@@ -253,7 +264,9 @@ class assessment extends MX_Controller {
     }
 
     function edit_question($question_id) {
-
+        
+        $this->load->config('huffas');
+        
         $obj_assesment_que = new Assessment_questions($question_id);
         $assessment_id = $obj_assesment_que->assesment_id;
         $saved = false;
@@ -321,6 +334,7 @@ class assessment extends MX_Controller {
 
         $data['question'] = $obj_assesment_que;
         $data['answers'] = $obj_assesment_ans;
+        $data['level'] = $this->config->config['assessment']['levels'];
         $data['edit'] = true;
 
         $data['style'] = array(NULL => 'Select', '1' => 'Boxed', '2' => 'List');

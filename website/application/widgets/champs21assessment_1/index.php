@@ -39,6 +39,15 @@ class champs21assessment_1 extends widget
 
     function run($ci_key, $assessment, $score_board, $can_play, $last_played)
     {   
+        $this->CI->load->config("huffas");
+        $assessment_config = $this->CI->config->config['assessment'];
+        
+        $data['b_explanation_popup'] = FALSE;
+        
+        if($assessment_config['auto_next'][strtolower($assessment_config['types'][$assessment->type])]){
+            $data['b_explanation_popup'] = TRUE;
+        }
+        
         $data['ci_key'] = $ci_key;
         $data['assessment'] = $assessment;
         $data['score_board'] = $score_board;

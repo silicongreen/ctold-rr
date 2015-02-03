@@ -207,8 +207,8 @@ class Assignments extends CActiveRecord
                 $marge['subjects_id'] = $value["subjectDetails"]->id;
                 $marge['subjects_icon'] = $value["subjectDetails"]->icon_number;
                 $marge['duedate'] = $value->duedate;
-                $marge['name'] = utf8_decode($value->title);
-                $marge['content'] = utf8_decode($value->content);
+                $marge['name'] = $value->title;
+                $marge['content'] = $value->content;
                 $marge['type'] = $value->assignment_type;
                 $marge['id'] = $value->id;
                 $assignment_answer = new AssignmentAnswers();

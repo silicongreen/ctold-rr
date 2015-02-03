@@ -342,6 +342,24 @@ class School extends CActiveRecord
             
         }
         
+        public function getSchoolPaid($paid_school_id)
+        {
+            $criteria = new CDbCriteria(); 
+            $criteria->select = "id";
+            $criteria->compare("paid_school_id",$paid_school_id);
+            $schools = $this->find($criteria);
+           
+           
+            if($schools)
+            {
+               return $schools->id;
+            } 
+            return false;
+            
+           
+            
+        }
+        
         public function getSchoolNotPaid($term="")
         {
             $criteria = new CDbCriteria(); 

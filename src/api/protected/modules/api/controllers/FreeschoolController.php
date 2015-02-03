@@ -23,7 +23,7 @@ class FreeschoolController extends Controller
     {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('getbanner','create','assign','getschool'),
+                'actions' => array('getbanner','create','assign','getschool','getassignschool'),
                 'users' => array('*'),
             ),
             array('deny', // deny all users
@@ -43,7 +43,33 @@ class FreeschoolController extends Controller
         $school = new School();
         $response['data']['schools'] = $school->getSchoolNotPaid($term);
         $response['status']['code'] = 200;
-        $response['status']['msg'] = "SCHOOL_SAVED";
+        $response['status']['msg'] = "SCHOOL_DATA";
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    }
+    public function actionGetAssignSchool()
+    {
+        $paid_school_id = Yii::app()->request->getPost('paid_school_id');
+        if (!$paid_school_id)
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "BAD_REQUEST";
+        }
+        else
+        {
+            $schoolobj = new School();
+            $previous_school_id = $schoolobj->getSchoolPaid($paid_school_id);
+            $assing = array();
+            if($previous_school_id)
+            {
+                $previous_school = $schoolobj->findByPk($previous_school_id);
+                $assing['id'] = $previous_school->id;
+                $assing['name'] = $previous_school->name;
+            }
+            $response['data']['assing'] = $assing;
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "SCHOOL_DATA";
+        }
         echo CJSON::encode($response);
         Yii::app()->end();
     }
@@ -57,23 +83,39 @@ class FreeschoolController extends Controller
         
         
         
-        if (!$name || !$code || $paid_school_id || !$free_school_id)
+        if (!$name || !$code || !$paid_school_id || !$free_school_id)
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "BAD_REQUEST";
         }
         else
-        {       
+        {   
+            
             $schoolobj = new School();
+            
+            
+            $previous_school_id = $schoolobj->getSchoolPaid($paid_school_id);
+            
+            if($previous_school_id)
+            {
+                $previous_school = $schoolobj->findByPk($previous_school_id);
+                
+                $previous_school->is_paid = 0;
+                $previous_school->code = null;
+                $previous_school->paid_school_id = null;
+                $previous_school->save();
+            }
             
             $school = $schoolobj->findByPk($free_school_id);
            
-            $school->paid_school_id = $paid_school_id;
-            $school->name = $name;
-            $school->code = $code;
-            $school->is_paid = 1;
-            
-            $school->save();
+            if(isset($school->id) && $school->id)
+            {
+                $school->paid_school_id = $paid_school_id;
+                $school->name = $name;
+                $school->code = $code;
+                $school->is_paid = 1;
+                $school->save();
+            }
             $response['status']['code'] = 200;
             $response['status']['msg'] = "SCHOOL_SAVED";
             
@@ -92,7 +134,7 @@ class FreeschoolController extends Controller
         
         
         
-        if (!$name || !$code || $paid_school_id)
+        if (!$name || !$code || !$paid_school_id)
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "BAD_REQUEST";

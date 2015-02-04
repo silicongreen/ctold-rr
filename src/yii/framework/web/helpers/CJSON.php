@@ -109,6 +109,10 @@ class CJSON
 				return str_replace(',','.',(float)$var); // locale-independent representation
 
 			case 'string':
+                                if(mb_detect_encoding(utf8_decode($var))==="UTF-8")
+                                {
+                                    $var = mb_convert_encoding($var, 'cp1252', 'UTF-8');
+                                }        
 				if (($enc=strtoupper(Yii::app()->charset))!=='UTF-8')
 					$var=iconv($enc, 'UTF-8', $var);
 

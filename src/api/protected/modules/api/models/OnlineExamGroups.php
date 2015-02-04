@@ -139,7 +139,7 @@ class OnlineExamGroups extends CActiveRecord
             $criteria->compare('t.is_published', 1);
             $criteria->addCondition("DATE(start_date) <= '".$cur_date."' ");
             $criteria->addCondition("DATE(end_date) >= '".$cur_date."' ");
-            $criteria->addCondition("examgiven.student_id != '".$student_id."' ");
+            //$criteria->addCondition("examgiven.student_id != '".$student_id."' ");
             $criteria->with = array(
                 'questions' => array(
                     'select' => 'questions.id,questions.question,questions.mark,questions.created_at',
@@ -151,7 +151,7 @@ class OnlineExamGroups extends CActiveRecord
                     )
                 ),
                 'examgiven' => array(
-                    'select' => ''
+                    'select' => 'examgiven.student_id'
                 )
             );
             
@@ -175,6 +175,19 @@ class OnlineExamGroups extends CActiveRecord
                        }    
                     }    
                 }
+                
+                if(isset($data['examgiven']) && count($data['examgiven'])>0)
+                {
+                    foreach($data['examgiven'] as $evalue)
+                    {
+                        if($evalue->student_id == $student_id)
+                        {
+                            $assesment_valid = false;
+                            break;
+                        }
+                    }    
+                } 
+                
                 
                 if($assesment_valid)
                 {
@@ -274,6 +287,22 @@ class OnlineExamGroups extends CActiveRecord
                 $i = 0;
                 foreach($data as $value)
                 {
+                   $examGiven = false;
+                   if(isset($value['examgiven']) && count($value['examgiven'])>0)
+                   {
+                       foreach($value['examgiven'] as $evalue)
+                       {
+                           if($evalue->student_id == $student_id)
+                           {
+                               $examGiven = true;
+                               break;
+                           }
+                       }    
+                   } 
+                   if($examGiven)
+                   {
+                       continue;
+                   }
                    $exam_array[$i]['id'] = $value->id;
                    $exam_array[$i]['name'] = $value->name;
                    $exam_array[$i]['start_date'] = $value->start_date;

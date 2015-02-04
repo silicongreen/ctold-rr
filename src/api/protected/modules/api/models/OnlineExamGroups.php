@@ -55,6 +55,8 @@ class OnlineExamGroups extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+                    'questions' => array(self::HAS_MANY, 'OnlineExamQuestions', 'online_exam_group_id'),
+                    'examgiven' => array(self::HAS_MANY, 'OnlineExamAttendances', 'online_exam_group_id')
 		);
 	}
 
@@ -126,5 +128,161 @@ class OnlineExamGroups extends CActiveRecord
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
-	}
+	}       
+        public function getOnlineExam($id,$batch_id,$student_id)
+        {   
+            $cur_date = date("Y-m-d");
+            $criteria = new CDbCriteria();
+            $criteria->select = 't.*';
+            $criteria->compare('t.id', $id);
+            $criteria->compare('t.batch_id', $batch_id);
+            $criteria->compare('t.is_published', 1);
+            $criteria->addCondition("DATE(start_date) <= '".$cur_date."' ");
+            $criteria->addCondition("DATE(end_date) >= '".$cur_date."' ");
+            $criteria->addCondition("examgiven.student_id != '".$student_id."' ");
+            $criteria->with = array(
+                'questions' => array(
+                    'select' => 'questions.id,questions.question,questions.mark,questions.created_at',
+                    'order' => "RAND()",
+                    'with' => array(
+                        "option" => array(
+                            "select" => "option.id,option.option,option.is_answer"
+                        )
+                    )
+                ),
+                'examgiven' => array(
+                    'select' => ''
+                )
+            );
+            
+            
+            $data = $this->find($criteria);
+             
+            
+            
+            $response_array = array();
+            $assesment_valid = false;
+            if($data != NULL)
+            {
+                if(isset($data['questions']) && count($data['questions']>0))
+                {
+                    foreach($data['questions'] as $questions)
+                    {
+                       if(isset($questions['option']) && count($questions['option']>1))
+                       {
+                           $assesment_valid = true;
+                           break;
+                       }    
+                    }    
+                }
+                
+                if($assesment_valid)
+                {
+                    
+                    $response_array['id'] = $data->id;
+                    $response_array['title'] = $data->name;
+                    $response_array['use_time'] = 1;
+                    $response_array['time'] = intval($data->maximum_time);
+                    $response_array['start_date'] = $data->start_date;
+                    $response_array['end_date'] = $data->end_date;
+                    
+                    $response_array['question'] = array();
+                    
+                    $i = 0;
+                    
+                    $total_question = count($data['questions']);
+                    
+                    $time_par_question =  intval($data->maximum_time)*60/$total_question;
+                    
+                    foreach($data['questions'] as $questions)
+                    {
+                        if(isset($questions['option']) && count($questions['option']>1))
+                        {
+                            $q_image = "";
+                            $qimages = Settings::content_images($questions->question);
+                            if(count($qimages)>0)
+                            {
+                                $q_image = $qimages[0];
+                            }    
+                             
+                            $response_array['question'][$i]['id'] = $questions->id;
+                            $response_array['question'][$i]['question'] = Settings::substr_with_unicode($questions->question);
+                            $response_array['question'][$i]['image'] = $q_image;
+                            
+                            $response_array['question'][$i]['mark'] = $questions->mark;
+                            $response_array['question'][$i]['time'] = $time_par_question;
+                            $response_array['question'][$i]['style'] = 1;
+                            $response_array['question'][$i]['created_date'] = $questions->created_at;
+                            
+                            $response_array['question'][$i]['option'] = array();
+                            
+                            $j = 0;
+                            foreach($questions['option'] as $options)
+                            {
+                               $a_image = "";
+                               $images = Settings::content_images($options->option);
+                               if(count($images)>0)
+                               {
+                                  $a_image = $images[0];
+                               }    
+                               
+                               $response_array['question'][$i]['option'][$j]['id'] = $options->id;
+                               $response_array['question'][$i]['option'][$j]['answer'] = Settings::substr_with_unicode($options->option);
+                               $response_array['question'][$i]['option'][$j]['answer_image'] = $a_image;
+                               
+                               $response_array['question'][$i]['option'][$j]['correct'] = $options->is_answer;
+                               
+                               $j++;
+                            } 
+                            
+                            $i++;
+                            
+                        }    
+                    }
+                    
+                    
+                }
+                    
+            }
+            return $response_array;
+            
+        }
+        
+        
+        public function getOnlineExamList($batch_id,$student_id)
+        {
+            $cur_date = date("Y-m-d");
+            $criteria = new CDbCriteria();
+            $criteria->select = 't.id,t.name,t.start_date,t.end_date,t.maximum_time,t.pass_percentage';
+            $criteria->compare('t.batch_id', $batch_id);
+            $criteria->compare('t.is_published', 1);
+            $criteria->addCondition("DATE(start_date) <= '".$cur_date."' ");
+            $criteria->addCondition("DATE(end_date) >= '".$cur_date."' ");
+            $criteria->addCondition("examgiven.student_id != '".$student_id."' ");
+            $criteria->with = array(
+                'examgiven' => array(
+                    'select' => ''
+                )
+            );
+            
+            $data = $this->findAll($criteria);
+            
+            $exam_array = array();
+            
+            if($data)
+            {
+                $i = 0;
+                foreach($data as $value)
+                {
+                   $exam_array[$i]['id'] = $value->id;
+                   $exam_array[$i]['name'] = $value->name;
+                   $exam_array[$i]['start_date'] = $value->start_date;
+                   $exam_array[$i]['end_date'] = $value->end_date;
+                   $exam_array[$i]['maximum_time'] = $value->maximum_time;
+                   $exam_array[$i]['pass_percentage'] = $value->pass_percentage;
+                   $i++;
+                }    
+            } 
+            return $exam_array;
+        }
 }

@@ -176,7 +176,7 @@ class ExamGroups extends CActiveRecord
         $data = $this->with("Exams")->findAll($criteria);
         $data = $this->formatExamCategory($data);
         
-        return (!empty($data)) ? $data : false;
+        return (!empty($data)) ? $data : array();
         
     }
     

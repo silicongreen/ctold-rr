@@ -51,7 +51,6 @@ class HomeworkController extends Controller
                 {
                     
                     $response['data']['current_date'] = date("Y-m-d H:i:s");
-                    $response['data']['higistmark'] = $assignment->assessmentHighistMark($id); 
                     $response['data']['assesment'] = $homework_data;
                     $response['status']['code']      = 200;
                     $response['status']['msg']       = "Data Found";

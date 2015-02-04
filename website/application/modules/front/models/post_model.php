@@ -660,6 +660,29 @@ class Post_model extends DataMapper
         return (count($related_assess) > 0) ? $related_assess : FALSE;
     }
     
+    public function get_assessment_levels($i_assessment_id)
+    {
+        $this->db->select('GROUP_CONCAT( DISTINCT `level`) AS `levels`');
+        $this->db->where("assesment_id", $i_assessment_id);
+
+        $assess_levels = $this->db->get("assessment_question")->row();
+        return (count($assess_levels) > 0) ? $assess_levels->levels : FALSE;
+    }
+    
+    public function get_user_assessment_marks($user_id, $i_assessment_id, $level = 0)
+    {
+        $this->db->select('mark, id, no_played, time_taken, avg_time_per_ques, level, created_date');
+        $this->db->where("user_id", $user_id);
+        $this->db->where("assessment_id", $i_assessment_id);
+        if($level > 0){
+            $this->db->where("level", $level);
+        }
+        
+        $user_assess_mark = $this->db->get("assesment_mark")->result();
+        
+        return (count($user_assess_mark) > 0) ? $user_assess_mark : FALSE;
+    }
+    
     public function get_exclusive_news()
     {
         $arIssueDate = $this->getIssueDate();

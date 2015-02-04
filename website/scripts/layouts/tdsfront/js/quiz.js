@@ -167,7 +167,7 @@ $(document).ready(function(){
         extra_html += cp;
     }
     
-    var pop_up_data =  get_popup_data(key, extra_html);
+    /* var pop_up_data =  get_popup_data(key, extra_html);
     
     $('#assessment-popup-wrapper').css('width', '700px');
     $('.assessment-popup-header-label').html('');
@@ -198,7 +198,7 @@ $(document).ready(function(){
         },
         'padding': 0,
         'margin': 0
-    });
+    }); */
         
     var assessment_next_clicked = 0;
     $(document).off('click').on('click', '#assessment_next', function(){
@@ -245,46 +245,6 @@ $(document).ready(function(){
         });
         
     });
-            
-    /*$(document).on('click', '.assessment-previous', function(){
-            
-        $('.assessment-submit').hide('slow');
-                
-        var current = $(this).parent('.assessment-next-previous').parent('.answer-wrapper').parent('.content-post').parent('.materials_and_byline');
-        var next = current.prev('.materials_and_byline');
-        has_next = next.length;
-                
-        if(has_next > 0) {
-            current.hide('slow', function() {
-                current.attr('style', 'display: none;');
-            });
-            next.show('slow', function(){
-                next.attr('style', 'display: block;');
-                        
-                var set_height = setTimeout(function() {
-                            
-                    if( (next.attr('style').contains('display: block;')) ||(next.attr('style').contains('opacity: 1;')) ) {
-                    
-                        var height = 0;
-                        next.find('.content-post .answer-wrapper ul li').each(function() {
-                                    
-                            if ($(this).height() > $(this).prev().height()) {
-                                height = $(this).height();
-                            } else {
-                                height = $(this).prev().height();
-                            }
-                        });
-                            
-                        next.find('.content-post .answer-wrapper ul li').height(height);
-                    }
-                            
-                    clearTimeout(set_height);
-                            
-                }, 1);
-                        
-            });
-        }
-    });*/
             
     $(document).on('click', '.btn-assessment-submit', function() {
         
@@ -521,6 +481,19 @@ $(document).ready(function(){
         $('.assessment_custom_message').html(pop_up_data.custom_message);
     });
     
+    $(document).on('click', '#start_assessment_play', function(){
+        
+        $('.inner-container').css('background-color', 'rgba(1, 1, 1, 0.45)');
+        $('.inner-container').css('border-radius', '5px');
+        
+        console.log(num_assessments);
+        
+        $('#pre_assessment_details').children('p').eq(1).html('No. of Question&nbsp;: '+num_assessments);
+        
+        $('#icc-quiz-start-play-screen').show('slow');
+        $('#icc-quiz-start-screen').hide('fast');
+    });
+    
     $(document).on('click', '#start_assessment_now', function(){
         
         if($('#assessment_title_span').attr('cp') == 0 ) {
@@ -529,8 +502,11 @@ $(document).ready(function(){
         
         var ques_time = get_ques_time(0);
         time_up = false;
-        $.fancybox.close();
         clock.setTime(ques_time);
+        
+        $('#icc-quiz-content').show('slow');
+        $('#icc-quiz-start-play-screen').hide('fast');
+        
         clock.start();
     });
     

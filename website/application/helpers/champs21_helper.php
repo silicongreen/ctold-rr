@@ -1003,7 +1003,7 @@ if(!function_exists('get_rand_images')){
 
 if( !function_exists("get_assessment"))
 {
-    function get_assessment($assesment_id, $user_id = 0, $webview = 1)
+    function get_assessment($assesment_id, $user_id = 0, $webview = 1, $level = 0, $type = 0)
     {
         $CI = &get_instance();
         
@@ -1012,6 +1012,14 @@ if( !function_exists("get_assessment"))
         
         if($user_id > 0) {
             $fields_string .= "&user_id=" . $user_id;
+        }
+        
+        if($level > 0) {
+            $fields_string .= "&level=" . $level;
+        }
+        
+        if($type > 0) {
+            $fields_string .= "&type=" . $type;
         }
         
         //start curl

@@ -4,9 +4,38 @@ header.champs-header {
 .cann_play{
     color: #DC3131;
 }
-#start_assessment_now {
-    float: left;
-    width: 49%;
+.score-board-summary {
+    background: url("/styles/layouts/tdsfront/image/quiz-score-board.png") no-repeat scroll 0 0 / 80% 100% rgba(0, 0, 0, 0);
+    min-height: 400px;
+    margin-top: 40px;
+}
+.score-board-header{
+    color: #fff;
+    font-size: 30px;
+    padding: 20px 0 0;
+    text-align: center;
+    text-shadow: 1px 1px 0.5px #ddd;
+    width: 80%;
+}
+.score-board-summary-text{
+    margin-top: 50px;
+    padding: 10px 10px 15px 40px;
+    width: 80%;
+}
+#icc-quiz-content {
+    display: none;
+}
+#icc-quiz-start-play-screen {
+    display: none;
+}
+.icc-quiz-play-2 {
+    background: url("/styles/layouts/tdsfront/image/quiz-play-2.png") no-repeat scroll 0 0 / 80% 100% rgba(0, 0, 0, 0);
+    border: medium none;
+    min-height: 60px;
+    width: 60%;
+}
+.icc-quiz-play-2:hover {
+    background: url("/styles/layouts/tdsfront/image/quiz-play-2-hover.png") no-repeat scroll 0 0 / 80% 100% rgba(0, 0, 0, 0);
 }
 #full_leader_board {
     float: right;
@@ -47,6 +76,7 @@ header.champs-header {
 }
 .assessment-popup-btn-wrapper{
     text-align: center;
+    width: 80%;
 }
 #assessment_topic{
     color: #FB3C2D;
@@ -436,7 +466,6 @@ header.champs-header {
     text-align: center;
 }
 #pre_assessment_details{
-    float: left;
     padding-left: 5px;
     width: 35%;
 }
@@ -537,6 +566,12 @@ header.champs-header {
     text-align: center;
 }
 /* Assessment Leader summary */
+
+/* Fancybox */
+.fancybox-close {
+    display: none;
+}
+/* Fancybox */
 
 
 @media all and (min-width: 319px) and (max-width: 479px){

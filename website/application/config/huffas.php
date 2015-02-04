@@ -29,7 +29,7 @@ $config[ 'api_index' ] = array('index','inner','inner-popular');
 $config[ 'assessment' ] = array(
     'types' => array(
         1 => 'Assessment',
-        2 => 'Quiz',
+        2 => 'ICC Quiz',
     ),
     'levels' => array(
         0 => 'Common',

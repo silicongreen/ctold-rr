@@ -1024,11 +1024,15 @@ class home extends MX_Controller {
     function process_post_view( $i_category_id, $obj_post_data, $b_layout = true)
     {
         $this->load->config("huffas");
+        $obj_post = new Post_model();
+        
         //TAKE THE GOOD READ FOLDER IN CASE USER LOGIN
         $obj_post_data->good_read_single = "";
         $obj_post_data->attempt = FALSE;
+        $user_played_levels = array();
+        
         if (free_user_logged_in() )
-        {            
+        {
             $this->load->model("user_folder");
             $i_user_id = get_free_user_session("id");
             $ar_user_folder = $this->user_folder->get_user_good_read_folder($i_user_id);
@@ -1060,6 +1064,15 @@ class home extends MX_Controller {
                 
             }
             
+            /* User Assessment Data */
+            $obj_post_data->assess_user_mark = $obj_post->get_user_assessment_marks($i_user_id, $obj_post_data->assessment_id);
+            
+            foreach($obj_post_data->assess_user_mark as $user_marks) {
+                $user_played_levels[] = $user_marks->level;
+            }
+            
+            /* User Assessment Data */
+            
         }
         /**
          * Get Category and Sub-category first for a single post
@@ -1089,7 +1102,6 @@ class home extends MX_Controller {
         
         
         $this->load->model('post','model');
-        $obj_post = new Post_model();    
         //NOW GET ALL CATEGORY FOR THE POST
         if ( isset($obj_post_data->post_id) )
         {
@@ -1192,6 +1204,18 @@ class home extends MX_Controller {
         $related_news = $obj_post->get_related_news($obj_post_data->post_id);
         
         $assessment = $obj_post->get_related_assessment($obj_post_data->assessment_id);
+        $assessment_levels = $obj_post->get_assessment_levels($obj_post_data->assessment_id);
+        
+        $ar_assessment_levels = explode(',', $assessment_levels);
+        $ar_playable_levels = array();
+        
+        $obj_post_data->assessment_has_levels = FALSE;
+        
+        if($assessment_levels > 0) {
+            $obj_post_data->assessment_has_levels = TRUE;
+            $obj_post_data->next_level = min(array_diff($ar_assessment_levels, $user_played_levels));
+        }
+        
         $obj_post_data->has_assessment = FALSE;
         
         $data['all_attachment'] = $obj_post->get_related_attach($obj_post_data->post_id);
@@ -1206,6 +1230,7 @@ class home extends MX_Controller {
         if($assessment) {
             $obj_post_data->has_assessment = TRUE;
             $obj_post_data->assessment = $assessment;
+            $obj_post_data->assessment_levels = $assessment_levels;
             $obj_post_data->go_to_assessment = $this->config->config['go_to_assessment'];
         }
         
@@ -3393,6 +3418,12 @@ class home extends MX_Controller {
         
         $str_assesment = $this->uri->segment(2);
         $str_post = $this->uri->segment(3);
+        $str_level = $this->uri->segment(4);
+        if($str_level){
+            $str_level = $str_level;
+        } else {
+            $str_level = 0;
+        }
         
         $ar_assessment = explode('-', $str_assesment);
         $post_id = $ar_assessment[count($ar_assessment) - 2];
@@ -3408,7 +3439,7 @@ class home extends MX_Controller {
         }
         
         $data['post_uri'] = $str_post;
-        $assessment = get_assessment($assesment_id, $user_id);
+        $assessment = get_assessment($assesment_id, $user_id, 1, $str_level);
         
         if(!property_exists($assessment->assesment, 'id')) {
             

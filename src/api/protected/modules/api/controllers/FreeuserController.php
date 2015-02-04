@@ -365,6 +365,9 @@ class FreeuserController extends Controller
         $webview = Yii::app()->request->getPost('webview');
         $user_id = Yii::app()->request->getPost('user_id');
         $limit = Yii::app()->request->getPost('limit');
+        $type = Yii::app()->request->getPost('type');
+        $level = Yii::app()->request->getPost('level');
+        
         if (!$assesment_id )
         {
             $response['status']['code'] = 400;
@@ -416,9 +419,10 @@ class FreeuserController extends Controller
             $response['data']['current_date'] = date("Y-m-d H:i:s");
             $response['data']['last_played'] = $last_played;
             $response['data']['can_play'] = $can_play;
-            $response['data']['score_board'] = $cmark->getTopMark($assesment_id,$limit); 
+            $response['data']['score_board'] = $cmark->getTopMark($assesment_id, $limit); 
             $response['data']['higistmark'] = $cmark->assessmentHighistMark($assesment_id); 
-            $response['data']['assesment'] = $assesmentObj->getAssessment($assesment_id,$webview);
+            $response['data']['assesment'] = $assesmentObj->getAssessment($assesment_id, $webview, $type, $level);
+            $response['data']['assesment']['levels'] = $assesmentObj->getAssessmentLevels($assesment_id);
             $response['data']['assesment']['higistmark'] = $response['data']['higistmark'];
             $response['status']['code'] = 200;
             $response['status']['msg'] = "success";

@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="<?php echo base_url('scripts/FlipClock/compiled/flipclock.css') ?>">
-<link rel="stylesheet" href="<?php echo base_url('styles/layouts/tdsfront/css/assessment.css') ?>">
+<link rel="stylesheet" href="<?php echo base_url('styles/layouts/tdsfront/css/quiz.css') ?>">
 <div style="width: 77%; min-height:250px;" class="container">
 
     <?php if (free_user_logged_in()) { ?>
@@ -88,18 +88,6 @@
                                 } ?>
                             </ul>
 
-                            <!--                            <div class="assessment-next-previous col-lg-2">
-                            
-                                                            <div class="assessment-previous">
-                                                                <div class="assessment-previous-arrow"></div>
-                                                            </div>
-                            
-                                                            <div class="assessment-next">
-                                                                <div class="assessment-next-arrow"></div>
-                                                            </div>
-                            
-                                                        </div>-->
-
                         </div>
 
                         <div style="clear: both; height: 2px;"></div>
@@ -113,12 +101,6 @@
             } ?>
 
             <input type="hidden" value="<?php echo $total_mark; ?>" id="total_mark">
-<!--            <div class="assessment-submit col-lg-2">
-                <button type="button" class="red btn-assessment-submit">
-                    Submit
-                </button>
-            </div>-->
-
             <hr> 
 
 
@@ -163,26 +145,6 @@
 </div>
 
 <div class="assessment-popup-btn-wrapper-explanation" style="display: none;">
-    <button class="red" type="button" id="assessment_explanation">
-        <span class="clearfix f2">
-            Explanation
-        </span>
-    </button>
-
-    <button class="red nxt-btn" type="button" id="assessment_next">
-        <span class="clearfix f2">
-            Next
-        </span>
-    </button>
-</div>
-
-<div class="assessment-popup-btn-wrapper-explanation" style="display: none;">
-    <button class="red" type="button" id="assessment_explanation">
-        <span class="clearfix f2">
-            Explanation
-        </span>
-    </button>
-
     <button class="red nxt-btn" type="button" id="assessment_next">
         <span class="clearfix f2">
             Next

@@ -170,20 +170,6 @@
         </span>
     </button>
 </div>
-
-<div class="assessment-popup-btn-wrapper-explanation" style="display: none;">
-    <button class="red" type="button" id="assessment_explanation">
-        <span class="clearfix f2">
-            Explanation
-        </span>
-    </button>
-
-    <button class="red nxt-btn" type="button" id="assessment_next">
-        <span class="clearfix f2">
-            Next
-        </span>
-    </button>
-</div>
 <!--   Assessment Pop up     -->
 
 <div id="assess_ladder_board">

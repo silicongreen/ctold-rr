@@ -434,13 +434,13 @@ $(document).ready(function(){
             $('.nxt-btn').addClass('btn-assessment-submit');
         }
         
-        var assess_summary = populate_assessment_summary();
-        var assess_summary_table = '<div class="assess_summary_wrapper" id="assess_summary">' + assess_summary + '</div>';
-        var user_assess_scroe_html = '<p class="f2" style="color: #999; font-size: 30px; font-weight: 900; letter-spacing: 3px; text-align: center;">YOUR SCORE IS</p><p style="color: #000; font-size: 70px; font-weight: 900; letter-spacing: -1; margin: 35px 0; text-align: center; "> '+ user_score + ' / ' + $('#total_mark').val() + '</p>';
+//        var assess_summary = populate_assessment_summary();
+//        var assess_summary_table = '<div class="assess_summary_wrapper" id="assess_summary">' + assess_summary + '</div>';
+        var user_assess_scroe_html = '<p class="f2" style="color: #999; font-size: 30px; font-weight: 900; letter-spacing: 3px; text-align: center;">YOUR SCORE IS</p><p class="f2" style="color: #000; font-size: 70px; font-weight: 900; letter-spacing: -1; margin: 35px 0; text-align: center; "> '+ user_score + ' / ' + $('#total_mark').val() + '</p>';
         
-        var assess_summary_html = user_assess_scroe_html + assess_summary_table;
+        var assess_summary_html = user_assess_scroe_html;
         
-        var btn_html = $('.assessment-popup-btn-wrapper-explanation').children().eq(1);
+        var btn_html = $('.assessment-popup-btn-wrapper-explanation').children().eq(0);
         var pop_up_data =  get_popup_data(key, assess_summary_html);
         
         $('#assessment-popup-wrapper').css('width', '100%');
@@ -461,6 +461,7 @@ $(document).ready(function(){
         $.fancybox({
             'content' : html_expl_nxt_popup,
             'width': '75%',
+            'height': 'auto',
             'transitionIn': 'fade',
             'transitionOut': 'fade',
             'openEffect': 'elastic',
@@ -664,12 +665,12 @@ function get_popup_data(key, explanation){
         'assess_wrong' : {
             'icon' : 'assessment_popup.png',
             'header_label' : 'Quiz',
-            'custom_message' : '<p class="f2" style="text-align: center;">Oops! Wrong answer.</p>'
+            'custom_message' : ''
         },
         'assess_correct' : {
             'icon' : 'assessment_popup.png',
             'header_label' : 'Quiz',
-            'custom_message' : '<p class="f2" style="text-align: center;">Congratulations! You got it right.</p>'
+            'custom_message' : ''
         },
         'assessment_score' : {
             'icon' : 'assessment_popup.png',

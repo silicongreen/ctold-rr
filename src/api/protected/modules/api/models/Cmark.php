@@ -52,11 +52,16 @@ class Cmark extends CActiveRecord
         }
          
     }
-    public function getTopMark($id, $limit = 100)
+    public function getTopMark($id, $limit = 100, $user_id = NULL)
     {
         $criteria = new CDbCriteria();
-        $criteria->select = 't.mark,t.created_date,t.time_taken,t.no_played';
+        $criteria->select = 't.mark,t.user_id,t.level,t.created_date,t.time_taken,t.no_played';
         $criteria->compare('assessment_id', $id);
+        
+        if(!empty($user_id) && ($user_id > 0)) {
+            $criteria->compare('t.user_id', $user_id);
+        }
+        
         $criteria->order = "t.mark DESC,t.time_taken ASC,t.no_played ASC, t.avg_time_per_ques ASC, t.created_date ASC";
         $criteria->limit = $limit;
         $criteria->with = array(
@@ -112,6 +117,8 @@ class Cmark extends CActiveRecord
                 }
                 
                 $response_array[$i]['user_name'] = $user_name;
+                $response_array[$i]['user_id'] = $value->user_id;
+                $response_array[$i]['level'] = $value->level;
                 $response_array[$i]['school'] = $school;
                 $response_array[$i]['profile_image'] = $image;
                 $response_array[$i]['pid'] = 0;
@@ -196,14 +203,19 @@ class Cmark extends CActiveRecord
         return $response_array;
     }
 
-    public function getUserMarkAssessment($user_id, $assessment_id)
+    public function getUserMarkAssessment($user_id, $assessment_id, $level = NULL)
     {
         $criteria = new CDbCriteria();
         $criteria->select = 't.mark,t.id,t.no_played,t.time_taken,t.avg_time_per_ques,t.created_date';
         $criteria->compare('t.user_id', $user_id);
         $criteria->compare('t.assessment_id', $assessment_id);
-
-        $data = $this->find($criteria);
+        
+        if(empty($level)) {
+            $data = $this->find($criteria);
+        } else {
+            $data = $this->findAll($criteria);
+        }
+        
 
         if ($data != NULL)
         {

@@ -3453,6 +3453,24 @@ class home extends MX_Controller {
                 $data['can_play'] = false;
                 $data['last_played'] = false;
             } else {
+                
+                $obj_post = new Post_model();
+                
+                $assessment->assesment->assess_user_mark = $obj_post->get_user_assessment_marks($user_id, $assesment_id);
+            
+                foreach($assessment->assesment->assess_user_mark as $user_marks) {
+                    $user_played_levels[] = $user_marks->level;
+                }
+                
+                $ar_assessment_levels = explode(',', $assessment->assesment->levels);
+                
+                $assessment->assesment->assessment_has_levels = FALSE;
+                
+                if($assessment->assesment->levels > 0) {
+                    $assessment->assesment->assessment_has_levels = TRUE;
+                    $assessment->assesment->next_level = min(array_diff($ar_assessment_levels, $user_played_levels));
+                }
+                
                 $data['assessment'] = $assessment->assesment;
                 $data['score_board'] = $assessment->score_board;
                 $data['can_play'] = $assessment->can_play;

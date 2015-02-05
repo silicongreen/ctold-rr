@@ -22,9 +22,9 @@
     <div style="padding: 5px 25px 0 25px;" class="sports-inner-news yesPrint">    
         <div style="float:left;">
             <a href="<?php echo '#'; ?>">
-<!--            <a href="<?php //echo create_link_url(sanitize('assessment'));  ?>">-->
+<!--            <a href="<?php //echo create_link_url(sanitize('assessment'));   ?>">-->
                 <h1 style="color:#93989C;" class="title noPrint f2">
-                    Quiz
+                    &nbsp;
                 </h1>
             </a>
         </div>
@@ -32,29 +32,30 @@
     </div>
 
     <div style="margin: 10px 20px;" class="inner-container">
-        
+
         <div id="icc-quiz-start-screen">
-            
-            <div class="assessment-popup-btn-wrapper">
-                <button class="red" type="button" id="start_assessment_play">
-                    <span class="clearfix f2">
-                        Play
-                    </span>
-                </button>
+
+            <div class="start_assessment_play_wrapper assessment-popup-btn-wrapper">
+                <button type="button" id="start_assessment_play"></button>
             </div>
-            
+
+            <div class="icc-quiz-start-screen-text">
+                <p class="f2">The ICC Cricket World Cup. The stage for greatest batsman, bowler, all rounders, wicket-keepers...and quizzers.<br />
+                    Sign in now for a chance to grab the spotlight.</p>
+            </div>
+
         </div>
-        
+
         <div id="icc-quiz-start-play-screen">
-            
+
             <div id="pre_assessment_details">
-                
+
                 <div class="score-board-summary">
-                    
+
                     <div class="score-board-header f2">
                         Today's Quiz
                     </div>
-                    
+
                     <div class="score-board-summary-text">
                         <p class="f2"></p>
                         <p class="f2">Total Score</p>
@@ -62,28 +63,117 @@
                         <p class="f2">Quiz Time&nbsp;: <?php echo (!empty($assessment->use_time) ) ? $assessment->time : 0; ?> Minute</p>
                         <p class="f2">Total Played&nbsp;: <?php echo (!empty($assessment->played) ) ? $assessment->played : 0; ?></p>
                     </div>
-                    
+
                     <div class="assessment-popup-btn-wrapper">
                         <button class="icc-quiz-play-2" type="button" id="start_assessment_now"></button>
                     </div>
 
                 </div>
 
-                
+
+            </div>
+
+            <div id="leader_board">
+                <div class="individual">
+                    <div class="leader_board_header f2">
+                        Top Player
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="leader_board_content">
+                        <ul>
+                            <?php foreach ($score_board as $sb) { ?>
+                                <li><span class="user_name f5"><?php echo $sb->user_name; ?></span>&nbsp;<span class="mark f5"><?php echo $sb->mark; ?></span></li>
+                            <?php } ?>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="school">
+                    <div class="leader_board_header f2">Top School</div>
+                    <div class="clearfix"></div>
+                    <div class="leader_board_content">
+                        <ul>
+                            <?php foreach ($score_board as $sb) { ?>
+                                <li><span class="user_name f5"><?php echo $sb->user_name; ?></span>&nbsp;<span class="mark f5"><?php echo $sb->mark; ?></span></li>
+                            <?php } ?>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="icc-quiz-game-over">
+            <div class="icc-quiz-game-over-header f2">Game Over</div>
+            
+            <div class="score-board-summary-wrapper">
+                <div class="score-board-summary">
+
+                    <div class="score-board-header f2">
+                        Your Score Today
+                    </div>
+
+                    <div class="score-board-summary-text">
+                        <?php
+                            $ar_assess_levels = explode(',', $assessment->levels);
+                            foreach ($ar_assess_levels as $level) { ?>
+                                <p class="f2">Stage <?php echo $level; ?> : 
+                                    <?php
+                                        $score = 0;
+                                        $str_level_status = 'Play Again';
+                                        if($level > $assessment->next_level) {
+                                            $str_level_status = 'Locked';
+                                        }
+                                        else if($level == $assessment->next_level) {
+                                            $str_level_status = 'Play Now';
+                                            $score = '';
+                                        }
+                                    ?>
+                                    <?php echo $score; ?>
+                                    <span class="level-status"><?php echo $str_level_status; ?></span>
+                                </p>
+                        <?php } ?>
+                    </div>
+
+                    <div class="assessment-popup-btn-wrapper"></div>
+
+                </div>
             </div>
             
-            <div id="leader_board">
-                
+            
+            <div class="score-board-summary-wrapper">
+                <div class="grand-score-board-summary">
+
+                    <div class="grand-score-board-header f2">
+                        Your Total Score
+                    </div>
+
+                    <div class="grand-score-board-summary-text f2">
+                        <?php echo $assessment->total_score; ?>
+                    </div>
+
+                    <div class="score-add-to-school f2">Add score to your school   </div>
+                    <div class="school-position f2">Your schools's position</div>
+                    <div class="invite-friends f5">
+                        <img src="/styles/layouts/tdsfront/image/icc-quiz-invite.png">
+                        <p>Invite friends</p>
+                        <p>to play</p>
+                    </div>
+
+                </div>
+            </div>
+            
+            <div class="replay-wrapper">
+                <img src="/styles/layouts/tdsfront/image/icc-quiz-play.png">
             </div>
             
         </div>
-        
+
         <div id="icc-quiz-content">
-            <div class="col-md-9">
+            <div class="col-md-9" style="display: none;">
                 <h1 data="<?php echo $assessment->id; ?>" style="font-size: 30px;" class="f2" id="assessment_title">
                     <span id="assessment_topic"><?php echo (!empty($assessment)) ? $assessment->topic : 'No Assessment'; ?></span> <span id="assessment_title_span" lpd="<?php echo (!$last_played) ? 'Not Available' : date("M j, y, g:i A", strtotime($last_played)); ?>" cp="<?php echo (!$can_play) ? '0' : '1'; ?>"><?php echo (!empty($assessment)) ? $assessment->title : 'No Assessment'; ?></span>
                 </h1>
-    <!--            <div class="by_line">By <i class="f4">Jobayer Ahmed</i> <span class="f5">23 Hours ago</span></div>-->
                 <div style="clear: both;"></div>
             </div>
 
@@ -91,9 +181,9 @@
                 <div class="clock"></div>
             </div>
 
-            <div class="clearfix"></div>
+            <!--            <div class="clearfix"></div>-->
 
-            <div class="materials_and_byline_wrapper">
+            <div class="ques_id">
                 <?php
                 $i = 0;
                 $total_mark = 0;
@@ -112,8 +202,6 @@
                             </h5>
                         </div>
 
-                        <div class="clearfix"></div>
-
                         <div id="content" class="content-post">
                             <div class="answer-wrapper">
                                 <ul explanation="<?php echo (!empty($question->explanation)) ? $question->explanation : ''; ?>" time="<?php echo $question->time; ?>">
@@ -126,7 +214,7 @@
                                         ?>
                                         <li data="<?php echo $option->id; ?>" <?php echo $li_style; ?> option="<?php echo $option->correct; ?>" mark="<?php echo $question->mark; ?>">
                                             <div class="opt-wrapper f2">
-                                                <div class="opt-num f2"><?php echo ucfirst(get_alphabets($j)); ?></div>
+                                                <div class="opt-num f2"><?php echo ucfirst(get_alphabets($j)); ?>.</div>
                                                 <div class="opt-ans f2"><?php echo $option->answer_webview; ?></div>
                                             </div>
                                         </li>
@@ -147,11 +235,10 @@
                 } ?>
 
                 <input type="hidden" value="<?php echo $total_mark; ?>" id="total_mark">
-                <hr> 
 
             </div>
         </div>
-        
+
     </div>
 
 </div>

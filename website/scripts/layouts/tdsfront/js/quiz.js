@@ -379,10 +379,14 @@ $(document).ready(function(){
         var key = $(this).attr('data');
         
         $('.assessment-popup-btn-wrapper').html('');
+        $('.assessment-popup-btn-wrapper').css('padding-left', '0');
         
         $('.nxt-btn').removeClass('show-assessment-score');
-        $('.nxt-btn span').text('Save Score');
+        $('.nxt-btn').removeClass('red');
+        $('.nxt-btn span').text('Save');
         $('.nxt-btn').removeAttr('id');
+        
+        $('.nxt-btn').addClass('purple');
         
         get_user_score(total_time_taken);
         
@@ -398,10 +402,16 @@ $(document).ready(function(){
 //        var assess_summary_table = '<div class="assess_summary_wrapper" id="assess_summary">' + assess_summary + '</div>';
         var user_assess_scroe_html = '<p class="f2" style="color: #999; font-size: 30px; font-weight: 900; letter-spacing: 3px; text-align: center;">YOUR SCORE IS</p><p class="f2" style="color: #000; font-size: 70px; font-weight: 900; letter-spacing: -1; margin: 35px 0; text-align: center; "> '+ user_score + ' / ' + $('#total_mark').val() + '</p>';
         
-        var assess_summary_html = user_assess_scroe_html;
+//        var assess_summary_html = user_assess_scroe_html;
         
         var btn_html = $('.assessment-popup-btn-wrapper-explanation').children().eq(0);
-        var pop_up_data =  get_popup_data(key, assess_summary_html);
+        $('.assessment-popup-btn-wrapper').html(btn_html);
+        
+        $('#icc-quiz-content').hide('fast');
+        $('.icc-quiz-game-over').show('slow');
+        $.fancybox.close();
+        
+        /* var pop_up_data =  get_popup_data(key, assess_summary_html);
         
         $('#assessment-popup-wrapper').css('width', '100%');
         
@@ -413,8 +423,6 @@ $(document).ready(function(){
         
         $('.assessment_custom_message').html('');
         $('.assessment_custom_message').html(pop_up_data.custom_message);
-        
-        $('.assessment-popup-btn-wrapper').html(btn_html);
         
         var html_expl_nxt_popup = $('#assessment-popup-fancy').html();
 
@@ -436,7 +444,7 @@ $(document).ready(function(){
             },
             'padding': 0,
             'margin': 0
-        });
+        }); */
         
     });
     
@@ -485,6 +493,7 @@ $(document).ready(function(){
         
         $('.inner-container').css('background-color', 'rgba(1, 1, 1, 0.45)');
         $('.inner-container').css('border-radius', '5px');
+        $('.inner-container').css('min-height', '530px');
         
         console.log(num_assessments);
         
@@ -499,6 +508,8 @@ $(document).ready(function(){
         if($('#assessment_title_span').attr('cp') == 0 ) {
             return false;
         }
+        
+        $('.inner-container').css('background-color', 'rgba(1, 1, 1, 0.65)');
         
         var ques_time = get_ques_time(0);
         time_up = false;

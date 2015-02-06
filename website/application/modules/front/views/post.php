@@ -332,7 +332,7 @@
                                     $str_level = '/' . $next_level;
                                 }
                                 
-                                $assess_url = base_url('quiz/' . sanitize($assessment->title) . '-' . $assessment->id) . $_SERVER['REQUEST_URI'] . $str_level;
+                                $assess_url = base_url('quiz/' . sanitize($assessment->title) . '-' . $assessment->type . '-' . $assessment->id) . $_SERVER['REQUEST_URI'] . $str_level;
                             } else {
                                 $assess_url = '#';
                             }

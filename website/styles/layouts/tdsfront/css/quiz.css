@@ -13,7 +13,7 @@ header.champs-header {
 .score-board-summary {
     background: url("/styles/layouts/tdsfront/image/quiz-score-board.png") no-repeat scroll 0 0 / 80% 100% rgba(0, 0, 0, 0);
     min-height: 400px;
-    margin-top: 40px;
+    margin-top: 0;
 }
 .score-board-header{
     color: #fff;
@@ -76,7 +76,11 @@ header.champs-header {
     width: 100%;
 }
 .icc-quiz-game-over-header {
-
+    color: #fff;
+    font-size: 50px;
+    margin: 5px auto 0;
+    text-align: center;
+    width: 50%;
 }
 .score-board-summary-wrapper {
     float: left;
@@ -84,7 +88,7 @@ header.champs-header {
     width: 35%;
 }
 .grand-score-board-summary {
-    margin-top: 40px;
+    margin-top: 0;
     text-align: center;
 }
 .grand-score-board-header {
@@ -164,7 +168,7 @@ header.champs-header {
 }
 .replay-wrapper {
     float: left;
-    margin-top: 120px;
+    margin-top: 60px;
     padding-left: 5px;
     text-align: center;
     width: 30%;

@@ -249,13 +249,40 @@ $(document).ready(function(){
     $(document).on('click', '.btn-assessment-submit', function() {
         
         var assessment = get_user_score(total_time_taken);
+        var cur_level = 0;
+        if($('#current-level').length > 0) {
+            cur_level = $('#current-level').attr('data');
+        }
         
         $.ajax({
             url : $('#base_url').val() + 'save_assessment',
             type : 'post',
             dataType : 'json',
             data : {
-                data : assessment
+                data : assessment, cur_level : cur_level
+            },
+            success : function(data) {
+                console.log(data)
+            },
+            error : function() {}
+        });
+           
+    });
+    
+    $(document).on('click', '.score-add-to-school', function() {
+        
+        var assessment = get_user_score(total_time_taken);
+        var cur_level = 0;
+        if($('#current-level').length > 0) {
+            cur_level = $('#current-level').attr('data');
+        }
+        
+        $.ajax({
+            url : $('#base_url').val() + 'save_assessment',
+            type : 'post',
+            dataType : 'json',
+            data : {
+                data : assessment, add_to_school : true, cur_level : cur_level
             },
             success : function(data) {
                 console.log(data)
@@ -398,9 +425,26 @@ $(document).ready(function(){
             $('.nxt-btn').addClass('btn-assessment-submit');
         }
         
+        var cur_level = 0;
+        if($('#current-level').length > 0) {
+            cur_level = $('#current-level').attr('data');
+        }
+        var next_level = parseInt(cur_level) + 1;
+        
+        $('#level-' + cur_level).text(user_score);
+        $('#level-' + cur_level).parent('p').find('a span').text('Play Again');
+        
+        if($('#level-' + next_level).length > 0){
+            var cur_url = $('#level-' + next_level).parent('p').find('a').attr('href');
+            var next_url = cur_url + '/' + next_level;
+            
+            $('#level-' + next_level).parent('p').find('a').attr('href', next_url);
+            $('#level-' + next_level).parent('p').find('a span').text('Play Now');
+        }
+        
 //        var assess_summary = populate_assessment_summary();
 //        var assess_summary_table = '<div class="assess_summary_wrapper" id="assess_summary">' + assess_summary + '</div>';
-        var user_assess_scroe_html = '<p class="f2" style="color: #999; font-size: 30px; font-weight: 900; letter-spacing: 3px; text-align: center;">YOUR SCORE IS</p><p class="f2" style="color: #000; font-size: 70px; font-weight: 900; letter-spacing: -1; margin: 35px 0; text-align: center; "> '+ user_score + ' / ' + $('#total_mark').val() + '</p>';
+//        var user_assess_scroe_html = '<p class="f2" style="color: #999; font-size: 30px; font-weight: 900; letter-spacing: 3px; text-align: center;">YOUR SCORE IS</p><p class="f2" style="color: #000; font-size: 70px; font-weight: 900; letter-spacing: -1; margin: 35px 0; text-align: center; "> '+ user_score + ' / ' + $('#total_mark').val() + '</p>';
         
 //        var assess_summary_html = user_assess_scroe_html;
         

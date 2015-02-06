@@ -405,12 +405,18 @@ class FreeuserController extends Controller
             if($user_id)
             {
                 $objcmark = new Cmark();
-                $objassessment = $objcmark->getUserMarkAssessment($user_id,$assesment_id, $level);
+                $objassessment = $objcmark->getUserMarkAssessment($user_id, $assesment_id, $type);
+                
+                $user_score_board = array();
                 
                 if(is_array($objassessment)) {
                     
+                    $i = 1;
                     foreach ($objassessment as $assessment) {
+                        $user_score_board[$assessment->level]['user_id'] = $assessment->user_id;
+                        $user_score_board[$assessment->level]['mark'] = $assessment->mark;
                         $total_score += $assessment->mark;
+                        $i++;
                     }
                 }
                 
@@ -430,10 +436,10 @@ class FreeuserController extends Controller
             $response['data']['last_played'] = $last_played;
             $response['data']['can_play'] = $can_play;
             $response['data']['score_board'] = $cmark->getTopMark($assesment_id, $limit); 
-            $response['data']['user_score_board'] = $cmark->getTopMark($assesment_id, $limit, $user_id); 
             $response['data']['higistmark'] = $cmark->assessmentHighistMark($assesment_id); 
             $response['data']['assesment'] = $assesmentObj->getAssessment($assesment_id, $webview, $type, $level);
             $response['data']['assesment']['levels'] = $assesmentObj->getAssessmentLevels($assesment_id);
+            $response['data']['assesment']['user_score_board'] = $user_score_board;
             $response['data']['assesment']['total_score'] = $total_score;
             $response['data']['assesment']['higistmark'] = $response['data']['higistmark'];
             $response['status']['code'] = 200;

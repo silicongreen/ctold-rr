@@ -3426,7 +3426,7 @@ class home extends MX_Controller {
         }
         
         $ar_assessment = explode('-', $str_assesment);
-        $post_id = $ar_assessment[count($ar_assessment) - 2];
+        $assessment_type = $ar_assessment[count($ar_assessment) - 2];
         $assesment_id = end($ar_assessment);
         $user_id = 0;
         
@@ -3439,7 +3439,7 @@ class home extends MX_Controller {
         }
         
         $data['post_uri'] = $str_post;
-        $assessment = get_assessment($assesment_id, $user_id, 1, $str_level);
+        $assessment = get_assessment($assesment_id, $user_id, 1, $str_level, $assessment_type);
         
         if(!property_exists($assessment->assesment, 'id')) {
             
@@ -3449,6 +3449,7 @@ class home extends MX_Controller {
             
             if ((!$assessment)) {
                 $data['assessment'] = array();
+                $data['score_board'] = array();
                 $data['score_board'] = array();
                 $data['can_play'] = false;
                 $data['last_played'] = false;
@@ -3511,12 +3512,21 @@ class home extends MX_Controller {
         $response = array();
         if(!$this->input->is_ajax_request()){
             $response['saved'] = false;
-            $response['error'] = 'BAD_ASSESSMENT';
+            $response['error'] = 'BAD_REQUEST';
             echo json_encode($response);
             exit;
         }
         
         $data = trim($_POST['data'], ',');
+        
+        $add_to_school = $this->input->post('add_to_school');
+        $cur_level = $this->input->post('cur_level');
+        
+        if($cur_level > 0) {
+            $cur_level = $cur_level;
+        } else {
+            $cur_level = 0;
+        }
         
         $ar_data = explode('_', $data);
         
@@ -3526,6 +3536,11 @@ class home extends MX_Controller {
         
         if(free_user_logged_in()) {
             $user_id = get_free_user_session('id');
+            
+            if($add_to_school == 'true') {
+                $user_school = new User_school();
+                $user_school_data = ($b_mulit_school_join) ? $user_school->get_user_school($user_id, $school_id) : $user_school->get_user_school($user_id);
+            }
         }
         
         if($assessment_config['update_played']['after_finish']){
@@ -3571,7 +3586,12 @@ class home extends MX_Controller {
             $user_id = get_free_user_session('id');
             
             $obj_assessment_mark = new Assesment_mark();
-            $assessment_mark = $obj_assessment_mark->find_assessment_mark($user_id, $assessment_id);
+            $assessment_mark = $obj_assessment_mark->find_assessment_mark($user_id, $assessment_id, $cur_level);
+            
+            if($user_school_data != FALSE) {
+                $obj_assessment_school_mark = new Assessment_school_mark();
+                $assessment_school_mark = $obj_assessment_school_mark->find_assessment_school_mark($user_id, $assessment_id, $cur_level, $user_school_data[0]->school_id);
+            }
             
             $next_play_time = strtotime(date('Y-m-d H:i:s', strtotime($assessment_mark->created_date . "+1 Day")));
             $now = date('Y-m-d H:i:s');
@@ -3582,7 +3602,7 @@ class home extends MX_Controller {
             if( ($now_time < $next_play_time) && $assessment_mark !== FALSE ) {
                 $can_play = FALSE;
             }
-            
+            $can_play = TRUE;
             if($can_play) {
                 
                 if ( ($assessment_mark != false) ) {
@@ -3604,7 +3624,7 @@ class home extends MX_Controller {
                         $ar_lb['avg_time_per_ques'] = number_format($avg_time, 2);
                     }
                     
-                    $this->db->update('assesment_mark', $ar_lb, array('user_id' => $user_id, 'assessment_id' => $assessment_id));
+                    $this->db->update('assesment_mark', $ar_lb, array('user_id' => $user_id, 'assessment_id' => $assessment_id, 'level' => $cur_level));
                     $response['highest_score'] = $user_mark;
 
                 } else {
@@ -3612,6 +3632,7 @@ class home extends MX_Controller {
                     $obj_assessment_mark->user_id = $user_id;
                     $obj_assessment_mark->assessment_id = $assessment_id;
                     $obj_assessment_mark->mark = $user_mark;
+                    $obj_assessment_mark->level = $cur_level;
                     $obj_assessment_mark->created_date = $now;
                     $obj_assessment_mark->time_taken = $ar_data[1];
                     $obj_assessment_mark->avg_time_per_ques = number_format($avg_time, 2);
@@ -3620,6 +3641,42 @@ class home extends MX_Controller {
                     $obj_assessment_mark->save();
                     
                     $response['highest_score'] = $user_mark;
+                }
+                
+                if ( ($assessment_school_mark != false) ) {
+                    
+                    $ar_lb = array(
+                        'created_date' => $now,
+                        'no_played' => $assessment_school_mark->no_played + 1,
+                    );
+
+                    if($user_mark > $assessment_school_mark->mark) {
+                        $ar_lb['mark'] = $user_mark;
+                    }
+
+                    if( (empty($assessment_school_mark->time_taken)) || ($ar_data[1] < $assessment_school_mark->time_taken) ) {
+                        $ar_lb['time_taken'] = $ar_data[1];
+                    }
+
+                    if( (empty($assessment_school_mark->avg_time_per_ques)) || ($avg_time < $assessment_school_mark->avg_time_per_ques) ) {
+                        $ar_lb['avg_time_per_ques'] = number_format($avg_time, 2);
+                    }
+                    
+                    $this->db->update('assesment_mark', $ar_lb, array('user_id' => $user_id, 'assessment_id' => $assessment_id, 'level' => $cur_level));
+
+                } else {
+                    
+                    $obj_assessment_school_mark->user_id = $user_id;
+                    $obj_assessment_school_mark->assessment_id = $assessment_id;
+                    $obj_assessment_school_mark->mark = $user_mark;
+                    $obj_assessment_school_mark->level = $cur_level;
+                    $obj_assessment_school_mark->school_id = $user_school_data[0]->school_id;
+                    $obj_assessment_school_mark->created_date = $now;
+                    $obj_assessment_school_mark->time_taken = $ar_data[1];
+                    $obj_assessment_school_mark->avg_time_per_ques = number_format($avg_time, 2);
+                    $obj_assessment_school_mark->no_played = 1;
+                    
+                    $obj_assessment_school_mark->save();
                 }
                 
                 $response['saved'] = true;

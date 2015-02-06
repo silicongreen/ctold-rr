@@ -114,25 +114,41 @@
                     </div>
 
                     <div class="score-board-summary-text">
+                        
                         <?php
                             $ar_assess_levels = explode(',', $assessment->levels);
+                            $ar_user_score_board = get_object_vars($assessment->user_score_board);
+                            
+                            $uris = explode('/', $_SERVER['REQUEST_URI']);
+                            $cur_level = $uris[count($uris) - 1];
+                        ?>
+                        
+                        <?php
+                            unset($uris[count($uris) - 1]);
+                            
+                            $url = implode('/', $uris);
+                            
                             foreach ($ar_assess_levels as $level) { ?>
                                 <p class="f2">Stage <?php echo $level; ?> : 
+                                    <span id="level-<?php echo $level; ?>"><?php echo ( property_exists($ar_user_score_board[$level], 'mark') ) ? $ar_user_score_board[$level]->mark : 0; ?></span>
                                     <?php
-                                        $score = 0;
-                                        $str_level_status = 'Play Again';
+                                        
                                         if($level > $assessment->next_level) {
                                             $str_level_status = 'Locked';
+                                            $url_level = '';
                                         }
                                         else if($level == $assessment->next_level) {
                                             $str_level_status = 'Play Now';
-                                            $score = '';
+                                            $url_level = '/' . $level;
+                                        } else {
+                                            $str_level_status = 'Play Again';
+                                            $url_level = '/' . $level;
                                         }
                                     ?>
-                                    <?php echo $score; ?>
-                                    <span class="level-status"><?php echo $str_level_status; ?></span>
+                                    <a href="<?php echo base_url($url . $url_level); ?>"><span class="level-status"><?php echo $str_level_status; ?></span></a>
                                 </p>
                         <?php } ?>
+                        <div style="display: none;" id="current-level" data="<?php echo $cur_level; ?>"></div>
                     </div>
 
                     <div class="assessment-popup-btn-wrapper"></div>
@@ -164,7 +180,7 @@
             </div>
             
             <div class="replay-wrapper">
-                <img src="/styles/layouts/tdsfront/image/icc-quiz-play.png">
+                <a href="<?php echo base_url($_SERVER['REQUEST_URI']);?>"><img src="/styles/layouts/tdsfront/image/icc-quiz-play.png"></a>
             </div>
             
         </div>

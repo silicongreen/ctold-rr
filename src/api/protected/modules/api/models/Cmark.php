@@ -203,14 +203,14 @@ class Cmark extends CActiveRecord
         return $response_array;
     }
 
-    public function getUserMarkAssessment($user_id, $assessment_id, $level = NULL)
+    public function getUserMarkAssessment($user_id, $assessment_id, $type = NULL)
     {
         $criteria = new CDbCriteria();
-        $criteria->select = 't.mark,t.id,t.no_played,t.time_taken,t.avg_time_per_ques,t.created_date';
+        $criteria->select = 't.mark,t.id,t.no_played,t.time_taken,t.level,t.user_id,t.avg_time_per_ques,t.created_date';
         $criteria->compare('t.user_id', $user_id);
         $criteria->compare('t.assessment_id', $assessment_id);
         
-        if(empty($level)) {
+        if( empty($type) || $type <= 1) {
             $data = $this->find($criteria);
         } else {
             $data = $this->findAll($criteria);

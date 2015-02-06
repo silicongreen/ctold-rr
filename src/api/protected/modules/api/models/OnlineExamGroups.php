@@ -193,6 +193,7 @@ class OnlineExamGroups extends CActiveRecord
                 {
                     
                     $response_array['id'] = $data->id;
+                    $response_array['pass_percentage'] = intval($data->pass_percentage);
                     $response_array['title'] = $data->name;
                     $response_array['use_time'] = 1;
                     $response_array['time'] = intval($data->maximum_time);

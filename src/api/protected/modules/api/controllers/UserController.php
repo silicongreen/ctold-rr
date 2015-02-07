@@ -453,7 +453,7 @@ class UserController extends Controller {
                     else
                     {
                        $response['data']['free_id'] = "";
-                       $response['data']['user'] = array();
+                       //$response['data']['user'] = array();
                     }    
                     $response['data']['user_type'] = 1;
                     $response['data']['paid_user']['id'] = Yii::app()->user->id;

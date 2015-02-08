@@ -142,7 +142,7 @@ class OnlineExamGroups extends CActiveRecord
             //$criteria->addCondition("examgiven.student_id != '".$student_id."' ");
             $criteria->with = array(
                 'questions' => array(
-                    'select' => 'questions.id,questions.question,questions.mark,questions.created_at',
+                    'select' => 'questions.id,questions.explanation,questions.question,questions.mark,questions.created_at',
                     'order' => "RAND()",
                     'with' => array(
                         "option" => array(
@@ -193,6 +193,7 @@ class OnlineExamGroups extends CActiveRecord
                 {
                     
                     $response_array['id'] = $data->id;
+                    
                     $response_array['pass_percentage'] = intval($data->pass_percentage);
                     $response_array['title'] = $data->name;
                     $response_array['use_time'] = 1;
@@ -221,6 +222,7 @@ class OnlineExamGroups extends CActiveRecord
                              
                             $response_array['question'][$i]['id'] = $questions->id;
                             $response_array['question'][$i]['question'] = Settings::substr_with_unicode($questions->question);
+                            $response_array['question'][$i]['explanation'] = $questions->explanation;
                             $response_array['question'][$i]['image'] = $q_image;
                             
                             $response_array['question'][$i]['mark'] = $questions->mark;

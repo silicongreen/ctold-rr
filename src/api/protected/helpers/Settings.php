@@ -752,7 +752,16 @@ class Settings {
             
             
             if(isset($postValue['postCategories'][0]['category']->name))
-            $post_array['category_name'] = $postValue['postCategories'][0]['category']->name;
+            {
+                if(isset($postValue['postCategories'][0]['category']->display_name) && $postValue['postCategories'][0]['category']->display_name!="")
+                {
+                    $post_array['category_name'] = $postValue['postCategories'][0]['category']->display_name; 
+                }
+                else
+                {    
+                    $post_array['category_name'] = $postValue['postCategories'][0]['category']->name;
+                }
+            }
             
             if(isset($postValue['postCategories'][0]['category']->id))
             $post_array['category_id'] = $postValue['postCategories'][0]['category']->id;
@@ -768,7 +777,14 @@ class Settings {
 
             if (isset($postValue['postCategories'][1]['category']->name))
             {
-                $post_array['second_category_name'] = $postValue['postCategories'][1]['category']->name;
+                if(isset($postValue['postCategories'][1]['category']->display_name) && $postValue['postCategories'][1]['category']->display_name!="")
+                {
+                    $post_array['second_category_name'] = $postValue['postCategories'][1]['category']->display_name; 
+                }
+                else
+                {    
+                    $post_array['second_category_name'] = $postValue['postCategories'][1]['category']->name;
+                }
                 $post_array['second_category_id'] = $postValue['postCategories'][1]['category']->id;
             }
             $post_array['tags'] = array();

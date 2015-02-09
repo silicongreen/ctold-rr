@@ -31,6 +31,7 @@ class Assessment_questions extends DataMapper {
         'question',
         'explanation',
         'mark',
+        'level',
         'style',
         'time',
         'created_date'
@@ -62,6 +63,7 @@ class Assessment_questions extends DataMapper {
             'question' => 'Question',
             'explanation' => 'Explanation',
             'mark' => 'Mark',
+            'level' => 'Level',
             'time' => 'Time',
             'style' => 'style'
         );

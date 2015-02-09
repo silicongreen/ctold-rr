@@ -24,6 +24,7 @@ class Assessments extends DataMapper {
     private $ar_fields = array(
         'id',
         'title',
+        'type',
         'use_time',
         'time',
         'created_date'
@@ -52,6 +53,7 @@ class Assessments extends DataMapper {
 
         return array(
             'title' => 'Title',
+            'type' => 'Type',
             'use_time' => 'Use Time',
             'time' => 'Time'
         );

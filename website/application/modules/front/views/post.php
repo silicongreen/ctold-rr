@@ -326,7 +326,13 @@
                     <div class="inner-container_wrapper">
                         <?php
                             if($go_to_assessment) {
-                                $assess_url = base_url('assessment/' . sanitize($assessment->title) . '-' . $assessment->id) . $_SERVER['REQUEST_URI'];
+                                
+                                $str_level = '';
+                                if($assessment_has_levels) {
+                                    $str_level = '/' . $next_level;
+                                }
+                                
+                                $assess_url = base_url('quiz/' . sanitize($assessment->title) . '-' . $assessment->type . '-' . $assessment->id) . $_SERVER['REQUEST_URI'] . $str_level;
                             } else {
                                 $assess_url = '#';
                             }

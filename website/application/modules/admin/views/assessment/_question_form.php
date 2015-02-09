@@ -42,6 +42,15 @@
                         </fieldset>
                             
                         <fieldset class="label_side top">
+                            <label for="required_field">Level</label>
+                            <div>
+                                <?php echo form_dropdown('level', $level, $question->level); ?>
+                                <div class="required_tag"></div>
+                            </div>
+                        </fieldset>
+
+                            
+                        <fieldset class="label_side top">
                             <label for="required_field">Time (Second)</label>
                             <div>
                                 <input id="time" name="time" value="<?php echo $question->time; ?>" type="text" class="required" minlength="1">

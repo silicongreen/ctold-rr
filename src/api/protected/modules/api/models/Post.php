@@ -414,7 +414,7 @@ class Post extends CActiveRecord
                 'joinType' => "LEFT OUTER JOIN",
                 'with' => array(
                     "category" => array(
-                        "select" => "category.id,category.menu_icon,category.icon,category.name"
+                        "select" => "category.id,category.menu_icon,category.icon,category.name,category.display_name"
                     )
                 )
             ),

@@ -402,12 +402,11 @@ class FreeuserController extends Controller
             $can_play = true;
             $total_score = 0;
             
+            $user_score_board = array();
             if($user_id)
             {
                 $objcmark = new Cmark();
                 $objassessment = $objcmark->getUserMarkAssessment($user_id, $assesment_id, $type);
-                
-                $user_score_board = array();
                 
                 if(is_array($objassessment)) {
                     

@@ -224,7 +224,7 @@
                                     <?php
                                     $j = 0;
 
-                                    $li_style = ($question->style == 1) ? '' : 'style="float: none; width: 90%;"';
+                                    $li_style = ($question->style == 1) ? '' : 'style="float: none; width: 65%;"';
 
                                     foreach ($question->option as $option) {
                                         ?>

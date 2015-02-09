@@ -72,7 +72,7 @@ header.champs-header {
     width: 90%;
 }
 .icc-quiz-game-over {
-    display: none;
+    display: block;
     width: 100%;
 }
 .icc-quiz-game-over-header {
@@ -150,6 +150,7 @@ header.champs-header {
     width: 100px;
 }
 .invite-friends {
+    cursor: pointer;
     margin-left: auto;
     margin-right: auto;
     width: 80%;
@@ -312,6 +313,7 @@ header.champs-header {
     cursor: pointer;
     float: left;
     margin: 10px;
+    min-height: 75px;
     text-align: center;
     width: 33%;
 }
@@ -330,7 +332,7 @@ header.champs-header {
 .opt-wrapper .opt-num {
     float: left;
     font-weight: bold;
-    padding: 2px 0 0;
+    padding: 2px 0 25px;
     width: 50px;
 }
 .opt-wrapper .opt-ans{
@@ -485,6 +487,7 @@ header.champs-header {
 }
 #pre_assessment_details {
     float: left;
+    margin-top: 42px;
     padding-left: 5px;
     width: 35%;
 }
@@ -625,6 +628,86 @@ header.champs-header {
     display: none;
 }
 /* Fancybox */
+
+/* Invite Friends */
+.friends-fb  {
+    background-color: #4862a3;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    color: #fff;
+    cursor: pointer;
+    float: left;
+    margin-right: 5px;
+    padding: 10px 5px;
+    text-align: center;
+    width: 55%;
+}
+.friends-fb:hover {
+    background-color: #ccc;
+    color: #000;
+    transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -webkit-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    -ms-transition: all 0.5s ease;
+}
+.friends-email {
+    background-color: #DC3131;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    color: #fff;
+    cursor: pointer;
+    float: right;
+    margin-right: 5px;
+    padding: 10px 5px;
+    text-align: center;
+    width: 40%;
+}
+.friends-email:hover {
+    background-color: #ccc;
+    color: #000;
+    transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -webkit-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    -ms-transition: all 0.5s ease;
+}
+
+.friends-email-invite {
+    background-color: #DC3131;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-right: auto;
+    margin-left: auto;
+    padding: 10px 5px;
+    text-align: center;
+    width: 50%;
+}
+.friends-email-invite button {
+    background-color: transparent;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    text-align: center;
+    width: 100%;
+}
+.friends-email-invite:hover {
+    background-color: #ccc;
+    color: #000;
+    transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -webkit-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    -ms-transition: all 0.5s ease;
+}
+.friends-email label {
+    
+}
+.friends-email input {
+    
+}
+/* Invite Friends */
 
 
 @media all and (min-width: 319px) and (max-width: 479px){

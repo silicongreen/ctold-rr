@@ -3418,11 +3418,11 @@ class home extends MX_Controller {
         
         $str_assesment = $this->uri->segment(2);
         $str_post = $this->uri->segment(3);
-        $str_level = $this->uri->segment(4);
-        if($str_level){
-            $str_level = $str_level;
+        $assessment_level = $this->uri->segment(4);
+        if($assessment_level){
+            $assessment_level = $assessment_level;
         } else {
-            $str_level = 0;
+            $assessment_level = 0;
         }
         
         $ar_assessment = explode('-', $str_assesment);
@@ -3439,7 +3439,7 @@ class home extends MX_Controller {
         }
         
         $data['post_uri'] = $str_post;
-        $assessment = get_assessment($assesment_id, $user_id, 1, $str_level, $assessment_type);
+        $assessment = get_assessment($assesment_id, $user_id, 1, $assessment_level, $assessment_type);
         
         if(!property_exists($assessment->assesment, 'id')) {
             
@@ -3709,5 +3709,74 @@ class home extends MX_Controller {
         $response['leader_board'] = $assessment_leader_board;
         echo json_encode($response);
         exit;
+    }
+    
+    public function invite_friend_by_email(){
+        
+        $response = array();
+        if(!$this->input->is_ajax_request()){
+            $response['invitation_sent'] = false;
+            $response['error'] = 'Bad Request';
+            echo json_encode($response);
+            exit;
+        }
+        
+        if(free_user_logged_in()) {
+            $user_data = get_free_user_session();
+        }
+        
+        $to_name = $this->input->post('friend_name');
+        $to_email = $this->input->post('friend_email');
+        
+        $ar_email['sender_full_name'] = $user_data['full_name'];
+        $ar_email['sender_email'] = $user_data['email'];
+        $ar_email['to_name'] = $to_name;
+        $ar_email['to_email'] = $to_email;
+        $ar_email['html'] = true;
+        
+        $ar_email['subject'] = 'ICC World Cup 2015 Quiz at Champs21.com';
+        $ar_email['message'] = $this->invite_friend_by_email_body($ar_email);
+        
+        if(send_mail($ar_email)) {
+            $response['invitation_sent'] = TRUE;
+            $response['error'] = 'NO_ERROR';
+        } else {
+            $response['invitation_sent'] = FALSE;
+            $response['error'] = 'invitation not sent. Please try later.';
+        }
+        
+        echo json_encode($response);
+        exit;
+    }
+    
+    private function invite_friend_by_email_body($param) {
+        
+        $message = '<!DOCTYPE HTML>';
+
+        $message .= '<head>';
+        $message .= '<meta http-equiv="content-type" content="text/html">';
+
+        $message .= '<title>ICC World Cup 2015 Quiz at Champs21.com</title>';
+
+        $message .= '<body>';
+
+        if (!empty($param['full_name'])) {
+            $message .= '<p>Hi ' . $param['full_name'] . ',</p>';
+        } else {
+            $message .= '<p>Hi,</p>';
+        }
+
+        $message .= '<p>I have played ICC World Cup 2015 Quiz at Champs21.com. It&#39;s really an amazing experience. You should play too.</p>';
+        $message .= '<p>They are giving very exciting prizes to the winners.</p>';
+        
+        $message .= '<p>Best Regards,</p>';
+        $message .= '<p>&nbsp;</p>';
+        $message .= '<p>&nbsp;</p>';
+        $message .= '<p>' . $ar_email['sender_full_name'] . '</p>';
+        
+        $message .= '</body>';
+        $message .= '</head>';
+        
+        return $message;
     }
 }

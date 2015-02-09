@@ -47,7 +47,7 @@ class champs21assessment_2 extends widget
         if($assessment_config['auto_next'][strtolower($assessment_config['types'][$assessment->type])]){
             $data['b_explanation_popup'] = TRUE;
         }
-//        var_dump($assessment->next_level);exit;
+        
         $data['ci_key'] = $ci_key;
         $data['assessment'] = $assessment;
         $data['score_board'] = $score_board;

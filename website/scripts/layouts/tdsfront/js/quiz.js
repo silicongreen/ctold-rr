@@ -246,6 +246,89 @@ $(document).ready(function(){
         
     });
             
+    $(document).on('click', '#friends-fb', function() {
+        FB.ui({
+            method: 'send',
+//            link: 'http://www.champs21.com' + window.location.pathname
+            link: window.location.href
+        });
+    });
+    
+    $(document).on('submit', 'form#frm-invite_friend', function(event) {
+        
+        event.preventDefault();
+        var formData = new FormData($(this)[0]);
+        
+        $.ajax({
+            url : $('#base_url').val() + 'invite_friend_by_email',
+            type: 'POST',
+            data: formData,
+            dataType: 'json',
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success : function(data) {
+                console.log(data)
+            },
+            error : function() {}
+        });
+        
+    });
+    
+    $(document).on('click', '#friends-email', function() {
+        $('.assessment_custom_message').html('');
+        var html_email = '<form id="frm-invite_friend"><div style="margin: 3px 0 20px;">' +
+                            '<label class="f2">Full Name&nbsp;:&nbsp;</label>' +
+                            '<input id="friend_name" style="width: 75%; float: right; border-radius: 5px;" type="text" name="friend_name" value="">' +
+                        '</div>' +
+                        '<div style="margin: 3px 0 20px;">' +
+                            '<label class="f2">Email&nbsp;:&nbsp;</label>' +
+                            '<input id="friend_email" style="width: 75%; float: right; border-radius: 5px;" type="text" name="friend_email" value="">' +
+                        '</div>' +
+                        '<div class="friends-email-invite"><button type="submit" class="f2">Send Invitation</button></div></form>';
+        $('.assessment_custom_message').html(html_email);
+    });
+    
+    $(document).on('click', '.invite-friends', function() {
+        
+        var key = 'asssessment_invite_friends';
+        var pop_up_data =  get_popup_data(key, '');
+        
+        $('.assessment-popup-btn-wrapper').html('');
+        
+        $('#assessment-popup-wrapper').css('width', '450px');
+        $('.assessment-popup-header-label').html('');
+        $('.assessment-popup-header-label').html(pop_up_data.header_label);
+
+        $('.assessment-popup-icon-wrapper').html('');
+        $('.assessment-popup-icon-wrapper').html('<img src="/styles/layouts/tdsfront/image/' + pop_up_data.icon + '" width="75" />');
+
+        $('.assessment_custom_message').html('');
+        $('.assessment_custom_message').html(pop_up_data.custom_message);
+
+        var html_before_login_popup = $('#assessment-popup-fancy').html();
+
+        $.fancybox({
+            'content' : html_before_login_popup,
+            'width': 718,
+            'transitionIn': 'fade',
+            'transitionOut': 'fade',
+            'openEffect': 'elastic',
+            'openSpeed' : 350,
+            'fitToView' : true,
+            'autoSize' : true,
+            'closeClick'  : false,
+            helpers   : { 
+                overlay : {
+                    closeClick: false
+                }
+            },
+            'padding': 0,
+            'margin': 0
+        });
+    });
+    
     $(document).on('click', '.btn-assessment-submit', function() {
         
         var assessment = get_user_score(total_time_taken);
@@ -259,7 +342,8 @@ $(document).ready(function(){
             type : 'post',
             dataType : 'json',
             data : {
-                data : assessment, cur_level : cur_level
+                data : assessment, 
+                cur_level : cur_level
             },
             success : function(data) {
                 console.log(data)
@@ -282,7 +366,9 @@ $(document).ready(function(){
             type : 'post',
             dataType : 'json',
             data : {
-                data : assessment, add_to_school : true, cur_level : cur_level
+                data : assessment, 
+                add_to_school : true, 
+                cur_level : cur_level
             },
             success : function(data) {
                 console.log(data)
@@ -442,11 +528,11 @@ $(document).ready(function(){
             $('#level-' + next_level).parent('p').find('a span').text('Play Now');
         }
         
-//        var assess_summary = populate_assessment_summary();
-//        var assess_summary_table = '<div class="assess_summary_wrapper" id="assess_summary">' + assess_summary + '</div>';
-//        var user_assess_scroe_html = '<p class="f2" style="color: #999; font-size: 30px; font-weight: 900; letter-spacing: 3px; text-align: center;">YOUR SCORE IS</p><p class="f2" style="color: #000; font-size: 70px; font-weight: 900; letter-spacing: -1; margin: 35px 0; text-align: center; "> '+ user_score + ' / ' + $('#total_mark').val() + '</p>';
+        //        var assess_summary = populate_assessment_summary();
+        //        var assess_summary_table = '<div class="assess_summary_wrapper" id="assess_summary">' + assess_summary + '</div>';
+        //        var user_assess_scroe_html = '<p class="f2" style="color: #999; font-size: 30px; font-weight: 900; letter-spacing: 3px; text-align: center;">YOUR SCORE IS</p><p class="f2" style="color: #000; font-size: 70px; font-weight: 900; letter-spacing: -1; margin: 35px 0; text-align: center; "> '+ user_score + ' / ' + $('#total_mark').val() + '</p>';
         
-//        var assess_summary_html = user_assess_scroe_html;
+        //        var assess_summary_html = user_assess_scroe_html;
         
         var btn_html = $('.assessment-popup-btn-wrapper-explanation').children().eq(0);
         $('.assessment-popup-btn-wrapper').html(btn_html);
@@ -455,7 +541,7 @@ $(document).ready(function(){
         $('.icc-quiz-game-over').show('slow');
         $.fancybox.close();
         
-        /* var pop_up_data =  get_popup_data(key, assess_summary_html);
+    /* var pop_up_data =  get_popup_data(key, assess_summary_html);
         
         $('#assessment-popup-wrapper').css('width', '100%');
         
@@ -507,7 +593,7 @@ $(document).ready(function(){
                 explanation = '<p class="f2">Explanation: ' + $(this).find('.content-post .answer-wrapper ul').attr('explanation') + '</p>';
                 $(this).find('.content-post .answer-wrapper ul li').each(function() {
                     var option = $(this).attr('option');
-//                    var opt_num = $(this).find('.opt-wrapper .opt-num').text();
+                    //                    var opt_num = $(this).find('.opt-wrapper .opt-num').text();
                     
                     if(option == 1) {
                         correct_html = '<p class="f2">Right answer is : ' + $(this).find('.opt-wrapper .opt-ans').text() + '</p>';
@@ -722,6 +808,11 @@ function get_popup_data(key, explanation){
             'icon' : 'assessment_popup.png',
             'header_label' : 'Leader Board',
             'custom_message' : '<div class="full_leader_board_wrapper" id="leader_board">' + $('#assess_ladder_board').html() + '</div>'
+        },
+        'asssessment_invite_friends' : {
+            'icon' : 'assessment_popup.png',
+            'header_label' : 'Invite Friends',
+            'custom_message' : '<div class="friends-fb f2" id="friends-fb">Invite Facebook Friends</div><div class="friends-email f2" id="friends-email">Email Friend</div>'
         },
         'assess_explanation' : {
             'icon' : 'assessment_popup.png',

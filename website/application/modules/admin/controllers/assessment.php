@@ -212,8 +212,8 @@ class assessment extends MX_Controller {
                 }
             }
 
-            $answer = $this->input->post('answer');
-            $loop_limit = count($answer);
+            $answers = $this->input->post('answer');
+            $loop_limit = count($answers);
 
             if (($loop_limit != 2) && ($loop_limit != 4)) {
                 $data['custom_error'] = 'Invalid number of answers. There should be two or four answers.';
@@ -224,6 +224,7 @@ class assessment extends MX_Controller {
                 $obj_assesment_que->assesment_id = $assessment_id;
                 $obj_assesment_que->question = $this->input->post('question');
                 $obj_assesment_que->explanation = $this->input->post('explanation');
+                $obj_assesment_que->level = $this->input->post('level');
                 $obj_assesment_que->mark = $this->input->post('mark');
                 $obj_assesment_que->style = $this->input->post('style');
                 $obj_assesment_que->time = $this->input->post('time');
@@ -235,7 +236,7 @@ class assessment extends MX_Controller {
                         $obj_assesment_ans = new Assessment_options();
 
                         $obj_assesment_ans->question_id = $obj_assesment_que->id;
-                        $obj_assesment_ans->answer = $answer[$i];
+                        $obj_assesment_ans->answer = $answers[$i];
                         
                         $correct = $this->input->post('correct');
                         $obj_assesment_ans->correct = ($i == $correct[0]) ? 1 : 0;
@@ -283,8 +284,9 @@ class assessment extends MX_Controller {
                 }
             }
             
-            $answer = $this->input->post('answer');
-            $loop_limit = count($answer);
+            $answers = $this->input->post('answer');
+            
+            $loop_limit = count($answers);
 
             if (($loop_limit != 2) && ($loop_limit != 4)) {
                 $data['custom_error'] = 'Invalid number of answers. There should be two or four answers.';
@@ -295,6 +297,7 @@ class assessment extends MX_Controller {
                 $obj_assesment_que->assesment_id = $assessment_id;
                 $obj_assesment_que->question = $this->input->post('question');
                 $obj_assesment_que->explanation = $this->input->post('explanation');
+                $obj_assesment_que->level = $this->input->post('level');
                 $obj_assesment_que->mark = $this->input->post('mark');
                 $obj_assesment_que->style = $this->input->post('style');
                 $obj_assesment_que->time = $this->input->post('time');
@@ -306,12 +309,12 @@ class assessment extends MX_Controller {
                     
                     if ($del_answers) {
                         $i = 0;
-                        foreach ($answer as $answer) {
+                        foreach ($answers as $answer) {
 
                             $obj_assesment_ans = new Assessment_options();
 
                             $obj_assesment_ans->question_id = $obj_assesment_que->id;
-                            $obj_assesment_ans->answer = $answer[$i];
+                            $obj_assesment_ans->answer = $answers[$i];
                             
                             $correct = $this->input->post('answer');
                             $obj_assesment_ans->correct = ($i == $correct[0]) ? 1 : 0;

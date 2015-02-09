@@ -1528,7 +1528,7 @@ $(document).ready(function(){
                 console.log('User cancelled login or did not fully authorize.');
             }
         // handle the response
-        },{scope: 'email, user_location, public_profile, user_birthday'});
+        },{scope: 'email, user_location, public_profile, user_birthday, user_friends'});
         
         return false;
         

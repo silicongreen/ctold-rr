@@ -365,6 +365,9 @@ class FreeuserController extends Controller
         $webview = Yii::app()->request->getPost('webview');
         $user_id = Yii::app()->request->getPost('user_id');
         $limit = Yii::app()->request->getPost('limit');
+        $type = Yii::app()->request->getPost('type');
+        $level = Yii::app()->request->getPost('level');
+        
         if (!$assesment_id )
         {
             $response['status']['code'] = 400;
@@ -397,10 +400,25 @@ class FreeuserController extends Controller
             }
             $last_played = "";
             $can_play = true;
+            $total_score = 0;
+            
+            $user_score_board = array();
             if($user_id)
             {
                 $objcmark = new Cmark();
-                $objassessment = $objcmark->getUserMarkAssessment($user_id,$assesment_id);
+                $objassessment = $objcmark->getUserMarkAssessment($user_id, $assesment_id, $type);
+                
+                if(is_array($objassessment)) {
+                    
+                    $i = 1;
+                    foreach ($objassessment as $assessment) {
+                        $user_score_board[$assessment->level]['user_id'] = $assessment->user_id;
+                        $user_score_board[$assessment->level]['mark'] = $assessment->mark;
+                        $total_score += $assessment->mark;
+                        $i++;
+                    }
+                }
+                
                 if(isset($objassessment->created_date))
                 {
                     $last_played = $objassessment->created_date;
@@ -416,9 +434,12 @@ class FreeuserController extends Controller
             $response['data']['current_date'] = date("Y-m-d H:i:s");
             $response['data']['last_played'] = $last_played;
             $response['data']['can_play'] = $can_play;
-            $response['data']['score_board'] = $cmark->getTopMark($assesment_id,$limit); 
+            $response['data']['score_board'] = $cmark->getTopMark($assesment_id, $limit); 
             $response['data']['higistmark'] = $cmark->assessmentHighistMark($assesment_id); 
-            $response['data']['assesment'] = $assesmentObj->getAssessment($assesment_id,$webview);
+            $response['data']['assesment'] = $assesmentObj->getAssessment($assesment_id, $webview, $type, $level);
+            $response['data']['assesment']['levels'] = $assesmentObj->getAssessmentLevels($assesment_id);
+            $response['data']['assesment']['user_score_board'] = $user_score_board;
+            $response['data']['assesment']['total_score'] = $total_score;
             $response['data']['assesment']['higistmark'] = $response['data']['higistmark'];
             $response['status']['code'] = 200;
             $response['status']['msg'] = "success";

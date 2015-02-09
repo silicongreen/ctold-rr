@@ -38,15 +38,24 @@ class Cassignments extends CActiveRecord
         
                
         
-        public function getAssessment($id,$webview=false)
+        public function getAssessment($id, $webview = false, $type = 0, $level = 0)
         {   
            
             $criteria = new CDbCriteria();
             $criteria->select = 't.*';
-            $criteria->compare('t.id', $id); 
+            $criteria->compare('t.id', $id);
+            
+            if($type > 0) {
+                $criteria->compare('t.type', $type);
+            }
+            
+            if($level > 0) {
+                $criteria->compare('question.level', $level);
+            }
+            
             $criteria->with = array(
                 'question' => array(
-                    'select' => 'question.id,question.explanation,question.mark,question.time,question.style,question.question,question.created_date',
+                    'select' => 'question.id,question.explanation,question.mark,question.level,question.time,question.style,question.question,question.created_date',
                     'order' => "RAND()",
                     'with' => array(
                         "option" => array(
@@ -56,10 +65,7 @@ class Cassignments extends CActiveRecord
                 )
             );
             
-            
             $data = $this->find($criteria);
-             
-            
             
             $response_array = array();
             $assesment_valid = false;
@@ -82,6 +88,8 @@ class Cassignments extends CActiveRecord
                     
                     $response_array['id'] = $data->id;
                     $response_array['title'] = $data->title;
+                    $response_array['type'] = $data->type;
+                    $response_array['type_text'] = Settings::$assessment_config['types'][$data->type];
                     $response_array['use_time'] = $data->use_time;
                     $response_array['time'] = $data->time; 
                     $response_array['played'] = $data->played; 
@@ -113,6 +121,7 @@ class Cassignments extends CActiveRecord
                                 $response_array['question'][$i]['question_webview'] = $questions->question;
                             }
                             $response_array['question'][$i]['mark'] = $questions->mark;
+                            $response_array['question'][$i]['level'] = $questions->level;
                             $response_array['question'][$i]['time'] = $questions->time;
                             $response_array['question'][$i]['style'] = $questions->style;
                             $response_array['question'][$i]['created_date'] = $questions->created_date;
@@ -156,8 +165,17 @@ class Cassignments extends CActiveRecord
                 }
                     
             }
+            
             return $response_array;
             
+        }
+        
+        public function getAssessmentLevels($assessment_id){
+            
+            $response_array = array();
+            
+            $levels = Yii::app()->db->createCommand()->select('GROUP_CONCAT( DISTINCT `level`) AS `levels`')->from('tds_assessment_question q')->where('q.assesment_id=:a_id', array(':a_id' => $assessment_id))->queryRow();
+            return $response_array = $levels['levels'];
         }
         
        

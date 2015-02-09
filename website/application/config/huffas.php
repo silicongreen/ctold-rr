@@ -26,6 +26,27 @@ $config[ 'wow_login' ] = false;
 
 $config[ 'api_index' ] = array('index','inner','inner-popular');
 
+$config[ 'assessment' ] = array(
+    'types' => array(
+        1 => 'Assessment',
+        2 => 'ICC Quiz',
+    ),
+    'levels' => array(
+        0 => 'Common',
+        1 => 'Level 1',
+        2 => 'Level 2',
+        3 => 'Level 3',
+    ),
+    'auto_next' => array(
+        'assessment'    => FALSE,
+        'quiz'          => TRUE,
+    ),
+    'update_played' => array(
+        'before_start' => TRUE,
+        'after_finish' => FALSE,
+    )
+);
+
 $config[ 'school_candle_category_id' ] = 58;
 
 $config['education-changes-life'] = array(

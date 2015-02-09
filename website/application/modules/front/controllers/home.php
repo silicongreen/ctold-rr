@@ -557,13 +557,12 @@ class home extends MX_Controller {
         $data['edit'] = (free_user_logged_in()) ? TRUE : FALSE;
         // User Data
         $obj_post = new Posts();
+        
         $data['category_tree'] = $obj_post->user_preference_tree_for_pref();
                
         $s_right_view =  $this->load->view( 'right', $data, TRUE );  
         
         $str_title = getCommonTitle();
-        
-      
         
         $meta_description = META_DESCRIPTION;
         $keywords = KEYWORDS;
@@ -1025,11 +1024,15 @@ class home extends MX_Controller {
     function process_post_view( $i_category_id, $obj_post_data, $b_layout = true)
     {
         $this->load->config("huffas");
+        $obj_post = new Post_model();
+        
         //TAKE THE GOOD READ FOLDER IN CASE USER LOGIN
         $obj_post_data->good_read_single = "";
         $obj_post_data->attempt = FALSE;
+        $user_played_levels = array();
+        
         if (free_user_logged_in() )
-        {            
+        {
             $this->load->model("user_folder");
             $i_user_id = get_free_user_session("id");
             $ar_user_folder = $this->user_folder->get_user_good_read_folder($i_user_id);
@@ -1061,6 +1064,15 @@ class home extends MX_Controller {
                 
             }
             
+            /* User Assessment Data */
+            $obj_post_data->assess_user_mark = $obj_post->get_user_assessment_marks($i_user_id, $obj_post_data->assessment_id);
+            
+            foreach($obj_post_data->assess_user_mark as $user_marks) {
+                $user_played_levels[] = $user_marks->level;
+            }
+            
+            /* User Assessment Data */
+            
         }
         /**
          * Get Category and Sub-category first for a single post
@@ -1090,7 +1102,6 @@ class home extends MX_Controller {
         
         
         $this->load->model('post','model');
-        $obj_post = new Post_model();    
         //NOW GET ALL CATEGORY FOR THE POST
         if ( isset($obj_post_data->post_id) )
         {
@@ -1193,6 +1204,18 @@ class home extends MX_Controller {
         $related_news = $obj_post->get_related_news($obj_post_data->post_id);
         
         $assessment = $obj_post->get_related_assessment($obj_post_data->assessment_id);
+        $assessment_levels = $obj_post->get_assessment_levels($obj_post_data->assessment_id);
+        
+        $ar_assessment_levels = explode(',', $assessment_levels);
+        $ar_playable_levels = array();
+        
+        $obj_post_data->assessment_has_levels = FALSE;
+        
+        if($assessment_levels > 0) {
+            $obj_post_data->assessment_has_levels = TRUE;
+            $obj_post_data->next_level = min(array_diff($ar_assessment_levels, $user_played_levels));
+        }
+        
         $obj_post_data->has_assessment = FALSE;
         
         $data['all_attachment'] = $obj_post->get_related_attach($obj_post_data->post_id);
@@ -1207,6 +1230,7 @@ class home extends MX_Controller {
         if($assessment) {
             $obj_post_data->has_assessment = TRUE;
             $obj_post_data->assessment = $assessment;
+            $obj_post_data->assessment_levels = $assessment_levels;
             $obj_post_data->go_to_assessment = $this->config->config['go_to_assessment'];
         }
         
@@ -3381,7 +3405,10 @@ class home extends MX_Controller {
         $this->extra_params = $ar_params;
     }
     
-    public function assessment() {
+    public function quiz() {
+        
+        $this->load->config("huffas");
+        $assessment_config = $this->config->config['assessment'];
         
         $ar_js = array();
         $ar_css = array(
@@ -3391,52 +3418,87 @@ class home extends MX_Controller {
         
         $str_assesment = $this->uri->segment(2);
         $str_post = $this->uri->segment(3);
+        $assessment_level = $this->uri->segment(4);
+        if($assessment_level){
+            $assessment_level = $assessment_level;
+        } else {
+            $assessment_level = 0;
+        }
         
         $ar_assessment = explode('-', $str_assesment);
-        $post_id = $ar_assessment[count($ar_assessment) - 2];
+        $assessment_type = $ar_assessment[count($ar_assessment) - 2];
         $assesment_id = end($ar_assessment);
         $user_id = 0;
         
         if(free_user_logged_in()) {
-            
             $user_id = get_free_user_session('id');
         }
         
-        $data['post_uri'] = $str_post;
-        $assessment = get_assessment($assesment_id, $user_id);
-        
-        if ((!$assessment)) {
-            $data['assessment'] = array();
-            $data['score_board'] = array();
-            $data['can_play'] = false;
-            $data['last_played'] = false;
-        } else {
-            $data['assessment'] = $assessment->assesment;
-            $data['score_board'] = $assessment->score_board;
-            $data['can_play'] = $assessment->can_play;
-            $data['last_played'] = $assessment->last_played;
+        if($assessment_config['update_played']['before_start']){
+            assessment_update_played($assesment_id);
         }
         
-        $s_content = $this->load->view('assessment', $data, true);
+        $data['post_uri'] = $str_post;
+        $assessment = get_assessment($assesment_id, $user_id, 1, $assessment_level, $assessment_type);
         
-        $str_title = WEBSITE_NAME . " | Assessment";
-        
-        $meta_description = META_DESCRIPTION;
-        $keywords = KEYWORDS;
-        
-        $ar_params = array(
-            "javascripts"           => $ar_js,
-            "css"                   => $ar_css,
-            "extra_head"            => $extra_js,
-            "title"                 => $str_title,
-            "description"           => $meta_description,
-            "keywords"              => $keywords,
-            "side_bar"              => '',
-            "target"                => "index",
-            "content"               => $s_content
-        );
-        
-        $this->extra_params = $ar_params;
+        if(!property_exists($assessment->assesment, 'id')) {
+            
+            $this->show_404_custom();
+            
+        } else {
+            
+            if ((!$assessment)) {
+                $data['assessment'] = array();
+                $data['score_board'] = array();
+                $data['score_board'] = array();
+                $data['can_play'] = false;
+                $data['last_played'] = false;
+            } else {
+                
+                $obj_post = new Post_model();
+                
+                $assessment->assesment->assess_user_mark = $obj_post->get_user_assessment_marks($user_id, $assesment_id);
+            
+                foreach($assessment->assesment->assess_user_mark as $user_marks) {
+                    $user_played_levels[] = $user_marks->level;
+                }
+                
+                $ar_assessment_levels = explode(',', $assessment->assesment->levels);
+                
+                $assessment->assesment->assessment_has_levels = FALSE;
+                
+                if($assessment->assesment->levels > 0) {
+                    $assessment->assesment->assessment_has_levels = TRUE;
+                    $assessment->assesment->next_level = min(array_diff($ar_assessment_levels, $user_played_levels));
+                }
+                
+                $data['assessment'] = $assessment->assesment;
+                $data['score_board'] = $assessment->score_board;
+                $data['can_play'] = $assessment->can_play;
+                $data['last_played'] = $assessment->last_played;
+            }
+
+            $s_content = $this->load->view('assessment', $data, true);
+
+            $str_title = WEBSITE_NAME . " | Quiz";
+
+            $meta_description = META_DESCRIPTION;
+            $keywords = KEYWORDS;
+
+            $ar_params = array(
+                "javascripts"           => $ar_js,
+                "css"                   => $ar_css,
+                "extra_head"            => $extra_js,
+                "title"                 => $str_title,
+                "description"           => $meta_description,
+                "keywords"              => $keywords,
+                "side_bar"              => '',
+                "target"                => "index",
+                "content"               => $s_content
+            );
+
+            $this->extra_params = $ar_params;
+        }
 //        var_dump();
 //        exit;
         
@@ -3444,15 +3506,27 @@ class home extends MX_Controller {
     
     public function save_assessment() {
         
+        $this->load->config("huffas");
+        $assessment_config = $this->config->config['assessment'];
+        
         $response = array();
         if(!$this->input->is_ajax_request()){
             $response['saved'] = false;
-            $response['error'] = 'BAD_ASSESSMENT';
+            $response['error'] = 'BAD_REQUEST';
             echo json_encode($response);
             exit;
         }
         
         $data = trim($_POST['data'], ',');
+        
+        $add_to_school = $this->input->post('add_to_school');
+        $cur_level = $this->input->post('cur_level');
+        
+        if($cur_level > 0) {
+            $cur_level = $cur_level;
+        } else {
+            $cur_level = 0;
+        }
         
         $ar_data = explode('_', $data);
         
@@ -3461,8 +3535,16 @@ class home extends MX_Controller {
         $user_id = 0;
         
         if(free_user_logged_in()) {
-            
             $user_id = get_free_user_session('id');
+            
+            if($add_to_school == 'true') {
+                $user_school = new User_school();
+                $user_school_data = ($b_mulit_school_join) ? $user_school->get_user_school($user_id, $school_id) : $user_school->get_user_school($user_id);
+            }
+        }
+        
+        if($assessment_config['update_played']['after_finish']){
+            assessment_update_played($assesment_id);
         }
         
         $assessment = get_assessment($assessment_id, $user_id);
@@ -3504,7 +3586,12 @@ class home extends MX_Controller {
             $user_id = get_free_user_session('id');
             
             $obj_assessment_mark = new Assesment_mark();
-            $assessment_mark = $obj_assessment_mark->find_assessment_mark($user_id, $assessment_id);
+            $assessment_mark = $obj_assessment_mark->find_assessment_mark($user_id, $assessment_id, $cur_level);
+            
+            if($user_school_data != FALSE) {
+                $obj_assessment_school_mark = new Assessment_school_mark();
+                $assessment_school_mark = $obj_assessment_school_mark->find_assessment_school_mark($user_id, $assessment_id, $cur_level, $user_school_data[0]->school_id);
+            }
             
             $next_play_time = strtotime(date('Y-m-d H:i:s', strtotime($assessment_mark->created_date . "+1 Day")));
             $now = date('Y-m-d H:i:s');
@@ -3512,10 +3599,10 @@ class home extends MX_Controller {
             
             $can_play = TRUE;
             
-            if($now_time < $next_play_time) {
+            if( ($now_time < $next_play_time) && $assessment_mark !== FALSE ) {
                 $can_play = FALSE;
             }
-            
+            $can_play = TRUE;
             if($can_play) {
                 
                 if ( ($assessment_mark != false) ) {
@@ -3537,7 +3624,7 @@ class home extends MX_Controller {
                         $ar_lb['avg_time_per_ques'] = number_format($avg_time, 2);
                     }
                     
-                    $this->db->update('assesment_mark', $ar_lb, array('user_id' => $user_id, 'assessment_id' => $assessment_id));
+                    $this->db->update('assesment_mark', $ar_lb, array('user_id' => $user_id, 'assessment_id' => $assessment_id, 'level' => $cur_level));
                     $response['highest_score'] = $user_mark;
 
                 } else {
@@ -3545,6 +3632,7 @@ class home extends MX_Controller {
                     $obj_assessment_mark->user_id = $user_id;
                     $obj_assessment_mark->assessment_id = $assessment_id;
                     $obj_assessment_mark->mark = $user_mark;
+                    $obj_assessment_mark->level = $cur_level;
                     $obj_assessment_mark->created_date = $now;
                     $obj_assessment_mark->time_taken = $ar_data[1];
                     $obj_assessment_mark->avg_time_per_ques = number_format($avg_time, 2);
@@ -3553,6 +3641,42 @@ class home extends MX_Controller {
                     $obj_assessment_mark->save();
                     
                     $response['highest_score'] = $user_mark;
+                }
+                
+                if ( ($assessment_school_mark != false) ) {
+                    
+                    $ar_lb = array(
+                        'created_date' => $now,
+                        'no_played' => $assessment_school_mark->no_played + 1,
+                    );
+
+                    if($user_mark > $assessment_school_mark->mark) {
+                        $ar_lb['mark'] = $user_mark;
+                    }
+
+                    if( (empty($assessment_school_mark->time_taken)) || ($ar_data[1] < $assessment_school_mark->time_taken) ) {
+                        $ar_lb['time_taken'] = $ar_data[1];
+                    }
+
+                    if( (empty($assessment_school_mark->avg_time_per_ques)) || ($avg_time < $assessment_school_mark->avg_time_per_ques) ) {
+                        $ar_lb['avg_time_per_ques'] = number_format($avg_time, 2);
+                    }
+                    
+                    $this->db->update('assesment_mark', $ar_lb, array('user_id' => $user_id, 'assessment_id' => $assessment_id, 'level' => $cur_level));
+
+                } else {
+                    
+                    $obj_assessment_school_mark->user_id = $user_id;
+                    $obj_assessment_school_mark->assessment_id = $assessment_id;
+                    $obj_assessment_school_mark->mark = $user_mark;
+                    $obj_assessment_school_mark->level = $cur_level;
+                    $obj_assessment_school_mark->school_id = $user_school_data[0]->school_id;
+                    $obj_assessment_school_mark->created_date = $now;
+                    $obj_assessment_school_mark->time_taken = $ar_data[1];
+                    $obj_assessment_school_mark->avg_time_per_ques = number_format($avg_time, 2);
+                    $obj_assessment_school_mark->no_played = 1;
+                    
+                    $obj_assessment_school_mark->save();
                 }
                 
                 $response['saved'] = true;
@@ -3585,5 +3709,74 @@ class home extends MX_Controller {
         $response['leader_board'] = $assessment_leader_board;
         echo json_encode($response);
         exit;
+    }
+    
+    public function invite_friend_by_email(){
+        
+        $response = array();
+        if(!$this->input->is_ajax_request()){
+            $response['invitation_sent'] = false;
+            $response['error'] = 'Bad Request';
+            echo json_encode($response);
+            exit;
+        }
+        
+        if(free_user_logged_in()) {
+            $user_data = get_free_user_session();
+        }
+        
+        $to_name = $this->input->post('friend_name');
+        $to_email = $this->input->post('friend_email');
+        
+        $ar_email['sender_full_name'] = $user_data['full_name'];
+        $ar_email['sender_email'] = $user_data['email'];
+        $ar_email['to_name'] = $to_name;
+        $ar_email['to_email'] = $to_email;
+        $ar_email['html'] = true;
+        
+        $ar_email['subject'] = 'ICC World Cup 2015 Quiz at Champs21.com';
+        $ar_email['message'] = $this->invite_friend_by_email_body($ar_email);
+        
+        if(send_mail($ar_email)) {
+            $response['invitation_sent'] = TRUE;
+            $response['error'] = 'NO_ERROR';
+        } else {
+            $response['invitation_sent'] = FALSE;
+            $response['error'] = 'invitation not sent. Please try later.';
+        }
+        
+        echo json_encode($response);
+        exit;
+    }
+    
+    private function invite_friend_by_email_body($param) {
+        
+        $message = '<!DOCTYPE HTML>';
+
+        $message .= '<head>';
+        $message .= '<meta http-equiv="content-type" content="text/html">';
+
+        $message .= '<title>ICC World Cup 2015 Quiz at Champs21.com</title>';
+
+        $message .= '<body>';
+
+        if (!empty($param['full_name'])) {
+            $message .= '<p>Hi ' . $param['full_name'] . ',</p>';
+        } else {
+            $message .= '<p>Hi,</p>';
+        }
+
+        $message .= '<p>I have played ICC World Cup 2015 Quiz at Champs21.com. It&#39;s really an amazing experience. You should play too.</p>';
+        $message .= '<p>They are giving very exciting prizes to the winners.</p>';
+        
+        $message .= '<p>Best Regards,</p>';
+        $message .= '<p>&nbsp;</p>';
+        $message .= '<p>&nbsp;</p>';
+        $message .= '<p>' . $ar_email['sender_full_name'] . '</p>';
+        
+        $message .= '</body>';
+        $message .= '</head>';
+        
+        return $message;
     }
 }

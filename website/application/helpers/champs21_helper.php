@@ -1003,7 +1003,7 @@ if(!function_exists('get_rand_images')){
 
 if( !function_exists("get_assessment"))
 {
-    function get_assessment($assesment_id, $user_id = 0, $webview = 1)
+    function get_assessment($assesment_id, $user_id = 0, $webview = 1, $level = 0, $type = 0)
     {
         $CI = &get_instance();
         
@@ -1012,6 +1012,14 @@ if( !function_exists("get_assessment"))
         
         if($user_id > 0) {
             $fields_string .= "&user_id=" . $user_id;
+        }
+        
+        if($level > 0) {
+            $fields_string .= "&level=" . $level;
+        }
+        
+        if($type > 0) {
+            $fields_string .= "&type=" . $type;
         }
         
         //start curl
@@ -1042,6 +1050,45 @@ if( !function_exists("get_assessment"))
         }
         
         return false;
+    }
+}
+    
+if( !function_exists("assessment_update_played"))
+{
+    function assessment_update_played($assesment_id)
+    {
+        $CI = &get_instance();
+        
+        $url = get_curl_url("updatePlayed");
+        $fields_string = "assessment_id=" . $assesment_id;
+        
+        //start curl
+        $ch = curl_init();
+        curl_setopt($ch,CURLOPT_URL, $url);
+
+        curl_setopt($ch,CURLOPT_POST, count($fields));
+        curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER, 1);
+
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
+            'Accept: application/json',
+            'Content-Length: ' . strlen($fields_string)
+            )                                                                       
+        );    
+        //execute post
+        $result = curl_exec($ch);
+
+        //close connection
+        curl_close($ch);
+        //end curl
+        
+        $assesments = json_decode($result);
+        
+        if($assesments->status->code == 200){
+            return TRUE;
+        }
+        
+        return FALSE;
     }
 }
     

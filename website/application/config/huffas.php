@@ -13,7 +13,7 @@ $config[ 'news_in_index' ] = array(
 $config['api_url']   = 'http://api.champs21.com/api/freeuser';
 
 $config['android_app_dl_popup_show']   = TRUE;
-$config['android_app_dl_url']   = 'http://www.champs21.com/';
+$config['android_app_dl_url']   = 'https://play.google.com/store/apps/details?id=com.champs21.schoolapp';
 
 $config['education_changes_life'] = TRUE;
 

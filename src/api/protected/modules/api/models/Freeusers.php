@@ -253,7 +253,15 @@ class Freeusers extends CActiveRecord {
             $user_info['profile_image'] = $value->profile_image;
             $user_info['last_name'] = $value->last_name;
             $user_info['middle_name'] = $value->middle_name;
-            $user_info['nick_name'] = $value->nick_name;
+            if($value->nick_name==1 || $value->nick_name==2 || $value->nick_name==3 )
+            {
+                $user_info['nick_name'] = $value->nick_name;
+            }  
+            else
+            {
+                $user_info['nick_name'] = 1;
+            }    
+            
             $user_info['user_type'] = $value->user_type;
             $user_info['medium'] = $value->medium;
             $user_info['email'] = $value->email;

@@ -132,23 +132,29 @@
                                 <p class="f2">Stage <?php echo $level; ?> : 
                                     <span id="level-<?php echo $level; ?>"><?php echo ( property_exists($ar_user_score_board[$level], 'mark') ) ? $ar_user_score_board[$level]->mark : 0; ?></span>
                                     <?php
-                                        if($level > $assessment->next_level) {
-                                            $str_level_status = 'Locked';
-                                            $url_level = '';
-                                        }
-                                        else if($level == $assessment->next_level) {
-                                            $str_level_status = 'Play Now';
-                                            $url_level = '/' . $level;
-                                        } else {
+                                    
+                                        if(!empty($assessment->next_level)) {
+                                            if($level > $assessment->next_level) {
+                                                $str_level_status = 'Locked';
+                                                $url_level = '';
+                                            }
+                                            else if($level == $assessment->next_level) {
+                                                $str_level_status = 'Play Now';
+                                                $url_level = '';
+                                            } else {
+                                                $str_level_status = 'Play Again';
+                                                $url_level = '/' . $level;
+                                            } ?>
+                                        
+                                        <a href="<?php echo base_url($url . $url_level); ?>"><span class="level-status"><?php echo $str_level_status; ?></span></a>
+                                        
+                                        <?php } else {
                                             $str_level_status = 'Play Again';
-                                            $url_level = '/' . $level;
-                                        }
-                                         var_dump($url_level);
-                                    ?>
-                                    <a href="<?php echo base_url($url . $url_level); ?>"><span class="level-status"><?php echo $str_level_status; ?></span></a>
+                                            $url_level = '/1'; ?>
+                                            <a href="<?php echo base_url($url . $url_level); ?>"><span class="level-status"><?php echo $str_level_status; ?></span></a>
+                                    <?php break; } ?>
                                 </p>
                         <?php } ?>
-                                <?php exit; ?>
                         <div style="display: none;" id="current-level" data="<?php echo $cur_level; ?>"></div>
                     </div>
 

@@ -72,7 +72,7 @@ header.champs-header {
     width: 90%;
 }
 .icc-quiz-game-over {
-    display: block;
+    display: none;
     width: 100%;
 }
 .icc-quiz-game-over-header {

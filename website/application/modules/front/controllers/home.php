@@ -3539,9 +3539,18 @@ class home extends MX_Controller {
         if(free_user_logged_in()) {
             $user_id = get_free_user_session('id');
             
-            if($add_to_school == 'true') {
-                $user_school = new User_school();
-                $user_school_data = ($b_mulit_school_join) ? $user_school->get_user_school($user_id, $school_id) : $user_school->get_user_school($user_id);
+            $obj_assessment_mark = new Assesment_mark();
+            $obj_assessment_school_mark = new Assessment_school_mark();
+            $user_school = new User_school();
+            $score_add_to_school = TRUE;
+            
+            if($add_to_school == 'false') {
+                
+                $assessment_school_mark = $obj_assessment_school_mark->find_assessment_school_mark($user_id, $assessment_id, 1, $user_school_data[0]->school_id);
+                
+                if(!$assessment_school_mark) {
+                    $score_add_to_school = FALSE;
+                }
             }
         }
         
@@ -3587,12 +3596,14 @@ class home extends MX_Controller {
             
             $user_id = get_free_user_session('id');
             
-            $obj_assessment_mark = new Assesment_mark();
             $assessment_mark = $obj_assessment_mark->find_assessment_mark($user_id, $assessment_id, $cur_level);
+            $user_school_data = ($b_mulit_school_join) ? $user_school->get_user_school($user_id, $school_id) : $user_school->get_user_school($user_id);
             
             if($user_school_data != FALSE) {
-                $obj_assessment_school_mark = new Assessment_school_mark();
                 $assessment_school_mark = $obj_assessment_school_mark->find_assessment_school_mark($user_id, $assessment_id, $cur_level, $user_school_data[0]->school_id);
+                $response['has_school'] = TRUE;
+            } else {
+                $response['has_school'] = FALSE;
             }
             
             $next_play_time = strtotime(date('Y-m-d H:i:s', strtotime($assessment_mark->created_date . "+1 Day")));
@@ -3664,21 +3675,24 @@ class home extends MX_Controller {
                         $ar_lb['avg_time_per_ques'] = number_format($avg_time, 2);
                     }
                     
-                    $this->db->update('assesment_mark', $ar_lb, array('user_id' => $user_id, 'assessment_id' => $assessment_id, 'level' => $cur_level));
-
+                    $this->db->update('assessment_school_mark', $ar_lb, array('user_id' => $user_id, 'assessment_id' => $assessment_id, 'level' => $cur_level));
+                    
                 } else {
                     
-                    $obj_assessment_school_mark->user_id = $user_id;
-                    $obj_assessment_school_mark->assessment_id = $assessment_id;
-                    $obj_assessment_school_mark->mark = $user_mark;
-                    $obj_assessment_school_mark->level = $cur_level;
-                    $obj_assessment_school_mark->school_id = $user_school_data[0]->school_id;
-                    $obj_assessment_school_mark->created_date = $now;
-                    $obj_assessment_school_mark->time_taken = $ar_data[1];
-                    $obj_assessment_school_mark->avg_time_per_ques = number_format($avg_time, 2);
-                    $obj_assessment_school_mark->no_played = 1;
-                    
-                    $obj_assessment_school_mark->save();
+                    if($score_add_to_school) {
+                        
+                        $obj_assessment_school_mark->user_id = $user_id;
+                        $obj_assessment_school_mark->assessment_id = $assessment_id;
+                        $obj_assessment_school_mark->mark = $user_mark;
+                        $obj_assessment_school_mark->level = $cur_level;
+                        $obj_assessment_school_mark->school_id = $user_school_data[0]->school_id;
+                        $obj_assessment_school_mark->created_date = $now;
+                        $obj_assessment_school_mark->time_taken = $ar_data[1];
+                        $obj_assessment_school_mark->avg_time_per_ques = number_format($avg_time, 2);
+                        $obj_assessment_school_mark->no_played = 1;
+
+                        $obj_assessment_school_mark->save();
+                    }
                 }
                 
                 $response['saved'] = true;
@@ -3687,10 +3701,14 @@ class home extends MX_Controller {
                 
             }
             
+            $assessment_user_total_mark = $obj_assessment_mark->find_user_assessment_total_mark($user_id, $assessment_id);
+            
         }
         
+        $response['cur_level'] = $cur_level;
         $response['score'] = $user_mark;
         $response['total_score'] = $total_mark;
+        $response['user_total_score'] = $assessment_user_total_mark->mark;
         echo json_encode($response);
         exit;
     }

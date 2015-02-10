@@ -491,8 +491,8 @@ $(document).ready(function(){
         
         var key = $(this).attr('data');
         
-        $('.assessment-popup-btn-wrapper').html('');
-        $('.assessment-popup-btn-wrapper').css('padding-left', '0');
+//        $('.assessment-popup-btn-wrapper').html('');
+//        $('.assessment-popup-btn-wrapper').css('padding-left', '0');
         
         $('.nxt-btn').removeClass('show-assessment-score');
         $('.nxt-btn').removeClass('red');
@@ -535,7 +535,7 @@ $(document).ready(function(){
         //        var assess_summary_html = user_assess_scroe_html;
         
         var btn_html = $('.assessment-popup-btn-wrapper-explanation').children().eq(0);
-        $('.assessment-popup-btn-wrapper').html(btn_html);
+        $('.assessment-save-score-wrapper').html(btn_html);
         
         $('#icc-quiz-content').hide('fast');
         $('.icc-quiz-game-over').show('slow');

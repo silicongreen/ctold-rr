@@ -36,7 +36,7 @@
         <div id="icc-quiz-start-screen">
 
             <div class="start_assessment_play_wrapper assessment-popup-btn-wrapper">
-                <button type="button" id="start_assessment_play"></button>
+                <button class="element-animation" type="button" id="start_assessment_play"></button>
             </div>
 
             <div class="icc-quiz-start-screen-text">
@@ -132,7 +132,6 @@
                                 <p class="f2">Stage <?php echo $level; ?> : 
                                     <span id="level-<?php echo $level; ?>"><?php echo ( property_exists($ar_user_score_board[$level], 'mark') ) ? $ar_user_score_board[$level]->mark : 0; ?></span>
                                     <?php
-                                        
                                         if($level > $assessment->next_level) {
                                             $str_level_status = 'Locked';
                                             $url_level = '';
@@ -144,14 +143,16 @@
                                             $str_level_status = 'Play Again';
                                             $url_level = '/' . $level;
                                         }
+                                         var_dump($url_level);
                                     ?>
                                     <a href="<?php echo base_url($url . $url_level); ?>"><span class="level-status"><?php echo $str_level_status; ?></span></a>
                                 </p>
                         <?php } ?>
+                                <?php exit; ?>
                         <div style="display: none;" id="current-level" data="<?php echo $cur_level; ?>"></div>
                     </div>
 
-                    <div class="assessment-popup-btn-wrapper"></div>
+                    <div class="assessment-save-score-wrapper"></div>
 
                 </div>
             </div>

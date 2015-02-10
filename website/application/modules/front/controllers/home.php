@@ -1954,6 +1954,7 @@ class home extends MX_Controller {
             // Google Registration Starts
             if($_POST['data']['source'] == 'g'){
                 $_POST['gl_profile_id']      = $_POST['data']['id'];
+                $_POST['nick_name'] = 1;
                 $_POST['google_profile_url'] = filter_var($_POST['data']['profile_url'], FILTER_VALIDATE_URL);
             }
             // Google Registration Ends
@@ -1961,6 +1962,7 @@ class home extends MX_Controller {
             // Facebook Registration Starts
             if($_POST['data']['source'] == 'f'){
                 $_POST['fb_profile_id']      = $_POST['data']['id'];
+                $_POST['nick_name'] = 1;
                 $_POST['fb_profile_url'] = filter_var($_POST['data']['profile_url'], FILTER_VALIDATE_URL);
             }
             // Facebook Registration Ends

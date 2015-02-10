@@ -716,12 +716,12 @@ height: 46px;
                     <div class="icon-my-school">&nbsp;</div> 
                 </li>
                 <?php if($this->config->config['android_app_dl_popup_show'] == true):?>
-                    <?php $ua = strtolower($_SERVER['HTTP_USER_AGENT']); ?>
-                    <?php if(stripos($ua,'android') !== false): ?>
+                    <?php #$ua = strtolower($_SERVER['HTTP_USER_AGENT']); ?>
+                    <?php #if(stripos($ua,'android') !== false): ?>
                     <li data="android-app" class="pop-without-login">                        
                         <div class="icon-mobile-app">&nbsp;</div> 
                     </li>
-                    <?php endif; ?>
+                    <?php #endif; ?>
                 <?php endif; ?>
 <!--                <li data="create-page" class="before-login-user-back" onclick="location.href='<?php echo base_url('/createpage'); ?>'">                        
                     <div class="icon-create-page">&nbsp;</div> 

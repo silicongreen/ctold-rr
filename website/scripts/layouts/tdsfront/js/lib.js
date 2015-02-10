@@ -1003,6 +1003,31 @@ $(document).ready(function(){
                     
                     $('.fancybox-close').trigger('click');
                     
+                    var icc_quiz_cookie = readCookie('c21_icc_quiz');
+                    var icc_quiz_level = readCookie('c21_icc_quiz_level');
+                    
+                    if(icc_quiz_cookie !== false) {
+                        if(icc_quiz_level !== false) {
+                            $.ajax({
+                                url : $('#base_url').val() + 'save_assessment',
+                                type : 'post',
+                                dataType : 'json',
+                                data : {
+                                    data : icc_quiz_cookie, 
+                                    add_to_school : true, 
+                                    cur_level : icc_quiz_level
+                                },
+                                success : function(data) {
+                                    if(data.saved == true) {
+                                        eraseCookie('c21_icc_quiz');
+                                        eraseCookie('c21_icc_quiz_level');
+                                    }
+                                },
+                                error : function() {}
+                            });                            
+                        }
+                    }
+                    
                     if(paid_school_id > 0) {
                         window.location.href = $('#base_url').val() + 'paid_regiser/' + data.activaiton_code + '/' + paid_school_code;
                     }
@@ -2347,4 +2372,29 @@ function getPostData(){
             }
         }, 200);
     });
+}
+
+function createCookie(name,value,days) {
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime()+(days*24*60*60*1000));
+        var expires = "; expires="+date.toGMTString();
+    }
+    else var expires = "";
+    document.cookie = name+"="+value+expires+"; path=/";
+}
+
+function readCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
+}
+
+function eraseCookie(name) {
+    createCookie(name,"",-1);
 }

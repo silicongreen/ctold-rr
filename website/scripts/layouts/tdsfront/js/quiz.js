@@ -2,7 +2,7 @@ $(document).ready(function(){
     
     if($('#asses_id').length > 0) {
         
-        var assess_score_cookie = readCookie('c21_assessment');
+        var assess_score_cookie = readCookie('c21_icc_quiz');
         if(assess_score_cookie) {
             $.ajax({
                 url : $('#base_url').val() + 'save_assessment',
@@ -342,7 +342,8 @@ $(document).ready(function(){
             type : 'post',
             dataType : 'json',
             data : {
-                data : assessment, 
+                data : assessment,
+                add_to_school : false,
                 cur_level : cur_level
             },
             success : function(data) {
@@ -367,11 +368,17 @@ $(document).ready(function(){
             dataType : 'json',
             data : {
                 data : assessment, 
-                add_to_school : true, 
+                add_to_school : true,
                 cur_level : cur_level
             },
             success : function(data) {
-                console.log(data)
+                if(data.has_school === false) {
+                    createCookie('c21_icc_quiz_level', cur_level, 1);
+                    createCookie('c21_icc_quiz', assessment, 1);
+                    window.location.href = $('#base_url').val() + 'schools';
+                } else {
+                    $('.grand-score-board-summary-text').html(data.user_total_score);
+                }
             },
             error : function() {}
         });
@@ -437,6 +444,9 @@ $(document).ready(function(){
             var pop_up_data =  get_popup_data(key, '');
             
             $('#assessment-popup-wrapper').css('width', '450px');
+            $('.assessment-popup-btn-wrapper').css('width', '100%');
+            $('.assessment-popup-btn-wrapper').css('padding-left', '0');
+            
             $('.assessment-popup-header-label').html('');
             $('.assessment-popup-header-label').html(pop_up_data.header_label);
         
@@ -491,8 +501,8 @@ $(document).ready(function(){
         
         var key = $(this).attr('data');
         
-        $('.assessment-popup-btn-wrapper').html('');
-        $('.assessment-popup-btn-wrapper').css('padding-left', '0');
+//        $('.assessment-popup-btn-wrapper').html('');
+//        $('.assessment-popup-btn-wrapper').css('padding-left', '0');
         
         $('.nxt-btn').removeClass('show-assessment-score');
         $('.nxt-btn').removeClass('red');
@@ -506,6 +516,11 @@ $(document).ready(function(){
         if($('#asses_id').length < 1) {
             $('.nxt-btn').addClass('before-login-user');
             $('.nxt-btn').attr('data', 'assessment_save_score');
+            
+            $('.score-add-to-school').addClass('before-login-user');
+            $('.score-add-to-school').attr('data', 'assessment_save_score');
+            
+            $('.grand-score-board-summary-text').html(user_score);
             
         } else {
             $('.nxt-btn').addClass('btn-assessment-submit');
@@ -535,7 +550,7 @@ $(document).ready(function(){
         //        var assess_summary_html = user_assess_scroe_html;
         
         var btn_html = $('.assessment-popup-btn-wrapper-explanation').children().eq(0);
-        $('.assessment-popup-btn-wrapper').html(btn_html);
+        $('.assessment-save-score-wrapper').html(btn_html);
         
         $('#icc-quiz-content').hide('fast');
         $('.icc-quiz-game-over').show('slow');
@@ -880,7 +895,7 @@ function get_user_score(total_time_taken) {
     });
     
     if($('#asses_id').length < 1) {
-        createCookie('c21_assessment', assessment, false);
+        createCookie('c21_icc_quiz', assessment, false);
     }
     
     return assessment;
@@ -894,27 +909,27 @@ function get_ques_time(ques_id) {
 //    return 5;
 }
 
-function createCookie(name,value,days) {
-    if (days) {
-        var date = new Date();
-        date.setTime(date.getTime()+(days*24*60*60*1000));
-        var expires = "; expires="+date.toGMTString();
-    }
-    else var expires = "";
-    document.cookie = name+"="+value+expires+"; path=/";
-}
-
-function readCookie(name) {
-    var nameEQ = name + "=";
-    var ca = document.cookie.split(';');
-    for(var i=0;i < ca.length;i++) {
-        var c = ca[i];
-        while (c.charAt(0)==' ') c = c.substring(1,c.length);
-        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-    }
-    return null;
-}
-
-function eraseCookie(name) {
-    createCookie(name,"",-1);
-}
+//function createCookie(name,value,days) {
+//    if (days) {
+//        var date = new Date();
+//        date.setTime(date.getTime()+(days*24*60*60*1000));
+//        var expires = "; expires="+date.toGMTString();
+//    }
+//    else var expires = "";
+//    document.cookie = name+"="+value+expires+"; path=/";
+//}
+//
+//function readCookie(name) {
+//    var nameEQ = name + "=";
+//    var ca = document.cookie.split(';');
+//    for(var i=0;i < ca.length;i++) {
+//        var c = ca[i];
+//        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+//        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+//    }
+//    return null;
+//}
+//
+//function eraseCookie(name) {
+//    createCookie(name,"",-1);
+//}

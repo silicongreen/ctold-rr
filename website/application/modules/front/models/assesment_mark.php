@@ -61,6 +61,24 @@ class Assesment_mark extends DataMapper {
         return (!empty($obj_assessment_mark)) ? $obj_assessment_mark : false;
         
     }
+    
+    function find_user_assessment_total_mark($user_id = 0, $assessment_id = 0) {
+        
+        $this->db->select('SUM(mark) AS mark');
+        if($user_id > 0) {
+            $this->db->where("assesment_mark.user_id", $user_id);
+        }
+        if($assessment_id > 0) {
+            $this->db->where("assesment_mark.assessment_id", $assessment_id);
+        }
+        
+        $this->db->from("assesment_mark");
+        
+        $obj_assessment_mark = $this->db->get()->row();
+        
+        return (!empty($obj_assessment_mark)) ? $obj_assessment_mark : false;
+        
+    }
 
     public function get_attributes() {
 

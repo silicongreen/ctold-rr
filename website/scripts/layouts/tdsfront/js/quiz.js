@@ -34,100 +34,54 @@ $(document).ready(function(){
         callbacks: {
             stop: function() {
                 
-                time_up = true;
-                
-                var html_expl_nxt_popup = '';
-                var key = '';
-                var btn_html = '';
-                var pop_up_data = '';
-                
-                if( (assess_finished == true) && (time_up == false) ) {
-                    
-                    key = 'assessment_score';
-                    
-                    $('.assessment-popup-btn-wrapper').html('');
-                    
-                    $('.nxt-btn span').text('View Score');
-                    $('.nxt-btn').removeAttr('id');
-                    $('.nxt-btn').addClass('show-assessment-score');
-                    $('.nxt-btn').attr('data', 'assessment_score');
-                    
-                } else if( (assess_finished == true) && (time_up == true) ) {
-                    
-                    key = 'ques_time_up';
-                    
-                    $('.assessment-popup-btn-wrapper').html('');
-                    
-                    $('.nxt-btn span').text('View Score');
-                    $('.nxt-btn').removeAttr('id');
-                    $('.nxt-btn').addClass('show-assessment-score');
-                    $('.nxt-btn').attr('data', 'assessment_score');
-                    
-                } else {
+                if(clock.time == 0) {
+                    time_up = true;
                     
                     var next_question_id = 0;
                     
                     $('.materials_and_byline').each(function() {
-            
                         if( ( $(this).attr('style').indexOf('display: block;') != -1 ) ||( $(this).attr('style').indexOf('opacity: 1;') != -1 ) ) {
                 
                             next_question_id = parseInt($(this).attr('id').split('-')[1]) + 1;
                         }
                     });
                     
-                    $('#assessment_next').attr('nxt_q_id', next_question_id.toString());
-                    
-                    key = 'ques_time_up';
-                    
-                    if(next_question_id == num_assessments) {
-                        
-                        $('.assessment-popup-btn-wrapper').html('');
-                    
-                        $('.nxt-btn span').text('View Score');
-                        $('.nxt-btn').removeAttr('id');
-                        $('.nxt-btn').addClass('show-assessment-score');
-                        $('.nxt-btn').attr('data', 'assessment_score');
-                    }
+                    clock.setOption('next_q_id', next_question_id);
                 }
                 
-                btn_html = $('.assessment-popup-btn-wrapper-explanation').html();
-                pop_up_data = get_popup_data(key, user_score);
+                $('#assessment_next').attr('nxt_q_id', clock.next_q_id.toString());
                 
-                $('#assessment-popup-wrapper').css('width', '450px');
-                $('.show-assessment-score').css('width', '49%');
+                var ques_time = get_ques_time(clock.current_q_id);
+                var clock_time = parseInt(clock.time);
+                var time_taken = ques_time - clock_time;
+                total_time_taken += time_taken;
                 
-                $('.assessment-popup-header-label').html('');
-                $('.assessment-popup-header-label').html(pop_up_data.header_label);
+                if(clock.next_q_id == num_assessments) {
+                    assess_finished = true;
+                } else {
+                    time_up = false;
+                }
+                
+                if(assess_finished == false) {
                     
-                $('.assessment-popup-icon-wrapper').html('');
-                $('.assessment-popup-icon-wrapper').html('<img src="/styles/layouts/tdsfront/image/' + pop_up_data.icon + '" width="75" />');
-        
-                $('.assessment_custom_message').html('');
-                $('.assessment_custom_message').html(pop_up_data.custom_message);
-            
-                $('.assessment-popup-btn-wrapper').html('');
-                $('.assessment-popup-btn-wrapper').html(btn_html);
-        
-                html_expl_nxt_popup = $('#assessment-popup-fancy').html();
+                    var ques_time = get_ques_time(clock.next_q_id);
+                    clock.setTime(ques_time);
+                    
+                    $('#assessment_next').trigger('click');
+                } else {
+                    
+                    $('.assessment-popup-btn-wrapper').html('');
+                    
+                    $('.nxt-btn').removeAttr('id');
+                    $('.nxt-btn').addClass('show-assessment-score');
+                    $('.nxt-btn').attr('data', 'assessment_score');
+                    
+                    var assess_score = setTimeout(function(){
+                        $('.show-assessment-score').trigger('click');
+                        clearTimeout(assess_score);
+                    }, 50);
+                }
                 
-                $.fancybox({
-                    'content' : html_expl_nxt_popup,
-                    'width': 450,
-                    'transitionIn': 'fade',
-                    'transitionOut': 'fade',
-                    'openEffect': 'elastic',
-                    'openSpeed' : 350,
-                    'fitToView' : true,
-                    'autoSize' : true,
-                    'closeClick'  : false,
-                    helpers   : { 
-                        overlay : {
-                            closeClick: false
-                        }
-                    },
-                    'padding': 0,
-                    'margin': 0
-                });
             }
         }
     });
@@ -166,53 +120,11 @@ $(document).ready(function(){
     if(cp != '') {
         extra_html += cp;
     }
-    
-    /* var pop_up_data =  get_popup_data(key, extra_html);
-    
-    $('#assessment-popup-wrapper').css('width', '700px');
-    $('.assessment-popup-header-label').html('');
-    $('.assessment-popup-header-label').html(pop_up_data.header_label);
-            
-    $('.assessment-popup-icon-wrapper').html('');
-    $('.assessment-popup-icon-wrapper').html('<img src="/styles/layouts/tdsfront/image/' + pop_up_data.icon + '" width="75" />');
-            
-    $('.assessment_custom_message').html('');
-    $('.assessment_custom_message').html(pop_up_data.custom_message);
-            
-    var html_before_login_popup = $('#assessment-popup-fancy').html();
-    
-    $.fancybox({
-        'content' : html_before_login_popup,
-        'width': 718,
-        'transitionIn': 'fade',
-        'transitionOut': 'fade',
-        'openEffect': 'elastic',
-        'openSpeed' : 350,
-        'fitToView' : true,
-        'autoSize' : true,
-        'closeClick'  : false,
-        helpers   : { 
-            overlay : {
-                closeClick: false
-            }
-        },
-        'padding': 0,
-        'margin': 0
-    }); */
         
-    var assessment_next_clicked = 0;
     $(document).off('click').on('click', '#assessment_next', function(){
-        
-        assessment_next_clicked++;
         
         var next_q_id = $(this).attr('nxt_q_id');
         var curr_q_id = parseInt(next_q_id) - 1;
-        
-        var ques_time = get_ques_time(next_q_id);
-        clock.setTime(ques_time);
-        clock.start(function() {
-            time_up = false;
-        });
         
         $('#q_id-'+curr_q_id).hide('slow', function() {
             $('#q_id-'+curr_q_id).attr('style', 'display: none;');
@@ -240,8 +152,10 @@ $(document).ready(function(){
                 clearTimeout(set_height);
             }, 1);
             
-            $.fancybox.close();
-            $('.assessment-popup-btn-wrapper').html('');
+            var start_clock = setTimeout(function() {
+                clock.start();
+                clearTimeout(start_clock);
+            }, 700);
         });
         
     });
@@ -397,16 +311,12 @@ $(document).ready(function(){
         var next_q_id = current_q_id + 1;
         $('#assessment_next').attr('nxt_q_id', next_q_id.toString());
         
-        clock.stop(function(){
-            time_up = false;
-            
-            var ques_time = get_ques_time(current_q_id);
-            var clock_time = parseInt(clock.time);
-            var time_taken = ques_time - clock_time;
-            
-            total_time_taken += time_taken;
-            return;
+        clock.setOptions({
+            'current_q_id' : current_q_id,
+            'next_q_id' : next_q_id
         });
+        
+        clock.stop();
         
         var checked = false; 
         var this_ul = $(this).parent('ul');
@@ -419,66 +329,16 @@ $(document).ready(function(){
             }
         });
         
-        if( next_q_id == num_assessments ) {
-            
-            clock.stop(function(){
-                time_up = false;
-                assess_finished = true;
-            });
-        }
-        
         if(!checked) {
             $(this).attr('checked', 'checked');
             $(this).css('background-color', '#FFFDDC');
             
             var correct = $(this).attr('option');
             
-            var key = 'assess_wrong';
-            var btn_html = $('.assessment-popup-btn-wrapper-explanation').html();
             if(correct == '1') {
-                key = 'assess_correct';
                 var ques_mark = parseInt($(this).attr('mark'));
                 user_score += ques_mark;
-            }
-            
-            var pop_up_data =  get_popup_data(key, '');
-            
-            $('#assessment-popup-wrapper').css('width', '450px');
-            $('.assessment-popup-btn-wrapper').css('width', '100%');
-            $('.assessment-popup-btn-wrapper').css('padding-left', '0');
-            
-            $('.assessment-popup-header-label').html('');
-            $('.assessment-popup-header-label').html(pop_up_data.header_label);
-        
-            $('.assessment-popup-icon-wrapper').html('');
-            $('.assessment-popup-icon-wrapper').html('<img src="/styles/layouts/tdsfront/image/' + pop_up_data.icon + '" width="75" />');
-        
-            $('.assessment_custom_message').html('');
-            $('.assessment_custom_message').html(pop_up_data.custom_message);
-            
-            $('.assessment-popup-btn-wrapper').html('');
-            $('.assessment-popup-btn-wrapper').html(btn_html);
-        
-            var html_expl_nxt_popup = $('#assessment-popup-fancy').html();
-
-            $.fancybox({
-                'content' : html_expl_nxt_popup,
-                'width': 450,
-                'transitionIn': 'fade',
-                'transitionOut': 'fade',
-                'openEffect': 'elastic',
-                'openSpeed' : 350,
-                'fitToView' : true,
-                'autoSize' : true,
-                'closeClick'  : false,
-                helpers   : { 
-                    overlay : {
-                        closeClick: false
-                    }
-                },
-                'padding': 0,
-                'margin': 0
-            });
+            } 
         }
     });
     
@@ -634,11 +494,14 @@ $(document).ready(function(){
         $('.assessment_custom_message').html(pop_up_data.custom_message);
     });
     
-    $(document).on('click', '#start_assessment_play', function(){
+    $(document).on('click', '#icc-quiz-start-screen', function(){
         
         $('.inner-container').css('background-color', 'rgba(1, 1, 1, 0.45)');
         $('.inner-container').css('border-radius', '5px');
         $('.inner-container').css('min-height', '530px');
+        $('.inner-container').css('margin-bottom', '20px');
+        $('.flip-clock-label').css('color', '#ffffff');
+        $('.icc-quiz-start-screen-player').css('display', 'none');
         
         console.log(num_assessments);
         
@@ -908,28 +771,3 @@ function get_ques_time(ques_id) {
     return parseInt(ques_time);
 //    return 5;
 }
-
-//function createCookie(name,value,days) {
-//    if (days) {
-//        var date = new Date();
-//        date.setTime(date.getTime()+(days*24*60*60*1000));
-//        var expires = "; expires="+date.toGMTString();
-//    }
-//    else var expires = "";
-//    document.cookie = name+"="+value+expires+"; path=/";
-//}
-//
-//function readCookie(name) {
-//    var nameEQ = name + "=";
-//    var ca = document.cookie.split(';');
-//    for(var i=0;i < ca.length;i++) {
-//        var c = ca[i];
-//        while (c.charAt(0)==' ') c = c.substring(1,c.length);
-//        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-//    }
-//    return null;
-//}
-//
-//function eraseCookie(name) {
-//    createCookie(name,"",-1);
-//}

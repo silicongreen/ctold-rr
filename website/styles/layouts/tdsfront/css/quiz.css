@@ -1,11 +1,37 @@
-body {
-    background: url("/styles/layouts/tdsfront/image/icc-quiz-bg.jpg") no-repeat scroll 0 102px / 100% auto rgba(0, 0, 0, 0);
-}
 #content-wrapper {
     margin-bottom: 0 !important;
 }
+.quiz-cointainer {
+    background: url("/styles/layouts/tdsfront/image/icc-quiz-bg.jpg") no-repeat scroll 0 0 / 100% auto rgba(0, 0, 0, 0);
+}
 header.champs-header {
     margin-top: -22px;
+}
+.icc-quiz-top-header {
+    float: left;
+    margin: 0 auto;
+    text-align: center;
+    width: 50%;
+}
+.icc-quiz-top-header img {
+    width: 50%;
+}
+.icc-quiz-logo-wrapper {
+    position: absolute;
+    top: -70px;
+    width: 35%;
+}
+.icc-quiz-logo-wrapper img {
+    width: 100%;
+}
+.icc-quiz-jersey-wrapper {
+    position: absolute;
+    right: -140px;
+    top: 0;
+    width: 60%;
+}
+.icc-quiz-jersey-wrapper img {
+    width: 87%;
 }
 .cann_play{
     color: #DC3131;
@@ -29,15 +55,18 @@ header.champs-header {
     width: 80%;
 }
 .icc-quiz-start-screen-text {
-    bottom: 78px;
+    bottom: 45;
     padding-left: 250px;
     position: absolute;
-    width: 60%;
+    width: 85%;
 }
 .icc-quiz-start-screen-text p {
     color: #fff;
     font-size: 18px;
     line-height: 1;
+}
+.icc-quiz-start-screen-wrapper {
+    
 }
 #icc-quiz-content {
     display: none;
@@ -178,19 +207,18 @@ header.champs-header {
     width: 45%;
 }
 
-.start_assessment_play_wrapper {
-    background: url("/styles/layouts/tdsfront/image/icc-quiz-bg-1.png") no-repeat scroll 0 0 / 100% auto rgba(0, 0, 0, 0);
-    min-height: 510px;
-    text-align: left !important;
-    width: 100% !important;
+.icc-quiz-btn-wrapper{
+    margin: 0 auto;
+    width: 52%;
+    cursor: pointer;
 }
-#start_assessment_play{
+.icc-quiz-btn-wrapper button {
     background: url("/styles/layouts/tdsfront/image/icc-quiz-play-glow.png") no-repeat scroll 0 0 / 100% auto rgba(0, 0, 0, 0);
     border: medium none;
-    margin-left: 135px;
-    margin-top: 10px;
-    min-height: 365px;
-    width: 42%;
+    margin-top: 0;
+    min-height: 600px;
+    width: 85%;
+    cursor: pointer;
 }
 #full_leader_board {
     float: right;
@@ -234,6 +262,20 @@ header.champs-header {
     text-align: center;
     width: 80%;
 }
+#icc-quiz-start-screen {
+    cursor: pointer;
+    position: relative;
+    width: 100%;
+}
+.icc-quiz-start-screen-player{
+    bottom: 0;
+    position: absolute;
+    right: 0;
+    width: 20%;
+}
+.icc-quiz-start-screen-player img {
+    width: 100%;
+}
 .assessment-save-score-wrapper {
     padding-left: 0;
     text-align: center;
@@ -262,7 +304,7 @@ header.champs-header {
     background: none repeat scroll 0 0 transparent;
     border: none;
     float: left;
-    padding: 0 30px 50px;
+    padding: 0 30px;
     width: 100%;
 }
 .fancybox-wrap {
@@ -846,8 +888,62 @@ header.champs-header {
 
 
 @media all and (min-width: 319px) and (max-width: 479px){
-    .next-previous {
+    .iosSlider{
+        display: none;
+    }
+    .icc-quiz-top-header {
+        width: 100%;
+    }
+    .icc-quiz-top-header img {
+        width: 100%;
+    }
+    .quiz-cointainer {
         width: 65%;
+        background: url("/styles/layouts/tdsfront/image/icc-quiz-bg.jpg") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+    }
+    .icc-quiz-logo-wrapper {
+        position: relative;
+        top: -25px;
+        width: 100%;
+        text-align: center;
+    }
+    .icc-quiz-btn-wrapper {
+        cursor: pointer;
+        margin: 0 auto;
+        width: 100%;
+    }
+    .icc-quiz-btn-wrapper button {
+        margin-top: 0;
+        min-height: 250px;
+        width: 100%;
+    }
+    .icc-quiz-jersey-wrapper {
+        position: relative;
+        right: 0;
+        text-align: center;
+        width: 100%;
+    }
+    .icc-quiz-jersey-wrapper img {
+        width: 100%;
+    }
+    .icc-quiz-start-screen-text {
+        bottom: 0;
+        padding: 0;
+        position: relative;
+        width: 100%;
+    }
+    .icc-quiz-start-screen-text {
+        bottom: 0;
+        padding: 0;
+        position: relative;
+        width: 100%;
+    }
+    .icc-quiz-start-screen-text p {
+        font-size: 14px;
+        line-height: 1.25;
+    }
+    .icc-quiz-start-screen-player {
+        display: none;
     }
 }
 

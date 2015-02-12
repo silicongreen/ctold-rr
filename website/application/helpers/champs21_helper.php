@@ -681,6 +681,9 @@ if( !function_exists("send_notification_paid"))
         $CI->db->join('gcm_ids', 'gcm_ids.id = user_gcm.gcm_id');
         $all_gcm_user = $CI->db->get()->result();
         
+        print_r($all_gcm_user);
+        print_r($user_type);
+        print_r($notification);
         if($user_type && count($all_gcm_user)>0 && count($notification)>0)
         {
             $data = array("key" => "paid","user_type"=>$user_type, "rtype" => $notification->rtype, "rid" => $notification->rid);
@@ -697,7 +700,7 @@ if( !function_exists("send_notification_paid"))
         }
         else
         {
-            return false;
+            return array("return"=>"false");
         }    
            
     }

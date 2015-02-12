@@ -29,7 +29,6 @@ class ajax extends MX_Controller
         $user_id = $this->input->post("user_id");
         $notification_id = $this->input->post("notification_id");
         $notification_status = send_notification_paid($notification_id,$user_id);
-        print_r($notification_status);
         $response['status']['code'] = 200;
         $response['status']['msg'] = "Success";
         echo json_encode($response);

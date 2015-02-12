@@ -24,6 +24,17 @@ class ajax extends MX_Controller
         echo "getExclusiveNews";
     }
     
+    public function send_paid_notification()
+    {
+        $user_id = $this->input->post("user_id");
+        $notification_id = $this->input->post("notification_id");
+        $notification_status = send_notification_paid($notification_id,$user_id);
+        print_r($notification_status);
+        $response['status']['code'] = 200;
+        $response['status']['msg'] = "Success";
+        echo json_encode($response);
+    }
+    
     public function set_type_cookie($user_type)
     {
         set_type_cookie($user_type);

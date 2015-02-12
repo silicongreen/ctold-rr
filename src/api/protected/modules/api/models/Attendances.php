@@ -161,6 +161,15 @@ class Attendances extends CActiveRecord {
         $data = $this->findAll($criteria);
         return $data;
     }
+    public function getAttendenceStudent($student_id,$date)
+    {
+        $criteria = new CDbCriteria;
+        $criteria->select="t.id";
+        $criteria->compare('month_date', $date); 
+        $criteria->compare('student_id', $student_id);
+        $data = $this->find($criteria);
+        return $data;
+    }
     public function getAttendence($batch_id,$student_id,$date)
     {
         $criteria = new CDbCriteria;

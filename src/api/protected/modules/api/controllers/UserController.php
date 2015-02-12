@@ -482,7 +482,7 @@ class UserController extends Controller {
                         {
                             $user_gcm = new UserGcm();
                             $usergcm = $user_gcm->getUserGcm($gcm_id,Yii::app()->user->id);
-                            if(!$user_gcm)
+                            if(!$usergcm)
                             {
                                 $user_gcm->user_id = Yii::app()->user->id;
                                 $user_gcm->gcm_id = $gcm_id;

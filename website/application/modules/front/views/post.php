@@ -82,7 +82,11 @@
 
         <input type="hidden" name="url-post" id="url-post" value="<?php echo base_url('print_post/' . sanitize($headline) . '-' . $post_id); ?>" />
         <?php endif; ?>
-        <div class="inner-container" style="margin: 10px 20px;">
+        <div style="width: 100%; padding: 10px 21px 0px;">
+            <img style="width: 100%;" src="<?php echo base_url("styles/layouts/tdsfront/image/app_name.jpg"); ?>">
+        </div>
+            
+        <div class="inner-container" style="margin: 0px 20px 10px;">
             
             <!-- Ad sense Place Top -->
 <!--            <div class="add-wrapper-top">

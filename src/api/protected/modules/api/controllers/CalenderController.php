@@ -264,7 +264,7 @@ class CalenderController extends Controller {
     }
     
     
-    private function sendnotificationleave($student_id,$status,$updateleave,$late)
+    private function sendnotificationleave($student_id,$status,$updateleave)
     {
         $reminderrecipients = array();
         $studentobj = new Students();

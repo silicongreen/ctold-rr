@@ -83,7 +83,7 @@
         <input type="hidden" name="url-post" id="url-post" value="<?php echo base_url('print_post/' . sanitize($headline) . '-' . $post_id); ?>" />
         <?php endif; ?>
         <div style="width: 100%; padding: 10px 21px 0px;">
-            <img style="width: 100%;" src="<?php echo base_url("styles/layouts/tdsfront/image/app_name.jpg"); ?>">
+            <a href="https://play.google.com/store/apps/details?id=com.champs21.schoolapp" target="_blank"><img style="width: 100%;" src="<?php echo base_url("styles/layouts/tdsfront/image/app_name.jpg"); ?>"></a>
         </div>
             
         <div class="inner-container" style="margin: 0px 20px 10px;">

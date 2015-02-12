@@ -235,9 +235,9 @@ class CalenderController extends Controller {
         $reminderrecipients = $studentdata->user_id;
         
         if ($late==1)
-          $message = $studentdata.first_name." ".$studentdata.last_name." is absent on ".$newattendence.month_date;
+          $message = $studentdata->first_name." ".$studentdata->last_name." is absent on ".$newattendence->month_date;
         else
-          $message = $studentdata.first_name." ".$studentdata.last_name." is absent on (forenoon) ".$newattendence.month_date;
+          $message = $studentdata->first_name." ".$studentdata->last_name." is absent on (forenoon) ".$newattendence->month_date;
         
         if($studentdata->immediate_contact_id)
         {
@@ -254,7 +254,7 @@ class CalenderController extends Controller {
                 $reminder->subject = "Attendance Notice";
                 $reminder->body = $message;
                 $reminder->created_at = date("Y-m-d H:i:s");
-                $reminder->rid = $newattendence.id;
+                $reminder->rid = $newattendence->id;
                 $reminder->rtype = 6;
                 $reminder->updated_at = date("Y-m-d H:i:s");
                 $reminder->school_id = Yii::app()->user->schoolId;
@@ -287,10 +287,10 @@ class CalenderController extends Controller {
                 $reminder = new Reminders(); 
                 $reminder->sender = Yii::app()->user->id;
                 $reminder->recipient = $value;
-                $reminder->subject = "Your Leave Aplication is ".$approved_text." (".$studentdata.first_name.")";
-                $reminder->body = "(".$studentdata.first_name.") leave application from ".$updateleave.start_date." to ".$updateleave.end_date." is ".$approved_text."";
+                $reminder->subject = "Your Leave Aplication is ".$approved_text." (".$studentdata->first_name.")";
+                $reminder->body = "(".$studentdata->first_name.") leave application from ".$updateleave->start_date." to ".$updateleave->end_date." is ".$approved_text."";
                 $reminder->created_at = date("Y-m-d H:i:s");
-                $reminder->rid = $updateleave.id;
+                $reminder->rid = $updateleave->id;
                 $reminder->rtype = 10;
                 $reminder->updated_at = date("Y-m-d H:i:s");
                 $reminder->school_id = Yii::app()->user->schoolId;

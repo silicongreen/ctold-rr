@@ -631,6 +631,77 @@ if ( ! function_exists("get_diff_date"))
         return $a_out;
     }
 }
+
+if( !function_exists("send_notification_paid"))
+{
+    function send_notification_paid($notification_id,$user_id)
+    {
+        $CI = &get_instance();
+        
+        
+        //getting notification details
+        $CI->db->dbprefix = '';
+        $CI->db->select('*');
+        $CI->db->from('reminders');
+        $CI->db->where('id',$notification_id);
+        $notification = $CI->db->get()->row();
+        
+        //getting user information
+        $CI->db->dbprefix = '';
+        $CI->db->select('*');
+        $CI->db->from('users');
+        $CI->db->where('id',$user_id);
+        $user = $CI->db->get()->row();
+        
+        $user_type = 0;
+        
+        if($user->admin)
+        {
+           $user_type = 1; 
+        } 
+        if($user->student)
+        {
+           $user_type = 3; 
+        } 
+        if($user->employee)
+        {
+           $user_type = 2; 
+        } 
+        if($user->parent)
+        {
+           $user_type = 4; 
+        } 
+        
+        
+        //getting all user gcm_ids
+        $CI->db->dbprefix = 'tds_';
+        $CI->db->select('gcm_ids.gcm_id as gcmid');
+        $CI->db->where('user_gcm.user_id',$user_id);
+        $CI->db->from('user_gcm');
+        $CI->db->join('gcm_ids', 'gcm_ids.id = user_gcm.gcm_id');
+        $all_gcm_user = $CI->db->get()->result();
+        
+        if($user_type && count($all_gcm_user)>0 && count($notification)>0)
+        {
+            $data = array("key" => "paid","user_type"=>$user_type, "rtype" => $notification->rtype, "rid" => $notification->rid);
+            $messege = $notification->body;
+            $CI->load->library('gcm');
+            $CI->gcm->setMessage($messege);
+            $CI->gcm->setData($data);
+            foreach($all_gcm_user as $value)
+            {
+               $CI->gcm->addRecepient($value->gcmid);
+            }
+            $data = $CI->gcm->send();
+            return $data;
+        }
+        else
+        {
+            return false;
+        }    
+           
+    }
+} 
 if( !function_exists("send_notification"))
 {
     function send_notification($messege, $data = array())

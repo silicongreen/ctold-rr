@@ -359,11 +359,6 @@ $(document).ready(function(){
         
         total_time_taken += last_q_time
         
-        var key = $(this).attr('data');
-        
-//        $('.assessment-popup-btn-wrapper').html('');
-//        $('.assessment-popup-btn-wrapper').css('padding-left', '0');
-        
         $('.nxt-btn').removeClass('show-assessment-score');
         $('.nxt-btn').removeClass('red');
         $('.nxt-btn span').text('Save');
@@ -403,54 +398,13 @@ $(document).ready(function(){
             $('#level-' + next_level).parent('p').find('a span').text('Play Now');
         }
         
-        //        var assess_summary = populate_assessment_summary();
-        //        var assess_summary_table = '<div class="assess_summary_wrapper" id="assess_summary">' + assess_summary + '</div>';
-        //        var user_assess_scroe_html = '<p class="f2" style="color: #999; font-size: 30px; font-weight: 900; letter-spacing: 3px; text-align: center;">YOUR SCORE IS</p><p class="f2" style="color: #000; font-size: 70px; font-weight: 900; letter-spacing: -1; margin: 35px 0; text-align: center; "> '+ user_score + ' / ' + $('#total_mark').val() + '</p>';
-        
-        //        var assess_summary_html = user_assess_scroe_html;
-        
         var btn_html = $('.assessment-popup-btn-wrapper-explanation').children().eq(0);
         $('.assessment-save-score-wrapper').html(btn_html);
         
         $('#icc-quiz-content').hide('fast');
         $('.icc-quiz-game-over').show('slow');
         $.fancybox.close();
-        
-    /* var pop_up_data =  get_popup_data(key, assess_summary_html);
-        
-        $('#assessment-popup-wrapper').css('width', '100%');
-        
-        $('.assessment-popup-header-label').html('');
-        $('.assessment-popup-header-label').html(pop_up_data.header_label);
-        
-        $('.assessment-popup-icon-wrapper').html('');
-        $('.assessment-popup-icon-wrapper').html('<img src="/styles/layouts/tdsfront/image/' + pop_up_data.icon + '" width="75" />');
-        
-        $('.assessment_custom_message').html('');
-        $('.assessment_custom_message').html(pop_up_data.custom_message);
-        
-        var html_expl_nxt_popup = $('#assessment-popup-fancy').html();
-
-        $.fancybox({
-            'content' : html_expl_nxt_popup,
-            'width': '75%',
-            'height': 'auto',
-            'transitionIn': 'fade',
-            'transitionOut': 'fade',
-            'openEffect': 'elastic',
-            'openSpeed' : 350,
-            'fitToView' : true,
-            'autoSize' : false,
-            'closeClick'  : false,
-            helpers   : { 
-                overlay : {
-                    closeClick: false
-                }
-            },
-            'padding': 0,
-            'margin': 0
-        }); */
-        
+      
     });
     
     $(document).on('click', '#assessment_explanation', function(){
@@ -502,8 +456,7 @@ $(document).ready(function(){
         $('.inner-container').css('margin-bottom', '20px');
         $('.flip-clock-label').css('color', '#ffffff');
         $('.icc-quiz-start-screen-player').css('display', 'none');
-        
-        console.log(num_assessments);
+        $('.icc-quiz-start-screen-stamp').css('display', 'none');
         
         $('#pre_assessment_details').children('p').eq(1).html('No. of Question&nbsp;: '+num_assessments);
         
@@ -512,6 +465,10 @@ $(document).ready(function(){
     });
     
     $(document).on('click', '#start_assessment_now', function(){
+        
+        if($(window).width() < 768) {
+            $('.icc-quiz-top-header').addClass('hide-icc-quiz-top-header');
+        }
         
         if($('#assessment_title_span').attr('cp') == 0 ) {
             return false;
@@ -547,12 +504,14 @@ $(document).ready(function(){
             type : 'post',
             dataType : 'json',
             data : {
-                assessment_id : assessment_id
+                assessment_id : assessment_id,
+                type : 2
             },
             success : function(data) {
                 
                 var response = JSON.parse(data.leader_board);
                 var lb_rows = ''
+                var s_lb_rows = ''
                 
                 $.each(response.data.assesment,function(k, v) {
                     
@@ -581,19 +540,44 @@ $(document).ready(function(){
                     
                 });
                 
+                $.each(response.data.school_score_board,function(k, v) {
+                    
+                    var school_logo = $('#base_url').val() + 'styles/layouts/tdsfront/image/C.png';
+                    
+                    if(v.school_logo != '') {
+                        school_logo = $('#base_url').val() + v.school_logo;
+                    }
+                    
+                    s_lb_rows += '<tr>' +
+                    '<td>' +
+                    '<div class="ladder_board_user_name f2">' +
+                    '<img src="' + school_logo + '">' +
+                    v.school_name +
+                    '</div>' +
+                    '</td>' +
+                    '<td>' +
+                    '<div class="ladder_board_mark f2">'+ v.mark +'</div>' +
+                    '</td>' +
+                    '</tr>';
+                    
+                });
+                
                 $('.ladder_board_title').text('');
                 $('.ladder_board_title').html('Top 100');
                 
-                $('#assess_ladder_board table tbody').html('');
-                $('#assess_ladder_board table tbody').html(lb_rows);
+                $('#user_leader_board table tbody').html('');
+                $('#user_leader_board table tbody').html(lb_rows);
+                
+                $('#school_leader_board table tbody').html('');
+                $('#school_leader_board table tbody').html(s_lb_rows);
                 
                 var pop_up_data = get_popup_data('assess_full_leader_board', '');
                 
                 $('.assessment-popup-btn-wrapper').html('');
                 
-                var btn_html = '<button class="red" type="button" id="start_assessment_now" style="float: none;"><span class="clearfix f2">Start Now</span></button>';
+                var btn_html = '';
                 
-                $('#assessment-popup-wrapper').css('width', '718px');
+                $('#assessment-popup-wrapper').css('width', '100%');
                 $('.assessment-popup-header-label').html('');
                 $('.assessment-popup-header-label').html(pop_up_data.header_label);
         
@@ -610,13 +594,13 @@ $(document).ready(function(){
 
                 $.fancybox({
                     'content' : html_before_login_popup,
-                    'width': 700,
+                    'width': '90%',
                     'transitionIn': 'fade',
                     'transitionOut': 'fade',
                     'openEffect': 'elastic',
                     'openSpeed' : 350,
                     'fitToView' : true,
-                    'autoSize' : true,
+                    'autoSize' : false,
                     'closeClick'  : false,
                     helpers   : { 
                         overlay : {

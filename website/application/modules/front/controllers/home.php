@@ -3451,7 +3451,7 @@ class home extends MX_Controller {
             
             if ((!$assessment)) {
                 $data['assessment'] = array();
-                $data['score_board'] = array();
+                $data['school_score_board'] = array();
                 $data['score_board'] = array();
                 $data['can_play'] = false;
                 $data['last_played'] = false;
@@ -3475,6 +3475,7 @@ class home extends MX_Controller {
                 }
                 
                 $data['assessment'] = $assessment->assesment;
+                $data['school_score_board'] = $assessment->school_score_board;
                 $data['score_board'] = $assessment->score_board;
                 $data['can_play'] = $assessment->can_play;
                 $data['last_played'] = $assessment->last_played;
@@ -3723,10 +3724,12 @@ class home extends MX_Controller {
             exit;
         }
         $assessment_id = $this->input->post('assessment_id');
+        $assessment_type = $this->input->post('type');
         
-        $assessment_leader_board = get_assessment_leader_board($assessment_id, 100);
+        $assessment_leader_board = get_assessment_leader_board($assessment_id, 100, $assessment_type);
         
         $response['leader_board'] = $assessment_leader_board;
+        
         echo json_encode($response);
         exit;
     }

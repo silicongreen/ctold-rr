@@ -407,6 +407,36 @@ class UserController extends Controller {
        Yii::app()->end();
        
     }
+    public function actionlogout() 
+    {
+        $gcm_id = Yii::app()->request->getPost('gcm_id');
+        $user_secret = Yii::app()->request->getPost('user_secret');
+        if ($gcm_id && Yii::app()->user->user_secret === $user_secret)
+        {
+            $gcmobj = new Gcm();
+            $gcm_id = $gcmobj->getGcm($gcm_id);
+            if($gcm_id)
+            {
+                $user_gcm = new UserGcm();
+                $usergcm = $user_gcm->getUserGcm($gcm_id,$user_id);
+                if($user_gcm)
+                {
+                    $user_gcm_to_delete = $user_gcm->findByPk($user_gcm);
+                    $user_gcm_to_delete->delete();
+                    
+                }    
+            }
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "Logout Successfull";
+        }
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    }
 
     public function actionAuth() {
 
@@ -442,6 +472,25 @@ class UserController extends Controller {
 
                 if ($user_paid_login_data = $user->login()) {
 
+                    //check gcm and add gcm
+                    $gcm_id = Yii::app()->request->getPost('gcm_id');
+                    if($gcm_id)
+                    {
+                        $gcmobj = new Gcm();
+                        $gcm_id = $gcmobj->getGcm($gcm_id);
+                        if($gcm_id)
+                        {
+                            $user_gcm = new UserGcm();
+                            $usergcm = $user_gcm->getUserGcm($gcm_id,Yii::app()->user->id);
+                            if(!$user_gcm)
+                            {
+                                $user_gcm->user_id = Yii::app()->user->id;
+                                $user_gcm->gcm_id = $gcm_id;
+                                $user_gcm->save();
+                            }    
+                        }
+                    }
+                    
                     if($data = $free_user->login($username,$password, true))
                     {
                         $folderObj = new UserFolder();

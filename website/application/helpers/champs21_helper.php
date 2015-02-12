@@ -1165,12 +1165,16 @@ if( !function_exists("assessment_update_played"))
     
 if( !function_exists("get_assessment_leader_board"))
 {
-    function get_assessment_leader_board($assesment_id, $limit = 100)
+    function get_assessment_leader_board($assesment_id, $limit = 100, $type = 0)
     {
         $CI = &get_instance();
         
         $url = get_curl_url("assesmenttopscore");
         $fields_string = "id=" . $assesment_id . "&limit=" . $limit;
+        
+        if($type > 0) {
+             $fields_string .= "&type=" . $type;
+        }
         
         //start curl
         $ch = curl_init();

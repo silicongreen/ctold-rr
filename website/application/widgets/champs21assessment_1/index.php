@@ -37,7 +37,7 @@ class champs21assessment_1 extends widget
         $this->CI = & get_instance();
     }
 
-    function run($ci_key, $assessment, $score_board, $can_play, $last_played)
+    function run($ci_key, $assessment, $score_board, $can_play, $last_played, $school_score_board = NULL)
     {   
         $this->CI->load->config("huffas");
         $assessment_config = $this->CI->config->config['assessment'];

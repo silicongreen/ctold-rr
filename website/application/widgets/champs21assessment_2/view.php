@@ -104,8 +104,8 @@
                         <div class="clearfix"></div>
                         <div class="leader_board_content">
                             <ul>
-                                <?php foreach ($score_board as $sb) { ?>
-                                    <li><span class="user_name f5"><?php echo $sb->user_name; ?></span>&nbsp;<span class="mark f5"><?php echo $sb->mark; ?></span></li>
+                                <?php foreach ($school_score_board as $ssb) { ?>
+                                    <li><span class="user_name f5"><?php echo $ssb->school_name; ?></span>&nbsp;<span class="mark f5"><?php echo $ssb->mark; ?></span></li>
                                 <?php } ?>
                             </ul>
                         </div>
@@ -190,7 +190,7 @@
                         </div>
 
                         <div class="score-add-to-school f2">Add score to your school   </div>
-                        <div class="school-position f2">Your schools's position</div>
+                        <div id="full_leader_board" class="school-position f2">Leader Board</div>
                         <div class="invite-friends f5">
                             <img src="/styles/layouts/tdsfront/image/icc-quiz-invite.png">
                             <p>Invite friends</p>
@@ -279,8 +279,12 @@
         </div>
     </div>
     
-     <div class="icc-quiz-start-screen-player">
+    <div class="icc-quiz-start-screen-player">
         <img src="/styles/layouts/tdsfront/image/icc-quiz-bottom-player.png">
+    </div>
+
+    <div class="icc-quiz-start-screen-stamp">
+        <img src="/styles/layouts/tdsfront/image/icc-quiz-stamp.png">
     </div>
 
 </div>
@@ -332,38 +336,82 @@
     <div class="col-lg-12 ladder_board_title f2">
         Top 5
     </div>
-    <table>
-        <thead>
-            <tr>
-                <th class="f2">Name</th>
-                <th class="f2">Score</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($score_board as $sb) { ?>
+    
+    <div id="user_leader_board" class="ladder_board_wrapper">
+        <table>
+            <thead>
                 <tr>
-                    <td>
-                        <div class="ladder_board_user_name f2">
-                            <?php
-                            $profile_img = base_url('styles/layouts/tdsfront/image/C.png');
-
-                            if (!empty($sb->profile_image)) {
-                                $profile_img = $sb->profile_image;
-                            }
-                            ?>
-                            <img src="<?php echo $profile_img; ?>">
-                            <?php echo $sb->user_name; ?>
-                        </div>
-                        <div class="ladder_board_school_name f2"><?php echo $sb->school; ?></div>
-                    </td>
-                    <td>
-                        <div class="ladder_board_mark f2"><?php echo $sb->mark; ?></div>
-                        <div class="ladder_board_time f2"><?php echo gmdate('i:s', (int) $sb->time_taken); ?> Minute</div>
-                    </td>
+                    <th colspan="2" class="f2">Individual</th>
                 </tr>
-            <?php } ?>
-        </tbody>
-    </table>
+                <tr>
+                    <th class="f2">Name</th>
+                    <th class="f2">Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($score_board as $sb) { ?>
+                    <tr>
+                        <td>
+                            <div class="ladder_board_user_name f2">
+                                <?php
+                                $profile_img = base_url('styles/layouts/tdsfront/image/C.png');
+
+                                if (!empty($sb->profile_image)) {
+                                    $profile_img = $sb->profile_image;
+                                }
+                                ?>
+                                <img src="<?php echo $profile_img; ?>">
+                                <?php echo $sb->user_name; ?>
+                            </div>
+                            <div class="ladder_board_school_name f2"><?php echo $sb->school; ?></div>
+                        </td>
+                        <td>
+                            <div class="ladder_board_mark f2"><?php echo $sb->mark; ?></div>
+                            <div class="ladder_board_time f2"><?php echo gmdate('i:s', (int) $sb->time_taken); ?> Minute</div>
+                        </td>
+                    </tr>
+                <?php } ?>
+            </tbody>
+        </table>
+    </div>
+    
+    <div id="school_leader_board" class="ladder_board_wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="2" class="f2">School</th>
+                </tr>
+                <tr>
+                    <th class="f2">Name</th>
+                    <th class="f2">Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($school_score_board as $ssb) { ?>
+                    <tr>
+                        <td>
+                            <div class="ladder_board_user_name f2">
+                                <?php
+                                $school_logo = base_url('styles/layouts/tdsfront/image/C.png');
+
+                                if (!empty($ssb->school_logo)) {
+                                    $school_logo = $ssb->school_logo;
+                                }
+                                ?>
+                                <img src="<?php echo $school_logo; ?>">
+                                <?php echo $ssb->school_name; ?>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="ladder_board_mark f2"><?php echo $ssb->mark; ?></div>
+                            <!--div class="ladder_board_time f2"><?php //echo gmdate('i:s', (int) $ssb->time_taken); ?> Minute</div-->
+                        </td>
+                    </tr>
+                <?php } ?>
+            </tbody>
+        </table>
+    </div>
+    
 </div>
 <div class="clearfix"></div>
 <script src="<?php echo base_url('scripts/FlipClock/compiled/flipclock.min.js') ?>"></script>

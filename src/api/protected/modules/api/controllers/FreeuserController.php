@@ -170,6 +170,8 @@ class FreeuserController extends Controller
         
         $id = Yii::app()->request->getPost('id');
         $limit = Yii::app()->request->getPost('limit');
+        $type = Yii::app()->request->getPost('type');
+        
         if (!$id )
         {
             $response['status']['code'] = 400;
@@ -185,6 +187,12 @@ class FreeuserController extends Controller
             }    
             $objassessment = $objcmark->getTopMark($id,$limit);
             $response['data']['assesment'] = $objassessment;
+            
+            if($type == 2) {
+                $assessment_school_mark = new AssesmentSchoolMark();
+                $response['data']['school_score_board'] = $assessment_school_mark->getSchoolTopMark($id, 100);
+            }
+            
             $response['status']['code'] = 200;
             $response['status']['msg'] = "success";
                 
@@ -387,6 +395,7 @@ class FreeuserController extends Controller
             
             $assesmentObj = new Cassignments();
             $cmark = new Cmark();
+            
             if(!$limit)
             {
                 if($webview)
@@ -434,7 +443,13 @@ class FreeuserController extends Controller
             $response['data']['current_date'] = date("Y-m-d H:i:s");
             $response['data']['last_played'] = $last_played;
             $response['data']['can_play'] = $can_play;
-            $response['data']['score_board'] = $cmark->getTopMark($assesment_id, $limit); 
+            $response['data']['score_board'] = $cmark->getTopMark($assesment_id, $limit);
+            
+            if($type == 2) {
+                $assessment_school_mark = new AssesmentSchoolMark();
+                $response['data']['school_score_board'] = $assessment_school_mark->getSchoolTopMark($assesment_id, 100);
+            }
+            
             $response['data']['higistmark'] = $cmark->assessmentHighistMark($assesment_id); 
             $response['data']['assesment'] = $assesmentObj->getAssessment($assesment_id, $webview, $type, $level);
             $response['data']['assesment']['levels'] = $assesmentObj->getAssessmentLevels($assesment_id);

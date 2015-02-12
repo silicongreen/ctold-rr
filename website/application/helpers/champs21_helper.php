@@ -694,6 +694,8 @@ if( !function_exists("send_notification_paid"))
             }
             $response = $CI->gcm->send();
             echo "here";
+            print_r($CI->gcm->status);
+            print_r($CI->gcm->messagesStatuses);
             print_r($response);
             return $response;
         }

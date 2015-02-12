@@ -418,7 +418,7 @@ class UserController extends Controller {
             if($gcm_id)
             {
                 $user_gcm = new UserGcm();
-                $usergcm = $user_gcm->getUserGcm($gcm_id,$user_id);
+                $usergcm = $user_gcm->getUserGcm($gcm_id,Yii::app()->user->id);
                 if($user_gcm)
                 {
                     $user_gcm_to_delete = $user_gcm->findByPk($user_gcm);

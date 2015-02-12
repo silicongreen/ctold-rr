@@ -232,7 +232,7 @@ class CalenderController extends Controller {
         $reminderrecipients = array();
         $studentobj = new Students();
         $studentdata = $studentobj->findByPk($student_id);
-        $reminderrecipients = $studentdata->user_id;
+        $reminderrecipients[] = $studentdata->user_id;
         
         if ($late==1)
           $message = $studentdata->first_name." ".$studentdata->last_name." is absent on ".$newattendence->month_date;

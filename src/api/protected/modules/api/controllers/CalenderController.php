@@ -235,9 +235,9 @@ class CalenderController extends Controller {
         $reminderrecipients[] = $studentdata->user_id;
         
         if ($late==1)
-          $message = $studentdata->first_name." ".$studentdata->last_name." is absent on ".$newattendence->month_date;
+          $message = $studentdata->first_name." ".$studentdata->last_name." is absent on (forenoon)".$newattendence->month_date;
         else
-          $message = $studentdata->first_name." ".$studentdata->last_name." is absent on (forenoon) ".$newattendence->month_date;
+          $message = $studentdata->first_name." ".$studentdata->last_name." is absent on".$newattendence->month_date;
         
         if($studentdata->immediate_contact_id)
         {

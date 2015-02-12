@@ -71,7 +71,6 @@ class EventController extends Controller {
         if(Yii::app()->user->user_secret === $user_secret)
         {
             $objreminder = new Reminders();
-            
             $response['data']['reminder'] = $objreminder->getUserReminderNew(Yii::app()->user->id);
             $response['status']['code'] = 200;
             $response['status']['msg'] = "Success";

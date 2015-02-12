@@ -226,6 +226,78 @@ class CalenderController extends Controller {
         echo CJSON::encode($response);
         Yii::app()->end();
     }
+    
+    private function sendnotificationAttendence($student_id, $newattendence,$late)
+    {
+        $reminderrecipients = array();
+        $studentobj = new Students();
+        $studentdata = $studentobj->findByPk($student_id);
+        $reminderrecipients = $studentdata->user_id;
+        
+        if ($late==1)
+          $message = $studentdata.first_name." ".$studentdata.last_name." is absent on ".$newattendence.month_date;
+        else
+          $message = $studentdata.first_name." ".$studentdata.last_name." is absent on (forenoon) ".$newattendence.month_date;
+        
+        if($studentdata->immediate_contact_id)
+        {
+            $reminderrecipients[] = $studentdata->immediate_contact_id;
+        }
+        
+        if($reminderrecipients)
+        {
+            foreach($reminderrecipients as $value)
+            {
+                $reminder = new Reminders(); 
+                $reminder->sender = Yii::app()->user->id;
+                $reminder->recipient = $value;
+                $reminder->subject = "Attendance Notice";
+                $reminder->body = $message;
+                $reminder->created_at = date("Y-m-d H:i:s");
+                $reminder->rid = $newattendence.id;
+                $reminder->rtype = 6;
+                $reminder->updated_at = date("Y-m-d H:i:s");
+                $reminder->school_id = Yii::app()->user->schoolId;
+                $reminder->save();
+            }  
+        }
+    }
+    
+    
+    private function sendnotificationleave($student_id,$status,$updateleave,$late)
+    {
+        $reminderrecipients = array();
+        $studentobj = new Students();
+        $studentdata = $studentobj->findByPk($student_id);
+        $reminderrecipients = array();
+
+        if($studentdata->immediate_contact_id)
+        {
+            $reminderrecipients[] = $studentdata->immediate_contact_id;
+        }
+        $approved_text = "Denied";
+        if($status==1)
+        {
+            $approved_text = "Approved";
+        } 
+        if($reminderrecipients)
+        {
+            foreach($reminderrecipients as $value)
+            {
+                $reminder = new Reminders(); 
+                $reminder->sender = Yii::app()->user->id;
+                $reminder->recipient = $value;
+                $reminder->subject = "Your Leave Aplication is ".$approved_text." (".$studentdata.first_name.")";
+                $reminder->body = "(".$studentdata.first_name.") leave application from ".$updateleave.start_date." to ".$updateleave.end_date." is ".$approved_text."";
+                $reminder->created_at = date("Y-m-d H:i:s");
+                $reminder->rid = $updateleave.id;
+                $reminder->rtype = 10;
+                $reminder->updated_at = date("Y-m-d H:i:s");
+                $reminder->school_id = Yii::app()->user->schoolId;
+                $reminder->save();
+            }  
+        }
+    }        
     public function actionapproveLeave()
     {
          $user_secret = Yii::app()->request->getPost('user_secret');
@@ -245,7 +317,48 @@ class CalenderController extends Controller {
                  $updateleave->approved = $status;
                  $updateleave->approving_teacher = Yii::app()->user->profileId;
                  
+                 //sending notification
+                 $reminderrecipients = array();
+                 $studentobj = new Students();
+                 $studentdata = $studentobj->findByPk($student_id);
+                 $reminderrecipients[] = $studentdata->user_id;
                  $updateleave->save(false);
+                 
+                 $this->sendnotificationleave($student_id, $status, $updateleave);
+                 
+                 $check_date = $updateleave->start_date;
+                 $end_date = $updateleave->end_date;
+                 while ($check_date <= $end_date) 
+                 { 
+                    $attendence = new Attendances();
+                    $attendence_student = $attendence->getAttendenceStudent($student_id, $check_date);
+                    
+                    if($attendence_student)
+                    {
+                        $objatt = $attendence->findByPk($attendence_student->id);
+                        $objatt->is_leave = 1;
+                        $objatt->save();
+                    }  
+                    else
+                    {
+                        $studentobj = new Students();
+                        $studentdata = $studentobj->findByPk($student_id);
+                        $attendence->afternoon = 1;
+                        $attendence->forenoon = 1;
+                        $attendence->month_date = $check_date;
+                        $attendence->student_id = $student_id;
+                        $attendence->batch_id = $studentdata->batch_id;
+                        $attendence->created_at = date("Y-m-d H:i:s");
+                        $attendence->updated_at = date("Y-m-d H:i:s");
+                        $attendence->school_id = Yii::app()->user->schoolId;
+                        $attendence->reason = $updateleave->reason;
+                        $attendence->save();
+                        
+                    }
+                    $check_date = date ("Y-m-d", strtotime ("+1 day", strtotime($check_date)));      
+                 }
+                 
+                 
                  $response['status']['code'] = 200;
                  $response['status']['msg'] = "Success";
             
@@ -289,7 +402,20 @@ class CalenderController extends Controller {
             foreach($attendence_batch as $value)
             {
                 $previous_attendence = $attendence->findbypk($value->id);
-                $previous_attendence->delete();
+                if($previous_attendence)
+                {
+                    $reminder = new Reminders();
+
+                    $reminderdata = $reminder->getReminder($value->id);
+                    
+                    if($reminderdata)
+                    {
+                        $rfordelete = $reminder->findByPk($reminderdata->id);
+                        $rfordelete->delete();
+                    }    
+
+                    $previous_attendence->delete();
+                }
             }    
             
             foreach($student_ids as $key=>$student_id)
@@ -319,6 +445,9 @@ class CalenderController extends Controller {
                     $newattendence->afternoon = 1;
                 }    
                 $newattendence->save();
+                
+                $this->sendnotificationAttendence($student_id, $newattendence,$late);
+               
             }
           
             $response['status']['code'] = 200;

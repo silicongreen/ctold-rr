@@ -410,8 +410,11 @@ class CalenderController extends Controller {
                     
                     if($reminderdata)
                     {
-                        $rfordelete = $reminder->findByPk($reminderdata->id);
-                        $rfordelete->delete();
+                        foreach($reminderdata as $rvalue)
+                        {
+                            $rfordelete = $reminder->findByPk($rvalue->id);
+                            $rfordelete->delete();
+                        }
                     }    
 
                     $previous_attendence->delete();

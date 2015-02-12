@@ -20,7 +20,7 @@ class EventController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'acknowledge','meetingrequest','meetingstatus',
+                'actions' => array('index','readreminder','getuserreminder', 'acknowledge','meetingrequest','meetingstatus',
                     'getstudentparent','addmeetingrequest','addmeetingparent','getteacherparent',
                     'addleaveteacher','leavetype','teacherleaves','studentleaves','fees'),
                 'users' => array('@'),
@@ -29,6 +29,60 @@ class EventController extends Controller {
                 'users' => array('*'),
             ),
         );
+    }
+    
+    public function actionReadReminder()
+    {
+        $user_secret = Yii::app()->request->getPost('user_secret');
+        $id = Yii::app()->request->getPost('id');
+        $rtype = Yii::app()->request->getPost('rtype');
+        $rid = Yii::app()->request->getPost('rid');
+        if(Yii::app()->user->user_secret === $user_secret && ( $id || $rtype))
+        {
+            $objreminder = new Reminders();
+            if(!$id)
+            {
+                $id = 0;
+            }
+            if(!$rtype)
+            {
+                $rtype = 0;
+            }
+            if(!$rid)
+            {
+                $rid = 0;
+            }
+            $objreminder->ReadReminderNew(Yii::app()->user->id,$id,$rtype,$rid);
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "Success";
+        } 
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    }
+    
+    public function actionGetuserReminder()
+    {
+        $user_secret = Yii::app()->request->getPost('user_secret');
+        if(Yii::app()->user->user_secret === $user_secret)
+        {
+            $objreminder = new Reminders();
+            
+            $response['data']['reminder'] = $objreminder->getUserReminderNew(Yii::app()->user->id);
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "Success";
+        } 
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
     }
     
     public function actionFees()

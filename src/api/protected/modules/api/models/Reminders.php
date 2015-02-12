@@ -119,4 +119,67 @@ class Reminders extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        public function getUserReminderNew($user_id)
+        {
+            $criteria = new CDbCriteria;
+            $criteria->select = 't.id,t.subject,t.body,t.rtype,t.rid';
+            $criteria->compare('recipient', $user_id);
+            $criteria->compare('is_read', 0);
+            $criteria->compare('is_deleted_by_sender', 0);
+            $criteria->compare('is_deleted_by_recipient', 0);
+            $criteria->order = "created_at DESC";
+            $obj_reminder = $this->findAll($criteria);
+            $reminder = array();
+            
+            if($obj_reminder)
+            {
+                $i = 0;
+                foreach($obj_reminder as $value)
+                {
+                   $reminder[$i]['id'] = $value->id;
+                   $reminder[$i]['subject'] = $value->subject;
+                   $reminder[$i]['body'] = $value->body;
+                   $reminder[$i]['rtype'] = $value->rtype;
+                   $reminder[$i]['rid'] = $value->rid;
+                   $i++;
+                }
+               
+            }    
+
+            return $reminder;
+        } 
+        public function ReadReminderNew($user_id,$id=0,$rtype=0,$rid=0)
+        {
+            $criteria = new CDbCriteria;
+            $criteria->select = 't.id';
+            $criteria->compare('is_read', 0);
+            $criteria->compare('is_deleted_by_sender', 0);
+            $criteria->compare('is_deleted_by_recipient', 0);
+            $criteria->compare('recipient', $user_id);
+            if($id)
+            {
+                $criteria->compare('id', $id);
+            }
+            else if($rtype)
+            {
+                $criteria->compare('rtype', $rtype);
+                if($rid)
+                {
+                    $criteria->compare('rid', $rid);
+                }
+            }
+            $obj_reminder = $this->findAll($criteria);
+            if($obj_reminder)
+            {
+                foreach($obj_reminder as $value)
+                {
+                   $robject = new Reminders();
+                   $robjchange = $robject->findByPk($value->id);
+                   $robjchange->is_read = 1;
+                   $robjchange->save();
+                }
+               
+            }
+            
+        }
 }

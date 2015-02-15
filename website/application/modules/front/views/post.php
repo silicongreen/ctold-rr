@@ -713,12 +713,12 @@
         setInterval(function () {
             if($('#google-play-link').is(':visible'))
             {
-               $('#google-play-link').fadeOut("slow").next('#world-cup-play-link').fadeIn("slow");
+               $('#google-play-link').hide().next('#world-cup-play-link').fadeIn("slow");
                
             }
             else
             {
-              $('#world-cup-play-link').fadeOut("slow").next('#google-play-link').fadeIn("slow");
+              $('#world-cup-play-link').hide().next('#google-play-link').fadeIn("slow");
             }
         }, 5000);
         <?php if(!free_user_logged_in()): ?>

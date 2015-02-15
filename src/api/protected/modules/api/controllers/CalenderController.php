@@ -109,6 +109,10 @@ class CalenderController extends Controller {
                     foreach ($leave_array as $value) {
                         $start_holiday = new DateTime($value['start_date']);
                         $end_holiday = new DateTime($value['end_date']);
+                        if($value['end_date']>date("Y-m-d"))
+                        {
+                            $end_holiday = new DateTime(date("Y-m-d"));
+                        }
                         $holiday_interval = DateInterval::createFromDateString('1 day');
                         $holiday_period = new DatePeriod($start_holiday, $holiday_interval, $end_holiday);
                         foreach ($holiday_period as $hdt) {

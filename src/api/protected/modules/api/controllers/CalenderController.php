@@ -142,7 +142,7 @@ class CalenderController extends Controller
                         {
                             continue;
                         }
-                        $merge['title'] = $value['reason'];
+                        $merge['title'] = $value['title'];
                         $merge['start_date'] = date("Y-m-d", strtotime($value['start_date']));
                         $merge['end_date'] = date("Y-m-d", strtotime($value['end_date']));
                         $leave_array_modified[] = $merge;
@@ -150,7 +150,7 @@ class CalenderController extends Controller
                     }
                     if (!in_array($end_holiday->format("Y-m-d"), $holiday_array_for_count) && !in_array($end_holiday->format("w"), $weekend_array))
                     {
-                        $merge['title'] = $value['reason'];
+                        $merge['title'] = $value['title'];
                         $merge['start_date'] = date("Y-m-d", strtotime($value['start_date']));
                         $merge['end_date'] = date("Y-m-d", strtotime($value['end_date']));
                         $leave_array_modified[] = $merge;

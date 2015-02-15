@@ -120,7 +120,6 @@ class CalenderController extends Controller {
                         $holiday_period = new DatePeriod($start_holiday, $holiday_interval, $end_holiday);
                         
                         foreach ($holiday_period as $hdt) {
-                            echo $hdt->format("Y-m-d");
                             if (in_array($hdt->format("Y-m-d"), $holiday_array_for_count)) 
                             {
                                 continue;
@@ -129,6 +128,10 @@ class CalenderController extends Controller {
                                 continue;
                             }
 
+                            $leave_count++;
+                        }
+                        if(!in_array($end_holiday->format("Y-m-d"), $holiday_array_for_count) && !in_array($end_holiday->format("w"), $weekend_array))
+                        {
                             $leave_count++;
                         }
                          

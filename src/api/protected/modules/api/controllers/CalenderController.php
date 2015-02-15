@@ -90,8 +90,13 @@ class CalenderController extends Controller
                 $attendance = new Attendances();
                 $holiday = new Events();
                 $holiday_array = $holiday->getHolidayMonth($start_date, $end_date, $school_id);
+                
+                if ($end_date > date("Y-m-d"))
+                {
+                    $end_date = date("Y-m-d");
+                }
+                
                 $leave = new ApplyLeaveStudents();
-
                 $leave_array = $leave->getleaveStudentMonth($start_date, $end_date, $student_id);
                 $weekend_array = $attendance->getWeekend(Yii::app()->user->schoolId);
 

@@ -192,6 +192,8 @@ class CalenderController extends Controller
                 }
                 else
                 {
+                    echo $start_date;
+                    echo $end_date;
                    $begin = new DateTime(date("Y-m-d", strtotime($start_date)));
                    $end = new DateTime(date("Y-m-d", strtotime($end_date))); 
                 }    

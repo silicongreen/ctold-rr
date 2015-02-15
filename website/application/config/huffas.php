@@ -10,6 +10,9 @@ $config[ 'news_in_index' ] = array(
     'days_to_retrieve_news' => "-30 days"
 );
 
+
+
+$config['world_cup_quize_link']   = '/quiz/day-1-2-11/1';
 $config['api_url']   = 'http://api.champs21.com/api/freeuser';
 
 $config['android_app_dl_popup_show']   = TRUE;

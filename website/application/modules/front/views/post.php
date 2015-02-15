@@ -82,8 +82,13 @@
 
         <input type="hidden" name="url-post" id="url-post" value="<?php echo base_url('print_post/' . sanitize($headline) . '-' . $post_id); ?>" />
         <?php endif; ?>
+        <?php
+        $CI = & get_instance();
+        $CI->load->config("huffas");
+        ?>
         <div style="width: 100%; padding: 10px 21px 0px;">
-            <a href="https://play.google.com/store/apps/details?id=com.champs21.schoolapp" target="_blank"><img style="width: 100%;" src="<?php echo base_url("styles/layouts/tdsfront/image/app_name.jpg"); ?>"></a>
+            <a id="google-play-link" href="https://play.google.com/store/apps/details?id=com.champs21.schoolapp" target="_blank"><img style="width: 100%;" src="<?php echo base_url("styles/layouts/tdsfront/image/app_name.jpg"); ?>"></a>
+            <a id="world-cup-play-link" href="<?php echo base_url(); ?><?php echo $CI->config->config['world_cup_quize_link']?>" ><img style="width: 100%;" src="<?php echo base_url("styles/layouts/tdsfront/image/world-cup-page-banner.jpg"); ?>"></a>
         </div>
             
         <div class="inner-container" style="margin: 0px 20px 10px;">
@@ -688,6 +693,7 @@
 <?php endif; ?>
         
 <script type="text/javascript">
+    
     function load_print_popup( url )
     {
             var leftPosition, topPosition;
@@ -704,6 +710,19 @@
             return false;
     }
     $(document).ready(function(){
+        setInterval(function () {
+            if($('#google-play-link').is(':visible'))
+            {
+               $('#google-play-link').hide();
+               $('#world-cup-play-link').slideDown();
+               
+            }
+            else
+            {
+              $('#world-cup-play-link').hide();
+              $('#google-play-link').slideDown();
+            }
+        }, 5000);
         <?php if(!free_user_logged_in()): ?>
            
             $(".check_login").each(function(){
@@ -766,6 +785,10 @@
 </div>
 
 <style>
+    #world-cup-play-link
+    {
+        display:none;
+    }
     .addthis_toolbox{
         background: #F7F7F7;
         border: 1px solid #ccc;

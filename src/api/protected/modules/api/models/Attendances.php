@@ -303,7 +303,7 @@ class Attendances extends CActiveRecord {
         $criteria = new CDbCriteria;
         $criteria->addCondition("month_date >= '" . $start_date . "'");
         $criteria->addCondition("month_date <= '" . $end_date . "'");
-
+        $criteria->compare('is_leave',0);
         if (Yii::app()->user->isParent && is_array($student_id)) {
             $criteria->addInCondition('student_id', $student_id);
         } else {

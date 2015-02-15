@@ -65,6 +65,17 @@ class CalenderController extends Controller {
                     $student_id = Yii::app()->user->profileId;
                     $school_id = Yii::app()->user->schoolId;
                 }
+                $objbatch = new Batches();
+                $batchData = $objbatch->findByPk($batch_id);
+                if ($yearly) 
+                {
+                    $start_date = date("Y-m-d",strtotime($batchData->start_date));
+                    $end_date = date("Y-m-d",strtotime($batchData->end_date));
+                    if($end_date>date("Y-m-d"))
+                    {
+                        $end_date = new DateTime(date("Y-m-d"));
+                    }
+                }
 
                 $attendance = new Attendances();
                 $attendance_array = $attendance->getAbsentStudentMonth($start_date, $end_date, $student_id);
@@ -73,7 +84,7 @@ class CalenderController extends Controller {
                 $leave = new ApplyLeaveStudents();
 
                 $leave_array = $leave->getleaveStudentMonth($start_date, $end_date, $student_id);
-
+                $weekend_array = $attendance->getWeekend(Yii::app()->user->schoolId);
 
                 if ($yearly) {
 
@@ -103,13 +114,18 @@ class CalenderController extends Controller {
                         $leave_count++;
 
                         foreach ($holiday_period as $hdt) {
+                            if (in_array($hdt->format("Y-m-d"), $holiday_array_for_count)) 
+                            {
+                                continue;
+                            }
+                            if (in_array($hdt->format("w"), $weekend_array)) {
+                                continue;
+                            }
                             $leave_count++;
                         }
                     }
 
-                    $objbatch = new Batches();
                     
-                    $batchData = $objbatch->findByPk($batch_id);
                             
                     $begin = new DateTime(date("Y-m-d",strtotime($batchData->start_date)));
                     $end = new DateTime(date("Y-m-d",strtotime($batchData->end_date)));
@@ -123,7 +139,7 @@ class CalenderController extends Controller {
                     $period = new DatePeriod($begin, $interval, $end);
                     $i = 0;
 
-                    $weekend_array = $attendance->getWeekend(Yii::app()->user->schoolId);
+                    
                     foreach ($period as $dt) {
 
                         if (in_array($dt->format("Y-m-d"), $holiday_array_for_count)) {

@@ -316,7 +316,7 @@ class assessment extends MX_Controller {
                             $obj_assesment_ans->question_id = $obj_assesment_que->id;
                             $obj_assesment_ans->answer = $answers[$i];
                             
-                            $correct = $this->input->post('answer');
+                            $correct = $this->input->post('correct');
                             $obj_assesment_ans->correct = ($i == $correct[0]) ? 1 : 0;
 
                             if ($obj_assesment_ans->save()) {

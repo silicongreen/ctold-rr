@@ -197,27 +197,32 @@ class CalenderController extends Controller
                     $end = new DateTime(date("Y-m-d"));
                 }
 
-                $interval = DateInterval::createFromDateString('1 day');
-                $period = new DatePeriod($begin, $interval, $end);
+                
                 $i = 0;
-
-
-                foreach ($period as $dt)
+                
+                if($begin<=$end)
                 {
+                    $interval = DateInterval::createFromDateString('1 day');
+                    $period = new DatePeriod($begin, $interval, $end);
 
-                    if (in_array($dt->format("Y-m-d"), $holiday_array_for_count))
+
+                    foreach ($period as $dt)
                     {
-                        continue;
+
+                        if (in_array($dt->format("Y-m-d"), $holiday_array_for_count))
+                        {
+                            continue;
+                        }
+                        if (in_array($dt->format("w"), $weekend_array))
+                        {
+                            continue;
+                        }
+                        $i++;
                     }
-                    if (in_array($dt->format("w"), $weekend_array))
+                    if (!in_array($end->format("Y-m-d"), $holiday_array_for_count) && !in_array($end->format("w"), $weekend_array))
                     {
-                        continue;
+                        $i++;
                     }
-                    $i++;
-                }
-                if (!in_array($end->format("Y-m-d"), $holiday_array_for_count) && !in_array($end->format("w"), $weekend_array))
-                {
-                    $i++;
                 }
                 
                 $attendance_array = $attendance->getAbsentStudentMonth($start_date, $end_date, $student_id,$holiday_array_for_count,$weekend_array);

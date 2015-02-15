@@ -244,8 +244,10 @@ class CalenderController extends Controller {
             $reminderrecipients[] = $studentdata->immediate_contact_id;
         }
         
+        
         if($reminderrecipients)
         {
+            $notifiation_ids = array();
             foreach($reminderrecipients as $value)
             {
                 $reminder = new Reminders(); 
@@ -259,7 +261,12 @@ class CalenderController extends Controller {
                 $reminder->updated_at = date("Y-m-d H:i:s");
                 $reminder->school_id = Yii::app()->user->schoolId;
                 $reminder->save();
+                $notifiation_ids[] = $reminder->id;
+                
             }  
+            $notifiation_id = implode(",", $notifiation_ids);
+            $user_id = implode(",", $reminderrecipients);
+            Settings::sendCurlNotification($user_id, $notification_id);
         }
     }
     
@@ -282,6 +289,7 @@ class CalenderController extends Controller {
         } 
         if($reminderrecipients)
         {
+            $notifiation_ids = array();
             foreach($reminderrecipients as $value)
             {
                 $reminder = new Reminders(); 
@@ -295,7 +303,11 @@ class CalenderController extends Controller {
                 $reminder->updated_at = date("Y-m-d H:i:s");
                 $reminder->school_id = Yii::app()->user->schoolId;
                 $reminder->save();
-            }  
+                $notifiation_ids[] = $reminder->id;
+            } 
+            $notifiation_id = implode(",", $notifiation_ids);
+            $user_id = implode(",", $reminderrecipients);
+            Settings::sendCurlNotification($user_id, $notification_id);
         }
     }        
     public function actionapproveLeave()
@@ -328,6 +340,7 @@ class CalenderController extends Controller {
                  
                  $check_date = $updateleave->start_date;
                  $end_date = $updateleave->end_date;
+                 
                  while ($check_date <= $end_date) 
                  { 
                     $attendence = new Attendances();
@@ -336,10 +349,17 @@ class CalenderController extends Controller {
                     if($attendence_student)
                     {
                         $objatt = $attendence->findByPk($attendence_student->id);
-                        $objatt->is_leave = 1;
+                        if($status==1)
+                        {
+                            $objatt->is_leave = 1;
+                        }
+                        else
+                        {
+                            $objatt->is_leave = 0;
+                        }    
                         $objatt->save();
                     }  
-                    else
+                    else if($status==1)
                     {
                         $studentobj = new Students();
                         $studentdata = $studentobj->findByPk($student_id);
@@ -352,6 +372,7 @@ class CalenderController extends Controller {
                         $attendence->updated_at = date("Y-m-d H:i:s");
                         $attendence->school_id = Yii::app()->user->schoolId;
                         $attendence->reason = $updateleave->reason;
+                        $attendence->is_leave = 1;
                         $attendence->save();
                         
                     }

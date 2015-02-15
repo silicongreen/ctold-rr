@@ -148,16 +148,16 @@ class CalenderController extends Controller
                             continue;
                         }
                         $merge['title'] = $value['title'];
-                        $merge['start_date'] = date("Y-m-d", strtotime($value['start_date']));
-                        $merge['end_date'] = date("Y-m-d", strtotime($value['end_date']));
+                        $merge['start_date'] = $hdt->format("Y-m-d");
+                        $merge['end_date'] = $hdt->format("Y-m-d");
                         $leave_array_modified[] = $merge;
                         $leave_count++;
                     }
                     if (!in_array($end_holiday->format("Y-m-d"), $holiday_array_for_count) && !in_array($end_holiday->format("w"), $weekend_array))
                     {
                         $merge['title'] = $value['title'];
-                        $merge['start_date'] = date("Y-m-d", strtotime($value['start_date']));
-                        $merge['end_date'] = date("Y-m-d", strtotime($value['end_date']));
+                        $merge['start_date'] = $end_holiday->format("Y-m-d");
+                        $merge['end_date'] = $end_holiday->format("Y-m-d");
                         $leave_array_modified[] = $merge;
                         $leave_count++;
                     }

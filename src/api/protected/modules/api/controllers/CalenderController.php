@@ -181,8 +181,16 @@ class CalenderController extends Controller
                 
 
 
-                $begin = new DateTime(date("Y-m-d", strtotime($batchData->start_date)));
-                $end = new DateTime(date("Y-m-d", strtotime($batchData->end_date)));
+                if($yearly)
+                {
+                    $begin = new DateTime(date("Y-m-d", strtotime($batchData->start_date)));
+                    $end = new DateTime(date("Y-m-d", strtotime($batchData->end_date)));
+                }
+                else
+                {
+                   $begin = new DateTime(date("Y-m-d", strtotime($start_date)));
+                   $end = new DateTime(date("Y-m-d", strtotime($end_date))); 
+                }    
 
                 if (date("Y-m-d", strtotime($batchData->end_date)) > date("Y-m-d"))
                 {
@@ -205,6 +213,10 @@ class CalenderController extends Controller
                     {
                         continue;
                     }
+                    $i++;
+                }
+                if (!in_array($end->format("Y-m-d"), $holiday_array_for_count) && !in_array($end->format("w"), $weekend_array))
+                {
                     $i++;
                 }
                 
@@ -230,6 +242,7 @@ class CalenderController extends Controller
                     $response['data'] = $attendance_array;
                     $response['data']['holiday'] = $holiday_array;
                     $response['data']['leave'] = $leave_array_modified;
+                    $response['data']['total'] = $i;
                     $response['status']['code'] = 200;
                     $response['status']['msg'] = "Data Found";
                 }

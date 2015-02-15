@@ -713,18 +713,14 @@
         setInterval(function () {
             if($('#google-play-link').is(':visible'))
             {
-               $('#google-play-link').css('opacity', 0);;
-               $( "#world-cup-play-link" ).animate({
-                    opacity:1,
-                  }, 1000);
+               $('#google-play-link').hide();
+               $( "#world-cup-play-link" ).show();
                
             }
             else
             {
-              $('#world-cup-play-link').css('opacity', 0);;
-              $( "#google-play-link" ).animate({
-                    opacity:1,
-              }, 1000);
+              $('#world-cup-play-link').hide();
+              $( "#google-play-link" ).show();
             }
         }, 8000);
         <?php if(!free_user_logged_in()): ?>
@@ -791,7 +787,7 @@
 <style>
     #world-cup-play-link
     {
-        opacity:0;
+        display:none;
     }
     .addthis_toolbox{
         background: #F7F7F7;

@@ -85,12 +85,11 @@ class CalenderController extends Controller {
 
                 $leave_array = $leave->getleaveStudentMonth($start_date, $end_date, $student_id);
                 $weekend_array = $attendance->getWeekend(Yii::app()->user->schoolId);
-                print_r($weekend_array);
-
+                
                 if ($yearly) {
 
-                    $late_count = count($attendance_array['absent']);
-                    $absent_count = count($attendance_array['late']);
+                    $absent_count = count($attendance_array['absent']);
+                    $late_count = count($attendance_array['late']);
 
                     $holiday_count = 0;
                     $holiday_array_for_count = array();

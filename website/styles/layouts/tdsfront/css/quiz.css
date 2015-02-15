@@ -1007,6 +1007,67 @@ header.champs-header {
         font-size: 14px !important;
         letter-spacing: 1.25px !important;
     }
+    .icc-quiz-game-over-header {
+        font-size: 35px;
+        margin: 5px auto 10px;
+        width: 100%;
+    }
+    .icc-quiz-game-over .score-board-summary-wrapper {
+        width: 100%;
+    }
+    .icc-quiz-game-over .score-board-summary {
+        background: url("/styles/layouts/tdsfront/image/quiz-score-board.png") no-repeat scroll 0 0 / 100% 100% rgba(0, 0, 0, 0);
+        margin: 0 auto;
+        min-height: 350px;
+        width: 80%;
+    }
+    .icc-quiz-game-over .score-board-header {
+        font-size: 25px;
+        padding: 10px 0;
+        width: 100%;
+    }
+    .icc-quiz-game-over .score-board-summary-text {
+        margin-top: 40px;
+        padding: 10px;
+        width: 100%;
+    }
+    .icc-quiz-game-over .level-status {
+        font-size: 12px;
+        width: 80px;
+    }
+    .icc-quiz-game-over .assessment-save-score-wrapper {
+        margin-top: 20px;
+        width: 100%;
+    }
+    .icc-quiz-game-over .purple {
+        font-size: 25px;
+        height: 50px;
+    }
+    .icc-quiz-game-over .grand-score-board-header {
+        font-size: 25px;
+        padding: 20px 0 0;
+    }
+    .icc-quiz-game-over .grand-score-board-summary-text {
+        font-size: 45px;
+    }
+    .icc-quiz-game-over .score-add-to-school {
+        width: 85%;
+    }
+    .icc-quiz-game-over .school-position {
+        width: 85%;
+    }
+    .icc-quiz-game-over .invite-friends {
+        width: 85%;
+    }
+    .icc-quiz-game-over .invite-friends p {
+        padding-top: 15px;
+    }
+    .icc-quiz-game-over .replay-wrapper {
+        clear : both;
+        margin: 0;
+        padding: 35px;
+        width: 100%;
+    }
 }
 
 @media all and (min-width: 480px) and (max-width: 779px) {
@@ -1156,6 +1217,72 @@ header.champs-header {
         font-size: 14px !important;
         letter-spacing: 1.25px !important;
     }
+    
+    .icc-quiz-game-over-header {
+        font-size: 35px;
+        margin: 5px auto 15px;
+        width: 100%;
+    }
+    .icc-quiz-game-over .score-board-summary-wrapper {
+        width: 35%;
+        padding-left: 5px;
+    }
+    .icc-quiz-game-over .score-board-summary {
+        background: url("/styles/layouts/tdsfront/image/quiz-score-board.png") no-repeat scroll center center / 90% 100% rgba(0, 0, 0, 0);
+        margin: 0;
+        min-height: 300px;
+        width: 100%;
+    }
+    .icc-quiz-game-over .score-board-header {
+        font-size: 22px;
+        padding: 20px 0 0;
+        width: 100%;
+    }
+    .icc-quiz-game-over .score-board-summary-text {
+        margin: 60px auto 0;
+        padding: 10px;
+        width: 90%;
+    }
+    .icc-quiz-game-over .level-status {
+        font-size: 12px;
+        width: 80px;
+    }
+    .icc-quiz-game-over .assessment-save-score-wrapper {
+        margin-top: 20px;
+        width: 100%;
+    }
+    .icc-quiz-game-over .purple {
+        font-size: 25px;
+        height: 50px;
+    }
+    .icc-quiz-game-over .grand-score-board-header {
+        font-size: 25px;
+        padding: 20px 0 0;
+    }
+    .icc-quiz-game-over .grand-score-board-summary-text {
+        font-size: 45px;
+        margin: 20px auto;
+    }
+    .icc-quiz-game-over .score-add-to-school {
+        width: 100%;
+    }
+    .icc-quiz-game-over .school-position {
+        width: 100%;
+    }
+    .icc-quiz-game-over .invite-friends {
+        width: 100%;
+    }
+    .icc-quiz-game-over .invite-friends p {
+        padding-top: 15px;
+    }
+    .icc-quiz-game-over .replay-wrapper {
+        margin: 50px 0;
+        padding: 0;
+        width: 30%;
+    }
+    .icc-quiz-game-over .replay-wrapper img {
+        width: 60%;
+    }
 }
 
 @media all and (min-width: 780px) and (max-width: 899px){
@@ -1264,6 +1391,72 @@ header.champs-header {
         font-size: 14px !important;
         letter-spacing: 1.25px !important;
     }
+    
+    .icc-quiz-game-over-header {
+        font-size: 35px;
+        margin: 5px auto 15px;
+        width: 100%;
+    }
+    .icc-quiz-game-over .score-board-summary-wrapper {
+        padding-left: 0;
+        width: 40%;
+    }
+    .icc-quiz-game-over .score-board-summary {
+        background: url("/styles/layouts/tdsfront/image/quiz-score-board.png") no-repeat scroll center center / 90% 100% rgba(0, 0, 0, 0);
+        margin: 0;
+        min-height: 300px;
+        width: 100%;
+    }
+    .icc-quiz-game-over .score-board-header {
+        font-size: 22px;
+        padding: 10px 0 0;
+        width: 100%;
+    }
+    .icc-quiz-game-over .score-board-summary-text {
+        margin: 60px auto 0;
+        padding: 10px;
+        width: 90%;
+    }
+    .icc-quiz-game-over .level-status {
+        font-size: 12px;
+        width: 80px;
+    }
+    .icc-quiz-game-over .assessment-save-score-wrapper {
+        margin-top: 20px;
+        width: 100%;
+    }
+    .icc-quiz-game-over .purple {
+        font-size: 25px;
+        height: 50px;
+    }
+    .icc-quiz-game-over .grand-score-board-header {
+        font-size: 25px;
+        padding: 20px 0 0;
+    }
+    .icc-quiz-game-over .grand-score-board-summary-text {
+        font-size: 45px;
+        margin: 8px auto;
+    }
+    .icc-quiz-game-over .score-add-to-school {
+        width: 95%;
+    }
+    .icc-quiz-game-over .school-position {
+        width: 95%;
+    }
+    .icc-quiz-game-over .invite-friends {
+        width: 95%;
+    }
+    .icc-quiz-game-over .invite-friends p {
+        padding-top: 15px;
+    }
+    .icc-quiz-game-over .replay-wrapper {
+        margin: 50px 0;
+        padding: 0;
+        width: 20%;
+    }
+    .icc-quiz-game-over .replay-wrapper img {
+        width: 80%;
+    }
 }
 
 @media all and (min-width: 900px) and (max-width: 1023px){
@@ -1362,6 +1555,72 @@ header.champs-header {
         font-size: 14px !important;
         letter-spacing: 1.25px !important;
     }
+    
+    .icc-quiz-game-over-header {
+        font-size: 35px;
+        margin: 5px auto 15px;
+        width: 100%;
+    }
+    .icc-quiz-game-over .score-board-summary-wrapper {
+        width: 35%;
+        padding-left: 5px;
+    }
+    .icc-quiz-game-over .score-board-summary {
+        background: url("/styles/layouts/tdsfront/image/quiz-score-board.png") no-repeat scroll center center / 90% 100% rgba(0, 0, 0, 0);
+        margin: 0;
+        min-height: 300px;
+        width: 100%;
+    }
+    .icc-quiz-game-over .score-board-header {
+        font-size: 22px;
+        padding: 20px 0 0;
+        width: 100%;
+    }
+    .icc-quiz-game-over .score-board-summary-text {
+        margin: 60px auto 0;
+        padding: 10px;
+        width: 90%;
+    }
+    .icc-quiz-game-over .level-status {
+        font-size: 12px;
+        width: 80px;
+    }
+    .icc-quiz-game-over .assessment-save-score-wrapper {
+        margin-top: 20px;
+        width: 100%;
+    }
+    .icc-quiz-game-over .purple {
+        font-size: 25px;
+        height: 50px;
+    }
+    .icc-quiz-game-over .grand-score-board-header {
+        font-size: 25px;
+        padding: 20px 0 0;
+    }
+    .icc-quiz-game-over .grand-score-board-summary-text {
+        font-size: 45px;
+        margin: 8px auto;
+    }
+    .icc-quiz-game-over .score-add-to-school {
+        width: 100%;
+    }
+    .icc-quiz-game-over .school-position {
+        width: 100%;
+    }
+    .icc-quiz-game-over .invite-friends {
+        width: 100%;
+    }
+    .icc-quiz-game-over .invite-friends p {
+        padding-top: 15px;
+    }
+    .icc-quiz-game-over .replay-wrapper {
+        margin: 50px 0;
+        padding: 0;
+        width: 30%;
+    }
+    .icc-quiz-game-over .replay-wrapper img {
+        width: 60%;
+    }
 }
 
 @media all and (min-width: 1024px) and (max-width: 1279px){
@@ -1417,5 +1676,71 @@ header.champs-header {
     }
     .opt-wrapper .opt-ans {
         padding-top: 3px;
+    }
+    
+    .icc-quiz-game-over-header {
+        font-size: 35px;
+        margin: 5px auto 15px;
+        width: 100%;
+    }
+    .icc-quiz-game-over .score-board-summary-wrapper {
+        width: 35%;
+        padding-left: 5px;
+    }
+    .icc-quiz-game-over .score-board-summary {
+        background: url("/styles/layouts/tdsfront/image/quiz-score-board.png") no-repeat scroll center center / 90% 100% rgba(0, 0, 0, 0);
+        margin: 0;
+        min-height: 300px;
+        width: 100%;
+    }
+    .icc-quiz-game-over .score-board-header {
+        font-size: 22px;
+        padding: 20px 0 0;
+        width: 100%;
+    }
+    .icc-quiz-game-over .score-board-summary-text {
+        margin: 60px auto 0;
+        padding: 10px;
+        width: 90%;
+    }
+    .icc-quiz-game-over .level-status {
+        font-size: 12px;
+        width: 80px;
+    }
+    .icc-quiz-game-over .assessment-save-score-wrapper {
+        margin-top: 20px;
+        width: 100%;
+    }
+    .icc-quiz-game-over .purple {
+        font-size: 25px;
+        height: 50px;
+    }
+    .icc-quiz-game-over .grand-score-board-header {
+        font-size: 25px;
+        padding: 20px 0 0;
+    }
+    .icc-quiz-game-over .grand-score-board-summary-text {
+        font-size: 45px;
+        margin: 20px auto;
+    }
+    .icc-quiz-game-over .score-add-to-school {
+        width: 100%;
+    }
+    .icc-quiz-game-over .school-position {
+        width: 100%;
+    }
+    .icc-quiz-game-over .invite-friends {
+        width: 100%;
+    }
+    .icc-quiz-game-over .invite-friends p {
+        padding-top: 15px;
+    }
+    .icc-quiz-game-over .replay-wrapper {
+        margin: 50px 0;
+        padding: 0;
+        width: 30%;
+    }
+    .icc-quiz-game-over .replay-wrapper img {
+        width: 60%;
     }
 }

@@ -114,9 +114,9 @@ class CalenderController extends Controller {
                     $begin = new DateTime(date("Y-m-d",strtotime($batchData->start_date)));
                     $end = new DateTime(date("Y-m-d",strtotime($batchData->end_date)));
                     
-                    if($end>date("Y-m-d"))
+                    if(date("Y-m-d",strtotime($batchData->end_date))>date("Y-m-d"))
                     {
-                        $end = date("Y-m-d");
+                        $end = new DateTime(date("Y-m-d"));
                     }    
 
                     $interval = DateInterval::createFromDateString('1 day');

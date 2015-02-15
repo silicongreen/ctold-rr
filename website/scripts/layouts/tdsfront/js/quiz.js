@@ -458,7 +458,8 @@ $(document).ready(function(){
         $('.icc-quiz-start-screen-player').css('display', 'none');
         $('.icc-quiz-start-screen-stamp').css('display', 'none');
         
-        $('#pre_assessment_details').children('p').eq(1).html('No. of Question&nbsp;: '+num_assessments);
+        $('.score-board-summary-text').children('p').eq(0).html('Total Score&nbsp;: '+ $('#total_mark').val());
+        $('.score-board-summary-text').children('p').eq(1).html('No. of Question&nbsp;: '+num_assessments);
         
         $('#icc-quiz-start-play-screen').show('slow');
         $('#icc-quiz-start-screen').hide('fast');

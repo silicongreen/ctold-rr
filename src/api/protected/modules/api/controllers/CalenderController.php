@@ -99,12 +99,13 @@ class CalenderController extends Controller {
                         $end_holiday = new DateTime($value['end_date']);
                         $holiday_interval = DateInterval::createFromDateString('1 day');
                         $holiday_period = new DatePeriod($start_holiday, $holiday_interval, $end_holiday);
-                        $holiday_count++;
-                        $holiday_array_for_count[] = $start_holiday->format("Y-m-d");
+                        
                         foreach ($holiday_period as $hdt) {
                             $holiday_count++;
                             $holiday_array_for_count[] = $hdt->format("Y-m-d");
                         }
+                        $holiday_count++;
+                        $holiday_array_for_count[] = $end_holiday->format("Y-m-d");
                     }
                     print_r($holiday_array_for_count);
                     $leave_count = 0;

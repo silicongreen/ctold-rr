@@ -35,12 +35,15 @@ class CalenderController extends Controller {
             $user_secret = Yii::app()->request->getPost('user_secret');
             $start_date = Yii::app()->request->getPost('start_date');
             $end_date = Yii::app()->request->getPost('end_date');
+            
             $yearly = false;
             if (!$start_date || !$end_date) {
                 $start_date = date("Y-01-01");
                 $end_date = date("Y-12-31");
+                   
                 $yearly = true;
             }
+            
             
             $response = array();
             if (Yii::app()->user->user_secret === $user_secret && $start_date != "" && $end_date != "" &&
@@ -104,8 +107,17 @@ class CalenderController extends Controller {
                         }
                     }
 
-                    $begin = new DateTime(date("Y-1-1"));
-                    $end = new DateTime(date("Y-m-d"));
+                    $objbatch = new Batches();
+                    
+                    $batchData = $objbatch->findByPk($batch_id);
+                            
+                    $begin = new DateTime(date("Y-m-d",strtotime($batchData->start_date)));
+                    $end = new DateTime(date("Y-m-d",strtotime($batchData->end_date)));
+                    
+                    if($end>date("Y-m-d"))
+                    {
+                        $end = date("Y-m-d");
+                    }    
 
                     $interval = DateInterval::createFromDateString('1 day');
                     $period = new DatePeriod($begin, $interval, $end);
@@ -466,6 +478,14 @@ class CalenderController extends Controller {
                 $late = (isset($lates[$key]))?$lates[$key]:0;
             
                 $newattendence = new Attendances();
+                
+                $leaveStudent = new ApplyLeaveStudents();
+                $leave_today = $leaveStudent->getallleaveStudentsDate($date);
+                
+                if(isset($leave_today['approved']) && in_array($student_id, $leave_today['approved']))
+                {  
+                   $newattendence->is_leave = 1;
+                } 
 
                 $newattendence->batch_id = $batch_id;
                 $newattendence->student_id = $student_id;

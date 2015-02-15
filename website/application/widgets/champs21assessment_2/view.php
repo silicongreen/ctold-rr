@@ -121,7 +121,7 @@
                     <div class="score-board-summary">
 
                         <div class="score-board-header f2">
-                            Your Score Today
+                            My Score Today
                         </div>
 
                         <div class="score-board-summary-text">
@@ -182,19 +182,18 @@
                     <div class="grand-score-board-summary">
 
                         <div class="grand-score-board-header f2">
-                            Your Total Score
+                            My Total Score
                         </div>
 
                         <div class="grand-score-board-summary-text f2">
                             <?php echo $assessment->total_score; ?>
                         </div>
 
-                        <div class="score-add-to-school f2">Add score to your school   </div>
+                        <div class="score-add-to-school f2">Add score to my school   </div>
                         <div id="full_leader_board" class="school-position f2">Leader Board</div>
                         <div class="invite-friends f5">
                             <img src="/styles/layouts/tdsfront/image/icc-quiz-invite.png">
                             <p>Invite friends</p>
-                            <p>to play</p>
                         </div>
 
                     </div>

@@ -185,6 +185,10 @@ class CalenderController extends Controller
                 {
                     $begin = new DateTime(date("Y-m-d", strtotime($batchData->start_date)));
                     $end = new DateTime(date("Y-m-d", strtotime($batchData->end_date)));
+                    if (date("Y-m-d", strtotime($batchData->end_date)) > date("Y-m-d"))
+                    {
+                        $end = new DateTime(date("Y-m-d"));
+                    }
                 }
                 else
                 {
@@ -192,10 +196,7 @@ class CalenderController extends Controller
                    $end = new DateTime(date("Y-m-d", strtotime($end_date))); 
                 }    
 
-                if (date("Y-m-d", strtotime($batchData->end_date)) > date("Y-m-d"))
-                {
-                    $end = new DateTime(date("Y-m-d"));
-                }
+                
 
                 
                 $i = 0;

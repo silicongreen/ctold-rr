@@ -791,7 +791,7 @@
 <style>
     #world-cup-play-link
     {
-        display:none;
+        opacity:0;
     }
     .addthis_toolbox{
         background: #F7F7F7;

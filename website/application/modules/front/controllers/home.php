@@ -3418,13 +3418,18 @@ class home extends MX_Controller {
         );
         $extra_js = '';
         
-        $str_assesment = $this->uri->segment(2);
-        $str_post = $this->uri->segment(3);
-        $assessment_level = $this->uri->segment(4);
-        if($assessment_level){
-            $assessment_level = $assessment_level;
+        $uri_segments = $this->uri->segment_array();
+        $str_assesment = $uri_segments[2];
+        
+        if(count($uri_segments) < 4 && is_numeric($uri_segments[3])) {
+            $assessment_level = $uri_segments[3];
+            $str_post = NULL;
+        } elseif(count($uri_segments) == 4 && is_numeric($uri_segments[4])) {
+            $assessment_level = $uri_segments[4];
+            $str_post = $uri_segments[3];
         } else {
             $assessment_level = 0;
+            $str_post = $uri_segments[3];
         }
         
         $ar_assessment = explode('-', $str_assesment);

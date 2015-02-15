@@ -86,10 +86,24 @@ class CalenderController extends Controller
                         $end_date = date("Y-m-d");
                     }
                 }
+                   
 
                 $attendance = new Attendances();
+                
                 $holiday = new Events();
                 $holiday_array = $holiday->getHolidayMonth($start_date, $end_date, $school_id);
+                
+                if(!$yearly)
+                {
+                   if($start_date<date("Y-m-d", strtotime($batchData->start_date))) 
+                   {
+                       $start_date = date("Y-m-d", strtotime($batchData->start_date));
+                   }
+                   if($end_date>date("Y-m-d", strtotime($batchData->end_date)))
+                   {
+                       $end_date = date("Y-m-d", strtotime($batchData->end_date));
+                   }
+                }    
                 
                 if ($end_date > date("Y-m-d"))
                 {

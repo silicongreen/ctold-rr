@@ -69,7 +69,7 @@
 
                         <div class="score-board-summary-text">
                             <p class="f2"></p>
-                            <p class="f2">Total Score</p>
+                            <p class="f2"></p>
                             <p class="f2">Highest Score&nbsp;: <?php echo (!empty($assessment->higistmark) ) ? $assessment->higistmark : 0; ?></p>
                             <p class="f2">Quiz Time&nbsp;: <?php echo (!empty($assessment->use_time) ) ? $assessment->time : 0; ?> Minute</p>
                             <p class="f2">Total Played&nbsp;: <?php echo (!empty($assessment->played) ) ? $assessment->played : 0; ?></p>

@@ -73,7 +73,7 @@ class CalenderController extends Controller {
                     $end_date = date("Y-m-d",strtotime($batchData->end_date));
                     if($end_date>date("Y-m-d"))
                     {
-                        $end_date = new DateTime(date("Y-m-d"));
+                        $end_date = date("Y-m-d");
                     }
                 }
 

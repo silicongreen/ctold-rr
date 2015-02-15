@@ -119,6 +119,19 @@ class Reminders extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        public function getReminder($rid,$rtype=6)
+        {
+            $criteria = new CDbCriteria;
+            $criteria->select = 't.id';
+            $criteria->compare('rid', $rid);
+            $criteria->compare('rtype', $rtype);
+            $criteria->compare('is_deleted_by_sender', 0);
+            $criteria->compare('is_deleted_by_recipient', 0);
+            $criteria->order = "created_at DESC";
+            $obj_reminder = $this->findAll($criteria);
+            return $obj_reminder;
+            
+        } 
         public function getUserReminderNew($user_id)
         {
             $criteria = new CDbCriteria;

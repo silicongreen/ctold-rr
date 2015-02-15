@@ -100,12 +100,13 @@ class CalenderController extends Controller {
                         $holiday_interval = DateInterval::createFromDateString('1 day');
                         $holiday_period = new DatePeriod($start_holiday, $holiday_interval, $end_holiday);
                         $holiday_count++;
-                        $holiday_array_for_count[] = $value['start_date'];
+                        $holiday_array_for_count[] = $start_holiday->format("Y-m-d");
                         foreach ($holiday_period as $hdt) {
                             $holiday_count++;
                             $holiday_array_for_count[] = $hdt->format("Y-m-d");
                         }
                     }
+                    print_r($holiday_array_for_count);
                     $leave_count = 0;
                     foreach ($leave_array as $value) {
                         $start_holiday = new DateTime($value['start_date']);
@@ -116,19 +117,27 @@ class CalenderController extends Controller {
                         }
                         $holiday_interval = DateInterval::createFromDateString('1 day');
                         $holiday_period = new DatePeriod($start_holiday, $holiday_interval, $end_holiday);
-                        foreach ($holiday_period as $hdt) {
-                            if (in_array($hdt->format("Y-m-d"), $holiday_array_for_count)) 
-                            {
-                                continue;
+                        if($value['start_date']>$value['end_date'])
+                        {
+                            foreach ($holiday_period as $hdt) {
+                                if (in_array($hdt->format("Y-m-d"), $holiday_array_for_count)) 
+                                {
+                                    continue;
+                                }
+                                if (in_array($hdt->format("w"), $weekend_array)) {
+                                    continue;
+                                }
+
+                                $leave_count++;
                             }
-                            if (in_array($hdt->format("w"), $weekend_array)) {
-                                continue;
-                            }
-                            echo $hdt->format("Y-m-d");
-                            echo $hdt->format("w");
-                            echo "<br/>";
-                            $leave_count++;
                         }
+                        else
+                        {
+                            if (!in_array($start_holiday->format("Y-m-d"), $holiday_array_for_count) && !in_array($start_holiday->format("w"), $weekend_array)) 
+                            {
+                               $leave_count++;
+                            }    
+                        }    
                     }
 
                     

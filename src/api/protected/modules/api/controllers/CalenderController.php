@@ -192,8 +192,7 @@ class CalenderController extends Controller
                 }
                 else
                 {
-                    echo $start_date;
-                    echo $end_date;
+                  
                    $begin = new DateTime(date("Y-m-d", strtotime($start_date)));
                    $end = new DateTime(date("Y-m-d", strtotime($end_date))); 
                 }    
@@ -203,7 +202,7 @@ class CalenderController extends Controller
                 
                 $i = 0;
                 
-                if($begin<=$end)
+                if($yearly || $start_date<=$end_date)
                 {
                     $interval = DateInterval::createFromDateString('1 day');
                     $period = new DatePeriod($begin, $interval, $end);

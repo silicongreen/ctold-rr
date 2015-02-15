@@ -498,20 +498,31 @@ class HomeworkController extends Controller
 
 
 
+            $notifiation_ids = array();
+            $reminderrecipients = array();
             foreach ($students as $value)
             {
+                $studentsobj = $stdobj->findByPk($value);
                 $reminder = new Reminders();
                 $reminder->sender = Yii::app()->user->id;
                 $reminder->subject = Settings::$HomeworkText . ":" . $title;
                 $reminder->body = Settings::$HomeworkText . " Added for " . $subject_details->name . " Please check the homework For details";
-                $reminder->recipient = $value;
+                $reminder->recipient = $studentsobj->user_id;
                 $reminder->school_id = Yii::app()->user->schoolId;
-
-
+                $reminder->rid = $homework->id;
+                $reminder->rtype = 4;
                 $reminder->created_at = date("Y-m-d H:i:s");
 
                 $reminder->updated_at = date("Y-m-d H:i:s");
                 $reminder->save();
+                $reminderrecipients[] = $studentsobj->user_id;
+                $notifiation_ids[] = $reminder->id;
+            }
+            if($notifiation_ids)
+            {
+                $notifiation_id = implode(",", $notifiation_ids);
+                $user_id = implode(",", $reminderrecipients);
+                Settings::sendCurlNotification($user_id, $notification_id);
             }
 
 

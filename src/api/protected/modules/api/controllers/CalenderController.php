@@ -290,8 +290,24 @@ class CalenderController extends Controller {
         if($reminderrecipients)
         {
             $notifiation_ids = array();
+            
+            $reminder = new Reminders(); 
+            //delete reminder previous
+            $reminderdata = $reminder->getReminder($updateleave->id,10);
+                    
+            if($reminderdata)
+            {
+                foreach($reminderdata as $rvalue)
+                {
+                    $rfordelete = $reminder->findByPk($rvalue->id);
+                    $rfordelete->delete();
+                }
+            }
+            //delete reminder previous
+            
             foreach($reminderrecipients as $value)
             {
+                   
                 $reminder = new Reminders(); 
                 $reminder->sender = Yii::app()->user->id;
                 $reminder->recipient = $value;

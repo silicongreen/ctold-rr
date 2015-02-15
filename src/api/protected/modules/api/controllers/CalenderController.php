@@ -124,6 +124,9 @@ class CalenderController extends Controller {
                             if (in_array($hdt->format("w"), $weekend_array)) {
                                 continue;
                             }
+                            echo $hdt->format("Y-m-d");
+                            echo $hdt->format("w");
+                            echo "<br/>";
                             $leave_count++;
                         }
                     }

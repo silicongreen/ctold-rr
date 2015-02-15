@@ -298,7 +298,7 @@ class Attendances extends CActiveRecord {
         
     }
 
-    public function getAbsentStudentMonth($start_date, $end_date, $student_id) {
+    public function getAbsentStudentMonth($start_date, $end_date, $student_id,$holiday_array_for_count=array(),$weekend_array=array()) {
 
         $criteria = new CDbCriteria;
         $criteria->addCondition("month_date >= '" . $start_date . "'");
@@ -315,7 +315,15 @@ class Attendances extends CActiveRecord {
         $return_array['late'] = array();
         if ($data != NULL) {
             foreach ($data as $value) {
-                
+                $dateobj = new DateTime(date("Y-m-d",  strtotime($value->month_date)));
+                if (in_array($dateobj->format("Y-m-d"), $holiday_array_for_count))
+                {
+                    continue;
+                }
+                if (in_array($dateobj->format("w"), $weekend_array))
+                {
+                    continue;
+                }
                 $middle_name = (!empty($value['studentDetails']->middle_name)) ? $value['studentDetails']->middle_name . ' ' : '';
                 
                 $merge1 = array();

@@ -48,6 +48,7 @@ class assessment extends MX_Controller {
         $this->datatables->set_buttons("edit");
         $this->datatables->set_buttons("delete");
         $this->datatables->set_buttons("question");
+        $this->datatables->set_buttons("get_link");
         $this->datatables->set_controller_name("assessment");
         $this->datatables->set_primary_key("id");
         
@@ -117,41 +118,9 @@ class assessment extends MX_Controller {
         if (!$this->input->is_ajax_request()) {
             exit('No direct script access allowed');
         }
-        $obj_school = new Schools($this->input->post('primary_id'));
-        $obj_school->delete();
+        $obj_assessments = new Assessments($this->input->post('primary_id'));
+        $obj_assessments->delete();
         echo 1;
-    }
-
-    public function sort_schools() {
-        $obj_school = new Schools();
-        $obj_school->order_by('priority');
-        $obj_school->where("is_columnist", "1");
-        $data['schools'] = $obj_school->get();
-
-        $data['token_name'] = $this->security->get_csrf_token_name();
-        $data['token_val'] = $this->security->get_csrf_hash();
-        $this->render('admin/school/sort', $data);
-    }
-
-    public function save_priorities() {
-        if (!$this->input->is_ajax_request()) {
-            exit('No direct script access allowed');
-        }
-        $ar_priority_sets = array();
-
-
-        $s_school_data = $this->input->post("category_ids");
-
-        $obj_school = new Schools();
-        $ar_schools = explode(",", $s_school_data);
-        $i = 1;
-        foreach ($ar_schools as $school_id) {
-            if (stripos($school_id, "_") === FALSE) {
-                $obj_school->where('id', $school_id);
-                $obj_school->update("priority", $i);
-                $i++;
-            }
-        }
     }
 
     public function question($assessment_id) {
@@ -165,6 +134,20 @@ class assessment extends MX_Controller {
         $data['style'] = array(NULL => 'Select', '1' => 'Boxed', '2' => 'List');
 
         $this->render('admin/assessment/question', $data);
+    }
+    
+    public function get_link($assessment_id) {
+        //set table id in table open tag
+        $assessment = new Assessments($assessment_id);
+        
+        $str_level = '';
+        if($assessment->type == 2) {
+            $str_level = '/1';
+        }
+        
+        $data['assess_url'] = base_url('quiz/' . sanitize($assessment->title) . '-' . $assessment->type . '-' . $assessment->id) . $str_level;
+        
+        $this->render('admin/assessment/_assessment_link', $data);
     }
 
     public function datatable_question($assessment_id) {

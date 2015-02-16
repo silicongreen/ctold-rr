@@ -298,7 +298,7 @@ class Attendances extends CActiveRecord {
         
     }
 
-    public function getAbsentStudentMonth($start_date, $end_date, $student_id,$holiday_array_for_count=array(),$weekend_array=array()) {
+    public function getAbsentStudentMonth($start_date, $end_date, $student_id,$holiday_array_for_count=array(),$weekend_array=array(),$leave_array_modified=array()) {
 
         $criteria = new CDbCriteria;
         $criteria->addCondition("month_date >= '" . $start_date . "'");
@@ -321,6 +321,22 @@ class Attendances extends CActiveRecord {
                     continue;
                 }
                 if (in_array($dateobj->format("w"), $weekend_array))
+                {
+                    continue;
+                }
+                $continue_leave = false;
+                if($leave_array_modified)
+                {
+                    foreach($leave_array_modified as $lmvalue)
+                    {
+                        if ($dateobj->format("Y-m-d")==$lmvalue['start_date'])
+                        {
+                            $continue_leave=true;
+                            break;
+                        }
+                    }
+                }
+                if($continue_leave)
                 {
                     continue;
                 }

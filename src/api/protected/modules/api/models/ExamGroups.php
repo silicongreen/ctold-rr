@@ -130,6 +130,17 @@ class ExamGroups extends CActiveRecord
     {
         return parent::model($className);
     }
+    
+    public function getAllExamsBatch($batch_id)
+    {
+        $criteria = new CDbCriteria();
+        $criteria->select = 't.id,t.name,t.exam_date';
+        $criteria->compare('t.batch_id', $batch_id);
+        $criteria->compare('t.is_published', 1);
+        $criteria->order = "t.created_at DESC";
+        $data = $this->findAll($criteria);
+        return $data;
+    }
 
     public function getTermExamsBatch($batch_id, $student_id)
     {

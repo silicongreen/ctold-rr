@@ -116,11 +116,11 @@ class RoutineController extends Controller {
             $day_id = Yii::app()->request->getPost('day_id');
             $cur_day_name = Settings::getCurrentDay();
             $cur_day_key = Settings::$ar_weekdays_key[$cur_day_name];
-            if(!$day_id)
+            if($day_id!==0 && !$day_id)
             {
                 $day_id = false;
             }
-            if($day_by_day)
+            if($day_by_day && $day_id===false)
             {
                 $day_id = $cur_day_key;
             } 

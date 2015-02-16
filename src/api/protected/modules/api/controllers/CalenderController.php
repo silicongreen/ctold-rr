@@ -181,34 +181,53 @@ class CalenderController extends Controller
                 
 
 
-                $begin = new DateTime(date("Y-m-d", strtotime($batchData->start_date)));
-                $end = new DateTime(date("Y-m-d", strtotime($batchData->end_date)));
-
-                if (date("Y-m-d", strtotime($batchData->end_date)) > date("Y-m-d"))
+                if($yearly)
                 {
-                    $end = new DateTime(date("Y-m-d"));
+                    $begin = new DateTime(date("Y-m-d", strtotime($batchData->start_date)));
+                    $end = new DateTime(date("Y-m-d", strtotime($batchData->end_date)));
+                    if (date("Y-m-d", strtotime($batchData->end_date)) > date("Y-m-d"))
+                    {
+                        $end = new DateTime(date("Y-m-d"));
+                    }
                 }
-
-                $interval = DateInterval::createFromDateString('1 day');
-                $period = new DatePeriod($begin, $interval, $end);
-                $i = 0;
-
-
-                foreach ($period as $dt)
+                else
                 {
+                  
+                   $begin = new DateTime(date("Y-m-d", strtotime($start_date)));
+                   $end = new DateTime(date("Y-m-d", strtotime($end_date))); 
+                }    
 
-                    if (in_array($dt->format("Y-m-d"), $holiday_array_for_count))
+                
+
+                
+                $i = 0;
+                
+                if($yearly || $start_date<=$end_date)
+                {
+                    $interval = DateInterval::createFromDateString('1 day');
+                    $period = new DatePeriod($begin, $interval, $end);
+
+
+                    foreach ($period as $dt)
                     {
-                        continue;
+
+                        if (in_array($dt->format("Y-m-d"), $holiday_array_for_count))
+                        {
+                            continue;
+                        }
+                        if (in_array($dt->format("w"), $weekend_array))
+                        {
+                            continue;
+                        }
+                        $i++;
                     }
-                    if (in_array($dt->format("w"), $weekend_array))
+                    if (!in_array($end->format("Y-m-d"), $holiday_array_for_count) && !in_array($end->format("w"), $weekend_array))
                     {
-                        continue;
+                        $i++;
                     }
-                    $i++;
                 }
                 
-                $attendance_array = $attendance->getAbsentStudentMonth($start_date, $end_date, $student_id,$holiday_array_for_count,$weekend_array);
+                $attendance_array = $attendance->getAbsentStudentMonth($start_date, $end_date, $student_id,$holiday_array_for_count,$weekend_array,$leave_array_modified);
                 $absent_count = count($attendance_array['absent']);
                 $late_count = count($attendance_array['late']);
 
@@ -230,6 +249,7 @@ class CalenderController extends Controller
                     $response['data'] = $attendance_array;
                     $response['data']['holiday'] = $holiday_array;
                     $response['data']['leave'] = $leave_array_modified;
+                    $response['data']['total'] = $i;
                     $response['status']['code'] = 200;
                     $response['status']['msg'] = "Data Found";
                 }

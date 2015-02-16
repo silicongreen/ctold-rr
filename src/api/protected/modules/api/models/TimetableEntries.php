@@ -237,7 +237,7 @@ class TimetableEntries extends CActiveRecord {
         return false;
     }
 
-    public function getTimeTables($school_id, $date = '', $b_full_week = false, $batch_id = null) {
+    public function getTimeTables($school_id, $date = '', $b_full_week = false, $batch_id = null,$day_id=false) {
 
         $criteria = new CDbCriteria;
 
@@ -247,7 +247,14 @@ class TimetableEntries extends CActiveRecord {
         if (!$b_full_week) {
             $cur_day_name = Settings::getCurrentDay($date);
             $cur_day_key[] = Settings::$ar_weekdays_key[$cur_day_name];
-        } else {
+        } 
+        else if($day_id!==false)
+        {
+            $cur_day_key[] = $day_id;
+            $b_full_week = false;
+        }
+        else
+        {
             $weekdays = new Weekdays;
             $weekdays = $weekdays->getWorkingDays($school_id);
             $cur_day_key = $weekdays;
@@ -264,8 +271,9 @@ class TimetableEntries extends CActiveRecord {
 
         $data = $this->with('classTimingDetails', 'subjectDetails', 'employeeDetails', 'timeTableDetails')->findAll($criteria);
 
+       
         if (!empty($data)) {
-            return $this->formatTimeTable($data, $b_full_week);
+            return $this->formatTimeTable($data, $b_full_week,false);
         }
 
         return false;

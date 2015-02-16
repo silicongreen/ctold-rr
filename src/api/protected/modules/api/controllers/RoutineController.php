@@ -112,6 +112,11 @@ class RoutineController extends Controller {
             $bacth_id = Yii::app()->request->getPost('batch_id');
             $date = Yii::app()->request->getPost('date');
             $daily = Yii::app()->request->getPost('daily');
+            $day_id = Yii::app()->request->getPost('day_id');
+            if(!$day_id)
+            {
+                $day_id = false;
+            }    
             $date = (!empty($date)) ? $date : \date('Y-m-d', \time());
 
             $weekly = ($daily == 1) ? false : true;
@@ -130,9 +135,13 @@ class RoutineController extends Controller {
             $response = array();
             if (Yii::app()->user->user_secret === $user_secret) {
                 $time_table = new TimetableEntries;
-                $time_table = $time_table->getTimeTables($school_id, $date, $weekly, $bacth_id);
+                $time_table = $time_table->getTimeTables($school_id, $date, $weekly, $bacth_id,$day_id);
 
                 if ($time_table) {
+                    $response['data']['weekdays'] = Settings::$ar_weekdays;
+                    $cur_day_name = Settings::getCurrentDay();
+                    $cur_day_key = Settings::$ar_weekdays_key[$cur_day_name];
+                    $response['data']['cur_week'] = $cur_day_key;
                     $response['data']['time_table'] = $time_table;
                     $response['status']['code'] = 200;
                     $response['status']['msg'] = "ROUTINE_FOUND";

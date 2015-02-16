@@ -112,11 +112,19 @@ class RoutineController extends Controller {
             $bacth_id = Yii::app()->request->getPost('batch_id');
             $date = Yii::app()->request->getPost('date');
             $daily = Yii::app()->request->getPost('daily');
+            $day_by_day = Yii::app()->request->getPost('day_by_day');
             $day_id = Yii::app()->request->getPost('day_id');
+            $cur_day_name = Settings::getCurrentDay();
+            $cur_day_key = Settings::$ar_weekdays_key[$cur_day_name];
             if(!$day_id)
             {
                 $day_id = false;
-            }    
+            }
+            if($day_by_day)
+            {
+                $day_id = $cur_day_key;
+            } 
+            
             $date = (!empty($date)) ? $date : \date('Y-m-d', \time());
 
             $weekly = ($daily == 1) ? false : true;
@@ -139,8 +147,7 @@ class RoutineController extends Controller {
 
                 if ($time_table) {
                     $response['data']['weekdays'] = Settings::$ar_weekdays;
-                    $cur_day_name = Settings::getCurrentDay();
-                    $cur_day_key = Settings::$ar_weekdays_key[$cur_day_name];
+                    
                     $response['data']['cur_week'] = $cur_day_key;
                     $response['data']['time_table'] = $time_table;
                     $response['status']['code'] = 200;

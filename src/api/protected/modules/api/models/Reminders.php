@@ -21,6 +21,7 @@ class Reminders extends CActiveRecord
 	/**
 	 * @return string the associated database table name
 	 */
+        public $total;
 	public function tableName()
 	{
 		return 'reminders';
@@ -132,15 +133,28 @@ class Reminders extends CActiveRecord
             return $obj_reminder;
             
         } 
-        public function getUserReminderNew($user_id)
+        public function getReminderTotal($user_id)
+        {
+            
+            $criteria = new CDbCriteria();
+            $criteria->select = 'count(t.id) as total';
+            $criteria->compare('recipient', $user_id);
+            $criteria->compare('is_deleted_by_sender', 0);
+            $criteria->compare('is_deleted_by_recipient', 0);
+            $data = $this->find($criteria);
+            return $data->total;
+        } 
+        public function getUserReminderNew($user_id,$page_number,$page_size)
         {
             $criteria = new CDbCriteria;
-            $criteria->select = 't.id,t.subject,t.body,t.rtype,t.rid';
+            $criteria->select = 't.id,t.subject,t.body,t.rtype,t.rid,t.is_read';
             $criteria->compare('recipient', $user_id);
-            $criteria->compare('is_read', 0);
             $criteria->compare('is_deleted_by_sender', 0);
             $criteria->compare('is_deleted_by_recipient', 0);
             $criteria->order = "created_at DESC";
+            $start = ($page_number-1)*$page_size;
+            $criteria->limit = $page_size;
+            $criteria->offset = $start;
             $obj_reminder = $this->findAll($criteria);
             $reminder = array();
             
@@ -151,6 +165,7 @@ class Reminders extends CActiveRecord
                 {
                    $reminder[$i]['id'] = $value->id;
                    $reminder[$i]['subject'] = $value->subject;
+                   $reminder[$i]['is_read'] = $value->is_read;
                    $reminder[$i]['body'] = $value->body;
                    $reminder[$i]['rtype'] = $value->rtype;
                    $reminder[$i]['rid'] = $value->rid;

@@ -237,7 +237,7 @@ class TimetableEntries extends CActiveRecord {
         return false;
     }
 
-    public function getTimeTables($school_id, $date = '', $b_full_week = false, $batch_id = null,$day_id=false) {
+    public function getTimeTables($school_id, $date = '', $b_full_week = false, $batch_id = null,$day_id) {
 
         $criteria = new CDbCriteria;
 

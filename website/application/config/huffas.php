@@ -12,7 +12,7 @@ $config[ 'news_in_index' ] = array(
 
 
 
-$config['world_cup_quize_link']   = '/quiz/day-1-2-11/1';
+$config['world_cup_quize_link']   = '/quiz/day-2-2-13/1';
 $config['api_url']   = 'http://api.champs21.com/api/freeuser';
 
 $config['android_app_dl_popup_show']   = TRUE;

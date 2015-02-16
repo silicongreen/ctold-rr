@@ -20,7 +20,7 @@ class RoutineController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'exam','getdateroutine','teacher','nextclass'),
+                'actions' => array('index','allexam', 'exam','getdateroutine','teacher','nextclass'),
                 'users' => array('@'),
             ),
             array('deny', // deny all users
@@ -206,8 +206,8 @@ class RoutineController extends Controller {
             }
         }
     }
-
-    public function actionExam() {
+    
+    public function actionAllExam() {
 
         if (isset($_POST) && !empty($_POST)) {
 
@@ -233,8 +233,56 @@ class RoutineController extends Controller {
 
             if (Yii::app()->user->user_secret === $user_secret) {
 
+                $time_table = new ExamGroups();
+                $time_table = $time_table->getAllExamsBatch($batch_id);
+
+                if ($time_table) {
+                    $response['data']['all_exam'] = $time_table;
+                    $response['status']['code'] = 200;
+                    $response['status']['msg'] = "EXAM_ROUTINE_FOUND";
+                } else {
+                    $response['status']['code'] = 404;
+                    $response['status']['msg'] = "EXAM_ROUTINE_NOT_FOUND";
+                }
+            }
+        } else {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "BAD_REQUEST";
+        }
+
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    }
+
+    public function actionExam() {
+
+        if (isset($_POST) && !empty($_POST)) {
+
+            $user_secret = Yii::app()->request->getPost('user_secret');
+            $school_id = Yii::app()->request->getPost('school');
+            $batch_id = Yii::app()->request->getPost('batch_id');
+            $student_id = Yii::app()->request->getPost('student_id');
+            $exam_id = Yii::app()->request->getPost('exam_id');
+
+            $response = array();
+
+            if ((Yii::app()->user->isParent) && ( empty($school_id) || empty($batch_id) || empty($student_id) )) {
+                $response['status']['code'] = 400;
+                $response['status']['msg'] = "BAD_REQUEST";
+                echo CJSON::encode($response);
+                Yii::app()->end();
+            }
+
+            if (Yii::app()->user->isStudent) {
+                $school_id = Yii::app()->user->schoolId;
+                $batch_id = Yii::app()->user->batchId;
+                $student_id = Yii::app()->user->profileId;
+            }
+
+            if (Yii::app()->user->user_secret === $user_secret) {
+
                 $time_table = new Exams;
-                $time_table = $time_table->getExamTimeTable($school_id, $batch_id, $student_id);
+                $time_table = $time_table->getExamTimeTable($school_id, $batch_id, $student_id,$exam_id);
 
                 if ($time_table) {
                     $response['data']['exam_time_table'] = $time_table;

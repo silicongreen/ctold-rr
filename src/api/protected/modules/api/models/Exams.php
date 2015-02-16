@@ -178,7 +178,7 @@ class Exams extends CActiveRecord {
         return $data;
     }
 
-    public function getExamTimeTable($school_id = null, $batch_id = null, $student_id = null) {
+    public function getExamTimeTable($school_id = null, $batch_id = null, $student_id = null,$exam_id=null) {
 
         $criteria = new CDbCriteria;
 
@@ -200,8 +200,33 @@ class Exams extends CActiveRecord {
                 'select' => 'studentSubject.id',
             ),
         );
-
-        $criteria->addCondition(
+        if($exam_id)
+        {
+            $criteria->addCondition(
+                  "(Examgroup.id = :exam_id AND Examgroup.batch_id = :batch_id AND Examgroup.school_id = :school_id)
+                   AND (
+                          (
+                          Subjects.elective_group_id IS NULL
+                          AND Subjects.no_exams = '0'
+                          AND Subjects.is_deleted = '0'
+                          AND Subjects.school_id = :school_id
+                      )
+                      OR (
+                          studentSubject.student_id = :student_id
+                          AND studentSubject.batch_id = :batch_id
+                          AND electiveGroup.is_deleted = '0'
+                          AND electiveGroup.school_id = :school_id
+                      )
+                   )"
+            ); 
+            $params[':exam_id'] = $exam_id;
+            $params[':school_id'] = $school_id;
+            $params[':batch_id'] = $batch_id;
+            $params[':student_id'] = $student_id;
+        }
+        else
+        {
+           $criteria->addCondition(
                 "(Examgroup.is_current = '1' AND Examgroup.batch_id = :batch_id AND Examgroup.school_id = :school_id)
                  AND (
                         (
@@ -217,11 +242,12 @@ class Exams extends CActiveRecord {
                         AND electiveGroup.school_id = :school_id
                     )
                  )"
-        );
-
-        $params[':school_id'] = $school_id;
-        $params[':batch_id'] = $batch_id;
-        $params[':student_id'] = $student_id;
+            ); 
+            $params[':school_id'] = $school_id;
+            $params[':batch_id'] = $batch_id;
+            $params[':student_id'] = $student_id;
+        }    
+   
 
         $criteria->params = $params;
 

@@ -40,11 +40,10 @@ class FreeuserController extends Controller
     
      public function actionDownloadAttachment()
     {
-        $school_code = $_GET['school_code'];
+        
         $id = $_GET['id'];
-        if ($school_code && $id)
+        if ($id)
         {
-
             $assignment = new Assignments();
             $assignmentobj = $assignment->findByPk($id);
             if($assignmentobj->attachment_file_name)

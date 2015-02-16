@@ -20,7 +20,7 @@ class RoutineController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'exam','teacher','nextclass'),
+                'actions' => array('index', 'exam','getdateroutine','teacher','nextclass'),
                 'users' => array('@'),
             ),
             array('deny', // deny all users
@@ -102,8 +102,8 @@ class RoutineController extends Controller {
             Yii::app()->end();
         }
     }
-
-    public function actionIndex() {
+    
+    public function actionGetDateRoutine() {
 
         if (isset($_POST) && !empty($_POST)) {
 
@@ -112,7 +112,7 @@ class RoutineController extends Controller {
             $bacth_id = Yii::app()->request->getPost('batch_id');
             $date = Yii::app()->request->getPost('date');
             $daily = Yii::app()->request->getPost('daily');
-            $day_by_day = Yii::app()->request->getPost('day_by_day');
+            
             $day_id = Yii::app()->request->getPost('day_id');
             $cur_day_name = Settings::getCurrentDay();
             $cur_day_key = Settings::$ar_weekdays_key[$cur_day_name];
@@ -120,14 +120,10 @@ class RoutineController extends Controller {
             {
                $day_id = $day_id; 
             }    
-            else if(!$day_by_day)
-            {
-                $day_id = false;
-            }
-            else if($day_by_day)
+            else
             {
                 $day_id = $cur_day_key;
-            } 
+            }
             
             $date = (!empty($date)) ? $date : \date('Y-m-d', \time());
 
@@ -153,6 +149,53 @@ class RoutineController extends Controller {
                     $response['data']['weekdays'] = Settings::$ar_weekdays;
                     
                     $response['data']['cur_week'] = $cur_day_key;
+                    $response['data']['time_table'] = $time_table;
+                    $response['status']['code'] = 200;
+                    $response['status']['msg'] = "ROUTINE_FOUND";
+                } else {
+                    $response['status']['code'] = 404;
+                    $response['status']['msg'] = "ROUTINE_NOT_FOUND";
+                }
+
+                echo CJSON::encode($response);
+                Yii::app()->end();
+            }
+        }
+    }
+
+    public function actionIndex() {
+
+        if (isset($_POST) && !empty($_POST)) {
+
+            $user_secret = Yii::app()->request->getPost('user_secret');
+            $school_id = Yii::app()->request->getPost('school');
+            $bacth_id = Yii::app()->request->getPost('batch_id');
+            $date = Yii::app()->request->getPost('date');
+            $daily = Yii::app()->request->getPost('daily');
+            
+            
+            $date = (!empty($date)) ? $date : \date('Y-m-d', \time());
+
+            $weekly = ($daily == 1) ? false : true;
+
+            if (Yii::app()->user->isParent && empty($bacth_id)) {
+                $response['status']['code'] = 400;
+                $response['status']['msg'] = "BAD_REQUEST";
+                echo CJSON::encode($response);
+                Yii::app()->end();
+            }
+
+            if (Yii::app()->user->isStudent) {
+                $bacth_id = Yii::app()->user->batchId;
+            }
+            
+            $response = array();
+            if (Yii::app()->user->user_secret === $user_secret) {
+                $time_table = new TimetableEntries;
+                $time_table = $time_table->getTimeTables($school_id, $date, $weekly, $bacth_id);
+
+                if ($time_table) {
+                    
                     $response['data']['time_table'] = $time_table;
                     $response['status']['code'] = 200;
                     $response['status']['msg'] = "ROUTINE_FOUND";

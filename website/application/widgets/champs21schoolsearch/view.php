@@ -20,7 +20,7 @@
             <?php echo form_close(); ?> 
 
         </div>
-        <div style="float:right; width:55%; height:150px;">
+        <div style="float:right; width:55%;">
 <!--            <p class="f2" style="color:red;font-size:25px;line-height:30px;">We are the Bridge Between Schools & Parents</p>
             <p class="f5" style="color:#CACACA;font-size:17px;line-height:21x;">Search & find information on 100+ schools in the Dhaka and around the nation</p>
             <hr style="border:dashed grey; border-width:1px 0 0 0; height:0;line-height:0px;font-size:0;margin:0;padding:0;"></hr>
@@ -28,7 +28,7 @@
 
             <p><input type="button" class="btn_myschool" value="My School"></p>-->
             <p style="position:relative; top:100%; text-align: right;">
-                <button class="btn_school_entry f2" value="">Create your own school</button>
+                <button class="btn_school_entry f2" value="">Create Your School Website</button>
             </p>
         </div>
         <div style="clear:both;"></div>
@@ -356,13 +356,14 @@
     }
     
     .btn_school_entry {
-        background-color: #7DC6A2;
+        background-color: #db3434;
         border: medium none;
-        box-shadow: 0 3px 2px 0 #bbb;
         color: #fff;
-        height: 40px;
-        line-height: 15px;
-        width: 60%;
+        font-size: 20px;
+        font-weight: bold;
+        height: 70px;
+        line-height: 1.25;
+        width: 35%;
     }
     .btn_school_entry:hover{
         background-color: #bbbbbb;

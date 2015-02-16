@@ -57,7 +57,7 @@ class FreeuserController extends Controller
                 $attachment_extra = $attachment_date_chunk[0].$attachment_date_chunk[1].$attachment_date_chunk[2];
                 $attachment_extra.= $attachment_time_chunk[0].$attachment_date_chunk[1].$attachment_time_chunk[2];
 
-                $url = "http://".$school_code.".".Settings::$endPoint."/uploads/assignments/attachments/".$id."/original/".str_replace(" ","+", $assignmentobj->attachment_file_name)."?".$attachment_extra;
+                $url = "../../../premium/school/public/uploads/assignments/attachments/".$id."/original/".str_replace(" ","+", $assignmentobj->attachment_file_name)."?".$attachment_extra;
                
                 header("Content-Disposition: attachment; filename=".$assignmentobj->attachment_file_name);
                 header("Content-Type: {$assignmentobj->attachment_content_type}");

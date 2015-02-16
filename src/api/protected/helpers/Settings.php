@@ -166,7 +166,7 @@ class Settings {
     }        
     public static function getFedenaToken($school_code,$username,$password)
     {
-        $endPoint = "plus.champs21.com";
+        $endPoint = "champs21.com";
         
         $client_id = sha1($school_code . Settings::$client_id);
         $client_secret = sha1($school_code . Settings::$client_secret);

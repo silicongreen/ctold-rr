@@ -217,6 +217,13 @@ class Assignments extends CActiveRecord
                 $middle_name = (!empty($value["employeeDetails"]->middle_name)) ? $value["employeeDetails"]->middle_name.' ' : '';
                 $marge['id']   = $value->id;
                 
+                $marge['attachment_file_name'] = "";
+                
+                if($value->attachment_file_name)
+                {
+                    $marge['attachment_file_name'] = $value->attachment_file_name;
+                }
+                
                 $marge['teacher_name'] = rtrim($value["employeeDetails"]->first_name.' '.$middle_name.$value["employeeDetails"]->last_name);
                 $marge['teacher_id']   = $value["employeeDetails"]->id;
                 $marge['subjects'] = $value["subjectDetails"]->name;

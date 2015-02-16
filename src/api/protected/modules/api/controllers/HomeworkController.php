@@ -23,7 +23,7 @@ class HomeworkController extends Controller
     {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'Done','singlehomework', 'saveassessment', 'assessment', 'getassessment', 'getproject', 'getsubject', 'addhomework', 'teacherhomework', 'homeworkstatus'),
+                'actions' => array('index', 'Done','singlehomework','downloadattachment', 'saveassessment', 'assessment', 'getassessment', 'getproject', 'getsubject', 'addhomework', 'teacherhomework', 'homeworkstatus'),
                 'users' => array('*'),
             ),
             array('deny', // deny all users
@@ -284,6 +284,43 @@ class HomeworkController extends Controller
         echo CJSON::encode($response);
         Yii::app()->end();
     }
+    public function actionDownloadAttachment()
+    {
+        if (isset($_POST) && !empty($_POST))
+        {
+            $user_secret = Yii::app()->request->getPost('user_secret');
+            $id = Yii::app()->request->getPost('id');
+            if ($id && Yii::app()->user->user_secret === $user_secret && ( Yii::app()->user->isStudent || (Yii::app()->user->isParent && Yii::app()->request->getPost('batch_id') && Yii::app()->request->getPost('student_id') )))
+            {
+                
+                $assignment = new Assignments();
+                $assignmentobj = $assignment->findByPk($id);
+                if($assignmentobj->attachment_file_name)
+                {
+                    $school_obj  = new Schools(); 
+                    $school_details = $school_obj->findByPk(Yii::app()->user->schoolId);
+                    $school_code = $school_details->code;
+                    
+                    $attachment_datetime_chunk = explode(" ", $assignmentobj->attachment_updated_at);
+                    
+                    $attachment_date_chunk = explode("-", $attachment_datetime_chunk[0]);
+                    $attachment_time_chunk = explode(":", $attachment_datetime_chunk[1]);
+                    
+                    $attachment_extra = $attachment_date_chunk[0].$attachment_date_chunk[1].$attachment_date_chunk[2];
+                    $attachment_extra.= $attachment_time_chunk[0].$attachment_date_chunk[1].$attachment_time_chunk[2];
+                    
+                    $url = $school_code.Settings::$endPoint."/uploads/assignments/attachments/".$id."/original/".$assignmentobj->attachment_file_name."?".$attachment_extra;
+                    header("Content-Disposition: attachment; filename=".$assignmentobj->attachment_file_name);
+                    header("Content-Type: {$assignmentobj->attachment_content_type}");
+                    header("Content-Length: " . filesize($url));
+                    readfile($url); 
+                }    
+                
+            }
+            
+        }
+      
+    }
      
     public function actionSingleHomework()
     {
@@ -309,7 +346,7 @@ class HomeworkController extends Controller
                 if ($homework_data)
                 {
 
-                    $response['data']['homework'] = $homework_datap[0];
+                    $response['data']['homework'] = $homework_data[0];
                     $response['status']['code'] = 200;
                     $response['status']['msg'] = "Data Found";
                 }

@@ -51,8 +51,8 @@
                 <div class="clearfix"></div>
                 
                 <div class="icc-quiz-start-screen-text">
-                    <p class="f2">The ICC Cricket World Cup. The stage for greatest batsman, bowler, all rounders, wicket-keepers...and quizzers.<br />
-                        Sign in now for a chance to grab the spotlight.</p>
+                    <p class="f2">The stage is set for the greatest cricketers… and quizzers!! Win a whole set of Cricket gears for your school! 10 jerseys are up for grabs for the top ten high-scorers everyday as well. So make sure you play every day and win as many jerseys as you want.<br />
+                        So what are you waiting for? Start playing!!</p>
                 </div>
                 
             </div>
@@ -77,6 +77,9 @@
 
                         <div class="assessment-popup-btn-wrapper">
                             <button class="icc-quiz-play-2" type="button" id="start_assessment_now"></button>
+                            <button class="icc-quiz-rules f2" type="button" id="show_assessment_rules">
+                                <span>Rules</span>
+                            </button>
                         </div>
 
                     </div>
@@ -111,7 +114,11 @@
                         </div>
                     </div>
                 </div>
-
+                
+                <div class="icc-quiz-rules-wrapper">
+                    Quiz Rules will be here.
+                </div>
+                
             </div>
 
             <div class="icc-quiz-game-over">

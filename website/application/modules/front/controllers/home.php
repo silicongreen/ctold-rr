@@ -3711,7 +3711,20 @@ class home extends MX_Controller {
             
         }
         
+        $ar_asses_levels = explode(',', $assessment->assesment->levels);
+        
+        $next_level = 0;
+        
+        if( count($ar_asses_levels) > ($cur_level + 1) ) {
+            $next_level = $cur_level + 1;
+        }
+        
         $response['cur_level'] = $cur_level;
+        $response['assessment_id'] = sanitize($assessment->assesment->id);
+        $response['assessment_title'] = sanitize($assessment->assesment->title);
+        $response['assessment_type'] = $assessment->assesment->type;
+        $response['assessment_levels'] = $assessment->assesment->levels;
+        $response['next_level'] = $next_level;
         $response['score'] = $user_mark;
         $response['total_score'] = $total_mark;
         $response['user_total_score'] = $assessment_user_total_mark->mark;

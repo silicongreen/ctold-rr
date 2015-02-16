@@ -83,10 +83,44 @@ header.champs-header {
     background: url("/styles/layouts/tdsfront/image/quiz-play-2.png") no-repeat scroll 0 0 / 80% 100% rgba(0, 0, 0, 0);
     border: medium none;
     min-height: 60px;
-    width: 60%;
+    width: 49%;
 }
 .icc-quiz-play-2:hover {
     background: url("/styles/layouts/tdsfront/image/quiz-play-2-hover.png") no-repeat scroll 0 0 / 80% 100% rgba(0, 0, 0, 0);
+}
+
+.icc-quiz-rules {
+    background-color: #8e3382;
+    border: medium none;
+    border-radius: 10px;
+    color: #fff;
+    float: right;
+    font-size: 25px;
+    padding: 9px 10px;
+    width: 40%;
+    
+    box-shadow: 0 4px 0 0 #35042c;
+    -moz-box-shadow: 0 4px 0 0 #35042c;
+    -webkit-box-shadow: 0 4px 0 0 #35042c;
+    -ms-box-shadow: 0 4px 0 0 #35042c;
+    -o-box-shadow: 0 4px 0 0 #35042c;
+}
+.icc-quiz-rules:hover{
+    background-color: #5D9B2F;
+    box-shadow: 0 4px 0 0 #284E0B;
+    -moz-box-shadow: 0 4px 0 0 #284E0B;
+    -webkit-box-shadow: 0 4px 0 0 #284E0B;
+    -ms-box-shadow: 0 4px 0 0 #284E0B;
+    -o-box-shadow: 0 4px 0 0 #284E0B;
+    
+    -webkit-transition: background-color 0.5s ease;
+    -moz-transition: background-color 0.5s ease;
+    -o-transition: background-color 0.5s ease;
+    -ms-transition: background-color 0.5s ease;
+    transition: background-color 0.5s ease;
+}
+.icc-quiz-rules-wrapper {
+    display: none;
 }
 .icc-logo {
     float: left;
@@ -257,7 +291,7 @@ header.champs-header {
     padding: 40px 20px 50px;
 }
 .assessment-popup-btn-wrapper {
-    padding-left: 20px;
+    padding: 0 30px 0 20px;
     text-align: center;
     width: 80%;
 }

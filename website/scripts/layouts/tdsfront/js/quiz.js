@@ -3,17 +3,25 @@ $(document).ready(function(){
     if($('#asses_id').length > 0) {
         
         var assess_score_cookie = readCookie('c21_icc_quiz');
+        
+        var cur_level = 0;
+        if($('#current-level').length > 0) {
+            cur_level = $('#current-level').attr('data');
+        }
+        
         if(assess_score_cookie) {
             $.ajax({
                 url : $('#base_url').val() + 'save_assessment',
                 type : 'post',
                 dataType : 'json',
                 data : {
-                    data : assess_score_cookie
+                    data : assess_score_cookie,
+                    add_to_school : false,
+                    cur_level : cur_level
                 },
                 success : function(data) {
                     if(data.saved == true) {
-                        eraseCookie('c21_assessment');
+                        eraseCookie('c21_icc_quiz');
                     }
                 },
                 error : function() {}
@@ -233,11 +241,6 @@ $(document).ready(function(){
             'fitToView' : true,
             'autoSize' : true,
             'closeClick'  : false,
-            helpers   : { 
-                overlay : {
-                    closeClick: false
-                }
-            },
             'padding': 0,
             'margin': 0
         });
@@ -261,6 +264,32 @@ $(document).ready(function(){
                 cur_level : cur_level
             },
             success : function(data) {
+                
+                $('.icc-quiz-game-over .grand-score-board-summary-text').text(data.user_total_score);
+                
+                var quiz_levels = data.assessment_levels.split(',');
+                var levels_html = '';
+                var i = 1;
+                
+                if( $('.icc-quiz-game-over .score-board-summary-text p').length < quiz_levels.length) {
+                    quiz_levels.forEach(function(level) {
+                        if(level > cur_level) {
+                            var level_str = '';
+                            var label_str = 'Locked';
+                            if(data.next_level == level) {
+                                level_str = '/' + level;
+                                label_str = 'Play Now';
+                            }
+
+                            levels_html += '<p class="f2">Stage ' + level + ' : <span id="level-' + level + '">0</span><a href="' + $('#base_url').val() + 'quiz/' + data.assessment_title + '-' + data.assessment_type + '-' + data.assessment_id + level_str + '"><span class="level-status">' + label_str + '</span></a></p>';
+                            i++;
+                        }
+
+                    });
+                }
+                
+                $('.icc-quiz-game-over .score-board-summary-text').append(levels_html);
+                
                 console.log(data)
             },
             error : function() {}
@@ -403,7 +432,6 @@ $(document).ready(function(){
         
         $('#icc-quiz-content').hide('fast');
         $('.icc-quiz-game-over').show('slow');
-        $.fancybox.close();
       
     });
     
@@ -465,6 +493,13 @@ $(document).ready(function(){
         $('#icc-quiz-start-screen').hide('fast');
     });
     
+    $(document).on('click', '#show_assessment_rules', function(){
+        var lb_old_content = $('#leader_board').html();
+        var lb_new_content = $('.icc-quiz-rules-wrapper').html();
+        $('#leader_board').html(lb_new_content);
+        
+    });
+    
     $(document).on('click', '#start_assessment_now', function(){
         
         if($(window).width() < 768) {
@@ -485,15 +520,6 @@ $(document).ready(function(){
         $('#icc-quiz-start-play-screen').hide('fast');
         
         clock.start();
-    });
-    
-    $(document).on('click', '.fancybox-close', function(){
-        
-        var post_uri = $('#post_uri').html();
-        var post_url = $('#base_url').val() + $.trim(post_uri);
-        
-        window.location.href = post_url;
-        return false;
     });
     
     $(document).on('click', '#full_leader_board', function(){
@@ -603,11 +629,6 @@ $(document).ready(function(){
                     'fitToView' : true,
                     'autoSize' : false,
                     'closeClick'  : false,
-                    helpers   : { 
-                        overlay : {
-                            closeClick: false
-                        }
-                    },
                     'padding': 0,
                     'margin': 0
                 });
@@ -615,8 +636,6 @@ $(document).ready(function(){
             },
             error : function() {}
         });
-        
-        
     });
             
 //    var myEvent = window.attachEvent || window.addEventListener;

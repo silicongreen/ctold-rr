@@ -165,14 +165,22 @@ class Assignments extends CActiveRecord
             return $data->total;
         }        
         
-        public function getAssignment($batch_id, $student_id, $date = '',$page=1, $subject_id=NULL, $page_size,$type)
+        public function getAssignment($batch_id, $student_id, $date = '',$page=1, $subject_id=NULL, $page_size,$type,$id=0)
         {
             $date = (!empty($date)) ? $date : \date('Y-m-d', \time());
             
             $criteria = new CDbCriteria();
             $criteria->select = 't.*';
             $criteria->compare('subjectDetails.batch_id', $batch_id);
-            $criteria->compare('t.assignment_type', $type);
+            
+            if($id>0)
+            {
+               $criteria->compare('t.id', $id); 
+            } 
+            else
+            {
+                $criteria->compare('t.assignment_type', $type);
+            }    
             if($subject_id!=NULL)
             {
                 $criteria->compare('subjectDetails.id', $subject_id);
@@ -188,11 +196,17 @@ class Assignments extends CActiveRecord
             $criteria->addCondition("FIND_IN_SET(".$student_id.", student_list)");
             
             
-            
-            $start = ($page-1)*$page_size;
-            $criteria->limit = $page_size;
-            
-            $criteria->offset = $start;
+            if($id>0)
+            {
+                $criteria->limit = 1;
+            }
+            else
+            {    
+                $start = ($page-1)*$page_size;
+                $criteria->limit = $page_size;
+
+                $criteria->offset = $start;
+            }
             
             $data = $this->with("subjectDetails","employeeDetails")->findAll($criteria);
             $response_array = array();
@@ -201,12 +215,19 @@ class Assignments extends CActiveRecord
             {
                 $marge = array();
                 $middle_name = (!empty($value["employeeDetails"]->middle_name)) ? $value["employeeDetails"]->middle_name.' ' : '';
+                $marge['id']   = $value->id;
+                
                 $marge['teacher_name'] = rtrim($value["employeeDetails"]->first_name.' '.$middle_name.$value["employeeDetails"]->last_name);
                 $marge['teacher_id']   = $value["employeeDetails"]->id;
                 $marge['subjects'] = $value["subjectDetails"]->name;
                 $marge['subjects_id'] = $value["subjectDetails"]->id;
                 $marge['subjects_icon'] = $value["subjectDetails"]->icon_number;
                 $marge['duedate'] = $value->duedate;
+                $marge['time_over'] = 0;
+                if(date("Y-m-d")>$value->duedate)
+                {
+                   $marge['time_over'] = 1; 
+                }
                 $marge['name'] = $value->title;
                 $marge['content'] = $value->content;
                 $marge['type'] = $value->assignment_type;

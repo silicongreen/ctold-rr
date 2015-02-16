@@ -23,7 +23,7 @@ class HomeworkController extends Controller
     {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'Done', 'saveassessment', 'assessment', 'getassessment', 'getproject', 'getsubject', 'addhomework', 'teacherhomework', 'homeworkstatus'),
+                'actions' => array('index', 'Done','singlehomework', 'saveassessment', 'assessment', 'getassessment', 'getproject', 'getsubject', 'addhomework', 'teacherhomework', 'homeworkstatus'),
                 'users' => array('*'),
             ),
             array('deny', // deny all users
@@ -261,6 +261,55 @@ class HomeworkController extends Controller
                     }
                     $response['data']['has_next'] = $has_next;
                     $response['data']['homework'] = $homework_data;
+                    $response['status']['code'] = 200;
+                    $response['status']['msg'] = "Data Found";
+                }
+                else
+                {
+                    $response['status']['code'] = 404;
+                    $response['status']['msg'] = "Data Not Found";
+                }
+            }
+            else
+            {
+                $response['status']['code'] = 403;
+                $response['status']['msg'] = "Access Denied.";
+            }
+        }
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    }
+     
+    public function actionSingleHomework()
+    {
+        if (isset($_POST) && !empty($_POST))
+        {
+            $user_secret = Yii::app()->request->getPost('user_secret');
+            $id = Yii::app()->request->getPost('id');
+            $response = array();
+            if ($id && Yii::app()->user->user_secret === $user_secret && ( Yii::app()->user->isStudent || (Yii::app()->user->isParent && Yii::app()->request->getPost('batch_id') && Yii::app()->request->getPost('student_id') )))
+            {
+                if (Yii::app()->user->isParent)
+                {
+                    $batch_id = Yii::app()->request->getPost('batch_id');
+                    $student_id = Yii::app()->request->getPost('student_id');
+                }
+                else
+                {
+                    $batch_id = Yii::app()->user->batchId;
+                    $student_id = Yii::app()->user->profileId;
+                }
+                $assignment = new Assignments();
+                $homework_data = $assignment->getAssignment($batch_id, $student_id, "", 1, null, 1, 1,$id);
+                if ($homework_data)
+                {
+
+                    $response['data']['homework'] = $homework_datap[0];
                     $response['status']['code'] = 200;
                     $response['status']['msg'] = "Data Found";
                 }

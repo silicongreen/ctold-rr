@@ -286,8 +286,8 @@ class HomeworkController extends Controller
     }
     public function actionDownloadAttachment()
     {
-        $school_code = Yii::app()->request->getRequest('school_code');
-        $id = Yii::app()->request->getRequest('id');
+        $school_code = Yii::app()->request->get('school_code');
+        $id = Yii::app()->request->get('id');
         if ($school_code && $id)
         {
 

@@ -23,7 +23,7 @@ class FreeuserController extends Controller
     {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'create', 'getcategorypost', 'getsinglenews', 'search', "getkeywordpost"
+                'actions' => array('index','downloadattachment', 'create', 'getcategorypost', 'getsinglenews', 'search', "getkeywordpost"
                     , "gettagpost", "getbylinepost", "getmenu","getassesment","addmark","updateplayed","assesmenthistory",
                     "getuserinfo", "goodread", "readlater", "goodreadall", "goodreadfolder", "removegoodread"
                     , "schoolsearch", "school", "createschool", "schoolpage", "schoolactivity", "candle"
@@ -36,6 +36,38 @@ class FreeuserController extends Controller
                 'users' => array('*'),
             ),
         );
+    }
+    
+     public function actionDownloadAttachment()
+    {
+        $school_code = $_GET['school_code'];
+        $id = $_GET['id'];
+        if ($school_code && $id)
+        {
+
+            $assignment = new Assignments();
+            $assignmentobj = $assignment->findByPk($id);
+            if($assignmentobj->attachment_file_name)
+            {
+                $attachment_datetime_chunk = explode(" ", $assignmentobj->attachment_updated_at);
+
+                $attachment_date_chunk = explode("-", $attachment_datetime_chunk[0]);
+                $attachment_time_chunk = explode(":", $attachment_datetime_chunk[1]);
+
+                $attachment_extra = $attachment_date_chunk[0].$attachment_date_chunk[1].$attachment_date_chunk[2];
+                $attachment_extra.= $attachment_time_chunk[0].$attachment_date_chunk[1].$attachment_time_chunk[2];
+
+                $url = "http://".$school_code.Settings::$endPoint."/uploads/assignments/attachments/".$id."/original/".str_replace(" ","+", $assignmentobj->attachment_file_name)."?".$attachment_extra;
+                header("Content-Disposition: attachment; filename=".$assignmentobj->attachment_file_name);
+                header("Content-Type: {$assignmentobj->attachment_content_type}");
+                header("Content-Length: " . $assignmentobj->attachment_file_size);
+                readfile($url); 
+            }    
+
+        }
+            
+      
+      
     }
     
     public function actionShareSchoolFeed()

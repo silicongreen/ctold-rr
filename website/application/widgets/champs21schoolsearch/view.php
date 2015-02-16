@@ -20,14 +20,16 @@
             <?php echo form_close(); ?> 
 
         </div>
-        <div style="float:right;width:55%;height:230px;padding-left:20px;">
+        <div style="float:right; width:55%; height:150px;">
 <!--            <p class="f2" style="color:red;font-size:25px;line-height:30px;">We are the Bridge Between Schools & Parents</p>
             <p class="f5" style="color:#CACACA;font-size:17px;line-height:21x;">Search & find information on 100+ schools in the Dhaka and around the nation</p>
             <hr style="border:dashed grey; border-width:1px 0 0 0; height:0;line-height:0px;font-size:0;margin:0;padding:0;"></hr>
             <p class="f5" style="color:#000;font-size:15px;line-height:20px;margin-top:30px;">Share your School's information on Champs21.com now!!</p>
 
             <p><input type="button" class="btn_myschool" value="My School"></p>-->
-            <p style='position:relative; top:100%;'><input type="button" class="btn_school_entry" value=""></p>
+            <p style="position:relative; top:100%; text-align: right;">
+                <button class="btn_school_entry f2" value="">Create your own school</button>
+            </p>
         </div>
         <div style="clear:both;"></div>
     </div> <!--your content end-->
@@ -176,7 +178,7 @@
         });
 
 
-        $('input.btn_school_entry').click(function() {
+        $('button.btn_school_entry').click(function() {
             checkLogin();
             loading();
             if (alreadyopen == 1)
@@ -352,17 +354,24 @@
         width: 110px;
         
     }
-    .btn_school_entry
-    {
-        background:url("<?php echo base_url('Profiler/images/right/btn-schools-entry.png')?>") no-repeat !important;
-        background-size:100% !important;
+    
+    .btn_school_entry {
+        background-color: #7DC6A2;
         border: medium none;
-        border-radius: 0;        
-        height: 48px;        
-        width: 82%;
-        margin-left:30px;        
+        box-shadow: 0 3px 2px 0 #bbb;
+        color: #fff;
+        height: 40px;
+        line-height: 15px;
+        width: 60%;
     }
-
+    .btn_school_entry:hover{
+        background-color: #bbbbbb;
+        -webkit-transition: all 0.5s ease;
+        -moz-transition: all 0.5s ease;
+        -o-transition: all 0.5s ease;
+        -ms-transition: all 0.5s ease;
+        transition: all 0.5s ease;
+    }
     input[type=checkbox].css-checkbox {
         position: absolute; 
         overflow: hidden; 

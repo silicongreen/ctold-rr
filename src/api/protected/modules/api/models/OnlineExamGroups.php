@@ -137,6 +137,7 @@ class OnlineExamGroups extends CActiveRecord
             $criteria->select = 't.*';
             $criteria->compare('t.id', $id);
             $criteria->compare('t.batch_id', $batch_id);
+            $criteria->compare('t.is_deleted', 0);
             $criteria->compare('t.is_published', 1);
             $criteria->compare('examgiven.student_id', $student_id);
             //$criteria->addCondition("examgiven.student_id != '".$student_id."' ");
@@ -182,6 +183,7 @@ class OnlineExamGroups extends CActiveRecord
                 
                 if($assesment_valid)
                 {
+                    $response_array['name'] = $data->name;
                     $response_array['total_mark'] = $total_mark;
                     $response_array['start_time'] = $data['examgiven'][0]->start_time;
                     $response_array['end_time'] = $data['examgiven'][0]->end_time;
@@ -200,6 +202,7 @@ class OnlineExamGroups extends CActiveRecord
             $criteria->select = 't.*';
             $criteria->compare('t.id', $id);
             $criteria->compare('t.batch_id', $batch_id);
+            $criteria->compare('t.is_deleted', 0);
             $criteria->compare('t.is_published', 1);
             $criteria->addCondition("DATE(start_date) <= '".$cur_date."' ");
             $criteria->addCondition("DATE(end_date) >= '".$cur_date."' ");
@@ -332,6 +335,7 @@ class OnlineExamGroups extends CActiveRecord
             $cur_date = date("Y-m-d");
             $criteria = new CDbCriteria();
             $criteria->select = 'count(t.id) as total';
+            $criteria->compare('t.is_deleted', 0);
             $criteria->compare('t.batch_id', $batch_id);
             $criteria->compare('t.is_published', 1);
             $criteria->addCondition("DATE(start_date) <= '".$cur_date."' ");
@@ -346,6 +350,7 @@ class OnlineExamGroups extends CActiveRecord
             $criteria = new CDbCriteria();
             $criteria->select = 't.id,t.name,t.start_date,t.end_date,t.maximum_time,t.pass_percentage';
             $criteria->compare('t.batch_id', $batch_id);
+            $criteria->compare('t.is_deleted', 0);
             $criteria->compare('t.is_published', 1);
             $criteria->addCondition("DATE(start_date) <= '".$cur_date."' ");
             //$criteria->addCondition("DATE(end_date) >= '".$cur_date."' ");

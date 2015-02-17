@@ -254,5 +254,13 @@ class Employees extends CActiveRecord {
         
         return $this->find($criteria);
     }
+    public function getEmployeeByUserId($uid) {
+
+        $criteria = new CDbCriteria();
+        $criteria->select = 'id';
+        $criteria->compare('user_id', $uid);
+
+        return $this->find($criteria);
+    }
 
 }

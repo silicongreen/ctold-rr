@@ -389,7 +389,7 @@ class Events extends CActiveRecord {
         $extra_condition = Settings::$ar_event_origins[$origin];
         $criteria->addCondition("{$extra_condition['condition']}");
 
-        $criteria->compare('eventCategory.status', 1);
+        //$criteria->compare('eventCategory.status', 1);
         $criteria->compare('t.school_id', $school_id);
 
         if (!$b_count) {

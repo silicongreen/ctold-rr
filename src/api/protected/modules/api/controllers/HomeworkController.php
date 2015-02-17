@@ -177,13 +177,35 @@ class HomeworkController extends Controller
 
                 $batch_id = Yii::app()->user->batchId;
                 $student_id = Yii::app()->user->profileId;
+                $page_number = Yii::app()->request->getPost('page_number');
+
+                $page_size = Yii::app()->request->getPost('page_size');
+
+                
+
+                if (empty($page_number))
+                {
+                    $page_number = 1;
+                }
+                if (empty($page_size))
+                {
+                    $page_size = 10;
+                }
+
 
                 $assignment = new OnlineExamGroups();
 
 
-                $homework_data = $assignment->getOnlineExamList($batch_id, $student_id);
+                $homework_data = $assignment->getOnlineExamList($batch_id, $student_id,$page_number,$page_size);
                 if ($homework_data)
                 {
+                    $response['data']['total'] = $assignment->getOnlineExamTotal($batch_id, $student_id);
+                    $has_next = false;
+                    if ($response['data']['total'] > $page_number * $page_size)
+                    {
+                        $has_next = true;
+                    }
+                    $response['data']['has_next'] = $has_next;
                     $response['data']['homework'] = $homework_data;
                     $response['status']['code'] = 200;
                     $response['status']['msg'] = "Data Found";

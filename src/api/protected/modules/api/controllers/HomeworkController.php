@@ -23,13 +23,53 @@ class HomeworkController extends Controller
     {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'Done','singlehomework', 'saveassessment', 'assessment', 'getassessment', 'getproject', 'getsubject', 'addhomework', 'teacherhomework', 'homeworkstatus'),
+                'actions' => array('index', 'Done','assessmentscore','singlehomework', 'saveassessment', 'assessment', 'getassessment', 'getproject', 'getsubject', 'addhomework', 'teacherhomework', 'homeworkstatus'),
                 'users' => array('*'),
             ),
             array('deny', // deny all users
                 'users' => array('*'),
             ),
         );
+    }
+    public function actionAssessmentScore()
+    {
+        if (isset($_POST) && !empty($_POST))
+        {
+            $user_secret = Yii::app()->request->getPost('user_secret');
+            $id = Yii::app()->request->getPost('id');
+            $response = array();
+            if ($id && Yii::app()->user->user_secret === $user_secret && ( Yii::app()->user->isStudent))
+            {
+
+                $batch_id = Yii::app()->user->batchId;
+                $student_id = Yii::app()->user->profileId;
+                $assignment = new OnlineExamGroups();
+                $homework_data = $assignment->getOnlineExamScore($id, $batch_id, $student_id);
+                if ($homework_data)
+                {
+                    $response['data']['assesment'] = $homework_data;
+                    $response['status']['code'] = 200;
+                    $response['status']['msg'] = "Data Found";
+                }
+                else
+                {
+                    $response['status']['code'] = 404;
+                    $response['status']['msg'] = "Data Not Found";
+                }
+            }
+            else
+            {
+                $response['status']['code'] = 403;
+                $response['status']['msg'] = "Access Denied.";
+            }
+        }
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
     }
 
     public function actionSaveAssessment()

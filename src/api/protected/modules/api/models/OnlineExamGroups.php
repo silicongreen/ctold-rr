@@ -129,7 +129,70 @@ class OnlineExamGroups extends CActiveRecord
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
-	}       
+	}  
+        public function getOnlineExamScore($id,$batch_id,$student_id)
+        {   
+            $cur_date = date("Y-m-d");
+            $criteria = new CDbCriteria();
+            $criteria->select = 't.*';
+            $criteria->compare('t.id', $id);
+            $criteria->compare('t.batch_id', $batch_id);
+            $criteria->compare('t.is_published', 1);
+            $criteria->compare('examgiven.student_id', $student_id);
+            //$criteria->addCondition("examgiven.student_id != '".$student_id."' ");
+            $criteria->with = array(
+                'questions' => array(
+                    'select' => 'questions.mark'
+                ),
+                'examgiven' => array(
+                    'select' => 'examgiven.student_id,examgiven.start_time,examgiven.end_time,examgiven.is_passed,examgiven.total_score'
+                )
+            );
+            $data = $this->find($criteria);
+            $response_array = array();
+          
+            if($data != NULL)
+            {
+                $total_mark = 0;
+                if(isset($data['questions']) && count($data['questions']>0))
+                {
+                    foreach($data['questions'] as $questions)
+                    {
+                          $total_mark+=$questions->mark;
+                    }    
+                }
+                
+                
+                $assesment_valid = false;
+                if(isset($data['examgiven']) && count($data['examgiven'])>0)
+                {
+                    $assesment_valid = true;
+                   
+                    
+                    foreach($data['examgiven'] as $evalue)
+                    {
+                        if($evalue->student_id == $student_id)
+                        {
+                            
+                            break;
+                        }
+                    }    
+                } 
+                
+                
+                if($assesment_valid)
+                {
+                    $response_array['total_mark'] = $total_mark;
+                    $response_array['start_time'] = $data['examgiven'][0]->start_time;
+                    $response_array['end_time'] = $data['examgiven'][0]->end_time;
+                    $response_array['is_passed'] = $data['examgiven'][0]->is_passed;
+                    $response_array['total_score'] = $data['examgiven'][0]->total_score;
+                }
+                    
+            }
+            return $response_array;
+            
+        }
         public function getOnlineExam($id,$batch_id,$student_id)
         {   
             $cur_date = date("Y-m-d");

@@ -156,24 +156,104 @@ class school extends MX_Controller
     function add()
     {
         $obj_school = new Schools();
+        $edit = FALSE;
+        
         if ($_POST)
         {
+            $user_created_school_id =  $this->input->post('user_created_school_id');
+            
+            unset($_POST['user_created_school_id']);
+            
             foreach ($this->input->post() as $key => $value)
             {
                 if($value)
                 $obj_school->$key = $value;
             }
         }
-
+        
         $data['model'] = $obj_school;
+        $data['user_schools'] = array(NULL => 'Select School');
+        
+        $obj_user_school = new userschools();
+        $obj_user_school = $obj_user_school->get_user_submitted_school();
+        
+        foreach ($obj_user_school as $row) {
+            $data['user_schools'][$row->id] = $row->school_name;
+        }
+        
         if (!$obj_school->save())
         {
             $this->render('admin/school/insert', $data);
         }
         else
         {
+            $obj_user_school = new userschools();
+            $obj_user_school = $obj_user_school->get_user_submitted_school($user_created_school_id);
+            $obj_free_user = new Free_users($obj_user_school[0]->freeuser_id);
+            
+            $user_school = new User_school();
+            $user_school->user_id = $obj_user_school[0]->freeuser_id;
+            $user_school->school_id = $obj_school->id;
+            $user_school->approved_date = date('Y-m-d');
+            $user_school->approved_by = 'admin';
+            $user_school->is_approved = '0';
+            $user_school->grade = $obj_free_user->grade_ids;
+            $user_school->type = $obj_free_user->user_type;
+            $user_school->save();
+            
+            $temp_user_school_score = new Assessment_school_mark_temp();
+            $temp_user_school_score = $temp_user_school_score->find_assessment_school_mark_all(0, 0, $user_created_school_id);
+            
+            $assessment_school_mark_temp = array();
+            foreach($temp_user_school_score as $am) {
+
+                $assessment_school_mark_temp_data['user_id'] = $am->user_id;
+                $assessment_school_mark_temp_data['assessment_id'] = $am->assessment_id;
+                $assessment_school_mark_temp_data['mark'] = $am->mark;
+                $assessment_school_mark_temp_data['level'] = $am->level;
+                $assessment_school_mark_temp_data['school_id'] = $obj_school->id;
+                $assessment_school_mark_temp_data['created_date'] = $am->created_date;
+                $assessment_school_mark_temp_data['time_taken'] = $am->time_taken;
+                $assessment_school_mark_temp_data['avg_time_per_ques'] = $am->avg_time_per_ques;
+                $assessment_school_mark_temp_data['no_played'] = $am->no_played;
+
+                $assessment_school_mark_temp[] = $assessment_school_mark_temp_data;
+            }
+
+            $this->db->insert_batch('assessment_school_mark', $assessment_school_mark_temp);
+            
+            $this->db->where('temp_school_id', $user_created_school_id);
+            $this->db->delete('assessment_school_mark_temp');
+            
             echo "<script>parent.oTable.fnClearTable(true); parent.$.fancybox.close();</script>";
         }
+    }
+    
+    function get_user_school_data() {
+        
+        $response = array();
+        
+        $school_id = $this->input->post('school_id');
+        
+        if(!$this->input->is_ajax_request() || empty($school_id)){
+            $response['error'] = 'Bad Request';
+            echo json_encode($response);
+            exit;
+        }
+        
+        $obj_user_school = new userschools();
+        $obj_user_school = $obj_user_school->get_user_submitted_school($school_id);
+        
+        if($obj_user_school !== FALSE) {
+            
+            foreach ($obj_user_school[0] as $k => $v) {
+                $response[$k] = $v;
+            }
+        }
+        
+        echo json_encode($response);
+        exit;
+        
     }
 
     /**
@@ -184,9 +264,9 @@ class school extends MX_Controller
      */
     function edit($id)
     {
-
-        
         $obj_school = new Schools($id);
+        $edit = TRUE;
+        
         if ($_POST)
         {
             foreach ($this->input->post() as $key => $value)

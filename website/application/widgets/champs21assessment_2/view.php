@@ -153,7 +153,7 @@
                                     <?php
                                     if (!empty($assessment->next_level)) {
                                         if ($level > $assessment->next_level) {
-                                            $str_level_status = 'Locked';
+                                            $str_level_status = 'Login';
                                             $url_level = '';
                                         } else if ($level == $assessment->next_level) {
                                             $str_level_status = 'Play Now';
@@ -177,6 +177,7 @@
                                 </p>
                             <?php } ?>
                             <div style="display: none;" id="current-level" data="<?php echo $cur_level; ?>"></div>
+                            
                         </div>
 
                         <div class="assessment-save-score-wrapper"></div>
@@ -419,6 +420,7 @@
     </div>
     
 </div>
+
 <div class="clearfix"></div>
 <script src="<?php echo base_url('scripts/FlipClock/compiled/flipclock.min.js') ?>"></script>
 <script src="<?php echo base_url('scripts/layouts/tdsfront/js/quiz.js') ?>"></script>

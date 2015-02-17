@@ -23,7 +23,7 @@ class EventController extends Controller
     {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'readreminder', 'getuserreminder', 'acknowledge', 'meetingrequest', 'meetingstatus',
+                'actions' => array('index','getsingleevent', 'readreminder', 'getuserreminder', 'acknowledge', 'meetingrequest', 'meetingstatus',
                     'getstudentparent', 'addmeetingrequest', 'addmeetingparent', 'getteacherparent',
                     'addleaveteacher', 'leavetype', 'teacherleaves', 'studentleaves', 'fees'),
                 'users' => array('@'),
@@ -514,6 +514,34 @@ class EventController extends Controller
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    }
+    public function actionGetSingleEvent()
+    {
+        $user_secret = Yii::app()->request->getPost('user_secret');
+        $id = Yii::app()->request->getPost('id');
+        if ($id && Yii::app()->user->user_secret === $user_secret)
+        {
+            $events = new Events;
+            $events_data = $events->getSingleEvents($id);
+            if($events_data)
+            {
+               $response['data']['evemts'] = $events_data;
+               $response['status']['code'] = 200;
+               $response['status']['msg'] = 'EVENT_FOUND.'; 
+            } 
+            else
+            {
+                $response['status']['code'] = 400;
+                $response['status']['msg'] = "Bad Request.";
+            }    
+        }
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request.";
         }
         echo CJSON::encode($response);
         Yii::app()->end();

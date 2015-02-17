@@ -152,4 +152,12 @@ class Guardians extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        public function getGuardianByUserId($uid) 
+        {
+            $criteria = new CDbCriteria();
+            $criteria->select = 'id';
+            $criteria->compare('user_id', $uid);
+
+            return $this->find($criteria);
+        }
 }

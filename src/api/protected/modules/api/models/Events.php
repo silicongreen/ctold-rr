@@ -384,7 +384,7 @@ class Events extends CActiveRecord {
         $criteria->addCondition("DATE(t.start_date) >= '" . $from_date . "'");
         $criteria->addCondition("DATE(t.end_date) <= '" . $to_date . "'");
 
-        //$criteria->compare('eventCategory.is_club !', 1);
+        $criteria->addCondition('eventCategory.is_club != 1');
 
         $extra_condition = Settings::$ar_event_origins[$origin];
         $criteria->addCondition("{$extra_condition['condition']}");

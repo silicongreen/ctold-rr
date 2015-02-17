@@ -284,7 +284,7 @@ $(document).ready(function(){
                     quiz_levels.forEach(function(level) {
                         if(level > cur_level) {
                             var level_str = '';
-                            var label_str = 'Locked';
+                            var label_str = 'Login';
                             if(data.next_level == level) {
                                 level_str = '/' + level;
                                 label_str = 'Play Now';

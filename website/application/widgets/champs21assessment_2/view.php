@@ -153,7 +153,7 @@
                                     <?php
                                     if (!empty($assessment->next_level)) {
                                         if ($level > $assessment->next_level) {
-                                            $str_level_status = 'Locked';
+                                            $str_level_status = 'Login';
                                             $url_level = '';
                                         } else if ($level == $assessment->next_level) {
                                             $str_level_status = 'Play Now';

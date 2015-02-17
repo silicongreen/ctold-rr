@@ -70,7 +70,7 @@ class Events extends CActiveRecord {
             ),
             'eventCategory' => array(self::BELONGS_TO, 'EventCategory', 'event_category_id',
                 'select' => 'eventCategory.id, eventCategory.name, eventCategory.is_club, eventCategory.icon_number',
-                'joinType' => 'INNER JOIN',
+                'joinType' => 'LEFT JOIN',
             ),
             'eventAcknowledge' => array(self::HAS_MANY, 'EventAcknowledges', 'event_id',
                 'select' => 'eventAcknowledge.event_id, eventAcknowledge.acknowledged_by, eventAcknowledge.acknowledged_by_id, eventAcknowledge.status',
@@ -384,12 +384,12 @@ class Events extends CActiveRecord {
         $criteria->addCondition("DATE(t.start_date) >= '" . $from_date . "'");
         $criteria->addCondition("DATE(t.end_date) <= '" . $to_date . "'");
 
-        //$criteria->compare('eventCategory.is_club !', 1);
+        $criteria->compare('eventCategory.is_club !', 1);
 
         $extra_condition = Settings::$ar_event_origins[$origin];
         $criteria->addCondition("{$extra_condition['condition']}");
 
-        //$criteria->compare('eventCategory.status', 1);
+        $criteria->compare('eventCategory.status', 1);
         $criteria->compare('t.school_id', $school_id);
 
         if (!$b_count) {

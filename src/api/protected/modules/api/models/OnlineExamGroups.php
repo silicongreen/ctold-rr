@@ -23,6 +23,7 @@ class OnlineExamGroups extends CActiveRecord
 	/**
 	 * @return string the associated database table name
 	 */
+        public $total;
 	public function tableName()
 	{
 		return 'online_exam_groups';
@@ -263,9 +264,20 @@ class OnlineExamGroups extends CActiveRecord
             return $response_array;
             
         }
+        public function getOnlineExamTotal($batch_id,$student_id)
+        {
+            $cur_date = date("Y-m-d");
+            $criteria = new CDbCriteria();
+            $criteria->select = 'count(t.id) as total';
+            $criteria->compare('t.batch_id', $batch_id);
+            $criteria->compare('t.is_published', 1);
+            $criteria->addCondition("DATE(start_date) <= '".$cur_date."' ");
+            $data = $this->find($criteria);
+            return $data->total;
+        } 
         
         
-        public function getOnlineExamList($batch_id,$student_id)
+        public function getOnlineExamList($batch_id,$student_id,$page_number,$page_size)
         {
             $cur_date = date("Y-m-d");
             $criteria = new CDbCriteria();
@@ -273,13 +285,18 @@ class OnlineExamGroups extends CActiveRecord
             $criteria->compare('t.batch_id', $batch_id);
             $criteria->compare('t.is_published', 1);
             $criteria->addCondition("DATE(start_date) <= '".$cur_date."' ");
-            $criteria->addCondition("DATE(end_date) >= '".$cur_date."' ");
+            //$criteria->addCondition("DATE(end_date) >= '".$cur_date."' ");
             //$criteria->addCondition("examgiven.student_id != '".$student_id."' ");
             $criteria->with = array(
                 'examgiven' => array(
                     'select' => ''
                 )
             );
+            $criteria->order = "t.created_at DESC";
+            $start = ($page_number-1)*$page_size;
+            $criteria->limit = $page_size;
+
+            $criteria->offset = $start;
             
             $data = $this->findAll($criteria);
             
@@ -302,11 +319,18 @@ class OnlineExamGroups extends CActiveRecord
                            }
                        }    
                    } 
+                   
+                   $exam_array[$i]['id'] = $value->id;
+                   $exam_array[$i]['timeover'] = 0;
+                   if($cur_date>date("Y-m-d",  strtotime($value->end_date)))
+                   {
+                      $exam_array[$i]['timeover'] = 1; 
+                   }
+                   $exam_array[$i]['examGiven'] = 0;
                    if($examGiven)
                    {
-                       continue;
+                       $exam_array[$i]['examGiven']=1;
                    }
-                   $exam_array[$i]['id'] = $value->id;
                    $exam_array[$i]['name'] = $value->name;
                    $exam_array[$i]['start_date'] = $value->start_date;
                    $exam_array[$i]['end_date'] = $value->end_date;

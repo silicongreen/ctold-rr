@@ -3439,6 +3439,8 @@ class home extends MX_Controller {
         
         if(free_user_logged_in()) {
             $user_id = get_free_user_session('id');
+        } else {
+            $assessment_level = 1;
         }
         
         if($assessment_config['update_played']['before_start']){
@@ -3665,80 +3667,41 @@ class home extends MX_Controller {
                 
                 if ( ($assessment_school_mark != false) ) {
                     
-                    $ar_lb = array(
-                        'created_date' => $now,
-                        'no_played' => $assessment_school_mark->no_played + 1,
-                    );
-
-                    if($user_mark > $assessment_school_mark->mark) {
-                        $ar_lb['mark'] = $user_mark;
-                    }
-
-                    if( (empty($assessment_school_mark->time_taken)) || ($ar_data[1] < $assessment_school_mark->time_taken) ) {
-                        $ar_lb['time_taken'] = $ar_data[1];
-                    }
-
-                    if( (empty($assessment_school_mark->avg_time_per_ques)) || ($avg_time < $assessment_school_mark->avg_time_per_ques) ) {
-                        $ar_lb['avg_time_per_ques'] = number_format($avg_time, 2);
-                    }
+                    $this->db->where('user_id', $user_id);
+                    $this->db->where('assessment_id', $assessment_id);
+                    $this->db->delete('assessment_school_mark');
+                }
+                
+                if($score_add_to_school && $response['has_school']) {
                     
-                    $this->db->update('assessment_school_mark', $ar_lb, array('user_id' => $user_id, 'assessment_id' => $assessment_id, 'level' => $cur_level));
+                    $assessment_mark = $obj_assessment_mark->find_assessment_mark_all($user_id, $assessment_id);
                     
-                } else {
-                    
-                    if($score_add_to_school) {
+                    if($assessment_mark !== FALSE) {
                         
-                        if( $cur_level == max($ar_asses_levels) ) {
-                            $this->db->where('user_id', $user_id);
-                            $this->db->where('assessment_id', $assessment_id);
-                            $this->db->delete('assessment_school_mark');
-                            
-                            $assessment_mark = $obj_assessment_mark->find_assessment_mark_all($user_id, $assessment_id);
-                            
-                            $assessment_school_mark = array();
-                            foreach($assessment_mark as $am) {
-                                
-                                $assessment_school_mark_data['user_id'] = $user_id;
-                                $assessment_school_mark_data['assessment_id'] = $assessment_id;
-                                $assessment_school_mark_data['mark'] = $am->mark;
-                                $assessment_school_mark_data['level'] = $am->level;
-                                $assessment_school_mark_data['school_id'] = $user_school_data[0]->school_id;
-                                $assessment_school_mark_data['created_date'] = $am->created_date;
-                                $assessment_school_mark_data['time_taken'] = $am->time_taken;
-                                $assessment_school_mark_data['avg_time_per_ques'] = $am->avg_time_per_ques;
-                                $assessment_school_mark_data['no_played'] = $am->no_played;
-                                
-                                $assessment_school_mark[] = $assessment_school_mark_data;
-                            }
-                            
-                            $this->db->insert_batch('assessment_school_mark', $assessment_school_mark);
-                            
-                        } else {
-                            
-                            $obj_assessment_school_mark->user_id = $user_id;
-                            $obj_assessment_school_mark->assessment_id = $assessment_id;
-                            $obj_assessment_school_mark->mark = $user_mark;
-                            $obj_assessment_school_mark->level = $cur_level;
-                            $obj_assessment_school_mark->school_id = $user_school_data[0]->school_id;
-                            $obj_assessment_school_mark->created_date = $now;
-                            $obj_assessment_school_mark->time_taken = $ar_data[1];
-                            $obj_assessment_school_mark->avg_time_per_ques = number_format($avg_time, 2);
-                            $obj_assessment_school_mark->no_played = 1;
+                        $assessment_school_mark = array();
+                        foreach($assessment_mark as $am) {
 
-                            $obj_assessment_school_mark->save();
+                            $assessment_school_mark_data['user_id'] = $user_id;
+                            $assessment_school_mark_data['assessment_id'] = $assessment_id;
+                            $assessment_school_mark_data['mark'] = $am->mark;
+                            $assessment_school_mark_data['level'] = $am->level;
+                            $assessment_school_mark_data['school_id'] = $user_school_data[0]->school_id;
+                            $assessment_school_mark_data['created_date'] = $am->created_date;
+                            $assessment_school_mark_data['time_taken'] = $am->time_taken;
+                            $assessment_school_mark_data['avg_time_per_ques'] = $am->avg_time_per_ques;
+                            $assessment_school_mark_data['no_played'] = $am->no_played;
+
+                            $assessment_school_mark[] = $assessment_school_mark_data;
                         }
-                        
+
+                        $this->db->insert_batch('assessment_school_mark', $assessment_school_mark);
                     }
                 }
                 
                 $response['saved'] = true;
-                
-            } else {
-                
             }
             
-            $assessment_user_total_mark = $obj_assessment_mark->find_user_assessment_total_mark($user_id, $assessment_id);
-            
+            $assessment_user_total_mark = $obj_assessment_mark->find_user_assessment_total_mark($user_id, $assessment_id);   
         }
         
         $next_level = 0;

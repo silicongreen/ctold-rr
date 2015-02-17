@@ -177,6 +177,7 @@
                                 </p>
                             <?php } ?>
                             <div style="display: none;" id="current-level" data="<?php echo $cur_level; ?>"></div>
+                            
                         </div>
 
                         <div class="assessment-save-score-wrapper"></div>
@@ -419,6 +420,7 @@
     </div>
     
 </div>
+
 <div class="clearfix"></div>
 <script src="<?php echo base_url('scripts/FlipClock/compiled/flipclock.min.js') ?>"></script>
 <script src="<?php echo base_url('scripts/layouts/tdsfront/js/quiz.js') ?>"></script>

@@ -383,9 +383,9 @@ class ajax extends MX_Controller
     }
     public function add_school()
     {
+        $user_id = 0;
         if (free_user_logged_in())
         {
-           
             $school_obj = new userschools();
             $school_obj->school_name = $this->input->post("school_name");
             $school_obj->freeuser_id = get_free_user_session("id");
@@ -393,8 +393,7 @@ class ajax extends MX_Controller
             $school_obj->address = $this->input->post("address");
             $school_obj->zip_code = $this->input->post("zip_code");
             $school_obj->about = $this->input->post("about");
-
-
+            
             $this->load->library('upload');
             if (!empty($_FILES['picture']['name']))
             {
@@ -431,9 +430,164 @@ class ajax extends MX_Controller
                 }
             }
 
-            $school_obj->save();
+            if($school_obj->save()) {
+                
+                $this->load->config("huffas");
+                $assessment_config = $this->config->config['assessment'];
+                
+                $data = trim($this->input->post('icc_quiz_cookie'), ',');
+                $add_to_school = $this->input->post('add_to_school');
+                $cur_level = $this->input->post('icc_quiz_level');
 
+                if($cur_level > 0) {
+                    $cur_level = $cur_level;
+                } else {
+                    $cur_level = 0;
+                }
 
+                $ar_data = explode('_', $data);
+
+                $assessment_id = $ar_data[0];
+
+                $user_id = get_free_user_session('id');
+
+                $obj_assessment_mark = new Assesment_mark();
+                $obj_assessment_school_mark_temp = new Assessment_school_mark_temp();
+                
+                $score_add_to_school = TRUE;
+
+                if($add_to_school == 'false') {
+
+                    $assessment_school_mark_temp = $obj_assessment_school_mark_temp->find_assessment_school_mark($user_id, $assessment_id, 1, $school_obj->id);
+
+                    if(!$assessment_school_mark_temp) {
+                        $score_add_to_school = FALSE;
+                    }
+                }
+                
+                if($assessment_config['update_played']['after_finish']){
+                    assessment_update_played($assesment_id);
+                }
+
+                $assessment = get_assessment($assessment_id, $user_id);
+
+                $total_mark = 0;
+                $user_mark = 0;
+                $ar_q_a = explode(',', $ar_data[2]);
+
+                $i = 0;
+                foreach($assessment->assesment->question as $question) {
+                    $total_mark += $question->mark;
+                    $i++;
+
+                    foreach ($ar_q_a as $str_q_a) {
+                        $q_a = explode('-', $str_q_a);
+
+                        $q = $q_a[0];
+                        $a = $q_a[1];
+
+                        if($question->id == $q) {
+
+                            foreach ($question->option as $option) {
+
+                                if ($option->id == $a) {
+
+                                    if ($option->correct == 1) {
+                                        $user_mark += $question->mark;
+                                    }
+                                }   
+                            }
+                        }
+                    }
+                }
+
+                $avg_time = $ar_data[1] / $i;
+                $ar_asses_levels = explode(',', $assessment->assesment->levels);
+                
+                $assessment_mark = $obj_assessment_mark->find_assessment_mark($user_id, $assessment_id, $cur_level);
+                
+                $next_play_time = strtotime(date('Y-m-d H:i:s', strtotime($assessment_mark->created_date . "+1 Day")));
+                $now = date('Y-m-d H:i:s');
+                $now_time = strtotime($now);
+
+                $can_play = TRUE;
+
+                if( ($now_time < $next_play_time) && $assessment_mark !== FALSE ) {
+                    $can_play = FALSE;
+                }
+                
+                $can_play = TRUE;
+                if($can_play) {
+
+                    if ( ($assessment_mark != false) ) {
+
+                        $ar_lb = array(
+                            'created_date' => $now,
+                            'no_played' => $assessment_mark->no_played + 1,
+                        );
+
+                        if($user_mark > $assessment_mark->mark) {
+                            $ar_lb['mark'] = $user_mark;
+                        }
+
+                        if( (empty($assessment_mark->time_taken)) || ($ar_data[1] < $assessment_mark->time_taken) ) {
+                            $ar_lb['time_taken'] = $ar_data[1];
+                        }
+
+                        if( (empty($assessment_mark->avg_time_per_ques)) || ($avg_time < $assessment_mark->avg_time_per_ques) ) {
+                            $ar_lb['avg_time_per_ques'] = number_format($avg_time, 2);
+                        }
+
+                        $this->db->update('assesment_mark', $ar_lb, array('user_id' => $user_id, 'assessment_id' => $assessment_id, 'level' => $cur_level));
+                        $response['highest_score'] = $user_mark;
+
+                    } else {
+
+                        $obj_assessment_mark->user_id = $user_id;
+                        $obj_assessment_mark->assessment_id = $assessment_id;
+                        $obj_assessment_mark->mark = $user_mark;
+                        $obj_assessment_mark->level = $cur_level;
+                        $obj_assessment_mark->created_date = $now;
+                        $obj_assessment_mark->time_taken = $ar_data[1];
+                        $obj_assessment_mark->avg_time_per_ques = number_format($avg_time, 2);
+                        $obj_assessment_mark->no_played = 1;
+
+                        $obj_assessment_mark->save();
+
+                        $response['highest_score'] = $user_mark;
+                    }
+
+                    if ( ($assessment_school_mark_temp != false) ) {
+
+                        $this->db->where('user_id', $user_id);
+                        $this->db->where('assessment_id', $assessment_id);
+                        $this->db->delete('assessment_school_mark_temp');
+                    }
+                    
+                    $assessment_mark = $obj_assessment_mark->find_assessment_mark_all($user_id, $assessment_id);
+
+                    if($assessment_mark !== FALSE) {
+
+                        $assessment_school_mark_temp = array();
+                        foreach($assessment_mark as $am) {
+
+                            $assessment_school_mark_temp_data['user_id'] = $user_id;
+                            $assessment_school_mark_temp_data['assessment_id'] = $assessment_id;
+                            $assessment_school_mark_temp_data['mark'] = $am->mark;
+                            $assessment_school_mark_temp_data['level'] = $am->level;
+                            $assessment_school_mark_temp_data['temp_school_id'] = $school_obj->id;
+                            $assessment_school_mark_temp_data['created_date'] = $am->created_date;
+                            $assessment_school_mark_temp_data['time_taken'] = $am->time_taken;
+                            $assessment_school_mark_temp_data['avg_time_per_ques'] = $am->avg_time_per_ques;
+                            $assessment_school_mark_temp_data['no_played'] = $am->no_played;
+
+                            $assessment_school_mark_temp[] = $assessment_school_mark_temp_data;
+                        }
+
+                        $this->db->insert_batch('assessment_school_mark_temp', $assessment_school_mark_temp);
+                    }   
+                }
+            }
 
             if($school_obj->id)
             {

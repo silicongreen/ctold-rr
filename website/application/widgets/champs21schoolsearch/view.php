@@ -183,6 +183,18 @@
             loading();
             if (alreadyopen == 1)
             {
+                var icc_quiz_cookie = readCookie('c21_icc_quiz');
+                var icc_quiz_level = readCookie('c21_icc_quiz_level');
+                
+                if(icc_quiz_cookie === false || icc_quiz_level === false) {
+                    icc_quiz_cookie = '';
+                    icc_quiz_level = '';
+                }
+                
+                $("form#validate_form_school").append('<input type="hidden" id="icc_quiz_cookie" name="icc_quiz_cookie" value="' + icc_quiz_cookie + '">');
+                $("form#validate_form_school").append('<input type="hidden" id="icc_quiz_level" name="icc_quiz_level" value="' + icc_quiz_level + '">');
+                $("form#validate_form_school").append('<input type="hidden" id="add_to_school" name="add_to_school" value="true">');
+                    
                 closeloading();
                 $('.innerTop-school').animate({'left': '3px'}, {
                     duration: 1000,
@@ -284,10 +296,12 @@
             {
                 loading(); // loading
                 var formData = new FormData($(this)[0]);
+                
                 $.ajax({
                     url: $("#base_url").val() + "front/ajax/add_school/",
                     type: 'POST',
-                    data: formData,
+                    dataType : 'json',
+                    data : formData,
                     async: false,
                     cache: false,
                     contentType: false,
@@ -305,6 +319,9 @@
                             $('#section_form_school').hide();
                             $("#section_thanks_school").fadeIn(500);
                         }
+                        
+                        eraseCookie('c21_icc_quiz');
+                        eraseCookie('c21_icc_quiz_level');
                     }
                 });
 

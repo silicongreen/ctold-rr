@@ -22,7 +22,16 @@ $(document).ready(function(){
                 success : function(data) {
                     if(data.saved == true) {
                         eraseCookie('c21_icc_quiz');
+                        
+                        var url = window.location.href;
+                        var i = url.lastIndexOf('/');
+                        if (i != -1) {
+                            var next_level = parseInt(cur_level) + 1;
+                            url = url.substr(0, i) + "/" + next_level;
+                        }
+                        window.location.href = url;
                     }
+                    
                 },
                 error : function() {}
             });

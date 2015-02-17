@@ -28,6 +28,35 @@ class NoticeController extends Controller {
             ),
         );
     }
+    public function actionGetSingleNotice()
+    {
+        $user_secret = Yii::app()->request->getPost('user_secret');
+        $id = Yii::app()->request->getPost('id');
+        if ($id && Yii::app()->user->user_secret === $user_secret)
+        {
+            $news = new News;
+            $news = $news->getSingleNews($id);
+            
+            if($news)
+            {
+               $response['data']['events'] = $news;
+               $response['status']['code'] = 200;
+               $response['status']['msg'] = 'NOTICE_FOUND.'; 
+            } 
+            else
+            {
+                $response['status']['code'] = 400;
+                $response['status']['msg'] = "Bad Request.";
+            }    
+        }
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request.";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    }
 
     public function actionIndex() {
 

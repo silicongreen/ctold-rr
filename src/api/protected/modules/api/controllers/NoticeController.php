@@ -39,7 +39,7 @@ class NoticeController extends Controller {
             
             if($news)
             {
-               $response['data']['events'] = $news;
+               $response['data']['notice'] = $news;
                $response['status']['code'] = 200;
                $response['status']['msg'] = 'NOTICE_FOUND.'; 
             } 

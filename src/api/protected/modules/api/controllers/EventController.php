@@ -528,7 +528,7 @@ class EventController extends Controller
             $events_data = $events->getSingleEvents($id);
             if($events_data)
             {
-               $response['data']['evemts'] = $events_data;
+               $response['data']['events'] = $events_data;
                $response['status']['code'] = 200;
                $response['status']['msg'] = 'EVENT_FOUND.'; 
             } 

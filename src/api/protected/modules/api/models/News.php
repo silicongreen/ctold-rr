@@ -116,6 +116,33 @@ class News extends CActiveRecord {
     public static function model($className = __CLASS__) {
         return parent::model($className);
     }
+    
+    public function getSingleNews($id) 
+    {
+        $criteria = new CDbCriteria;
+
+        $criteria->select = 't.id, t.category_id, t.title, t.content, t.created_at, t.updated_at';
+        $criteria->compare('t.id', $id);
+
+        $data = $this->with('authorDetails')->find($criteria);
+
+        return (!empty($data)) ? $this->formatSingleNotice($data) : \FALSE;
+    }
+    public function formatSingleNotice($row) 
+    {
+        $_data['notice_id'] = $row->id;
+        $_data['notice_type_id'] = $row->category_id;
+        $_data['notice_type_text'] = ucfirst(Settings::$ar_notice_type[$row->category_id]);
+        $_data['notice_title'] = $row->title;
+        $_data['notice_content'] = $row->content;
+        $_data['published_at'] = date('Y-m-d H:i:s', strtotime($row->created_at));
+        $_data['updated_at'] = date('Y-m-d H:i:s', strtotime($row->updated_at));
+        $_data['author_id'] = rtrim($row['authorDetails']->id);
+        $_data['author_first_name'] = rtrim($row['authorDetails']->first_name);
+        $_data['author_full_name'] = rtrim($row['authorDetails']->first_name . ' ' . $row['authorDetails']->last_name);
+
+        return $_data;
+    }
 
     public function getNews($school_id, $from_date, $to_date, $notice_type = '', $author_id = '') {
 

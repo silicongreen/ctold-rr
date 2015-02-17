@@ -364,7 +364,7 @@ class Events extends CActiveRecord {
             $criteria->select = 'COUNT(t.id) AS num_rows';
         }
 
-        //$with = array('eventCategory');
+        $with = array('eventCategory');
 
         if (Yii::app()->user->isStudent) {
             $with[] = 'eventBatch';

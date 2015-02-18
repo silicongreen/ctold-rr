@@ -501,7 +501,7 @@ class UserController extends Controller {
                     
                         $folderObj->createGoodReadFolder($data->id);
                         $response['data']['free_id'] = $data->id;
-                        $response['data']['user']  = $free_user->getUserInfo($data->id);
+                        $response['data']['user']  = $free_user->getUserInfo($data->id,Yii::app()->user->schoolId,$free_user->user_type);
                     }   
                     else
                     {
@@ -522,17 +522,64 @@ class UserController extends Controller {
                         if(Yii::app()->user->isStudent)
                         {
                             $free_user->user_type = 2;
+                            $stdobj = new Students();
+                            $stddata = $stdobj->findByPk(Yii::app()->user->profileId);
+                            if($stddata)
+                            {
+                                if(isset($stddata->gender) && $stddata->gender=="m")
+                                {
+                                   $free_user->gender = 1;
+                                }
+                                else
+                                {
+                                    $free_user->gender = 2;
+                                } 
+                                if(isset($stddata->date_of_birth) && $stddata->date_of_birth)
+                                {
+                                    $free_user->dob = $stddata->date_of_birth;
+                                }
+                                $free_user->tds_country_id = $stddata->nationality_id;
+                            }
                         }
                         else if(Yii::app()->user->isParent)
                         {
+                            $stdobj = new Guardians();
+                            $stddata = $stdobj->findByPk(Yii::app()->user->profileId);
+                            if($stddata)
+                            {
+                                if(isset($stddata->dob) && $stddata->dob)
+                                {
+                                    $free_user->dob = $stddata->dob;
+                                }
+                                
+                                $free_user->tds_country_id = $stddata->country_id;
+                            }
                             $free_user->user_type = 4;
                         }
                         else
                         {
-                             $free_user->user_type = 3;
+                            $stdobj = new Employees();
+                            $stddata = $stdobj->findByPk(Yii::app()->user->profileId);
+                            if($stddata)
+                            {
+                                if(isset($stddata->gender) && $stddata->gender=="m")
+                                {
+                                   $free_user->gender = 1;
+                                }
+                                else
+                                {
+                                    $free_user->gender = 2;
+                                } 
+                                if(isset($stddata->date_of_birth) && $stddata->date_of_birth)
+                                {
+                                    $free_user->dob = $stddata->date_of_birth;
+                                }
+                                $free_user->tds_country_id = $stddata->nationality_id;
+                            }
+                            $free_user->user_type = 3;
                         }
                         $free_user->school_name = $school_details->name;
-                        $free_user->tds_country_id = 14;
+                        
                         
                         $free_user->save();
                         
@@ -540,7 +587,7 @@ class UserController extends Controller {
                     
                         $folderObj->createGoodReadFolder($free_user->id);
                         $response['data']['free_id'] = $free_user->id;
-                        $response['data']['user']  = $free_user->getUserInfo($free_user->id);
+                        $response['data']['user']  = $free_user->getUserInfo($free_user->id,Yii::app()->user->schoolId,$free_user->user_type);
                        
                     }    
                     $response['data']['user_type'] = 1;

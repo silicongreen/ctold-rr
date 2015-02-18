@@ -58,54 +58,87 @@ class SchoolUser extends CActiveRecord
         );
     }
 
-    
     public static function model($className = __CLASS__)
     {
         return parent::model($className);
     }
-    public function userSchool($user_id, $school_id=0)
+
+    public function userSchool($user_id, $school_id = 0, $paid_school_id = 0, $type = 0)
     {
         $criteria = new CDbCriteria();
         $criteria->select = "t.is_approved,t.school_id,t.type";
-        if($school_id)
+        if ($school_id)
         {
-           $criteria->compare("t.school_id", $school_id); 
-        }    
+            $criteria->compare("t.school_id", $school_id);
+        }
         $criteria->compare("t.user_id", $user_id);
         $userschools = $this->findAll($criteria);
-        
+
         $user_schools = array();
         $i = 0;
-        foreach($userschools as $value)
+        if ($userschools)
         {
-            $user_schools[$i]['school_id'] = $value->school_id;
-            $user_schools[$i]['status'] = $value->is_approved;
-            $user_schools[$i]['type'] = $value->type;
-            $i++;
+            foreach ($userschools as $value)
+            {
+                $user_schools[$i]['school_id'] = $value->school_id;
+                $user_schools[$i]['status'] = $value->is_approved;
+                $user_schools[$i]['type'] = $value->type;
+                $i++;
+            }
         }
-        
+        else if ($paid_school_id > 1 && $type > 0)
+        {
+            $schoolobj = new School();
+            $paid_school = $schoolobj->getSchoolPaid($paid_school_id);
+            if ($paid_school)
+            {
+                $userschool = new SchoolUser();
+                $userschool->school_id = $paid_school;
+                $userschool->user_id = $user_id;
+                $userschool->is_approved = 1;
+                $userschool->type = $type;
+                $userschool->save();
+                
+                $criteria = new CDbCriteria();
+                $criteria->select = "t.is_approved,t.school_id,t.type";
+                if ($school_id)
+                {
+                    $criteria->compare("t.school_id", $school_id);
+                }
+                $criteria->compare("t.user_id", $user_id);
+                $userschools = $this->findAll($criteria);
+
+                $user_schools = array();
+                $i = 0;
+                if ($userschools)
+                {
+                    foreach ($userschools as $value)
+                    {
+                        $user_schools[$i]['school_id'] = $value->school_id;
+                        $user_schools[$i]['status'] = $value->is_approved;
+                        $user_schools[$i]['type'] = $value->type;
+                        $i++;
+                    }
+                }
+            }
+        }
+
         return $user_schools;
-        
-        
-    } 
-    
+    }
+
     public function userSchoolSingle($user_id, $school_id)
     {
         $criteria = new CDbCriteria();
         $criteria->select = "t.id,t.is_approved,t.school_id,t.type";
-        if($school_id)
+        if ($school_id)
         {
-           $criteria->compare("t.school_id", $school_id); 
-        }    
+            $criteria->compare("t.school_id", $school_id);
+        }
         $criteria->compare("t.user_id", $user_id);
         $userschools = $this->find($criteria);
-        
-        
-        return $userschools;
-        
-        
-    } 
 
-    
+
+        return $userschools;
+    }
 
 }

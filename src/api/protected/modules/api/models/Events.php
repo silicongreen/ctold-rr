@@ -193,7 +193,7 @@ class Events extends CActiveRecord {
         $criteria->compare('t.id',$id);
         
         $with = array('eventCategory');
-        $criteria->compare('eventCategory.is_club !', 1);
+        //$criteria->compare('eventCategory.is_club !', 1);
        
         $obj_event = $this->with($with)->find($criteria);
         if($obj_event)
@@ -215,8 +215,9 @@ class Events extends CActiveRecord {
         $_data['event_end_date'] = $row->end_date;
         $_data['event_description'] = $row->description;
         $_data['event_common'] = $row->is_common;
-        $event_ack = new EventAcknowledges;
-        $_data['event_acknowledge'] = (int) $event_ack->getEventAcknowledgeData($row->school_id, $row->id);
+        $_data['club_fees'] = (float) $row->fees;
+        //$event_ack = new EventAcknowledges;
+        //$_data['event_acknowledge'] = (int) $event_ack->getEventAcknowledgeData($row->school_id, $row->id);
         return $_data;
     }
 
@@ -265,7 +266,7 @@ class Events extends CActiveRecord {
             $criteria->select .= ', t.fees';
             $criteria->compare('eventCategory.is_club', 1);
         } else {
-            $criteria->compare('eventCategory.is_club !', 1);
+            $criteria->addCondition('(eventCategory.is_club is NULL or  eventCategory.is_club != 1)');
         }
 
         $criteria->addCondition("(t.origin_id IS NULL OR t.origin_id = '') AND (t.origin_type IS NULL OR t.origin_type = '')");

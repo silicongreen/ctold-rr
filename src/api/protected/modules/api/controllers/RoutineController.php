@@ -20,7 +20,7 @@ class RoutineController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index','allexam', 'exam','getdateroutine','teacher','nextclass'),
+                'actions' => array('index','nextclassstudent','allexam', 'exam','getdateroutine','teacher','nextclass'),
                 'users' => array('@'),
             ),
             array('deny', // deny all users

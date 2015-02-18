@@ -491,6 +491,10 @@ class UserController extends Controller {
                         }
                     }
                     
+                    $school_obj  = new Schools();
+                    $school_details = $school_obj->findByPk(Yii::app()->user->schoolId);
+                    $school_code = $school_details->code;
+                    
                     if($data = $free_user->login($username,$password, true))
                     {
                         $folderObj = new UserFolder();
@@ -501,8 +505,40 @@ class UserController extends Controller {
                     }   
                     else
                     {
-                       $response['data']['free_id'] = "";
-                       //$response['data']['user'] = array();
+                        $userpaidobj = new Users();
+                        $userpaidData = $userpaidobj->findByPk(Yii::app()->user->id);
+                        $free_user->paid_id = Yii::app()->user->id;
+                        $free_user->paid_username = $username;
+                        $free_user->paid_password = $password;
+                        $free_user->paid_school_id = Yii::app()->user->schoolId;
+                        $free_user->paid_school_code = $school_code;
+                        $free_user->salt = md5(uniqid(rand(), true));
+                        $free_user->password = $this->encrypt($password, $free_user->salt);
+                        
+                        $free_user->first_name = $userpaidData->first_name;
+                        $free_user->last_name = $userpaidData->last_name;
+                        
+                        $free_user->nick_name = 1;
+                        if(Yii::app()->user->isStudent)
+                        {
+                            $free_user->user_type = 2;
+                        }
+                        else if(Yii::app()->user->isParent)
+                        {
+                            $free_user->user_type = 4;
+                        }
+                        else
+                        {
+                             $free_user->user_type = 3;
+                        }
+                        $free_user->save();
+                        
+                        $folderObj = new UserFolder();
+                    
+                        $folderObj->createGoodReadFolder($free_user->id);
+                        $response['data']['free_id'] = $free_user->id;
+                        $response['data']['user']  = $free_user->getUserInfo($free_user->id);
+                       
                     }    
                     $response['data']['user_type'] = 1;
                     $response['data']['paid_user']['id'] = Yii::app()->user->id;
@@ -526,13 +562,7 @@ class UserController extends Controller {
                     $response['data']['paid_user']['is_teacher'] = Yii::app()->user->isTeacher;
                     $response['data']['paid_user']['school_id'] = Yii::app()->user->schoolId;
                     
-                    $school_obj  = new Schools();
                     
-                    $school_details = $school_obj->findByPk(Yii::app()->user->schoolId);
-                    
-                  
-                    
-                    $school_code = $school_details->code;
                     
                     if(is_array($user_paid_login_data))
                     {

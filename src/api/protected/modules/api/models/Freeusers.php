@@ -239,7 +239,7 @@ class Freeusers extends CActiveRecord {
         }
         return $user_info;
     }
-    public function getUserInfo($id,$paid_school_id=0,$type)
+    public function getUserInfo($id,$paid_school_id=0,$type=0)
     {
         $criteria = new CDbCriteria;
         $criteria->compare('id', $id);

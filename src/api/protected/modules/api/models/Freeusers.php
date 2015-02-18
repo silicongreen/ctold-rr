@@ -233,7 +233,7 @@ class Freeusers extends CActiveRecord {
 
         $value = $this->find($criteria);
         $user_info = array();
-        if ($value != NULL)
+        if ($value)
         { 
            $user_info['profile_image'] = $value->profile_image; 
         }

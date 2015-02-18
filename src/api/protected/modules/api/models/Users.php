@@ -361,7 +361,7 @@ class Users extends CActiveRecord {
                 $user_array[$i]['id'] = $value->user_id;
                 $user_array[$i]['profile_id'] = $value->id;
                 $user_array[$i]['profile_image'] = "";
-                if($profile_image)
+                if(isset($profile_image['profile_image']))
                 {
                    $user_array[$i]['profile_image'] = $profile_image['profile_image']; 
                 }

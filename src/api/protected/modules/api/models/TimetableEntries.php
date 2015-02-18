@@ -256,6 +256,7 @@ class TimetableEntries extends CActiveRecord {
         $_data['class_start_time'] = Settings::formatTime($row['classTimingDetails']->start_time);
         $_data['class_end_time'] = Settings::formatTime($row['classTimingDetails']->end_time);
         
+        $middle_name = (!empty($row['employeeDetails']->middle_name)) ? $row['employeeDetails']->middle_name . ' ' : '';
         $_data['teacher_first_name'] = rtrim($row['employeeDetails']->first_name);
         $_data['teacher_full_name'] = rtrim($row['employeeDetails']->first_name . ' ' . $middle_name . $row['employeeDetails']->last_name);
         

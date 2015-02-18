@@ -165,6 +165,7 @@ class TimetableEntries extends CActiveRecord {
 
         $data = $this->find($criteria);
         if ($data) {
+            echo "here".$call;
             return $this->formatTimeNext($data);
         }
         else if($call<7)

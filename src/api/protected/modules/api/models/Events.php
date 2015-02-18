@@ -193,7 +193,7 @@ class Events extends CActiveRecord {
         $criteria->compare('t.id',$id);
         
         $with = array('eventCategory');
-        //$criteria->compare('eventCategory.is_club !', 1);
+        $criteria->addCondition('(eventCategory.is_club is NULL or  eventCategory.is_club != 1)');
        
         $obj_event = $this->with($with)->find($criteria);
         if($obj_event)
@@ -385,7 +385,7 @@ class Events extends CActiveRecord {
         $criteria->addCondition("DATE(t.start_date) >= '" . $from_date . "'");
         $criteria->addCondition("DATE(t.end_date) <= '" . $to_date . "'");
 
-         $criteria->addCondition('(eventCategory.is_club is NULL or  eventCategory.is_club != 1)');
+        $criteria->addCondition('(eventCategory.is_club is NULL or  eventCategory.is_club != 1)');
 
         $extra_condition = Settings::$ar_event_origins[$origin];
         $criteria->addCondition("{$extra_condition['condition']}");

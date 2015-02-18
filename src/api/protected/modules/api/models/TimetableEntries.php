@@ -136,7 +136,7 @@ class TimetableEntries extends CActiveRecord {
         $criteria = new CDbCriteria;
         $criteria->select = 't.id, t.weekday_id';
         $date = date("Y-m-d");
-        $time = date("h:i:s");
+        $time = date("H:i:s");
         if($cur_day_key=='current')
         {
             $cur_day_name = Settings::getCurrentDay($date);
@@ -194,7 +194,7 @@ class TimetableEntries extends CActiveRecord {
         $criteria->select = 't.id, t.weekday_id';
         $criteria->compare('t.school_id', $school_id);
         $date = date("Y-m-d");
-        $time = date("h:i:s");
+        $time = date("H:i:s");
         if(!$cur_day_key)
         {
             $cur_day_name = Settings::getCurrentDay($date);

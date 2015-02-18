@@ -165,7 +165,7 @@ class TimetableEntries extends CActiveRecord {
 
         $data = $this->find($criteria);
         if ($data) {
-            echo "here".$call;
+            
             return $this->formatTimeNext($data);
         }
         else if($call<7)
@@ -238,7 +238,8 @@ class TimetableEntries extends CActiveRecord {
                 $next_day = $cur_day_key+1;
             } 
             $call++;
-            $this->getNextTeacher($school_id,$emplyee_id,$next_day,$call);
+            $return_data = $this->getNextTeacher($school_id,$emplyee_id,$next_day,$call);
+            return $return_data;
         }
         else
         {

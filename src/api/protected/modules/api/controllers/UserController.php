@@ -614,6 +614,9 @@ class UserController extends Controller {
                     $response['data']['paid_user']['id'] = Yii::app()->user->id;
                     $response['data']['paid_user']['is_admin'] = Yii::app()->user->isAdmin;
                     $response['data']['paid_user']['is_student'] = Yii::app()->user->isStudent;
+                    
+                    
+                    
 
                     if (Yii::app()->user->isStudent) {
                         $response['data']['paid_user']['batch_id'] = Yii::app()->user->batchId;
@@ -631,6 +634,7 @@ class UserController extends Controller {
                     $response['data']['paid_user']['is_parent'] = Yii::app()->user->isParent;
                     $response['data']['paid_user']['is_teacher'] = Yii::app()->user->isTeacher;
                     $response['data']['paid_user']['school_id'] = Yii::app()->user->schoolId;
+                    $response['data']['paid_user']['school_name'] = $school_details->name;
                     
                     
                     

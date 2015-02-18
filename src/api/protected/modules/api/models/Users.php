@@ -351,9 +351,20 @@ class Users extends CActiveRecord {
 
                 $exam_category = new ExamGroups;
                 $exam_category = $exam_category->getExamCategory($value->school_id, $value->batch_id, 3);
+                
+                $freobj = new Freeusers();
+                $profile_image = $freobj->getUserImage($value->user_id);
+                
+                
+                
 
                 $user_array[$i]['id'] = $value->user_id;
                 $user_array[$i]['profile_id'] = $value->id;
+                $user_array[$i]['profile_image'] = "";
+                if($profile_image)
+                {
+                   $user_array[$i]['profile_image'] = $profile_image['profile_image']; 
+                }
                 $user_array[$i]['full_name'] = rtrim($value->first_name . ' ' . $middle_name . $value->last_name);
                 $user_array[$i]['school_id'] = $value->school_id;
                 $user_array[$i]['batch_id'] = $value->batch_id;

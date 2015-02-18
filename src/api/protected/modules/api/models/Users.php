@@ -357,6 +357,9 @@ class Users extends CActiveRecord {
                 $user_array[$i]['full_name'] = rtrim($value->first_name . ' ' . $middle_name . $value->last_name);
                 $user_array[$i]['school_id'] = $value->school_id;
                 $user_array[$i]['batch_id'] = $value->batch_id;
+                $user_array[$i]['batch_name'] = $value['batchDetails']->name;
+                $user_array[$i]['course_name'] = $value['batchDetails']['courseDetails']->course_name;
+                $user_array[$i]['section_name'] = $value['batchDetails']['courseDetails']->section_name;
                 $user_array[$i]['terms'] = $exam_category;
                 $i++;
             }

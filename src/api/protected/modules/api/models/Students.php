@@ -260,7 +260,7 @@ class Students extends CActiveRecord {
                 'joinType' => "INNER JOIN",
                 'with' => array(
                     "courseDetails" => array(
-                        "select" => "courseDetails.course_name",
+                        "select" => "courseDetails.course_name,courseDetails.section_name",
                         'joinType' => "INNER JOIN",
                     )
                 )

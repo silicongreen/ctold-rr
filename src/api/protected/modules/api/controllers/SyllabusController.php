@@ -34,7 +34,7 @@ class SyllabusController extends Controller {
 
             $user_secret = Yii::app()->request->getPost('user_secret');
 
-            $term_id = Yii::app()->request->getPost('id');
+            $id = Yii::app()->request->getPost('id');
 
 
             $response = array();

@@ -20,13 +20,47 @@ class SyllabusController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'terms'),
+                'actions' => array('index', 'terms','single'),
                 'users' => array('@'),
             ),
             array('deny', // deny all users
                 'users' => array('*'),
             ),
         );
+    }
+    public function actionSingle() 
+    {
+        if ((Yii::app()->request->isPostRequest) && !empty($_POST)) {
+
+            $user_secret = Yii::app()->request->getPost('user_secret');
+
+            $term_id = Yii::app()->request->getPost('id');
+
+
+            $response = array();
+            if (Yii::app()->user->user_secret === $user_secret) {
+                $syllabus = new Syllabuses;
+                $syllabus = $syllabus->getSingleSyllabus($id);
+
+                if (!$syllabus) {
+                    $response['status']['code'] = 404;
+                    $response['status']['msg'] = 'NO_SYLLABUS_FOUND';
+                } else {
+                    $response['data']['syllabus'] = $syllabus;
+                    $response['status']['code'] = 200;
+                    $response['status']['msg'] = 'SYLLABUS_FOUND';
+                }
+            } else {
+                $response['status']['code'] = 403;
+                $response['status']['msg'] = "Access Denied.";
+            }
+        } else {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request.";
+        }
+
+        echo CJSON::encode($response);
+        Yii::app()->end();
     }
 
     public function actionIndex() {

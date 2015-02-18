@@ -109,6 +109,21 @@ class Syllabuses extends CActiveRecord {
     public static function model($className = __CLASS__) {
         return parent::model($className);
     }
+    
+    public function getSingleSyllabus($id) {
+        $criteria = new CDbCriteria;
+
+        $criteria->select = 't.id, t.content, t.subject_id, t.updated_at';
+        $criteria->compare('t.id', $id);
+        
+        $data = $this->with('subjectDetails')->findAll($criteria);
+        
+        if(!empty($data)){
+            $data = $this->formatSyllabus($data);
+            return $data[0];
+        }
+        return false;
+    }
 
     public function getSyllabus($school_id, $term_id, $batch_id = null, $b_yearly = false) {
 

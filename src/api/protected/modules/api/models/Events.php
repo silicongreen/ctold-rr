@@ -209,8 +209,8 @@ class Events extends CActiveRecord {
         $_data['event_title'] = $row->title;
         //$_data['event_category_id'] = $row->event_category_id;
         //$_data['event_category_name'] = $row['eventCategory']->name;
-        $_data['event_icon_name'] = $row['eventCategory']->icon_number;
-        $_data['event_icon_path'] = (!empty($row['eventCategory']->icon_number)) ? Settings::$domain_name . '/images/icons/events/' . $row['eventCategory']->icon_number : null;
+        //$_data['event_icon_name'] = $row['eventCategory']->icon_number;
+        //$_data['event_icon_path'] = (!empty($row['eventCategory']->icon_number)) ? Settings::$domain_name . '/images/icons/events/' . $row['eventCategory']->icon_number : null;
         $_data['event_start_date'] = $row->start_date;
         $_data['event_end_date'] = $row->end_date;
         $_data['event_description'] = $row->description;

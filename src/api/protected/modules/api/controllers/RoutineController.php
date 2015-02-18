@@ -20,13 +20,49 @@ class RoutineController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index','allexam', 'exam','getdateroutine','teacher','nextclass'),
+                'actions' => array('index','nextclassstudent','allexam', 'exam','getdateroutine','teacher','nextclass'),
                 'users' => array('@'),
             ),
             array('deny', // deny all users
                 'users' => array('*'),
             ),
         );
+    }
+    public function actionNextClassStudent() {
+
+        if (isset($_POST) && !empty($_POST)) {
+
+            $user_secret = Yii::app()->request->getPost('user_secret');
+            $bacth_id = Yii::app()->request->getPost('batch_id');
+            if (Yii::app()->user->isParent && empty($bacth_id)) {
+                $response['status']['code'] = 400;
+                $response['status']['msg'] = "BAD_REQUEST";
+                echo CJSON::encode($response);
+                Yii::app()->end();
+            }
+
+            if (Yii::app()->user->isStudent) {
+                $bacth_id = Yii::app()->user->batchId;
+            }
+            
+            $response = array();
+            if (Yii::app()->user->user_secret === $user_secret) {
+                $time_table = new TimetableEntries;
+                $time_table = $time_table->getNextStudent($bacth_id);
+
+                $response['data']['today'] = date("Y-m-d");
+                $response['data']['time_table'] = array();
+                if ($time_table) {
+                    $response['data']['time_table'] = $time_table;
+                    
+                }
+                $response['status']['code'] = 200;
+                $response['status']['msg'] = "ROUTINE_FOUND";
+
+                echo CJSON::encode($response);
+                Yii::app()->end();
+            }
+        }
     }
     
      public function actionNextClass() {

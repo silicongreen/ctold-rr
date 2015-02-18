@@ -495,8 +495,26 @@ class UserController extends Controller {
                     $school_details = $school_obj->findByPk(Yii::app()->user->schoolId);
                     $school_code = $school_details->code;
                     
+                    
+                    
                     if($data = $free_user->login($username,$password, true))
                     {
+                        $user_type_edit = 1;
+                        $freedata = $free_user->findByPk($data->id);
+                        if(Yii::app()->user->isStudent)
+                        {
+                            $freedata->user_type = 2;
+                        }
+                        else if(Yii::app()->user->isParent)
+                        {
+                            $freedata->user_type = 4; 
+                        }
+                        else
+                        {
+                            $freedata->user_type = 3;
+                        }
+                        $freedata->save();
+                        
                         $folderObj = new UserFolder();
                     
                         $folderObj->createGoodReadFolder($data->id);
@@ -517,6 +535,8 @@ class UserController extends Controller {
                         
                         $free_user->first_name = $userpaidData->first_name;
                         $free_user->last_name = $userpaidData->last_name;
+                        
+                        $free_user->email = $username;
                         
                         $free_user->nick_name = 1;
                         if(Yii::app()->user->isStudent)

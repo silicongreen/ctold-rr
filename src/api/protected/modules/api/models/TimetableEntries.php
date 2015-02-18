@@ -164,7 +164,7 @@ class TimetableEntries extends CActiveRecord {
                                 'timeTableDetails');
 
         $data = $this->find($criteria);
-        if (!empty($data)) {
+        if ($data) {
             return $this->formatTimeNext($data);
         }
         else if($call<7)
@@ -222,7 +222,7 @@ class TimetableEntries extends CActiveRecord {
                                 'timeTableDetails');
 
         $data = $this->find($criteria);
-        if (!empty($data)) {
+        if ($data) {
             return $this->formatTimeNext($data);
         }
         else if($call<7)

@@ -179,7 +179,8 @@ class TimetableEntries extends CActiveRecord {
                 $next_day = $cur_day_key+1;
             } 
             $call++;
-            $this->getNextStudent($batch_id,$next_day,$call);
+            $return_data = $this->getNextStudent($batch_id,$next_day,$call);
+            return $return_data;
         }
         else
         {

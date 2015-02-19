@@ -34,7 +34,9 @@ class ApplyLeaveStudents extends CActiveRecord
 	 */
 	public function rules()
 	{
-		
+		return array(
+			array('reason, school_id,start_date,end_date','required'),
+                 );
 	}
 
 	/**

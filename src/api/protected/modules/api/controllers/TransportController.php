@@ -36,20 +36,11 @@ class TransportController extends Controller {
             $response = array();
             
             $user_secret = Yii::app()->request->getPost('user_secret');
-            $school_id = Yii::app()->request->getPost('school');
-            
-            $weekday_id = Yii::app()->request->getPost('weekday_id');
-            $weekday_id = (!empty($weekday_id)) ? $weekday_id : null;
             
             $receiver_id = Yii::app()->request->getPost('student_id');
             $receiver_id = (!empty($receiver_id)) ? $receiver_id : null;
             
-            if (empty($school_id)) {
-                $response['status']['code'] = 400;
-                $response['status']['msg'] = "Bad Request";
-                echo CJSON::encode($response);
-                Yii::app()->end();
-            }
+           
             
             if (Yii::app()->user->isParent && empty($receiver_id)) {
                 $response['status']['code'] = 400;
@@ -70,7 +61,7 @@ class TransportController extends Controller {
                 }
                 
                 $transport_schedule = new RouteSchedules;
-                $transport_schedule = $transport_schedule->getRouteSchedule($school_id, $receiver_type, $receiver_id, $weekday_id);
+                $transport_schedule = $transport_schedule->getRouteSchedule($receiver_type, $receiver_id);
                 
                 if (!$transport_schedule) {
                     $response['status']['code'] = 404;

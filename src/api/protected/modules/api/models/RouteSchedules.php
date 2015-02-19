@@ -106,7 +106,7 @@ class RouteSchedules extends CActiveRecord {
         return parent::model($className);
     }
 
-    public function getRouteSchedule($school_id, $receiver_type, $receiver_id = null, $weekday_id = NULL) {
+    public function getRouteSchedule($receiver_type, $receiver_id = null) {
         
         $receiver_id = (!empty($receiver_id)) ? $receiver_id : Yii::app()->user->profileId;
         
@@ -124,11 +124,6 @@ class RouteSchedules extends CActiveRecord {
         
         $criteria->compare('transportDetails.receiver_id', $receiver_id);
         $criteria->compare('transportDetails.receiver_type', $receiver_type);
-        $criteria->compare('t.school_id', $school_id);
-        
-        if(!empty($weekday_id)){
-            $criteria->compare('t.weekday_id', $weekday_id);
-        }
         
         $data = $this->findAll($criteria);
         

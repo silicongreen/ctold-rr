@@ -87,7 +87,7 @@
         $CI->load->config("huffas");
         ?>
         <div style="width: 100%; padding: 10px 21px 0px;">
-            <a id="google-play-link" href="https://play.google.com/store/apps/details?id=com.champs21.schoolapp" target="_blank"><img style="width: 100%; height:223px;"  src="<?php echo base_url("styles/layouts/tdsfront/image/app_name.jpg"); ?>"></a>
+            <a id="google-play-link" href="https://play.google.com/store/apps/details?id=com.champs21.schoolapp" target="_blank"><img style="width: 100%;"  src="<?php echo base_url("styles/layouts/tdsfront/image/app_name.jpg"); ?>"></a>
 <!--            <a id="world-cup-play-link" href="<?php echo base_url(); ?><?php echo $CI->config->config['world_cup_quize_link']?>" ><img style="width: 100%; height:223px;" src="<?php echo base_url("styles/layouts/tdsfront/image/world-cup-page-banner.jpg"); ?>"></a>-->
         </div>
             

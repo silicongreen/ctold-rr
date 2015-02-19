@@ -191,7 +191,11 @@ class RoutineController extends Controller {
                 $response['data']['weekdays'] = Settings::$ar_weekdays;
 
                 $response['data']['cur_week'] = $cur_day_key;
-                $response['data']['time_table'] = $time_table;
+                $response['data']['time_table'] = array();
+                if ($time_table) {
+                    $response['data']['time_table'] = $time_table;
+
+                }
                 $response['status']['code'] = 200;
                 $response['status']['msg'] = "ROUTINE_FOUND";
                 

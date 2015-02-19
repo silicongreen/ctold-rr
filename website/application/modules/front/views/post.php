@@ -88,7 +88,7 @@
         ?>
         <div style="width: 100%; padding: 10px 21px 0px;">
             <a id="google-play-link" href="https://play.google.com/store/apps/details?id=com.champs21.schoolapp" target="_blank"><img style="width: 100%; height:223px;"  src="<?php echo base_url("styles/layouts/tdsfront/image/app_name.jpg"); ?>"></a>
-            <a id="world-cup-play-link" href="<?php echo base_url(); ?><?php echo $CI->config->config['world_cup_quize_link']?>" ><img style="width: 100%; height:223px;" src="<?php echo base_url("styles/layouts/tdsfront/image/world-cup-page-banner.jpg"); ?>"></a>
+<!--            <a id="world-cup-play-link" href="<?php echo base_url(); ?><?php echo $CI->config->config['world_cup_quize_link']?>" ><img style="width: 100%; height:223px;" src="<?php echo base_url("styles/layouts/tdsfront/image/world-cup-page-banner.jpg"); ?>"></a>-->
         </div>
             
         <div class="inner-container" style="margin: 0px 20px 10px;">
@@ -710,19 +710,19 @@
             return false;
     }
     $(document).ready(function(){
-        setInterval(function () {
-            if($('#google-play-link').is(':visible'))
-            {
-               $('#google-play-link').hide();
-               $( "#world-cup-play-link" ).show();
-               
-            }
-            else
-            {
-              $('#world-cup-play-link').hide();
-              $( "#google-play-link" ).show();
-            }
-        }, 8000);
+//        setInterval(function () {
+//            if($('#google-play-link').is(':visible'))
+//            {
+//               $('#google-play-link').hide();
+//               $( "#world-cup-play-link" ).show();
+//               
+//            }
+//            else
+//            {
+//              $('#world-cup-play-link').hide();
+//              $( "#google-play-link" ).show();
+//            }
+//        }, 8000);
         <?php if(!free_user_logged_in()): ?>
            
             $(".check_login").each(function(){

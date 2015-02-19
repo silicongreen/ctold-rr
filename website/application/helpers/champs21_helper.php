@@ -1072,6 +1072,43 @@ if(!function_exists('get_rand_images')){
     }
 }
 
+if(!function_exists('get_icc_user_level_score')){
+    
+    function get_icc_user_level_score(){
+        
+        $CI = &get_instance();
+        //echo get_free_user_session('id');exit;
+        if(get_free_user_session('id'))
+        {
+            $user_id = get_free_user_session('id');
+            $CI->db->dbprefix = 'tds_';
+            $CI->db->select('*');
+            $CI->db->from('assesment_mark');
+            $CI->db->where('user_id',$user_id);
+            $results = $CI->db->get()->result();
+
+            if(count($results)>0)
+            {   $datas = array()   ;      
+                foreach($results as $data)
+                {               
+                    $datas[$data->level] = $data;
+                }                     
+
+                return $datas;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
+}
+
+
 if( !function_exists("get_assessment"))
 {
     function get_assessment($assesment_id, $user_id = 0, $webview = 1, $level = 0, $type = 0)

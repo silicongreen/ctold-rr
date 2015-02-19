@@ -3693,7 +3693,7 @@ class home extends MX_Controller {
 
                             $assessment_school_mark[] = $assessment_school_mark_data;
                         }
-
+                        
                         $this->db->insert_batch('assessment_school_mark', $assessment_school_mark);
                     }
                 }
@@ -3706,7 +3706,7 @@ class home extends MX_Controller {
         
         $next_level = 0;
         
-        if( count($ar_asses_levels) > ($cur_level + 1) ) {
+        if( count($ar_asses_levels) > $cur_level ) {
             $next_level = $cur_level + 1;
         }
         

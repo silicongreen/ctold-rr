@@ -190,14 +190,14 @@ class TimetableEntries extends CActiveRecord {
         
     }
     
-    public function getNextTeacher($school_id,$emplyee_id,$cur_day_key = 0, $call=1)
+    public function getNextTeacher($school_id,$emplyee_id,$cur_day_key = null, $call=1)
     {
         $criteria = new CDbCriteria;
         $criteria->select = 't.id, t.weekday_id';
         $criteria->compare('t.school_id', $school_id);
         $date = date("Y-m-d");
         $time = date("H:i:s");
-        if(!$cur_day_key)
+        if($call==1 && $cur_day_key!==0 && !$cur_day_key)
         {
             $cur_day_name = Settings::getCurrentDay($date);
             $cur_day_key = Settings::$ar_weekdays_key[$cur_day_name];

@@ -352,7 +352,7 @@ class OnlineExamGroups extends CActiveRecord
             $criteria->compare('t.batch_id', $batch_id);
             $criteria->compare('t.is_deleted', 0);
             $criteria->compare('t.is_published', 1);
-            $criteria->addCondition("DATE(start_date) <= '".$cur_date."' ");
+            //$criteria->addCondition("DATE(start_date) <= '".$cur_date."' ");
             //$criteria->addCondition("DATE(end_date) >= '".$cur_date."' ");
             //$criteria->addCondition("examgiven.student_id != '".$student_id."' ");
             $criteria->with = array(

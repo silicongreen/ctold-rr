@@ -10,7 +10,7 @@
     </div>
     
     <div class="clearfix"></div>
-    
+   
     <div class="container" style="width: 77%; min-height:250px !important;">
 
         <?php if (free_user_logged_in()) { ?>
@@ -19,7 +19,9 @@
         <input type="hidden" value="<?php echo (!empty($assessment->use_time) ) ? $assessment->time : 0; ?>" id="assess_time">
         <input type="hidden" value="<?php echo (!empty($assessment->higistmark) ) ? $assessment->higistmark : 0; ?>" id="highest_score">
         <input type="hidden" value="<?php echo (!empty($assessment->played) ) ? $assessment->played : 0; ?>" id="total_played">
-
+        <?php if($icc_utotal=="done"){?>
+        <input type="hidden" value="<?php echo $icc_utotal; ?>" id="icc_utotal">
+        <?php }?>
         <?php if (!$b_explanation_popup) { ?>
             <input type="hidden" value="" id="b_explanation_popup">
         <?php } ?>
@@ -31,43 +33,37 @@
         </div>
 
         <div class="inner-container">
-
-            <div id="icc-quiz-start-screen">
-                
+            <div id="icc-quiz-start-screen">                
                 <div class="icc-quiz-start-screen-wrapper">
                     <div class="icc-quiz-logo-wrapper">
                         <img src="/styles/layouts/tdsfront/image/icc-quiz-logo.png">
                     </div>
-
                     <div class="icc-quiz-btn-wrapper">
                         <button class="element-animation" type="button" id="start_assessment_play"></button>
                     </div>
-
                     <div class="icc-quiz-jersey-wrapper">
                         <img src="/styles/layouts/tdsfront/image/icc-quiz-jersey.png">
                     </div>
-                </div>
-                
-                <div class="clearfix"></div>
-                
+                </div>                
+                <div class="clearfix"></div>                
                 <div class="icc-quiz-start-screen-text">
                     <p class="f2">The stage is set for the greatest cricketers… and quizzers!! Win a whole set of Cricket gears for your school! 10 jerseys are up for grabs for the top ten high-scorers everyday as well. So make sure you play every day and win as many jerseys as you want.<br />
                         So what are you waiting for? Start playing!!</p>
-                </div>
-                
+                </div>                
             </div>
 
             <div id="icc-quiz-start-play-screen">
-
                 <div id="pre_assessment_details">
-
                     <div class="score-board-summary">
-
                         <div class="score-board-header f2">
                             Today's Quiz
                         </div>
-
+                        <?php 
+                            $actual_link = "$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+                            $pieces = explode("/", $actual_link);
+                        ?>
                         <div class="score-board-summary-text">
+                            <div class="f2" style="margin-bottom:5px;font-size:18px;color: #616161;">Stage <?php echo (!empty($pieces[count($pieces) - 1]))?$pieces[count($pieces) - 1]:1 ;?></div>
                             <p class="f2"></p>
                             <p class="f2"></p>
                             <p class="f2">Highest Score&nbsp;: <?php echo (!empty($assessment->higistmark) ) ? $assessment->higistmark : 0; ?></p>
@@ -81,10 +77,7 @@
                                 <span>Rules</span>
                             </button>
                         </div>
-
                     </div>
-
-
                 </div>
 
                 <div id="leader_board">
@@ -115,28 +108,33 @@
                     </div>
                 </div>
                 
-                <div class="icc-quiz-rules-wrapper">
-                    Quiz Rules will be here.
+                <div class="icc-quiz-rules-wrapper" >
+                    <div style="background-color: #fff; border-radius: 5px; min-height: 530px;margin-top:30px; margin-bottom: 20px;padding:20px;">
+                    <h3>Quiz Rules</h3>   
+                 1 . Anybody can participate in this competition, not just students<br><br>
+2 . You can win a jersey every day by being in the top ten scorers. So make sure you play every day and win as many jerseys as you want.<br><br>
+3 . You can add your scores to your school. The school with the highest score (scores contributed by players) will win a set of cricket gears.<br><br>
+4 . The competition has three stages. You can play Stage 1 without any registration, to save your score please register.<br><br>
+5 . After saving your score, Stages 2 & 3 will be unlocked for you.<br><br>
+6 . Your total score is a compilation of your scores from Stage 1, 2 & 3. So make sure you play all three stages to be in the top 10 scorers. <br>
                 </div>
-                
+                    </div>                
             </div>
 
             <div class="icc-quiz-game-over">
                 <div class="icc-quiz-game-over-header f2">Game Over</div>
-
-                <div class="score-board-summary-wrapper">
+                <div class="score-board-summary-wrapper" id="score_board_icc">
                     <div class="score-board-summary">
-
                         <div class="score-board-header f2">
                             My Score Today
                         </div>
-
                         <div class="score-board-summary-text">
-
                             <?php
                             $ar_assess_levels = explode(',', $assessment->levels);
                             $ar_user_score_board = get_object_vars($assessment->user_score_board);
-
+                            
+                            $userscore_data = get_icc_user_level_score();         
+                            
                             $uris = explode('/', $_SERVER['REQUEST_URI']);
                             $cur_level = $uris[count($uris) - 1];
                             ?>
@@ -146,25 +144,38 @@
 
                             $url = implode('/', $uris);
 
-                            foreach ($ar_assess_levels as $level) {
+                            foreach ($ar_assess_levels as $level) {                                
                                 ?>
                                 <p class="f2">Stage <?php echo $level; ?> : 
-                                    <span id="level-<?php echo $level; ?>"><?php echo ( property_exists($ar_user_score_board[$level], 'mark') ) ? $ar_user_score_board[$level]->mark : 0; ?></span>
+                                    <span id="level-<?php echo $level; ?>">
+                                        <?php 
+                                            
+                                            if($userscore_data == false)                                            {                                          
+                                               echo (property_exists($ar_user_score_board[$level], 'mark') ) ? $ar_user_score_board[$level]->mark : 0;
+                                            }else
+                                            {
+                                                echo (int) $userscore_data[$level]->mark;
+                                            }
+                                        ?>
+                                    </span>
                                     <?php
                                     if (!empty($assessment->next_level)) {
                                         if ($level > $assessment->next_level) {
-                                            $str_level_status = 'Login';
+                                            $str_level_status = 'Complete '.$assessment->next_level;
                                             $url_level = '';
-                                        } else if ($level == $assessment->next_level) {
+                                    ?>        <span class="level-status"><?php echo $str_level_status; ?></span>
+                                    <?php    } else if ($level == $assessment->next_level) {
                                             $str_level_status = 'Play Now';
-                                            $url_level = '';
-                                        } else {
-                                            $str_level_status = 'Play Again';
+                                            $url_level = '/'.$assessment->next_level;
+                                    ?>        <a href="<?php echo base_url($url . $url_level); ?>"><span class="level-status"><?php echo $str_level_status; ?></span></a>
+                                    <?php    } else {
+                                            $str_level_status = 'Completed';
                                             $url_level = '/' . $level;
-                                        }
+                                    ?>        <span class="level-status"><?php echo $str_level_status; ?></span>
+                                    <?php    }
                                         ?>
 
-                                        <a href="<?php echo base_url($url . $url_level); ?>"><span class="level-status"><?php echo $str_level_status; ?></span></a>
+<!--                                        <a href="<?php echo base_url($url . $url_level); ?>"><span class="level-status"><?php echo $str_level_status; ?></span></a>-->
 
                                         <?php
                                     } else {
@@ -179,31 +190,43 @@
                             <div style="display: none;" id="current-level" data="<?php echo $cur_level; ?>"></div>
                             
                         </div>
-
+                        <div style="margin-left: 50px; margin-top: 22px;position: absolute;display:none;" id="loader_icc">
+                            <img src="/styles/layouts/tdsfront/images/loader.gif"></div>
                         <div class="assessment-save-score-wrapper"></div>
-
+                        <div class="congratulation_text" style="width:80%;text-align:center;font-size: 20px;display:none;">Congratulation<br />All Stages Finished.Play Tomorrow.</div>
                     </div>
                 </div>
 
-
-                <div class="score-board-summary-wrapper">
+                <div class="score-board-summary-wrapper" id="icc_uboard">
                     <div class="grand-score-board-summary">
-
                         <div class="grand-score-board-header f2">
                             My Total Score
                         </div>
-
                         <div class="grand-score-board-summary-text f2">
-                            <?php echo $assessment->total_score; ?>
+                            <?php
+                                if($userscore_data!=false)
+                                {   $utotal = 0;
+                                    foreach ($userscore_data as $udata)
+                                    {
+                                        $utotal += $udata->mark;
+                                    }
+                                    echo $utotal;
+                                }
+                                else
+                                {
+                                    echo 0;//echo $assessment->total_score;
+                                }
+                                
+                                ?>
+                            
+                            <?php  ?>                            
                         </div>
-
                         <div class="score-add-to-school f2">Add score to my school   </div>
                         <div id="full_leader_board" class="school-position f2">Leader Board</div>
                         <div class="invite-friends f5">
                             <img src="/styles/layouts/tdsfront/image/icc-quiz-invite.png">
                             <p>Invite friends</p>
                         </div>
-
                     </div>
                 </div>
 
@@ -220,7 +243,6 @@
                     </h1>
                     <div style="clear: both;"></div>
                 </div>
-
                 <div class="col-md-3 social-bar">
                     <div class="clock"></div>
                 </div>

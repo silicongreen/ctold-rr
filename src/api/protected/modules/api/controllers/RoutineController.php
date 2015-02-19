@@ -49,22 +49,16 @@ class RoutineController extends Controller {
             if (Yii::app()->user->user_secret === $user_secret) {
                 $time_table = new TimetableEntries;
                 $time_table = $time_table->getNextStudent($bacth_id);
-                if ($time_table) 
-                {
-                    $response['data']['today'] = date("Y-m-d");
-                    $response['data']['time_table'] = array();
-                    if ($time_table) {
-                        $response['data']['time_table'] = $time_table;
+                
+                $response['data']['today'] = date("Y-m-d");
+                $response['data']['time_table'] = array();
+                if ($time_table) {
+                    $response['data']['time_table'] = $time_table;
 
-                    }
-                    $response['status']['code'] = 200;
-                    $response['status']['msg'] = "ROUTINE_FOUND";
                 }
-                else
-                {
-                    $response['status']['code'] = 404;
-                    $response['status']['msg'] = "ROUTINE_NOT_FOUND";
-                }
+                $response['status']['code'] = 200;
+                $response['status']['msg'] = "ROUTINE_FOUND";
+               
 
                 echo CJSON::encode($response);
                 Yii::app()->end();
@@ -87,22 +81,16 @@ class RoutineController extends Controller {
             if (Yii::app()->user->isTeacher && $school_id && Yii::app()->user->user_secret === $user_secret) {
                 $time_table = new TimetableEntries;
                 $time_table = $time_table->getNextTeacher($school_id, Yii::app()->user->profileId);
-                if ($time_table) 
-                {
-                    $response['data']['today'] = date("Y-m-d");
-                    $response['data']['time_table'] = array();
-                    if ($time_table) {
-                        $response['data']['time_table'] = $time_table;
+                
+                $response['data']['today'] = date("Y-m-d");
+                $response['data']['time_table'] = array();
+                if ($time_table) {
+                    $response['data']['time_table'] = $time_table;
 
-                    }
-                    $response['status']['code'] = 200;
-                    $response['status']['msg'] = "ROUTINE_FOUND";
                 }
-                else
-                {
-                    $response['status']['code'] = 404;
-                    $response['status']['msg'] = "ROUTINE_NOT_FOUND";
-                }
+                $response['status']['code'] = 200;
+                $response['status']['msg'] = "ROUTINE_FOUND";
+                
 
                 
             }
@@ -131,28 +119,22 @@ class RoutineController extends Controller {
                 $time_table = new TimetableEntries;
                 $time_table = $time_table->getTimeTablesTeacher($school_id,$date, Yii::app()->user->profileId, $day_id);
 
-                if ($time_table) 
-                {
-                    $response['data']['time_table'] = array();
+                
+                $response['data']['time_table'] = array();
 
-                    $response['data']['weekdays'] = Settings::$ar_weekdays;
+                $response['data']['weekdays'] = Settings::$ar_weekdays;
 
-                    $cur_day_name = Settings::getCurrentDay();
-                    $cur_day_key = Settings::$ar_weekdays_key[$cur_day_name];
+                $cur_day_name = Settings::getCurrentDay();
+                $cur_day_key = Settings::$ar_weekdays_key[$cur_day_name];
 
-                    $response['data']['cur_week'] = $cur_day_key;
-                    if ($time_table) {
-                        $response['data']['time_table'] = $time_table;
+                $response['data']['cur_week'] = $cur_day_key;
+                if ($time_table) {
+                    $response['data']['time_table'] = $time_table;
 
-                    }
-                    $response['status']['code'] = 200;
-                    $response['status']['msg'] = "ROUTINE_FOUND";
                 }
-                else
-                {
-                    $response['status']['code'] = 404;
-                    $response['status']['msg'] = "ROUTINE_NOT_FOUND";
-                }
+                $response['status']['code'] = 200;
+                $response['status']['msg'] = "ROUTINE_FOUND";
+               
 
                 
             }
@@ -205,17 +187,14 @@ class RoutineController extends Controller {
                 $time_table = new TimetableEntries;
                 $time_table = $time_table->getTimeTables($school_id, $date, $weekly, $bacth_id,$day_id);
 
-                if ($time_table) {
-                    $response['data']['weekdays'] = Settings::$ar_weekdays;
-                    
-                    $response['data']['cur_week'] = $cur_day_key;
-                    $response['data']['time_table'] = $time_table;
-                    $response['status']['code'] = 200;
-                    $response['status']['msg'] = "ROUTINE_FOUND";
-                } else {
-                    $response['status']['code'] = 404;
-                    $response['status']['msg'] = "ROUTINE_NOT_FOUND";
-                }
+               
+                $response['data']['weekdays'] = Settings::$ar_weekdays;
+
+                $response['data']['cur_week'] = $cur_day_key;
+                $response['data']['time_table'] = $time_table;
+                $response['status']['code'] = 200;
+                $response['status']['msg'] = "ROUTINE_FOUND";
+                
 
                 echo CJSON::encode($response);
                 Yii::app()->end();
@@ -254,15 +233,16 @@ class RoutineController extends Controller {
                 $time_table = new TimetableEntries;
                 $time_table = $time_table->getTimeTables($school_id, $date, $weekly, $bacth_id);
 
-                if ($time_table) {
+               
                     
+                $response['data']['time_table'] = array();
+                if ($time_table) {
                     $response['data']['time_table'] = $time_table;
-                    $response['status']['code'] = 200;
-                    $response['status']['msg'] = "ROUTINE_FOUND";
-                } else {
-                    $response['status']['code'] = 404;
-                    $response['status']['msg'] = "ROUTINE_NOT_FOUND";
+
                 }
+                $response['status']['code'] = 200;
+                $response['status']['msg'] = "ROUTINE_FOUND";
+
 
                 echo CJSON::encode($response);
                 Yii::app()->end();

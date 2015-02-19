@@ -154,6 +154,16 @@ class ApplyLeaveStudents extends CActiveRecord
             }
             return $return_array;
         }
+        
+        public function getStudentLeaveParent($student_id) 
+        {
+            $today = date("Y-m-d", strtotime("-6 Month")); 
+            $criteria = new CDbCriteria();
+            $criteria->compare('student_id', $student_id);           
+            $criteria->addCondition('date(t.start_date)>="'.$today.'"');
+            $criteria->order = 't.created_at DESC';
+            return $this->findAll($criteria);
+        }
         public function getStudentLeave($profile_id) 
         {
             $esubject = new EmployeesSubjects();

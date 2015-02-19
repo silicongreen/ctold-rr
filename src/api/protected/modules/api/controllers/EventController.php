@@ -23,7 +23,7 @@ class EventController extends Controller
     {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index','getsingleevent', 'readreminder', 'getuserreminder', 'acknowledge', 'meetingrequest', 'meetingstatus',
+                'actions' => array('index','addleavestudent','studentleavesparent','getsingleevent', 'readreminder', 'getuserreminder', 'acknowledge', 'meetingrequest', 'meetingstatus',
                     'getstudentparent', 'addmeetingrequest', 'addmeetingparent', 'getteacherparent',
                     'addleaveteacher','reportmanagerteacher', 'leavetype', 'teacherleaves', 'studentleaves', 'fees'),
                 'users' => array('@'),
@@ -258,6 +258,85 @@ class EventController extends Controller
             $response['status']['msg'] = "Bad Request";
         }    
     }
+    public function actionStudentLeavesParent()
+    {
+        $user_secret = Yii::app()->request->getPost('user_secret');
+        $student_id = Yii::app()->request->getPost('student_id');
+        if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isParent && $student_id)
+        {
+
+            $leave = new ApplyLeaveStudents();
+            $leaveobj = $leave->getStudentLeaveParent(Yii::app()->user->profileId);
+
+            $leave = array();
+            $i = 0;
+            if ($leaveobj)
+                foreach ($leaveobj as $value)
+                {
+                   
+                    $leave[$i]['leave_start_date'] = $value->start_date;
+                    $leave[$i]['leave_end_date'] = $value->end_date;
+                    if (!$value->approving_teacher)
+                    {
+                        $leave[$i]['status'] = 2;
+                    }
+                    else if ($value->approved == 1)
+                    {
+                        $leave[$i]['status'] = 1;
+                    }
+                    else
+                    {
+                        $leave[$i]['status'] = 0;
+                    }
+                    $leave[$i]['created_at'] = date("Y-m-d", strtotime($value->created_at));
+                    $i++;
+                }
+            $response['data']['today'] = date("Y-m-d");
+            $response['data']['leaves'] = $leave;
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "Success";
+        }
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    }
+    
+    public function actionAddLeaveStudent()
+    {
+        $user_secret = Yii::app()->request->getPost('user_secret');
+        $reason = Yii::app()->request->getPost('reason');
+        $start_date = Yii::app()->request->getPost('start_date');
+        $end_date = Yii::app()->request->getPost('end_date');
+        $student_id = Yii::app()->request->getPost('student_id');
+        if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isParent && $reason && $student_id && $start_date && $end_date )
+        {
+            
+            
+            $leave = new ApplyLeaveStudents();
+            $leave->school_id = Yii::app()->user->schoolId;
+            $leave->reason = $reason;
+            $leave->start_date = $start_date;
+            $leave->end_date = $end_date;
+            $leave->student_id = $student_id;
+            $leave->created_at = date("Y-m-d H:i:s");
+            $leave->updated_at = date("Y-m-d H:i:s");
+            $leave->save();
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "Success";
+            
+        }
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    }
 
     public function actionAddLeaveTeacher()
     {
@@ -279,8 +358,8 @@ class EventController extends Controller
                 $leave->start_date = $start_date;
                 $leave->end_date = $end_date;
                 $leave->is_half_day = 0;
-                $leave->approving_manager = $employeedata->
-                $leave->employee_leave_types_id = $employee_leave_types_id->reporting_manager_id;
+                $leave->approving_manager = $employeedata->reporting_manager_id;
+                $leave->employee_leave_types_id = $employee_leave_types_id;
                 $leave->employee_id = Yii::app()->user->profileId;
                 $leave->created_at = date("Y-m-d H:i:s");
                 $leave->updated_at = date("Y-m-d H:i:s");

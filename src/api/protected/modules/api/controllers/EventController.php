@@ -390,7 +390,7 @@ class EventController extends Controller
         $datetime = Yii::app()->request->getPost('datetime');
         $parent_id = Yii::app()->request->getPost('parent_id');
         $student_id = Yii::app()->request->getPost('student_id');
-        if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isParent && $batch_id && $description && $datetime && $parent_id)
+        if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isParent && $student_id && $batch_id && $description && $datetime && $parent_id)
         {
 
             $meetingreq = new Meetingrequest();
@@ -400,6 +400,29 @@ class EventController extends Controller
             $meetingreq->parent_id = $student_id;
             $meetingreq->type = 2;
             $meetingreq->save();
+            
+            $guardian = new Guardians();
+            $guardianData = $guardian->findByPk(Yii::app()->user->profileId);
+            $employee = new Employees();
+            $techer_profile = $employee->findByPk($parent_id);
+            
+            if(isset($techer_profile->user_id) && isset($guardianData->first_name))
+            {
+                $reminder = new Reminders();
+                $reminder->sender = Yii::app()->user->id;
+                $reminder->subject = "New Meeting Request";
+                $reminder->body = "New Meeting Request Send from " . $guardianData->first_name . " at ".$datetime;
+                $reminder->recipient = $techer_profile->user_id;
+                $reminder->school_id = Yii::app()->user->schoolId;
+                $reminder->rid = $meetingreq->id;
+                $reminder->rtype = 12;
+                $reminder->created_at = date("Y-m-d H:i:s");
+
+                $reminder->updated_at = date("Y-m-d H:i:s");
+                $reminder->save();
+                
+                ///push notification
+            }
 
             $response['status']['code'] = 200;
             $response['status']['msg'] = "Success";
@@ -464,6 +487,31 @@ class EventController extends Controller
             $meetingreq->teacher_id = Yii::app()->user->profileId;
             $meetingreq->parent_id = $parent_id;
             $meetingreq->save();
+            
+            $employee = new Employees();
+            $techer_profile = $employee->findByPk(Yii::app()->user->profileId);
+            
+            $student = new Students();
+            $studentdata = $student->findByPk($parent_id);
+            
+            if(isset($studentdata->immediate_contact_id) && isset($techer_profile->first_name))
+            {
+                $reminder = new Reminders();
+                $reminder->sender = Yii::app()->user->id;
+                $reminder->subject = "New Meeting Request";
+                $reminder->body = "New Meeting Request Send from " . $techer_profile->first_name . " at ".$datetime;
+                $reminder->recipient = $studentdata->immediate_contact_id;
+                $reminder->school_id = Yii::app()->user->schoolId;
+                $reminder->rid = $meetingreq->id;
+                $reminder->rtype = 11;
+                $reminder->created_at = date("Y-m-d H:i:s");
+
+                $reminder->updated_at = date("Y-m-d H:i:s");
+                $reminder->save();
+                ///push notification
+            }
+            
+            
 
             $response['status']['code'] = 200;
             $response['status']['msg'] = "Success";

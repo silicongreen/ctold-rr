@@ -266,7 +266,7 @@ class EventController extends Controller
         {
 
             $leave = new ApplyLeaveStudents();
-            $leaveobj = $leave->getStudentLeaveParent(Yii::app()->user->profileId);
+            $leaveobj = $leave->getStudentLeaveParent($student_id);
 
             $leave = array();
             $i = 0;

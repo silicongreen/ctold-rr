@@ -10,6 +10,7 @@ $(document).ready(function(){
         }
         
         if(assess_score_cookie) {
+            alert(assess_score_cookie+" "+cur_level+"   XXXXXXXXXXXXXXXX")
             $.ajax({
                 url : $('#base_url').val() + 'save_assessment',
                 type : 'post',
@@ -36,6 +37,18 @@ $(document).ready(function(){
                 error : function() {}
             });
         }
+    }
+    alert($('#icc_utotal').val())
+    if($('#icc_utotal').val() == "done")
+    {
+        $("#icc-quiz-start-screen").css("display","none")
+        $(".icc-quiz-game-over").css("display","block")
+        $(".replay-wrapper").hide()
+        $("#score_board_icc").hide()
+        $("#icc_uboard").css("width","50%")
+        $("#icc_uboard").css("margin","0px auto")     
+        $("#icc_uboard").css("text-align","center")     
+        $("#icc_uboard").css("float","none")     
     }
     
     var user_score = 0;
@@ -263,6 +276,11 @@ $(document).ready(function(){
             cur_level = $('#current-level').attr('data');
         }
         
+        $(".btn-assessment-submit").attr("disabled","disabled");
+        $(".btn-assessment-submit").css('background-color', '#cccccc');
+        $("#loader_icc").show();
+        
+        
         $.ajax({
             url : $('#base_url').val() + 'save_assessment',
             type : 'post',
@@ -273,8 +291,21 @@ $(document).ready(function(){
                 cur_level : cur_level
             },
             success : function(data) {
-                
+                alert(data+"   YYYYYYYZZZZZZZZ")
+                var site_url_icc = $('#base_url').val()
                 $('.icc-quiz-game-over .grand-score-board-summary-text').text(data.user_total_score);
+                $("#loader_icc").hide();
+                $(".btn-assessment-submit").css('display', 'none');
+                if(data.next_level ==0 )
+                {
+                    $(".replay-wrapper").hide()
+                    $(".congratulation_text").show();
+                }
+                else
+                {
+                    $(".replay-wrapper").find("a").attr("href", site_url_icc + 'quiz/' + data.assessment_title + '-' + data.assessment_type + '-' + data.assessment_id + "/" + data.next_level)
+                }
+                
                 
                 var quiz_levels = data.assessment_levels.split(',');
                 var levels_html = '';
@@ -282,19 +313,57 @@ $(document).ready(function(){
                 
                 if( $('.icc-quiz-game-over .score-board-summary-text p').length < quiz_levels.length) {
                     quiz_levels.forEach(function(level) {
+                        alert("start"+level)
                         if(level > cur_level) {
+                            alert("below"+level)
                             var level_str = '';
-                            var label_str = 'Login';
+                            var label_str = 'Complete '+(parseInt(level)-1);
                             if(data.next_level == level) {
                                 level_str = '/' + level;
                                 label_str = 'Play Now';
                             }
-
-                            levels_html += '<p class="f2">Stage ' + level + ' : <span id="level-' + level + '">0</span><a href="' + $('#base_url').val() + 'quiz/' + data.assessment_title + '-' + data.assessment_type + '-' + data.assessment_id + level_str + '"><span class="level-status">' + label_str + '</span></a></p>';
+                            if(level_str == "")
+                            {
+                                levels_html += '<p class="f2">Stage ' + level + ' : <span id="level-' + level + '">0</span><span class="level-status">' + label_str + '</span></p>';
+                            }
+                            else
+                            {
+                                levels_html += '<p class="f2">Stage ' + level + ' : <span id="level-' + level + '">0</span><a href="' + $('#base_url').val() + 'quiz/' + data.assessment_title + '-' + data.assessment_type + '-' + data.assessment_id + level_str + '"><span class="level-status">' + label_str + '</span></a></p>';
+                            }
+                            
                             i++;
+                        }
+                        else
+                        {
+                            if(level == cur_level)
+                            {
+                                alert(level)
+                                $('#level-' + cur_level).text(data.score);
+                                $('#level-' + cur_level).parent('p').find('a').replaceWith('<span class="level-status">Completed</span>');
+                            }
                         }
 
                     });
+                }    
+                else
+                {
+                    if( $('.icc-quiz-game-over .score-board-summary-text p').length == quiz_levels.length) {
+                        quiz_levels.forEach(function(level) {
+                            if(level == cur_level)
+                            {     alert('aa'+level)                           
+                                $('#level-' + cur_level).text(data.score);
+                                $('#level-' + cur_level).parent('p').find('a').replaceWith('<span class="level-status">Completed</span>');
+                            }
+                            if(data.next_level == level)
+                            {   
+                                alert('#level-' + data.next_level)
+                                var level_str = '/' + level;
+                                var label_str = 'Play Now';
+                                $('#level-' + data.next_level).text(0);
+                                $('#level-' + data.next_level).parent('p').find('span.level-status').replaceWith('<a href="' + $('#base_url').val() + 'quiz/' + data.assessment_title + '-' + data.assessment_type + '-' + data.assessment_id + level_str + '"><span class="level-status">' + label_str + '</span></a>');                            
+                            }
+                        });
+                    }
                 }
                 
                 $('.icc-quiz-game-over .score-board-summary-text').append(levels_html);
@@ -324,6 +393,7 @@ $(document).ready(function(){
                 cur_level : cur_level
             },
             success : function(data) {
+                alert(data+"   YYYYYYYYYYYYYYYYYYY")
                 if(data.has_school === false) {
                     createCookie('c21_icc_quiz_level', cur_level, 1);
                     createCookie('c21_icc_quiz', assessment, 1);

@@ -377,7 +377,7 @@ class CalenderController extends Controller
 
         if ($reminderrecipients)
         {
-            $notifiation_ids = array();
+            $notification_ids = array();
             foreach ($reminderrecipients as $value)
             {
                 $reminder = new Reminders();
@@ -391,9 +391,9 @@ class CalenderController extends Controller
                 $reminder->updated_at = date("Y-m-d H:i:s");
                 $reminder->school_id = Yii::app()->user->schoolId;
                 $reminder->save();
-                $notifiation_ids[] = $reminder->id;
+                $notification_ids[] = $reminder->id;
             }
-            $notifiation_id = implode(",", $notifiation_ids);
+            $notification_id = implode(",", $notification_ids);
             $user_id = implode(",", $reminderrecipients);
             Settings::sendCurlNotification($user_id, $notification_id);
         }
@@ -417,7 +417,7 @@ class CalenderController extends Controller
         }
         if ($reminderrecipients)
         {
-            $notifiation_ids = array();
+            $notification_ids = array();
 
             $reminder = new Reminders();
             //delete reminder previous
@@ -447,9 +447,9 @@ class CalenderController extends Controller
                 $reminder->updated_at = date("Y-m-d H:i:s");
                 $reminder->school_id = Yii::app()->user->schoolId;
                 $reminder->save();
-                $notifiation_ids[] = $reminder->id;
+                $notification_ids[] = $reminder->id;
             }
-            $notifiation_id = implode(",", $notifiation_ids);
+            $notification_id = implode(",", $notification_ids);
             $user_id = implode(",", $reminderrecipients);
             Settings::sendCurlNotification($user_id, $notification_id);
         }

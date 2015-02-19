@@ -276,7 +276,7 @@ class OnlineExamGroups extends CActiveRecord
                     
                     $time_par_question =  intval($data->maximum_time)*60/$total_question;
                     
-                    $time_par_question = round($time_par_question);
+                    $time_par_question = (int)$time_par_question;
                     
                     foreach($data['questions'] as $questions)
                     {

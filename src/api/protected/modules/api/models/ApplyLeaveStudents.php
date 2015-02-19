@@ -54,25 +54,7 @@ class ApplyLeaveStudents extends CActiveRecord
 	/**
 	 * @return array customized attribute labels (name=>label)
 	 */
-	public function attributeLabels()
-	{
-		return array(
-			'id' => 'ID',
-			'employee_id' => 'Employee',
-			'employee_leave_types_id' => 'Employee Leave Types',
-			'is_half_day' => 'Is Half Day',
-			'start_date' => 'Start Date',
-			'end_date' => 'End Date',
-			'reason' => 'Reason',
-			'approved' => 'Approved',
-			'viewed_by_manager' => 'Viewed By Manager',
-			'manager_remark' => 'Manager Remark',
-			'approving_manager' => 'Approving Manager',
-			'created_at' => 'Created At',
-			'updated_at' => 'Updated At',
-			'school_id' => 'School',
-		);
-	}
+	
 
 	/**
 	 * Retrieves a list of models based on the current search/filter conditions.

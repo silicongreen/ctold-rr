@@ -100,7 +100,8 @@ class SyllabusController extends Controller {
                 $syllabus = $syllabus->getSyllabus($school_id, $term_id, $batch_id);
 
                 if (!$syllabus) {
-                    $response['status']['code'] = 404;
+                    $response['data']['syllabus'] = array();
+                    $response['status']['code'] = 200;
                     $response['status']['msg'] = 'NO_SYLLABUS_FOUND';
                 } else {
                     $response['data']['syllabus'] = $syllabus;
@@ -161,7 +162,8 @@ class SyllabusController extends Controller {
                     $response['status']['code'] = 200;
                     $response['status']['msg'] = "TERMS_FOUND";
                 } else {
-                    $response['status']['code'] = 404;
+                    $response['data']['terms'] = array();
+                    $response['status']['code'] = 200;
                     $response['status']['msg'] = "NO_TERMS_FOUND";
                 }
             } else {

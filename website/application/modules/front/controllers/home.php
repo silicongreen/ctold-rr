@@ -3509,6 +3509,115 @@ class home extends MX_Controller {
 
             $this->extra_params = $ar_params;
         }
+        
+    }
+    
+    public function cricaddict() {
+        
+        $this->load->config("huffas");
+        $assessment_config = $this->config->config['assessment'];
+        
+        $ar_js = array();
+        $ar_css = array(
+                "styles/layouts/tdsfront/css/post/social.css" => "screen"
+        );
+        $extra_js = '';
+        
+        $uri_segments = $this->uri->segment_array();
+        $str_assesment = $uri_segments[2];
+        
+        if(count($uri_segments) < 4 && is_numeric($uri_segments[3])) {
+            $assessment_level = $uri_segments[3];
+            $str_post = NULL;
+        } elseif(count($uri_segments) == 4 && is_numeric($uri_segments[4])) {
+            $assessment_level = $uri_segments[4];
+            $str_post = $uri_segments[3];
+        } else {
+            $assessment_level = 0;
+            $str_post = $uri_segments[3];
+        }
+        
+        $ar_assessment = explode('-', $str_assesment);
+        $assessment_type = $ar_assessment[count($ar_assessment) - 2];
+        $assesment_id = end($ar_assessment);
+        $user_id = 0;
+        
+        if(free_user_logged_in()) {
+            $user_id = get_free_user_session('id');
+        } else {
+            $assessment_level = 1;
+        }
+        
+        if($assessment_config['update_played']['before_start']){
+            assessment_update_played($assesment_id);
+        }
+        
+        $data['post_uri'] = $str_post;
+        $assessment = get_assessment($assesment_id, $user_id, 1, $assessment_level, $assessment_type);
+        
+        if(!property_exists($assessment->assesment, 'id')) {
+            
+            $this->show_404_custom();
+            
+        } else {
+            
+            if ((!$assessment)) {
+                $data['assessment'] = array();
+                $data['school_score_board'] = array();
+                $data['score_board'] = array();
+                $data['can_play'] = false;
+                $data['last_played'] = false;
+            } else {
+                
+                $obj_post = new Post_model();
+                
+                $assessment->assesment->assess_user_mark = $obj_post->get_user_assessment_marks($user_id, $assesment_id);
+            
+                $user_played_levels = array();
+                foreach($assessment->assesment->assess_user_mark as $user_marks) {
+                    $user_played_levels[] = $user_marks->level;
+                }
+                
+                $ar_assessment_levels = explode(',', $assessment->assesment->levels);
+                
+                $assessment->assesment->assessment_has_levels = FALSE;
+                
+                if($assessment->assesment->levels > 0) {
+                    $assessment->assesment->assessment_has_levels = TRUE;
+                    $unplayed_levels = array_diff($ar_assessment_levels, $user_played_levels);
+                    $assessment->assesment->next_level = min($unplayed_levels);
+                }
+                
+                $assessment->assesment->unplayed_levels = $unplayed_levels;
+                $assessment->assesment->ar_assessment_levels = $ar_assessment_levels;
+                $data['assessment'] = $assessment->assesment;
+                $data['school_score_board'] = $assessment->school_score_board;
+                $data['score_board'] = $assessment->score_board;
+                $data['can_play'] = $assessment->can_play;
+                $data['last_played'] = $assessment->last_played;
+            }
+
+            $s_content = $this->load->view('assessment', $data, true);
+
+            $str_title = WEBSITE_NAME . " | Quiz";
+
+            $meta_description = META_DESCRIPTION;
+            $keywords = KEYWORDS;
+
+            $ar_params = array(
+                "javascripts"           => $ar_js,
+                "css"                   => $ar_css,
+                "extra_head"            => $extra_js,
+                "title"                 => $str_title,
+                "description"           => $meta_description,
+                "keywords"              => $keywords,
+                "side_bar"              => '',
+                "target"                => "index",
+                "content"               => $s_content
+            );
+
+            $this->extra_params = $ar_params;
+        }
 //        var_dump();
 //        exit;
         

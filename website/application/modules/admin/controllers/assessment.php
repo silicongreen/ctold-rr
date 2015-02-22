@@ -138,6 +138,9 @@ class assessment extends MX_Controller {
     
     public function get_link($assessment_id) {
         //set table id in table open tag
+        
+        $this->load->config('huffas');
+        $assess_config = $this->config->config['assessment'];
         $assessment = new Assessments($assessment_id);
         
         $str_level = '';
@@ -145,7 +148,9 @@ class assessment extends MX_Controller {
             $str_level = '/1';
         }
         
-        $data['assess_url'] = base_url('quiz/' . sanitize($assessment->title) . '-' . $assessment->type . '-' . $assessment->id) . $str_level;
+        $url_prefix = $assess_config['url_prefix'][$assessment->type];
+        
+        $data['assess_url'] = base_url($url_prefix . sanitize($assessment->title) . '-' . $assessment->type . '-' . $assessment->id) . $str_level;
         
         $this->render('admin/assessment/_assessment_link', $data);
     }

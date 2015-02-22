@@ -4,6 +4,14 @@
 #content-wrapper {
     margin-bottom: 0 !important;
 }
+.icc-quiz-start-screen-stage-text{
+    color: #fff;
+    font-size: 50px;
+    position: absolute;
+    text-align: center;
+    top: 370px;
+    width: 45%;
+}
 .quiz-cointainer {
     background: url("/styles/layouts/tdsfront/image/icc-quiz-bg.jpg") no-repeat scroll 0 0 / 100% auto rgba(0, 0, 0, 0);
 }

@@ -2,6 +2,11 @@
 <link rel="stylesheet" href="<?php echo base_url('styles/layouts/tdsfront/css/quiz.css') ?>">
 <div style="width: 100%; min-height:250px;" class="quiz-cointainer">
     
+    <?php
+        $uris = explode('/', $_SERVER['REQUEST_URI']);
+        $cur_level = $uris[count($uris) - 1];
+    ?>
+    
     <div class="sports-inner-news yesPrint">
         <div class="icc-quiz-top-header">
             <img src="/styles/layouts/tdsfront/image/icc-quiz-top-header.png">
@@ -40,18 +45,21 @@
                     </div>
                     <div class="icc-quiz-btn-wrapper">
                         <button class="element-animation" type="button" id="start_assessment_play"></button>
+                        <div class="f2 icc-quiz-start-screen-stage-text">
+                            Stage <?php echo $cur_level; ?>
+                        </div>
                     </div>
                     <div class="icc-quiz-jersey-wrapper">
                         <img src="/styles/layouts/tdsfront/image/icc-quiz-jersey.png">
                     </div>
                 </div>                
-                <div class="clearfix"></div>                
+                <div class="clearfix"></div>
                 <div class="icc-quiz-start-screen-text">
                     <p class="f2">The stage is set for the greatest cricketers… and quizzers!! Win a whole set of Cricket gears for your school! 10 jerseys are up for grabs for the top ten high-scorers everyday as well. So make sure you play every day and win as many jerseys as you want.<br />
                         So what are you waiting for? Start playing!!</p>
-                </div>                
+                </div>
             </div>
-
+            
             <div id="icc-quiz-start-play-screen">
                 <div id="pre_assessment_details">
                     <div class="score-board-summary">
@@ -133,10 +141,7 @@
                             $ar_assess_levels = explode(',', $assessment->levels);
                             $ar_user_score_board = get_object_vars($assessment->user_score_board);
                             
-                            $userscore_data = get_icc_user_level_score();         
-                            
-                            $uris = explode('/', $_SERVER['REQUEST_URI']);
-                            $cur_level = $uris[count($uris) - 1];
+                            $userscore_data = get_icc_user_level_score($assessment->id);
                             ?>
 
                             <?php

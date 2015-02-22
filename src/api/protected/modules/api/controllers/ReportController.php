@@ -50,10 +50,7 @@ class ReportController extends Controller
                     $batch_id   = Yii::app()->user->batchId;
                     $student_id = Yii::app()->user->profileId;
                 }   
-                if(!$category_id)
-                {
-                    $category_id = 1;
-                }  
+                
                 $subjects = new Subjects();
                 $term_report = $subjects->getTermReport($batch_id, $student_id, $id);
                 if ($term_report) {

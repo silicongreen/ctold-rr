@@ -131,6 +131,18 @@ class ExamGroups extends CActiveRecord
         return parent::model($className);
     }
     
+    public function getAllExamsResultPublish($batch_id,$category_id=1)
+    {
+        $criteria = new CDbCriteria();
+        $criteria->select = 't.id,t.name,t.exam_date';
+        $criteria->compare('t.batch_id', $batch_id);
+        $criteria->compare('t.result_published', 1);
+        $criteria->compare('t.exam_category', $category_id);
+        $criteria->order = "t.created_at DESC";
+        $data = $this->findAll($criteria);
+        return $data;
+    }
+    
     public function getAllExamsBatch($batch_id)
     {
         $criteria = new CDbCriteria();
@@ -142,7 +154,7 @@ class ExamGroups extends CActiveRecord
         return $data;
     }
 
-    public function getTermExamsBatch($batch_id, $student_id)
+    public function getTermExamsBatch($batch_id, $student_id,$id=0)
     {
         $ar_sid = Yii::app()->db->createCommand()->select('subject_id')->from('students_subjects')->where('student_id = :sid', array(':sid' => $student_id))->queryAll();
         
@@ -163,7 +175,15 @@ class ExamGroups extends CActiveRecord
         $criteria = new CDbCriteria();
         $criteria->select = 't.*';
         $criteria->compare('t.batch_id', $batch_id);
-        $criteria->compare('t.exam_category', 3);
+        if($id>0)
+        {
+            $criteria->compare('t.id', $id);
+        }
+        else
+        {
+            $criteria->compare('t.exam_category', 3);
+        }    
+        
         $criteria->compare('t.result_published', 1);
         $criteria->compare('Subjects.batch_id', $batch_id);
         $criteria->compare('Subjects.no_exams', false);

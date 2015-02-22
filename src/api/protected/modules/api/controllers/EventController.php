@@ -23,7 +23,7 @@ class EventController extends Controller
     {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index','getsingleevent', 'readreminder', 'getuserreminder', 'acknowledge', 'meetingrequest', 'meetingstatus',
+                'actions' => array('index','addleavestudent','studentleavesparent','getsingleevent', 'readreminder', 'getuserreminder', 'acknowledge', 'meetingrequest', 'meetingstatus',
                     'getstudentparent', 'addmeetingrequest', 'addmeetingparent', 'getteacherparent',
                     'addleaveteacher','reportmanagerteacher', 'leavetype', 'teacherleaves', 'studentleaves', 'fees'),
                 'users' => array('@'),
@@ -258,6 +258,126 @@ class EventController extends Controller
             $response['status']['msg'] = "Bad Request";
         }    
     }
+    public function actionStudentLeavesParent()
+    {
+        $user_secret = Yii::app()->request->getPost('user_secret');
+        $student_id = Yii::app()->request->getPost('student_id');
+        if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isParent && $student_id)
+        {
+
+            $leave = new ApplyLeaveStudents();
+            $leaveobj = $leave->getStudentLeaveParent($student_id);
+
+            $leave = array();
+            $i = 0;
+            if ($leaveobj)
+                foreach ($leaveobj as $value)
+                {
+                   
+                    $leave[$i]['leave_start_date'] = $value->start_date;
+                    $leave[$i]['leave_end_date'] = $value->end_date;
+                    if (!$value->approving_teacher)
+                    {
+                        $leave[$i]['status'] = 2;
+                    }
+                    else if ($value->approved == 1)
+                    {
+                        $leave[$i]['status'] = 1;
+                    }
+                    else
+                    {
+                        $leave[$i]['status'] = 0;
+                    }
+                    $leave[$i]['created_at'] = date("Y-m-d", strtotime($value->created_at));
+                    $i++;
+                }
+             
+            $response['data']['today'] = date("Y-m-d");
+            $response['data']['leaves'] = $leave;
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "Success";
+        }
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    }
+    
+    public function actionAddLeaveStudent()
+    {
+        $user_secret = Yii::app()->request->getPost('user_secret');
+        $reason = Yii::app()->request->getPost('reason');
+        $start_date = Yii::app()->request->getPost('start_date');
+        $end_date = Yii::app()->request->getPost('end_date');
+        $student_id = Yii::app()->request->getPost('student_id');
+        if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isParent && $reason && $student_id && $start_date && $end_date )
+        {
+            
+            
+            $leave = new ApplyLeaveStudents();
+            $leave->school_id = Yii::app()->user->schoolId;
+            $leave->reason = $reason;
+            $leave->start_date = $start_date;
+            $leave->end_date = $end_date;
+            $leave->student_id = $student_id;
+            $leave->created_at = date("Y-m-d H:i:s");
+            $leave->updated_at = date("Y-m-d H:i:s");
+            $leave->save();
+            
+            //reminder code
+            $std = new Students();
+            $stddata = $std->findByPk($student_id);
+
+            $emsubject = new EmployeesSubjects();
+
+            $employess = $emsubject->getEmployee($stddata->batch_id);
+            if($employess)
+            {
+                $notifiation_ids = array();
+                $reminderrecipients = array();
+                foreach ($employess as $value)
+                {
+
+                    $reminder = new Reminders();
+                    $reminder->sender = Yii::app()->user->id;
+                    $reminder->subject = "Student Leave Apply Notice";
+                    $reminder->body = $stddata->first_name . "  apply for leave from " . $leave->start_date . " to ".$leave->end_date;
+                    $reminder->recipient = $value->user_id;
+                    $reminder->school_id = Yii::app()->user->schoolId;
+                    $reminder->rid = $leave->id;
+                    $reminder->rtype = 9;
+                    $reminder->created_at = date("Y-m-d H:i:s");
+
+                    $reminder->updated_at = date("Y-m-d H:i:s");
+                    $reminder->save();
+                    $reminderrecipients[] = $value->user_id;
+                    $notifiation_ids[] = $reminder->id;
+                }
+                if($notifiation_ids)
+                {
+                    $notifiation_id = implode(",", $notifiation_ids);
+                    $user_id = implode(",", $reminderrecipients);
+                    Settings::sendCurlNotification($user_id, $notification_id);
+                }
+            }    
+                
+            //reminder code  
+            
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "Success";
+            
+        }
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    }
 
     public function actionAddLeaveTeacher()
     {
@@ -279,12 +399,44 @@ class EventController extends Controller
                 $leave->start_date = $start_date;
                 $leave->end_date = $end_date;
                 $leave->is_half_day = 0;
-                $leave->approving_manager = $employeedata->
-                $leave->employee_leave_types_id = $employee_leave_types_id->reporting_manager_id;
+                $leave->approving_manager = $employeedata->reporting_manager_id;
+                $leave->employee_leave_types_id = $employee_leave_types_id;
                 $leave->employee_id = Yii::app()->user->profileId;
                 $leave->created_at = date("Y-m-d H:i:s");
                 $leave->updated_at = date("Y-m-d H:i:s");
                 $leave->save();
+                
+                //reminder
+                if(isset($leave->id))
+                {
+                    $notifiation_ids = array();
+                    $reminderrecipients = array();
+                    
+                    $reminder = new Reminders();
+                    $reminder->sender = Yii::app()->user->id;
+                    $reminder->subject = "Employee Leave Apply Notice";
+                    $reminder->body = $employeedata->first_name . "  apply for leave from " . $leave->start_date . " to ".$leave->end_date;
+                    $reminder->recipient = $employeedata->reporting_manager_id;
+                    $reminder->school_id = Yii::app()->user->schoolId;
+                    $reminder->rid = $leave->id;
+                    $reminder->rtype = 7;
+                    $reminder->created_at = date("Y-m-d H:i:s");
+
+                    $reminder->updated_at = date("Y-m-d H:i:s");
+                    $reminder->save();
+                    $reminderrecipients[] = $employeedata->reporting_manager_id;
+                    $notifiation_ids[] = $reminder->id;
+
+                    if($notifiation_ids)
+                    {
+                        $notifiation_id = implode(",", $notifiation_ids);
+                        $user_id = implode(",", $reminderrecipients);
+                        Settings::sendCurlNotification($user_id, $notification_id);
+                    }
+                }
+                
+                //reminder
+                
                 $response['status']['code'] = 200;
                 $response['status']['msg'] = "Success";
             }
@@ -311,7 +463,7 @@ class EventController extends Controller
         $datetime = Yii::app()->request->getPost('datetime');
         $parent_id = Yii::app()->request->getPost('parent_id');
         $student_id = Yii::app()->request->getPost('student_id');
-        if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isParent && $batch_id && $description && $datetime && $parent_id)
+        if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isParent && $student_id && $batch_id && $description && $datetime && $parent_id)
         {
 
             $meetingreq = new Meetingrequest();
@@ -321,6 +473,29 @@ class EventController extends Controller
             $meetingreq->parent_id = $student_id;
             $meetingreq->type = 2;
             $meetingreq->save();
+            
+            $guardian = new Guardians();
+            $guardianData = $guardian->findByPk(Yii::app()->user->profileId);
+            $employee = new Employees();
+            $techer_profile = $employee->findByPk($parent_id);
+            
+            if(isset($techer_profile->user_id) && isset($guardianData->first_name))
+            {
+                $reminder = new Reminders();
+                $reminder->sender = Yii::app()->user->id;
+                $reminder->subject = "New Meeting Request";
+                $reminder->body = "New Meeting Request Send from " . $guardianData->first_name . " at ".$datetime;
+                $reminder->recipient = $techer_profile->user_id;
+                $reminder->school_id = Yii::app()->user->schoolId;
+                $reminder->rid = $meetingreq->id;
+                $reminder->rtype = 12;
+                $reminder->created_at = date("Y-m-d H:i:s");
+
+                $reminder->updated_at = date("Y-m-d H:i:s");
+                $reminder->save();
+                
+                ///push notification
+            }
 
             $response['status']['code'] = 200;
             $response['status']['msg'] = "Success";
@@ -385,6 +560,31 @@ class EventController extends Controller
             $meetingreq->teacher_id = Yii::app()->user->profileId;
             $meetingreq->parent_id = $parent_id;
             $meetingreq->save();
+            
+            $employee = new Employees();
+            $techer_profile = $employee->findByPk(Yii::app()->user->profileId);
+            
+            $student = new Students();
+            $studentdata = $student->findByPk($parent_id);
+            
+            if(isset($studentdata->immediate_contact_id) && isset($techer_profile->first_name))
+            {
+                $reminder = new Reminders();
+                $reminder->sender = Yii::app()->user->id;
+                $reminder->subject = "New Meeting Request";
+                $reminder->body = "New Meeting Request Send from " . $techer_profile->first_name . " at ".$datetime;
+                $reminder->recipient = $studentdata->immediate_contact_id;
+                $reminder->school_id = Yii::app()->user->schoolId;
+                $reminder->rid = $meetingreq->id;
+                $reminder->rtype = 11;
+                $reminder->created_at = date("Y-m-d H:i:s");
+
+                $reminder->updated_at = date("Y-m-d H:i:s");
+                $reminder->save();
+                ///push notification
+            }
+            
+            
 
             $response['status']['code'] = 200;
             $response['status']['msg'] = "Success";

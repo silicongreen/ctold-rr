@@ -137,7 +137,7 @@ class TimetableEntries extends CActiveRecord {
         $criteria->select = 't.id, t.weekday_id';
         $date = date("Y-m-d");
         $time = date("H:i:s");
-        if($cur_day_key=='current')
+        if($call==1 && $cur_day_key=='current')
         {
             $cur_day_name = Settings::getCurrentDay($date);
             $cur_day_key = Settings::$ar_weekdays_key[$cur_day_name];

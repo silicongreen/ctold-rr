@@ -119,7 +119,7 @@ class EmployeesSubjects extends CActiveRecord
                     
                 ),
                 'employee' => array(
-                    'select' => 'employee.id,employee.first_name,employee.middle_name,employee.last_name',
+                    'select' => 'employee.id,employee.user_id,employee.first_name,employee.middle_name,employee.last_name',
                     'joinType' => "INNER JOIN",
                     
                 )
@@ -132,7 +132,6 @@ class EmployeesSubjects extends CActiveRecord
 
             return $obj_employee;
         }
-        
         public function getBatchId($employee_id)
         {
             $criteria = new CDbCriteria;

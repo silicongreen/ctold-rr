@@ -237,24 +237,16 @@ class HomeworkController extends Controller
 
 
                 $homework_data = $assignment->getOnlineExamList($batch_id, $student_id,$page_number,$page_size);
-                if ($homework_data)
+                $response['data']['total'] = $assignment->getOnlineExamTotal($batch_id, $student_id);
+                $has_next = false;
+                if ($response['data']['total'] > $page_number * $page_size)
                 {
-                    $response['data']['total'] = $assignment->getOnlineExamTotal($batch_id, $student_id);
-                    $has_next = false;
-                    if ($response['data']['total'] > $page_number * $page_size)
-                    {
-                        $has_next = true;
-                    }
-                    $response['data']['has_next'] = $has_next;
-                    $response['data']['homework'] = $homework_data;
-                    $response['status']['code'] = 200;
-                    $response['status']['msg'] = "Data Found";
+                    $has_next = true;
                 }
-                else
-                {
-                    $response['status']['code'] = 404;
-                    $response['status']['msg'] = "Data Not Found";
-                }
+                $response['data']['has_next'] = $has_next;
+                $response['data']['homework'] = $homework_data;
+                $response['status']['code'] = 200;
+                $response['status']['msg'] = "Data Found";
             }
             else
             {

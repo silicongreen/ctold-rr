@@ -291,6 +291,7 @@ class EventController extends Controller
                     $leave[$i]['created_at'] = date("Y-m-d", strtotime($value->created_at));
                     $i++;
                 }
+             
             $response['data']['today'] = date("Y-m-d");
             $response['data']['leaves'] = $leave;
             $response['status']['code'] = 200;
@@ -325,6 +326,46 @@ class EventController extends Controller
             $leave->created_at = date("Y-m-d H:i:s");
             $leave->updated_at = date("Y-m-d H:i:s");
             $leave->save();
+            
+            //reminder code
+            $std = new Students();
+            $stddata = $std->findByPk($student_id);
+
+            $emsubject = new EmployeesSubjects();
+
+            $employess = $emsubject->getEmployee($stddata->batch_id);
+            if($employess)
+            {
+                $notifiation_ids = array();
+                $reminderrecipients = array();
+                foreach ($employess as $value)
+                {
+
+                    $reminder = new Reminders();
+                    $reminder->sender = Yii::app()->user->id;
+                    $reminder->subject = "Student Leave Apply Notice";
+                    $reminder->body = $stddata->first_name . "  apply for leave from " . $leave->start_date . " to ".$leave->end_date;
+                    $reminder->recipient = $value->user_id;
+                    $reminder->school_id = Yii::app()->user->schoolId;
+                    $reminder->rid = $leave->id;
+                    $reminder->rtype = 9;
+                    $reminder->created_at = date("Y-m-d H:i:s");
+
+                    $reminder->updated_at = date("Y-m-d H:i:s");
+                    $reminder->save();
+                    $reminderrecipients[] = $value->user_id;
+                    $notifiation_ids[] = $reminder->id;
+                }
+                if($notifiation_ids)
+                {
+                    $notifiation_id = implode(",", $notifiation_ids);
+                    $user_id = implode(",", $reminderrecipients);
+                    Settings::sendCurlNotification($user_id, $notification_id);
+                }
+            }    
+                
+            //reminder code  
+            
             $response['status']['code'] = 200;
             $response['status']['msg'] = "Success";
             
@@ -364,6 +405,38 @@ class EventController extends Controller
                 $leave->created_at = date("Y-m-d H:i:s");
                 $leave->updated_at = date("Y-m-d H:i:s");
                 $leave->save();
+                
+                //reminder
+                if(isset($leave->id))
+                {
+                    $notifiation_ids = array();
+                    $reminderrecipients = array();
+                    
+                    $reminder = new Reminders();
+                    $reminder->sender = Yii::app()->user->id;
+                    $reminder->subject = "Employee Leave Apply Notice";
+                    $reminder->body = $employeedata->first_name . "  apply for leave from " . $leave->start_date . " to ".$leave->end_date;
+                    $reminder->recipient = $employeedata->reporting_manager_id;
+                    $reminder->school_id = Yii::app()->user->schoolId;
+                    $reminder->rid = $leave->id;
+                    $reminder->rtype = 7;
+                    $reminder->created_at = date("Y-m-d H:i:s");
+
+                    $reminder->updated_at = date("Y-m-d H:i:s");
+                    $reminder->save();
+                    $reminderrecipients[] = $employeedata->reporting_manager_id;
+                    $notifiation_ids[] = $reminder->id;
+
+                    if($notifiation_ids)
+                    {
+                        $notifiation_id = implode(",", $notifiation_ids);
+                        $user_id = implode(",", $reminderrecipients);
+                        Settings::sendCurlNotification($user_id, $notification_id);
+                    }
+                }
+                
+                //reminder
+                
                 $response['status']['code'] = 200;
                 $response['status']['msg'] = "Success";
             }

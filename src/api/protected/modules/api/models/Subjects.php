@@ -137,11 +137,11 @@ class Subjects extends CActiveRecord
         return parent::model($className);
     }
 
-    public function getTermReport($batch_id, $student_id)
+    public function getTermReport($batch_id, $student_id, $id = 0)
     {
 
         $examGroup = new ExamGroups();
-        $exams = $examGroup->getTermExamsBatch($batch_id,$student_id);
+        $exams = $examGroup->getTermExamsBatch($batch_id,$student_id,$id);
         $report_term = array();
         
         $objStudent = new Students();

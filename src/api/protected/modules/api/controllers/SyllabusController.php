@@ -73,12 +73,7 @@ class SyllabusController extends Controller {
             $term_id = Yii::app()->request->getPost('term');
             $batch_id = Yii::app()->request->getPost('batch_id');
 
-            if (empty($term_id) || !isset($term_id) || $term_id == '') {
-                $response['status']['code'] = 400;
-                $response['status']['msg'] = "Bad Request.";
-                echo CJSON::encode($response);
-                Yii::app()->end();
-            }
+            
 
             $response = array();
             if (Yii::app()->user->user_secret === $user_secret) {
@@ -95,6 +90,10 @@ class SyllabusController extends Controller {
                     $response['status']['msg'] = "Bad Request.";
                     echo CJSON::encode($response);
                     Yii::app()->end();
+                }
+                if(!$term_id)
+                {
+                    $term_id = 0;
                 }
 
                 $syllabus = new Syllabuses;
@@ -128,6 +127,7 @@ class SyllabusController extends Controller {
             $user_secret = Yii::app()->request->getPost('user_secret');
             $school_id = Yii::app()->request->getPost('school');
             $batch_id = Yii::app()->request->getPost('batch_id');
+            $category_id = Yii::app()->request->getPost('category_id');
 
             if (Yii::app()->user->user_secret === $user_secret) {
 
@@ -148,9 +148,13 @@ class SyllabusController extends Controller {
                 if (Yii::app()->user->isStudent) {
                     $batch_id = Yii::app()->user->batchId;
                 }
+                if(!$category_id)
+                {
+                    $category_id = 3;
+                }
 
                 $exam_category = new ExamGroups;
-                $exam_category = $exam_category->getExamCategory($school_id, $batch_id, 3);
+                $exam_category = $exam_category->getExamCategory($school_id, $batch_id, $category_id);
 
                 if (!empty($exam_category)) {
                     $response['data']['terms'] = $exam_category;

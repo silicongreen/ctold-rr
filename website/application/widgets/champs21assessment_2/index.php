@@ -38,54 +38,27 @@ class champs21assessment_2 extends widget
     }
 
     function run($ci_key, $assessment, $score_board, $can_play, $last_played, $school_score_board = NULL)
-    {   
-        $userscore_data = get_icc_user_level_score();
-        
-        $uris = explode('/', $_SERVER['REQUEST_URI']);
-        $pices = $uris[3];      $icc = 0;
-        if( is_array($userscore_data))
-        {   $utotal = 0;
-            foreach ($userscore_data as $udata)
-            {
-                $utotal += $udata->mark;
-                $icc++;
-            }
-        }
-        if($pices == null || $pices == "")
-        {
-            if($icc == 3)
-            {
-                redirect(base_url().$uris[1]."/".$uris[2]."/".$icc);
-            }
-            else
-            {
-                redirect(base_url().$uris[1]."/".$uris[2]."/1");
-            }
-        }
-        else
-        {
-            if($icc > 1 && $pices  != $icc)
-            {
-                redirect(base_url().$uris[1]."/".$uris[2]."/".$icc);
-            }
-            elseif($icc == 3)
-            {
-                $data['icc_utotal'] = "done";
-            }
-            else
-            {
-                $data['icc_utotal'] = "not";
-            }
-        }
-        
-        
-        
-        
+    {
         $this->CI->load->config("huffas");
         $assessment_config = $this->CI->config->config['assessment'];
+        $url_prefix = $assessment_config['url_prefix'][$assessment->type];
+        
+        $ar_uris = $this->CI->uri->segment_array();
+        
+        $redirect_url = '';
+        if(!empty($assessment->unplayed_levels) && !empty($assessment->next_level) ) {
+            $redirect_url = base_url($url_prefix . sanitize($assessment->title) . '-' . $assessment->type . '-' . $assessment->id) . '/' . $assessment->next_level;
+            
+        } elseif ( is_array($assessment->unplayed_levels) && empty($assessment->unplayed_levels) && empty($assessment->next_level) ) {
+            $redirect_url = base_url($url_prefix . sanitize($assessment->title) . '-' . $assessment->type . '-' . $assessment->id) . '/' . max($assessment->ar_assessment_levels);
+        }
+        
+        if( !empty($assessment->next_level) && (end($ar_uris) != $assessment->next_level )) {
+            redirect($redirect_url);
+        }
         
         $data['b_explanation_popup'] = FALSE;
-        
+
         if($assessment_config['auto_next'][strtolower($assessment_config['types'][$assessment->type])]){
             $data['b_explanation_popup'] = TRUE;
         }
@@ -96,11 +69,9 @@ class champs21assessment_2 extends widget
         $data['school_score_board'] = $school_score_board;
         $data['can_play'] = $can_play;
         $data['last_played'] = $last_played;
+        $data['icc_utotal'] = ( !empty($assessment->next_level) > 0 ) ? 'not' : 'done';
         
-        
-        
-        
-        $this->render($data);
+        $this->render($data); 
     }
 }
 

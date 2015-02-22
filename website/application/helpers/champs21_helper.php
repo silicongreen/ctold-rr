@@ -1074,9 +1074,10 @@ if(!function_exists('get_rand_images')){
 
 if(!function_exists('get_icc_user_level_score')){
     
-    function get_icc_user_level_score(){
+    function get_icc_user_level_score($assessment_id){
         
         $CI = &get_instance();
+        
         //echo get_free_user_session('id');exit;
         if(get_free_user_session('id'))
         {
@@ -1085,6 +1086,7 @@ if(!function_exists('get_icc_user_level_score')){
             $CI->db->select('*');
             $CI->db->from('assesment_mark');
             $CI->db->where('user_id',$user_id);
+            $CI->db->where('assessment_id', $assessment_id);
             $results = $CI->db->get()->result();
 
             if(count($results)>0)

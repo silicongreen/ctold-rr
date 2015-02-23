@@ -213,7 +213,7 @@ $(document).ready(function(){
             contentType: false,
             processData: false,
             success : function(data) {
-                console.log(data)
+                console.log(data);
             },
             error : function() {}
         });
@@ -280,7 +280,6 @@ $(document).ready(function(){
         $(".btn-assessment-submit").css('background-color', '#cccccc');
         $("#loader_icc").show();
         
-        
         $.ajax({
             url : $('#base_url').val() + 'save_assessment',
             type : 'post',
@@ -292,20 +291,19 @@ $(document).ready(function(){
             },
             success : function(data) {
                 
-                var site_url_icc = $('#base_url').val()
+                var site_url_icc = $('#base_url').val();
                 $('.icc-quiz-game-over .grand-score-board-summary-text').text(data.user_total_score);
                 $("#loader_icc").hide();
                 $(".btn-assessment-submit").css('display', 'none');
-                if(data.next_level ==0 )
-                {
-                    $(".replay-wrapper").hide()
-                    $(".congratulation_text").show();
-                }
-                else
-                {
-                    $(".replay-wrapper").find("a").attr("href", site_url_icc + 'quiz/' + data.assessment_title + '-' + data.assessment_type + '-' + data.assessment_id + "/" + data.next_level)
-                }
                 
+                if(data.next_level == 0 ) {
+                    
+                    $(".replay-wrapper").hide();
+                    $(".congratulation_text").show();
+                    
+                } else {
+                    $(".replay-wrapper").find("a").attr("href", site_url_icc + 'cricaddict/' + data.assessment_title + '-' + data.assessment_type + '-' + data.assessment_id + "/" + data.next_level);
+                }
                 
                 var quiz_levels = data.assessment_levels.split(',');
                 var levels_html = '';
@@ -318,48 +316,43 @@ $(document).ready(function(){
                             
                             var level_str = '';
                             var label_str = 'Complete '+(parseInt(level)-1);
+                            
                             if(data.next_level == level) {
                                 level_str = '/' + level;
                                 label_str = 'Play Now';
                             }
-                            if(level_str == "")
-                            {
+                            
+                            if(level_str == "") {
                                 levels_html += '<p class="f2">Stage ' + level + ' : <span id="level-' + level + '">0</span><span class="level-status">' + label_str + '</span></p>';
-                            }
-                            else
-                            {
+                            } else {
                                 levels_html += '<p class="f2">Stage ' + level + ' : <span id="level-' + level + '">0</span><a href="' + $('#base_url').val() + 'quiz/' + data.assessment_title + '-' + data.assessment_type + '-' + data.assessment_id + level_str + '"><span class="level-status">' + label_str + '</span></a></p>';
                             }
                             
                             i++;
-                        }
-                        else
-                        {
-                            if(level == cur_level)
-                            {
-                                
+                            
+                        } else {
+                            
+                            if(level == cur_level) {
                                 $('#level-' + cur_level).text(data.score);
                                 $('#level-' + cur_level).parent('p').find('a').replaceWith('<span class="level-status">Completed</span>');
                             }
                         }
-
                     });
-                }    
-                else
-                {
+                    
+                } else {
                     if( $('.icc-quiz-game-over .score-board-summary-text p').length == quiz_levels.length) {
                         quiz_levels.forEach(function(level) {
-                            if(level == cur_level)
-                            {   
+                            
+                            if(level == cur_level) {   
                                 $('#level-' + cur_level).text(data.score);
                                 $('#level-' + cur_level).parent('p').find('a').replaceWith('<span class="level-status">Completed</span>');
                             }
-                            if(data.next_level == level)
-                            {   
+                            
+                            if(data.next_level == level) {   
                                 var level_str = '/' + level;
                                 var label_str = 'Play Now';
                                 $('#level-' + data.next_level).text(0);
-                                $('#level-' + data.next_level).parent('p').find('span.level-status').replaceWith('<a href="' + $('#base_url').val() + 'quiz/' + data.assessment_title + '-' + data.assessment_type + '-' + data.assessment_id + level_str + '"><span class="level-status">' + label_str + '</span></a>');                            
+                                $('#level-' + data.next_level).parent('p').find('span.level-status').replaceWith('<a href="' + $('#base_url').val() + 'quiz/' + data.assessment_title + '-' + data.assessment_type + '-' + data.assessment_id + level_str + '"><span class="level-status">' + label_str + '</span></a>');
                             }
                         });
                     }
@@ -367,7 +360,6 @@ $(document).ready(function(){
                 
                 $('.icc-quiz-game-over .score-board-summary-text').append(levels_html);
                 
-                console.log(data)
             },
             error : function() {}
         });
@@ -464,7 +456,7 @@ $(document).ready(function(){
             last_q_time = get_ques_time($('.materials_and_byline:visible').attr('id').split('-')[1]) - parseInt(clock.time);
         }
         
-        total_time_taken += last_q_time
+        total_time_taken += last_q_time;
         
         $('.nxt-btn').removeClass('show-assessment-score');
         $('.nxt-btn').removeClass('red');
@@ -535,7 +527,6 @@ $(document).ready(function(){
                     }
                     
                 });
-                
             }
         });
         

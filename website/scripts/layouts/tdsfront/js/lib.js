@@ -1023,13 +1023,16 @@ $(document).ready(function(){
                                         eraseCookie('c21_icc_quiz_level');
                                     }
                                 },
-                                error : function() {}
+                                error : function(e) {console.log(e);}
+                                
+                            }).done(function() {
+                                
+                                if(paid_school_id > 0) {
+                                    window.location.href = $('#base_url').val() + 'paid_regiser/' + data.activaiton_code + '/' + paid_school_code;
+                                }
+                                
                             });                            
                         }
-                    }
-                    
-                    if(paid_school_id > 0) {
-                        window.location.href = $('#base_url').val() + 'paid_regiser/' + data.activaiton_code + '/' + paid_school_code;
                     }
                     
                 } else {

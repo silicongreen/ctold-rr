@@ -3633,6 +3633,9 @@ class home extends MX_Controller {
     public function save_assessment() {
         
         $this->load->config("huffas");
+        $this->load->config('user_register');
+        
+        $b_mulit_school_join = $this->config->config['multi_school_join'];
         $assessment_config = $this->config->config['assessment'];
         
         $response = array();
@@ -3670,6 +3673,7 @@ class home extends MX_Controller {
             
             if($add_to_school == 'false') {
                 
+                $user_school_data = ($b_mulit_school_join) ? $user_school->get_user_school($user_id, $school_id) : $user_school->get_user_school($user_id);
                 $assessment_school_mark = $obj_assessment_school_mark->find_assessment_school_mark($user_id, $assessment_id, 1, $user_school_data[0]->school_id);
                 
                 if(!$assessment_school_mark) {

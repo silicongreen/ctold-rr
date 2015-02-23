@@ -130,7 +130,7 @@
             </div>
 
             <div class="icc-quiz-game-over">
-                <div class="icc-quiz-game-over-header f2">Game Over</div>
+                <div class="icc-quiz-game-over-header f2"><?php echo ($icc_utotal == "done") ? 'You have already played for today. Visit tomorrow.' : 'Game Over' ?></div>
                 <div class="score-board-summary-wrapper" id="score_board_icc">
                     <div class="score-board-summary">
                         <div class="score-board-header f2">
@@ -226,7 +226,7 @@
                             
                             <?php  ?>                            
                         </div>
-                        <div class="score-add-to-school f2">Add score to my school   </div>
+                        <div id="<?php echo (!$b_score_added_to_school) ? 'score-add-to-school' : ''; ?>" class="score-add-to-school f2"><?php echo (!$b_score_added_to_school) ? 'Add score to my school' : 'Score added to your school'; ?></div>
                         <div id="full_leader_board" class="school-position f2">Leader Board</div>
                         <div class="invite-friends f5">
                             <img src="/styles/layouts/tdsfront/image/icc-quiz-invite.png">

@@ -366,7 +366,7 @@ $(document).ready(function(){
            
     });
     
-    $(document).on('click', '.score-add-to-school', function() {
+    $(document).on('click', '#score-add-to-school', function() {
         
         var assessment = get_user_score(total_time_taken);
         var cur_level = 0;
@@ -392,6 +392,8 @@ $(document).ready(function(){
                 } else {
                     $('.grand-score-board-summary-text').html(data.user_total_score);
                 }
+                $('.score-add-to-school').text('Score added to your school');
+                $('.score-add-to-school').attr('id', '');
             },
             error : function() {}
         });

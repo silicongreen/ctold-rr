@@ -53,7 +53,14 @@ class home extends MX_Controller {
             unset($_POST['school_id']);
             unset($_POST['grade_ids']);
             
-            if(!empty($activaiton_code) && !empty($paid_school_id)) {
+            if (empty($activaiton_code) && !empty($paid_school_id)) {
+                
+                $response['errors'][] = 'Invalid Activation Code.';
+                    
+                echo( json_encode($response));
+                exit;
+                
+            } elseif(!empty($activaiton_code) && !empty($paid_school_id)) {
                 
                 $this->db->dbprefix = '';
                 

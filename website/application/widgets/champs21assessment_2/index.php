@@ -40,7 +40,12 @@ class champs21assessment_2 extends widget
     function run($ci_key, $assessment, $score_board, $can_play, $last_played, $school_score_board = NULL)
     {
         $this->CI->load->config("huffas");
+        $this->load->config('user_register');
+        $user_id = get_free_user_session('id');
+        
+        $b_mulit_school_join = $this->config->config['multi_school_join'];
         $assessment_config = $this->CI->config->config['assessment'];
+        
         $url_prefix = $assessment_config['url_prefix'][$assessment->type];
         
         $ar_uris = $this->CI->uri->segment_array();
@@ -63,10 +68,22 @@ class champs21assessment_2 extends widget
             $data['b_explanation_popup'] = TRUE;
         }
         
+        $user_school = new User_school();
+        $obj_assessment_school_mark = new Assessment_school_mark();
+        
+        $user_school_data = ($b_mulit_school_join) ? $user_school->get_user_school($user_id, $school_id) : $user_school->get_user_school($user_id);
+        $assessment_school_mark = $obj_assessment_school_mark->find_assessment_school_mark($user_id, $assessment_id, 0, $user_school_data[0]->school_id);
+        
+        $b_score_added_to_school = FALSE;
+        if($assessment_school_mark !== false) {
+            $b_score_added_to_school = TRUE;
+        }
+        
         $data['ci_key'] = $ci_key;
         $data['assessment'] = $assessment;
         $data['score_board'] = $score_board;
         $data['school_score_board'] = $school_score_board;
+        $data['b_score_added_to_school'] = $b_score_added_to_school;
         $data['can_play'] = $can_play;
         $data['last_played'] = $last_played;
         $data['icc_utotal'] = ( !empty($assessment->next_level) > 0 ) ? 'not' : 'done';

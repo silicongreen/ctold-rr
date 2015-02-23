@@ -52,21 +52,27 @@ class Cmark extends CActiveRecord
         }
          
     }
-    public function getTopMark($id, $limit = 100, $user_id = NULL)
+    public function getTopMark($id, $limit = 100, $user_id = 0, $type = 0)
     {
         $criteria = new CDbCriteria();
-        $criteria->select = 't.mark,t.user_id,t.level,t.created_date,t.time_taken,t.no_played';
+        if($type == 2) {
+            $criteria->select = 't.user_id, SUM(t.mark) AS mark, t.level, t.created_date, SUM(t.time_taken) AS time_taken, SUM(t.no_played) AS no_played, SUM(t.avg_time_per_ques) AS avg_time_per_ques';
+            $criteria->group = 't.user_id';
+        } else{
+            $criteria->select = 't.mark AS mark, t.user_id, t.level, t.created_date, t.time_taken AS time_taken, t.no_played AS no_played';
+        }
+        
         $criteria->compare('assessment_id', $id);
         
         if(!empty($user_id) && ($user_id > 0)) {
             $criteria->compare('t.user_id', $user_id);
         }
         
-        $criteria->order = "t.mark DESC,t.time_taken ASC,t.no_played ASC, t.avg_time_per_ques ASC, t.created_date ASC";
+        $criteria->order = "mark DESC, time_taken ASC, no_played ASC, avg_time_per_ques ASC, t.created_date ASC";
         $criteria->limit = $limit;
         $criteria->with = array(
             'assessment' => array(
-                'select' => 'assessment.id,assessment.title,assessment.topic',
+                'select' => 'assessment.id, assessment.title, assessment.topic',
                 'with' =>array('question' => array(
                         'select' => 'question.mark'
                     ),
@@ -76,7 +82,7 @@ class Cmark extends CActiveRecord
                 )
             ),
             'freeUser' => array(
-                'select' => 'freeUser.first_name,freeUser.middle_name,freeUser.last_name,freeUser.email,freeUser.profile_image,freeUser.school_name'
+                'select' => 'freeUser.first_name, freeUser.middle_name, freeUser.last_name, freeUser.email, freeUser.profile_image, freeUser.school_name'
             )        
         );
         $data = $this->findAll($criteria);

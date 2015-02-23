@@ -369,16 +369,6 @@
                 <?php } ?>
                 <!-- Assessment -->
                 
-                <?php
-                    
-                    if( is_string($s_ad_image) && $s_ad_image != "" ) {
-                        echo $s_ad_image;
-                    } else if( is_array($s_ad_image) && $s_ad_image['visible'] && ($s_ad_image['position'] == 'bottom') ) {
-                        echo $s_ad_image['banner'];
-                    }
-                ?>
-                
-                <div class="clearfix"></div>
             </div>
             <?php else : ?>
             <div class="center">
@@ -691,6 +681,24 @@
 </div>
 <?php endif; ?>     
 <?php endif; ?>
+    
+    <div class="inner-container_related" style="margin: 20px; width: 96%;">
+        <div class="related_news_headline f2">
+            &nbsp;
+        </div>
+        <div class="related_post">
+            
+            <?php
+            if (is_string($s_ad_image) && $s_ad_image != "") {
+                echo $s_ad_image;
+            } else if (is_array($s_ad_image) && $s_ad_image['visible'] && ($s_ad_image['position'] == 'bottom')) {
+                echo $s_ad_image['banner'];
+            }
+            ?>
+                
+            <div class="clearfix"></div>
+        </div>
+    </div>
         
 <script type="text/javascript">
     

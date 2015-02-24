@@ -108,7 +108,7 @@ class DashboardController extends Controller
                 if(!$attendence_return)
                 {
                     
-                    $attendance_array = $attendance->getAbsentStudentMonth($date, $date, $student_id);
+                    $attendance_array = $objattendence->getAbsentStudentMonth($date, $date, $student_id);
                     if($attendance_array['late'])
                     {
                        $response['data']['attendence'] =  $today_text." ".$std_data->first_name." ".$std_data->last_name." is Late"; 
@@ -131,7 +131,8 @@ class DashboardController extends Controller
             
             //attendence end
             
-            
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "Data Found";
             
         }
         else
@@ -139,6 +140,8 @@ class DashboardController extends Controller
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";   
         }
+        echo CJSON::encode($response);
+        Yii::app()->end();
     }        
     
     public function actionIndex(){

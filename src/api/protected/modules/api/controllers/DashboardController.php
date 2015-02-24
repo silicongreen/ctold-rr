@@ -90,7 +90,7 @@ class DashboardController extends Controller
                 {
                     if($date!=date("Y-m-d"))
                     {
-                        $today_text = $weekday;
+                        $today_text = Settings::$ar_weekdays[$weekday];
                     } 
                     $response['data']['attendence'] = $today_text." is weekend";
                     $attendence_return = true;

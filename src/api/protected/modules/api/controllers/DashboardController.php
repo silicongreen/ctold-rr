@@ -146,7 +146,7 @@ class DashboardController extends Controller
             //homework start
             
             $assignment = new Assignments();
-            $homework_data = $assignment->getAssignment($batch_id, $student_id, "", 1, $subject_id, 100, 1,$date);
+            $homework_data = $assignment->getAssignment($batch_id, $student_id, "", 1, NULL, 100, 1,$date);
             $response['data']['homework'] = $homework_data; 
             
             //homework end

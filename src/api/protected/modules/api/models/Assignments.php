@@ -175,7 +175,7 @@ class Assignments extends CActiveRecord
             
             if($duedate)
             {
-                $criteria->compare('date(t.duedate)', $duedate);
+                $criteria->compare('DATE(t.duedate)', $duedate);
             }
             
             if($id>0)

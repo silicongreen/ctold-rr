@@ -236,7 +236,7 @@ class Subjects extends CActiveRecord
                     if($student_result['Examgrade'])
                     $report_term_merge['exam_subjects'][$i]['credit_points']= $student_result['Examgrade']->credit_points;
                     
-                    $report_term_merge['exam_subjects'][$i]['your_percent'] = ($student_result->marks / $examvalue->maximum_marks) * 100;
+                    $report_term_merge['exam_subjects'][$i]['your_percent'] = (int)($student_result->marks / $examvalue->maximum_marks) * 100;
                 
                     $total_mark = $total_mark+$student_result->marks;
                     if($student_result['Examgrade'])
@@ -335,7 +335,7 @@ class Subjects extends CActiveRecord
                             
                             
                             $report_class_test_merge['subject_exam']['class_test'][$i]['your_mark'] = $student_result->marks;
-                            $report_class_test_merge['subject_exam']['class_test'][$i]['your_percent'] = ($student_result->marks / $exam_details->maximum_marks) * 100;
+                            $report_class_test_merge['subject_exam']['class_test'][$i]['your_percent'] = (int)($student_result->marks / $exam_details->maximum_marks) * 100;
 
                             $report_class_test_merge['subject_exam']['class_test'][$i]['topic'] = $exam_details['Examgroup']->topic;;
                             $report_class_test_merge['subject_exam']['class_test'][$i]['max_mark'] = $max_mark;
@@ -362,7 +362,7 @@ class Subjects extends CActiveRecord
                             
                             
                             $report_class_test_merge['subject_exam']['project'][$j]['your_mark'] = $student_result->marks;
-                            $report_class_test_merge['subject_exam']['project'][$j]['your_percent'] = ($student_result->marks / $exam_details->maximum_marks) * 100;
+                            $report_class_test_merge['subject_exam']['project'][$j]['your_percent'] = (int)($student_result->marks / $exam_details->maximum_marks) * 100;
 
                             $report_class_test_merge['subject_exam']['project'][$j]['topic'] = $exam_details['Examgroup']->topic;;
                             $report_class_test_merge['subject_exam']['project'][$j]['max_mark'] = $max_mark;

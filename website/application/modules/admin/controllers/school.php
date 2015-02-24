@@ -189,41 +189,46 @@ class school extends MX_Controller
         {
             $obj_user_school = new userschools();
             $obj_user_school = $obj_user_school->get_user_submitted_school($user_created_school_id);
-            $obj_free_user = new Free_users($obj_user_school[0]->freeuser_id);
             
-            $user_school = new User_school();
-            $user_school->user_id = $obj_user_school[0]->freeuser_id;
-            $user_school->school_id = $obj_school->id;
-            $user_school->approved_date = date('Y-m-d');
-            $user_school->approved_by = 'admin';
-            $user_school->is_approved = '0';
-            $user_school->grade = $obj_free_user->grade_ids;
-            $user_school->type = $obj_free_user->user_type;
-            $user_school->save();
+            if($obj_user_school !== FALSE) {
+                $obj_free_user = new Free_users($obj_user_school[0]->freeuser_id);
             
-            $temp_user_school_score = new Assessment_school_mark_temp();
-            $temp_user_school_score = $temp_user_school_score->find_assessment_school_mark_all(0, 0, $user_created_school_id);
-            
-            $assessment_school_mark_temp = array();
-            foreach($temp_user_school_score as $am) {
+                $user_school = new User_school();
+                $user_school->user_id = $obj_user_school[0]->freeuser_id;
+                $user_school->school_id = $obj_school->id;
+                $user_school->approved_date = date('Y-m-d');
+                $user_school->approved_by = 'admin';
+                $user_school->is_approved = '0';
+                $user_school->grade = $obj_free_user->grade_ids;
+                $user_school->type = $obj_free_user->user_type;
+                $user_school->save();
 
-                $assessment_school_mark_temp_data['user_id'] = $am->user_id;
-                $assessment_school_mark_temp_data['assessment_id'] = $am->assessment_id;
-                $assessment_school_mark_temp_data['mark'] = $am->mark;
-                $assessment_school_mark_temp_data['level'] = $am->level;
-                $assessment_school_mark_temp_data['school_id'] = $obj_school->id;
-                $assessment_school_mark_temp_data['created_date'] = $am->created_date;
-                $assessment_school_mark_temp_data['time_taken'] = $am->time_taken;
-                $assessment_school_mark_temp_data['avg_time_per_ques'] = $am->avg_time_per_ques;
-                $assessment_school_mark_temp_data['no_played'] = $am->no_played;
+                $temp_user_school_score = new Assessment_school_mark_temp();
+                $temp_user_school_score = $temp_user_school_score->find_assessment_school_mark_all(0, 0, $user_created_school_id);
+                
+                if($temp_user_school_score !== FALSE) {
+                    $assessment_school_mark_temp = array();
+                    foreach($temp_user_school_score as $am) {
 
-                $assessment_school_mark_temp[] = $assessment_school_mark_temp_data;
+                        $assessment_school_mark_temp_data['user_id'] = $am->user_id;
+                        $assessment_school_mark_temp_data['assessment_id'] = $am->assessment_id;
+                        $assessment_school_mark_temp_data['mark'] = $am->mark;
+                        $assessment_school_mark_temp_data['level'] = $am->level;
+                        $assessment_school_mark_temp_data['school_id'] = $obj_school->id;
+                        $assessment_school_mark_temp_data['created_date'] = $am->created_date;
+                        $assessment_school_mark_temp_data['time_taken'] = $am->time_taken;
+                        $assessment_school_mark_temp_data['avg_time_per_ques'] = $am->avg_time_per_ques;
+                        $assessment_school_mark_temp_data['no_played'] = $am->no_played;
+
+                        $assessment_school_mark_temp[] = $assessment_school_mark_temp_data;
+                    }
+
+                    $this->db->insert_batch('assessment_school_mark', $assessment_school_mark_temp);
+
+                    $this->db->where('temp_school_id', $user_created_school_id);
+                    $this->db->delete('assessment_school_mark_temp');
+                }
             }
-
-            $this->db->insert_batch('assessment_school_mark', $assessment_school_mark_temp);
-            
-            $this->db->where('temp_school_id', $user_created_school_id);
-            $this->db->delete('assessment_school_mark_temp');
             
             echo "<script>parent.oTable.fnClearTable(true); parent.$.fancybox.close();</script>";
         }

@@ -136,6 +136,39 @@ class Subjects extends CActiveRecord
     {
         return parent::model($className);
     }
+    
+    public function getSubject($batch_id,$student_id)
+    {
+        $criteria = new CDbCriteria();
+        $criteria->select = 't.name,t.id';
+        $criteria->compare('t.batch_id', $batch_id);
+        $criteria->compare('t.is_deleted', 0);
+        $criteria->order = "t.name desc";
+        $data_subject = $this->findAll($criteria);
+        $stsub = new StudentsSubjects();
+        $student_subject = $stsub->getStudentSubject($student_id);
+        $subject_array = array();
+        $i = 0;
+        if($data_subject)
+        {
+            foreach($data_subject as $value)
+            {
+                $subject_array[$i]['name'] = $value->name;
+                $subject_array[$i]['id'] = $value->id;
+                $i++;
+            }    
+        } 
+        if($student_subject)
+        {
+            foreach($student_subject as $value)
+            {
+                $subject_array[$i]['name'] = $value->name;
+                $subject_array[$i]['id'] = $value->id;
+                $i++;
+            }    
+        } 
+        return $subject_array;
+    }        
 
     public function getTermReport($batch_id, $student_id, $id = 0)
     {

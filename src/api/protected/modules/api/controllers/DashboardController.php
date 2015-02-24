@@ -201,11 +201,8 @@ class DashboardController extends Controller
             
             $cur_day_name = Settings::getCurrentDay($tommmorow);
             $day_id = Settings::$ar_weekdays_key[$cur_day_name];
-            echo $day_id;
-            echo $batch_id;
-            echo $school_id;
             $time_table = new TimetableEntries;
-            $time_table = $time_table->getTimeTables($school_id, "", true, $batch_id,$day_id);
+            $time_table = $time_table->getTimeTables($school_id, $tommmorow, true, $batch_id,$day_id);
             $response['data']['time_table'] = array();
             if($time_table)
             {

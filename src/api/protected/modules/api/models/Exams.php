@@ -183,10 +183,7 @@ class Exams extends CActiveRecord {
         $criteria = new CDbCriteria;
 
         $criteria->select = 't.id, t.start_time, t.subject_id, t.end_time';
-        if($tommmorow)
-        {
-            $criteria->compare('DATE(t.start_time)', $tommmorow);
-        }
+        
 
         $criteria->with = array(
             'Subjects' => array(
@@ -231,7 +228,7 @@ class Exams extends CActiveRecord {
         else if($tommmorow)
         {
             $criteria->addCondition(
-                "(Examgroup.batch_id = :batch_id AND Examgroup.school_id = :school_id)
+                "DATE(t.start_time) = :start_time AND (Examgroup.batch_id = :batch_id AND Examgroup.school_id = :school_id)
                  AND (
                         (
                         Subjects.elective_group_id IS NULL
@@ -246,7 +243,8 @@ class Exams extends CActiveRecord {
                         AND electiveGroup.school_id = :school_id
                     )
                  )"
-            ); 
+            );
+            $params[':start_time'] = $tommmorow;
             $params[':school_id'] = $school_id;
             $params[':batch_id'] = $batch_id;
             $params[':student_id'] = $student_id;  

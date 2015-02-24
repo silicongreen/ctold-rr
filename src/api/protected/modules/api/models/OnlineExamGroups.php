@@ -346,7 +346,7 @@ class OnlineExamGroups extends CActiveRecord
         } 
         
         
-        public function getOnlineExamList($batch_id,$student_id,$page_number,$page_size)
+        public function getOnlineExamList($batch_id,$student_id,$page_number,$page_size,$created_at="")
         {
             $cur_date = date("Y-m-d");
             $criteria = new CDbCriteria();
@@ -354,6 +354,10 @@ class OnlineExamGroups extends CActiveRecord
             $criteria->compare('t.batch_id', $batch_id);
             $criteria->compare('t.is_deleted', 0);
             $criteria->compare('t.is_published', 1);
+            if($created_at)
+            {
+                $criteria->compare('DATE(t.created_at)', $created_at); 
+            }
             $criteria->addCondition("DATE(start_date) <= '".$cur_date."' ");
             //$criteria->addCondition("DATE(end_date) >= '".$cur_date."' ");
             //$criteria->addCondition("examgiven.student_id != '".$student_id."' ");

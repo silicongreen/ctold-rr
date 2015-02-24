@@ -356,7 +356,7 @@ class Events extends CActiveRecord {
         return $formatted_acks;
     }
 
-    public function getAcademicCalendar($school_id, $from_date, $to_date = NULL, $batch_id = null, $origin = 0, $page_no = 1, $page_size = 10, $b_count = false) {
+    public function getAcademicCalendar($school_id, $from_date, $to_date = NULL, $batch_id = null, $origin = 0, $page_no = 1, $page_size = 10, $b_count = false,$not_use_origin=false) {
 
         $criteria = new CDbCriteria;
         $criteria->select = 't.id, t.title, t.description, t.start_date';
@@ -387,8 +387,11 @@ class Events extends CActiveRecord {
 
         $criteria->addCondition('(eventCategory.is_club is NULL or  eventCategory.is_club != 1)');
 
-        $extra_condition = Settings::$ar_event_origins[$origin];
-        $criteria->addCondition("{$extra_condition['condition']}");
+        if(!$not_use_origin)
+        {
+            $extra_condition = Settings::$ar_event_origins[$origin];
+            $criteria->addCondition("{$extra_condition['condition']}");
+        }
 
         //$criteria->compare('eventCategory.status', 1);
         $criteria->compare('t.school_id', $school_id);

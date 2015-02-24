@@ -36,13 +36,15 @@ class DashboardController extends Controller
         $date = Yii::app()->request->getPost('date');
         $date = (!empty($date)) ? $date : \date('Y-m-d', \time());
         $student_id = Yii::app()->request->getPost('student_id');
-        $student_user_id = Yii::app()->request->getPost('student_user_id');
-        if(Yii::app()->user->user_secret === $user_secret && ( Yii::app()->user->isStudent || (Yii::app()->user->isParent && $student_id && $student_user_id)))
+        $batch_id = Yii::app()->request->getPost('batch_id');
+        if(Yii::app()->user->user_secret === $user_secret && ( Yii::app()->user->isStudent || (Yii::app()->user->isParent && $student_id && $batch_id)))
         {
             if (Yii::app()->user->isStudent)
             {
                 $student_id = Yii::app()->user->profileId;
+                $batch_id = Yii::app()->user->batchId;
             }
+            
             $stdObject = new Students();
             $std_data = $stdObject->findByPk($student_id);
             $response = array();
@@ -90,7 +92,7 @@ class DashboardController extends Controller
                 {
                     if($date!=date("Y-m-d"))
                     {
-                        $today_text = Settings::$ar_weekdays[$weekday];
+                        $today_text = Settings::$ar_weekdays[$weekday]."(".$ar_weekdays.")";
                     } 
                     $response['data']['attendence'] = $today_text." is weekend";
                     $attendence_return = true;
@@ -130,6 +132,24 @@ class DashboardController extends Controller
             } 
             
             //attendence end
+            
+            //Notice start
+            $newsobj = new News();
+            $notice = $newsobj->getNews($school_id, $date, $date);
+            $response['data']['notice'] = array();
+            if($notice)
+            {
+                $response['data']['notice'] = $notice; 
+            }
+            //Notice end
+            
+            //homework start
+            
+            $assignment = new Assignments();
+            $homework_data = $assignment->getAssignment($batch_id, $student_id, "", 1, $subject_id, 100, 1,$date);
+            $response['data']['homework'] = $homework_data; 
+            
+            //homework end
             
             $response['status']['code'] = 200;
             $response['status']['msg'] = "Data Found";

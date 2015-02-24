@@ -320,7 +320,10 @@ class HomeworkController extends Controller
                 }
                 else
                 {
-                    $response['status']['code'] = 404;
+                    $response['data']['total'] = 0;
+                    $response['data']['has_next'] = false;
+                    $response['data']['homework'] = array();
+                    $response['status']['code'] = 200;
                     $response['status']['msg'] = "Data Not Found";
                 }
             }
@@ -487,7 +490,10 @@ class HomeworkController extends Controller
                 }
                 else
                 {
-                    $response['status']['code'] = 404;
+                    $response['data']['total'] = 0;
+                    $response['data']['has_next'] = false;
+                    $response['data']['homework'] = array();
+                    $response['status']['code'] = 200;
                     $response['status']['msg'] = "Data Not Found";
                 }
             }
@@ -582,7 +588,10 @@ class HomeworkController extends Controller
             }
             else
             {
-                $response['status']['code'] = 404;
+                $response['data']['total'] = 0;
+                $response['data']['has_next'] = false;
+                $response['data']['homework'] = array();
+                $response['status']['code'] = 200;
                 $response['status']['msg'] = "Data Not Found";
             }
         }

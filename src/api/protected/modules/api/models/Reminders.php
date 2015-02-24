@@ -128,6 +128,7 @@ class Reminders extends CActiveRecord
             $criteria->compare('rtype', $rtype);
             $criteria->compare('is_deleted_by_sender', 0);
             $criteria->compare('is_deleted_by_recipient', 0);
+            
             $criteria->order = "created_at DESC";
             $obj_reminder = $this->findAll($criteria);
             return $obj_reminder;
@@ -144,13 +145,18 @@ class Reminders extends CActiveRecord
             $data = $this->find($criteria);
             return $data->total;
         } 
-        public function getUserReminderNew($user_id,$page_number,$page_size)
+        public function getUserReminderNew($user_id,$page_number,$page_size,$created_at="",$rtype="")
         {
             $criteria = new CDbCriteria;
             $criteria->select = 't.id,t.subject,t.body,t.rtype,t.rid,t.is_read';
             $criteria->compare('recipient', $user_id);
             $criteria->compare('is_deleted_by_sender', 0);
             $criteria->compare('is_deleted_by_recipient', 0);
+            if($created_at && $rtype)
+            {
+               $criteria->compare('DATE(created_at)', $created_at); 
+               $criteria->compare('rtype', $rtype);
+            }
             $criteria->order = "created_at DESC";
             $start = ($page_number-1)*$page_size;
             $criteria->limit = $page_size;

@@ -48,7 +48,7 @@ class DashboardController extends Controller
             $stdObject = new Students();
             $std_data = $stdObject->findByPk($student_id);
             $response = array();
-            $school_id = Yii::app()->request->getPost('school');
+            $school_id =  Yii::app()->user->schoolId;
             $response['data']['current_date'] = date("Y-m-d");
             
             

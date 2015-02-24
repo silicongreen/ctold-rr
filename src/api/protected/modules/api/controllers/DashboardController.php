@@ -63,6 +63,7 @@ class DashboardController extends Controller
             
             
             //attendence start
+            $objattendence = new Attendances();
             $today_text = "Today";
             if($date!=date("Y-m-d"))
             {
@@ -83,7 +84,7 @@ class DashboardController extends Controller
             
             if(!$attendence_return)
             {
-                $weekend_array = $attendance->getWeekend($school_id);
+                $weekend_array = $objattendence->getWeekend($school_id);
                 $weekday = date("w",  strtotime($date));
                 if (in_array($weekday, $weekend_array))
                 {
@@ -106,7 +107,7 @@ class DashboardController extends Controller
                 }
                 if(!$attendence_return)
                 {
-                    $objattendence = new Attendances();
+                    
                     $attendance_array = $attendance->getAbsentStudentMonth($date, $date, $student_id);
                     if($attendance_array['late'])
                     {

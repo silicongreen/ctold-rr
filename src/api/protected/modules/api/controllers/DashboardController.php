@@ -92,7 +92,7 @@ class DashboardController extends Controller
                 {
                     if($date!=date("Y-m-d"))
                     {
-                        $today_text = Settings::$ar_weekdays[$weekday]."(".$date.")";
+                        $today_text = ucfirst(Settings::$ar_weekdays[$weekday])."(".$date.")";
                     } 
                     $response['data']['attendence'] = $today_text." is weekend";
                     $attendence_return = true;
@@ -150,10 +150,22 @@ class DashboardController extends Controller
             
             
             $assignment = new Assignments();
-            $homework_data = $assignment->getAssignment($batch_id, $student_id, "", 1, NULL, 100, 1,0,$tommmorow);
+            $homework_data = $assignment->getAssignment($batch_id, $student_id, "", 1, NULL, 10, 1,0,$tommmorow);
             $response['data']['homework'] = $homework_data; 
             
             //homework end
+            
+            //Quiz start
+            $onlineExamObj = new OnlineExamGroups();
+            $onlineexamData = $onlineExamObj->getOnlineExamList($batch_id, $student_id, 1, 10,$date);
+            $response['data']['quiz'] = $onlineexamData; 
+            //Quiz End
+            
+            //start_event
+            $objEvent = new Events();
+            $event_data = $objEvent->getAcademicCalendar($school_id, $tommmorow, $tommmorow, $batch_id, 0, 1, 10, false, true);
+            $response['data']['event'] = $event_data;
+            //end_event
             
             $response['status']['code'] = 200;
             $response['status']['msg'] = "Data Found";

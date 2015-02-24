@@ -145,8 +145,10 @@ class DashboardController extends Controller
             
             //homework start
             
+            $tommmorow = date('Y-m-d',strtotime($date . "+1 days"));
+            
             $assignment = new Assignments();
-            $homework_data = $assignment->getAssignment($batch_id, $student_id, "", 1, NULL, 100, 1,$date);
+            $homework_data = $assignment->getAssignment($batch_id, $student_id, "", 1, NULL, 100, 1,$tommmorow);
             $response['data']['homework'] = $homework_data; 
             
             //homework end

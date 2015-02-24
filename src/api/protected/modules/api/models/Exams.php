@@ -178,11 +178,15 @@ class Exams extends CActiveRecord {
         return $data;
     }
 
-    public function getExamTimeTable($school_id = null, $batch_id = null, $student_id = null,$exam_id=null) {
+    public function getExamTimeTable($school_id = null, $batch_id = null, $student_id = null,$exam_id=null,$tommmorow="") {
 
         $criteria = new CDbCriteria;
 
         $criteria->select = 't.id, t.start_time, t.subject_id, t.end_time';
+        if($tommmorow)
+        {
+            $criteria->compare('DATE(t.start_time)', $tommmorow);
+        }
 
         $criteria->with = array(
             'Subjects' => array(
@@ -223,6 +227,29 @@ class Exams extends CActiveRecord {
             $params[':school_id'] = $school_id;
             $params[':batch_id'] = $batch_id;
             $params[':student_id'] = $student_id;
+        }
+        else if($tommmorow)
+        {
+            $criteria->addCondition(
+                "(Examgroup.batch_id = :batch_id AND Examgroup.school_id = :school_id)
+                 AND (
+                        (
+                        Subjects.elective_group_id IS NULL
+                        AND Subjects.no_exams = '0'
+                        AND Subjects.is_deleted = '0'
+                        AND Subjects.school_id = :school_id
+                    )
+                    OR (
+                        studentSubject.student_id = :student_id
+                        AND studentSubject.batch_id = :batch_id
+                        AND electiveGroup.is_deleted = '0'
+                        AND electiveGroup.school_id = :school_id
+                    )
+                 )"
+            ); 
+            $params[':school_id'] = $school_id;
+            $params[':batch_id'] = $batch_id;
+            $params[':student_id'] = $student_id;  
         }
         else
         {

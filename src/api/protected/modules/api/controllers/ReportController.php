@@ -20,7 +20,7 @@ class ReportController extends Controller
     {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index','allexam', 'Getfullreport','getexamreport','acknowledge'),
+                'actions' => array('index','classtestreport','allexam', 'Getfullreport','getexamreport','acknowledge'),
                 'users' => array('*'),
             ),
             array('deny', // deny all users
@@ -113,6 +113,57 @@ class ReportController extends Controller
                     $response['status']['code'] = 200;
                     $response['status']['msg'] = "EXAM_ROUTINE_FOUND";
                 }  
+            }
+            else
+            {
+                $response['status']['code'] = 403;
+                $response['status']['msg'] = "Access Denied.";
+            }
+        }
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    }
+    
+    public function actionClassTestReport()
+    {
+        if (isset($_POST) && !empty($_POST))
+        {
+            $user_secret = Yii::app()->request->getPost('user_secret');
+            $response = array();
+            if (Yii::app()->user->user_secret === $user_secret && ( Yii::app()->user->isStudent || (Yii::app()->user->isParent 
+                   && Yii::app()->request->getPost('batch_id') && Yii::app()->request->getPost('student_id') )
+                    || (Yii::app()->user->isTeacher  && Yii::app()->request->getPost('batch_id')  && Yii::app()->request->getPost('student_id'))))
+            {
+                if(Yii::app()->user->isParent || Yii::app()->user->isTeacher)
+                {
+                    $batch_id   = Yii::app()->request->getPost('batch_id');
+                    $student_id = Yii::app()->request->getPost('student_id');
+                }
+                else
+                {
+                    $batch_id   = Yii::app()->user->batchId;
+                    $student_id = Yii::app()->user->profileId;
+                }    
+                $subjects = new Subjects();
+                $exam_data = $subjects->getBatchSubjectClassTestProjectReport($batch_id, $student_id);
+                
+                if ($exam_data || $term_report)
+                {
+                    $response['data']['class_test_report']    = $exam_data;
+                    $response['status']['code']       = 200;
+                    $response['status']['msg']        = "Data Found";
+                }
+                else
+                {
+                    $response['data']['class_test_report']    = array();
+                    $response['status']['code']       = 200;
+                    $response['status']['msg']        = "Data Not Found";
+                }    
             }
             else
             {

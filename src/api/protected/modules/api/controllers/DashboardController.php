@@ -22,7 +22,7 @@ class DashboardController extends Controller
     {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions'=>array('index'),
+                'actions'=>array('index','gethome'),
                 'users'=>array('*'),
             ),
             array('deny',  // deny all users
@@ -30,6 +30,115 @@ class DashboardController extends Controller
             ),
         );
     }
+    public function actionGetHome()
+    {
+        $user_secret = Yii::app()->request->getPost('user_secret');
+        $date = Yii::app()->request->getPost('date');
+        $date = (!empty($date)) ? $date : \date('Y-m-d', \time());
+        $student_id = Yii::app()->request->getPost('student_id');
+        $student_user_id = Yii::app()->request->getPost('student_user_id');
+        if(Yii::app()->user->user_secret === $user_secret && ( Yii::app()->user->isStudent || (Yii::app()->user->isParent && $student_id && $student_user_id)))
+        {
+            if (Yii::app()->user->isStudent)
+            {
+                $student_id = Yii::app()->user->profileId;
+            }
+            $stdObject = new Students();
+            $std_data = $stdObject->findByPk($student_id);
+            $response = array();
+            $school_id = Yii::app()->request->getPost('school');
+            $response['data']['current_date'] = date("Y-m-d");
+            
+            
+            
+            $lastvisited = new LastVisited();
+            $last_visited = $lastvisited->getLastVisited();
+            $lastvisited->addLastVisited();
+            
+            if(!$last_visited)
+            {
+              $last_visited = "";  
+            }
+            $response['data']['last_visited'] = $last_visited;
+            
+            
+            //attendence start
+            $today_text = "Today";
+            if($date!=date("Y-m-d"))
+            {
+                $today_text = "At ".$date;
+            }
+            $attendence_return = false;
+            $holiday = new Events();
+            $holiday_array = $holiday->getHolidayMonth($date, $date, $school_id);
+            if($holiday_array)
+            {
+               if($date!=date("Y-m-d"))
+               {
+                  $today_text = $date;
+               }
+               $response['data']['attendence'] = $today_text." is Holiday (".$holiday_array[0]['title'].")"; 
+               $attendence_return = true;
+            }
+            
+            if(!$attendence_return)
+            {
+                $weekend_array = $attendance->getWeekend($school_id);
+                $weekday = date("w",  strtotime($date));
+                if (in_array($weekday, $weekend_array))
+                {
+                    if($date!=date("Y-m-d"))
+                    {
+                        $today_text = $weekday;
+                    } 
+                    $response['data']['attendence'] = $today_text." is weekend";
+                    $attendence_return = true;
+                }
+            }
+            if(!$attendence_return)
+            {
+                $leave = new ApplyLeaveStudents();
+                $leave_array = $leave->getleaveStudentMonth($date, $date, $student_id);
+                if($leave_array)
+                {
+                   $response['data']['attendence'] = $today_text." ".$std_data->first_name." ".$std_data->last_name." on leave"; 
+                   $attendence_return = true;
+                }
+                if(!$attendence_return)
+                {
+                    $objattendence = new Attendances();
+                    $attendance_array = $attendance->getAbsentStudentMonth($date, $date, $student_id);
+                    if($attendance_array['late'])
+                    {
+                       $response['data']['attendence'] =  $today_text." ".$std_data->first_name." ".$std_data->last_name." is Late"; 
+                       $attendence_return = true; 
+                    }
+                    else if($attendance_array['absent'])
+                    {
+                       $response['data']['attendence'] =  $today_text." ".$std_data->first_name." ".$std_data->last_name." is Absent"; 
+                       $attendence_return = true; 
+                    }
+                    else
+                    {
+                       $response['data']['attendence'] =  $today_text." ".$std_data->first_name." ".$std_data->last_name." is Present"; 
+                       $attendence_return = true; 
+                        
+                    }
+                    
+                }
+            } 
+            
+            //attendence end
+            
+            
+            
+        }
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";   
+        }
+    }        
     
     public function actionIndex(){
         

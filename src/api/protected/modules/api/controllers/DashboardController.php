@@ -44,6 +44,7 @@ class DashboardController extends Controller
                 $student_id = Yii::app()->user->profileId;
                 $batch_id = Yii::app()->user->batchId;
             }
+            $user_id = Yii::app()->user->id;
             
             $stdObject = new Students();
             $std_data = $stdObject->findByPk($student_id);
@@ -180,6 +181,30 @@ class DashboardController extends Controller
                 $response['data']['exam'] = $examdata; 
             }
             //end exam
+            
+            $objReminder = new Reminders();
+            $schedule = $objReminder->getUserReminderNew($user_id,1,10,$date,2);
+            $response['data']['schedule'] = $schedule;
+            
+            $objReminder = new Reminders();
+            $result = $objReminder->getUserReminderNew($user_id,1,10,$date,3);
+            $response['data']['result'] = $result;
+            
+            $objReminder = new Reminders();
+            $meeting_request = $objReminder->getUserReminderNew($user_id,1,10,$date,13);
+            $response['data']['meeting_request'] = $meeting_request;
+            
+            $objReminder = new Reminders();
+            $leave = $objReminder->getUserReminderNew($user_id,1,10,$date,10);
+            $response['data']['result'] = $leave;
+            
+            
+            $cur_day_name = Settings::getCurrentDay($tommmorow);
+            $day_id = Settings::$ar_weekdays_key[$cur_day_name];
+            $time_table = new TimetableEntries;
+            $time_table = $time_table->getTimeTables($school_id, "", true, $bacth_id,$day_id);
+            $response['data']['time_table'] = $time_table;
+            
             
             $response['status']['code'] = 200;
             $response['status']['msg'] = "Data Found";

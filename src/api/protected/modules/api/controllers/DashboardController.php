@@ -171,6 +171,16 @@ class DashboardController extends Controller
             }
             //end_event
             
+            //exam start
+            $objExam = new Exams();
+            $examdata = $objExam->getExamTimeTable($school_id, $batch_id, $student_id, NULL, $tommmorow);
+            $response['data']['exam'] = array();
+            if($examdata)
+            {
+                $response['data']['exam'] = $examdata; 
+            }
+            //end exam
+            
             $response['status']['code'] = 200;
             $response['status']['msg'] = "Data Found";
             

@@ -234,9 +234,9 @@ class Assignments extends CActiveRecord
                 $marge['subjects'] = $value["subjectDetails"]->name;
                 $marge['subjects_id'] = $value["subjectDetails"]->id;
                 $marge['subjects_icon'] = $value["subjectDetails"]->icon_number;
-                $marge['duedate'] = $value->duedate;
+                $marge['duedate'] = date("Y-m-d",  strtotime($value->duedate));
                 $marge['time_over'] = 0;
-                if(date("Y-m-d")>$value->duedate)
+                if(date("Y-m-d")>date("Y-m-d",  strtotime($value->duedate)))
                 {
                    $marge['time_over'] = 1; 
                 }

@@ -164,7 +164,11 @@ class DashboardController extends Controller
             //start_event
             $objEvent = new Events();
             $event_data = $objEvent->getAcademicCalendar($school_id, $tommmorow, $tommmorow, $batch_id, 0, 1, 10, false, true);
-            $response['data']['event'] = $event_data;
+            $response['data']['event'] = array();
+            if($event_data)
+            {
+                $response['data']['event'] = $event_data; 
+            }
             //end_event
             
             $response['status']['code'] = 200;

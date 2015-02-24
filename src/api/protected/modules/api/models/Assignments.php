@@ -165,13 +165,18 @@ class Assignments extends CActiveRecord
             return $data->total;
         }        
         
-        public function getAssignment($batch_id, $student_id, $date = '',$page=1, $subject_id=NULL, $page_size,$type,$id=0)
+        public function getAssignment($batch_id, $student_id, $date = '',$page=1, $subject_id=NULL, $page_size,$type,$id=0,$duedate="")
         {
             $date = (!empty($date)) ? $date : \date('Y-m-d', \time());
             
             $criteria = new CDbCriteria();
             $criteria->select = 't.*';
             $criteria->compare('subjectDetails.batch_id', $batch_id);
+            
+            if($duedate)
+            {
+                $criteria->compare('date(t.duedate)', $duedate);
+            }
             
             if($id>0)
             {

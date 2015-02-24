@@ -127,7 +127,8 @@ class LastVisited extends CActiveRecord
                 $lastvisited->last_visited = date("Y-m-d H:i:s");
                 $lastvisited->user_id = Yii::app()->user->id;
                 
-            }    
+            }  
+            $lastvisited->save();
         }
        
         

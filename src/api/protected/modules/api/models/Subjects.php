@@ -338,7 +338,7 @@ class Subjects extends CActiveRecord
                             $report_class_test_merge['subject_exam']['class_test'][$i]['your_mark'] = $student_result->marks;
                             $report_class_test_merge['subject_exam']['class_test'][$i]['your_percent'] = ($student_result->marks / $exam_details->maximum_marks) * 100;
 
-                            $report_class_test_merge['subject_exam']['class_test'][$j]['your_percent'] = intval($report_class_test_merge['subject_exam']['class_test'][$j]['your_percent']);
+                            $report_class_test_merge['subject_exam']['class_test'][$i]['your_percent'] = intval($report_class_test_merge['subject_exam']['class_test'][$i]['your_percent']);
                             $report_class_test_merge['subject_exam']['class_test'][$i]['topic'] = $exam_details['Examgroup']->topic;;
                             $report_class_test_merge['subject_exam']['class_test'][$i]['max_mark'] = $max_mark;
                             $report_class_test_merge['subject_exam']['class_test'][$i]['category'] = $exam_details['Examgroup']->exam_category;

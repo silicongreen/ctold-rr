@@ -124,6 +124,7 @@ class DashboardController extends Controller
                 $date_array[$i]['number'] = date('d',strtotime("-".$i." days"));
                 $date_array[$i]['name'] = date('F',strtotime("-".$i." days"));
                 $date_array[$i]['dateformat'] = date('Y-m-d',strtotime("-".$i." days"));
+                
             }
             $response['maindata']['dates'] = $date_array;
             
@@ -335,9 +336,10 @@ class DashboardController extends Controller
                 
                 //Quiz End
                 
-                $response['data'] = $merging_date;
+                
             
             }
+            $response['data'] = $merging_date;
             
             
             

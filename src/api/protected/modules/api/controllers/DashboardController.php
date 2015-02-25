@@ -33,8 +33,7 @@ class DashboardController extends Controller
     public function actionGetHome()
     {
         $user_secret = Yii::app()->request->getPost('user_secret');
-        $date = Yii::app()->request->getPost('date');
-        $date = (!empty($date)) ? $date : \date('Y-m-d', \time());
+       
         $student_id = Yii::app()->request->getPost('student_id');
         $batch_id = Yii::app()->request->getPost('batch_id');
         if(Yii::app()->user->user_secret === $user_secret && ( Yii::app()->user->isStudent || (Yii::app()->user->isParent && $student_id && $batch_id)))
@@ -47,14 +46,14 @@ class DashboardController extends Controller
             }
             $user_id = Yii::app()->user->id;
             $school_id =  Yii::app()->user->schoolId;
-            $tommmorow = date('Y-m-d',strtotime($date . "+1 days"));
+            
             
             //school info
             
             $school_obj  = new Schools();
             $school_details = $school_obj->findByPk($school_id);
-            $response['data']['school_name'] = $school_details->name;
-            $response['data']['school_picture'] = "";
+            $response['maindata']['school_name'] = $school_details->name;
+            $response['maindata']['school_picture'] = "";
             
             $freeschool = new School();
             $freeschoolid = $freeschool->getSchoolPaid($school_id);
@@ -63,7 +62,7 @@ class DashboardController extends Controller
                 $freeschooldetails = $freeschool->findByPk($freeschoolid);
                 if(isset($freeschooldetails->cover) && $freeschooldetails->cover )
                 {
-                    $response['data']['school_picture'] = Settings::$image_path.$freeschooldetails->cover;
+                    $response['maindata']['school_picture'] = Settings::$image_path.$freeschooldetails->cover;
                 }
                 
             }
@@ -72,26 +71,28 @@ class DashboardController extends Controller
             
             //student profile
             
-            $response['data']['profile_picture'] = "";
+            $response['maindata']['profile_picture'] = "";
             $freobj = new Freeusers();
             $profile_image = $freobj->getUserImage($user_id);
             if(isset($profile_image['profile_image']) && $profile_image['profile_image'])
             {
-               $response['data']['profile_picture'] = $profile_image['profile_image']; 
+               $response['maindata']['profile_picture'] = $profile_image['profile_image']; 
             }
             
             //student profile end
             
             //current day
             
-            $response['data']['current_date'] = date("l Y-m-d");
+            $response['maindata']['current_date'] = date("l Y-m-d");
             
             //current day
             
+            
+            
             //Last Visited
-            $response['data']['last_visited']['first'] = "Last Visited";
-            $response['data']['last_visited']['number']  = "Today";
-            $response['data']['last_visited']['type']  = "";
+            $response['maindata']['last_visited']['first'] = "Last Visited";
+            $response['maindata']['last_visited']['number']  = "Today";
+            $response['maindata']['last_visited']['type']  = "";
             
             $lastvisited = new LastVisited();
             $last_visited = $lastvisited->getLastVisited();
@@ -100,213 +101,239 @@ class DashboardController extends Controller
             if($last_visited)
             {
               $visitedarray = explode(" ", $last_visited);
-              $response['data']['last_visited']['number'] = $visitedarray[0];
-              $response['data']['last_visited']['type'] = $visitedarray[1];
+              $response['maindata']['last_visited']['number'] = $visitedarray[0];
+              $response['maindata']['last_visited']['type'] = $visitedarray[1];
                
             }
             
             
             //Last Visited
             
+            $date_today = date('d');
+            $date_month_name = date('F');
             
-            //attendence start
-            $stdObject = new Students();
-            $std_data = $stdObject->findByPk($student_id);
+            $date_array = array();
             
-            $response['data']['student_name'] = $std_data->first_name;
+            $date_array[0]['index'] = 0;
+            $date_array[0]['number'] = $date_today;
+            $date_array[0]['name'] = $date_month_name;
+            $date_array[0]['dateformat'] = date("Y-m-d");
+            for($i=1;$i<6;$i++)
+            {
+                $date_array[$i]['index'] = $i;
+                $date_array[$i]['number'] = date('d',strtotime("-".$i." days"));
+                $date_array[$i]['name'] = date('F',strtotime("-".$i." days"));
+                $date_array[$i]['dateformat'] = date('Y-m-d',strtotime("-".$i." days"));
+            }
+            $response['maindata']['dates'] = $date_array;
             
-            $objattendence = new Attendances();
+            foreach($date_array as $value)
+            {
+                $date = $value['dateformat'];
+            
+                $tommmorow = date('Y-m-d',strtotime($date . "+1 days"));
 
-            $attendence_return = false;
-            $holiday = new Events();
-            $holiday_array = $holiday->getHolidayMonth($date, $date, $school_id);
-            if($holiday_array)
-            {
-               $response['data']['attendence'] = "Today is Holiday"; //(".$holiday_array[0]['title'].")
-               $attendence_return = true;
-            }
-            
-            if(!$attendence_return)
-            {
-                $weekend_array = $objattendence->getWeekend($school_id);
-                $weekday = date("w",  strtotime($date));
-                if (in_array($weekday, $weekend_array))
+
+                //attendence start
+                $stdObject = new Students();
+                $std_data = $stdObject->findByPk($student_id);
+
+                $response['data'][$value['index']]['student_name'] = $std_data->first_name;
+
+                $objattendence = new Attendances();
+
+                $attendence_return = false;
+                $holiday = new Events();
+                $holiday_array = $holiday->getHolidayMonth($date, $date, $school_id);
+                if($holiday_array)
                 {
-                    $response['data']['attendence'] = "Today is weekend";
-                    $attendence_return = true;
-                }
-            }
-            if(!$attendence_return)
-            {
-                $leave = new ApplyLeaveStudents();
-                $leave_array = $leave->getleaveStudentMonth($date, $date, $student_id);
-                if($leave_array)
-                {
-                   $response['data']['attendence'] = "was on Leave Today"; 
+                   $response['data'][$value['index']]['attendence'] = "Today is Holiday"; //(".$holiday_array[0]['title'].")
                    $attendence_return = true;
+                }
+
+                if(!$attendence_return)
+                {
+                    $weekend_array = $objattendence->getWeekend($school_id);
+                    $weekday = date("w",  strtotime($date));
+                    if (in_array($weekday, $weekend_array))
+                    {
+                        $response['data'][$value['index']]['attendence'] = "Today is weekend";
+                        $attendence_return = true;
+                    }
                 }
                 if(!$attendence_return)
                 {
-                    
-                    $attendance_array = $objattendence->getAbsentStudentMonth($date, $date, $student_id);
-                    if($attendance_array['late'])
+                    $leave = new ApplyLeaveStudents();
+                    $leave_array = $leave->getleaveStudentMonth($date, $date, $student_id);
+                    if($leave_array)
                     {
-                       $response['data']['attendence'] =  "was Late Today"; 
-                       $attendence_return = true; 
+                       $response['data'][$value['index']]['attendence'] = "was on Leave Today"; 
+                       $attendence_return = true;
                     }
-                    else if($attendance_array['absent'])
+                    if(!$attendence_return)
                     {
-                       $response['data']['attendence'] =  "was Absent Today"; 
-                       $attendence_return = true; 
+
+                        $attendance_array = $objattendence->getAbsentStudentMonth($date, $date, $student_id);
+                        if($attendance_array['late'])
+                        {
+                           $response['data'][$value['index']]['attendence'] =  "was Late Today"; 
+                           $attendence_return = true; 
+                        }
+                        else if($attendance_array['absent'])
+                        {
+                           $response['data'][$value['index']]['attendence'] =  "was Absent Today"; 
+                           $attendence_return = true; 
+                        }
+                        else
+                        {
+                           $response['data'][$value['index']]['attendence'] =  "was Present Today"; 
+                           $attendence_return = true; 
+
+                        }
+
                     }
-                    else
-                    {
-                       $response['data']['attendence'] =  "was Present Today"; 
-                       $attendence_return = true; 
-                        
-                    }
-                    
-                }
-            } 
-            
-            //attendence end
-            
-            //tomomorow class
-            $cur_day_name = Settings::getCurrentDay($tommmorow);
-            $day_id = Settings::$ar_weekdays_key[$cur_day_name];
-            $time_table = new TimetableEntries;
-            $time_table = $time_table->getTimeTables($school_id, $tommmorow, true, $batch_id,$day_id);
-            $response['data']['class_tommrow'] = false;
-            if($time_table)
-            {
-                $response['data']['class_tommrow'] = true;
-            }
-            
-            //tomomorow class end
-            
-            //homework start
-            
-            $assignment = new Assignments();
-            $homework_data = $assignment->getAssignmentSubject($batch_id, $student_id,$tommmorow);
-            
-            $response['data']['homework_subject'] = array();
-            $sub_array = array();
-            if($homework_data)
-            {
-                $i = 0;
-                foreach($homework_data as $value)
-                {
-                    if(!in_array($value['subjects_id'], $sub_array))
-                    {
-                        $response['data']['homework_subject'][$i]['id'] = $value['subjects_id'];
-                        $response['data']['homework_subject'][$i]['name'] = $value['subjects'];
-                        $response['data']['homework_subject'][$i]['icon'] = $value['subjects_icon'];
-                        $i++;
-                    }        
                 } 
-            }
-            
-            //homework end
-            
-            //Result Published
-            $response['data']['result_publish'] = "";
-            
-            
-            $objReminder = new Reminders();
-            $result = $objReminder->getUserReminderNew($user_id,1,10,$date,3);
-            if($result && isset($result[0]['rid']) && $result[0]['rid'])
-            {
-                $exam = new ExamGroups();
-                $examsdata = $exam->findByPk($result[0]['rid']);
-                if($examsdata)
+
+                //attendence end
+
+                //tomomorow class
+                $cur_day_name = Settings::getCurrentDay($tommmorow);
+                $day_id = Settings::$ar_weekdays_key[$cur_day_name];
+                $time_table = new TimetableEntries;
+                $time_table = $time_table->getTimeTables($school_id, $tommmorow, true, $batch_id,$day_id);
+                $response['data'][$value['index']]['class_tommrow'] = false;
+                if($time_table)
                 {
-                    $response['data']['result_publish'] = $examsdata->name;
+                    $response['data'][$value['index']]['class_tommrow'] = true;
                 }
-            }
-            
-            //Result Published end
-            
-            //Routine Published
-            $response['data']['routine_publish'] = "";
-            
-            
-            $objReminder = new Reminders();
-            $result = $objReminder->getUserReminderNew($user_id,1,10,$date,2);
-            if($result && isset($result[0]['rid']) && $result[0]['rid'])
-            {
-                $exam = new ExamGroups();
-                $examsdata = $exam->findByPk($result[0]['rid']);
-                if($examsdata)
+
+                //tomomorow class end
+
+                //homework start
+
+                $assignment = new Assignments();
+                $homework_data = $assignment->getAssignmentSubject($batch_id, $student_id,$tommmorow);
+
+                $response['data'][$value['index']]['homework_subject'] = array();
+                $sub_array = array();
+                if($homework_data)
                 {
-                    $response['data']['routine_publish'] = $examsdata->name;
+                    $i = 0;
+                    foreach($homework_data as $value)
+                    {
+                        if(!in_array($value['subjects_id'], $sub_array))
+                        {
+                            $response['data'][$value['index']]['homework_subject'][$i]['id'] = $value['subjects_id'];
+                            $response['data'][$value['index']]['homework_subject'][$i]['name'] = $value['subjects'];
+                            $response['data'][$value['index']]['homework_subject'][$i]['icon'] = $value['subjects_icon'];
+                            $i++;
+                        }        
+                    } 
                 }
-            }
-            
-            //Routine Published end
-            
-            //start_event
-            
-            $objEvent = new Events();
-            $event_data = $objEvent->getAcademicCalendar($school_id, $tommmorow, $tommmorow, $batch_id, 0, 1, 10, false, true);
-            $response['data']['event_tommorow'] = false;
-            if($event_data)
-            {
-                $response['data']['event_tommorow'] = true;
-                $response['data']['event_id'] = $event_data[0]['event_id']; 
-                $response['data']['event_name'] = $event_data[0]['event_title']; 
-            }
-            
-            //end_event
-            
-            //exam start
-            $objExam = new Exams();
-            $examdata = $objExam->getExamTimeTable($school_id, $batch_id, $student_id, NULL, $tommmorow);
-            $response['data']['exam_tommorow'] = false;
-            if($examdata)
-            {
-                $response['data']['exam_tommorow'] = true; 
-            }
-            //end exam
-            
-            if(Yii::app()->user->isParent)
-            {
-                $objReminder = new Reminders();
-                $meeting_request = $objReminder->getUserReminderNew($user_id,1,10,$date,13);
-                $response['data']['meeting_request'] = $meeting_request;
+
+                //homework end
+
+                //Result Published
+                $response['data'][$value['index']]['result_publish'] = "";
+
 
                 $objReminder = new Reminders();
-                $leave = $objReminder->getUserReminderNew($user_id,1,10,$date,10);
-                $response['data']['leave'] = $leave;
-                
-                $objFees = new FinanceFees();
-                $fees = $objFees->feesStudentDue($student_id);
-                $response['data']['fees'] = false;
-                if($fees)
+                $result = $objReminder->getUserReminderNew($user_id,1,10,$date,3);
+                if($result && isset($result[0]['rid']) && $result[0]['rid'])
                 {
-                    $response['data']['fees'] = true;
+                    $exam = new ExamGroups();
+                    $examsdata = $exam->findByPk($result[0]['rid']);
+                    if($examsdata)
+                    {
+                        $response['data'][$value['index']]['result_publish'] = $examsdata->name;
+                    }
                 }
-                
+
+                //Result Published end
+
+                //Routine Published
+                $response['data'][$value['index']]['routine_publish'] = "";
+
+
+                $objReminder = new Reminders();
+                $result = $objReminder->getUserReminderNew($user_id,1,10,$date,2);
+                if($result && isset($result[0]['rid']) && $result[0]['rid'])
+                {
+                    $exam = new ExamGroups();
+                    $examsdata = $exam->findByPk($result[0]['rid']);
+                    if($examsdata)
+                    {
+                        $response['data'][$value['index']]['routine_publish'] = $examsdata->name;
+                    }
+                }
+
+                //Routine Published end
+
+                //start_event
+
+                $objEvent = new Events();
+                $event_data = $objEvent->getAcademicCalendar($school_id, $tommmorow, $tommmorow, $batch_id, 0, 1, 10, false, true);
+                $response['data'][$value['index']]['event_tommorow'] = false;
+                if($event_data)
+                {
+                    $response['data'][$value['index']]['event_tommorow'] = true;
+                    $response['data'][$value['index']]['event_id'] = $event_data[0]['event_id']; 
+                    $response['data'][$value['index']]['event_name'] = $event_data[0]['event_title']; 
+                }
+
+                //end_event
+
+                //exam start
+                $objExam = new Exams();
+                $examdata = $objExam->getExamTimeTable($school_id, $batch_id, $student_id, NULL, $tommmorow);
+                $response['data'][$value['index']]['exam_tommorow'] = false;
+                if($examdata)
+                {
+                    $response['data'][$value['index']]['exam_tommorow'] = true; 
+                }
+                //end exam
+
+                if(Yii::app()->user->isParent)
+                {
+                    $objReminder = new Reminders();
+                    $meeting_request = $objReminder->getUserReminderNew($user_id,1,10,$date,13);
+                    $response['data'][$value['index']]['meeting_request'] = $meeting_request;
+
+                    $objReminder = new Reminders();
+                    $leave = $objReminder->getUserReminderNew($user_id,1,10,$date,10);
+                    $response['data'][$value['index']]['leave'] = $leave;
+
+                    $objFees = new FinanceFees();
+                    $fees = $objFees->feesStudentDue($student_id);
+                    $response['data'][$value['index']]['fees'] = false;
+                    if($fees)
+                    {
+                        $response['data'][$value['index']]['fees'] = true;
+                    }
+
+                }
+
+
+
+                //Notice start
+                $newsobj = new News();
+                $notice = $newsobj->getNews($school_id, $date, $date);
+                $response['data'][$value['index']]['notice'] = false;
+                if($notice)
+                {
+                    $response['data'][$value['index']]['notice'] = true; 
+                }
+                //Notice end
+
+
+
+                //Quiz start
+                $onlineExamObj = new OnlineExamGroups();
+                $onlineexamData = $onlineExamObj->getOnlineExamList($batch_id, $student_id, 1, 10,$date);
+                $response['data'][$value['index']]['quiz'] = $onlineexamData; 
+                //Quiz End
+            
             }
-            
-            
-            
-            //Notice start
-            $newsobj = new News();
-            $notice = $newsobj->getNews($school_id, $date, $date);
-            $response['data']['notice'] = false;
-            if($notice)
-            {
-                $response['data']['notice'] = true; 
-            }
-            //Notice end
-            
-            
-            
-            //Quiz start
-            $onlineExamObj = new OnlineExamGroups();
-            $onlineexamData = $onlineExamObj->getOnlineExamList($batch_id, $student_id, 1, 10,$date);
-            $response['data']['quiz'] = $onlineexamData; 
-            //Quiz End
             
             
             

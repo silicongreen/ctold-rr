@@ -706,8 +706,8 @@ class HomeworkController extends Controller
                 $assignment_answer->assignment_id = $assignment_id;
                 $assignment_answer->student_id = Yii::app()->user->profileId;
                 $assignment_answer->title = "Done";
-                $assignment_answer->content = "Please Accept";
-                $assignment_answer->status = "ACCEPTED";
+                $assignment_answer->content = "I submitted the homework Please Accept";
+                $assignment_answer->status = "SUBMITTED";
                 $assignment_answer->created_at = date("Y-m-d H:i:s");
                 $assignment_answer->school_id = Yii::app()->user->schoolId;
                 $assignment_answer->insert();

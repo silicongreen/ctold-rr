@@ -397,7 +397,7 @@ class Events extends CActiveRecord {
         $criteria->compare('t.school_id', $school_id);
 
         if (!$b_count) {
-            $criteria->order = 't.event_start_date ASC';
+            $criteria->order = 't.start_date ASC';
             $criteria->together = true;
             $start = ($page_no - 1) * $page_size;
             $criteria->offset = $start;

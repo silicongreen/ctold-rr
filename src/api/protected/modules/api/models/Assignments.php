@@ -123,7 +123,8 @@ class Assignments extends CActiveRecord
                 $marge['course'] = $value["subjectDetails"]['Subjectbatch']['courseDetails']->course_name;
                 $marge['subjects_id'] = $value["subjectDetails"]->id;
                 $marge['subjects_icon'] = $value["subjectDetails"]->icon_number;
-                $marge['duedate'] = $value->duedate;
+                $marge['assign_date'] = date("Y-m-d", strtotime($value->created_at));
+                $marge['duedate'] = date("Y-m-d", strtotime($value->duedate));
                 $marge['name'] = $value->title;
                 $marge['content'] = $value->content;
                 $marge['type'] = $value->assignment_type;
@@ -234,6 +235,7 @@ class Assignments extends CActiveRecord
                 $marge['subjects'] = $value["subjectDetails"]->name;
                 $marge['subjects_id'] = $value["subjectDetails"]->id;
                 $marge['subjects_icon'] = $value["subjectDetails"]->icon_number;
+                $marge['assign_date'] = date("Y-m-d", strtotime($value->created_at));
                 $marge['duedate'] = date("Y-m-d",  strtotime($value->duedate));
                 $marge['time_over'] = 0;
                 if(date("Y-m-d")>date("Y-m-d",  strtotime($value->duedate)))

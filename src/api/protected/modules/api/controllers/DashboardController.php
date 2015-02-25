@@ -62,103 +62,7 @@ class DashboardController extends Controller
         if ($target && $id && Yii::app()->user->user_secret === $user_secret && ( Yii::app()->user->isStudent || (Yii::app()->user->isParent && $student_id && $batch_id)))
         {
 
-            if (empty($page_number))
-            {
-                $page_number = 1;
-            }
-            if (empty($page_size))
-            {
-                $page_size = 10;
-            }
-
-            $user_id = Yii::app()->request->getPost('user_id');
-            if (!$user_id)
-            {
-                $user_type = 1;
-            }
-            else
-            {
-                $freeuserObj = new Freeusers();
-                $user_info = $freeuserObj->getUserInfo($user_id);
-                $user_type = $user_info['user_type'];
-            }
-
-
-
-            $postObj = new Post();
-            $post = $postObj->getPosts($id, $user_type, $target, $page_number, $page_size);
-
-            $response['data']['total'] = $postObj->getPostTotal($id, $user_type, $target);
-            $has_next = false;
-            if ($response['data']['total'] > $page_number * $page_size)
-            {
-                $has_next = true;
-            }
-            $response['data']['has_next'] = $has_next;
-            $response['data']['post'] = $post;
-            $response['status']['code'] = 200;
-            $response['status']['msg'] = "DATA_FOUND";
-
-            if (isset($response['data']['post']) && count($response['data']['post']) > 0)
-            {
-
-                $wow = array();
-                if ($user_id)
-                {
-                    $obj_wow = new Wow();
-                    $wow = $obj_wow->userwow($user_id);
-                }
-
-                $post_data = array();
-                if ($page_number == 1)
-                {
-                    $i = 1;
-                }
-                else
-                {
-                    $i = 0;
-                }
-                foreach ($response['data']['post'] as $value)
-                {
-                    $post_data[$i] = $this->getSingleNewsFromCache($value['id']);
-                    $post_data[$i]['can_wow'] = 1;
-                    $post_data[$i]['can_share'] = 0;
-                    $shared_user_name = "";
-                    $shared_user_image = "";
-
-                    if (isset($value['postSchool'][0]['freeUser']->profile_image))
-                    {
-                        $shared_user_image = $value['postSchool'][0]['freeUser']->profile_image;
-                    }
-                    if (isset($value['postSchool'][0]['freeUser']->first_name) && $value['postSchool'][0]['freeUser']->first_name)
-                    {
-                        $shared_user_name .= $value['postSchool'][0]['freeUser']->first_name . " ";
-                    }
-                    if (isset($value['postSchool'][0]['freeUser']->middle_name) && $value['postSchool'][0]['freeUser']->middle_name)
-                    {
-                        $shared_user_name .= $value['postSchool'][0]['freeUser']->middle_name . " ";
-                    }
-                    if (isset($value['postSchool'][0]['freeUser']->last_name) && $value['postSchool'][0]['freeUser']->last_name)
-                    {
-                        $shared_user_name .= $value['postSchool'][0]['freeUser']->last_name;
-                    }
-                    if (!$shared_user_name)
-                    {
-                        if (isset($value['postSchool'][0]['freeUser']->email))
-                            $shared_user_name = $value['postSchool'][0]['freeUser']->email;
-                    }
-
-                    $post_data[$i]['shared_user_name'] = $shared_user_name;
-                    $post_data[$i]['shared_user_image'] = $shared_user_image;
-
-                    if (in_array($value['id'], $wow) && Settings::$wow_login == true)
-                    {
-                        $post_data[$i]['can_wow'] = 0;
-                    }
-                    $i++;
-                }
-                $response['data']['post'] = $post_data;
-            }
+            
             if ($page_number == 1)
             {
                 
@@ -442,13 +346,108 @@ class DashboardController extends Controller
 
                     $response['maindata']['datefeed'][] = $merging_data;
                 }
-                $response['data']['post'][0] = $response['maindata'];
+                $post_data[0] = $response['maindata'];
                 unset($response['maindata']);
+            }
+            
+            if (empty($page_number))
+            {
+                $page_number = 1;
+            }
+            if (empty($page_size))
+            {
+                $page_size = 10;
+            }
+
+            $user_id = Yii::app()->request->getPost('user_id');
+            if (!$user_id)
+            {
+                $user_type = 1;
+            }
+            else
+            {
+                $freeuserObj = new Freeusers();
+                $user_info = $freeuserObj->getUserInfo($user_id);
+                $user_type = $user_info['user_type'];
             }
 
 
 
+            $postObj = new Post();
+            $post = $postObj->getPosts($id, $user_type, $target, $page_number, $page_size);
 
+            $response['data']['total'] = $postObj->getPostTotal($id, $user_type, $target);
+            $has_next = false;
+            if ($response['data']['total'] > $page_number * $page_size)
+            {
+                $has_next = true;
+            }
+            $response['data']['has_next'] = $has_next;
+            $response['data']['post'] = $post;
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "DATA_FOUND";
+            $post_data = array();
+            if (isset($response['data']['post']) && count($response['data']['post']) > 0)
+            {
+
+                $wow = array();
+                if ($user_id)
+                {
+                    $obj_wow = new Wow();
+                    $wow = $obj_wow->userwow($user_id);
+                }
+
+                
+                if ($page_number == 1)
+                {
+                    $i = 1;
+                }
+                else
+                {
+                    $i = 0;
+                }
+                foreach ($response['data']['post'] as $value)
+                {
+                    $post_data[$i] = $this->getSingleNewsFromCache($value['id']);
+                    $post_data[$i]['can_wow'] = 1;
+                    $post_data[$i]['can_share'] = 0;
+                    $shared_user_name = "";
+                    $shared_user_image = "";
+
+                    if (isset($value['postSchool'][0]['freeUser']->profile_image))
+                    {
+                        $shared_user_image = $value['postSchool'][0]['freeUser']->profile_image;
+                    }
+                    if (isset($value['postSchool'][0]['freeUser']->first_name) && $value['postSchool'][0]['freeUser']->first_name)
+                    {
+                        $shared_user_name .= $value['postSchool'][0]['freeUser']->first_name . " ";
+                    }
+                    if (isset($value['postSchool'][0]['freeUser']->middle_name) && $value['postSchool'][0]['freeUser']->middle_name)
+                    {
+                        $shared_user_name .= $value['postSchool'][0]['freeUser']->middle_name . " ";
+                    }
+                    if (isset($value['postSchool'][0]['freeUser']->last_name) && $value['postSchool'][0]['freeUser']->last_name)
+                    {
+                        $shared_user_name .= $value['postSchool'][0]['freeUser']->last_name;
+                    }
+                    if (!$shared_user_name)
+                    {
+                        if (isset($value['postSchool'][0]['freeUser']->email))
+                            $shared_user_name = $value['postSchool'][0]['freeUser']->email;
+                    }
+
+                    $post_data[$i]['shared_user_name'] = $shared_user_name;
+                    $post_data[$i]['shared_user_image'] = $shared_user_image;
+
+                    if (in_array($value['id'], $wow) && Settings::$wow_login == true)
+                    {
+                        $post_data[$i]['can_wow'] = 0;
+                    }
+                    $i++;
+                }
+                
+            }
+            $response['data']['post'] = $post_data;
             $response['status']['code'] = 200;
             $response['status']['msg'] = "Data Found";
         }

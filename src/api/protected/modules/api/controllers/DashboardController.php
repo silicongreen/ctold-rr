@@ -171,6 +171,18 @@ class DashboardController extends Controller
             
             //attendence end
             
+            //tomomorow class
+            $cur_day_name = Settings::getCurrentDay($tommmorow);
+            $day_id = Settings::$ar_weekdays_key[$cur_day_name];
+            $time_table = new TimetableEntries;
+            $time_table = $time_table->getTimeTables($school_id, $tommmorow, true, $batch_id,$day_id);
+            $response['data']['class_tommrow'] = false;
+            if($time_table)
+            {
+                $response['data']['class_tommrow'] = true;
+            }
+            
+            //tomomorow class end
             
             //homework start
             
@@ -232,49 +244,27 @@ class DashboardController extends Controller
             
             //Routine Published end
             
-            
-            
-            //Notice start
-            $newsobj = new News();
-            $notice = $newsobj->getNews($school_id, $date, $date);
-            $response['data']['notice'] = array();
-            if($notice)
-            {
-                $response['data']['notice'] = $notice; 
-            }
-            //Notice end
-            
-            
-            
-            //Quiz start
-            $onlineExamObj = new OnlineExamGroups();
-            $onlineexamData = $onlineExamObj->getOnlineExamList($batch_id, $student_id, 1, 10,$date);
-            $response['data']['quiz'] = $onlineexamData; 
-            //Quiz End
-            
             //start_event
+            
             $objEvent = new Events();
             $event_data = $objEvent->getAcademicCalendar($school_id, $tommmorow, $tommmorow, $batch_id, 0, 1, 10, false, true);
-            $response['data']['event'] = array();
+            $response['data']['event_tommorow'] = array();
             if($event_data)
             {
-                $response['data']['event'] = $event_data; 
+                $response['data']['event_tommorow'] = $event_data; 
             }
+            
             //end_event
             
             //exam start
             $objExam = new Exams();
             $examdata = $objExam->getExamTimeTable($school_id, $batch_id, $student_id, NULL, $tommmorow);
-            $response['data']['exam'] = array();
+            $response['data']['exam_tommorow'] = false;
             if($examdata)
             {
-                $response['data']['exam'] = $examdata; 
+                $response['data']['exam_tommorow'] = true; 
             }
             //end exam
-            
-            
-            
-            
             
             if(Yii::app()->user->isParent)
             {
@@ -285,18 +275,36 @@ class DashboardController extends Controller
                 $objReminder = new Reminders();
                 $leave = $objReminder->getUserReminderNew($user_id,1,10,$date,10);
                 $response['data']['leave'] = $leave;
+                
+                $objFees = new FinanceFees();
+                $fees = $objFees->feesStudentDue($student_id);
+                $response['data']['fees'] = false;
+                if($fees)
+                {
+                    $response['data']['fees'] = true;
+                }
+                
             }
             
             
-            $cur_day_name = Settings::getCurrentDay($tommmorow);
-            $day_id = Settings::$ar_weekdays_key[$cur_day_name];
-            $time_table = new TimetableEntries;
-            $time_table = $time_table->getTimeTables($school_id, $tommmorow, true, $batch_id,$day_id);
-            $response['data']['time_table'] = array();
-            if($time_table)
+            
+            //Notice start
+            $newsobj = new News();
+            $notice = $newsobj->getNews($school_id, $date, $date);
+            $response['data']['notice'] = false;
+            if($notice)
             {
-                $response['data']['time_table'] = $time_table; 
+                $response['data']['notice'] = true; 
             }
+            //Notice end
+            
+            
+            
+            //Quiz start
+            $onlineExamObj = new OnlineExamGroups();
+            $onlineexamData = $onlineExamObj->getOnlineExamList($batch_id, $student_id, 1, 10,$date);
+            $response['data']['quiz'] = $onlineexamData; 
+            //Quiz End
             
             
             

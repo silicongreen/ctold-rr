@@ -382,7 +382,7 @@ class Events extends CActiveRecord {
 
         $criteria->compare('t.is_common', 1, FALSE, 'OR');
 
-        $criteria->addCondition("DATE(t.start_date) >= '" . $from_date . "'");
+        $criteria->addCondition("DATE(t.start_date) >= '" . date("Y-m-d") . "'");
         $criteria->addCondition("DATE(t.end_date) <= '" . $to_date . "'");
 
         $criteria->addCondition('(eventCategory.is_club is NULL or  eventCategory.is_club != 1)');
@@ -397,7 +397,7 @@ class Events extends CActiveRecord {
         $criteria->compare('t.school_id', $school_id);
 
         if (!$b_count) {
-            $criteria->order = 't.id DESC';
+            $criteria->order = 't.start_date ASC';
             $criteria->together = true;
             $start = ($page_no - 1) * $page_size;
             $criteria->offset = $start;

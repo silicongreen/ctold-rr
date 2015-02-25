@@ -79,18 +79,29 @@ class Assignments extends CActiveRecord
             return $data->total;
         }        
         
-        public function getAssignmentTeacher($employee_id,$page=1,$page_size=10)
+        public function getAssignmentTeacher($employee_id,$page=1,$page_size=10,$id=0)
         {
             
             
             $criteria = new CDbCriteria();
             $criteria->select = 't.*';
             $criteria->compare('t.employee_id', $employee_id);
+            if($id>0)
+            {
+               $criteria->compare('t.id', $id); 
+            } 
             $criteria->order = "duedate DESC";          
-            $start = ($page-1)*$page_size;
-            $criteria->limit = $page_size;
-            
-            $criteria->offset = $start;
+            if($id>0)
+            {
+                $criteria->limit = 1;
+            }
+            else
+            {    
+                $start = ($page-1)*$page_size;
+                $criteria->limit = $page_size;
+
+                $criteria->offset = $start;
+            }
             
             $criteria->with = array(
                 'subjectDetails' => array(

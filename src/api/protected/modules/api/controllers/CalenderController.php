@@ -75,6 +75,9 @@ class CalenderController extends Controller
                     $student_id = Yii::app()->user->profileId;
                     $school_id = Yii::app()->user->schoolId;
                 }
+                $student = new Students();
+                $stddata = $student->findByPk($student_id);
+
                 $objbatch = new Batches();
                 $batchData = $objbatch->findByPk($batch_id);
                 if ($yearly)
@@ -86,36 +89,36 @@ class CalenderController extends Controller
                         $end_date = date("Y-m-d");
                     }
                 }
-                   
+
 
                 $attendance = new Attendances();
-                
+
                 $holiday = new Events();
                 $holiday_array = $holiday->getHolidayMonth($start_date, $end_date, $school_id);
-                
-                if(!$yearly)
+
+                if (!$yearly)
                 {
-                   if($start_date<date("Y-m-d", strtotime($batchData->start_date))) 
-                   {
-                       $start_date = date("Y-m-d", strtotime($batchData->start_date));
-                   }
-                   if($end_date>date("Y-m-d", strtotime($batchData->end_date)))
-                   {
-                       $end_date = date("Y-m-d", strtotime($batchData->end_date));
-                   }
-                }    
-                
+                    if ($start_date < date("Y-m-d", strtotime($batchData->start_date)))
+                    {
+                        $start_date = date("Y-m-d", strtotime($batchData->start_date));
+                    }
+                    if ($end_date > date("Y-m-d", strtotime($batchData->end_date)))
+                    {
+                        $end_date = date("Y-m-d", strtotime($batchData->end_date));
+                    }
+                }
+
                 if ($end_date > date("Y-m-d"))
                 {
                     $end_date = date("Y-m-d");
                 }
-                
+
                 $leave = new ApplyLeaveStudents();
                 $leave_array = $leave->getleaveStudentMonth($start_date, $end_date, $student_id);
                 $weekend_array = $attendance->getWeekend(Yii::app()->user->schoolId);
 
 
-                
+
 
                 $holiday_count = 0;
                 $holiday_array_for_count = array();
@@ -148,8 +151,8 @@ class CalenderController extends Controller
                     }
                     $holiday_interval = DateInterval::createFromDateString('1 day');
                     $holiday_period = new DatePeriod($start_holiday, $holiday_interval, $end_holiday);
-                    
-                    
+
+
 
                     foreach ($holiday_period as $hdt)
                     {
@@ -176,12 +179,12 @@ class CalenderController extends Controller
                         $leave_count++;
                     }
                 }
-                
-                
-                
 
 
-                if($yearly)
+
+
+
+                if ($yearly)
                 {
                     $begin = new DateTime(date("Y-m-d", strtotime($batchData->start_date)));
                     $end = new DateTime(date("Y-m-d", strtotime($batchData->end_date)));
@@ -192,17 +195,17 @@ class CalenderController extends Controller
                 }
                 else
                 {
-                  
-                   $begin = new DateTime(date("Y-m-d", strtotime($start_date)));
-                   $end = new DateTime(date("Y-m-d", strtotime($end_date))); 
-                }    
 
-                
+                    $begin = new DateTime(date("Y-m-d", strtotime($start_date)));
+                    $end = new DateTime(date("Y-m-d", strtotime($end_date)));
+                }
 
-                
+
+
+
                 $i = 0;
-                
-                if($yearly || $start_date<=$end_date)
+
+                if ($yearly || $start_date <= $end_date)
                 {
                     $interval = DateInterval::createFromDateString('1 day');
                     $period = new DatePeriod($begin, $interval, $end);
@@ -226,10 +229,165 @@ class CalenderController extends Controller
                         $i++;
                     }
                 }
-                
-                $attendance_array = $attendance->getAbsentStudentMonth($start_date, $end_date, $student_id,$holiday_array_for_count,$weekend_array,$leave_array_modified);
+
+                $attendance_array = $attendance->getAbsentStudentMonth($start_date, $end_date, $student_id, $holiday_array_for_count, $weekend_array, $leave_array_modified);
                 $absent_count = count($attendance_array['absent']);
                 $late_count = count($attendance_array['late']);
+
+                $start_date_main = Yii::app()->request->getPost('start_date');
+                $end_date_main = Yii::app()->request->getPost('end_date');
+                if (!$yearly && $start_date_main <= $end_date_main)
+                {
+                    $begin = new DateTime(date("Y-m-d", strtotime($start_date_main)));
+                    $end = new DateTime(date("Y-m-d", strtotime($end_date_main)));
+                    
+                    $interval = DateInterval::createFromDateString('1 day');
+                    $period = new DatePeriod($begin, $interval, $end);
+
+                    foreach ($period as $dt)
+                    {
+
+                        if ($dt->format("Y-m-d") == date("Y-m-d"))
+                        {
+                            $text = "Today";
+                        }
+                        else
+                        {
+                            $text = date('jS F', strtotime($dt->format("Y-m-d")));
+                        }
+
+
+                        if (in_array($dt->format("Y-m-d"), $holiday_array_for_count))
+                        {
+                            $msg[$dt->format("Y-m-d")] = $text . " is Holiday".;
+                        }
+                        elseif (in_array($dt->format("w"), $weekend_array))
+                        {
+                            $msg[$dt->format("Y-m-d")] = $text . " is Weekend";
+                        }
+
+                        if (!isset($msg[$dt->format("Y-m-d")]))
+                        {
+                            if ($leave_array_modified)
+                            {
+                                foreach ($leave_array_modified as $value)
+                                {
+                                    if ($value['start_date'] == $dt->format("Y-m-d"))
+                                    {
+                                        $msg[$dt->format("Y-m-d")] = $text . " " . $stddata->first_name . " is on leave";
+                                        break;
+                                    }
+                                }
+                            }
+
+                            if (!isset($msg[$dt->format("Y-m-d")]))
+                            {
+                                if ($dt->format("Y-m-d") > date("Y-m-d"))
+                                {
+                                    $msg[$dt->format("Y-m-d")] = "No Status Found for " . date('jS F', strtotime($dt->format("Y-m-d")));
+                                }
+                                else
+                                {
+                                    foreach ($attendance_array['absent'] as $value)
+                                    {
+                                        if ($value['date'] == $dt->format("Y-m-d"))
+                                        {
+                                            $msg[$dt->format("Y-m-d")] = $text . " " . $stddata->first_name . " is Absent";
+                                            break;
+                                        }
+                                    }
+                                    if (!isset($msg[$dt->format("Y-m-d")]))
+                                    {
+                                        foreach ($attendance_array['late'] as $value)
+                                        {
+                                            if ($value['date'] == $dt->format("Y-m-d"))
+                                            {
+                                                $msg[$dt->format("Y-m-d")] = $text . " " . $stddata->first_name . " is Late";
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    if (!isset($msg[$dt->format("Y-m-d")]))
+                                    {
+                                        $msg[$dt->format("Y-m-d")] = $text . " " . $stddata->first_name . " is Present";
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+
+                    if ($end->format("Y-m-d") == date("Y-m-d"))
+                    {
+                        $text = "Today";
+                    }
+                    else
+                    {
+                        $text = "At " . date('jS F', strtotime($end->format("Y-m-d")));
+                    }
+
+
+                    if (in_array($end->format("Y-m-d"), $holiday_array_for_count))
+                    {
+                        $msg[$end->format("Y-m-d")] = $text . " is Holiday";
+                    }
+                    elseif (in_array($end->format("w"), $weekend_array))
+                    {
+                        $msg[$end->format("Y-m-d")] = $text . " is Weekend";
+                    }
+
+                    if (!isset($msg[$end->format("Y-m-d")]))
+                    {
+                        if ($leave_array_modified)
+                        {
+                            foreach ($leave_array_modified as $value)
+                            {
+                                if ($value['start_date'] == $end->format("Y-m-d"))
+                                {
+                                    $msg[$end->format("Y-m-d")] = $text . " " . $stddata->first_name . " is on leave";
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (!isset($msg[$end->format("Y-m-d")]))
+                        {
+                            if ($end->format("Y-m-d") > date("Y-m-d"))
+                            {
+                                $msg[$end->format("Y-m-d")] = "No Status Found for " . date('jS F', strtotime($end->format("Y-m-d")));
+                            }
+                            else
+                            {
+                                foreach ($attendance_array['absent'] as $value)
+                                {
+                                    if ($value['date'] == $end->format("Y-m-d"))
+                                    {
+                                        $msg[$end->format("Y-m-d")] = $text . " " . $stddata->first_name . " is Absent";
+                                        break;
+                                    }
+                                }
+                                if (!isset($msg[$end->format("Y-m-d")]))
+                                {
+                                    foreach ($attendance_array['late'] as $value)
+                                    {
+                                        if ($value['date'] == $end->format("Y-m-d"))
+                                        {
+                                            $msg[$end->format("Y-m-d")] = $text . " " . $stddata->first_name . " is Late";
+                                            break;
+                                        }
+                                    }
+                                }
+                                if (!isset($msg[$end->format("Y-m-d")]))
+                                {
+                                    $msg[$end->format("Y-m-d")] = $text . " " . $stddata->first_name . " is Present";
+                                }
+                            }
+                        }
+                    }
+
+
+                   
+                }
 
 
 
@@ -250,6 +408,7 @@ class CalenderController extends Controller
                     $response['data']['holiday'] = $holiday_array;
                     $response['data']['leave'] = $leave_array_modified;
                     $response['data']['total'] = $i;
+                    $response['data']['msg'] = $msg;
                     $response['status']['code'] = 200;
                     $response['status']['msg'] = "Data Found";
                 }

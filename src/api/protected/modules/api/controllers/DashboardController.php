@@ -63,6 +63,26 @@ class DashboardController extends Controller
         {
 
             $post_data = array();
+            if (empty($page_number))
+            {
+                $page_number = 1;
+            }
+            if (empty($page_size))
+            {
+                $page_size = 10;
+            }
+
+            $user_id = Yii::app()->request->getPost('user_id');
+            if (!$user_id)
+            {
+                $user_type = 1;
+            }
+            else
+            {
+                $freeuserObj = new Freeusers();
+                $user_info = $freeuserObj->getUserInfo($user_id);
+                $user_type = $user_info['user_type'];
+            }
             if ($page_number == 1)
             {
                 
@@ -349,30 +369,6 @@ class DashboardController extends Controller
                 $post_data[0] = $response['maindata'];
                 unset($response['maindata']);
             }
-            
-            if (empty($page_number))
-            {
-                $page_number = 1;
-            }
-            if (empty($page_size))
-            {
-                $page_size = 10;
-            }
-
-            $user_id = Yii::app()->request->getPost('user_id');
-            if (!$user_id)
-            {
-                $user_type = 1;
-            }
-            else
-            {
-                $freeuserObj = new Freeusers();
-                $user_info = $freeuserObj->getUserInfo($user_id);
-                $user_type = $user_info['user_type'];
-            }
-
-
-
             $postObj = new Post();
             $post = $postObj->getPosts($id, $user_type, $target, $page_number, $page_size);
 

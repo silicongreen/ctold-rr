@@ -175,7 +175,7 @@ class DashboardController extends Controller
 
                 $school_obj = new Schools();
                 $school_details = $school_obj->findByPk($school_id);
-                $response['data']['post'][0]['post_type'] = 20;
+                $response['maindata']['post_type'] = 20;
                 $response['maindata']['school_name'] = $school_details->name;
                 $response['maindata']['school_picture'] = "";
 

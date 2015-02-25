@@ -62,7 +62,7 @@ class DashboardController extends Controller
         if ($target && $id && Yii::app()->user->user_secret === $user_secret && ( Yii::app()->user->isStudent || (Yii::app()->user->isParent && $student_id && $batch_id)))
         {
 
-            
+            $post_data = array();
             if ($page_number == 1)
             {
                 
@@ -386,7 +386,7 @@ class DashboardController extends Controller
             $response['data']['post'] = $post;
             $response['status']['code'] = 200;
             $response['status']['msg'] = "DATA_FOUND";
-            $post_data = array();
+            
             if (isset($response['data']['post']) && count($response['data']['post']) > 0)
             {
 

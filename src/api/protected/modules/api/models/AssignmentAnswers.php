@@ -164,6 +164,7 @@ class AssignmentAnswers extends CActiveRecord
             $criteria->select = 'count(t.id) as total';
             $criteria->compare('t.assignment_id', $assignment_id);
             $criteria->compare('t.status', "ACCEPTED");
+            $criteria->group = "t.student_id";
             $data = $this->find($criteria);
             return $data->total;
             

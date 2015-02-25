@@ -240,11 +240,11 @@ class Settings {
         return $a_out;
     }
 
-    public static function get_post_time($published_date) {
+    public static function get_post_time($published_date,$to=6) {
         $datediff = self::get_diff_date($published_date);
         $datestring = "";
         $findvalue = false;
-        if ($datediff['Years'] > 0) {
+        if ($datediff['Years'] > 0 && $to>0) {
             if ($datediff['Years'] > 1) {
                 $datestring.= $datediff['Years'] . " Years";
             } else {
@@ -252,7 +252,7 @@ class Settings {
             }
             $findvalue = true;
         }
-        if ($datediff['Months'] > 0 && $findvalue === false) {
+        if ($datediff['Months'] > 0 && $findvalue === false && $to>1) {
             if ($findvalue) {
                 $datestring.= ", ";
             }
@@ -264,7 +264,7 @@ class Settings {
 
             $findvalue = true;
         }
-        if ($datediff['Days'] > 0 && $findvalue === false) {
+        if ($datediff['Days'] > 0 && $findvalue === false && $to>2) {
             if ($findvalue) {
                 $datestring.= ", ";
             }
@@ -276,7 +276,7 @@ class Settings {
 
             $findvalue = true;
         }
-        if ($datediff['Hours'] > 0 && $findvalue === false) {
+        if ($datediff['Hours'] > 0 && $findvalue === false  && $to>3) {
             if ($findvalue) {
                 $datestring.= ", ";
             }
@@ -288,7 +288,7 @@ class Settings {
 
             $findvalue = true;
         }
-        if ($datediff['Minutes'] > 0 && $findvalue === false) {
+        if ($datediff['Minutes'] > 0 && $findvalue === false  && $to>4) {
             if ($findvalue) {
                 $datestring.= ", ";
             }
@@ -300,7 +300,7 @@ class Settings {
 
             $findvalue = true;
         }
-        if ($datediff['Seconds'] > 0 && $findvalue === false) {
+        if ($datediff['Seconds'] > 0 && $findvalue === false  && $to>5) {
             if ($findvalue) {
                 $datestring.= ", ";
             }
@@ -312,6 +312,7 @@ class Settings {
 
             $findvalue = true;
         }
+        
 
         return $datestring;
     }

@@ -102,7 +102,7 @@ class LastVisited extends CActiveRecord
             
             if($obj)
             {
-                return Settings::get_post_time($obj->last_visited);
+                return Settings::get_post_time($obj->last_visited,3);
             }    
 
             return false;

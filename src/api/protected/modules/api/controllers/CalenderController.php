@@ -253,13 +253,13 @@ class CalenderController extends Controller
                         }
                         else
                         {
-                            $text = "At " . date('jS F', strtotime($dt->format("Y-m-d")));
+                            $text = date('jS F', strtotime($dt->format("Y-m-d")));
                         }
 
 
                         if (in_array($dt->format("Y-m-d"), $holiday_array_for_count))
                         {
-                            $msg[$dt->format("Y-m-d")] = $text . " is Holiday";
+                            $msg[$dt->format("Y-m-d")] = $text . " is Holiday".;
                         }
                         elseif (in_array($dt->format("w"), $weekend_array))
                         {

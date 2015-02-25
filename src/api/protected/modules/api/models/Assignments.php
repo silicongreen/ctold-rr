@@ -120,6 +120,13 @@ class Assignments extends CActiveRecord
               
                 $marge['subjects'] = $value["subjectDetails"]->name;
                 $marge['batch'] = $value["subjectDetails"]['Subjectbatch']->name;
+                
+                $marge['attachment_file_name'] = ""; 
+                if($value->attachment_file_name)
+                {
+                    $marge['attachment_file_name'] = $value->attachment_file_name;
+                }
+                
                 $marge['course'] = $value["subjectDetails"]['Subjectbatch']['courseDetails']->course_name;
                 $marge['subjects_id'] = $value["subjectDetails"]->id;
                 $marge['subjects_icon'] = $value["subjectDetails"]->icon_number;

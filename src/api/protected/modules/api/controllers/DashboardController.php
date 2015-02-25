@@ -127,9 +127,10 @@ class DashboardController extends Controller
             }
             $response['maindata']['dates'] = $date_array;
             
-            foreach($date_array as $value)
+            foreach($date_array as $dvalue)
             {
-                $date = $value['dateformat'];
+                $merging_date = array();
+                $date = $dvalue['dateformat'];
             
                 $tommmorow = date('Y-m-d',strtotime($date . "+1 days"));
 
@@ -138,7 +139,7 @@ class DashboardController extends Controller
                 $stdObject = new Students();
                 $std_data = $stdObject->findByPk($student_id);
 
-                $response['data'][$value['index']]['student_name'] = $std_data->first_name;
+                $merging_date[$dvalue['index']]['student_name'] = $std_data->first_name;
 
                 $objattendence = new Attendances();
 
@@ -147,7 +148,7 @@ class DashboardController extends Controller
                 $holiday_array = $holiday->getHolidayMonth($date, $date, $school_id);
                 if($holiday_array)
                 {
-                   $response['data'][$value['index']]['attendence'] = "Today is Holiday"; //(".$holiday_array[0]['title'].")
+                   $merging_date[$dvalue['index']]['attendence'] = "Today is Holiday"; //(".$holiday_array[0]['title'].")
                    $attendence_return = true;
                 }
 
@@ -157,7 +158,7 @@ class DashboardController extends Controller
                     $weekday = date("w",  strtotime($date));
                     if (in_array($weekday, $weekend_array))
                     {
-                        $response['data'][$value['index']]['attendence'] = "Today is weekend";
+                        $merging_date[$dvalue['index']]['attendence'] = "Today is weekend";
                         $attendence_return = true;
                     }
                 }
@@ -167,7 +168,7 @@ class DashboardController extends Controller
                     $leave_array = $leave->getleaveStudentMonth($date, $date, $student_id);
                     if($leave_array)
                     {
-                       $response['data'][$value['index']]['attendence'] = "was on Leave Today"; 
+                       $merging_date[$dvalue['index']]['attendence'] = "was on Leave Today"; 
                        $attendence_return = true;
                     }
                     if(!$attendence_return)
@@ -176,17 +177,17 @@ class DashboardController extends Controller
                         $attendance_array = $objattendence->getAbsentStudentMonth($date, $date, $student_id);
                         if($attendance_array['late'])
                         {
-                           $response['data'][$value['index']]['attendence'] =  "was Late Today"; 
+                           $merging_date[$dvalue['index']]['attendence'] =  "was Late Today"; 
                            $attendence_return = true; 
                         }
                         else if($attendance_array['absent'])
                         {
-                           $response['data'][$value['index']]['attendence'] =  "was Absent Today"; 
+                           $merging_date[$dvalue['index']]['attendence'] =  "was Absent Today"; 
                            $attendence_return = true; 
                         }
                         else
                         {
-                           $response['data'][$value['index']]['attendence'] =  "was Present Today"; 
+                           $merging_date[$dvalue['index']]['attendence'] =  "was Present Today"; 
                            $attendence_return = true; 
 
                         }
@@ -201,10 +202,10 @@ class DashboardController extends Controller
                 $day_id = Settings::$ar_weekdays_key[$cur_day_name];
                 $time_table = new TimetableEntries;
                 $time_table = $time_table->getTimeTables($school_id, $tommmorow, true, $batch_id,$day_id);
-                $response['data'][$value['index']]['class_tommrow'] = false;
+                $merging_date[$dvalue['index']]['class_tommrow'] = false;
                 if($time_table)
                 {
-                    $response['data'][$value['index']]['class_tommrow'] = true;
+                    $merging_date[$dvalue['index']]['class_tommrow'] = true;
                 }
 
                 //tomomorow class end
@@ -214,7 +215,7 @@ class DashboardController extends Controller
                 $assignment = new Assignments();
                 $homework_data = $assignment->getAssignmentSubject($batch_id, $student_id,$tommmorow);
 
-                $response['data'][$value['index']]['homework_subject'] = array();
+                $merging_date[$dvalue['index']]['homework_subject'] = array();
                 $sub_array = array();
                 if($homework_data)
                 {
@@ -223,9 +224,9 @@ class DashboardController extends Controller
                     {
                         if(!in_array($value['subjects_id'], $sub_array))
                         {
-                            $response['data'][$value['index']]['homework_subject'][$i]['id'] = $value['subjects_id'];
-                            $response['data'][$value['index']]['homework_subject'][$i]['name'] = $value['subjects'];
-                            $response['data'][$value['index']]['homework_subject'][$i]['icon'] = $value['subjects_icon'];
+                            $merging_date[$dvalue['index']]['homework_subject'][$i]['id'] = $value['subjects_id'];
+                            $merging_date[$dvalue['index']]['homework_subject'][$i]['name'] = $value['subjects'];
+                            $merging_date[$dvalue['index']]['homework_subject'][$i]['icon'] = $value['subjects_icon'];
                             $i++;
                         }        
                     } 
@@ -234,7 +235,7 @@ class DashboardController extends Controller
                 //homework end
 
                 //Result Published
-                $response['data'][$value['index']]['result_publish'] = "";
+                $merging_date[$dvalue['index']]['result_publish'] = "";
 
 
                 $objReminder = new Reminders();
@@ -245,14 +246,14 @@ class DashboardController extends Controller
                     $examsdata = $exam->findByPk($result[0]['rid']);
                     if($examsdata)
                     {
-                        $response['data'][$value['index']]['result_publish'] = $examsdata->name;
+                        $merging_date[$dvalue['index']]['result_publish'] = $examsdata->name;
                     }
                 }
 
                 //Result Published end
 
                 //Routine Published
-                $response['data'][$value['index']]['routine_publish'] = "";
+                $merging_date[$dvalue['index']]['routine_publish'] = "";
 
 
                 $objReminder = new Reminders();
@@ -263,7 +264,7 @@ class DashboardController extends Controller
                     $examsdata = $exam->findByPk($result[0]['rid']);
                     if($examsdata)
                     {
-                        $response['data'][$value['index']]['routine_publish'] = $examsdata->name;
+                       $merging_date[$dvalue['index']]['routine_publish'] = $examsdata->name;
                     }
                 }
 
@@ -273,12 +274,12 @@ class DashboardController extends Controller
 
                 $objEvent = new Events();
                 $event_data = $objEvent->getAcademicCalendar($school_id, $tommmorow, $tommmorow, $batch_id, 0, 1, 10, false, true);
-                $response['data'][$value['index']]['event_tommorow'] = false;
+                $merging_date[$dvalue['index']]['event_tommorow'] = false;
                 if($event_data)
                 {
-                    $response['data'][$value['index']]['event_tommorow'] = true;
-                    $response['data'][$value['index']]['event_id'] = $event_data[0]['event_id']; 
-                    $response['data'][$value['index']]['event_name'] = $event_data[0]['event_title']; 
+                    $merging_date[$dvalue['index']]['event_tommorow'] = true;
+                    $merging_date[$dvalue['index']]['event_id'] = $event_data[0]['event_id']; 
+                    $merging_date[$dvalue['index']]['event_name'] = $event_data[0]['event_title']; 
                 }
 
                 //end_event
@@ -286,10 +287,10 @@ class DashboardController extends Controller
                 //exam start
                 $objExam = new Exams();
                 $examdata = $objExam->getExamTimeTable($school_id, $batch_id, $student_id, NULL, $tommmorow);
-                $response['data'][$value['index']]['exam_tommorow'] = false;
+                $merging_date[$dvalue['index']]['exam_tommorow'] = false;
                 if($examdata)
                 {
-                    $response['data'][$value['index']]['exam_tommorow'] = true; 
+                    $merging_date[$dvalue['index']]['exam_tommorow'] = true; 
                 }
                 //end exam
 
@@ -297,18 +298,18 @@ class DashboardController extends Controller
                 {
                     $objReminder = new Reminders();
                     $meeting_request = $objReminder->getUserReminderNew($user_id,1,10,$date,13);
-                    $response['data'][$value['index']]['meeting_request'] = $meeting_request;
+                    $merging_date[$dvalue['index']]['meeting_request'] = $meeting_request;
 
                     $objReminder = new Reminders();
                     $leave = $objReminder->getUserReminderNew($user_id,1,10,$date,10);
-                    $response['data'][$value['index']]['leave'] = $leave;
+                    $merging_date[$dvalue['index']]['leave'] = $leave;
 
                     $objFees = new FinanceFees();
                     $fees = $objFees->feesStudentDue($student_id);
-                    $response['data'][$value['index']]['fees'] = false;
+                    $merging_date[$dvalue['index']]['fees'] = false;
                     if($fees)
                     {
-                        $response['data'][$value['index']]['fees'] = true;
+                        $merging_date[$dvalue['index']]['fees'] = true;
                     }
 
                 }
@@ -318,10 +319,10 @@ class DashboardController extends Controller
                 //Notice start
                 $newsobj = new News();
                 $notice = $newsobj->getNews($school_id, $date, $date);
-                $response['data'][$value['index']]['notice'] = false;
+                $merging_date[$dvalue['index']]['notice'] = false;
                 if($notice)
                 {
-                    $response['data'][$value['index']]['notice'] = true; 
+                    $merging_date[$dvalue['index']]['notice'] = true; 
                 }
                 //Notice end
 
@@ -330,8 +331,11 @@ class DashboardController extends Controller
                 //Quiz start
                 $onlineExamObj = new OnlineExamGroups();
                 $onlineexamData = $onlineExamObj->getOnlineExamList($batch_id, $student_id, 1, 10,$date);
-                $response['data'][$value['index']]['quiz'] = $onlineexamData; 
+                $merging_date[$dvalue['index']]['quiz'] = $onlineexamData; 
+                
                 //Quiz End
+                
+                $response['data'] = $merging_date;
             
             }
             

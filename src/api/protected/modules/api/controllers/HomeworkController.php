@@ -23,7 +23,7 @@ class HomeworkController extends Controller
     {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'Done','subjects','assessmentscore','singlehomework', 'saveassessment', 'assessment', 'getassessment', 'getproject', 'getsubject', 'addhomework', 'teacherhomework', 'homeworkstatus'),
+                'actions' => array('index', 'Done','subjects','singleteacher','assessmentscore','singlehomework', 'saveassessment', 'assessment', 'getassessment', 'getproject', 'getsubject', 'addhomework', 'teacherhomework', 'homeworkstatus'),
                 'users' => array('*'),
             ),
             array('deny', // deny all users
@@ -341,6 +341,53 @@ class HomeworkController extends Controller
         echo CJSON::encode($response);
         Yii::app()->end();
     }
+    
+    public function actionSingleTeacher()
+    {
+        $user_secret = Yii::app()->request->getPost('user_secret');
+        $employee_id = Yii::app()->user->profileId;
+        $id = Yii::app()->request->getPost('id');
+        if ($id && Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher)
+        {
+            $homework = new Assignments();
+            $page_number = Yii::app()->request->getPost('page_number');
+            $page_size = Yii::app()->request->getPost('page_size');
+            if (empty($page_number))
+            {
+                $page_number = 1;
+            }
+            if (empty($page_size))
+            {
+                $page_size = 10;
+            }
+            $homework_data = $homework->getAssignmentTeacher($employee_id, $page_number, $page_size, $id);
+            if ($homework_data)
+            {
+
+                $response['data']['homework'] = $homework_data[0];
+                $response['status']['code'] = 200;
+                $response['status']['msg'] = "Data Found";
+            }
+            else
+            {
+                $response['data']['total'] = 0;
+                $response['data']['has_next'] = false;
+                $response['data']['homework'] = array();
+                $response['status']['code'] = 200;
+                $response['status']['msg'] = "Data Not Found";
+            }
+        }
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    }
+    
+    
    
      
     public function actionSingleHomework()

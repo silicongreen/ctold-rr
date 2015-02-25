@@ -409,8 +409,6 @@ class EventController extends Controller
                 //reminder
                 if(isset($leave->id))
                 {
-                    $notifiation_ids = array();
-                    $reminderrecipients = array();
                     
                     $reminder = new Reminders();
                     $reminder->sender = Yii::app()->user->id;
@@ -424,15 +422,9 @@ class EventController extends Controller
 
                     $reminder->updated_at = date("Y-m-d H:i:s");
                     $reminder->save();
-                    $reminderrecipients[] = $employeedata->reporting_manager_id;
-                    $notifiation_ids[] = $reminder->id;
-
-                    if($notifiation_ids)
-                    {
-                        $notifiation_id = implode(",", $notifiation_ids);
-                        $user_id = implode(",", $reminderrecipients);
-                        Settings::sendCurlNotification($user_id, $notification_id);
-                    }
+                    
+                    Settings::sendCurlNotification($employeedata->reporting_manager_id, $reminder->id);
+                    
                 }
                 
                 //reminder
@@ -493,6 +485,8 @@ class EventController extends Controller
 
                 $reminder->updated_at = date("Y-m-d H:i:s");
                 $reminder->save();
+                
+                Settings::sendCurlNotification($techer_profile->user_id, $reminder->id);
                 
                 ///push notification
             }
@@ -581,6 +575,8 @@ class EventController extends Controller
 
                 $reminder->updated_at = date("Y-m-d H:i:s");
                 $reminder->save();
+                
+                Settings::sendCurlNotification($studentdata->immediate_contact_id, $reminder->id);
                 ///push notification
             }
             
@@ -655,6 +651,62 @@ class EventController extends Controller
                 $updatemeeting->save(false);
                 $response['status']['code'] = 200;
                 $response['status']['msg'] = "Success";
+                
+                $status_text = "Declined";
+                if($status==1)
+                {
+                    $status_text = "Accepted"; 
+                }
+                $name = "";
+                $rtype = 13;
+                $recipient = 0;
+                if(Yii::app()->user->isParent)
+                {
+                    $gr = new Guardians();
+                    $grdata = $gr->findByPk(Yii::app()->user->profileId);
+                    $name = $grdata->first_name." ".$grdata->last_name;
+                    
+                    $employee = new Employees();
+                    $emdata = $employee->findByPk($updatemeeting->teacher_id);
+                    $rtype = 14;
+                    $recipient = $emdata->user_id;
+                    
+                }
+                else
+                {
+                    $employee = new Employees();
+                    $emdata = $employee->findByPk(Yii::app()->user->profileId);
+                    $name = $emdata->first_name." ".$emdata->last_name;
+                    
+                    $std = new Students();
+                    $std_data = $std->findByPk($updatemeeting->parent_id);
+                    if($std_data->immediate_contact_id)
+                    {
+                        $recipient = $std_data->immediate_contact_id;
+                    }
+                }    
+                if($recipient)
+                {
+                    
+                    $reminder = new Reminders();
+                    $reminder->sender = Yii::app()->user->id;
+                    $reminder->subject = "Your Meeting Request is ".$status_text;
+                    $reminder->body = "Your meeting request with " . $name . " have been  ".$status_text." for ".date('l jS \of F Y h:i:s A',$updatemeeting->datetime);
+                    $reminder->recipient = $recipient;
+                    $reminder->school_id = Yii::app()->user->schoolId;
+                    $reminder->rid = $updatemeeting->id;
+                    $reminder->rtype = $rtype;
+                    $reminder->created_at = date("Y-m-d H:i:s");
+
+                    $reminder->updated_at = date("Y-m-d H:i:s");
+                    $reminder->save();
+                    
+                    Settings::sendCurlNotification($recipient, $reminder->id);
+                   
+
+                    ///push notification
+                }
+                
             }
             else
             {

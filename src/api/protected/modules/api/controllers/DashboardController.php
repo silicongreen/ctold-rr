@@ -190,13 +190,16 @@ class DashboardController extends Controller
             $result = $objReminder->getUserReminderNew($user_id,1,10,$date,3);
             $response['data']['result'] = $result;
             
-            $objReminder = new Reminders();
-            $meeting_request = $objReminder->getUserReminderNew($user_id,1,10,$date,13);
-            $response['data']['meeting_request'] = $meeting_request;
-            
-            $objReminder = new Reminders();
-            $leave = $objReminder->getUserReminderNew($user_id,1,10,$date,10);
-            $response['data']['result'] = $leave;
+            if(Yii::app()->user->isParent)
+            {
+                $objReminder = new Reminders();
+                $meeting_request = $objReminder->getUserReminderNew($user_id,1,10,$date,13);
+                $response['data']['meeting_request'] = $meeting_request;
+
+                $objReminder = new Reminders();
+                $leave = $objReminder->getUserReminderNew($user_id,1,10,$date,10);
+                $response['data']['leave'] = $leave;
+            }
             
             
             $cur_day_name = Settings::getCurrentDay($tommmorow);

@@ -337,6 +337,7 @@ class CalenderController extends Controller
                     $response['data']['holiday'] = $holiday_array;
                     $response['data']['leave'] = $leave_array_modified;
                     $response['data']['total'] = $i;
+                    $response['data']['msg'] = $msg;
                     $response['status']['code'] = 200;
                     $response['status']['msg'] = "Data Found";
                 }

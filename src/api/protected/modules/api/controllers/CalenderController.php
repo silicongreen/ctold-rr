@@ -234,8 +234,15 @@ class CalenderController extends Controller
                 $absent_count = count($attendance_array['absent']);
                 $late_count = count($attendance_array['late']);
 
-                if (!$yearly && $start_date <= $end_date)
+                $start_date_main = Yii::app()->request->getPost('start_date');
+                $end_date_main = Yii::app()->request->getPost('end_date');
+                if (!$yearly && $start_date_main <= $end_date_main)
                 {
+                    $begin = new DateTime(date("Y-m-d", strtotime($start_date_main)));
+                    $end = new DateTime(date("Y-m-d", strtotime($end_date_main)));
+                    
+                    $interval = DateInterval::createFromDateString('1 day');
+                    $period = new DatePeriod($begin, $interval, $end);
 
                     foreach ($period as $dt)
                     {

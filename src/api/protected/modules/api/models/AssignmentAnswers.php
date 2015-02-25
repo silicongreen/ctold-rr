@@ -136,7 +136,7 @@ class AssignmentAnswers extends CActiveRecord
             
             $data = $this->findAll($criteria);
             
-            $return = "";
+            $return = array();
             $i = 0;
             foreach($data as $value)
             {

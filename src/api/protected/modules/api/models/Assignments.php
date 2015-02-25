@@ -164,7 +164,37 @@ class Assignments extends CActiveRecord
             
             $data = $this->with("subjectDetails")->find($criteria);
             return $data->total;
-        }        
+        } 
+        
+        public function getAssignmentSubject($batch_id, $student_id,$duedate)
+        {
+            
+            $criteria = new CDbCriteria();
+            $criteria->select = 't.id,t.attachment_file_name';
+            $criteria->compare('subjectDetails.batch_id', $batch_id);
+            $criteria->compare('DATE(t.duedate)', $duedate);
+            $criteria->order = "t.created_at DESC";
+            $criteria->addCondition("FIND_IN_SET(".$student_id.", student_list)");
+            $data = $this->with("subjectDetails")->findAll($criteria);
+            $response_array = array();
+            if($data != NULL)
+            foreach($data as $value)
+            {
+                $marge['attachment_file_name'] = "";      
+                if($value->attachment_file_name)
+                {
+                    $marge['attachment_file_name'] = $value->attachment_file_name;
+                } 
+                $marge['subjects'] = $value["subjectDetails"]->name;
+                $marge['subjects_id'] = $value["subjectDetails"]->id;
+                $marge['subjects_icon'] = $value["subjectDetails"]->icon_number;
+                
+                $response_array[] = $marge;     
+                
+            }
+            return $response_array;
+            
+        }
         
         public function getAssignment($batch_id, $student_id, $date = '',$page=1, $subject_id=NULL, $page_size,$type,$id=0,$duedate="")
         {

@@ -39,49 +39,90 @@ class DashboardController extends Controller
         $batch_id = Yii::app()->request->getPost('batch_id');
         if(Yii::app()->user->user_secret === $user_secret && ( Yii::app()->user->isStudent || (Yii::app()->user->isParent && $student_id && $batch_id)))
         {
+            $response = array();
             if (Yii::app()->user->isStudent)
             {
                 $student_id = Yii::app()->user->profileId;
                 $batch_id = Yii::app()->user->batchId;
             }
             $user_id = Yii::app()->user->id;
-            
-            $stdObject = new Students();
-            $std_data = $stdObject->findByPk($student_id);
-            $response = array();
             $school_id =  Yii::app()->user->schoolId;
-            $response['data']['current_date'] = date("Y-m-d");
+            $tommmorow = date('Y-m-d',strtotime($date . "+1 days"));
             
+            //school info
             
+            $school_obj  = new Schools();
+            $school_details = $school_obj->findByPk($school_id);
+            $response['data']['school_name'] = $school_details->name;
+            $response['data']['school_picture'] = "";
+            
+            $freeschool = new School();
+            $freeschoolid = $freeschool->getSchoolPaid($school_id);
+            if($freeschoolid)
+            {
+                $freeschooldetails = $freeschool->findByPk($freeschoolid);
+                if(isset($freeschooldetails->cover) && $freeschooldetails->cover )
+                {
+                    $response['data']['school_picture'] = Settings::$image_path.$freeschooldetails->cover;
+                }
+                
+            }
+            
+            //end school info
+            
+            //student profile
+            
+            $response['data']['profile_picture'] = "";
+            $freobj = new Freeusers();
+            $profile_image = $freobj->getUserImage($user_id);
+            if(isset($profile_image['profile_image']) && $profile_image['profile_image'])
+            {
+               $response['data']['profile_picture'] = $profile_image['profile_image']; 
+            }
+            
+            //student profile end
+            
+            //current day
+            
+            $response['data']['current_date'] = date("l Y-m-d");
+            
+            //current day
+            
+            //Last Visited
+            $response['data']['last_visited']['first'] = "Last Visited";
+            $response['data']['last_visited']['number']  = "Today";
+            $response['data']['last_visited']['type']  = "";
             
             $lastvisited = new LastVisited();
             $last_visited = $lastvisited->getLastVisited();
             $lastvisited->addLastVisited();
             
-            if(!$last_visited)
+            if($last_visited)
             {
-              $last_visited = "";  
+              $visitedarray = explode(" ", $last_visited);
+              $response['data']['last_visited']['number'] = $visitedarray[0];
+              $response['data']['last_visited']['type'] = $visitedarray[1];
+               
             }
-            $response['data']['last_visited'] = $last_visited;
+            
+            
+            //Last Visited
             
             
             //attendence start
+            $stdObject = new Students();
+            $std_data = $stdObject->findByPk($student_id);
+            
+            $response['data']['student_name'] = $std_data->first_name;
+            
             $objattendence = new Attendances();
-            $today_text = "Today";
-            if($date!=date("Y-m-d"))
-            {
-                $today_text = "At ".$date;
-            }
+
             $attendence_return = false;
             $holiday = new Events();
             $holiday_array = $holiday->getHolidayMonth($date, $date, $school_id);
             if($holiday_array)
             {
-               if($date!=date("Y-m-d"))
-               {
-                  $today_text = $date;
-               }
-               $response['data']['attendence'] = $today_text." is Holiday (".$holiday_array[0]['title'].")"; 
+               $response['data']['attendence'] = "Today is Holiday"; //(".$holiday_array[0]['title'].")
                $attendence_return = true;
             }
             
@@ -91,11 +132,7 @@ class DashboardController extends Controller
                 $weekday = date("w",  strtotime($date));
                 if (in_array($weekday, $weekend_array))
                 {
-                    if($date!=date("Y-m-d"))
-                    {
-                        $today_text = ucfirst(Settings::$ar_weekdays[$weekday])."(".$date.")";
-                    } 
-                    $response['data']['attendence'] = $today_text." is weekend";
+                    $response['data']['attendence'] = "Today is weekend";
                     $attendence_return = true;
                 }
             }
@@ -105,7 +142,7 @@ class DashboardController extends Controller
                 $leave_array = $leave->getleaveStudentMonth($date, $date, $student_id);
                 if($leave_array)
                 {
-                   $response['data']['attendence'] = $today_text." ".$std_data->first_name." ".$std_data->last_name." on leave"; 
+                   $response['data']['attendence'] = "was on Leave Today"; 
                    $attendence_return = true;
                 }
                 if(!$attendence_return)
@@ -114,17 +151,17 @@ class DashboardController extends Controller
                     $attendance_array = $objattendence->getAbsentStudentMonth($date, $date, $student_id);
                     if($attendance_array['late'])
                     {
-                       $response['data']['attendence'] =  $today_text." ".$std_data->first_name." ".$std_data->last_name." is Late"; 
+                       $response['data']['attendence'] =  "was Late Today"; 
                        $attendence_return = true; 
                     }
                     else if($attendance_array['absent'])
                     {
-                       $response['data']['attendence'] =  $today_text." ".$std_data->first_name." ".$std_data->last_name." is Absent"; 
+                       $response['data']['attendence'] =  "was Absent Today"; 
                        $attendence_return = true; 
                     }
                     else
                     {
-                       $response['data']['attendence'] =  $today_text." ".$std_data->first_name." ".$std_data->last_name." is Present"; 
+                       $response['data']['attendence'] =  "was Present Today"; 
                        $attendence_return = true; 
                         
                     }
@@ -133,6 +170,69 @@ class DashboardController extends Controller
             } 
             
             //attendence end
+            
+            
+            //homework start
+            
+            $assignment = new Assignments();
+            $homework_data = $assignment->getAssignmentSubject($batch_id, $student_id,$tommmorow);
+            
+            $response['data']['homework_subject'] = array();
+            $sub_array = array();
+            if($homework_data)
+            {
+                $i = 0;
+                foreach($homework_data as $value)
+                {
+                    if(!in_array($value['subjects_id'], $sub_array))
+                    {
+                        $response['data']['homework_subject'][$i]['id'] = $value['subjects_id'];
+                        $response['data']['homework_subject'][$i]['name'] = $value['subjects'];
+                        $response['data']['homework_subject'][$i]['icon'] = $value['subjects_icon'];
+                        $i++;
+                    }        
+                } 
+            }
+            
+            //homework end
+            
+            //Result Published
+            $response['data']['result_publish'] = "";
+            
+            
+            $objReminder = new Reminders();
+            $result = $objReminder->getUserReminderNew($user_id,1,10,$date,3);
+            if($result && isset($result[0]['rid']) && $result[0]['rid'])
+            {
+                $exam = new ExamGroups();
+                $examsdata = $exam->findByPk($result[0]['rid']);
+                if($examsdata)
+                {
+                    $response['data']['result_publish'] = $examsdata->name;
+                }
+            }
+            
+            //Result Published end
+            
+            //Routine Published
+            $response['data']['routine_publish'] = "";
+            
+            
+            $objReminder = new Reminders();
+            $result = $objReminder->getUserReminderNew($user_id,1,10,$date,2);
+            if($result && isset($result[0]['rid']) && $result[0]['rid'])
+            {
+                $exam = new ExamGroups();
+                $examsdata = $exam->findByPk($result[0]['rid']);
+                if($examsdata)
+                {
+                    $response['data']['routine_publish'] = $examsdata->name;
+                }
+            }
+            
+            //Routine Published end
+            
+            
             
             //Notice start
             $newsobj = new News();
@@ -144,17 +244,7 @@ class DashboardController extends Controller
             }
             //Notice end
             
-            //homework start
             
-            $tommmorow = date('Y-m-d',strtotime($date . "+1 days"));
-            
-            
-            
-            $assignment = new Assignments();
-            $homework_data = $assignment->getAssignment($batch_id, $student_id, "", 1, NULL, 10, 1,0,$tommmorow);
-            $response['data']['homework'] = $homework_data; 
-            
-            //homework end
             
             //Quiz start
             $onlineExamObj = new OnlineExamGroups();
@@ -182,13 +272,9 @@ class DashboardController extends Controller
             }
             //end exam
             
-            $objReminder = new Reminders();
-            $schedule = $objReminder->getUserReminderNew($user_id,1,10,$date,2);
-            $response['data']['schedule'] = $schedule;
             
-            $objReminder = new Reminders();
-            $result = $objReminder->getUserReminderNew($user_id,1,10,$date,3);
-            $response['data']['result'] = $result;
+            
+            
             
             if(Yii::app()->user->isParent)
             {

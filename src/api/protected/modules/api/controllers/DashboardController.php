@@ -336,7 +336,7 @@ class DashboardController extends Controller
                 
                 //Quiz End
                 
-                $response['datefeed'][] = $merging_date;
+                $response['datefeed'][] = $merging_data;
             
             }
             

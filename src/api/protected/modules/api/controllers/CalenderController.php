@@ -259,7 +259,7 @@ class CalenderController extends Controller
 
                         if (in_array($dt->format("Y-m-d"), $holiday_array_for_count))
                         {
-                            $msg[$dt->format("Y-m-d")] = $text . " is Holiday".;
+                            $msg[$dt->format("Y-m-d")] = $text . " is Holiday";
                         }
                         elseif (in_array($dt->format("w"), $weekend_array))
                         {

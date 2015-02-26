@@ -721,7 +721,7 @@ class HomeworkController extends Controller
             }
             if($notifiation_ids)
             {
-                $notifiation_id = implode(",", $notifiation_ids);
+                $notification_id = implode(",", $notifiation_ids);
                 $user_id = implode(",", $reminderrecipients);
                 Settings::sendCurlNotification($user_id, $notification_id);
             }

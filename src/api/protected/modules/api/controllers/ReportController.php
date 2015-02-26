@@ -152,7 +152,7 @@ class ReportController extends Controller
                 $subjects = new Subjects();
                 $exam_data = $subjects->getBatchSubjectClassTestProjectReport($batch_id, $student_id);
                 
-                if ($exam_data || $term_report)
+                if ($exam_data)
                 {
                     $response['data']['class_test_report']    = $exam_data;
                     $response['status']['code']       = 200;

@@ -228,6 +228,7 @@ class CalenderController extends Controller
                     {
                         $i++;
                     }
+                    $i++;
                 }
 
                 $attendance_array = $attendance->getAbsentStudentMonth($start_date, $end_date, $student_id, $holiday_array_for_count, $weekend_array, $leave_array_modified);

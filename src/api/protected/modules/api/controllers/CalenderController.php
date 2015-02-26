@@ -323,7 +323,7 @@ class CalenderController extends Controller
                     }
                     else
                     {
-                        $text = "At " . date('jS F', strtotime($end->format("Y-m-d")));
+                        $text = date('jS F', strtotime($end->format("Y-m-d")));
                     }
 
 

@@ -228,7 +228,6 @@ class CalenderController extends Controller
                     {
                         $i++;
                     }
-                    $i++;
                 }
 
                 $attendance_array = $attendance->getAbsentStudentMonth($start_date, $end_date, $student_id, $holiday_array_for_count, $weekend_array, $leave_array_modified);
@@ -666,10 +665,14 @@ class CalenderController extends Controller
                         if ($status == 1)
                         {
                             $objatt->is_leave = 1;
+                            $objatt->forenoon = 1;
+                            $objatt->afternoon = 1;
                         }
                         else
                         {
                             $objatt->is_leave = 0;
+                            $objatt->forenoon = 1;
+                            $objatt->afternoon = 1;
                         }
                         $objatt->save();
                     }

@@ -198,7 +198,7 @@ class ExamGroups extends CActiveRecord
     public function getExamCategory($school_id = null, $batch_id = null, $category_id = null) {
         
         $criteria = new CDbCriteria();
-        $criteria->select = 't.id, t.name';
+        $criteria->select = 't.id, t.name, t.exam_date';
         $criteria->compare('t.school_id', $school_id);
         $criteria->compare('t.batch_id', $batch_id);
         $criteria->compare('t.exam_category', $category_id);
@@ -218,6 +218,7 @@ class ExamGroups extends CActiveRecord
         foreach ($obj_exam_cat as $row) {
             $_data['id'] = $row->id;
             $_data['title'] = $row->name;
+            $_data['exam_date'] = $row->exam_date;
             
             $ar_formatted_data[] = $_data;
         }

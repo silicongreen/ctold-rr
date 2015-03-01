@@ -699,7 +699,7 @@ class HomeworkController extends Controller
 
 
 
-            $notifiation_ids = array();
+            $notification_ids = array();
             $reminderrecipients = array();
             foreach ($students as $value)
             {
@@ -717,11 +717,11 @@ class HomeworkController extends Controller
                 $reminder->updated_at = date("Y-m-d H:i:s");
                 $reminder->save();
                 $reminderrecipients[] = $studentsobj->user_id;
-                $notifiation_ids[] = $reminder->id;
+                $notification_ids[] = $reminder->id;
             }
-            if($notifiation_ids)
+            if($notification_ids)
             {
-                $notification_id = implode(",", $notifiation_ids);
+                $notification_id = implode(",", $notification_ids);
                 $user_id = implode(",", $reminderrecipients);
                 Settings::sendCurlNotification($user_id, $notification_id);
             }

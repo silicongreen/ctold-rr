@@ -350,7 +350,7 @@ class EventController extends Controller
                     $reminder->sender = Yii::app()->user->id;
                     $reminder->subject = "Student Leave Apply Notice";
                     $reminder->body = $stddata->first_name . "  apply for leave from " . $leave->start_date . " to ".$leave->end_date;
-                    $reminder->recipient = $value->user_id;
+                    $reminder->recipient = $value['employee']->user_id;
                     $reminder->school_id = Yii::app()->user->schoolId;
                     $reminder->rid = $leave->id;
                     $reminder->rtype = 9;

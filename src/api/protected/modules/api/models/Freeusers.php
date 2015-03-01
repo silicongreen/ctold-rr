@@ -199,10 +199,11 @@ class Freeusers extends CActiveRecord {
         }
         return false;
     }
-    public function getFreeuserPaid($paid_id) {
+    public function getFreeuserPaid($paid_id, $school_id) {
 
         $criteria = new CDbCriteria;
         $criteria->compare('paid_id', $paid_id);
+        $criteria->compare('paid_school_id', $school_id);
 
         $data = $this->find($criteria);
        

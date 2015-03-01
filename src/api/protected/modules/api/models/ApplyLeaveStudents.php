@@ -109,7 +109,7 @@ class ApplyLeaveStudents extends CActiveRecord
         public function getallleaveStudentsDate($date)
         {
             $criteria = new CDbCriteria;
-            $criteria->select = "t.id,t.student_id,t.approved,t.reason,t.start_date,t.end_date";
+            $criteria->select = "t.id,t.student_id,t.leave_subject,t.approved,t.reason,t.start_date,t.end_date";
             $criteria->addCondition("DATE(start_date) <= '" . $date . "'");
             $criteria->addCondition("DATE(end_date) >= '" . $date . "'");
             
@@ -129,6 +129,11 @@ class ApplyLeaveStudents extends CActiveRecord
                 {
                     $return_array['unapproved'][$i] = $value->student_id;
                 }  
+                $return_array['leave_subject'][$i]  = "";
+                if($value->leave_subject)
+                {
+                    $return_array['leave_subject'][$i] = $value->leave_subject;
+                }
               
                 $return_array['reason'][$i] = $value->reason;
                 $return_array['leave_id'][$i] = $value->id;
@@ -154,7 +159,7 @@ class ApplyLeaveStudents extends CActiveRecord
             $batches = $esubject->getBatchId($profile_id);
             $today = date("Y-m-d",  strtotime("-1 Month")); 
             $criteria = new CDbCriteria;
-            $criteria->select = "t.id,t.student_id,t.approved,t.reason,t.start_date,t.end_date,t.created_at";
+            $criteria->select = "t.id,t.student_id,t.approved,t.leave_subject,t.reason,t.start_date,t.end_date,t.created_at";
             $criteria->addCondition("DATE(t.start_date) >= '" . $today . "'");
             $criteria->addInCondition("students.batch_id", $batches);
             $criteria->addCondition("t.approving_teacher IS NULL");
@@ -189,6 +194,11 @@ class ApplyLeaveStudents extends CActiveRecord
                 $return_array[$i]['student_name'] = $students_name;
                 $return_array[$i]['batch'] = $value['students']['batchDetails']['courseDetails']->course_name." ".$value['students']['batchDetails']->name;
                 $return_array[$i]['approved'] = $value->approved;
+                $return_array[$i]['leave_subject']  = "";
+                if($value->leave_subject)
+                {
+                    $return_array[$i]['leave_subject'] = $value->leave_subject;
+                }
                 $return_array[$i]['reason'] = $value->reason;
                 $return_array[$i]['leave_id'] = $value->id;
                 $return_array[$i]['leave_start_date'] = $value->start_date;

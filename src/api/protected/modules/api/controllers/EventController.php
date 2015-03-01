@@ -880,7 +880,11 @@ class EventController extends Controller
 
                 if (!$events)
                 {
-                    $response['status']['code'] = 404;
+                    $events_cnt = new Events;
+                    $response['data']['total'] = $events_cnt->getEvents($school_id, $from_date, $to_date, $page_no, $page_size, $category_id, false, true);
+                    $response['data']['has_next'] =  false;
+                    $response['data']['events'] = array();
+                    $response['status']['code'] = 200;
                     $response['status']['msg'] = 'NO_EVENT_FOUND.';
                 }
                 else

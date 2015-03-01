@@ -153,11 +153,12 @@ class UserController extends Controller {
     {
         $freeuserObj = new Freeusers();
         $paid_id = Yii::app()->request->getPost('paid_id');
+        $school_id = Yii::app()->request->getPost('paid_school_id');
         $paid_password = Yii::app()->request->getPost('paid_password');
         $first_name = Yii::app()->request->getPost('first_name');
-        if($paid_id && $user_id = $freeuserObj->getFreeuserPaid($paid_id))
+        
+        if($school_id && $paid_id && $user_id = $freeuserObj->getFreeuserPaid($paid_id, $school_id))
         {
-            
             $freeuserObj = $freeuserObj->findByPk($user_id);
             
             if ($paid_password)

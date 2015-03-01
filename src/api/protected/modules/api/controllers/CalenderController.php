@@ -637,17 +637,21 @@ class CalenderController extends Controller
             {
                 if (!$status)
                 {
-                    $status = 1;
+                    $status = 0;
                 }
+                $updateleave->viewed_by_teacher = 1;
+                $updateleave->updated_at = date("Y-m-d H:i:s");
                 $updateleave->approved = $status;
                 $updateleave->approving_teacher = Yii::app()->user->profileId;
+                
+                $updateleave->save(false);
 
                 //sending notification
                 $reminderrecipients = array();
                 $studentobj = new Students();
                 $studentdata = $studentobj->findByPk($student_id);
                 $reminderrecipients[] = $studentdata->user_id;
-                $updateleave->save(false);
+                
 
                 $this->sendnotificationleave($student_id, $status, $updateleave);
 
@@ -674,7 +678,7 @@ class CalenderController extends Controller
                             $objatt->forenoon = 1;
                             $objatt->afternoon = 1;
                         }
-                        $objatt->save();
+                        $objatt->save(false);
                     }
                     else if ($status == 1)
                     {
@@ -690,7 +694,7 @@ class CalenderController extends Controller
                         $attendence->school_id = Yii::app()->user->schoolId;
                         $attendence->reason = $updateleave->reason;
                         $attendence->is_leave = 1;
-                        $attendence->save();
+                        $attendence->save(false);
                     }
                     $check_date = date("Y-m-d", strtotime("+1 day", strtotime($check_date)));
                 }

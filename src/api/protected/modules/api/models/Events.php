@@ -275,7 +275,14 @@ class Events extends CActiveRecord {
         $criteria->compare('t.is_holiday', 0);
 
         if (!$b_count) {
-            $criteria->order = 't.id DESC';
+            if($b_archive)
+            {
+                $criteria->order = 't.start_date DESC';
+            }
+            else
+            {
+                $criteria->order = 't.start_date ASC'; 
+            }    
             $criteria->together = true;
             $start = ($page - 1) * $page_size;
             $criteria->offset = $start;

@@ -276,6 +276,12 @@ class EventController extends Controller
                    
                     $leave[$i]['leave_start_date'] = $value->start_date;
                     $leave[$i]['leave_end_date'] = $value->end_date;
+                    $leave[$i]['leave_subject']  = "";
+                    if($value->leave_subject)
+                    {
+                        $leave[$i]['leave_subject'] = $value->leave_subject;
+                    }
+                    $leave[$i]['reason'] = $value->reason;
                     if (!$value->approving_teacher)
                     {
                         $leave[$i]['status'] = 2;

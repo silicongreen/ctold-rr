@@ -358,7 +358,7 @@ class EventController extends Controller
 
                     $reminder->updated_at = date("Y-m-d H:i:s");
                     $reminder->save();
-                    $reminderrecipients[] = $value->user_id;
+                    $reminderrecipients[] = $value['employee']->user_id;
                     $notifiation_ids[] = $reminder->id;
                 }
                 if($notifiation_ids)

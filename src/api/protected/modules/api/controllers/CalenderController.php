@@ -230,7 +230,8 @@ class CalenderController extends Controller
                     }
                 }
 
-                $attendance_array = $attendance->getAbsentStudentMonth($start_date, $end_date, $student_id, $holiday_array_for_count, $weekend_array, $leave_array_modified);
+                //$attendance_array = $attendance->getAbsentStudentMonth($start_date, $end_date, $student_id, $holiday_array_for_count, $weekend_array, $leave_array_modified);
+                $attendance_array = $attendance->getAbsentStudentMonth($start_date, $end_date, $student_id, $holiday_array_for_count, $weekend_array);
                 $absent_count = count($attendance_array['absent']);
                 $late_count = count($attendance_array['late']);
 

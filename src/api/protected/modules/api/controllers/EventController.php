@@ -361,7 +361,7 @@ class EventController extends Controller
                     $reminderrecipients[] = $value['employee']->user_id;
                     $notification_ids[] = $reminder->id;
                 }
-                if($notifiation_ids)
+                if($notification_ids)
                 {
                     $notification_id = implode(",", $notification_ids);
                     $user_id = implode(",", $reminderrecipients);

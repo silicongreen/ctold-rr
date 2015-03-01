@@ -309,13 +309,14 @@ class EventController extends Controller
     public function actionAddLeaveStudent()
     {
         $user_secret = Yii::app()->request->getPost('user_secret');
+        $leave_subject = Yii::app()->request->getPost('leave_subject');
         $reason = Yii::app()->request->getPost('reason');
         $start_date = Yii::app()->request->getPost('start_date');
         $end_date = Yii::app()->request->getPost('end_date');
         $student_id = Yii::app()->request->getPost('student_id');
         if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isParent && $reason && $student_id && $start_date && $end_date )
         {
-            
+             
             
             $leave = new ApplyLeaveStudents();
             $leave->school_id = Yii::app()->user->schoolId;
@@ -323,6 +324,10 @@ class EventController extends Controller
             $leave->start_date = $start_date;
             $leave->end_date = $end_date;
             $leave->student_id = $student_id;
+            if($leave_subject)
+            {
+                $leave->leave_subject = $leave_subject;
+            }
             $leave->created_at = date("Y-m-d H:i:s");
             $leave->updated_at = date("Y-m-d H:i:s");
             $leave->save();
@@ -875,7 +880,11 @@ class EventController extends Controller
 
                 if (!$events)
                 {
-                    $response['status']['code'] = 404;
+                    $events_cnt = new Events;
+                    $response['data']['total'] = $events_cnt->getEvents($school_id, $from_date, $to_date, $page_no, $page_size, $category_id, false, true);
+                    $response['data']['has_next'] =  false;
+                    $response['data']['events'] = array();
+                    $response['status']['code'] = 200;
                     $response['status']['msg'] = 'NO_EVENT_FOUND.';
                 }
                 else

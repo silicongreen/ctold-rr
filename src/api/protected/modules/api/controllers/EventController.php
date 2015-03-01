@@ -882,6 +882,10 @@ class EventController extends Controller
                 {
                     $events_cnt = new Events;
                     $response['data']['total'] = $events_cnt->getEvents($school_id, $from_date, $to_date, $page_no, $page_size, $category_id, false, true);
+                    if(!$response['data']['total'])
+                    {
+                        $response['data']['total'] = 0;
+                    }
                     $response['data']['has_next'] =  false;
                     $response['data']['events'] = array();
                     $response['status']['code'] = 200;

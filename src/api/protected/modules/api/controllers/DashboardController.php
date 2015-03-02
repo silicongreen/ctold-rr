@@ -265,6 +265,7 @@ class DashboardController extends Controller
                                 $merging_data['homework_subject'][$i]['name'] = $value['subjects'];
                                 $merging_data['homework_subject'][$i]['icon'] = $value['subjects_icon'];
                                 $i++;
+                                $sub_array[] = $value['subjects_id'];
                             }
                         }
                     }
@@ -359,8 +360,28 @@ class DashboardController extends Controller
                     //Notice end
                     //Quiz start
                     $onlineExamObj = new OnlineExamGroups();
-                    $onlineexamData = $onlineExamObj->getOnlineExamList($batch_id, $student_id, 1, 10, $date);
-                    $merging_data['quiz'] = $onlineexamData;
+                    $onlineexamData = $onlineExamObj->getOnlineExamSubject($batch_id,$date);
+
+                    $merging_data['quiz'] = array();
+                    $sub_array = array();
+                    if ($onlineexamData)
+                    {
+                        $i = 0;
+                        foreach ($onlineexamData as $value)
+                        {
+                            if (!in_array($value['subjects_id'], $sub_array))
+                            {
+                                $merging_data['quiz'][$i]['id'] = $value['subjects_id'];
+                                $merging_data['quiz'][$i]['name'] = $value['subjects'];
+                                $merging_data['quiz'][$i]['icon'] = $value['subjects_icon'];
+                                $i++;
+                                $sub_array[] = $value['subjects_id'];
+                            }
+                        }
+                    }
+//                    $onlineExamObj = new OnlineExamGroups();
+//                    $onlineexamData = $onlineExamObj->getOnlineExamList($batch_id, $student_id, 1, 10, $date);
+//                    $merging_data['quiz'] = $onlineexamData;
 
                     //Quiz End
 

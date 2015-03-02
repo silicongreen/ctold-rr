@@ -57,7 +57,7 @@ class OnlineExamGroups extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
                     'questions' => array(self::HAS_MANY, 'OnlineExamQuestions', 'online_exam_group_id'),
-                    'subject' => array(self::HAS_MANY, 'Subjects', 'subject_id'),
+                    'subject' => array(self::BELONGS_TO, 'Subjects', 'subject_id'),
                     'examgiven' => array(self::HAS_MANY, 'OnlineExamAttendances', 'online_exam_group_id')
 		);
 	}

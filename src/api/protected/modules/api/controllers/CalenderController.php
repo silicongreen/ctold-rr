@@ -643,7 +643,7 @@ class CalenderController extends Controller
                 $updateleave->viewed_by_teacher = 1;
                 $updateleave->updated_at = date("Y-m-d H:i:s");
                 $updateleave->approved = $status;
-                $updateleave->approving_teacher = Yii::app()->user->profileId;
+                $updateleave->approving_teacher = Yii::app()->user->id;
                 
                 $updateleave->save(false);
 
@@ -667,6 +667,15 @@ class CalenderController extends Controller
                     if ($attendence_student)
                     {
                         $objatt = $attendence->findByPk($attendence_student->id);
+                        
+                        if(isset($updateleave->leave_subject) && $updateleave->leave_subject)
+                        {
+                            $objatt->reason = $updateleave->leave_subject;
+                        } 
+                        else
+                        {
+                            $objatt->reason = $updateleave->reason;
+                        }
                         if ($status == 1)
                         {
                             $objatt->is_leave = 1;
@@ -693,7 +702,15 @@ class CalenderController extends Controller
                         $attendence->created_at = date("Y-m-d H:i:s");
                         $attendence->updated_at = date("Y-m-d H:i:s");
                         $attendence->school_id = Yii::app()->user->schoolId;
-                        $attendence->reason = $updateleave->reason;
+                        if(isset($updateleave->leave_subject) && $updateleave->leave_subject)
+                        {
+                            $attendence->reason = $updateleave->leave_subject;
+                        } 
+                        else
+                        {
+                            $attendence->reason = $updateleave->reason;
+                        }
+                        
                         $attendence->is_leave = 1;
                         $attendence->save(false);
                     }

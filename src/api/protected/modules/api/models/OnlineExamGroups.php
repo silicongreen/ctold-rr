@@ -387,7 +387,42 @@ class OnlineExamGroups extends CActiveRecord
             $criteria->addCondition("DATE(start_date) <= '".$cur_date."' ");
             $data = $this->find($criteria);
             return $data->total;
-        } 
+        }
+        
+        public function getOnlineExamSubject($batch_id,$duedate)
+        {
+            
+            $criteria = new CDbCriteria();
+            $criteria->select = 't.id';
+            $criteria->compare('t.batch_id', $batch_id);
+            $criteria->compare('t.is_deleted', 0);
+            $criteria->compare('t.is_published', 1);
+            $criteria->compare('DATE(t.start_date)', $duedate);
+            $criteria->order = "t.created_at DESC";
+            
+            $criteria->with = array(
+                'subject' => array(
+                    'select' => 'subject.id,subject.name,subject.icon_number',
+                    'joinType' => "INNER JOIN"
+                )
+            );
+            
+            $data = $this->findAll($criteria);
+            $response_array = array();
+            if($data != NULL)
+            foreach($data as $value)
+            {
+                
+                $marge['subjects'] = $value["subject"]->name;
+                $marge['subjects_id'] = $value["subject"]->id;
+                $marge['subjects_icon'] = $value["subject"]->icon_number;
+                
+                $response_array[] = $marge;     
+                
+            }
+            return $response_array;
+            
+        }
         
         
         public function getOnlineExamList($batch_id,$student_id,$page_number,$page_size,$created_at="",$subject_id=0)

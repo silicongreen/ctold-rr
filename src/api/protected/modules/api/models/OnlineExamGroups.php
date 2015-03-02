@@ -57,6 +57,7 @@ class OnlineExamGroups extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
                     'questions' => array(self::HAS_MANY, 'OnlineExamQuestions', 'online_exam_group_id'),
+                    'subject' => array(self::HAS_MANY, 'Subjects', 'subject_id'),
                     'examgiven' => array(self::HAS_MANY, 'OnlineExamAttendances', 'online_exam_group_id')
 		);
 	}
@@ -145,6 +146,10 @@ class OnlineExamGroups extends CActiveRecord
                 'questions' => array(
                     'select' => 'questions.mark'
                 ),
+                'subject' => array(
+                    'select' => 'subject.name,subject.icon_number',
+                    'joinType' => "LEFT JOIN"
+                ),
                 'examgiven' => array(
                     'select' => 'examgiven.student_id,examgiven.start_time,examgiven.end_time,examgiven.is_passed,examgiven.total_score'
                 )
@@ -184,6 +189,22 @@ class OnlineExamGroups extends CActiveRecord
                 if($assesment_valid)
                 {
                     $response_array['name'] = $data->name;
+                    
+                    $subject = "";
+                    $subject_icon = "";
+                    if(isset($value['subject']->name) && $value['subject']->name)
+                    {
+                        $subject = $value['subject']->name;
+                    }
+                    if(isset($value['subject']->icon_number) && $value['subject']->icon_number)
+                    {
+                        $subject_icon = $value['subject']->icon_number;
+                    }
+                    
+                    $response_array['subject_name'] = $subject;
+                    $response_array['subject_icon'] = $subject_icon;
+                    
+                    
                     $response_array['total_mark'] = $total_mark;
                     $response_array['start_time'] = $data['examgiven'][0]->start_time;
                     $response_array['end_time'] = $data['examgiven'][0]->end_time;
@@ -216,6 +237,10 @@ class OnlineExamGroups extends CActiveRecord
                             "select" => "option.id,option.option,option.is_answer"
                         )
                     )
+                ),
+                'subject' => array(
+                    'select' => 'subject.name,subject.icon_number',
+                    'joinType' => "LEFT JOIN"
                 ),
                 'examgiven' => array(
                     'select' => 'examgiven.student_id'
@@ -263,6 +288,21 @@ class OnlineExamGroups extends CActiveRecord
                     
                     $response_array['pass_percentage'] = intval($data->pass_percentage);
                     $response_array['title'] = $data->name;
+                    
+                    $subject = "";
+                    $subject_icon = "";
+                    if(isset($value['subject']->name) && $value['subject']->name)
+                    {
+                        $subject = $value['subject']->name;
+                    }
+                    if(isset($value['subject']->icon_number) && $value['subject']->icon_number)
+                    {
+                        $subject_icon = $value['subject']->icon_number;
+                    }
+                    
+                    $response_array['subject_name'] = $subject;
+                    $response_array['subject_icon'] = $subject_icon;
+                    
                     $response_array['use_time'] = 1;
                     $response_array['time'] = intval($data->maximum_time);
                     $response_array['start_date'] = $data->start_date;
@@ -364,6 +404,10 @@ class OnlineExamGroups extends CActiveRecord
             $criteria->with = array(
                 'examgiven' => array(
                     'select' => ''
+                ),
+                'subject' => array(
+                    'select' => 'subject.name,subject.icon_number',
+                    'joinType' => "LEFT JOIN"
                 )
             );
             $criteria->order = "t.created_at DESC";
@@ -394,6 +438,19 @@ class OnlineExamGroups extends CActiveRecord
                        }    
                    } 
                    
+                   $subject = "";
+                   $subject_icon = "";
+                   if(isset($value['subject']->name) && $value['subject']->name)
+                   {
+                       $subject = $value['subject']->name;
+                   }
+                   if(isset($value['subject']->icon_number) && $value['subject']->icon_number)
+                   {
+                       $subject_icon = $value['subject']->icon_number;
+                   }
+                   
+                   
+                   
                    $exam_array[$i]['id'] = $value->id;
                    $exam_array[$i]['timeover'] = 0;
                    if($cur_date>date("Y-m-d",  strtotime($value->end_date)))
@@ -406,6 +463,8 @@ class OnlineExamGroups extends CActiveRecord
                        $exam_array[$i]['examGiven']=1;
                    }
                    $exam_array[$i]['name'] = $value->name;
+                   $exam_array[$i]['subject_name'] = $subject;
+                   $exam_array[$i]['subject_icon'] = $subject_icon;
                    $exam_array[$i]['start_date'] = $value->start_date;
                    $exam_array[$i]['end_date'] = $value->end_date;
                    $exam_array[$i]['maximum_time'] = $value->maximum_time;

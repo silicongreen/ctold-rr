@@ -223,6 +223,10 @@ class HomeworkController extends Controller
 
                 
 
+                $subject_id = Yii::app()->request->getPost('subject_id');
+
+                
+
                 if (empty($page_number))
                 {
                     $page_number = 1;
@@ -231,13 +235,18 @@ class HomeworkController extends Controller
                 {
                     $page_size = 10;
                 }
+                
+                if (!$subject_id)
+                {
+                    $subject_id = 0;
+                }
 
 
                 $assignment = new OnlineExamGroups();
 
 
-                $homework_data = $assignment->getOnlineExamList($batch_id, $student_id,$page_number,$page_size);
-                $response['data']['total'] = $assignment->getOnlineExamTotal($batch_id, $student_id);
+                $homework_data = $assignment->getOnlineExamList($batch_id, $student_id,$page_number,$page_size,$subject_id);
+                $response['data']['total'] = $assignment->getOnlineExamTotal($batch_id, $student_id,$subject_id);
                 $has_next = false;
                 if ($response['data']['total'] > $page_number * $page_size)
                 {

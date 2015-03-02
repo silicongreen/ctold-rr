@@ -20,7 +20,7 @@ class NoticeController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index','getsinglenotice', 'acknowledge'),
+                'actions' => array('index','getnotice','getsinglenotice', 'acknowledge'),
                 'users' => array('@'),
             ),
             array('deny', // deny all users
@@ -54,6 +54,59 @@ class NoticeController extends Controller {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request.";
         }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    }
+    
+    public function actionGetNotice() {
+
+        if ((Yii::app()->request->isPostRequest) && !empty($_POST)) {
+
+            $user_secret = Yii::app()->request->getPost('user_secret');
+            $notice_type = Yii::app()->request->getPost('notice_type');
+        
+
+            $response = array();
+            if (Yii::app()->user->user_secret === $user_secret) {
+                $page_number = Yii::app()->request->getPost('page_number');
+                $page_size = Yii::app()->request->getPost('page_size');
+                if (empty($page_number))
+                {
+                    $page_number = 1;
+                }
+                if (empty($page_size))
+                {
+                    $page_size = 10;
+                }
+                if(!$notice_type)
+                {
+                    $notice_type = 1;
+                }
+
+               
+                $news = new News;
+                
+                
+                $response['data']['total'] = $news->getNoticeCount($notice_type);
+                if ($response['data']['total'] > $page_number * $page_size)
+                {
+                    $has_next = true;
+                }
+                $response['data']['has_next'] = $has_next;
+                $response['data']['notice'] = $news->getNotice($notice_type,$page_number,$page_size);
+                $response['status']['code'] = 200;
+                $response['status']['msg'] = 'NOTICE_FOUND.';
+
+                
+            } else {
+                $response['status']['code'] = 403;
+                $response['status']['msg'] = "Access Denied.";
+            }
+        } else {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request.";
+        }
+
         echo CJSON::encode($response);
         Yii::app()->end();
     }

@@ -18,6 +18,7 @@ class News extends CActiveRecord {
     /**
      * @return string the associated database table name
      */
+    public $total;
     public function tableName() {
         return 'news';
     }
@@ -142,6 +143,33 @@ class News extends CActiveRecord {
         $_data['author_full_name'] = rtrim($row['authorDetails']->first_name . ' ' . $row['authorDetails']->last_name);
 
         return $_data;
+    }
+    public function getNoticeCount($notice_type=1) {
+        
+        $school_id = Yii::app()->user->schoolId;
+        $criteria = new CDbCriteria;
+        $criteria->select = 'count(t.id) as total';
+        $criteria->compare('t.school_id', $school_id);
+        $criteria->compare('category_id', $notice_type);
+        $data = $this->find($criteria);
+
+        return $data->total;
+    }
+    
+    public function getNotice($notice_type=1,$page_number=1,$page_size=10) {
+        
+        $school_id = Yii::app()->user->schoolId;
+        $criteria = new CDbCriteria;
+        $criteria->select = 't.id, t.category_id, t.title, t.content, t.created_at, t.updated_at';
+        $criteria->compare('t.school_id', $school_id);
+        $criteria->compare('category_id', $notice_type);
+        $criteria->order = 't.id DESC';
+        $start = ($page_number-1)*$page_size;
+        $criteria->limit = $page_size;
+        $criteria->offset = $start;
+        $data = $this->with('authorDetails', 'newsAcknowledge')->findAll($criteria);
+
+        return (!empty($data)) ? $this->formatNotice($data) : array();
     }
 
     public function getNews($school_id, $from_date, $to_date, $notice_type = '', $author_id = '') {

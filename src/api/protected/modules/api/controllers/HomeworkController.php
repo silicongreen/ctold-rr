@@ -245,7 +245,7 @@ class HomeworkController extends Controller
                 $assignment = new OnlineExamGroups();
 
 
-                $homework_data = $assignment->getOnlineExamList($batch_id, $student_id,$page_number,$page_size,$subject_id);
+                $homework_data = $assignment->getOnlineExamList($batch_id, $student_id,$page_number,$page_size,"",$subject_id);
                 $response['data']['total'] = $assignment->getOnlineExamTotal($batch_id, $student_id,$subject_id);
                 $has_next = false;
                 if ($response['data']['total'] > $page_number * $page_size)

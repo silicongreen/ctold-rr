@@ -88,6 +88,7 @@ class NoticeController extends Controller {
                 
                 
                 $response['data']['total'] = $news->getNoticeCount($notice_type);
+                $has_next = false;
                 if ($response['data']['total'] > $page_number * $page_size)
                 {
                     $has_next = true;

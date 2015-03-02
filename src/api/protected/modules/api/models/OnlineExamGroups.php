@@ -372,7 +372,7 @@ class OnlineExamGroups extends CActiveRecord
             return $response_array;
             
         }
-        public function getOnlineExamTotal($batch_id,$student_id)
+        public function getOnlineExamTotal($batch_id,$student_id,$subject_id=0)
         {
             $cur_date = date("Y-m-d");
             $criteria = new CDbCriteria();
@@ -380,13 +380,17 @@ class OnlineExamGroups extends CActiveRecord
             $criteria->compare('t.is_deleted', 0);
             $criteria->compare('t.batch_id', $batch_id);
             $criteria->compare('t.is_published', 1);
+            if($subject_id>0)
+            {
+                $criteria->compare('t.subject_id', $subject_id);
+            }
             $criteria->addCondition("DATE(start_date) <= '".$cur_date."' ");
             $data = $this->find($criteria);
             return $data->total;
         } 
         
         
-        public function getOnlineExamList($batch_id,$student_id,$page_number,$page_size,$created_at="")
+        public function getOnlineExamList($batch_id,$student_id,$page_number,$page_size,$created_at="",$subject_id=0)
         {
             $cur_date = date("Y-m-d");
             $criteria = new CDbCriteria();
@@ -399,6 +403,8 @@ class OnlineExamGroups extends CActiveRecord
                 $criteria->compare('DATE(start_date)', $created_at); 
             }
             $criteria->addCondition("DATE(start_date) <= '".$cur_date."' ");
+            
+            
             //$criteria->addCondition("DATE(end_date) >= '".$cur_date."' ");
             //$criteria->addCondition("examgiven.student_id != '".$student_id."' ");
             $criteria->with = array(
@@ -410,6 +416,11 @@ class OnlineExamGroups extends CActiveRecord
                     'joinType' => "LEFT JOIN"
                 )
             );
+            if($subject_id>0)
+            {
+                $criteria->compare('t.subject_id', $subject_id);
+            }  
+            
             $criteria->order = "t.created_at DESC";
             $start = ($page_number-1)*$page_size;
             $criteria->limit = $page_size;

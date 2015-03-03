@@ -115,7 +115,7 @@ class CalenderController extends Controller
 
                 $leave = new ApplyLeaveStudents();
                 $leave_array = $leave->getleaveStudentMonth($start_date, $end_date, $student_id);
-                $weekend_array = $attendance->getWeekend(Yii::app()->user->schoolId);
+                $weekend_array = $attendance->getWeekend(Yii::app()->user->schoolId,$batch_id);
 
 
 

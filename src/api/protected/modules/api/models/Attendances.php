@@ -132,10 +132,10 @@ class Attendances extends CActiveRecord {
         return parent::model($className);
     }
     
-    public function getWeekend($school_id)
+    public function getWeekend($school_id,$batch_id=0)
     {
         $timetable = new TimeTableWeekdays();
-        $week_day = $timetable->getWeekDaySet($school_id);
+        $week_day = $timetable->getWeekDaySet($school_id,$batch_id);
         $weekdays_set = new WeekdaySetsWeekdays();
         $weekdays_set->setAttribute("weekday_set_id", $week_day->weekday_set_id);
         $weekdays = $weekdays_set->getWeekDays();

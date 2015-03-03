@@ -117,6 +117,6 @@ class TimeTableWeekdays extends CActiveRecord
                 $criteria->compare('batch_id',$batch_id);
             }    
             $criteria->limit=1;
-            return $this->find();
+            return $this->find($criteria);
         }        
 }

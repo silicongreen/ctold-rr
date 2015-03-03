@@ -140,9 +140,6 @@ class Attendances extends CActiveRecord {
         $weekdays_set->setAttribute("weekday_set_id", $week_day->weekday_set_id);
         $weekdays = $weekdays_set->getWeekDays();
         
-        var_dump($weekdays);
-        exit;
-        
         $ar_weekdays = Settings::$ar_weekdays;
         if ($weekdays != NULL)
         {

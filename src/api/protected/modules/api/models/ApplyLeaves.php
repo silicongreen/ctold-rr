@@ -137,7 +137,7 @@ class ApplyLeaves extends CActiveRecord
 
             $criteria = new CDbCriteria;
             $criteria->select = "t.id";
-            $criteria->addCondition("(employee_id = ".$employee_id." AND (approved IS NULL OR approved=1)) AND ((date(start_date) is BETWEEN '".$start_date."' AND '".$end_date."' ) OR (date(end_date) is BETWEEN '".$start_date."' AND '".$end_date."' ))");
+            $criteria->addCondition("(employee_id = ".$employee_id." AND (approved IS NULL OR approved=1)) AND ((date(start_date)  BETWEEN '".$start_date."' AND '".$end_date."' ) OR (date(end_date) BETWEEN '".$start_date."' AND '".$end_date."' ))");
             $criteria->limit = 1;
             $data = $this->find($criteria);
             if($data)

@@ -325,60 +325,69 @@ class EventController extends Controller
              
             
             $leave = new ApplyLeaveStudents();
-            $leave->school_id = Yii::app()->user->schoolId;
-            $leave->reason = $reason;
-            $leave->start_date = $start_date;
-            $leave->end_date = $end_date;
-            $leave->student_id = $student_id;
-            if($leave_subject)
+            
+            if($leave->checkLeaveOk($student_id,$start_date,$end_date))
             {
-                $leave->leave_subject = $leave_subject;
+                $leave->school_id = Yii::app()->user->schoolId;
+                $leave->reason = $reason;
+                $leave->start_date = $start_date;
+                $leave->end_date = $end_date;
+                $leave->student_id = $student_id;
+                if($leave_subject)
+                {
+                    $leave->leave_subject = $leave_subject;
+                }
+                $leave->created_at = date("Y-m-d H:i:s");
+                $leave->updated_at = date("Y-m-d H:i:s");
+                $leave->save();
+
+                //reminder code
+                $std = new Students();
+                $stddata = $std->findByPk($student_id);
+
+                $emsubject = new EmployeesSubjects();
+
+                $employess = $emsubject->getEmployee($stddata->batch_id);
+                if($employess)
+                {
+                    $notification_ids = array();
+                    $reminderrecipients = array();
+                    foreach ($employess as $value)
+                    {
+
+                        $reminder = new Reminders();
+                        $reminder->sender = Yii::app()->user->id;
+                        $reminder->subject = "Student Leave Apply Notice";
+                        $reminder->body = $stddata->first_name . "  apply for leave from " . $leave->start_date . " to ".$leave->end_date;
+                        $reminder->recipient = $value['employee']->user_id;
+                        $reminder->school_id = Yii::app()->user->schoolId;
+                        $reminder->rid = $leave->id;
+                        $reminder->rtype = 9;
+                        $reminder->created_at = date("Y-m-d H:i:s");
+
+                        $reminder->updated_at = date("Y-m-d H:i:s");
+                        $reminder->save();
+                        $reminderrecipients[] = $value['employee']->user_id;
+                        $notification_ids[] = $reminder->id;
+                    }
+                    if($notification_ids)
+                    {
+                        $notification_id = implode(",", $notification_ids);
+                        $user_id = implode(",", $reminderrecipients);
+                        Settings::sendCurlNotification($user_id, $notification_id);
+                    }
+                }    
+
+                //reminder code  
+
+                $response['status']['code'] = 200;
+                $response['status']['msg'] = "Success";
             }
-            $leave->created_at = date("Y-m-d H:i:s");
-            $leave->updated_at = date("Y-m-d H:i:s");
-            $leave->save();
-            
-            //reminder code
-            $std = new Students();
-            $stddata = $std->findByPk($student_id);
-
-            $emsubject = new EmployeesSubjects();
-
-            $employess = $emsubject->getEmployee($stddata->batch_id);
-            if($employess)
+            else
             {
-                $notification_ids = array();
-                $reminderrecipients = array();
-                foreach ($employess as $value)
-                {
-
-                    $reminder = new Reminders();
-                    $reminder->sender = Yii::app()->user->id;
-                    $reminder->subject = "Student Leave Apply Notice";
-                    $reminder->body = $stddata->first_name . "  apply for leave from " . $leave->start_date . " to ".$leave->end_date;
-                    $reminder->recipient = $value['employee']->user_id;
-                    $reminder->school_id = Yii::app()->user->schoolId;
-                    $reminder->rid = $leave->id;
-                    $reminder->rtype = 9;
-                    $reminder->created_at = date("Y-m-d H:i:s");
-
-                    $reminder->updated_at = date("Y-m-d H:i:s");
-                    $reminder->save();
-                    $reminderrecipients[] = $value['employee']->user_id;
-                    $notification_ids[] = $reminder->id;
-                }
-                if($notification_ids)
-                {
-                    $notification_id = implode(",", $notification_ids);
-                    $user_id = implode(",", $reminderrecipients);
-                    Settings::sendCurlNotification($user_id, $notification_id);
-                }
+               $response['status']['code'] = 404;
+               $response['status']['msg'] = "Some dates are already approved or Applied.Please check the application date range"; 
             }    
-                
-            //reminder code  
-            
-            $response['status']['code'] = 200;
-            $response['status']['msg'] = "Success";
             
         }
         else
@@ -405,48 +414,56 @@ class EventController extends Controller
             if(isset($employeedata->reporting_manager_id) && $employeedata->reporting_manager_id>0)
             {
                 $leave = new ApplyLeaves();
-                $leave->school_id = Yii::app()->user->schoolId;
-                $leave->reason = $reason;
-                $leave->start_date = $start_date;
-                $leave->end_date = $end_date;
-                $leave->is_half_day = 0;
-                $leave->approving_manager = $employeedata->reporting_manager_id;
-                $leave->employee_leave_types_id = $employee_leave_types_id;
-                $leave->employee_id = Yii::app()->user->profileId;
-                $leave->created_at = date("Y-m-d H:i:s");
-                $leave->updated_at = date("Y-m-d H:i:s");
-                $leave->save();
-                
-                //reminder
-                if(isset($leave->id))
+                if($leave->checkLeaveOk(Yii::app()->user->profileId,$start_date,$end_date))
                 {
-                    
-                    $reminder = new Reminders();
-                    $reminder->sender = Yii::app()->user->id;
-                    $reminder->subject = "Employee Leave Apply Notice";
-                    $reminder->body = $employeedata->first_name . "  apply for leave from " . $leave->start_date . " to ".$leave->end_date;
-                    $reminder->recipient = $employeedata->reporting_manager_id;
-                    $reminder->school_id = Yii::app()->user->schoolId;
-                    $reminder->rid = $leave->id;
-                    $reminder->rtype = 7;
-                    $reminder->created_at = date("Y-m-d H:i:s");
+                    $leave->school_id = Yii::app()->user->schoolId;
+                    $leave->reason = $reason;
+                    $leave->start_date = $start_date;
+                    $leave->end_date = $end_date;
+                    $leave->is_half_day = 0;
+                    $leave->approving_manager = $employeedata->reporting_manager_id;
+                    $leave->employee_leave_types_id = $employee_leave_types_id;
+                    $leave->employee_id = Yii::app()->user->profileId;
+                    $leave->created_at = date("Y-m-d H:i:s");
+                    $leave->updated_at = date("Y-m-d H:i:s");
+                    $leave->save();
 
-                    $reminder->updated_at = date("Y-m-d H:i:s");
-                    $reminder->save();
-                    
-                    Settings::sendCurlNotification($employeedata->reporting_manager_id, $reminder->id);
-                    
+                    //reminder
+                    if(isset($leave->id))
+                    {
+
+                        $reminder = new Reminders();
+                        $reminder->sender = Yii::app()->user->id;
+                        $reminder->subject = "Employee Leave Apply Notice";
+                        $reminder->body = $employeedata->first_name . "  apply for leave from " . $leave->start_date . " to ".$leave->end_date;
+                        $reminder->recipient = $employeedata->reporting_manager_id;
+                        $reminder->school_id = Yii::app()->user->schoolId;
+                        $reminder->rid = $leave->id;
+                        $reminder->rtype = 7;
+                        $reminder->created_at = date("Y-m-d H:i:s");
+
+                        $reminder->updated_at = date("Y-m-d H:i:s");
+                        $reminder->save();
+
+                        Settings::sendCurlNotification($employeedata->reporting_manager_id, $reminder->id);
+
+                    }
+
+                    //reminder
+
+                    $response['status']['code'] = 200;
+                    $response['status']['msg'] = "Success";
                 }
-                
-                //reminder
-                
-                $response['status']['code'] = 200;
-                $response['status']['msg'] = "Success";
+                else
+                {
+                   $response['status']['code'] = 404;
+                   $response['status']['msg'] = "Some dates are already approved or Applied.Please check the application date range"; 
+                }    
             }
             else
             {
-                $response['status']['code'] = 404;
-                $response['status']['msg'] = "NOT FOUND";
+                $response['status']['code'] = 403;
+                $response['status']['msg'] = "ADD_REPORING_MANAGER";
             }
         }
         else

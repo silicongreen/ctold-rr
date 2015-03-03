@@ -106,6 +106,20 @@ class ApplyLeaveStudents extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        public function checkLeaveOk($student_id,$start_date,$end_date)
+        {
+
+            $criteria = new CDbCriteria;
+            $criteria->select = "t.id";
+            $criteria->addCondition("(student_id = ".$student_id." AND (approved IS NULL OR approved=1)) AND ((date(start_date) is BETWEEN '".$start_date."' AND '".$end_date."' ) OR (date(end_date) is BETWEEN '".$start_date."' AND '".$end_date."' ))");
+            $criteria->limit = 1;
+            $data = $this->find($criteria);
+            if($data)
+            {
+                return false;
+            }
+            return true;
+        }
         public function getallleaveStudentsDate($date)
         {
             $criteria = new CDbCriteria;

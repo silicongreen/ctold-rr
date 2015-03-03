@@ -132,6 +132,21 @@ class ApplyLeaves extends CActiveRecord
 		return parent::model($className);
 	}
         
+        public function checkLeaveOk($employee_id,$start_date,$end_date)
+        {
+
+            $criteria = new CDbCriteria;
+            $criteria->select = "t.id";
+            $criteria->addCondition("(employee_id = ".$employee_id." AND (approved IS NULL OR approved=1)) AND ((date(start_date) is BETWEEN '".$start_date."' AND '".$end_date."' ) OR (date(end_date) is BETWEEN '".$start_date."' AND '".$end_date."' ))");
+            $criteria->limit = 1;
+            $data = $this->find($criteria);
+            if($data)
+            {
+                return false;
+            }
+            return true;
+        }
+        
         public function getTeacherLeave($employee_id) 
         {
                 $today = date("Y-m-d", strtotime("-6 Month")); 

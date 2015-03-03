@@ -719,7 +719,7 @@ class EventController extends Controller
                     $reminder = new Reminders();
                     $reminder->sender = Yii::app()->user->id;
                     $reminder->subject = "Your Meeting Request is ".$status_text;
-                    $reminder->body = "Your meeting request with " . $name . " have been  ".$status_text." for ".date('Y-m-d',$updatemeeting->datetime);
+                    $reminder->body = "Your meeting request with " . $name . " have been  ".$status_text." for ".date('l jS \of F Y h:i:s A',  strtotime($updatemeeting->datetime));
                     $reminder->recipient = $recipient;
                     $reminder->school_id = Yii::app()->user->schoolId;
                     $reminder->rid = $updatemeeting->id;

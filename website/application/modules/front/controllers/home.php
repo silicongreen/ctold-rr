@@ -3447,7 +3447,7 @@ class home extends MX_Controller {
         if(free_user_logged_in()) {
             $user_id = get_free_user_session('id');
         } else {
-            $assessment_level = 1;
+            $assessment_level = 0;
         }
         
         if($assessment_config['update_played']['before_start']){

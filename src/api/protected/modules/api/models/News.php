@@ -125,7 +125,7 @@ class News extends CActiveRecord {
         $criteria->select = 't.id, t.category_id, t.title, t.content, t.created_at, t.updated_at';
         $criteria->compare('t.id', $id);
 
-        $data = $this->with('authorDetails')->find($criteria);
+        $data = $this->with('authorDetails', 'newsAcknowledge')->find($criteria);
 
         return (!empty($data)) ? $this->formatSingleNotice($data) : \FALSE;
     }
@@ -141,6 +141,11 @@ class News extends CActiveRecord {
         $_data['author_id'] = rtrim($row['authorDetails']->id);
         $_data['author_first_name'] = rtrim($row['authorDetails']->first_name);
         $_data['author_full_name'] = rtrim($row['authorDetails']->first_name . ' ' . $row['authorDetails']->last_name);
+        
+        $_data['acknowledge'] = array();
+        if (sizeof($row['newsAcknowledge']) > 0) {
+            $_data['acknowledge'] = $this->formatAcknowledge($row['newsAcknowledge']);
+        }
 
         return $_data;
     }

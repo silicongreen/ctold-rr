@@ -171,17 +171,15 @@ class HomeworkController extends Controller
         {
             $user_secret = Yii::app()->request->getPost('user_secret');
             $id = Yii::app()->request->getPost('id');
-            $batch_id = Yii::app()->request->getPost('batch_id');
-            $student_id = Yii::app()->request->getPost('student_id');
+            
             $response = array();
-            if ($id && Yii::app()->user->user_secret === $user_secret && ( Yii::app()->user->isStudent || ($batch_id && $student_id)))
+            if ($id && Yii::app()->user->user_secret === $user_secret && ( Yii::app()->user->isStudent))
             {
 
-                if(!$batch_id)
-                {
-                    $batch_id = Yii::app()->user->batchId;
-                    $student_id = Yii::app()->user->profileId;
-                }
+               
+                $batch_id = Yii::app()->user->batchId;
+                $student_id = Yii::app()->user->profileId;
+               
 
 
                 $assignment = new OnlineExamGroups();
@@ -221,12 +219,18 @@ class HomeworkController extends Controller
         if (isset($_POST) && !empty($_POST))
         {
             $user_secret = Yii::app()->request->getPost('user_secret');
+            $batch_id = Yii::app()->request->getPost('batch_id');
+            $student_id = Yii::app()->request->getPost('student_id');
             $response = array();
-            if (Yii::app()->user->user_secret === $user_secret && ( Yii::app()->user->isStudent))
+            if (Yii::app()->user->user_secret === $user_secret && ( Yii::app()->user->isStudent || ($batch_id && $student_id)))
             {
+                if(Yii::app()->user->isStudent)
+                {
+                    $batch_id = Yii::app()->user->batchId;
+                    $student_id = Yii::app()->user->profileId;
+                }
 
-                $batch_id = Yii::app()->user->batchId;
-                $student_id = Yii::app()->user->profileId;
+                
                 $page_number = Yii::app()->request->getPost('page_number');
 
                 $page_size = Yii::app()->request->getPost('page_size');

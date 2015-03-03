@@ -37,12 +37,17 @@ class HomeworkController extends Controller
         {
             $user_secret = Yii::app()->request->getPost('user_secret');
             $id = Yii::app()->request->getPost('id');
+            $batch_id = Yii::app()->request->getPost('batch_id');
+            $student_id = Yii::app()->request->getPost('student_id');
             $response = array();
-            if ($id && Yii::app()->user->user_secret === $user_secret && ( Yii::app()->user->isStudent))
+            if ($id && Yii::app()->user->user_secret === $user_secret && ( Yii::app()->user->isStudent || ($batch_id && $student_id)))
             {
 
-                $batch_id = Yii::app()->user->batchId;
-                $student_id = Yii::app()->user->profileId;
+                if(!$batch_id)
+                {
+                    $batch_id = Yii::app()->user->batchId;
+                    $student_id = Yii::app()->user->profileId;
+                }
                 $assignment = new OnlineExamGroups();
                 $homework_data = $assignment->getOnlineExamScore($id, $batch_id, $student_id);
                 if ($homework_data)
@@ -166,12 +171,17 @@ class HomeworkController extends Controller
         {
             $user_secret = Yii::app()->request->getPost('user_secret');
             $id = Yii::app()->request->getPost('id');
+            $batch_id = Yii::app()->request->getPost('batch_id');
+            $student_id = Yii::app()->request->getPost('student_id');
             $response = array();
-            if ($id && Yii::app()->user->user_secret === $user_secret && ( Yii::app()->user->isStudent))
+            if ($id && Yii::app()->user->user_secret === $user_secret && ( Yii::app()->user->isStudent || ($batch_id && $student_id)))
             {
 
-                $batch_id = Yii::app()->user->batchId;
-                $student_id = Yii::app()->user->profileId;
+                if(!$batch_id)
+                {
+                    $batch_id = Yii::app()->user->batchId;
+                    $student_id = Yii::app()->user->profileId;
+                }
 
 
                 $assignment = new OnlineExamGroups();

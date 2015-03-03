@@ -543,7 +543,12 @@ class CalenderController extends Controller
 
         if ($studentdata->immediate_contact_id)
         {
-            $reminderrecipients[] = $studentdata->immediate_contact_id;
+            $gr = new Guardians();
+            $grdata = $gr->findByPk($studentdata->immediate_contact_id);
+            if($grdata->user_id)
+            {
+                $reminderrecipients[] = $grdata->user_id;
+            }
         }
 
 
@@ -580,7 +585,12 @@ class CalenderController extends Controller
 
         if ($studentdata->immediate_contact_id)
         {
-            $reminderrecipients[] = $studentdata->immediate_contact_id;
+            $gr = new Guardians();
+            $grdata = $gr->findByPk($studentdata->immediate_contact_id);
+            if($grdata->user_id)
+            {
+                $reminderrecipients[] = $grdata->user_id;
+            }
         }
         $approved_text = "Denied";
         if ($status == 1)

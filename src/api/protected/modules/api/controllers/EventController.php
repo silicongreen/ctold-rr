@@ -591,20 +591,29 @@ class EventController extends Controller
             
             if(isset($studentdata->immediate_contact_id) && isset($techer_profile->first_name))
             {
-                $reminder = new Reminders();
-                $reminder->sender = Yii::app()->user->id;
-                $reminder->subject = "New Meeting Request";
-                $reminder->body = "New Meeting Request Send from " . $techer_profile->first_name . " at ".$datetime;
-                $reminder->recipient = $studentdata->immediate_contact_id;
-                $reminder->school_id = Yii::app()->user->schoolId;
-                $reminder->rid = $meetingreq->id;
-                $reminder->rtype = 11;
-                $reminder->created_at = date("Y-m-d H:i:s");
+                $gr = new Guardians();
+                $grdata = $gr->findByPk($studentdata->immediate_contact_id);
+                if($grdata->user_id)
+                {
+                    $receptionist_id = $grdata->user_id;
+                }
+                if($receptionist_id)
+                {
+                    $reminder = new Reminders();
+                    $reminder->sender = Yii::app()->user->id;
+                    $reminder->subject = "New Meeting Request";
+                    $reminder->body = "New Meeting Request Send from " . $techer_profile->first_name . " at ".$datetime;
+                    $reminder->recipient = $receptionist_id;
+                    $reminder->school_id = Yii::app()->user->schoolId;
+                    $reminder->rid = $meetingreq->id;
+                    $reminder->rtype = 11;
+                    $reminder->created_at = date("Y-m-d H:i:s");
 
-                $reminder->updated_at = date("Y-m-d H:i:s");
-                $reminder->save();
-                
-                Settings::sendCurlNotification($studentdata->immediate_contact_id, $reminder->id);
+                    $reminder->updated_at = date("Y-m-d H:i:s");
+                    $reminder->save();
+
+                    Settings::sendCurlNotification($receptionist_id, $reminder->id);
+                }
                 ///push notification
             }
             
@@ -710,7 +719,12 @@ class EventController extends Controller
                     $std_data = $std->findByPk($updatemeeting->parent_id);
                     if($std_data->immediate_contact_id)
                     {
-                        $recipient = $std_data->immediate_contact_id;
+                        $gr = new Guardians();
+                        $grdata = $gr->findByPk($std_data->immediate_contact_id);
+                        if($grdata->user_id)
+                        {
+                            $recipient = $grdata->user_id;
+                        }
                     }
                 }    
                 if($recipient)

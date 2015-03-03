@@ -814,7 +814,10 @@ class CalenderController extends Controller
                 }
                 $newattendence->save();
 
-                $this->sendnotificationAttendence($student_id, $newattendence, $late);
+                if(!isset($newattendence->is_leave) || $newattendence->is_leave!=1)
+                {
+                    $this->sendnotificationAttendence($student_id, $newattendence, $late);
+                }
             }
 
             $response['status']['code'] = 200;

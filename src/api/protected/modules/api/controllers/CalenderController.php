@@ -170,7 +170,7 @@ class CalenderController extends Controller
                         $leave_array_modified[] = $merge;
                         $leave_count++;
                     }
-                    $week_day_id = $end_holiday->format("w");
+                    
                     if (!in_array($end_holiday->format("Y-m-d"), $holiday_array_for_count) && !in_array($end_holiday->format("w"), $weekend_array))
                     {
                         $merge['title'] = $value['title'];
@@ -414,8 +414,7 @@ class CalenderController extends Controller
                 else
                 {
                     $response['data'] = $attendance_array;
-                    $response['data']['week_day_id'] = $week_day_id;
-                    $response['data']['week_day_array'] = $weekend_array;
+                    $response['data']['week_end'] = $weekend_array;
                     
                     $response['data']['holiday'] = $holiday_array;
                     $response['data']['leave'] = $leave_array_modified;

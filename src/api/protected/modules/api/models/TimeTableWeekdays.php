@@ -108,9 +108,7 @@ class TimeTableWeekdays extends CActiveRecord
 	}
         public function getWeekDaySet($school_id,$batch_id=0)
         {
-            echo $school_id;
-            echo $batch_id;
-            exit;
+           
             $criteria=new CDbCriteria;
             $criteria->select = 'weekday_set_id';
             $criteria->compare('school_id',$school_id);

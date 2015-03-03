@@ -195,7 +195,7 @@ class DashboardController extends Controller
 
                     if (!$attendence_return)
                     {
-                        $weekend_array = $objattendence->getWeekend($school_id);
+                        $weekend_array = $objattendence->getWeekend($school_id,$batch_id);
                         $weekday = date("w", strtotime($date));
                         if (in_array($weekday, $weekend_array))
                         {

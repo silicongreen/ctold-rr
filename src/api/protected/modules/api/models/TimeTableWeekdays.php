@@ -106,11 +106,15 @@ class TimeTableWeekdays extends CActiveRecord
 	{
 		return parent::model($className);
 	}
-        public function getWeekDaySet($school_id)
+        public function getWeekDaySet($school_id,$batch_id=0)
         {
             $criteria=new CDbCriteria;
             $criteria->select = 'weekday_set_id';
             $criteria->compare('school_id',$school_id);
+            if($batch_id>0)
+            {
+                $criteria->compare('batch_id',$batch_id);
+            }    
             $criteria->limit=1;
             return $this->find();
         }        

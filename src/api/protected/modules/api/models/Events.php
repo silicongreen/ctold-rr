@@ -216,8 +216,8 @@ class Events extends CActiveRecord {
         $_data['event_description'] = $row->description;
         $_data['event_common'] = $row->is_common;
         $_data['club_fees'] = (float) $row->fees;
-        //$event_ack = new EventAcknowledges;
-        //$_data['event_acknowledge'] = (int) $event_ack->getEventAcknowledgeData($row->school_id, $row->id);
+        $event_ack = new EventAcknowledges;
+        $_data['event_acknowledge'] = (int) $event_ack->getEventAcknowledgeData($row->school_id, $row->id);
         return $_data;
     }
 

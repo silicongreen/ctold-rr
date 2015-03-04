@@ -128,7 +128,7 @@ class DashboardController extends Controller
                 //student profile end
                 //current day
 
-                $response['maindata']['current_date'] = date("l Y-m-d");
+                $response['maindata']['current_date'] = date("D d-m-Y");
 
                 //current day
                 //Last Visited

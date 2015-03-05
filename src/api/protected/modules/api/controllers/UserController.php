@@ -20,7 +20,7 @@ class UserController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('auth','checkauth','geterrors','logout','updateprofile','updateprofilepaiduser','createuser'),
+                'actions' => array('auth','checkauth','geterrors','logout','updateprofile','updateprofilepaiduser','createuser','delete_by_paid_id'),
                 'users' => array('*'),
             ),
 //            array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -52,7 +52,7 @@ class UserController extends Controller {
         $paid_school_id = Yii::app()->request->getPost('paid_school_id');
         $paid_school_code = Yii::app()->request->getPost('paid_school_code');
         
-        $response = Yii::app()->cache->get("all_erros");
+        /* $response = Yii::app()->cache->get("all_erros");
         if($response)
         {
             
@@ -61,7 +61,8 @@ class UserController extends Controller {
         else
         {
             $response[0] = $_POST;
-        }    
+        } */
+        
         Yii::app()->cache->set("all_erros", $response, 86400);
         $freeuserObj = new Freeusers();
         if(Yii::app()->request->getPost('user_type') && $email && !$freeuserObj->getFreeuser($email) && $password && $first_name)
@@ -140,18 +141,13 @@ class UserController extends Controller {
             if (Yii::app()->request->getPost('occupation'))
                 $freeuserObj->occupation = Yii::app()->request->getPost('occupation');
 
-//            if(
-//            {
-//                
-//            }   
-//            else
-//            {
-//                $all_errors = $freeuserObj->getErrors();
-//                Yii::app()->cache->set("all_erros_".$paid_id, $all_errors, 86400);
-//            } 
-            $freeuserObj->save();
+            if(!$freeuserObj->save())
+            {
+                $all_errors = $freeuserObj->errors;
+                Yii::app()->cache->set("all_erros", $all_errors, 86400);
+            }
+            
             $folderObj = new UserFolder();
-
             $folderObj->createGoodReadFolder($freeuserObj->id);
 
             $response['status']['code'] = 200;
@@ -739,6 +735,49 @@ class UserController extends Controller {
 
         echo CJSON::encode($response);
         Yii::app()->end();
+    }
+    
+    public function actionDelete_by_paid_id() {
+        
+        $paid_user_id = \trim(Yii::app()->request->getPost('paid_id'));
+        $paid_school_id = \trim(Yii::app()->request->getPost('paid_school_id'));
+        
+        $response = array();
+        if (empty($paid_user_id) || empty($paid_school_id)) {
+            
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+            
+            echo CJSON::encode($response);
+            Yii::app()->end();
+        }
+        
+        $obj_free_user = new Freeusers();
+        $obj_free_user_data = $obj_free_user->getFreeuserPaid($paid_user_id, $paid_school_id);
+        
+        if(!$obj_free_user_data) {
+            
+            $response['status']['code'] = 404;
+            $response['status']['msg'] = "User Not Found";
+            
+            echo CJSON::encode($response);
+            Yii::app()->end();
+        }
+        
+        if($obj_free_user->deleteByPk($obj_free_user_data)) {
+            
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "User Successfully Deleted";
+            
+            echo CJSON::encode($response);
+            Yii::app()->end();
+            
+        } else {
+            
+            $all_errors = $obj_free_user->errors;
+            Yii::app()->cache->set("all_erros", $all_errors, 86400);
+        }
+
     }
 
 }

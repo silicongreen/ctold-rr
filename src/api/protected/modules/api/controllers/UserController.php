@@ -20,7 +20,7 @@ class UserController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('auth','checkauth','logout','updateprofile','updateprofilepaiduser','createuser'),
+                'actions' => array('auth','checkauth','geterrors','logout','updateprofile','updateprofilepaiduser','createuser'),
                 'users' => array('*'),
             ),
 //            array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -128,13 +128,19 @@ class UserController extends Controller {
             if (Yii::app()->request->getPost('occupation'))
                 $freeuserObj->occupation = Yii::app()->request->getPost('occupation');
 
-            $freeuserObj->save();
+            if($freeuserObj->save())
+            {
+                
+            }   
+            else
+            {
+                $all_errors = $freeuserObj->getErrors();
+                Yii::app()->cache->set("all_erros_".$paid_id, $all_errors, 86400);
+            }    
             $folderObj = new UserFolder();
 
             $folderObj->createGoodReadFolder($freeuserObj->id);
 
-
-            $freeuserObj->save();
             $response['status']['code'] = 200;
             $response['status']['msg'] = "Successfully Saved";
         }   
@@ -148,7 +154,13 @@ class UserController extends Controller {
         echo CJSON::encode($response);
         Yii::app()->end();
        
-    }  
+    } 
+    public function actiongetErrors()
+    {
+        $paid_id = $_GET['paid_id'];
+        $response = Yii::app()->cache->get("all_erros_".$paid_id);
+        print_r($response);
+    }        
     public function actionUpdateProfilePaidUser()
     {
         $freeuserObj = new Freeusers();

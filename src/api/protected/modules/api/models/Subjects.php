@@ -212,6 +212,7 @@ class Subjects extends CActiveRecord
            }    
            $i = 0;
            $total_grade_point = 0;
+           $total_cradit_hours = 0;
            $total_mark = 0;
            foreach($value['Exams'] as $examvalue)
            {
@@ -219,6 +220,11 @@ class Subjects extends CActiveRecord
                 $report_term_merge['exam_subjects'][$i]['subject_code'] = $examvalue['Subjects']->code;
                 $report_term_merge['exam_subjects'][$i]['subject_id']   = $examvalue['Subjects']->id;
                 $report_term_merge['exam_subjects'][$i]['subject_icon'] = $examvalue['Subjects']->icon_number;
+                
+                $report_term_merge['exam_subjects'][$i]['cradit_hours'] = $examvalue['Subjects']->credit_hours;
+                $total_cradit_hours = $total_cradit_hours+$examvalue['Subjects']->credit_hours;
+                $report_term_merge['exam_subjects'][$i]['total_cradit_hours'] = $total_cradit_hours;
+               
                
                 $examScore = new ExamScores();
                 $student_result = $examScore->getSingleExamStudentResult($student_id, $examvalue->id);
@@ -242,6 +248,8 @@ class Subjects extends CActiveRecord
                     $total_mark = $total_mark+$student_result->marks;
                     if($student_result['Examgrade'])
                     $total_grade_point = $total_grade_point+$student_result['Examgrade']->credit_points;
+                    
+                    $report_term_merge['exam_subjects'][$i]['total_grade_point'] = $total_grade_point;
                     
                     $report_term_merge['exam_subjects'][$i]['remarks'] = $student_result->remarks;
                 }

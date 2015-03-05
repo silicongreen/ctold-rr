@@ -107,7 +107,7 @@ class UserIdentity extends CUserIdentity
             return true;
         }
         
-        if($this->__api_username !== $this->__ar_username){
+        if(strtolower($this->__api_username) !== strtolower($this->__ar_username)){
             $this->setState('status_code', 404);
             $this->setState('status_msg', 'User Not Found');
             

@@ -128,15 +128,16 @@ class UserController extends Controller {
             if (Yii::app()->request->getPost('occupation'))
                 $freeuserObj->occupation = Yii::app()->request->getPost('occupation');
 
-            if($freeuserObj->save())
-            {
-                
-            }   
-            else
-            {
-                $all_errors = $freeuserObj->getErrors();
-                Yii::app()->cache->set("all_erros_".$paid_id, $all_errors, 86400);
-            }    
+//            if(
+//            {
+//                
+//            }   
+//            else
+//            {
+//                $all_errors = $freeuserObj->getErrors();
+//                Yii::app()->cache->set("all_erros_".$paid_id, $all_errors, 86400);
+//            } 
+            $freeuserObj->save();
             $folderObj = new UserFolder();
 
             $folderObj->createGoodReadFolder($freeuserObj->id);

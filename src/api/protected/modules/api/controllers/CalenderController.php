@@ -708,7 +708,7 @@ class CalenderController extends Controller
                             $objatt->forenoon = 1;
                             $objatt->afternoon = 1;
                         }
-                        $objatt->save(false);
+                        $objatt->save();
                     }
                     else if ($status == 1)
                     {
@@ -732,7 +732,7 @@ class CalenderController extends Controller
                         }
                         
                         $attendence->is_leave = 1;
-                        $attendence->save(false);
+                        $attendence->save();
                     }
                     $check_date = date("Y-m-d", strtotime("+1 day", strtotime($check_date)));
                 }

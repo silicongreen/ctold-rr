@@ -514,6 +514,7 @@ class UserController extends Controller {
                         {
                             $freedata->user_type = 3;
                         }
+                        $freedata->school_name = $school_details->name;
                         $freedata->save();
                         
                         $folderObj = new UserFolder();

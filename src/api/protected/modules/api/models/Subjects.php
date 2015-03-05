@@ -212,6 +212,7 @@ class Subjects extends CActiveRecord
            }    
            $i = 0;
            $total_grade_point = 0;
+           $only_grade_point = 0;
            $total_cradit_hours = 0;
            $total_mark = 0;
            foreach($value['Exams'] as $examvalue)
@@ -256,7 +257,10 @@ class Subjects extends CActiveRecord
                     $report_term_merge['exam_subjects'][$i]['your_percent'] = intval($report_term_merge['exam_subjects'][$i]['your_percent']);
                     $total_mark = $total_mark+$student_result->marks;
                     if($student_result['Examgrade'])
-                    $total_grade_point = $total_grade_point+($student_result['Examgrade']->credit_points*$cradit_hours);
+                    {
+                        $total_grade_point = $total_grade_point+($student_result['Examgrade']->credit_points*$cradit_hours);
+                        $only_grade_point = $only_grade_point+$student_result['Examgrade']->credit_points;
+                    }
                    
                     
                     $report_term_merge['exam_subjects'][$i]['remarks'] = $student_result->remarks;
@@ -283,7 +287,7 @@ class Subjects extends CActiveRecord
          
            
            
-           $report_term_merge['Your_position'] = $examModel->getPosition($value->id, $total_grade_point, $total_mark);
+           $report_term_merge['Your_position'] = $examModel->getPosition($value->id, $only_grade_point, $total_mark);
          
            
            $report_term[] = $report_term_merge; 

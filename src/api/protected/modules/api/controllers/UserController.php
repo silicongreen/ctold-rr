@@ -52,7 +52,7 @@ class UserController extends Controller {
         $paid_school_id = Yii::app()->request->getPost('paid_school_id');
         $paid_school_code = Yii::app()->request->getPost('paid_school_code');
         
-        $response = Yii::app()->cache->get("all_erros");
+        /* $response = Yii::app()->cache->get("all_erros");
         if($response)
         {
             
@@ -61,7 +61,8 @@ class UserController extends Controller {
         else
         {
             $response[0] = $_POST;
-        }    
+        } */
+        
         Yii::app()->cache->set("all_erros", $response, 86400);
         $freeuserObj = new Freeusers();
         if(Yii::app()->request->getPost('user_type') && $email && !$freeuserObj->getFreeuser($email) && $password && $first_name)
@@ -140,18 +141,13 @@ class UserController extends Controller {
             if (Yii::app()->request->getPost('occupation'))
                 $freeuserObj->occupation = Yii::app()->request->getPost('occupation');
 
-//            if(
-//            {
-//                
-//            }   
-//            else
-//            {
-//                $all_errors = $freeuserObj->getErrors();
-//                Yii::app()->cache->set("all_erros_".$paid_id, $all_errors, 86400);
-//            } 
-            $freeuserObj->save();
+            if(!$freeuserObj->save())
+            {
+                $all_errors = $freeuserObj->errors;
+                Yii::app()->cache->set("all_erros", $all_errors, 86400);
+            }
+            
             $folderObj = new UserFolder();
-
             $folderObj->createGoodReadFolder($freeuserObj->id);
 
             $response['status']['code'] = 200;
@@ -775,6 +771,11 @@ class UserController extends Controller {
             
             echo CJSON::encode($response);
             Yii::app()->end();
+            
+        } else {
+            
+            $all_errors = $obj_free_user->errors;
+            Yii::app()->cache->set("all_erros", $all_errors, 86400);
         }
 
     }

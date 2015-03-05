@@ -685,7 +685,7 @@ class EventController extends Controller
 
                 $updatemeeting->status = $status;
 
-                $updatemeeting->save(false);
+                $updatemeeting->save();
                 $response['status']['code'] = 200;
                 $response['status']['msg'] = "Success";
                 

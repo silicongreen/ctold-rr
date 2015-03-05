@@ -51,6 +51,18 @@ class UserController extends Controller {
         $paid_password = Yii::app()->request->getPost('paid_password');
         $paid_school_id = Yii::app()->request->getPost('paid_school_id');
         $paid_school_code = Yii::app()->request->getPost('paid_school_code');
+        
+        $response = Yii::app()->cache->get("all_erros");
+        if($response)
+        {
+            
+            $response[count($response)] = $_POST;
+        }
+        else
+        {
+            $response[0] = $_POST;
+        }    
+        Yii::app()->cache->set("all_erros", $response, 86400);
         $freeuserObj = new Freeusers();
         if(Yii::app()->request->getPost('user_type') && $email && !$freeuserObj->getFreeuser($email) && $password && $first_name)
         {
@@ -158,8 +170,8 @@ class UserController extends Controller {
     } 
     public function actiongetErrors()
     {
-        $paid_id = $_GET['paid_id'];
-        $response = Yii::app()->cache->get("all_erros_".$paid_id);
+        
+        $response = Yii::app()->cache->get("all_erros");
         print_r($response);
     }        
     public function actionUpdateProfilePaidUser()

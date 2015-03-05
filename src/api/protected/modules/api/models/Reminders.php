@@ -170,9 +170,18 @@ class Reminders extends CActiveRecord
                 foreach($obj_reminder as $value)
                 {
                    $reminder[$i]['id'] = $value->id;
-                   $reminder[$i]['subject'] = $value->subject;
+                   $reminder[$i]['subject'] = "";
+                   if($value->subject)
+                   {
+                        $reminder[$i]['subject'] = trim($value->subject);
+                   }
                    $reminder[$i]['is_read'] = $value->is_read;
-                   $reminder[$i]['body'] = $value->body;
+                   
+                   $reminder[$i]['body'] = "";
+                   if($value->body)
+                   {
+                        $reminder[$i]['body'] = trim($value->body);
+                   }
                    $reminder[$i]['rtype'] = $value->rtype;
                    $reminder[$i]['rid'] = $value->rid;
                    $i++;

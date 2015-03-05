@@ -520,7 +520,7 @@ class UserController extends Controller {
                     
                         $folderObj->createGoodReadFolder($data->id);
                         $response['data']['free_id'] = $data->id;
-                        $response['data']['user']  = $free_user->getUserInfo($data->id,Yii::app()->user->schoolId,$free_user->user_type);
+                        $response['data']['user']  = $free_user->getUserInfo($data->id,Yii::app()->user->schoolId,$freedata->user_type);
                     }   
                     else
                     {

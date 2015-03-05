@@ -82,7 +82,7 @@ class SchoolUser extends CActiveRecord
         }
         if ($userschools && $paid_school)
         {
-            if($userschools[0]->school_id != $paid_school)
+            if($userschools[0]->school_id != $paid_school || $userschools[0]->type!=$type || $userschools[0]->is_approved!=1)
             {
                foreach ($userschools as $svalue)
                { 

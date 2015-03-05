@@ -66,13 +66,33 @@ class SchoolUser extends CActiveRecord
     public function userSchool($user_id, $school_id = 0, $paid_school_id = 0, $type = 0)
     {
         $criteria = new CDbCriteria();
-        $criteria->select = "t.is_approved,t.school_id,t.type";
+        $criteria->select = "t.id,t.is_approved,t.school_id,t.type";
         if ($school_id)
         {
             $criteria->compare("t.school_id", $school_id);
         }
         $criteria->compare("t.user_id", $user_id);
         $userschools = $this->findAll($criteria);
+        
+        $paid_school = array();
+        if($paid_school_id > 0 && $type > 0)
+        {
+            $schoolobj = new School();
+            $paid_school = $schoolobj->getSchoolPaid($paid_school_id);
+        }
+        if ($userschools && $paid_school)
+        {
+            if($userschools[0]->school_id != $paid_school)
+            {
+               foreach ($userschools as $svalue)
+               { 
+                   $schooluser = new SchoolUser();
+                   $school_del = $schooluser->findByPk($svalue->id);
+                   $school_del->delete();
+               }
+               $userschools = array();
+            }    
+        }
 
         $user_schools = array();
         $i = 0;
@@ -80,16 +100,25 @@ class SchoolUser extends CActiveRecord
         {
             foreach ($userschools as $value)
             {
-                $user_schools[$i]['school_id'] = $value->school_id;
-                $user_schools[$i]['status'] = $value->is_approved;
-                $user_schools[$i]['type'] = $value->type;
+                if($i == 0)
+                {
+                    $user_schools[$i]['school_id'] = $value->school_id;
+                    $user_schools[$i]['status'] = $value->is_approved;
+                    $user_schools[$i]['type'] = $value->type;
+                    
+                }
+                else
+                {
+                   $schooluser = new SchoolUser();
+                   $school_del = $schooluser->findByPk($value->id);
+                   $school_del->delete();
+                }  
                 $i++;
             }
         }
-        else if ($paid_school_id > 1 && $type > 0)
+        else if ($paid_school_id > 0 && $type > 0)
         {
-            $schoolobj = new School();
-            $paid_school = $schoolobj->getSchoolPaid($paid_school_id);
+            
             if ($paid_school)
             {
                 $userschool = new SchoolUser();

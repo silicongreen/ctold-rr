@@ -131,6 +131,34 @@ class TimetableEntries extends CActiveRecord {
         return parent::model($className);
     }
     
+    public function classStarted($batch_id)
+    {
+        $criteria = new CDbCriteria;
+        $criteria->select = 't.id';
+        $date = date("Y-m-d");
+        $time = date("H:i:s",  strtotime("+10 minutes"));
+        
+        $cur_day_name = Settings::getCurrentDay($date);
+        $cur_day_key = Settings::$ar_weekdays_key[$cur_day_name];
+        $criteria->compare('t.weekday_id', $cur_day_key);
+        $criteria->addCondition("classTimingDetails.start_time<'".$time."'");
+        $criteria->compare('t.batch_id', $batch_id);
+        $criteria->addCondition("timeTableDetails.start_date <= '" . $date . "' ");
+        $criteria->addCondition("timeTableDetails.end_date >= '" . $date . "' ");
+        $criteria->limit = 1;
+        $criteria->with=array('classTimingDetails','timeTableDetails');
+        $criteria->order = 'classTimingDetails.start_time ASC';
+        $data = $this->find($criteria);
+        if($data)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }    
+    }
+    
     public function getNextStudent($batch_id,$cur_day_key = 'current', $call=1)
     {
         $criteria = new CDbCriteria;

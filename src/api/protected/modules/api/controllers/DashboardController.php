@@ -228,7 +228,16 @@ class DashboardController extends Controller
                             }
                             else
                             {
-                                $merging_data['attendence'] = "was Present Today";
+                                $timetableobj = new TimetableEntries();
+                                $class_started = $timetableobj->classStarted($batch_id);
+                                if($class_started)
+                                {
+                                    $merging_data['attendence'] = "was Present Today";
+                                }
+                                else
+                                {
+                                    $merging_data['attendence'] = "Class Not Started Yet";
+                                }    
                                 $attendence_return = true;
                             }
                         }

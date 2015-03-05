@@ -220,9 +220,18 @@ class Subjects extends CActiveRecord
                 $report_term_merge['exam_subjects'][$i]['subject_code'] = $examvalue['Subjects']->code;
                 $report_term_merge['exam_subjects'][$i]['subject_id']   = $examvalue['Subjects']->id;
                 $report_term_merge['exam_subjects'][$i]['subject_icon'] = $examvalue['Subjects']->icon_number;
-                
+                $cradit_hours = 100;
+                if($examvalue['Subjects']->credit_hours)
+                {
+                    $cradit_hours = $examvalue['Subjects']->credit_hours;
+                    $total_cradit_hours = $total_cradit_hours+$examvalue['Subjects']->credit_hours;
+                }
+                else
+                {
+                     $total_cradit_hours = $total_cradit_hours+100;
+                }    
                 $report_term_merge['exam_subjects'][$i]['cradit_hours'] = $examvalue['Subjects']->credit_hours;
-                $total_cradit_hours = $total_cradit_hours+$examvalue['Subjects']->credit_hours;
+                
                 $report_term_merge['exam_subjects'][$i]['total_cradit_hours'] = $total_cradit_hours;
                
                
@@ -247,9 +256,8 @@ class Subjects extends CActiveRecord
                     $report_term_merge['exam_subjects'][$i]['your_percent'] = intval($report_term_merge['exam_subjects'][$i]['your_percent']);
                     $total_mark = $total_mark+$student_result->marks;
                     if($student_result['Examgrade'])
-                    $total_grade_point = $total_grade_point+$student_result['Examgrade']->credit_points;
-                    
-                    $report_term_merge['exam_subjects'][$i]['total_grade_point'] = $total_grade_point;
+                    $total_grade_point = $total_grade_point+($student_result['Examgrade']->credit_points*$cradit_hours);
+                   
                     
                     $report_term_merge['exam_subjects'][$i]['remarks'] = $student_result->remarks;
                 }
@@ -261,7 +269,7 @@ class Subjects extends CActiveRecord
            if($total_grade_point && $total_grade_point>0)
            {
                 $grading_level = new GradingLevels();
-                $report_term_merge['GPA']   = number_format($total_grade_point/($i+1), 2);
+                $report_term_merge['GPA']   = number_format(($total_grade_point/$total_cradit_hours), 2);
                 $report_term_merge['grade'] = $grading_level->getGrade($report_term_merge['GPA'],Yii::app()->user->schoolId);
            }
            else
@@ -270,7 +278,7 @@ class Subjects extends CActiveRecord
                 $report_term_merge['grade'] = "-";
            }
            $report_term_merge['total_mark'] = $total_mark;
-           $report_term_merge['total_grade_point'] = $total_grade_point;
+           //$report_term_merge['total_grade_point'] = $total_grade_point;
            $report_term_merge['total_student'] = $total_student;
          
            

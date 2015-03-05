@@ -230,13 +230,13 @@ class DashboardController extends Controller
                             {
                                 $timetableobj = new TimetableEntries();
                                 $class_started = $timetableobj->classStarted($batch_id);
-                                if($class_started && $date==date("Y-m-d"))
+                                if($class_started)
                                 {
                                     $merging_data['attendence'] = "was Present Today";
                                 }
-                                else
+                                else if($date==date("Y-m-d"))
                                 {
-                                    $merging_data['attendence'] = "Class Not Started Yet";
+                                    $merging_data['attendence'] = "Class yet not started";
                                 }    
                                 $attendence_return = true;
                             }

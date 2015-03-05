@@ -446,7 +446,7 @@ class UserController extends Controller {
 
         if (isset($_POST) && !empty($_POST)) {
 
-            if (!isset($_POST['user_secret'])) {
+//            if (!isset($_POST['user_secret'])) {
 
                 if (!isset($_POST['username']) || !isset($_POST['password']) || empty($_POST['username']) || empty($_POST['password'])) {
                     $response['status']['code'] = 400;
@@ -455,7 +455,7 @@ class UserController extends Controller {
                     echo CJSON::encode($response);
                     Yii::app()->end();
                 }
-            }
+//            }
 
             $username = Yii::app()->request->getPost('username');
             $password = Yii::app()->request->getPost('password');

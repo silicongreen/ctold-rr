@@ -68,7 +68,7 @@ class Assignments extends CActiveRecord
 		);
 	}
         
-        public function getAssignmentTotalTeacher($employee_id,$subject_id=NULL)
+        public function getAssignmentTotalTeacher($employee_id,$subject_id=NULL,$duedate=NULL)
         {
             
             $criteria = new CDbCriteria();
@@ -77,13 +77,17 @@ class Assignments extends CActiveRecord
             {         
                 $criteria->compare('t.subject_id', $subject_id);
             }
+            if($duedate)
+            {
+                $criteria->compare('DATE(t.duedate)', $duedate);
+            }
             $criteria->compare('t.employee_id', $employee_id);
             
             $data = $this->find($criteria);
             return $data->total;
         }        
         
-        public function getAssignmentTeacher($employee_id,$page=1,$page_size=10,$id=0,$subject_id=NULL)
+        public function getAssignmentTeacher($employee_id,$page=1,$page_size=10,$id=0,$subject_id=NULL,$duedate=NULL)
         {
             
             
@@ -94,6 +98,10 @@ class Assignments extends CActiveRecord
             {
                 $criteria->compare('t.subject_id', $subject_id);
               
+            }
+            if($duedate)
+            {
+                $criteria->compare('DATE(t.duedate)', $duedate);
             }
             if($id>0)
             {
@@ -169,7 +177,7 @@ class Assignments extends CActiveRecord
         
         
         
-        public function getAssignmentTotal($batch_id, $student_id, $date = '', $subject_id=NULL, $type)
+        public function getAssignmentTotal($batch_id, $student_id, $date = '', $subject_id=NULL, $type, $duedate=null)
         {
             $date = (!empty($date)) ? $date : \date('Y-m-d', \time());
             $criteria = new CDbCriteria();
@@ -179,6 +187,10 @@ class Assignments extends CActiveRecord
             if($subject_id!=NULL)
             {
                 $criteria->compare('t.subject_id', $subject_id);
+            }
+            if($duedate)
+            {
+                $criteria->compare('DATE(t.duedate)', $duedate);
             }
             
             $criteria->addCondition("FIND_IN_SET(".$student_id.", student_list)");

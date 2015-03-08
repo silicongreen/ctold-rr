@@ -63,7 +63,6 @@ class UserController extends Controller {
             $response[0] = $_POST;
         } */
         
-        Yii::app()->cache->set("all_erros", $response, 86400);
         $freeuserObj = new Freeusers();
         if(Yii::app()->request->getPost('user_type') && $email && !$freeuserObj->getFreeuser($email) && $password && $first_name)
         {

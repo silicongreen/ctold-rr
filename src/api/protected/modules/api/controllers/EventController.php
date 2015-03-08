@@ -84,6 +84,7 @@ class EventController extends Controller
                 $page_size = 10;
             }
             $objreminder = new Reminders();
+            $response['data']['unread_total'] = $objreminder->getReminderTotalUnread(Yii::app()->user->id);
             $response['data']['total'] = $objreminder->getReminderTotal(Yii::app()->user->id);
             $has_next = false;
             if ($response['data']['total'] > $page_number * $page_size)

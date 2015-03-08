@@ -38,7 +38,7 @@ class Freeusers extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('user_type, email, password, first_name', 'required'),
+            array('user_type, email, password, first_name', 'required', 'on' => 'insert'),
             array('email', 'unique'),
         );
     }

@@ -247,15 +247,15 @@ height: 46px;
 
                                 <fieldset>
                                     <div class="center">
-                                        <input placeholder="Enter Email Address" class="f5 email_txt" id="email" name="email" value="<?php echo $model->email; ?>" type="text" maxlength="60" <?php echo ($edit) ? 'readonly="readonly"' : ''; ?>>
-                                        <input placeholder="Re-enter Email Address" class="f5 email_txt" id="cnf_email" name="cnf_email" value="<?php echo $model->email; ?>" type="text" maxlength="60" <?php echo ($edit) ? 'readonly="readonly"' : ''; ?>>
+                                        <input placeholder="Enter Email Address" class="email_txt" id="email" name="email" value="<?php echo $model->email; ?>" type="text" maxlength="60" <?php echo ($edit) ? 'readonly="readonly"' : ''; ?>>
+                                        <input placeholder="Re-enter Email Address" class="email_txt" id="cnf_email" name="cnf_email" value="<?php echo $model->email; ?>" type="text" maxlength="60" <?php echo ($edit) ? 'readonly="readonly"' : ''; ?>>
                                     </div>
                                 </fieldset>
 
                                 <fieldset>
                                     <div class="center">
-                                        <input placeholder="Enter Password (Minimum 6 Charecters)" class="f5 email_txt" id="password" name="password" value="" type="password" maxlength="60" />
-                                        <input placeholder="Re-enter Password" class="f5 email_txt" id="cnf_password" name="cnf_password" value="" type="password" maxlength="60" />
+                                        <input placeholder="Enter Password (Minimum 6 Charecters)" class="email_txt" id="password" name="password" value="" type="password" maxlength="60" />
+                                        <input placeholder="Re-enter Password" class="email_txt" id="cnf_password" name="cnf_password" value="" type="password" maxlength="60" />
                                     </div>
                                 </fieldset>
 
@@ -271,7 +271,7 @@ height: 46px;
                                                 <label for="first_name" class="css-label"></label>
                                             </div>
                                             <label for="first_name" class="user_type_label">
-                                                <input class="f5 name_text" placeholder="First Name" id="first_name" name="first_name" value="<?php echo $model->first_name; ?>" type="text" maxlength="60">
+                                                <input class="name_text" placeholder="First Name" id="first_name" name="first_name" value="<?php echo $model->first_name; ?>" type="text" maxlength="60">
                                             </label>
                                         </li>
                                         <li>
@@ -280,7 +280,7 @@ height: 46px;
                                                 <label for="middle_name" class="css-label"></label>
                                             </div>
                                             <label for="middle_name" class="user_type_label">
-                                                <input class="f5 name_text" placeholder="Middle Name" id="middle_name" name="middle_name" value="<?php echo $model->middle_name; ?>" type="text" maxlength="60" >
+                                                <input class="name_text" placeholder="Middle Name" id="middle_name" name="middle_name" value="<?php echo $model->middle_name; ?>" type="text" maxlength="60" >
                                             </label>
                                         </li>
                                         <li>
@@ -289,7 +289,7 @@ height: 46px;
                                                 <label for="last_name" class="css-label"></label>
                                             </div>
                                             <label for="last_name" class="user_type_label">
-                                                <input class="f5 name_text" placeholder="Last Name" id="last_name" name="last_name" value="<?php echo $model->last_name; ?>" type="text" maxlength="60">
+                                                <input class="name_text" placeholder="Last Name" id="last_name" name="last_name" value="<?php echo $model->last_name; ?>" type="text" maxlength="60">
                                             </label>
                                         </li>
                                     </ul>
@@ -309,7 +309,7 @@ height: 46px;
                                             </div>
                                         </li>
                                         <li>
-                                            <input class="f5" placeholder="District" id="district" name="district" value="<?php echo $model->district; ?>" type="text" maxlength="60">
+                                            <input class="name_text" placeholder="District" id="district" name="district" value="<?php echo $model->district; ?>" type="text" maxlength="60">
                                         </li>
                                     </ul>
 
@@ -319,10 +319,10 @@ height: 46px;
 
                                     <ul class="radio-holder">    
                                         <li>
-                                            <input placeholder="880" class="f5 name_text country_code" id="country_code" name="country_code" value="" type="text" maxlength="6">
+                                            <input placeholder="880" class="name_text country_code" id="country_code" name="country_code" value="" type="text" maxlength="6">
                                         </li>
                                         <li>
-                                            <input placeholder="Mobile Number" class="f5 name_text mobile_no" id="mobile_no" name="mobile_no" value="<?php echo $model->mobile_no; ?>" type="text" maxlength="60">
+                                            <input placeholder="Mobile Number" class="name_text mobile_no" id="mobile_no" name="mobile_no" value="<?php echo $model->mobile_no; ?>" type="text" maxlength="60">
                                         </li>
                                     </ul>
                                 </fieldset>
@@ -348,7 +348,7 @@ height: 46px;
 
                                                 }
 
-                                                $days[NULL] = 'Select Day';
+                                                $days[NULL] = 'Day';
                                                 for($i = 1; $i <= 31; $i++){
                                                     if(strlen($i) < 2){
                                                         $i = '0'.$i;
@@ -356,7 +356,7 @@ height: 46px;
                                                     $days[$i] = $i;
                                                 }
 
-                                                $class_string = 'id="dob_day" class="f5"';
+                                                $class_string = 'id="dob_day"';
                                                 echo form_dropdown('dob_day', $days, $dob_day, $class_string);
                                                 ?>
                                             </div>
@@ -365,7 +365,7 @@ height: 46px;
                                             <div class="f5 selectDob">
                                                 <?php
 
-                                                $months[NULL] = 'Select Month';
+                                                $months[NULL] = 'Month';
                                                 for($i = 1; $i <= 12; $i++){
                                                     if(strlen($i) < 2){
                                                         $i = '0'.$i;
@@ -373,7 +373,7 @@ height: 46px;
                                                     $months[$i] = $i;
                                                 }
 
-                                                $class_string = 'id="dob_month" class="f5"';
+                                                $class_string = 'id="dob_month"';
                                                 echo form_dropdown('dob_month', $months, $dob_month, $class_string);
                                                 ?>
                                             </div>
@@ -384,7 +384,7 @@ height: 46px;
 
                                                 $year = date('Y');
 
-                                                $years[NULL] = 'Select Year';
+                                                $years[NULL] = 'Year';
 
                                                 $num = $year - 70;
 
@@ -395,7 +395,7 @@ height: 46px;
                                                     $years[$i] = $i;
                                                 }
 
-                                                $class_string = 'id="dob_year" class="f5"';
+                                                $class_string = 'id="dob_year"';
                                                 echo form_dropdown('dob_year', $years, $dob_year, $class_string);
                                                 ?>
                                             </div>
@@ -410,7 +410,7 @@ height: 46px;
                                     <div class="selectMedium">
                                         <?php
                                         $ar_input_data =array(
-                                            'class' => 'f5 text_field',
+                                            'class' => 'text_field',
                                             'placeholder' => 'Occupation',
                                             'maxlength' => '255',
                                             'size' => '560',
@@ -428,7 +428,7 @@ height: 46px;
                                     <div class="selectMedium">
                                         <?php
                                         $ar_input_data =array(
-                                            'class' => 'f5 text_field',
+                                            'class' => 'text_field',
                                             'placeholder' => 'School Name',
                                             'maxlength' => '255',
                                             'size' => '560',
@@ -445,7 +445,7 @@ height: 46px;
                                     <div class="selectMedium">
                                         <?php
                                         $ar_input_data_tf =array(
-                                            'class' => 'f5 text_field',
+                                            'class' => 'text_field',
                                             'placeholder' => 'Teaching For (Years and Month)',
                                             'maxlength' => '255',
                                             'size' => '560',
@@ -461,7 +461,7 @@ height: 46px;
                                 <fieldset>
                                     <div class="selectMedium">
                                         <?php
-                                        $class_string = 'id="medium" class="f5"';
+                                        $class_string = 'id="medium"';
                                         echo form_dropdown('medium', $medium, NULL, $class_string);
                                         ?>
                                     </div>
@@ -592,13 +592,13 @@ height: 46px;
 
                                 <fieldset>
                                     <div class="login_text_div">
-                                        <input class="f5 login_text login_user_name_back_image login_back_image_property" id="email" name="email" value="" type="text" maxlength="60" placeholder="Email" size="60">
+                                        <input class="login_text login_user_name_back_image login_back_image_property" id="email" name="email" value="" type="text" maxlength="60" placeholder="Email" size="60">
                                     </div>
                                 </fieldset>
 
                                 <fieldset>
                                     <div class="login_text_div">
-                                        <input class="f5 login_text login_password_back_image login_back_image_property" id="password" name="password" value="" type="password" maxlength="60" placeholder="Password"  size="60">
+                                        <input class="login_text login_password_back_image login_back_image_property" id="password" name="password" value="" type="password" maxlength="60" placeholder="Password"  size="60">
                                     </div>
                                 </fieldset>
 
@@ -2133,6 +2133,7 @@ if($('.header-logo-div').is(':visible')) {
         width: 100% !important;
     }
     .login_text{
+        font-family: tahoma,georgia,arial,serif;
         color: #000000 !important;
         width: 100% !important;
         height: 40px !important;
@@ -2472,6 +2473,7 @@ if($('.header-logo-div').is(':visible')) {
         margin: 15px 0 0;
     }
     .email_txt{
+        font-family: tahoma,georgia,arial,serif;
         background-color: #adb2b5;
         border-radius: 0px;
         -moz-border-radius: 0px;
@@ -2568,6 +2570,7 @@ if($('.header-logo-div').is(':visible')) {
         padding: 10px 0 3px 4px;
     }
     .name_text{
+        font-family: tahoma,georgia,arial,serif;
         background-color: #adb2b5;
         border-color: #8f979a !important;
         color: #000000 !important;
@@ -2587,6 +2590,7 @@ if($('.header-logo-div').is(':visible')) {
         width: 29px !important;
     }
     .text_field {
+        font-family: tahoma,georgia,arial,serif;
         background-color: #adb2b5;
         border-color: #8f979a !important;
         color: #000000 !important;

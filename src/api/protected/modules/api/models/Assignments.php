@@ -68,24 +68,33 @@ class Assignments extends CActiveRecord
 		);
 	}
         
-        public function getAssignmentTotalTeacher($employee_id)
+        public function getAssignmentTotalTeacher($employee_id,$subject_id=NULL)
         {
             
             $criteria = new CDbCriteria();
             $criteria->select = 'count(t.id) as total';
+            if($subject_id!=NULL)
+            {         
+                $criteria->compare('t.subject_id', $subject_id);
+            }
             $criteria->compare('t.employee_id', $employee_id);
             
             $data = $this->find($criteria);
             return $data->total;
         }        
         
-        public function getAssignmentTeacher($employee_id,$page=1,$page_size=10,$id=0)
+        public function getAssignmentTeacher($employee_id,$page=1,$page_size=10,$id=0,$subject_id=NULL)
         {
             
             
             $criteria = new CDbCriteria();
             $criteria->select = 't.*';
             $criteria->compare('t.employee_id', $employee_id);
+            if($subject_id!=NULL)
+            {
+                $criteria->compare('t.subject_id', $subject_id);
+              
+            }
             if($id>0)
             {
                $criteria->compare('t.id', $id); 
@@ -101,7 +110,8 @@ class Assignments extends CActiveRecord
                 $criteria->limit = $page_size;
 
                 $criteria->offset = $start;
-            }
+     
+            } 
             
             $criteria->with = array(
                 'subjectDetails' => array(
@@ -168,12 +178,7 @@ class Assignments extends CActiveRecord
             $criteria->compare('t.assignment_type', $type);
             if($subject_id!=NULL)
             {
-                $criteria->compare('subjectDetails.id', $subject_id);
-                //$criteria->addCondition("DATE(duedate) <= '".$date."' ");
-            }   
-            else
-            {    
-                 //$criteria->addCondition("DATE(duedate) >= '".$date."' ");
+                $criteria->compare('t.subject_id', $subject_id);
             }
             
             $criteria->addCondition("FIND_IN_SET(".$student_id.", student_list)");
@@ -237,16 +242,10 @@ class Assignments extends CActiveRecord
             }    
             if($subject_id!=NULL)
             {
-                $criteria->compare('subjectDetails.id', $subject_id);
-                //$criteria->addCondition("DATE(duedate) < '".$date."' ");
-                $criteria->order = "t.created_at DESC";
-            }   
-            else
-            {    
-                 //$criteria->addCondition("DATE(duedate) >= '".$date."' ");
-                 $criteria->order = "t.created_at DESC";
+                $criteria->compare('t.subject_id', $subject_id);
+                
             }
-            
+            $criteria->order = "t.created_at DESC";
             $criteria->addCondition("FIND_IN_SET(".$student_id.", student_list)");
             
             

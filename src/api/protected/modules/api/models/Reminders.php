@@ -134,6 +134,18 @@ class Reminders extends CActiveRecord
             return $obj_reminder;
             
         } 
+        public function getReminderTotalUnread($user_id)
+        {
+            
+            $criteria = new CDbCriteria();
+            $criteria->select = 'count(t.id) as total';
+            $criteria->compare('recipient', $user_id);
+            $criteria->compare('is_read', 0);
+            $criteria->compare('is_deleted_by_sender', 0);
+            $criteria->compare('is_deleted_by_recipient', 0);
+            $data = $this->find($criteria);
+            return $data->total;
+        } 
         public function getReminderTotal($user_id)
         {
             

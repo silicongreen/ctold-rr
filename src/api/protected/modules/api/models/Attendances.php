@@ -138,7 +138,7 @@ class Attendances extends CActiveRecord {
         $week_day = $timetable->getWeekDaySet($school_id,$batch_id);
         $ar_weekdays = Settings::$ar_weekdays;
         
-        if($ar_weekdays)
+        if($week_day)
         {
             $weekdays_set = new WeekdaySetsWeekdays();
             $weekdays_set->setAttribute("weekday_set_id", $week_day->weekday_set_id);

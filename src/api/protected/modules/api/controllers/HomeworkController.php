@@ -633,6 +633,8 @@ class HomeworkController extends Controller
             $homework = new Assignments();
             $page_number = Yii::app()->request->getPost('page_number');
             $page_size = Yii::app()->request->getPost('page_size');
+            $subject_id = Yii::app()->request->getPost('subject_id');
+                
             if (empty($page_number))
             {
                 $page_number = 1;
@@ -641,11 +643,15 @@ class HomeworkController extends Controller
             {
                 $page_size = 10;
             }
-            $homework_data = $homework->getAssignmentTeacher($employee_id, $page_number, $page_size);
+            if (empty($subject_id))
+            {
+                    $subject_id = NULL;
+            }
+            $homework_data = $homework->getAssignmentTeacher($employee_id, $page_number, $page_size,0,$subject_id);
             if ($homework_data)
             {
 
-                $response['data']['total'] = $homework->getAssignmentTotalTeacher($employee_id);
+                $response['data']['total'] = $homework->getAssignmentTotalTeacher($employee_id,$subject_id);
                 $has_next = false;
                 if ($response['data']['total'] > $page_number * $page_size)
                 {

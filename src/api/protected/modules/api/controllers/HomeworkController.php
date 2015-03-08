@@ -528,6 +528,8 @@ class HomeworkController extends Controller
                 $page_size = Yii::app()->request->getPost('page_size');
 
                 $subject_id = Yii::app()->request->getPost('subject_id');
+                
+                $duedate = Yii::app()->request->getPost('duedate');
 
                 if (empty($page_number))
                 {
@@ -542,12 +544,16 @@ class HomeworkController extends Controller
                 {
                     $subject_id = NULL;
                 }
+                if (!$duedate)
+                {
+                    $duedate = NULL;
+                }
 
-                $homework_data = $assignment->getAssignment($batch_id, $student_id, "", $page_number, $subject_id, $page_size, 1);
+                $homework_data = $assignment->getAssignment($batch_id, $student_id, "", $page_number, $subject_id, $page_size, 1, 0,$duedate);
                 if ($homework_data)
                 {
 
-                    $response['data']['total'] = $assignment->getAssignmentTotal($batch_id, $student_id, "", $subject_id, 1);
+                    $response['data']['total'] = $assignment->getAssignmentTotal($batch_id, $student_id, "", $subject_id, 1, $duedate);
                     $has_next = false;
                     if ($response['data']['total'] > $page_number * $page_size)
                     {
@@ -634,6 +640,12 @@ class HomeworkController extends Controller
             $page_number = Yii::app()->request->getPost('page_number');
             $page_size = Yii::app()->request->getPost('page_size');
             $subject_id = Yii::app()->request->getPost('subject_id');
+            $duedate = Yii::app()->request->getPost('duedate');
+            
+            if (!$duedate)
+            {
+                $duedate = NULL;
+            }
                 
             if (empty($page_number))
             {
@@ -647,11 +659,11 @@ class HomeworkController extends Controller
             {
                     $subject_id = NULL;
             }
-            $homework_data = $homework->getAssignmentTeacher($employee_id, $page_number, $page_size,0,$subject_id);
+            $homework_data = $homework->getAssignmentTeacher($employee_id, $page_number, $page_size,0,$subject_id,$duedate);
             if ($homework_data)
             {
 
-                $response['data']['total'] = $homework->getAssignmentTotalTeacher($employee_id,$subject_id);
+                $response['data']['total'] = $homework->getAssignmentTotalTeacher($employee_id,$subject_id,$duedate);
                 $has_next = false;
                 if ($response['data']['total'] > $page_number * $page_size)
                 {

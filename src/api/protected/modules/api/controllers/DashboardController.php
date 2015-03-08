@@ -59,7 +59,7 @@ class DashboardController extends Controller
         $target = Yii::app()->request->getPost('target');
         $user_id = Yii::app()->request->getPost('user_id');
 
-        if ($target && $id && Yii::app()->user->user_secret === $user_secret && ( Yii::app()->user->isStudent || (Yii::app()->user->isParent && $student_id && $batch_id)))
+        if ($target && $id && Yii::app()->user->user_secret === $user_secret && (Yii::app()->user->isTeacher || Yii::app()->user->isStudent || (Yii::app()->user->isParent && $student_id && $batch_id)))
         {
 
             $post_data = array();
@@ -83,7 +83,7 @@ class DashboardController extends Controller
                 $user_info = $freeuserObj->getUserInfo($user_id);
                 $user_type = $user_info['user_type'];
             }
-            if ($page_number == 1)
+            if ($page_number == 1 && !Yii::app()->user->isTeacher)
             {
                 
                 if (Yii::app()->user->isStudent)
@@ -424,7 +424,7 @@ class DashboardController extends Controller
                 }
 
                 
-                if ($page_number == 1)
+                if ($page_number == 1 && !Yii::app()->user->isTeacher)
                 {
                     $i = 1;
                 }

@@ -672,7 +672,7 @@
                         if(!isset($width_main) || $width_main==0)
                         {
                             $news->image = str_replace("http://www.champs21.com","http://champs21.com",$news->image );
-                            list($width_main, $height_main, $type_main, $attr_main) = getimagesize($news->lead_material);
+                            list($width_main, $height_main, $type_main, $attr_main) = getimagesize($news->image);
                         }
                     }    
                     

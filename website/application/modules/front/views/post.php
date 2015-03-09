@@ -638,7 +638,7 @@
 <?php if ( $has_related && $b_layout && $school_id==0) : ?>
 <div class="inner-container_related" style="margin: 20px; width: 96%;">
     <div class="related_news_headline f2">
-        You may also like
+        You May Also Like
     </div>
     <div class="related_post">
     <?php $i = 0; foreach( $related_news as $news ): ?>
@@ -651,9 +651,16 @@
                     
                     if(isset($news->lead_material))
                     {
+                       
                        list($width_main, $height_main, $type_main, $attr_main) = getimagesize($news->lead_material); 
                        
                     }
+                    if(!isset($width_main) || $width_main==0)
+                    {
+                        $news->lead_material = str_replace("http://www.champs21.com","http://champs21.com",$news->lead_material );
+                        list($width_main, $height_main, $type_main, $attr_main) = getimagesize($news->lead_material);
+                    }    
+                    
                     if(isset($width_main) && $width_main>0)
                     {
                         $image_related = $news->lead_material;
@@ -662,18 +669,23 @@
                     {
                         list($width_main, $height_main, $type_main, $attr_main) = getimagesize($news->image);
                         $image_related = $news->image;
+                        if(!isset($width_main) || $width_main==0)
+                        {
+                            $news->image = str_replace("http://www.champs21.com","http://champs21.com",$news->image );
+                            list($width_main, $height_main, $type_main, $attr_main) = getimagesize($news->lead_material);
+                        }
                     }    
                     
                     
                 
                  ?>
                 <?php if(isset($width_main) && $width_main>0): ?>
-                <img src="<?php echo $image_related; ?>" width="120" height="120" style="overflow:hidden;float: left; margin-right:15px;" />
+                <a href="<?php echo $news->new_link; ?>" style="border:0px;"><img src="<?php echo $image_related; ?>" width="120" height="120" style="overflow:hidden;float: left; border:0; margin-right:15px;" /></a>
                 <?php endif; ?>
             
             <div style="margin-right:30px;">
                 <p style="margin:0px;line-height:20px; "><a href="<?php echo $news->new_link; ?>"><?php echo $news->title; ?></a></p>
-                <p style="margin:0px; line-height:16px;font-size:12px;"><?php echo $news->content; ?></p>
+                <p style="margin:0px; line-height:16px;font-size:12px;"><a href="<?php echo $news->new_link; ?>"><?php echo $news->content; ?></a></p>
             </div>
         </div>
     <?php $i++; endforeach; ?>
@@ -684,7 +696,7 @@
     
     <div class="inner-container_related" style="margin: 20px; width: 96%;">
         <div class="related_news_headline f2">
-            &nbsp;
+            Check Out These Sections Also
         </div>
         <div class="related_post">
             

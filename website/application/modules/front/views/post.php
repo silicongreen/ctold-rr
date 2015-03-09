@@ -648,44 +648,35 @@
         <div class="related_post_content">
             
                 <?php
-                    $image_related = "";
+                    
                     if(isset($news->lead_material))
                     {
-                       $image_related = $news->lead_material;
-//                       list($width_main, $height_main, $type_main, $attr_main) = getimagesize($news->lead_material); 
+                       
+                       list($width_main, $height_main, $type_main, $attr_main) = getimagesize($news->lead_material); 
                        
                     }
-//                    if(!isset($width_main) || $width_main==0)
-//                    {
-//                        $news->lead_material = str_replace("http://www.champs21.com","http://champs21.com",$news->lead_material );
-//                        list($width_main, $height_main, $type_main, $attr_main) = getimagesize($news->lead_material);
-//                    }    
-//                    
-//                    if(isset($width_main) && $width_main>0)
-//                    {
-//                        
-//                    }
+                    if(isset($width_main) && $width_main>0)
+                    {
+                        $image_related = $news->lead_material;
+                    }
+
                     else if(isset($news->image))
                     {
-                        //list($width_main, $height_main, $type_main, $attr_main) = getimagesize($news->image);
+                        list($width_main, $height_main, $type_main, $attr_main) = getimagesize($news->image);
                         $image_related = $news->image;
-//                        if(!isset($width_main) || $width_main==0)
-//                        {
-//                            $news->image = str_replace("http://www.champs21.com","http://champs21.com",$news->image );
-//                            list($width_main, $height_main, $type_main, $attr_main) = getimagesize($news->image);
-//                        }
+
                     }    
                     
                     
                 
                  ?>
-                <?php if($image_related): ?>
+                <?php if(isset($width_main) && $width_main>0): ?>
                 <a href="<?php echo $news->new_link; ?>" style="border:0px;"><img src="<?php echo $image_related; ?>" width="120" height="120" style="overflow:hidden;float: left; border:0; margin-right:15px;" /></a>
                 <?php endif; ?>
             
             <div style="margin-right:30px;">
                 <p style="margin:0px;line-height:20px; "><a href="<?php echo $news->new_link; ?>"><?php echo $news->title; ?></a></p>
-                <p style="margin:0px; line-height:16px;font-size:12px;"><a href="<?php echo $news->new_link; ?>"><?php echo $news->content; ?></a></p>
+                <p style="margin:0px; line-height:16px;font-size:12px;"><a style="color:black;" href="<?php echo $news->new_link; ?>"><?php echo $news->content; ?></a></p>
             </div>
         </div>
     <?php $i++; endforeach; ?>

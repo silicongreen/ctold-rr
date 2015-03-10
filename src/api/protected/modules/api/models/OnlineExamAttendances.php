@@ -20,6 +20,8 @@ class OnlineExamAttendances extends CActiveRecord
 	/**
 	 * @return string the associated database table name
 	 */
+        public $total;
+        public $maxmin;
 	public function tableName()
 	{
 		return 'online_exam_attendances';
@@ -116,4 +118,27 @@ class OnlineExamAttendances extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        public function getScore($type="MAX") 
+        {
+
+            $criteria = new CDbCriteria();
+
+            $criteria->select = $type.'(t.total_score) as maxmin';
+            $criteria->compare('online_exam_group_id',$online_exam_group_id);
+            $attendance = $this->find($criteria);
+
+            return $attendance->maxmin;
+        }
+        
+        public function getAttendanceCount($online_exam_group_id) 
+        {
+
+            $criteria = new CDbCriteria();
+
+            $criteria->select = 'count(t.id) as total';
+            $criteria->compare('online_exam_group_id',$online_exam_group_id);
+            $attendance = $this->find($criteria);
+
+            return $attendance->total;
+        }
 }

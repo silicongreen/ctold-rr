@@ -102,7 +102,7 @@ class Meetingrequest extends CActiveRecord
         {
            $criteria = new CDbCriteria; 
            $criteria->select = 't.id,t.description,t.datetime,t.status,t.type';
-           $criteria->compare('id', $id);
+           $criteria->compare('t.id', $id);
            $criteria->with = array(
                     'employee' => array(
                         'select' => 'employee.first_name,employee.middle_name,employee.last_name',

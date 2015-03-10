@@ -125,6 +125,14 @@ class Meetingrequest extends CActiveRecord
                     $full_name = ($value['students']->first_name)?$value['students']->first_name." ":"";
                     $full_name.= ($value['students']->middle_name)?$value['students']->middle_name." ":"";
                     $full_name.= ($value['students']->last_name)?$value['students']->last_name:"";
+                    if($value->type==1)
+                    {
+                        $meeting['type'] = 2;   
+                    } 
+                    else
+                    {
+                        $meeting['type'] = 1;  
+                    }
                     $meeting['show_for'] = 1;
                     $meeting['name'] = $full_name;
                     $meeting['batch'] = $student_batch['batchDetails']['courseDetails']->course_name." ".$student_batch['batchDetails']->name;
@@ -137,8 +145,9 @@ class Meetingrequest extends CActiveRecord
                     $meeting['show_for'] = 0;
                     $meeting['name'] = $full_name;
                     $meeting['batch'] = "";
+                    $meeting['type'] = $value->type;
                 } 
-                $meeting['type'] = $value->type;
+                
                 $meeting['id'] = $value->id;
                 $meeting['date'] = $value->datetime;
                 $datevalue = date("Y-m-d",  strtotime($value->datetime));

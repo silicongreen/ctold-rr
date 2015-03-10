@@ -103,6 +103,16 @@ class Meetingrequest extends CActiveRecord
            $criteria = new CDbCriteria; 
            $criteria->select = 't.id,t.description,t.datetime,t.status,t.type';
            $criteria->compare('id', $id);
+           $criteria->with = array(
+                    'employee' => array(
+                        'select' => 'employee.first_name,employee.middle_name,employee.last_name',
+                        'joinType' => "LEFT JOIN"
+                    ),
+                    'students' => array(
+                        'select' => 'students.immediate_contact_id,students.id,students.first_name,students.middle_name,students.last_name',
+                        'joinType' => "LEFT JOIN"
+                    )
+            );
            $value = $this->find($criteria);
            $meeting = array();
            if($value)

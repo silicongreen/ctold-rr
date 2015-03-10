@@ -196,8 +196,8 @@ class OnlineExamGroups extends CActiveRecord
                     
                     $response_array['total_student'] = $std->getStudentByBatchCount($batch_id);
                     $response_array['total_participated'] = $examattendence->getAttendanceCount($data->id);
-                    $response_array['max_score'] = $examattendence->getScore("MAX");
-                    $response_array['min_score'] = $examattendence->getScore("MIN");
+                    $response_array['max_score'] = $examattendence->getScore("MAX",$data->id);
+                    $response_array['min_score'] = $examattendence->getScore("MIN",$data->id);
                     $subject = "";
                     $subject_icon = "";
                     if(isset($value['subject']->name) && $value['subject']->name)

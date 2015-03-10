@@ -149,6 +149,7 @@ class Meetingrequest extends CActiveRecord
                 } 
                 
                 $meeting['id'] = $value->id;
+                $meeting['description'] = $value->description;
                 $meeting['date'] = $value->datetime;
                 $datevalue = date("Y-m-d",  strtotime($value->datetime));
                 $meeting['timeover']  = 0;

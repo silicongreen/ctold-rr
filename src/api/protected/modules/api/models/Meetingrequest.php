@@ -98,6 +98,49 @@ class Meetingrequest extends CActiveRecord
                 return 0;
             }
         }
+        public function singleMetting($id)
+        {
+           $criteria = new CDbCriteria; 
+           $criteria->select = 't.id,t.description,t.datetime,t.status,t.type';
+           $criteria->compare('id', $id);
+           $value = $this->find($criteria);
+           $meeting = array();
+           if($value)
+           {
+                if(Yii::app()->user->isTeacher)
+                {                           
+                    $student_model = new Students();
+                    $student_batch = $student_model->getStudentById($value['students']->id);                    
+                    $full_name = ($value['students']->first_name)?$value['students']->first_name." ":"";
+                    $full_name.= ($value['students']->middle_name)?$value['students']->middle_name." ":"";
+                    $full_name.= ($value['students']->last_name)?$value['students']->last_name:"";
+                    $meeting['show_for'] = 1;
+                    $meeting['name'] = $full_name;
+                    $meeting['batch'] = $student_batch['batchDetails']['courseDetails']->course_name." ".$student_batch['batchDetails']->name;
+                }
+                else
+                {
+                    $full_name = ($value['employee']->first_name)?$value['employee']->first_name." ":"";
+                    $full_name.= ($value['employee']->middle_name)?$value['employee']->middle_name." ":"";
+                    $full_name.= ($value['employee']->last_name)?$value['employee']->last_name:"";
+                    $meeting['show_for'] = 0;
+                    $meeting['name'] = $full_name;
+                    $meeting['batch'] = "";
+                } 
+                $meeting['type'] = $value->type;
+                $meeting['id'] = $value->id;
+                $meeting['date'] = $value->datetime;
+                $datevalue = date("Y-m-d",  strtotime($value->datetime));
+                $meeting['timeover']  = 0;
+                if($today>$datevalue)
+                {
+                    $meeting['timeover'] = 1;
+                }
+                $meeting['status'] = $value->status;
+           }
+           return $meeting;
+           
+        }        
         public function getInboxOutbox($id,$type=1,$type2=1,$start_date="",$end_date="", $page = 1, $page_size = 10)
         {
             $criteria = new CDbCriteria;

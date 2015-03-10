@@ -226,8 +226,15 @@ class Settings {
         return $time = ($b_12_hour) ? date('h:i a', strtotime($time)) : $time;
     }
 
-    public static function get_diff_date($end, $out_in_array = true) {
-        $intervalo = date_diff(date_create($end), date_create());
+    public static function get_diff_date($end, $out_in_array = true,$start_date=false) {
+        if($start_date==false)
+        {
+            $intervalo = date_diff(date_create($end), date_create());
+        }
+        else
+        {
+            $intervalo = date_diff(date_create($end), date_create($start_date));
+        }    
         $out = $intervalo->format("Years:%Y,Months:%M,Days:%d,Hours:%H,Minutes:%i,Seconds:%s");
         if (!$out_in_array)
             return $out;
@@ -240,8 +247,8 @@ class Settings {
         return $a_out;
     }
 
-    public static function get_post_time($published_date,$to=6) {
-        $datediff = self::get_diff_date($published_date);
+    public static function get_post_time($published_date,$to=6,$check=true,$start_date=false) {
+        $datediff = self::get_diff_date($published_date,true,$start_date);
         $datestring = "";
         $findvalue = false;
         if ($datediff['Years'] > 0 && $to>0) {
@@ -252,7 +259,7 @@ class Settings {
             }
             $findvalue = true;
         }
-        if ($datediff['Months'] > 0 && $findvalue === false && $to>1) {
+        if ($datediff['Months'] > 0 && ($findvalue === false || $check==false) && $to>1) {
             if ($findvalue) {
                 $datestring.= ", ";
             }
@@ -264,7 +271,7 @@ class Settings {
 
             $findvalue = true;
         }
-        if ($datediff['Days'] > 0 && $findvalue === false && $to>2) {
+        if ($datediff['Days'] > 0 && ($findvalue === false || $check==false) && $to>2) {
             if ($findvalue) {
                 $datestring.= ", ";
             }
@@ -276,7 +283,7 @@ class Settings {
 
             $findvalue = true;
         }
-        if ($datediff['Hours'] > 0 && $findvalue === false  && $to>3) {
+        if ($datediff['Hours'] > 0 && ($findvalue === false || $check==false)  && $to>3) {
             if ($findvalue) {
                 $datestring.= ", ";
             }
@@ -288,7 +295,7 @@ class Settings {
 
             $findvalue = true;
         }
-        if ($datediff['Minutes'] > 0 && $findvalue === false  && $to>4) {
+        if ($datediff['Minutes'] > 0 && ($findvalue === false || $check==false)  && $to>4) {
             if ($findvalue) {
                 $datestring.= ", ";
             }
@@ -300,7 +307,7 @@ class Settings {
 
             $findvalue = true;
         }
-        if ($datediff['Seconds'] > 0 && $findvalue === false  && $to>5) {
+        if ($datediff['Seconds'] > 0 && ($findvalue === false || $check==false)  && $to>5) {
             if ($findvalue) {
                 $datestring.= ", ";
             }

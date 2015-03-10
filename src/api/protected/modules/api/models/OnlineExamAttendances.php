@@ -118,13 +118,13 @@ class OnlineExamAttendances extends CActiveRecord
 	{
 		return parent::model($className);
 	}
-        public function getScore($type="MAX") 
+        public function getScore($type="MAX",$online_exam_group_id) 
         {
 
             $criteria = new CDbCriteria();
 
             $criteria->select = $type.'(t.total_score) as maxmin';
-            $criteria->compare('online_exam_group_id',$online_exam_group_id);
+            $criteria->compare('t.online_exam_group_id',$online_exam_group_id);
             $attendance = $this->find($criteria);
 
             return $attendance->maxmin;

@@ -190,6 +190,14 @@ class OnlineExamGroups extends CActiveRecord
                 {
                     $response_array['name'] = $data->name;
                     
+                    $std = new Students();
+                    
+                    $examattendence = new OnlineExamAttendances();
+                    
+                    $response_array['total_student'] = $std->getStudentByBatchCount($batch_id);
+                    $response_array['total_participated'] = $examattendence->getAttendanceCount($data->id);
+                    $response_array['max_score'] = $examattendence->getScore("MAX");
+                    $response_array['min_score'] = $examattendence->getScore("MIN");
                     $subject = "";
                     $subject_icon = "";
                     if(isset($value['subject']->name) && $value['subject']->name)
@@ -208,6 +216,7 @@ class OnlineExamGroups extends CActiveRecord
                     $response_array['total_mark'] = $total_mark;
                     $response_array['start_time'] = $data['examgiven'][0]->start_time;
                     $response_array['end_time'] = $data['examgiven'][0]->end_time;
+                    $response_array['total_time_taken'] = Settings::get_post_time($data['examgiven'][0]->end_time, 6, false, $data['examgiven'][0]->start_time);
                     $response_array['is_passed'] = $data['examgiven'][0]->is_passed;
                     $response_array['total_score'] = $data['examgiven'][0]->total_score;
                 }

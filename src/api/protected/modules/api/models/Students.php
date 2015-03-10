@@ -53,6 +53,7 @@ class Students extends CActiveRecord {
     /**
      * @return string the associated database table name
      */
+    public $total;
     public function tableName() {
         return 'students';
     }
@@ -267,6 +268,16 @@ class Students extends CActiveRecord {
             )
       );
       return $this->findAll($criteria);
+    }
+    public function getStudentByBatchCount($batch_id) {
+
+        $criteria = new CDbCriteria();
+        
+        $criteria->select = 'count(t.id) as total';
+        $criteria->compare('batch_id',$batch_id);
+        $students = $this->find($criteria);
+       
+        return $students->total;
     }
     public function getStudentByBatchFull($batch_id) {
 

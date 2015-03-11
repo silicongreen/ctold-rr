@@ -132,7 +132,7 @@ class DashboardController extends Controller
 
                 //current day
                 //Last Visited
-                $response['maindata']['last_visited']['first'] = "Last Visited";
+                $response['maindata']['last_visited']['first'] = "";
                 $response['maindata']['last_visited']['number'] = "Today";
                 $response['maindata']['last_visited']['type'] = "";
 
@@ -143,6 +143,7 @@ class DashboardController extends Controller
                 if ($last_visited)
                 {
                     $visitedarray = explode(" ", $last_visited);
+                    $response['maindata']['last_visited']['first'] = "Last Visited";
                     $response['maindata']['last_visited']['number'] = $visitedarray[0];
                     $response['maindata']['last_visited']['type'] = $visitedarray[1];
                 }

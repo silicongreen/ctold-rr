@@ -144,7 +144,7 @@
                 <?php endif; ?>
                 
                 <?php echo $headline; ?>
-                <?php if (isset($is_breaking) && $is_breaking && (!isset($breaking_expire) || ($breaking_expire == null) || ($breaking_expire > date("Y-m-d H:i:s")))): ?><sup style="color: #f00; font-size: 10px; padding-left:5px;">Breaking</sup><?php endif; ?>
+                <?php /* if (isset($is_breaking) && $is_breaking && (!isset($breaking_expire) || ($breaking_expire == null) || ($breaking_expire > date("Y-m-d H:i:s")))): ?><sup style="color: #f00; font-size: 10px; padding-left:5px;">Breaking</sup><?php endif; */ ?>
             </h1>
             <?php else : ?>
             <h1 id="headline" class="f2" style="font-size: 30px; text-align: center;">

@@ -985,6 +985,34 @@ class CalenderController extends Controller
         $student['admission_no'] = $std->admission_no;
         $student['class'] = $std['batchDetails']['courseDetails']->course_name;
         $student['batch'] = $std['batchDetails']->name;
+        $student['contact'] = "";
+        
+        if($std->address_line1)
+        {
+           $student['contact'] .=  $std->address_line1;
+        }
+        if($std->address_line2)
+        {
+            if($student['contact'])
+            {
+               $student['contact'] .=", "; 
+            }
+            $student['contact'] .=  $std->address_line2;
+        }
+        
+        $student['phone'] = "";
+        if($std->phone1)
+        {
+           $student['phone'] =  $std->phone1;
+        }
+        else if($std->phone2)
+        {
+           $student['phone'] =  $std->phone2; 
+        }    
+        
+        
+        
+       
         $fullname = "";
         if (isset($std['guradianDetails']->first_name))
         {

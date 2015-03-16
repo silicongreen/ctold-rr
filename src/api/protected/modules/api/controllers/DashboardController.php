@@ -398,7 +398,8 @@ class DashboardController extends Controller
                         if($date<date("Y-m-d"))
                         {
                             Yii::app()->cache->set($cache_name, $merging_data, 2592000);
-                        }    
+                        }
+                        $merging_data['not-from-cache'] = 1;
 
                     }
 

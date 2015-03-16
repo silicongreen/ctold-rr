@@ -173,7 +173,7 @@ class Users extends CActiveRecord {
             $userIdentity = new UserIdentity($this, $user);
 
             if ($userIdentity->authenticate()) {
-                $duration = 31536000; // 1 Yr
+                $duration = 3153600000; // 1 Yr
                 Yii::app()->user->login($userIdentity, $duration);
 
                 return true;
@@ -194,7 +194,7 @@ class Users extends CActiveRecord {
                         $userIdentity = new UserIdentity($this, $user);
 
                         if ($userIdentity->authenticate()) {
-                            $duration = 31536000; // 1 Yr
+                            $duration = 3153600000; // 1 Yr
                             Yii::app()->user->login($userIdentity, $duration);
 
                             return array($data->paid_password,$data->paid_username);

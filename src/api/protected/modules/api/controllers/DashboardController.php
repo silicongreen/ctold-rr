@@ -171,229 +171,236 @@ class DashboardController extends Controller
 
                 foreach ($date_array as $dvalue)
                 {
-                    $merging_data = array();
+                    
                     $date = $dvalue['dateformat'];
+                    
+                    $cache_name = "DASHBOARD-" . $date . "-" .  $user_id;
+                    $merging_data = Yii::app()->cache->get($cache_name);
 
-                    $tommmorow = date('Y-m-d', strtotime($date . "+1 days"));
-
-
-                    //attendence start
-                    $stdObject = new Students();
-                    $std_data = $stdObject->findByPk($student_id);
-
-                    $merging_data['student_name'] = $std_data->first_name;
-
-                    $objattendence = new Attendances();
-
-                    $attendence_return = false;
-                    $holiday = new Events();
-                    $holiday_array = $holiday->getHolidayMonth($date, $date, $school_id);
-                    if ($holiday_array)
+                    if(!$merging_data)
                     {
-                        $merging_data['attendence'] = "Today is Holiday"; //(".$holiday_array[0]['title'].")
-                        $attendence_return = true;
-                    }
+                        $merging_data = array();
+                        $tommmorow = date('Y-m-d', strtotime($date . "+1 days"));
 
-                    if (!$attendence_return)
-                    {
-                        $weekend_array = $objattendence->getWeekend($school_id,$batch_id);
-                        $weekday = date("w", strtotime($date));
-                        if (in_array($weekday, $weekend_array))
+
+                        //attendence start
+                        $stdObject = new Students();
+                        $std_data = $stdObject->findByPk($student_id);
+
+                        $merging_data['student_name'] = $std_data->first_name;
+
+                        $objattendence = new Attendances();
+
+                        $attendence_return = false;
+                        $holiday = new Events();
+                        $holiday_array = $holiday->getHolidayMonth($date, $date, $school_id);
+                        if ($holiday_array)
                         {
-                            $merging_data['attendence'] = "Today is weekend";
+                            $merging_data['attendence'] = "Today is Holiday"; //(".$holiday_array[0]['title'].")
                             $attendence_return = true;
                         }
-                    }
-                    if (!$attendence_return)
-                    {
-                        $leave = new ApplyLeaveStudents();
-                        $leave_array = $leave->getleaveStudentMonth($date, $date, $student_id);
-                        if ($leave_array)
+
+                        if (!$attendence_return)
                         {
-                            $merging_data['attendence'] = "was on Leave Today";
-                            $attendence_return = true;
+                            $weekend_array = $objattendence->getWeekend($school_id,$batch_id);
+                            $weekday = date("w", strtotime($date));
+                            if (in_array($weekday, $weekend_array))
+                            {
+                                $merging_data['attendence'] = "Today is weekend";
+                                $attendence_return = true;
+                            }
                         }
                         if (!$attendence_return)
                         {
+                            $leave = new ApplyLeaveStudents();
+                            $leave_array = $leave->getleaveStudentMonth($date, $date, $student_id);
+                            if ($leave_array)
+                            {
+                                $merging_data['attendence'] = "was on Leave Today";
+                                $attendence_return = true;
+                            }
+                            if (!$attendence_return)
+                            {
 
-                            $attendance_array = $objattendence->getAbsentStudentMonth($date, $date, $student_id);
-                            if ($attendance_array['late'])
-                            {
-                                $merging_data['attendence'] = "was Late Today";
-                                $attendence_return = true;
-                            }
-                            else if ($attendance_array['absent'])
-                            {
-                                $merging_data['attendence'] = "was Absent Today";
-                                $attendence_return = true;
-                            }
-                            else
-                            {
-                                $timetableobj = new TimetableEntries();
-                                $class_started = $timetableobj->classStarted($batch_id);
-                                if($class_started)
+                                $attendance_array = $objattendence->getAbsentStudentMonth($date, $date, $student_id);
+                                if ($attendance_array['late'])
                                 {
-                                    $merging_data['attendence'] = "was Present Today";
+                                    $merging_data['attendence'] = "was Late Today";
+                                    $attendence_return = true;
                                 }
-                                else if($date==date("Y-m-d"))
+                                else if ($attendance_array['absent'])
                                 {
-                                    $merging_data['attendence'] = "Class yet not started";
-                                }    
-                                $attendence_return = true;
+                                    $merging_data['attendence'] = "was Absent Today";
+                                    $attendence_return = true;
+                                }
+                                else
+                                {
+                                    $timetableobj = new TimetableEntries();
+                                    $class_started = $timetableobj->classStarted($batch_id);
+                                    if($class_started)
+                                    {
+                                        $merging_data['attendence'] = "was Present Today";
+                                    }
+                                    else if($date==date("Y-m-d"))
+                                    {
+                                        $merging_data['attendence'] = "Class yet not started";
+                                    }    
+                                    $attendence_return = true;
+                                }
                             }
                         }
-                    }
 
-                    //attendence end
-                    //tomomorow class
-                    $cur_day_name = Settings::getCurrentDay($tommmorow);
-                    $day_id = Settings::$ar_weekdays_key[$cur_day_name];
-                    $time_table = new TimetableEntries;
-                    $time_table = $time_table->getTimeTables($school_id, $tommmorow, true, $batch_id, $day_id);
-                    $merging_data['class_tommrow'] = false;
-                    if ($time_table)
-                    {
-                        $merging_data['class_tommrow'] = true;
-                    }
-
-                    //tomomorow class end
-                    //homework start
-
-                    $assignment = new Assignments();
-                    $homework_data = $assignment->getAssignmentSubject($batch_id, $student_id, $tommmorow);
-
-                    $merging_data['homework_subject'] = array();
-                    $sub_array = array();
-                    if ($homework_data)
-                    {
-                        $i = 0;
-                        foreach ($homework_data as $value)
+                        //attendence end
+                        //tomomorow class
+                        $cur_day_name = Settings::getCurrentDay($tommmorow);
+                        $day_id = Settings::$ar_weekdays_key[$cur_day_name];
+                        $time_table = new TimetableEntries;
+                        $time_table = $time_table->getTimeTables($school_id, $tommmorow, true, $batch_id, $day_id);
+                        $merging_data['class_tommrow'] = false;
+                        if ($time_table)
                         {
-                            if (!in_array($value['subjects_id'], $sub_array))
+                            $merging_data['class_tommrow'] = true;
+                        }
+
+                        //tomomorow class end
+                        //homework start
+
+                        $assignment = new Assignments();
+                        $homework_data = $assignment->getAssignmentSubject($batch_id, $student_id, $tommmorow);
+
+                        $merging_data['homework_subject'] = array();
+                        $sub_array = array();
+                        if ($homework_data)
+                        {
+                            $i = 0;
+                            foreach ($homework_data as $value)
                             {
-                                $merging_data['homework_subject'][$i]['id'] = $value['subjects_id'];
-                                $merging_data['homework_subject'][$i]['name'] = $value['subjects'];
-                                $merging_data['homework_subject'][$i]['icon'] = $value['subjects_icon'];
-                                $i++;
-                                $sub_array[] = $value['subjects_id'];
+                                if (!in_array($value['subjects_id'], $sub_array))
+                                {
+                                    $merging_data['homework_subject'][$i]['id'] = $value['subjects_id'];
+                                    $merging_data['homework_subject'][$i]['name'] = $value['subjects'];
+                                    $merging_data['homework_subject'][$i]['icon'] = $value['subjects_icon'];
+                                    $i++;
+                                    $sub_array[] = $value['subjects_id'];
+                                }
                             }
                         }
-                    }
 
-                    //homework end
-                    //Result Published
-                    $merging_data['result_publish'] = "";
+                        //homework end
+                        //Result Published
+                        $merging_data['result_publish'] = "";
 
-
-                    $objReminder = new Reminders();
-                    $result = $objReminder->getUserReminderNew($user_id, 1, 10, $date, 3);
-                    if ($result && isset($result[0]['rid']) && $result[0]['rid'])
-                    {
-                        $exam = new ExamGroups();
-                        $examsdata = $exam->findByPk($result[0]['rid']);
-                        if ($examsdata)
-                        {
-                            $merging_data['result_publish'] = $examsdata->name;
-                        }
-                    }
-
-                    //Result Published end
-                    //Routine Published
-                    $merging_data['routine_publish'] = "";
-
-
-                    $objReminder = new Reminders();
-                    $result = $objReminder->getUserReminderNew($user_id, 1, 10, $date, 2);
-                    if ($result && isset($result[0]['rid']) && $result[0]['rid'])
-                    {
-                        $exam = new ExamGroups();
-                        $examsdata = $exam->findByPk($result[0]['rid']);
-                        if ($examsdata)
-                        {
-                            $merging_data['routine_publish'] = $examsdata->name;
-                        }
-                    }
-
-                    //Routine Published end
-                    //start_event
-
-                    $objEvent = new Events();
-                    $event_data = $objEvent->getAcademicCalendar($school_id, $tommmorow, $tommmorow, $batch_id, 0, 1, 10, false, true);
-                    $merging_data['event_tommorow'] = false;
-                    if ($event_data)
-                    {
-                        $merging_data['event_tommorow'] = true;
-                        $merging_data['event_id'] = $event_data[0]['event_id'];
-                        $merging_data['event_name'] = $event_data[0]['event_title'];
-                    }
-
-                    //end_event
-                    //exam start
-                    $objExam = new Exams();
-                    $examdata = $objExam->getExamTimeTable($school_id, $batch_id, $student_id, NULL, $tommmorow);
-                    $merging_data['exam_tommorow'] = false;
-                    if ($examdata)
-                    {
-                        $merging_data['exam_tommorow'] = true;
-                    }
-                    //end exam
-
-                    if (Yii::app()->user->isParent)
-                    {
-                        $objReminder = new Reminders();
-                        $meeting_request = $objReminder->getUserReminderNew($user_id, 1, 10, $date, 13);
-                        $merging_data['meeting_request'] = $meeting_request;
 
                         $objReminder = new Reminders();
-                        $leave = $objReminder->getUserReminderNew($user_id, 1, 10, $date, 10);
-                        $merging_data['leave'] = $leave;
-
-                        $objFees = new FinanceFees();
-                        $fees = $objFees->feesStudentDue($student_id);
-                        $merging_data['fees'] = false;
-                        if ($fees)
+                        $result = $objReminder->getUserReminderNew($user_id, 1, 10, $date, 3);
+                        if ($result && isset($result[0]['rid']) && $result[0]['rid'])
                         {
-                            $merging_data['fees'] = true;
-                        }
-                    }
-
-
-
-                    //Notice start
-                    $newsobj = new News();
-                    $notice = $newsobj->getNews($school_id, $date, $date);
-                    $merging_data['notice'] = false;
-                    if ($notice)
-                    {
-                        $merging_data['notice'] = true;
-                    }
-                    //Notice end
-                    //Quiz start
-                    $onlineExamObj = new OnlineExamGroups();
-                    $onlineexamData = $onlineExamObj->getOnlineExamSubject($batch_id,$date);
-
-                    $merging_data['quiz'] = array();
-                    $sub_array = array();
-                    if ($onlineexamData)
-                    {
-                        $i = 0;
-                        foreach ($onlineexamData as $value)
-                        {
-                            if (!in_array($value['subjects_id'], $sub_array))
+                            $exam = new ExamGroups();
+                            $examsdata = $exam->findByPk($result[0]['rid']);
+                            if ($examsdata)
                             {
-                                $merging_data['quiz'][$i]['id'] = $value['subjects_id'];
-                                $merging_data['quiz'][$i]['name'] = $value['subjects'];
-                                $merging_data['quiz'][$i]['icon'] = $value['subjects_icon'];
-                                $i++;
-                                $sub_array[] = $value['subjects_id'];
+                                $merging_data['result_publish'] = $examsdata->name;
                             }
                         }
-                    }
-//                    $onlineExamObj = new OnlineExamGroups();
-//                    $onlineexamData = $onlineExamObj->getOnlineExamList($batch_id, $student_id, 1, 10, $date);
-//                    $merging_data['quiz'] = $onlineexamData;
 
-                    //Quiz End
+                        //Result Published end
+                        //Routine Published
+                        $merging_data['routine_publish'] = "";
+
+
+                        $objReminder = new Reminders();
+                        $result = $objReminder->getUserReminderNew($user_id, 1, 10, $date, 2);
+                        if ($result && isset($result[0]['rid']) && $result[0]['rid'])
+                        {
+                            $exam = new ExamGroups();
+                            $examsdata = $exam->findByPk($result[0]['rid']);
+                            if ($examsdata)
+                            {
+                                $merging_data['routine_publish'] = $examsdata->name;
+                            }
+                        }
+
+                        //Routine Published end
+                        //start_event
+
+                        $objEvent = new Events();
+                        $event_data = $objEvent->getAcademicCalendar($school_id, $tommmorow, $tommmorow, $batch_id, 0, 1, 10, false, true);
+                        $merging_data['event_tommorow'] = false;
+                        if ($event_data)
+                        {
+                            $merging_data['event_tommorow'] = true;
+                            $merging_data['event_id'] = $event_data[0]['event_id'];
+                            $merging_data['event_name'] = $event_data[0]['event_title'];
+                        }
+
+                        //end_event
+                        //exam start
+                        $objExam = new Exams();
+                        $examdata = $objExam->getExamTimeTable($school_id, $batch_id, $student_id, NULL, $tommmorow);
+                        $merging_data['exam_tommorow'] = false;
+                        if ($examdata)
+                        {
+                            $merging_data['exam_tommorow'] = true;
+                        }
+                        //end exam
+
+                        if (Yii::app()->user->isParent)
+                        {
+                            $objReminder = new Reminders();
+                            $meeting_request = $objReminder->getUserReminderNew($user_id, 1, 10, $date, 13);
+                            $merging_data['meeting_request'] = $meeting_request;
+
+                            $objReminder = new Reminders();
+                            $leave = $objReminder->getUserReminderNew($user_id, 1, 10, $date, 10);
+                            $merging_data['leave'] = $leave;
+
+                            $objFees = new FinanceFees();
+                            $fees = $objFees->feesStudentDue($student_id);
+                            $merging_data['fees'] = false;
+                            if ($fees)
+                            {
+                                $merging_data['fees'] = true;
+                            }
+                        }
+
+
+
+                        //Notice start
+                        $newsobj = new News();
+                        $notice = $newsobj->getNews($school_id, $date, $date);
+                        $merging_data['notice'] = false;
+                        if ($notice)
+                        {
+                            $merging_data['notice'] = true;
+                        }
+                        //Notice end
+                        //Quiz start
+                        $onlineExamObj = new OnlineExamGroups();
+                        $onlineexamData = $onlineExamObj->getOnlineExamSubject($batch_id,$date);
+
+                        $merging_data['quiz'] = array();
+                        $sub_array = array();
+                        if ($onlineexamData)
+                        {
+                            $i = 0;
+                            foreach ($onlineexamData as $value)
+                            {
+                                if (!in_array($value['subjects_id'], $sub_array))
+                                {
+                                    $merging_data['quiz'][$i]['id'] = $value['subjects_id'];
+                                    $merging_data['quiz'][$i]['name'] = $value['subjects'];
+                                    $merging_data['quiz'][$i]['icon'] = $value['subjects_icon'];
+                                    $i++;
+                                    $sub_array[] = $value['subjects_id'];
+                                }
+                            }
+                        }
+                        if($date<date("Y-m-d"))
+                        {
+                            Yii::app()->cache->set($cache_name, $merging_data, 2592000);
+                        }    
+
+                    }
 
                     $response['maindata']['datefeed'][] = $merging_data;
                 }

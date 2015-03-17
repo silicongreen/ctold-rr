@@ -2285,12 +2285,16 @@ class home extends MX_Controller {
     
     function search()
     {
+        $purify_config = HTMLPurifier_Config::createDefault();
+        $purifier = new HTMLPurifier($purify_config);
         
         $q = '';
         
         if (isset($_GET['s']) && !empty($_GET['s'])) {
             $q = $this->input->get('s');
         }
+        
+        $q = $purifier->purify($q);
         
         $ar_js = array();
         $ar_css = array();

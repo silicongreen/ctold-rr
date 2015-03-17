@@ -2296,6 +2296,10 @@ class home extends MX_Controller {
         
         $q = $purifier->purify($q);
         
+        if(empty($q)) {
+            redirect(base_url());
+        }
+        
         $ar_js = array();
         $ar_css = array();
         $extra_js = '';

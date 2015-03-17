@@ -201,6 +201,8 @@ class postdata extends widget
             $a_post_params['q'] = $q;
             $data['q'] = $q;
             $s_priority = "DATE(tds_post.published_date), DESC";
+        } else {
+            $s_priority = "post.priority, ASC";
         }
         if($target == "school" || $target=="teacher")
         {

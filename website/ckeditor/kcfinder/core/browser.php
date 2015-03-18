@@ -1292,6 +1292,7 @@ class browser extends uploader {
                     if ( $ar_tmp['name'] == "post" )
                         $ar_tmp['current'] = true;
                     $i++;
+                    $ar_tmp['name_before'] = $ar_tmp['name'];
                     
                     array_push($imgDirs, $ar_tmp);
                 }

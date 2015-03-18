@@ -889,7 +889,7 @@ class browser extends uploader {
             $writable = dir::isWritable($dir);
             foreach ($dirs as $cdir) {
                 $info = $this->getDirInfo($cdir);
-                if ($info === false) continue;
+                if ($info === false || $info['name']=="Ads") continue;
                 $info['removable'] = $writable && $info['writable'];
                 $return[] = $info;
             }

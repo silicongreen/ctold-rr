@@ -1289,7 +1289,7 @@ class browser extends uploader {
                         'hasDirs' => $hasDirs 
                     );
                     
-                    if ( $ar_tmp['name'] == "post" )
+                    if ( $i == 5 )
                         $ar_tmp['current'] = true;
                     $i++;
                     $ar_tmp['name_before'] = $ar_tmp['name'];

@@ -362,7 +362,7 @@ class School extends CActiveRecord
         public function getSchoolPaidCoverLogo($paid_school_id)
         {
             $criteria = new CDbCriteria(); 
-            $criteria->select = "id";
+            $criteria->select = "*";
             $criteria->compare("paid_school_id",$paid_school_id);
             $schools = $this->find($criteria);
            

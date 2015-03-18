@@ -359,6 +359,38 @@ class School extends CActiveRecord
            
             
         }
+        public function getSchoolPaidCoverLogo($paid_school_id)
+        {
+            $criteria = new CDbCriteria(); 
+            $criteria->select = "id";
+            $criteria->compare("paid_school_id",$paid_school_id);
+            $schools = $this->find($criteria);
+           
+            $school_array["school_logo"]    = "";
+            $school_array["school_picture"] = "";
+            $school_array["school_cover"]   = "";
+            
+            if($schools)
+            {
+                if($schools->logo)
+                $school_array["school_logo"]               = Settings::$image_path.$schools->logo;
+                if($schools->cover)
+                $school_array["school_cover"]              = Settings::$image_path.$schools->cover; 
+                if($schools->picture)
+                {
+                    $school_array["school_picture"]        = Settings::$image_path.$schools->picture;
+                }
+                else if($schools->logo)
+                {
+                    $school_array["school_picture"]        = Settings::$image_path.$schools->logo;
+                }
+            }
+            return $school_array;
+            
+           
+            
+        }
+        
         
         public function getSchoolNotPaid($term="")
         {

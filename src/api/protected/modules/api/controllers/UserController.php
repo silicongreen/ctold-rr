@@ -529,8 +529,7 @@ class UserController extends Controller {
                     $school_details = $school_obj->findByPk(Yii::app()->user->schoolId);
                     $school_code = $school_details->code;
                     
-                    $freeschool = new School();
-                    $response['data']['paid_user'] = $freeschool->getSchoolPaidCoverLogo(Yii::app()->user->schoolId);
+                    
                     
                     
                     
@@ -649,6 +648,8 @@ class UserController extends Controller {
                        
                     }    
                     $response['data']['user_type'] = 1;
+                    $freeschool = new School();
+                    $response['data']['paid_user'] = $freeschool->getSchoolPaidCoverLogo(Yii::app()->user->schoolId);
                     $response['data']['paid_user']['id'] = Yii::app()->user->id;
                     $response['data']['paid_user']['is_admin'] = Yii::app()->user->isAdmin;
                     $response['data']['paid_user']['is_student'] = Yii::app()->user->isStudent;

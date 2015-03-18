@@ -153,7 +153,7 @@ class browser extends uploader {
         foreach ($tree['dirs'] as $key=>$t)
         {
             
-            if($t['name']!="Image" && $t['name']!="video" && $t['name']!="podcast" && $t['name']!="Ads")
+            if($t['name']!="Image" && $t['name']!="video" && $t['name']!="podcast" )
             {
                // unset($tree['dirs'][$key]);
                 continue;
@@ -175,7 +175,7 @@ class browser extends uploader {
                 foreach ($value as $vkey=>$t)
                 {
 
-                    if($t['name']!="Image" && $t['name']!="Ads" && $t['name']!="video" && $t['name']!="podcast")
+                    if($t['name']!="Image"  && $t['name']!="video" && $t['name']!="podcast")
                     {
                        // unset($tree['dirs'][$key]);
                         continue;
@@ -1252,7 +1252,7 @@ class browser extends uploader {
             $writable = dir::isWritable(str_ireplace("//", "/", strtolower($dir)));
             foreach ($dirs as $cdir) {
                 $info = $this->getDirInfo($cdir);
-                if ($info === false) continue;
+                if ($info === false || $info['name']=="Ads") continue;
                 $info['removable'] = $writable && $info['writable'];
                 $return[] = $info;
             }

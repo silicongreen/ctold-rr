@@ -153,7 +153,7 @@ class browser extends uploader {
         foreach ($tree['dirs'] as $key=>$t)
         {
             
-            if($t['name']!="Image" && $t['name']!="video" && $t['name']!="podcast")
+            if($t['name']!="Image" && $t['name']!="video" && $t['name']!="podcast" && $t['name']!="Ads")
             {
                // unset($tree['dirs'][$key]);
                 continue;
@@ -175,7 +175,7 @@ class browser extends uploader {
                 foreach ($value as $vkey=>$t)
                 {
 
-                    if($t['name']!="Image" && $t['name']!="video" && $t['name']!="podcast")
+                    if($t['name']!="Image" && $t['name']!="Ads" && $t['name']!="video" && $t['name']!="podcast")
                     {
                        // unset($tree['dirs'][$key]);
                         continue;

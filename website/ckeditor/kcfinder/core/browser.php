@@ -160,7 +160,7 @@ class browser extends uploader {
             }
             if (isset($t['dirs']) )
             { 
-                $s_path = $this->typeDir . strtolower($t['name']) . "/" . strtolower($t['dirs'][0]['name']);
+                $s_path = $this->typeDir . strtolower($t['name']) . "/post";
             }
                
         }
@@ -1289,7 +1289,7 @@ class browser extends uploader {
                         'hasDirs' => $hasDirs 
                     );
                     
-                    if ( $i == 0 )
+                    if ( $ar_tmp['name'] == "post" )
                         $ar_tmp['current'] = true;
                     $i++;
                     

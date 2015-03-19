@@ -1288,8 +1288,8 @@ class browser extends uploader {
                         'removable' => $removable && $writable && dir::isWritable(str_ireplace("//", "/", strtolower(dirname($cdir)))),
                         'hasDirs' => $hasDirs 
                     );
-                    
-                    if ( $i == 5 )
+                    $namefolder = stripslashes(basename($cdir));
+                    if ( $namefolder == "post" )
                         $ar_tmp['current'] = true;
                     $i++;
                     $ar_tmp['name_before'] = $ar_tmp['name'];

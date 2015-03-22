@@ -218,6 +218,89 @@ class TimetableEntries extends CActiveRecord {
         
     }
     
+    public function getNextTeacherMulti($school_id,$emplyee_id,$cur_day_key = null, $call=1,$limit=2)
+    {
+        $criteria = new CDbCriteria;
+        $criteria->select = 't.id, t.weekday_id';
+        $criteria->compare('t.school_id', $school_id);
+        $date = date("Y-m-d");
+        $time = date("H:i:s");
+        if($call==1 && $cur_day_key!==0 && !$cur_day_key)
+        {
+            $cur_day_name = Settings::getCurrentDay($date);
+            $cur_day_key = Settings::$ar_weekdays_key[$cur_day_name];
+        }
+        
+          
+        $criteria->compare('t.weekday_id', $cur_day_key);
+        
+        if($call==1)
+        {
+            $criteria->addCondition("classTimingDetails.start_time>'".$time."'");
+        }
+        $criteria->compare('t.employee_id', $emplyee_id);
+        $criteria->addCondition("timeTableDetails.start_date <= '" . $date . "' ");
+        $criteria->addCondition("timeTableDetails.end_date >= '" . $date . "' ");
+        //$criteria->addCondition("timeTableDetails.end_date >= '" . $date . "' ");
+        $criteria->order = 'classTimingDetails.start_time ASC';
+
+        $criteria->limit = $limit;
+        $criteria->with=array('classTimingDetails',
+                               'batchDetails'=>array("with"=>"courseDetails"), 
+                                'subjectDetails', 
+                                'employeeDetails', 
+                                'timeTableDetails');
+
+        $data = $this->findAll($criteria);
+        if ($data) {
+            return $this->formatTimeNextMulti($data);
+        }
+        else if($call<7)
+        {
+            if($cur_day_key == 6)
+            {
+                $next_day = 0;
+            }
+            else
+            {
+                $next_day = $cur_day_key+1;
+            } 
+            $call++;
+            $return_data = $this->getNextTeacherMulti($school_id,$emplyee_id,$next_day,$call);
+            return $return_data;
+        }
+        else
+        {
+            return array();
+        }    
+
+        
+    }
+    public function formatTimeNextMulti($data)
+    {
+        $classess = array();
+        foreach($data as $row)
+        {
+            $_data['batch_name'] = rtrim($row['batchDetails']->name);
+            $_data['course_name'] = rtrim($row['batchDetails']['courseDetails']->course_name);
+            $_data['subject_code'] = $row['subjectDetails']->code;
+            $_data['subject_name'] = $row['subjectDetails']->name;
+            $_data['subject_icon_name'] = $row['subjectDetails']->icon_number;
+            $_data['subject_icon_path'] = (!empty($row['subjectDetails']->icon_number)) ? Settings::$domain_name . '/images/icons/subjects/' . $row['subjectDetails']->icon_number : null;
+            $_data['class_start_time'] = Settings::formatTime($row['classTimingDetails']->start_time);
+            $_data['class_end_time'] = Settings::formatTime($row['classTimingDetails']->end_time);
+
+            $middle_name = (!empty($row['employeeDetails']->middle_name)) ? $row['employeeDetails']->middle_name . ' ' : '';
+            $_data['teacher_first_name'] = rtrim($row['employeeDetails']->first_name);
+            $_data['teacher_full_name'] = rtrim($row['employeeDetails']->first_name . ' ' . $middle_name . $row['employeeDetails']->last_name);
+
+            $_data['weekday_id'] = $row->weekday_id;
+            $_data['weekday_text'] = Settings::$ar_weekdays[$row->weekday_id];
+            $classess[] = $_data;
+        }
+        return $classess;
+    } 
+    
     public function getNextTeacher($school_id,$emplyee_id,$cur_day_key = null, $call=1)
     {
         $criteria = new CDbCriteria;

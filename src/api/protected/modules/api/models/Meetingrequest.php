@@ -161,6 +161,26 @@ class Meetingrequest extends CActiveRecord
            }
            return $meeting;
            
+        } 
+        public function meetingTommorow($id)
+        {
+            $criteria = new CDbCriteria;
+            $criteria->select = 't.id,t.description,t.datetime,t.status';
+            $tommorow = date("Y-m-d",  strtotime("+1 Day"));
+            $criteria->compare('teacher_id', $id);
+            $criteria->compare('DATE(datetime)', $tommorow);
+            $criteria->compare('status', 1);
+            $criteria->limit = 1;
+            $obj_metting = $this->find($criteria);
+            if($obj_metting)
+            {
+                return true;
+            } 
+            else
+            {
+                return false;
+            }    
+            
         }        
         public function getInboxOutbox($id,$type=1,$type2=1,$start_date="",$end_date="", $page = 1, $page_size = 10)
         {

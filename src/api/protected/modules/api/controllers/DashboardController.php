@@ -408,6 +408,163 @@ class DashboardController extends Controller
                 $post_data[0] = $response['maindata'];
                 unset($response['maindata']);
             }
+            else if($page_number == 1 && Yii::app()->user->isTeacher)
+            {
+                
+                $user_id = Yii::app()->user->id;
+                $school_id = Yii::app()->user->schoolId;
+                $profile_id = Yii::app()->user->profileId;
+
+
+                //school info
+
+                $school_obj = new Schools();
+                $school_details = $school_obj->findByPk($school_id);
+                $response['maindata']['post_type'] = "20";
+                $response['maindata']['school_name'] = $school_details->name;
+                $response['maindata']['school_picture'] = "";
+
+                $freeschool = new School();
+                $freeschoolid = $freeschool->getSchoolPaid($school_id);
+                if ($freeschoolid)
+                {
+                    $freeschooldetails = $freeschool->findByPk($freeschoolid);
+                    if (isset($freeschooldetails->cover) && $freeschooldetails->cover)
+                    {
+                        $response['maindata']['school_picture'] = Settings::$image_path . $freeschooldetails->cover;
+                    }
+                }
+
+                //end school info
+                //student profile
+
+                $response['maindata']['profile_picture'] = "";
+                $freobj = new Freeusers();
+                $profile_image = $freobj->getUserImage($user_id);
+                if (isset($profile_image['profile_image']) && $profile_image['profile_image'])
+                {
+                    $response['maindata']['profile_picture'] = $profile_image['profile_image'];
+                }
+
+                //student profile end
+                //current day
+
+                $response['maindata']['current_date'] = date("D d-m-Y");
+
+                //current day
+                //Last Visited
+                $response['maindata']['last_visited']['first'] = "";
+                $response['maindata']['last_visited']['number'] = "Today";
+                $response['maindata']['last_visited']['type'] = "";
+
+                $lastvisited = new LastVisited();
+                $last_visited = $lastvisited->getLastVisited();
+                $lastvisited->addLastVisited();
+
+                if ($last_visited)
+                {
+                    $visitedarray = explode(" ", $last_visited);
+                    $response['maindata']['last_visited']['first'] = "Last Visited";
+                    $response['maindata']['last_visited']['number'] = $visitedarray[0];
+                    $response['maindata']['last_visited']['type'] = $visitedarray[1];
+                }
+
+
+                //Last Visited
+
+                $date_today = date('d');
+                $date_month_name = date('F');
+
+                $date_array = array();
+
+                $date_array[0]['index'] = 0;
+                $date_array[0]['number'] = $date_today;
+                $date_array[0]['name'] = $date_month_name;
+                $date_array[0]['dateformat'] = date("Y-m-d");
+                for ($i = 1; $i < 6; $i++)
+                {
+                    $date_array[$i]['index'] = $i;
+                    $date_array[$i]['number'] = date('d', strtotime("-" . $i . " days"));
+                    $date_array[$i]['name'] = date('F', strtotime("-" . $i . " days"));
+                    $date_array[$i]['dateformat'] = date('Y-m-d', strtotime("-" . $i . " days"));
+                }
+                $response['maindata']['dates'] = $date_array;
+
+                foreach ($date_array as $dvalue)
+                {
+                    
+                    $date = $dvalue['dateformat'];
+                    
+                    $cache_name = "DASHBOARD-" . $date . "-" .  $user_id;
+                    $merging_data = Yii::app()->cache->get($cache_name);
+
+                    if(!$merging_data)
+                    {
+                        $merging_data = array();
+                        $tommmorow = date('Y-m-d', strtotime($date . "+1 days"));
+
+
+                        
+                        //Next Class
+                  
+                        $time_table = new TimetableEntries;
+                        $next_class = $time_table->getNextTeacherMulti($school_id, $profile_id);
+                        $merging_data['next_class'] = $next_class;
+                       
+                        
+                        //Teacher Assignment
+                        $assignment = new Assignments();
+                        $homework_data = $assignment->getAssignmentTeacher($profile_id,1,2);
+
+                        $merging_data['homework'] = $homework_data;
+                        
+
+                        
+                        //start_event
+
+                        $objEvent = new Events();
+                        $event_data = $objEvent->getAcademicCalendar($school_id, $tommmorow, $tommmorow, $batch_id, 0, 1, 10, false, true);
+                        $merging_data['event_tommorow'] = false;
+                        if ($event_data)
+                        {
+                            $merging_data['event_tommorow'] = true;
+                            $merging_data['event_id'] = $event_data[0]['event_id'];
+                            $merging_data['event_name'] = $event_data[0]['event_title'];
+                        }
+
+                        //end_event
+                        $meetingobj = new Meetingrequest();
+                        $merging_data['meeting_tommorow'] =  $meetingobj->meetingTommorow($profile_id);
+                        
+
+
+                        //Notice start
+                        $newsobj = new News();
+                        $notice = $newsobj->getNews($school_id, $date, $date);
+                        $merging_data['notice'] = false;
+                        if ($notice)
+                        {
+                            $merging_data['notice'] = true;
+                        }
+                        //Notice end
+                        //Quiz start
+
+                        $merging_data['quiz'] = array();
+                        
+                        if($date<date("Y-m-d"))
+                        {
+                            Yii::app()->cache->set($cache_name, $merging_data, 2592000);
+                        }
+                        $merging_data['not-from-cache'] = 1;
+
+                    }
+
+                    $response['maindata']['datefeed'][] = $merging_data;
+                }
+                $post_data[0] = $response['maindata'];
+                unset($response['maindata']);
+                
+            }
             $postObj = new Post();
             $post = $postObj->getPosts($id, $user_type, $target, $page_number, $page_size);
 
@@ -433,7 +590,7 @@ class DashboardController extends Controller
                 }
 
                 
-                if ($page_number == 1 && !Yii::app()->user->isTeacher)
+                if ($page_number == 1)
                 {
                     $i = 1;
                 }

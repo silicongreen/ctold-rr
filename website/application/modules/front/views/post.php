@@ -140,7 +140,7 @@
                          </span>
                 <?php else: ?> 
                 
-                <span><?php echo $name; ?></span>
+                <span><?php echo ((isset($display_name) && $display_name != "")) ? $display_name : $name; ?></span>
                 <?php endif; ?>
                 
                 <?php echo $headline; ?>

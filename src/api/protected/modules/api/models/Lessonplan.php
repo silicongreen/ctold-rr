@@ -64,7 +64,7 @@ class Lessonplan extends CActiveRecord
             $criteria->select = 'count(t.id) as total';
             $criteria->compare('t.lessonplan_category_id', $lessonplan_category_id);
             $criteria->compare('t.author_id', Yii::app()->user->id);
-            $criteria->addCondition("FIND_IN_SET(".$batch_id.", batch_ids)");
+            //$criteria->addCondition("FIND_IN_SET(".$batch_id.", batch_ids)");
             
             $data = $this->find($criteria);
             return $data->total;

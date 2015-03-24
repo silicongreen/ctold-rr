@@ -223,7 +223,7 @@ class SyllabusController extends Controller {
                 $lessonplan = new Lessonplan();
                 $lessonplan = $lessonplan->findByPk($id); 
             
-                if($lessonplan && $lessonplan->author_id==Yii::app()->user->profileId)
+                if($lessonplan && $lessonplan->author_id==Yii::app()->user->id)
                 {
                     foreach($lessonplan as $key=>$value)
                     {
@@ -290,7 +290,7 @@ class SyllabusController extends Controller {
         $content = Yii::app()->request->getPost('content');
         $id = Yii::app()->request->getPost('id');
         
-        if ($user_secret && Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher && $subject_ids &$lessonplan_category_id
+        if ($user_secret && Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher && $subject_ids && $lessonplan_category_id
                  && $title && $publish_date && $content)
         {
             if(!$is_show)
@@ -321,7 +321,7 @@ class SyllabusController extends Controller {
             {
                 $subject_ids = implode(",", $subjects);
                 $batch_ids = implode(",", $batches);
-                $author_id = Yii::app()->user->profileId;
+                $author_id = Yii::app()->user->id;
                 $school_id = Yii::app()->user->schoolId;
                 $created_at = $updated_at = date("Y-m-d H:i:s");
                 

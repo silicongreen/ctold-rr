@@ -77,7 +77,7 @@ class SyllabusController extends Controller {
             $batch_id = Yii::app()->request->getPost('batch_id');
             $lessonplan_category_id = Yii::app()->request->getPost('lessonplan_category_id');
             $response = array();
-            if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher && $lessonplan_category_id && $batch_id)
+            if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher )
             {
                 
                 $page_number = Yii::app()->request->getPost('page_number');
@@ -89,6 +89,15 @@ class SyllabusController extends Controller {
                 if (empty($page_size))
                 {
                     $page_size = 10;
+                }
+                
+                if(!$lessonplan_category_id)
+                {
+                    $lessonplan_category_id = 0;
+                }
+                if(!$batch_id)
+                {
+                    $batch_id = 0;
                 }
                 
                 $lessonplan = new Lessonplan();
@@ -290,8 +299,8 @@ class SyllabusController extends Controller {
         $content = Yii::app()->request->getPost('content');
         $id = Yii::app()->request->getPost('id');
         
-        if ($user_secret && Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher && $subject_ids && $lessonplan_category_id
-                 && $title && $publish_date && $content)
+        if ($user_secret && Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher  && $lessonplan_category_id
+                 && $title && $content)
         {
             if(!$is_show)
             {
@@ -299,9 +308,11 @@ class SyllabusController extends Controller {
             } 
             $subjects = array();
             $batches = array();
+            $subjects_array = array();
+            if($subject_ids)
             $subjects_array = explode(",", $subject_ids);
             
-            
+          
             if($subjects_array)
             {
                 foreach($subjects_array as $value)
@@ -311,16 +322,20 @@ class SyllabusController extends Controller {
                     if($sub)
                     {
                         $subjects[] = $sub->id;
-                        $batches[] = $sub->batch_id;
+                        if(!in_array($sub->batch_id, $batches))
+                        {
+                            $batches[] = $sub->batch_id;
+                        }
                     }    
                     
                 }
             }
             
-            if($subjects)
-            {
-                $subject_ids = implode(",", $subjects);
-                $batch_ids = implode(",", $batches);
+                if($subjects)
+                {
+                    $subject_ids = implode(",", $subjects);
+                    $batch_ids = implode(",", $batches);
+                }
                 $author_id = Yii::app()->user->id;
                 $school_id = Yii::app()->user->schoolId;
                 $created_at = $updated_at = date("Y-m-d H:i:s");
@@ -329,13 +344,26 @@ class SyllabusController extends Controller {
                 if($id)
                 {
                    $lessonplan = $lessonplan->findByPk($id); 
+                } 
+                if($subjects)
+                {
+                    $lessonplan->subject_ids = $subject_ids;
+                    $lessonplan->batch_ids = $batch_ids;
+                }
+                else 
+                {
+                    $lessonplan->subject_ids = null;
+                    $lessonplan->batch_ids = null; 
                 }    
-                $lessonplan->subject_ids = $subject_ids;
-                $lessonplan->batch_ids = $batch_ids;
                 $lessonplan->lessonplan_category_id = $lessonplan_category_id;
                 $lessonplan->title = $title;
                 $lessonplan->is_show = $is_show;
-                $lessonplan->publish_date = $publish_date;
+                
+                if($publish_date)
+                {
+                    $lessonplan->publish_date = $publish_date;
+                }
+                
                 $lessonplan->content = $content;
                 $lessonplan->school_id = $school_id;
                 $lessonplan->author_id = $author_id;
@@ -345,12 +373,8 @@ class SyllabusController extends Controller {
                 $response['status']['code'] = 200;
                 $response['status']['msg'] = "Success";
                 
-            }    
-            else
-            {
-                $response['status']['code'] = 400;
-                $response['status']['msg'] = "Bad Request"; 
-            }    
+               
+                
             
 
         }

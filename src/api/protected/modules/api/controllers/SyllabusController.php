@@ -95,7 +95,7 @@ class SyllabusController extends Controller {
 
 
                 $lessonplans = $lessonplan->getLessonPlan($batch_id, $lessonplan_category_id,$page_number,$page_size);
-                $response['data']['total'] = $assignment->getLessonPlanTotal($batch_id, $lessonplan_category_id);
+                $response['data']['total'] = $lessonplans->getLessonPlanTotal($batch_id, $lessonplan_category_id);
                 $has_next = false;
                 if ($response['data']['total'] > $page_number * $page_size)
                 {

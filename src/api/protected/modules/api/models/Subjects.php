@@ -136,6 +136,34 @@ class Subjects extends CActiveRecord
     {
         return parent::model($className);
     }
+    public function getSubjectFullName($id)
+    {
+       $criteria = new CDbCriteria(); 
+       $criteria->select = 't.name';
+       $criteria->compare('t.id', $id);
+       $criteria->with =array(
+                        "Subjectbatch" => array(
+                            "select" => "Subjectbatch.name",
+                            'joinType' => "INNER JOIN",
+                            'with' => array(
+                                "courseDetails" => array(
+                                    "select" => "courseDetails.course_name",
+                                    'joinType' => "INNER JOIN",
+                                )
+                            )
+                     )
+            );
+       $subject = array();
+       $subjects = $this->findAll($criteria);
+       if($subjects)
+       foreach($subjects as $value)
+       {
+           $subject[] = $value->name." ".$value['Subjectbatch']->name." ".$value['Subjectbatch']['courseDetails']->course_name;
+       }
+      
+       
+       return $subject;
+    }
     
     public function getSubject($batch_id,$student_id)
     {

@@ -209,7 +209,7 @@ class EmployeesSubjects extends CActiveRecord
             return $subject;
         }
         
-        public function getSubject($employee_id)
+        public function getSubject($employee_id,$lesson_id = 0,$return_selcted_subject_array=false)
         {
             $criteria = new CDbCriteria;
             $criteria->select = 't.*';
@@ -241,11 +241,41 @@ class EmployeesSubjects extends CActiveRecord
         
             $subject = array();
             $i = 0; 
+            $subject_selected = array();
+            if($lesson_id>0)
+            {
+                $lessonplan = new Lessonplan();
+                $lessonplan = $lessonplan->findByPk($lesson_id);
+                if($lessonplan && $lessonplan->subject_ids)
+                {
+                    $subject_selected_string = $lessonplan->subject_ids;
+                    $subject_selected = explode(",", $subject_selected_string);
+                }
+            }
             foreach ($obj_subject as $value)
             {
-               $subject[$i]['id'] = $value['subject']->id;
-               $subject[$i]['name'] = $value['subject']->name." ".$value['subject']['Subjectbatch']->name." ".$value['subject']['Subjectbatch']['courseDetails']->course_name;
-               $i++; 
+                if($return_selcted_subject_array)
+                {
+                   if(in_array($value['subject']->id, $subject_selected))
+                   {
+                        $subject[$i]['id'] = $value['subject']->id;
+                        $subject[$i]['name'] = $value['subject']->name." ".$value['subject']['Subjectbatch']->name." ".$value['subject']['Subjectbatch']['courseDetails']->course_name;
+                        $i++;
+                   }
+                     
+                }
+                else
+                {
+                    $subject[$i]['id'] = $value['subject']->id;
+                    $subject[$i]['name'] = $value['subject']->name." ".$value['subject']['Subjectbatch']->name." ".$value['subject']['Subjectbatch']['courseDetails']->course_name;
+                    $subject[$i]['selected'] = 0;
+                    if(in_array($value['subject']->id, $subject_selected))
+                    {
+                        $subject[$i]['selected'] = 1;
+                    }
+                    $i++;  
+                }    
+                
             }
 
             return $subject;

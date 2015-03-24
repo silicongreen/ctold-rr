@@ -185,9 +185,9 @@ class SyllabusController extends Controller {
         
         if ($user_secret && Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher && $id)
         {
-            if($is_show!==0 && !$is_show)
+            if(!$is_show)
             {
-                $is_show = 1;
+                $is_show = 0;
             }
             $ids = explode(",", $id);
             $lessonplan = new Lessonplan();

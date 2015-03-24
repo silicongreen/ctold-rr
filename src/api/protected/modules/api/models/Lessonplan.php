@@ -132,6 +132,7 @@ class Lessonplan extends CActiveRecord
                 
                 $marge['category']   = $value["category"]->name;
                 $marge['title'] = $value->title;
+                $marge['is_show'] = $value->is_show;
               
                 $marge['subjects'] = "";
                 $subjectobj = new Subjects();

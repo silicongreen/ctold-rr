@@ -48,7 +48,7 @@ class LessonplanCategory extends CActiveRecord
         {
             $criteria = new CDbCriteria;
             $criteria->select = 't.id,t.name';
-            $criteria->compare("t.author_id", Yii::app()->user->profileId);
+            $criteria->compare("t.author_id", Yii::app()->user->id);
             $criteria->compare("t.status", 1);
             $obj_categopry = $this->findAll($criteria);
             $category = array();

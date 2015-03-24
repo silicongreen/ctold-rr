@@ -185,7 +185,7 @@ class SyllabusController extends Controller {
         
         if ($user_secret && Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher && $id)
         {
-            if(!$is_show)
+            if($is_show!==0 && !$is_show)
             {
                 $is_show = 1;
             }

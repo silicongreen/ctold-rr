@@ -67,7 +67,7 @@ class LessonplanCategory extends CActiveRecord
                     if($return_selcted_category)
                     {
                       
-                        if($category_selected_id = $value->id)
+                        if($category_selected_id == $value->id)
                         {
                             $category[$i]['id'] = $value->id;
                             $category[$i]['name'] = $value->name;
@@ -80,7 +80,7 @@ class LessonplanCategory extends CActiveRecord
                         $category[$i]['id'] = $value->id;
                         $category[$i]['name'] = $value->name;
                         $category[$i]['selected'] = 0;
-                        if($category_selected_id = $value->id)
+                        if($category_selected_id == $value->id)
                         {
                             $category[$i]['selected'] = 1;
                         }

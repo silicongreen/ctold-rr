@@ -267,7 +267,7 @@ class SyllabusController extends Controller {
                     $id = 0;
                 }    
             
-                $rseponse['data']['category'] = $lessonCategory->getUserCategory($id);
+                $response['data']['category'] = $lessonCategory->getUserCategory($id);
                 $response['status']['code'] = 200;
                 $response['status']['msg'] = "Success";
         }

@@ -57,13 +57,17 @@ class Lessonplan extends CActiveRecord
 	{
 		return parent::model($className);
 	}
-        public function getLessonPlanTotal($batch_id, $lessonplan_category_id)
+        public function getLessonPlanTotal($batch_id=0, $lessonplan_category_id=0)
         {
            
             $criteria = new CDbCriteria();
             $criteria->select = 'count(t.id) as total';
+            if($lessonplan_category_id)
             $criteria->compare('t.lessonplan_category_id', $lessonplan_category_id);
+            
             $criteria->compare('t.author_id', Yii::app()->user->id);
+            
+            if($batch_id)
             $criteria->addCondition("FIND_IN_SET(".$batch_id.", batch_ids)");
             
             $data = $this->find($criteria);
@@ -83,6 +87,8 @@ class Lessonplan extends CActiveRecord
                 $response_array['category']   = $value["category"]->name;
                 $response_array['title']   = $value->title;
                 $response_array['content']   = $value->content;
+                $response_array['publish_date'] = "";
+                if($value->publish_date)
                 $response_array['publish_date']   = $value->publish_date;
                 $response_array['is_show']   = $value->is_show;
                 $response_array['subjects'] = "";
@@ -105,14 +111,18 @@ class Lessonplan extends CActiveRecord
         }
         
         
-        public function getLessonPlan($batch_id, $lessonplan_category_id,$page=1,$page_size)
+        public function getLessonPlan($batch_id=0, $lessonplan_category_id=0,$page=1,$page_size)
         {
             
             
             $criteria = new CDbCriteria();
             $criteria->select = 't.*';
+            if($lessonplan_category_id)
             $criteria->compare('t.lessonplan_category_id', $lessonplan_category_id);
+            
             $criteria->compare('t.author_id', Yii::app()->user->id);
+            
+            if($batch_id)
             $criteria->addCondition("FIND_IN_SET(".$batch_id.", batch_ids)");
             
             $criteria->order = "t.created_at DESC";

@@ -131,7 +131,7 @@ class SyllabusController extends Controller {
                 $lessonplan = new Lessonplan();
                 $lessonplan = $lessonplan->findByPk($id); 
             
-                if($lessonplan && $lessonplan->author_id==Yii::app()->user->profileId)
+                if($lessonplan && $lessonplan->author_id==Yii::app()->user->id)
                 {
                     $lessonplan->delete();
                     $response['status']['code'] = 200;

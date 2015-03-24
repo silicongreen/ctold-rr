@@ -231,10 +231,10 @@ class SyllabusController extends Controller {
                     }
                     $emplyee_subject = new EmployeesSubjects();
                     $subjects = $emplyee_subject->getSubject(Yii::app()->user->profileId,$id,true);
-                    $rseponse['data']['category'] = $lessonCategory->getUserCategory($id,true);
+                    $response['data']['category'] = $lessonCategory->getUserCategory($id,true);
                     $response['data']['subjects'] = $subjects;
                     
-                    $rseponse['data']['lessonplan'] = $lessonplanarray;
+                    $response['data']['lessonplan'] = $lessonplanarray;
                     $response['status']['code'] = 200;
                     $response['status']['msg'] = "Success";
                 }

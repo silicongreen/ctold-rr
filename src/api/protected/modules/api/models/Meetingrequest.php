@@ -19,7 +19,7 @@ class Meetingrequest extends CActiveRecord
         public $total = 0;
 	public function tableName()
 	{
-		return 'meeting_request';
+		return 'meeting_requests';
 	}
 
 	/**
@@ -31,7 +31,7 @@ class Meetingrequest extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('teacher_id,parent_id,description,datetime', 'required'),
-			array('type,teacher_id,parent_id,description,datetime,student_ids,status', 'safe', 'on'=>'search'),
+			array('meeting_type,teacher_id,parent_id,description,datetime,student_ids,status', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -72,7 +72,7 @@ class Meetingrequest extends CActiveRecord
             {
                 $criteria->compare('parent_id', $id); 
             }
-            $criteria->compare('type', $type);
+            $criteria->compare('meeting_type', $type);
             if($start_date)
             {
                 $criteria->addCondition('DATE(datetime) >="'.$start_date.'"');
@@ -101,7 +101,7 @@ class Meetingrequest extends CActiveRecord
         public function singleMetting($id)
         {
            $criteria = new CDbCriteria; 
-           $criteria->select = 't.id,t.description,t.datetime,t.status,t.type';
+           $criteria->select = 't.id,t.description,t.datetime,t.status,t.meeting_type';
            $criteria->compare('t.id', $id);
            $today = date("Y-m-d");
            $criteria->with = array(
@@ -125,7 +125,7 @@ class Meetingrequest extends CActiveRecord
                     $full_name = ($value['students']->first_name)?$value['students']->first_name." ":"";
                     $full_name.= ($value['students']->middle_name)?$value['students']->middle_name." ":"";
                     $full_name.= ($value['students']->last_name)?$value['students']->last_name:"";
-                    if($value->type==1)
+                    if($value->meeting_type==1)
                     {
                         $meeting['type'] = 2;   
                     } 
@@ -145,7 +145,7 @@ class Meetingrequest extends CActiveRecord
                     $meeting['show_for'] = 0;
                     $meeting['name'] = $full_name;
                     $meeting['batch'] = "";
-                    $meeting['type'] = $value->type;
+                    $meeting['type'] = $value->meeting_type;
                 } 
                 
                 $meeting['id'] = $value->id;
@@ -195,7 +195,7 @@ class Meetingrequest extends CActiveRecord
             {
                 $criteria->compare('parent_id', $id); 
             }
-            $criteria->compare('type', $type);
+            $criteria->compare('meeting_type', $type);
             
            
             

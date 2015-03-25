@@ -492,7 +492,7 @@ class EventController extends Controller
             $meetingreq->datetime = $datetime;
             $meetingreq->teacher_id = $parent_id;
             $meetingreq->parent_id = $student_id;
-            $meetingreq->type = 2;
+            $meetingreq->meeting_type = 2;
             $meetingreq->save();
             
             $guardian = new Guardians();
@@ -680,8 +680,8 @@ class EventController extends Controller
         {
             $meetingreq = new Meetingrequest();
             $updatemeeting = $meetingreq->findByPk($meeting_id);
-            if (( isset($updatemeeting->parent_id) && Yii::app()->user->isParent && $student_id == $updatemeeting->parent_id && $updatemeeting->type == 1) ||
-                    ( isset($updatemeeting->teacher_id) && Yii::app()->user->isTeacher && Yii::app()->user->profileId == $updatemeeting->teacher_id && $updatemeeting->type == 2))
+            if (( isset($updatemeeting->parent_id) && Yii::app()->user->isParent && $student_id == $updatemeeting->parent_id && $updatemeeting->meeting_type == 1) ||
+                    ( isset($updatemeeting->teacher_id) && Yii::app()->user->isTeacher && Yii::app()->user->profileId == $updatemeeting->teacher_id && $updatemeeting->meeting_type == 2))
             {
 
                 $updatemeeting->status = $status;

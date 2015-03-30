@@ -2892,6 +2892,11 @@ class FreeuserController extends Controller
                                 $guobj = $gu_obj->findByPk($gu_data->id);
                                 $guobj->first_name = $freeuserObj->first_name;
                                 $guobj->last_name = $freeuserObj->last_name;
+                                if (Yii::app()->request->getPost('relation'))
+                                {
+                                    $guobj->relation = Yii::app()->request->getPost('relation');
+                                }    
+                                
                                 $guobj->save();
                             }
                         }

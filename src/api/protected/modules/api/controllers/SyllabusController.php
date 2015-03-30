@@ -136,20 +136,31 @@ class SyllabusController extends Controller {
         $id = Yii::app()->request->getPost('id');
         if ($user_secret && Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher && $id)
         {
-                $lessonCategory = new LessonplanCategory();
+                $ids = explode(",", $id);
                 $lessonplan = new Lessonplan();
-                $lessonplan = $lessonplan->findByPk($id); 
-            
-                if($lessonplan && $lessonplan->author_id==Yii::app()->user->id)
+                $delete_done = false;
+                foreach($ids as $value)
                 {
-                    $lessonplan->delete();
+                    $lessonplan = $lessonplan->findByPk($value); 
+
+                    if($lessonplan && $lessonplan->author_id==Yii::app()->user->id)
+                    {
+                        $lessonplan->delete();
+                        $delete_done = true;
+                        
+                    }
+                }
+                
+                if($delete_done)
+                {
                     $response['status']['code'] = 200;
-                    $response['status']['msg'] = "Success";
+                    $response['status']['msg'] = "Success"; 
                 }
                 else
                 {
                     $response['status']['code'] = 400;
-                    $response['status']['msg'] = "Bad Request"; 
+                    $response['status']['msg'] = "Bad Request";
+                    
                 }    
                 
         }

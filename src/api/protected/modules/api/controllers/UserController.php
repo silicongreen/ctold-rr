@@ -530,7 +530,8 @@ class UserController extends Controller {
                     $school_code = $school_details->code;
                     
                     
-                    
+                    $userpaidobj = new Users();
+                    $userpaidData = $userpaidobj->findByPk(Yii::app()->user->id);
                     
                     
                     if($data = $free_user->login($username,$password, true))
@@ -560,8 +561,7 @@ class UserController extends Controller {
                     }   
                     else
                     {
-                        $userpaidobj = new Users();
-                        $userpaidData = $userpaidobj->findByPk(Yii::app()->user->id);
+                        
                         $free_user->paid_id = Yii::app()->user->id;
                         $free_user->paid_username = $username;
                         $free_user->paid_password = $password;
@@ -650,6 +650,11 @@ class UserController extends Controller {
                     $response['data']['user_type'] = 1;
                     $freeschool = new School();
                     $response['data']['paid_user'] = $freeschool->getSchoolPaidCoverLogo(Yii::app()->user->schoolId);
+                    $response['data']['paid_user']['is_first_login'] = $userpaidData->is_first_login;
+                    
+                    $userpaidData->is_first_login = 0;
+                    $userpaidData->save();
+                    
                     $response['data']['paid_user']['id'] = Yii::app()->user->id;
                     $response['data']['paid_user']['is_admin'] = Yii::app()->user->isAdmin;
                     $response['data']['paid_user']['is_student'] = Yii::app()->user->isStudent;
@@ -693,6 +698,9 @@ class UserController extends Controller {
                     $response['data']['children'] = array();
                     if (Yii::app()->user->isParent) {
                         $response['data']['children'] = $user->studentList(Yii::app()->user->profileId);
+                        $gurdianModel = new Guardians();
+                        $gurdian = $gurdianModel->findBypk(Yii::app()->user->profileId);
+                        $response['data']['paid_user']['relation'] = $gurdian->relation;
                     }
 
                     if (!isset($user_secret)) {

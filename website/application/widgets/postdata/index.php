@@ -269,6 +269,22 @@ class postdata extends widget
         $data['featured'] = $b_featured;
         $data['swf_external_url'] =  $CI->config->config['swf']['external_url'];
         
+        if (get_free_user_session('paid_id') && get_free_user_session('paid_school_code')) {
+            $user_school = new User_school();
+
+            $user_school_data = $user_school->get_user_school(get_free_user_session("id"));
+            $widget_title = 'My School';
+            if ($user_school_data !== FALSE) {
+                $school_obj = new schools($user_school_data[0]->school_id);
+                $widget_title = '<a href="'. base_url() . 'schools/' . sanitize($school_obj->name) .'">My Diary21</a>';
+                if ($school_obj->is_paid == 1) {
+                    $data['school_icon_class'] = 'icon-diary21-school';
+                }
+            }
+
+            $data['widget_title'] = $widget_title;
+        }
+        
 //        print '<pre>';
 //        print_r($data);
 //        exit;

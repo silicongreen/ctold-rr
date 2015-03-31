@@ -324,6 +324,75 @@ class Subjects extends CActiveRecord
         return $report_term;
         
     }
+    
+    public function getPrograss($batch_id, $student_id, $subject_id, $exam_category=0)
+    {
+      
+        $progress = array();
+      
+
+        $examModel = new Exams();
+        $exam_details_all = $examModel->getPublishExam($subject_id, $batch_id, $exam_category);
+
+        $avg = 0;
+        if (!empty($exam_details_all))
+        {
+            $i = 0;
+            $total_mark = 0;
+            
+            foreach ($exam_details_all as $exam_details)
+            {
+
+                $examScore = new ExamScores();
+
+                $student_result = $examScore->getSingleExamStudentResult($student_id, $exam_details->id);
+                $max_mark = $examScore->getExamStudentMaxMark($exam_details->id);
+                if (!empty($student_result) && !empty($max_mark))
+                {
+                    
+                    $progress['exam'][$i]['exam_id'] = $exam_details->id;
+                    $progress['exam'][$i]['exam_name'] = $exam_details['Examgroup']->name;
+                    $progress['exam'][$i]['exam_date'] = DATE("Y-m-d", strtotime($exam_details->start_time));
+
+                    $progress['exam'][$i]['your_grade'] = "-";
+                    $progress['exam'][$i]['grade_point'] = "-";
+
+                    if(isset($student_result['Examgrade']->name))
+                    $progress['exam'][$i]['your_grade'] = $student_result['Examgrade']->name;
+
+                    if(isset($student_result['Examgrade']->name))
+                    $progress['exam'][$i]['grade_point'] = $student_result['Examgrade']->credit_points;
+
+
+                    $progress['exam'][$i]['your_mark'] = $student_result->marks;
+                    $total_mark = $total_mark+$student_result->marks;
+                    $progress['exam'][$i]['your_percent'] = ($student_result->marks / $exam_details->maximum_marks) * 100;
+
+                    $progress['exam'][$i]['your_percent'] = intval($report_class_test_merge['subject_exam']['class_test'][$i]['your_percent']);
+                    
+                    $progress['exam'][$i]['max_mark'] = $max_mark;
+                    $progress['exam'][$i]['category'] = $exam_details['Examgroup']->exam_category;
+                    $progress['exam'][$i]['total_mark'] = $exam_details->maximum_marks;
+                    
+                    
+
+                    $i++;
+                      
+
+
+                }
+            }
+            if($total_mark && $i)
+            {
+                $avg = $total_mark/$i;
+                $avg = intval($avg);
+                $progress['avg'] = $avg;
+            }
+       
+        }
+        
+        return $progress;
+    }
    
     
     public function getBatchSubjectClassTestProjectReport($batch_id, $student_id)

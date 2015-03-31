@@ -276,7 +276,7 @@ class postdata extends widget
             $widget_title = 'My School';
             if ($user_school_data !== FALSE) {
                 $school_obj = new schools($user_school_data[0]->school_id);
-                $widget_title = '<a href="'. base_url() . 'schools/' . sanitize($school_obj->name) .'">My Diary21</a>';
+                $widget_title = '<a href="'. base_url() . 'schools/' . sanitize($school_obj->name) .'" style="color: #ffffff;">My Diary21</a>';
                 if ($school_obj->is_paid == 1) {
                     $data['school_icon_class'] = 'icon-diary21-school';
                 }

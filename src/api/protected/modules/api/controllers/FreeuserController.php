@@ -2589,6 +2589,11 @@ class FreeuserController extends Controller
                     $countryObj = new Countries();
                     $response['data']['countries'] = $countryObj->getCountryies();
                     $response['data']['user'] = $freeuserObj->getUserInfo($user_id);
+                    if (Yii::app()->user->isParent) {
+                        $gurdianModel = new Guardians();
+                        $gurdian = $gurdianModel->findBypk(Yii::app()->user->profileId);
+                        $response['data']['user']['relation'] = $gurdian->relation;
+                    }
                     $response['status']['code'] = 200;
                     $response['status']['msg'] = "DATA_FOUND";
                 }

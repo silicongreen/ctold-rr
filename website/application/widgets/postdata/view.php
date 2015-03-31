@@ -172,7 +172,7 @@
                                 </li>
                             <?php elseif (free_user_logged_in() && get_free_user_session('paid_id') && $target == 'index'): ?>
                                 <li class="post shown col-md-6 ">
-                                    <div class="champs21_feed_title f2">My School</div>
+                                    <div class="champs21_feed_title f2"><?php echo $widget_title;?></div>
                                     <div id='mycustomscroll' class='flexcroll'>
                                         <?php $widget->run('champs21plusreminder'); ?> 
                                     </div>

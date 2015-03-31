@@ -368,7 +368,7 @@ class Subjects extends CActiveRecord
                     $total_mark = $total_mark+$student_result->marks;
                     $progress['exam'][$i]['your_percent'] = ($student_result->marks / $exam_details->maximum_marks) * 100;
 
-                    $progress['exam'][$i]['your_percent'] = intval($report_class_test_merge['subject_exam']['class_test'][$i]['your_percent']);
+                    $progress['exam'][$i]['your_percent'] = intval($progress['exam'][$i]['your_percent']);
                     
                     $progress['exam'][$i]['max_mark'] = $max_mark;
                     $progress['exam'][$i]['category'] = $exam_details['Examgroup']->exam_category;

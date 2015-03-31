@@ -713,7 +713,7 @@ height: 46px;
                 </li>
                 <li data="magic_mart" class="before-login-user-back" onclick="location.href='<?php echo $my_school_menu_uri; ?>'">
                 <!-- onclick="location.href='//<?php echo base_url('/market'); ?>'" -->
-                    <div class="icon-my-school">&nbsp;</div> 
+                    <div class="<?php echo $school_icon_class;?>">&nbsp;</div> 
                 </li>
                 <?php if($this->config->config['android_app_dl_popup_show'] == true):?>
                     <?php #$ua = strtolower($_SERVER['HTTP_USER_AGENT']); ?>
@@ -1954,6 +1954,18 @@ if($('.header-logo-div').is(':visible')) {
 .icon-my-school:hover
 {
     background: url(<?php echo base_url('styles/layouts/tdsfront/image/my_school_black.png'); ?>) no-repeat;
+    background-size:70%;    
+}
+.icon-diary21-school
+{
+    background: url(<?php echo base_url('styles/layouts/tdsfront/image/diary21_red.png'); ?>) no-repeat;
+    background-size:70%;
+    width:118px;
+    height:79px;
+}
+.icon-diary21-school:hover
+{
+    background: url(<?php echo base_url('styles/layouts/tdsfront/image/diary21_black.png'); ?>) no-repeat;
     background-size:70%;    
 }
 .icon-create-page

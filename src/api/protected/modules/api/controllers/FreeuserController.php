@@ -2587,13 +2587,10 @@ class FreeuserController extends Controller
                 if ($freeuserObj->getUserInfo($user_id))
                 {
                     $countryObj = new Countries();
+                    $response['data'] = $freeuserObj->getPaidUserInfo();
                     $response['data']['countries'] = $countryObj->getCountryies();
                     $response['data']['user'] = $freeuserObj->getUserInfo($user_id);
-                    if (Yii::app()->user->isParent) {
-                        $gurdianModel = new Guardians();
-                        $gurdian = $gurdianModel->findBypk(Yii::app()->user->profileId);
-                        $response['data']['user']['relation'] = $gurdian->relation;
-                    }
+                    
                     $response['status']['code'] = 200;
                     $response['status']['msg'] = "DATA_FOUND";
                 }
@@ -2641,7 +2638,7 @@ class FreeuserController extends Controller
 
                     $folderObj->createGoodReadFolder($user->id);
 
-                    $response['data']['user_type'] = 0;
+                    $response['data'] = $freeuserObj->getPaidUserInfo();
                     $response['data']['free_id'] = $user->id;
                     $response['data']['user'] = $freeuserObj->getUserInfo($user->id);
                     $response['status']['code'] = 200;
@@ -2685,7 +2682,7 @@ class FreeuserController extends Controller
 
                     $this->sendRegistrationMail($freeuserObj);
 
-                    $response['data']['user_type'] = 0;
+                    $response['data'] = $freeuserObj->getPaidUserInfo();
                     $response['data']['free_id'] = $freeuserObj->id;
                     $response['data']['user'] = $freeuserObj->getUserInfo($freeuserObj->id);
                     $response['data']['countries'] = $countryObj->getCountryies();
@@ -2702,7 +2699,7 @@ class FreeuserController extends Controller
                     $folderObj = new UserFolder();
 
                     $folderObj->createGoodReadFolder($user->id);
-                    $response['data']['user_type'] = 0;
+                    $response['data'] = $freeuserObj->getPaidUserInfo();
                     $response['data']['free_id'] = $user->id;
                     $response['data']['user'] = $freeuserObj->getUserInfo($user->id);
                     $response['status']['code'] = 200;
@@ -2745,7 +2742,7 @@ class FreeuserController extends Controller
 
                     $this->sendRegistrationMail($freeuserObj);
 
-                    $response['data']['user_type'] = 0;
+                    $response['data'] = $freeuserObj->getPaidUserInfo();
                     $response['data']['free_id'] = $freeuserObj->id;
                     $response['data']['user'] = $freeuserObj->getUserInfo($freeuserObj->id);
                     $response['data']['countries'] = $countryObj->getCountryies();
@@ -2911,7 +2908,7 @@ class FreeuserController extends Controller
 
 
                 $this->sendRegistrationMail($freeuserObj);
-                $response['data']['user_type'] = 0;
+                $response['data'] = $freeuserObj->getPaidUserInfo();
                 $response['data']['free_id'] = $freeuserObj->id;
                 $response['data']['user'] = $freeuserObj->getUserInfo($freeuserObj->id);
                 $response['data']['is_register'] = true;
@@ -2934,7 +2931,7 @@ class FreeuserController extends Controller
 
                 $folderObj->createGoodReadFolder($freeuserObj->id);
 
-                $response['data']['user_type'] = 0;
+                $response['data'] = $freeuserObj->getPaidUserInfo();
                 $response['data']['free_id'] = $freeuserObj->id;
                 $response['data']['countries'] = $countryObj->getCountryies();
                 $response['data']['user'] = $freeuserObj->getUserInfo($freeuserObj->id);

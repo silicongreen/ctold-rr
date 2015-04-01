@@ -285,11 +285,11 @@ class Freeusers extends CActiveRecord {
 
 
 
-            if(is_array($user_paid_login_data))
-            {
-              $username =  $user_paid_login_data[1]; 
-              $password =  $user_paid_login_data[0];
-            }
+//            if(is_array($user_paid_login_data))
+//            {
+//              $username =  $user_paid_login_data[1]; 
+//              $password =  $user_paid_login_data[0];
+//            }
 
 
 

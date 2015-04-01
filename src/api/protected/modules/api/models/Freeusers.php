@@ -241,6 +241,81 @@ class Freeusers extends CActiveRecord {
         }
         return $user_info;
     }
+    public function getPaidUserInfo()
+    {
+        if(Yii::app()->user->id)
+        {
+            $school_obj  = new Schools();
+            $school_details = $school_obj->findByPk(Yii::app()->user->schoolId);
+            $school_code = $school_details->code;
+
+
+            $userpaidobj = new Users();
+            $userpaidData = $userpaidobj->findByPk(Yii::app()->user->id);
+            $user_info['user_type'] = 1;
+            $freeschool = new School();
+            $user_info['paid_user'] = $freeschool->getSchoolPaidCoverLogo(Yii::app()->user->schoolId);
+            $user_info['paid_user']['is_first_login'] = $userpaidData->is_first_login;
+
+            $userpaidData->is_first_login = 0;
+            $userpaidData->save();
+
+            $user_info['paid_user']['id'] = Yii::app()->user->id;
+            $user_info['paid_user']['is_admin'] = Yii::app()->user->isAdmin;
+            $user_info['paid_user']['is_student'] = Yii::app()->user->isStudent;
+            if (Yii::app()->user->isStudent) {
+                $user_info['paid_user']['batch_id'] = Yii::app()->user->batchId;
+
+                $exam_category = new ExamGroups;
+                $exam_category = $exam_category->getExamCategory(Yii::app()->user->schoolId, Yii::app()->user->batchId, 3);
+
+                $user_info['paid_user']['terms'] = array();
+
+                if($exam_category)
+                $user_info['paid_user']['terms'] = $exam_category;
+            }
+
+
+            $user_info['paid_user']['profile_id'] = Yii::app()->user->profileId;
+            $user_info['paid_user']['is_parent'] = Yii::app()->user->isParent;
+            $user_info['paid_user']['is_teacher'] = Yii::app()->user->isTeacher;
+            $user_info['paid_user']['school_id'] = Yii::app()->user->schoolId;
+            $user_info['paid_user']['school_name'] = $school_details->name;
+
+
+
+
+            if(is_array($user_paid_login_data))
+            {
+              $username =  $user_paid_login_data[1]; 
+              $password =  $user_paid_login_data[0];
+            }
+
+
+
+            $attendance = new Attendances();
+            $user_info['weekend'] = $attendance->getWeekend(Yii::app()->user->schoolId);
+
+            $user_info['children'] = array();
+            if (Yii::app()->user->isParent) {
+                $user_info['children'] = $user->studentList(Yii::app()->user->profileId);
+                $gurdianModel = new Guardians();
+                $gurdian = $gurdianModel->findBypk(Yii::app()->user->profileId);
+                $user_info['paid_user']['relation'] = $gurdian->relation;
+            }
+
+            if (!isset($user_secret)) {
+                $user_info['paid_user']['secret'] = Yii::app()->user->user_secret;
+            }
+
+            $user_info['session'] = Yii::app()->session->getSessionID();
+        }
+        else
+        {
+            $user_info['user_type'] = 0;
+        }
+        return $user_info;   
+    }        
     public function getUserInfo($id,$paid_school_id=0,$type=0)
     {
         $criteria = new CDbCriteria;

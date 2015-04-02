@@ -21,6 +21,7 @@ class ExamScores extends CActiveRecord
 	 * @return string the associated database table name
 	 */
         public $max_marks;
+        public $avg_marks;
        
 	public function tableName()
 	{
@@ -122,6 +123,17 @@ class ExamScores extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        public function getExamStudentAvgMark($exam_id)
+        {
+            $criteria = new CDbCriteria();
+            $criteria->select = 't.id,AVG(t.marks) as avg_marks';
+            $criteria->compare('t.exam_id', $exam_id);
+            $criteria->limit = 1;
+            $data = $this->find($criteria);
+            
+            return $data->avg_marks;
+            
+        }
         public function getExamStudentMaxMark($exam_id)
         {
             $criteria = new CDbCriteria();

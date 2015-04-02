@@ -377,7 +377,7 @@ class Subjects extends CActiveRecord
                     $progress['exam'][$i]['max_mark_percent'] = ($max_mark/ $exam_details->maximum_marks) * 100;
                     $progress['exam'][$i]['max_mark_percent'] = intval($progress['exam'][$i]['max_mark_percent']);
                     
-                    $progress['exam'][$i]['avg_mark'] = $avg_mark;
+                    $progress['exam'][$i]['avg_mark'] = round($avg_mark, 2);
                     $progress['exam'][$i]['avg_mark_percent'] = ($avg_mark/ $exam_details->maximum_marks) * 100;
                     $progress['exam'][$i]['avg_mark_percent'] = intval($progress['exam'][$i]['avg_mark_percent']);
                     

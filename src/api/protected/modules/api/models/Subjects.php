@@ -347,6 +347,7 @@ class Subjects extends CActiveRecord
 
                 $student_result = $examScore->getSingleExamStudentResult($student_id, $exam_details->id);
                 $max_mark = $examScore->getExamStudentMaxMark($exam_details->id);
+                $avg_mark = $examScore->getExamStudentAvgMark($exam_details->id);
                 if (!empty($student_result) && !empty($max_mark))
                 {
                     
@@ -373,6 +374,14 @@ class Subjects extends CActiveRecord
                     $total_mark = $total_mark+$progress['exam'][$i]['your_percent'];
                     
                     $progress['exam'][$i]['max_mark'] = $max_mark;
+                    $progress['exam'][$i]['max_mark_percent'] = ($max_mark/ $exam_details->maximum_marks) * 100;
+                    $progress['exam'][$i]['max_mark_percent'] = intval($progress['exam'][$i]['max_mark_percent']);
+                    
+                    $progress['exam'][$i]['avg_mark'] = $avg_mark;
+                    $progress['exam'][$i]['avg_mark_percent'] = ($avg_mark/ $exam_details->maximum_marks) * 100;
+                    $progress['exam'][$i]['avg_mark_percent'] = intval($progress['exam'][$i]['avg_mark_percent']);
+                    
+                    
                     $progress['exam'][$i]['category'] = $exam_details['Examgroup']->exam_category;
                     $progress['exam'][$i]['total_mark'] = $exam_details->maximum_marks;
                     

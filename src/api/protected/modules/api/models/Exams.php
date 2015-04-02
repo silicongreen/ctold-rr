@@ -169,7 +169,7 @@ class Exams extends CActiveRecord {
         
         $criteria->compare('Examgroup.result_published', 1);
         $criteria->compare('t.subject_id', $subject_id);
-        $criteria->order = "start_time DESC";
+        $criteria->order = "Examgroup.exam_date ASC";
         $data = $this->with("Examgroup")->findAll($criteria);
         return $data;
     }

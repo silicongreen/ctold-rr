@@ -75,6 +75,7 @@ class SyllabusController extends Controller {
         {
             $user_secret = Yii::app()->request->getPost('user_secret');
             $batch_id = Yii::app()->request->getPost('batch_id');
+            $subject_id = Yii::app()->request->getPost('subject_id');
             $lessonplan_category_id = Yii::app()->request->getPost('lessonplan_category_id');
             $response = array();
             if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher )
@@ -95,16 +96,22 @@ class SyllabusController extends Controller {
                 {
                     $lessonplan_category_id = 0;
                 }
+                
                 if(!$batch_id)
                 {
                     $batch_id = 0;
                 }
                 
+                if(!$subject_id)
+                {
+                    $subject_id = 0;
+                }
+                
                 $lessonplan = new Lessonplan();
 
 
-                $lessonplans = $lessonplan->getLessonPlan($batch_id, $lessonplan_category_id,$page_number,$page_size);
-                $response['data']['total'] = $lessonplan->getLessonPlanTotal($batch_id, $lessonplan_category_id);
+                $lessonplans = $lessonplan->getLessonPlan($subject_id, $batch_id, $lessonplan_category_id, $page_number, $page_size);
+                $response['data']['total'] = $lessonplan->getLessonPlanTotal($subject_id, $batch_id, $lessonplan_category_id);
                 $has_next = false;
                 if ($response['data']['total'] > $page_number * $page_size)
                 {
@@ -112,8 +119,8 @@ class SyllabusController extends Controller {
                 }
                 $response['data']['has_next'] = $has_next;
                 $response['data']['lessonplans'] = $lessonplans;
-                $response['status']['code'] = 200;
-                $response['status']['msg'] = "Data Found";
+                $response['status']['code'] = ($response['data']['total'] > 0) ? 200 : 404;
+                $response['status']['msg'] = ($response['data']['total'] > 0) ? "Data Found" : "No Data Found";
             }
             else
             {

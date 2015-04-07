@@ -57,7 +57,7 @@ class Lessonplan extends CActiveRecord
 	{
 		return parent::model($className);
 	}
-        public function getLessonPlanTotal($batch_id=0, $lessonplan_category_id=0)
+        public function getLessonPlanTotal($subject_id, $batch_id=0, $lessonplan_category_id=0)
         {
            
             $criteria = new CDbCriteria();
@@ -69,6 +69,9 @@ class Lessonplan extends CActiveRecord
             
             if($batch_id)
             $criteria->addCondition("FIND_IN_SET(".$batch_id.", batch_ids)");
+            
+            if($subject_id)
+            $criteria->addCondition("FIND_IN_SET(".$subject_id.", subject_ids)");
             
             $data = $this->find($criteria);
             return $data->total;
@@ -111,7 +114,7 @@ class Lessonplan extends CActiveRecord
         }
         
         
-        public function getLessonPlan($batch_id=0, $lessonplan_category_id=0,$page=1,$page_size)
+        public function getLessonPlan($subject_id = 0, $batch_id = 0, $lessonplan_category_id = 0, $page = 1, $page_size)
         {
             
             
@@ -124,6 +127,9 @@ class Lessonplan extends CActiveRecord
             
             if($batch_id)
             $criteria->addCondition("FIND_IN_SET(".$batch_id.", batch_ids)");
+            
+            if($subject_id)
+            $criteria->addCondition("FIND_IN_SET(".$subject_id.", subject_ids)");
             
             $criteria->order = "t.created_at DESC";
             $start = ($page-1)*$page_size;
@@ -148,7 +154,7 @@ class Lessonplan extends CActiveRecord
                 $subjectobj = new Subjects();
                 if($value->subject_ids)
                 {
-                    $sub_array = explode(",", $value->subject_ids);
+                    $sub_array = ($subject_id) ? $subject_id : explode(",", $value->subject_ids);
                     $subject_names = $subjectobj->getSubjectFullName($sub_array);
                     if($subject_names)
                     {

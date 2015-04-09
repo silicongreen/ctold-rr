@@ -208,11 +208,10 @@ class Exams extends CActiveRecord {
                                 ),
                          )
                     ),
-                  'with' => array(
-                      'employee'=>array(
-                          'select'=>''
-                      )
-                  )
+                    'employee'=>array(
+                        'select'=>''
+                    )
+                  
                 )
             ),
             'Examgroup' => array(

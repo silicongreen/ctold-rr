@@ -196,6 +196,7 @@ class Exams extends CActiveRecord {
     {
         $criteria = new CDbCriteria;
         $criteria->select = 't.id, t.start_time, t.end_time'; 
+        $criteria->together = true;
         $criteria->with = array(
             'Subjects' => array(
                 'select' => 'Subjects.name,Subjects.icon_number',

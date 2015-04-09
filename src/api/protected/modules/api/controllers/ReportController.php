@@ -204,7 +204,7 @@ class ReportController extends Controller
                     $batch_id   = Yii::app()->user->batchId;
                     $student_id = Yii::app()->user->profileId;
                 }   
-                if($category_id!=0 && !$category_id)
+                if($category_id!==0 && !$category_id)
                 {
                     $category_id = 3;
                 }    

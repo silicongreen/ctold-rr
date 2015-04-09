@@ -113,4 +113,16 @@ class EmployeeAttendances extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        
+        public function getAttTeacher($employee_id) 
+        {
+                $today = date("Y-m-d"); 
+                $criteria = new CDbCriteria();
+                $criteria->compare('employee_id', $employee_id);
+                
+                
+                $criteria->compare('date(t.attendance_date)',$today);
+                
+                return $this->find($criteria);
+        }
 }

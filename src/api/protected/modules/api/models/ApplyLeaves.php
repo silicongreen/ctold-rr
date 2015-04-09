@@ -147,6 +147,19 @@ class ApplyLeaves extends CActiveRecord
             return true;
         }
         
+        public function getleaveTeacher($employee_id) 
+        {
+                $today = date("Y-m-d"); 
+                $criteria = new CDbCriteria();
+                $criteria->compare('employee_id', $employee_id);
+                
+                
+                $criteria->addCondition('date(t.start_date)<="'.$today.'"');
+                $criteria->addCondition('date(t.end_date)>="'.$today.'"');
+                
+                return $this->find($criteria);
+        }
+        
         public function getTeacherLeave($employee_id) 
         {
                 $today = date("Y-m-d", strtotime("-6 Month")); 

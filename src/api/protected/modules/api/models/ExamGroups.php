@@ -137,7 +137,10 @@ class ExamGroups extends CActiveRecord
         $criteria->select = 't.id,t.name,t.exam_date';
         $criteria->compare('t.batch_id', $batch_id);
         $criteria->compare('t.result_published', 1);
-        $criteria->compare('t.exam_category', $category_id);
+        if($category_id>0)
+        {
+            $criteria->compare('t.exam_category', $category_id);
+        }
         $criteria->order = "t.created_at DESC";
         $data = $this->findAll($criteria);
         return $data;

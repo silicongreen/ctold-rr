@@ -20,13 +20,130 @@ class ReportController extends Controller
     {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index','getsubject','progress','classtestreport','allexam', 'Getfullreport','getexamreport','acknowledge'),
+                'actions' => array('index','attendence','getsubject','progress','classtestreport','allexam', 'Getfullreport','getexamreport','acknowledge'),
                 'users' => array('*'),
             ),
             array('deny', // deny all users
                 'users' => array('*'),
             ),
         );
+    }
+    public function actionattendence()
+    {
+       $user_secret = Yii::app()->request->getPost('user_secret');
+       if(Yii::app()->user->user_secret === $user_secret)
+       {
+            $school_id = Yii::app()->user->schoolId;
+            if(Yii::app()->user->isParent)
+            {
+                $batch_id   = Yii::app()->request->getPost('batch_id');
+                $student_id = Yii::app()->request->getPost('student_id');
+            }
+            else if(Yii::app()->user->isStudent)
+            {
+                $batch_id   = Yii::app()->user->batchId;
+                $student_id = Yii::app()->user->profileId;
+            }
+            else
+            {
+                $batch_id = 0;
+                
+                $student_id = Yii::app()->user->profileId;
+            }    
+            $text = "";
+            $date = date("Y-m-d");
+            $objattendence = new Attendances();
+            $holiday = new Events();
+            $holiday_array = $holiday->getHolidayMonth($date, $date, $school_id);
+            if ($holiday_array)
+            {
+                $text = "Today is Holiday";
+            }
+            if(!$text)
+            {
+                $weekend_array = $objattendence->getWeekend($school_id,$batch_id);
+                $weekday = date("w", strtotime($date));
+                if (in_array($weekday, $weekend_array))
+                {
+                    $text = "Today is weekend";
+                } 
+            }
+            if(!$text)
+            {
+                if(Yii::app()->user->isParent || Yii::app()->user->isStudent)
+                {
+                    $leave = new ApplyLeaveStudents();
+                    $leave_array = $leave->getleaveStudentMonth($date, $date, $student_id);
+                    if ($leave_array)
+                    {
+                        $text = "was on Leave Today";
+                    }
+                    if(!$text)
+                    {
+                        
+                        $attendance_array = $objattendence->getAbsentStudentMonth($date, $date, $student_id);
+                        if ($attendance_array['late'])
+                        {
+                            $text = "was Late Today";
+                        }
+                        else if ($attendance_array['absent'])
+                        {
+                            $text = "was Absent Today";
+                        }
+                        else
+                        {
+                            $timetableobj = new TimetableEntries();
+                            $class_started = $timetableobj->classStarted($batch_id);
+                            if($class_started)
+                            {
+                                $text = "was Present Today";
+                            }
+                            else if($date==date("Y-m-d"))
+                            {
+                                $text = "Class yet not started";
+                            }    
+                            
+                        }
+                    }
+                }
+                else
+                {
+                    $leave = new ApplyLeaves();
+                    $leave_array = $leave->getleaveTeacher($student_id);
+                    if($leave_array)
+                    {
+                        $text = "was on Leave Today";
+                    }
+                    if(!$text)
+                    {
+                        $attendence = new EmployeeAttendances();
+                        $leave_array = $attendence->getAttTeacher($student_id);
+                        if($leave_array)
+                        {
+                            $text = "was Absent Today";
+                        }
+                        else
+                        {
+                            $text = "was Present Today";
+                        }
+                    }
+                }
+                
+            }
+            
+            
+           $response['data']['text']    = $text;
+           $response['status']['code']       = 200;
+           $response['status']['msg']        = "Data Found"; 
+       }
+       else
+       {
+           $response['status']['code'] = 403;
+           $response['status']['msg'] = "Access Denied."; 
+       }
+       
+       echo CJSON::encode($response);
+       Yii::app()->end();
     }
     public function actionProgress()
     {

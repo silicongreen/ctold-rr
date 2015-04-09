@@ -38,20 +38,25 @@ class ReportController extends Controller
             {
                 $batch_id   = Yii::app()->request->getPost('batch_id');
                 $student_id = Yii::app()->request->getPost('student_id');
+                $studentobj = new Students();
+                $stddata = $studentobj->findByPk($student_id);
+                $user_id = $stddata->user_id;
             }
             else if(Yii::app()->user->isStudent)
             {
                 $batch_id   = Yii::app()->user->batchId;
                 $student_id = Yii::app()->user->profileId;
+                $user_id = Yii::app()->user->id;
             }
             else
             {
                 $batch_id = 0;
                 
                 $student_id = Yii::app()->user->profileId;
+                $user_id = Yii::app()->user->id;
             } 
             $response['data']['profile_picture'] = "";
-            $user_id = Yii::app()->user->id;
+            
             $freobj = new Freeusers();
             $profile_image = $freobj->getUserImage($user_id);
             if (isset($profile_image['profile_image']) && $profile_image['profile_image'])

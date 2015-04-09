@@ -204,9 +204,13 @@ class ReportController extends Controller
                     $batch_id   = Yii::app()->user->batchId;
                     $student_id = Yii::app()->user->profileId;
                 }   
-                if($category_id!==0 && !$category_id)
+                if(!$category_id)
                 {
                     $category_id = 3;
+                } 
+                else if($category_id=="all")
+                {
+                    $category_id = 0;
                 }    
                 $time_table = new ExamGroups();
                 $time_table = $time_table->getAllExamsResultPublish($batch_id,$category_id);

@@ -20,7 +20,7 @@ class RoutineController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index','nextclassstudent','allexam', 'exam','getdateroutine','teacher','nextclass'),
+                'actions' => array('index','teacherexam','nextclassstudent','allexam', 'exam','getdateroutine','teacher','nextclass'),
                 'users' => array('@'),
             ),
             array('deny', // deny all users
@@ -70,7 +70,28 @@ class RoutineController extends Controller {
             $response['status']['msg'] = "BAD_REQUEST";
         }
     }
-    
+    public function actionTeacherExam() {
+        $user_secret = Yii::app()->request->getPost('user_secret');
+        $limit = Yii::app()->request->getPost('limit');
+        if (Yii::app()->user->isTeacher && Yii::app()->user->user_secret === $user_secret) 
+        {
+            if(!$limit)
+            {
+               $limit = 10; 
+            }
+            $examobj = new Exams();
+            $response['data']['time_table'] = $examobj->getTeacherExam($limit);
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "ROUTINE_FOUND";
+        }
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "BAD_REQUEST";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    }
      public function actionNextClass() {
 
         if (isset($_POST) && !empty($_POST)) {

@@ -49,7 +49,16 @@ class ReportController extends Controller
                 $batch_id = 0;
                 
                 $student_id = Yii::app()->user->profileId;
-            }    
+            } 
+            $response['data']['profile_picture'] = "";
+            $user_id = Yii::app()->user->id;
+            $freobj = new Freeusers();
+            $profile_image = $freobj->getUserImage($user_id);
+            if (isset($profile_image['profile_image']) && $profile_image['profile_image'])
+            {
+                $response['data']['profile_picture'] = $profile_image['profile_image'];
+            }
+            
             $text = "";
             $date = date("Y-m-d");
             $objattendence = new Attendances();

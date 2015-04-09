@@ -192,6 +192,61 @@ class Exams extends CActiveRecord {
 
         return $data;
     }
+    public function getTeacherExam($limit=10)
+    {
+        $criteria = new CDbCriteria;
+        $criteria->select = 't.id, t.start_time, t.end_time'; 
+        $criteria->with = array(
+            'Subjects' => array(
+                'select' => 'Subjects.name,Subjects.icon_number',
+                'with' => array(
+                    'Subjectbatch' => array(
+                        'select' => 'Subjectbatch.name',
+                        'with' => array(
+                                'courseDetails' => array(
+                                    'select' => 'courseDetails.course_name,courseDetails.section_name',
+                                ),
+                         )
+                    ),
+                  'with' => array(
+                      'employee'=>array(
+                          'select'=>''
+                      )
+                  )
+                )
+            ),
+            'Examgroup' => array(
+                'select' => 'Examgroup.name',
+            ),
+            'studentSubject' => array(
+                'select' => 'studentSubject.id',
+            ),
+        );
+        $criteria->compare("employee.employee_id", Yii::app()->user->profileId);
+        $criteria->limit = $limit;
+        $criteria->addCondition("DATE(t.start_time)>='".date("Y-m-d")."'");
+        $criteria->order = "t.start_time ASC";
+        $data = $this->findAll($criteria);
+        
+        $return = array();
+        if($data)
+        {
+            $i = 0;
+            foreach($data as $value)
+            {
+                $return[$i]['subject'] = $value['Subjects']->name;
+                $return[$i]['subject_icon'] = $value['Subjects']->icon_number;
+                $return[$i]['start_time'] = $value->start_time;
+                $return[$i]['end_time'] = $value->end_time;
+                $return[$i]['exam_name'] = $value['Examgroup']->name;
+                $return[$i]['batch'] = $value['Subjects']['Subjectbatch']->name." ".$value['Subjects']['Subjectbatch']['courseDetails']->course_name." ".$value['Subjects']['Subjectbatch']['courseDetails']->section_name;
+                $i++;
+            }    
+            
+        }
+        return $return;
+        
+    }        
 
     public function getExamTimeTable($school_id = null, $batch_id = null, $student_id = null,$exam_id=null,$tommmorow="") {
 

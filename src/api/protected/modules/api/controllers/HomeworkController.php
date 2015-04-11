@@ -23,7 +23,7 @@ class HomeworkController extends Controller
     {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'Done','subjects','singleteacher','assessmentscore','singlehomework', 'saveassessment', 'assessment', 'getassessment', 'getproject', 'getsubject', 'addhomework', 'teacherhomework', 'homeworkstatus'),
+                'actions' => array('index', 'Done','subjects','singleteacher','assessmentscore','singlehomework', 'saveassessment', 'assessment', 'getassessment', 'getproject', 'getsubject', 'addhomework', 'teacherhomework', 'homeworkstatus', 'teacherQuiz'),
                 'users' => array('*'),
             ),
             array('deny', // deny all users
@@ -824,5 +824,62 @@ class HomeworkController extends Controller
         echo CJSON::encode($response);
         Yii::app()->end();
     }
-
+    
+    public function actionTeacherQuiz() {
+        if (isset($_POST) && !empty($_POST)) {
+            $user_secret = Yii::app()->request->getPost('user_secret');
+            $page_number = Yii::app()->request->getPost('page_number');
+            $page_size = Yii::app()->request->getPost('page_size');
+            $subject_id = Yii::app()->request->getPost('subject_id');
+            
+            if (empty($page_number))
+            {
+                $page_number = 1;
+            }
+            
+            if (empty($page_size))
+            {
+                $page_size = 10;
+            }
+            
+            if (empty($subject_id))
+            {
+                $subject_id = 0;
+            }
+            
+            $response = array();
+            if (Yii::app()->user->user_secret === $user_secret) {
+                
+                $mod_timetable_entries = TimetableEntries::model()->findAllByAttributes( array('employee_id' => Yii::app()->user->profileId), array('select' => 'batch_id', 'group' => 'batch_id') );
+                
+                $batch_ids = array();
+                foreach($mod_timetable_entries as $te) {
+                    $batch_ids[] = $te->batch_id;
+                }
+                
+                $mod_online_exam = new OnlineExamGroups();
+                $online_exams = $mod_online_exam->getOnlineExamListTeacher($batch_ids, $page_number, $page_size, $subject_id);
+                
+                $response['data']['total'] = $mod_online_exam->getOnlineExamListTeacher($batch_ids, $page_number, $page_size, $subject_id, TRUE);
+                $has_next = false;
+                if ($response['data']['total'] > $page_number * $page_size)
+                {
+                    $has_next = true;
+                }
+                
+                $response['data']['has_next'] = $has_next;
+                $response['data']['teacher_quiz'] = $online_exams;
+                $response['status']['code'] = 200;
+                $response['status']['msg'] = "Data Found";
+                
+            } else {
+                $response['status']['code'] = 400;
+                $response['status']['msg'] = "Bad Request";
+            }
+            
+            echo CJSON::encode($response);
+            Yii::app()->end();
+        }
+    }
+    
 }

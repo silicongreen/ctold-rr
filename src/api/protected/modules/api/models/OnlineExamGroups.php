@@ -477,7 +477,7 @@ class OnlineExamGroups extends CActiveRecord {
         return $exam_array;
     }
     
-    public function getOnlineExamListTeacher($batch_id, $page_number, $page_size, $subject_id=0, $b_total = false, $created_at="") {
+    public function getOnlineExamListTeacher($page_number, $page_size, $subject_ids = array(), $b_total = false, $created_at="") {
         
         $cur_date = date("Y-m-d");
         
@@ -488,8 +488,10 @@ class OnlineExamGroups extends CActiveRecord {
         } else {
             $criteria->select = 't.id, t.name, t.start_date, t.end_date, t.maximum_time, t.pass_percentage, (SELECT COUNT(examgiven.id) FROM `online_exam_attendances` AS examgiven WHERE `examgiven`.`online_exam_group_id` = `t`.`id`) AS perticipated';
         }
+        if (!empty($subject_ids)) {
+            $criteria->compare('t.subject_id', $subject_ids);
+        }
         
-        $criteria->compare('t.batch_id', $batch_id);
         $criteria->compare('t.is_deleted', 0);
         $criteria->compare('t.is_published', 1);
         if ($created_at) {
@@ -503,10 +505,7 @@ class OnlineExamGroups extends CActiveRecord {
                 'joinType' => "LEFT JOIN"
             )
         );
-        if ($subject_id > 0) {
-            $criteria->compare('t.subject_id', $subject_id);
-        }
-
+        
         $criteria->order = "t.created_at DESC";
         $start = ($page_number - 1) * $page_size;
         $criteria->limit = $page_size;

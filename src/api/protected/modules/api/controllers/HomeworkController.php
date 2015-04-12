@@ -547,8 +547,10 @@ class HomeworkController extends Controller
                 if (!$duedate)
                 {
                     $duedate = NULL;
+                } else {
+                    $duedate = date('Y-m-d', strtotime($duedate));
                 }
-
+                
                 $homework_data = $assignment->getAssignment($batch_id, $student_id, "", $page_number, $subject_id, $page_size, 1, 0,$duedate);
                 if ($homework_data)
                 {

@@ -850,17 +850,17 @@ class HomeworkController extends Controller
             $response = array();
             if (Yii::app()->user->user_secret === $user_secret) {
                 
-                $mod_timetable_entries = TimetableEntries::model()->findAllByAttributes( array('employee_id' => Yii::app()->user->profileId), array('select' => 'batch_id', 'group' => 'batch_id') );
+                $mod_timetable_entries = TimetableEntries::model()->findAllByAttributes( array('employee_id' => Yii::app()->user->profileId), array('select' => 'subject_id', 'group' => 'batch_id') );
                 
-                $batch_ids = array();
+                $subject_ids = array();
                 foreach($mod_timetable_entries as $te) {
-                    $batch_ids[] = $te->batch_id;
+                    $subject_ids[] = $te->subject_id;
                 }
                 
                 $mod_online_exam = new OnlineExamGroups();
-                $online_exams = $mod_online_exam->getOnlineExamListTeacher($batch_ids, $page_number, $page_size, $subject_id);
+                $online_exams = $mod_online_exam->getOnlineExamListTeacher($page_number, $page_size, $subject_ids);
                 
-                $response['data']['total'] = $mod_online_exam->getOnlineExamListTeacher($batch_ids, $page_number, $page_size, $subject_id, TRUE);
+                $response['data']['total'] = $mod_online_exam->getOnlineExamListTeacher($page_number, $page_size, $subject_ids, TRUE);
                 $has_next = false;
                 if ($response['data']['total'] > $page_number * $page_size)
                 {

@@ -3394,6 +3394,24 @@ class home extends MX_Controller {
         $data['ci_key_for_cover'] = "index";
         $data['s_category_ids'] = "0";
         
+        $data['school_id'] = 0;
+        
+        if($_GET['paid_school_id'])
+        {
+           $school_id = $this->input->get('paid_school_id');
+           
+           $this->db->select("id");
+           $this->db->from("school");
+           $this->db->where("paid_school_id",$school_id);
+           $free_school_id = $this->db->get()->row();
+           
+           if($free_school_id)
+           {
+               $data['school_id'] = $free_school_id->id;
+           }
+           
+        }    
+        
         $this->db->where('key', 'layout');
         $query = $this->db->get('settings');
         $layout_settings = $query->row();

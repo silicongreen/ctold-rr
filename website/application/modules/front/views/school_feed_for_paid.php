@@ -1,7 +1,16 @@
 <script type="text/javascript" src="<?php echo base_url('js/top-main.js'); ?>"></script> 
 <?php
 $widget = new Widget;
-$widget->run('postdataforpaid', "index", $s_category_ids, 'index');
+if($school_id>0)
+{
+    $widget->run('postdataforpaid', "school", $school_id, 'school');
+}
+else
+{
+    $widget->run('postdataforpaid', "index", $s_category_ids, 'index'); 
+}    
+
+
 ?>
 <script type="text/javascript" src="<?php echo base_url('js/main-bottom.js'); ?>"></script>
 <script type="text/javascript">

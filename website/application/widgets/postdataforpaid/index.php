@@ -32,7 +32,7 @@ if (!defined('BASEPATH'))
 class postdataforpaid extends widget
 {
 
-    function run( $s_category_name, $s_category_ids = "", $target = "inner", $b_featured = FALSE, $i_featured_position = 0, $page = "index", $current_page = 0, $limit = 9,$is_game = 0, $q = '')
+    function run( $s_category_name, $s_category_ids = "", $target = "inner", $b_featured = FALSE, $i_featured_position = 0, $page = "index", $current_page = 0, $limit = 40,$is_game = 0, $q = '')
     {
        
         $CI = & get_instance();        

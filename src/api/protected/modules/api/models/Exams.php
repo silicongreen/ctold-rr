@@ -174,12 +174,17 @@ class Exams extends CActiveRecord {
         return $data;
     }
 
-    public function getPublishClassTestProjectSubjectWise($subject_id, $batch_id, $limit = true) {
+    public function getPublishClassTestProjectSubjectWise($subject_id, $batch_id, $limit = true, $exam_group=0) {
         $criteria = new CDbCriteria();
         $criteria->select = 't.*';
         $criteria->compare('Examgroup.batch_id', $batch_id);
         $criteria->compare('Examgroup.exam_category', 1);
         $criteria->compare('Examgroup.exam_category', 2, false, "OR");
+        if($exam_group>0)
+        {
+           $criteria->compare('Examgroup.id', $exam_group); 
+        }    
+        
         $criteria->compare('Examgroup.result_published', 1);
         $criteria->compare('t.subject_id', $subject_id);
         $criteria->order = "start_time DESC";

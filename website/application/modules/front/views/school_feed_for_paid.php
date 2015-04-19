@@ -38,8 +38,11 @@ alert(c.message);
 </script>
 
 <style>
-    body
-    {
-        background:#e7e7e7 !important;
-    }
+body
+{
+    background:#e7e7e7 !important;
+}
+a.summary_link {
+            color: #666;
+}
 </style>

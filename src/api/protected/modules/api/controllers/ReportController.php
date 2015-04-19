@@ -375,6 +375,7 @@ class ReportController extends Controller
         if (isset($_POST) && !empty($_POST))
         {
             $user_secret = Yii::app()->request->getPost('user_secret');
+            $exam_group = Yii::app()->request->getPost('exam_group');
             $response = array();
             if (Yii::app()->user->user_secret === $user_secret && ( Yii::app()->user->isStudent || (Yii::app()->user->isParent 
                    && Yii::app()->request->getPost('batch_id') && Yii::app()->request->getPost('student_id') )
@@ -389,9 +390,14 @@ class ReportController extends Controller
                 {
                     $batch_id   = Yii::app()->user->batchId;
                     $student_id = Yii::app()->user->profileId;
-                }    
+                }  
+                if(!$exam_group)
+                {
+                    $exam_group = 0;
+                }   
+                
                 $subjects = new Subjects();
-                $exam_data = $subjects->getBatchSubjectClassTestProjectReport($batch_id, $student_id);
+                $exam_data = $subjects->getBatchSubjectClassTestProjectReport($batch_id, $student_id, $exam_group);
                 
                 if ($exam_data)
                 {

@@ -407,13 +407,14 @@ class Subjects extends CActiveRecord
     }
    
     
-    public function getBatchSubjectClassTestProjectReport($batch_id, $student_id)
+    public function getBatchSubjectClassTestProjectReport($batch_id, $student_id, $exam_group=0)
     {
         $criteria = new CDbCriteria();
         $criteria->select = 't.*';
         $criteria->compare('t.batch_id', $batch_id);
         $criteria->compare('t.no_exams', false);
         $criteria->compare('t.is_deleted', false);
+        
         $data_subject = $this->findAll($criteria);
 
 
@@ -423,7 +424,7 @@ class Subjects extends CActiveRecord
         {
 
             $examModel = new Exams();
-            $exam_details_all = $examModel->getPublishClassTestProjectSubjectWise($value->id, $batch_id, false);
+            $exam_details_all = $examModel->getPublishClassTestProjectSubjectWise($value->id, $batch_id, false, $exam_group);
             
             $report_class_test_merge['subject_name'] = $value->name;
             $report_class_test_merge['subject_code'] = $value->code;

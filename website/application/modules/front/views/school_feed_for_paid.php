@@ -42,6 +42,9 @@ body
 {
     background:#e7e7e7 !important;
 }
+a.summary_link:hover {
+            color: #fb3c2d;
+}
 a.summary_link {
             color: #666;
 }

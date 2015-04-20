@@ -213,7 +213,12 @@ class home extends MX_Controller {
         if(count($ar_segmens) < 2)
         {
             //$this->show_404_custom();
+            $joined_school = get_user_school_joined();
             
+            if($joined_school)
+            {
+                redirect("schools/".sanitize($joined_school));
+            }
             $this->db->select('*');
             $this->db->from('tds_school');
             

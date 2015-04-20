@@ -698,6 +698,15 @@ height: 46px;
         
         <div class="fixed-menu">
             <ul class="fixed-menu-ul">
+                <?php
+                    if(get_free_user_session('paid_id') && get_free_user_session('paid_school_code'))
+                    { ?>
+                        <li data="magic_mart" class="before-login-user-back" onclick="location.href='<?php echo $my_school_menu_uri; ?>'">                        
+                            <div class="<?php echo $school_icon_class;?>">&nbsp;</div> 
+                        </li>   
+                        
+                <?php  }
+                ?>
                 <?php if( free_user_logged_in() ) { ?>
                         <li onclick="location.href='<?php echo base_url('/good-read'); ?>'">
                     <?php } else { ?>
@@ -711,9 +720,8 @@ height: 46px;
                 <li data="candle" class="<?php echo ( free_user_logged_in() ) ? 'candlepopup' : 'before-login-user'; ?>">
                     <div class="icon-candle">&nbsp;</div> 
                 </li>
-                <li data="magic_mart" class="before-login-user-back" onclick="location.href='<?php echo $my_school_menu_uri; ?>'">
-                <!-- onclick="location.href='//<?php echo base_url('/market'); ?>'" -->
-                    <div class="<?php echo $school_icon_class;?>">&nbsp;</div> 
+                <li data="magic_mart" class="before-login-user-back" onclick="location.href='<?php echo base_url() . 'schools'; ?>'">                
+                    <div class="icon-my-school">&nbsp;</div> 
                 </li>
                 <?php if($this->config->config['android_app_dl_popup_show'] == true):?>
                     <?php #$ua = strtolower($_SERVER['HTTP_USER_AGENT']); ?>
@@ -1158,31 +1166,37 @@ if($('.header-logo-div').is(':visible')) {
         }
         .icon-good-read
         {
-            width:66px !important;
+            width:60px !important;
             height:43px !important;
             top:-1px;
         }
         .icon-candle
         {
-            width:66px !important;
+            width:60px !important;
             height:43px !important;
             top:-1px;
         }
         .icon-magic-mart
         {
-            width:66px !important;
+            width:60px !important;
             height:43px !important;
             top:-1px;
         }
         .icon-my-school
         {
-            width:66px !important;
+            width:60px !important;
             height:43px !important;
             top:-1px;
         }
         .icon-mobile-app
         {
-            width:66px !important;
+            width:60px !important;
+            height:43px !important;
+            top:-1px;
+        }
+        .icon-diary21-school
+        {
+            width:60px !important;
             height:43px !important;
             top:-1px;
         }
@@ -1341,31 +1355,37 @@ if($('.header-logo-div').is(':visible')) {
         }
         .icon-good-read
         {
-            width:66px !important;
+            width:60px !important;
+            height:43px !important;
+            top:-1px;
+        }
+        .icon-diary21-school
+        {
+            width:60px !important;
             height:43px !important;
             top:-1px;
         }
         .icon-candle
         {
-            width:66px !important;
+            width:60px !important;
             height:43px !important;
             top:-1px;
         }
         .icon-magic-mart
         {
-            width:66px !important;
+            width:60px !important;
             height:43px !important;
             top:-1px;
         }
         .icon-my-school
         {
-            width:66px !important;
+            width:60px !important;
             height:43px !important;
             top:-1px;
         }
         .icon-mobile-app
         {
-            width:66px !important;
+            width:60px !important;
             height:43px !important;
             top:-1px;
         }
@@ -1577,31 +1597,37 @@ if($('.header-logo-div').is(':visible')) {
         }
         .icon-good-read
         {
-            width:66px !important;
+            width:60px !important;
+            height:43px !important;
+            top:-1px;
+        }
+        .icon-diary21-school
+        {
+            width:60px !important;
             height:43px !important;
             top:-1px;
         }
         .icon-candle
         {
-            width:66px !important;
+            width:60px !important;
             height:43px !important;
             top:-1px;
         }
         .icon-magic-mart
         {
-            width:66px !important;
+            width:60px !important;
             height:43px !important;
             top:-1px;
         }
         .icon-my-school
         {
-            width:66px !important;
+            width:60px !important;
             height:43px !important;
             top:-1px;
         }
         .icon-mobile-app
         {
-            width:66px !important;
+            width:60px !important;
             height:43px !important;
             top:-1px;
         }
@@ -1864,7 +1890,7 @@ if($('.header-logo-div').is(':visible')) {
     padding:0;
     position:fixed;
     left:0px;
-    top:170px;
+    top:100px;
 }
 .category-fixed-menu-list{
     

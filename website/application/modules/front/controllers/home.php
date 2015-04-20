@@ -173,8 +173,7 @@ class home extends MX_Controller {
             exit;   
         }
     }
-    
-    function schools()
+    function redirect_to_paid_school()
     {
         if(get_free_user_session('paid_id') && get_free_user_session('paid_school_code'))
         {
@@ -207,7 +206,9 @@ class home extends MX_Controller {
             header("Location: ".$url);
             exit;
         }
-        
+    }
+    function schools()
+    {   
         $ar_segmens = $this->uri->segment_array();
         if(count($ar_segmens) < 2)
         {

@@ -72,7 +72,7 @@ class champs21header extends widget {
                 $data['school_icon_class'] = 'icon-diary21-school';
             }
             
-            $data['my_school_menu_uri'] = base_url() . 'schools/' . sanitize($school_obj->name);
+            $data['my_school_menu_uri'] = base_url() . 'redirect_to_paid_school/' . sanitize($school_obj->name);
         } else {
             $data['my_school_menu_uri'] = base_url() . 'schools';
         }

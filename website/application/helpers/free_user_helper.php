@@ -3,6 +3,65 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
+
+if( !function_exists("get_user_school_joined") )
+{
+    function get_user_school_joined()
+    {
+        $CI = &get_instance();
+        
+        if(free_user_logged_in() && get_free_user_session('paid_id'))
+        {
+            $user_id = get_free_user_session("id");
+            $CI->db->select("paid_school_id");
+            $CI->db->where("id",$user_id);
+            $result = $CI->db->get("free_users")->row();
+            if(count($result)>0 && $result->paid_school_id)
+            {
+                $CI->db->select("name");
+                $CI->db->where("paid_school_id",$result->paid_school_id);
+                $school_data = $CI->db->get("school")->row();
+                return $school_data->name;
+            } 
+            else
+            {
+                return false;
+            }
+            
+        }    
+        else if(free_user_logged_in())
+        {
+            
+            $user_id = get_free_user_session("id");
+            $CI->db->select("school_id,is_approved,deny_by,type");
+            $CI->db->where("user_id",$user_id);
+            
+            $result = $CI->db->get("user_school")->row();
+            
+           
+           
+            if(count($result)>0)
+            {
+                $CI->db->select("name");
+                $CI->db->where("id",$result->school_id);
+                $school_data = $CI->db->get("school")->row();
+                return $school_data->name;
+            } 
+            else
+            {
+                return false;
+            }
+            
+        }
+        else
+        {
+            return false;
+        }    
+        
+    }        
+} 
+
+
 if( !function_exists("get_user_school") )
 {
     function get_user_school($school_id=0)

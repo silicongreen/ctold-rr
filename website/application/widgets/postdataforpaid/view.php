@@ -470,3 +470,9 @@ padding: 1px;
     <input type="hidden" name="page-size" id="page-size" value="<?php echo $page_size; ?>" autocomplete="off" />
     <input type="hidden" name="total_data" id="total_data" value="<?php echo $total_data; ?>" autocomplete="off" />
 <?php endif; ?>
+
+    <script>
+      jQuery(function($) {
+          $("a").attr("target","_parent");
+      });  
+    </script>    

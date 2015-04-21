@@ -473,6 +473,6 @@ padding: 1px;
 
     <script>
       jQuery(function($) {
-          $("a").attr("target","_parent");
+          $("a").attr("target","_blank");
       });  
     </script>    

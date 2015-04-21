@@ -546,7 +546,7 @@ class OnlineExamGroups extends CActiveRecord {
             }
         }
         
-        return ($b_total) ? $data->total : $exam_array;
+        return ($b_total && !empty($data)) ? $data->total : $exam_array;
     }
 
 }

@@ -335,6 +335,63 @@ class Subjects extends CActiveRecord
         return $report_term;
         
     }
+    public function getPrograssAll($batch_id, $student_id, $exam_category=0)
+    {
+      
+        $progress = array();
+        $subject = new Subjects();
+        $all_subject = $subject->getSubject($batch_id, $student_id);
+          
+        
+        $j = 0;
+        foreach($all_subject as $value)
+        {
+            $examModel = new Exams();
+            $exam_details_all = $examModel->getPublishExam($value['id'], $batch_id, $exam_category);
+            if (!empty($exam_details_all))
+            {
+                $i = 0;
+                $total_mark = 0;
+                $progress['subject'][$j]['name'] = $value['name'];
+                foreach ($exam_details_all as $exam_details)
+                {
+                    $examScore = new ExamScores();
+                    $student_result = $examScore->getSingleExamStudentResult($student_id, $exam_details->id);
+                    
+                    if($exam_details['Examgroup']->exam_category == 2)
+                    {
+                        $e_name = "P";
+                    } 
+                    else if($exam_details['Examgroup']->exam_category == 1)
+                    {
+                        $e_name = "C";
+                    } 
+                    else
+                    {
+                        $e_name = "T";
+                    }  
+                    $extra = $i+1;
+                    $progress['subject'][$j]['exam'][$i]['name'] = $e_name." ".$extra;
+                    $progress['subject'][$j]['exam'][$i]['point'] = 0;
+                   
+                    if (!empty($student_result) && !empty($max_mark))
+                    {
+                        $your_percent = ($student_result->marks / $exam_details->maximum_marks) * 100;
+
+                        $progress['subject'][$j]['exam'][$i]['point'] = intval($your_percent);
+
+                        $i++;
+                    }
+                }
+             
+       
+            }
+            $j++;
+        }
+        
+        return $progress;
+    }
+    
     
     public function getPrograss($batch_id, $student_id, $subject_id, $exam_category=0)
     {

@@ -20,13 +20,71 @@ class SyllabusController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'terms','single','addlessonplan','singlelessonplans','lessonplandelete','lessoncategory','getsubject','lessonplanedit','lessonplans','assignlesson'),
+                'actions' => array('index','lsubjects', 'terms','single','addlessonplan','singlelessonplans','lessonplandelete','lessoncategory','getsubject','lessonplanedit','lessonplans','assignlesson'),
                 'users' => array('@'),
             ),
             array('deny', // deny all users
                 'users' => array('*'),
             ),
         );
+    }
+    public function actionLsubjects()
+    {
+        if (isset($_POST) && !empty($_POST))
+        {
+            $user_secret = Yii::app()->request->getPost('user_secret');
+            $response = array();
+            if (Yii::app()->user->user_secret === $user_secret && ( Yii::app()->user->isStudent || (Yii::app()->user->isParent && Yii::app()->request->getPost('batch_id') && Yii::app()->request->getPost('student_id') )))
+            {
+                if (Yii::app()->user->isParent)
+                {
+                    $batch_id = Yii::app()->request->getPost('batch_id');
+                    $student_id = Yii::app()->request->getPost('student_id');
+                }
+                else
+                {
+                    $batch_id = Yii::app()->user->batchId;
+                    $student_id = Yii::app()->user->profileId;
+                }
+                
+                $subject = new Subjects();
+                $all_subject = $subject->getSubject($batch_id, $student_id);
+                
+                $objlessonplan = new Lessonplan();
+                
+                $lsubjects = array();
+                $i = 0;
+                foreach($all_subject as $value)
+                {
+                    $total = $objlessonplan->getLessonPlanTotalStudent($value['id'], $batch_id);
+                    if($total>0)
+                    {
+                        $lastupdated = $objlessonplan->getLessonPlanLastUpdated($value['id'], $batch_id);
+                        $lsubjects[$i] = $value;
+                        $lsubjects[$i]['total'] = $total;
+                        $lsubjects[$i]['lastupdated'] = $lastupdated;
+                    }    
+                    
+                }    
+                
+                $response['data']['subject'] = $lsubjects;
+                $response['status']['code'] = 200;
+                $response['status']['msg'] = "Data Found";
+                
+            }
+            else
+            {
+                $response['status']['code'] = 403;
+                $response['status']['msg'] = "Access Denied.";
+            }
+        }
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
     }
     public function actionSinglelessonplans()
     {

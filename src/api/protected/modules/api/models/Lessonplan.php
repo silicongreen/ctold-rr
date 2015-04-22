@@ -76,6 +76,49 @@ class Lessonplan extends CActiveRecord
             $data = $this->find($criteria);
             return $data->total;
         } 
+        public function getLessonPlanLastUpdated($subject_id, $batch_id=0, $lessonplan_category_id=0)
+        {
+           
+            $criteria = new CDbCriteria();
+            $criteria->select = 't.publish_date';
+            
+            $criteria->compare('t.is_show', 1);
+            $criteria->addCondition('t.publish_date IS NOT NULL AND t.publish_date>="'.date('Y-m-d').'"');
+            
+            if($lessonplan_category_id)
+            $criteria->compare('t.lessonplan_category_id', $lessonplan_category_id);
+            if($batch_id)
+            $criteria->addCondition("FIND_IN_SET(".$batch_id.", batch_ids)");
+            
+            if($subject_id)
+            $criteria->addCondition("FIND_IN_SET(".$subject_id.", subject_ids)");
+            
+            $criteria->limit = 1;
+            $criteria->order = "t.publish_date DESC";
+            
+            $data = $this->find($criteria);
+            return $data->publish_date;
+        }
+        public function getLessonPlanTotalStudent($subject_id, $batch_id=0, $lessonplan_category_id=0)
+        {
+           
+            $criteria = new CDbCriteria();
+            $criteria->select = 'count(t.id) as total';
+            
+            $criteria->compare('t.is_show', 1);
+            $criteria->addCondition('t.publish_date IS NOT NULL AND t.publish_date>="'.date('Y-m-d').'"');
+            
+            if($lessonplan_category_id)
+            $criteria->compare('t.lessonplan_category_id', $lessonplan_category_id);
+            if($batch_id)
+            $criteria->addCondition("FIND_IN_SET(".$batch_id.", batch_ids)");
+            
+            if($subject_id)
+            $criteria->addCondition("FIND_IN_SET(".$subject_id.", subject_ids)");
+            
+            $data = $this->find($criteria);
+            return $data->total;
+        }
         public function getLessonPlanSingle($id)
         {
             

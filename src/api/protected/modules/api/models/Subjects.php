@@ -184,6 +184,11 @@ class Subjects extends CActiveRecord
             {
                 $subject_array[$i]['name'] = $value->name;
                 $subject_array[$i]['id'] = $value->id;
+                $subject_array[$i]['icon'] = "";
+                if(isset($value->icon_number))
+                {
+                    $subject_array[$i]['icon'] = $value->icon_number;
+                }
                 $i++;
             }    
         } 
@@ -193,6 +198,11 @@ class Subjects extends CActiveRecord
             {
                 $subject_array[$i]['name'] = $value->name;
                 $subject_array[$i]['id'] = $value->id;
+                $subject_array[$i]['icon'] = "";
+                if(isset($value->icon_number))
+                {
+                    $subject_array[$i]['icon'] = $value->icon_number;
+                }
                 $i++;
             }    
         } 

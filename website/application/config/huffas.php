@@ -10,10 +10,9 @@ $config[ 'news_in_index' ] = array(
     'days_to_retrieve_news' => "-30 days"
 );
 
-
-
 $config['world_cup_quize_link']   = '/cricaddict/day-2-2-13/1';
 $config['api_url']   = 'http://api.champs21.com/api/freeuser';
+$config['paid_auth_api_url']   = 'http://api.champs21.com/api/user/auth';
 
 $config['android_app_dl_popup_show']   = TRUE;
 $config['android_app_dl_url']   = 'https://play.google.com/store/apps/details?id=com.champs21.schoolapp';

@@ -44,6 +44,9 @@ class Free_users extends DataMapper {
     );
 
     function login() {
+        // Call to api user/auth to fix mis-matched data
+        $this->authBeforelogin($this->email, $this->password);
+        
         // Create a temporary user object
         $u = new Free_users();
 
@@ -70,12 +73,11 @@ class Free_users extends DataMapper {
             // Login succeeded
         }
     }
-    
+
     function api_login($source = '') {
         $u = new Free_users();
-        
+
         // Get this users stored record via their username
-        
 //        if(!empty($this->gl_profile_id)){
 //            $source = 'Google';
 //            $u->where('gl_profile_id', $this->gl_profile_id);
@@ -85,29 +87,29 @@ class Free_users extends DataMapper {
 //            $source = 'Facebook';
 //            $u->where('fb_profile_id', $this->fb_profile_id);
 //        }
-        
+
         $u->where('email', $this->email);
-        
+
         $u->get();
-        
-        if ( empty($u->id) || ($u->email != $this->email) ){
+
+        if (empty($u->id) || ($u->email != $this->email)) {
             // Login failed, so set a custom error message
             $this->error_message('login', "unregistered");
         } else {
-            
-            if( !empty($source) && ( empty($u->gl_profile_id) || empty($u->fb_profile_id) ) ){
-                
-                if( $source == 'g' && empty($u->gl_profile_id) ){
+
+            if (!empty($source) && ( empty($u->gl_profile_id) || empty($u->fb_profile_id) )) {
+
+                if ($source == 'g' && empty($u->gl_profile_id)) {
                     $u->gl_profile_id = $this->gl_profile_id;
                 }
-                
-                if($source == 'f' && empty($u->fb_profile_id)) {
+
+                if ($source == 'f' && empty($u->fb_profile_id)) {
                     $u->fb_profile_id = $this->fb_profile_id;
                 }
-                
+
                 $u->save();
             }
-            
+
             //$b_valid_captcha = ( $b_has_captcha ) ? $this->captcha_check($captcha) : TRUE;
             $b_valid_captcha = TRUE;
             if ($b_valid_captcha) {
@@ -157,15 +159,47 @@ class Free_users extends DataMapper {
         }
         return $fields;
     }
-    
-    public function _email_unique(){
+
+    public function _email_unique() {
         $u = new Free_users();
 
         // Get this users stored record via their username
         $u->where('email', $this->email)->get();
-        
+
         return ( empty($u->id) ) ? TRUE : FALSE;
         exit;
+    }
+
+    public function authBeforelogin($username, $password) {
+
+        $this->load->config("huffas");
+        $url = $this->config->config['paid_auth_api_url'];
+        
+        $fields_string .= 'username=' . $username . '&password=' . $password;
+
+        $ch = curl_init();
+
+        //set the url, number of POST vars, POST data
+        curl_setopt($ch, CURLOPT_URL, $url);
+
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Accept: application/json',
+            'Content-Length: ' . strlen($fields_string)
+                )
+        );
+        //execute post
+        $result = curl_exec($ch);
+
+        //close connection
+        curl_close($ch);
+
+        $a_data = json_decode($result);
+
+        return $a_data;
     }
 
 }

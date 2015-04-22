@@ -374,14 +374,13 @@ class Subjects extends CActiveRecord
                     $progress['subject'][$j]['exam'][$i]['name'] = $e_name." ".$extra;
                     $progress['subject'][$j]['exam'][$i]['point'] = 0;
                    
-                    if (!empty($student_result) && !empty($max_mark))
+                    if (!empty($student_result))
                     {
                         $your_percent = ($student_result->marks / $exam_details->maximum_marks) * 100;
 
                         $progress['subject'][$j]['exam'][$i]['point'] = intval($your_percent);
-
-                        $i++;
                     }
+                    $i++;
                 }
              
        

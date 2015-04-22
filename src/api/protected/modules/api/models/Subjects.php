@@ -351,7 +351,6 @@ class Subjects extends CActiveRecord
             if (!empty($exam_details_all))
             {
                 $i = 0;
-                $total_mark = 0;
                 $progress['subject'][$j]['name'] = $value['name'];
                 foreach ($exam_details_all as $exam_details)
                 {
@@ -383,9 +382,9 @@ class Subjects extends CActiveRecord
                     $i++;
                 }
              
-       
+              $j++;
             }
-            $j++;
+            
         }
         
         return $progress;

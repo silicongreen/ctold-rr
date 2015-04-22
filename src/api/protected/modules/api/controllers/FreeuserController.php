@@ -1625,6 +1625,12 @@ class FreeuserController extends Controller
             $singlepost = $postModel->getSinglePost($id);
             Yii::app()->cache->set($cache_name, $singlepost, 5184000);
         }
+        else
+        {
+            $datestring = Settings::get_post_time($singlepost['published_date']);
+            $singlepost['current_date'] = date("Y-m-d H:i:s");
+            $singlepost['published_date_string'] = $datestring;
+        }    
         return $singlepost;
     }
 

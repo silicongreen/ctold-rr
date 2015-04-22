@@ -63,6 +63,7 @@ class SyllabusController extends Controller {
                         $lsubjects[$i] = $value;
                         $lsubjects[$i]['total'] = $total;
                         $lsubjects[$i]['lastupdated'] = $lastupdated;
+                        $i++;
                     }    
                     
                 }    

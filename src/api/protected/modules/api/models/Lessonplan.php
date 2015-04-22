@@ -76,7 +76,7 @@ class Lessonplan extends CActiveRecord
             $data = $this->find($criteria);
             return $data->total;
         } 
-        public function getLessonPlanLastUpdated($subject_id, $batch_id=0, $lessonplan_category_id=0)
+        public function getLessonPlanLastUpdated($subject_id, $batch_id=0)
         {
            
             $criteria = new CDbCriteria();
@@ -85,8 +85,7 @@ class Lessonplan extends CActiveRecord
             $criteria->compare('t.is_show', 1);
             $criteria->addCondition('t.publish_date IS NOT NULL AND t.publish_date<="'.date('Y-m-d').'"');
             
-            if($lessonplan_category_id)
-            $criteria->compare('t.lessonplan_category_id', $lessonplan_category_id);
+            
             if($batch_id)
             $criteria->addCondition("FIND_IN_SET(".$batch_id.", batch_ids)");
             
@@ -99,7 +98,7 @@ class Lessonplan extends CActiveRecord
             $data = $this->find($criteria);
             return $data->publish_date;
         }
-        public function getLessonPlanTotalStudent($subject_id, $batch_id=0, $lessonplan_category_id=0)
+        public function getLessonPlanTotalStudent($subject_id, $batch_id=0)
         {
            
             $criteria = new CDbCriteria();
@@ -108,8 +107,6 @@ class Lessonplan extends CActiveRecord
             $criteria->compare('t.is_show', 1);
             $criteria->addCondition('t.publish_date IS NOT NULL AND t.publish_date<="'.date('Y-m-d').'"');
             
-            if($lessonplan_category_id)
-            $criteria->compare('t.lessonplan_category_id', $lessonplan_category_id);
             if($batch_id)
             $criteria->addCondition("FIND_IN_SET(".$batch_id.", batch_ids)");
             

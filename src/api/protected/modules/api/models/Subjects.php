@@ -169,7 +169,7 @@ class Subjects extends CActiveRecord
     public function getSubject($batch_id,$student_id)
     {
         $criteria = new CDbCriteria();
-        $criteria->select = 't.name,t.id';
+        $criteria->select = 't.name,t.id,t.icon_number';
         $criteria->compare('t.batch_id', $batch_id);
         $criteria->compare('t.is_deleted', 0);
         $criteria->order = "t.name desc";

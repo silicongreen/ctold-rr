@@ -38,6 +38,16 @@ class SyllabusController extends Controller {
             $response = array();
             if ($subject_id && Yii::app()->user->user_secret === $user_secret && ( Yii::app()->user->isStudent || (Yii::app()->user->isParent && Yii::app()->request->getPost('batch_id') && Yii::app()->request->getPost('student_id') )) )
             {
+                if (Yii::app()->user->isParent)
+                {
+                    $batch_id = Yii::app()->request->getPost('batch_id');
+                    $student_id = Yii::app()->request->getPost('student_id');
+                }
+                else
+                {
+                    $batch_id = Yii::app()->user->batchId;
+                    $student_id = Yii::app()->user->profileId;
+                }
                 
                 $page_number = Yii::app()->request->getPost('page_number');
                 $page_size = Yii::app()->request->getPost('page_size');
@@ -63,7 +73,7 @@ class SyllabusController extends Controller {
                 }
                 $response['data']['has_next'] = $has_next;
                 $response['data']['lessonplans'] = $lessonplans;
-                $response['status']['code'] = ($response['data']['total'] > 0) ? 200 : 404;
+                $response['status']['code'] = 200;
                 $response['status']['msg'] = ($response['data']['total'] > 0) ? "Data Found" : "No Data Found";
             }
             else
@@ -231,7 +241,7 @@ class SyllabusController extends Controller {
                 }
                 $response['data']['has_next'] = $has_next;
                 $response['data']['lessonplans'] = $lessonplans;
-                $response['status']['code'] = ($response['data']['total'] > 0) ? 200 : 404;
+                $response['status']['code'] = 200;
                 $response['status']['msg'] = ($response['data']['total'] > 0) ? "Data Found" : "No Data Found";
             }
             else

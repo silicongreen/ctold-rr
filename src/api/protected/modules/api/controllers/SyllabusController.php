@@ -20,7 +20,7 @@ class SyllabusController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index','lsubjects', 'terms','single','addlessonplan','singlelessonplans','lessonplandelete','lessoncategory','getsubject','lessonplanedit','lessonplans','assignlesson'),
+                'actions' => array('index','lessonplansstd','lsubjects', 'terms','single','addlessonplan','singlelessonplans','lessonplandelete','lessoncategory','getsubject','lessonplanedit','lessonplans','assignlesson'),
                 'users' => array('@'),
             ),
             array('deny', // deny all users
@@ -28,6 +28,59 @@ class SyllabusController extends Controller {
             ),
         );
     }
+    
+    public function actionlessonplansStd()
+    {
+        if (isset($_POST) && !empty($_POST))
+        {
+            $user_secret = Yii::app()->request->getPost('user_secret');
+            $subject_id = Yii::app()->request->getPost('subject_id');
+            $response = array();
+            if ($subject_id && Yii::app()->user->user_secret === $user_secret && ( Yii::app()->user->isStudent || (Yii::app()->user->isParent && Yii::app()->request->getPost('batch_id') && Yii::app()->request->getPost('student_id') )) )
+            {
+                
+                $page_number = Yii::app()->request->getPost('page_number');
+                $page_size = Yii::app()->request->getPost('page_size');
+                if (empty($page_number))
+                {
+                    $page_number = 1;
+                }
+                if (empty($page_size))
+                {
+                    $page_size = 10;
+                }
+                
+                
+                $lessonplan = new Lessonplan();
+
+
+                $lessonplans = $lessonplan->getLessonPlanStudent($subject_id, $batch_id, $page_number, $page_size);
+                $response['data']['total'] = $lessonplan->getLessonPlanTotalStudent($subject_id, $batch_id);
+                $has_next = false;
+                if ($response['data']['total'] > $page_number * $page_size)
+                {
+                    $has_next = true;
+                }
+                $response['data']['has_next'] = $has_next;
+                $response['data']['lessonplans'] = $lessonplans;
+                $response['status']['code'] = ($response['data']['total'] > 0) ? 200 : 404;
+                $response['status']['msg'] = ($response['data']['total'] > 0) ? "Data Found" : "No Data Found";
+            }
+            else
+            {
+                $response['status']['code'] = 403;
+                $response['status']['msg'] = "Access Denied.";
+            }
+        }
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    }
+    
     public function actionLsubjects()
     {
         if (isset($_POST) && !empty($_POST))

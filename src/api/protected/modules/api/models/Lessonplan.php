@@ -98,6 +98,43 @@ class Lessonplan extends CActiveRecord
             $data = $this->find($criteria);
             return $data->publish_date;
         }
+        
+        public function getLessonPlanStudent($subject_id = 0, $batch_id = 0, $page = 1, $page_size)
+        {
+            
+            
+            $criteria = new CDbCriteria();
+            $criteria->select = 't.*';
+            $criteria->compare('t.is_show', 1);
+            $criteria->addCondition('t.publish_date IS NOT NULL AND t.publish_date<="'.date('Y-m-d').'"');
+            
+            if($batch_id)
+            $criteria->addCondition("FIND_IN_SET(".$batch_id.", batch_ids)");
+            
+            if($subject_id)
+            $criteria->addCondition("FIND_IN_SET(".$subject_id.", subject_ids)");
+            
+            $criteria->order = "t.publish_date DESC";
+            $start = ($page-1)*$page_size;
+            $criteria->limit = $page_size;
+
+            $criteria->offset = $start;
+            
+            $data = $this->with("category")->findAll($criteria);
+            $response_array = array();
+            if($data != NULL)
+            foreach($data as $value)
+            {
+                $marge = array();
+                $marge['id']   = $value->id;
+                $marge['title'] = $value->title;
+                $marge['publish_date'] = $value->publish_date;
+                $response_array[] = $marge;     
+                
+            }
+            return $response_array;
+            
+        }
         public function getLessonPlanTotalStudent($subject_id, $batch_id=0)
         {
            

@@ -83,7 +83,7 @@ class Lessonplan extends CActiveRecord
             $criteria->select = 't.publish_date';
             
             $criteria->compare('t.is_show', 1);
-            $criteria->addCondition('t.publish_date IS NOT NULL AND t.publish_date>="'.date('Y-m-d').'"');
+            $criteria->addCondition('t.publish_date IS NOT NULL AND t.publish_date<="'.date('Y-m-d').'"');
             
             if($lessonplan_category_id)
             $criteria->compare('t.lessonplan_category_id', $lessonplan_category_id);
@@ -106,7 +106,7 @@ class Lessonplan extends CActiveRecord
             $criteria->select = 'count(t.id) as total';
             
             $criteria->compare('t.is_show', 1);
-            $criteria->addCondition('t.publish_date IS NOT NULL AND t.publish_date>="'.date('Y-m-d').'"');
+            $criteria->addCondition('t.publish_date IS NOT NULL AND t.publish_date<="'.date('Y-m-d').'"');
             
             if($lessonplan_category_id)
             $criteria->compare('t.lessonplan_category_id', $lessonplan_category_id);

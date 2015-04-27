@@ -353,6 +353,10 @@ class RoutineController extends Controller {
                 $time_table = $time_table->getExamTimeTable($school_id, $batch_id, $student_id,$exam_id);
 
                 if ($time_table) {
+                    
+                    $robject = new Reminders();
+                    $robject->ReadReminderNew(Yii::app()->user->id, 0 ,2, $exam_id);
+                    
                     $response['data']['exam_time_table'] = $time_table;
                     $response['status']['code'] = 200;
                     $response['status']['msg'] = "EXAM_ROUTINE_FOUND";

@@ -154,7 +154,36 @@ class ExamGroups extends CActiveRecord
         $criteria->compare('t.is_published', 1);
         $criteria->order = "t.created_at DESC";
         $data = $this->findAll($criteria);
-        return $data;
+        
+        $all_exam = array();
+        if($data != NULL)
+        {
+            $i = 0;
+            
+            foreach($data as $kvalue)
+            {
+                $rid[]= $kvalue->id;
+            }
+            $robject = new Reminders();
+
+            $new_data = $robject->FindUnreadData(2, $rid);
+            foreach($data as $value)
+            {
+                $all_exam[$i]['id'] = $value->id;
+                $all_exam[$i]['name'] = $value->name;
+                $all_exam[$i]['exam_date'] = $value->exam_date;
+                $all_exam[$i]['is_new'] = 0;
+                    
+                if(in_array($value->id, $new_data))
+                {
+                    $all_exam[$i]['is_new'] = 1;
+                }
+               
+                $i++;
+            }
+        }
+        
+        return $all_exam;
     }
 
     public function getTermExamsBatch($batch_id, $student_id,$id=0)

@@ -468,7 +468,7 @@ class ReportController extends Controller
                         {
                            if(!in_array($cvalue['exam_id'], $exam_ids))
                            {
-                               $exam_ids[] =  $cvalue['exam_id'];
+                               $exam_ids[] =  $cvalue['exam_group_id'];
                            }
                            
                         }
@@ -476,7 +476,7 @@ class ReportController extends Controller
                         {
                            if(!in_array($pvalue['exam_id'], $exam_ids))
                            {
-                               $exam_ids[] =  $pvalue['exam_id'];
+                               $exam_ids[] =  $pvalue['exam_group_id'];
                            } 
                         }
                         

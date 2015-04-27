@@ -436,7 +436,9 @@ class HomeworkController extends Controller
                 $homework_data = $assignment->getAssignment($batch_id, $student_id, "", 1, null, 1, 1,$id);
                 if ($homework_data)
                 {
-
+                    $robject = new Reminders();
+                    $robject->ReadReminderNew(Yii::app()->user->id, 0 ,4, $id);
+                    
                     $response['data']['homework'] = $homework_data[0];
                     $response['status']['code'] = 200;
                     $response['status']['msg'] = "Data Found";

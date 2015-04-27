@@ -203,6 +203,28 @@ class Reminders extends CActiveRecord
 
             return $reminder;
         } 
+        public function FindUnreadData($rtype,$rids=array())
+        {
+            $criteria = new CDbCriteria;
+            $criteria->select = 't.rid';
+            $criteria->compare('is_read', 0);
+            $criteria->compare('recipient', Yii::app()->user->id);  
+            $criteria->compare('rtype', $rtype);
+            $criteria->compare('rid', $rids);
+            $obj_reminder = $this->findAll($criteria);
+            $reminder_data = array();
+            if($obj_reminder)
+            {
+                foreach($obj_reminder as $value)
+                {
+                   $reminder_data[] = $value->rid;
+                }
+               
+            }
+            return $reminder_data;
+            
+            
+        }        
         public function ReadReminderNew($user_id,$id=0,$rtype=0,$rid=0)
         {
             $criteria = new CDbCriteria;

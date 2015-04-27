@@ -283,7 +283,7 @@ class Assignments extends CActiveRecord
             {
                 foreach($data as $kvalue)
                 {
-                    $rid[]= $value->id;
+                    $rid[]= $kvalue->id;
                 }
                 $robject = new Reminders();
                 

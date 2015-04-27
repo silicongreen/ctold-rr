@@ -546,7 +546,7 @@ class Subjects extends CActiveRecord
                         {
                             $report_class_test_merge['subject_exam']['project'][$j]['exam_id'] = $exam_details->id;
                             $report_class_test_merge['subject_exam']['project'][$j]['exam_name'] = $exam_details['Examgroup']->name;
-                            $report_class_test_merge['subject_exam']['class_test'][$i]['exam_group_id'] = $exam_details['Examgroup']->id;
+                            $report_class_test_merge['subject_exam']['project'][$i]['exam_group_id'] = $exam_details['Examgroup']->id;
                             $report_class_test_merge['subject_exam']['project'][$j]['exam_date'] = DATE("Y-m-d", strtotime($exam_details->start_time));
                             
                             $report_class_test_merge['subject_exam']['project'][$i]['your_grade'] = "-";

@@ -274,41 +274,61 @@ class Assignments extends CActiveRecord
             }
             
             $data = $this->with("subjectDetails","employeeDetails")->findAll($criteria);
+            
+            $rid = array();
+            
+            
             $response_array = array();
             if($data != NULL)
-            foreach($data as $value)
             {
-                $marge = array();
-                $middle_name = (!empty($value["employeeDetails"]->middle_name)) ? $value["employeeDetails"]->middle_name.' ' : '';
-                $marge['id']   = $value->id;
-                
-                $marge['attachment_file_name'] = "";
-                
-                if($value->attachment_file_name)
+                foreach($data as $kvalue)
                 {
-                    $marge['attachment_file_name'] = $value->attachment_file_name;
+                    $rid[]= $value->id;
                 }
+                $robject = new Reminders();
                 
-                $marge['teacher_name'] = rtrim($value["employeeDetails"]->first_name.' '.$middle_name.$value["employeeDetails"]->last_name);
-                $marge['teacher_id']   = $value["employeeDetails"]->id;
-                $marge['subjects'] = $value["subjectDetails"]->name;
-                $marge['subjects_id'] = $value["subjectDetails"]->id;
-                $marge['subjects_icon'] = $value["subjectDetails"]->icon_number;
-                $marge['assign_date'] = date("Y-m-d", strtotime($value->created_at));
-                $marge['duedate'] = date("Y-m-d",  strtotime($value->duedate));
-                $marge['time_over'] = 0;
-                if(date("Y-m-d")>date("Y-m-d",  strtotime($value->duedate)))
+                $new_data = $robject->FindUnreadData(4, $rid);
+                foreach($data as $value)
                 {
-                   $marge['time_over'] = 1; 
+                    $marge = array();
+                    $middle_name = (!empty($value["employeeDetails"]->middle_name)) ? $value["employeeDetails"]->middle_name.' ' : '';
+                    $marge['id']   = $value->id;
+                    
+                    $marge['is_new'] = 0;
+                    
+                    if(in_array($value->id, $new_data))
+                    {
+                        $marge['is_new'] = 1;
+                    }
+
+                    $marge['attachment_file_name'] = "";
+
+                    if($value->attachment_file_name)
+                    {
+                        $marge['attachment_file_name'] = $value->attachment_file_name;
+                    }
+
+                    $marge['teacher_name'] = rtrim($value["employeeDetails"]->first_name.' '.$middle_name.$value["employeeDetails"]->last_name);
+                    $marge['teacher_id']   = $value["employeeDetails"]->id;
+                    $marge['subjects'] = $value["subjectDetails"]->name;
+                    $marge['subjects_id'] = $value["subjectDetails"]->id;
+                    $marge['subjects_icon'] = $value["subjectDetails"]->icon_number;
+                    $marge['assign_date'] = date("Y-m-d", strtotime($value->created_at));
+                    $marge['duedate'] = date("Y-m-d",  strtotime($value->duedate));
+                    $marge['time_over'] = 0;
+                    if(date("Y-m-d")>date("Y-m-d",  strtotime($value->duedate)))
+                    {
+                       $marge['time_over'] = 1; 
+                    }
+                    $marge['name'] = $value->title;
+                    $marge['content'] = $value->content;
+                    $marge['type'] = $value->assignment_type;
+                    $marge['id'] = $value->id;
+                    $assignment_answer = new AssignmentAnswers();
+                    $marge['is_done'] = $assignment_answer->isAlreadyDone($value->id, $student_id);
+                    $response_array[] = $marge;     
+
                 }
-                $marge['name'] = $value->title;
-                $marge['content'] = $value->content;
-                $marge['type'] = $value->assignment_type;
-                $marge['id'] = $value->id;
-                $assignment_answer = new AssignmentAnswers();
-                $marge['is_done'] = $assignment_answer->isAlreadyDone($value->id, $student_id);
-                $response_array[] = $marge;     
-                
             }
             return $response_array;
             

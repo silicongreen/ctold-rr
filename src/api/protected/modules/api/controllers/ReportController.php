@@ -348,6 +348,9 @@ class ReportController extends Controller
                 $subjects = new Subjects();
                 $term_report = $subjects->getTermReport($batch_id, $student_id, $id);
                 if ($term_report) {
+                    $robject = new Reminders();
+                    $robject->ReadReminderNew(Yii::app()->user->id, 0 ,3, $id);
+                    
                     $response['data']['report'] = $term_report[0];
                     $response['status']['code'] = 200;
                     $response['status']['msg'] = "EXAM_ROUTINE_FOUND";
@@ -458,6 +461,32 @@ class ReportController extends Controller
                 
                 if ($exam_data)
                 {
+                    $exam_ids = array();
+                    foreach($exam_data as $exam_value)
+                    {
+                        foreach($exam_value['subject_exam']['class_test'] as $cvalue)
+                        {
+                           if(!in_array($cvalue['exam_id'], $exam_ids))
+                           {
+                               $exam_ids[] =  $cvalue['exam_id'];
+                           }
+                           
+                        }
+                        foreach($exam_value['subject_exam']['project'] as $pvalue)
+                        {
+                           if(!in_array($pvalue['exam_id'], $exam_ids))
+                           {
+                               $exam_ids[] =  $pvalue['exam_id'];
+                           } 
+                        }
+                        
+                    }    
+                    
+                  
+                    $robject = new Reminders();
+                    $robject->ReadReminderNew(Yii::app()->user->id, 0 ,3, $exam_ids);
+                    
+                    
                     $response['data']['class_test_report']    = $exam_data;
                     $response['status']['code']       = 200;
                     $response['status']['msg']        = "Data Found";

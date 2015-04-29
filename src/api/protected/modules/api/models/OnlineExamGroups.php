@@ -434,6 +434,14 @@ class OnlineExamGroups extends CActiveRecord {
         if ($data) {
             $i = 0;
             foreach ($data as $value) {
+                foreach($data as $kvalue)
+                {
+                    $rid[]= $kvalue->id;
+                }
+                $robject = new Reminders();
+                
+                $new_data = $robject->FindUnreadData(15, $rid);
+                
                 $examGiven = false;
                 if (isset($value['examgiven']) && count($value['examgiven']) > 0) {
                     foreach ($value['examgiven'] as $evalue) {
@@ -452,8 +460,8 @@ class OnlineExamGroups extends CActiveRecord {
                 if (isset($value['subject']->icon_number) && $value['subject']->icon_number) {
                     $subject_icon = $value['subject']->icon_number;
                 }
-
-
+                
+                $exam_array[$i]['is_new'] = 0;
 
                 $exam_array[$i]['id'] = $value->id;
                 $exam_array[$i]['timeover'] = 0;
@@ -464,6 +472,12 @@ class OnlineExamGroups extends CActiveRecord {
                 if ($examGiven) {
                     $exam_array[$i]['examGiven'] = 1;
                 }
+                
+                if(in_array($value->id, $new_data) && $exam_array[$i]['timeover']==0 && $exam_array[$i]['examGiven']==0)
+                {
+                    $exam_array[$i]['is_new'] = 1;
+                }
+                
                 $exam_array[$i]['name'] = $value->name;
                 $exam_array[$i]['subject_name'] = $subject;
                 $exam_array[$i]['subject_icon'] = $subject_icon;

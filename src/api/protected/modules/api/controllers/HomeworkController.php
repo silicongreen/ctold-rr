@@ -188,6 +188,9 @@ class HomeworkController extends Controller
                 $homework_data = $assignment->getOnlineExam($id, $batch_id, $student_id);
                 if ($homework_data)
                 {
+                    $robject = new Reminders();
+                    $robject->ReadReminderNew(Yii::app()->user->id, 0 ,15, $id);
+                    
                     $response['data']['current_date'] = date("Y-m-d H:i:s");
                     $response['data']['assesment'] = $homework_data;
                     $response['status']['code'] = 200;

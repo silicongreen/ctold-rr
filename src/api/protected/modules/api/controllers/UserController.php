@@ -659,6 +659,9 @@ class UserController extends Controller {
                     $response['data']['paid_user']['is_admin'] = Yii::app()->user->isAdmin;
                     $response['data']['paid_user']['is_student'] = Yii::app()->user->isStudent;
                     
+                    $objreminder = new Reminders();
+                    $response['data']['paid_user']['unread_total'] = $objreminder->getReminderTotalUnread(Yii::app()->user->id);
+                    
                     
                     
 

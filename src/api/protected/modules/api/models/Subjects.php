@@ -341,7 +341,8 @@ class Subjects extends CActiveRecord
         $progress = array();
         $subject = new Subjects();
         $all_subject = $subject->getSubject($batch_id, $student_id);
-          
+         
+        $color_array = ['#000000','#FF0000','#00FF00','#0000FF','#BF8277','#FF00FF','#00FFFF','#5954D8','#84C1A3','#AAA5BF','#D3CE87','#DDBA87','#CE5E60','#829E8C','#876656','#CE5E60','#7F7F9B','#AD998C'];
         
         $j = 0;
         foreach($all_subject as $value)
@@ -352,6 +353,7 @@ class Subjects extends CActiveRecord
             {
                 $i = 0;
                 $progress['subject'][$j]['name'] = $value['name'];
+                $progress['subject'][$j]['color'] = $color_array[$j];
                 foreach ($exam_details_all as $exam_details)
                 {
                     $examScore = new ExamScores();

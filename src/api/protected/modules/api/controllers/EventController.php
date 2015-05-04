@@ -56,6 +56,7 @@ class EventController extends Controller
                 $rid = 0;
             }
             $objreminder->ReadReminderNew(Yii::app()->user->id, $id, $rtype, $rid);
+            $response['data']['unread_total'] = $objreminder->getReminderTotalUnread(Yii::app()->user->id);
             $response['status']['code'] = 200;
             $response['status']['msg'] = "Success";
         }

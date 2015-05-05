@@ -55,7 +55,7 @@
 
 
 
-    <div style="width: 84.1%; float:left;">
+    <div style="width: 84.1%; float:left; margin-left:100px;">
         <?php //endif; ?>   
         <?php $j = -1; ?>    
         <?php $news_to_show = count($obj_post_news); ?>   

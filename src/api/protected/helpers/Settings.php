@@ -38,7 +38,7 @@ class Settings {
     );
     public static $news_in_index = array(
         'show_old_news' => TRUE,
-        'days_to_retrieve_news' => "-10 days"
+        'days_to_retrieve_news' => "-30 days"
     );
     public static $reset_password = array(
         'token_salt' => TRUE,

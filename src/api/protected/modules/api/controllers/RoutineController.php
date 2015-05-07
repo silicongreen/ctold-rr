@@ -97,7 +97,7 @@ class RoutineController extends Controller {
         if (isset($_POST) && !empty($_POST)) {
 
             $user_secret = Yii::app()->request->getPost('user_secret');
-            $school_id = Yii::app()->request->getPost('school');
+            $school_id = Yii::app()->user->schoolId;
             $response = array();
             if (Yii::app()->user->isTeacher && $school_id && Yii::app()->user->user_secret === $user_secret) {
                 $time_table = new TimetableEntries;
@@ -130,7 +130,7 @@ class RoutineController extends Controller {
         if (isset($_POST) && !empty($_POST)) {
 
             $user_secret = Yii::app()->request->getPost('user_secret');
-            $school_id = Yii::app()->request->getPost('school');
+            $school_id = Yii::app()->user->schoolId;
            
             $date = Yii::app()->request->getPost('date');
             $day_id = Yii::app()->request->getPost('day_id');
@@ -174,7 +174,7 @@ class RoutineController extends Controller {
         if (isset($_POST) && !empty($_POST)) {
 
             $user_secret = Yii::app()->request->getPost('user_secret');
-            $school_id = Yii::app()->request->getPost('school');
+            $school_id = Yii::app()->user->schoolId;
             $bacth_id = Yii::app()->request->getPost('batch_id');
             $date = Yii::app()->request->getPost('date');
             $daily = Yii::app()->request->getPost('daily');
@@ -232,7 +232,7 @@ class RoutineController extends Controller {
         if (isset($_POST) && !empty($_POST)) {
 
             $user_secret = Yii::app()->request->getPost('user_secret');
-            $school_id = Yii::app()->request->getPost('school');
+            $school_id = Yii::app()->user->schoolId;
             $bacth_id = Yii::app()->request->getPost('batch_id');
             $date = Yii::app()->request->getPost('date');
             $daily = Yii::app()->request->getPost('daily');
@@ -280,7 +280,7 @@ class RoutineController extends Controller {
         if (isset($_POST) && !empty($_POST)) {
 
             $user_secret = Yii::app()->request->getPost('user_secret');
-            $school_id = Yii::app()->request->getPost('school');
+            $school_id = Yii::app()->user->schoolId;
             $batch_id = Yii::app()->request->getPost('batch_id');
             $student_id = Yii::app()->request->getPost('student_id');
 
@@ -327,7 +327,7 @@ class RoutineController extends Controller {
         if (isset($_POST) && !empty($_POST)) {
 
             $user_secret = Yii::app()->request->getPost('user_secret');
-            $school_id = Yii::app()->request->getPost('school');
+            $school_id = Yii::app()->user->schoolId;
             $batch_id = Yii::app()->request->getPost('batch_id');
             $student_id = Yii::app()->request->getPost('student_id');
             $exam_id = Yii::app()->request->getPost('exam_id');

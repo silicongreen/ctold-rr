@@ -61,7 +61,7 @@ class CalenderController extends Controller
                 {
                     $batch_id = Yii::app()->request->getPost('batch_id');
                     $student_id = Yii::app()->request->getPost('student_id');
-                    $school_id = Yii::app()->request->getPost('school');
+                    $school_id = Yii::app()->user->schoolId;
                 }
                 else if (Yii::app()->user->isTeacher)
                 {
@@ -456,7 +456,7 @@ class CalenderController extends Controller
         {
 
             $user_secret = Yii::app()->request->getPost('user_secret');
-            $school_id = Yii::app()->request->getPost('school');
+            
 
             $from_date = Yii::app()->request->getPost('from_date');
             $from_date = (!empty($from_date)) ? $from_date : date('Y-01-01');
@@ -486,7 +486,7 @@ class CalenderController extends Controller
 
             if (Yii::app()->user->user_secret === $user_secret)
             {
-
+                $school_id = Yii::app()->user->schoolId;
                 if (Yii::app()->user->isStudent)
                 {
                     $batch_id = Yii::app()->user->batchId;

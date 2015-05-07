@@ -117,7 +117,7 @@ class NoticeController extends Controller {
         if ((Yii::app()->request->isPostRequest) && !empty($_POST)) {
 
             $user_secret = Yii::app()->request->getPost('user_secret');
-            $school_id = Yii::app()->request->getPost('school');
+            
             $notice_type = Yii::app()->request->getPost('notice_type');
             $author_id = Yii::app()->request->getPost('author');
 
@@ -129,7 +129,7 @@ class NoticeController extends Controller {
 
             $response = array();
             if (Yii::app()->user->user_secret === $user_secret) {
-
+                $school_id = Yii::app()->user->schoolId;
                 if ($notice_type == 4) {
                     $response['status']['code'] = 404;
                     $response['status']['msg'] = 'NO_EVENT_FOUND. PLEASE TRY EVENT API';
@@ -164,7 +164,7 @@ class NoticeController extends Controller {
         if ((Yii::app()->request->isPostRequest) && !empty($_POST)) {
 
             $user_secret = Yii::app()->request->getPost('user_secret');
-            $school_id = Yii::app()->request->getPost('school');
+            
             $notice_id = Yii::app()->request->getPost('notice_id');
 
             if (empty($notice_id)) {
@@ -175,7 +175,7 @@ class NoticeController extends Controller {
             }
 
             if (Yii::app()->user->user_secret === $user_secret) {
-
+                $school_id = Yii::app()->user->schoolId;
                 $notice = new NewsAcknowledges;
                 $notice = $notice->acknowledgeNotice($notice_id);
 

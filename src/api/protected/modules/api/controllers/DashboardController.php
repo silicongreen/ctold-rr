@@ -661,10 +661,11 @@ class DashboardController extends Controller
             $user_secret = Yii::app()->request->getPost('user_secret');
             $date = Yii::app()->request->getPost('date');
             $date = (!empty($date)) ? $date : \date('Y-m-d', \time());
-            $school_id = Yii::app()->request->getPost('school');
+            
 
             if (Yii::app()->user->user_secret === $user_secret)
             {
+                $school_id = Yii::app()->user->schoolId;
 
                 $users = new Users;
 

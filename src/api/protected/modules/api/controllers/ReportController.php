@@ -253,7 +253,8 @@ class ReportController extends Controller
                 }
                 else
                 {
-                    $response['data']['progress']    = (object) null;
+                    $progress['exam'] = array();
+                    $response['data']['progress']    = $progress;
                     $response['status']['code']       = 200;
                     $response['status']['msg']        = "Data Not Found";
                 }    

@@ -572,7 +572,7 @@ class ReportController extends Controller
         if ((Yii::app()->request->isPostRequest) && !empty($_POST)) {
 
             $user_secret = Yii::app()->request->getPost('user_secret');
-            $school_id = Yii::app()->request->getPost('school');
+            
             $exam_id = Yii::app()->request->getPost('exam_id');
 
             if (empty($exam_id)) {
@@ -583,7 +583,7 @@ class ReportController extends Controller
             }
 
             if (Yii::app()->user->user_secret === $user_secret) {
-
+                $school_id = Yii::app()->user->schoolId;
                 $exam = new UserExamAcknowledge;
                 $exam_data = $exam->acknowledgeExam($exam_id);
 

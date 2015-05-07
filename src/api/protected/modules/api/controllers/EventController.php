@@ -931,7 +931,7 @@ class EventController extends Controller
         {
 
             $user_secret = Yii::app()->request->getPost('user_secret');
-            $school_id = Yii::app()->request->getPost('school');
+            
 
             $from_date = Yii::app()->request->getPost('from_date');
             $from_date = (!empty($from_date)) ? $from_date : \date('Y-m-d', \time());
@@ -954,6 +954,7 @@ class EventController extends Controller
             $response = array();
             if (Yii::app()->user->user_secret === $user_secret)
             {
+                $school_id = Yii::app()->user->schoolId;
 
                 $events = new Events;
                 $events = $events->getEvents($school_id, $from_date, $to_date, $page_no, $page_size, $category_id, false, false, $archive);
@@ -1013,13 +1014,13 @@ class EventController extends Controller
         {
 
             $user_secret = Yii::app()->request->getPost('user_secret');
-            $school_id = Yii::app()->request->getPost('school');
+            
             $event_id = Yii::app()->request->getPost('event_id');
             $status = Yii::app()->request->getPost('status');
 
             if (Yii::app()->user->user_secret === $user_secret)
             {
-
+                $school_id = Yii::app()->user->schoolId;
                 if (empty($event_id) || !isset($status) || $status == '')
                 {
                     $response['status']['code'] = 400;

@@ -34,7 +34,7 @@ class ClubController extends Controller {
         if ((Yii::app()->request->isPostRequest) && !empty($_POST)) {
 
             $user_secret = Yii::app()->request->getPost('user_secret');
-            $school_id = Yii::app()->request->getPost('school');
+            
 
             $from_date = Yii::app()->request->getPost('from_date');
             $from_date = (!empty($from_date)) ? $from_date : \date('Y-m-d', \time());
@@ -63,7 +63,7 @@ class ClubController extends Controller {
 
             $response = array();
             if (Yii::app()->user->user_secret === $user_secret) {
-
+                $school_id = Yii::app()->user->schoolId;
                 if (Yii::app()->user->isStudent) {
                     $events = new Events;
                     $events = $events->getEvents($school_id, $from_date, $to_date, $page_no, $page_size, $category_id, true, $child_id);
@@ -115,7 +115,7 @@ class ClubController extends Controller {
         if ((Yii::app()->request->isPostRequest) && !empty($_POST)) {
 
             $user_secret = Yii::app()->request->getPost('user_secret');
-            $school_id = Yii::app()->request->getPost('school');
+            $school_id = Yii::app()->user->schoolId;
             $event_id = Yii::app()->request->getPost('club_id');
             $child_id = Yii::app()->request->getPost('student_id');
 

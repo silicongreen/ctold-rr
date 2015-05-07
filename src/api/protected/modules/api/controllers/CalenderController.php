@@ -539,9 +539,13 @@ class CalenderController extends Controller
     private function sendnotificationAttendence($student_id, $newattendence, $late)
     {
         $reminderrecipients = array();
+        $batch_ids = array();
+        $student_ids = array();
         $studentobj = new Students();
         $studentdata = $studentobj->findByPk($student_id);
         $reminderrecipients[] = $studentdata->user_id;
+        $batch_ids[$studentdata->user_id] = $studentdata->batch_id;
+        $student_id[$studentdata->user_id] = $studentdata->id;
 
         if ($late == 1)
             $message = $studentdata->first_name . " " . $studentdata->last_name . " is absent on (forenoon)" . $newattendence->month_date;
@@ -555,6 +559,8 @@ class CalenderController extends Controller
             if($grdata->user_id)
             {
                 $reminderrecipients[] = $grdata->user_id;
+                $batch_ids[$grdata->user_id] = $studentdata->batch_id;
+                $student_id[$grdata->user_id] = $studentdata->id;
             }
         }
 
@@ -572,6 +578,9 @@ class CalenderController extends Controller
                 $reminder->created_at = date("Y-m-d H:i:s");
                 $reminder->rid = $newattendence->id;
                 $reminder->rtype = 6;
+                $reminder->batch_id = $batch_ids[$value];
+                $reminder->student_id = $student_ids[$value];
+                
                 $reminder->updated_at = date("Y-m-d H:i:s");
                 $reminder->school_id = Yii::app()->user->schoolId;
                 $reminder->save();
@@ -586,6 +595,8 @@ class CalenderController extends Controller
     private function sendnotificationleave($student_id, $status, $updateleave)
     {
         $reminderrecipients = array();
+        $batch_ids = array();
+        $student_ids = array();
         $studentobj = new Students();
         $studentdata = $studentobj->findByPk($student_id);
         $reminderrecipients = array();
@@ -597,6 +608,8 @@ class CalenderController extends Controller
             if($grdata->user_id)
             {
                 $reminderrecipients[] = $grdata->user_id;
+                $batch_ids[$grdata->user_id] = $studentdata->batch_id;
+                $student_id[$grdata->user_id] = $studentdata->id;
             }
         }
         $approved_text = "Denied";
@@ -633,6 +646,8 @@ class CalenderController extends Controller
                 $reminder->created_at = date("Y-m-d H:i:s");
                 $reminder->rid = $updateleave->id;
                 $reminder->rtype = 10;
+                $reminder->batch_id = $batch_ids[$value];
+                $reminder->student_id = $student_ids[$value];
                 $reminder->updated_at = date("Y-m-d H:i:s");
                 $reminder->school_id = Yii::app()->user->schoolId;
                 $reminder->save();

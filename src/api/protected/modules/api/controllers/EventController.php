@@ -598,6 +598,8 @@ class EventController extends Controller
                 if($grdata->user_id)
                 {
                     $receptionist_id = $grdata->user_id;
+                    $batch_id = $std_data->batch_id;
+                    $student_id = $std_data->id;
                 }
                 if($receptionist_id)
                 {
@@ -609,6 +611,8 @@ class EventController extends Controller
                     $reminder->school_id = Yii::app()->user->schoolId;
                     $reminder->rid = $meetingreq->id;
                     $reminder->rtype = 11;
+                    $reminder->batch_id = $batch_id;
+                    $reminder->student_id = $student_id;
                     $reminder->created_at = date("Y-m-d H:i:s");
 
                     $reminder->updated_at = date("Y-m-d H:i:s");
@@ -699,6 +703,8 @@ class EventController extends Controller
                 $name = "";
                 $rtype = 13;
                 $recipient = 0;
+                $batch_id = 0;
+                $student_id = 0;
                 if(Yii::app()->user->isParent)
                 {
                     $gr = new Guardians();
@@ -726,6 +732,8 @@ class EventController extends Controller
                         if($grdata->user_id)
                         {
                             $recipient = $grdata->user_id;
+                            $batch_id = $std_data->batch_id;
+                            $student_id = $std_data->id;
                         }
                     }
                 }    
@@ -740,6 +748,8 @@ class EventController extends Controller
                     $reminder->school_id = Yii::app()->user->schoolId;
                     $reminder->rid = $updatemeeting->id;
                     $reminder->rtype = $rtype;
+                    $reminder->batch_id = $batch_id;
+                    $reminder->student_id = $student_id;
                     $reminder->created_at = date("Y-m-d H:i:s");
 
                     $reminder->updated_at = date("Y-m-d H:i:s");

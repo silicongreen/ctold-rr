@@ -35,7 +35,7 @@ class LibraryController extends Controller {
         if ((Yii::app()->request->isPostRequest) && !empty($_POST)) {
 
             $user_secret = Yii::app()->request->getPost('user_secret');
-            $school_id = Yii::app()->request->getPost('school');
+            
 
             $title = Yii::app()->request->getPost('title');
             $title = (!empty($title)) ? $title : NULL;
@@ -53,7 +53,7 @@ class LibraryController extends Controller {
             $page_size = (!empty($page_size)) ? $page_size : 10;
 
             if (Yii::app()->user->user_secret === $user_secret) {
-
+                $school_id = Yii::app()->user->schoolId;
                 $books = new Books;
                 $books = $books->getBookDetails($school_id, $title, $author, $tag, $page_no, $page_size);
 
@@ -95,7 +95,7 @@ class LibraryController extends Controller {
         if ((Yii::app()->request->isPostRequest) && !empty($_POST)) {
 
             $user_secret = Yii::app()->request->getPost('user_secret');
-            $school_id = Yii::app()->request->getPost('school');
+            
 
             $book_id = Yii::app()->request->getPost('book_id');
 
@@ -107,7 +107,7 @@ class LibraryController extends Controller {
             }
 
             if (Yii::app()->user->user_secret === $user_secret) {
-
+                $school_id = Yii::app()->user->schoolId;
                 $book = new Books;
                 $book = $book->reserveBook($book_id);
                 

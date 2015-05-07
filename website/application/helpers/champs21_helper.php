@@ -694,7 +694,7 @@ if( !function_exists("send_notification_paid"))
         
         if($user_type && count($all_gcm_user)>0 && count($notification)>0)
         {
-            $data = array("key" => "paid",'total_unread'=>$total_unread,"user_type"=>$user_type,"subject"=>$notification->subject, "rtype" => $notification->rtype, "rid" => $notification->rid);
+            $data = array("key" => "paid",'total_unread'=>$total_unread,"user_type"=>$user_type,"subject"=>$notification->subject, "rtype" => $notification->rtype, "rid" => $notification->rid, "batch_id" => $notification->batch_id, "student_id" => $notification->student_id);
             $messege = $notification->body;
             $CI->load->library('gcm');
             $CI->gcm->setMessage($messege);

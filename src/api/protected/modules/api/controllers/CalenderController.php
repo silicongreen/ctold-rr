@@ -23,7 +23,7 @@ class CalenderController extends Controller
     {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('getAttendence', 'academic', 'getbatch', 'getbatchstudentattendence', 'approveLeave', 'addattendence',
+                'actions' => array('getAttendence', 'academic', 'getbatch', 'getbatchstudentattendence', 'approveLeave', 'addattendence','addattendencesingle',
                     'studentattendencereport', 'getstudentinfo'),
                 'users' => array('*'),
             ),
@@ -761,6 +761,97 @@ class CalenderController extends Controller
                 $response['status']['code'] = 400;
                 $response['status']['msg'] = "Bad Request";
             }
+        }
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    }
+    
+    public function actionAddAttendenceSingle()
+    {
+        $user_secret = Yii::app()->request->getPost('user_secret');
+        $batch_id = Yii::app()->request->getPost('batch_id');
+        $student_id = Yii::app()->request->getPost('student_id');
+        $late = Yii::app()->request->getPost('late');
+        $date = Yii::app()->request->getPost('date');
+        
+
+        if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher && $batch_id && $student_id)
+        {
+            
+            if (!$date)
+            {
+                $date = date("Y-m-d");
+            }
+            $attendence = new Attendances();
+            $attendence_batch = $attendence->getAttendenceStudent($student_id, $date);
+            if ($attendence_batch)
+                foreach ($attendence_batch as $value)
+                {
+                    $previous_attendence = $attendence->findbypk($value->id);
+                    if ($previous_attendence)
+                    {
+                        $reminder = new Reminders();
+
+                        $reminderdata = $reminder->getReminder($value->id);
+
+                        if ($reminderdata)
+                        {
+                            foreach ($reminderdata as $rvalue)
+                            {
+                                $rfordelete = $reminder->findByPk($rvalue->id);
+                                $rfordelete->delete();
+                            }
+                        }
+
+                        $previous_attendence->delete();
+                    }
+                }
+
+            
+            $late = (isset($lates[$key])) ? $lates[$key] : 0;
+
+            $newattendence = new Attendances();
+
+            $leaveStudent = new ApplyLeaveStudents();
+            $leave_today = $leaveStudent->getallleaveStudentsDate($date);
+
+            if (isset($leave_today['approved']) && in_array($student_id, $leave_today['approved']))
+            {
+                $newattendence->is_leave = 1;
+            }
+
+            $newattendence->batch_id = $batch_id;
+            $newattendence->student_id = $student_id;
+            // $newattendence->reason = $reason;
+            $newattendence->month_date = $date;
+            $newattendence->created_at = date("Y-m-d H:i:s");
+            $newattendence->updated_at = date("Y-m-d H:i:s");
+            $newattendence->school_id = Yii::app()->user->schoolId;
+            if ($late && $late == 1)
+            {
+                $newattendence->forenoon = 1;
+                $newattendence->afternoon = 0;
+            }
+            else
+            {
+                $newattendence->forenoon = 1;
+                $newattendence->afternoon = 1;
+            }
+            $newattendence->save();
+
+            if(!isset($newattendence->is_leave) || $newattendence->is_leave!=1)
+            {
+                $this->sendnotificationAttendence($student_id, $newattendence, $late);
+            }
+            
+
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "Success";
         }
         else
         {

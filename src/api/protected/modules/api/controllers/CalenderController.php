@@ -813,7 +813,7 @@ class CalenderController extends Controller
             }
 
             
-            $late = (isset($lates[$key])) ? $lates[$key] : 0;
+            $late = (isset($late)) ? $late : 0;
 
             $newattendence = new Attendances();
 

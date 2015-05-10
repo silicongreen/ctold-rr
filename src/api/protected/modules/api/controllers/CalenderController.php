@@ -545,7 +545,7 @@ class CalenderController extends Controller
         $studentdata = $studentobj->findByPk($student_id);
         $reminderrecipients[] = $studentdata->user_id;
         $batch_ids[$studentdata->user_id] = $studentdata->batch_id;
-        $student_id[$studentdata->user_id] = $studentdata->id;
+        $student_ids[$studentdata->user_id] = $studentdata->id;
 
         if ($late == 1)
             $message = $studentdata->first_name . " " . $studentdata->last_name . " is absent on (forenoon)" . $newattendence->month_date;

@@ -789,28 +789,28 @@ class CalenderController extends Controller
             }
             $attendence = new Attendances();
             $attendence_batch = $attendence->getAttendenceStudent($student_id, $date);
+            
             if ($attendence_batch)
-                foreach ($attendence_batch as $value)
+            {
+                $previous_attendence = $attendence->findbypk($attendence_batch->id);
+                if ($previous_attendence)
                 {
-                    $previous_attendence = $attendence->findbypk($value->id);
-                    if ($previous_attendence)
+                    $reminder = new Reminders();
+
+                    $reminderdata = $reminder->getReminder($attendence_batch->id);
+
+                    if ($reminderdata)
                     {
-                        $reminder = new Reminders();
-
-                        $reminderdata = $reminder->getReminder($value->id);
-
-                        if ($reminderdata)
+                        foreach ($reminderdata as $rvalue)
                         {
-                            foreach ($reminderdata as $rvalue)
-                            {
-                                $rfordelete = $reminder->findByPk($rvalue->id);
-                                $rfordelete->delete();
-                            }
+                            $rfordelete = $reminder->findByPk($rvalue->id);
+                            $rfordelete->delete();
                         }
-
-                        $previous_attendence->delete();
                     }
+
+                    $previous_attendence->delete();
                 }
+            }
 
             
             $late = (isset($lates[$key])) ? $lates[$key] : 0;

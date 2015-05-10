@@ -160,7 +160,7 @@ class Reminders extends CActiveRecord
         public function getUserReminderNew($user_id,$page_number,$page_size,$created_at="",$rtype="")
         {
             $criteria = new CDbCriteria;
-            $criteria->select = 't.id,t.subject,t.body,t.rtype,t.rid,t.is_read';
+            $criteria->select = 't.id,t.subject,t.body,t.rtype,t.rid,t.is_read,t.batch_id,t.student_id';
             $criteria->compare('recipient', $user_id);
             $criteria->compare('is_deleted_by_sender', 0);
             $criteria->compare('is_deleted_by_recipient', 0);
@@ -188,6 +188,9 @@ class Reminders extends CActiveRecord
                         $reminder[$i]['subject'] = trim($value->subject);
                    }
                    $reminder[$i]['is_read'] = $value->is_read;
+                   
+                   $reminder[$i]['batch_id'] = $value->batch_id;
+                   $reminder[$i]['student_id'] = $value->student_id;
                    
                    $reminder[$i]['body'] = "";
                    if($value->body)

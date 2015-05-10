@@ -778,6 +778,7 @@ class CalenderController extends Controller
         $student_id = Yii::app()->request->getPost('student_id');
         $late = Yii::app()->request->getPost('late');
         $date = Yii::app()->request->getPost('date');
+        $remove_only = Yii::app()->request->getPost('remove_only');
         
 
         if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher && $batch_id && $student_id)
@@ -815,38 +816,41 @@ class CalenderController extends Controller
             
             $late = (isset($late)) ? $late : 0;
 
-            $newattendence = new Attendances();
-
-            $leaveStudent = new ApplyLeaveStudents();
-            $leave_today = $leaveStudent->getallleaveStudentsDate($date);
-
-            if (isset($leave_today['approved']) && in_array($student_id, $leave_today['approved']))
+            if(!$remove_only)
             {
-                $newattendence->is_leave = 1;
-            }
+                $newattendence = new Attendances();
 
-            $newattendence->batch_id = $batch_id;
-            $newattendence->student_id = $student_id;
-            // $newattendence->reason = $reason;
-            $newattendence->month_date = $date;
-            $newattendence->created_at = date("Y-m-d H:i:s");
-            $newattendence->updated_at = date("Y-m-d H:i:s");
-            $newattendence->school_id = Yii::app()->user->schoolId;
-            if ($late && $late == 1)
-            {
-                $newattendence->forenoon = 1;
-                $newattendence->afternoon = 0;
-            }
-            else
-            {
-                $newattendence->forenoon = 1;
-                $newattendence->afternoon = 1;
-            }
-            $newattendence->save();
+                $leaveStudent = new ApplyLeaveStudents();
+                $leave_today = $leaveStudent->getallleaveStudentsDate($date);
 
-            if(!isset($newattendence->is_leave) || $newattendence->is_leave!=1)
-            {
-                $this->sendnotificationAttendence($student_id, $newattendence, $late);
+                if (isset($leave_today['approved']) && in_array($student_id, $leave_today['approved']))
+                {
+                    $newattendence->is_leave = 1;
+                }
+
+                $newattendence->batch_id = $batch_id;
+                $newattendence->student_id = $student_id;
+                // $newattendence->reason = $reason;
+                $newattendence->month_date = $date;
+                $newattendence->created_at = date("Y-m-d H:i:s");
+                $newattendence->updated_at = date("Y-m-d H:i:s");
+                $newattendence->school_id = Yii::app()->user->schoolId;
+                if ($late && $late == 1)
+                {
+                    $newattendence->forenoon = 1;
+                    $newattendence->afternoon = 0;
+                }
+                else
+                {
+                    $newattendence->forenoon = 1;
+                    $newattendence->afternoon = 1;
+                }
+                $newattendence->save();
+
+                if(!isset($newattendence->is_leave) || $newattendence->is_leave!=1)
+                {
+                    $this->sendnotificationAttendence($student_id, $newattendence, $late);
+                }
             }
             
 

@@ -649,26 +649,15 @@
             
                 <?php
                     $image_related = "";
-                    if(isset($news->lead_material))
+                    if(isset($news->lead_material) && $news->lead_material)
                     {
                        $image_related = $news->lead_material;
-//                       $news->lead_material =  str_replace("http://www.champs21.com/", "/var/home/champs21/public_html/website/", $news->lead_material);
-//                       $news->lead_material =  str_replace("http://champs21.com/", "/var/home/champs21/public_html/website/", $news->lead_material);
-//                       
-//                       list($width_main, $height_main, $type_main, $attr_main) = getimagesize($news->lead_material); 
+
                        
                     }
-//                    if(isset($width_main) && $width_main>0)
-//                    {
-//                        $image_related = $news->lead_material;
-//                    }
-
-                    else if(!$image_related && isset($news->image))
+                    else if(isset($news->image) && $news->image)
                     {
-//                        $news->image =  str_replace("http://www.champs21.com/", "/var/home/champs21/public_html/website/", $news->image);
-//                        $news->image =  str_replace("http://champs21.com/", "/var/home/champs21/public_html/website/", $news->image);
-//                        
-//                        list($width_main, $height_main, $type_main, $attr_main) = getimagesize($news->image);
+
                         $image_related = $news->image;
 
                     }  

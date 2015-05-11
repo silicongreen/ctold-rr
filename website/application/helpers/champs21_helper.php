@@ -683,6 +683,11 @@ if( !function_exists("send_notification_paid"))
            $user_type = 4; 
         } 
         
+        if(!$total_unread)
+        {
+            $total_unread = 0;
+        }    
+        
         
         //getting all user gcm_ids
         $CI->db->dbprefix = 'tds_';

@@ -647,6 +647,7 @@ if( !function_exists("send_notification_paid"))
         $notification = $CI->db->get()->row();
         
         //getting notification details
+        $total_unread = 0;
         $CI->db->dbprefix = '';
         $CI->db->select('count(id) as total_unread');
         $CI->db->from('reminders');
@@ -655,7 +656,11 @@ if( !function_exists("send_notification_paid"))
         $CI->db->where('is_deleted_by_recipient',0);
         $CI->db->where('is_read',0);
         $count_notification = $CI->db->get()->row();
-        $total_unread = $count_notification->total_unread;
+        
+        if($count_notification)
+        {
+            $total_unread = $count_notification->total_unread;
+        }
         
         //getting user information
         $CI->db->dbprefix = '';
@@ -697,7 +702,7 @@ if( !function_exists("send_notification_paid"))
         $CI->db->join('gcm_ids', 'gcm_ids.id = user_gcm.gcm_id');
         $all_gcm_user = $CI->db->get()->result();
         
-        if($user_type && count($all_gcm_user)>0 && count($notification)>0)
+        if($user_type && $total_unread && count($all_gcm_user)>0 && count($notification)>0)
         {
             $data = array("key" => "paid",'total_unread'=>$total_unread,"user_type"=>$user_type,"subject"=>$notification->subject, "rtype" => $notification->rtype, "rid" => $notification->rid, "batch_id" => $notification->batch_id, "student_id" => $notification->student_id);
             $messege = $notification->body;

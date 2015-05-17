@@ -55,7 +55,7 @@ class CalenderController extends Controller
             if (Yii::app()->user->user_secret === $user_secret && $start_date != "" && $end_date != "" &&
                     ( Yii::app()->user->isStudent ||
                     (Yii::app()->user->isParent && Yii::app()->request->getPost('batch_id') && Yii::app()->request->getPost('student_id') && Yii::app()->request->getPost('school')) ||
-                    (Yii::app()->user->isTeacher && Yii::app()->request->getPost('batch_id') && Yii::app()->request->getPost('student_id'))))
+                    ((Yii::app()->user->isTeacher || Yii::app()->user->isAdmin) && Yii::app()->request->getPost('batch_id') && Yii::app()->request->getPost('student_id'))))
             {
                 if (Yii::app()->user->isParent)
                 {
@@ -63,7 +63,7 @@ class CalenderController extends Controller
                     $student_id = Yii::app()->request->getPost('student_id');
                     $school_id = Yii::app()->user->schoolId;
                 }
-                else if (Yii::app()->user->isTeacher)
+                else if (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin)
                 {
                     $batch_id = Yii::app()->request->getPost('batch_id');
                     $student_id = Yii::app()->request->getPost('student_id');
@@ -781,7 +781,7 @@ class CalenderController extends Controller
         $remove_only = Yii::app()->request->getPost('remove_only');
         
 
-        if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher && $batch_id && $student_id)
+        if (Yii::app()->user->user_secret === $user_secret && (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin) && $batch_id && $student_id)
         {
             
             if (!$date)
@@ -968,7 +968,7 @@ class CalenderController extends Controller
         $batch_id = Yii::app()->request->getPost('batch_id');
         $date = Yii::app()->request->getPost('date');
 
-        if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher && $batch_id)
+        if (Yii::app()->user->user_secret === $user_secret && (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin) && $batch_id)
         {
             if (!$date)
             {
@@ -1038,7 +1038,7 @@ class CalenderController extends Controller
         $batch_id = Yii::app()->request->getPost('batch_id');
         $date = Yii::app()->request->getPost('date');
 
-        if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher && $batch_id)
+        if (Yii::app()->user->user_secret === $user_secret && (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin) && $batch_id)
         {
             if (!$date)
             {

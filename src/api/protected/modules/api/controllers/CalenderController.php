@@ -63,7 +63,7 @@ class CalenderController extends Controller
                     $student_id = Yii::app()->request->getPost('student_id');
                     $school_id = Yii::app()->user->schoolId;
                 }
-                else if (Yii::app()->user->isTeacher)
+                else if (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin)
                 {
                     $batch_id = Yii::app()->request->getPost('batch_id');
                     $student_id = Yii::app()->request->getPost('student_id');

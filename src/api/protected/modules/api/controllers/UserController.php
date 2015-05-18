@@ -534,7 +534,8 @@ class UserController extends Controller {
                     $userpaidData = $userpaidobj->findByPk(Yii::app()->user->id);
                     
                     $data = $free_user->login($username,$password, true);
-                    if($data->id)
+                    
+                    if($data)
                     {
                         $user_type_edit = 1;
                         $freedata = $free_user->findByPk($data->id);
@@ -561,6 +562,8 @@ class UserController extends Controller {
                     }   
                     else
                     {
+                        
+                        Yii::app()->db->createCommand()->delete('tds_free_users', 'email = (?) OR paid_username = (?) OR paid_id = (?)', array($username, $username, Yii::app()->user->id));
                         
                         $free_user->paid_id = Yii::app()->user->id;
                         $free_user->paid_username = $username;

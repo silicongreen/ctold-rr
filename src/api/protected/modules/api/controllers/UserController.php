@@ -533,8 +533,8 @@ class UserController extends Controller {
                     $userpaidobj = new Users();
                     $userpaidData = $userpaidobj->findByPk(Yii::app()->user->id);
                     
-                    
-                    if($data = $free_user->login($username,$password, true))
+                    $data = $free_user->login($username,$password, true);
+                    if($data->id)
                     {
                         $user_type_edit = 1;
                         $freedata = $free_user->findByPk($data->id);

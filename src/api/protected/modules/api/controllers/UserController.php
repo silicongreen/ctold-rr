@@ -551,6 +551,8 @@ class UserController extends Controller {
                             $freedata->user_type = 3;
                         }
                         $freedata->school_name = $school_details->name;
+                        $free_user->first_name = $userpaidData->first_name;
+                        $free_user->last_name = $userpaidData->last_name;
                         $freedata->save();
                         
                         $folderObj = new UserFolder();

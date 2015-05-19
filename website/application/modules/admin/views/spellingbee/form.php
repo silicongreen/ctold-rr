@@ -26,7 +26,7 @@
                         <fieldset class="label_side top">
                             <label for="type">Type</label>
                             <div>
-                                <input id="type" name="word" value="<?php echo $model->word; ?>" type="text" class="required" minlength="4" required>
+                                <input id="wtype" name="wtype" value="<?php echo $model->wtype; ?>" type="text" class="required" minlength="4" required>
                                 <div class="required_tag"></div>
                             </div>
                         </fieldset>
@@ -60,10 +60,16 @@
                             <div>
                                 <?php
                                     $c_year = date('Y');
-                                    $years = array($c_year);
-                                    for($i = 0; $i <= 3; $i++){
+                                    $c_year = $c_year-10;
+                                    $years = array(NULL => "Selcet"); 
+                                    $years[$c_year]= $c_year;
+                                    for($i = 0; $i < 10; $i++){
                                         $c_year += 1;
-                                        $years[] = $c_year;
+                                        $years[$c_year] = $c_year;
+                                    }
+                                    if(!$model->year)
+                                    {
+                                        $model->year = date('Y');
                                     }
                                     
                                     echo form_dropdown('year', $years, $model->year, 'id="year"');
@@ -75,9 +81,10 @@
                         <fieldset class="label_side top">
                             <label>Word Strength</label>
                             <div class="jqui_radios">
-                                <input type="radio" class="required" name="level" value="1" id="easy" <?php echo ($model->level == 1) ? 'checked="checked"' : ''; ?>/><label for="easy">Easy</label>
-                                <input type="radio" class="required" name="level" value="2" id="medium" <?php echo ($model->level == 2) ? 'checked="checked"' : ''; ?>/><label for="medium">Medium</label>
-                                <input type="radio" class="required" name="level" value="3" id="hard" <?php echo ($model->level == 3) ? 'checked="checked"' : ''; ?>/><label for="hard">Hard</label>
+                                <input type="radio" class="required" name="level" value="0" id="easy" <?php echo ($model->level == 0) ? 'checked="checked"' : ''; ?>/><label for="easy">Easy</label>
+                                <input type="radio" class="required" name="level" value="1" id="medium" <?php echo ($model->level == 1) ? 'checked="checked"' : ''; ?>/><label for="medium">Medium</label>
+                                <input type="radio" class="required" name="level" value="2" id="hard" <?php echo ($model->level == 2) ? 'checked="checked"' : ''; ?>/><label for="hard">Hard</label>
+                                <input type="radio" class="required" name="level" value="3" id="extreme" <?php echo ($model->level == 3) ? 'checked="checked"' : ''; ?>/><label for="extreme">Extreme Hard</label>
                                 <div class="required_tag"></div>
                             </div>
                             
@@ -86,7 +93,7 @@
                         <fieldset class="label_side top">
                             <label>Word Source</label>
                             <div class="jqui_radios">
-                                <input type="radio" class="required" name="source" value="1" id="word_bank" <?php echo ($model->source == 1) ? 'checked="checked"' : ''; ?>/><label for="word_bank">Word Bank</label>
+                                <input type="radio" class="required" name="source" value="1" id="word_bank" <?php echo ($model->source == 1 || $model->source == 0) ? 'checked="checked"' : ''; ?>/><label for="word_bank">Word Bank</label>
                                 <input type="radio" class="required" name="source" value="2" id="others" <?php echo ($model->source == 2) ? 'checked="checked"' : ''; ?>/><label for="others">others</label>
                                 <input type="radio" class="required" name="source" value="3" id="daily_star" <?php echo ($model->source == 3) ? 'checked="checked"' : ''; ?>/><label for="daily_star">Daily Star</label>
                                 <div class="required_tag"></div>

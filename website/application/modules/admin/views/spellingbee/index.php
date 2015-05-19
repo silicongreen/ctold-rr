@@ -8,12 +8,12 @@
 
         <input type="hidden" id="modelwidth" value="80%" />
 
-        <input type="hidden" id="modelheight" value="99%" />
+        <input type="hidden" id="modelheight" value="90%" />
         
-        <?php if(is_integer(($datatableSortBy)) && $datatableSortBy >= 0 && !empty($datatableSortDirection)){?>
-            <input type="hidden" id="sortIndex" value="<?php echo $datatableSortBy;?>" />
-            <input type="hidden" id="sorttype" value="<?php echo $datatableSortBy;?>" />
-        <?php }?>
+        
+        <input type="hidden" id="sortIndex" value="<?php echo $datatableSortBy;?>" />
+        <input type="hidden" id="sorttype" value="<?php echo $datatableSortDirection;?>" />
+
         
         <div id="main_container" class="main_container container_16 clearfix">
 
@@ -27,15 +27,26 @@
                 <div class="box grid_16" >
                     <?php
                         $filter_array = array();
+                        $filter_array[1] = array("Word", "input");
 
                         $level = array(NULL => "Selcet", 1 => "Easy", 2 => "Medium", 3 => "Hard");
-                        $filter_array[5] = array("Level", "form_dropdown", $level);
+                        $filter_array[4] = array("Level", "form_dropdown", $level);
 
                         $status = array(NULL => "Selcet", 0 => "Disabled", 1 => "Enabled");
-                        $filter_array[6] = array("Status", "form_dropdown", $status);
-
-                        $source = array(NULL => "Selcet", 1 => "Word Bank", 2 => "Others", 3 => "Daily Star");
-                        $filter_array[7] = array("Status", "form_dropdown", $source);
+                        $filter_array[5] = array("Status", "form_dropdown", $status);
+                        $c_year = date('Y');
+                        $c_year = $c_year-10;
+                        $years = array(NULL => "Selcet"); 
+                        $years[$c_year]= $c_year;
+                        for($i = 0; $i < 10; $i++){
+                            $c_year += 1;
+                            $years[$c_year] = $c_year;
+                        }
+                       
+                        $filter_array[6] = array("Year", "form_dropdown", $years);
+                        
+                        $status = array(NULL => "Selcet", 1 => "Yes", 0 => "No");
+                        $filter_array[7] = array("Sound Problem", "form_dropdown", $status);
 
                         create_filter($filter_array);
                     ?>

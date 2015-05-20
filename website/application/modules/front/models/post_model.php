@@ -582,10 +582,10 @@ class Post_model extends DataMapper
         
         $this->db->where("postType.type_id", $user_post_type);
         
+        if( is_array($ar_categories) && (count($ar_categories) > 0) ) {
+            $this->db->where("post_category.category_id IN (" . implode(",", $ar_categories) . ")" );
+        }
         
-        
-        
-        $this->db->where("post_category.category_id IN (" . implode(",", $ar_categories) . ")" );
         $this->db->group_by("post.id");
         
         $post = $this->db->get("post");
@@ -624,7 +624,9 @@ class Post_model extends DataMapper
         $this->db->where("post.status",5);
         $this->db->where("(referance_id IS NULL OR referance_id = '')");
         
-        $this->db->where("post_category.category_id IN (" . implode(",", $ar_categories) . ")" );
+        if( is_array($ar_categories) && (count($ar_categories) > 0) ) {
+            $this->db->where("post_category.category_id IN (" . implode(",", $ar_categories) . ")" );
+        }
         $this->db->group_by("post.id");
         
         $this->db->limit("1");

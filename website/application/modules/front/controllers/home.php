@@ -1313,7 +1313,7 @@ class home extends MX_Controller {
         $obj_post_data->outbrain_content = $this->load->view( 'outbrain', $data1, TRUE );
 
         $obj_post_data->resource  = $obj_post->get_related_gallery($obj_post_data->post_id);
-
+        
         if ( $obj_post_data->post_type == 4 )
         {
             $obj_post_data->has_previous = $obj_post->has_news($obj_post_data->post_id, $a_category_ids, 'previous', $obj_post_data->published_date);

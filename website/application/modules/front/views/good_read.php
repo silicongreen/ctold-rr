@@ -98,8 +98,10 @@ $widget = new Widget;
     .good-read-box .selected-folder span{
         color: #fff;
     }
-    .good-read-box .folder:hover, .folder-add:hover{
-        background-image: url(<?php echo base_url('styles/layouts/tdsfront/images/social/black-folder.png'); ?>) no-repeat 50px 38px;
+    .good-read-box .folder:hover, .folder-add:hover {
+        background-image: url(<?php echo base_url('styles/layouts/tdsfront/images/social/black-folder.png'); ?>);
+        background-position: 50px 38px;
+        background-repeat: no-repeat;
         background-color: #3d3d3b;
         background-size: 50px 50px;
         transition: all 0.25s ease-out 0s;

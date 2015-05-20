@@ -651,7 +651,7 @@ height: 46px;
                 </div>
                 <!-- Login Form -->
                 
-                <div style="width: 10%; display: inline-flex;">
+                <div style="width: 10%; float: left;">
                     <?php if( free_user_logged_in() ){ ?>
                     <ul class="ch-grid-header">
                         <li>

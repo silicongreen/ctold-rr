@@ -72,9 +72,10 @@ $widget = new Widget;
         border-bottom: 3px solid #ccc;
         border-right: 2px solid #ccc;
         cursor: pointer;
-        background: #fff url(<?php echo base_url('styles/layouts/tdsfront/images/social/add-folder.png'); ?>) no-repeat 50px 38px;
+        background: #fff url(<?php echo base_url('styles/layouts/tdsfront/images/social/black-folder.png'); ?>) no-repeat 50px 38px;
         background-size: 50px 50px;
         padding-top: 95px;
+        position: relative;
     }
     .good-read-box .selected-folder{
         height: 150px;
@@ -98,11 +99,64 @@ $widget = new Widget;
         color: #fff;
     }
     .good-read-box .folder:hover, .folder-add:hover{
-        background: #FC3E30 url(<?php echo base_url('styles/layouts/tdsfront/images/social/white-folder.png'); ?>) no-repeat 50px 38px;
+        background-image: url(<?php echo base_url('styles/layouts/tdsfront/images/social/black-folder.png'); ?>) no-repeat 50px 38px;
+        background-color: #3d3d3b;
         background-size: 50px 50px;
+        transition: all 0.25s ease-out 0s;
+        -webkit-transition: all 0.25s ease-out 0s;
+        -ms-transition: all 0.25s ease-out 0s;
+        -moz-transition: all 0.25s ease-out 0s;
+        -o-transition: all 0.25s ease-out 0s;
     }
     .good-read-box .folder:hover span, .folder-add:hover span{
-        color: #fff;
+        color: #93989c;
+    }
+    .good-read-box .folder a {
+        background: transparent none repeat scroll 0 0;
+        border: 1px solid #93989c;
+        border-radius: 50%;
+        color: #93989c;
+        font-size: 10px;
+        font-weight: bold;
+        height: 22px;
+        line-height: 17px;
+        opacity: 0;
+        position: absolute;
+        right: 10px;
+        text-align: center;
+        text-decoration: none;
+        top: 10px;
+        visibility: hidden;
+        width: 20px;
+        transition: all 0.25s ease-out 0s;
+        -webkit-transition: all 0.25s ease-out 0s;
+        -ms-transition: all 0.25s ease-out 0s;
+        -moz-transition: all 0.25s ease-out 0s;
+        -o-transition: all 0.25s ease-out 0s;
+    }
+    .good-read-box .folder-add a {
+        background: transparent none repeat scroll 0 0;
+        border: 1px solid #ffffff;
+        border-radius: 50%;
+        color: #ffffff;
+        height: 18px;
+        position: absolute;
+        right: 69px;
+        text-align: center;
+        text-decoration: none;
+        top: 64px;
+        width: 18px;
+    }
+    .good-read-box .folder-add a span {
+        color: #ffffff;
+        font-size: 20px;
+        margin-left: -5px;
+        margin-top: -7px;
+        position: absolute;
+    }
+    .good-read-box .folder:hover a {
+        opacity: 1;
+        visibility: visible;
     }
     input.folder_name{
         height: 45px;
@@ -241,9 +295,7 @@ $widget = new Widget;
 
     <div class="als-container good-read-box" id="demo2">
         <div class="good-read-box-scroll">
-            <div class="folder <?php echo ($folder_visible == 0) ? 'selected-folder' : ''; ?>" id="folder_0" onclick="location.href = '<?php echo base_url('good-read'); ?>'">
-                <span class="title-span-folder f2">Unread</span>
-            </div>
+
             <div <?php if ($i_user_folder_count > 3): ?>class="als-viewport"<?php endif; ?> style="float:left; overflow: hidden; width: auto;">
                 <ul class="als-wrapper">
                     <?php
@@ -254,14 +306,12 @@ $widget = new Widget;
                         <?php if ($folder->title == trim(strip_tags($folder->title))): ?>
                             <li class="als-item" id="folderli_<?php echo $folder->id; ?>"  <?php if ($selected_folder_id == $folder->id): ?>style="left:-505px;"<?php endif; ?>>            
                                 <div class="folder folder_div  <?php echo ($selected_folder_id == $folder->id) ? 'selected-folder' : ''; ?>" id="folder_<?php echo $folder->id; ?>" data-link="<?php echo base_url('good-read/' . $folder->title); ?>" >
-                                    <span class="title-span-folder f2"><?php echo strip_tags($folder->title); ?></span>
-
-                                    <?php if (!in_array($folder->title, $dfolders)): ?>
-                                        <a href="javascript:void(0);" id="delete_folder_<?php echo $folder->id; ?>" class="f2 delete_folder" style="position: absolute;top: 3px;right: 3px;display: block;
-                                           width: 20px;height: 22px;line-height: 17px;border: 1px solid black;border-radius: 50%;
-                                           color:#f5f5f5; text-align:center;text-decoration:none;background: gray;
-                                           font-size: 10px;font-weight:bold;">x</a>
-                                       <?php endif; ?>      
+                                    <span class="title-span-folder f2"><?php echo ucfirst(strip_tags($folder->title)); ?></span>
+                                    <?php
+                                    ?>
+                                    <?php if (strtolower(strip_tags($folder->title)) !== 'unread'): ?>
+                                        <a href="javascript:void(0);" id="delete_folder_<?php echo $folder->id; ?>" class="f2 delete_folder">x</a>
+                                    <?php endif; ?>      
                                 </div>            
                             </li>
                             <?php
@@ -271,13 +321,17 @@ $widget = new Widget;
                     <?php endforeach; ?>
                 </ul>
             </div>
+
             <div class="folder-add add-folder add">
                 <span class="title-span-folder f2">Add Folder</span>
+                <a href="javascript:void(0);" class="f2"><span>+</span></a>
             </div>
+
             <?php if ($i_user_folder_count > 3): ?>
-                                                    <span class="als-next" style='background: url("../styles/layouts/tdsfront/images/nextarrow.png") no-repeat 10px 55px white !important;height: 149px; float:left; clear:none; position: static; margin-left:10px;'><!-- <img src="<?php echo base_url('styles/layouts/tdsfront/images/nextarrow.png'); ?>" alt="next" title="next" />--></span>
+                            <span class="als-next" style='background: url("../styles/layouts/tdsfront/images/nextarrow.png") no-repeat 10px 55px white !important;height: 149px; float:left; clear:none; position: static; margin-left:10px;'><!-- <img src="<?php echo base_url('styles/layouts/tdsfront/images/nextarrow.png'); ?>" alt="next" title="next" />--></span>
             <?php endif; ?>
         </div>
+
         <div class="good-read-box2">
             <div class="good-read-box-new-folder">
                 <label class="label-folder">Folder Name</label>

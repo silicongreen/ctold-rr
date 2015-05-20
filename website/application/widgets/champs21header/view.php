@@ -962,6 +962,7 @@ if($('.header-logo-div').is(':visible')) {
 {
     width: auto;
     display:inline-block;
+    float: left;
 }
 .header-logo-div
 {
@@ -2178,6 +2179,7 @@ if($('.header-logo-div').is(':visible')) {
         background-color: #ADB2B5 !important;
         font-size: 15px !important;
         text-align: center;
+        text-indent: 25px !important;
         border-radius: 5px !important;
         -o-border-radius: 5px !important;
         -moz-border-radius: 5px !important;
@@ -2545,7 +2547,11 @@ if($('.header-logo-div').is(':visible')) {
         width: 50px;
     }
     .fb-button button {
-        background: url("styles/layouts/tdsfront/image/facebook.png") no-repeat scroll 0 0 / 50px auto transparent;
+        background-color: transparent;
+        background-image: url("styles/layouts/tdsfront/image/facebook.png");
+        background-position: 0 0;
+        background-repeat: no-repeat;
+        background-size: 50px auto;
         border: medium none;
         color: #de3427;
         font-family: inherit;
@@ -2554,7 +2560,7 @@ if($('.header-logo-div').is(':visible')) {
         position: relative;
     }
     .fb-button button:hover {
-        background: url("styles/layouts/tdsfront/image/facebook_hover.png") no-repeat scroll 0 0 / 50px auto transparent;
+        background-image: url("styles/layouts/tdsfront/image/facebook_hover.png");
     }
     
     .google-button{
@@ -2563,7 +2569,11 @@ if($('.header-logo-div').is(':visible')) {
         width: 50px;
     }
     .google-button button {
-        background: url("styles/layouts/tdsfront/image/google_plus.png") no-repeat scroll 0 0 / 50px auto transparent;
+        background-color: transparent;
+        background-image: url("styles/layouts/tdsfront/image/google_plus.png");
+        background-position: 0 0;
+        background-repeat: no-repeat;
+        background-size: 50px auto;
         border: medium none;
         color: #de3427;
         font-family: inherit;
@@ -2572,7 +2582,7 @@ if($('.header-logo-div').is(':visible')) {
         position: relative;
     }
     .google-button button:hover {
-        background: url("styles/layouts/tdsfront/image/google_plus_hover.png") no-repeat scroll 0 0 / 50px auto transparent;
+        background-image: url("styles/layouts/tdsfront/image/google_plus_hover.png");
     }
     
     .circle{
@@ -2815,7 +2825,7 @@ if($('.header-logo-div').is(':visible')) {
         cursor: pointer;
         font-size: 11px;
         margin: 0;
-        padding: 10px 0;
+        padding: 10px;
     }
     .settings-elm-list-div ul li:hover{
         background-color: #CC161E;

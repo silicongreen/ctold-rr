@@ -405,13 +405,17 @@ class spellingbee extends MX_Controller
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_HEADER, false);
         $soundfile = curl_exec($curl);
+        $curl_status = curl_getinfo ($curl);
         curl_close($curl);
-       
+        
+        if($curl_status['http_code']!=200)
+        {
+           $soundfile = $this->_download_bing_audio($_GET["q"]);
+        }
         header("Content-type: audio/mpeg");
         header("Content-Transfer-Encoding: binary");
         header('Pragma: no-cache');
         header('Expires: 0');
-
         echo($soundfile);
         
     }

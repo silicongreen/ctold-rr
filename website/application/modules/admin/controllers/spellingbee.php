@@ -246,6 +246,56 @@ class spellingbee extends MX_Controller
         return $sound_status;
       
     }
+    public function xml_create()
+    {
+        $this->db->select("DISTINCT year",false);
+        $yesrs = $this->db->get("spellingbee")->result();
+        $xmlstr = "<?xml version='1.0' ?>\n".
+              '<set xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"></set>';
+        if(count($yesrs)>0)
+        {
+            $sxe   = new SimpleXMLElement($xmlstr);
+            $years = $sxe->addChild('years'); 
+            foreach($yesrs as $item) {
+                $sale = $years->addChild('year',$item->year);
+
+            }
+          
+        
+            $strDestination = "upload/spellingbee/xml";
+            if (!is_dir($strDestination))
+            {
+                @mkdir($strDestination, 0777, true);
+            }
+            $xmlFile = $strDestination."/year.xml";
+
+            $dom = dom_import_simplexml($sxe)->ownerDocument;
+            $dom->formatOutput = TRUE;
+            $formatted = $dom->saveXML();
+            
+            file_put_contents( $xmlFile, $formatted );
+        }
+//        $res = $this->db->query('custom query');
+//        if ($res->num_rows() > 0) {
+//            $sxe   = new SimpleXMLElement();
+//            $deals = $sxe->addChild('deals');
+//
+//            foreach($res->result() as $item) {
+//                $sale = $deals->addChild('sale');
+//                $sale->addAttribute('id', $item->id);
+//                $sale->addChild('link', $item->link);
+//                $sale->addChild('title', urlencode($item->title));
+//                $sale->addChild('image', $item->image);
+//                $sale->addChild('text', urlencode($item->text));
+//                $sale->addChild('time', $item->time);
+//                $sale->addChild('price', $item->price);
+//                $sale->addChild('parcent', $item->parcent);
+//            }
+//        }
+//
+//        echo $sxe->saveXML();
+    }
+    
     function _download_bing_audio($strWord)
     {
         $sound_status = 0;
@@ -276,6 +326,21 @@ class spellingbee extends MX_Controller
             return false;
         } 
         return false;
+    }
+    
+    function playaudio()
+    {
+        $qs = http_build_query(array("ie" => "utf-8","tl" => $_GET["tl"], "q" => $_GET["q"]));
+        $ctx = stream_context_create(array("http"=>array("method"=>"GET","header"=>"Referer: \r\n")));
+        $soundfile = file_get_contents("http://translate.google.com/translate_tts?".$qs, false, $ctx);
+
+        header("Content-type: audio/mpeg");
+        header("Content-Transfer-Encoding: binary");
+        header('Pragma: no-cache');
+        header('Expires: 0');
+
+        echo($soundfile);
+        
     }
     
     

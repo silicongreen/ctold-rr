@@ -398,8 +398,8 @@ class spellingbee extends MX_Controller
     
     function playaudio()
     {
-        $qs = http_build_query(array("ie" => "utf-8","tl" => $_GET["tl"], "q" => $_GET["q"]));
-        $soundfile = file_get_contents("http://translate.google.com/translate_tts?".$qs);
+       
+        $soundfile = file_get_contents("http://translate.google.com/translate_tts?q=" . str_replace( " ", "+", strtolower( trim( $_GET["q"] ) ) ) . "&tl=en" );
 
         header("Content-type: audio/mpeg");
         header("Content-Transfer-Encoding: binary");

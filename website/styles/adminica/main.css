@@ -29,7 +29,7 @@ Sidebar and Topbar
   padding: 5px;
 }
 #sidebar {
-  position: fixed;
+  position: absolute;
   top: 10px;
   margin-left: 10px;
   z-index: 10;

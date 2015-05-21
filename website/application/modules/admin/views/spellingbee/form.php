@@ -19,6 +19,11 @@
                             <label for="word">Word<span>Unique field</span></label>
                             <div>
                                 <input id="word" name="word" value="<?php echo  $model->word; ?>" type="text" class="required" minlength="4" required>
+                                <div>
+                                    <audio id="speech" rel="noreferrer"   style="display:none;" src="" ></audio>
+                                    <a id="speech-href" href="javascript:void(0);" onclick="playtext();"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAABD0lEQVRYw+3XsQqDMBAG4L6suogIIoq7ToIuDi4i6C6+gSDo6OjjXEkhoUNibcCYtPdDFk3MB8Z4eTwwGAzG7FiWBVEUwbIsoC2QtqIo7kGGYSiceBxH8DyPIZMkAeU4MvGnfmVZqkdS3BkgSdd1rH+e56AMdxZIUlUVGzNNEyjBfQN8H+/7PijB8YDbtgknX9eVjZvnGS7H8YDkWl3XwsnJ3kj6pGkqD4zjGGhzXVeIEwFJa5qGCxiG4XXftm154BHoLFC0Pvd9l1q/lwDbtoWj598OzLKMi3AcB4G/8Yov+0i032a036iN+9UZUSwYUW7JFqx936srWI0o+WmCIND30GTEsdPogzsGg/n3PAGH4GdMo71vewAAAABJRU5ErkJggg==">
+                                    </a>
+                                </div>
                                 <div class="required_tag"></div>
                             </div>
                         </fieldset>
@@ -116,3 +121,56 @@
 
     </div>
 </div>
+<script>
+    
+    
+    $(document).ready(function(){
+        var text = $("#word").val();
+        if(text!="" && text.length>3)
+        {
+            $("#speech-href").show();
+        }
+        else
+        {
+            $("#speech-href").hide();
+        } 
+        
+        $('body').on('keydown','#word', function(event) {
+            var text = $("#word").val();
+            if(text!="" && text.length>3)
+            {
+                $("#speech-href").show();
+            }
+            else
+            {
+                $("#speech-href").hide();
+            }
+        });
+        $('body').on('keyup','#word', function(event) {
+            var text = $("#word").val();
+            if(text!="" && text.length>3)
+            {
+                $("#speech-href").show();
+            }
+            else
+            {
+                $("#speech-href").hide();
+            }
+        });
+        
+        
+        
+    })
+    function playtext()
+    {
+        var text = $("#word").val();
+        if(text!="" && text.length>3)
+        {
+            
+            var audio = new Audio();
+            var url =$("#base_url").val()+"admin/spellingbee/playaudio?q=" +text+ "&tl=en";
+            $("audio").attr("src",url).get(0).play();
+          
+        }
+    }
+</script>    

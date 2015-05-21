@@ -399,8 +399,14 @@ class spellingbee extends MX_Controller
     function playaudio()
     {
        
-        $soundfile = file_get_contents("http://translate.google.com/translate_tts?q=" . str_replace( " ", "+", strtolower( trim( $_GET["q"] ) ) ) . "&tl=en" );
-
+        $url = "http://translate.google.com/translate_tts?q=" . str_replace( " ", "+", strtolower( trim( $_GET["q"] ) ) ) . "&tl=en" ;
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_HEADER, false);
+        $soundfile = curl_exec($curl);
+        curl_close($curl);
+       
         header("Content-type: audio/mpeg");
         header("Content-Transfer-Encoding: binary");
         header('Pragma: no-cache');

@@ -248,9 +248,12 @@ class spellingbee extends MX_Controller
     }
     public function xml_create()
     {
+        @chmod("upload", 0777);
+        @chmod("upload/spellingbee", 0777);
+        @chmod("upload/spellingbee/xml", 0777);
         $this->db->select("DISTINCT year",false);
         $yesrs = $this->db->get("spellingbee")->result();
-        $xmlstr = "<?xml version='1.0' ?>\n".
+        $xmlstr = '<?xml version="1.0" encoding="UTF-8"?>'.
               '<set xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"></set>';
         if(count($yesrs)>0)
         {
@@ -258,6 +261,55 @@ class spellingbee extends MX_Controller
             $years = $sxe->addChild('years'); 
             foreach($yesrs as $item) {
                 $sale = $years->addChild('year',$item->year);
+                
+                $this->db->where("has_problem",0);
+                $this->db->where("enabled",1);
+                $this->db->where("year",$item->year);
+                $spell_word = $this->db->get("spellingbee")->result();
+                
+                #print_r($spell_word);
+                
+                $wordsxe = new SimpleXMLElement($xmlstr);
+                
+                if(count($spell_word)>0)
+                {
+                    foreach($spell_word as $value)
+                    {
+                        $data = $wordsxe->addChild('data');
+                        $data->addAttribute('id', $value->id);
+                        $data->addChild('word',$value->word);
+                        $data->addChild('bangla_meaning',$value->bangla_meaning);
+                        $data->addChild('definition',$value->definition);
+                        $data->addChild('sentence',$value->sentence);
+                        $data->addChild('wtype',$value->wtype);
+                        $data->addChild('level',$value->level);
+                        $data->addChild('year',$value->year);
+                        $data->addChild('source',$value->source);
+                    } 
+                    $strDestination = "upload/spellingbee/xml";
+                    if (!is_dir($strDestination))
+                    {
+                       mkdir($strDestination, 0777, true);
+                    }
+                    
+                    
+                    $xmlFileword = $strDestination."/word_".$value->year.".xml";
+                    
+                    if(is_file($xmlFileword))
+                    {
+                        @unlink($xmlFileword);
+                    }    
+
+                    $dom_word = dom_import_simplexml($wordsxe)->ownerDocument;
+                    $dom_word->formatOutput = TRUE;
+                    $formatted_word = $dom_word->saveXML();
+                    
+
+                    file_put_contents( $xmlFileword, $formatted_word );
+                }    
+                
+                
+                
 
             }
           
@@ -268,33 +320,24 @@ class spellingbee extends MX_Controller
                 @mkdir($strDestination, 0777, true);
             }
             $xmlFile = $strDestination."/year.xml";
+            
+            if(is_file($xmlFile))
+            {
+                @unlink($xmlFile);
+            }
+           
 
             $dom = dom_import_simplexml($sxe)->ownerDocument;
             $dom->formatOutput = TRUE;
             $formatted = $dom->saveXML();
             
             file_put_contents( $xmlFile, $formatted );
+            
+            echo 1;
         }
-//        $res = $this->db->query('custom query');
-//        if ($res->num_rows() > 0) {
-//            $sxe   = new SimpleXMLElement();
-//            $deals = $sxe->addChild('deals');
-//
-//            foreach($res->result() as $item) {
-//                $sale = $deals->addChild('sale');
-//                $sale->addAttribute('id', $item->id);
-//                $sale->addChild('link', $item->link);
-//                $sale->addChild('title', urlencode($item->title));
-//                $sale->addChild('image', $item->image);
-//                $sale->addChild('text', urlencode($item->text));
-//                $sale->addChild('time', $item->time);
-//                $sale->addChild('price', $item->price);
-//                $sale->addChild('parcent', $item->parcent);
-//            }
-//        }
-//
-//        echo $sxe->saveXML();
+
     }
+
     
     function _download_bing_audio($strWord)
     {

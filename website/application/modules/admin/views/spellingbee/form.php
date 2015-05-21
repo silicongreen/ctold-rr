@@ -166,8 +166,6 @@
         var text = $("#word").val();
         if(text!="" && text.length>3)
         {
-            
-            var audio = new Audio();
             var url =$("#base_url").val()+"admin/spellingbee/playaudio?q=" +text+ "&tl=en";
             $("audio").attr("src",url).get(0).play();
           

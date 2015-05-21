@@ -257,7 +257,7 @@ class spellingbee extends MX_Controller
             {
                 if ($entry != "." && $entry != ".." && !strstr($entry,'.php')) {
               
-                    $zip->addFile("upload/spellingbee/xml".$entry);
+                    $zip->addFile("upload/spellingbee/xml/".$entry);
                 }
             }
             closedir($handle);

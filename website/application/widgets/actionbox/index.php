@@ -32,9 +32,18 @@ if (!defined('BASEPATH'))
 class actionbox extends widget
 {
 
-    function run($news)
+    function run($news,$target = "inner",$category_id = 0)
     {
+        //        print '<pre>';
+        //        print_r($news);
+        //        exit;
+        
+        
         $data['news'] = $news;
+        
+        $data['target'] = $target;
+        $data['category_id'] = $category_id;
+        
         $this->render($data);
     }
     

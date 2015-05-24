@@ -70,7 +70,33 @@ class User_folder extends CI_Model{
       
         return TRUE;
     }
-    
+    public function delete_post_from_user_good_read_folder( $ar_user_good_read  )
+    {
+        $this->db->select('*',false )
+                ->from('user_good_read')
+                ->where('user_id', $ar_user_good_read['user_id'], FALSE)
+                ->where('folder_id', $ar_user_good_read['folder_id'], FALSE)
+                ->where('post_id', $ar_user_good_read['post_id'], FALSE);
+        $query = $this->db->get(); 
+        
+        if ( $query->num_rows() > 0 )
+        {
+            $this->db->where('post_id', $ar_user_good_read['post_id'], FALSE);
+            $this->db->where('user_id', $ar_user_good_read['user_id'], FALSE);
+            $this->db->where('folder_id', $ar_user_good_read['folder_id'], FALSE);
+            $this->db->delete("user_good_read", $data); 
+            
+            echo "Done";
+        }
+        else
+        {
+            
+            return "The Post is already deleted" ;
+            //$this->db->insert("user_good_read", $ar_user_good_read); 
+        }
+      
+        return TRUE;
+    }
     public function save_user_good_read_folder( $ar_user_good_read  )
     {
         $this->db->select('*',false )

@@ -228,9 +228,9 @@
 
                         <?php $s_post_class = ( $is_breaking_found ) ? "news_slides" : "post"; ?>  
                         <?php if (in_array($news->post_layout, array(1, 2, 3))) : ?>   
-                            <?php $widget->run('post_type_' . $news->post_layout, $news, $style, $s_post_class, $li_class_name, $i, $count_show, $is_exclusive_found, $target); ?>         
+                            <?php $widget->run('post_type_' . $news->post_layout, $news, $style, $s_post_class, $li_class_name, $i, $count_show, $is_exclusive_found, $target,"main",$category); ?>         
                         <?php elseif (!is_null($news->short_title) && strlen(trim($news->short_title)) > 0 && in_array($news->sort_title_type, array(1, 2, 3, 4, 5))) : ?>
-                            <?php $widget->run('short_title_block' . $news->sort_title_type, $news, $style, $s_post_class, $li_class_name, $i, $count_show, $is_exclusive_found, $target); ?>
+                            <?php $widget->run('short_title_block' . $news->sort_title_type, $news, $style, $s_post_class, $li_class_name, $i, $count_show, $is_exclusive_found, $target,"main",$category); ?>
                         <?php else : ?>
                             <li style="<?php echo $style; ?>" id="post-<?php echo $news->post_id; ?>" class="post-<?php echo $news->post_id; ?> <?php echo $s_post_class; ?> type-post post-content-showed status-publish format-image has-post-thumbnail hentry category-post-format tag-description tag-image tag-people tag-text <?php echo $li_class_name; ?> <?php echo ($i < $count_show) ? "shown" : ""; ?> <?php echo (!is_null($news->short_title) && strlen(trim($news->short_title)) > 0) ? " format-quote  tag-quote " : ""; ?> post-boxes ">
 
@@ -464,7 +464,7 @@
 
                                         <?php
                                         $widget = new Widget;
-                                        $widget->run('actionbox', $news);
+                                        $widget->run('actionbox', $news,$target,$category);
                                         ?>
 
                                     <?php endif; ?>

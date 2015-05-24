@@ -1176,7 +1176,30 @@ class ajax extends MX_Controller
             echo "-1";
         }
     }
+    public function deletePostFromGoodRead()
+    {
+        if (free_user_logged_in())
+        {
+            $this->load->model("user_folder");
+            $ar_user_good_read['user_id'] = get_free_user_session("id");
 
+            $ar_user_good_read['folder_id'] = $this->input->post("folder_id");
+            if ($ar_user_good_read['folder_id'] == 0)
+            {
+                $folder_name = "Unread";
+                $folder_data = $this->user_folder->get_folder_id($ar_user_good_read['user_id'], $folder_name);
+				$ar_user_good_read['folder_id'] = $folder_data->id;
+            }
+            $ar_user_good_read['post_id'] = $this->input->post("post_id");            
+
+            $s_message = $this->user_folder->delete_post_from_user_good_read_folder($ar_user_good_read);
+            echo $s_message;
+        }
+        else
+        {
+            echo "-1";
+        }
+    }
     public function addUserGoodReadFolder()
     {
         if (free_user_logged_in())

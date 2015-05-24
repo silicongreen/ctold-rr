@@ -98,6 +98,8 @@
 
         <ul style="position: relative; width:100%; " class="grid effect-6 posts-<?php echo $current_page; ?>" id="grid">
             <?php $is_breaking_found = false;
+            $b_paid_reminder_showed = false;
+            $paid_reminder_position = -1;
             $count_show = 6; ?>
             <?php $found_slider = 0; ?>
             <?php $ar_slider_amount = array(); ?>
@@ -105,6 +107,14 @@
             $i = 0;
             $ka = 0;
             if ($obj_post_news)
+                        
+                if (
+                        ($obj_post_news[0]->is_exclusive && date("Y-m-d H:i:s") < $obj_post_news[0]->exclusive_expired) || 
+                        ( $obj_post_news[0]->is_breaking && date("Y-m-d H:i:s") < $obj_post_news[0]->breaking_expire)
+                    ) {
+                    $paid_reminder_position = 1;
+                }
+                
                 foreach ($obj_post_news as $news) :
                     ?>
                     <?php
@@ -121,7 +131,7 @@
                             if (!$is_breaking_found) {
                                 $count_show++;
                                 $ka++;
-                                print '<li   style="padding:0px"  class="post col-sm-12 type-post status-publish format-image has-post-thumbnail hentry category-post-format tag-description tag-image tag-people tag-text shown post-boxes ">
+                                print '<li style="padding:0px"  class="post col-sm-12 type-post status-publish format-image has-post-thumbnail hentry category-post-format tag-description tag-image tag-people tag-text shown post-boxes ">
                                     <div class="flex-wrapper_news">
                                         <div id="slider" class="flexslider_news" style="margin-bottom:10px;">
                                         <ul class="slides_news" style="padding:14px; margin:0px;">';
@@ -129,7 +139,7 @@
                             $is_breaking_found = true;
                         }
                     } else if ($news->is_breaking && date("Y-m-d H:i:s") < $news->breaking_expire) {
-
+                        
                         //$is_exclusive_found = true;
                         if ($obj_post_news[$i + 1]->is_breaking && date("Y-m-d H:i:s") < $obj_post_news[$i + 1]->breaking_expire) {
                             if (!$is_breaking_found) {
@@ -161,26 +171,42 @@
                         <?php else: ?>
                             <?php $arCustomNews = getFormatedContentAll($news, 125); ?>
                         <?php endif; ?>
-                        <?php if ($i == 2): ?>
-                            <?php if ($has_3rd_column && count($ar_3rd_column_extra_data) > 0 && $ar_extra_config['type'] == "news") : ?>
+                        
+                        <?php if ( $i == $paid_reminder_position ) { ?>
+                            <?php if (free_user_logged_in() && get_free_user_session('paid_id') && $target == 'index') { ?>
                                 <li class="post shown col-md-6 ">
-                                    <?php $widget->run('thirdcolumninnernews', $ar_3rd_column_extra_data, $extra_column_name, $ar_extra_config); ?>    
-                                </li>
-                            <?php elseif ($has_3rd_column && count($ar_3rd_column_extra_data) > 0 && $ar_extra_config['type'] == "list"): ?>
-                                <li class="post shown col-md-6 ">
-                                    <?php $widget->run('thirdcolumninnerlist', $ar_3rd_column_extra_data, $extra_column_name, $ar_extra_config); ?> 
-                                </li>
-                            <?php elseif (free_user_logged_in() && get_free_user_session('paid_id') && $target == 'index'): ?>
-                                <li class="post shown col-md-6 ">
-                                    <div class="champs21_feed_title f2"><?php echo $widget_title;?></div>
+                                    <div class="champs21_feed_title f2"><?php echo $widget_title; ?></div>
                                     <div id='mycustomscroll' class='flexcroll'>
                                         <?php $widget->run('champs21plusreminder'); ?> 
                                     </div>
                                 </li>
-                            <?php endif; ?> 
+                                <?php  $b_paid_reminder_showed = true; ?>
+                            <?php } ?>
+                        <?php } ?>
+            
+                        <?php if ($i == 2): ?>
+
+                            <?php if ($has_3rd_column && count($ar_3rd_column_extra_data) > 0 && $ar_extra_config['type'] == "news") { ?>
+                                <li class="post shown col-md-6 ">
+                                    <?php $widget->run('thirdcolumninnernews', $ar_3rd_column_extra_data, $extra_column_name, $ar_extra_config); ?>    
+                                </li>
+                            <?php } elseif ($has_3rd_column && count($ar_3rd_column_extra_data) > 0 && $ar_extra_config['type'] == "list") { ?>
+                                <li class="post shown col-md-6 ">
+                                    <?php $widget->run('thirdcolumninnerlist', $ar_3rd_column_extra_data, $extra_column_name, $ar_extra_config); ?> 
+                                </li>
+                            <?php } elseif (free_user_logged_in() && get_free_user_session('paid_id') && $target == 'index' && !$b_paid_reminder_showed) { ?>
+                                <li class="post shown col-md-6 ">
+                                    <div class="champs21_feed_title f2"><?php echo $widget_title; ?></div>
+                                    <div id='mycustomscroll' class='flexcroll'>
+                                        <?php $widget->run('champs21plusreminder'); ?> 
+                                    </div>
+                                </li>
+                            <?php } ?>
+                                
                             <?php if(isset($obj_selected_post_news) && count($obj_selected_post_news)>0): ?>
                                 <?php $widget->run('post_selected',$obj_selected_post_news, $category, $s_category_name); ?>
                             <?php endif; ?> 
+                                
                         <?php endif; ?>
                        
                         <?php if ($i == 5 && $opinion): ?>

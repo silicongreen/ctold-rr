@@ -2099,7 +2099,48 @@ if(!function_exists('get_alphabets'))
     }
 }
 
+if (!function_exists('set_session_cookie')) {
 
+    function set_session_cookie($cookie_token) {
+        $cookie = array(
+            'name' => 'c21_session',
+            'value' => $cookie_token,
+            'expire' => 2592000
+        );
+        $CI = & get_instance();
+        $CI->input->set_cookie($cookie);
+    }
+
+}
+
+if (!function_exists('get_session_cookie')) {
+
+    function get_session_cookie() {
+        $CI = & get_instance();
+        $cookie = $CI->input->cookie('c21_session');
+        if ($cookie) {
+            return $cookie;
+        } else {
+            return 0;
+        }
+    }
+}
+
+if (!function_exists('get_session_cookie_token')) {
+    
+    function get_session_cookie_token($obj_user, $key) {
+        $str = $obj_user->id . $obj_user->user_type . $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT'];
+        $str .= $key;
+        return hash('sha512', $str);
+    }
+}
+
+if (!function_exists('get_session_key')) {
+    
+    function get_session_key() {
+        return md5(uniqid(rand(), true) . time() );
+    }
+}
 
 // ------------------------------------------------------------------------
 

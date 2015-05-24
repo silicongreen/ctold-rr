@@ -67,7 +67,7 @@ if(strpos($_SERVER['REQUEST_URI'],'admin') || strpos($_SERVER['REQUEST_URI'],'m'
 |	$autoload['helper'] = array('url', 'file');
 */
 
-$autoload['helper'] = array('widget','url', 'file','manager_helper','champs21','site','html','Adplace','string', 'free_user_helper');
+$autoload['helper'] = array('widget','url', 'file','manager_helper','champs21','site','html','Adplace','string', 'free_user_helper', 'cookie');
 
 
 /*

@@ -201,5 +201,27 @@ class Free_users extends DataMapper {
 
         return $a_data;
     }
+    
+    public function cookie_login() {
+
+        $u = new Free_users();
+        $u->where('cookie_token', $this->cookie_token)->get();
+        
+        if($this->cookie_validate($this->cookie_token, $u)) {
+            return $u;
+        } else {
+            return false;
+        }
+    }
+
+    public function cookie_validate($token_to_validate, $obj_to_match) {
+
+        if( !time() < strtotime($obj_to_match->cookie_expire) ) {
+            $token = get_session_cookie_token($obj_to_match, $obj_to_match->cookie_key);
+            return ($token === $token_to_validate);
+        } else {
+            return false;
+        }
+    }
 
 }

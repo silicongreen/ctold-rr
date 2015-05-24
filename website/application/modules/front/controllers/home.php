@@ -2092,6 +2092,7 @@ class home extends MX_Controller {
         if(isset($_POST) && !empty($_POST)){
             
             $free_user->email = $this->input->post('email');
+            $remember_me = $this->input->post('remember_me');
             
             if($api_login){
                 
@@ -2105,7 +2106,7 @@ class home extends MX_Controller {
                 
                 if ( $obj_free_user =  $free_user->api_login($source) ) {
                     
-                    $this->set_user_session($obj_free_user);
+                    $this->set_user_session($obj_free_user, NULL, $remember_me);
                     
                 }  else {
                     
@@ -2121,7 +2122,7 @@ class home extends MX_Controller {
             
                 if ($free_user->login()) {
                     
-                    $this->set_user_session($free_user, $this->input->post('password'));
+                    $this->set_user_session($free_user, $this->input->post('password'), $remember_me);
                     
                 }  else {
                     
@@ -2396,14 +2397,15 @@ class home extends MX_Controller {
         $array_items = array('free_user' => array());
         $this->session->unset_userdata($array_items);
         $this->session->sess_destroy();
+        delete_cookie('c21_session');
         set_type_cookie(1);
         redirect(base_url());
         
     }
     
-    private function set_user_session($obj_user, $pwd = NULL){
+    private function set_user_session($obj_user, $pwd = NULL, $remember = false){
         
-        set_user_sessions($obj_user, $pwd);
+        set_user_sessions($obj_user, $pwd, $remember);
     }
     
     function upload_profile_image() {
@@ -3931,6 +3933,30 @@ class home extends MX_Controller {
         
         echo json_encode($response);
         exit;
+    }
+    
+    function validate_cookie() {
+        
+        if( $this->input->is_ajax_request() && free_user_logged_in() ){
+            $user_info['logged_in'] = free_user_logged_in();
+            echo json_encode($user_info);
+            exit;
+        }
+        
+        $free_user = new Free_users();
+        
+        $free_user->cookie_token = $_POST['data'];
+        
+        $user_data = $free_user->cookie_login();
+        
+        if($user_data !== false) {
+            $this->set_user_session($user_data, $this->input->post('password'));
+        }
+        
+        $data['logged_in'] = free_user_logged_in();
+        
+        echo json_encode($data);
+        exit;        
     }
     
     private function invite_friend_by_email_body($param) {

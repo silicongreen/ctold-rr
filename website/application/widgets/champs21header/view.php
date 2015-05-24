@@ -1,5 +1,9 @@
 <header class="champs-header col-xs-12 clearfix">
     
+    <?php if( get_free_user_session('paid_id') && get_free_user_session('paid_school_code')) { ?>
+        <input type="hidden" id="paid_school_code" value="<?php echo get_free_user_session('paid_school_code'); ?>">
+    <?php } ?>
+    
     <?php if(!$user_profile_complete) { ?>
         <input type="hidden" name="user_profile_complete" id="user_profile_complete" value="nai">
     <?php } ?>
@@ -608,7 +612,7 @@ height: 46px;
                                         <div class="login_remember_me_div">
                                             <input id="remember_me_chk" name="remember_me" value="1" type="checkbox" checked="checked">
                                             <!--<label class="login_checkbox_label" for="remember_me"></label>-->
-                                            <label for="remember_me_chk" class="f5 login_checkbox_label_txt">Remember me</label>
+                                            <label class="f5 login_checkbox_label_txt">Remember me</label>
                                         </div>
 
                                         <div class="f5 login_reset_password">

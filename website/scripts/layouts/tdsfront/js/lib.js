@@ -401,7 +401,24 @@ $(document).ready(function () {
         }
         );
     });
-
+    
+    $(document).on("click", ".read_later_remove", function () {
+        var post_str = this.id.replace("read_later_remove_", "");
+        var res = post_str.split("_");
+        var post_id = res[0];
+        var folder_id = res[1];
+        $.post($("#base_url").val() + 'front/ajax/deletePostFromGoodRead/',
+                {folder_id: folder_id, post_id: post_id}, function (data) {
+            if (data != -1)
+            {
+                alert('Post is deleted from your folder.');
+                
+                location.reload();
+            }
+        }
+        );
+    });
+    
     $(document).on("click", ".float-read", function (e) {
         if ($(".good-read-box").css("display") == "none")
         {

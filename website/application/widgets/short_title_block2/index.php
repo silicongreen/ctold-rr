@@ -32,7 +32,7 @@ if (!defined('BASEPATH'))
 class short_title_block2 extends widget
 {
 
-    function run( $obj_post_news, $style, $s_post_class, $li_class_name, $i, $count_show, $is_exclusive_found, $target, $from = "main")
+    function run( $obj_post_news, $style, $s_post_class, $li_class_name, $i, $count_show, $is_exclusive_found, $target, $from = "main",$category_id = 0)
     {
         $data['news'] = $obj_post_news;
         $data['style'] = $style;
@@ -42,6 +42,7 @@ class short_title_block2 extends widget
         $data['count_show'] = $count_show;
         $data['is_exclusive_found'] = $is_exclusive_found;
         $data['target'] = $target;
+        $data['category_id'] = $category_id;
         $data['from'] = $from;
         $data['images'] = $obj_post_news->web_images;
         $this->render($data);

@@ -106,7 +106,7 @@
         
        <?php
             $widget = new Widget;
-            $widget->run('actionbox', $news);
+            $widget->run('actionbox', $news,$target,$category_id);
         ?>
 
 <?php endif; ?>

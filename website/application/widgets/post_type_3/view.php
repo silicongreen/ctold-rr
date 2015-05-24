@@ -65,7 +65,7 @@
         
        <?php
             $widget = new Widget;
-            $widget->run('actionbox', $news);
+            $widget->run('actionbox', $news,$target,$category_id);
         ?>
         <div style="clear:both; height: 5px;"></div>
         <!-- <div class="box-shadow"></div> --> 

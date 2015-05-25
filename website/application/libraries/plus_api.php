@@ -29,7 +29,9 @@ class Plus_api {
         $school_code = ( isset($ar_params['school_code']) && !empty($ar_params['school_code'])) ? $ar_params['school_code'] : '';
         $username = ( isset($ar_params['username']) && !empty($ar_params['username'])) ? $ar_params['username'] : $school_code . '-champs21';
         $password = ( isset($ar_params['password']) && !empty($ar_params['password'])) ? $ar_params['password'] : $school_code . $this->_CI->config->config['champs_password'];
-
+        
+        $school_code = strtolower($school_code);
+        
         $this->_username = $username;
         $this->_password = $password;
 
@@ -46,9 +48,6 @@ class Plus_api {
         $this->_client = new Client($this->_api_endpoint);
         $this->_client_oauth = new Client($this->_oauth_endpoint);
         
-        
-
-
         if (isset($_SESSION['plus_access_token']) && $b_use_session) {
 
             if (isset($this->_token) && ($this->_token != $_SESSION['plus_access_token'])) {
@@ -91,7 +90,6 @@ class Plus_api {
                 return true;
             }
         } catch (Exception $e) {
-
             return false;
         }
     }
@@ -146,7 +144,7 @@ class Plus_api {
                 "Cache-Control"=>"no-cache",
                 "Cookie"=>"_champs21_session_=".$cookie,
                 "User-Agent"=>"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36",
-                "Host"=>$this->_school_code.".plus.champs21.com",
+                "Host"=>$this->_school_code.".champs21.com",
                 'Content-type' => 'application/x-www-form-urlencoded',
                 'Authorization' => 'Token token="' . $this->_token . '"',
                 'cookies' => true

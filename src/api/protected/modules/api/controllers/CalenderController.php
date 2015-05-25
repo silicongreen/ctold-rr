@@ -54,7 +54,7 @@ class CalenderController extends Controller
             $response = array();
             if (Yii::app()->user->user_secret === $user_secret && $start_date != "" && $end_date != "" &&
                     ( Yii::app()->user->isStudent ||
-                    (Yii::app()->user->isParent && Yii::app()->request->getPost('batch_id') && Yii::app()->request->getPost('student_id') && Yii::app()->request->getPost('school')) ||
+                    (Yii::app()->user->isParent && Yii::app()->request->getPost('batch_id') && Yii::app()->request->getPost('student_id')) ||
                     ((Yii::app()->user->isTeacher || Yii::app()->user->isAdmin) && Yii::app()->request->getPost('batch_id') && Yii::app()->request->getPost('student_id'))))
             {
                 if (Yii::app()->user->isParent)

@@ -1129,8 +1129,6 @@ if(!function_exists('plus_api2')){
             //echo $res = $this->plus_api->login($ar_params, 'users/loginhook');
             
             return $res = $CI->plus_api->call__("get", 'reminders','get_data_reminder');
-            
-             
          }
          exit;
     }

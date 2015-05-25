@@ -185,21 +185,20 @@
                         <?php } ?>
             
                         <?php if ($i == 2): ?>
-
-                            <?php if ($has_3rd_column && count($ar_3rd_column_extra_data) > 0 && $ar_extra_config['type'] == "news") { ?>
+                            <?php if (free_user_logged_in() && get_free_user_session('paid_id') && $target == 'index' && !$b_paid_reminder_showed) { ?>
+                                <li class="post shown col-md-6 ">
+                                    <div class="champs21_feed_title f2"><?php echo $widget_title; ?></div>
+                                    <div id='mycustomscroll' class='flexcroll'>
+                                        <?php $widget->run('champs21plusreminder'); ?> 
+                                    </div>
+                                </li>
+                            <?php } elseif ($has_3rd_column && count($ar_3rd_column_extra_data) > 0 && $ar_extra_config['type'] == "news") { ?>
                                 <li class="post shown col-md-6 ">
                                     <?php $widget->run('thirdcolumninnernews', $ar_3rd_column_extra_data, $extra_column_name, $ar_extra_config); ?>    
                                 </li>
                             <?php } elseif ($has_3rd_column && count($ar_3rd_column_extra_data) > 0 && $ar_extra_config['type'] == "list") { ?>
                                 <li class="post shown col-md-6 ">
                                     <?php $widget->run('thirdcolumninnerlist', $ar_3rd_column_extra_data, $extra_column_name, $ar_extra_config); ?> 
-                                </li>
-                            <?php } elseif (free_user_logged_in() && get_free_user_session('paid_id') && $target == 'index' && !$b_paid_reminder_showed) { ?>
-                                <li class="post shown col-md-6 ">
-                                    <div class="champs21_feed_title f2"><?php echo $widget_title; ?></div>
-                                    <div id='mycustomscroll' class='flexcroll'>
-                                        <?php $widget->run('champs21plusreminder'); ?> 
-                                    </div>
                                 </li>
                             <?php } ?>
                                 
@@ -219,7 +218,6 @@
                                  </li>   
                                 
                         <?php endif; ?>
-                      
 
                         <?php
                         $li_class_name = 'col-md-6';

@@ -17,6 +17,7 @@
  * NOTE: If you change these, also change the error_reporting() code below
  *
  */
+    header('Content-Type: text/html; charset=utf-8');
 	define('ENVIRONMENT', 'development');
 
 /*

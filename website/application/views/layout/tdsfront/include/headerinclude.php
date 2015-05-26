@@ -1,11 +1,11 @@
-
+﻿
 <!--[if lt IE 7 ]><html class="ie ie6" lang="en-US"> <![endif]-->
 <!--[if IE 7 ]><html class="ie ie7" lang="en-US"> <![endif]-->
 <!--[if IE 8 ]><html class="ie ie8" lang="en-US"> <![endif]-->
 <!--[if (gte IE 9)|!(IE)]><!-->
 <html><!--<![endif]-->
 <head prefix="og: http://ogp.me/ns#">	
-    <meta charset="UTF-8">	
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 	<meta name = "apple-mobile-web-app-capable" content = "yes" /> 
         <meta name="alexaVerifyID" content="rXOHeRArHGSEJfOH2THlJGs2o6g"/>

@@ -180,25 +180,26 @@
                                         <?php $widget->run('champs21plusreminder'); ?> 
                                     </div>
                                 </li>
-                                <?php $b_paid_reminder_showed = true;?>
+                                <?php  $b_paid_reminder_showed = true; ?>
                             <?php } ?>
                         <?php } ?>
             
                         <?php if ($i == 2): ?>
-                            <?php if (free_user_logged_in() && get_free_user_session('paid_id') && $target == 'index' && !$b_paid_reminder_showed) { ?>
-                                <li class="post shown col-md-6 ">
-                                    <div class="champs21_feed_title f2"><?php echo $widget_title; ?></div>
-                                    <div id='mycustomscroll' class='flexcroll'>
-                                        <?php $widget->run('champs21plusreminder'); ?> 
-                                    </div>
-                                </li>
-                            <?php } elseif ($has_3rd_column && count($ar_3rd_column_extra_data) > 0 && $ar_extra_config['type'] == "news") { ?>
+
+                            <?php if ($has_3rd_column && count($ar_3rd_column_extra_data) > 0 && $ar_extra_config['type'] == "news") { ?>
                                 <li class="post shown col-md-6 ">
                                     <?php $widget->run('thirdcolumninnernews', $ar_3rd_column_extra_data, $extra_column_name, $ar_extra_config); ?>    
                                 </li>
                             <?php } elseif ($has_3rd_column && count($ar_3rd_column_extra_data) > 0 && $ar_extra_config['type'] == "list") { ?>
                                 <li class="post shown col-md-6 ">
                                     <?php $widget->run('thirdcolumninnerlist', $ar_3rd_column_extra_data, $extra_column_name, $ar_extra_config); ?> 
+                                </li>
+                            <?php } elseif (free_user_logged_in() && get_free_user_session('paid_id') && $target == 'index' && !$b_paid_reminder_showed) { ?>
+                                <li class="post shown col-md-6 ">
+                                    <div class="champs21_feed_title f2"><?php echo $widget_title; ?></div>
+                                    <div id='mycustomscroll' class='flexcroll'>
+                                        <?php $widget->run('champs21plusreminder'); ?> 
+                                    </div>
                                 </li>
                             <?php } ?>
                                 
@@ -218,6 +219,7 @@
                                  </li>   
                                 
                         <?php endif; ?>
+                      
 
                         <?php
                         $li_class_name = 'col-md-6';
@@ -226,9 +228,9 @@
 
                         <?php $s_post_class = ( $is_breaking_found ) ? "news_slides" : "post"; ?>  
                         <?php if (in_array($news->post_layout, array(1, 2, 3))) : ?>   
-                            <?php $widget->run('post_type_' . $news->post_layout, $news, $style, $s_post_class, $li_class_name, $i, $count_show, $is_exclusive_found, $target,"main",$category); ?>         
+                            <?php $widget->run('post_type_' . $news->post_layout, $news, $style, $s_post_class, $li_class_name, $i, $count_show, $is_exclusive_found, $target); ?>         
                         <?php elseif (!is_null($news->short_title) && strlen(trim($news->short_title)) > 0 && in_array($news->sort_title_type, array(1, 2, 3, 4, 5))) : ?>
-                            <?php $widget->run('short_title_block' . $news->sort_title_type, $news, $style, $s_post_class, $li_class_name, $i, $count_show, $is_exclusive_found, $target,"main",$category); ?>
+                            <?php $widget->run('short_title_block' . $news->sort_title_type, $news, $style, $s_post_class, $li_class_name, $i, $count_show, $is_exclusive_found, $target); ?>
                         <?php else : ?>
                             <li style="<?php echo $style; ?>" id="post-<?php echo $news->post_id; ?>" class="post-<?php echo $news->post_id; ?> <?php echo $s_post_class; ?> type-post post-content-showed status-publish format-image has-post-thumbnail hentry category-post-format tag-description tag-image tag-people tag-text <?php echo $li_class_name; ?> <?php echo ($i < $count_show) ? "shown" : ""; ?> <?php echo (!is_null($news->short_title) && strlen(trim($news->short_title)) > 0) ? " format-quote  tag-quote " : ""; ?> post-boxes ">
 
@@ -462,7 +464,7 @@
 
                                         <?php
                                         $widget = new Widget;
-                                        $widget->run('actionbox', $news,$target,$category);
+                                        $widget->run('actionbox', $news);
                                         ?>
 
                                     <?php endif; ?>

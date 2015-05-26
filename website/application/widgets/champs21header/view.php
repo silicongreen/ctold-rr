@@ -302,14 +302,16 @@ height: 46px;
 
                                 <fieldset>
 
-                                    <ul class="radio-holder">    
+                                    <ul class="radio-holder">
                                         <li>
-                                            <div class="f5 selectParent">
-                                                <?php
-                                                //$class_string = '';
-                                                $class_string = 'id="tds_country_id" class="f5"';
-                                                echo form_dropdown('tds_country_id', $country, $country['id'], $class_string);
-                                                ?>
+                                            <div class="custom_dropdown">
+                                                <div>
+                                                    <?php
+                                                    //$class_string = '';
+                                                    $class_string = 'id="tds_country_id" class="droppify"';
+                                                    echo form_dropdown('tds_country_id', $country, $country['id'], $class_string);
+                                                    ?>
+                                                </div>
                                             </div>
                                         </li>
                                         <li>
@@ -333,75 +335,78 @@ height: 46px;
 
                                 <fieldset>
 
-                                    <ul class="radio-holder">    
-
+                                    <ul class="radio-holder">
                                         <li>
-                                            <div class="f5 selectDob">
-                                                <?php
+                                            <div class="custom_dropdown_dob">
+                                                <div>
+                                                    <?php
+                                                    $dob_day = NULL;
+                                                    $dob_month = NULL;
+                                                    $dob_year = NULL;
 
-                                                $dob_day = NULL;
-                                                $dob_month = NULL;
-                                                $dob_year = NULL;
+                                                    if (isset($model->dob) && !empty($model->dob) && ($model->dob != '0000-00-00')) {
+                                                        $ar_dob = explode('-', $model->dob);
 
-                                                if ( isset($model->dob) && !empty($model->dob) && ($model->dob != '0000-00-00') ) {
-                                                    $ar_dob = explode('-', $model->dob);
-
-                                                    $dob_day = $ar_dob[2];
-                                                    $dob_month = $ar_dob[1];
-                                                    $dob_year = $ar_dob[0];
-
-                                                }
-
-                                                $days[NULL] = 'Day';
-                                                for($i = 1; $i <= 31; $i++){
-                                                    if(strlen($i) < 2){
-                                                        $i = '0'.$i;
+                                                        $dob_day = $ar_dob[2];
+                                                        $dob_month = $ar_dob[1];
+                                                        $dob_year = $ar_dob[0];
                                                     }
-                                                    $days[$i] = $i;
-                                                }
 
-                                                $class_string = 'id="dob_day"';
-                                                echo form_dropdown('dob_day', $days, $dob_day, $class_string);
-                                                ?>
+                                                    $days[NULL] = 'Day';
+                                                    for ($i = 1; $i <= 31; $i++) {
+                                                        if (strlen($i) < 2) {
+                                                            $i = '0' . $i;
+                                                        }
+                                                        $days[$i] = $i;
+                                                    }
+
+                                                    $class_string = 'id="dob_day" class="droppify"';
+                                                    echo form_dropdown('dob_day', $days, $dob_day, $class_string);
+                                                    ?>
+                                                </div>
                                             </div>
                                         </li>
                                         <li>
-                                            <div class="f5 selectDob">
-                                                <?php
+                                            <div class="custom_dropdown_dob">
+                                                <div>
+                                                    <?php
 
-                                                $months[NULL] = 'Month';
-                                                for($i = 1; $i <= 12; $i++){
-                                                    if(strlen($i) < 2){
-                                                        $i = '0'.$i;
+                                                    $months[NULL] = 'Month';
+                                                    for($i = 1; $i <= 12; $i++){
+                                                        if(strlen($i) < 2){
+                                                            $i = '0'.$i;
+                                                        }
+                                                        $months[$i] = $i;
                                                     }
-                                                    $months[$i] = $i;
-                                                }
 
-                                                $class_string = 'id="dob_month"';
-                                                echo form_dropdown('dob_month', $months, $dob_month, $class_string);
-                                                ?>
+                                                    $class_string = 'id="dob_month" class="droppify"';
+                                                    echo form_dropdown('dob_month', $months, $dob_month, $class_string);
+                                                    ?>
+                                                <div>
                                             </div>
                                         </li>
                                         <li>
-                                            <div class="f5 selectDob">
-                                                <?php
+                                            <div class="custom_dropdown_dob">
+                                                <div>
+                                                    <?php
 
-                                                $year = date('Y');
+                                                    $year = date('Y');
 
-                                                $years[NULL] = 'Year';
+                                                    $years[NULL] = 'Year';
 
-                                                $num = $year - 70;
+                                                    $num = $year - 70;
 
-                                                for($i = $year; $i >= $num; $i--){
-                                                    if(strlen($i) < 2){
-                                                        $i = '0'.$i;
+                                                    for($i = $year; $i >= $num; $i--){
+                                                        if(strlen($i) < 2){
+                                                            $i = '0'.$i;
+                                                        }
+                                                        $years[$i] = $i;
                                                     }
-                                                    $years[$i] = $i;
-                                                }
 
-                                                $class_string = 'id="dob_year"';
-                                                echo form_dropdown('dob_year', $years, $dob_year, $class_string);
-                                                ?>
+                                                    $class_string = 'id="dob_year" class="droppify"';
+                                                    echo form_dropdown('dob_year', $years, $dob_year, $class_string);
+                                                    ?>
+                                                <div>
                                             </div>
                                         </li>
 
@@ -463,11 +468,13 @@ height: 46px;
                                 <?php } ?>
 
                                 <fieldset>
-                                    <div class="selectMedium">
-                                        <?php
-                                        $class_string = 'id="medium"';
-                                        echo form_dropdown('medium', $medium, NULL, $class_string);
-                                        ?>
+                                    <div class="custom_dropdown_medium">
+                                        <div>
+                                            <?php
+                                            $class_string = 'id="medium" class="droppify"';
+                                            echo form_dropdown('medium', $medium, $model->medium, $class_string);
+                                            ?>
+                                        </div>
                                     </div>
                                 </fieldset>
 
@@ -2382,28 +2389,6 @@ if($('.header-logo-div').is(':visible')) {
         width: 19px;
         cursor: pointer;
     }
-
-/*    input[type=radio].css-checkbox  label.css-label {
-        border: 3px solid #a7a8aa;
-        border-radius: 1000px;
-        -o-border-radius: 1000px;
-        -moz-border-radius: 1000px;
-        -ms-border-radius: 1000px;
-        -webkit-border-radius: 1000px;
-        cursor: pointer;
-        display: inline-block;
-        float: left;
-        height: 20px !important;
-        margin-right: 10px;
-        width: 20px !important;
-    }
-
-    input[type=radio].css-checkbox:checked  label.css-label {
-        background: url('styles/layouts/tdsfront/image/radio-checked.png') top no-repeat;
-        background-color: #fff;
-        background-position: 2.7px center !important;
-        background-size: 9px auto !important;
-    }*/
     label.css-label {
         float: left;
         background-color: #fff;
@@ -2430,14 +2415,14 @@ if($('.header-logo-div').is(':visible')) {
     ul.radio-holder li{
         float: left;
         text-align: left !important;
-        padding-left: 15px;
+        padding-left: 12px;
     }
     ul.radio-holder li:last-child {
         margin-right: 0px !important;
     }
     ul.radio-holder li:first-child {
-        margin-left: 0px !important;
-        padding-left: 0 !important;
+        margin-left: 0;
+        padding-left: 0;
     }
     .user_type_label {
         clear: none !important;
@@ -2627,7 +2612,7 @@ if($('.header-logo-div').is(':visible')) {
         border-color: #8f979a !important;
         color: #000000 !important;
         height: 51px !important;
-        width: 110px;
+        width: 135px;
     }
     .name_text_label {
         float: left;
@@ -2663,7 +2648,23 @@ if($('.header-logo-div').is(':visible')) {
         float: left;
         font-size: 15px;
         height: 51px;
-        width: 218px;
+        width: 240px;
+    }
+    .custom_dropdown {
+        width: 250px;
+    }
+    .custom_dropdown_dob {
+        width: 164px;
+    }
+    .custom_dropdown_dob .droppify_wrapper {
+        background-position: 122px 11px;
+    }
+    .custom_dropdown_medium {
+        width: 100%;
+    }
+    .custom_dropdown_medium .droppify_wrapper {
+        background-position: 98.5% 11px;
+        width: 100%;
     }
     .selectParent{
         overflow: hidden;

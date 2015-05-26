@@ -1176,7 +1176,7 @@ $(document).ready(function () {
 
         $.fancybox({
             'content': html_frm_reg,
-            'width': 500,
+            'width': 600,
             'height': 'auto',
             'transitionIn': 'fade',
             'transitionOut': 'fade',

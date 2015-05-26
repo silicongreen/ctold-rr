@@ -246,7 +246,7 @@ class CalenderController extends Controller
 
                 $start_date_main = Yii::app()->request->getPost('start_date');
                 $end_date_main = Yii::app()->request->getPost('end_date');
-                if (!$yearly && $send_yearly && $start_date_main <= $end_date_main)
+                if (!$yearly && !$send_yearly && $start_date_main <= $end_date_main)
                 {
                     $begin = new DateTime(date("Y-m-d", strtotime($start_date_main)));
                     $end = new DateTime(date("Y-m-d", strtotime($end_date_main)));

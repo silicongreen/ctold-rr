@@ -1,4 +1,5 @@
 <script type="text/javascript" src="<?php echo base_url('js/top-main.js'); ?>"></script> 
+<input type="hidden" name="cookie_check" id="cookie_check" value="false">
 <?php
 $widget = new Widget;
 if($school_id>0)

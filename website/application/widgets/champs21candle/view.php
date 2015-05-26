@@ -48,13 +48,13 @@
                     
                 </label>
                 <label class="candle-input">
-                    <input type="text" name="headline" id="headline" class="cd-input f5" placeholder="title">
+                    <input type="text" name="headline" id="headline" class="cd-input f5" placeholder="Title">
                 </label>
                 <label class="candle-input" id="candle_input_mobile">
                     <input type="text" name="mobile_num" id="mobile_num" value="<?php echo $user_mobile_number; ?>" class="cd-input f5" placeholder="Your Mobile Number">
                 </label>
                 <label class="candle-textarea">
-                    <textarea class="cd-textarea f5" id="content" name="content" placeholder="content"></textarea>
+                    <textarea class="cd-textarea f5" id="content" name="content" placeholder="Content"></textarea>
                 </label>
             </div>
             <div class="candle_form_right" style=display:none;">
@@ -68,12 +68,24 @@
                     <label for="demo_box_6"  class="css-label f5">Show comment to all?</label>
                 </div>
             </div>
-            <label class="candle-btn">
+            
 
 
-                <a class="button f5 icon-attach" id="file_attach" href="javascript:void(0);">Attach a file</a>
-                <a class="button f5 icon-upload" id="image_attach" href="javascript:void(0);">Upload Picture</a>
-                <a class="button f5 icon-send" id="candle_send" href="javascript:void(0);">Send</a>
+                <div class="button icon-attach"   style="width:150px;float:left;overflow: hidden;margin-right:10px;">
+                    <label class="candle-btn">
+                        <a class="f5 " id="file_attach" href="javascript:void(0);">Attach a file</a>
+                    </label>                    
+                </div>
+                <div class="button icon-upload" style="width:160px;float:left;overflow: hidden;margin-right:10px;">
+                    <label class="candle-btn">
+                        <a class="f5 " id="image_attach" href="javascript:void(0);">Upload Picture</a>
+                    </label>                    
+                </div>
+                <div class="button icon-send" style="width:105px;float:left;overflow: hidden;margin-right:10px;">
+                    <label class="candle-btn">
+                        <a class="f5 " id="candle_send" href="javascript:void(0);">Send</a>
+                    </label>
+                </div>
 
                 <input type="submit" id="submit_form" style="display:none;" value="Submit" />
             </label>
@@ -455,29 +467,32 @@
     .innerTop, .innerBottom { display:none;   z-index: -1;  }
 
     #button-bottom { width: 100px; position: absolute; left: 75%; top: 240px; padding-left: 100px;overflow: hidden;}
-
+    .button:hover {
+        background-color: #fff;
+        color: #000;
+    }
     .candle-checkbox{margin-left:27px;}
-    .candle-btn{margin-left:20px;}
+    .candle-btn{margin-left:1px;}
     .candle-btn .button{text-align: left;font-size:15px;}
     .candle-btn a{color:#A6AEAF;}
-    .candle-btn a.button:hover{background:none;color:#000000;}
+    .button a:hover{background:none;color:#000000;}
     .candle-btn a.button.icon {
         padding-left: 11px;
     }
 
-    .candle-btn a.button.icon-attach{
+    .icon-attach{
         padding-left: 30px;
-        background: url("/Profiler/images/right/icon-attach.png") no-repeat 0 4px;
+        background: url("/Profiler/images/right/icon-attach.png") no-repeat 5px 6px;
         background-color: #fff;
     }
-    .candle-btn a.button.icon-upload{
+    .icon-upload{
         padding-left: 30px;
-        background: url("/Profiler/images/right/icon-photo.png") no-repeat 0 5px;
+        background: url("/Profiler/images/right/icon-photo.png") no-repeat 5px 6px;
         background-color: #fff;
     }
-    .candle-btn a.button.icon-send{
+    .icon-send{
         padding-left: 30px;
-        background: url("/Profiler/images/right/icon-send.png") no-repeat 0 4px;
+        background: url("/Profiler/images/right/icon-send.png") no-repeat 5px 6px;
         background-color: #fff;
     }
     .cd-input{width:100%;background: #E7EBEE;font-size:13px !important;}

@@ -70,7 +70,7 @@
                 <textarea class="cd-textarea f5" id="about" name="about" placeholder="about"></textarea>
             </label>
 
-            <label class="candle-btn">
+<!--            <label class="candle-btn">
 
 
                 <a class="button f5 icon-attach" id="file_attach_school" href="javascript:void(0);">Upload Picture</a>
@@ -78,7 +78,23 @@
                 <a class="button f5 icon-send" id="candle_send_school" href="javascript:void(0);">Send</a>
 
                 <input type="submit" id="submit_form_school" style="display:none;" value="Submit" />
-            </label>
+            </label>-->
+            <div style="clear:both;"></div>
+            <div style="width:160px;float:left;overflow: hidden;margin-right:10px;">
+                <label class="candle-btn">
+                    <a class="button f5 icon-attach" id="file_attach_school" href="javascript:void(0);">Upload Picture</a>
+                </label>
+            </div>
+            <div style="width:150px;float:left;overflow: hidden;margin-right:10px;">
+                <label class="candle-btn">
+                    <a class="button f5 icon-upload" id="image_attach_school" href="javascript:void(0);">Upload Logo</a>
+                </label>
+            </div>
+            <div style="width:95px;float:left;overflow: hidden;margin-right:10px;">
+                <label class="candle-btn">
+                   <a class="button f5 icon-send" id="candle_send_school" href="javascript:void(0);">Send</a>
+                </label>
+            </div>
             <label class="candle-input">
                 <input type="file" style="display:none;"  id="attach_file_school" name="picture"  />
             </label>
@@ -495,9 +511,11 @@
 }
 
 #section_form_school {
-    margin-top: 125px;
-    background-color: #fff;
-    padding: 25px;
+  background-color: #ffffff;
+  height: 259px;
+  margin-bottom: 10px;
+  margin-top: 85px;
+  padding: 1px 20px;
 }
 
 .school-search-ul li {

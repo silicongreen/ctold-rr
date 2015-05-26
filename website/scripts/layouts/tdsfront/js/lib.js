@@ -396,7 +396,7 @@ $(document).ready(function () {
                 {folder_id: folder_id, post_id: post_id, is_read: 0}, function (data) {
             if (data != -1)
             {
-                alert("Added to your Unread Post list");
+                alert("Added to your Good Read list");
             }
         }
         );

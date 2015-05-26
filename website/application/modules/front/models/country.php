@@ -27,21 +27,18 @@ class Country extends DataMapper {
     public function get_country($id = NULL) {
 
         $sql = "SELECT c.id, c.name FROM `countries` AS c";
-
         $where = (!empty($id)) ? " WHERE c.id = '" . $id . "'" : "";
-
         $sql .= $where;
-
         $obj_country = $this->query($sql);
-
+        
         return (sizeof($obj_country->all) > 0) ? $obj_country : false;
     }
 
     public function formatCounrtyForDropdown($obj_country) {
-
+        
         $array[0] = 'Country';
         foreach ($obj_country as $row) {
-            $array[$row->id] = mb_convert_encoding($row->name, 'UTF-8');
+            $array[$row->id] = $row->name;
         }
         return $array;
     }

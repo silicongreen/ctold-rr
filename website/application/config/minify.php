@@ -55,6 +55,7 @@ $config['css_groups']            = Array(
                                     'merapi/style/styles.css',
                                     'styles/layouts/tdsfront/css/fonts.css',
                                     'styles/layouts/tdsfront/css/freefeed.css',
+                                    'styles/layouts/tdsfront/css/droppify.css',
                         ),
                         'sidebar.css' => Array( // when loading example.com/css/example1.css you will load stylesheet1.css and stylesheet2.css into one single file
                                     'Profiler/sidebar.css',
@@ -122,6 +123,7 @@ $config['js_groups']            = Array(
                                 'scripts/jquery/jquery.tree.js',
                                 'scripts/custom/customTree.js',
                                 'scripts/layouts/tdsfront/js/jquery.liteuploader.js',
+                                'scripts/layouts/tdsfront/js/droppify.js',
                                 'gallery/html5gallery.js',
                         )
                         

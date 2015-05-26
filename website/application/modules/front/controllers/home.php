@@ -2566,7 +2566,7 @@ class home extends MX_Controller {
     private function get_country() {
         
         $country = new Country();
-        $country = $country->formatCounrtyForDropdown($country->get());
+        $country = $country->formatCounrtyForDropdown($country->get_country());
         
         return $country;
     }

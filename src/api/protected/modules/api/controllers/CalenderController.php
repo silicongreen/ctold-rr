@@ -40,6 +40,7 @@ class CalenderController extends Controller
             $user_secret = Yii::app()->request->getPost('user_secret');
             $start_date = Yii::app()->request->getPost('start_date');
             $end_date = Yii::app()->request->getPost('end_date');
+            $send_yearly = Yii::app()->request->getPost('send_yearly');
 
             $yearly = false;
             if (!$start_date || !$end_date)
@@ -213,7 +214,7 @@ class CalenderController extends Controller
 
                 $i = 0;
 
-                if ($yearly || $start_date <= $end_date)
+                if (($yearly || $send_yearly ) || $start_date <= $end_date)
                 {
                     $interval = DateInterval::createFromDateString('1 day');
                     $period = new DatePeriod($begin, $interval, $end);
@@ -245,7 +246,7 @@ class CalenderController extends Controller
 
                 $start_date_main = Yii::app()->request->getPost('start_date');
                 $end_date_main = Yii::app()->request->getPost('end_date');
-                if (!$yearly && $start_date_main <= $end_date_main)
+                if (!$yearly && $send_yearly && $start_date_main <= $end_date_main)
                 {
                     $begin = new DateTime(date("Y-m-d", strtotime($start_date_main)));
                     $end = new DateTime(date("Y-m-d", strtotime($end_date_main)));
@@ -407,7 +408,7 @@ class CalenderController extends Controller
 
 
 
-                if ($yearly)
+                if ($yearly || $send_yearly)
                 {
                     $response['data']['absent'] = $absent_count;
                     $response['data']['late'] = $late_count;

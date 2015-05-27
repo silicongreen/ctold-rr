@@ -163,6 +163,21 @@
 
                     </fieldset>
                     <fieldset class="label_side top">
+                        <label for="required_field">Spelling Bee<span>Select only if ad type post And use for home page spelling bee banner</span></label>
+                        <div class="clearfix">
+
+                           <?php
+                            $f_array = array(0 => "No", 1 => "Yes");
+
+
+                            echo form_dropdown('is_spelling_bee', $f_array, $model->is_spelling_bee);
+                            ?>
+                            
+                        </div>
+
+                    </fieldset>
+                        
+                    <fieldset class="label_side top">
                         <label for="required_field">Ad Target<span>Select only if ad type post</span></label>
                         <div class="clearfix">
 

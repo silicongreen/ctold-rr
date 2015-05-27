@@ -107,14 +107,10 @@ $(document).ready(function () {
             dataType: 'json',
             async: false,
             success: function (data) {
-
+                
                 if (data.logged_in == true) {
                     window.location.reload();
-                } else {
-                    window.location.href = $('#base_url').val();
-                    return false;
                 }
-
             },
             error: function (e) {
                 

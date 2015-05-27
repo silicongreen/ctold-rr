@@ -3950,10 +3950,11 @@ class home extends MX_Controller {
         $user_data = $free_user->cookie_login();
         
         if($user_data !== false) {
-            $this->set_user_session($user_data, $this->input->post('password'));
+            $this->set_user_session($user_data);
+            $data['logged_in'] = free_user_logged_in();
+        } else {
+            $this->logout_user();
         }
-        
-        $data['logged_in'] = free_user_logged_in();
         
         echo json_encode($data);
         exit;        

@@ -499,6 +499,8 @@ class Settings {
         {
             $post_array['title']     = $postValue->headline;
             
+            $post_array['is_spelling_bee'] = $postValue->is_spelling_bee;
+            
             $post_array['post_type'] = $postValue->post_type;
             
             $post_array['ad_target'] = 1;

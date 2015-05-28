@@ -227,7 +227,12 @@
                         ?>
 
                         <?php $s_post_class = ( $is_breaking_found ) ? "news_slides" : "post"; ?> 
-                        <?php if ($news->is_spelling_bee == 1 ) : ?>
+                                 
+                        <?php
+                            $CI = & get_instance();        
+                            $CI->load->config("tds");
+                        ?>
+                        <?php if ($news->is_spelling_bee == 1 && $CI->config->config['spelling_bee_start'] ) : ?>
                              <?php $widget->run('spelling_bee', $news, $style, $s_post_class, $li_class_name, $i, $count_show, $is_exclusive_found, $target); ?>
                         <?php elseif (in_array($news->post_layout, array(1, 2, 3))) : ?>   
                             <?php $widget->run('post_type_' . $news->post_layout, $news, $style, $s_post_class, $li_class_name, $i, $count_show, $is_exclusive_found, $target); ?>         

@@ -8,43 +8,78 @@
         $widget->run('seenassessment', $news);
     ?>
     <div class="post-content clearfix">
-        <div class="intro-post">
-            <div class="post-thumb " id="post-image" style="position: relative;">
-                <?php if ($target == "index") : ?>
-                <div class="post-thumb " style="width: 57px; position: absolute; left: 43%; top: 49px;">
-                    <p style="<?php if($is_exclusive_found===true):?>top:104px;position:absolute;<?php else: ?>margin-top: -67px;position: relative;<?php endif;?>text-align: center;width: 100%;">
-                        <img width="57" <?php if($is_exclusive_found===true):?>style="margin-left:-101%;"<?php endif; ?> src="<?php echo $news->icon ?>">
-                    </p>
+        <div class="intro-post spellingbee">
+            <div class="col-lg-6">
+               
+            </div>  
+            <div class="col-lg-6 links-spell">
+                <div class="col-lg-12 leader leader_board1">
+                    <div class="col-lg-3">
+                        
+                    </div>
+                    <div class="col-lg-8">
+                        GUES THE WORD
+                    </div>
                 </div>
-                <?php endif; ?>
-                <?php if (!is_null($news->lead_material) && strlen(trim($news->lead_material)) > 0) : ?>
-                    <?php if ($news->post_type == 2) : ?>   
-                        <a class="add-link" title="<?php echo $news->lead_caption; ?>" href="<?php echo $news->lead_link; ?>"   <?php if($news->ad_target!=2): ?> target="_blank"<?php endif; ?>>       
-                        <?php endif; ?>     
-
-                            <img class="no_toolbar" src="<?php echo $arCustomNews['lead_material']; ?>" class="attachment-post-thumbnail wp-post-image <?php echo ( $news->post_type == 2 ) ? 'no_toolbar' : ''; ?>" alt="<?php echo $news->headline; ?>" <?php if($is_exclusive_found===true): ?>style="width:475px;height:265px; "<?php endif; ?>>
-                        <?php if ($news->post_type == 2) : ?>   
-                        </a>
-                    <?php endif; ?>
-                <?php elseif (strlen(trim($arCustomNews['image'])) > 0) : ?>
-                    <?php if ($news->post_type == 2) : ?>   
-                        <a class="add-link"   title="<?php echo $arCustomNews['all_image_title'][0]; ?>"  href="<?php echo $arCustomNews['all_image_url'][0]; ?>"   <?php if($news->ad_target!=2): ?> target="_blank"<?php endif; ?>>       
-                    <?php endif; ?> 
-                        <img class="no_toolbar" src="<?php echo $arCustomNews['image']; ?>" class="attachment-post-thumbnail wp-post-image" alt="<?php echo $news->headline; ?>" style="clip: rect(0px,60px,200px,0px);"<?php if($is_exclusive_found===true): ?>style="width:475px;height:265px; "<?php endif; ?>>
-                    <?php if ($news->post_type == 2) : ?>   
-                        </a>
-                    <?php endif; ?>
-                <?php endif; ?>
-                <div id="triangle-bottomright" style="position: absolute; bottom: 0;"></div>
-                <div class="post-thumb " style="width: 50%; position: absolute; left: 25%; bottom: -30px;">
-                    <img class="no_toolbar" src="<?php echo $news->inside_image; ?>" class="attachment-post-thumbnail wp-post-image" alt="<?php echo $news->headline; ?>" style="border: 8px solid #fff; box-shadow: 0px 0px 20px #999;">
-                </div><!-- post thumb -->
-            </div><!-- post thumb -->
+                <div class="col-lg-12 leader leader_board2">
+                    <div class="col-lg-3">
+                        
+                    </div>
+                    <div class="col-lg-8">
+                        LEADER BOARD
+                    </div>
+                    
+                </div>
+               
+            </div> 
             
         </div> 
-
+    </div>
        
 </li>
+<style>
+    .spellingbee .links-spell
+    {
+        color: white;
+    }
+    .spellingbee .col-lg-6
+    {
+        padding: 20px 0px;
+        height: 500px;
+    }
+    .spellingbee .col-lg-6 .leader
+    {
+        margin-top: 8px;
+        float:left;
+    }
+    .spellingbee .col-lg-6 .leader_board1 .col-lg-3
+    {
+        background: #C99567;
+        height: 20%;
+        
+    }
+    .spellingbee .col-lg-6 .leader_board2 .col-lg-3
+    {
+        background: #E9B60A;
+        height: 20%;
+        
+    }
+    .spellingbee .col-lg-6 .leader_board1 .col-lg-8
+    {
+        background: #E6A96E;
+        height: 40px;
+        padding: 35px 0px 57px 12px;
+        font-size: 22px;
+    }
+    .spellingbee .col-lg-6 .leader_board2 .col-lg-8
+    {
+        background: #FFCA0B;
+        height: 40px;
+        padding: 35px 0px 57px 12px;
+        font-size: 22px;
+    }
+    
+</style>    
 <script>
     $(document).ready(function(){
         

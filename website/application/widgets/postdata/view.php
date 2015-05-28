@@ -226,8 +226,15 @@
                         $li_class_name = ( $news->is_breaking && date("Y-m-d H:i:s") < $news->breaking_expire ) ? 'col-sm-8' : ( ( $news->is_exclusive && date("Y-m-d H:i:s") < $news->exclusive_expired ) ? 'col-sm-12' : 'col-md-6' );
                         ?>
 
-                        <?php $s_post_class = ( $is_breaking_found ) ? "news_slides" : "post"; ?>  
-                        <?php if (in_array($news->post_layout, array(1, 2, 3))) : ?>   
+                        <?php $s_post_class = ( $is_breaking_found ) ? "news_slides" : "post"; ?> 
+                                 
+                        <?php
+                            $CI = & get_instance();        
+                            $CI->load->config("tds");
+                        ?>
+                        <?php if ($news->is_spelling_bee == 1 && $CI->config->config['spelling_bee_start'] ) : ?>
+                             <?php $widget->run('spelling_bee', $news, $style, $s_post_class, $li_class_name, $i, $count_show, $is_exclusive_found, $target); ?>
+                        <?php elseif (in_array($news->post_layout, array(1, 2, 3))) : ?>   
                             <?php $widget->run('post_type_' . $news->post_layout, $news, $style, $s_post_class, $li_class_name, $i, $count_show, $is_exclusive_found, $target); ?>         
                         <?php elseif (!is_null($news->short_title) && strlen(trim($news->short_title)) > 0 && in_array($news->sort_title_type, array(1, 2, 3, 4, 5))) : ?>
                             <?php $widget->run('short_title_block' . $news->sort_title_type, $news, $style, $s_post_class, $li_class_name, $i, $count_show, $is_exclusive_found, $target); ?>

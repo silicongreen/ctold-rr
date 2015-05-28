@@ -29,7 +29,7 @@ if (!defined('BASEPATH'))
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-class post_type_1 extends widget
+class spelling_bee extends widget
 {
 
     function run( $obj_post_news, $style, $s_post_class, $li_class_name, $i, $count_show, $is_exclusive_found, $target, $from = "main",$category_id = 0)

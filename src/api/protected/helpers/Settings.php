@@ -524,6 +524,7 @@ class Settings {
             
             if($postValue->is_spelling_bee)
             {
+               
                 $objrelated = new RelatedNews();
                 $rnews = $objrelated->getRelatedNews($postValue->id);
                 $post_data = array();
@@ -533,7 +534,8 @@ class Settings {
                     $post_data[$i] = self::getSingleNewsFromCache($value['id']);
                     $i++;
                 }
-                $response['related_news_spelling_bee'] = $post_data;
+              
+                $post_array['related_news_spelling_bee'] = $post_data;
             
             }
             

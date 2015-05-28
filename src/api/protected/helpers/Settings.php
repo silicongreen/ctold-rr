@@ -492,6 +492,25 @@ class Settings {
         $value = preg_replace('/<p(.*?)id=\"solution-\-p\"(.*?)>(.*?)<\/p>/s', "", $content);
         return $value;
     }
+    
+    public static function getSingleNewsFromCache($id)
+    {
+        $cache_name = "YII-SINGLE-POST-CACHE-" . $id;
+        if (!$singlepost = Yii::app()->cache->get($cache_name))
+        {
+            $postModel = new Post();
+            $singlepost = $postModel->getSinglePost($id);
+            Yii::app()->cache->set($cache_name, $singlepost, 5184000);
+        }
+        else
+        {
+            $datestring = self::get_post_time($singlepost['published_date']);
+            $singlepost['current_date'] = date("Y-m-d H:i:s");
+            $singlepost['published_date_string'] = $datestring;
+        }    
+        return $singlepost;
+    }
+    
     public static function formatData($postValue)
     {
         $post_array = array();
@@ -500,6 +519,27 @@ class Settings {
             $post_array['title']     = $postValue->headline;
             
             $post_array['is_spelling_bee'] = $postValue->is_spelling_bee;
+            
+            $post_array['related_news_spelling_bee'] = array();
+            
+            if($postValue->is_spelling_bee)
+            {
+               
+                $objrelated = new RelatedNews();
+                $rnews = $objrelated->getRelatedNews($postValue->id);
+                $post_data = array();
+                $i = 0;
+                foreach ($rnews as $value)
+                {
+                    $post_data[$i] = self::getSingleNewsFromCache($value['id']);
+                    $i++;
+                }
+              
+                $post_array['related_news_spelling_bee'] = $post_data;
+            
+            }
+            
+            
             
             $post_array['post_type'] = $postValue->post_type;
             

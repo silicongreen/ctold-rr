@@ -21,6 +21,7 @@
                         echo $header;
                     }
                 ?>
+                <div style="margin-top:80px;"></div>
                 <?php echo $content; ?>
             </div> 
                     

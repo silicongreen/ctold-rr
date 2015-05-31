@@ -2637,6 +2637,95 @@ class home extends MX_Controller {
             @readfile($str_music_dir);
         }
     }
+    
+    public function spellingbee()
+    {
+        $ar_js = array();
+        $ar_css = array();
+        $extra_js = '';
+        
+        $data = array();
+        
+        $data['ci_key']    = "spellingbee";
+        $data['ci_key_for_cover'] = "spellingbee";
+        $data['s_category_ids'] = "0";
+        
+        
+        $this->db->where('key', 'layout');
+        $query = $this->db->get('settings');
+        $layout_settings = $query->row();
+        
+        $data['layout'] = $layout_settings->value;
+        
+        
+        $s_content = $this->load->view('spellingbee',$data, true);
+        
+        $s_right_view = "";
+        $cache_name = "common/right_view";
+        if ( ! $s_widgets = $this->cache->file->get($cache_name)  )
+        {
+           
+            
+            $this->db->where('is_enabled', 1);
+            $query = $this->db->get('widget');
+            
+            $obj_widgets = $query->result();
+            
+            if ($obj_widgets )
+            {
+               $data2['post_details'] = 0;
+               $data2['widgets'] = $obj_widgets;
+               $data2['cartoon'] = true;
+               
+               // User Data
+               $user_id = (free_user_logged_in()) ? get_free_user_session('id') : NULL;
+               
+               $data2['model'] = $this->get_free_user($user_id);
+               
+               $data2['free_user_types'] = $this->get_free_user_types();
+               
+               $data2['country'] = $this->get_country();
+               $data2['country']['id'] = $data2['model']->tds_country_id;
+               
+               $data2['grades'] = $this->get_grades();
+               
+               $data2['medium'] = $this->get_medium();
+               
+               $data2['edit'] = (free_user_logged_in()) ? TRUE : FALSE;
+               // User Data
+               
+               $obj_post = new Posts();
+               $data2['category_tree'] = $obj_post->user_preference_tree();
+               
+               $s_right_view =  $this->load->view( 'right', $data2, TRUE );  
+               $this->cache->file->save($cache_name, $s_right_view, 86400 * 30 * 12);
+            }
+        }
+        else
+        {
+            $s_right_view = $s_widgets;
+        }
+
+        $str_title = WEBSITE_NAME . " | Spelling Bee";
+        
+        $meta_description = META_DESCRIPTION;
+        $keywords = KEYWORDS;
+        $ar_params = array(
+            "javascripts"           => $ar_js,
+            "css"                   => $ar_css,
+            "extra_head"            => $extra_js,
+            "title"                 => $str_title,
+            "description"           => $meta_description,
+            "keywords"              => $keywords,
+            "side_bar"              => $s_right_view,
+            "target"                => "spellingbee",
+            "fb_contents"           => NULL,
+            "content"               => $s_content
+        );
+        
+        $this->extra_params = $ar_params;
+    }
+    
     public function about_us()
     {
         $ar_js = array();

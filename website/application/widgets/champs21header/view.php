@@ -17,10 +17,21 @@
         <img src="<?php echo base_url($this->config->config['cover-image'][$ci_key_for_cover]); ?>" width="100%" class="image-logo" alt="logo">
         <?php elseif ((array_key_exists($ci_key_for_cover, $this->config->config['LOGO']) && $this->config->config['LOGO'][$ci_key_for_cover]) ||
                 (array_key_exists("allpage", $this->config->config['LOGO']) && $this->config->config['LOGO']["allpage"])) : ?>
-        <div class="header-new" style="background: none; width: 77%;margin: 0px auto; height: 100px; padding: 18px 5px; ">
+        <div class="header-new" style="background: #fff;position: fixed; width: 100%;margin: 0px auto; height: 80px; padding: 18px 5px; z-index:1000;">
             
             <div class="logo-div">
                 <a href="<?php echo base_url(); ?>" ><img  src="<?php echo base_url('styles/layouts/tdsfront/images/logo-new.png'); ?>" class="image-logo" alt="logo"></a>
+            </div>
+            <div style="float: left;width: 60%;height:50px;">
+                
+                
+                    <?php
+                    $widget = new Widget;
+                    $widget->run('champs21newmenu');
+                    ?> 
+                
+                
+                
             </div>
             <?php if( free_user_logged_in() ): ?>
             <div class="header-logo-div">
@@ -57,14 +68,14 @@
             ?>
             
             <div class="login_reg_div">
-                <div class="search_box_head">
+                <!--<div class="search_box_head">
                         <div style="float: left;margin:5px;">                
                                 <form method="get" class="searchform" action="<?php echo base_url('search'); ?>" role="search">                    
                                         <input class="field" name="s" id="s" class='search' placeholder="Search this site" type="search" style="border-radius: 6px; -moz-border-radius: 6px; -webkit-border-radius: 6px; width: 220px; margin-top: 3px;">
                                         <input class="submit search-button" value="" type="submit" />
                                 </form>                
                         </div>
-                </div>
+                </div>-->
                 <div class="login_reg_div_box">
                     
                     <?php if( !free_user_logged_in() ){ ?>
@@ -813,19 +824,19 @@ height: 46px;
                         //$widget = new Widget;
                         //$widget->run('champs21schoolsearch', $ci_key);
                 ?>
-        <div class="category-fixed-menu">
+        <!--<div class="category-fixed-menu">
             <div class="f2 category-fixed-menu-box">            
                 <label class="category-fixed-menu-title" for="menu-toggle">Menu</label>
          
                 <input type="checkbox" id="menu-toggle"/>
                 <div class="category-fixed-menu-list" id="category-fixed-menu-list">
                     <?php
-                    $widget = new Widget;
-                    $widget->run('champs21slidemenu');
+                    //$widget = new Widget;
+                    //$widget->run('champs21slidemenu');
                     ?>  
-                </div><!--end class plazart-megamenu-->            
+                </div>end class plazart-megamenu          
             </div>            
-        </div>
+        </div>-->  
         
         
         
@@ -958,7 +969,7 @@ if($('.header-logo-div').is(':visible')) {
 .logo-div
 {
 	float: left; 
-	width: 27%; 
+	width: 20%; 
 	padding-left: 20px;        
 }
 
@@ -2818,7 +2829,7 @@ if($('.header-logo-div').is(':visible')) {
         
         width:190px;
         position:absolute;
-        right:199px;
+        right:85px;
         top:60px;
         background-color: #fff;
         z-index: 5000;

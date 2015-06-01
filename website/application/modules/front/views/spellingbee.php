@@ -44,6 +44,23 @@
                <?php $this->load->view('spellingbee/profile'); ?>  
             </section>
         </div>
+        
+        <div style="margin-top:30px;clear: both;height: 250px;">
+            <div class="spelling_bee_play" style="">
+            <center><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/sp_play_s3.png'); ?>" style="width:50%;margin-top:40px;"></center>
+            </div>
+            <div style="float: left;width: 31%;background: #fff;height: 250px;">
+                <h2 class="f2" style="margin-left:20px;font-size: 16px;">Videos</h2>
+            <center><a href="https://www.youtube.com/channel/UCywQj51MiCqHzQAa0Mg4KXg" target="_blank"><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/spellingbee_video.png'); ?>" style="width:80%;"></a></center>
+            </div>
+            <div style="float: right;width: 31%;background: #fff;height: 250px;">
+            <center><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/spellato.png'); ?>" style="width:80%;margin-top:15px;"></center>
+            </div>
+        </div>
+        
+        <div style="margin-top:30px;clear: both;height: 145px;">
+            <center><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/sponser.png'); ?>" style="width:100%;"></center>
+        </div>
     </div>
 </div>
 
@@ -156,5 +173,17 @@
 #tabscontent .tabpage:not(:first-child) 
 {
     display: none;
+}
+
+.spelling_bee_play{
+  float: left;
+  height: 250px;
+  width: 31%;
+  margin-right:36px;
+  background-color: #fff;  
+  background-image: url("<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/small_bee.png'); ?>");
+  background-position: left bottom;
+  background-repeat: no-repeat;
+  background-size: 25% auto;
 }
 </style>

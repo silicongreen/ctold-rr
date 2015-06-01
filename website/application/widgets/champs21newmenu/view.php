@@ -4,10 +4,10 @@ float: left;
 height: 35px;
 margin-left: 20px;
 margin-top: 7px;
-width: 17%;" class="bababa">
+width: 15%;" class="bababa">
                     
                 </div>
-<div style="float: left;width: 80%;height:34px;margin-top: 10px;overflow: hidden;">
+<div style="float: left;width: 82%;height:34px;margin-top: 10px;overflow: hidden;">
 <ul class="ca-menu-new">
     <?php if ($slidemenu) : ?>
         <?php
@@ -73,7 +73,7 @@ $( ".ca-menu-new li" ).mouseover(function() {
 }
 .ca-menu-new li{
     float:left;
-    width: 44px;
+    width: 46px;
     height: 44px;
     overflow: hidden;
     position: relative;
@@ -103,7 +103,7 @@ $( ".ca-menu-new li" ).mouseover(function() {
 .ca-icon-new{            
     height:80px;
     position: absolute;
-    width: 40px;    
+    width: 43px;    
     text-align: center;
     -webkit-transition: all 300ms linear;
     -moz-transition: all 300ms linear;

@@ -27,7 +27,7 @@ class SiteController extends Controller
 	 */
 	public function actionIndex()
 	{
-                $cookies = Yii::$app->request->cookies;
+                $cookies = Yii::app()->request->cookies;
                 $user_cookie = "";
                 if (isset($cookies['c21_session'])) {
                     $user_cookie = $cookies['c21_session']->value;

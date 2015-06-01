@@ -108,7 +108,7 @@ $( ".ca-menu-new li" ).mouseover(function() {
 .ca-icon-new{            
     height:80px;
     position: absolute;
-    width: 43px;    
+    width: 48px;    
     text-align: center;
     -webkit-transition: all 300ms linear;
     -moz-transition: all 300ms linear;

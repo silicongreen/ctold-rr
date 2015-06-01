@@ -7,7 +7,11 @@ margin-top: 7px;
 width: 15%;" class="bababa">
                     
                 </div>
-<div style="float: left;width: 82%;height:34px;margin-top: 10px;overflow: hidden;">
+<?php
+    $my_uri = $_SERVER[REQUEST_URI];
+    $my_uri = explode("/", $my_uri);    
+    ?>
+<div style="float: left;width: 82%;height:38px;margin-top: 5px;overflow: hidden;">
 <ul class="ca-menu-new">
     <?php if ($slidemenu) : ?>
         <?php
@@ -20,7 +24,7 @@ width: 15%;" class="bababa">
                                         <?php else: ?>
                                             <a href="<?php echo base_url() . sanitize($row->name); ?>">
                                         <?php endif; ?>
-						<span class="ca-icon-new" style="background: url(<?php echo base_url($row->menu_icon); ?>) no-repeat;background-size:50px;top:0px;left:-5px;"></span>
+						<span class="ca-icon-new <?php echo ($my_uri[1] == sanitize($row->name))?"active_header_menu":"";?>" style="background: url(<?php echo base_url($row->menu_icon); ?>) no-repeat;background-size:55px;top:0px;left:-5px;"></span>
 						
 					</a>
                                                 <div class="ca-content-main" style="display:none;">
@@ -34,7 +38,7 @@ width: 15%;" class="bababa">
     <?php endif; ?>
 			<li class="schools topopup">
 				 <a href="<?php echo base_url() . "schools"; ?>">
-					<span class="ca-icon-new" style="background: url(<?php echo base_url('styles/layouts/tdsfront/image/schools_new.png'); ?>) no-repeat;background-size:50px;top:0px;left:-5px;"></span>
+					<span class="ca-icon-new <?php echo ($my_uri[1] == "schools")?"active_header_menu":"";?>" style="background: url(<?php echo base_url('styles/layouts/tdsfront/image/schools_new.png'); ?>) no-repeat;background-size:55px;top:0px;left:-5px;"></span>
                                         <div class="ca-content-main" style="display:none;">
 						<h2 class="ca-main-new f5">Schools</h2>
 					</div>
@@ -69,11 +73,12 @@ $( ".ca-menu-new li" ).mouseover(function() {
 <style>
 .ca-menu-new{
     padding:0;
-    margin:0px auto;
+    float:left;
+    text-align:center;
 }
 .ca-menu-new li{
     float:left;
-    width: 46px;
+    width: 48px;
     height: 44px;
     overflow: hidden;
     position: relative;
@@ -162,7 +167,7 @@ $( ".ca-menu-new li" ).mouseover(function() {
 .ca-menu-new li:hover .ca-icon-new{
     opacity: 1;
     color:#93989C;    
-    top:-33px !important;
+    top:-36px !important;
 	
 	
     -webkit-animation: moveFromTop 300ms ease-in-out;
@@ -174,6 +179,11 @@ $( ".ca-menu-new li" ).mouseover(function() {
     -webkit-animation: moveFromBottom 300ms ease-in-out;
     -moz-animation: moveFromBottom 300ms ease-in-out;
     -ms-animation: moveFromBottom 300ms ease-in-out;
+}
+
+.active_header_menu
+{
+    top:-36px !important;
 }
 @-webkit-keyframes moveFromBottom {
     from {
@@ -236,4 +246,6 @@ $( ".ca-menu-new li" ).mouseover(function() {
         -ms-transform: translateY(0%);
     }
 }
+
+
 </style>

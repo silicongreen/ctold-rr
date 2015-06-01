@@ -22,7 +22,7 @@
             <div class="logo-div">
                 <a href="<?php echo base_url(); ?>" ><img  src="<?php echo base_url('styles/layouts/tdsfront/images/logo-new.png'); ?>" class="image-logo" alt="logo"></a>
             </div>
-            <div style="float: left;width: 60%;height:50px;">
+            <div style="float: left;width: 64%;height:50px;">
                 
                 
                     <?php
@@ -964,7 +964,7 @@ if($('.header-logo-div').is(':visible')) {
 <style type="text/css">
 .image-logo
 {
-    width:100%;
+    width:210px;
 }
 .logo-div
 {

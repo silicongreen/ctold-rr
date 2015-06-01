@@ -36,38 +36,62 @@ width: 15%;" class="bababa">
         endforeach;
         ?>
     <?php endif; ?>
-			<li class="schools topopup">
+<!--			<li class="schools topopup">
 				 <a href="<?php echo base_url() . "schools"; ?>">
 					<span class="ca-icon-new <?php echo ($my_uri[1] == "schools")?"active_header_menu":"";?>" style="background: url(<?php echo base_url('styles/layouts/tdsfront/image/schools_new.png'); ?>) no-repeat;background-size:55px;top:0px;left:-5px;"></span>
                                         <div class="ca-content-main" style="display:none;">
 						<h2 class="ca-main-new f5">Schools</h2>
 					</div>
 				</a>						
-			</li>
+			</li>-->
            
 
 </ul>
 </div>
 <script type="text/javascript">
+
 jQuery(function($) {
     var i = 0;
-$( ".ca-menu-new li" ).mouseover(function() {
-  if(i == 0)
-    {        
-        var h = $(this).find( ".ca-content-main" ).html(); 
+    
+    $(document).off('mouseenter',".ca-menu-new li").on('mouseenter',".ca-menu-new li",function(){
+        if(i == 0)
+        { 
+            var h = $(this).find( ".ca-content-main" ).html();         
+            $('.bababa').append(h);
+            $('.bababa .ca-main-new').addClass("new_animation");
+            $(".bababa").css("border-left","4px solid #cccccc");
+            i = 1;
+
+        }
+    });
+     $(document).off('mouseleave',".ca-menu-new li").on('mouseleave',".ca-menu-new li",function(){
+         $('.bababa').empty("");
+            $(".bababa").css("border-left","0px solid #cccccc");
+            i = 0;
+
         
-        $('.bababa').append(h);
-        //$(".bababa .ca-main-new").css("opacity","1");
-        //$(".bababa .ca-main-new").css("border","1");
-        $(".bababa").css("border-left","4px solid #cccccc");
-        i = 1;
-    }
-}).mouseout(function() {
-    $('.bababa').empty("");
-    $(".bababa").css("border-left","0px solid #cccccc");
-    i = 0;
-  
-});
+    });
+    
+
+//$( ".ca-menu-new li" ).mouseover(function(e) {
+//  if(i == 0)
+//    {       
+//        
+//        var h = $(this).find( ".ca-content-main" ).html();         
+//        $('.bababa').append(h);
+//        $('.bababa .ca-main-new').addClass("new_animation");
+//        $(".bababa").css("border-left","4px solid #cccccc");
+//        i = 1;
+//        console.log(i);
+//        
+//    }
+//    
+//}).mouseout(function() {
+//    $('.bababa').empty("");
+//    $(".bababa").css("border-left","0px solid #cccccc");
+//    i = 0;console.log(i);
+//  
+//});
 });
 </script>
 <style>
@@ -127,14 +151,15 @@ $( ".ca-menu-new li" ).mouseover(function() {
 	font-size: 17px;
         color:red;
 	line-height:13px;
-            margin-left:5px;
+            margin-left:10px;
+            white-space:nowrap;
     text-align:left;
-    margin-top:5px;
+/*    margin-top:10px;
     -webkit-transition: all 300ms linear;
     -moz-transition: all 300ms linear;
     -o-transition: all 300ms linear;
     -ms-transition: all 300ms linear;
-    transition: all 300ms linear;
+    transition: all 300ms linear;*/
 	opacity:1;
         font-weight:bold;
 }
@@ -170,6 +195,13 @@ $( ".ca-menu-new li" ).mouseover(function() {
     top:-36px !important;
 	
 	
+    -webkit-animation: moveFromTop 300ms ease-in-out;
+    -moz-animation: moveFromTop 300ms ease-in-out;
+    -ms-animation: moveFromTop 300ms ease-in-out;
+}
+.new_animation{
+    
+    	
     -webkit-animation: moveFromTop 300ms ease-in-out;
     -moz-animation: moveFromTop 300ms ease-in-out;
     -ms-animation: moveFromTop 300ms ease-in-out;

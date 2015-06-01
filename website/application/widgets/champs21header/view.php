@@ -969,7 +969,7 @@ if($('.header-logo-div').is(':visible')) {
 .logo-div
 {
 	float: left; 
-	width: 20%; 
+	width: 17%; 
 	padding-left: 20px;        
 }
 

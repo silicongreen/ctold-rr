@@ -54,8 +54,15 @@ class sidebar extends widget
                         "Post Properties" => array("newsfeatures"),
                         "Pin Post" => array("pinpost"),
                         "Feature Post" => array("featurepost"),
-                        "Spelling Bee" => array("spellingbee"),
                         "Trash"    => array("news","trash"),
+                     ),
+             "Spelling Bee" => 
+                array(
+                        "Spelling Bee Word" => array("spellingbee"),
+                        "Gallery" => array("galleries"),
+                        "Sort Gallery" => array("galleries", "sort_galleries"),
+                        "Gallery Photo" => array("gallery_photo"),
+                        
                      ),
             "Post Arrangement" => 
                 array(

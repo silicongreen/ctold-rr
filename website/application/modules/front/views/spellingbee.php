@@ -203,7 +203,7 @@
   background-size: 25% auto;
 }
 #tabpage_2 ul li, #tabpage_3 ul li, #tabpage_10 ul li {
-    list-style: outside none disc;
+    list-style: disc !important;
 }
 #tabpage_3 ol li {
     margin-left: 10px;

@@ -57,8 +57,15 @@ class FreeuserController extends Controller
             $objParams->score = Yii::app()->request->getPost('score');
             
            
-            
-            $objParams->isCheater = Yii::app()->request->getPost('is_cheater');
+            if(Yii::app()->request->getPost('is_cheater'))
+            {
+                $cheat = 1;
+            }
+            else
+            {
+                $cheat = 0;
+            }    
+            $objParams->isCheater = $cheat;
 
             
             #$data = Yii::app()->user->free_id;

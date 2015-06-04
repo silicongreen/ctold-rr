@@ -2643,6 +2643,8 @@ class FreeuserController extends Controller
                     $folderObj = new UserFolder();
 
                     $folderObj->createGoodReadFolder($user->id);
+                    
+                    Yii::app()->user->setState("free_id",$user->id);
 
                     $response['data'] = $freeuserObj->getPaidUserInfo();
                     $response['data']['free_id'] = $user->id;
@@ -2687,6 +2689,8 @@ class FreeuserController extends Controller
                     $folderObj->createGoodReadFolder($freeuserObj->id);
 
                     $this->sendRegistrationMail($freeuserObj);
+                    
+                    Yii::app()->user->setState("free_id",$freeuserObj->id);
 
                     $response['data'] = $freeuserObj->getPaidUserInfo();
                     $response['data']['free_id'] = $freeuserObj->id;
@@ -2703,6 +2707,7 @@ class FreeuserController extends Controller
                 if ($user = $freeuserObj->getFreeuserGmail($gl_profile_id))
                 {
                     $folderObj = new UserFolder();
+                    Yii::app()->user->setState("free_id",$user->id);
 
                     $folderObj->createGoodReadFolder($user->id);
                     $response['data'] = $freeuserObj->getPaidUserInfo();
@@ -2747,6 +2752,8 @@ class FreeuserController extends Controller
                     $folderObj->createGoodReadFolder($freeuserObj->id);
 
                     $this->sendRegistrationMail($freeuserObj);
+                    
+                    Yii::app()->user->setState("free_id",$freeuserObj->id);
 
                     $response['data'] = $freeuserObj->getPaidUserInfo();
                     $response['data']['free_id'] = $freeuserObj->id;
@@ -2912,7 +2919,7 @@ class FreeuserController extends Controller
                     }
                 }
 
-
+                Yii::app()->user->setState("free_id",$freeuserObj->id);
                 $this->sendRegistrationMail($freeuserObj);
                 $response['data'] = $freeuserObj->getPaidUserInfo();
                 $response['data']['free_id'] = $freeuserObj->id;
@@ -2936,6 +2943,8 @@ class FreeuserController extends Controller
                 $folderObj = new UserFolder();
 
                 $folderObj->createGoodReadFolder($freeuserObj->id);
+                
+                Yii::app()->user->setState("free_id",$freeuserObj->id);
 
                 $response['data'] = $freeuserObj->getPaidUserInfo();
                 $response['data']['free_id'] = $freeuserObj->id;

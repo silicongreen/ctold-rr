@@ -728,7 +728,9 @@ class UserController extends Controller {
 //                        $response['data'] = array();
 //                        $response['status']['code'] = 404;
 //                        $response['status']['msg'] = "USER_NOT_FOUND";
-//                    }  
+//                    } 
+                  
+                    Yii::app()->user->setState("free_id",$response['data']['free_id']);
 
                     $response['status']['code'] = 200;
                     $response['status']['msg'] = "USER_FOUND";
@@ -745,7 +747,7 @@ class UserController extends Controller {
 //                    $response['data']['children'] = array();
 //                    $response['data']['session'] =  Yii::app()->session->getSessionID();
                     //for paid
-                    
+                    Yii::app()->user->setState("free_id",$data->id);
                     $response['data']['user_type'] = 0;
                     $response['data']['free_id'] = $data->id;
                     $response['data']['user']  = $free_user->getUserInfo($data->id);

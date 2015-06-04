@@ -27,6 +27,13 @@ class SiteController extends Controller
 	 */
 	public function actionIndex()
 	{
+                $cookies = Yii::app()->request->cookies;
+                $user_cookie = "";
+                if (isset($cookies['c21_session'])) {
+                    $user_cookie = $cookies['c21_session']->value;
+                }
+                 echo $user_cookie;
+                exit;
 		// renders the view file 'protected/views/site/index.php'
 		// using the default layout 'protected/views/layouts/main.php'
 		$this->render('index');

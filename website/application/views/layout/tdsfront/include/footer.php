@@ -154,5 +154,11 @@ color: #fb3c2d;
 a.summary_link {
 color: #666;
 }
+@media screen and (max-width: 992px)
+{
+  .col-sm-8 {
+        width: 100%;
+  }
+}
 </style>
  

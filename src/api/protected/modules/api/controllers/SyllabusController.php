@@ -568,34 +568,26 @@ class SyllabusController extends Controller {
         if ((Yii::app()->request->isPostRequest) && !empty($_POST)) {
 
             $user_secret = Yii::app()->request->getPost('user_secret');
-            $school_id = Yii::app()->request->getPost('school');
 
             $term_id = Yii::app()->request->getPost('term');
             $batch_id = Yii::app()->request->getPost('batch_id');
 
-            
-
             $response = array();
-            if (Yii::app()->user->user_secret === $user_secret) {
-
-                if (empty($school_id) || !isset($school_id) || $school_id == '') {
-                    $response['status']['code'] = 400;
-                    $response['status']['msg'] = "Bad Request.";
-                    echo CJSON::encode($response);
-                    Yii::app()->end();
-                }
-
+            if ($user_secret && Yii::app()->user->user_secret === $user_secret) {
+                
                 if (!Yii::app()->user->isStudent && empty($batch_id)) {
                     $response['status']['code'] = 400;
                     $response['status']['msg'] = "Bad Request.";
                     echo CJSON::encode($response);
                     Yii::app()->end();
+                    exit;
                 }
                 if(!$term_id)
                 {
                     $term_id = 0;
                 }
-
+                
+                $school_id = Yii::app()->user->schoolId;
                 $syllabus = new Syllabuses;
                 $syllabus = $syllabus->getSyllabus($school_id, $term_id, $batch_id);
 
@@ -626,18 +618,12 @@ class SyllabusController extends Controller {
         if ((Yii::app()->request->isPostRequest) && !empty($_POST)) {
 
             $user_secret = Yii::app()->request->getPost('user_secret');
-            $school_id = Yii::app()->request->getPost('school');
             $batch_id = Yii::app()->request->getPost('batch_id');
             $category_id = Yii::app()->request->getPost('category_id');
 
             if (Yii::app()->user->user_secret === $user_secret) {
-
-                if (empty($school_id) || !isset($school_id) || $school_id == '') {
-                    $response['status']['code'] = 400;
-                    $response['status']['msg'] = "Bad Request.";
-                    echo CJSON::encode($response);
-                    Yii::app()->end();
-                }
+                
+                $school_id = Yii::app()->user->schoolId;
 
                 if (!Yii::app()->user->isStudent && empty($batch_id)) {
                     $response['status']['code'] = 400;

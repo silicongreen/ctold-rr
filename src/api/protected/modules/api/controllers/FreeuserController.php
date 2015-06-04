@@ -23,7 +23,7 @@ class FreeuserController extends Controller
     {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'downloadattachment', 'create', 'getcategorypost', 'getsinglenews', 'search', "getkeywordpost"
+                'actions' => array('index','savespellingbee', 'downloadattachment', 'create', 'getcategorypost', 'getsinglenews', 'search', "getkeywordpost"
                     , "gettagpost", "getbylinepost", "getmenu", "getassesment", "addmark", "updateplayed", "assesmenthistory",
                     "getuserinfo", "goodread", "readlater", "goodreadall", "goodreadfolder", "removegoodread"
                     , "schoolsearch", "school", "createschool", "schoolpage", "schoolactivity", "candle"
@@ -36,6 +36,173 @@ class FreeuserController extends Controller
                 'users' => array('*'),
             ),
         );
+    }
+    
+    public function actionsaveSpellingBee()
+    {
+        
+        if(Yii::app()->request->getPost('left') && Yii::app()->request->getPost('right') && Yii::app()->request->getPost('method')
+                 && Yii::app()->request->getPost('operator') && Yii::app()->request->getPost('send_id') && 
+                Yii::app()->request->getPost('total_time') && Yii::app()->request->getPost('score') )
+        {
+         
+            $objParams = (object) null;
+            $objParams->left = Yii::app()->request->getPost('left');
+            $objParams->right = Yii::app()->request->getPost('right');
+            $objParams->method = Yii::app()->request->getPost('method');
+            $objParams->operator = Yii::app()->request->getPost('operator');
+            $objParams->send_id = Yii::app()->request->getPost('send_id');
+
+            $objParams->total_time = Yii::app()->request->getPost('total_time');
+            $objParams->score = Yii::app()->request->getPost('score');
+            
+           
+            
+            $objParams->isCheater = Yii::app()->request->getPost('is_cheater');
+
+            
+            #$data = Yii::app()->user->free_id;
+            $data = Settings::getSessionId();
+            $valid_user = FALSE;
+            if ($data && is_int($data))
+            {
+                $autorize_check = Settings::authorizeUserCheck($objParams->left, $objParams->right, $objParams->method, $objParams->operator, $objParams->send_id, $data);
+
+                if ($autorize_check)
+                {
+                    $valid_user = TRUE;
+                }
+            }
+
+            $arUserData = array();
+            $arUserData['rank'] = "UnRanked";
+            $arUserData['highestScore'] = 0;
+            if ($valid_user)
+            {
+                $iUserId = $data;
+                $objUser = new Freeusers();
+                $user_data = $objUser->findByPk($iUserId);
+
+                if ($user_data)
+                {
+                    $cache_name = "YII-SPELLINGBEE-USERDATA";
+                    $response = Yii::app()->cache->get($cache_name);
+
+                    $current_score = 0;
+                    $current_time = 0;
+
+                    $highscore = new Highscore();
+                    $prev_id = 0;
+                    $play_total_time = 0;
+                    if ($response !== FALSE)
+                    {
+
+                        if (isset($response[$iUserId]) && isset($response[$iUserId]['current_score']) && isset($response[$iUserId]['current_time']) && isset($response[$iUserId]['prev_id']) && isset($response[$iUserId]['play_total_time']))
+                        {
+
+                            $current_score = $response[$iUserId]['current_score'];
+                            $current_time = $response[$iUserId]['current_time'];
+                            $prev_id = $response[$iUserId]['prev_id'];
+                            $play_total_time = $response[$iUserId]['play_total_time'] = $response[$iUserId]['play_total_time'] + $objParams->total_time;
+                            Yii::app()->cache->set($cache_name, $response, 3986400);
+                        }
+                        else
+                        {
+                            $user_score_data = $highscore->getUserScore($iUserId);
+                            if ($user_score_data)
+                            {
+                                $response[$iUserId]['current_score'] = $current_score = $user_score_data->score;
+                                $response[$iUserId]['current_time'] = $current_time = $user_score_data->test_time;
+                                $response[$iUserId]['prev_id'] = $prev_id = $user_score_data->id;
+                                $response[$iUserId]['play_total_time'] = $play_total_time = $user_score_data->play_total_time + $objParams->total_time;
+
+                                Yii::app()->cache->set($cache_name, $response, 3986400);
+                            }
+                            else
+                            {
+                                $play_total_time = $objParams->total_time;
+                            }    
+                        }
+                    }
+                    else
+                    {
+                        $response = array();
+
+                        $user_score_data = $highscore->getUserScore($iUserId);
+                        if ($user_score_data)
+                        {
+                            $response[$iUserId]['current_score'] = $current_score = $user_score_data->score;
+                            $response[$iUserId]['current_time'] = $current_time = $user_score_data->test_time;
+                            $response[$iUserId]['prev_id'] = $prev_id = $user_score_data->id;
+                            $response[$iUserId]['play_total_time'] = $play_total_time = $user_score_data->play_total_time + $objParams->total_time;
+                            Yii::app()->cache->set($cache_name, $response, 3986400);
+                        }
+                        else
+                        {
+                            $play_total_time = $objParams->total_time;
+                        }
+                    }
+
+                    if ($objParams->score > $current_score || ($objParams->score == $current_score && $objParams->total_time < $current_time))
+                    {
+
+                        $score_for_rank = $objParams->score;
+                        $time_for_rank = $objParams->total_time;
+
+                        if ($prev_id)
+                        {
+                            $highscore = $highscore->findByPk($prev_id);
+                        }
+                        $highscore->userid = $iUserId;
+                        $highscore->test_time = $objParams->total_time;
+                        $highscore->enddate = time();
+                        $highscore->score = (int) $objParams->score;
+                        $highscore->is_cheat = $objParams->isCheater;
+                        $highscore->play_total_time = $play_total_time;
+                        $highscore->spell_year = date('Y');
+                        $highscore->division = strtolower($user_data->district);
+                        $highscore->country = $user_data->tds_country_id;
+                        $highscore->save();
+
+                        $response[$iUserId]['current_score'] = $score_for_rank;
+                        $response[$iUserId]['current_time'] = $time_for_rank;
+                        $response[$iUserId]['prev_id'] = $highscore->id;
+                        $response[$iUserId]['play_total_time'] = $play_total_time;
+                        Yii::app()->cache->set($cache_name, $response, 3986400);
+                    }
+                    else
+                    {
+                        $score_for_rank = $current_score;
+                        $time_for_rank = $current_time;
+                    }
+                    $arUserData['highestScore'] = $score_for_rank;
+                    $arUserData['rank'] = $highscore->getUserRank($score_for_rank, $time_for_rank,$user_data->tds_country_id, strtolower($user_data->district));
+                    
+                    
+                    
+                    $rresponse['data'] = $arUserData;
+                    $rresponse['status']['code'] = 200;
+                    $rresponse['status']['msg'] = "Success";
+                }
+                else
+                {
+                    $rresponse['status']['code'] = 400;
+                    $rresponse['status']['msg'] = "Bad Request";
+                }    
+            }
+            else
+            {
+                $rresponse['status']['code'] = 400;
+                $rresponse['status']['msg'] = "Bad Request";
+            }    
+        }
+        else
+        {
+            $rresponse['status']['code'] = 400;
+            $rresponse['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($rresponse);
+        Yii::app()->end();
     }
 
     public function actionDownloadAttachment()
@@ -2645,6 +2812,8 @@ class FreeuserController extends Controller
                     $folderObj = new UserFolder();
 
                     $folderObj->createGoodReadFolder($user->id);
+                    
+                    Yii::app()->user->setState("free_id",$user->id);
 
                     $response['data'] = $freeuserObj->getPaidUserInfo();
                     $response['data']['free_id'] = $user->id;
@@ -2689,6 +2858,8 @@ class FreeuserController extends Controller
                     $folderObj->createGoodReadFolder($freeuserObj->id);
 
                     $this->sendRegistrationMail($freeuserObj);
+                    
+                    Yii::app()->user->setState("free_id",$freeuserObj->id);
 
                     $response['data'] = $freeuserObj->getPaidUserInfo();
                     $response['data']['free_id'] = $freeuserObj->id;
@@ -2705,6 +2876,7 @@ class FreeuserController extends Controller
                 if ($user = $freeuserObj->getFreeuserGmail($gl_profile_id))
                 {
                     $folderObj = new UserFolder();
+                    Yii::app()->user->setState("free_id",$user->id);
 
                     $folderObj->createGoodReadFolder($user->id);
                     $response['data'] = $freeuserObj->getPaidUserInfo();
@@ -2749,6 +2921,8 @@ class FreeuserController extends Controller
                     $folderObj->createGoodReadFolder($freeuserObj->id);
 
                     $this->sendRegistrationMail($freeuserObj);
+                    
+                    Yii::app()->user->setState("free_id",$freeuserObj->id);
 
                     $response['data'] = $freeuserObj->getPaidUserInfo();
                     $response['data']['free_id'] = $freeuserObj->id;
@@ -2914,7 +3088,7 @@ class FreeuserController extends Controller
                     }
                 }
 
-
+                Yii::app()->user->setState("free_id",$freeuserObj->id);
                 $this->sendRegistrationMail($freeuserObj);
                 $response['data'] = $freeuserObj->getPaidUserInfo();
                 $response['data']['free_id'] = $freeuserObj->id;
@@ -2938,6 +3112,8 @@ class FreeuserController extends Controller
                 $folderObj = new UserFolder();
 
                 $folderObj->createGoodReadFolder($freeuserObj->id);
+                
+                Yii::app()->user->setState("free_id",$freeuserObj->id);
 
                 $response['data'] = $freeuserObj->getPaidUserInfo();
                 $response['data']['free_id'] = $freeuserObj->id;

@@ -532,7 +532,7 @@
                             $img_url = str_replace('http://www.champs21.com/', '', $img_url);
                         }
                         
-                        $img_url = 'http://www.champs21.com/' . $img_url;
+                        $img_url = base_url() . $img_url;
                         
                         $aaData[$row_key][$a_custom_string_field_position] = "<img src='".$img_url."' height='100' />";
                     }

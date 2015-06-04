@@ -200,6 +200,23 @@ class Freeusers extends CActiveRecord {
         }
         return false;
     }
+    public function getFreeuserByCookie() {
+
+        $cookies = Yii::app()->request->cookies;
+        if (isset($cookies['c21_session'])) 
+        {
+            $criteria = new CDbCriteria;
+            $criteria->compare('cookie_token', $cookies['c21_session']->value);
+            $data = $this->find($criteria);
+            if ($data != NULL)
+            {
+               return $data->id;
+            }
+        }
+       
+        
+        return FALSE;
+    }
     public function getFreeuserPaid($paid_id, $school_id) {
 
         $criteria = new CDbCriteria;

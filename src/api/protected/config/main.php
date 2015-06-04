@@ -11,14 +11,17 @@ return array(
 'timeZone' => 'Asia/Dhaka',
     'name' => 'champs21-school.com',
     // preloading 'log' component
-    'preload' => array('log'),
+    'preload' => array('log','zend'),
     // autoloading model and component classes
     'import' => array(
         'application.models.*',
         'application.components.*',
+        'application.components.vo.*',
+        'application.vendors.*',
         'application.helpers.*',
-		'ext.YiiMailer.YiiMailer',
+	'ext.YiiMailer.YiiMailer',
     ),
+    
     'modules' => array(
         // uncomment the following to enable the Gii tool
 
@@ -32,6 +35,9 @@ return array(
     ),
     // application components
     'components' => array(
+        'zend'=>array(
+            'class'=>'ext.zend.EZendAutoloader'
+        ),
 		
         /*'cache'  => array(
                 'class'  => 'system.caching.CFileCache',

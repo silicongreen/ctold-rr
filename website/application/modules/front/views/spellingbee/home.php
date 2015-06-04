@@ -9,8 +9,7 @@
         </div>
         <div style="width: 70%;float:left;">
             <div class="f5" style="float:left;width: 55%;font-size: 20px;">
-                Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. 
-  Donec eu libero sit amet quam egestas semper.
+                Spelling Bee is back with its 4th season in Bangladesh! The Bee is making the country buzz! Join the Spelling Bee Competition and join the top spellers of the country to fight for the trophy and the prestigious title of ‘Spelling Bee Champion’. Hurry!!
             </div>
             <div style="clear: both;float:left;width: 100%;margin-top:40px;">
                 <nav>

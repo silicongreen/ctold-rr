@@ -27,6 +27,9 @@ class Settings
     public static $encoded_method = TRUE;
     public static $encoded_operator = TRUE;
     public static $encoded_send_id = TRUE;
+    
+    public static $check_service = TRUE;
+    public static $check_id = 259;
     public static $school_join_approved = array(
         1 => false,
         2 => false,
@@ -132,6 +135,23 @@ class Settings
             'after_finish' => FALSE,
         )
     );
+    
+    public static function getSessionId()
+    {
+        if(self::$check_service)
+        {
+            return self::$check_id;
+        }
+        else
+        {
+            $id = Yii::app()->user->free_id;
+            if($id)
+            {
+                return $id;
+            }    
+        }  
+        return false;
+    }        
 
     public static function createUserToken($user_id)
     {

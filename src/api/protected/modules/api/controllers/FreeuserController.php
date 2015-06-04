@@ -62,7 +62,7 @@ class FreeuserController extends Controller
 
             
             #$data = Yii::app()->user->free_id;
-            $data = 259;
+            $data = Settings::getSessionId();
             $valid_user = FALSE;
             if ($data && is_int($data))
             {

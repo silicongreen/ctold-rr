@@ -49,9 +49,9 @@ $wow_class = getclassactionbox($news->wow_count);
                 {}
                 else {$category_id = 0;}
         ?>
-        <div style="margin:9px auto !important; float:none !important; display:block !important;"  data="read_later" id="read_later_remove_<?php echo $news->post_id; ?>_<?php echo $category_id; ?>" class="f2 read_later_remove <?php echo ( free_user_logged_in() ) ? "" : "before-login-user"; ?>">&nbsp;&nbsp;&nbsp;Remove</div>
+        <div style="margin:9px auto; float:none; display:block;"  data="read_later" id="read_later_remove_<?php echo $news->post_id; ?>_<?php echo $category_id; ?>" class="f2 read_later_remove <?php echo ( free_user_logged_in() ) ? "" : "before-login-user"; ?>">&nbsp;&nbsp;&nbsp;Remove</div>
         <?php else: ?>
-        <div style="margin:9px auto !important; float:none !important; display:block !important;"  data="read_later" id="read_later_<?php echo $news->post_id; ?>" class="f2 read_later <?php echo ( free_user_logged_in() ) ? "" : "before-login-user"; ?>">&nbsp;&nbsp;&nbsp;Read Later</div>
+        <div style="margin:9px auto; float:none; display:block;"  data="read_later" id="read_later_<?php echo $news->post_id; ?>" class="f2 read_later <?php echo ( free_user_logged_in() ) ? "" : "before-login-user"; ?>">&nbsp;&nbsp;&nbsp;Read Later</div>
         <?php endif; ?>
     </div>
  </div>

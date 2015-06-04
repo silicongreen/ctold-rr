@@ -870,7 +870,7 @@ class home extends MX_Controller {
         
         if ( $obj_parent_category->id != $i_category_id )
         {
-            $data['a_category_ids'] =  array($i_category_id);
+            $data['a_category_ids'] = array($i_category_id);
         }
         
         if ( ! $obj_parent_category )
@@ -1100,6 +1100,7 @@ class home extends MX_Controller {
         $obj_post_data->name = $obj_parent_category->name;
         
         $obj_post_data->display_name = $obj_parent_category->display_name;
+        $obj_post_data->parent_category_id = $obj_parent_category->id;
         
         $obj_post_data->has_categories = FALSE;
         $i_category_id = $obj_parent_category->id;
@@ -1120,7 +1121,7 @@ class home extends MX_Controller {
         {
             $categories_for_the_post = $obj_post->get_category_by_post($obj_post_data->post_id);
             $a_category_ids = array();
-            if ( count($categories_for_the_post) >0 ) foreach($categories_for_the_post as $cate)
+            if ( count($categories_for_the_post) > 0 ) foreach($categories_for_the_post as $cate)
             {
                 array_push($a_category_ids, $cate->category_id);
             }
@@ -1381,7 +1382,7 @@ class home extends MX_Controller {
             {
                 $i_first_image_text .= '"';
             }   
-            $i_first_image_text .= 'style="width: 48%; float: left; margin-left: 1%; margin-right: 1%; cursor: pointer;" src="' . base_url() . $ar_images[$i_first_image] . '" /></a>';
+            $i_first_image_text .= 'src="' . base_url() . $ar_images[$i_first_image] . '" /></a>';
 
             $i_second_image_text = '<a href="' . base_url() . $ar_ad_images['link'][$i_second_image] . '">';
             $i_second_image_text .= '<img id="'. $ar_ad_images['id'][$i_second_image] .'" class="ads ads-image ' . $ar_ad_images['class'][$i_second_image] . ' ';
@@ -1393,9 +1394,9 @@ class home extends MX_Controller {
             {
                 $i_second_image_text .= '"';
             }   
-            $i_second_image_text .= 'style="width: 48%; float: left; margin-left: 1%; margin-right: 1%; cursor: pointer;" src="' . base_url() . $ar_images[$i_second_image] . '" /></a>';
+            $i_second_image_text .= 'src="' . base_url() . $ar_images[$i_second_image] . '" /></a>';
 
-            $s_ad_image = "<p style='float:left; clear:both; margin-top:10px;'>" . $i_first_image_text . "" . $i_second_image_text . "</p>";
+            $s_ad_image = "<p>" . $i_first_image_text . "" . $i_second_image_text . "</p>";
         }
         
         $obj_post_data->s_ad_image = $s_ad_image;

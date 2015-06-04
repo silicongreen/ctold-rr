@@ -164,7 +164,10 @@ class Settings
 
 
         $return1 = $return = array("left" => $leftvalue, "right" => $rightvalue, "method" => $encoded_method, "operator" => $operator_main, "user_id_token" => $user_id_created);
-
+        
+        $cache_name = "USER_TOKEN_CACHE";
+        $response[$user_id][] = $user_id_created;
+        Yii::app()->cache->set($cache_name, $response, 3986400);
 
         if (self::$encoded_right)
         {

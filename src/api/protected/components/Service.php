@@ -257,7 +257,7 @@ class Service
                         }
                         else
                         {
-                            $play_total_time = $user_score_data->test_time;
+                            $play_total_time = $objParams->total_time;
                         }    
                     }
                 }
@@ -276,7 +276,7 @@ class Service
                     }
                     else
                     {
-                        $play_total_time = $user_score_data->test_time;
+                        $play_total_time = $objParams->total_time;
                     }
                 }
 

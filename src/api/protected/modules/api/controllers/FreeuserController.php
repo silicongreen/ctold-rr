@@ -42,9 +42,32 @@ class FreeuserController extends Controller
     {
         
         if(Yii::app()->request->getPost('left') && Yii::app()->request->getPost('right') && Yii::app()->request->getPost('method')
-                 && Yii::app()->request->getPost('operator') && Yii::app()->request->getPost('send_id') && 
-                Yii::app()->request->getPost('total_time') && Yii::app()->request->getPost('score') )
+                 && Yii::app()->request->getPost('operator') && Yii::app()->request->getPost('send_id') )
         {
+            if(Yii::app()->request->getPost('total_time'))
+            {
+                $total_time = Yii::app()->request->getPost('total_time');
+            }
+            else
+            {
+                $total_time = 0;
+            }  
+            if(Yii::app()->request->getPost('score'))
+            {
+                $score = Yii::app()->request->getPost('score');
+            }
+            else
+            {
+                $score = 0;
+            }
+            if(Yii::app()->request->getPost('is_cheater'))
+            {
+                $cheat = 1;
+            }
+            else
+            {
+                $cheat = 0;
+            }
          
             $objParams = (object) null;
             $objParams->left = Yii::app()->request->getPost('left');
@@ -53,18 +76,8 @@ class FreeuserController extends Controller
             $objParams->operator = Yii::app()->request->getPost('operator');
             $objParams->send_id = Yii::app()->request->getPost('send_id');
 
-            $objParams->total_time = Yii::app()->request->getPost('total_time');
-            $objParams->score = Yii::app()->request->getPost('score');
-            
-           
-            if(Yii::app()->request->getPost('is_cheater'))
-            {
-                $cheat = 1;
-            }
-            else
-            {
-                $cheat = 0;
-            }    
+            $objParams->total_time = $total_time;
+            $objParams->score = $score;
             $objParams->isCheater = $cheat;
 
             

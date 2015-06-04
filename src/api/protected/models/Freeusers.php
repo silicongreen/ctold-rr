@@ -23,6 +23,8 @@
 class Freeusers extends CActiveRecord {
 
     public $num_rows = 0;
+    public $check_service = TRUE;
+    public $check_id = 259;
 
     /**
      * @return string the associated database table name
@@ -200,8 +202,12 @@ class Freeusers extends CActiveRecord {
         }
         return false;
     }
-    public function getFreeuserByCookie() {
-
+    public function getFreeuserByCookie() 
+    {
+        if($this->check_service)
+        {
+            return $this->check_id;
+        }    
         $cookies = Yii::app()->request->cookies;
         if (isset($cookies['c21_session'])) 
         {

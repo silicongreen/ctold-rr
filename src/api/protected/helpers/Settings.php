@@ -1,9 +1,11 @@
 <?php
-class Settings {
+
+class Settings
+{
 
     public static $domain_name = 'http://www.champs21.com/';
     public static $image_path = 'http://www.champs21.com/';
-    public static $url_array  = array("http://www.champs21.com/","http://champs21.com/","http://stage.champs21.com");
+    public static $url_array = array("http://www.champs21.com/", "http://champs21.com/", "http://stage.champs21.com");
     public static $real_path = '/home/champs21/public_html/website/';
     public static $main_path = "../../website/";
     public static $inner_post_to_show = 15;
@@ -18,10 +20,13 @@ class Settings {
     public static $AssignmentText = "New Assignment";
     public static $education_changes_life = 59;
     public static $notification_url = "http://www.champs21.com/front/ajax/send_paid_notification";
-    
-    
-    
-    
+    public static $method = array("c", "p", "s", "m", "d");
+    public static $operator = array("m", "p");
+    public static $encoded_left = TRUE;
+    public static $encoded_right = TRUE;
+    public static $encoded_method = TRUE;
+    public static $encoded_operator = TRUE;
+    public static $encoded_send_id = TRUE;
     public static $school_join_approved = array(
         1 => false,
         2 => false,
@@ -117,7 +122,6 @@ class Settings {
             'operator' => "AND",
         ),
     );
-    
     public static $assessment_config = array(
         'types' => array(
             1 => 'Assessment',
@@ -129,7 +133,320 @@ class Settings {
         )
     );
 
-    public static function sendCurlNotification($user_id,$notification_id)
+    public static function createUserToken($user_id)
+    {
+        $leftstring = rand(1000, 1000000);
+        $rightstring = rand(100, 100000);
+
+
+
+        $leftvalue = strlen($leftstring);
+        $rightvalue = strlen($rightstring);
+
+
+
+
+        $method_main = self::$method[array_rand(self::$method)];
+
+
+
+        $operator_main = self::$operator[array_rand(self::$operator)];
+
+        $encoded_method = self::createMethodEncoded($method_main);
+
+
+
+
+        $encripted_user_id = self::createEncriptedUserID($encoded_method, $operator_main, $user_id, $leftvalue, $rightvalue);
+
+        $user_id_created = $leftstring . $encripted_user_id . $rightstring;
+
+
+
+        $return1 = $return = array("left" => $leftvalue, "right" => $rightvalue, "method" => $encoded_method, "operator" => $operator_main, "user_id_token" => $user_id_created);
+
+
+        if (self::$encoded_right)
+        {
+            $return['right'] = base64_encode($return['right']);
+        }
+
+        if (self::$encoded_left)
+        {
+            $return['left'] = base64_encode($return['left']);
+        }
+
+        if (self::$encoded_send_id)
+        {
+            $return['user_id_token'] = base64_encode($return['user_id_token']);
+        }
+
+        if (self::$encoded_method)
+        {
+            $return['method'] = base64_encode($return['method']);
+        }
+
+        if (self::$encoded_operator)
+        {
+            $return['operator'] = base64_encode($return['operator']);
+        }
+
+        return (object) $return;
+    }
+
+    public static function createEncriptedUserID($method, $operator, $send_id_without_lr, $left, $right)
+    {
+        $send_id_decrepted = 0;
+        if (strpos($method, self::$method[0]) !== FALSE)
+        {
+            $concated_value = $left . "" . $right;
+            $value = (int) $concated_value;
+            if ($operator == self::$operator[0])
+            {
+                $send_id_decrepted = $send_id_without_lr + $value;
+            }
+            else if ($operator == self::$operator[1])
+            {
+                $send_id_decrepted = $send_id_without_lr - $value;
+            }
+        }
+        else if (strpos($method, self::$method[1]) !== FALSE)
+        {
+            $value = $left + $right;
+            if ($operator == self::$operator[0])
+            {
+                $send_id_decrepted = $send_id_without_lr + $value;
+            }
+            else if ($operator == self::$operator[1])
+            {
+                $send_id_decrepted = $send_id_without_lr - $value;
+            }
+        }
+        else if (strpos($method, self::$method[2]) !== FALSE)
+        {
+            if ($left > $right)
+            {
+                $value = $left - $right;
+            }
+            else
+            {
+                $value = $right - $left;
+            }
+
+            if ($operator == self::$operator[0])
+            {
+                $send_id_decrepted = $send_id_without_lr + $value;
+            }
+            else if ($operator == self::$operator[1])
+            {
+                $send_id_decrepted = $send_id_without_lr - $value;
+            }
+        }
+        else if (strpos($method, self::$method[3]) !== FALSE)
+        {
+
+            $value = $left * $right;
+
+            if ($operator == self::$operator[0])
+            {
+                $send_id_decrepted = $send_id_without_lr + $value;
+            }
+            else if ($operator == self::$operator[1])
+            {
+                $send_id_decrepted = $send_id_without_lr - $value;
+            }
+        }
+        else if (strpos($method, self::$method[4]) !== FALSE)
+        {
+            if ($left > $right)
+            {
+                $value = round($left / $right);
+            }
+            else
+            {
+                $value = round($right / $left);
+            }
+            if ($operator == self::$operator[0])
+            {
+                $send_id_decrepted = $send_id_without_lr + $value;
+            }
+            else if ($operator == self::$operator[1])
+            {
+                $send_id_decrepted = $send_id_without_lr - $value;
+            }
+        }
+        return $send_id_decrepted;
+    }
+
+    public static function createMethodEncoded($method_main)
+    {
+        $length = rand(2, 5);
+        $characters = 'abefghijklnoqrtuvwxyz';
+        $charactersLength = strlen($characters);
+        $encoded_method = '';
+        $randomString1 = '';
+        for ($i = 0; $i < $length; $i++)
+        {
+            $randomString1 .= $characters[rand(0, $charactersLength - 1)];
+        }
+
+        $encoded_method.= $randomString1 . $method_main;
+
+
+        $randomString2 = '';
+        for ($i = 0; $i < $length; $i++)
+        {
+            $randomString2 .= $characters[rand(0, $charactersLength - 1)];
+        }
+
+
+        $encoded_method.=$randomString2;
+
+        return $encoded_method;
+    }
+
+    public static function authorizeUserCheck($left, $right, $method, $operator, $send_id, $session_id)
+    {
+
+        if (self::$encoded_send_id)
+        {
+            $send_id = base64_decode($send_id);
+        }
+
+        $cache_name = "USER_TOKEN_CACHE";
+        $response = Yii::app()->cache->get($cache_name);
+        if ($response !== FALSE)
+        {
+            if (isset($response[$session_id]))
+            {
+                if (in_array($send_id, $response[$session_id]))
+                {
+                    return FALSE;
+                }
+            }
+        }
+
+
+        if (self::$encoded_right)
+        {
+            $right = base64_decode($right);
+        }
+
+        if (self::$encoded_left)
+        {
+            $left = base64_decode($left);
+        }
+
+        if (self::$encoded_method)
+        {
+            $method = base64_decode($method);
+        }
+
+        if (self::$encoded_operator)
+        {
+            $operator = base64_decode($operator);
+        }
+
+        $left_position = $left - 1;
+        $send_id_without_left = substr($send_id, $left);
+
+
+
+        $right_position = strlen($send_id_without_left) - $right;
+        $send_id_without_lr = substr($send_id_without_left, 0, $right_position);
+
+
+
+        if (strpos($method, self::$method[0]) !== FALSE)
+        {
+            $concated_value = $left . "" . $right;
+            $value = (int) $concated_value;
+            if ($operator == self::$operator[0])
+            {
+                $send_id_decrepted = $send_id_without_lr - $value;
+            }
+            else if ($operator == self::$operator[1])
+            {
+                $send_id_decrepted = $send_id_without_lr + $value;
+            }
+        }
+        else if (strpos($method, self::$method[1]) !== FALSE)
+        {
+            $value = $left + $right;
+            if ($operator == self::$operator[0])
+            {
+                $send_id_decrepted = $send_id_without_lr - $value;
+            }
+            else if ($operator == self::$operator[1])
+            {
+                $send_id_decrepted = $send_id_without_lr + $value;
+            }
+        }
+        else if (strpos($method, self::$method[2]) !== FALSE)
+        {
+            if ($left > $right)
+            {
+                $value = $left - $right;
+            }
+            else
+            {
+                $value = $right - $left;
+            }
+
+            if ($operator == self::$operator[0])
+            {
+                $send_id_decrepted = $send_id_without_lr - $value;
+            }
+            else if ($operator == self::$operator[1])
+            {
+                $send_id_decrepted = $send_id_without_lr + $value;
+            }
+        }
+        else if (strpos($method, self::$method[3]) !== FALSE)
+        {
+
+            $value = $left * $right;
+
+            if ($operator == self::$operator[0])
+            {
+                $send_id_decrepted = $send_id_without_lr - $value;
+            }
+            else if ($operator == self::$operator[1])
+            {
+                $send_id_decrepted = $send_id_without_lr + $value;
+            }
+        }
+        else if (strpos($method, self::$method[4]) !== FALSE)
+        {
+            if ($left > $right)
+            {
+                $value = round($left / $right);
+            }
+            else
+            {
+                $value = round($right / $left);
+            }
+            if ($operator == self::$operator[0])
+            {
+                $send_id_decrepted = $send_id_without_lr - $value;
+            }
+            else if ($operator == self::$operator[1])
+            {
+                $send_id_decrepted = $send_id_without_lr + $value;
+            }
+        }
+
+
+        if (isset($send_id_decrepted) && $send_id_decrepted == $session_id)
+        {
+            $response[$session_id][] = $send_id;
+            Yii::app()->cache->set($cache_name, $response, 3986400);
+            return TRUE;
+        }
+        return FALSE;
+    }
+
+    public static function sendCurlNotification($user_id, $notification_id)
     {
         $url = Settings::$notification_url;
         $fields = array(
@@ -139,81 +456,83 @@ class Settings {
 
         $fields_string = "";
 
-        foreach($fields as $key=>$value) { 
-            $fields_string .= $key.'='.$value.'&'; 
-
+        foreach ($fields as $key => $value)
+        {
+            $fields_string .= $key . '=' . $value . '&';
         }
 
         rtrim($fields_string, '&');
         $ch = curl_init();
 
         //set the url, number of POST vars, POST data
-        curl_setopt($ch,CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_URL, $url);
 
-        curl_setopt($ch,CURLOPT_POST, count($fields));
-        curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
-        curl_setopt($ch,CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POST, count($fields));
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
             'Accept: application/json',
             'Content-Length: ' . strlen($fields_string)
-            )                                                                       
-        );    
+                )
+        );
 
         $result = curl_exec($ch);
 
         curl_close($ch);
-    }        
-    public static function getFedenaToken($school_code,$username,$password)
+    }
+
+    public static function getFedenaToken($school_code, $username, $password)
     {
         $endPoint = "champs21.com";
-        
+
         $client_id = sha1($school_code . Settings::$client_id);
         $client_secret = sha1($school_code . Settings::$client_secret);
         $redirect_url = 'http://' . $school_code . '.' . self::$endPoint . '/authenticate';
         $url = 'http://' . $school_code . '.' . self::$endPoint . '/oauth/token';
         $data = array(
-                "client_id"=>$client_id,
-                "client_secret"=>$client_secret,
-                "username"=>$username,
-                "password"=>$password,
-                "redirect_uri"=>$redirect_url,
-                "grant_type"=>"password"
+            "client_id" => $client_id,
+            "client_secret" => $client_secret,
+            "username" => $username,
+            "password" => $password,
+            "redirect_uri" => $redirect_url,
+            "grant_type" => "password"
         );
-        
-        
-       
-        $output = Yii::app()->curl->post($url,$data);
-       
+
+
+
+        $output = Yii::app()->curl->post($url, $data);
+
         $joutput = json_decode(($output));
-      
+
         return $joutput;
-        
-    }   
-    public static function getDataApi($data,$url_end,$type="get")
+    }
+
+    public static function getDataApi($data, $url_end, $type = "get")
     {
-        $url = 'http://' . Yii::app()->user->school_code . '.' . self::$endPoint ."/". $url_end;
-      
-        $headers = array('Content-type'=>'application/x-www-form-urlencoded',
-            'Authorization'=>'Token token="' . Yii::app()->user->access_token_user.'"'
-        ); 
-        
-        if($type=="post")
+        $url = 'http://' . Yii::app()->user->school_code . '.' . self::$endPoint . "/" . $url_end;
+
+        $headers = array('Content-type' => 'application/x-www-form-urlencoded',
+            'Authorization' => 'Token token="' . Yii::app()->user->access_token_user . '"'
+        );
+
+        if ($type == "post")
         {
-            $output = Yii::app()->curl->setHeaders($headers)->post($url,$data);
-        }   
+            $output = Yii::app()->curl->setHeaders($headers)->post($url, $data);
+        }
         else
         {
-            $output = Yii::app()->curl->setHeaders($headers)->get($url,$data);
-        } 
-     
+            $output = Yii::app()->curl->setHeaders($headers)->get($url, $data);
+        }
+
         $xml = simplexml_load_string($output);
         $json = json_encode($xml);
-        $array = json_decode($json,TRUE);
+        $array = json_decode($json, TRUE);
         return $array;
     }
 
-    public static function getCurrentDay($date = '') {
+    public static function getCurrentDay($date = '')
+    {
 
         $date = (!empty($date)) ? $date : \date('Y-m-d', \time());
 
@@ -221,143 +540,182 @@ class Settings {
         return $day;
     }
 
-    public static function formatTime($time, $b_12_hour = TRUE) {
+    public static function formatTime($time, $b_12_hour = TRUE)
+    {
 
         return $time = ($b_12_hour) ? date('h:i a', strtotime($time)) : $time;
     }
 
-    public static function get_diff_date($end, $out_in_array = true,$start_date=false) {
-        if($start_date==false)
+    public static function get_diff_date($end, $out_in_array = true, $start_date = false)
+    {
+        if ($start_date == false)
         {
             $intervalo = date_diff(date_create($end), date_create());
         }
         else
         {
             $intervalo = date_diff(date_create($end), date_create($start_date));
-        }    
+        }
         $out = $intervalo->format("Years:%Y,Months:%M,Days:%d,Hours:%H,Minutes:%i,Seconds:%s");
         if (!$out_in_array)
             return $out;
         $a_out = array();
         $outs = explode(',', $out);
-        foreach ($outs as $val) {
+        foreach ($outs as $val)
+        {
             $v = explode(':', $val);
             $a_out[$v[0]] = $v[1];
         }
         return $a_out;
     }
 
-    public static function get_post_time($published_date,$to=6,$check=true,$start_date=false) {
-        $datediff = self::get_diff_date($published_date,true,$start_date);
+    public static function get_post_time($published_date, $to = 6, $check = true, $start_date = false)
+    {
+        $datediff = self::get_diff_date($published_date, true, $start_date);
         $datestring = "";
         $findvalue = false;
-        if ($datediff['Years'] > 0 && $to>0) {
-            if ($datediff['Years'] > 1) {
+        if ($datediff['Years'] > 0 && $to > 0)
+        {
+            if ($datediff['Years'] > 1)
+            {
                 $datestring.= $datediff['Years'] . " Years";
-            } else {
+            }
+            else
+            {
                 $datestring.= $datediff['Years'] . " Year";
             }
             $findvalue = true;
         }
-        if ($datediff['Months'] > 0 && ($findvalue === false || $check==false) && $to>1) {
-            if ($findvalue) {
+        if ($datediff['Months'] > 0 && ($findvalue === false || $check == false) && $to > 1)
+        {
+            if ($findvalue)
+            {
                 $datestring.= ", ";
             }
-            if ($datediff['Months'] > 1) {
+            if ($datediff['Months'] > 1)
+            {
                 $datestring.= $datediff['Months'] . " Months";
-            } else {
+            }
+            else
+            {
                 $datestring.= $datediff['Months'] . " Month";
             }
 
             $findvalue = true;
         }
-        if ($datediff['Days'] > 0 && ($findvalue === false || $check==false) && $to>2) {
-            if ($findvalue) {
+        if ($datediff['Days'] > 0 && ($findvalue === false || $check == false) && $to > 2)
+        {
+            if ($findvalue)
+            {
                 $datestring.= ", ";
             }
-            if ($datediff['Days'] > 1) {
+            if ($datediff['Days'] > 1)
+            {
                 $datestring.= $datediff['Days'] . " Days";
-            } else {
+            }
+            else
+            {
                 $datestring.= $datediff['Days'] . " Day";
             }
 
             $findvalue = true;
         }
-        if ($datediff['Hours'] > 0 && ($findvalue === false || $check==false)  && $to>3) {
-            if ($findvalue) {
+        if ($datediff['Hours'] > 0 && ($findvalue === false || $check == false) && $to > 3)
+        {
+            if ($findvalue)
+            {
                 $datestring.= ", ";
             }
-            if ($datediff['Hours'] > 1) {
+            if ($datediff['Hours'] > 1)
+            {
                 $datestring.= $datediff['Hours'] . " Hours";
-            } else {
+            }
+            else
+            {
                 $datestring.= $datediff['Hours'] . " Hour";
             }
 
             $findvalue = true;
         }
-        if ($datediff['Minutes'] > 0 && ($findvalue === false || $check==false)  && $to>4) {
-            if ($findvalue) {
+        if ($datediff['Minutes'] > 0 && ($findvalue === false || $check == false) && $to > 4)
+        {
+            if ($findvalue)
+            {
                 $datestring.= ", ";
             }
-            if ($datediff['Minutes'] > 1) {
+            if ($datediff['Minutes'] > 1)
+            {
                 $datestring.= $datediff['Minutes'] . " Minutes";
-            } else {
+            }
+            else
+            {
                 $datestring.= $datediff['Minutes'] . " Minute";
             }
 
             $findvalue = true;
         }
-        if ($datediff['Seconds'] > 0 && ($findvalue === false || $check==false)  && $to>5) {
-            if ($findvalue) {
+        if ($datediff['Seconds'] > 0 && ($findvalue === false || $check == false) && $to > 5)
+        {
+            if ($findvalue)
+            {
                 $datestring.= ", ";
             }
-            if ($datediff['Seconds'] > 1) {
+            if ($datediff['Seconds'] > 1)
+            {
                 $datestring.= $datediff['Seconds'] . " Seconds";
-            } else {
+            }
+            else
+            {
                 $datestring.= $datediff['Seconds'] . " Second";
             }
 
             $findvalue = true;
         }
-        
+
 
         return $datestring;
     }
 
-    public static function formatDateTime($date_time, $b_12_hour = TRUE) {
+    public static function formatDateTime($date_time, $b_12_hour = TRUE)
+    {
 
         return $time = ($b_12_hour) ? date('Y-m-d h:i a', strtotime($date_time)) : $time;
     }
-    
-     public static function get_crop_image($url, $replace_url = "gallery/facebook/") {
+
+    public static function get_crop_image($url, $replace_url = "gallery/facebook/")
+    {
         $image = str_replace("gallery/", $replace_url, $url);
 
-        foreach(self::$url_array as $value)
+        foreach (self::$url_array as $value)
         {
-           $image = str_replace($value, self::$real_path, $image); 
+            $image = str_replace($value, self::$real_path, $image);
         }
-        
-        if (!file_exists($image)) {
+
+        if (!file_exists($image))
+        {
             return $url;
         }
         return str_replace(self::$real_path, self::$image_path, $image);
     }
 
-    public static function get_mobile_image($url, $replace_url = "gallery/mobile/") {
+    public static function get_mobile_image($url, $replace_url = "gallery/mobile/")
+    {
         $image = str_replace("gallery/", $replace_url, $url);
 
-        foreach(self::$url_array as $value)
+        foreach (self::$url_array as $value)
         {
-           $image = str_replace($value, self::$real_path, $image); 
+            $image = str_replace($value, self::$real_path, $image);
         }
-        
-        if (!file_exists($image)) {
+
+        if (!file_exists($image))
+        {
             return $url;
         }
         return str_replace(self::$real_path, self::$image_path, $image);
     }
 
-    public static function sanitize($str, $char = '-') {
+    public static function sanitize($str, $char = '-')
+    {
         // Lower case the string and remove whitespace from the beginning or end
         $str = trim(strtolower($str));
 
@@ -377,65 +735,90 @@ class Settings {
         return $str;
     }
 
-    public static function get_simple_post_layout($postValue) {
+    public static function get_simple_post_layout($postValue)
+    {
         $post_type = 0;
         $edu_check = false;
-        if(isset($postValue['postCategories']) && count($postValue['postCategories'])>0)
+        if (isset($postValue['postCategories']) && count($postValue['postCategories']) > 0)
         {
-            foreach($postValue['postCategories'] as $value)
+            foreach ($postValue['postCategories'] as $value)
             {
-               if(self::$education_changes_life==$value['category']->id)
-               {
-                  $edu_check = true; 
-                  break;
-               }    
-            }    
-        }    
-        
-        
-        if($postValue->school_id>0)
-        {
-           $post_type = 8; 
+                if (self::$education_changes_life == $value['category']->id)
+                {
+                    $edu_check = true;
+                    break;
+                }
+            }
         }
-        else if($edu_check)
+
+
+        if ($postValue->school_id > 0)
+        {
+            $post_type = 8;
+        }
+        else if ($edu_check)
         {
             $post_type = 9;
         }
-        else if ($postValue->post_layout == 1 && $postValue->inside_image != "" && $postValue->inside_image != null) {
+        else if ($postValue->post_layout == 1 && $postValue->inside_image != "" && $postValue->inside_image != null)
+        {
             $post_type = 2;
-        } else if ($postValue->post_layout == 2 && $postValue['postGalleries'] && count($postValue['postGalleries']) > 2) {
+        }
+        else if ($postValue->post_layout == 2 && $postValue['postGalleries'] && count($postValue['postGalleries']) > 2)
+        {
             $post_type = 3;
-        } else if ($postValue->post_layout == 3) {
+        }
+        else if ($postValue->post_layout == 3)
+        {
             $post_type = 1;
-        } else if ($postValue->short_title != "") {
-            if ($postValue->sort_title_type == 2 && $postValue['postGalleries'] && count($postValue['postGalleries']) > 1) {
+        }
+        else if ($postValue->short_title != "")
+        {
+            if ($postValue->sort_title_type == 2 && $postValue['postGalleries'] && count($postValue['postGalleries']) > 1)
+            {
                 $post_type = 6;
-            } else if ($postValue->sort_title_type == 3) {
+            }
+            else if ($postValue->sort_title_type == 3)
+            {
                 $post_type = 7;
-            } else if ($postValue->sort_title_type == 4 && isset($postValue['postAuthor']) && $postValue['postAuthor']->image != "") {
+            }
+            else if ($postValue->sort_title_type == 4 && isset($postValue['postAuthor']) && $postValue['postAuthor']->image != "")
+            {
                 $post_type = 4;
-            } else if ($postValue->sort_title_type == 5) {
+            }
+            else if ($postValue->sort_title_type == 5)
+            {
                 $post_type = 5;
             }
         }
         return $post_type;
     }
 
-    public static function get_post_link_url($news) {
+    public static function get_post_link_url($news)
+    {
         $link_array = array();
-        if ($news->post_type == 2) {
-            if ($news->lead_link != null && $news->lead_link != "") {
+        if ($news->post_type == 2)
+        {
+            if ($news->lead_link != null && $news->lead_link != "")
+            {
                 $link_array['link'] = $news->lead_link;
                 $link_array['use_link'] = 1;
-            } else {
+            }
+            else
+            {
                 $link_array['link'] = "";
                 $link_array['use_link'] = 1;
             }
-        } else {
-            if ($news->lead_link != null && $news->lead_link != "") {
+        }
+        else
+        {
+            if ($news->lead_link != null && $news->lead_link != "")
+            {
                 $link_array['link'] = $news->lead_link;
                 $link_array['use_link'] = 1;
-            } else {
+            }
+            else
+            {
                 $link_array['link'] = self::$image_path . self::sanitize($news->headline) . "-" . $news->id;
                 $link_array['use_link'] = 0;
             }
@@ -443,24 +826,34 @@ class Settings {
         return $link_array;
     }
 
-    public static function add_caption_and_link($postValue) {
+    public static function add_caption_and_link($postValue)
+    {
 
         $all_image = array();
-        if ($postValue->lead_material && strlen(trim($postValue->lead_material)) > 0) {
+        if ($postValue->lead_material && strlen(trim($postValue->lead_material)) > 0)
+        {
             $all_image[0]['ad_image'] = self::get_mobile_image(self::$image_path . $postValue->lead_material);
             $all_image[0]['ad_image_link'] = $postValue->lead_source;
             $all_image[0]['ad_image_caption'] = $postValue->lead_caption;
-        } else {
+        }
+        else
+        {
             $doc = new DOMDocument();
             @$doc->loadHTML($postValue->content);
             $images = $doc->getElementsByTagName('img');
             $i = 0;
-            foreach ($images as $image) {
-                if (strpos($image->getAttribute('src'), "relatednews.jpg") !== FALSE) {
+            foreach ($images as $image)
+            {
+                if (strpos($image->getAttribute('src'), "relatednews.jpg") !== FALSE)
+                {
                     continue;
-                } else if (strpos($image->getAttribute('class'), "no_slider") !== FALSE) {
+                }
+                else if (strpos($image->getAttribute('class'), "no_slider") !== FALSE)
+                {
                     continue;
-                } else {
+                }
+                else
+                {
                     $all_image[$i]['ad_image'] = self::get_mobile_image($image->getAttribute('src'));
                     $all_image[$i]['ad_image_link'] = $image->getAttribute('longdesc');
                     $all_image[$i]['ad_image_caption'] = $image->getAttribute('title');
@@ -471,16 +864,19 @@ class Settings {
         return $all_image;
     }
 
-    public static function get_embeded_url($content) {
+    public static function get_embeded_url($content)
+    {
         preg_match('/src="([^"]+)"/', $content, $match);
         $url = $match[1];
         return $url;
     }
 
-    public static function get_solution($content) {
+    public static function get_solution($content)
+    {
         $value = preg_match_all('/<div(.*?)id=\"solution\-text\"(.*?)>(.*?)<\/div>/s', $content, $estimates);
         $soultion = "";
-        if ($value) {
+        if ($value)
+        {
             $soultion = str_replace("<hr />", "", $estimates[count($estimates) - 1][0]);
             $soultion = str_replace("<hr/>", "", $soultion);
             $soultion = str_replace("\n", "", $soultion);
@@ -488,11 +884,13 @@ class Settings {
 
         return $soultion;
     }
-    public static function remove_solution_button($content) {
+
+    public static function remove_solution_button($content)
+    {
         $value = preg_replace('/<p(.*?)id=\"solution-\-p\"(.*?)>(.*?)<\/p>/s', "", $content);
         return $value;
     }
-    
+
     public static function getSingleNewsFromCache($id)
     {
         $cache_name = "YII-SINGLE-POST-CACHE-" . $id;
@@ -507,24 +905,24 @@ class Settings {
             $datestring = self::get_post_time($singlepost['published_date']);
             $singlepost['current_date'] = date("Y-m-d H:i:s");
             $singlepost['published_date_string'] = $datestring;
-        }    
+        }
         return $singlepost;
     }
-    
+
     public static function formatData($postValue)
     {
         $post_array = array();
-        if($postValue)
+        if ($postValue)
         {
-            $post_array['title']     = $postValue->headline;
-            
+            $post_array['title'] = $postValue->headline;
+
             $post_array['is_spelling_bee'] = $postValue->is_spelling_bee;
-            
+
             $post_array['related_news_spelling_bee'] = array();
-            
-            if($postValue->is_spelling_bee)
+
+            if ($postValue->is_spelling_bee)
             {
-               
+
                 $objrelated = new RelatedNews();
                 $rnews = $objrelated->getRelatedNews($postValue->id);
                 $post_data = array();
@@ -534,102 +932,101 @@ class Settings {
                     $post_data[$i] = self::getSingleNewsFromCache($value['id']);
                     $i++;
                 }
-              
+
                 $post_array['related_news_spelling_bee'] = $post_data;
-            
             }
-            
-            
-            
+
+
+
             $post_array['post_type'] = $postValue->post_type;
-            
+
             $post_array['ad_target'] = 1;
-            if(isset($postValue->ad_target))
+            if (isset($postValue->ad_target))
             {
                 $post_array['ad_target'] = $postValue->ad_target;
             }
-            
+
             $post_array['category_id_to_use'] = "";
             $post_array['subcategory_id_to_use'] = "";
             $post_array['school_id'] = "";
             $post_array['education_changes_life'] = 0;
-            if(isset($postValue->school_id) && $postValue->school_id)
+            if (isset($postValue->school_id) && $postValue->school_id)
             {
                 $post_array['school_id'] = $postValue->school_id;
             }
-            
-            if(isset($postValue->category_id) && $postValue->category_id)
+
+            if (isset($postValue->category_id) && $postValue->category_id)
             {
                 $post_array['category_id_to_use'] = $postValue->category_id;
-                if(self::$education_changes_life==$postValue->category_id)
+                if (self::$education_changes_life == $postValue->category_id)
                 {
                     $post_array['education_changes_life'] = 1;
                 }
-                
-                if(isset($postValue->subcategory_id_to_use) && $postValue->subcategory_id_to_use)
+
+                if (isset($postValue->subcategory_id_to_use) && $postValue->subcategory_id_to_use)
                 {
                     $post_array['subcategory_id_to_use'] = $postValue->subcategory_id_to_use;
-                }    
+                }
             }
-            
+
             //need to change into single news
             $post_array['post_type_mobile'] = $postValue->mobile_view_type;
-            
+
             $post_array['can_comment'] = $postValue->can_comment;
-            
+
             $post_array['assessment_id'] = "";
-            
-            if($postValue->assessment_id)
-            $post_array['assessment_id'] = $postValue->assessment_id;
-            
+
+            if ($postValue->assessment_id)
+                $post_array['assessment_id'] = $postValue->assessment_id;
+
             $post_array['force_assessment'] = $postValue->force_assessment;
-            
+
             $post_array['assessment_title'] = "";
-            
+
             $post_array['assessment_played'] = 0;
-            
-            if(isset($postValue['postAssessment']->title) && $postValue['postAssessment']->title)
+
+            if (isset($postValue['postAssessment']->title) && $postValue['postAssessment']->title)
             {
                 $post_array['assessment_title'] = $postValue['postAssessment']->title;
                 $post_array['assessment_played'] = $postValue['postAssessment']->played;
             }
-            
+
             $post_array['show_comment_to_all'] = $postValue->show_comment_to_all;
-            
+
             $post_array['video_file'] = "";
 
             if ($postValue->video_file)
                 $post_array['video_file'] = Settings::$image_path . $postValue->video_file;
-            
-            
+
+
             $post_array['sub_head'] = $postValue->sub_head;
-            
+
             $post_array['wow_count'] = $postValue->wow_count;
-            
+
             $post_array['school_id'] = $postValue->school_id;
-            
+
             $post_array['teacher_id'] = $postValue->teacher_id;
-            
+
             $post_array['candle_type'] = $postValue->candle_type;
-            
+
             $post_array['subject'] = $postValue->subject;
 
             $post_array['show_comment_to_all'] = $postValue->show_comment_to_all;
-            
+
             $post_array['user_id'] = $postValue->user_id;
-            
+
             $post_array['force_web_view_mobie'] = $postValue->force_web_view_mobie;
-            
-            
-            
+
+
+
             $post_array['related_post_type'] = $postValue->related_post_type;
-            
+
             $post_array['seen'] = $postValue->view_count;
-            
+
             $post_array['title_color'] = $postValue->headline_color;
-            
+
             $post_array['id'] = $postValue->id;
-            
+
             $post_array['post_layout'] = $postValue->post_layout;
 
             $post_array['sort_title_type'] = $postValue->sort_title_type;
@@ -639,71 +1036,71 @@ class Settings {
                 $post_array['inside_image'] = Settings::get_mobile_image(Settings::$image_path . $postValue->inside_image);
 
 
-            
+
 
 
             $post_array['author'] = "";
             $post_array['designation'] = "";
-            if(isset($postValue->author_image_post))
+            if (isset($postValue->author_image_post))
             {
                 $post_array['author_image'] = $postValue->author_image_post;
             }
             else
             {
                 $post_array['author_image'] = "";
-            } 
-            
-            if(isset($postValue['freeUser']))
+            }
+
+            if (isset($postValue['freeUser']))
             {
                 $auther_name = "";
-                if(isset($postValue['freeUser']->profile_image))
+                if (isset($postValue['freeUser']->profile_image))
                 {
                     $post_array['author_image'] = $postValue['freeUser']->profile_image;
-                } 
-                if(isset($postValue['freeUser']->first_name) && $postValue['freeUser']->first_name)
-                {
-                    $auther_name .= $postValue['freeUser']->first_name." ";
                 }
-                if(isset($postValue['freeUser']->middle_name) && $postValue['freeUser']->middle_name)
+                if (isset($postValue['freeUser']->first_name) && $postValue['freeUser']->first_name)
                 {
-                    $auther_name .= $postValue['freeUser']->middle_name." ";
+                    $auther_name .= $postValue['freeUser']->first_name . " ";
                 }
-                if(isset($postValue['freeUser']->last_name) && $postValue['freeUser']->last_name)
+                if (isset($postValue['freeUser']->middle_name) && $postValue['freeUser']->middle_name)
+                {
+                    $auther_name .= $postValue['freeUser']->middle_name . " ";
+                }
+                if (isset($postValue['freeUser']->last_name) && $postValue['freeUser']->last_name)
                 {
                     $auther_name .= $postValue['freeUser']->last_name;
                 }
-                if(!$auther_name)
+                if (!$auther_name)
                 {
-                    if(isset($postValue['freeUser']->email))
-                    $auther_name = $postValue['freeUser']->email;
+                    if (isset($postValue['freeUser']->email))
+                        $auther_name = $postValue['freeUser']->email;
                 }
                 $post_array['author'] = $auther_name;
-                
-                if(isset($postValue['freeUser']->designation) && $postValue['freeUser']->designation)
+
+                if (isset($postValue['freeUser']->designation) && $postValue['freeUser']->designation)
                 {
-                    $post_array['designation']= $postValue['freeUser']->designation;
+                    $post_array['designation'] = $postValue['freeUser']->designation;
                 }
-            }    
-            
-            
+            }
+
+
             if (isset($postValue['postAuthor']))
             {
                 $post_array['author'] = $postValue['postAuthor']->title;
                 if ($postValue['postAuthor']->image)
                     $post_array['author_image'] = Settings::$image_path . $postValue['postAuthor']->image;
-                
-                if(isset($postValue['postAuthor']->designation) && $postValue['postAuthor']->designation)
+
+                if (isset($postValue['postAuthor']->designation) && $postValue['postAuthor']->designation)
                 {
-                    $post_array['designation']= $postValue['postAuthor']->designation;
+                    $post_array['designation'] = $postValue['postAuthor']->designation;
                 }
             }
-            
+
             $post_array['post_id'] = $postValue->id;
-            
-            $post_array['headline']= $postValue->headline;
-            
+
+            $post_array['headline'] = $postValue->headline;
+
             $post_array['content'] = $postValue->content;
-            
+
             $post_array['is_featured'] = $postValue->is_featured;
             $post_array['show_byline_image'] = $postValue->show_byline_image;
             $post_array['headline_color'] = $postValue->headline_color;
@@ -729,43 +1126,43 @@ class Settings {
 
             $post_array['user_view_count'] = $postValue->user_view_count;
             $post_array['embedded'] = $postValue->embedded;
-            
+
             $post_array['embedded_url'] = "";
-            if($postValue->embedded)
-            $post_array['embedded_url'] = Settings::get_embeded_url($postValue->embedded);
-          
+            if ($postValue->embedded)
+                $post_array['embedded_url'] = Settings::get_embeded_url($postValue->embedded);
+
             $post_array['layout_color'] = $postValue->layout_color;
 
             $post_array['referance_id'] = $postValue->referance_id;
             $post_array['attach'] = $postValue->attach;
             $post_array['layout'] = $postValue->layout;
-            
+
             $post_array['crop_images'] = array();
             $post_array['images'] = array();
             $post_array['add_images'] = array();
             $post_array['web_images'] = array();
-            
+
             $post_array['image_width'] = "";
             $post_array['image_height'] = "";
-            
+
             if ($postValue['postGalleries'])
             {
                 $j = 0;
                 $k = 0;
                 foreach ($postValue['postGalleries'] as $value)
                 {
-                    if (trim($value['material']->material_url) && $value->type==2)
+                    if (trim($value['material']->material_url) && $value->type == 2)
                     {
                         $post_array['crop_images'][] = Settings::get_crop_image(Settings::$image_path . $value['material']->material_url);
                         $post_array['images'][] = Settings::get_mobile_image(Settings::$image_path . $value['material']->material_url);
-                    
+
                         $post_array['add_images'][$j]['ad_image'] = Settings::get_mobile_image(Settings::$image_path . $value['material']->material_url);
                         $post_array['add_images'][$j]['ad_image_link'] = $value->source;
                         $post_array['add_images'][$j]['ad_image_caption'] = $value->caption;
-                        if($j==1)
+                        if ($j == 1)
                         {
                             list($image_width, $image_height, $image_type, $image_attr) = @getimagesize($post_array['images'][$j]);
-                            if(isset($image_width) && isset($image_height))
+                            if (isset($image_width) && isset($image_height))
                             {
                                 $post_array['image_width'] = $image_width;
                                 $post_array['image_height'] = $image_height;
@@ -773,25 +1170,27 @@ class Settings {
                         }
                         $j++;
                     }
-                    else if(trim($value['material']->material_url) && $value->type==1)
+                    else if (trim($value['material']->material_url) && $value->type == 1)
                     {
-                           
+
                         $post_array['web_images'][$k]['image'] = Settings::$image_path . $value['material']->material_url;
                         $post_array['web_images'][$k]['source'] = $value->source;
-                        $post_array['web_images'][$k]['caption'] =  $value->caption;
-                         
+                        $post_array['web_images'][$k]['caption'] = $value->caption;
+
                         $k++;
-                    }    
+                    }
                 }
             }
-            
-            if( empty($post_array['images']) ) {
-                if( !empty($post_array['lead_material']) ) {
+
+            if (empty($post_array['images']))
+            {
+                if (!empty($post_array['lead_material']))
+                {
                     $post_array['images'][] = Settings::get_mobile_image(Settings::$image_path . $post_array['lead_material']);
                     $post_array['crop_images'][] = Settings::get_crop_image(Settings::$image_path . $post_array['lead_material']);
                 }
             }
-            
+
             //need to change 2
             if (isset($postValue->mobile_content) && strlen(Settings::substr_with_unicode($postValue->mobile_content, true)) > 0)
             {
@@ -805,10 +1204,10 @@ class Settings {
                 $post_array['full_content'] = Settings::substr_with_unicode($postValue->content, true);
                 $post_array['solution'] = Settings::get_solution($postValue->content);
             }
-            
+
             $post_array['summary'] = "";
-            
-            
+
+
             if ($postValue->summary)
             {
                 $post_array['has_summary'] = 1;
@@ -819,7 +1218,7 @@ class Settings {
                 $post_array['has_summary'] = 0;
                 $post_array['summary'] = Settings::substr_with_unicode($postValue->content);
             }
-            
+
             $post_array['share_link'] = Settings::get_post_link_url($postValue);
             $post_array['mobile_image'] = "";
             if ($postValue->mobile_image)
@@ -845,47 +1244,47 @@ class Settings {
             $post_array['category_name'] = "News and Articles";
             $post_array['category_id'] = 38;
             $post_array['inner_priority'] = 1;
-            
-            
-            
-            if(isset($postValue['postCategories'][0]['category']->name))
+
+
+
+            if (isset($postValue['postCategories'][0]['category']->name))
             {
-                if(isset($postValue['postCategories'][0]['category']->display_name) && $postValue['postCategories'][0]['category']->display_name!="")
+                if (isset($postValue['postCategories'][0]['category']->display_name) && $postValue['postCategories'][0]['category']->display_name != "")
                 {
-                    $post_array['category_name'] = $postValue['postCategories'][0]['category']->display_name; 
+                    $post_array['category_name'] = $postValue['postCategories'][0]['category']->display_name;
                 }
                 else
-                {    
+                {
                     $post_array['category_name'] = $postValue['postCategories'][0]['category']->name;
                 }
             }
-            
-            if(isset($postValue['postCategories'][0]['category']->id))
-            $post_array['category_id'] = $postValue['postCategories'][0]['category']->id;
 
-            if(isset($postValue['postCategories'][0]['category']->inner_priority))
-            $post_array['inner_priority'] = $postValue['postCategories'][0]->inner_priority;
+            if (isset($postValue['postCategories'][0]['category']->id))
+                $post_array['category_id'] = $postValue['postCategories'][0]['category']->id;
+
+            if (isset($postValue['postCategories'][0]['category']->inner_priority))
+                $post_array['inner_priority'] = $postValue['postCategories'][0]->inner_priority;
 
             $post_array['second_category_name'] = "";
             $post_array['second_category_id'] = 0;
-            
-            if(isset($postValue['postCategories'][1]['category']->id))
+
+            if (isset($postValue['postCategories'][1]['category']->id))
                 $post_array['second_category_id'] = $postValue['postCategories'][1]['category']->id;
 
             if (isset($postValue['postCategories'][1]['category']->name))
             {
-                if(isset($postValue['postCategories'][1]['category']->display_name) && $postValue['postCategories'][1]['category']->display_name!="")
+                if (isset($postValue['postCategories'][1]['category']->display_name) && $postValue['postCategories'][1]['category']->display_name != "")
                 {
-                    $post_array['second_category_name'] = $postValue['postCategories'][1]['category']->display_name; 
+                    $post_array['second_category_name'] = $postValue['postCategories'][1]['category']->display_name;
                 }
                 else
-                {    
+                {
                     $post_array['second_category_name'] = $postValue['postCategories'][1]['category']->name;
                 }
                 $post_array['second_category_id'] = $postValue['postCategories'][1]['category']->id;
             }
             $post_array['tags'] = array();
-            
+
             $post_array['normal_post_type'] = Settings::get_simple_post_layout($postValue);
 
             $j = 0;
@@ -896,7 +1295,7 @@ class Settings {
                     $post_array['tags'][$j]['id'] = $value['tag']->id;
                     $j++;
                 }
-                
+
             $post_array['attach'] = "";
             $post_array['attach_content'] = "";
             $post_array['attach_download_link'] = "";
@@ -917,34 +1316,43 @@ class Settings {
                     $ai++;
                 }
             }
-            
+
             return $post_array;
-            
         }
         else
         {
             return false;
-        }    
+        }
     }
 
-    public static function content_images($content, $first_image = true, $lead_material = false) {
+    public static function content_images($content, $first_image = true, $lead_material = false)
+    {
         $doc = new DOMDocument();
         @$doc->loadHTML($content);
         $images = $doc->getElementsByTagName('img');
         $all_image = array();
 
-        if ($lead_material) {
+        if ($lead_material)
+        {
             $all_image[] = self::get_mobile_image(self::$image_path . $lead_material);
         }
         $i = 1;
-        foreach ($images as $image) {
-            if (strpos($image->getAttribute('src'), "relatednews.jpg") !== FALSE) {
+        foreach ($images as $image)
+        {
+            if (strpos($image->getAttribute('src'), "relatednews.jpg") !== FALSE)
+            {
                 continue;
-            } else if (strpos($image->getAttribute('class'), "no_slider") !== FALSE) {
+            }
+            else if (strpos($image->getAttribute('class'), "no_slider") !== FALSE)
+            {
                 continue;
-            } else if ($i == 1 && $first_image === false) {
+            }
+            else if ($i == 1 && $first_image === false)
+            {
                 continue;
-            } else {
+            }
+            else
+            {
                 $all_image[] = self::get_mobile_image($image->getAttribute('src'));
             }
             $i++;
@@ -952,7 +1360,8 @@ class Settings {
         return $all_image;
     }
 
-    public static function substr_with_unicode($string, $full_length = false, $length = 400) {
+    public static function substr_with_unicode($string, $full_length = false, $length = 400)
+    {
         $string = preg_replace('/<div (.*?)>Source:(.*?)<\/div>/', '', $string);
         $string = preg_replace('/<div class="img_caption" (.*?)>(.*?)<\/div>/', '', $string);
 
@@ -960,42 +1369,52 @@ class Settings {
         $string = str_replace("&nbsp;", '', $string);
         $string = str_replace("<p></p>", '', $string);
 
-        if ($full_length === false) {
+        if ($full_length === false)
+        {
 
             $main_string = mb_substr(strip_tags(html_entity_decode($string, ENT_QUOTES, 'UTF-8')), 0, $length, 'UTF-8');
             return trim($main_string);
-        } else {
+        }
+        else
+        {
             $main_string = strip_tags(html_entity_decode($string, ENT_QUOTES, 'UTF-8'));
             $main_string = mb_substr($main_string, 0, mb_strlen($main_string, 'UTF-8'), 'UTF-8');
             return trim($main_string);
         }
     }
 
-    public static function getProfileModel() {
+    public static function getProfileModel()
+    {
 
         $mod_name = 'Employees';
 
-        if (Yii::app()->user->isStudent) {
+        if (Yii::app()->user->isStudent)
+        {
             $mod_name = 'Students';
         }
 
-        if (Yii::app()->user->isParent) {
+        if (Yii::app()->user->isParent)
+        {
             $mod_name = 'Guardians';
         }
 
         return $mod_name;
     }
 
-    public static function extractIds($array_or_obj, $key = 'id') {
+    public static function extractIds($array_or_obj, $key = 'id')
+    {
 
         $ar_ids = array();
 
-        foreach ($array_or_obj as $value) {
-            if (is_object($array_or_obj)) {
+        foreach ($array_or_obj as $value)
+        {
+            if (is_object($array_or_obj))
+            {
                 $ar_ids[] = $value->$key;
             }
 
-            if (is_array($array_or_obj)) {
+            if (is_array($array_or_obj))
+            {
                 $ar_ids[] = $value[$key];
             }
         }

@@ -12,12 +12,18 @@
     <nav>
         <div class='ribbon'>
             <a id="tabHeader_1" href='#'><span>Home</span></a>
-            <a id="tabHeader_2" href='#'><span>About</span></a>
-            <a id="tabHeader_3" href='#'><span>Registration</span></a>
-            <a id="tabHeader_4" href='#'><span>Spellato</span></a>
+            <!--<a id="tabHeader_2" href='#'><span>About</span></a>-->
+            <a id="tabHeader_2" href='#'><span>Competition Format</span></a>
+            <a id="tabHeader_8" href='#'><span>Award</span></a>
+            <a id="tabHeader_3" href='#'><span>How to Participate</span></a>
+            <a id="tabHeader_9" href='#'><span>Registration</span></a>
+            <a id="tabHeader_10" href='#'><span>Study Tips</span></a>
+            
+<!--            <a id="tabHeader_4" href='#'><span>Spellato</span></a>
             <a id="tabHeader_5" href='#'><span>Terms & Condition</span></a>
             <a id="tabHeader_6" href='#'><span>Gallery</span></a>
             <a id="tabHeader_7" href='#'><span>Profile</span></a>
+            -->
         </div>
     </nav>
     <div class="spellingbee">
@@ -28,21 +34,31 @@
             <section class="tabpage content mCustomScrollbar" id="tabpage_2">
                <?php $this->load->view('spellingbee/about'); ?>  
             </section>
+            <section class="tabpage content mCustomScrollbar" id="tabpage_8">
+               <?php $this->load->view('spellingbee/award'); ?>  
+            </section>
             <section class="tabpage content mCustomScrollbar" id="tabpage_3">
+               <?php $this->load->view('spellingbee/how_to_perticipate'); ?>  
+            </section>
+            <section class="tabpage content mCustomScrollbar" id="tabpage_9">
                <?php $this->load->view('spellingbee/registration'); ?>  
             </section>
-            <section class="tabpage content mCustomScrollbar" id="tabpage_4">
-               <?php $this->load->view('spellingbee/spellato'); ?>  
+            <section class="tabpage content mCustomScrollbar" id="tabpage_10">
+               <?php $this->load->view('spellingbee/study_tips'); ?>  
+            </section>
+            
+<!--            <section class="tabpage content mCustomScrollbar" id="tabpage_4">
+               <?php //$this->load->view('spellingbee/spellato'); ?>  
             </section>
             <section class="tabpage content mCustomScrollbar" id="tabpage_5">
-               <?php $this->load->view('spellingbee/term_n_condition'); ?>  
+               <?php //$this->load->view('spellingbee/term_n_condition'); ?>  
             </section>
             <section class="tabpage content mCustomScrollbar" id="tabpage_6">
-               <?php $this->load->view('spellingbee/gallery'); ?>  
+               <?php //$this->load->view('spellingbee/gallery'); ?>  
             </section>
             <section class="tabpage content mCustomScrollbar" id="tabpage_7">
-               <?php $this->load->view('spellingbee/profile'); ?>  
-            </section>
+               <?php //$this->load->view('spellingbee/profile'); ?>  
+            </section>-->
         </div>
         
         <div style="margin-top:30px;clear: both;height: 250px;">
@@ -185,5 +201,12 @@
   background-position: left bottom;
   background-repeat: no-repeat;
   background-size: 25% auto;
+}
+#tabpage_2 ul li, #tabpage_3 ul li, #tabpage_10 ul li {
+    list-style: outside none disc;
+}
+#tabpage_3 ol li {
+    margin-left: 10px;
+    padding-left: 10px;
 }
 </style>

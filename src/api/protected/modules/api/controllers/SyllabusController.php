@@ -574,7 +574,7 @@ class SyllabusController extends Controller {
             $response = array();
             if ($user_secret && Yii::app()->user->user_secret === $user_secret) {
                 
-                if (!Yii::app()->user->isStudent && empty($batch_id)) {
+                if (!Yii::app()->user->isStudent && !$batch_id) {
                     $response['status']['code'] = 400;
                     $response['status']['msg'] = "Bad Request.";
                     echo CJSON::encode($response);

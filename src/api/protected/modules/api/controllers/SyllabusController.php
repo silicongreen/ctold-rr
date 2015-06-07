@@ -586,6 +586,10 @@ class SyllabusController extends Controller {
                     $term_id = 0;
                 }
                 
+                if (Yii::app()->user->isStudent) {
+                    $batch_id = Yii::app()->user->batchId;
+                }
+                
                 
                 $syllabus = new Syllabuses();    
                 $syllabus = $syllabus->getSyllabus($term_id, $batch_id);

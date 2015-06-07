@@ -211,7 +211,8 @@ class Service
 
                     } 
                     $i++;
-                 }    
+                 } 
+                 $words_array['words'] = (object)$words_array['words'];
             }  
            
             return (count($words_array['words'])==0) ? 'no_data' : (object)$words_array;

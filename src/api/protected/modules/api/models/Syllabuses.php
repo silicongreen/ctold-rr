@@ -125,7 +125,7 @@ class Syllabuses extends CActiveRecord {
         return false;
     }
 
-    public function getSyllabus($school_id, $term_id, $batch_id = null, $b_yearly = false) {
+    public function getSyllabus($term_id=0, $batch_id = null, $b_yearly = false) {
 
         if (Yii::app()->user->isStudent) {
             $batch_id = Yii::app()->user->batchId;
@@ -136,8 +136,7 @@ class Syllabuses extends CActiveRecord {
         $criteria->select = 't.id, t.content, t.subject_id, t.updated_at';
         $criteria->compare('t.batch_id', $batch_id);
         $criteria->compare('t.exam_group_id', $term_id);
-        
-        $criteria->compare('t.school_id', $school_id);
+     
         
         $data = $this->with('subjectDetails')->findAll($criteria);
         

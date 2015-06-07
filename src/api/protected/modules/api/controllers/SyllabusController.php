@@ -589,7 +589,7 @@ class SyllabusController extends Controller {
                 $school_id = Yii::app()->user->schoolId;
                 $syllabus = new Syllabuses;
                 $syllabus = array();
-                #$syllabus = $syllabus->getSyllabus($school_id, $term_id, $batch_id);
+                $syllabus = $syllabus->getSyllabus($school_id, $term_id, $batch_id);
 
                 if (!$syllabus) {
                     $response['data']['syllabus'] = array();

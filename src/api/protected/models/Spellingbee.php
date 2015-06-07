@@ -89,9 +89,19 @@ class Spellingbee extends CActiveRecord
             $iYear = $iYear-1;
             if($iYear<2012)
             {
-                $response['words'] = array();
-                $response['fulldata'] = 1;
-                return $response;
+                $iYear = 2015;
+                $responsecache[$iUserId]['year'] = $iYear;
+                
+                Yii::app()->cache->set($cache_name, $responsecache, 3986400);
+                
+                $cache_name = "YII-SPELLINGBEE-USERWORD";
+                $responsecach = Yii::app()->cache->get($cache_name);
+                $responsecach[$iUserId]['words'] = array();
+               
+                Yii::app()->cache->set($cache_name, $responsecach, 3986400);
+                
+                $data = $this->getWordsByLevel( $iLevel, $iMaxWord, $iYear,array(),$iUserId);
+                return $data;
             } 
             else
             {    

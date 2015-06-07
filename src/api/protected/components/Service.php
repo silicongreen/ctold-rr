@@ -129,11 +129,13 @@ class Service
     {
         $words_id = $objParams->words;
         $checkpoint = $objParams->checkpoint;
+        $objfreeuser = new Freeusers();
         $data = $objfreeuser->getFreeuserByCookie();
+       
         $valid_user = FALSE;
-        if ($data && is_int($data) && $words_id && $checkpoint )
+        if ($data && is_int($data) && $words_id && $checkpoint)
         {
-
+            
             $autorize_check = Settings::authorizeUserCheck($objParams->left, $objParams->right, $objParams->method, $objParams->operator, $objParams->send_id, $data);
            
             if ($autorize_check)
@@ -142,8 +144,10 @@ class Service
             }
      
         }
+        
         if($valid_user)
         {
+            
             $word_id_array = explode(",", $words_id);
             $cache_name = "YII-SPELLINGBEE-USERWORD";
             $response = Yii::app()->cache->get($cache_name);
@@ -156,6 +160,7 @@ class Service
             Yii::app()->cache->set($cache_name, $response, 3986400);
             
             $cache_name = "YII-SPELLINGBEE-USERDATA";
+            $check = Yii::app()->cache->get($cache_name);
             $check[$data]['user_checkpoint'] = $checkpoint;
             Yii::app()->cache->set($cache_name, $check, 3986400);
             
@@ -172,7 +177,7 @@ class Service
 
     public function getWords($objParams)
     {
-        $iYear = 2012; // deault year for spellbee word
+        $iYear = 2015; // deault year for spellbee word
         $objfreeuser = new Freeusers();
         $data = $objfreeuser->getFreeuserByCookie();
         $valid_user = FALSE;
@@ -194,6 +199,7 @@ class Service
             {
                 $user_word_played = $response[$iUserId]['words'];
             }
+            
           
             $spbobj = new Spellingbee();
             $arWords = $spbobj->getWordsByLevel($iLevelId, $objParams->size, $iYear,$user_word_played,$iUserId);

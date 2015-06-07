@@ -68,6 +68,7 @@ class Service
 
         if ($data && is_int($data))
         {
+            $iUserId = $data;
             $cache_name = "YII-SPELLINGBEE-USERAGREMENT";
             $response = Yii::app()->cache->get($cache_name);
             if ($response !== false)

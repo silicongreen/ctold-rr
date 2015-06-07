@@ -64,9 +64,9 @@ class Spellingbee extends CActiveRecord
     {
         $cache_name = "YII-SPELLINGBEE-USERYEAR";
         $responsecache = Yii::app()->cache->get($cache_name);
-        if (isset($responsecache[$iUserId]) && isset($responsecache[$iUserId]['year']))
+        if (isset($responsecache[$iUserId]) && isset($responsecache[$iUserId][$iLevel]) && isset($responsecache[$iUserId][$iLevel]['year']))
         {
-            $iYear = $responsecache[$iUserId]['year'];
+            $iYear = $responsecache[$iUserId][$iLevel]['year'];
         }
         
         $criteria = new CDbCriteria;
@@ -90,13 +90,14 @@ class Spellingbee extends CActiveRecord
             if($iYear<2012)
             {
                 $iYear = 2015;
-                $responsecache[$iUserId]['year'] = $iYear;
+                $cache_name = "YII-SPELLINGBEE-USERYEAR";
+                $responsecache[$iUserId][$iLevel]['year'] = $iYear;
                 
                 Yii::app()->cache->set($cache_name, $responsecache, 3986400);
                 
                 $cache_name = "YII-SPELLINGBEE-USERWORD";
                 $responsecach = Yii::app()->cache->get($cache_name);
-                $responsecach[$iUserId]['words'] = array();
+                $responsecach[$iUserId][$iLevel]['words'] = array();
                
                 Yii::app()->cache->set($cache_name, $responsecach, 3986400);
                 
@@ -104,8 +105,9 @@ class Spellingbee extends CActiveRecord
                 return $data;
             } 
             else
-            {    
-                $responsecache[$iUserId]['year'] = $iYear;
+            {  
+                $cache_name = "YII-SPELLINGBEE-USERYEAR";
+                $responsecache[$iUserId][$iLevel]['year'] = $iYear;
                 Yii::app()->cache->set($cache_name, $responsecache, 3986400);
                 $data = $this->getWordsByLevel( $iLevel, $iMaxWord, $iYear,$user_word_played,$iUserId);
                 return $data;

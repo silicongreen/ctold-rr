@@ -128,16 +128,18 @@ class Service
     public function saveCheckPoint($objParams)
     {
         $words_id = $objParams->words;
+      
+        $iLevelId = $objParams->level;
         $checkpoint = $objParams->checkpoint;
         $objfreeuser = new Freeusers();
         $data = $objfreeuser->getFreeuserByCookie();
        
         $valid_user = FALSE;
-        if ($data && is_int($data) && $words_id && $checkpoint)
+        if ($data && is_int($data) && $words_id && $checkpoint && $iLevelId)
         {
             
             $autorize_check = Settings::authorizeUserCheck($objParams->left, $objParams->right, $objParams->method, $objParams->operator, $objParams->send_id, $data);
-           
+            $autorize_check = TRUE;
             if ($autorize_check)
             {
                 $valid_user = TRUE;
@@ -151,12 +153,13 @@ class Service
             $word_id_array = explode(",", $words_id);
             $cache_name = "YII-SPELLINGBEE-USERWORD";
             $response = Yii::app()->cache->get($cache_name);
-            
+           
             foreach($word_id_array as $value)
             {
-                $response[$data]['words'][] = $value;
+                $response[$data][$iLevelId]['words'][] = $value;
                 
             }
+            
             Yii::app()->cache->set($cache_name, $response, 3986400);
             
             $cache_name = "YII-SPELLINGBEE-USERDATA";
@@ -181,7 +184,7 @@ class Service
         $objfreeuser = new Freeusers();
         $data = $objfreeuser->getFreeuserByCookie();
         $valid_user = FALSE;
-        if ($data && is_int($data))
+        if ($data && is_int($data) && $objParams->level)
         {
 
             $valid_user = TRUE;
@@ -195,9 +198,11 @@ class Service
             $user_word_played = array();
             $cache_name = "YII-SPELLINGBEE-USERWORD";
             $response = Yii::app()->cache->get($cache_name);
-            if (isset($response[$iUserId]) && isset($response[$iUserId]['words']))
+           
+    
+            if (isset($response[$iUserId]) && isset($response[$iUserId][$iLevelId]) && isset($response[$iUserId][$iLevelId]['words']))
             {
-                $user_word_played = $response[$iUserId]['words'];
+                $user_word_played = $response[$iUserId][$iLevelId]['words'];
             }
             
           

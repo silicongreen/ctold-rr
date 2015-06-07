@@ -37,6 +37,40 @@ class FreeuserController extends Controller
             ),
         );
     }
+    public function actiongetLeaderboard()
+    {
+        $limit = Yii::app()->request->getPost('limit');
+        $user_id = Settings::getSessionId();
+        if(!$limit)
+        {
+            $limit = 10;
+        } 
+        if(!$user_id)
+        $objfreeuser = new Freeusers();
+        $data = $objfreeuser->getFreeuserByCookie();
+
+        if (isset($data) && is_int($data))
+        {
+            $user_id = $data;
+        }
+        else
+        {
+            return FALSE;
+        }
+        $objUser = new Freeusers();
+        $user_data = $objUser->findByPk($user_id);
+
+        if ($user_data)
+        {
+            $highscore = new Highscore();
+            $arUserScores = $highscore->getLeaderBoard($iLimit, $user_data->district, $user_data->tds_country_id);
+            return $arUserScores;
+        }
+        else
+        {
+            return FALSE;
+        }
+    }
     
     public function actionsaveSpellingBee()
     {

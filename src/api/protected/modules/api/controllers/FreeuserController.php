@@ -23,7 +23,7 @@ class FreeuserController extends Controller
     {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index','savespellingbee', 'downloadattachment', 'create', 'getcategorypost', 'getsinglenews', 'search', "getkeywordpost"
+                'actions' => array('index','getleaderboard','savespellingbee', 'downloadattachment', 'create', 'getcategorypost', 'getsinglenews', 'search', "getkeywordpost"
                     , "gettagpost", "getbylinepost", "getmenu", "getassesment", "addmark", "updateplayed", "assesmenthistory",
                     "getuserinfo", "goodread", "readlater", "goodreadall", "goodreadfolder", "removegoodread"
                     , "schoolsearch", "school", "createschool", "schoolpage", "schoolactivity", "candle"
@@ -36,6 +36,54 @@ class FreeuserController extends Controller
                 'users' => array('*'),
             ),
         );
+    }
+    public function actiongetLeaderboard()
+    {
+        $limit = Yii::app()->request->getPost('limit');
+        $division = Yii::app()->request->getPost('division');
+        $user_id = Settings::getSessionId();
+       
+        if(!$limit)
+        {
+            $limit = 10;
+        } 
+        if($user_id || $division)
+        {
+            if($user_id)
+            {
+                $objUser = new Freeusers();
+                $user_data = $objUser->findByPk($user_id);
+                if($user_data->district)
+                {
+                    $divi = $user_data->district;
+                }
+                else
+                {
+                    $divi = "";
+                }    
+                $country = $user_data->tds_country_id;
+            }
+            if($division)
+            {
+                $divi = $division;
+                $country = "";
+            }
+
+        
+            $highscore = new Highscore();
+            $arUserScores = $highscore->getLeaderBoard($limit, $divi, $country);
+            $rresponse['data'] = (array)$arUserScores;
+            $rresponse['status']['code'] = 200;
+            $rresponse['status']['msg'] = "Success";
+           
+        }
+        else
+        {
+            $rresponse['status']['code'] = 400;
+            $rresponse['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($rresponse);
+        Yii::app()->end();
     }
     
     public function actionsaveSpellingBee()

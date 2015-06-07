@@ -59,6 +59,7 @@ class Service
         $arUserMode = array();
         $arUserMode['cPlayMode'] = 'p';
         $arUserMode['bIsNew'] = 0;
+        $arUserMode['user_checkpoint'] = 0;
         $arUserMode['user_id_tokens'] = (object) NULL;
 
         $objfreeuser = new Freeusers();
@@ -76,6 +77,13 @@ class Service
                 {
                     $arUserMode['bIsNew'] = 1;
                 }
+            }
+            
+            $cache_name = "YII-SPELLINGBEE-USERDATA";
+            $response = Yii::app()->cache->get($cache_name);
+            if (isset($response[$iUserId]) && isset($response[$iUserId]['user_checkpoint']))
+            {
+                $arUserMode['user_checkpoint'] = $response[$iUserId]['user_checkpoint'];
             }
 
             $arUserMode['cPlayMode'] = 'c';
@@ -120,6 +128,25 @@ class Service
     public function getWords($objParams)
     {
         $iYear = 2014; // deault year for spellbee word
+        $objfreeuser = new Freeusers();
+        $data = $objfreeuser->getFreeuserByCookie();
+        $valid_user = FALSE;
+        if ($data && is_int($data))
+        {
+            $autorize_check = Settings::authorizeUserCheck($objParams->left, $objParams->right, $objParams->method, $objParams->operator, $objParams->send_id, $data);
+           
+            if ($autorize_check)
+            {
+                $valid_user = TRUE;
+            }
+        }
+        $arWords = "";
+        if($valid_user)
+        {
+           $iLevelId = $objParams->level;
+           
+        }
+        
         $iUserID = Champs21_Utility_Session::getValue('userInfo', 'userid');
         $objConn = Champs21_Db_Connection::factory()->getSlaveConnection();
         $objSpellbeeDao = Champs21_Model_Dao_Factory::getInstance()->setModule('spellingbee')->getSpellingbeeDao();
@@ -139,47 +166,7 @@ class Service
         return (!is_array($arWords) ) ? 'no_data' : $arWords;
     }
 
-    public function getWordsForMobile($level, $size, $strExcludeIds = '')
-    {
-        $strExcludeIds = substr($strExcludeIds, 0, -1);
-        $objViewRenderer = Zend_Controller_Action_HelperBroker::getStaticHelper('viewRenderer');
-        if (null === $objViewRenderer->view)
-        {
-            $objViewRenderer->initView();
-        }
-
-        $objView = $objViewRenderer->view;
-        $objConn = Champs21_Db_Connection::factory()->getMasterConnection();
-        $objSpellbeeDao = Champs21_Model_Dao_Factory::getInstance()->setModule('spellingbee')->getSpellingbeeDao();
-        $objSpellbeeDao->setDbConnection($objConn);
-        $arWords = $objSpellbeeDao->getWordsForMobile($objView->APP_URL, $level, $size, $strExcludeIds);
-        header('content-type: text/xml');
-        $strSpellBeeXML = '<spellbee_xml>';
-        if ($arWords === FALSE)
-        {
-            $strSpellBeeXML .= '<spellbee>';
-            $strSpellBeeXML .= '<id></id><bangla_meaning></bangla_meaning><definition></definition><word>finish play</word><sentence></sentence><wtype></wtype><level></level><voice></voice><source></source><enabled></enabled><sound_url></sound_url>';
-            $strSpellBeeXML .= '</spellbee>';
-            $strSpellBeeXML .= '</spellbee_xml>';
-            print $strSpellBeeXML;
-            exit;
-        }
-        foreach ($arWords as $arWord)
-        {
-            $strSpellBeeXML .= '<spellbee>';
-            foreach ($arWord as $key => $value)
-            {
-                if ($key == "sentence")
-                    $strSpellBeeXML .= '<' . $key . '>' . str_replace($arWord['word'], "******", $value) . '</' . $key . '>';
-                else
-                    $strSpellBeeXML .= '<' . $key . '>' . $value . '</' . $key . '>';
-            }
-            $strSpellBeeXML .= '</spellbee>';
-        }
-        $strSpellBeeXML .= '</spellbee_xml>';
-        print $strSpellBeeXML;
-        exit;
-    }
+    
 
     public function getXML()
     {

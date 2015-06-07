@@ -18,12 +18,12 @@ class Service
         return ( is_int($data)) ? TRUE : FALSE;
     }
 
-//    public function checkUser()
-//    {
-//        $autorize_check = Settings::authorizeUserCheck("Mw==", "NA==", "a2xnZGp2YQ==", "cA==", "MjQ1MjU4OTU3NA==", 259);
-//
-//        return $autorize_check;
-//    }
+    public function checkUser()
+    {
+        $autorize_check = Settings::authorizeUserCheck("Mw==", "NA==", "a2xnZGp2YQ==", "cA==", "MjQ1MjU4OTU3NA==", 259);
+
+        return $autorize_check;
+    }
 
     public function getWebScores($iLimit = 10)
     {

@@ -568,7 +568,6 @@ class SyllabusController extends Controller {
         if ((Yii::app()->request->isPostRequest) && !empty($_POST)) {
 
             $user_secret = Yii::app()->request->getPost('user_secret');
-
             $term_id = Yii::app()->request->getPost('term');
             $batch_id = Yii::app()->request->getPost('batch_id');
 
@@ -589,7 +588,8 @@ class SyllabusController extends Controller {
                 
                 $school_id = Yii::app()->user->schoolId;
                 $syllabus = new Syllabuses;
-                $syllabus = $syllabus->getSyllabus($school_id, $term_id, $batch_id);
+                $syllabus = array();
+                #$syllabus = $syllabus->getSyllabus($school_id, $term_id, $batch_id);
 
                 if (!$syllabus) {
                     $response['data']['syllabus'] = array();

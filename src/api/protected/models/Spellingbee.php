@@ -60,70 +60,58 @@ class Spellingbee extends CActiveRecord
     {
         return parent::model($className);
     }
-    public function getWordsByLevel( $iLevel, $iMaxWord = 20, $iYear = 2013  )
+    public function getWordsByLevel( $iLevel, $iMaxWord = 25, $iYear = 2015,$user_word_played = array(),$iUserId=0  )
     {
-        $strDestination = CHAMPS21_VAR_DIR . DS . 'upload';
-        $strPath = implode( DS, array("userspelling", "front") );
-        Champs21_Utility_File::createDirs( $strDestination, $strPath );
-        $strDestinationDir = Champs21_Utility_File::makePath( $strDestination . DS . $strPath );
-        $iUserID = Champs21_Utility_Session::getValue( 'userInfo', 'userid' );
-        if ( empty( $iUserID ) )
-            $iUserID = session_id();
-        $strFileName = $strDestinationDir . DS . $iUserID . "_spellids.txt";
-        $strFileName = str_replace( "./", "", $strFileName );
-        //echo $strFileName;
-        if ( file_exists( $strFileName ) )
+        $cache_name = "YII-SPELLINGBEE-USERYEAR";
+        $responsecache = Yii::app()->cache->get($cache_name);
+        if (isset($responsecache[$iUserId]) && isset($responsecache[$iUserId]['year']))
         {
-            try
+            $iYear = $responsecache[$iUserId]['year'];
+        }
+        
+        $criteria = new CDbCriteria;
+        $criteria->select = 't.*';
+        $criteria->compare('t.level', $iLevel);
+        $criteria->compare('t.year', $iYear);
+        $criteria->compare('t.enabled', 1);
+        
+        if(count($user_word_played)>0)
+        {
+            $criteria->addNotInCondition('t.id', $user_word_played);
+        }
+        $criteria->order = 'RAND()';
+        
+        $criteria->limit = $iMaxWord;
+        $data = $this->findAll($criteria);
+        
+        if(count($data)==0)
+        {
+            $iYear = $iYear-1;
+            if($iYear<2012)
             {
-                $hFile = fopen( $strFileName, 'r' );
-                $strUsedIds = fread( $hFile, filesize( $strFileName ) );
+                $response['words'] = array();
+                $response['fulldata'] = 1;
+                return $response;
+            } 
+            else
+            {    
+                $responsecache[$iUserId]['year'] = $iYear;
+                Yii::app()->cache->set($cache_name, $responsecache, 3986400);
+                $data = $this->getWordsByLevel( $iLevel, $iMaxWord, $iYear,$user_word_played,$iUserId);
+                return $data;
             }
-            catch ( Exception $e )
-            {
-                $strUsedIds = '0';
-            }
+            
         }
         else
         {
-            $strUsedIds = '0';
-        }
-
-        $strExtraSQL = "";
-        if ( $iLevel == 0 )
-        {
-            $strExtraSQL = " AND spell_date = '" . date( "Y-m-d" ) . "'";
-        }
-        $strSQL = sprintf( "SELECT * FROM spellingbee WHERE level = %d %s AND year = %d AND enabled = 1 ", $iLevel, $strExtraSQL, $iYear );
-        $hRes = mysql_query( $strSQL );
-        if ( mysql_num_rows( $hRes ) == 0 )
-        {
-            return false;
-        }
-        while ( $arRow = mysql_fetch_assoc( $hRes ) )
-        {
-            $arData[] = $arRow;
-        }
-        if ( isset( $arData ) )
-        {
-            shuffle( $arData );
-            shuffle( $arData );
-            $arTmpData = array_slice( $arData, 0, $iMaxWord );
-            $arData = $arTmpData;
-
-            $strUsedIds = ( $strUsedIds == "0" ) ? '' : $strUsedIds . ',';
-            $strSpellIds = $strUsedIds;
-            foreach ( $arData as $arSpellData )
+            $response['words'] = $data;
+            $response['fulldata'] = 1;
+            if(count($data)!=$iMaxWord)
             {
-                $strSpellIds .= $arSpellData['id'] . ',';
+                $response['fulldata'] = 0;
             }
-            $strSpellIds = substr( $strSpellIds, 0, -1 );
-            $hFile = fopen( $strFileName, 'w+' );
-            fwrite( $hFile, $strSpellIds );
-            fclose( $hFile );
         }
-
-        return (isset( $arData )) ? $arData : "no_data";
+        return $response;
     }
 
 }

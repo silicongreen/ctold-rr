@@ -125,46 +125,100 @@ class Service
         }
         return (object) $arUserMode;
     }
-
-    public function getWords($objParams)
+    public function saveCheckPoint($objParams)
     {
-        $iYear = 2014; // deault year for spellbee word
-        $objfreeuser = new Freeusers();
+        $words_id = $objParams->words;
+        $checkpoint = $objParams->checkpoint;
         $data = $objfreeuser->getFreeuserByCookie();
         $valid_user = FALSE;
-        if ($data && is_int($data))
+        if ($data && is_int($data) && $words_id && $checkpoint )
         {
+
             $autorize_check = Settings::authorizeUserCheck($objParams->left, $objParams->right, $objParams->method, $objParams->operator, $objParams->send_id, $data);
            
             if ($autorize_check)
             {
                 $valid_user = TRUE;
             }
+     
+        }
+        if($valid_user)
+        {
+            $word_id_array = explode(",", $words_id);
+            $cache_name = "YII-SPELLINGBEE-USERWORD";
+            $response = Yii::app()->cache->get($cache_name);
+            
+            foreach($word_id_array as $value)
+            {
+                $response[$data]['words'][] = $value;
+                
+            }
+            Yii::app()->cache->set($cache_name, $response, 3986400);
+            
+            $cache_name = "YII-SPELLINGBEE-USERDATA";
+            $check[$data]['user_checkpoint'] = $checkpoint;
+            Yii::app()->cache->set($cache_name, $check, 3986400);
+            
+            return TRUE;
+            
+            
+        }
+        return FALSE;
+        
+         
+        
+        
+    }
+
+    public function getWords($objParams)
+    {
+        $iYear = 2012; // deault year for spellbee word
+        $objfreeuser = new Freeusers();
+        $data = $objfreeuser->getFreeuserByCookie();
+        $valid_user = FALSE;
+        if ($data && is_int($data))
+        {
+
+            $valid_user = TRUE;
+     
         }
         $arWords = "";
         if($valid_user)
         {
-           $iLevelId = $objParams->level;
+            $iUserId = $data;
+            $iLevelId = $objParams->level;
+            $user_word_played = array();
+            $cache_name = "YII-SPELLINGBEE-USERWORD";
+            $response = Yii::app()->cache->get($cache_name);
+            if (isset($response[$iUserId]) && isset($response[$iUserId]['words']))
+            {
+                $user_word_played = $response[$iUserId]['words'];
+            }
+          
+            $spbobj = new Spellingbee();
+            $arWords = $spbobj->getWordsByLevel($iLevelId, $objParams->size, $iYear,$user_word_played,$iUserId);
+            $words_array['words'] = array();
+            $words_array['fulldata'] = $arWords['fulldata'];
+            
+            if(count($arWords['words'])>0)
+            {
+               $i = 0;
+                foreach($arWords['words'] as $value)
+                {
+                    foreach($value as $key=>$v)
+                    {                      
+                       $words_array['words'][$i][$key] =$v; 
+
+                    } 
+                    $i++;
+                 }    
+            }  
+           
+            return (count($words_array['words'])==0) ? 'no_data' : (object)$words_array;
            
         }
         
-        $iUserID = Champs21_Utility_Session::getValue('userInfo', 'userid');
-        $objConn = Champs21_Db_Connection::factory()->getSlaveConnection();
-        $objSpellbeeDao = Champs21_Model_Dao_Factory::getInstance()->setModule('spellingbee')->getSpellingbeeDao();
-        $objSpellbeeDao->setDbConnection($objConn);
-        $iLevelId = $objParams->level;
-        if (is_int($iUserID) && $iUserID == 496)
-        {
-            $iLevelId = 2; //0 = DS, 1 = Easy, 2 = Mid, 3 = Hard
-            $iYear = 2014;
-        }
-        elseif (is_int($iUserID) && $iUserID == 10840)
-        {
-            $iYear = 2014;
-        }
 
-        $arWords = $objSpellbeeDao->getWordsByLevel($iLevelId, $objParams->size, $iYear);
-        return (!is_array($arWords) ) ? 'no_data' : $arWords;
     }
 
     

@@ -62,15 +62,15 @@
         </div>
         
         <div style="margin-top:30px;clear: both;height: 250px;">
-            <div class="spelling_bee_play" style="">
-            <center><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/sp_play_s3.png'); ?>" style="width:50%;margin-top:40px;"></center>
+            <div class="spelling_bee_play swing" style="">
+            <center><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/sp_play_s3.png'); ?>" style="width:50%;margin-top:40px;" class="scalup"></center>
             </div>
-            <div style="float: left;width: 31%;background: #fff;height: 250px;">
+            <div class="swing" style="float: left;width: 31%;background: #fff;height: 250px;">
                 <h2 class="f2" style="margin-left:20px;font-size: 16px;">Videos</h2>
             <center><a href="https://www.youtube.com/channel/UCywQj51MiCqHzQAa0Mg4KXg" target="_blank"><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/spellingbee_video.png'); ?>" style="width:80%;"></a></center>
             </div>
-            <div style="float: right;width: 31%;background: #fff;height: 250px;">
-            <center><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/spellato.png'); ?>" style="width:80%;margin-top:15px;"></center>
+            <div class="swing" style="float: right;width: 31%;background: #fff;height: 250px;">
+                <center><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/spellato.png'); ?>" style="width:75%;margin-top:15px;" class="scalup"></center>
             </div>
         </div>
         
@@ -208,5 +208,96 @@
 #tabpage_3 ol li {
     margin-left: 10px;
     padding-left: 10px;
+}
+
+
+
+
+.scalup
+{
+    transition: all 300ms linear;
+}
+.scalup:hover
+{
+    
+    -webkit-transform: scale(1.1);
+    -moz-transform: scale(1.1);
+    -o-transform: scale(1.1);
+    -ms-transform: scale(1.1);
+    transform: scale(1.1);
+}
+.swing:hover
+{
+       border:1px solid #ccc;       
+       -webkit-animation: swing 1s ease;
+        animation: swing 1s ease;
+        -webkit-animation-iteration-count: 1;
+        animation-iteration-count: 1;
+}
+@-webkit-keyframes swing
+{
+    15%
+    {
+        -webkit-transform: translateX(5px);
+        transform: translateX(5px);
+    }
+    30%
+    {
+        -webkit-transform: translateX(-5px);
+       transform: translateX(-5px);
+    } 
+    50%
+    {
+        -webkit-transform: translateX(3px);
+        transform: translateX(3px);
+    }
+    65%
+    {
+        -webkit-transform: translateX(-3px);
+        transform: translateX(-3px);
+    }
+    80%
+    {
+        -webkit-transform: translateX(2px);
+        transform: translateX(2px);
+    }
+    100%
+    {
+        -webkit-transform: translateX(0);
+        transform: translateX(0);
+    }
+}
+@keyframes swing
+{
+    15%
+    {
+        -webkit-transform: translateX(5px);
+        transform: translateX(5px);
+    }
+    30%
+    {
+        -webkit-transform: translateX(-5px);
+        transform: translateX(-5px);
+    }
+    50%
+    {
+        -webkit-transform: translateX(3px);
+        transform: translateX(3px);
+    }
+    65%
+    {
+        -webkit-transform: translateX(-3px);
+        transform: translateX(-3px);
+    }
+    80%
+    {
+        -webkit-transform: translateX(2px);
+        transform: translateX(2px);
+    }
+    100%
+    {
+        -webkit-transform: translateX(0);
+        transform: translateX(0);
+    }
 }
 </style>

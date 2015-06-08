@@ -88,6 +88,7 @@ class Spellingbee extends CActiveRecord
         { 
             $cache_name = "YII-SPELLINGBEE-LEVEL-STATUS";  
             $levelstatus = Settings::getSpellingBeeCache($cache_name);
+           
             $all_clear = true;
             for($i =0; $i<4; $i++)
             {
@@ -124,6 +125,11 @@ class Spellingbee extends CActiveRecord
                 $response['words'] = array();
                 $response['word_complete'] = 1;
                 $response['level'] = $iLevel; 
+                
+                $cache_name = "YII-SPELLINGBEE-LEVEL-STATUS";
+                $responsecache = Settings::getSpellingBeeCache($cache_name);
+                $responsecache[$iUserId][$iLevel] = 1;
+                Settings::setSpellingBeeCache($cache_name, $responsecache);
             }
         }
         else
@@ -135,6 +141,8 @@ class Spellingbee extends CActiveRecord
             {
                 $response['word_complete'] = 1;
                 $cache_name = "YII-SPELLINGBEE-LEVEL-STATUS";
+                
+                $responsecache = Settings::getSpellingBeeCache($cache_name);
                 $responsecache[$iUserId][$iLevel] = 1;
                 Settings::setSpellingBeeCache($cache_name, $responsecache);
             }

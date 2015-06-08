@@ -221,6 +221,7 @@ class Service
           
             $spbobj = new Spellingbee();
             $arWords = $spbobj->getWordsByLevel($iLevelId, $objParams->size,$user_word_played,$iUserId);
+          
             $words_array['words'] = array();
             $words_array['word_complete'] = $arWords['word_complete'];
             $words_array['level'] = $arWords['level'];

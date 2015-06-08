@@ -54,6 +54,7 @@ class Service
         $arUserMode['bIsNew'] = 0;
         $arUserMode['user_checkpoint'] = 0;
         $arUserMode['user_id_tokens'] = (object) NULL;
+        $arUserMode['level_status'] = (object) NULL;
 
         $objfreeuser = new Freeusers();
         $data = $objfreeuser->getFreeuserByCookie();
@@ -82,6 +83,16 @@ class Service
 
             $arUserMode['cPlayMode'] = 'c';
             $arUserMode['user_id_tokens'] = Settings::createUserToken($data);
+            
+            for($i =0; $i<4; $i++)
+            {
+                $arUserMode['level_status']->$i = 1;
+                if(isset($levelstatus) && isset($levelstatus[$iUserId]) && isset($levelstatus[$iUserId][$i]))
+                {
+                    $arUserMode['level_status']->$i = 0;
+                }
+            }
+            
         }
 
         return (object) $arUserMode;

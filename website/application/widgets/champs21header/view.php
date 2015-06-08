@@ -46,7 +46,9 @@
                 
                 if( free_user_logged_in() ){
                     $user_data = get_free_user_session();
-                    
+
+
+
                     if( !empty($user_data['profile_image'] )){
                         //$profile_image_url = base_url() . 'upload/free_user_profile_images/' . $user_data->profile_image;
                         $profile_image_url = $user_data['profile_image'];
@@ -56,7 +58,7 @@
                         $_user_data = get_user_data();
                         
                         $user_data = get_free_user_session();
-                        
+                            
                         if( !empty($_user_data->profile_image) ){
                             $profile_image_url = $_user_data->profile_image;
                             $has_profile_img = TRUE;
@@ -104,6 +106,7 @@
                         </ul>
                     
                     <?php } else { ?>
+
                         <div id="profile_image_div" style="
                                     float: left; width: 46px;
                                     height: 44px;
@@ -672,7 +675,100 @@ height: 46px;
 
                 </div>
                 <!-- Login Form -->
-                
+                <div id="frm_spellbee_reg" style="display: none;">
+                    <?php
+                    $action = base_url('register_user');
+                    $frm_id = 'reg_frm';
+                    if($edit){
+                        $action = base_url('update_profile');
+                        $frm_id = 'update_profile_frm';
+                    }
+                    ?>
+
+                    <?php echo form_open($action, array('class' => 'validate_form', 'id' => $frm_id, 'enctype' => 'multipart/form-data', 'autocomplete' => 'off')); ?>
+
+                        <div class="clearfix" style="margin-left: auto; margin-right: auto; width: 90%; margin-top: 0px; ">
+                            <div>
+                                
+                                <fieldset class="reg_logo">
+                                    <div>
+                                        <img src="<?php echo base_url('styles/layouts/tdsfront/image/register.png'); ?>" width="60px" alt="Chmaps21.com" />
+                                    </div>
+                                </fieldset>
+
+                                <fieldset class="reg_title f2">
+                                    <div>
+                                         <?php echo ($edit) ? 'Update Profile For Spelling Bee' : 'Update Profile For Spelling Bee'; ?>
+
+                                        <?php if($edit){ ?>
+                                            <div class="clearfix horizontal-line"></div>
+                                         <?php }?>
+                                    </div>
+                                </fieldset>  
+                                <?php if($edit){ ?>
+                                    <div style="text-align: center; font-size: 20px; padding: 15px 0px 20px;">&nbsp;</div>
+                                <?php }?>
+                                <fieldset>
+
+                                    <ul class="radio-holder">    
+                                        <li>
+                                            <input placeholder="880" class="name_text country_code" id="country_code" name="country_code" value="" type="text" maxlength="6">
+                                        </li>
+                                        <li>
+                                            <input placeholder="Mobile Number" class="name_text mobile_no" id="mobile_no" name="mobile_no" value="<?php echo $model->mobile_no; ?>" type="text" maxlength="60">
+                                        </li>
+                                    </ul>
+                                </fieldset>
+
+                                <fieldset>
+
+                                    <ul class="radio-holder">
+                                        
+                                        <li>
+                                            <div class="custom_dropdown_dob">
+                                                <div>
+                                                    <?php
+                                                    $division = NULL;
+                                                    
+                                                    $divsion_data['Dhaka'] = 'Dhaka';
+                                                    $divsion_data['Chittagong'] = 'Chittagong';
+                                                    $divsion_data['Rajshahi'] = 'Rajshahi';
+                                                    $divsion_data['Khulna'] = 'Khulna';
+                                                    $divsion_data['Sylhet'] = 'Sylhet';
+                                                    $divsion_data['Rangpur'] = 'Rangpur';
+                                                    $divsion_data['Barishal'] = 'Barishal';
+                                                    
+
+                                                    $class_string = 'id="division" class="droppify"';
+                                                    echo form_dropdown('division', $divsion_data, $division, $class_string);
+                                                    ?>
+                                                <div>
+                                            </div>
+                                        </li>
+                                        
+
+                                    </ul>
+
+                                </fieldset>
+                                <div class="clearfix" style="margin-left: auto; margin-right: auto; margin-top: 20px; text-align: center; margin-bottom: 20px;">
+                                    <button id="btn_free_user" class="red" type="submit">
+                                        <span class="clearfix f2">
+                                            <?php echo ($edit) ? 'Proceed' : 'Create my account'; ?>
+                                        </span>
+
+                                        <?php if(!$edit){ ?>
+                <!--                            <div class="plus-right">
+                                                <div></div>
+                                            </div>-->
+                                        <?php } ?>
+
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    <?php echo form_close(); ?>
+                </div>
                 <div style="width: 10%; float: left;">
                     <?php if( free_user_logged_in() ){ ?>
                     <ul class="ch-grid-header">

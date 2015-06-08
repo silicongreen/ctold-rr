@@ -41,7 +41,7 @@ class Highscore extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('play_total_time, spell_year, division', 'required', 'on' => 'insert')
+            array('play_total_time, spell_year', 'required', 'on' => 'insert')
         );
     }
 

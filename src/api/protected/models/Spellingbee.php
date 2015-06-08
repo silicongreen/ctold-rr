@@ -30,7 +30,7 @@ class Spellingbee extends CActiveRecord
      */
     public function tableName()
     {
-        return 'tds_spellingbee';
+        return 'tds_spellingbee_test';
     }
 
     /**

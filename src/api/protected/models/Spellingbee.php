@@ -60,67 +60,63 @@ class Spellingbee extends CActiveRecord
     {
         return parent::model($className);
     }
-    public function getWordsByLevel( $iLevel, $iMaxWord = 25, $iYear = 2015,$user_word_played = array(),$iUserId=0  )
+    public function getWordsByLevel( $iLevel, $iMaxWord = 25,$user_word_played = array(),$iUserId=0  )
     {
-        $cache_name = "YII-SPELLINGBEE-USERYEAR";
-        $responsecache = Settings::getSpellingBeeCache($cache_name);
-        if (isset($responsecache[$iUserId]) && isset($responsecache[$iUserId][$iLevel]) && isset($responsecache[$iUserId][$iLevel]['year']))
-        {
-            $iYear = $responsecache[$iUserId][$iLevel]['year'];
-        }
-        
+       
         $criteria = new CDbCriteria;
         $criteria->select = 't.*';
         $criteria->compare('t.level', $iLevel);
-        $criteria->compare('t.year', $iYear);
         $criteria->compare('t.enabled', 1);
         
         if(count($user_word_played)>0)
         {
             $criteria->addNotInCondition('t.id', $user_word_played);
         }
-        $criteria->order = 'RAND()';
+        $criteria->order = 't.year DESC, RAND()';
         
         $criteria->limit = $iMaxWord;
         $data = $this->findAll($criteria);
         
         if(count($data)==0)
-        {
-            $iYear = $iYear-1;
-            if($iYear<2012)
+        { 
+            $cache_name = "YII-SPELLINGBEE-LEVEL-STATUS";  
+            $levelstatus = Settings::getSpellingBeeCache($cache_name);
+            $all_clear = true;
+            for($i =0; $i<4; $i++)
             {
-                $iYear = 2015;
-                $cache_name = "YII-SPELLINGBEE-USERYEAR";
-                $responsecache[$iUserId][$iLevel]['year'] = $iYear;
-                
-                Settings::setSpellingBeeCache($cache_name, $responsecache);
-                
-                $cache_name = "YII-SPELLINGBEE-USERWORD";
-                $responsecach = Settings::getSpellingBeeCache($cache_name);
-                $responsecach[$iUserId][$iLevel]['words'] = array();
-               
-                Settings::setSpellingBeeCache($cache_name, $responsecach);
-                
-                $data = $this->getWordsByLevel( $iLevel, $iMaxWord, $iYear,array(),$iUserId);
-                return $data;
-            } 
-            else
-            {  
-                $cache_name = "YII-SPELLINGBEE-USERYEAR";
-                $responsecache[$iUserId][$iLevel]['year'] = $iYear;
-                Settings::setSpellingBeeCache($cache_name, $responsecache);
-                $data = $this->getWordsByLevel( $iLevel, $iMaxWord, $iYear,$user_word_played,$iUserId);
-                return $data;
+                if(!isset($levelstatus) || !isset($levelstatus[$iUserId]) || !isset($levelstatus[$iUserId][$i]))
+                {
+                    $all_clear = false;
+                    break;
+                }
             }
             
+            if($all_clear)
+            {
+                unset($levelstatus[$iUserId]);
+                Settings::setSpellingBeeCache($cache_name, $levelstatus);
+                $data = $this->getWordsByLevel( $iLevel, $iMaxWord,array(),$iUserId);
+                return $data;
+                
+            }    
+            else
+            {    
+                $response['words'] = array();
+                $response['word_complete'] = 1;
+                $response['level'] = $iLevel; 
+            }
         }
         else
         {
             $response['words'] = $data;
-            $response['fulldata'] = 1;
+            $response['word_complete'] = 0;
+            $response['level'] = $iLevel;
             if(count($data)!=$iMaxWord)
             {
-                $response['fulldata'] = 0;
+                $response['word_complete'] = 1;
+                $cache_name = "YII-SPELLINGBEE-LEVEL-STATUS";
+                $responsecache[$iUserId][$iLevel] = 1;
+                Settings::setSpellingBeeCache($cache_name, $responsecache);
             }
         }
         return $response;

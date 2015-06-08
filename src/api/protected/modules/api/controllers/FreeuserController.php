@@ -72,9 +72,10 @@ class FreeuserController extends Controller
             $current_score = 0;
             $cache_name = "YII-SPELLINGBEE-USERDATA";
             $response = Settings::getSpellingBeeCache($cache_name);
-            if (isset($response[$iUserId]) && isset($response[$iUserId]['current_score']))
+            if (isset($response[$user_id]) && isset($response[$user_id]['current_score']))
             {
-                $current_score = $response[$iUserId]['current_score'];
+                $current_score = $response[$user_id]['current_score'];
+                $current_time = $response[$user_id]['current_time'];
             }
             else
             {
@@ -91,6 +92,7 @@ class FreeuserController extends Controller
             $arUserScores = $highscore->getLeaderBoard($limit, $divi, $country);
             $rresponse['data']['leaderboard'] = (array)$arUserScores;
             $rresponse['data']['division'] = $divi;
+            $rresponse['data']['best_score'] = $current_score;
             $rresponse['status']['code'] = 200;
             $rresponse['status']['msg'] = "Success";
            

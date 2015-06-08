@@ -29,7 +29,7 @@
                 $filter_array = array();
                 $filter_array[1] = array("Word", "input");
 
-                $level = array(NULL => "Selcet", 1 => "Easy", 2 => "Medium", 3 => "Hard");
+                $level = array(NULL => "Selcet", 0 => "Easy", 1 => "Medium", 2 => "Hard", 2 => "Very Hard");
                 $filter_array[4] = array("Level", "form_dropdown", $level);
 
                 $status = array(NULL => "Selcet", 0 => "Disabled", 1 => "Enabled");

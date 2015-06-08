@@ -173,7 +173,7 @@ class Service
 
     public function getWords($objParams)
     {
-        $iYear = 2015; // deault year for spellbee word
+       
         $objfreeuser = new Freeusers();
         $data = $objfreeuser->getFreeuserByCookie();
         $valid_user = FALSE;
@@ -200,9 +200,10 @@ class Service
             
           
             $spbobj = new Spellingbee();
-            $arWords = $spbobj->getWordsByLevel($iLevelId, $objParams->size, $iYear,$user_word_played,$iUserId);
+            $arWords = $spbobj->getWordsByLevel($iLevelId, $objParams->size,$user_word_played,$iUserId);
             $words_array['words'] = array();
-            $words_array['fulldata'] = $arWords['fulldata'];
+            $words_array['word_complete'] = $arWords['word_complete'];
+            $words_array['level'] = $arWords['level'];
             
             if(count($arWords['words'])>0)
             {
@@ -219,7 +220,7 @@ class Service
                  $words_array['words'] = (object)$words_array['words'];
             }  
            
-            return (count($words_array['words'])==0) ? 'no_data' : (object)$words_array;
+            return (object)$words_array;
            
         }
         

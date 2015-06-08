@@ -283,11 +283,11 @@ class Settings
         {
             if ($left > $right)
             {
-                $value = round($left / $right);
+                $value = ceil($left / $right);
             }
             else
             {
-                $value = round($right / $left);
+                $value = ceil($right / $left);
             }
             if ($operator == self::$operator[0])
             {
@@ -443,11 +443,11 @@ class Settings
         {
             if ($left > $right)
             {
-                $value = round($left / $right);
+                $value = ceil($left / $right);
             }
             else
             {
-                $value = round($right / $left);
+                $value = ceil($right / $left);
             }
             if ($operator == self::$operator[0])
             {

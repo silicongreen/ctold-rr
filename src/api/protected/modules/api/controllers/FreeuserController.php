@@ -53,9 +53,9 @@ class FreeuserController extends Controller
             {
                 $objUser = new Freeusers();
                 $user_data = $objUser->findByPk($user_id);
-                if($user_data->district)
+                if($user_data->division)
                 {
-                    $divi = $user_data->district;
+                    $divi = $user_data->division;
                 }
                 else
                 {
@@ -153,6 +153,8 @@ class FreeuserController extends Controller
 
                 if ($user_data)
                 {
+//                    $cachefile = new CFileCache();
+//                    $cachefile->cachePath = "protected/runtime/cache/spellingbee";
                     $cache_name = "YII-SPELLINGBEE-USERDATA";
                     $response = Yii::app()->cache->get($cache_name);
 
@@ -228,7 +230,7 @@ class FreeuserController extends Controller
                         $highscore->is_cheat = $objParams->isCheater;
                         $highscore->play_total_time = $play_total_time;
                         $highscore->spell_year = date('Y');
-                        $highscore->division = strtolower($user_data->district);
+                        $highscore->division = strtolower($user_data->division);
                         $highscore->country = $user_data->tds_country_id;
                         $highscore->save();
 
@@ -244,7 +246,7 @@ class FreeuserController extends Controller
                         $time_for_rank = $current_time;
                     }
                     $arUserData['highestScore'] = $score_for_rank;
-                    $arUserData['rank'] = $highscore->getUserRank($score_for_rank, $time_for_rank,$user_data->tds_country_id, strtolower($user_data->district));
+                    $arUserData['rank'] = $highscore->getUserRank($score_for_rank, $time_for_rank,$user_data->tds_country_id, strtolower($user_data->division));
                     
                     
                     

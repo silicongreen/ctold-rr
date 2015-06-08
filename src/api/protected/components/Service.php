@@ -84,6 +84,7 @@ class Service
             $arUserMode['cPlayMode'] = 'c';
             $arUserMode['user_id_tokens'] = Settings::createUserToken($data);
             
+            
             for($i =0; $i<4; $i++)
             {
                 $arUserMode['level_status']->$i = 1;
@@ -91,7 +92,13 @@ class Service
                 {
                     $arUserMode['level_status']->$i = 0;
                 }
+                
             }
+            
+            Settings::clearCurrentWord($iUserId);
+            
+            
+            
             
         }
 
@@ -170,6 +177,8 @@ class Service
             $check = Settings::getSpellingBeeCache($cache_name);
             $check[$data]['user_checkpoint'] = $checkpoint;
             Settings::setSpellingBeeCache($cache_name, $check);
+            
+            Settings::clearCurrentWord($iUserId);
             
             return TRUE;
             
@@ -283,7 +292,7 @@ class Service
 
             if ($user_data)
             {
-                  
+                Settings::clearCurrentWord($iUserId);
                 $cache_name = "YII-SPELLINGBEE-USERDATA";
                 $response = Settings::getSpellingBeeCache($cache_name);
 

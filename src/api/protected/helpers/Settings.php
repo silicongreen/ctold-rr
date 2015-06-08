@@ -175,6 +175,16 @@ class Settings
         $response = $cachefile->get($cache_name);
         return $response;
     }
+    public static function clearCurrentWord($iUserId)
+    {
+        $cache_name_word = "YII-SPELLINGBEE-CURRENTUSERWORD";
+        $responseword = self::getSpellingBeeCache($cache_name_word);
+        if(isset($responseword) && isset($responseword[$iUserId]) )
+        {
+          unset($responseword[$iUserId]);
+        }
+        self::setSpellingBeeCache($cache_name_word, $responseword);
+    }        
 
     public static function createUserToken($user_id)
     {

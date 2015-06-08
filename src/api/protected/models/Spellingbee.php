@@ -72,6 +72,13 @@ class Spellingbee extends CActiveRecord
         {
             $criteria->addNotInCondition('t.id', $user_word_played);
         }
+        $cache_name_word = "YII-SPELLINGBEE-CURRENTUSERWORD";
+        $responseword = Settings::getSpellingBeeCache($cache_name_word);
+        if(isset($responseword) && isset($responseword[$iUserId]) && isset($responseword[$iUserId][$iLevel]['words']))
+        {
+             $criteria->addNotInCondition('t.id', $responseword[$iUserId][$iLevel]['words']);
+        }    
+        
         $criteria->order = 't.year DESC, RAND()';
         
         $criteria->limit = $iMaxWord;
@@ -95,6 +102,19 @@ class Spellingbee extends CActiveRecord
             {
                 unset($levelstatus[$iUserId]);
                 Settings::setSpellingBeeCache($cache_name, $levelstatus);
+                
+                
+                $cache_name_word = "YII-SPELLINGBEE-USERWORD";
+                $responseword = Settings::getSpellingBeeCache($cache_name_word);
+                if(isset($responseword[$iUserId]))
+                {
+                    unset($responseword[$iUserId]);
+                }
+                Settings::setSpellingBeeCache($cache_name_word, $responseword);
+                
+                Settings::clearCurrentWord($iUserId);
+                
+                
                 $data = $this->getWordsByLevel( $iLevel, $iMaxWord,array(),$iUserId);
                 return $data;
                 
@@ -118,6 +138,20 @@ class Spellingbee extends CActiveRecord
                 $responsecache[$iUserId][$iLevel] = 1;
                 Settings::setSpellingBeeCache($cache_name, $responsecache);
             }
+            
+            $cache_name_word = "YII-SPELLINGBEE-CURRENTUSERWORD";
+            $responseword = Settings::getSpellingBeeCache($cache_name_word);
+            foreach($data as $value)
+            {
+                if(!isset($responseword[$iUserId][$iLevel]['words']) || !in_array($value->word, $responseword[$iUserId][$iLevel]['words']))
+                {
+                    $responseword[$iUserId][$iLevel]['words'][] = $value->word;
+                }
+                
+            }
+            Settings::setSpellingBeeCache($cache_name_word, $responseword);
+            
+            
         }
         return $response;
     }

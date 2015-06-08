@@ -143,9 +143,9 @@ class Spellingbee extends CActiveRecord
             $responseword = Settings::getSpellingBeeCache($cache_name_word);
             foreach($data as $value)
             {
-                if(!isset($responseword[$iUserId][$iLevel]['words']) || !in_array($value->word, $responseword[$iUserId][$iLevel]['words']))
+                if(!isset($responseword[$iUserId][$iLevel]['words']) || !in_array($value->id, $responseword[$iUserId][$iLevel]['words']))
                 {
-                    $responseword[$iUserId][$iLevel]['words'][] = $value->word;
+                    $responseword[$iUserId][$iLevel]['words'][] = $value->id;
                 }
                 
             }

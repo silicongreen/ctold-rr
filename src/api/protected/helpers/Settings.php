@@ -247,14 +247,9 @@ class Settings
         }
         else if (strpos($method, self::$method[2]) !== FALSE)
         {
-            if ($left > $right)
-            {
-                $value = $left - $right;
-            }
-            else
-            {
-                $value = $right - $left;
-            }
+            
+            $value = $left - $right;
+           
 
             if ($operator == self::$operator[0])
             {
@@ -281,14 +276,9 @@ class Settings
         }
         else if (strpos($method, self::$method[4]) !== FALSE)
         {
-            if ($left > $right)
-            {
-                $value = ceil($left / $right);
-            }
-            else
-            {
-                $value = ceil($right / $left);
-            }
+           
+            $value = ceil($left / $right);
+            
             if ($operator == self::$operator[0])
             {
                 $send_id_decrepted = $send_id_without_lr + $value;
@@ -407,14 +397,9 @@ class Settings
         }
         else if (strpos($method, self::$method[2]) !== FALSE)
         {
-            if ($left > $right)
-            {
-                $value = $left - $right;
-            }
-            else
-            {
-                $value = $right - $left;
-            }
+            
+            $value = $left - $right;
+           
 
             if ($operator == self::$operator[0])
             {
@@ -441,14 +426,9 @@ class Settings
         }
         else if (strpos($method, self::$method[4]) !== FALSE)
         {
-            if ($left > $right)
-            {
-                $value = ceil($left / $right);
-            }
-            else
-            {
-                $value = ceil($right / $left);
-            }
+            
+            $value = ceil($left / $right);
+           
             if ($operator == self::$operator[0])
             {
                 $send_id_decrepted = $send_id_without_lr - $value;

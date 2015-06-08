@@ -151,7 +151,30 @@ class Settings
             }    
         }  
         return false;
-    }        
+    }  
+    
+    public static function setSpellingBeeCache($cache_name,$response)
+    {
+        $cachefile = new CFileCache();
+        $cachefile->cachePath = "protected/runtime/cache/spellingbee";
+        if(!is_dir($cachefile->cachePath))
+        {
+            mkdir($cachefile->cachePath, 0777);
+        }
+        $cachefile->set($cache_name, $response, 31536000);
+    }
+    public static function getSpellingBeeCache($cache_name)
+    {
+        $cachefile = new CFileCache();
+        $cachefile->cachePath = "protected/runtime/cache/spellingbee";
+        if(!is_dir($cachefile->cachePath))
+        {
+            mkdir($cachefile->cachePath, 0777);
+            
+        }
+        $response = $cachefile->get($cache_name);
+        return $response;
+    }
 
     public static function createUserToken($user_id)
     {
@@ -187,7 +210,7 @@ class Settings
         
         $cache_name = "USER_TOKEN_CACHE";
         $response[$user_id][] = $user_id_created;
-        Yii::app()->cache->set($cache_name, $response, 3986400);
+        self::setSpellingBeeCache($cache_name, $response);
 
         if (self::$encoded_right)
         {
@@ -327,13 +350,18 @@ class Settings
         }
 
         $cache_name = "USER_TOKEN_CACHE";
-        $response = Yii::app()->cache->get($cache_name);
+        $response = self::getSpellingBeeCache($cache_name);
+        
+        
         if ($response !== FALSE)
         {
+            
             if (isset($response[$session_id]))
             {
+                
                 if (in_array($send_id, $response[$session_id]))
                 {
+                    
                     return FALSE;
                 }
             }
@@ -443,7 +471,7 @@ class Settings
         if (isset($send_id_decrepted) && $send_id_decrepted == $session_id)
         {
             $response[$session_id][] = $send_id;
-            Yii::app()->cache->set($cache_name, $response, 3986400);
+            self::setSpellingBeeCache($cache_name, $response);
             return TRUE;
         }
         return FALSE;

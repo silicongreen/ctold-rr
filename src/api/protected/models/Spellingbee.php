@@ -63,7 +63,7 @@ class Spellingbee extends CActiveRecord
     public function getWordsByLevel( $iLevel, $iMaxWord = 25, $iYear = 2015,$user_word_played = array(),$iUserId=0  )
     {
         $cache_name = "YII-SPELLINGBEE-USERYEAR";
-        $responsecache = Yii::app()->cache->get($cache_name);
+        $responsecache = Settings::getSpellingBeeCache($cache_name);
         if (isset($responsecache[$iUserId]) && isset($responsecache[$iUserId][$iLevel]) && isset($responsecache[$iUserId][$iLevel]['year']))
         {
             $iYear = $responsecache[$iUserId][$iLevel]['year'];
@@ -93,13 +93,13 @@ class Spellingbee extends CActiveRecord
                 $cache_name = "YII-SPELLINGBEE-USERYEAR";
                 $responsecache[$iUserId][$iLevel]['year'] = $iYear;
                 
-                Yii::app()->cache->set($cache_name, $responsecache, 3986400);
+                Settings::setSpellingBeeCache($cache_name, $responsecache);
                 
                 $cache_name = "YII-SPELLINGBEE-USERWORD";
-                $responsecach = Yii::app()->cache->get($cache_name);
+                $responsecach = Settings::getSpellingBeeCache($cache_name);
                 $responsecach[$iUserId][$iLevel]['words'] = array();
                
-                Yii::app()->cache->set($cache_name, $responsecach, 3986400);
+                Settings::setSpellingBeeCache($cache_name, $responsecach);
                 
                 $data = $this->getWordsByLevel( $iLevel, $iMaxWord, $iYear,array(),$iUserId);
                 return $data;
@@ -108,7 +108,7 @@ class Spellingbee extends CActiveRecord
             {  
                 $cache_name = "YII-SPELLINGBEE-USERYEAR";
                 $responsecache[$iUserId][$iLevel]['year'] = $iYear;
-                Yii::app()->cache->set($cache_name, $responsecache, 3986400);
+                Settings::setSpellingBeeCache($cache_name, $responsecache);
                 $data = $this->getWordsByLevel( $iLevel, $iMaxWord, $iYear,$user_word_played,$iUserId);
                 return $data;
             }

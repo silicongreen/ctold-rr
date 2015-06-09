@@ -74,6 +74,8 @@ class FreeuserController extends Controller
             {
                 Settings::downloadMP3($strWord);
             }
+            
+            echo filesize( $strMusicFile );
             echo $strWord;
             exit;
             header( 'Content-Description: File Transfer' );

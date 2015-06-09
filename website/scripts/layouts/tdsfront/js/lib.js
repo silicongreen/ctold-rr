@@ -1539,6 +1539,78 @@ $(document).ready(function () {
         return false;
 
     });
+    
+    $(document).on('submit', 'form#update_spellingbee_profile_frm', function (event) {
+
+        event.preventDefault();
+        var formData = new FormData($(this)[0]);
+        
+        $.ajax({
+            url: $('#base_url').val() + 'update_spellingbee_profile',
+            type: 'POST',
+            data: formData,
+            dataType: 'json',
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+
+                $.each(data, function (i, v) {
+
+                    if (i == 'errors') {
+                        alert(v);
+                    }
+                    else if ((i == 'success') && (v == true)) {
+                        alert('Profile Seccessfully Updated.');
+                        window.location.reload();
+                    } else {
+                        alert('Login or Register Please.');
+                        window.location.reload();
+                    }
+
+                });
+
+            },
+            error: function (e) {
+
+            }
+        });
+
+        return false;
+
+    });
+
+    $(document).ready(function(){
+        $('body').on("keyup",'#search-box1', function(event){
+            
+            var base_url = $('#base_url').val();
+                
+                    $.ajax({
+                    type: "POST",
+                    url: base_url + 'front/ajax/getschoolname',
+                    data:'keyword='+$(this).val(),
+                    beforeSend: function(){
+                            $("body #search-box1").css("background","#FFF url("+base_url+"styles/layouts/tdsfront/spelling_bee/LoaderIcon.gif) no-repeat 350px");
+                    },
+                    success: function(data){                       
+                        if(data)
+                        {
+                            $("body #suggesstion-box1").show();
+                            $("body #suggesstion-box1").html(data);
+                            $("body #search-box1").css("background","#FFF");
+                        }
+                        else
+                            $("body #suggesstion-box1").hide();
+                            $("body #search-box1").css("background","#FFF");
+                    },
+                    error: function (event) {
+
+                    }
+                    });
+        });
+    });
+
 
     $(document).on("click", '.login-user', function () {
 

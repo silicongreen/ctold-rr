@@ -160,7 +160,7 @@ if (!function_exists('set_user_sessions')) {
         $sessionData['free_user']['bng_pwd'] = $pwd;
         $sessionData['free_user']['country_id'] = $obj_user->tds_country_id;
         $sessionData['free_user']['division'] = $obj_user->division;
-        $sessionData['free_user']['is_joined_speellbee'] = $obj_user->is_joined_speellbee;
+        $sessionData['free_user']['is_joined_spellbee'] = $obj_user->is_joined_speellbee;
         $sessionData['free_user']['gender'] = $obj_user->gender;
 
         $sessionData['free_user']['paid_id'] = $obj_user->paid_id;

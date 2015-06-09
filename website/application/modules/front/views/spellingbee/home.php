@@ -14,7 +14,7 @@
             <div style="clear: both;float:left;width: 100%;margin-top:40px;">
                 <nav>
                 
-                    <a  href="#" id="join_spellbee_reg" class="f2 button-filter1">Join</a>
+                <a  href="#" id="join_spellbee_reg" class="f2 button-filter1">Join</a>
                 <a  href="#" class="f2 button-filter2">Leaderboard</a>
                 <a  href="#" class="f2 button-filter3">Facebook Like</a>
                 </nav>

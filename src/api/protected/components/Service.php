@@ -163,6 +163,8 @@ class Service
             $word_id_array = explode(",", $words_id);
             $cache_name = "YII-SPELLINGBEE-USERWORD";
             $response = Settings::getSpellingBeeCache($cache_name);
+            
+           
            
             foreach($word_id_array as $value)
             {
@@ -172,12 +174,15 @@ class Service
             
             Settings::setSpellingBeeCache($cache_name, $response);
             
+           
+            
             $cache_name = "YII-SPELLINGBEE-USERDATA";
             $check = Settings::getSpellingBeeCache($cache_name);
+             
             $check[$data]['user_checkpoint'] = $checkpoint;
             Settings::setSpellingBeeCache($cache_name, $check);
             
-            Settings::clearCurrentWord($iUserId);
+            Settings::clearCurrentWord($data);
             
             return TRUE;
             

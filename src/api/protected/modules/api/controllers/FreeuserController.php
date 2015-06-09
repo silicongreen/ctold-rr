@@ -54,8 +54,8 @@ class FreeuserController extends Controller
         
         
         
-        echo  $strWord = Settings::retriveWord($left, $right,$operator, $word, $top,$bottom);
-        exit;
+        $strWord = Settings::retriveWord($left, $right,$operator, $word, $top,$bottom);
+       
         
       
         
@@ -74,6 +74,8 @@ class FreeuserController extends Controller
             {
                 Settings::downloadMP3($strWord);
             }
+            echo $strWord;
+            exit;
             header( 'Content-Description: File Transfer' );
             header( 'Content-Type: audio/mpeg' );
             header( 'Content-Disposition: attachment; filename=' . basename( $strMusicFile ) );

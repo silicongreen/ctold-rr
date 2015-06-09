@@ -54,7 +54,8 @@ class FreeuserController extends Controller
         
         
         
-        $strWord = Settings::retriveWord($left, $right,$operator, $word, $top,$bottom);
+        echo  $strWord = Settings::retriveWord($left, $right,$operator, $word, $top,$bottom);
+        exit;
         
       
         

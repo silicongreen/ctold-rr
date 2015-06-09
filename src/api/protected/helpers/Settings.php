@@ -136,6 +136,216 @@ class Settings
         )
     );
     
+    
+    public static function download_bing_audio($strWord)
+    {
+        $sound_status = 0;
+        $clientID = '00000000480E8A3E';
+        $clientSecret = 'VvjLerJ7T8v5X4g+9r4WKWOG3Ih0yNEwz2tpveoYmsw=';
+        $authUrl = 'https://datamarket.accesscontrol.windows.net/v2/OAuth2-13/';
+        $scopeUrl = 'http://api.microsofttranslator.com';
+        $grantType = 'client_credentials';
+        $accessToken = getBingTokens( $grantType, $scopeUrl, $clientID, $clientSecret, $authUrl );
+        if($accessToken)
+        {
+            try
+            {
+                $strLang = 'en';
+                $strAuthHeader = "Authorization: Bearer " . $accessToken;
+                $strParams = "text=" . urlencode( $strWord ) . "&language=" . $strLang . "&format=audio/mp3";
+                $strURL = "http://api.microsofttranslator.com/V2/Http.svc/Speak?" . $strParams;
+                $strResponse = curlRequest( $strURL, $strAuthHeader );
+                return $strResponse;
+            }
+            catch ( Exception $e )
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        } 
+        return false;
+    }
+    public static function downloadMP3( $strWord )
+    {
+       
+        $strDestination = "upload/spellingbee";
+        if (!is_dir($strDestination))
+        {
+            @mkdir($strDestination, 0777, true);
+        }
+        $strMusicFile = $strDestination."/".strtolower( trim( $strWord ) ) . ".mp3";
+        $sound_status = 1;
+        @unlink($strMusicFile);
+        if(!is_file($strMusicFile))  
+        {
+            $objCURL = curl_init( "http://translate.google.com/translate_tts?q=" . str_replace( " ", "+", strtolower( trim( $strWord ) ) ) . "&tl=en" );
+            $fp = fopen( $strMusicFile, "w+" );
+
+            curl_setopt( $objCURL, CURLOPT_FILE, $fp );
+            curl_setopt( $objCURL, CURLOPT_HEADER, 0 );
+
+            curl_exec( $objCURL );
+            $curl_status = curl_getinfo ($objCURL);
+            if($curl_status['http_code']==200)
+            {
+                $sound_status = 1;
+                curl_close( $objCURL );
+                fclose( $fp );
+            }
+            else
+            {
+                $sound_status = 0;
+                curl_close( $objCURL );
+                fclose( $fp );
+                @unlink($strMusicFile);
+            } 
+            
+        }
+        if($sound_status==0)
+        {
+            @unlink($strMusicFile);
+            $file_response = self::download_bing_audio($strWord);
+            if($file_response)
+            {
+                $sound_status = 1;
+                file_put_contents( $strMusicFile, $file_response );
+            }   
+        } 
+        
+        return $sound_status;
+      
+    }
+    
+    
+    public static function retriveWord($left, $right,$operator, $word, $top,$bottom)
+    {
+       
+        $left_decrepted = self::decreptmobilestyle($left);
+        if($left_decrepted==0)
+        {
+            return false;
+        }    
+        $word_without_left = substr($word, $left_decrepted);
+        
+        $right_decrepted = self::decreptmobilestyle($right);
+        if($right_decrepted==0)
+        {
+            return false;
+        }
+        
+        $right_position = strlen($word_without_left) - $right_decrepted;
+        $word_without_lr = substr($word_without_left, 0, $right_position);
+        
+       
+        
+        
+        if((strlen($word_without_lr)%2)!=0)
+        {
+            return false;
+        }    
+        $array_string = str_split($word_without_lr, 2);
+        
+      
+        $main_array = array();
+        
+        $i = 2;
+        foreach($array_string as $value)
+        {
+            if(($i%2)==0)
+            {
+                if($operator=="pm")
+                {
+                    $main_array[] = $value-$left_decrepted;
+                }
+                else if($operator=="am")
+                {
+                    $main_array[] = $value+$left_decrepted;
+                } 
+            }
+            else
+            {
+                if($operator=="pm")
+                {
+                    $main_array[] = $value+$right_decrepted;
+                }
+                else if($operator=="am")
+                {
+                    $main_array[] = $value-$right_decrepted;
+                }
+                
+            }    
+            $i++;
+        } 
+      
+     
+        
+        $character_array = self::createCharacterArray($top,$bottom);
+    
+     
+        $return_string = "";
+        
+        if(!$main_array)
+        {
+            return false;
+        }
+        else
+        {
+            foreach($main_array as $value)
+            {
+                if(isset($character_array[$value]))
+                {
+                    $return_string.=$character_array[$value];
+                }
+                else
+                {
+                    return false;
+                    break;
+                }    
+            }    
+        }
+        return $return_string;
+        
+        
+    } 
+    public static function createCharacterArray($top,$bottom)
+    {
+        $character_array = array();
+       
+        $characters = 'abcdefghijklmnopqrstuvwxyz';
+        $charactersLength = strlen($characters);
+      
+        for ($i = 0; $i < $charactersLength; $i++)
+        {
+            if($i>0)
+            {
+                $top = $top+$bottom;
+            }    
+            $character_array[$top]= $characters[$i];
+        }
+
+        
+
+        return $character_array;
+    }
+    
+    public static function decreptmobilestyle($string)
+    {
+        $mobile_keyboard = array(2=>"abc",3=>"def",4=>"ghi",5=>"jkl",6=>"mno",7=>"pqrs",8=>"tuv",9=>"wxyz");
+        $convertvalue = 0;
+        foreach($mobile_keyboard as $key=>$value)
+        {
+            if (strpos($value, $string) !== FALSE)
+            {
+                $convertvalue = $key;
+                break;
+            }
+        }  
+        return $convertvalue;
+    }        
+
     public static function getSessionId()
     {
         if(self::$check_service)
@@ -350,6 +560,9 @@ class Settings
 
         return $encoded_method;
     }
+    
+    
+
 
     public static function authorizeUserCheck($left, $right, $method, $operator, $send_id, $session_id)
     {

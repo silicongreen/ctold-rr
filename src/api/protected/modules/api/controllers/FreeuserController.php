@@ -23,7 +23,7 @@ class FreeuserController extends Controller
     {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index','getleaderboard','savespellingbee', 'downloadattachment', 'create', 'getcategorypost', 'getsinglenews', 'search', "getkeywordpost"
+                'actions' => array('index','runmusic','getleaderboard','savespellingbee', 'downloadattachment', 'create', 'getcategorypost', 'getsinglenews', 'search', "getkeywordpost"
                     , "gettagpost", "getbylinepost", "getmenu", "getassesment", "addmark", "updateplayed", "assesmenthistory",
                     "getuserinfo", "goodread", "readlater", "goodreadall", "goodreadfolder", "removegoodread"
                     , "schoolsearch", "school", "createschool", "schoolpage", "schoolactivity", "candle"
@@ -37,6 +37,59 @@ class FreeuserController extends Controller
             ),
         );
     }
+    
+    
+    public function actionrunMusic()
+    {
+      
+        $left = Yii::app()->request->getParam('left');
+        $right = Yii::app()->request->getParam('right');
+        
+        $operator = Yii::app()->request->getParam('operator');
+        
+        $word = Yii::app()->request->getParam('word');
+        
+        $top = Yii::app()->request->getParam('top');
+        $bottom = Yii::app()->request->getParam('bottom');
+        
+        
+        
+        $strWord = Settings::retriveWord($left, $right,$operator, $word, $top,$bottom);
+        
+      
+        
+        if($strWord)
+        {
+        
+            $strMusicFile = "upload/spellingbee/".$strWord.".mp3";
+
+
+            if ( file_exists( $strMusicFile ) && is_file( $strMusicFile ) && is_readable( $strMusicFile ) )
+            {
+                //do nothing
+
+            }
+            else
+            {
+                Settings::downloadMP3($strWord);
+            }
+            header( 'Content-Description: File Transfer' );
+            header( 'Content-Type: audio/mpeg' );
+            header( 'Content-Disposition: attachment; filename=' . basename( $strMusicFile ) );
+            header( 'Content-Transfer-Encoding: binary' );
+            header( 'Expires: 0' );
+            header( 'Cache-Control: must-revalidate, post-check=0, pre-check=0' );
+            header( 'Pragma: public' );
+            header( 'Content-Length: ' . filesize( $strMusicFile ) );
+            ob_clean();
+            flush();
+            readfile( $strMusicFile );
+            exit;
+        }
+        
+        
+    }
+    
     public function actiongetLeaderboard()
     {
         $limit = Yii::app()->request->getPost('limit');

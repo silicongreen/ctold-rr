@@ -339,6 +339,30 @@ height: 46px;
 
                                     <ul class="radio-holder">    
                                         <li>
+                                            <fieldset>Division</fieldset>
+
+                                            <div class="custom_dropdown_dob">
+                                                <div>
+                                                    <?php                                                    
+                                                    $division[NULL] = $model->division;
+
+                                                    $divsion_data['Dhaka'] = 'Dhaka';
+                                                    $divsion_data['Chittagong'] = 'Chittagong';
+                                                    $divsion_data['Rajshahi'] = 'Rajshahi';
+                                                    $divsion_data['Khulna'] = 'Khulna';
+                                                    $divsion_data['Sylhet'] = 'Sylhet';
+                                                    $divsion_data['Rangpur'] = 'Rangpur';
+                                                    $divsion_data['Barishal'] = 'Barishal';
+                                                    
+
+                                                    $class_string = 'id="division" class="droppify"';
+                                                    echo form_dropdown('division',$divsion_data, $division,  $class_string);
+                                                    ?>
+                                                </div>
+                                            </div>
+
+                                        </li>
+                                        <li>
                                             <input placeholder="880" class="name_text country_code" id="country_code" name="country_code" value="" type="text" maxlength="6">
                                         </li>
                                         <li>
@@ -452,6 +476,7 @@ height: 46px;
                                         <?php
                                         $ar_input_data =array(
                                             'class' => 'text_field',
+                                            'id' => 'search-box1',
                                             'placeholder' => 'School Name',
                                             'maxlength' => '255',
                                             'size' => '560',
@@ -460,6 +485,8 @@ height: 46px;
                                         );
                                         echo form_input($ar_input_data);
                                         ?>
+                                    
+                                                    <div id="suggesstion-box1"></div>
                                     </div>
                                 </fieldset>
 
@@ -680,8 +707,8 @@ height: 46px;
                     $action = base_url('register_user');
                     $frm_id = 'reg_frm';
                     if($edit){
-                        $action = base_url('update_profile');
-                        $frm_id = 'update_profile_frm';
+                        $action = base_url('update_spellingbee_profile');
+                        $frm_id = 'update_spellingbee_profile_frm';
                     }
                     ?>
 
@@ -706,20 +733,36 @@ height: 46px;
                                     </div>
                                 </fieldset>  
                                 <?php if($edit){ ?>
-                                    <div style="text-align: center; font-size: 20px; padding: 15px 0px 20px;">&nbsp;</div>
+                                    <div style="text-align: center; font-size: 20px; ">&nbsp;</div>
                                 <?php }?>
+                                <fieldset>School Name</fieldset>
                                 <fieldset>
 
                                     <ul class="radio-holder">    
                                         <li>
-                                            <input placeholder="880" class="name_text country_code" id="country_code" name="country_code" value="" type="text" maxlength="6">
-                                        </li>
-                                        <li>
-                                            <input placeholder="Mobile Number" class="name_text mobile_no" id="mobile_no" name="mobile_no" value="<?php echo $model->mobile_no; ?>" type="text" maxlength="60">
+                                            
+                                            <div class="frmSearch">
+                                                <input name="school_name" value="<?php echo $model->school_name?>" type="text" id="search-box1" class="name_text school_name"  placeholder="School Name" />
+                                                    <div id="suggesstion-box1"></div>
+                                            </div>
+
                                         </li>
                                     </ul>
                                 </fieldset>
+                                <fieldset>Mobile Number</fieldset>
+                                <fieldset>
 
+                                    <ul class="radio-holder">    
+                                        <li>
+                                            <input placeholder="88" class="name_text country_code" id="country_code" name="country_code" value="" type="text" maxlength="6">
+                                        </li>
+                                        
+                                        <li>
+                                            <input placeholder="Mobile Number" class="name_text mobile_no" id="mobile_no" name="mobile_no" value="<?php echo $model->mobile_no; ?>" type="text" maxlength="20">
+                                        </li>
+                                    </ul>
+                                </fieldset>
+                                <fieldset>Division</fieldset>
                                 <fieldset>
 
                                     <ul class="radio-holder">
@@ -728,7 +771,7 @@ height: 46px;
                                             <div class="custom_dropdown_dob">
                                                 <div>
                                                     <?php
-                                                    $division = NULL;
+                                                    $division = $model->division;
                                                     
                                                     $divsion_data['Dhaka'] = 'Dhaka';
                                                     $divsion_data['Chittagong'] = 'Chittagong';
@@ -742,7 +785,7 @@ height: 46px;
                                                     $class_string = 'id="division" class="droppify"';
                                                     echo form_dropdown('division', $divsion_data, $division, $class_string);
                                                     ?>
-                                                <div>
+                                                </div>
                                             </div>
                                         </li>
                                         
@@ -1050,6 +1093,12 @@ height: 46px;
    </div>
     
 </header>
+<script>
+    function selectCountry(val) {
+    $("body #search-box1").val(val);
+    $("body #suggesstion-box1").hide();
+    }
+</script>
 <script type="text/javascript">
 jQuery(function($) {
 if($('.header-logo-div').is(':visible')) {
@@ -1058,6 +1107,21 @@ if($('.header-logo-div').is(':visible')) {
 });
 </script>
 <style type="text/css">
+    
+.frmSearch {}
+#country-list{float:left;list-style:none;margin:0;padding:0;width:380px;}
+#country-list li{float:none;margin-bottom:0px;padding: 10px; background:#FAFAFA;border-bottom:#F0F0F0 1px solid;}
+#country-list li:hover{background:#F0F0F0;}
+#search-box1{padding: 10px;border: #F0F0F0 1px solid;}
+#suggesstion-box1 {
+    display:none;
+  max-height: 150px;
+  overflow-y: scroll;
+  position: absolute;
+  border: #ccc 1px solid;
+  font-size:12px;
+}
+    
 .image-logo
 {
     width:210px;
@@ -2822,10 +2886,17 @@ if($('.header-logo-div').is(':visible')) {
         appearance: none;
     }
     .country_code{
-        width: 100px;
+        width: 50px;
+    }
+    .mobile_code{
+        width: 50px;
     }
     .mobile_no{
-        width: 100%;
+        width: 115px;
+    }
+    .school_name
+    {
+        width: 400px;
     }
     .date_of_birth{
         float: left;

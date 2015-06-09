@@ -2222,7 +2222,54 @@ class home extends MX_Controller {
         echo json_encode($data);
         exit;
     }
-    
+    function update_spellingbee_profile(){
+        
+        $user_id = '0';
+        
+        if( free_user_logged_in() ){
+            $user_id = get_free_user_session('id');
+        }else{
+            $data['logged_in'] = FALSE;
+            $data['registered'] = FALSE;
+            echo json_encode($data);
+            exit;
+        }
+        
+        if($this->input->is_ajax_request()){
+            
+            $this->load->helper('form');
+
+            $free_user = new Free_users($user_id);
+            
+            if (isset($_POST) && !empty($_POST)) {
+
+                if($_POST['division'] && $_POST['mobile_no'] && $_POST['school_name'] ){
+                    $free_user->school_name = $_POST['school_name'];
+                    $free_user->division = $_POST['division'];
+                    $free_user->mobile_no = $_POST['mobile_no'];
+                    $free_user->is_joined_spellbee = '1';
+                }
+                                
+                $free_user->skip_validation();
+                
+                if ( $free_user->save() ) {
+                    $this->set_user_session($free_user);
+                    $data['success'] = TRUE;
+                } else {
+                    
+                    $errors = $free_user->error->all;
+                
+                    foreach ($errors as $error) {
+                        $data['errors'][] = $error;
+                    }
+                }
+            }
+        }
+        
+        echo json_encode($data);
+        exit;
+    }
+
     function schoolsearch()
     {
         //echo $this->input->get('str');

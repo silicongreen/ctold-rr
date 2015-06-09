@@ -75,9 +75,7 @@ class FreeuserController extends Controller
                 Settings::downloadMP3($strWord);
             }
             
-            echo filesize( $strMusicFile );
-            echo $strWord;
-            exit;
+          
             header( 'Content-Description: File Transfer' );
             header( 'Content-Type: audio/mpeg' );
             header( 'Content-Disposition: attachment; filename=' . basename( $strMusicFile ) );
@@ -86,8 +84,6 @@ class FreeuserController extends Controller
             header( 'Cache-Control: must-revalidate, post-check=0, pre-check=0' );
             header( 'Pragma: public' );
             header( 'Content-Length: ' . filesize( $strMusicFile ) );
-            ob_clean();
-            flush();
             readfile( $strMusicFile );
             exit;
         }

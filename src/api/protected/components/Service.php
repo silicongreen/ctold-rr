@@ -149,7 +149,7 @@ class Service
         {
             
             $autorize_check = Settings::authorizeUserCheck($objParams->left, $objParams->right, $objParams->method, $objParams->operator, $objParams->send_id, $data);
-            $autorize_check = TRUE;
+            #$autorize_check = TRUE;
             if ($autorize_check)
             {
                 $valid_user = TRUE;

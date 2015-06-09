@@ -24,6 +24,107 @@ class ajax extends MX_Controller
         echo "getExclusiveNews";
     }
     
+    public function runmusic()
+    {
+        $strWord = $this->input->post("q");
+        $strWord = base64_decode( trim( $strWord ) );
+        $strMusicFile = "upload/spellingbee/".$strWord."mp3";
+        if ( file_exists( $strMusicFile ) && is_file( $strMusicFile ) && is_readable( $strMusicFile ) )
+        {
+            //do nothing
+        }
+        else
+        {
+            $this->_downloadMP3($strWord);
+        }
+        header( 'Content-Length: ' . filesize( $strMusicFile ) );
+        ob_clean();
+        flush();
+        @readfile( $strMusicFile );
+        
+    } 
+    function _download_bing_audio($strWord)
+    {
+        $sound_status = 0;
+        $clientID = '00000000480E8A3E';
+        $clientSecret = 'VvjLerJ7T8v5X4g+9r4WKWOG3Ih0yNEwz2tpveoYmsw=';
+        $authUrl = 'https://datamarket.accesscontrol.windows.net/v2/OAuth2-13/';
+        $scopeUrl = 'http://api.microsofttranslator.com';
+        $grantType = 'client_credentials';
+        $accessToken = getBingTokens( $grantType, $scopeUrl, $clientID, $clientSecret, $authUrl );
+        if($accessToken)
+        {
+            try
+            {
+                $strLang = 'en';
+                $strAuthHeader = "Authorization: Bearer " . $accessToken;
+                $strParams = "text=" . urlencode( $strWord ) . "&language=" . $strLang . "&format=audio/mp3";
+                $strURL = "http://api.microsofttranslator.com/V2/Http.svc/Speak?" . $strParams;
+                $strResponse = curlRequest( $strURL, $strAuthHeader );
+                return $strResponse;
+            }
+            catch ( Exception $e )
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        } 
+        return false;
+    }
+    function _downloadMP3( $strWord )
+    {
+       
+        $strDestination = "upload/spellingbee";
+        if (!is_dir($strDestination))
+        {
+            @mkdir($strDestination, 0777, true);
+        }
+        $strMusicFile = $strDestination."/".strtolower( trim( $strWord ) ) . ".mp3";
+        $sound_status = 1;
+        @unlink($strMusicFile);
+        if(!is_file($strMusicFile))  
+        {
+            $objCURL = curl_init( "http://translate.google.com/translate_tts?q=" . str_replace( " ", "+", strtolower( trim( $strWord ) ) ) . "&tl=en" );
+            $fp = fopen( $strMusicFile, "w+" );
+
+            curl_setopt( $objCURL, CURLOPT_FILE, $fp );
+            curl_setopt( $objCURL, CURLOPT_HEADER, 0 );
+
+            curl_exec( $objCURL );
+            $curl_status = curl_getinfo ($objCURL);
+            if($curl_status['http_code']==200)
+            {
+                $sound_status = 1;
+                curl_close( $objCURL );
+                fclose( $fp );
+            }
+            else
+            {
+                $sound_status = 0;
+                curl_close( $objCURL );
+                fclose( $fp );
+                @unlink($strMusicFile);
+            } 
+            
+        }
+        if($sound_status==0)
+        {
+            @unlink($strMusicFile);
+            $file_response = $this->_download_bing_audio($strWord);
+            if($file_response)
+            {
+                $sound_status = 1;
+                file_put_contents( $strMusicFile, $file_response );
+            }   
+        } 
+        
+        return $sound_status;
+      
+    }
+    
     public function send_paid_notification()
     {
         $user_id = $this->input->post("user_id");

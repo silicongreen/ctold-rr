@@ -140,13 +140,12 @@ class Service
     {
         $words_id = $objParams->words;
       
-        $iLevelId = $objParams->level;
         $checkpoint = $objParams->checkpoint;
         $objfreeuser = new Freeusers();
         $data = $objfreeuser->getFreeuserByCookie();
        
         $valid_user = FALSE;
-        if ($data && is_int($data) && $words_id && $checkpoint && $iLevelId)
+        if ($data && is_int($data) && $words_id && $checkpoint)
         {
             
             $autorize_check = Settings::authorizeUserCheck($objParams->left, $objParams->right, $objParams->method, $objParams->operator, $objParams->send_id, $data);
@@ -167,7 +166,7 @@ class Service
            
             foreach($word_id_array as $value)
             {
-                $response[$data][$iLevelId]['words'][] = $value;
+                $response[$data]['words'][] = $value;
                 
             }
             
@@ -213,9 +212,9 @@ class Service
             $response = Settings::getSpellingBeeCache($cache_name);
            
     
-            if (isset($response[$iUserId]) && isset($response[$iUserId][$iLevelId]) && isset($response[$iUserId][$iLevelId]['words']))
+            if (isset($response[$iUserId]) && isset($response[$iUserId]) && isset($response[$iUserId]['words']))
             {
-                $user_word_played = $response[$iUserId][$iLevelId]['words'];
+                $user_word_played = $response[$iUserId]['words'];
             }
             
           

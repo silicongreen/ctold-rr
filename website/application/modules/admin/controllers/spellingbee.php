@@ -154,8 +154,12 @@ class spellingbee extends MX_Controller
     
     
     
-    function downloadExcle()
+    public function downloadExcle()
     {
+        $this->db->where("has_problem",0);
+        $this->db->where("enabled",1);
+        $this->db->order_by("year", "asc");
+        $spell_words = $this->db->get("spellingbee")->result();
         //load our new PHPExcel library
         $this->load->library('excel');
         //activate worksheet number 1
@@ -163,15 +167,76 @@ class spellingbee extends MX_Controller
         //name the worksheet
         $this->excel->getActiveSheet()->setTitle('Spelling Bee');
         //set cell A1 content with some text
-        $this->excel->getActiveSheet()->setCellValue('A1', 'This is just some text value');
-        //change the font size
+        $this->excel->getActiveSheet()->setCellValue('A1', 'Word');
         $this->excel->getActiveSheet()->getStyle('A1')->getFont()->setSize(20);
-        //make the font become bold
         $this->excel->getActiveSheet()->getStyle('A1')->getFont()->setBold(true);
-        //merge cell A1 until D1
-        $this->excel->getActiveSheet()->mergeCells('A1:D1');
+        
+        $this->excel->getActiveSheet()->setCellValue('B1', 'Bangla');
+        $this->excel->getActiveSheet()->getStyle('B1')->getFont()->setSize(20);
+        $this->excel->getActiveSheet()->getStyle('B1')->getFont()->setBold(true);
+        
+        $this->excel->getActiveSheet()->setCellValue('C1', 'Defination');
+        $this->excel->getActiveSheet()->getStyle('C1')->getFont()->setSize(20);
+        $this->excel->getActiveSheet()->getStyle('C1')->getFont()->setBold(true);
+        
+        $this->excel->getActiveSheet()->setCellValue('D1', 'Sentence');
+        $this->excel->getActiveSheet()->getStyle('D1')->getFont()->setSize(20);
+        $this->excel->getActiveSheet()->getStyle('D1')->getFont()->setBold(true);
+        
+        $this->excel->getActiveSheet()->setCellValue('E1', 'Type');
+        $this->excel->getActiveSheet()->getStyle('E1')->getFont()->setSize(20);
+        $this->excel->getActiveSheet()->getStyle('E1')->getFont()->setBold(true);
+        
+        $this->excel->getActiveSheet()->setCellValue('F1', 'Level');
+        $this->excel->getActiveSheet()->getStyle('F1')->getFont()->setSize(20);
+        $this->excel->getActiveSheet()->getStyle('F1')->getFont()->setBold(true);
+        
+        
+        $this->excel->getActiveSheet()->setCellValue('G1', 'Year');
+        $this->excel->getActiveSheet()->getStyle('G1')->getFont()->setSize(20);
+        $this->excel->getActiveSheet()->getStyle('G1')->getFont()->setBold(true);
+        
+        
+        $type = array("Easy","Normal","Hard","Vary Hard");
+        $i = 1;
+        if(count($spell_words)>0)
+        {
+            foreach($spell_words as $value)
+            {
+                $i++;
+                $this->excel->getActiveSheet()->setCellValue('A'.$i, $value->word);
+                $this->excel->getActiveSheet()->getStyle('A'.$i)->getFont()->setSize(20);
+
+                $this->excel->getActiveSheet()->setCellValue('B'.$i, $value->bangla_meaning);
+                $this->excel->getActiveSheet()->getStyle('B'.$i)->getFont()->setSize(20);
+
+                $this->excel->getActiveSheet()->setCellValue('C'.$i,$value->definition);
+                $this->excel->getActiveSheet()->getStyle('C'.$i)->getFont()->setSize(20);
+
+                $this->excel->getActiveSheet()->setCellValue('D'.$i, $value->sentence);
+                $this->excel->getActiveSheet()->getStyle('D'.$i)->getFont()->setSize(20);
+               
+                
+                $level = "None";
+                if(array_key_exists($value->level, $type))
+                {
+                    $level = $type[$value->level];
+                }        
+
+                $this->excel->getActiveSheet()->setCellValue('E'.$i, $value->wtype);
+                $this->excel->getActiveSheet()->getStyle('E'.$i)->getFont()->setSize(20);
+
+                $this->excel->getActiveSheet()->setCellValue('F'.$i, $level);
+                $this->excel->getActiveSheet()->getStyle('F'.$i)->getFont()->setSize(20);
+
+
+                $this->excel->getActiveSheet()->setCellValue('G'.$i, $value->year);
+                $this->excel->getActiveSheet()->getStyle('G'.$i)->getFont()->setSize(20);
+            }    
+        }    
+        
         //set aligment to center for that merged cell (A1 to D1)
-        $this->excel->getActiveSheet()->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        
         $filename = 'spellingbee.xls'; //save our workbook as this file name
         header('Content-Type: application/vnd.ms-excel'); //mime type
         header('Content-Disposition: attachment;filename="'.$filename.'"'); //tell browser what's the file name

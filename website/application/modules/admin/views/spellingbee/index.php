@@ -64,6 +64,10 @@
                     <button  type="button"   class="light text_only has_text" onclick="window.location='<?php echo base_url(); ?>admin/spellingbee/all_xml/'" >
                         <span>Donload Xml </span>
                     </button>
+                    <button  type="button"   class="light text_only has_text" onclick="window.location='<?php echo base_url(); ?>admin/spellingbee/downloadExcle/'" >
+                        <span> Donload Excell </span>
+                    </button>
+                    
                 </div>
                 <div id="wait_div" style="color:red; padding:10px 10px 15px 10px; margin-left:5px; font-size:15px; display: none;">Please Wait ...</div>
             <?php endif; ?>

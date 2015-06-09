@@ -61,7 +61,7 @@ class FreeuserController extends Controller
         if($strWord)
         {
         
-            $strMusicFile = "upload/spellingbee/".$strWord.".mp3";
+            $strMusicFile = Settings::$main_path."upload/spellingbee/".$strWord.".mp3";
 
 
             if ( file_exists( $strMusicFile ) && is_file( $strMusicFile ) && is_readable( $strMusicFile ) )

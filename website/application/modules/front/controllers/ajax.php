@@ -1355,6 +1355,27 @@ class ajax extends MX_Controller
         }
         echo "</ul>";
     }
+    
+    function getschoolname()
+    {
+        if(!empty($_POST["keyword"])) {
+            $this->db->like('school_name', $_POST["keyword"], 'after');
+            $this->db->order_by("school_name", "ASC");
+            $this->db->limit(6, 0);
+            $query = $this->db->get('school_list_spellingbee');
+            $number = $query->num_rows();
+            $obj_cat = $query->result();
+            if($number > 0)
+            {
+                echo "<ul id='country-list'>";
+                foreach ($obj_cat as $value)
+                {
+                    echo "<li onClick='selectCountry(&#39".$value->school_name."&#39);'>".$value->school_name."</li>";
+                }
+                echo "</ul>";
+            }            
+        }
+    }
 
     public function createArchiveCache()
     {

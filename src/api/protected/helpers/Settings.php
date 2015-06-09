@@ -171,7 +171,7 @@ class Settings
     public static function downloadMP3( $strWord )
     {
        
-        $strDestination = "upload/spellingbee";
+        $strDestination = self::$main_path."upload/spellingbee";
         if (!is_dir($strDestination))
         {
             @mkdir($strDestination, 0777, true);

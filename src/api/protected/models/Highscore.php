@@ -65,6 +65,10 @@ class Highscore extends CActiveRecord
     }
     public function getUserRank( $score_for_rank,$time_for_rank,$country,$division="" )
     {
+        if($score_for_rank==0)
+        {
+            return 0;
+        }    
         $criteria = new CDbCriteria;
         $criteria->select = 'count(t.id)+1 AS rank';
         if ($division)
@@ -83,7 +87,7 @@ class Highscore extends CActiveRecord
         }
         else
         {
-            return "UnRanked"; 
+            return 0; 
         }    
     }
     

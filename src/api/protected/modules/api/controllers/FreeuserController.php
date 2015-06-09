@@ -66,10 +66,11 @@ class FreeuserController extends Controller
             if($division)
             {
                 $divi = $division;
-                $country = "";
+                $country = 14;
             }
             $highscore = new Highscore();
             $current_score = 0;
+            $current_time = 0;
             $cache_name = "YII-SPELLINGBEE-USERDATA";
             $response = Settings::getSpellingBeeCache($cache_name);
             if (isset($response[$user_id]) && isset($response[$user_id]['current_score']))
@@ -83,8 +84,12 @@ class FreeuserController extends Controller
                 if ($user_score_data)
                 {
                     $current_score = $user_score_data->score;
+                    $current_time = $user_score_data->test_time;
                 }
-            }    
+            }
+            
+            
+            $arUserData['rank'] = $highscore->getUserRank($current_score, $current_time,$country, strtolower($divi));
             
             
             

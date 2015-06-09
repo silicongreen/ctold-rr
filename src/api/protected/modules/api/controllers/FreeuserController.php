@@ -103,13 +103,14 @@ class FreeuserController extends Controller
         } 
         if($user_id || $division)
         {
+            $user_division = "";
             if($user_id)
             {
                 $objUser = new Freeusers();
                 $user_data = $objUser->findByPk($user_id);
                 if($user_data->division)
                 {
-                    $divi = $user_data->division;
+                    $user_division=$divi = $user_data->division;
                 }
                 else
                 {
@@ -150,7 +151,7 @@ class FreeuserController extends Controller
             
             $arUserScores = $highscore->getLeaderBoard($limit, $divi, $country);
             $rresponse['data']['leaderboard'] = (array)$arUserScores;
-            $rresponse['data']['division'] = $divi;
+            $rresponse['data']['division'] = $user_division;
             $rresponse['data']['best_score'] = $current_score;
             $rresponse['status']['code'] = 200;
             $rresponse['status']['msg'] = "Success";

@@ -89,7 +89,7 @@ class FreeuserController extends Controller
             }
             
             
-            $arUserData['rank'] = $highscore->getUserRank($current_score, $current_time,$country, strtolower($divi));
+            $rresponse['data']['rank'] = $highscore->getUserRank($current_score, $current_time,$country, strtolower($divi));
             
             
             
@@ -2909,6 +2909,13 @@ class FreeuserController extends Controller
                     Yii::app()->user->setState("free_id",$user->id);
 
                     $response['data'] = $freeuserObj->getPaidUserInfo();
+                    
+                    $response['data']['can_play_spellingbee'] = 1;
+                    if($user->user_type==2 && $user->is_joined_spellbee==0)
+                    {
+                        $response['data']['can_play_spellingbee'] = 0;
+                    }
+                    
                     $response['data']['free_id'] = $user->id;
                     $response['data']['user'] = $freeuserObj->getUserInfo($user->id);
                     $response['status']['code'] = 200;
@@ -2936,6 +2943,7 @@ class FreeuserController extends Controller
                     $freeuserObj->medium = Yii::app()->request->getPost('medium');
                     $freeuserObj->tds_country_id = Yii::app()->request->getPost('country');
                     $freeuserObj->district = Yii::app()->request->getPost('district');
+                    $freeuserObj->division = Yii::app()->request->getPost('division');
                     $freeuserObj->grade_ids = Yii::app()->request->getPost('grade_ids');
                     $freeuserObj->mobile_no = Yii::app()->request->getPost('mobile_no');
                     $freeuserObj->dob = Yii::app()->request->getPost('dob');
@@ -2944,6 +2952,10 @@ class FreeuserController extends Controller
                     $freeuserObj->teaching_for = Yii::app()->request->getPost('teaching_for');
                     $freeuserObj->occupation = Yii::app()->request->getPost('occupation');
                     $freeuserObj->profile_image = Yii::app()->request->getPost('profile_image');
+                    
+                    if (Yii::app()->request->getPost('is_joined_spellbee'))
+                        $freeuserObj->is_joined_spellbee = Yii::app()->request->getPost('is_joined_spellbee');
+                    
                     $freeuserObj->save();
 
                     $folderObj = new UserFolder();
@@ -2955,6 +2967,13 @@ class FreeuserController extends Controller
                     Yii::app()->user->setState("free_id",$freeuserObj->id);
 
                     $response['data'] = $freeuserObj->getPaidUserInfo();
+                    
+                    $response['data']['can_play_spellingbee'] = 1;
+                    if($freeuserObj->user_type==2 && $freeuserObj->is_joined_spellbee==0)
+                    {
+                        $response['data']['can_play_spellingbee'] = 0;
+                    }
+                    
                     $response['data']['free_id'] = $freeuserObj->id;
                     $response['data']['user'] = $freeuserObj->getUserInfo($freeuserObj->id);
                     $response['data']['countries'] = $countryObj->getCountryies();
@@ -2973,6 +2992,13 @@ class FreeuserController extends Controller
 
                     $folderObj->createGoodReadFolder($user->id);
                     $response['data'] = $freeuserObj->getPaidUserInfo();
+                    
+                    $response['data']['can_play_spellingbee'] = 1;
+                    if($user->user_type==2 && $user->is_joined_spellbee==0)
+                    {
+                        $response['data']['can_play_spellingbee'] = 0;
+                    }
+                    
                     $response['data']['free_id'] = $user->id;
                     $response['data']['user'] = $freeuserObj->getUserInfo($user->id);
                     $response['status']['code'] = 200;
@@ -3000,6 +3026,7 @@ class FreeuserController extends Controller
                     $freeuserObj->medium = Yii::app()->request->getPost('medium');
                     $freeuserObj->tds_country_id = Yii::app()->request->getPost('country');
                     $freeuserObj->district = Yii::app()->request->getPost('district');
+                    $freeuserObj->division = Yii::app()->request->getPost('division');
                     $freeuserObj->grade_ids = Yii::app()->request->getPost('grade_ids');
                     $freeuserObj->mobile_no = Yii::app()->request->getPost('mobile_no');
                     $freeuserObj->dob = Yii::app()->request->getPost('dob');
@@ -3008,6 +3035,10 @@ class FreeuserController extends Controller
                     $freeuserObj->teaching_for = Yii::app()->request->getPost('teaching_for');
                     $freeuserObj->occupation = Yii::app()->request->getPost('occupation');
                     $freeuserObj->profile_image = Yii::app()->request->getPost('profile_image');
+                    
+                    if (Yii::app()->request->getPost('is_joined_spellbee'))
+                        $freeuserObj->is_joined_spellbee = Yii::app()->request->getPost('is_joined_spellbee');
+                    
                     $freeuserObj->save();
                     $folderObj = new UserFolder();
 
@@ -3018,6 +3049,13 @@ class FreeuserController extends Controller
                     Yii::app()->user->setState("free_id",$freeuserObj->id);
 
                     $response['data'] = $freeuserObj->getPaidUserInfo();
+                    
+                    $response['data']['can_play_spellingbee'] = 1;
+                    if($freeuserObj->user_type==2 && $freeuserObj->is_joined_spellbee==0)
+                    {
+                        $response['data']['can_play_spellingbee'] = 0;
+                    }
+                    
                     $response['data']['free_id'] = $freeuserObj->id;
                     $response['data']['user'] = $freeuserObj->getUserInfo($freeuserObj->id);
                     $response['data']['countries'] = $countryObj->getCountryies();
@@ -3092,6 +3130,9 @@ class FreeuserController extends Controller
 
                     if (Yii::app()->request->getPost('district'))
                         $freeuserObj->district = Yii::app()->request->getPost('district');
+                    
+                    if (Yii::app()->request->getPost('division'))
+                        $freeuserObj->division = Yii::app()->request->getPost('division');
 
                     if (Yii::app()->request->getPost('grade_ids'))
                         $freeuserObj->grade_ids = Yii::app()->request->getPost('grade_ids');
@@ -3113,6 +3154,10 @@ class FreeuserController extends Controller
 
                     if (Yii::app()->request->getPost('occupation'))
                         $freeuserObj->occupation = Yii::app()->request->getPost('occupation');
+                    
+                    if (Yii::app()->request->getPost('is_joined_spellbee'))
+                        $freeuserObj->is_joined_spellbee = Yii::app()->request->getPost('is_joined_spellbee');
+                    
                 }
 
                 $freeuserObj->save();
@@ -3184,6 +3229,13 @@ class FreeuserController extends Controller
                 Yii::app()->user->setState("free_id",$freeuserObj->id);
                 $this->sendRegistrationMail($freeuserObj);
                 $response['data'] = $freeuserObj->getPaidUserInfo();
+                
+                $response['data']['can_play_spellingbee'] = 1;
+                if($freeuserObj->user_type==2 && $freeuserObj->is_joined_spellbee==0)
+                {
+                    $response['data']['can_play_spellingbee'] = 0;
+                }
+                
                 $response['data']['free_id'] = $freeuserObj->id;
                 $response['data']['user'] = $freeuserObj->getUserInfo($freeuserObj->id);
                 $response['data']['is_register'] = true;

@@ -154,7 +154,7 @@ class Syllabuses extends CActiveRecord {
             
             $_data['id'] = $row->id;
             $_data['subject_id'] = $row->subject_id;
-            $_data['subject_name'] = Yii::app()->user->schoolId;
+            $_data['subject_name'] = $row['subjectDetails']->name;
             $_data['subject_icon_name'] = $row['subjectDetails']->icon_number;
             $_data['subject_icon_path'] = (!empty($row['subjectDetails']->icon_number)) ? Settings::$domain_name . '/images/icons/subjects/' . $row['subjectDetails']->icon_number : null;
             

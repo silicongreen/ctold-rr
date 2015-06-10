@@ -1,18 +1,18 @@
 <!--<div class="flying_bee"></div>-->
-<div class="home_box">
-    <div style="width: 60%;">
-        <h2 class="f2" style="color:#FCCC08;">Join The School of Excellence! </h2>
-    </div>
+<div class="home_box">    
     <div style="width: 100%;">
-        <div style="width: 30%;float:left;">
-            <center><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/sp-logo.png'); ?>" style="width:80%;"></center>
+        <div style="width: 41%;float:left;">
+            <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/BG.png'); ?>" style="width:100%;">
         </div>
-        <div style="width: 70%;float:left;">
-            <div class="f5" style="float:left;width: 55%;font-size: 20px;">
-                Spelling Bee is back with its 4th season in Bangladesh! Join the Spelling Bee Competition and join the top spellers of the country to fight for the trophy and the prestigious title of Spelling Bee Champion.
+        <div style="width: 58%;float:left;">
+            <div class="f5" style="float:left;width: 100%;font-size: 20px;">
+                <center><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/join_msg.png'); ?>" style="width:75%;"></center>
             </div>
-            <div style="clear: both;float:left;width: 100%;margin-top:40px;">
+            <div style="clear: both;float:left;width: 100%;margin-top:10px;">
                 <nav>
+                <a style="float: left;width:110px;" href="<?php echo base_url('leaderboard'); ?>">
+                    <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/play.png'); ?>" style="width:100%;">
+                </a>
                 <?php if( free_user_logged_in() ) { ?>
                     <a  href="#" id="join_spellbee_reg" class="f2 button-filter1">Join</a>
                 <?php } else { ?>
@@ -21,6 +21,9 @@
                 <a  href="<?php echo base_url('leaderboard'); ?>" class="f2 button-filter2">Leaderboard</a>
                 <a  href="https://www.facebook.com/spellbangladesh" target="_blank" class="f2 button-filter3">Facebook Like</a>
                 </nav>
+            </div>
+            <div class="f5" style="float:left;width: 100%;font-size: 13px;">
+                Spelling Bee is back with its 4th season in Bangladesh! Join the Spelling Bee Competition and join the top spellers of the country to fight for the trophy and the prestigious title of Spelling Bee Champion.
             </div>
         </div>
     </div>
@@ -41,20 +44,15 @@
   width: 60px;
 }
 
-.home_box {
-  background-image: url("<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/bee.png'); ?>");
-  background-position: right top;
-  background-repeat: no-repeat;
-  background-size: 31% auto;
+.home_box {  
   display: block;
-  padding: 30px;
+  padding: 0px;
   height:410px;
 }
 
 .button-filter1 {
   background-color: #F4A91C;
-  border: 1px solid #b3b3b3;
-  border-radius: 6px;
+  border: 1px solid #b3b3b3;  
   color: #fff;
   cursor: pointer;
   display: block;
@@ -62,7 +60,7 @@
   font-size: 17px;
   font-weight: normal;
   padding: 10px 17px;
-  margin-right: 10px;
+  margin-top:39px;
   text-decoration: none;
   transition: all 0.25s ease-in 0s;
 }
@@ -74,8 +72,7 @@
 }
 .button-filter2 {
   background-color: #63BF8E;
-  border: 1px solid #b3b3b3;
-  border-radius: 6px;
+  border: 1px solid #b3b3b3;  
   color: #fff;
   cursor: pointer;
   display: block;
@@ -83,7 +80,7 @@
   font-size: 17px;
   font-weight: normal;
   padding: 10px 17px;
-  margin-right: 10px;
+  margin-top:39px;
   text-decoration: none;
   transition: all 0.25s ease-in 0s;
 }
@@ -95,8 +92,7 @@
 }
 .button-filter3 {
   background-color: #2E7EB1;
-  border: 1px solid #b3b3b3;
-  border-radius: 6px;
+  border: 1px solid #b3b3b3;  
   color: #fff;
   cursor: pointer;
   display: block;
@@ -104,7 +100,7 @@
   font-size: 17px;
   font-weight: normal;
   padding: 10px 17px;
-  margin-right: 10px;
+  margin-top:39px;
   text-decoration: none;
   transition: all 0.25s ease-in 0s;
 }

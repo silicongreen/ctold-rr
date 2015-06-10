@@ -1203,7 +1203,14 @@ $(document).ready(function () {
             'margin': 0
         });
     });
-    
+    $(document).ready(function () {
+        var cid = 0;
+        cid = $('#main_p_category').val();
+        if(cid != 0)
+        {
+            $('#nmicon_'+cid).addClass("active_header_menu");
+        }
+    });
     $(document).on("click", '#pref_li', function () {
 
         var html_frm_reg = $('#tree_div').html();

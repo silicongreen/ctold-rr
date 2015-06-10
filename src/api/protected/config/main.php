@@ -38,6 +38,9 @@ return array(
         'zend'=>array(
             'class'=>'ext.zend.EZendAutoloader'
         ),
+        'session' => array(
+            "timeout" => 3153600000
+        ),
 		
         /*'cache'  => array(
                 'class'  => 'system.caching.CFileCache',
@@ -45,8 +48,16 @@ return array(
 
         'user' => array(
             // enable cookie-based authentication
-            'allowAutoLogin' => true,
+            'allowAutoLogin'  => true,
+            'autoRenewCookie' => true,
+            'authTimeout'     => 3153600000
         ),
+		
+        /*'cache'  => array(
+                'class'  => 'system.caching.CFileCache',
+        ),*/
+
+        
         // uncomment the following to enable URLs in path-format
 //        'session' => array(
 //            'autoStart' => true,

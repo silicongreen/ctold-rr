@@ -1,7 +1,7 @@
 <div class="flying_bee"></div>
 <div class="home_box">
     <div style="width: 60%;">
-        <h2 class="f2" style="color:#FCCC08;">Join Spelling Revelation! Be the leader of tomorrow! </h2>
+        <h2 class="f2" style="color:#FCCC08;">Join The School of Excellence! </h2>
     </div>
     <div style="width: 100%;">
         <div style="width: 30%;float:left;">
@@ -9,14 +9,17 @@
         </div>
         <div style="width: 70%;float:left;">
             <div class="f5" style="float:left;width: 55%;font-size: 20px;">
-                Spelling Bee is back with its 4th season in Bangladesh! The Bee is making the country buzz! Join the Spelling Bee Competition and join the top spellers of the country to fight for the trophy and the prestigious title of ‘Spelling Bee Champion’. Hurry!!
+                Spelling Bee is back with its 4th season in Bangladesh! Join the Spelling Bee Competition and join the top spellers of the country to fight for the trophy and the prestigious title of Spelling Bee Champion.
             </div>
             <div style="clear: both;float:left;width: 100%;margin-top:40px;">
                 <nav>
-                
-                <a  href="#" id="join_spellbee_reg" class="f2 button-filter1">Join</a>
-                <a  href="#" class="f2 button-filter2">Leaderboard</a>
-                <a  href="#" class="f2 button-filter3">Facebook Like</a>
+                <?php if( free_user_logged_in() ) { ?>
+                    <a  href="#" id="join_spellbee_reg" class="f2 button-filter1">Join</a>
+                <?php } else { ?>
+                    <a  href="#" class="f2 button-filter1 login-user">Join</a>
+                <?php } ?>
+                <a  href="<?php echo base_url('leaderboard'); ?>" class="f2 button-filter2">Leaderboard</a>
+                <a  href="https://www.facebook.com/spellbangladesh" target="_blank" class="f2 button-filter3">Facebook Like</a>
                 </nav>
             </div>
         </div>

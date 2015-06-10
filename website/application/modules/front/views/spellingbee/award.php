@@ -1,7 +1,7 @@
 <h2 class="f2" style="color:#FFCA0A;">Award</h2>
 <div>
     <p>
-        The biggest reward in this competition is the learning process and the experience. However, there will be exciting rewards for the winners of Spelling Bee as well. Let's have a look at them.
+        The biggest reward in this competition is the learning process and the experience. However, there will be exciting rewards for the winners of Spelling Bee as well. Let's have a look at them. 
     </p>
 </div>
 
@@ -14,7 +14,7 @@
     <div class="col-md-12 row-fluid row">
         <div class="col-lg-4"><p>Champion</p></div>
         <div class="col-lg-4"><p>1</p></div>
-        <div class="col-lg-4"><p>Metlife Alico Education Policy of Tk. 500,000 and trip to Washington D.C, the city of Spelling Bee, with one parent.</p></div>
+        <div class="col-lg-4"><p>MetlifeAlico Education Policy of Tk. 500,000 and trip to Washington D.C, the city of Spelling Bee, with one parent.</p></div>
     </div>
     <div class="col-md-12 row-fluid row">
         <div class="col-lg-4"><p>1st Runner-up</p></div>

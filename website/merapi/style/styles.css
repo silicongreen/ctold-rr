@@ -181,60 +181,9 @@ li.carrosel_news div.carrosel-news div.carrosel-news-content div.post-title{
     margin: 0 auto;
 }
 
-.action-box{
-    width: 100%;    
-    display: inline-block;
-    background:#ffffff;
-    border-bottom:2px solid #d1d1d2;
-}
-.action-box .fb{
-    width: 39%;
-    display: none;
-    vertical-align: top;
-}
 li.menu-item 
 {
     margin:5px 0px;
-}
-.action-box .read_later{
-    background: url("/merapi/img/read_later.png") no-repeat scroll 0 0 transparent;
-    background-size:20px;
-    letter-spacing:0px;
-    
-    color: #00;
-    cursor: pointer;
-    display: inline-block;
-    float: right;
-    font-size: 12px;
-    font-weight: 500;
-    height: 21px;
-    margin-right: 15px;
-    margin-top: 9px;
-    margin-bottom: 9px;
-    padding-left:15px;
-    text-align: center;    
-    width: 84px;
-    
-}
-.action-box .read_later_remove{
-    background: url("/merapi/img/user_trash.png") no-repeat scroll 0 0 transparent;
-    background-size:20px;
-    letter-spacing:0px;
-    
-    color: #00;
-    cursor: pointer;
-    display: inline-block;
-    float: right;
-    font-size: 12px;
-    font-weight: 500;
-    height: 21px;
-    margin-right: 15px;
-    margin-top: 9px;
-    margin-bottom: 9px;
-    padding-left:15px;
-    text-align: center;    
-    width: 84px;
-    
 }
 .play_btn_ch
 {
@@ -759,4 +708,74 @@ a.add-link[title]:hover:after {
 .button-group li:last-child .button:active{
     box-shadow: 0 0 1px rgba(0, 0, 0, .2) inset,
         5px 0 5px -3px rgba(0, 0, 0, .2) inset;
+}
+
+/**** Action Box ****/
+.action-box-wrapper {
+    border-right: 1px solid #dadedf !important;
+    cursor: pointer;
+    float: left;
+    max-height: 52px;
+    width: 33.3333%;
+}
+.action-box-wrapper:last-child {
+    border: none !important;
+}
+.action-box {
+    background-color: #F7F7F7;
+    border-bottom:2px solid #d1d1d2;
+    display: inline-block;
+    width: 100%;
+}
+.action-box a {
+    color: #666666;
+}
+.action-box .fb{
+    width: 39%;
+    display: none;
+    vertical-align: top;
+}
+.action-box .seen-image {
+    display: block;
+    float: left;
+    margin-left: 5px;
+    width: 16% !important;
+}
+.action-box .seen-image img {
+    float: left;
+    padding: 10px 0;
+    width: 18px;
+}
+.action-box .seen {
+    padding: 10px 0 !important;
+    width: 73% !important;
+}
+.action-box .seen span {
+    display: block;
+    font-size: 12px;
+    margin-top: 7px;
+    width: 100%;
+}
+.seen-image {
+    color: #b1b8ba;
+    float: left;
+    font-size: 12px;
+    margin-right: 5px;
+    padding: 10px 0;
+    width: 52%;
+}
+.seen {
+    float: left;
+    margin-left: 0;
+    width: 43%;
+}
+.seen-image img {
+    margin-left: 0 !important;
+}
+/**** Action Box ****/
+@media all and (min-width: 768px) and (max-width: 1024px){
+    .action-box-wrapper {
+        float: left;
+        width: 100%
+    }
 }

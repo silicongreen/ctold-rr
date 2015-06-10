@@ -875,7 +875,7 @@ if( !function_exists("send_notification"))
 
 if ( !function_exists("get_api_data_from_yii") )
 {
-    function get_api_data_from_yii($a_exclude_id,$page_number,$link="",$category_id = 0,$popular = false,$page_size = 9,$game_type=false,$fetaured=0,$stbid=0,$target=false)
+    function get_api_data_from_yii($a_exclude_id,$page_number,$link="",$category_id = 0,$popular = false,$page_size = 9,$game_type=false,$fetaured=0,$stbid=0,$target=false, $b_get_related = false)
     {
        
         $url = get_curl_url($link);
@@ -917,20 +917,20 @@ if ( !function_exists("get_api_data_from_yii") )
             $fields['id'] = $stbid;
             $fields['target'] = $target;
         }
+        
+        if($b_get_related && $stbid > 0)
+        {
+            $fields['id'] = $stbid;
+        }
+        
         if($link=="")
         {
             $type_cookie = get_type_cookie();
             $fields['user_type'] = $type_cookie;
         } 
         
-        $fields_string = "";
-
-        foreach($fields as $key=>$value) { 
-            $fields_string .= $key.'='.$value.'&'; 
-
-        }
+        $fields_string = http_build_query($fields);
         
-        rtrim($fields_string, '&');
         $ch = curl_init();
 
         //set the url, number of POST vars, POST data
@@ -943,8 +943,8 @@ if ( !function_exists("get_api_data_from_yii") )
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
             'Accept: application/json',
             'Content-Length: ' . strlen($fields_string)
-            )                                                                       
-        );    
+            )
+        );
         //execute post
         $result = curl_exec($ch);
 

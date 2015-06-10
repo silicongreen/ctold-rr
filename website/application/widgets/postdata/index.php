@@ -212,8 +212,13 @@ class postdata extends widget
         }
         else
         {
-            $a_post_params['post_id'] = $post_id;
-            $a_post_params['b_get_related'] = $b_get_related;
+            if($post_id > 0) {
+                $a_post_params['postCategories.post_id'] = $post_id;
+            }
+            
+            if($b_get_related) {
+                $a_post_params['b_get_related'] = $b_get_related;
+            }
             $ar_post_news = $this->post->gePostNews($a_post_params, $target, "smaller", $s_priority, $s_category_ids, $limit, $current_page, $b_featured, $i_featured_position); 
         }
         $data['target'] = $target;

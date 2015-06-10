@@ -145,7 +145,6 @@ class post extends CI_Model{
         }
         else
         {
-           
             $s_country = visitor_country();
             $country_id = 14; //By Default Bangladesh
             if ($this->config->config['country_filter'])
@@ -296,8 +295,8 @@ class post extends CI_Model{
             if ( $s_category_ids == 0 && empty($a_post_params) )
             {
                 $this->db->where("(category.parent_id IS NULL OR category.parent_id = '')",'',false);
-
             }
+            
             $ignore_post_type = false;
             if ( !empty($a_post_params) )
             {

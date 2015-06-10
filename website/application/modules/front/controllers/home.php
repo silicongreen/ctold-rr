@@ -1036,402 +1036,412 @@ class home extends MX_Controller {
 
     function process_post_view( $i_category_id, $obj_post_data, $b_layout = true)
     {
-        $this->load->config("huffas");
-        $obj_post = new Post_model();
-        
-        //TAKE THE GOOD READ FOLDER IN CASE USER LOGIN
-        $obj_post_data->good_read_single = "";
-        $obj_post_data->attempt = FALSE;
-        $user_played_levels = array();
-        
-        if (free_user_logged_in() )
-        {
-            $this->load->model("user_folder");
-            $i_user_id = get_free_user_session("id");
-            $ar_user_folder = $this->user_folder->get_user_good_read_folder($i_user_id);
-            $folder_name = "Unread";
-            $folder_data = $this->user_folder->get_folder_id($i_user_id, $folder_name);            
-            $folder_id = $folder_data->id;
-            $this->user_folder->set_unread_post_to_read($i_user_id, $obj_post_data->post_id,$folder_id);
-            $data['i_user_folder_count'] = $ar_user_folder['total'];
-            $data['ar_user_folder'] = $ar_user_folder['data'];
-            $obj_post_data->good_read_single = $this->load->view( 'good_read_single', $data, TRUE );
-            
-            
-            //IN CASE POST_TYPE = 4
-            if ( $obj_post_data->post_type == 4 )
-            {
-                $this->db->where('user_id', $i_user_id, FALSE);
-                $this->db->where('post_id', $obj_post_data->post_id);
-
-                $this->db->from("user_gk_answers");       
-                $query = $this->db->get();
-                
-                if ( $query->num_rows() > 0 )
-                {
-                    $row = $query->row();
-                    $obj_post_data->attempt = TRUE;
-                    $obj_post_data->is_correct = $row->is_correct;
-                    $obj_post_data->user_answer = $row->user_answer;
-                }
-                
-            }
-            
-            /* User Assessment Data */
-            $obj_post_data->assess_user_mark = $obj_post->get_user_assessment_marks($i_user_id, $obj_post_data->assessment_id);
-            
-            foreach($obj_post_data->assess_user_mark as $user_marks) {
-                $user_played_levels[] = $user_marks->level;
-            }
-            
-            /* User Assessment Data */
-            
-        }
-        /**
-         * Get Category and Sub-category first for a single post
-         */
-        $obj_parent_category = get_parent_category($i_category_id);
-        
-        if ( ! $obj_parent_category )
-        {
-            $this->show_404_custom();
-        }
-        
-        $obj_post_data->name = $obj_parent_category->name;
-        
-        $obj_post_data->display_name = $obj_parent_category->display_name;
-        $obj_post_data->parent_category_id = $obj_parent_category->id;
-        
-        $obj_post_data->has_categories = FALSE;
-        $i_category_id = $obj_parent_category->id;
-        
-        
-        $obj_category = new Category_model( $i_category_id );
-        $obj_child_categories = $obj_category->where("parent_id", $obj_category->id)->where("status",1)->order_by("priority","asc")->get();
-        $obj_post_data->obj_child_categories = $obj_child_categories;
-        if ( count($obj_child_categories->all) > 0 )
-        {
-            $obj_post_data->has_categories = TRUE;
-        }
-        
-        
-        $this->load->model('post','model');
-        //NOW GET ALL CATEGORY FOR THE POST
-        if ( isset($obj_post_data->post_id) )
-        {
-            $categories_for_the_post = $obj_post->get_category_by_post($obj_post_data->post_id);
-            $a_category_ids = array();
-            if ( count($categories_for_the_post) > 0 ) foreach($categories_for_the_post as $cate)
-            {
-                array_push($a_category_ids, $cate->category_id);
-            }
-            $obj_post_data->a_category_ids = $a_category_ids;
-        }
-        if ( ! $b_layout )
-        {
-            $this->layout_front = false;
-        }
-        error_reporting(0);
-        
-        $meta_description = META_DESCRIPTION;
-        $keywords = KEYWORDS;
-        
-        $obj_post_data->ci_key = "post";
-        $obj_post_data->ci_key_for_cover = "post";
-        
-        $extra_js = '';        
-
-        //$ar_fb = NULL;
-        $b_show_post = TRUE;
-        $s_target = "inner";
-        
-        
-        $obj_post_data->post_show_publish_date = $this->config->config['post_show_publish_date'];
-        $obj_post_data->post_show_updated_date = $this->config->config['post_show_updated_date'];
-        $obj_post_data->has_outbrain = $this->config->config['has_outbrain'];
-        $obj_post_data->has_disqus = $this->config->config['has_disqus'];
-        
         $ar_js = array("scripts/post/jquery.social.share.2.0.js","scripts/post/scripts.js","scripts/post/jquery.social.share.2.0.js");
         $ar_css = array(
                 "styles/layouts/tdsfront/css/post/social.css" => "screen"
         );
         
-        if ( strlen($obj_post_data->lead_material) == 0 )
-        {
-            $s_image = getImageForFacebook($obj_post_data);
-        }
-        else
-        {
-            $s_image = $obj_post_data->lead_material;
-        }
+        $cache_name = "POST" . '_' . $obj_post_data->post_id;
+        $s_content = $this->cache->get($cache_name);
         
-        
-        $strContent = preg_replace('/<div (.*?)>Source:(.*?)<\/div>/', '', $obj_post_data->content);
-        $strContent = preg_replace('/<div class="img_caption" (.*?)>(.*?)<\/div>/', '', $strContent);
-        $strContent = strip_tags($strContent);
-        $s_content = ( strlen($strContent) > 200 ) ? substr($strContent, 0, 200) . "..." : $strContent;
-
-
-        $i_pos = stripos($s_image, "gallery/");
-        if ( $i_pos !== FALSE )
-        {
-            $s_img_first = substr($s_image, 0, $i_pos + strlen("gallery/"));
-            $s_img_last = substr($s_image, $i_pos + strlen("gallery/"), strlen($s_image));
-            $s_image = $s_img_first . "facebook/" . $s_img_last;
-            $s_image = str_replace("http://bd.", "http://www.", $s_image);
-        }
-
-        $url_main = create_link_url(NULL, $obj_post_data->headline,$obj_post_data->post_id);
-        
-        $only_link = str_replace(base_url(), "", $url_main);
-        
-        $only_link_encoded = urlencode($only_link);
-        
-        if($obj_post_data->referance_id > 0)
-        {
-          $url_segment = $this->uri->segment(1);
-          $only_link_encoded = $url_segment;
-          //$only_link_encoded = urlencode($only_link);
-          $only_link_encoded = $only_link_encoded."/". $obj_post_data->language; 
-        } 
-        
-        $encoded_url = base_url().$only_link_encoded;
-        $ar_fb = array(
-            "type"          => "website",
-            "site_name"     => WEBSITE_NAME,
-            "title"         => $obj_post_data->headline,
-            "image"         => $s_image,
-            "url"           => $encoded_url,
-            "description"   => trim($s_content)
-        );
-
-        $obj_post_data->fb_desc = trim($s_content);
-        
-        $obj_post_data->discus_short_name = $this->config->config['disqus_short_name'];
-        
-        $str_title = (!empty($obj_post_data)) ? getCustomTitle($obj_post_data): getCommonTitle();
-        
-        $obj_post->updateCount($obj_post_data->post_id);
-        
-        $data['related_tags'] = $obj_post->get_related_tags($obj_post_data->post_id);
-        
-        $related_news = $obj_post->get_related_news($obj_post_data->post_id);
-        
-        $assessment = $obj_post->get_related_assessment($obj_post_data->assessment_id);
-        $assessment_levels = $obj_post->get_assessment_levels($obj_post_data->assessment_id);
-        
-        $ar_assessment_levels = explode(',', $assessment_levels);
-        $ar_playable_levels = array();
-        
-        $obj_post_data->assessment_has_levels = FALSE;
-        
-        if($assessment_levels > 0) {
-            $obj_post_data->assessment_has_levels = TRUE;
-            $obj_post_data->next_level = min(array_diff($ar_assessment_levels, $user_played_levels));
-        }
-        
-        $obj_post_data->has_assessment = FALSE;
-        
-        $data['all_attachment'] = $obj_post->get_related_attach($obj_post_data->post_id);
-        
-        $obj_post_data->has_related = FALSE;
-        
-        if (is_array($related_news))
-        {
-            $obj_post_data->has_related = TRUE;
-        }
-        
-        if($assessment) {
-            $obj_post_data->has_assessment = TRUE;
-            $obj_post_data->assessment = $assessment;
-            $obj_post_data->assessment_levels = $assessment_levels;
-            $obj_post_data->go_to_assessment = $this->config->config['go_to_assessment'];
-        }
-        
-        foreach ($related_news as &$r_news)
-        {
-            if ( ! isset( $r_news->content ) )
-            {
-                $link = $r_news->new_link;
-                $headline = $r_news->title;
-                $related_news_id = str_replace(base_url() . sanitize($headline) . "-", "", $link);
-
-                $obj_related_news = $obj_post->get_by_id($related_news_id);
-                $ar_news_data = getFormatedContentAll($obj_related_news, 150);
-
-                $r_news->lead_material = $ar_news_data['lead_material'];
-                $r_news->content = $ar_news_data['content'];
-                $r_news->image = $ar_news_data['image'];
-            }
-        }
-        
-        //Get Language for the post
-        $i_lang_post_id  = ( $obj_post_data->referance_id > 0 ) ? $obj_post_data->referance_id : $obj_post_data->post_id;
-        $s_lang = $obj_post->get_available_language( $i_lang_post_id, $obj_post_data->other_language, $obj_post_data->referance_id, $obj_post_data->language);
-        $this->db->set_dbprefix('tds_');
-        $data['s_lang'] = $s_lang;
-        
-        
-        if ( $obj_post_data->referance_id > 0 )
-        {
-            $this->db->select("id, headline, referance_id");
-            $this->db->from("post");
-            $this->db->where("id", $obj_post_data->referance_id, FALSE);
-            $post_data = $this->db->get()->row();
-            $data['main_post_id'] = $post_data->id;
-            $data['main_headline'] = $post_data->headline;
-            $data['main_referance_id'] = $post_data->referance_id;
-        }
-        else
-        {
-            $data['main_post_id'] = $obj_post_data->post_id;
-            $data['main_headline'] = $obj_post_data->headline;
-            $data['main_referance_id'] = $obj_post_data->referance_id;
-        }
-        
-        $data['related_news'] = $related_news;
-
-        $data['post_images'] = $obj_post->get_related_gallery($obj_post_data->post_id, array(1,5));
-        
-        $data['post_videos'] = $obj_post->get_post_videos($obj_post_data->post_id);
-        
-        if ( !empty($obj_post_data->attach) && file_exists($obj_post_data->attach) ){
-            $data['attachment'] = $obj_post_data->attach;
-        }
-        
-        $meta_description = $obj_post_data->meta_description;
-        
-        $keywords = $obj_post->get_keywords($obj_post_data->post_id);
-        
-        $obj_post_data->b_layout = $b_layout;
+        if ($s_content !== false) {
+            $s_content = $s_content;
             
-        /* $data['related_doc'] = $obj_post->get_related_gallery(); */
+        } else {
 
-        //$obj_post_data->related_news_content = $this->load->view( 'related_news', $data, TRUE );
-        $obj_post_data->disqus_content = $this->load->view( 'disqus', $obj_post_data, TRUE );
+            $this->load->config("huffas");
+            $obj_post = new Post_model();
 
-        $data1['outbrain_url'] = $this->config->config['outbrain_url'];
-        $obj_post_data->outbrain_content = $this->load->view( 'outbrain', $data1, TRUE );
+            //TAKE THE GOOD READ FOLDER IN CASE USER LOGIN
+            $obj_post_data->good_read_single = "";
+            $obj_post_data->attempt = FALSE;
+            $user_played_levels = array();
 
-        $obj_post_data->resource  = $obj_post->get_related_gallery($obj_post_data->post_id);
-        
-        if ( $obj_post_data->post_type == 4 )
-        {
-            $obj_post_data->has_previous = $obj_post->has_news($obj_post_data->post_id, $a_category_ids, 'previous', $obj_post_data->published_date);
-            $obj_post_data->has_next_news = $obj_post->has_news($obj_post_data->post_id, $a_category_ids, 'next', $obj_post_data->published_date);
-        }
-        else
-        {
-            $obj_post_data->has_previous = $obj_post->has_news($obj_post_data->post_id, $a_category_ids, 'previous');
-            $obj_post_data->has_next_news = $obj_post->has_news($obj_post_data->post_id, $a_category_ids, 'next');
-        }
-
-        if ( $obj_post_data->has_previous )
-        {
-            $obj_post_data->previous_news_link = $obj_post->news_link($obj_post_data->post_id, $a_category_ids, 'previous');
-        }
-
-        if ( $obj_post_data->has_next_news )
-        {
-            $obj_post_data->next_news_link = $obj_post->news_link($obj_post_data->post_id, $a_category_ids, 'next');
-        }
-        if ( $obj_post_data->post_type == 4 )
-        {
-            $obj_post_data->has_more = $obj_post->has_news($obj_post_data->post_id, $a_category_ids, 'none', $obj_post_data->published_date);
-        }
-        else
-        {
-            $obj_post_data->has_more = $obj_post->has_news($obj_post_data->post_id, $a_category_ids);
-        }
-
-
-        $dom = new DOMDocument;
-        $dom->loadHTML($obj_post_data->content);
-        $xp = new DOMXpath($dom);
-
-        $b_found = false;
-        foreach( $xp->query('//*[@style]') as $node) 
-        {
-
-            if ( $node->getAttribute('class') == "related_news_on_post" )
+            if (free_user_logged_in() )
             {
-                $related = (string) $dom->saveXML($node);
-                $style = $node->getAttribute('style');
-                $b_found = true;
-                break;
+                $this->load->model("user_folder");
+                $i_user_id = get_free_user_session("id");
+                $ar_user_folder = $this->user_folder->get_user_good_read_folder($i_user_id);
+                $folder_name = "Unread";
+                $folder_data = $this->user_folder->get_folder_id($i_user_id, $folder_name);            
+                $folder_id = $folder_data->id;
+                $this->user_folder->set_unread_post_to_read($i_user_id, $obj_post_data->post_id,$folder_id);
+                $data['i_user_folder_count'] = $ar_user_folder['total'];
+                $data['ar_user_folder'] = $ar_user_folder['data'];
+                $obj_post_data->good_read_single = $this->load->view( 'good_read_single', $data, TRUE );
+
+
+                //IN CASE POST_TYPE = 4
+                if ( $obj_post_data->post_type == 4 )
+                {
+                    $this->db->where('user_id', $i_user_id, FALSE);
+                    $this->db->where('post_id', $obj_post_data->post_id);
+
+                    $this->db->from("user_gk_answers");       
+                    $query = $this->db->get();
+
+                    if ( $query->num_rows() > 0 )
+                    {
+                        $row = $query->row();
+                        $obj_post_data->attempt = TRUE;
+                        $obj_post_data->is_correct = $row->is_correct;
+                        $obj_post_data->user_answer = $row->user_answer;
+                    }
+
+                }
+
+                /* User Assessment Data */
+                $obj_post_data->assess_user_mark = $obj_post->get_user_assessment_marks($i_user_id, $obj_post_data->assessment_id);
+
+                foreach($obj_post_data->assess_user_mark as $user_marks) {
+                    $user_played_levels[] = $user_marks->level;
+                }
+
+                /* User Assessment Data */
+
             }
-        }
-        
-        $ar_ad_images = $this->config->config['post-ads'];
-        
-        $ar_post_banner = array('category_id' => $i_category_id, 'post_id' => $obj_post_data->post_id);
-        $s_ad_image = get_single_post_custom_banner($ar_post_banner);
-        
-        if(!$s_ad_image) {
-            
-            $ar_images = $ar_ad_images['add'];
-            list($i_first_image, $i_second_image) = get_rand_images($ar_images);
+            /**
+             * Get Category and Sub-category first for a single post
+             */
+            $obj_parent_category = get_parent_category($i_category_id);
 
-            $i_first_image_text = '<a href="' . base_url() . $ar_ad_images['link'][$i_first_image] . '">';
-            $i_first_image_text .= '<img id="'. $ar_ad_images['id'][$i_first_image] .'" class="ads ads-image ' . $ar_ad_images['class'][$i_first_image] . ' ';
-            if ( $ar_ad_images['check_login'][$i_first_image] == "1" )
+            if ( ! $obj_parent_category )
             {
-                $i_first_image_text .= 'check_login"';
+                $this->show_404_custom();
+            }
+
+            $obj_post_data->name = $obj_parent_category->name;
+
+            $obj_post_data->display_name = $obj_parent_category->display_name;
+            $obj_post_data->parent_category_id = $obj_parent_category->id;
+
+            $obj_post_data->has_categories = FALSE;
+            $i_category_id = $obj_parent_category->id;
+
+
+            $obj_category = new Category_model( $i_category_id );
+            $obj_child_categories = $obj_category->where("parent_id", $obj_category->id)->where("status",1)->order_by("priority","asc")->get();
+            $obj_post_data->obj_child_categories = $obj_child_categories;
+            if ( count($obj_child_categories->all) > 0 )
+            {
+                $obj_post_data->has_categories = TRUE;
+            }
+
+
+            $this->load->model('post','model');
+            //NOW GET ALL CATEGORY FOR THE POST
+            if ( isset($obj_post_data->post_id) )
+            {
+                $categories_for_the_post = $obj_post->get_category_by_post($obj_post_data->post_id);
+                $a_category_ids = array();
+                if ( count($categories_for_the_post) > 0 ) foreach($categories_for_the_post as $cate)
+                {
+                    array_push($a_category_ids, $cate->category_id);
+                }
+                $obj_post_data->a_category_ids = $a_category_ids;
+            }
+            if ( ! $b_layout )
+            {
+                $this->layout_front = false;
+            }
+            error_reporting(0);
+
+            $meta_description = META_DESCRIPTION;
+            $keywords = KEYWORDS;
+
+            $obj_post_data->ci_key = "post";
+            $obj_post_data->ci_key_for_cover = "post";
+
+            $extra_js = '';        
+
+            //$ar_fb = NULL;
+            $b_show_post = TRUE;
+            $s_target = "inner";
+
+
+            $obj_post_data->post_show_publish_date = $this->config->config['post_show_publish_date'];
+            $obj_post_data->post_show_updated_date = $this->config->config['post_show_updated_date'];
+            $obj_post_data->has_outbrain = $this->config->config['has_outbrain'];
+            $obj_post_data->has_disqus = $this->config->config['has_disqus'];
+
+            if ( strlen($obj_post_data->lead_material) == 0 )
+            {
+                $s_image = getImageForFacebook($obj_post_data);
             }
             else
             {
-                $i_first_image_text .= '"';
-            }   
-            $i_first_image_text .= 'src="' . base_url() . $ar_images[$i_first_image] . '" /></a>';
-
-            $i_second_image_text = '<a href="' . base_url() . $ar_ad_images['link'][$i_second_image] . '">';
-            $i_second_image_text .= '<img id="'. $ar_ad_images['id'][$i_second_image] .'" class="ads ads-image ' . $ar_ad_images['class'][$i_second_image] . ' ';
-            if ( $ar_ad_images['check_login'][$i_second_image] == "1" )
-            {
-                $i_second_image_text .= 'check_login"';
+                $s_image = $obj_post_data->lead_material;
             }
-            else
+
+
+            $strContent = preg_replace('/<div (.*?)>Source:(.*?)<\/div>/', '', $obj_post_data->content);
+            $strContent = preg_replace('/<div class="img_caption" (.*?)>(.*?)<\/div>/', '', $strContent);
+            $strContent = strip_tags($strContent);
+            $s_content = ( strlen($strContent) > 200 ) ? substr($strContent, 0, 200) . "..." : $strContent;
+
+
+            $i_pos = stripos($s_image, "gallery/");
+            if ( $i_pos !== FALSE )
             {
-                $i_second_image_text .= '"';
-            }   
-            $i_second_image_text .= 'src="' . base_url() . $ar_images[$i_second_image] . '" /></a>';
+                $s_img_first = substr($s_image, 0, $i_pos + strlen("gallery/"));
+                $s_img_last = substr($s_image, $i_pos + strlen("gallery/"), strlen($s_image));
+                $s_image = $s_img_first . "facebook/" . $s_img_last;
+                $s_image = str_replace("http://bd.", "http://www.", $s_image);
+            }
 
-            $s_ad_image = "<p>" . $i_first_image_text . "" . $i_second_image_text . "</p>";
-        }
-        
-        $obj_post_data->s_ad_image = $s_ad_image;
-        
-        $s_related_news = "";
-        $s_related_news_content = $this->load->view( 'related_news', $data, TRUE );
-        if ( ! $b_found &&  is_array($data['related_news'])  )
-        {
-            $style = "width: 220px; height: 200px; float:right;";
-        }
-        if ( is_array($data['related_news']) )
-        {
-            $s_related_news = '<div class="related_news" style="' . $style . '">' . $s_related_news_content . '</div><p>';
-        }
+            $url_main = create_link_url(NULL, $obj_post_data->headline,$obj_post_data->post_id);
 
-        if ( ! $b_found &&  is_array($data['related_news'])  )
-        {
-            $obj_post_data->related_news_append = '<div id="related_news_1" class="related_news_parent">' . $s_related_news_content . '</div>';
-        }
+            $only_link = str_replace(base_url(), "", $url_main);
 
-        if(isset($obj_post_data->video_file) && $obj_post_data->video_file!="" && $obj_post_data->video_file!=null)
-        {
-            $video_file = trim($obj_post_data->video_file);
-            if($video_file!="")
+            $only_link_encoded = urlencode($only_link);
+
+            if($obj_post_data->referance_id > 0)
             {
-                $s_content = $this->load->view( 'post_videos', $obj_post_data, TRUE );
+              $url_segment = $this->uri->segment(1);
+              $only_link_encoded = $url_segment;
+              //$only_link_encoded = urlencode($only_link);
+              $only_link_encoded = $only_link_encoded."/". $obj_post_data->language; 
             } 
+
+            $encoded_url = base_url().$only_link_encoded;
+            $ar_fb = array(
+                "type"          => "website",
+                "site_name"     => WEBSITE_NAME,
+                "title"         => $obj_post_data->headline,
+                "image"         => $s_image,
+                "url"           => $encoded_url,
+                "description"   => trim($s_content)
+            );
+
+            $obj_post_data->fb_desc = trim($s_content);
+
+            $obj_post_data->discus_short_name = $this->config->config['disqus_short_name'];
+
+            $str_title = (!empty($obj_post_data)) ? getCustomTitle($obj_post_data): getCommonTitle();
+
+            $obj_post->updateCount($obj_post_data->post_id);
+
+            $data['related_tags'] = $obj_post->get_related_tags($obj_post_data->post_id);
+
+            $related_news = $obj_post->get_related_news($obj_post_data->post_id);
+
+            $assessment = $obj_post->get_related_assessment($obj_post_data->assessment_id);
+            $assessment_levels = $obj_post->get_assessment_levels($obj_post_data->assessment_id);
+
+            $ar_assessment_levels = explode(',', $assessment_levels);
+            $ar_playable_levels = array();
+
+            $obj_post_data->assessment_has_levels = FALSE;
+
+            if($assessment_levels > 0) {
+                $obj_post_data->assessment_has_levels = TRUE;
+                $obj_post_data->next_level = min(array_diff($ar_assessment_levels, $user_played_levels));
+            }
+
+            $obj_post_data->has_assessment = FALSE;
+
+            $data['all_attachment'] = $obj_post->get_related_attach($obj_post_data->post_id);
+
+            $obj_post_data->has_related = FALSE;
+
+            if (is_array($related_news))
+            {
+                $obj_post_data->has_related = TRUE;
+            }
+
+            if($assessment) {
+                $obj_post_data->has_assessment = TRUE;
+                $obj_post_data->assessment = $assessment;
+                $obj_post_data->assessment_levels = $assessment_levels;
+                $obj_post_data->go_to_assessment = $this->config->config['go_to_assessment'];
+            }
+
+            foreach ($related_news as &$r_news)
+            {
+                if ( ! isset( $r_news->content ) )
+                {
+                    $link = $r_news->new_link;
+                    $headline = $r_news->title;
+                    $related_news_id = str_replace(base_url() . sanitize($headline) . "-", "", $link);
+
+                    $obj_related_news = $obj_post->get_by_id($related_news_id);
+                    $ar_news_data = getFormatedContentAll($obj_related_news, 150);
+
+                    $r_news->lead_material = $ar_news_data['lead_material'];
+                    $r_news->content = $ar_news_data['content'];
+                    $r_news->image = $ar_news_data['image'];
+                }
+            }
+
+            //Get Language for the post
+            $i_lang_post_id  = ( $obj_post_data->referance_id > 0 ) ? $obj_post_data->referance_id : $obj_post_data->post_id;
+            $s_lang = $obj_post->get_available_language( $i_lang_post_id, $obj_post_data->other_language, $obj_post_data->referance_id, $obj_post_data->language);
+            $this->db->set_dbprefix('tds_');
+            $data['s_lang'] = $s_lang;
+
+
+            if ( $obj_post_data->referance_id > 0 )
+            {
+                $this->db->select("id, headline, referance_id");
+                $this->db->from("post");
+                $this->db->where("id", $obj_post_data->referance_id, FALSE);
+                $post_data = $this->db->get()->row();
+                $data['main_post_id'] = $post_data->id;
+                $data['main_headline'] = $post_data->headline;
+                $data['main_referance_id'] = $post_data->referance_id;
+            }
             else
             {
-                $s_content = $this->load->view( 'post', $obj_post_data, TRUE );
+                $data['main_post_id'] = $obj_post_data->post_id;
+                $data['main_headline'] = $obj_post_data->headline;
+                $data['main_referance_id'] = $obj_post_data->referance_id;
             }
-        }  
-        else
-        {
-           $s_content = $this->load->view( 'post', $obj_post_data, TRUE ); 
+
+            $data['related_news'] = $related_news;
+
+            $data['post_images'] = $obj_post->get_related_gallery($obj_post_data->post_id, array(1,5));
+
+            $data['post_videos'] = $obj_post->get_post_videos($obj_post_data->post_id);
+
+            if ( !empty($obj_post_data->attach) && file_exists($obj_post_data->attach) ){
+                $data['attachment'] = $obj_post_data->attach;
+            }
+
+            $meta_description = $obj_post_data->meta_description;
+
+            $keywords = $obj_post->get_keywords($obj_post_data->post_id);
+
+            $obj_post_data->b_layout = $b_layout;
+
+            /* $data['related_doc'] = $obj_post->get_related_gallery(); */
+
+            //$obj_post_data->related_news_content = $this->load->view( 'related_news', $data, TRUE );
+            $obj_post_data->disqus_content = $this->load->view( 'disqus', $obj_post_data, TRUE );
+
+            $data1['outbrain_url'] = $this->config->config['outbrain_url'];
+            $obj_post_data->outbrain_content = $this->load->view( 'outbrain', $data1, TRUE );
+
+            $obj_post_data->resource  = $obj_post->get_related_gallery($obj_post_data->post_id);
+
+            if ( $obj_post_data->post_type == 4 )
+            {
+                $obj_post_data->has_previous = $obj_post->has_news($obj_post_data->post_id, $a_category_ids, 'previous', $obj_post_data->published_date);
+                $obj_post_data->has_next_news = $obj_post->has_news($obj_post_data->post_id, $a_category_ids, 'next', $obj_post_data->published_date);
+            }
+            else
+            {
+                $obj_post_data->has_previous = $obj_post->has_news($obj_post_data->post_id, $a_category_ids, 'previous');
+                $obj_post_data->has_next_news = $obj_post->has_news($obj_post_data->post_id, $a_category_ids, 'next');
+            }
+
+            if ( $obj_post_data->has_previous )
+            {
+                $obj_post_data->previous_news_link = $obj_post->news_link($obj_post_data->post_id, $a_category_ids, 'previous');
+            }
+
+            if ( $obj_post_data->has_next_news )
+            {
+                $obj_post_data->next_news_link = $obj_post->news_link($obj_post_data->post_id, $a_category_ids, 'next');
+            }
+            if ( $obj_post_data->post_type == 4 )
+            {
+                $obj_post_data->has_more = $obj_post->has_news($obj_post_data->post_id, $a_category_ids, 'none', $obj_post_data->published_date);
+            }
+            else
+            {
+                $obj_post_data->has_more = $obj_post->has_news($obj_post_data->post_id, $a_category_ids);
+            }
+
+
+            $dom = new DOMDocument;
+            $dom->loadHTML($obj_post_data->content);
+            $xp = new DOMXpath($dom);
+
+            $b_found = false;
+            foreach( $xp->query('//*[@style]') as $node) 
+            {
+
+                if ( $node->getAttribute('class') == "related_news_on_post" )
+                {
+                    $related = (string) $dom->saveXML($node);
+                    $style = $node->getAttribute('style');
+                    $b_found = true;
+                    break;
+                }
+            }
+
+            $ar_ad_images = $this->config->config['post-ads'];
+
+            $ar_post_banner = array('category_id' => $i_category_id, 'post_id' => $obj_post_data->post_id);
+            $s_ad_image = get_single_post_custom_banner($ar_post_banner);
+
+            if(!$s_ad_image) {
+
+                $ar_images = $ar_ad_images['add'];
+                list($i_first_image, $i_second_image) = get_rand_images($ar_images);
+
+                $i_first_image_text = '<a href="' . base_url() . $ar_ad_images['link'][$i_first_image] . '">';
+                $i_first_image_text .= '<img id="'. $ar_ad_images['id'][$i_first_image] .'" class="ads ads-image ' . $ar_ad_images['class'][$i_first_image] . ' ';
+                if ( $ar_ad_images['check_login'][$i_first_image] == "1" )
+                {
+                    $i_first_image_text .= 'check_login"';
+                }
+                else
+                {
+                    $i_first_image_text .= '"';
+                }   
+                $i_first_image_text .= 'src="' . base_url() . $ar_images[$i_first_image] . '" /></a>';
+
+                $i_second_image_text = '<a href="' . base_url() . $ar_ad_images['link'][$i_second_image] . '">';
+                $i_second_image_text .= '<img id="'. $ar_ad_images['id'][$i_second_image] .'" class="ads ads-image ' . $ar_ad_images['class'][$i_second_image] . ' ';
+                if ( $ar_ad_images['check_login'][$i_second_image] == "1" )
+                {
+                    $i_second_image_text .= 'check_login"';
+                }
+                else
+                {
+                    $i_second_image_text .= '"';
+                }   
+                $i_second_image_text .= 'src="' . base_url() . $ar_images[$i_second_image] . '" /></a>';
+
+                $s_ad_image = "<p>" . $i_first_image_text . "" . $i_second_image_text . "</p>";
+            }
+
+            $obj_post_data->s_ad_image = $s_ad_image;
+
+            $s_related_news = "";
+            $s_related_news_content = $this->load->view( 'related_news', $data, TRUE );
+            if ( ! $b_found &&  is_array($data['related_news'])  )
+            {
+                $style = "width: 220px; height: 200px; float:right;";
+            }
+            if ( is_array($data['related_news']) )
+            {
+                $s_related_news = '<div class="related_news" style="' . $style . '">' . $s_related_news_content . '</div><p>';
+            }
+
+            if ( ! $b_found &&  is_array($data['related_news'])  )
+            {
+                $obj_post_data->related_news_append = '<div id="related_news_1" class="related_news_parent">' . $s_related_news_content . '</div>';
+            }
+
+            if(isset($obj_post_data->video_file) && $obj_post_data->video_file!="" && $obj_post_data->video_file!=null)
+            {
+                $video_file = trim($obj_post_data->video_file);
+                if($video_file!="")
+                {
+                    $s_content = $this->load->view( 'post_videos', $obj_post_data, TRUE );
+                } 
+                else
+                {
+                    $s_content = $this->load->view( 'post', $obj_post_data, TRUE );
+                }
+            }  
+            else
+            {
+               $s_content = $this->load->view( 'post', $obj_post_data, TRUE ); 
+            }
+            
         }
         
         

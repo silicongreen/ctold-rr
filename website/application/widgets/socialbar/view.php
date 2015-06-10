@@ -126,7 +126,7 @@
     }
     .good-read-image{
         float: right;
-        margin: 5px 13px 5px 0;
+        margin: 7px 13px 5px 0;
     }
     .good-read-text h2{
         color: #FFF;

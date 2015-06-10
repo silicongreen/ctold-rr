@@ -1961,6 +1961,17 @@ $(document).ready(function () {
         
     });
     
+    $(document).off('click', '.close_suggestion').on('click', '.close_suggestion', function (e) {
+        $('.suggested-post-container').toggleClass('suggested-post-container-hidden');
+        $('.post-wrapper').toggleClass('post-wrapper-expand');
+        var label = $(this).text();
+        label = label.trim();
+        label = (label == 'Hide') ? 'Show' : 'Hide';
+        $(this).text(label);
+    });
+    
+    
+    
 });
 
 function getOffsetSum(elem) {

@@ -649,12 +649,15 @@
 
         <div class="more-news-wrapper">
 
-            <div class="more-news-header f2">
-                More in <?php echo $parent_category; ?>
-            </div>
-
             <div class="more-news f2">
-                <?php $widget->run('postdata', $parent_category, $parent_category_id, 'inner', FALSE, 0, 'index', 0, 9, 0, $q = '', NULL); ?>
+                <?php
+                    if($parent_category_id == 59) {
+                        $mix_category = (isset($display_name) && $display_name != "") ? $display_name : $name;
+                    } else {
+                        $mix_category = $obj_child_categories;
+                    }
+                ?>
+                <?php $widget->run('postdata', $parent_category, $parent_category_id, 'inner', FALSE, 0, 'index', 0, 9, 0,'', $mix_category); ?>
             </div>
 
         </div>

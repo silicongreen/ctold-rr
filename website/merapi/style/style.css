@@ -37,9 +37,9 @@ body {
     font-size:1.6rem;
     height:80%;    
     letter-spacing: 1px;
-	background: url('../../styles/layouts/tdsfront/images/BG.png') no-repeat; 
-	background-size:100%;
-	background-position:0px 80px;
+/*    background: url('../../styles/layouts/tdsfront/images/BG.png') no-repeat; 
+    background-size:100%;
+    background-position:0px 80px;*/
 }
 
 h1 {

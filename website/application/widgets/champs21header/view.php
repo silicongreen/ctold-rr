@@ -860,22 +860,17 @@ height: 46px;
         <div class="fixed-menu">
             <ul class="fixed-menu-ul">
                 <?php
-                    if(get_free_user_session('paid_id') && get_free_user_session('paid_school_code'))
-                    { ?>
+                    if(get_free_user_session('paid_id') && get_free_user_session('paid_school_code')) { ?>
                         <li data="magic_mart" class="before-login-user-back" onclick="location.href='<?php echo $my_school_menu_uri; ?>'">                        
                             <div class="<?php echo $school_icon_class;?>">&nbsp;</div> 
-                        </li>   
-                        
-                <?php  }
-                ?>
+                        </li>
+                <?php } ?>
                 <?php if( free_user_logged_in() ) { ?>
-                        <li onclick="location.href='<?php echo base_url('/good-read'); ?>'">
-                    <?php } else { ?>
-                        <li data="good_read" class="before-login-user">
-                    <?php } ?>
-                        
-                    <div class="icon-good-read">&nbsp;</div>                               
-                       
+                    <li onclick="location.href='<?php echo base_url('/good-read'); ?>'">
+                <?php } else { ?>
+                    <li data="good_read" class="before-login-user">
+                <?php } ?>    
+                    <div class="icon-good-read">&nbsp;</div>
                </li>
                 
                 <li data="candle" class="<?php echo ( free_user_logged_in() ) ? 'candlepopup' : 'before-login-user'; ?>">

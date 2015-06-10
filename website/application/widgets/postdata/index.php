@@ -212,8 +212,10 @@ class postdata extends widget
         }
         else
         {
-            if($post_id > 0) {
+            if($post_id > 0 && !empty($q)) {
                 $a_post_params['postCategories.post_id'] = $post_id;
+            } else {
+                $a_post_params['post_id'] = $post_id;
             }
             
             if($b_get_related) {

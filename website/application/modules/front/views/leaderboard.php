@@ -4,12 +4,12 @@
     
     <div class="spellingbee">
         <div style="float: left;width: 100%;padding: 10px 50px;margin-top:20px;">
-            <a href="http://www.champs21.dev/leaderboard/">
+            <a href="http://www.champs21.com/leaderboard/">
                 <h1 style="float: left;color:#000;font-size:40px;margin-top: 20px;" class="title noPrint f2">
                     Leaderboard
                 </h1>
             </a>
-            <a href="http://www.champs21.dev/spellingbee/">
+            <a href="http://www.champs21.com/spellingbee/">
                 <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/sp-logo.png'); ?>" style="float: right;width:10%;">
             </a>
             

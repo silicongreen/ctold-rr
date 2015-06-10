@@ -1,4 +1,4 @@
-<div class="flying_bee"></div>
+<!--<div class="flying_bee"></div>-->
 <div class="home_box">
     <div style="width: 60%;">
         <h2 class="f2" style="color:#FCCC08;">Join The School of Excellence! </h2>

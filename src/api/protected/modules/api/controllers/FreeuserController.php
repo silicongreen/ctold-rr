@@ -367,9 +367,10 @@ class FreeuserController extends Controller
         Yii::app()->end();
     }
 
-    public function actionRelatedNews()
+    public function actionRelatednews()
     {
         $id = Yii::app()->request->getPost('id');
+        
         if (!$id)
         {
             $response['status']['code'] = 400;
@@ -387,6 +388,7 @@ class FreeuserController extends Controller
                 $post_data[$i] = $this->getSingleNewsFromCache($value['id']);
                 $i++;
             }
+            
             $response['data']['post'] = $post_data;
             $response['status']['code'] = 200;
             $response['status']['msg'] = "success";
@@ -2594,7 +2596,7 @@ class FreeuserController extends Controller
         Yii::app()->end();
     }
 
-    public function actionGetCategoryPost()
+    public function actionGetcategorypost()
     {
         $page_number = Yii::app()->request->getPost('page_number');
         $total_showed = Yii::app()->request->getPost('total_showed');

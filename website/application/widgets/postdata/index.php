@@ -32,7 +32,9 @@ if (!defined('BASEPATH'))
 class postdata extends widget
 {
 
-    function run( $s_category_name, $s_category_ids = "", $target = "inner", $b_featured = FALSE, $i_featured_position = 0, $page = "index", $current_page = 0, $limit = 9,$is_game = 0, $q = '', $mix_category = NULL)
+    function run( $s_category_name, $s_category_ids = "", $target = "inner", $b_featured = FALSE,
+            $i_featured_position = 0, $page = "index", $current_page = 0, $limit = 9,$is_game = 0,
+            $q = '', $mix_category = NULL, $b_get_related = false, $post_id = 0)
     {
        
         $CI = & get_instance();        
@@ -86,16 +88,14 @@ class postdata extends widget
             $s_priority = "MAX(t.priority),DESC";
         }
         else if ( $target == "good_read" )
-        {            
-            
+        {   
             $i_user_id = get_free_user_session("id");
             $ar_folder_id_data = $this->user_folder->get_folder_data($i_user_id, $s_category_ids);
  
             $s_priority = "ugr.folder_id,asc+ugr.id,desc";
             
             if ( $s_category_ids > 0 )
-            {
-                
+            {   
                 $is_read = ($ar_folder_id_data->visible == 0 )?0:1;
                 $a_post_params = array(
                                 "ugr.folder_id" => $s_category_ids,
@@ -209,9 +209,11 @@ class postdata extends widget
             $a_post_params = array();
             $a_post_params['stbid'] =$s_category_ids; 
             $ar_post_news = $this->post->gePostNews($a_post_params, $target, "smaller", $s_priority, 0, $limit, $current_page, $b_featured, $i_featured_position);
-        }   
+        }
         else
-        {    
+        {
+            $a_post_params['post_id'] = $post_id;
+            $a_post_params['b_get_related'] = $b_get_related;
             $ar_post_news = $this->post->gePostNews($a_post_params, $target, "smaller", $s_priority, $s_category_ids, $limit, $current_page, $b_featured, $i_featured_position); 
         }
         $data['target'] = $target;

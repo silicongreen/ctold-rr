@@ -130,10 +130,17 @@ class post extends CI_Model{
             if(isset($a_post_params['featured']) && $a_post_params['featured']===1)
             {
                 $fetaured = 1;
-                
             }    
             
-            return get_api_data_from_yii($a_exclude_id,$page_number,$link,$category_id,$popular,$paze_size,$game_type,$fetaured,$stbid,$target);
+            $b_get_related = false;
+            if(isset($a_post_params['b_get_related']) && $a_post_params['post_id'] > 0)
+            {
+                $link = "relatednews";
+                $b_get_related = true;
+                $stbid = $a_post_params['post_id'];
+            }
+            
+            return get_api_data_from_yii($a_exclude_id,$page_number,$link,$category_id,$popular,$paze_size,$game_type,$fetaured,$stbid,$target, $b_get_related, $i_post_id);
             
         }
         else

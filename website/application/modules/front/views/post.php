@@ -18,7 +18,7 @@
                 <?php if ($b_layout) : ?>
                     <div style="float:left;">
                         <a href="<?php echo create_link_url(sanitize($name)); ?>">
-                            <h1 class="title noPrint f2" style="color:#93989C;">
+                            <h1 class="title noPrint f2" style="color:#333333;">
                                 <?php
                                 if (isset($display_name) && $display_name != "") {
                                     echo $display_name;
@@ -154,7 +154,7 @@
                     </div>
 
                     <?php if ($school_id == 0) { ?>
-                        <?php $widget->run('socialbar', $post_id, $main_post_id, $main_headline, $headline, $user_view_count, $wow_count, $language, $other_language, $good_read_single); ?>
+                        <?php $widget->run('socialbar', $post_id, $main_post_id, $main_headline, $headline, $user_view_count, $wow_count, $language, $other_language, $good_read_single, $s_lang); ?>
                     <?php } ?>
 
                     <div class="clearfix"></div>
@@ -416,8 +416,7 @@
 
 
                         <?php if ($school_id == 0) { ?>
-
-                            <?php $widget->run('socialbar', $post_id, $main_post_id, $main_headline, $headline, $user_view_count, $wow_count, $language, $other_language, $good_read_single); ?>
+                            <?php $widget->run('socialbar', $post_id, $main_post_id, $main_headline, $headline, $user_view_count, $wow_count, $language, $other_language, $good_read_single, $s_lang); ?>
                         <?php } ?>
 
                         <div class="clearfix"></div>
@@ -648,7 +647,11 @@
         ?>
 
         <div class="more-news-wrapper">
-
+            
+            <div class="more-news-header f2">
+                More in <?php echo $parent_category; ?>
+            </div>
+            
             <div class="more-news f2">
                 <?php
                     if($parent_category_id == 59) {
@@ -986,7 +989,7 @@
         cursor: pointer;
         float: right;
         font-size: 12px;
-        margin-right: 5px;
+        margin-right: 20px;
         padding-top: 10px;
     }
     .check-also {
@@ -1116,7 +1119,11 @@
         margin: 0 auto 20px;
     }
     .more-news {
-
+        margin: 0;
+        padding: 0;
+    }
+    .more-news > div:nth-child(3) {
+        width: 100% !important;
     }
     .akmanda-excerpt {
         float: left;

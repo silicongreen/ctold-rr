@@ -31,7 +31,7 @@
         <div class="sports-inner-news yesPrint" style="padding: 0px 22px 0 35px;">    
             <div style="float:left;">
                 <a href="<?php echo create_link_url(sanitize($name)); ?>">
-                    <h1 class="title noPrint f2" style="color:#93989C;">
+                    <h1 class="title noPrint f2" style="color:#333333;">
                         <?php
                         if (isset($display_name) && $display_name != "") {
                             echo $display_name;

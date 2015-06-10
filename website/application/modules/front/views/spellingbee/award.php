@@ -5,54 +5,57 @@
     </p>
 </div>
 
-<div class="col-lg-12 award-wrapper">
-    <div class="col-md-12 row-fluid row">
-        <div class="col-lg-4 header">Title</div>
-        <div class="col-lg-4 header">Number of Recipients</div>
-        <div class="col-lg-4 header">Award</div>
-    </div>
-    <div class="col-md-12 row-fluid row">
-        <div class="col-lg-4"><p>Champion</p></div>
-        <div class="col-lg-4"><p>1</p></div>
-        <div class="col-lg-4"><p>MetlifeAlico Education Policy of Tk. 500,000 and trip to Washington D.C, the city of Spelling Bee, with one parent.</p></div>
-    </div>
-    <div class="col-md-12 row-fluid row">
-        <div class="col-lg-4"><p>1st Runner-up</p></div>
-        <div class="col-lg-4"><p>1</p></div>
-        <div class="col-lg-4"><p>Metlife Alico Education Policy of Tk. 300,000</p></div>
-    </div>
-    <div class="col-md-12 row-fluid row">
-        <div class="col-lg-4"><p>2nd Runner-up</p></div>
-        <div class="col-lg-4"><p>1</p></div>
-        <div class="col-lg-4"><p>Metlife Alico Education Policy of Tk. 200,000</p></div>
-    </div>
-    <div class="col-md-12 row-fluid row">
-        <div class="col-lg-4"><p>Semi-Final Winners</p></div>
-        <div class="col-lg-4"><p>8</p></div>
-        <div class="col-lg-4"><p>Souvenir</p></div>
-    </div>
-    <div class="col-md-12 row-fluid row">
-        <div class="col-lg-4"><p>TV Round Participants</p></div>
-        <div class="col-lg-4"><p>96</p></div>
-        <div class="col-lg-4"><p>Souvenir</p></div>
-    </div>
-    <div class="col-md-12 row-fluid row">
-        <div class="col-lg-4"><p>Divisional Round Participants</p></div>
-        <div class="col-lg-4"><p>3000</p></div>
-        <div class="col-lg-4"><p>Certificate</p></div>
-    </div>
+<div class="col-lg-12 award-wrapper">    
+    <table class="table">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Number of Recipients</th>
+            <th>Award</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Champion</td>
+            <td>1</td>
+            <td>MetlifeAlico Education Policy of Tk. 500,000 and trip to Washington D.C, the city of Spelling Bee, with one parent.</td>
+          </tr>
+          <tr>
+            <td>1st Runner-up</td>
+            <td>1</td>
+            <td>Metlife Alico Education Policy of Tk. 300,000</td>
+          </tr>
+          <tr>
+            <td>2nd Runner-up</td>
+            <td>1</td>
+            <td>Metlife Alico Education Policy of Tk. 200,000</td>
+          </tr>
+          <tr>
+            <td>Semi-Final Winners</td>
+            <td>8</td>
+            <td>Souvenir</td>
+          </tr>
+          <tr>
+            <td>TV Round Participants</td>
+            <td>96</td>
+            <td>Souvenir</td>
+          </tr>
+          <tr>
+            <td>Divisional Round Participants</td>
+            <td>3000</td>
+            <td>Certificate</td>
+          </tr>
+        </tbody>
+    </table>
 </div>
 
 <style type="text/css">
-    .award-wrapper .row div {
-        line-height: 50px;
-        text-align: center;
-    }
-    .header {
-        font-size: 18px;
-        font-weight: bold;
-    }
-    .award-wrapper .row p {
-        line-height: 30px;
-    }
+.table
+{
+    border: 1px solid #ddd;
+}
+.table td
+{
+    text-align: center;
+}
 </style>

@@ -362,6 +362,12 @@ class Freeusers extends CActiveRecord {
             $user_info['gender'] = $value->gender;
             $user_info['tds_country_id'] = $value->tds_country_id;
             $user_info['district'] = $value->district;
+            $user_info['division'] = "";
+            if($value->division)
+            {
+                $user_info['division'] = $value->division;
+            }
+            
             $user_info['grade_ids'] = $value->grade_ids;
             $user_info['dob'] = $value->dob;
             $user_info['mobile_no'] = $value->mobile_no;

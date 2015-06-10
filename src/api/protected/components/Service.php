@@ -53,8 +53,11 @@ class Service
         $arUserMode['cPlayMode'] = 'p';
         $arUserMode['bIsNew'] = 0;
         $arUserMode['user_checkpoint'] = 0;
-        $arUserMode['user_id_tokens'] = (object) NULL;
+        $arUserMode['user_checkpoint_score'] = 0;
+        $arUserMode['word_count'] = 0;
+        $arUserMode['old_id_send'] = 0;
         $arUserMode['level_status'] = (object) NULL;
+        $arUserMode['user_id_tokens'] = (object) NULL;
 
         $objfreeuser = new Freeusers();
         $data = $objfreeuser->getFreeuserByCookie();
@@ -76,24 +79,46 @@ class Service
             
             $cache_name = "YII-SPELLINGBEE-USERDATA";
             $response = Settings::getSpellingBeeCache($cache_name);
-            if (isset($response[$iUserId]) && isset($response[$iUserId]['user_checkpoint']))
-            {
-                $arUserMode['user_checkpoint'] = $response[$iUserId]['user_checkpoint'];
-            }
-
-            $arUserMode['cPlayMode'] = 'c';
-            $arUserMode['user_id_tokens'] = Settings::createUserToken($data);
             
+            if(isset($response[$iUserId]) && isset($response[$iUserId]))
+            {
+                if (isset($response[$iUserId]['user_checkpoint']))
+                {
+                    $arUserMode['user_checkpoint'] = $response[$iUserId]['user_checkpoint'];
+                }
+                if(isset($response[$iUserId]['user_checkpoint_score']))
+                {
+                    $arUserMode['user_checkpoint_score'] = $response[$iUserId]['user_checkpoint_score'];
+                } 
+
+                if(isset($response[$iUserId]['old_id_send']) && $response[$iUserId]['old_id_send']==1)
+                {
+                    $arUserMode['old_id_send'] = 1;
+                }
+            }
+            
+            $cache_name = "YII-SPELLINGBEE-USERWORD";
+            $response = Settings::getSpellingBeeCache($cache_name);
+            
+            if(isset($response) && isset($response[$iUserId]) && isset($response[$iUserId]['words']))
+            {
+                $arUserMode['word_count'] = count($response[$iUserId]['words']);
+            }
+            $cache_name = "YII-SPELLINGBEE-LEVEL-STATUS";
+            $responsecache = Settings::getSpellingBeeCache($cache_name);
             
             for($i =0; $i<4; $i++)
             {
                 $arUserMode['level_status']->$i = 1;
-                if(isset($levelstatus) && isset($levelstatus[$iUserId]) && isset($levelstatus[$iUserId][$i]))
+                if(isset($responsecache) && isset($responsecache[$iUserId]) && isset($responsecache[$iUserId][$i]))
                 {
                     $arUserMode['level_status']->$i = 0;
                 }
                 
             }
+
+            $arUserMode['cPlayMode'] = 'c';
+            $arUserMode['user_id_tokens'] = Settings::createUserToken($data);
             
             Settings::clearCurrentWord($iUserId);
             
@@ -138,11 +163,16 @@ class Service
     }
     public function saveCheckPoint($objParams)
     {
+          
         $words_id = $objParams->words;
+        
+        if(isset($objParams->old_words))
+        $old_words_id = $objParams->old_words;
       
         $checkpoint = $objParams->checkpoint;
         $objfreeuser = new Freeusers();
         $data = $objfreeuser->getFreeuserByCookie();
+         
        
         $valid_user = FALSE;
         if ($data && is_int($data) && $words_id && $checkpoint)
@@ -156,6 +186,7 @@ class Service
             }
      
         }
+      
         
         if($valid_user)
         {
@@ -164,23 +195,56 @@ class Service
             $cache_name = "YII-SPELLINGBEE-USERWORD";
             $response = Settings::getSpellingBeeCache($cache_name);
             
-           
-           
-            foreach($word_id_array as $value)
+            $cache_name_checkpoint = "YII-SPELLINGBEE-USERDATA";
+            $check = Settings::getSpellingBeeCache($cache_name_checkpoint);
+            $score_count = 0;
+            
+            if(isset($check) && isset($check[$data]) && isset($check[$data]['user_checkpoint_score']))
             {
-                $response[$data]['words'][] = $value;
-                
+                $score_count = $check[$data]['user_checkpoint_score'];
+            }  
+           
+           
+            
+            if(count($word_id_array)>0)
+            {
+                foreach($word_id_array as $value)
+                {
+                    if($value!="")
+                    {
+                        $response[$data]['words'][] = $value;
+                        $score_count++;
+                    }
+
+                }
+            }
+            
+            $check[$data]['old_id_send'] = 0;
+            if(isset($old_words_id) && $old_words_id)
+            {
+                $old_word_id_array = explode(",", $old_words_id);
+                if(count($old_word_id_array)>0)
+                {
+                    $check[$data]['old_id_send'] = 1;
+                    foreach($old_word_id_array as $value)
+                    {
+                        if($value!="")
+                        {
+                           $score_count++;
+                        }
+
+                    }
+                }     
             }
             
             Settings::setSpellingBeeCache($cache_name, $response);
             
            
             
-            $cache_name = "YII-SPELLINGBEE-USERDATA";
-            $check = Settings::getSpellingBeeCache($cache_name);
-             
+            
+            $check[$data]['user_checkpoint_score'] = $score_count;
             $check[$data]['user_checkpoint'] = $checkpoint;
-            Settings::setSpellingBeeCache($cache_name, $check);
+            Settings::setSpellingBeeCache($cache_name_checkpoint, $check);
             
             Settings::clearCurrentWord($data);
             

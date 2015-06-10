@@ -565,7 +565,7 @@ class SyllabusController extends Controller {
 
     public function actionIndex() {
 
-        if ((Yii::app()->request->isPostRequest) && !empty($_POST)) {
+        
 
             $user_secret = Yii::app()->request->getPost('user_secret');
             $term_id = Yii::app()->request->getPost('term');
@@ -607,10 +607,7 @@ class SyllabusController extends Controller {
                 $response['status']['code'] = 403;
                 $response['status']['msg'] = "Access Denied.";
             }
-        } else {
-            $response['status']['code'] = 400;
-            $response['status']['msg'] = "Bad Request.";
-        }
+         
 
         echo CJSON::encode($response);
         Yii::app()->end();

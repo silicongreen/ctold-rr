@@ -70,14 +70,14 @@
             ?>
             
             <div class="login_reg_div">
-                <!--<div class="search_box_head">
-                        <div style="float: left;margin:5px;">                
-                                <form method="get" class="searchform" action="<?php echo base_url('search'); ?>" role="search">                    
-                                        <input class="field" name="s" id="s" class='search' placeholder="Search this site" type="search" style="border-radius: 6px; -moz-border-radius: 6px; -webkit-border-radius: 6px; width: 220px; margin-top: 3px;">
-                                        <input class="submit search-button" value="" type="submit" />
-                                </form>                
-                        </div>
-                </div>-->
+                <div class="search_box_head">
+                    <div style="float: left;margin:5px;">                
+                        <form method="get" class="searchform" action="<?php echo base_url('search'); ?>" role="search">                    
+                            <input class="field" name="s" id="s" class='search' placeholder="Search this site" type="search" style="border-radius: 6px; -moz-border-radius: 6px; -webkit-border-radius: 6px; width: 160px; margin-top: 3px;">
+                            <input class="submit search-button" value="" type="submit" />
+                        </form>                
+                    </div>
+                </div>
                 <div class="login_reg_div_box">
                     
                     <?php if( !free_user_logged_in() ){ ?>
@@ -819,21 +819,21 @@ height: 46px;
                                 <?php if ( get_notification() ) : ?>
                                     <div class="circle"><?php echo get_notification(); ?></div>
                                 <?php endif; ?>
-                                <div class="ch-item-header">				
+                                <!--div class="ch-item-header">				
                                         <div class="ch-info-wrap-header">
                                                 <div class="ch-info-header">
                                                         <div class="ch-info-front-header ch-img-1-header"></div>
                                                         <div class="ch-info-back-header">
-                                                            <img class="ch-img-1-header-hover " src="<?php echo base_url('merapi/images/icon/notification_hover.png');?>">
+                                                            <img class="ch-img-1-header-hover " src="<?php //echo base_url('merapi/images/icon/notification_hover.png');?>">
                                                         </div>	
                                                 </div>
                                         </div>
                                         <!--<span>Notification</span>-->
-                                </div>
+                                </div-->
 
                         </li>
                     </ul>
-                    <?php }?>
+                    <?php } ?>
                 </div> 
 				
             </div>
@@ -1135,10 +1135,13 @@ if($('.header-logo-div').is(':visible')) {
 
 .login_reg_div
 {
-	float: right;
-        display:inline-block;
-	width: auto;
-	padding-right: 15px;
+	display: inline-block;
+        float: right;
+        padding-right: 15px;
+        position: absolute;
+        right: -50px;
+        top: 17px;
+        width: 30%;
 }
 .login_reg_div_box
 {

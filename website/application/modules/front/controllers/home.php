@@ -1444,7 +1444,7 @@ class home extends MX_Controller {
             
         }
         
-        
+
         if ( $b_found )
         {
             $s_content = str_replace($related, $s_related_news, $s_content);

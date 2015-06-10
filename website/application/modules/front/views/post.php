@@ -30,7 +30,7 @@
                             </h1>
                         </a>
                     </div>
-
+                <input type="hidden" value="<?php echo $parent_category_id;?>" name="main_p_category" id="main_p_category">
                     <div style="clear:both;"></div>
 
                     <?php $parent_category = $name; ?>

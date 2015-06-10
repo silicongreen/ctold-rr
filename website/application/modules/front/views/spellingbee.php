@@ -63,7 +63,7 @@
         
         <div style="margin-top:30px;clear: both;height: 250px;">
             <div class="spelling_bee_play swing" style="">
-            <center><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/sp_play_s3.png'); ?>" style="width:50%;margin-top:40px;" class="scalup"></center>
+            <center><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/spellato.png'); ?>" style="width:75%;margin-top:15px;" class="scalup"></center>
             </div>
             <div class="swing" style="float: left;width: 31%;background: #fff;height: 250px;">
                 <h2 class="f2" style="margin-left:20px;font-size: 16px;">Videos</h2>
@@ -197,10 +197,7 @@
   width: 31%;
   margin-right:36px;
   background-color: #fff;  
-  background-image: url("<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/small_bee.png'); ?>");
-  background-position: left bottom;
-  background-repeat: no-repeat;
-  background-size: 25% auto;
+
 }
 #tabpage_2 ul li, #tabpage_3 ul li, #tabpage_10 ul li {
     list-style: disc !important;

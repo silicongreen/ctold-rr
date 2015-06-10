@@ -154,13 +154,19 @@ class Syllabuses extends CActiveRecord {
             
             $_data['id'] = $row->id;
             $_data['subject_id'] = $row->subject_id;
-            $_data['subject_name'] = $row['subjectDetails']->name;
+            $_data['subject_name'] = Yii::app()->user->school_code;
             $_data['subject_icon_name'] = $row['subjectDetails']->icon_number;
             $_data['subject_icon_path'] = (!empty($row['subjectDetails']->icon_number)) ? Settings::$domain_name . '/images/icons/subjects/' . $row['subjectDetails']->icon_number : null;
-            $school_url = "http://".Yii::app()->user->school_code.".champs21.com";
+            
+            
+            #Yii::app()->user->setState('school_code',null);
+            
+            #unset(Yii::app()->user->school_code);
+            
+            #$school_url = "http://".Yii::app()->user->school_code.".champs21.com";
 
             
-            $_data['syllabus_text'] =  str_replace("/uploads/redactor_uploads/images",$school_url."/uploads/redactor_uploads/images", $row->content);
+            $_data['syllabus_text'] = $row->content; 
             $_data['last_updated'] = $row->updated_at;
             
             $ar_formatted_data[] = $_data;

@@ -590,15 +590,10 @@ class SyllabusController extends Controller {
                     $batch_id = Yii::app()->user->batchId;
                 }
                 
-                
+               
                 $syllabus = new Syllabuses();    
                 $syllabus = $syllabus->getSyllabus($term_id, $batch_id);
-                
-                $response['data']['syllabus'] = array();
-                $response['status']['code'] = 200;
-                $response['status']['msg'] = 'NO_SYLLABUS_FOUND';
-                echo CJSON::encode($response);
-                Yii::app()->end();
+               
 
                 if (!$syllabus) {
                     $response['data']['syllabus'] = array();

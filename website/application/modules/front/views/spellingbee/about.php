@@ -1,7 +1,7 @@
 <h2 class="f2" style="color:#FFCA0A;">About Spelling Bee</h2>
 <div class="col-lg-12 row-fluid row">
     <p>
-        The Online Round will begin from 16th June 2015 and end on the 15th July 2015. Students can compete online to be eligible for the Divisional Round. The description of all the rounds for Spelling Bee 2015 is given below:
+        The Online Round will begin on 16 June 2015 and end on 15 July 2015. Students can compete online to be eligible for the Divisional Round. Description of all the rounds for Spelling Bee 2015 is given below: 
     </p>
 </div>
 
@@ -9,7 +9,10 @@
 <h3>1st round - Online Round</h3>
 <div class="col-lg-12 row-fluid row">
     <p>
-        The 1st round consists of an online competition for which students will have to register at Champs21.com. With an ID and a password to play 'Spelling Bee Online Round' - an online vocabulary game where spellers have to spell words correctly after listening to an audio clip. Spellers can play the game as many times as they want until the 1st Round ends. Only their best scores from the game will be considered. Top spellers from each division will be selected for the 2nd Round.
+        The 1st round consists of an online competition.Here, students will have to register at Champs21.com. and get an ID and a password.  With this ID and password to play 'Spelling Bee Online Round' - an online vocabulary game where spellers have to spell words correctly after listening to an audio clip. Spellers can play the game as many times as they want. Only their best scores from the game will be considered. Top spellers from each division will be selected for the 2nd Round. 
+    </p>
+    <p>
+        Players can play online round from mobiles as well by downloading Champs21.com app. The link is given <a href="https://play.google.com/store/apps/details?id=com.champs21.schoolapp&hl=en" target="_blank">here</a>.   
     </p>
 </div>
 
@@ -17,7 +20,7 @@
 <h3>2nd Round - Divisional Round</h3>
 <div class="col-lg-12 row-fluid row">
     <p>
-        With the top 3,000 spellers (top 1%) from the country, the Divisional Round will kick off. The Spelling Bee team will go to all divisions of Bangladesh and conduct screening sessions from which the best spellers of the country will be filtered out for the TV Round. All spellers of this round will have to appear for a written test followed by an oral test. Further details and dates of this round will be shared with Online Round winners in due time.
+        With the top 3,000 spellers (top 1%) from the country, the Divisional Round will kick off. The Spelling Bee team will go to all divisions of Bangladesh and conduct screening sessions from which the best spellers of the country will be filtered out for the TV Round. All spellers of this round will have to appear for a written test followed by an oral test. Further details and dates of this round will be shared with Online Round winners in due time. 
     </p>
 </div>
 
@@ -25,7 +28,7 @@
 <h3>3rd Round - TV Round</h3>
 <div class="col-lg-12 row-fluid row">
     <p>
-        With the top 96 spellers from the country, the TV Round will kick off. The TV round will be broadcasted on Channel i and will consist of 4 rounds:
+        With the top 96 spellers from the country, the TV Round will kick off. The TV round will be broadcasted on Channel i and will consist of 4 rounds: 
     </p>
     
     <ul>
@@ -36,7 +39,7 @@
     </ul>
     
     <p>
-        Contestants will be tested on spelling skills in a wide variety of different game formats including Spell Hive, Spell It, Spell Buzz and Spell Ring. Further details and dates of the TV Round will be shared with Divisional Round winners in due time.
+        Contestants will be tested on spelling skills in a wide variety of different game formats including Spell Hive, Spell It, Spell Buzz and Spell Ring. Further details and dates of the TV Round will be shared with Divisional Round winners in due time. 
     </p>
 </div>
 

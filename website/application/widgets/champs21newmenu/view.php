@@ -25,7 +25,7 @@ $my_uri = explode("/", $my_uri);
                             <a href="<?php echo base_url() . sanitize($row->name); ?>">
                             <?php endif; ?>
                             <!--<span class="ca-icon-new <?php echo ($my_uri[1] == sanitize($row->name)) ? "active_header_menu" : ""; ?>" style="background: url(<?php echo base_url($row->menu_icon); ?>) no-repeat;background-size:55px;top:0px;left:-5px;"></span>-->
-                            <span class="ca-icon-new <?php echo ($my_uri[1] == sanitize($row->name)) ? "active_header_menu" : ""; ?>" style="background: url(<?php echo 'http://www.champs21.com/' . $row->menu_icon; ?>) no-repeat;background-size:55px;top:0px;left:-5px;"></span>
+                            <span id="nmicon_<?php echo $row->id;?>" class="ca-icon-new <?php echo ($my_uri[1] == sanitize($row->name)) ? "active_header_menu" : ""; ?>" style="background: url(<?php echo 'http://www.champs21.com/' . $row->menu_icon; ?>) no-repeat;background-size:55px;top:0px;left:-5px;"></span>
 
                         </a>
                         <div class="ca-content-main" style="display:none;">

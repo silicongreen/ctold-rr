@@ -100,6 +100,12 @@ class Service
                 {
                     $arUserMode['current_level'] = $response[$iUserId]['current_level'];
                 }
+                if(isset($response[$iUserId]['total_time']))
+                {
+                    $arUserMode['total_time'] = $response[$iUserId]['total_time'];
+                }
+                
+                
                 
              
             }
@@ -177,6 +183,7 @@ class Service
 //        if(isset($objParams->old_words))
 //        $old_words_id = $objParams->old_words;
         
+        $total_time = $objParams->total_time;
         $current_level = $objParams->current_level;
         $remaining_word = $objParams->remaining_word;
       
@@ -210,10 +217,18 @@ class Service
             $check = Settings::getSpellingBeeCache($cache_name_checkpoint);
             $score_count = 0;
             
-            if(isset($check) && isset($check[$data]) && isset($check[$data]['user_checkpoint_score']))
+            if(isset($check) && isset($check[$data]))
             {
-                $score_count = $check[$data]['user_checkpoint_score'];
-            }  
+                if(isset($check[$data]['user_checkpoint_score']))
+                {
+                    $score_count = $check[$data]['user_checkpoint_score'];
+                }
+
+                if(isset($check[$data]['total_time']))
+                {
+                    $total_time = $total_time+$check[$data]['total_time'];
+                } 
+            }
            
            
             
@@ -230,28 +245,13 @@ class Service
                 }
             }
             
-//            $check[$data]['old_id_send'] = 0;
-//            if(isset($old_words_id) && $old_words_id)
-//            {
-//                $old_word_id_array = explode(",", $old_words_id);
-//                if(count($old_word_id_array)>0)
-//                {
-//                    $check[$data]['old_id_send'] = 1;
-//                    foreach($old_word_id_array as $value)
-//                    {
-//                        if($value!="")
-//                        {
-//                           $score_count++;
-//                        }
-//
-//                    }
-//                }     
-//            }
+
             
             Settings::setSpellingBeeCache($cache_name, $response);
             
            
             
+            $check[$data]['total_time'] = $total_time;
             $check[$data]['remaining_word'] = $remaining_word;
             $check[$data]['current_level'] = $current_level;
             $check[$data]['user_checkpoint_score'] = $score_count;

@@ -556,7 +556,9 @@
             <!-- Suggested Post Wrapper Start -->
             <div class="suggested-post-container">
                 <div class="adme-div">
-                    <img src="/images/dummyadd.png">
+                    <a href="/spellingbee" style="display: block">
+                        <img src="/images/spellingbee-banner.png">
+                    </a>
                 </div>
                 <div class="clearfix"></div>
 

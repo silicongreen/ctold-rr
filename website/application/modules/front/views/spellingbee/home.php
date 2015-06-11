@@ -1,10 +1,10 @@
 <!--<div class="flying_bee"></div>-->
 <div class="home_box">    
     <div style="width: 100%;">
-        <div style="width: 41%;float:left;">
-            <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/BG.png'); ?>" style="width:100%;">
+        <div style="width: 41%;float:left;" class="flying_bee1">
+            
         </div>
-        <div style="width: 58%;float:left;">
+        <div style="width: 58%;float:right;">
             <div class="f5" style="float:left;width: 100%;font-size: 20px;">
                 <center><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/join_msg.png'); ?>" style="width:75%;"></center>
             </div>
@@ -45,9 +45,14 @@
 }
 
 .home_box {  
-  display: block;
-  padding: 0px;
-  height:410px;
+  background-image: url("<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/BG.png'); ?>");
+  background-position: left top;
+  background-repeat: no-repeat;
+  background-size: 408px 410px;  
+  height: 410px;
+  left: 0px;
+  position: relative;
+  top: 0px;
 }
 
 .button-filter1 {

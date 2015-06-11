@@ -10,7 +10,7 @@
                 </h1>
             </a>
             <a href="http://www.champs21.com/spellingbee/">
-                <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/sp-logo.png'); ?>" style="float: right;width:10%;">
+                <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/sp-logo.png'); ?>" style="float: right;width:15%;">
             </a>
             
         </div>

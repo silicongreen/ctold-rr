@@ -2105,7 +2105,8 @@ if (!function_exists('set_session_cookie')) {
         $cookie = array(
             'name' => 'c21_session',
             'value' => $cookie_token,
-            'expire' => 2592000
+            'expire' => 2592000,
+            'domain' => str_replace('www', '', $_SERVER['REQUEST_URI'])
         );
         $CI = & get_instance();
         $CI->input->set_cookie($cookie);

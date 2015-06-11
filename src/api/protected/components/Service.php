@@ -164,7 +164,7 @@ class Service
         $objfreeuser = new Freeusers();
         $data = $objfreeuser->getFreeuserByCookie(func_get_arg(0));
 
-        if ($data && is_int($data))
+        if ($data!==FALSE)
         {
             $user_array = array();
             $cache_name = "YII-SPELLINGBEE-USERAGREMENT";
@@ -205,7 +205,7 @@ class Service
          
        
         $valid_user = FALSE;
-        if ($data && is_int($data) && $words_id && $checkpoint)
+        if ($data!==FALSE && $words_id && $checkpoint)
         {
             
             $autorize_check = Settings::authorizeUserCheck($objParams->left, $objParams->right, $objParams->method, $objParams->operator, $objParams->send_id, $data);
@@ -289,7 +289,7 @@ class Service
         $objfreeuser = new Freeusers();
         $data = $objfreeuser->getFreeuserByCookie(func_get_arg(1));
         $valid_user = FALSE;
-        if ($data && is_int($data))
+        if ($data!==FALSE)
         {
 
             $valid_user = TRUE;
@@ -362,7 +362,7 @@ class Service
         $objfreeuser = new Freeusers();
         $data = $objfreeuser->getFreeuserByCookie(func_get_arg(1));
         $valid_user = FALSE;
-        if ($data && is_int($data))
+        if ($data!==FALSE)
         {
             $autorize_check = Settings::authorizeUserCheck($objParams->left, $objParams->right, $objParams->method, $objParams->operator, $objParams->send_id, $data);
            

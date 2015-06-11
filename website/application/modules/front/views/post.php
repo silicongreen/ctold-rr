@@ -989,7 +989,7 @@
         cursor: pointer;
         float: right;
         font-size: 12px;
-        margin-right: 20px;
+        margin-right: 15px;
         padding-top: 10px;
     }
     .check-also {

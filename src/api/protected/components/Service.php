@@ -69,6 +69,7 @@ class Service
         $arUserMode['easyWord'] = Settings::$easyWord;
         $arUserMode['normalWord'] = Settings::$normalWord;
         $arUserMode['hardWord'] = Settings::$hardWord;
+        $arUserMode['arg'] = func_get_arg(0);
 
         $objfreeuser = new Freeusers();
         $data = $objfreeuser->getFreeuserByCookie(func_get_arg(0));

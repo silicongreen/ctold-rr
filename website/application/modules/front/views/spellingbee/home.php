@@ -41,7 +41,7 @@
                 <a  href="https://www.facebook.com/spellbangladesh" target="_blank" class="f2 button-filter3">Facebook</a>
                 </nav>
             </div>
-            <div class="" style="float:left;width: 100%;font-size: 13px;">
+            <div class="" style="float:left;width: 97%;font-size: 13px;">
                 Spelling Bee is back with its 4th season in Bangladesh! Join the Spelling Bee Competition and join the top spellers of the country to fight for the trophy and the prestigious title of Spelling Bee Champion.
             </div>
         </div>

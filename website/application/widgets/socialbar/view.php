@@ -2,7 +2,7 @@
 
     <div class="col-md-2 box-5">                    
         <div class="seen-image f2">
-            <img src="<?php echo base_url("styles/layouts/tdsfront/images/social/seen.png"); ?>" />
+            <img src="<?php echo base_url("styles/layouts/tdsfront/images/social/seen.png"); ?>" style="margin-left: 5px !important; margin-top: 3px;" />
             <span>Seen</span>
         </div>
         <div class="seen"><h2 class=""><?php echo $user_view_count; ?></h2></div>

@@ -75,7 +75,7 @@ class Service
         $data = $objfreeuser->getFreeuserByCookie(func_get_arg(0));
       
         $arUserMode['arg'] = $data;
-        if ($data && is_int($data))
+        if ($data!==FALSE)
         {
             $iUserId = $data;
             $cache_name = "YII-SPELLINGBEE-USERAGREMENT";

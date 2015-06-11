@@ -14,8 +14,12 @@
                     <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/play.png'); ?>" style="width:100%;">
                 </a>
                 <?php if( free_user_logged_in() ) { ?>
+                    <?php $is_joined_spellbee = get_free_user_session('is_joined_spellbee');
+                    if($is_joined_spellbee == 0){
+                    ?>                    
                     <a  href="#" id="join_spellbee_reg" class="f2 button-filter1">Join</a>
-                <?php } else { ?>
+                    
+                    <?php } } else { ?>
                     <a  href="#" class="f2 button-filter1 login-user">Join</a>
                 <?php } ?>
                 <a  href="<?php echo base_url('leaderboard'); ?>" class="f2 button-filter2">Leaderboard</a>

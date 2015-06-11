@@ -175,7 +175,7 @@ if (!function_exists('set_user_sessions')) {
 
         $CI->session->set_userdata($sessionData);
         
-        if ($remember !== false) {
+//        if ($remember !== false) {
 
             $cookie_key = get_session_key();
             $cookie_token = get_session_cookie_token($obj_user, $cookie_key);
@@ -189,7 +189,7 @@ if (!function_exists('set_user_sessions')) {
 
             $CI->db->where('id', $obj_user->id);
             $CI->db->update('tds_free_users', $cookie_data);
-        }
+//        }
         
         set_type_cookie($obj_user->user_type);
     }

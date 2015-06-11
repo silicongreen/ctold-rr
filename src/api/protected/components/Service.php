@@ -6,6 +6,7 @@
 class Service
 {
 
+
     public function logonCheck()
     {
         $objfreeuser = new Freeusers();
@@ -48,6 +49,7 @@ class Service
 
     public function getMode()
     {
+        
 
         $arUserMode = array();
         $arUserMode['cPlayMode'] = 'p';

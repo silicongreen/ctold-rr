@@ -20,7 +20,7 @@ class UserController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('auth','checkauth','geterrors','logout','updateprofile','updateprofilepaiduser','createuser','delete_by_paid_id'),
+                'actions' => array('auth','setfreeuserid',"unsetfreeuserid",'checkauth','geterrors','logout','updateprofile','updateprofilepaiduser','createuser','delete_by_paid_id'),
                 'users' => array('*'),
             ),
 //            array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -470,6 +470,16 @@ class UserController extends Controller {
         }
         echo CJSON::encode($response);
         Yii::app()->end();
+    }
+    
+    public function actionSetFreeUserId()
+    {
+        $id = Yii::app()->request->getParam('id');
+        Yii::app()->user->setState("free_id_flash",$id);
+    }   
+    public function actionUnsetFreeUserId()
+    {
+       Yii::app()->user->setState("free_id_flash",null);
     }
 
     public function actionAuth() {

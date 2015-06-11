@@ -12,7 +12,20 @@ class AmfController extends Controller {
 //		} else {
 //			$server->setProduction(false);
 //		}
+                
+//                $cookies = Yii::app()->request->cookies;
+//                if (isset($cookies['c21_session'])) 
+//                {
+//                    echo $cookies['c21_session']->value;
+//                }
+//                if(isset(Yii::app()->user->free_id_flash))
+//                {
+//                    $data = Yii::app()->user->free_id_flash;
+//                }
+//                echo $data;
+                #$cookies = Yii::app()->request->cookies;
 
+                #$server->set();
 		// Add our class to Zend AMF Server.
 		$server->setClass("Service");
 

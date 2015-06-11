@@ -909,8 +909,8 @@ $(document).ready(function () {
         var pop_up_data = {
             'spellato': {
                 'icon': 'spellato.png',
-                'header_label': 'Spellato Download',
-                'custom_message': "<p style='font-size:16px;font-weigt:400;'>Download Spellato PDF Spelling Bee Season 4.</p>"
+                'header_label': 'Download Spellato',
+                'custom_message': "<p style='font-size:16px;font-weigt:400;'>Download and practise to win Spelling Bee 2015! Be the best while the rest rests! Practise while on the way to school and during breaks!</p>"
             }
         };
 
@@ -925,7 +925,7 @@ $(document).ready(function () {
         $('.custom_message').html('');
         $('.custom_message').html(pop_up_data[key].custom_message);
 
-        var html_before_login_popup = $('#global-popup-box').html();
+        var html_before_login_popup = $('#global-popup-box-for-spellato').html();
 
         $.fancybox({
             'content': html_before_login_popup,

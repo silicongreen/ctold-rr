@@ -23,7 +23,7 @@
 class Freeusers extends CActiveRecord {
 
     public $num_rows = 0;
-    public $check_service = TRUE;
+    public $check_service = FALSE;
     public $check_id = 259;
 
     /**

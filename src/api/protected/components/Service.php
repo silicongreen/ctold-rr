@@ -15,16 +15,16 @@ class Service
         {
             $user_cookie = $cookies['c21_session']->value;
         }
-        $data = $objfreeuser->getFreeuserByCookie();
+        $data = $objfreeuser->getFreeuserByCookie(func_get_arg(0));
         return ( is_int($data)) ? TRUE : FALSE;
     }
 
     public function getWebScores($iLimit = 10)
     {
         $objfreeuser = new Freeusers();
-        $data = $objfreeuser->getFreeuserByCookie();
+        $data = $objfreeuser->getFreeuserByCookie(func_get_arg(1));
 
-        if (isset($data) && is_int($data))
+        if ($data!==FALSE)
         {
             $user_id = $data;
         }
@@ -50,7 +50,7 @@ class Service
     public function getMode()
     {
         
-
+       
         $arUserMode = array();
         $arUserMode['cPlayMode'] = 'p';
         $arUserMode['bIsNew'] = 0;
@@ -69,12 +69,14 @@ class Service
         $arUserMode['easyWord'] = Settings::$easyWord;
         $arUserMode['normalWord'] = Settings::$normalWord;
         $arUserMode['hardWord'] = Settings::$hardWord;
+        $arUserMode['arg'] = func_get_arg(0);
 
         $objfreeuser = new Freeusers();
-        $data = $objfreeuser->getFreeuserByCookie();
+        $data = $objfreeuser->getFreeuserByCookie(func_get_arg(0));
       
-
-        if ($data && is_int($data))
+        
+        $arUserMode['arg'] = $data;
+        if ($data!==FALSE)
         {
             $iUserId = $data;
             $cache_name = "YII-SPELLINGBEE-USERAGREMENT";
@@ -160,9 +162,9 @@ class Service
         $arUserMode['bTerms'] = FALSE;
 
         $objfreeuser = new Freeusers();
-        $data = $objfreeuser->getFreeuserByCookie();
+        $data = $objfreeuser->getFreeuserByCookie(func_get_arg(0));
 
-        if ($data && is_int($data))
+        if ($data!==FALSE)
         {
             $user_array = array();
             $cache_name = "YII-SPELLINGBEE-USERAGREMENT";
@@ -199,11 +201,11 @@ class Service
       
         $checkpoint = $objParams->checkpoint;
         $objfreeuser = new Freeusers();
-        $data = $objfreeuser->getFreeuserByCookie();
+        $data = $objfreeuser->getFreeuserByCookie(func_get_arg(1));
          
        
         $valid_user = FALSE;
-        if ($data && is_int($data) && $words_id && $checkpoint)
+        if ($data!==FALSE && $words_id && $checkpoint)
         {
             
             $autorize_check = Settings::authorizeUserCheck($objParams->left, $objParams->right, $objParams->method, $objParams->operator, $objParams->send_id, $data);
@@ -285,9 +287,9 @@ class Service
     {
        
         $objfreeuser = new Freeusers();
-        $data = $objfreeuser->getFreeuserByCookie();
+        $data = $objfreeuser->getFreeuserByCookie(func_get_arg(1));
         $valid_user = FALSE;
-        if ($data && is_int($data))
+        if ($data!==FALSE)
         {
 
             $valid_user = TRUE;
@@ -358,9 +360,9 @@ class Service
     {
 
         $objfreeuser = new Freeusers();
-        $data = $objfreeuser->getFreeuserByCookie();
+        $data = $objfreeuser->getFreeuserByCookie(func_get_arg(1));
         $valid_user = FALSE;
-        if ($data && is_int($data))
+        if ($data!==FALSE)
         {
             $autorize_check = Settings::authorizeUserCheck($objParams->left, $objParams->right, $objParams->method, $objParams->operator, $objParams->send_id, $data);
            

@@ -20,6 +20,8 @@ class Settings
     public static $AssignmentText = "New Assignment";
     public static $education_changes_life = 59;
     public static $notification_url = "http://www.champs21.com/front/ajax/send_paid_notification";
+    
+    //spelling bee config
     public static $method = array("c", "p", "s", "m", "d");
     public static $operator = array("m", "p");
     public static $encoded_left = TRUE;
@@ -30,6 +32,16 @@ class Settings
     
     public static $check_service = TRUE;
     public static $check_id = 259;
+    
+    public static $spellingbeeConfig = TRUE;
+    public static $alwaysAgreementCheck = TRUE;
+    public static $checkPointSize = 25;
+    public static $dailyWord = 20;
+    public static $easyWord = 50;
+    public static $normalWord = 50;
+    public static $hardWord = 20;
+    
+    
     public static $school_join_approved = array(
         1 => false,
         2 => false,

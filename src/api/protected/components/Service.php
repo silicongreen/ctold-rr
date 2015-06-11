@@ -59,6 +59,14 @@ class Service
         $arUserMode['current_level'] = 0;
         $arUserMode['level_status'] = (object) NULL;
         $arUserMode['user_id_tokens'] = (object) NULL;
+        
+        $arUserMode['spellingbeeConfig'] = Settings::$spellingbeeConfig;
+        $arUserMode['alwaysAgreementCheck'] = Settings::$alwaysAgreementCheck;
+        $arUserMode['checkPointSize'] = Settings::$checkPointSize;
+        $arUserMode['dailyWord'] = Settings::$dailyWord;
+        $arUserMode['easyWord'] = Settings::$easyWord;
+        $arUserMode['normalWord'] = Settings::$normalWord;
+        $arUserMode['hardWord'] = Settings::$hardWord;
 
         $objfreeuser = new Freeusers();
         $data = $objfreeuser->getFreeuserByCookie();

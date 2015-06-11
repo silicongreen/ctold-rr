@@ -6,6 +6,7 @@
 class Service
 {
 
+
     public function logonCheck()
     {
         $objfreeuser = new Freeusers();
@@ -48,8 +49,7 @@ class Service
 
     public function getMode()
     {
-        $server = new Zend_Amf_Server();
-        echo $server->getRequest();
+        
 
         $arUserMode = array();
         $arUserMode['cPlayMode'] = 'p';

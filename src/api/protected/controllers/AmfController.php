@@ -23,8 +23,7 @@ class AmfController extends Controller {
 //                    $data = Yii::app()->user->free_id_flash;
 //                }
 //                echo $data;
-                $cookies = Yii::app()->request->cookies;
-                $server->setRequest($cookies['c21_session']->value);
+                #$cookies = Yii::app()->request->cookies;
 
                 #$server->set();
 		// Add our class to Zend AMF Server.

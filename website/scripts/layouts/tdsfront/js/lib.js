@@ -904,7 +904,42 @@ $(document).ready(function () {
             'margin': 0
         });
     });
+    $(document).on("click", '.spellato_dl_link', function () {
 
+        var pop_up_data = {
+            'spellato': {
+                'icon': 'spellato.png',
+                'header_label': 'Spellato Download',
+                'custom_message': "<p style='font-size:16px;font-weigt:400;'>Download Spellato PDF Spelling Bee Season 4.</p>"
+            }
+        };
+
+        var key = $(this).attr('data');
+
+        $('.before-login-user-header-label').html('');
+        $('.before-login-user-header-label').html(pop_up_data[key].header_label);
+
+        $('.before-login-user-icon-wrapper').html('');
+        $('.before-login-user-icon-wrapper').html('<img src="/styles/layouts/tdsfront/image/' + pop_up_data[key].icon + '" width="75" />');
+
+        $('.custom_message').html('');
+        $('.custom_message').html(pop_up_data[key].custom_message);
+
+        var html_before_login_popup = $('#global-popup-box').html();
+
+        $.fancybox({
+            'content': html_before_login_popup,
+            'width': 450,
+            'transitionIn': 'fade',
+            'transitionOut': 'fade',
+            'openEffect': 'elastic',
+            'openSpeed': 350,
+            'fitToView': true,
+            'autoSize': true,
+            'padding': 0,
+            'margin': 0
+        });
+    });
 
     $(document).on("click", '#free_user_profile_picture', function () {
         $('#profile_image_file').trigger('click');
@@ -1181,10 +1216,35 @@ $(document).ready(function () {
             'fitToView': false,
             'autoSize': false,
             'padding': 0,
-            'margin': 0
+            'margin': 0,            
         });
     });
-    
+    $(document).on("click", '#play_spellbee_4', function () {
+
+        var html_frm_spellbee_reg = $('#frm_spellbee_reg').html();
+
+        var nzData = 'http://www.champs21.com/swf/spellingbee_2015/index.html';
+
+        
+        $.fancybox({  
+             href: nzData,
+            'width': 800,
+            'height': 600,
+            'transitionIn': 'fade',
+            'transitionOut': 'fade',
+            'openEffect': 'elastic',
+            'openSpeed': 350,
+            'fitToView': false,
+            'autoSize': false,
+            'padding': 0,
+            'margin': 0,
+            'type': 'iframe',            
+            helpers   : { 
+            overlay : {closeClick: false} 
+           }
+                 
+        });
+    });
     $(document).on("click", '#join_spellbee_reg', function () {
 
         var html_frm_spellbee_reg = $('#frm_spellbee_reg').html();

@@ -1,4 +1,5 @@
 <!--<div class="flying_bee"></div>-->
+
 <div class="home_box">    
     <div style="width: 100%;">
         <div style="width: 41%;float:left;" class="flying_bee1">
@@ -10,9 +11,23 @@
             </div>
             <div style="clear: both;float:left;width: 100%;margin-top:10px;">
                 <nav>
-                <a style="float: left;width:110px;" href="<?php echo base_url('leaderboard'); ?>">
-                    <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/play.png'); ?>" style="width:100%;">
-                </a>
+                <?php if( free_user_logged_in() ) { ?>
+                    <?php $is_joined_spellbee = get_free_user_session('is_joined_spellbee');
+                    if($is_joined_spellbee == 1){
+                    ?>                                        
+                    <a name="windowX" title="Spelling Bee | Season 4" id="play_spellbee_4" style="float: left;width:110px;" href="#">
+                        <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/play.png'); ?>" style="width:100%;">
+                    </a>
+                    <?php } else{ ?>
+                        <a  id="join_spellbee_reg" style="float: left;width:110px;" href="#">
+                            <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/play.png'); ?>" style="width:100%;">
+                        </a>
+                    <?php }
+                    } else { ?>
+                    <a  class="f2 login-user" style="float: left;width:110px;" href="#">
+                        <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/play.png'); ?>" style="width:100%;">
+                    </a>
+                <?php } ?>
                 <?php if( free_user_logged_in() ) { ?>
                     <?php $is_joined_spellbee = get_free_user_session('is_joined_spellbee');
                     if($is_joined_spellbee == 0){
@@ -23,17 +38,28 @@
                     <a  href="#" class="f2 button-filter1 login-user">Join</a>
                 <?php } ?>
                 <a  href="<?php echo base_url('leaderboard'); ?>" class="f2 button-filter2">Leaderboard</a>
-                <a  href="https://www.facebook.com/spellbangladesh" target="_blank" class="f2 button-filter3">Facebook Like</a>
+                <a  href="https://www.facebook.com/spellbangladesh" target="_blank" class="f2 button-filter3">Facebook</a>
                 </nav>
             </div>
-            <div class="f5" style="float:left;width: 100%;font-size: 13px;">
+            <div class="" style="float:left;width: 100%;font-size: 13px;">
                 Spelling Bee is back with its 4th season in Bangladesh! Join the Spelling Bee Competition and join the top spellers of the country to fight for the trophy and the prestigious title of Spelling Bee Champion.
             </div>
         </div>
     </div>
 </div>
+<div class="spellingbee_ct"></div>
+<script type="text/javascript"> 
+//$('#play_spellbee_4').popupWindow({ 
+//centerBrowser:1 ,
+//height:600, 
+//width:800, 
+//location:1,
+//}); 
+//$(document).on("click", "#play_spellbee_4", function () {
+//        window.open('http://www.google.com/url?q=http%3A%2F%2Fwww.champs21.com%2Fswf%2Fspellingbee_2015%2Findex.html&sa=D&sntz=1&usg=AFQjCNEdK20MbmKmvjxzrtwURnEfQP3fSA','liveMatches','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=720,height=800');
+//    });
 
-
+</script>
 
 <style>
 .flying_bee {

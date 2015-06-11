@@ -201,7 +201,7 @@ class Settings
 
             curl_exec( $objCURL );
             $curl_status = curl_getinfo ($objCURL);
-            if($curl_status['http_code']==200)
+            if($curl_status['http_code']==200 && filesize($strMusicFile)>5000)
             {
                 $sound_status = 1;
                 curl_close( $objCURL );

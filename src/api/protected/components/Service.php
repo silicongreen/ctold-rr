@@ -74,7 +74,7 @@ class Service
         $objfreeuser = new Freeusers();
         $data = $objfreeuser->getFreeuserByCookie(func_get_arg(0));
       
-
+        $arUserMode['arg'] = $data;
         if ($data && is_int($data))
         {
             $iUserId = $data;

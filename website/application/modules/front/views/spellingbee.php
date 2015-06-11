@@ -4,7 +4,7 @@
     <div style="float:left;margin-left:20px;width: 96%;">
         <a href="http://www.champs21.dev/spellingbee/">
             <h1 style="color:#93989C;float: left;" class="title noPrint f2">
-                Spelling Bee
+                Spelling Bee <?php $model->mobile_no?>
             </h1>
         </a>
         
@@ -84,14 +84,21 @@
         
         <div style="margin-top:30px;clear: both;height: 250px;">
             <div class="spelling_bee_play swing" style="">
-            <center><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/spellato.png'); ?>" style="width:75%;margin-top:15px;" class="scalup"></center>
+                <h2 class="f2" style="margin-left:30px;font-size: 16px;">Download PDF</h2>
+            <center><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/spellato.png'); ?>" style="width:55%;margin-top:15px;" class="scalup"></center>
             </div>
             <div class="swing" style="float: left;width: 31%;background: #fff;height: 250px;">
-                <h2 class="f2" style="margin-left:20px;font-size: 16px;">Videos</h2>
-            <center><a href="https://www.youtube.com/channel/UCywQj51MiCqHzQAa0Mg4KXg" target="_blank"><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/spellingbee_video.png'); ?>" style="width:80%;"></a></center>
+                <h2 class="f2" style="margin-left:30px;font-size: 16px;">Archive</h2>
+                <a  href="<?php echo base_url('season3'); ?>" class="f2 button-filter">Season 3</a>
+                <a  href="<?php echo base_url('season2'); ?>" class="f2 button-filter">Season 2</a>
+                <a  href="<?php echo base_url('season1'); ?>" class="f2 button-filter">Season 1</a>
             </div>
-            <div class="swing" style="float: right;width: 31%;background: #fff;height: 250px;">
-                <center><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/spellato.png'); ?>" style="width:75%;margin-top:15px;" class="scalup"></center>
+            <div class="swing google_bg" style="float: right;width: 31%;background-color: #fff;height: 250px;">
+                <h2 class="f2" style="margin-left:30px;font-size: 16px;">Good News!!</h2>
+                <p style="font-size: 12px !important;line-height: 16px;padding: 0 30px;width: 225px;">
+                    Now you can play online round from your android mobile.Go to Play Store and download the App <a href="https://play.google.com/store/apps/details?id=com.champs21.schoolapp&hl=en" target="_blank">Champs21</a>
+                </p>
+                <a style="margin-left:30px;" href="https://play.google.com/store/apps/details?id=com.champs21.schoolapp&hl=en" target="_blank"><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/google_play.png'); ?>" style="width:55%;margin-top:15px;" class="scalup"></a>
             </div>
         </div>
         
@@ -251,7 +258,16 @@
     padding-left: 10px;
 }
 
-
+.google_bg
+{
+    background-image: url("<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/phone.png'); ?>");
+    background-position: right center;
+    background-repeat: no-repeat;
+    background-size: 25% auto;    
+    left: 0px;
+    position: relative;
+    top: 2px;    
+}
 
 
 .scalup
@@ -275,6 +291,29 @@
         -webkit-animation-iteration-count: 1;
         animation-iteration-count: 1;
 }
+
+.button-filter {
+  background-color: #f2fafd;
+  border: 1px solid #D6F2FC;
+  color: #93989c;
+  cursor: pointer;
+  display: block;
+  font-size: 17px;
+  font-weight: normal;
+  margin:8px 56px;
+  padding: 10px 17px;
+  text-decoration: none;
+  transition: all 0.25s ease-in 0s;
+  width: 200px;
+  text-align:center;
+}
+
+.button-filter:hover, .button-filter1:active {
+  background-color: #FDB218;
+  color: #ffffff;
+  transition: all 0.25s linear 0s;
+}
+
 @-webkit-keyframes swing
 {
     15%

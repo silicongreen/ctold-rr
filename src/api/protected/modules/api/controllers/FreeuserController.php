@@ -1901,7 +1901,7 @@ class FreeuserController extends Controller
     {
         $id = Yii::app()->request->getPost('id');
         $user_view_count = Yii::app()->request->getPost('user_view_count');
-        $view_count = Yii::app()->request->getPost('user_view_count');
+        $view_count = Yii::app()->request->getPost('view_count');
         $delete_cache = Yii::app()->request->getPost('delete_cache');
 
         $cache_name = "YII-SINGLE-POST-CACHE-" . $id;
@@ -1914,9 +1914,11 @@ class FreeuserController extends Controller
         }
         else if ($cache_data !== false && $delete_cache == "no" && $user_view_count && $view_count)
         {
-            $cache_data['seen'] = $cache_data['seen'] + $view_count;
-            $cache_data['view_count'] = $cache_data['seen'] + $view_count;
-            $cache_data['user_view_count'] = $cache_data['user_view_count'] + $user_view_count;
+            $postModel = new Post();
+            $postobj = $postModel->findByPk($id);
+            $cache_data['seen'] = $postobj->view_count;
+            $cache_data['view_count'] = $postobj->view_count;
+            $cache_data['user_view_count'] = $postobj->user_view_count;
             $singlepost = $cache_data;
         }
         else if ($cache_data !== false)
@@ -2089,9 +2091,9 @@ class FreeuserController extends Controller
             if ($cache_data !== false)
             {
 
-                $cache_data['seen'] = $cache_data['seen'] + Settings::$count_update_by;
-                $cache_data['view_count'] = $cache_data['seen'] + Settings::$count_update_by;
-                $cache_data['user_view_count'] = $cache_data['user_view_count'] + Settings::$count_update_by;
+                $cache_data['seen'] = $postobj->view_count;
+                $cache_data['view_count'] = $postobj->view_count;
+                $cache_data['user_view_count'] = $postobj->user_view_count;
                 $singlepost = $cache_data;
             }
             else

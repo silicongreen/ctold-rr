@@ -37,7 +37,7 @@ class Service
         if ($user_data)
         {
             $highscore = new Highscore();
-            $arUserScores = $highscore->getLeaderBoard($iLimit, $user_data->district, $user_data->tds_country_id);
+            $arUserScores = $highscore->getLeaderBoard($iLimit, $user_data->division, $user_data->tds_country_id);
             return $arUserScores;
         }
         else

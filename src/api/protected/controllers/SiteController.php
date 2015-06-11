@@ -27,6 +27,10 @@ class SiteController extends Controller
 	 */
 	public function actionIndex()
 	{
+            
+            $objfreeuser = new Freeusers();
+        $data = $objfreeuser->getFreeuserByCookie();
+        echo $data;
                 $cookies = Yii::app()->request->cookies;
                 $user_cookie = "";
                 if (isset($cookies['c21_session'])) {

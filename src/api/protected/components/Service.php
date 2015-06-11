@@ -24,7 +24,7 @@ class Service
         $objfreeuser = new Freeusers();
         $data = $objfreeuser->getFreeuserByCookie(func_get_arg(1));
 
-        if (isset($data) && is_int($data))
+        if ($data!==FALSE)
         {
             $user_id = $data;
         }

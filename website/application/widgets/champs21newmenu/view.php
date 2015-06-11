@@ -20,7 +20,8 @@ $my_uri = explode("/", $my_uri);
                 ?>			
                 <li>
                     <?php if ($row->id == 7): ?>
-                        <a href="https://www.youtube.com/channel/UCywQj51MiCqHzQAa0Mg4KXg" target="_blank">
+<!--                        <a href="https://www.youtube.com/channel/UCywQj51MiCqHzQAa0Mg4KXg" target="_blank">-->
+                        <a href="<?php echo base_url('spellingbee'); ?>">
                         <?php else: ?>
                             <a href="<?php echo base_url() . sanitize($row->name); ?>">
                             <?php endif; ?>

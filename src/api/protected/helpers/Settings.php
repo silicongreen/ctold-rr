@@ -250,6 +250,10 @@ class Settings
                 $sound_status = 1;
                 curl_close( $objCURL );
                 fclose( $fp );
+                if(filesize($strMusicFile)<500)
+                {
+                   $sound_status = 0; 
+                }    
             }
             else
             {

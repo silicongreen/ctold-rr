@@ -64,7 +64,7 @@ class FreeuserController extends Controller
             $strMusicFile = Settings::$main_path."upload/spellingbee/".$strWord.".mp3";
 
 
-            if ( file_exists( $strMusicFile ) && is_file( $strMusicFile ) && is_readable( $strMusicFile ) )
+            if ( file_exists( $strMusicFile ) && is_file( $strMusicFile ) && is_readable( $strMusicFile ) && filesize($strMusicFile)>500 )
             {
                 //do nothing
 

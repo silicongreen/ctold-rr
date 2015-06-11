@@ -83,9 +83,12 @@
         
         
         <div style="margin-top:30px;clear: both;height: 250px;">
-            <div class="spelling_bee_play swing" style="">
-                <h2 class="f2" style="margin-left:30px;font-size: 16px;">Download PDF</h2>
-            <center><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/spellato.png'); ?>" style="width:55%;margin-top:15px;" class="scalup"></center>
+            <div class="spelling_bee_play swing google_bg" style="">
+                <h2 class="f2" style="margin-left:30px;font-size: 16px;">Good News!!</h2>
+                <p style="font-size: 12px !important;line-height: 16px;padding: 0 30px;width: 225px;">
+                    Now you can play online round from your android mobile.Go to Play Store and download the App <a href="https://play.google.com/store/apps/details?id=com.champs21.schoolapp&hl=en" target="_blank">Champs21</a>
+                </p>
+                <a style="margin-left:30px;" href="https://play.google.com/store/apps/details?id=com.champs21.schoolapp&hl=en" target="_blank"><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/google_play.png'); ?>" style="width:55%;margin-top:15px;" class="scalup"></a>
             </div>
             <div class="swing" style="float: left;width: 31%;background: #fff;height: 250px;">
                 <h2 class="f2" style="margin-left:30px;font-size: 16px;">Archive</h2>
@@ -93,12 +96,9 @@
                 <a  href="<?php echo base_url('season2'); ?>" class="f2 button-filter">Season 2</a>
                 <a  href="<?php echo base_url('season1'); ?>" class="f2 button-filter">Season 1</a>
             </div>
-            <div class="swing google_bg" style="float: right;width: 31%;background-color: #fff;height: 250px;">
-                <h2 class="f2" style="margin-left:30px;font-size: 16px;">Good News!!</h2>
-                <p style="font-size: 12px !important;line-height: 16px;padding: 0 30px;width: 225px;">
-                    Now you can play online round from your android mobile.Go to Play Store and download the App <a href="https://play.google.com/store/apps/details?id=com.champs21.schoolapp&hl=en" target="_blank">Champs21</a>
-                </p>
-                <a style="margin-left:30px;" href="https://play.google.com/store/apps/details?id=com.champs21.schoolapp&hl=en" target="_blank"><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/google_play.png'); ?>" style="width:55%;margin-top:15px;" class="scalup"></a>
+            <div class="swing" style="float: right;width: 31%;background-color: #fff;height: 250px;">
+                <h2 class="f2" style="margin-left:30px;font-size: 16px;">Download PDF</h2>
+                <center><img data="spellato" class="spellato_dl_link" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/spellato.png'); ?>" style="width:55%;margin-top:15px;" class="scalup"></center>                
             </div>
         </div>
         

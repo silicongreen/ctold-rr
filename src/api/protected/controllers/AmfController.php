@@ -12,6 +12,11 @@ class AmfController extends Controller {
 //		} else {
 //			$server->setProduction(false);
 //		}
+                if(isset(Yii::app()->user->free_id_flash))
+                {
+                    $data = Yii::app()->user->free_id_flash;
+                }
+                echo $data;
 
 		// Add our class to Zend AMF Server.
 		$server->setClass("Service");

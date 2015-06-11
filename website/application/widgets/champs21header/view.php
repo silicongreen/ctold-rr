@@ -948,6 +948,29 @@ height: 46px;
 
             </div>
         </div>
+        <div id="global-popup-box-for-spellato" style="display: none;">
+            <div id="before-login-user-wrapper">
+
+                <div class="before-login-user-header">
+                    <div class="f2 before-login-user-header-label">
+                        
+                    </div>
+                    <div class="before-login-user-icon-wrapper">
+                        <img src="/styles/layouts/tdsfront/image/good_read_red_icon.png" width="75" />
+                    </div>
+
+                </div>
+
+                <div class="before-login-user-body">
+
+                    <div class="custom_message"></div>
+                    <p class="common_message"><a href="#" target="_blank">Click Here</a></p>
+
+                    
+                </div>
+
+            </div>
+        </div>
         <!--   Good Read, Candle, Magic Mart and Read Later Pop up     -->
         
                 <?php

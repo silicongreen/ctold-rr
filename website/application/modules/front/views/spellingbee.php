@@ -98,7 +98,7 @@
             </div>
             <div class="swing" style="float: right;width: 31%;background-color: #fff;height: 250px;">
                 <h2 class="f2" style="margin-left:30px;font-size: 16px;">Download PDF</h2>
-                <center><img data="spellato" class="spellato_dl_link" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/spellato.png'); ?>" style="width:55%;margin-top:15px;" class="scalup"></center>                
+                <center><img data="spellato" class="spellato_dl_link" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/spellato.png'); ?>" style="width:55%;margin-top:15px;cursor: pointer;" class="scalup"></center>                
             </div>
         </div>
         

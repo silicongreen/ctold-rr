@@ -15,14 +15,14 @@ class Service
         {
             $user_cookie = $cookies['c21_session']->value;
         }
-        $data = $objfreeuser->getFreeuserByCookie();
+        $data = $objfreeuser->getFreeuserByCookie(func_get_arg(0));
         return ( is_int($data)) ? TRUE : FALSE;
     }
 
     public function getWebScores($iLimit = 10)
     {
         $objfreeuser = new Freeusers();
-        $data = $objfreeuser->getFreeuserByCookie();
+        $data = $objfreeuser->getFreeuserByCookie(func_get_arg(1));
 
         if (isset($data) && is_int($data))
         {
@@ -50,7 +50,7 @@ class Service
     public function getMode()
     {
         
-
+       
         $arUserMode = array();
         $arUserMode['cPlayMode'] = 'p';
         $arUserMode['bIsNew'] = 0;
@@ -69,11 +69,12 @@ class Service
         $arUserMode['easyWord'] = Settings::$easyWord;
         $arUserMode['normalWord'] = Settings::$normalWord;
         $arUserMode['hardWord'] = Settings::$hardWord;
+        $arUserMode['arg'] = func_get_arg(0);
 
         $objfreeuser = new Freeusers();
-        $data = $objfreeuser->getFreeuserByCookie();
+        $data = $objfreeuser->getFreeuserByCookie(func_get_arg(0));
       
-
+        $arUserMode['arg'] = $data;
         if ($data && is_int($data))
         {
             $iUserId = $data;
@@ -160,7 +161,7 @@ class Service
         $arUserMode['bTerms'] = FALSE;
 
         $objfreeuser = new Freeusers();
-        $data = $objfreeuser->getFreeuserByCookie();
+        $data = $objfreeuser->getFreeuserByCookie(func_get_arg(0));
 
         if ($data && is_int($data))
         {
@@ -199,7 +200,7 @@ class Service
       
         $checkpoint = $objParams->checkpoint;
         $objfreeuser = new Freeusers();
-        $data = $objfreeuser->getFreeuserByCookie();
+        $data = $objfreeuser->getFreeuserByCookie(func_get_arg(1));
          
        
         $valid_user = FALSE;
@@ -285,7 +286,7 @@ class Service
     {
        
         $objfreeuser = new Freeusers();
-        $data = $objfreeuser->getFreeuserByCookie();
+        $data = $objfreeuser->getFreeuserByCookie(func_get_arg(1));
         $valid_user = FALSE;
         if ($data && is_int($data))
         {
@@ -358,7 +359,7 @@ class Service
     {
 
         $objfreeuser = new Freeusers();
-        $data = $objfreeuser->getFreeuserByCookie();
+        $data = $objfreeuser->getFreeuserByCookie(func_get_arg(1));
         $valid_user = FALSE;
         if ($data && is_int($data))
         {

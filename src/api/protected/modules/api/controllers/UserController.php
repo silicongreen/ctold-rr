@@ -472,12 +472,12 @@ class UserController extends Controller {
         Yii::app()->end();
     }
     
-    public function setFreeUserId()
+    public function actionSetFreeUserId()
     {
         $id = Yii::app()->request->getParam('id');
         Yii::app()->user->setState("free_id_flash",$id);
     }   
-    public function unsetFreeUserId()
+    public function actionUnsetFreeUserId()
     {
        Yii::app()->user->setState("free_id_flash",null);
     }

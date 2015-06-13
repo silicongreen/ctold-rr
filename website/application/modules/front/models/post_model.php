@@ -92,7 +92,35 @@ class Post_model extends DataMapper
 
         return (count($obj_rows->all) > 0) ? $obj_rows : FALSE;
     }
+    public function get_leader_board($stDivision = "Dhaka", $iLimit = 30, $iCountryId = 14,$iYear = NULL)
+    {
+        if(  is_null( $iYear))
+        {
+            $iYear = date('Y');
+        }
 
+        
+        $this->db->select('tds_free_users.id as user_id, tds_free_users.first_name, tds_free_users.middle_name, tds_free_users.last_name, tds_free_users.school_name, tds_spell_highscore.*')
+                    ->from('tds_free_users')
+                    ->join("tds_spell_highscore", "tds_free_users.id=tds_spell_highscore.userid", 'INNER')
+                    ->where("tds_spell_highscore.is_cancel", 0)
+                    ->where("tds_spell_highscore.spell_year", $iYear)
+                    ->where('tds_spell_highscore.score >',0)
+                    ->like('free_users.division', $stDivision, 'after') 
+                    ->order_by("tds_spell_highscore.score", "desc")
+                    ->order_by("tds_spell_highscore.test_time", "ASC")
+                    ->limit(30);
+        $query = $this->db->get();
+        if ( $query->num_rows() > 0 )
+        {
+            return $rows = $query->result();
+        }
+        else
+        {
+            return 0;
+        }
+        
+    }
     public function get_posts($ar_from_menu,$ar_issue_date, $ar_priority_type = array(1, 2, 3, 4), $i_category_type_id = 1, $i_category_id = 0, 
                               $s_has_issue_date = 'between', $s_order_by = 'post.priority,asc', $i_limit = 0, $b_limit_check = true,
                               $s_group_by = "", $s_check_images = '', $i_pareant_id = 0, $i_having_category_type_id = 1, $b_limit_execute = TRUE

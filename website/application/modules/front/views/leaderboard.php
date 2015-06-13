@@ -1,3 +1,4 @@
+
 <script type="text/javascript" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/jquery.mCustomScrollbar.concat.min.js'); ?>"></script>
 <link rel="stylesheet" href="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/jquery.mCustomScrollbar.css'); ?>">
 <div class="container" id="tabContainer" style="width: 77%; min-height: 250px; margin-bottom: 250px;">
@@ -6,7 +7,7 @@
         <div style="float: left;width: 100%;padding: 10px 50px;margin-top:20px;">
             <a href="http://www.champs21.com/leaderboard/">
                 <h1 style="float: left;color:#000;font-size:40px;margin-top: 20px;" class="title noPrint f2">
-                    Leaderboard
+                    Leader Board
                 </h1>
             </a>
             <a href="http://www.champs21.com/spellingbee/">
@@ -28,41 +29,75 @@
                 </ul>
 
                 <div class="tabbody active" id="tab1" style="display: block;">
-                  <?php $this->load->view('leaderboard/dhaka'); ?> 
+                    <table cellspacing='0'>                       
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Name & School</th>
+                                <th>Score</th>
+                            </tr>
+                        </thead>
+                        <tbody><?php echo $spellbee_data;?></tbody>
+                    </table>    
+                  <?php //$this->load->view('leaderboard/dhaka'); ?> 
                 </div>
 
                 <div class="tabbody" id="tab2" style="display: none;">
-                  <?php $this->load->view('leaderboard/chittagong'); ?>  
+                  <?php //$this->load->view('leaderboard/chittagong'); ?>  
                 </div>
                 
                 <div class="tabbody" id="tab3" style="display: none;">
-                  <?php $this->load->view('leaderboard/rajshahi'); ?>  
+                  <?php //$this->load->view('leaderboard/rajshahi'); ?>  
                 </div>
                 
                 <div class="tabbody" id="tab4" style="display: none;">
-                  <?php $this->load->view('leaderboard/khulna'); ?>  
+                  <?php //$this->load->view('leaderboard/khulna'); ?>  
                 </div>
                 
                 <div class="tabbody" id="tab5" style="display: none;">
-                  <?php $this->load->view('leaderboard/sylhet'); ?>  
+                  <?php //$this->load->view('leaderboard/sylhet'); ?>  
                 </div>
                 
                 <div class="tabbody" id="tab6" style="display: none;">
-                  <?php $this->load->view('leaderboard/rangpur'); ?>  
+                  <?php //$this->load->view('leaderboard/rangpur'); ?>  
                 </div>
                 
                 <div class="tabbody" id="tab7" style="display: none;">
-                  <?php $this->load->view('leaderboard/barishal'); ?>  
+                  <?php //$this->load->view('leaderboard/barishal'); ?>  
                 </div>
             </div>
         </nav>
         
         <div style="clear:both;"></div>        
-        
+        <div style="width: 100%;margin-top:40px;height:130px;">    
+        <a  href="#" class="f2 button-viewmore">View Top 30 Scorers</a>    
+</div>
         
     </div>
 </div>
+<style>
+    .button-viewmore {
+  background-color: #F4A91C;
+  border: 1px solid #b3b3b3;
+  border-radius: 6px;
+  color: #fff;
+  cursor: pointer;
+  display: block;
+  width: 230px;
+  font-size: 17px;
+  font-weight: normal;
+  padding: 10px 17px;
+  margin: 0px auto;
+  text-decoration: none;
+  transition: all 0.25s ease-in 0s;
+}
 
+.button-viewmore:hover, .button-viewmore:active {
+  background-color: #FF8F35;
+  color: #ffffff;
+  transition: all 0.25s linear 0s;
+}
+</style>
 <style>
 .spellingbee {
   background: none repeat scroll 0 0 #ffffff;
@@ -117,7 +152,28 @@ nav {
 <script>
  $('.tabheading li').click(function () {
         var tabid = $(this).attr("rel");
+        var tabval = $(this).find("a").html();
+        var base_url = $('#base_url').val();
         $(this).parents('.tabcontainer').find('.active').removeClass('active');
+        
+        $.ajax({
+            type: "POST",
+            url: base_url + 'front/ajax/getleaderboarddata',
+            data:'stdivision='+tabval,
+            beforeSend: function(){
+                    $(this).css("background"," url("+base_url+"styles/layouts/tdsfront/spelling_bee/LoaderIcon.gif) no-repeat 350px");
+            },
+            success: function(data){                       
+                if(data)
+                {   
+                    $('#' + tabid).html(data);                    
+                }                    
+            },
+            error: function (event) {
+
+            }
+            });
+        
         $('.tabbody').hide();
         $('#' + tabid).show();
         $(this).addClass('active');

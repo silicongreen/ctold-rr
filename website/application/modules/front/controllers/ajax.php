@@ -1376,7 +1376,43 @@ class ajax extends MX_Controller
             }            
         }
     }
-
+    function getleaderboarddata()
+    {
+        if(!empty($_POST["stdivision"])) {
+            $division = $_POST["stdivision"];
+            $obj_post = new Post_model();            
+            $obj_post_data = $obj_post->get_leader_board($division);
+            if($obj_post_data != 0)
+            {
+                $rank= 1;
+                echo "<table cellspacing='0'>                       
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Name & School</th>
+                                <th>Score</th>
+                            </tr>
+                        </thead>
+                        <tbody>";
+                
+                foreach ($obj_post_data as $value)
+                {
+                    echo "<tr>";
+                    echo "<td>".$rank."</td>";
+                    echo "<td>".ucfirst($value->first_name)." ".ucfirst($value->middle_name)." ".ucfirst($value->last_name)." "."(".ucfirst($value->school_name).")"."</td>";
+                    echo "<td>".$value->score."</td></tr>";
+                    $rank++;
+                }
+                echo "</tbody>
+                    </table>";
+                
+            }
+            else
+            {
+                echo "<p>No Data Found.</p>";
+            }            
+        }
+    }
     public function createArchiveCache()
     {
 

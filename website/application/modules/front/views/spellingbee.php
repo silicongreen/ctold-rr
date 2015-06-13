@@ -250,6 +250,10 @@
 {
     font-family:Arial !important;
 }
+.tabbody ol
+{
+    margin: 0 0 10px 30px
+}
 .spelling_bee_play{
   float: left;
   height: 250px;

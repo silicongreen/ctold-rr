@@ -70,7 +70,7 @@
         
         <div style="clear:both;"></div>        
         <div style="width: 100%;margin-top:40px;height:130px;">    
-        <a  href="#" class="f2 button-viewmore">View Top 30 Scorers</a>    
+<!--        <a  href="#" class="f2 button-viewmore">View Top 30 Scorers</a>    -->
 </div>
         
     </div>

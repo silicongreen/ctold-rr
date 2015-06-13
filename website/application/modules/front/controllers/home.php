@@ -2794,6 +2794,25 @@ class home extends MX_Controller {
         
         $data = array();
         
+        
+        $obj_post = new Post_model();            
+        $obj_post_data = $obj_post->get_leader_board();
+        if($obj_post_data != 0)
+        {
+        $rank= 1;$shtml = "";
+        foreach ($obj_post_data as $srow){
+                   
+		$shtml .= "<tr>";
+                $shtml .= "<td>".$rank."</td>";
+		$shtml .= "<td>".ucfirst($srow->first_name)." ".ucfirst($srow->middle_name)." ".ucfirst($srow->last_name)." "."(".ucfirst($srow->school_name).")"."</td>";
+		$shtml .= "<td>".$srow->score."</td>";
+		$shtml .= "</tr>";
+            $rank++;
+        }
+        }else{$shtml = "<p>No Data Found.</p>";}
+                
+        $data['spellbee_data']    = $shtml;
+        
         $data['ci_key']    = "leaderboard";
         $data['ci_key_for_cover'] = "leaderboard";
         $data['s_category_ids'] = "0";

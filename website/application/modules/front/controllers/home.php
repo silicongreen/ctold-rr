@@ -2117,7 +2117,7 @@ class home extends MX_Controller {
                 
                 if ( $obj_free_user =  $free_user->api_login($source) ) {
                     
-                    $this->set_user_session($obj_free_user, NULL, $remember_me);
+                    $this->set_user_session($obj_free_user, NULL, $remember_me, true);
                     
                 }  else {
                     
@@ -2133,7 +2133,7 @@ class home extends MX_Controller {
             
                 if ($free_user->login()) {
                     
-                    $this->set_user_session($free_user, $this->input->post('password'), $remember_me);
+                    $this->set_user_session($free_user, $this->input->post('password'), $remember_me, true);
                     
                 }  else {
                     
@@ -2236,6 +2236,7 @@ class home extends MX_Controller {
         echo json_encode($data);
         exit;
     }
+    
     function update_spellingbee_profile(){
         
         $user_id = '0';
@@ -2243,38 +2244,57 @@ class home extends MX_Controller {
         if( free_user_logged_in() ){
             $user_id = get_free_user_session('id');
         }else{
-            $data['logged_in'] = FALSE;
-            $data['registered'] = FALSE;
+            $data['logged_in'] = free_user_logged_in();
+            $data['registered'] = false;
             echo json_encode($data);
             exit;
         }
         
-        if($this->input->is_ajax_request()){
+        if($this->input->is_ajax_request()) {
             
             $this->load->helper('form');
 
             $free_user = new Free_users($user_id);
             
             if (isset($_POST) && !empty($_POST)) {
-
-                if($_POST['division'] && $_POST['mobile_no'] && $_POST['school_name'] ){
-                    $free_user->school_name = $_POST['school_name'];
-                    $free_user->division = $_POST['division'];
-                    $free_user->mobile_no = $_POST['mobile_no'];
-                    $free_user->is_joined_spellbee = '1';
+                
+                foreach ($_POST as $key => $value) {
+                    $free_user->$key = $value;
                 }
-                                
-                $free_user->skip_validation();
                 
-                if ( $free_user->save() ) {
-                    $this->set_user_session($free_user);
-                    $data['success'] = TRUE;
-                } else {
-                    
-                    $errors = $free_user->error->all;
+                if (empty($free_user->school_name)) {
+                    $data['errors']['school_name'] = 'School name cannot be blank.';
+                }
+                if (empty($free_user->division)) {
+                    $data['errors']['division'] = 'Division cannot be blank.';
+                }
+                if (empty($free_user->mobile_no)) {
+                    $data['errors']['mobile_no'] = 'Mobile No cannot be blank.';
+                }
+                if (empty($free_user->first_name)) {
+                    $data['errors']['first_name'] = 'First Name cannot be blank.';
+                }
                 
-                    foreach ($errors as $error) {
-                        $data['errors'][] = $error;
+                if (strlen($free_user->mobile_no) < 11) {
+                    $free_user->mobile_no = '0' . $free_user->mobile_no;
+                }
+                
+                if (strlen($free_user->mobile_no) == 10 && substr($free_user->mobile_no, 1, 1) != 1) {
+                    $data['errors']['mobile_no'] = 'Invalid mobile no format';
+                }
+                
+                if (strlen($free_user->mobile_no) < 10 || strlen($free_user->mobile_no) > 11) {
+                    $data['errors']['mobile_no'] = 'Invalid mobile no format';
+                }
+                
+                if (strlen($free_user->mobile_no) == 11 && substr($free_user->mobile_no, 0, 1) != 0) {
+                    $data['errors']['mobile_no'] = 'Invalid mobile no format';
+                }
+                
+                if (empty($data['errors'])) {
+                    if ( $free_user->save() ) {
+                        $this->set_user_session($free_user);
+                        $data['success'] = TRUE;
                     }
                 }
             }
@@ -2458,15 +2478,16 @@ class home extends MX_Controller {
         $array_items = array('free_user' => array());
         $this->session->unset_userdata($array_items);
         $this->session->sess_destroy();
-        delete_cookie('c21_session');
+        unset($_COOKIE['c21_session']);
+        setcookie('c21_session', NULL, time() - 100, '/', str_replace('www.', '', $_SERVER['SERVER_NAME']));
         set_type_cookie(1);
         redirect(base_url());
         
     }
     
-    private function set_user_session($obj_user, $pwd = NULL, $remember = false){
+    private function set_user_session($obj_user, $pwd = NULL, $remember = false, $b_refresh_cookie = false){
         
-        set_user_sessions($obj_user, $pwd, $remember);
+        set_user_sessions($obj_user, $pwd, $remember, $b_refresh_cookie);
     }
     
     function upload_profile_image() {

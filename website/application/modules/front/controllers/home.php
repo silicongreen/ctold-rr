@@ -2036,7 +2036,7 @@ class home extends MX_Controller {
                 
                 ($api_registration) ? $free_user->api_login() : $free_user->login();
                 
-                $this->set_user_session($free_user, $this->input->post('password'));
+                $this->set_user_session($free_user, $this->input->post('password'), false, true);
                 
                 $this->create_free_user_folders();
                 
@@ -2292,6 +2292,7 @@ class home extends MX_Controller {
                 }
                 
                 if (empty($data['errors'])) {
+                    $free_user->is_joined_spellbee = '1';
                     if ( $free_user->save() ) {
                         $this->set_user_session($free_user);
                         $data['success'] = TRUE;

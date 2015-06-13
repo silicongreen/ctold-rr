@@ -2108,8 +2108,8 @@ if (!function_exists('set_session_cookie')) {
             'expire' => 2592000,
             'domain' => str_replace('www.', '', $_SERVER['SERVER_NAME'])
         );
-        $CI = & get_instance();
-        $CI->input->set_cookie($cookie);
+        
+        setcookie('c21_session', $cookie_token, time() + 2592000, '/', str_replace('www.', '', $_SERVER['SERVER_NAME']));
     }
 
 }
@@ -2117,8 +2117,7 @@ if (!function_exists('set_session_cookie')) {
 if (!function_exists('get_session_cookie')) {
 
     function get_session_cookie() {
-        $CI = & get_instance();
-        $cookie = $CI->input->cookie('c21_session');
+        $cookie = $_COOKIE['c21_session'];
         if ($cookie) {
             return $cookie;
         } else {

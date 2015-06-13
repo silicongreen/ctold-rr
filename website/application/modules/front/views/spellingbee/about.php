@@ -1,4 +1,4 @@
-<h2 class="f2" style="color:#FFCA0A;">About Spelling Bee</h2>
+<h2 class="f2" style="color:#FFCA0A;">Competition Format</h2>
 <div class="col-lg-12 row-fluid row">
     <p>
         The Online Round will begin on 16 June 2015 and end on 15 July 2015. Students can compete online to be eligible for the Divisional Round. Description of all the rounds for Spelling Bee 2015 is given below: 

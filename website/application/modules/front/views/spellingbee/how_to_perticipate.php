@@ -64,7 +64,7 @@
                     </li>
                 </ul>
                 <p>
-                    Are you already a registered user of www.champs21.com? If yes, just log in to your account and start playing ‘Spelling Bee Online Round’. If you are not registered yet, just click here to register and start playing. 
+                    Are you already a registered user of www.champs21.com? If yes, just log in to your account and start playing ‘Spelling Bee Online Round’. If you are not registered yet, just click <a  class="f2 login-user" href="#">here</a> to register and start playing. 
                 </p>
                 <p>
                     As per game rules, if you make one mistake, you're out of the game! The good news is that you can play the game as many times as you want until the 1st Round ends on July 15, 2015. Your best score will be considered and only top spellers of your division will be selected for the 2nd Round. 

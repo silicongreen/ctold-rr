@@ -2106,7 +2106,7 @@ if (!function_exists('set_session_cookie')) {
             'name' => 'c21_session',
             'value' => $cookie_token,
             'expire' => 2592000,
-            'domain' => 'champs21.com'
+            'domain' => str_replace('www.', '', $_SERVER['SERVER_NAME'])
         );
         $CI = & get_instance();
         $CI->input->set_cookie($cookie);

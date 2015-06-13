@@ -15,16 +15,16 @@
                     <?php $is_joined_spellbee = get_free_user_session('is_joined_spellbee');
                     if($is_joined_spellbee == 1){
                     ?>                                        
-                    <a name="windowX" title="Spelling Bee | Season 4" id="play_spellbee_4" style="float: left;width:110px;" href="#">
+                    <a name="windowX" title="Spelling Bee | Season 4" id="play_spellbee_4" style="float: left;width:110px;" href="javascript:void(0);">
                         <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/play.png'); ?>" style="width:100%;">
                     </a>
                     <?php } else{ ?>
-                        <a  id="join_spellbee_reg" style="float: left;width:110px;" href="#">
+                        <a  id="join_spellbee_reg" style="float: left;width:110px;" href="javascript:void(0);">
                             <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/play.png'); ?>" style="width:100%;">
                         </a>
                     <?php }
                     } else { ?>
-                    <a  class="f2 login-user" style="float: left;width:110px;" href="#">
+                    <a  class="f2 login-user" style="float: left;width:110px;" href="javascript:void(0);">
                         <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/play.png'); ?>" style="width:100%;">
                     </a>
                 <?php } ?>
@@ -32,10 +32,10 @@
                     <?php $is_joined_spellbee = get_free_user_session('is_joined_spellbee');
                     if($is_joined_spellbee == 0){
                     ?>                    
-                    <a  href="#" id="join_spellbee_reg" class="f2 button-filter1">Join</a>
+                    <a  href="javascript:void(0);" id="join_spellbee_reg" class="f2 button-filter1">Join</a>
                     
                     <?php } } else { ?>
-                    <a  href="#" class="f2 button-filter1 login-user">Join</a>
+                    <a  href="javascript:void(0);" class="f2 button-filter1 login-user">Join</a>
                 <?php } ?>
                 <a  href="<?php echo base_url('leaderboard'); ?>" class="f2 button-filter2">Leaderboard</a>
                 <a  href="https://www.facebook.com/spellbangladesh" target="_blank" class="f2 button-filter3">Facebook</a>

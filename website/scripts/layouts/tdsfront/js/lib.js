@@ -946,7 +946,9 @@ $(document).ready(function () {
     });
 
     $(document).on("click", '#logout_li', function () {
-
+        
+        eraseCookie('c21_session');
+        
         if ($('#paid_school_code').length > 0) {
             var paid_logout_url = $('#paid_school_code').val() + '.' + $('#base_url').val().replace('http://www.', '') + 'user/logout';
             window.location.href = 'http://' + paid_logout_url;
@@ -1622,21 +1624,31 @@ $(document).ready(function () {
             contentType: false,
             processData: false,
             success: function (data) {
+                
+                if (data.success) {
+                    window.location.reload();
+                } else {
+                    var err_html = '<ul class="err-list">';
 
-                $.each(data, function (i, v) {
+                    $.each(data.errors, function (i, v) {
+                        err_html += '<li>' + v + '</li>';
+                        $("#update_spellingbee_profile_frm #" + i).css("border", "1px solid #DE3427");
+                    });
+                    err_html += '</ul>';
 
-                    if (i == 'errors') {
-                        alert(v);
-                    }
-                    else if ((i == 'success') && (v == true)) {
-                        alert('Profile Seccessfully Updated.');
-                        window.location.reload();
-                    } else {
-                        alert('Login or Register Please.');
-                        window.location.reload();
-                    }
+                    $('.err-list-wrap').html('');
+                    $('.err-list-wrap').html(err_html);
 
-                });
+                    $('.fancybox-wrap').css({
+                        "opacity": 0.20,
+                        "background-color": "#000000"
+                    });
+
+                    $('#alert-errors').show();
+                    $('#alert-errors').css({'opacity': 1, 'z-index': 8031});
+
+                    return false;
+                }
 
             },
             error: function (e) {

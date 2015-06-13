@@ -30,6 +30,7 @@
     background-image: url("/styles/layouts/tdsfront/image/drop_down.png");
 }
 .droppify_wrapper_active > ul.droppify_dropdown {
+    max-height: 250px !important;
     opacity: 1 !important;
     visibility: visible !important;
     transition: all 0.2s ease-out 0s;
@@ -54,6 +55,8 @@
     left: 0;
     list-style: outside none none;
     margin: 0;
+    max-height: 0;
+    overflow-y: scroll;
     opacity: 0;
     padding: 0;
     position: absolute;

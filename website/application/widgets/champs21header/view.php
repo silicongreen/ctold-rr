@@ -731,40 +731,54 @@ height: 46px;
                                             <div class="clearfix horizontal-line"></div>
                                          <?php }?>
                                     </div>
-                                </fieldset>  
+                                </fieldset>
+                                
                                 <?php if($edit){ ?>
                                     <div style="text-align: center; font-size: 20px; ">&nbsp;</div>
                                 <?php }?>
+                                    
+                                <fieldset>First Name</fieldset>
+                                <fieldset>
+                                    <ul class="radio-holder">    
+                                        <li>
+                                            <div class="frmSearch">
+                                                <input name="first_name" value="<?php echo $model->first_name?>" type="text" id="first_name" class="name_text school_name" placeholder="First Name" required="required" />
+                                                <div id="suggesstion-box1"></div>
+                                            </div>
+
+                                        </li>
+                                    </ul>
+                                </fieldset>
+                                    
                                 <fieldset>School Name</fieldset>
                                 <fieldset>
-
                                     <ul class="radio-holder">    
                                         <li>
                                             
                                             <div class="frmSearch">
-                                                <input name="school_name" value="<?php echo $model->school_name?>" type="text" id="search-box1" class="name_text school_name"  placeholder="School Name" />
+                                                <input name="school_name" value="<?php echo $model->school_name?>" type="text" id="school_name" class="name_text school_name"  placeholder="School Name" required="required" />
                                                     <div id="suggesstion-box1"></div>
                                             </div>
 
                                         </li>
                                     </ul>
                                 </fieldset>
+                                
                                 <fieldset>Mobile Number</fieldset>
                                 <fieldset>
-
                                     <ul class="radio-holder">    
                                         <li>
-                                            <input placeholder="88" class="name_text country_code" id="country_code" name="country_code" value="" type="text" maxlength="6">
+                                            <input placeholder="880" class="name_text country_code" id="country_code" name="country_code" value="" type="text" maxlength="6" />
                                         </li>
                                         
                                         <li>
-                                            <input placeholder="Mobile Number" class="name_text mobile_no" id="mobile_no" name="mobile_no" value="<?php echo $model->mobile_no; ?>" type="text" maxlength="20">
+                                            <input placeholder="Mobile Number" class="name_text mobile_no" id="mobile_no" name="mobile_no" value="<?php echo $model->mobile_no; ?>" type="text" maxlength="20" required="required" />
                                         </li>
                                     </ul>
                                 </fieldset>
+                                
                                 <fieldset>Division</fieldset>
                                 <fieldset>
-
                                     <ul class="radio-holder">
                                         
                                         <li>
@@ -789,7 +803,6 @@ height: 46px;
                                             </div>
                                         </li>
                                         
-
                                     </ul>
 
                                 </fieldset>
@@ -2801,7 +2814,7 @@ if($('.header-logo-div').is(':visible')) {
     .name_text{
         font-family: tahoma,georgia,arial,serif;
         background-color: #adb2b5;
-        border-color: #8f979a !important;
+        border-color: #8f979a;
         color: #000000 !important;
         height: 51px !important;
         width: 135px;

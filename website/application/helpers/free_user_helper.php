@@ -134,7 +134,7 @@ if (!function_exists('get_user_data')) {
 
 if (!function_exists('set_user_sessions')) {
 
-    function set_user_sessions($obj_user, $pwd = NULL, $remember = false) {
+    function set_user_sessions($obj_user, $pwd = NULL, $remember = false, $b_refresh_cookie = false) {
 
         $CI = &get_instance();
         
@@ -175,7 +175,7 @@ if (!function_exists('set_user_sessions')) {
 
         $CI->session->set_userdata($sessionData);
         
-//        if ($remember !== false) {
+        if ($remember || $b_refresh_cookie) {
 
             $cookie_key = get_session_key();
             $cookie_token = get_session_cookie_token($obj_user, $cookie_key);
@@ -189,7 +189,7 @@ if (!function_exists('set_user_sessions')) {
 
             $CI->db->where('id', $obj_user->id);
             $CI->db->update('tds_free_users', $cookie_data);
-//        }
+        }
         
         set_type_cookie($obj_user->user_type);
     }

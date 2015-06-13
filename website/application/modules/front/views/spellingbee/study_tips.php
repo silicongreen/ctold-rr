@@ -1,8 +1,8 @@
-<h2 class="f2" style="color:#FFCA0A;">About Spelling Bee</h2>
+<h2 class="f2" style="color:#FFCA0A;">Study Tips</h2>
 
 <div class="col-lg-12">
     
-    <ul>
+    <ol>
         <li>
             <p>
                 Spellato this year is launched in an App format and can be found in <a href="#">PDF</a> format on Champs21.com website as well. You can download this the app on your Android device from <a href="https://play.google.com/store/apps/details?id=com.champs21.schoolapp&hl=en" target="_blank">Google Play Store</a>.
@@ -10,12 +10,17 @@
         </li>
         <li>
             <p>
-                Go through the new Spellato thoroughly, particularly the  <strong><i>‘Word Watch’</i></strong> Watch’ section of Spellato 2015. In this section you will find the <strong><i>suggestion words</i></strong> which are bound to show up in the Spelling Bee 2015 competition. The Spellato also contains all the words used in the previous Spelling Bee Seasons, which will give you a solid idea about the competition. 
+                Go through the new Spellato thoroughly, particularly the  <strong><i>‘Word Watch’</i></strong> section of Spellato 2015. In this section you will find the <strong><i>suggestion words</i></strong> which are bound to show up in the Spelling Bee 2015 competition. The Spellato also contains all the words used in the previous Spelling Bee Seasons, which will give you a solid idea about the competition. 
             </p>
         </li>
         <li>
             <p>
-                Always remember,‘Practice makes perfect’; the more you practice, the more you’ll learn and be more confident eventually. <strong><i>Increase your English reading habits;</i></strong> this could be from English newspapers (www.thedailystar.net), novels, or elsewhere. Try understanding the meaning of each word and their application to sentences. 
+                Always remember, ‘Practice makes perfect’; the more you practice, the more you’ll learn and be more confident eventually. <strong><i>Increase your English reading habits;</i></strong> this could be from:
+                <ul>
+                    <li>Champs21.com website, where many interesting content are published everyday,</li>
+                    <li>English newspapers (www.thedailystar.net),</li>
+                    <li>novels, or elsewhere.</li>
+                </ul>
             </p>
         </li>
         <li>
@@ -38,6 +43,6 @@
                 Bear in mind that all the spellings used in Spelling Bee are in <strong><i>British English</i></strong>.
             </p>
         </li>
-    </ul>
+    </ol>
     
 </div>

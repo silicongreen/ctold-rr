@@ -228,6 +228,7 @@
 	-moz-border-radius-bottomright: 4px;
 	-moz-border-radius-bottomleft: 4px;
 	border-top-left-radius: 0px;
+        font-family:Arial !important;
 	border-top-right-radius: 4px;
 	border-bottom-right-radius: 4px;
 	border-bottom-left-radius: 4px; 
@@ -241,7 +242,14 @@
 	margin:0;
 	color:#333;
 }
-
+.tabbody p
+{
+    font-family:Arial !important;
+}
+.tabbody table td
+{
+    font-family:Arial !important;
+}
 .spelling_bee_play{
   float: left;
   height: 250px;

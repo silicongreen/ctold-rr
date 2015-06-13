@@ -742,6 +742,7 @@ height: 46px;
                                     <ul class="radio-holder">    
                                         <li>
                                             <div class="frmSearch">
+                                                
                                                 <input name="first_name" value="<?php echo $model->first_name?>" type="text" id="first_name" class="name_text school_name" placeholder="First Name" required="required" />
                                                 <div id="suggesstion-box1"></div>
                                             </div>

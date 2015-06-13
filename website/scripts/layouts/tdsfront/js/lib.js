@@ -1629,7 +1629,7 @@ $(document).ready(function () {
                     window.location.reload();
                 } else {
                     var err_html = '<ul class="err-list">';
-
+                    
                     $.each(data.errors, function (i, v) {
                         err_html += '<li>' + v + '</li>';
                         $("#update_spellingbee_profile_frm #" + i).css("border", "1px solid #DE3427");

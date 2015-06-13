@@ -55,6 +55,7 @@
                     <li>
                         <p>
                             In the event of qualifying to the divisional round, the student must bring <b>a letter from the school</b> confirming student status, detailing the <b>class</b> and curriculum of education for verification purposes on the school letterhead.
+                            
                         </p>
                     </li>
                     <li>

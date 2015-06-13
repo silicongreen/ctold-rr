@@ -1,4 +1,3 @@
-<!--<div class="flying_bee"></div>-->
 
 <div class="home_box">    
     <div style="width: 100%;">

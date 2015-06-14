@@ -5,7 +5,7 @@
     <ol>
         <li>
             <p>
-                Spellato this year is launched in an App format and can be found in <a href="#">PDF</a> format on Champs21.com website as well. You can download this the app on your Android device from <a href="https://play.google.com/store/apps/details?id=com.champs21.schoolapp&hl=en" target="_blank">Google Play Store</a>.
+                Spellato this year is launched in an App format and can be found in <a href="#">PDF</a> format on Champs21.com website as well. You can download this the app on your Android device from <a href="https://play.google.com/store/apps/details?id=com.champs21.spellato&hl=en" target="_blank">Google Play Store</a>.
             </p>
         </li>
         <li>

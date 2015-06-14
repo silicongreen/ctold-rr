@@ -95,7 +95,7 @@ String.prototype.in_array = function (haystack, argStrict)
 
 $(document).ready(function () {
 
-    var c21_session = readCookie('c21_session');
+    /* var c21_session = readCookie('c21_session');
     var cookie_check = $('#cookie_check').val();
 
     if ( (c21_session !== null) && ($('#free_user_profile_picture').length == 0) && cookie_check !== 'false' ) {
@@ -117,7 +117,7 @@ $(document).ready(function () {
             }
         });
 
-    }
+    } */
 
     var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
     var eventer = window[eventMethod];

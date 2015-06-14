@@ -760,7 +760,6 @@ class UserController extends Controller {
                 } 
                 else if($data = $free_user->login($username,$password))
                 {
-                   
                     $folderObj = new UserFolder();
                    
                     $folderObj->createGoodReadFolder($data->id);

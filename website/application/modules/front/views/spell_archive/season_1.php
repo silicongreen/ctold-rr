@@ -17,15 +17,19 @@
 </div>
 <div style="margin-top:30px;clear: both;height: 290px;">
     <div class="spelling_bee_play swing google_bg" style="">
-        <center><img data="spellato" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/top_90.png'); ?>" style="width:100%;cursor: pointer;" class="scalup"></center>                
+        <center><img id="top_90_s1" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/top_90.png'); ?>" style="width:100%;cursor: pointer;" class="scalup"></center>                
     </div>
     <div class="swing" style="float: left;width: 31%;background: #fff;height: 288px;">
         <center><a href="https://www.youtube.com/channel/UCywQj51MiCqHzQAa0Mg4KXg" target="_blank"><img data="spellato" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/youtube_v.png'); ?>" style="width:100%;cursor: pointer;" class="scalup"></a></center>                
     </div>
     <div class="swing" style="float: right;width: 31%;background-color: #fff;height: 288px;">        
-        <center><img data="spellato" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/gallery.png'); ?>" style="width:95%;cursor: pointer;" class="scalup"></center>                
+        <center><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/gallery.png'); ?>" style="width:95%;cursor: pointer;" class="scalup"></center>                
     </div>
 </div>
+<div class="top_90_s1_box">
+    <?php $this->load->view('spell_archive/top_90_s1'); ?> 
+</div>
+
 
 <style>
 .spelling_bee_play{
@@ -48,5 +52,9 @@
     -o-transform: scale(1.1);
     -ms-transform: scale(1.1);
     transform: scale(1.1);
+}
+.top_90_s1_box
+{
+    clear: both;float:left;width: 100%;margin:30px 0px;display: none;
 }
 </style>

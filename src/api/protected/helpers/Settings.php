@@ -417,7 +417,7 @@ class Settings
             $id = Yii::app()->user->free_id;
             if($id)
             {
-                return $id;
+                return (int)$id;
             }    
         }  
         return false;

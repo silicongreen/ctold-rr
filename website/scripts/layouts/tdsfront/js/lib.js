@@ -1247,6 +1247,62 @@ $(document).ready(function () {
                  
         });
     });
+    
+    $(document).on("click", '#top_90_s1', function () {
+
+        var html_frm_reg = $('.top_90_s1_box').html();
+
+        $.fancybox({
+            'content': html_frm_reg,
+            'width': 600,
+            'height': 'auto',
+            'transitionIn': 'fade',
+            'transitionOut': 'fade',
+            'openEffect': 'elastic',
+            'openSpeed': 350,
+            'fitToView': false,
+            'autoSize': false,
+            'padding': 0,
+            'margin': 0,            
+        });
+    });
+    $(document).on("click", '#top_90_s2', function () {
+
+        var html_frm_reg = $('.top_90_s2_box').html();
+
+        $.fancybox({
+            'content': html_frm_reg,
+            'width': 600,
+            'height': 'auto',
+            'transitionIn': 'fade',
+            'transitionOut': 'fade',
+            'openEffect': 'elastic',
+            'openSpeed': 350,
+            'fitToView': false,
+            'autoSize': false,
+            'padding': 0,
+            'margin': 0,            
+        });
+    });
+    $(document).on("click", '#top_90_s3', function () {
+
+        var html_frm_reg = $('.top_90_s3_box').html();
+
+        $.fancybox({
+            'content': html_frm_reg,
+            'width': 600,
+            'height': 'auto',
+            'transitionIn': 'fade',
+            'transitionOut': 'fade',
+            'openEffect': 'elastic',
+            'openSpeed': 350,
+            'fitToView': false,
+            'autoSize': false,
+            'padding': 0,
+            'margin': 0,            
+        });
+    });
+    
     $(document).on("click", '#join_spellbee_reg', function () {
 
         var html_frm_spellbee_reg = $('#frm_spellbee_reg').html();

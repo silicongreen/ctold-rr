@@ -214,7 +214,7 @@ class FreeuserController extends Controller
             if ($data && is_int($data))
             {
                 $autorize_check = Settings::authorizeUserCheck($objParams->left, $objParams->right, $objParams->method, $objParams->operator, $objParams->send_id, $data);
-
+                
                 if ($autorize_check)
                 {
                     $valid_user = TRUE;
@@ -342,7 +342,7 @@ class FreeuserController extends Controller
             else
             {
                 $rresponse['status']['code'] = 400;
-                $rresponse['status']['msg'] = "{$data}";
+                $rresponse['status']['msg'] = "Bad Request";
             }    
         }
         else

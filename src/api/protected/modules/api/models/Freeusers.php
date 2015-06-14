@@ -152,6 +152,12 @@ class Freeusers extends CActiveRecord {
                 $validdata = $this->find($criteria);
                 if($validdata)
                 {
+                    $userIdentity = new UserIdentity($validdata, $validdata, false);
+
+                    if ($userIdentity->authenticate()) {
+                        $duration = 3153600000; // 1 Yr
+                        Yii::app()->user->login($userIdentity, $duration);
+                    }
                     return $validdata;
                 }
 

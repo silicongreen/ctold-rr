@@ -9,6 +9,11 @@
         <p>The Spelling Bee team visited 300 schools, all 7 divisions and held Zonal Round in 10 districts around Bangladesh. This season the number of times the online round was played skyrocketed to 7,42,000. Wasique Hasan became the Champion, Naiyareen Fareeza Mayeen the first runner up and Saif Rahman the 2nd runner up.</p>
     </div>
 </div>
+<div style="clear: both;float:left;width: 100%;margin:30px 0px;">    
+    <div style="float:left;width: 45%;margin:20px 0px;border: 3px solid #ccc;"></div>
+    <div class="f2" style="float:left;width: 10%;font-size: 28px;color:#ccc;">TOP 6</div>
+    <div style="float:right;width: 45%;margin:20px 0px;border: 3px solid #ccc;"></div>
+</div>
 <div class="top_6_box" style="">
     <ul>
         <li>
@@ -104,16 +109,18 @@
 </div>
 <div style="margin-top:30px;clear: both;height: 290px;">
     <div class="spelling_bee_play swing google_bg" style="">
-        <center><img data="spellato" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/top_90.png'); ?>" style="width:100%;cursor: pointer;" class="scalup"></center>                
+        <center><img id="top_90_s3" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/top_90.png'); ?>" style="width:100%;cursor: pointer;" class="scalup"></center>                
     </div>
     <div class="swing" style="float: left;width: 31%;background: #fff;height: 288px;">
         <center><a href="https://www.youtube.com/channel/UCywQj51MiCqHzQAa0Mg4KXg" target="_blank"><img data="spellato" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/youtube_v.png'); ?>" style="width:100%;cursor: pointer;" class="scalup"></a></center>                
     </div>
     <div class="swing" style="float: right;width: 31%;background-color: #fff;height: 288px;">        
-        <center><img data="spellato" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/gallery.png'); ?>" style="width:95%;cursor: pointer;" class="scalup"></center>                
+        <center><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/gallery.png'); ?>" style="width:95%;cursor: pointer;" class="scalup"></center>                
     </div>
 </div>
-
+<div class="top_90_s3_box">
+    <?php $this->load->view('spell_archive/top_90_s3'); ?> 
+</div>
 <style>
 .top_6_box
 {
@@ -161,5 +168,9 @@
     -o-transform: scale(1.1);
     -ms-transform: scale(1.1);
     transform: scale(1.1);
+}
+.top_90_s3_box
+{
+    clear: both;float:left;width: 100%;margin:30px 0px;display: none;
 }
 </style>

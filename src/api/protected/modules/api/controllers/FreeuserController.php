@@ -76,7 +76,7 @@ class FreeuserController extends Controller
             
           
             header( 'Content-Description: File Transfer' );
-            header( 'Content-Type: audio/mpeg' );
+//            header( 'Content-Type: audio/mpeg' );
 //            header( 'Content-Disposition: attachment; filename=' . basename( $strMusicFile ) );
             header( 'Content-Transfer-Encoding: binary' );
             header( 'Expires: 0' );

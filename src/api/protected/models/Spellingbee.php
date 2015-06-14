@@ -60,7 +60,7 @@ class Spellingbee extends CActiveRecord
     {
         return parent::model($className);
     }
-    public function getWordsByLevel( $iLevel, $iMaxWord = 25,$user_word_played = array(),$iUserId=0  )
+    public function getWordsByLevel( $iLevel, $iMaxWord = 25,$user_word_played = array(),$iUserId=0, $year = 0  )
     {
        
         $criteria = new CDbCriteria;
@@ -68,16 +68,23 @@ class Spellingbee extends CActiveRecord
         $criteria->compare('t.level', $iLevel);
         $criteria->compare('t.enabled', 1);
         
+        if ($year > 0) {
+            $criteria->compare('t.year', $year);
+        }
+        
         if(count($user_word_played)>0)
         {
             $criteria->addNotInCondition('t.id', $user_word_played);
         }
         $cache_name_word = "YII-SPELLINGBEE-CURRENTUSERWORD";
         $responseword = Settings::getSpellingBeeCache($cache_name_word);
-        if(isset($responseword) && isset($responseword[$iUserId]) && isset($responseword[$iUserId][$iLevel]['words']))
-        {
-             $criteria->addNotInCondition('t.id', $responseword[$iUserId][$iLevel]['words']);
-        }    
+        
+        if ($year == 0) {
+            if(isset($responseword) && isset($responseword[$iUserId]) && isset($responseword[$iUserId][$iLevel]['words']))
+            {
+                 $criteria->addNotInCondition('t.id', $responseword[$iUserId][$iLevel]['words']);
+            }
+        }
         
         $criteria->order = 't.year DESC, RAND()';
         

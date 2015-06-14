@@ -289,6 +289,7 @@ class Service
         $objfreeuser = new Freeusers();
         $data = $objfreeuser->getFreeuserByCookie(func_get_arg(1));
         $valid_user = FALSE;
+        $year = 0;
         if ($data!==FALSE)
         {
 
@@ -296,6 +297,12 @@ class Service
      
         }
         $arWords = "";
+        
+        if(!$valid_user) {
+            $year = 2012;
+        }
+        
+        $valid_user = TRUE;
         if($valid_user)
         {
             $iUserId = $data;
@@ -312,7 +319,7 @@ class Service
             
           
             $spbobj = new Spellingbee();
-            $arWords = $spbobj->getWordsByLevel($iLevelId, $objParams->size,$user_word_played,$iUserId);
+            $arWords = $spbobj->getWordsByLevel($iLevelId, $objParams->size,$user_word_played,$iUserId, $year);
           
             $words_array['words'] = array();
             $words_array['word_complete'] = $arWords['word_complete'];

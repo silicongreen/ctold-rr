@@ -978,7 +978,7 @@ height: 46px;
                 <div class="before-login-user-body">
 
                     <div class="custom_message"></div>
-                    <p class="common_message"><a href="#" target="_blank">Click Here</a></p>
+                    <p class="common_message"><a href="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/spellato/spellato_2015_pdf.pdf'); ?>" target="_blank">Click Here</a></p>
 
                     
                 </div>

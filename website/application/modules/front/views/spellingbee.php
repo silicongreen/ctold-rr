@@ -4,7 +4,7 @@
     <div style="float:left;margin-left:20px;width: 96%;">
         <a href="http://www.champs21.dev/spellingbee/">
             <h1 style="color:#93989C;float: left;" class="title noPrint f2">
-                Spelling Bee <?php $model->mobile_no?>
+                Spelling Bee
             </h1>
         </a>
         
@@ -92,9 +92,9 @@
             </div>
             <div class="swing" style="float: left;width: 31%;background: #fff;height: 250px;">
                 <h2 class="f2" style="margin-left:30px;font-size: 16px;">Archive</h2>
-                <a  href="<?php echo base_url('season3'); ?>" class="f2 button-filter">Season 3</a>
-                <a  href="<?php echo base_url('season2'); ?>" class="f2 button-filter">Season 2</a>
-                <a  href="<?php echo base_url('season1'); ?>" class="f2 button-filter">Season 1</a>
+                <a  href="#" class="f2 button-filter">Season 3</a>
+                <a  href="#" class="f2 button-filter">Season 2</a>
+                <a  href="#" class="f2 button-filter">Season 1</a>
             </div>
             <div class="swing" style="float: right;width: 31%;background-color: #fff;height: 250px;">
                 <h2 class="f2" style="margin-left:30px;font-size: 16px;">Download PDF</h2>

@@ -92,9 +92,9 @@
             </div>
             <div class="swing" style="float: left;width: 31%;background: #fff;height: 250px;">
                 <h2 class="f2" style="margin-left:30px;font-size: 16px;">Archive</h2>
-                <a  href="#" class="f2 button-filter">Season 3</a>
-                <a  href="#" class="f2 button-filter">Season 2</a>
-                <a  href="#" class="f2 button-filter">Season 1</a>
+                <a  href="<?php echo base_url('archive?st=season3'); ?>" class="f2 button-filter">Season 3</a>
+                <a  href="<?php echo base_url('archive?st=season2'); ?>" class="f2 button-filter">Season 2</a>
+                <a  href="<?php echo base_url('archive?st=season1'); ?>" class="f2 button-filter">Season 1</a>
             </div>
             <div class="swing" style="float: right;width: 31%;background-color: #fff;height: 250px;">
                 <h2 class="f2" style="margin-left:30px;font-size: 16px;">Download PDF</h2>

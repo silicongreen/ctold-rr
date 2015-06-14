@@ -3009,12 +3009,19 @@ class home extends MX_Controller {
         $ar_js = array();
         $ar_css = array();
         $extra_js = '';
+        $s_st = null;
+        $s_st = $this->input->get("st");
         
+        if($s_st == null)
+        {
+            $s_st = "season3";
+        }
         $data = array();
         
         $data['ci_key']    = "archive";
         $data['ci_key_for_cover'] = "archive";
         $data['s_category_ids'] = "0";
+        $data['active_tab'] = $s_st;
         
         
         $this->db->where('key', 'layout');

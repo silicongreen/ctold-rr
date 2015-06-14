@@ -20,21 +20,21 @@
                     </h1>
                 </a>
                 <ul class="tabheading">
-                    <li class="active" rel="tab1"><a href="javascript:return false;">Season 1</a> </li>
-                    <li rel="tab2"><a href="javascript:return false;">Season 2</a> </li>
-                    <li rel="tab3"><a href="javascript:return false;">Season 3</a> </li>
+                    <li class="<?php if($active_tab == "season3"){ echo "active";}?>" rel="tab1"><a href="javascript:return false;">Season 3</a> </li>
+                    <li class="<?php if($active_tab == "season2"){ echo "active";}?>" rel="tab2"><a href="javascript:return false;">Season 2</a> </li>
+                    <li class="<?php if($active_tab == "season1"){ echo "active";}?>" rel="tab3"><a href="javascript:return false;">Season 1</a> </li>
                 </ul>
                 <div style="clear:both;"></div>   
-                <div class="tabbody active" id="tab1" style="display: block;">
-                  <?php $this->load->view('spell_archive/season_1'); ?>   
+                <div class="tabbody active" id="tab1" style="display: <?php if($active_tab == "season3"){ echo "block;";}else{echo "none;";}?>">
+                  <?php $this->load->view('spell_archive/season_3'); ?>   
                 </div>
 
-                <div class="tabbody content mCustomScrollbar" id="tab2" style="display: none;padding: 20px;">
+                <div class="tabbody content mCustomScrollbar" id="tab2" style="display: <?php if($active_tab == "season2"){ echo "block;";}else{echo "none;";}?>">
                   <?php $this->load->view('spell_archive/season_2'); ?>  
                 </div>
 
-                <div class="tabbody content mCustomScrollbar" id="tab3" style="display: none;padding: 20px;">
-                  <?php $this->load->view('spell_archive/season_3'); ?> 
+                <div class="tabbody content mCustomScrollbar" id="tab3" style="display: <?php if($active_tab == "season1"){ echo "block;";}else{echo "none;";}?>;">
+                  <?php $this->load->view('spell_archive/season_1'); ?> 
                 </div>
             </div>
 
@@ -65,7 +65,7 @@ nav {
 {
     margin:0px;
     float:right;
-    margin-bottom:50px;
+    margin-bottom:15px;
     margin-top:15px;
 }
 .tabheading li.active {

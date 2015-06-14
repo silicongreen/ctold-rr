@@ -2958,8 +2958,7 @@ class FreeuserController extends Controller
             $freeuserObj = new Freeusers();
             if ($fb_profile_id)
             {
-                var_dump('1');
-                    exit;
+                
                 if ($user = $freeuserObj->getFreeuserFb($fb_profile_id))
                 {
                     $folderObj = new UserFolder();
@@ -3045,8 +3044,7 @@ class FreeuserController extends Controller
             }
             else if ($gl_profile_id)
             {
-                var_dump('2');
-                    exit;
+                
                 if ($user = $freeuserObj->getFreeuserGmail($gl_profile_id))
                 {
                     $folderObj = new UserFolder();
@@ -3129,8 +3127,6 @@ class FreeuserController extends Controller
             }
             else if ($user_id)
             {
-                var_dump('3');
-                    exit;
                 $freeuserObj = $freeuserObj->findByPk($user_id);
                 $salt_paid = "";
                 $pass_paid = "";
@@ -3315,8 +3311,6 @@ class FreeuserController extends Controller
                 $freeuserObj->email = Yii::app()->request->getPost('email');
                 $freeuserObj->user_type = Yii::app()->request->getPost('user_type');
 
-
-
                 $freeuserObj->save();
                 $folderObj = new UserFolder();
 
@@ -3325,8 +3319,6 @@ class FreeuserController extends Controller
                 Yii::app()->user->setState("free_id",$freeuserObj->id);
 
                 $response['data'] = $freeuserObj->getPaidUserInfo();
-                var_dump($response['data']);
-                exit;
                 $response['data']['free_id'] = $freeuserObj->id;
                 $response['data']['countries'] = $countryObj->getCountryies();
                 $response['data']['user'] = $freeuserObj->getUserInfo($freeuserObj->id);

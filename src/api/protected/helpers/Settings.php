@@ -30,7 +30,7 @@ class Settings
     public static $encoded_operator = TRUE;
     public static $encoded_send_id = TRUE;
     
-    public static $check_service = TRUE;
+    public static $check_service = false;
     public static $check_id = 259;
     
     public static $spellingbeeConfig = TRUE;

@@ -342,7 +342,7 @@ class FreeuserController extends Controller
             else
             {
                 $rresponse['status']['code'] = 400;
-                $rresponse['status']['msg'] = "{$data}";
+                $rresponse['status']['msg'] = "Bad Request";
             }    
         }
         else

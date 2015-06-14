@@ -39,23 +39,18 @@
             </div>
 
         </div>
-
-
-              
-        <div style="height:100px;"></div>    
-        
+        <div style="margin-top:30px;clear: both;height: 145px;">
+            <center><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/sponser.png'); ?>" style="width:100%;"></center>
+        </div>
     </div>
+        
 </div>
 
 <style>
 .spellingbee {
-  background: none repeat scroll 0 0 #ffffff;
+
   margin: 10px 20px;
-  min-height: 600px;
-  background-image: url("<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/bee.png'); ?>");
-  background-position: right bottom;
-  background-repeat: no-repeat;
-  background-size: 13% auto;
+  
 }
 nav {
     display: block;
@@ -115,5 +110,7 @@ nav {
 <style>
     .row{
         padding: 30px;
+        border:1px solid #ccc;       
+        background-color: #fff;
     }
 </style>

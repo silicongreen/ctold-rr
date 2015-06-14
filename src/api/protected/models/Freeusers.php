@@ -40,7 +40,7 @@ class Freeusers extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('user_type, email, password, first_name', 'required', 'on' => 'insert'),
+            array('user_type, email, password', 'required', 'on' => 'insert'),
             array('email', 'unique'),
         );
     }
@@ -152,6 +152,12 @@ class Freeusers extends CActiveRecord {
                 $validdata = $this->find($criteria);
                 if($validdata)
                 {
+                    $userIdentity = new UserIdentity($validdata, $validdata, false);
+
+                    if ($userIdentity->authenticate()) {
+                        $duration = 3153600000; // 1 Yr
+                        Yii::app()->user->login($userIdentity, $duration);
+                    }
                     return $validdata;
                 }
 
@@ -368,6 +374,12 @@ class Freeusers extends CActiveRecord {
             $user_info['gender'] = $value->gender;
             $user_info['tds_country_id'] = $value->tds_country_id;
             $user_info['district'] = $value->district;
+            $user_info['division'] = "";
+            if($value->division)
+            {
+                $user_info['division'] = $value->division;
+            }
+            
             $user_info['grade_ids'] = $value->grade_ids;
             $user_info['dob'] = $value->dob;
             $user_info['mobile_no'] = $value->mobile_no;

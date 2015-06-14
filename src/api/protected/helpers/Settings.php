@@ -414,11 +414,10 @@ class Settings
         }
         else
         {
-//            $id = Yii::app()->user->free_id;
-            $id = Yii::app()->user->id;
+            $id = Yii::app()->user->free_id;
             if($id)
             {
-                return $id;
+                return (int)$id;
             }    
         }  
         return false;

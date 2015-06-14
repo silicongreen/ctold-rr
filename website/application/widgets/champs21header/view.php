@@ -1139,7 +1139,10 @@ if($('.header-logo-div').is(':visible')) {
 });
 </script>
 <style type="text/css">
-    
+ .fancybox-wrap { 
+  top: 30px !important; 
+  
+}   
 .frmSearch {}
 #country-list{float:left;list-style:none;margin:0;padding:0;width:380px;}
 #country-list li{float:none;margin-bottom:0px;padding: 10px; background:#FAFAFA;border-bottom:#F0F0F0 1px solid;}

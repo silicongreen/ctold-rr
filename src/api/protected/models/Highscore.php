@@ -112,10 +112,14 @@ class Highscore extends CActiveRecord
                 . 'UserFree.first_name,UserFree.middle_name,UserFree.last_name',
                 'joinType' => "INNER JOIN"
             ),
-            'Countries' => array(
-                'select' => 'Countries.name',
-                'joinType' => "INNER JOIN"
-            )
+            
+            /** Country join was throwing away user without country id 
+             * even if it was the highest scorer**/
+            
+//            'Countries' => array(
+//                'select' => 'Countries.name',
+//                'joinType' => "INNER JOIN"
+//            )
         );
         $division = strtolower($division);
 
@@ -125,13 +129,13 @@ class Highscore extends CActiveRecord
         }
         else
         {
-            $criteria->compare('t.country', $country);
+//            $criteria->compare('t.country', $country);
         }    
 
         $criteria->compare('t.is_cancel', 0);
         $criteria->compare('t.spell_year', date('Y'));
         $criteria->addCondition("t.userid >0  AND t.score > 0 ");
-        $criteria->order = "t.score DESC,test_time ASC";
+        $criteria->order = "t.score DESC, test_time ASC";
         $criteria->limit = $iLimit;
         $data = $this->findAll($criteria);
         $arScoresData = array();
@@ -166,7 +170,8 @@ class Highscore extends CActiveRecord
                     }
                     else
                     {
-                        $arUser['division_name'] = substr($value['Countries']->name, 0, strpos($value['Countries']->name," ("));
+                        $arUser['division_name'] = $value->division;
+//                        $arUser['division_name'] = substr($value['Countries']->name, 0, strpos($value['Countries']->name," ("));
                         $arUser['is_local'] = 0;
                     }
                     array_push( $arScoresData, ( object ) $arUser );

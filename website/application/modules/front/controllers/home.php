@@ -18,10 +18,14 @@ class home extends MX_Controller {
 //            }
 //        }
         
-         $this->load->database();
-         $this->load->library('datamapper');
-         $this->load->helper('form');
-
+        $this->load->database();
+        $this->load->library('datamapper');
+        $this->load->helper('form');
+        
+        $sess_cookie = $_COOKIE['c21_session'];
+        if(!empty($sess_cookie)) {
+            $this->validate_cookie($sess_cookie);
+        }
     }
     
     function join_to_school(){
@@ -4390,29 +4394,17 @@ class home extends MX_Controller {
         exit;
     }
     
-    function validate_cookie() {
-        
-        if( $this->input->is_ajax_request() && free_user_logged_in() ){
-            $user_info['logged_in'] = free_user_logged_in();
-            echo json_encode($user_info);
-            exit;
-        }
+    private function validate_cookie($cookie) {
         
         $free_user = new Free_users();
         
-        $free_user->cookie_token = $_POST['data'];
-        
+        $free_user->cookie_token = $cookie;
         $user_data = $free_user->cookie_login();
         
         if($user_data !== false) {
-            $this->set_user_session($user_data);
-            $data['logged_in'] = free_user_logged_in();
-        } else {
-            $this->logout_user();
+            $this->set_user_session($user_data, NULL, FALSE, TRUE);
+            return free_user_logged_in();
         }
-        
-        echo json_encode($data);
-        exit;        
     }
     
     private function invite_friend_by_email_body($param) {

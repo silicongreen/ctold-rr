@@ -94,8 +94,7 @@ class FreeuserController extends Controller
     {
         $limit = Yii::app()->request->getPost('limit');
         $division = Yii::app()->request->getPost('division');
-//        $user_id = Settings::getSessionId();
-        $user_id = Yii::app()->request->getPost('free_id');;
+        $user_id = Settings::getSessionId();
        
         if(!$limit)
         {
@@ -210,24 +209,21 @@ class FreeuserController extends Controller
 
             
             #$data = Yii::app()->user->free_id;
-//            $data = Settings::getSessionId();
-//            $valid_user = FALSE;
-//            if ($data && is_int($data))
-//            {
-//                $autorize_check = Settings::authorizeUserCheck($objParams->left, $objParams->right, $objParams->method, $objParams->operator, $objParams->send_id, $data);
-//                
-//                if ($autorize_check)
-//                {
-//                    $valid_user = TRUE;
-//                }
-//            } 
+            $data = Settings::getSessionId();
+            $valid_user = FALSE;
+            if ($data && is_int($data))
+            {
+                $autorize_check = Settings::authorizeUserCheck($objParams->left, $objParams->right, $objParams->method, $objParams->operator, $objParams->send_id, $data);
+
+                if ($autorize_check)
+                {
+                    $valid_user = TRUE;
+                }
+            }
 
             $arUserData = array();
             $arUserData['rank'] = "UnRanked";
             $arUserData['highestScore'] = 0;
-            $valid_user = true;
-            $data = Yii::app()->request->getPost('free_id');
-            $data = (int)$data;
             if ($valid_user)
             {
                 $iUserId = $data;

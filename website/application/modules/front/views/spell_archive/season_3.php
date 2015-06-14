@@ -1,131 +1,56 @@
-<table cellspacing='0'> <!-- cellspacing='0' is important, must stay -->
-
-	<!-- Table Header -->
-	<thead>
-		<tr>
-			<th></th>
-			<th>Name & School</th>
-			<th>Score</th>
-		</tr>
-	</thead>
-	<!-- Table Header -->
-
-	<!-- Table Body -->
-	<tbody>
-
-		<tr>
-                        <td>1</td>
-			<td>Create pretty table design</td>			
-			<td>Yes</td>
-		</tr><!-- Table Row -->
-
-		<tr class="even">
-                        <td>1</td>
-			<td>Take the dog for a walk</td>			
-			<td>Yes</td>
-		</tr><!-- Darker Table Row -->
-
-		<tr>
-			<td>1</td>
-                        <td>Waste half the day on Twitter</td>			
-			<td>No</td>
-		</tr>
-
-		<tr class="even">
-			<td>1</td>
-                        <td>Feel inferior after viewing Dribble</td>			
-			<td>No</td>
-		</tr>
-
-		<tr>
-                        <td>1</td>
-                        <td>Wince at "to do" list</td>			
-			<td>Yes</td>
-		</tr>
-
-		<tr class="even">
-			<td>1</td>
-                        <td>Vow to complete personal project</td>			
-			<td>yes</td>
-		</tr>
-
-		<tr>
-			<td>1</td>
-                        <td>Procrastinate</td>			
-			<td>No</td>
-		</tr>
-                <tr>
-			<td>1</td>
-                        <td>Procrastinate</td>			
-			<td>No</td>
-		</tr>
-                <tr>
-			<td>1</td>
-                        <td>Procrastinate</td>			
-			<td>No</td>
-		</tr>
-                <tr>
-			<td>1</td>
-                        <td>Procrastinate</td>			
-			<td>No</td>
-		</tr>
-                <tr>
-			<td>1</td>
-                        <td>Procrastinate</td>			
-			<td>No</td>
-		</tr>
-                <tr>
-			<td>1</td>
-                        <td>Procrastinate</td>			
-			<td>No</td>
-		</tr>
-                <tr>
-			<td>1</td>
-                        <td>Procrastinate</td>			
-			<td>No</td>
-		</tr>
-                <tr>
-			<td>1</td>
-                        <td>Procrastinate</td>			
-			<td>No</td>
-		</tr>
-                <tr>
-			<td>1</td>
-                        <td>Procrastinate</td>			
-			<td>No</td>
-		</tr>
-               
-
-
-	</tbody>
-	<!-- Table Body -->
-
-</table>
-
-<div style="clear: both;float:left;width: 100%;margin-top:40px;height:130px;">    
-        <a  href="#" class="f2 button-viewmore">View Top 30 Scorers</a>    
+<div style="clear: both;float:left;width: 100%;">
+    <div style="float:left;width: 40%;">
+        <center><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/spellato.png'); ?>" style="width:55%;"></center>                
+    </div>
+    <div style="float:right;width: 60%;text-align:left;">
+        Now you can play online round from your android mobile.Go to Play Store and download the App Champs21.Now you can play online round from your android mobile.Go to Play Store and download the App Champs21.Now you can play online round from your android mobile.Go to Play Store and download the App Champs21.Now you can play online round from your android mobile.Go to Play Store and download the App Champs21.
+    </div>
+</div>
+<div style="clear: both;float:left;width: 100%;margin:30px 0px;">    
+    <div style="float:left;width: 45%;margin:20px 0px;border: 3px solid #ccc;"></div>
+    <div class="f2" style="float:left;width: 10%;font-size: 28px;color:#ccc;">TOP 6</div>
+    <div style="float:right;width: 45%;margin:20px 0px;border: 3px solid #ccc;"></div>
+</div>
+<div style="clear: both;float:left;width: 100%;height: 200px;border: 1px solid;">
+    
+</div>
+<div style="clear: both;float:left;width: 100%;margin:30px 0px;">    
+    <div style="float:left;width: 45%;margin:20px 0px;border: 3px solid #ccc;"></div>
+    <div class="f2" style="float:left;width: 10%;font-size: 28px;color:#ccc;">MORE</div>
+    <div style="float:right;width: 45%;margin:20px 0px;border: 3px solid #ccc;"></div>
+</div>
+<div style="margin-top:30px;clear: both;height: 290px;">
+    <div class="spelling_bee_play swing google_bg" style="">
+        <center><img data="spellato" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/top_90.png'); ?>" style="width:100%;cursor: pointer;" class="scalup"></center>                
+    </div>
+    <div class="swing" style="float: left;width: 31%;background: #fff;height: 288px;">
+        <center><a href="https://www.youtube.com/channel/UCywQj51MiCqHzQAa0Mg4KXg" target="_blank"><img data="spellato" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/youtube_v.png'); ?>" style="width:100%;cursor: pointer;" class="scalup"></a></center>                
+    </div>
+    <div class="swing" style="float: right;width: 31%;background-color: #fff;height: 288px;">        
+        <center><img data="spellato" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/gallery.png'); ?>" style="width:95%;cursor: pointer;" class="scalup"></center>                
+    </div>
 </div>
 
 <style>
-    .button-viewmore {
-  background-color: #F4A91C;
-  border: 1px solid #b3b3b3;
-  border-radius: 6px;
-  color: #fff;
-  cursor: pointer;
-  display: block;
-  width: 230px;
-  font-size: 17px;
-  font-weight: normal;
-  padding: 10px 17px;
-  margin: 0px auto;
-  text-decoration: none;
-  transition: all 0.25s ease-in 0s;
-}
+.spelling_bee_play{
+  float: left;
+  height: 288px;
+  width: 31%;
+  margin-right:36px;
+  background-color: #fff;  
 
-.button-viewmore:hover, .button-viewmore:active {
-  background-color: #FF8F35;
-  color: #ffffff;
-  transition: all 0.25s linear 0s;
+}
+.scalup
+{
+    transition: all 300ms linear;
+}
+.scalup:hover
+{
+    opacity: .7;
+    -webkit-transform: scale(1.1);
+    -moz-transform: scale(1.1);
+    -o-transform: scale(1.1);
+    -ms-transform: scale(1.1);
+    transform: scale(1.1);
 }
 </style>

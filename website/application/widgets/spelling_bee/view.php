@@ -31,7 +31,7 @@
                 </div>
             </div>  
             <div class="col-lg-6 links-spell">
-                <a href="/leaderboard">
+                <a href="/gamerules">
                     <div class="col-lg-12 leader leader_board1">
                         <div class="col-lg-3">
                             <img 
@@ -44,7 +44,7 @@
                     </div>
                 </a>
                 
-                <a href="/gamerules">
+                <a href="/leaderboard">
                     <div class="col-lg-12 leader leader_board2">
                         <div class="col-lg-3">
                             <img 

@@ -25,7 +25,7 @@
  * @link        http://www.codeigniter.com/user_guide/libraries/sessions.html
  */
 require_once BASEPATH . '/libraries/Session.php';
-class MY_Session extends CI_Session
+class Our_Session extends CI_Session
 {
     var $session_id_ttl = 360; // session id time to live (TTL) in seconds
     var $flash_key = 'flash'; // prefix for "flash" variables (eg. flash:new:message)

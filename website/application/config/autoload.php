@@ -54,9 +54,9 @@ $autoload['packages'] = array();
 |	$autoload['libraries'] = array('database', 'session', 'xmlrpc');
 */
 if(strpos($_SERVER['REQUEST_URI'],'admin') || strpos($_SERVER['REQUEST_URI'],'m')){
-    $autoload['libraries'] = array('form_validation','database','datamapper','MY_Session', 'xmlrpc','CallCache');
+    $autoload['libraries'] = array('form_validation','database','datamapper','session', 'xmlrpc','CallCache');
 }else{
-    $autoload['libraries'] = array('MY_Session', 'xmlrpc', 'CallCache');
+    $autoload['libraries'] = array('Our_Session', 'xmlrpc', 'CallCache');
 }
 /*
 | -------------------------------------------------------------------

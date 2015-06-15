@@ -17,7 +17,7 @@
 </div>
 <div style="margin-top:30px;clear: both;height: 290px;">
     <div class="spelling_bee_play swing google_bg" style="">
-        <center><img id="top_90_s1" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/top_90.png'); ?>" style="width:100%;cursor: pointer;" class="scalup"></center>                
+        <center><a href="<?php echo base_url('top_spellers?st=season1'); ?>"><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/top_90.png'); ?>" style="width:100%;cursor: pointer;" class="scalup"></a></center>                
     </div>
     <div class="swing" style="float: left;width: 31%;background: #fff;height: 288px;">
         <center><a href="https://www.youtube.com/channel/UCywQj51MiCqHzQAa0Mg4KXg" target="_blank"><img data="spellato" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/youtube_v.png'); ?>" style="width:100%;cursor: pointer;" class="scalup"></a></center>                

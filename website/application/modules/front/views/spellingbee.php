@@ -97,7 +97,7 @@
                 <a  href="<?php echo base_url('archive?st=season1'); ?>" class="f2 button-filter">Season 1</a>
             </div>
             <div class="swing" style="float: right;width: 31%;background-color: #fff;height: 250px;">
-                <h2 class="f2" style="margin-left:30px;font-size: 16px;">Download PDF</h2>
+                <h2 class="f2" style="margin-left:30px;font-size: 16px;">Download Spellato</h2>
                 <center><img data="spellato" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/spellato.png'); ?>" style="width:55%;margin-top:15px;cursor: pointer;" class="scalup spellato_dl_link"></center>                
             </div>
         </div>

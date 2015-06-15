@@ -2575,6 +2575,12 @@ function getPostData() {
                                 content_showed = content_showed + id_array[1] + "|";
                             }
                         });
+                        
+                        if ( $("#post_id_val").length > 0 )
+                        {
+                            var post_id = $("#post_id_val").val();
+                            content_showed = content_showed + post_id + "|";
+                        }
                     }
 
                     $.ajax({

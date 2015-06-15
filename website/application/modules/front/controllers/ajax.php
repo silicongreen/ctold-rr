@@ -995,7 +995,8 @@ class ajax extends MX_Controller
                 }    
                
             }
-            
+//            print_r($a_post_params);
+//            exit;
             $ar_post_news = $this->post->gePostNews($a_post_params, $target, "smaller", "MAX(t.priority),DESC", $s_category_ids, $i_limit, $current_page, $b_featured, $i_featured_position);
         }
         else if ( $target == "inner" )
@@ -1004,7 +1005,6 @@ class ajax extends MX_Controller
             $a_post_params = array(
                                 "tds_post.referance_id" => 0
             ); 
-            
             
             $ar_post_news = $this->post->gePostNews($a_post_params, $target, "smaller", "DATE(tds_post.published_date),desc+postCategories.inner_priority,asc", $s_category_ids, $i_limit, $current_page, $b_featured, $i_featured_position);
         }

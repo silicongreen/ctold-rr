@@ -929,6 +929,8 @@ if ( !function_exists("get_api_data_from_yii") )
             $fields['user_type'] = $type_cookie;
         } 
         
+        $fields['website_only'] = 1;
+        
         $fields_string = http_build_query($fields);
         
         $ch = curl_init();

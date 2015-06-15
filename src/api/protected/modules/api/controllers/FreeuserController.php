@@ -2302,11 +2302,14 @@ class FreeuserController extends Controller
 
     public function actionIndex()
     {
+        $website_only = 0;
+        
         $page_number = Yii::app()->request->getPost('page_number');
         $total_showed = Yii::app()->request->getPost('total_showed');
         $page_size = Yii::app()->request->getPost('page_size');
         $user_id = Yii::app()->request->getPost('user_id');
         $user_type_set = Yii::app()->request->getPost('user_type');
+        $website_only = Yii::app()->request->getPost('website_only');
 
         $check_news_update = Yii::app()->request->getPost('check_news_update');
         $last_api_call = Yii::app()->request->getPost('last_api_call');
@@ -2388,11 +2391,11 @@ class FreeuserController extends Controller
 
             if ($already_showed)
             {
-                $homepage_post = $homepageObj->getHomePagePost($user_type, $page_number, $page_size, false, $already_showed, $from_main_site, $category_not_to_show);
+                $homepage_post = $homepageObj->getHomePagePost($website_only, $user_type, $page_number, $page_size, false, $already_showed, $from_main_site, $category_not_to_show);
             }
             else
             {
-                $homepage_post = $homepageObj->getHomePagePost($user_type, $page_number, $page_size, false, false, $from_main_site, $category_not_to_show);
+                $homepage_post = $homepageObj->getHomePagePost($website_only, $user_type, $page_number, $page_size, false, false, $from_main_site, $category_not_to_show);
             }
 
             $response['data']['total'] = $homepageObj->getPostTotal($user_type, false, $category_not_to_show);
@@ -2416,7 +2419,7 @@ class FreeuserController extends Controller
         if ($page_number == 1)
         {
             $pinpostobj = new Pinpost();
-            $all_pinpost = $pinpostobj->getPinPost(0);
+            $all_pinpost = $pinpostobj->getPinPost(0, $website_only);
             $new_post = array();
             $i = 0;
             foreach ($response['data']['post'] as $value)
@@ -2706,6 +2709,8 @@ class FreeuserController extends Controller
         $last_api_call = Yii::app()->request->getPost('last_api_call');
 
         $check_news_update = Yii::app()->request->getPost('check_news_update');
+        
+        $already_showed = Yii::app()->request->getPost('already_showed');
 
         $news_category = $category_id;
         if ($subcategory_id)
@@ -2781,9 +2786,24 @@ class FreeuserController extends Controller
         {
 
             $postcategoryObj = new PostCategory();
-            $post = $postcategoryObj->getPost($news_category, $user_type, $total_showed, $page_size, $popular_sort, $game_type, $fetaured);
-
-            $response['data']['total'] = $postcategoryObj->getPostTotal($news_category, $user_type);
+            if ($already_showed)
+            {
+                $post = $postcategoryObj->getPost($news_category, $user_type, $total_showed, $page_size, $popular_sort, $game_type, $fetaured, $already_showed);
+            }
+            else
+            {
+                $post = $postcategoryObj->getPost($news_category, $user_type, $total_showed, $page_size, $popular_sort, $game_type, $fetaured);
+            }
+            
+            
+            if ($already_showed)
+            {
+                $response['data']['total'] = $postcategoryObj->getPostTotal($news_category, $user_type, $already_showed);
+            }
+            else
+            {
+                $response['data']['total'] = $postcategoryObj->getPostTotal($news_category, $user_type);
+            }
             $has_next = false;
             if ($response['data']['total'] > $page_number * $page_size)
             {

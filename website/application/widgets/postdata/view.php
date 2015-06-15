@@ -716,8 +716,9 @@
     <input type="hidden" name="target" id="target" value="<?php echo $target; ?>" autocomplete="off" />
     <input type="hidden" name="page" id="page" value="<?php echo $page; ?>" autocomplete="off" />
     <input type="hidden" name="s" id="q" value="<?php echo $q; ?>" autocomplete="off" />
+    <?php if ( $related == FALSE ) : ?>
     <input type="hidden" name="category" id="category" value="<?php echo $category; ?>" autocomplete="off" />
-
+    <?php endif; ?>
 
     <input type="hidden" name="page-limit" id="page-limit" value="<?php echo $page_size; ?>" autocomplete="off" />
     <input type="hidden" name="current-page" id="current-page" value="<?php echo $current_page; ?>"  autocomplete="off" />

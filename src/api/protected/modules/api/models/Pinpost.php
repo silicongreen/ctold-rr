@@ -41,7 +41,9 @@ class Pinpost extends CActiveRecord
 	{
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
-		return array();
+		return array(
+                    'post' => array(self::BELONGS_TO, 'Post', 'post_id'),
+                );
 	}
 
 	
@@ -56,12 +58,28 @@ class Pinpost extends CActiveRecord
 	{
 		return parent::model($className);
 	}
-        public function getPinPost($category_id=0)
+        
+        public function getPinPost($category_id=0, $website_only = 0)
         {
             $criteria = new CDbCriteria;
+            
+            $criteria->with = array(
+                'post' => array(
+                    'select' => 'post.id',
+                    'joinType' => 'INNER JOIN',
+                ),
+            );
+            
+            $website_only = (int)$website_only;
+            if($website_only == 1) {
+                $criteria->compare("post.website_only", $website_only);
+            } else {
+                $criteria->addInCondition("post.website_only", array(0,1));
+            }
+            
             $criteria->select = 't.post_id,t.position';
             $criteria->order = "t.position ASC";
-            $criteria->compare('category_id', $category_id);
+            $criteria->compare('t.category_id', $category_id);
             $criteria->limit = 10;
             $obj_pin_post = $this->findAll($criteria);
             $pin_post = array();

@@ -1,6 +1,6 @@
 <div class="container" id="tabContainer" style="width: 77%; min-height: 250px; margin-bottom: 250px;">
     <div style="float:left;margin-left:20px;width: 96%;">
-        <a href="http://www.champs21.dev/spellingbee/">
+        <a href="<?php echo base_url('spellingbee'); ?>">
             <h1 style="color:#93989C;float: left;" class="title noPrint f2">
                 Spelling Bee&nbsp;
             </h1>
@@ -14,7 +14,7 @@
         
         <div class="col-lg-12 row-fluid row">
             <div class="tabcontainer">
-                <a href="http://www.champs21.com/archive/">
+                <a href="<?php echo base_url('archive'); ?>">
                     <h1 style="float: left;color:#000;font-size:40px;margin-top: 5px;" class="title noPrint f2">
                         Archive
                     </h1>
@@ -94,7 +94,11 @@ nav {
     padding: 0;
     display: none;
 }
-
+.tabbody p
+{
+    font-family: Arial;
+    letter-spacing:0px;
+}
 </style>
 <script>
  $('.tabheading li').click(function () {
@@ -106,6 +110,7 @@ nav {
 
         return false;
     });
+
 </script>
 <style>
     .row{

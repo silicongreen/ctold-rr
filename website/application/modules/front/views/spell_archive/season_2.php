@@ -79,7 +79,7 @@
                     <center><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/archive/s2/5th_place.png'); ?>" style="width:90%;cursor: pointer;" class="scalup toolbar"></center>   
                 </div>
                 <div class="aright">
-                    <p class="f2" style="color:#FDCB08;font-size:16px;margin-bottom: 5px;text-transform: uppercase;">Top 2</p>
+                    <p class="f2" style="color:#FDCB08;font-size:16px;margin-bottom: 5px;text-transform: uppercase;">FINALISTS</p>
                     <p style="font-weight:bold;"><i>Atiqul Huq</i></p>
                     <p>Class - IX</p>
                     <p>Ananda Niketan</p>
@@ -93,7 +93,7 @@
                     <center><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/archive/s2/6th_place.jpg'); ?>" style="width:90%;cursor: pointer;" class="scalup toolbar"></center>   
                 </div>
                 <div class="aright">
-                    <p class="f2" style="color:#FDCB08;font-size:16px;margin-bottom: 5px;text-transform: uppercase;">Top 3</p>
+                    <p class="f2" style="color:#FDCB08;font-size:16px;margin-bottom: 5px;text-transform: uppercase;">FINALISTS</p>
                     <p style="font-weight:bold;"><i>Saif rahman</i></p>
                     <p>Class - VIII</p>
                     <p>The City School</p>
@@ -116,12 +116,10 @@
         <center><a href="https://www.youtube.com/channel/UCywQj51MiCqHzQAa0Mg4KXg" target="_blank"><img data="spellato" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/youtube_v.png'); ?>" style="width:100%;cursor: pointer;" class="scalup"></a></center>                
     </div>
     <div class="swing" style="float: right;width: 31%;background-color: #fff;height: 288px;">        
-        <center><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/gallery.png'); ?>" style="width:95%;cursor: pointer;" class="scalup"></center>                
+        <center><img id="gallery_s2" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/gallery.png'); ?>" style="width:95%;cursor: pointer;" class="scalup"></center>                
     </div>
 </div>
-<div class="top_90_s2_box">
-    <?php $this->load->view('spell_archive/top_90_s2'); ?> 
-</div>
+
 <style>
 .top_6_box
 {
@@ -136,18 +134,18 @@
 }
 .top_6_box ul li p
 {
-    font-size: 12px;
-    line-height: 14px;
+    font-size: 10px;
+    line-height: 12px;
     margin: 0px;
     color:#000;
 }
 .top_6_box ul li .aleft
 {
-    float:left;width: 60%;height: 115px;
+    float:left;width: 50%;height: 115px;
 }
 .top_6_box ul li .aright
 {
-    float:right;width: 40%;height: 115px;text-align: left;
+    float:right;width: 50%;height: 115px;text-align: left;
 }
 .spelling_bee_play{
   float: left;
@@ -170,8 +168,100 @@
     -ms-transform: scale(1.1);
     transform: scale(1.1);
 }
-.top_90_s2_box
-{
-    clear: both;float:left;width: 100%;margin:30px 0px;display: none;
-}
+
 </style>
+
+<script>
+$("#gallery_s2").click(function() {
+        $.fancybox([            
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/1.JPG',
+                'title' : 'Season 2'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/2.JPG',
+                'title' : 'Season 2'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/3.JPG',
+                'title' : 'Season 2'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/4.JPG',
+                'title' : 'Season 2'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/5.JPG',
+                'title' : 'Season 2'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/6.JPG',
+                'title' : 'Season 2'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/7.JPG',
+                'title' : 'Season 2'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/8.JPG',
+                'title' : 'Season 2'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/9.JPG',
+                'title' : 'Season 2'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/10.JPG',
+                'title' : 'Season 2'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/11.JPG',
+                'title' : 'Season 2'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/12.JPG',
+                'title' : 'Season 2'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/13.JPG',
+                'title' : 'Season 2'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/14.JPG',
+                'title' : 'Season 2'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/15.JPG',
+                'title' : 'Season 2'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/16.JPG',
+                'title' : 'Season 2'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/17.JPG',
+                'title' : 'Season 2'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/18.JPG',
+                'title' : 'Season 2'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/19.JPG',
+                'title' : 'Season 2'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/20.JPG',
+                'title' : 'Season 2'
+            }
+        ], {
+            'padding'           : 0,
+            'transitionIn'      : 'none',
+            'transitionOut'     : 'none',
+            'type'              : 'image',
+            'changeFade'        : 0,
+            'fitToView': true,
+            'autoSize': true,
+        });
+    });
+</script>

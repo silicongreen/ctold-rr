@@ -2942,7 +2942,7 @@ class FreeuserController extends Controller
             {
                 $freeuserObj = new Freeusers();
                 if ($freeuserObj->getUserInfo($user_id))
-                {
+                { 
                     $countryObj = new Countries();
                     $response['data'] = $freeuserObj->getPaidUserInfo();
                     $response['data']['countries'] = $countryObj->getCountryies();

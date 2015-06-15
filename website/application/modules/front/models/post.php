@@ -75,6 +75,10 @@ class post extends CI_Model{
             $b_from_api = FALSE;
         }
         
+        if( $target == 'Single' ) {
+            $b_from_api = FALSE;
+        }
+        
         if (($b_from_api && in_array($target, $a_api_index)) || $target=="school" || $target=="teacher"  )
         {
             $a_exclude_id = array();

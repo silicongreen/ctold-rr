@@ -1051,6 +1051,7 @@ class home extends MX_Controller {
         $cache_name = "POST" . '_' . $obj_post_data->post_id;
         $s_content = $this->cache->get($cache_name);
         
+        
         $s_content = false;
         if ($s_content !== false) {
             $s_content = $s_content;
@@ -1727,6 +1728,7 @@ class home extends MX_Controller {
             
             $obj_category = new Category_model();
             $i_parent_category_id = 0;
+            
             if ( $i_count_segments > 1 )
             {
                 //Now Come on to the multiple segments, let say we have only categories and news will be passed through the remap
@@ -1819,6 +1821,7 @@ class home extends MX_Controller {
             {
                 $s_category = $ar_segmens[1];
             }
+            
             $b_popular = FALSE;
             if ( $s_category == "popular" )
             {
@@ -1855,6 +1858,7 @@ class home extends MX_Controller {
             {
                 $cate_name .= ".";
             }
+            
             $this->db->where('name', $cate_name);
             $this->db->where("status",1);
             if ( $i_parent_category_id == 0 )
@@ -1899,8 +1903,7 @@ class home extends MX_Controller {
                     );
                 }
                 
-                $a_post = $this->post->gePostNews($a_post_params);
-                
+                $a_post = $this->post->gePostNews($a_post_params, "Single");
                 if ( !is_array($a_post) )
                 {
                     //print urldecode($s_headline_sanitize) . "   " . sanitize($obj_post_data->headline);

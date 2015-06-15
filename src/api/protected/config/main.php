@@ -8,7 +8,7 @@ include 'DbCon.php';
 
 return array(
     'basePath' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
-'timeZone' => 'Asia/Dhaka',
+    'timeZone' => 'Asia/Dhaka',
     'name' => 'champs21-school.com',
     // preloading 'log' component
     'preload' => array('log','zend'),
@@ -106,6 +106,7 @@ return array(
         'db' => $db_con,
         'cache' => array(
             'class' => 'system.caching.CFileCache',
+            'cachePath' => 'protected/runtime/cache/news'
         ),
         'errorHandler' => array(
             // use 'site/error' action to display errors

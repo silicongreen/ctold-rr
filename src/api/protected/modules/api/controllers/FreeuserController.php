@@ -2419,7 +2419,7 @@ class FreeuserController extends Controller
         if ($page_number == 1)
         {
             $pinpostobj = new Pinpost();
-            $all_pinpost = $pinpostobj->getPinPost(0);
+            $all_pinpost = $pinpostobj->getPinPost(0, $website_only);
             $new_post = array();
             $i = 0;
             foreach ($response['data']['post'] as $value)

@@ -28,6 +28,8 @@ $config[ 'wow_login' ] = false;
 
 $config[ 'api_index' ] = array('index','inner','inner-popular');
 
+$config[ 'accept_without_cookie' ] = array('school_feed_for_paid');
+
 $config[ 'assessment' ] = array(
     'types' => array(
         1 => 'Assessment',

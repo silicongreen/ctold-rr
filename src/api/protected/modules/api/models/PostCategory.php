@@ -287,11 +287,11 @@ class PostCategory extends CActiveRecord
         
         if(!$popular_sort)
         {
-            $criteria->order = 'DATE(post.published_date) DESC, t.inner_priority ASC';
+            $criteria->order = ' t.inner_priority ASC, DATE(post.published_date) DESC';
         }
         else
         {
-            $criteria->order = 'post.user_view_count DESC, DATE(post.published_date) DESC, t.inner_priority ASC';
+            $criteria->order = 'post.user_view_count DESC, t.inner_priority ASC, DATE(post.published_date) DESC';
           
         }    
 

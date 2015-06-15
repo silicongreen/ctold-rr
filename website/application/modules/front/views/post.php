@@ -567,7 +567,8 @@
                 </div>
 
                 <div id="demo2">
-                    <?php $widget->run('postdata', 'index', '', 'inner', FALSE, 0, 'index', 0, 9, 0, $q = '', NULL, true, $post_id); ?>
+                    <?php // $widget->run('postdata', 'index', '', 'inner', FALSE, 0, 'index', 0, 9, 0, $q = '', NULL, true, $post_id); ?>
+                    <?php $widget->run('postdata', 'index', '', 'inner', FALSE, 0, 'index', 0, 9, 0,'', NULL, true, $post_id);?>
                     <span class="als-prev"></span>
                     <span class="als-next"></span>
                 </div>
@@ -662,7 +663,10 @@
                         $mix_category = $obj_child_categories;
                     }
                 ?>
-                <?php $widget->run('postdata', $parent_category, $parent_category_id, 'inner', FALSE, 0, 'index', 0, 9, 0,'', $mix_category); ?>
+                <?php
+                $obj_widget = new Widget;
+                $obj_widget->run('postdata', $parent_category, $parent_category_id, 'inner', FALSE, 0, 'index', 0, 9, 0,'', $mix_category, FALSE, $post_id);
+                ?>
             </div>
 
         </div>

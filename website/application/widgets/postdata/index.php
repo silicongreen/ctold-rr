@@ -122,6 +122,7 @@ class postdata extends widget
         }    
         else if ( $target == "inner" )
         {
+            
             $s_priority = "DATE(tds_post.published_date),desc+postCategories.inner_priority,asc";
             
             if ( $b_featured )
@@ -214,12 +215,26 @@ class postdata extends widget
         {
             if($post_id > 0 && !empty($q)) {
                 $a_post_params['postCategories.post_id'] = $post_id;
-            } else {
+            } 
+            else if($post_id > 0 && empty($q) && $b_get_related) {
                 $a_post_params['post_id'] = $post_id;
+            }
+            else  if($post_id > 0 && empty($q) && $b_get_related == false) {
+                $a_post_params["NOT_IN"] = array("tds_post.id",array($post_id));
             }
             
             if($b_get_related) {
                 $a_post_params['b_get_related'] = $b_get_related;
+            }
+            if($b_get_related == false)
+            {
+//            echo '<pre>';
+//            print_r($a_post_params) . '<br/>';
+//            print_r($target) . '<br/>';
+//            print_r($s_priority) . '<br/>';
+//            print_r($s_category_ids) . '<br/>';
+//            
+//            exit;
             }
             $ar_post_news = $this->post->gePostNews($a_post_params, $target, "smaller", $s_priority, $s_category_ids, $limit, $current_page, $b_featured, $i_featured_position); 
         }
@@ -227,7 +242,9 @@ class postdata extends widget
         
         $data['is_game'] = $is_game;
         $data['page'] = $page;
+        
         $data['category'] = (int) $s_category_ids;
+        $data['related'] = $b_get_related;
         
         $data['ecl'] = FALSE;
         if(isset($CI->config->config[sanitize($s_category_name)]['ecl_ids'])) {

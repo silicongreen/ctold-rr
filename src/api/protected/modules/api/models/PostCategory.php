@@ -108,7 +108,7 @@ class PostCategory extends CActiveRecord
         return parent::model($className);
     }
 
-    public function getPostTotal($category_id, $user_type)
+    public function getPostTotal($category_id, $user_type, $already_showed = false)
     {
 
         $criteria = new CDbCriteria();
@@ -119,6 +119,10 @@ class PostCategory extends CActiveRecord
         $criteria->compare("t.category_id", $category_id);
         $criteria->compare("post.school_id", 0);
         $criteria->compare("post.teacher_id", 0);
+        if($already_showed)
+        {
+            $criteria->addNotInCondition('post.id', explode(",",$already_showed));
+        }
         $criteria->addCondition("DATE(post.published_date) <= '" . date("Y-m-d") . "'");
         $criteria->with = array(
             'post' => array(
@@ -264,7 +268,7 @@ class PostCategory extends CActiveRecord
         return $post_array;
     }
 
-    public function getPost($category_id, $user_type, $page = 1, $page_size = 10,$popular_sort = false,$game_type = false,$fetaured=false)
+    public function getPost($category_id, $user_type, $page = 1, $page_size = 10,$popular_sort = false,$game_type = false,$fetaured=false, $already_showed = false)
     {
         $criteria = new CDbCriteria;
         $criteria->select = 't.id';
@@ -315,6 +319,10 @@ class PostCategory extends CActiveRecord
         $criteria->compare("t.category_id", $category_id);
         $criteria->compare("postType.type_id", $user_type);
         $criteria->addCondition("DATE(post.published_date) <= '" . date("Y-m-d") . "'");
+        if($already_showed)
+        {
+            $criteria->addNotInCondition('post.id', explode(",",$already_showed));
+        }
         $criteria->together = true;
 
         $obj_post = $this->findAll($criteria);

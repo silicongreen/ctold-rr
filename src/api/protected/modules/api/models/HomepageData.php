@@ -176,7 +176,7 @@ class HomepageData extends CActiveRecord
         return $return;
     }
 
-    public function getHomePagePost($user_type, $page = 1, $page_size = 9,$date_value=false,$already_showed=false,$from_main_site=false,$category_not_to_show=false)
+    public function getHomePagePost($website_only, $user_type, $page = 1, $page_size = 9,$date_value=false,$already_showed=false,$from_main_site=false,$category_not_to_show=false)
     {
         if($date_value==false)
         {
@@ -211,7 +211,11 @@ class HomepageData extends CActiveRecord
              $criteria->compare("t.date", $date_value);
         }    
         
-        
+        if($website_only == 1) {
+            $criteria->compare("t.website_only", $website_only);
+        } else {
+            $criteria->addInCondition("t.website_only", array(0,1));
+        }
         
         $criteria->compare("t.post_type", $user_type);
         $criteria->addCondition("DATE(post.published_date) <= '" . date("Y-m-d") . "'");
@@ -253,7 +257,7 @@ class HomepageData extends CActiveRecord
             else
             {
                 $date_value = date("Y-m-d", strtotime("-1 Days", $date_value));
-                $this->getHomePagePost($user_type, $page, $page_size, $date_value);
+                $this->getHomePagePost($website_only, $user_type, $page, $page_size, $date_value);
             }
         }
         else

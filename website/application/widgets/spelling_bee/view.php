@@ -21,7 +21,7 @@
                 </div>
 
                 <div class="col-lg-12 float-4">
-                    <a href="" id="play_image" style="border:0px;">
+                    <a href="/spellingbee" id="play_image" style="border:0px;">
                         <img id="play_image_1" 
                              src="styles/layouts/tdsfront/images/spellingbee/play.png"   />
                         <img id="play_image_2" 
@@ -31,26 +31,31 @@
                 </div>
             </div>  
             <div class="col-lg-6 links-spell">
-                <div class="col-lg-12 leader leader_board1">
-                    <div class="col-lg-3">
-                        <img 
-                            src="styles/layouts/tdsfront/images/spellingbee/ruls.png"  style="" 
-                            />
+                <a href="/leaderboard">
+                    <div class="col-lg-12 leader leader_board1">
+                        <div class="col-lg-3">
+                            <img 
+                                src="styles/layouts/tdsfront/images/spellingbee/ruls.png"  style="" 
+                                />
+                        </div>
+                        <div class="col-lg-8">
+                            GAME RULES 
+                        </div>
                     </div>
-                    <div class="col-lg-8">
-                        GAME RULES 
-                    </div>
-                </div>
-                <div class="col-lg-12 leader leader_board2">
-                    <div class="col-lg-3">
-                        <img 
-                            src="styles/layouts/tdsfront/images/spellingbee/leaderboard.png" />
-                    </div>
-                    <div class="col-lg-8">
-                        LEADER BOARD
-                    </div>
+                </a>
+                
+                <a href="/gamerules">
+                    <div class="col-lg-12 leader leader_board2">
+                        <div class="col-lg-3">
+                            <img 
+                                src="styles/layouts/tdsfront/images/spellingbee/leaderboard.png" />
+                        </div>
+                        <div class="col-lg-8">
+                            LEADER BOARD
+                        </div>
 
-                </div>
+                    </div>
+                </a>
 
                 <?php
                 if (count($news->related_news_spelling_bee) > 0)

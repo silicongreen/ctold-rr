@@ -19,8 +19,8 @@
                 <li rel="tab3"><a href="javascript:return false;">Award</a> </li>
                 <li rel="tab4"><a href="javascript:return false;">How to Participate</a> </li>
                 <li rel="tab5"><a href="javascript:return false;">Study Tips</a> </li>
-<!--                <li rel="tab6"><a href="javascript:return false;">Rangpur</a> </li>
-                <li rel="tab7"><a href="javascript:return false;">Barishal</a> </li>-->
+                <li rel="tab6"><a href="javascript:return false;">Partners</a> </li>
+                <!--<li rel="tab7"><a href="javascript:return false;">Barishal</a> </li>-->
             </ul>
 
             <div class="tabbody active" id="tab1" style="display: block;">
@@ -41,6 +41,9 @@
 
             <div class="tabbody content mCustomScrollbar" id="tab5" style="display: none;padding: 20px;">
               <?php $this->load->view('spellingbee/study_tips'); ?>  
+            </div>
+            <div class="tabbody content mCustomScrollbar" id="tab6" style="display: none;padding: 20px;">
+              <?php $this->load->view('spellingbee/term_n_condition'); ?>  
             </div>
             
         </div>

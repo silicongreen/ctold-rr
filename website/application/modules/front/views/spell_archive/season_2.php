@@ -175,83 +175,83 @@
 $("#gallery_s2").click(function() {
         $.fancybox([            
             {
-                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/1.JPG',
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/1.jpg',
                 'title' : 'Season 2'
             },
             {
-                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/2.JPG',
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/2.jpg',
                 'title' : 'Season 2'
             },
             {
-                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/3.JPG',
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/3.jpg',
                 'title' : 'Season 2'
             },
             {
-                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/4.JPG',
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/4.jpg',
                 'title' : 'Season 2'
             },
             {
-                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/5.JPG',
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/5.jpg',
                 'title' : 'Season 2'
             },
             {
-                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/6.JPG',
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/6.jpg',
                 'title' : 'Season 2'
             },
             {
-                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/7.JPG',
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/7.jpg',
                 'title' : 'Season 2'
             },
             {
-                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/8.JPG',
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/8.jpg',
                 'title' : 'Season 2'
             },
             {
-                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/9.JPG',
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/9.jpg',
                 'title' : 'Season 2'
             },
             {
-                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/10.JPG',
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/10.jpg',
                 'title' : 'Season 2'
             },
             {
-                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/11.JPG',
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/11.jpg',
                 'title' : 'Season 2'
             },
             {
-                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/12.JPG',
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/12.jpg',
                 'title' : 'Season 2'
             },
             {
-                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/13.JPG',
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/13.jpg',
                 'title' : 'Season 2'
             },
             {
-                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/14.JPG',
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/14.jpg',
                 'title' : 'Season 2'
             },
             {
-                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/15.JPG',
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/15.jpg',
                 'title' : 'Season 2'
             },
             {
-                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/16.JPG',
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/16.jpg',
                 'title' : 'Season 2'
             },
             {
-                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/17.JPG',
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/17.jpg',
                 'title' : 'Season 2'
             },
             {
-                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/18.JPG',
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/18.jpg',
                 'title' : 'Season 2'
             },
             {
-                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/19.JPG',
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/19.jpg',
                 'title' : 'Season 2'
             },
             {
-                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/20.JPG',
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s2/gallery/20.jpg',
                 'title' : 'Season 2'
             }
         ], {

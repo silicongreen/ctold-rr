@@ -178,119 +178,119 @@ Number of Schools participated this season soared to 1600 with a whopping number
 $("#gallery_s3").click(function() {
         $.fancybox([            
             {
-                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/1.JPG',
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/1.jpg',
                 'title' : 'Season 3'
             },
             {
-                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/2.JPG',
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/2.jpg',
                 'title' : 'Season 3'
             },
             {
-                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/3.JPG',
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/3.jpg',
                 'title' : 'Season 3'
             },
             {
-                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/4.JPG',
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/4.jpg',
                 'title' : 'Season 3'
             },
             {
-                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/5.JPG',
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/5.jpg',
                 'title' : 'Season 3'
             },
             {
-                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/6.JPG',
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/6.jpg',
                 'title' : 'Season 3'
             },
             {
-                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/7.JPG',
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/7.jpg',
                 'title' : 'Season 3'
             },
             {
-                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/8.JPG',
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/8.jpg',
                 'title' : 'Season 3'
             },
             {
-                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/9.JPG',
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/9.jpg',
                 'title' : 'Season 3'
             },
             {
-                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/10.JPG',
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/10.jpg',
                 'title' : 'Season 3'
             },
             {
-                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/11.JPG',
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/11.jpg',
                 'title' : 'Season 3'
             },
             {
-                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/12.JPG',
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/12.jpg',
                 'title' : 'Season 3'
             },
             {
-                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/13.JPG',
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/13.jpg',
                 'title' : 'Season 3'
             },
             {
-                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/14.JPG',
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/14.jpg',
                 'title' : 'Season 3'
             },
             {
-                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/15.JPG',
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/15.jpg',
                 'title' : 'Season 3'
             },
             {
-                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/16.JPG',
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/16.jpg',
                 'title' : 'Season 3'
             },
             {
-                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/17.JPG',
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/17.jpg',
                 'title' : 'Season 3'
             },
             {
-                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/18.JPG',
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/18.jpg',
                 'title' : 'Season 3'
             },
             {
-                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/19.JPG',
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/19.jpg',
                 'title' : 'Season 3'
             },
             {
-                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/20.JPG',
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/20.jpg',
                 'title' : 'Season 3'
             },
             {
-                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/21.JPG',
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/21.jpg',
                 'title' : 'Season 3'
             },
             {
-                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/22.JPG',
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/22.jpg',
                 'title' : 'Season 3'
             },
             {
-                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/23.JPG',
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/23.jpg',
                 'title' : 'Season 3'
             },
             {
-                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/24.JPG',
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/24.jpg',
                 'title' : 'Season 3'
             },
             {
-                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/25.JPG',
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/25.jpg',
                 'title' : 'Season 3'
             },
             {
-                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/26.JPG',
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/26.jpg',
                 'title' : 'Season 3'
             },
             {
-                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/27.JPG',
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/27.jpg',
                 'title' : 'Season 3'
             },
             {
-                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/28.JPG',
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/28.jpg',
                 'title' : 'Season 3'
             },
             {
-                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/29.JPG',
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/29.jpg',
                 'title' : 'Season 3'
             }
         ], {

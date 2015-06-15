@@ -256,7 +256,7 @@ table td {
 	border-left: 0px solid #e0e0e0;
 	border-right: 0px solid #e0e0e0;
 	background: #F5F5F5;
-        font-family: Arial;
+        font-family: Arial !important;
         letter-spacing:0px;
 }
 table tr.even td {

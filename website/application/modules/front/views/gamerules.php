@@ -1,13 +1,23 @@
 <div class="container" id="tabContainer" style="width: 77%; min-height: 250px; margin-bottom: 250px;">
-    
+    <div style="float:left;margin-left:20px;width: 96%;">
+        <a href="<?php echo base_url('spellingbee'); ?>">
+            <h1 style="color:#93989C;float: left;" class="title noPrint f2">
+                Spelling Bee&nbsp;
+            </h1>
+        </a>                
+        <h1 style="color:#93989C;float: left;" class="title noPrint f2">
+            > Game Rules
+        </h1>        
+    </div>
+    <div style="clear:both;"></div>
     <div class="spellingbee">
-        <div style="float: left;width: 100%;padding: 10px 50px;margin-top:20px;">
-            <a href="http://www.champs21.com/gamerules/">
+        <div style="float: left;width: 100%;padding: 10px 50px;margin-top:35px;">
+            <a href="<?php echo base_url('gamerules'); ?>">
                 <h1 style="float: left;color:#000;font-size:40px;margin-top: 20px;" class="title noPrint f2">
                     Game Rules
                 </h1>
             </a>
-            <a href="http://www.champs21.com/spellingbee/">
+            <a href="<?php echo base_url('spellingbee'); ?>">
                 <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/sp-logo.png'); ?>" style="float: right;width:15%;">
             </a>
             
@@ -98,7 +108,7 @@
 <style>
 .spellingbee {
   background: none repeat scroll 0 0 #ffffff;
-  margin: 70px 20px;
+  margin: 10px 20px;
   min-height: 600px;
   background-image: url("<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/bee.png'); ?>");
   background-position: right bottom;
@@ -159,6 +169,11 @@ nav {
 </script>
 <style>
     .row{
-        padding: 30px;
+        padding: 0px 30px 30px;
+    }
+    .row p
+    {
+        font-family: Arial;
+        letter-spacing:0px;
     }
 </style>

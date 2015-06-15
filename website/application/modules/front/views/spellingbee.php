@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/jquery.mCustomScrollbar.css'); ?>">
 <div class="container" id="tabContainer" style="width: 77%; min-height: 250px; margin-bottom: 250px;">
     <div style="float:left;margin-left:20px;width: 96%;">
-        <a href="http://www.champs21.dev/spellingbee/">
+        <a href="<?php echo base_url('spellingbee'); ?>">
             <h1 style="color:#93989C;float: left;" class="title noPrint f2">
                 Spelling Bee
             </h1>
@@ -244,7 +244,8 @@
 }
 .tabbody p
 {
-    font-family:Arial !important;
+    font-family:Arial !important;    
+    letter-spacing:0px;
 }
 .tabbody table td
 {

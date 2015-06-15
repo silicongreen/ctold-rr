@@ -23,12 +23,13 @@
         <center><a href="https://www.youtube.com/channel/UCywQj51MiCqHzQAa0Mg4KXg" target="_blank"><img data="spellato" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/youtube_v.png'); ?>" style="width:100%;cursor: pointer;" class="scalup"></a></center>                
     </div>
     <div class="swing" style="float: right;width: 31%;background-color: #fff;height: 288px;">        
-        <center><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/gallery.png'); ?>" style="width:95%;cursor: pointer;" class="scalup"></center>                
+        <center><img id="gallery_s1" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/gallery.png'); ?>" style="width:95%;cursor: pointer;" class="scalup"></center>                
     </div>
 </div>
-<div class="top_90_s1_box">
-    <?php $this->load->view('spell_archive/top_90_s1'); ?> 
-</div>
+<!--<div class="top_90_s1_box">
+    <?php //$this->load->view('spell_archive/top_90_s1'); ?> 
+</div>-->
+
 
 
 <style>
@@ -57,4 +58,124 @@
 {
     clear: both;float:left;width: 100%;margin:30px 0px;display: none;
 }
+
 </style>
+<script>
+$("#gallery_s1").click(function() {
+        $.fancybox([            
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s1/gallery/1.JPG',
+                'title' : 'Season 1'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s1/gallery/2.JPG',
+                'title' : 'Season 1'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s1/gallery/3.JPG',
+                'title' : 'Season 1'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s1/gallery/4.JPG',
+                'title' : 'Season 1'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s1/gallery/5.JPG',
+                'title' : 'Season 1'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s1/gallery/6.JPG',
+                'title' : 'Season 1'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s1/gallery/7.JPG',
+                'title' : 'Season 1'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s1/gallery/8.JPG',
+                'title' : 'Season 1'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s1/gallery/9.JPG',
+                'title' : 'Season 1'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s1/gallery/10.JPG',
+                'title' : 'Season 1'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s1/gallery/11.JPG',
+                'title' : 'Season 1'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s1/gallery/12.JPG',
+                'title' : 'Season 1'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s1/gallery/13.JPG',
+                'title' : 'Season 1'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s1/gallery/14.JPG',
+                'title' : 'Season 1'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s1/gallery/15.JPG',
+                'title' : 'Season 1'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s1/gallery/16.JPG',
+                'title' : 'Season 1'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s1/gallery/17.JPG',
+                'title' : 'Season 1'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s1/gallery/18.JPG',
+                'title' : 'Season 1'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s1/gallery/19.JPG',
+                'title' : 'Season 1'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s1/gallery/20.JPG',
+                'title' : 'Season 1'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s1/gallery/21.JPG',
+                'title' : 'Season 1'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s1/gallery/22.JPG',
+                'title' : 'Season 1'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s1/gallery/23.JPG',
+                'title' : 'Season 1'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s1/gallery/24.JPG',
+                'title' : 'Season 1'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s1/gallery/25.JPG',
+                'title' : 'Season 1'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s1/gallery/26.JPG',
+                'title' : 'Season 1'
+            }
+        ], {
+            'padding'           : 0,
+            'transitionIn'      : 'none',
+            'transitionOut'     : 'none',
+            'type'              : 'image',
+            'changeFade'        : 0,
+            'fitToView': true,
+            'autoSize': true,
+            'position':"absolute",
+        });
+    });
+</script>

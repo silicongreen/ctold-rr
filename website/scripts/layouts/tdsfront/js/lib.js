@@ -1223,10 +1223,7 @@ $(document).ready(function () {
     });
     $(document).on("click", '#play_spellbee_4', function () {
 
-        var html_frm_spellbee_reg = $('#frm_spellbee_reg').html();
-
         var nzData = 'http://www.champs21.com/swf/spellingbee_2015/index.html';
-
         
         $.fancybox({  
              href: nzData,
@@ -1250,56 +1247,71 @@ $(document).ready(function () {
     
     $(document).on("click", '#top_90_s1', function () {
 
-        var html_frm_reg = $('.top_90_s1_box').html();
-
-        $.fancybox({
-            'content': html_frm_reg,
-            'width': 600,
-            'height': 'auto',
+        var nzData = 'http://www.champs21.dev/upload/top_90/s1_top_90/honours_board_season_1.html';
+        
+        $.fancybox({  
+             href: nzData,
+            'width': 800,
+            'height': 600,
             'transitionIn': 'fade',
             'transitionOut': 'fade',
             'openEffect': 'elastic',
             'openSpeed': 350,
-            'fitToView': false,
-            'autoSize': false,
+            'fitToView': true,
+            'autoSize': true,
             'padding': 0,
-            'margin': 0,            
+            'margin': 0,
+            'type': 'iframe',            
+            helpers   : { 
+            overlay : {closeClick: false} 
+           }
+                 
         });
     });
     $(document).on("click", '#top_90_s2', function () {
 
-        var html_frm_reg = $('.top_90_s2_box').html();
-
-        $.fancybox({
-            'content': html_frm_reg,
-            'width': 600,
-            'height': 'auto',
+        var nzData = 'http://www.champs21.dev/upload/top_90/s2_top_90/honours_board_season_2.html';
+        
+        $.fancybox({  
+             href: nzData,
+            'width': 800,
+            'height': 600,
             'transitionIn': 'fade',
             'transitionOut': 'fade',
             'openEffect': 'elastic',
             'openSpeed': 350,
-            'fitToView': false,
-            'autoSize': false,
+            'fitToView': true,
+            'autoSize': true,
             'padding': 0,
-            'margin': 0,            
+            'margin': 0,
+            'type': 'iframe',            
+            helpers   : { 
+            overlay : {closeClick: false} 
+           }
+                 
         });
     });
     $(document).on("click", '#top_90_s3', function () {
 
-        var html_frm_reg = $('.top_90_s3_box').html();
-
-        $.fancybox({
-            'content': html_frm_reg,
-            'width': 600,
-            'height': 'auto',
+        var nzData = 'http://www.champs21.dev/upload/top_90/s3_top_90/honours_board_season_3.html';
+        
+        $.fancybox({  
+             href: nzData,
+            'width': 800,
+            'height': 600,
             'transitionIn': 'fade',
             'transitionOut': 'fade',
             'openEffect': 'elastic',
             'openSpeed': 350,
-            'fitToView': false,
-            'autoSize': false,
+            'fitToView': true,
+            'autoSize': true,
             'padding': 0,
-            'margin': 0,            
+            'margin': 0,
+            'type': 'iframe',            
+            helpers   : { 
+            overlay : {closeClick: false} 
+           }
+                 
         });
     });
     

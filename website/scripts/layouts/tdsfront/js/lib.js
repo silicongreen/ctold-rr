@@ -947,7 +947,7 @@ $(document).ready(function () {
 
     $(document).on("click", '#logout_li', function () {
         
-        eraseCookie('c21_session');
+        /* eraseCookie('c21_session'); */
         
         if ($('#paid_school_code').length > 0) {
             var paid_logout_url = $('#paid_school_code').val() + '.' + $('#base_url').val().replace('http://www.', '') + 'user/logout';

@@ -1051,6 +1051,7 @@ class home extends MX_Controller {
         $cache_name = "POST" . '_' . $obj_post_data->post_id;
         $s_content = $this->cache->get($cache_name);
         
+        $s_content = false;
         if ($s_content !== false) {
             $s_content = $s_content;
             

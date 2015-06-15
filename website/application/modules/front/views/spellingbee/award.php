@@ -18,17 +18,17 @@
           <tr>
             <td>Champion</td>
             <td>1</td>
-            <td>MetlifeAlico Education Policy of Tk. 500,000 and trip to Washington D.C, the city of Spelling Bee, with one parent.</td>
+            <td>Education Policy of Tk. 500,000 and trip to Washington D.C, the city of Spelling Bee, with one parent.</td>
           </tr>
           <tr>
             <td>1st Runner-up</td>
             <td>1</td>
-            <td>Metlife Alico Education Policy of Tk. 300,000</td>
+            <td>Education Policy of Tk. 300,000</td>
           </tr>
           <tr>
             <td>2nd Runner-up</td>
             <td>1</td>
-            <td>Metlife Alico Education Policy of Tk. 200,000</td>
+            <td>Education Policy of Tk. 200,000</td>
           </tr>
           <tr>
             <td>Semi-Final Winners</td>

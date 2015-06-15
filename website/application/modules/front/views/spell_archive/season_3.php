@@ -4,9 +4,10 @@
     </div>
     <div style="float:right;width: 48%;text-align:left;">
         <h4 class="f2" style="margin-top:0px;">Spelling Is Now Fun</h4>
-        <p>By the Spelling Bee Season 3 started the concept of Spelling Bee wasn’t new to the students anymore. Students around the country were preparing for Spelling Bee year round by this time.Spellato, the guide to help students prepare for Spelling Bee, was launched in an App form.</p>
-        <p>Number of Schools participated this season soared to 1600 with a whopping number of 2,73,992 students participating in the competition. To accommodate the soaring number of students the Top Spellers count was increased to 96 this season. The number of TV episode also increased to 36 from 32 of the previous two seasons.</p>
-        <p>The Spelling Bee team visited 300 schools, all 7 divisions and held Zonal Round in 10 districts around Bangladesh. This season the number of times the online round was played skyrocketed to 7,42,000. Wasique Hasan became the Champion, Naiyareen Fareeza Mayeen the first runner up and Saif Rahman the 2nd runner up.</p>
+        <p>By the time Spelling Bee Season 3 started, the concept of Spelling Bee wasn’t new to the students anymore. Students around the country were preparing for Spelling Bee year round. Spellato, the guide to help students prepare for Spelling Bee, was launched in an App form.
+Number of Schools participated this season soared to 1600 with a whopping number of 2,73,992 students participating in the competition. To accommodate the soaring number of students the Top Spellers number was increased to 96 this season. The number of TV episode also increased to 36 from 32 from the previous two seasons.</p>
+        <p>The Spelling Bee team visited 300 schools, all 7 divisions and held Zonal Round in 10 districts around Bangladesh. This season the number of times the online round was played skyrocketed to 7,42,000. </p>
+        <p>Wasique Hasan became the Champion, Naiyareen Fareeza Mayeen the first runner up and Saif Rahman the 2nd runner up.</p>
     </div>
 </div>
 <div style="clear: both;float:left;width: 100%;margin:30px 0px;">    
@@ -64,7 +65,7 @@
                     <center><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/archive/s3/4th_place.jpg'); ?>" style="width:60%;cursor: pointer;" class="scalup toolbar"></center>   
                 </div>
                 <div class="aright">
-                    <p class="f2" style="color:#FDCB08;font-size:16px;margin-bottom: 5px;text-transform: uppercase;">Top 1</p>
+                    <p class="f2" style="color:#FDCB08;font-size:16px;margin-bottom: 5px;text-transform: uppercase;">FINALISTS</p>
                     <p style="font-weight:bold;"><i>Ayesha Mehjuba Sinha</i></p>
                     <p>Class - X</p>
                     <p>Motijheel Ideal School & College</p>
@@ -78,7 +79,7 @@
                     <center><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/archive/s3/5th_place.jpg'); ?>" style="width:60%;cursor: pointer;" class="scalup toolbar"></center>   
                 </div>
                 <div class="aright">
-                    <p class="f2" style="color:#FDCB08;font-size:16px;margin-bottom: 5px;text-transform: uppercase;">Top 2</p>
+                    <p class="f2" style="color:#FDCB08;font-size:16px;margin-bottom: 5px;text-transform: uppercase;">FINALISTS</p>
                     <p style="font-weight:bold;"><i>Haseen Hasnain </i></p>
                     <p>Class - IX</p>
                     <p>HURDCO International School</p>
@@ -92,7 +93,7 @@
                     <center><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/archive/s3/6th_place.jpg'); ?>" style="width:60%;cursor: pointer;" class="scalup toolbar"></center>   
                 </div>
                 <div class="aright">
-                    <p class="f2" style="color:#FDCB08;font-size:16px;margin-bottom: 5px;text-transform: uppercase;">Top 3</p>
+                    <p class="f2" style="color:#FDCB08;font-size:16px;margin-bottom: 5px;text-transform: uppercase;">FINALISTS</p>
                     <p style="font-weight:bold;"><i>Argho Roy</i></p>
                     <p>Class - VIII</p>
                     <p>Ananda Niketan</p>
@@ -115,12 +116,10 @@
         <center><a href="https://www.youtube.com/channel/UCywQj51MiCqHzQAa0Mg4KXg" target="_blank"><img data="spellato" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/youtube_v.png'); ?>" style="width:100%;cursor: pointer;" class="scalup"></a></center>                
     </div>
     <div class="swing" style="float: right;width: 31%;background-color: #fff;height: 288px;">        
-        <center><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/gallery.png'); ?>" style="width:95%;cursor: pointer;" class="scalup"></center>                
+        <center><img id="gallery_s3" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/gallery.png'); ?>" style="width:95%;cursor: pointer;" class="scalup"></center>                
     </div>
 </div>
-<div class="top_90_s3_box">
-    <?php $this->load->view('spell_archive/top_90_s3'); ?> 
-</div>
+
 <style>
 .top_6_box
 {
@@ -135,18 +134,18 @@
 }
 .top_6_box ul li p
 {
-    font-size: 12px;
-    line-height: 14px;
+    font-size: 10px;
+    line-height: 12px;
     margin: 0px;
     color:#000;
 }
 .top_6_box ul li .aleft
 {
-    float:left;width: 60%;height: 115px;
+    float:left;width: 50%;height: 115px;
 }
 .top_6_box ul li .aright
 {
-    float:right;width: 40%;height: 115px;text-align: left;
+    float:right;width: 50%;height: 115px;text-align: left;
 }
 .spelling_bee_play{
   float: left;
@@ -174,3 +173,134 @@
     clear: both;float:left;width: 100%;margin:30px 0px;display: none;
 }
 </style>
+
+<script>
+$("#gallery_s3").click(function() {
+        $.fancybox([            
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/1.JPG',
+                'title' : 'Season 3'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/2.JPG',
+                'title' : 'Season 3'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/3.JPG',
+                'title' : 'Season 3'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/4.JPG',
+                'title' : 'Season 3'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/5.JPG',
+                'title' : 'Season 3'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/6.JPG',
+                'title' : 'Season 3'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/7.JPG',
+                'title' : 'Season 3'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/8.JPG',
+                'title' : 'Season 3'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/9.JPG',
+                'title' : 'Season 3'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/10.JPG',
+                'title' : 'Season 3'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/11.JPG',
+                'title' : 'Season 3'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/12.JPG',
+                'title' : 'Season 3'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/13.JPG',
+                'title' : 'Season 3'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/14.JPG',
+                'title' : 'Season 3'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/15.JPG',
+                'title' : 'Season 3'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/16.JPG',
+                'title' : 'Season 3'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/17.JPG',
+                'title' : 'Season 3'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/18.JPG',
+                'title' : 'Season 3'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/19.JPG',
+                'title' : 'Season 3'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/20.JPG',
+                'title' : 'Season 3'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/21.JPG',
+                'title' : 'Season 3'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/22.JPG',
+                'title' : 'Season 3'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/23.JPG',
+                'title' : 'Season 3'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/24.JPG',
+                'title' : 'Season 3'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/25.JPG',
+                'title' : 'Season 3'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/26.JPG',
+                'title' : 'Season 3'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/27.JPG',
+                'title' : 'Season 3'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/28.JPG',
+                'title' : 'Season 3'
+            },
+            {
+                'href'  : 'http://www.champs21.com/styles/layouts/tdsfront/spelling_bee/archive/s3/gallery/29.JPG',
+                'title' : 'Season 3'
+            }
+        ], {
+            'padding'           : 0,
+            'transitionIn'      : 'none',
+            'transitionOut'     : 'none',
+            'type'              : 'image',
+            'changeFade'        : 0,
+            'fitToView': true,
+            'autoSize': true,
+        });
+    });
+</script>

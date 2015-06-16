@@ -1,7 +1,7 @@
 <?php $arCustomNews = getFormatedContentAll($news, 125); ?>
 
 
-<li  id="post-<?php echo $news->post_id; ?>" class="post-<?php echo $news->post_id;?> <?php echo $s_post_class; ?> type-post post-
+<li  id="post-<?php echo $news->post_id; ?>" class="post-<?php echo $news->post_id; ?> <?php echo $s_post_class; ?> type-post post-
      content-showed status-publish format-image has-post-thumbnail hentry 
      category-post-format tag-description tag-image tag-people tag-text 
      col-sm-8 <?php echo ($i < $count_show) ? "shown" : ""; ?>  post-
@@ -14,18 +14,44 @@
 
     <div class="post-content clearfix spellingbee_post">
         <div class="intro-post spellingbee">
+
             <div class="col-lg-6" style="padding:5px 0px;">
-                <div class="col-lg-12 float-4">
-                    <img 
-                        src="styles/layouts/tdsfront/images/spellingbee/logo.png" />
-                </div>
 
                 <div class="col-lg-12 float-4">
-                    <a href="/spellingbee" id="play_image" style="border:0px;">
-                        <img id="play_image_1" class="no_toolbar" src="styles/layouts/tdsfront/images/spellingbee/play.png" />
-                        <img id="play_image_2" class="no_toolbar" src="styles/layouts/tdsfront/images/spellingbee/play_hover.png" style="display:none;" />
-                    </a>
+                    <img style="width: 90%;" src="/styles/layouts/tdsfront/spelling_bee/2015/images/join_msg.png" />
                 </div>
+
+                <div class="col-lg-6 float-4">
+                    <img src="/styles/layouts/tdsfront/spelling_bee/2015/sp-logo.png" />
+                </div>
+
+                <div class="col-lg-6 float-4">
+                    
+                    <?php if( free_user_logged_in() ) { ?>
+                        <?php
+                            $is_joined_spellbee = get_free_user_session('is_joined_spellbee');
+                            if($is_joined_spellbee == 1 || get_free_user_session('type') != 2) {
+                        ?>
+                            <a name="windowX" title="Spelling Bee | Season 4" id="play_spellbee_4" class="play_image" style="border:0px;" href="javascript:void(0);">
+                                <img id="play_image_1" class="no_toolbar" src="/styles/layouts/tdsfront/spelling_bee/2015/images/play.png" />
+                                <img id="play_image_2" class="no_toolbar" src="/styles/layouts/tdsfront/spelling_bee/2015/images/play-hover.png" style="display:none;" />
+                            </a>
+                        <?php } else { ?>
+                            <a id="join_spellbee_reg" class="play_image" style="border:0px;" href="javascript:void(0);">
+                                <img id="play_image_1" class="no_toolbar" src="/styles/layouts/tdsfront/spelling_bee/2015/images/play.png" />
+                                <img id="play_image_2" class="no_toolbar" src="/styles/layouts/tdsfront/spelling_bee/2015/images/play-hover.png" style="display:none;" />
+                            </a>
+                        <?php } ?>
+                        
+                    <?php } else { ?>
+                        <a class="play_image login-user" style="border:0px;" href="javascript:void(0);">
+                            <img id="play_image_1" class="no_toolbar" src="/styles/layouts/tdsfront/spelling_bee/2015/images/play.png" />
+                            <img id="play_image_2" class="no_toolbar" src="/styles/layouts/tdsfront/spelling_bee/2015/images/play-hover.png" style="display:none;" />
+                        </a>
+                    <?php }?>
+                    
+                </div>
+                
             </div>  
             <div class="col-lg-6 links-spell">
                 <a href="/gamerules">
@@ -35,19 +61,19 @@
                                 src="styles/layouts/tdsfront/images/spellingbee/ruls.png"  style="" 
                                 />
                         </div>
-                        <div class="col-lg-8">
+                        <div class="col-lg-8 f2" style="color: #ffffff;">
                             GAME RULES 
                         </div>
                     </div>
                 </a>
-                
+
                 <a href="/leaderboard">
                     <div class="col-lg-12 leader leader_board2">
                         <div class="col-lg-3">
                             <img 
                                 src="styles/layouts/tdsfront/images/spellingbee/leaderboard.png" />
                         </div>
-                        <div class="col-lg-8">
+                        <div class="col-lg-8 f2" style="color: #ffffff;">
                             LEADER BOARD
                         </div>
 
@@ -64,8 +90,7 @@
                         ?>
 
                         <?php
-                        if ($i == 2)
-                        {
+                        if ($i == 2) {
                             break;
                         }
                         ?>
@@ -75,22 +100,21 @@
                             <div class="col-lg-12 float-5">
                                 <hr style="margin:0px 0px 0px 0px; width:95%;"/>
                             </div>
-        <?php endif; ?>
+                        <?php endif; ?>
 
                         <div class="col-lg-12 float-10">
 
                             <?php
                             $image_related = "";
                             if (isset($newsrelated->crop_images) && count
-                                            ($newsrelated->crop_images) > 0)
-                            {
+                                            ($newsrelated->crop_images) > 0) {
                                 $image_related = $newsrelated->crop_images[0];
                             }
                             ?>
                             <div class="col-lg-3">
-        <?php if ($image_related): ?>
+                                <?php if ($image_related): ?>
                                     <a href="" style="border:0px;"><img src="<?php echo $image_related; ?>"  /></a>
-        <?php endif; ?>
+                                <?php endif; ?>
                             </div>
 
                             <div class="col-lg-7">
@@ -104,7 +128,7 @@
                                            ?></a>
                                 </div>
                                 <div class="col-lg-12 date-string">
-                                    <?php echo $newsrelated->published_date_string;?> Ago
+                                    <?php echo $newsrelated->published_date_string; ?> Ago
                                 </div>
                             </div>
                         </div>
@@ -112,7 +136,7 @@
                         $i++;
                     endforeach;
                     ?>
-<?php endif; ?>
+                <?php endif; ?>
             </div>
 
 
@@ -122,6 +146,10 @@
 
 </li>
 <style>
+    .height_value a {
+        color: #333333;
+        font-size: 16px;
+    }
     @media (min-width: 300px)
     {
         .date-string
@@ -133,7 +161,8 @@
         }
         .height_value
         {
-            height: 50px; overflow: hidden; 
+            height: 50px;
+            overflow: hidden; 
         }
 
         .float-10 img
@@ -154,20 +183,20 @@
             border: 0;
             margin: 25px;
         }
-        .float-4 #play_image  img
+        .float-4 .play_image img
         {
-            overflow:hidden;float: left; 
-            width: 172px;
-            border: 0;
-            margin: 15px 0px 0px 52px
-        }
-        .float-4 img
-        {
-            overflow: hidden;
+            border: 0 none;
             float: left;
-            width: 250px;
-            border: 0;
-            margin-left: 25px;
+            margin: 30px 0 0 55px;
+            overflow: hidden;
+            width: 60%;
+        }
+        .float-4 img {
+            border: 0 none;
+            float: left;
+            margin-left: 30px;
+            overflow: hidden;
+            width: 80%;
         }
         .spellingbee_post .col-lg-3 {
             width: 25%;
@@ -192,7 +221,6 @@
         .float-4
         {
             float:left;
-            clear:both;
         }
 
         .float-10
@@ -270,7 +298,8 @@
         }
         .height_value
         {
-            height: 50px; overflow: hidden; 
+            height: 50px;
+            overflow: hidden; 
         }
 
         .float-10 img
@@ -291,20 +320,21 @@
             border: 0;
             margin: 25px;
         }
-        .float-4 #play_image  img
+        .float-4 .play_image img
         {
-            overflow:hidden;float: left; 
-            width: 172px;
-            border: 0;
-            margin: 15px 0px 0px 72px
+            border: 0 none;
+            float: left;
+            margin: 30px 0 0 65px;
+            overflow: hidden;
+            width: 60%;
         }
         .float-4 img
         {
-            overflow: hidden;
+            border: 0 none;
             float: left;
-            width: 250px;
-            border: 0;
-            margin-left: 45px;
+            margin-left: 30px;
+            overflow: hidden;
+            width: 80%;
         }
         .spellingbee_post .col-lg-3 {
             width: 25%;
@@ -329,7 +359,6 @@
         .float-4
         {
             float:left;
-            clear:both;
         }
 
         .float-10
@@ -407,7 +436,8 @@
         }
         .height_value
         {
-            height: 50px; overflow: hidden; 
+            height: 50px;
+            overflow: hidden; 
         }
 
         .float-10 img
@@ -428,20 +458,21 @@
             border: 0;
             margin: 25px;
         }
-        .float-4 #play_image  img
+        .float-4 .play_image img
         {
-            overflow:hidden;float: left; 
-            width: 172px;
-            border: 0;
-            margin: 15px 0px 0px 72px
+            border: 0 none;
+            float: left;
+            margin: 30px 0 0 60px;
+            overflow: hidden;
+            width: 60%;
         }
         .float-4 img
         {
-            overflow: hidden;
+            border: 0 none;
             float: left;
-            width: 250px;
-            border: 0;
-            margin-left: 45px;
+            margin-left: 30px;
+            overflow: hidden;
+            width: 80%;
         }
         .spellingbee_post .col-lg-3 {
             width: 25%;
@@ -466,7 +497,6 @@
         .float-4
         {
             float:left;
-            clear:both;
         }
 
         .float-10
@@ -544,7 +574,8 @@
         }
         .height_value
         {
-            height: 50px; overflow: hidden; 
+            height: 50px;
+            overflow: hidden; 
         }
 
         .float-10 img
@@ -564,20 +595,21 @@
             border: 0;
             margin: 28px;
         }
-        .float-4 #play_image  img
+        .float-4 .play_image img
         {
-            overflow:hidden;float: left; 
-            width: 172px;
-            border: 0;
-            margin: 15px 0px 0px 72px
+            border: 0 none;
+            float: left;
+            margin: 30px 0 0 30px;
+            overflow: hidden;
+            width: 60%;
         }
         .float-4 img
         {
-            overflow: hidden;
+            border: 0 none;
             float: left;
-            width: 250px;
-            border: 0;
-            margin-left: 45px;
+            margin-left: 30px;
+            overflow: hidden;
+            width: 100%;
         }
         .spellingbee_post .col-lg-3 {
             width: 25%;
@@ -601,7 +633,6 @@
         .float-4
         {
             float:left;
-            clear:both;
         }
 
         .float-10
@@ -689,7 +720,8 @@
         }
         .height_value
         {
-            height: 50px; overflow: hidden; 
+            height: 50px;
+            overflow: hidden; 
         }
 
         .float-10 img
@@ -709,20 +741,21 @@
             border: 0;
             margin: 19px;
         }
-        .float-4 #play_image  img
+        .float-4 .play_image img
         {
-            overflow:hidden;float: left; 
-            width: 172px;
-            border: 0;
-            margin: 15px 0px 0px 41px
+            border: 0 none;
+            float: left;
+            margin: 30px 0 0 30px;
+            overflow: hidden;
+            width: 60%;
         }
         .float-4 img
         {
-            overflow: hidden;
+            border: 0 none;
             float: left;
-            width: 250px;
-            border: 0;
-            margin-left: 17px;
+            margin-left: 30px;
+            overflow: hidden;
+            width: 100%;
         }
         .spellingbee_post .col-lg-3 {
             width: 25%;
@@ -746,7 +779,6 @@
         .float-4
         {
             float:left;
-            clear:both;
         }
 
         .float-10
@@ -827,7 +859,8 @@
         }
         .height_value
         {
-            height: 35px; overflow: hidden; 
+            height: 35px;
+            overflow: hidden; 
         }
 
         .float-10 img
@@ -847,20 +880,21 @@
             border: 0;
             margin: 16px;
         }
-        .float-4 #play_image  img
+        .float-4 .play_image img
         {
-            overflow:hidden;float: left; 
-            width: 142px;
-            border: 0;
-            margin: 15px 0px 0px 51px
+            border: 0 none;
+            float: left;
+            margin: 30px 0 0 30px;
+            overflow: hidden;
+            width: 60%;
         }
         .float-4 img
         {
-            overflow: hidden;
+            border: 0 none;
             float: left;
-            width: 200px;
-            border: 0;
             margin-left: 30px;
+            overflow: hidden;
+            width: 100%;
         }
         .spellingbee_post .col-lg-3 {
             width: 25%;
@@ -884,7 +918,6 @@
         .float-4
         {
             float:left;
-            clear:both;
         }
 
         .float-10
@@ -960,7 +993,8 @@
         }
         .height_value
         {
-            height: 45px; overflow: hidden; 
+            height: 45px;
+            overflow: hidden; 
         }
 
         .float-10 img
@@ -981,20 +1015,21 @@
             border: 0;
             margin: 23px;
         }
-        .float-4 #play_image  img
+        .float-4 .play_image img
         {
-            overflow:hidden;float: left; 
-            width: 152px;
-            border: 0;
-            margin: 15px 0px 0px 68px
+            border: 0 none;
+            float: left;
+            margin: 30px 0 0 30px;
+            overflow: hidden;
+            width: 60%;
         }
         .float-4 img
         {
-            overflow: hidden;
+            border: 0 none;
             float: left;
-            width: 218px;
-            border: 0;
-            margin-left: 45px;
+            margin-left: 30px;
+            overflow: hidden;
+            width: 100%;
         }
         .spellingbee_post .col-lg-3 {
             width: 25%;
@@ -1018,7 +1053,6 @@
         .float-4
         {
             float:left;
-            clear:both;
         }
 
         .float-10
@@ -1095,7 +1129,8 @@
         }
         .height_value
         {
-            height: 50px; overflow: hidden; 
+            height: 50px;
+            overflow: hidden; 
         }
 
         .float-10 img
@@ -1116,20 +1151,21 @@
             border: 0;
             margin: 25px;
         }
-        .float-4 #play_image  img
+        .float-4 .play_image img
         {
-            overflow:hidden;float: left; 
-            width: 172px;
-            border: 0;
-            margin: 15px 0px 0px 72px
+            border: 0 none;
+            float: left;
+            margin: 30px 0 0 30px;
+            overflow: hidden;
+            width: 60%;
         }
         .float-4 img
         {
-            overflow: hidden;
+            border: 0 none;
             float: left;
-            width: 250px;
-            border: 0;
-            margin-left: 45px;
+            margin-left: 30px;
+            overflow: hidden;
+            width: 100%;
         }
         .spellingbee_post .col-lg-3 {
             width: 25%;
@@ -1153,7 +1189,6 @@
         .float-4
         {
             float:left;
-            clear:both;
         }
 
         .float-10
@@ -1233,7 +1268,8 @@
         }
         .height_value
         {
-            height: 60px; overflow: hidden; 
+            height: 60px;
+            overflow: hidden; 
         }
 
         .float-10 img
@@ -1254,20 +1290,21 @@
             border: 0;
             margin: 25px;
         }
-        .float-4 #play_image  img
+        .float-4 .play_image img
         {
-            overflow:hidden;float: left; 
-            width:208px; 
-            border:0; 
-            margin:15px 0px 0px 67px;
+            border: 0 none;
+            float: left;
+            margin: 30px 0 0 30px;
+            overflow: hidden;
+            width: 60%;
         }
         .float-4 img
         {
-            overflow: hidden;
+            border: 0 none;
             float: left;
-            width: 277px;
-            border: 0;
-            margin-left: 45px;
+            margin-left: 30px;
+            overflow: hidden;
+            width: 100%;
         }
         .spellingbee_post .col-lg-3 {
             width: 25%;
@@ -1291,7 +1328,6 @@
         .float-4
         {
             float:left;
-            clear:both;
         }
 
         .float-10
@@ -1361,7 +1397,8 @@
     {
         .height_value
         {
-            height: 73px; overflow: hidden; 
+            height: 73px;
+            overflow: hidden; 
         }
         .float-10 img
         {
@@ -1381,21 +1418,21 @@
             border: 0;
             margin: 25px;
         }
-        .float-4 #play_image  img
+        .float-4 .play_image img
         {
-            overflow:hidden;
-            float: left; 
-            width:208px;  
-            border:0; 
-            margin:15px 0px 0px 92px;
+            border: 0 none;
+            float: left;
+            margin: 30px 0 0 30px;
+            overflow: hidden;
+            width: 60%;
         }
         .float-4 img
         {
-            overflow: hidden;
+            border: 0 none;
             float: left;
-            width: 321px;
-            border: 0;
-            margin-left: 45px;
+            margin-left: 30px;
+            overflow: hidden;
+            width: 100%;
         }
         .spellingbee_post .col-lg-3 {
             width: 25%;
@@ -1425,7 +1462,6 @@
         .float-4
         {
             float:left;
-            clear:both;
         }
 
         .float-10
@@ -1496,7 +1532,7 @@
 
         $("#triangle-bottomright").css("border-left-width",
                 $("#post-image").width() + "px");
-        $("#play_image").hover(
+        $(".play_image").hover(
                 function () {
                     $("#play_image_1").hide();
                     $("#play_image_2").show();

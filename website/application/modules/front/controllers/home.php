@@ -2829,9 +2829,15 @@ class home extends MX_Controller {
         
         $data = array();
         
+        $user_id = (free_user_logged_in()) ? get_free_user_session('id') : NULL;
+        $user_division = (free_user_logged_in()) ? get_free_user_session('division') : NULL;
         
-        $obj_post = new Post_model();            
+        $obj_post = new Post_model();    
+        $user_score = $obj_post->get_user_score($user_id);
+        $user_rank = $obj_post->get_user_rank($user_score[0]->score,$user_score[0]->test_time,$user_score[0]->country_id,strtolower($user_division));
+                
         $obj_post_data = $obj_post->get_leader_board();
+        
         if($obj_post_data != 0)
         {
         $rank= 1;$shtml = "";
@@ -2846,6 +2852,8 @@ class home extends MX_Controller {
         }
         }else{$shtml = "<p>No Data Found.</p>";}
                 
+        $data['spellbee_user_score'] = $user_score[0]->score;
+        $data['spellbee_user_rank']  = $user_rank[0]->rank;
         $data['spellbee_data']    = $shtml;
         
         $data['ci_key']    = "leaderboard";

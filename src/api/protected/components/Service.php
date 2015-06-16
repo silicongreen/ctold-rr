@@ -376,20 +376,24 @@ class Service
             if ($autorize_check)
             {
                 $valid_user = TRUE;
+                
+                $iUserId = $data;
+                $objUser = new Freeusers();
+                $user_data = $objUser->findByPk($iUserId);
             }
         }
 
         $arUserData = array();
         $arUserData['rank'] = "UnRanked";
         $arUserData['highestScore'] = 0;
-       
-        if ($valid_user)
+        
+        if (!empty($user_data) && $user_data->user_type != 2) {
+            $valid_user = false;
+        }
+        
+        if (!empty($user_data) && $valid_user)
         {
            
-            $iUserId = $data;
-            $objUser = new Freeusers();
-            $user_data = $objUser->findByPk($iUserId);
-
             if ($user_data)
             {
                 Settings::clearCurrentWord($iUserId);
@@ -488,6 +492,9 @@ class Service
                 $arUserData['highestScore'] = $score_for_rank;
                 $arUserData['rank'] = $highscore->getUserRank($score_for_rank, $time_for_rank,$user_data->tds_country_id, strtolower($user_data->division));
             }
+        } else {
+            $arUserData['highestScore'] = 'N/A';
+            $arUserData['rank'] = 'N/A';
         }
 
         return (object) $arUserData;

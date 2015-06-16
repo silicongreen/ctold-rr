@@ -157,7 +157,7 @@ class Post_model extends DataMapper
             return -1;
         } 
         $iYear = date('Y');
-        $this->db->select('count(tds_spell_highscore.id) AS rank')
+        $this->db->select('count(tds_spell_highscore.id)+1 AS rank')
                     ->from('tds_spell_highscore')    
                     ->where("tds_spell_highscore.is_cancel", 0)
                     ->where("tds_spell_highscore.spell_year", $iYear)

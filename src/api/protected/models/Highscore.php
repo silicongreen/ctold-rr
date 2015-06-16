@@ -78,7 +78,8 @@ class Highscore extends CActiveRecord
         else
         {
             $criteria->compare('t.country', $country);
-        } 
+        }
+        $criteria->compare('t.is_cancel', 0);
         $criteria->addCondition("t.score > ".$score_for_rank." OR (t.score = ".$score_for_rank." AND t.test_time < ".$time_for_rank." ) ");
         $data = $this->find($criteria);
         if($data)
@@ -96,6 +97,7 @@ class Highscore extends CActiveRecord
         $criteria = new CDbCriteria;
         $criteria->select = 't.id,t.play_total_time,t.score,t.test_time';
         $criteria->compare('t.userid', $user_id);
+        $criteria->compare('t.is_cancel', 0);
         $data = $this->find($criteria);
         return $data;
         

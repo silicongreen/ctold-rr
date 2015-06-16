@@ -213,7 +213,7 @@ class HomepageData extends CActiveRecord
         
         $website_only = (int)$website_only;
         if($website_only == 1) {
-            $criteria->compare("post.website_only", $website_only);
+            $criteria->addInCondition("post.website_only", array(1,2));
         } else {
             $criteria->addInCondition("post.website_only", array(0,1));
         }

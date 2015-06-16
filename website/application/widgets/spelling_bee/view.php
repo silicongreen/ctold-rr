@@ -22,11 +22,8 @@
 
                 <div class="col-lg-12 float-4">
                     <a href="/spellingbee" id="play_image" style="border:0px;">
-                        <img id="play_image_1" 
-                             src="styles/layouts/tdsfront/images/spellingbee/play.png"   />
-                        <img id="play_image_2" 
-                             src="styles/layouts/tdsfront/images/spellingbee/play_hover.png" 
-                             style="display:none;"   />
+                        <img id="play_image_1" class="no_toolbar" src="styles/layouts/tdsfront/images/spellingbee/play.png" />
+                        <img id="play_image_2" class="no_toolbar" src="styles/layouts/tdsfront/images/spellingbee/play_hover.png" style="display:none;" />
                     </a>
                 </div>
             </div>  

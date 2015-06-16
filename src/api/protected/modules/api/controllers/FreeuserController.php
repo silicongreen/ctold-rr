@@ -111,21 +111,20 @@ class FreeuserController extends Controller
             {
                 $objUser = new Freeusers();
                 $user_data = $objUser->findByPk($user_id);
+                
                 if($user_data->division)
                 {
-                    $user_division=$divi = $user_data->division;
+                    $user_division = $user_data->division;
                 }
-                else
-                {
-                    $divi = "";
-                }    
                 $country = $user_data->tds_country_id;
             }
+            
             if($division)
             {
-                $divi = $division;
+                $user_division = $division;
                 $country = 14;
             }
+            $user_division = strtolower($user_division);
             $highscore = new Highscore();
             $current_score = 0;
             $current_time = 0;
@@ -147,12 +146,12 @@ class FreeuserController extends Controller
             }
             
             
-            $rresponse['data']['rank'] = $highscore->getUserRank($current_score, $current_time,$country, strtolower($divi));
+            $rresponse['data']['rank'] = $highscore->getUserRank($current_score, $current_time,$country, $user_division);
             
             
             
             
-            $arUserScores = $highscore->getLeaderBoard($limit, $divi, $country);
+            $arUserScores = $highscore->getLeaderBoard($limit, $user_division, $country);
             $rresponse['data']['leaderboard'] = (array)$arUserScores;
             $rresponse['data']['division'] = $user_division;
             $rresponse['data']['best_score'] = $current_score;

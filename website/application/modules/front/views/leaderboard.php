@@ -24,6 +24,85 @@
             </a>
             
         </div>
+        <?php if( free_user_logged_in() ) { ?>
+            <?php 
+                    $login_user_data = get_free_user_session();
+                    $userfullname = ucfirst($login_user_data['first_name'])." ".ucfirst($login_user_data['middle_name'])." ".ucfirst($login_user_data['last_name']);
+                    $userschoolname = ucfirst($login_user_data['school_name']);
+                    $userdivision = ucfirst($login_user_data['division']);
+                    
+                if($login_user_data['is_joined_spellbee'] == 1 && $login_user_data['type'] == 2){
+            ?> 
+        <div class="score_box">
+            <h2 class="f2" style="background-color: #ffd109;font-size: 40px;padding: 15px;text-align: center;margin: 0px;">Your Score</h2>
+            <div style="background-color: #575757;padding: 15px;width: 100%;height: 150px;">
+                <div style="float:left;width:20%;height:120px; ">
+                    <?php
+           
+                $has_profile_img = FALSE;
+                //$profile_image_url = base_url('upload/free_user_profile_images/2.jpg');
+                $profile_image_url = base_url('Profiler/images/right/nopic.png');
+                
+                if( free_user_logged_in() ){
+                    $user_data = get_free_user_session();
+
+
+
+                    if( !empty($user_data['profile_image'] )){
+                        //$profile_image_url = base_url() . 'upload/free_user_profile_images/' . $user_data->profile_image;
+                        $profile_image_url = $user_data['profile_image'];
+                        $has_profile_img = TRUE;
+                        
+                    }else{
+                        $_user_data = get_user_data();
+                        
+                        $user_data = get_free_user_session();
+                            
+                        if( !empty($_user_data->profile_image) ){
+                            $profile_image_url = $_user_data->profile_image;
+                            $has_profile_img = TRUE;
+                        }
+                        
+                    }
+                }
+                
+                        ?>
+                    <img src="<?php echo $profile_image_url; ?>" style="width:90%;" >
+                </div>
+                <div style="float:left;width:60%;height:120px; ">
+                    <p class="name"><?php echo $userfullname;?></p>
+                    <p class="school_division"><?php echo $userschoolname;?></p>
+                    <p class="school_division"><?php echo $userdivision;?></p>
+                    <?php if($spellbee_user_score != -1){?>
+                    <p class="best_score"> Best Score :<?php echo $spellbee_user_score;?></p>
+                    <?php }?>
+                    <?php if($spellbee_user_rank != -1){?>
+                    <p class="user_rank"><span></span>Rank&nbsp;:&nbsp;<?php echo $spellbee_user_rank;?></p>
+                    <?php }?>
+                </div>
+                <div style="float:right;width:20%;height:120px; ">
+                    <?php if( free_user_logged_in() ) { ?>
+                        <?php $is_joined_spellbee = get_free_user_session('is_joined_spellbee');
+                        if($is_joined_spellbee == 1 || get_free_user_session('type') != 2){
+                        ?>                                        
+                        <a name="windowX" title="Spelling Bee | Season 4" id="play_spellbee_4" style="float: left;width:110px;" href="javascript:void(0);">
+                            <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/play_again.png'); ?>" style="width:100%;" onMouseOver="MouseRollover(this)" onMouseOut="MouseOut(this)">
+                        </a>
+                        <?php } else { ?>
+                            <a  id="join_spellbee_reg" style="float: left;width:110px;" href="javascript:void(0);">
+                                <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/play_again.png'); ?>" style="width:100%;" onMouseOver="MouseRollover(this)" onMouseOut="MouseOut(this)">
+                            </a>
+                        <?php }
+                        } else { ?>
+                        <a  class="f2 login-user" style="float: left;width:110px;" href="javascript:void(0);">
+                            <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/play_again.png'); ?>" style="width:100%;" onMouseOver="MouseRollover(this)" onMouseOut="MouseOut(this)">
+                        </a>
+                    <?php } ?>
+                </div>
+            </div>
+        </div>
+            <?php } ?>
+        <?php } ?>
         <nav>
             <div class="tabcontainer">
 
@@ -156,7 +235,53 @@ nav {
     padding: 0;
     display: none;
 }
-
+.score_box
+{
+    float: left;
+    width: 100%;
+    padding: 10px 50px;
+    margin-top:20px;
+    margin-bottom: 20px;
+}
+.score_box .name
+{
+    color: #ffd109;
+    font-size: 20px;
+    font-weight: bold;
+    font-family: Verdana;
+    letter-spacing: 0px;
+}
+.score_box .school_division
+{
+    color: #b4b4b4;
+    font-family: Verdana;
+    font-size: 12px;
+    letter-spacing: 0;
+    line-height: 18px;
+    margin-bottom: 0;
+}
+.score_box .best_score
+{
+    color: #fff;
+    font-size: 12px;    
+    font-family: Verdana;
+    letter-spacing: 0px;
+    line-height: 18px;
+    margin-bottom: 5px;
+}
+.score_box .user_rank
+{
+    color: #fff;
+    font-size: 18px;    
+    font-family: arial;
+    letter-spacing: 0px;
+    background-image: url("<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/rank_icon.png'); ?>");
+    background-position: left top;
+    background-repeat: no-repeat;
+    background-size: 5% auto;
+    height:28px;
+    padding-left:35px;
+}
 </style>
 <script>
  $('.tabheading li').click(function () {
@@ -189,6 +314,14 @@ nav {
 
         return false;
     });
+</script>
+<script language="javascript">
+        function MouseRollover(MyImage) {
+        MyImage.src = "styles/layouts/tdsfront/spelling_bee/2015/images/play_again_hover.png";
+    }
+        function MouseOut(MyImage) {
+        MyImage.src = "styles/layouts/tdsfront/spelling_bee/2015/images/play_again.png";
+    }
 </script>
 <style>
     table a:link {

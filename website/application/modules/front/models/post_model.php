@@ -121,6 +121,62 @@ class Post_model extends DataMapper
         }
         
     }
+    public function get_user_score($user_id)
+    {
+        if(  is_null( $user_id))
+        {
+            return -1;
+        }
+        $iYear = date('Y');
+        
+        $this->db->select('spell_highscore.*')
+                    ->from('tds_spell_highscore')                    
+                    ->where("tds_spell_highscore.userid", $user_id)
+                    ->where("tds_spell_highscore.is_cancel", 0)
+                    ->where("tds_spell_highscore.spell_year", $iYear)
+                    ->limit(1);
+        $query = $this->db->get();
+        if ( $query->num_rows() > 0 )
+        {            
+            return $rows = $query->result();
+        }
+        else
+        {
+            return -1;
+        }
+        
+    }
+    public function get_user_rank($score_for_rank,$time_for_rank,$country,$division="")
+    {
+        if(  is_null( $division))
+        {
+            return -1;
+        }
+        if($score_for_rank==0)
+        {
+            return -1;
+        } 
+        $iYear = date('Y');
+        $this->db->select('count(tds_spell_highscore.id)+1 AS rank')
+                    ->from('tds_spell_highscore')    
+                    ->where("tds_spell_highscore.is_cancel", 0)
+                    ->where("tds_spell_highscore.spell_year", $iYear)
+                    ->where("tds_spell_highscore.division", $division)
+                    ->where("tds_spell_highscore.test_time", $time_for_rank)
+                    ->where('(tds_spell_highscore.score >', $score_for_rank, FALSE)
+                    ->or_where("tds_spell_highscore.score = ".$score_for_rank.")", NULL, FALSE)
+                    ->limit(1);
+        $query = $this->db->get();
+        if ( $query->num_rows() > 0 )
+        {
+            return $rows = $query->result();
+        }
+        else
+        {
+            return -1;
+        }
+        
+    }
     public function get_posts($ar_from_menu,$ar_issue_date, $ar_priority_type = array(1, 2, 3, 4), $i_category_type_id = 1, $i_category_id = 0, 
                               $s_has_issue_date = 'between', $s_order_by = 'post.priority,asc', $i_limit = 0, $b_limit_check = true,
                               $s_group_by = "", $s_check_images = '', $i_pareant_id = 0, $i_having_category_type_id = 1, $b_limit_execute = TRUE

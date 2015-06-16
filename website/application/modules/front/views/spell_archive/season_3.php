@@ -65,7 +65,7 @@ Number of Schools participated this season soared to 1600 with a whopping number
                     <center><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/archive/s3/4th_place.jpg'); ?>" style="width:60%;cursor: pointer;" class="scalup toolbar"></center>   
                 </div>
                 <div class="aright">
-                    <p class="f2" style="color:#FDCB08;font-size:16px;margin-bottom: 5px;text-transform: uppercase;">FINALISTS</p>
+                    <p class="f2" style="color:#FDCB08;font-size:16px;margin-bottom: 5px;text-transform: uppercase;">FINALIST</p>
                     <p style="font-weight:bold;"><i>Ayesha Mehjuba Sinha</i></p>
                     <p>Class - X</p>
                     <p>Motijheel Ideal School & College</p>
@@ -79,7 +79,7 @@ Number of Schools participated this season soared to 1600 with a whopping number
                     <center><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/archive/s3/5th_place.jpg'); ?>" style="width:60%;cursor: pointer;" class="scalup toolbar"></center>   
                 </div>
                 <div class="aright">
-                    <p class="f2" style="color:#FDCB08;font-size:16px;margin-bottom: 5px;text-transform: uppercase;">FINALISTS</p>
+                    <p class="f2" style="color:#FDCB08;font-size:16px;margin-bottom: 5px;text-transform: uppercase;">FINALIST</p>
                     <p style="font-weight:bold;"><i>Haseen Hasnain </i></p>
                     <p>Class - IX</p>
                     <p>HURDCO International School</p>
@@ -93,7 +93,7 @@ Number of Schools participated this season soared to 1600 with a whopping number
                     <center><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/archive/s3/6th_place.jpg'); ?>" style="width:60%;cursor: pointer;" class="scalup toolbar"></center>   
                 </div>
                 <div class="aright">
-                    <p class="f2" style="color:#FDCB08;font-size:16px;margin-bottom: 5px;text-transform: uppercase;">FINALISTS</p>
+                    <p class="f2" style="color:#FDCB08;font-size:16px;margin-bottom: 5px;text-transform: uppercase;">FINALIST</p>
                     <p style="font-weight:bold;"><i>Argho Roy</i></p>
                     <p>Class - VIII</p>
                     <p>Ananda Niketan</p>

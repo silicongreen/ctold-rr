@@ -12,7 +12,7 @@
                 <nav>
                 <?php if( free_user_logged_in() ) { ?>
                     <?php $is_joined_spellbee = get_free_user_session('is_joined_spellbee');
-                    if($is_joined_spellbee == 1 || get_free_user_session('user_type') != 2){
+                    if($is_joined_spellbee == 1 || get_free_user_session('type') != 2){
                     ?>                                        
                     <a name="windowX" title="Spelling Bee | Season 4" id="play_spellbee_4" style="float: left;width:110px;" href="javascript:void(0);">
                         <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/play.png'); ?>" style="width:100%;">
@@ -29,7 +29,7 @@
                 <?php } ?>
                 <?php if( free_user_logged_in() ) { ?>
                     <?php $is_joined_spellbee = get_free_user_session('is_joined_spellbee');
-                    if($is_joined_spellbee == 0 && get_free_user_session('user_type') == 2){
+                    if($is_joined_spellbee == 0 && get_free_user_session('type') == 2){
                     ?>                    
                     <a  href="javascript:void(0);" id="join_spellbee_reg" class="f2 button-filter1">Join</a>
                     

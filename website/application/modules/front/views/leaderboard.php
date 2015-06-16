@@ -34,7 +34,7 @@
                     <li rel="tab4"><a href="javascript:return false;">Khulna</a> </li>
                     <li rel="tab5"><a href="javascript:return false;">Sylhet</a> </li>
                     <li rel="tab6"><a href="javascript:return false;">Rangpur</a> </li>
-                    <li rel="tab7"><a href="javascript:return false;">Barishal</a> </li>
+                    <li rel="tab7"><a href="javascript:return false;">Barisal</a> </li>
                 </ul>
 
                 <div class="tabbody active" id="tab1" style="display: block;">

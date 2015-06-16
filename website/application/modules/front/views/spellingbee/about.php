@@ -9,7 +9,7 @@
 <h3>1st round - Online Round</h3>
 <div class="col-lg-12 row-fluid row">
     <p>
-        The 1st round consists of an online competition.Here, students will have to register at Champs21.com. and get an ID and a password.  With this ID and password to play 'Spelling Bee Online Round' - an online vocabulary game where spellers have to spell words correctly after listening to an audio clip. Spellers can play the game as many times as they want. Only their best scores from the game will be considered. Top spellers from each division will be selected for the 2nd Round. 
+        The 1st round consists of an online competition.Here, students will have to register at Champs21.com and get an ID and a password.  With this ID and password play 'Spelling Bee Online Round' - an online vocabulary game where spellers have to spell words correctly after listening to an audio clip. Spellers can play the game as many times as they want. Only their best scores from the game will be considered. Top spellers from each division will be selected for the 2nd Round. 
     </p>
     <p>
         Players can play online round from mobiles as well by downloading Champs21.com app. The link is given <a href="https://play.google.com/store/apps/details?id=com.champs21.schoolapp&hl=en" target="_blank">here</a>.   

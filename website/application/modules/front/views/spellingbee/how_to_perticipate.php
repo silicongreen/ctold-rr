@@ -32,12 +32,7 @@
             <p>
                The speller must not bypass or circumvent normal school activity to study for Spelling Bee.
             </p>
-        </li>
-        <li>
-            <p>
-                Upon successfully being selected for the divisional round, the speller must fill up the divisional round access form (to be obtained from the Champs21.com website) and bring it along with him/her to the divisional round venue.
-            </p>
-        </li>
+        </li>        
         <li>
             <div>
                 <p>

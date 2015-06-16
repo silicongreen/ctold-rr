@@ -15,16 +15,16 @@
                     if($is_joined_spellbee == 1 || get_free_user_session('type') != 2){
                     ?>                                        
                     <a name="windowX" title="Spelling Bee | Season 4" id="play_spellbee_4" style="float: left;width:110px;" href="javascript:void(0);">
-                        <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/play.png'); ?>" style="width:100%;">
+                        <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/play.png'); ?>" style="width:100%;" onMouseOver="MouseRollover(this)" onMouseOut="MouseOut(this)">
                     </a>
                     <?php } else { ?>
                         <a  id="join_spellbee_reg" style="float: left;width:110px;" href="javascript:void(0);">
-                            <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/play.png'); ?>" style="width:100%;">
+                            <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/play.png'); ?>" style="width:100%;" onMouseOver="MouseRollover(this)" onMouseOut="MouseOut(this)">
                         </a>
                     <?php }
                     } else { ?>
                     <a  class="f2 login-user" style="float: left;width:110px;" href="javascript:void(0);">
-                        <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/play.png'); ?>" style="width:100%;">
+                        <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/play.png'); ?>" style="width:100%;" onMouseOver="MouseRollover(this)" onMouseOut="MouseOut(this)">
                     </a>
                 <?php } ?>
                 <?php if( free_user_logged_in() ) { ?>
@@ -47,17 +47,13 @@
     </div>
 </div>
 <div class="spellingbee_ct"></div>
-<script type="text/javascript"> 
-//$('#play_spellbee_4').popupWindow({ 
-//centerBrowser:1 ,
-//height:600, 
-//width:800, 
-//location:1,
-//}); 
-//$(document).on("click", "#play_spellbee_4", function () {
-//        window.open('http://www.google.com/url?q=http%3A%2F%2Fwww.champs21.com%2Fswf%2Fspellingbee_2015%2Findex.html&sa=D&sntz=1&usg=AFQjCNEdK20MbmKmvjxzrtwURnEfQP3fSA','liveMatches','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=720,height=800');
-//    });
-
+<script language="javascript">
+        function MouseRollover(MyImage) {
+        MyImage.src = "styles/layouts/tdsfront/spelling_bee/2015/images/play-hover.png";
+    }
+        function MouseOut(MyImage) {
+        MyImage.src = "styles/layouts/tdsfront/spelling_bee/2015/images/play.png";
+    }
 </script>
 
 <style>

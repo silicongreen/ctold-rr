@@ -2852,8 +2852,8 @@ class home extends MX_Controller {
         }
         }else{$shtml = "<p>No Data Found.</p>";}
                 
-        $data['spellbee_user_score'] = $user_score[0]->score;
-        $data['spellbee_user_rank']  = $user_rank[0]->rank;
+        $data['spellbee_user_score'] = $user_score;
+        $data['spellbee_user_rank']  = $user_rank;
         $data['spellbee_data']    = $shtml;
         
         $data['ci_key']    = "leaderboard";

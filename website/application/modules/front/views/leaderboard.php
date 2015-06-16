@@ -74,10 +74,10 @@
                     <p class="school_division"><?php echo $userschoolname;?></p>
                     <p class="school_division"><?php echo $userdivision;?></p>
                     <?php if($spellbee_user_score != -1){?>
-                    <p class="best_score"> Best Score :<?php echo $spellbee_user_score;?></p>
+                    <p class="best_score"> Best Score :<?php echo $spellbee_user_score[0]->score;?></p>
                     <?php }?>
                     <?php if($spellbee_user_rank != -1){?>
-                    <p class="user_rank"><span></span>Rank&nbsp;:&nbsp;<?php echo $spellbee_user_rank;?></p>
+                    <p class="user_rank"><span></span>Rank&nbsp;:&nbsp;<?php echo $spellbee_user_rank[0]->rank;?></p>
                     <?php }?>
                 </div>
                 <div style="float:right;width:20%;height:120px; ">

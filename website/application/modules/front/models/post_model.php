@@ -161,10 +161,10 @@ class Post_model extends DataMapper
                     ->from('tds_spell_highscore')    
                     ->where("tds_spell_highscore.is_cancel", 0)
                     ->where("tds_spell_highscore.spell_year", $iYear)
-                    ->where("tds_spell_highscore.division", $division)
-                    ->where("tds_spell_highscore.test_time <", $time_for_rank)
-                    ->where('(tds_spell_highscore.score >', $score_for_rank, FALSE)
-                    ->or_where("tds_spell_highscore.score = ".$score_for_rank.")", NULL, FALSE)
+                    ->where("tds_spell_highscore.division", $division)                    
+                    ->where('(tds_spell_highscore.score >', $score_for_rank)
+                    ->or_where("(tds_spell_highscore.test_time <", $time_for_rank, FALSE)
+                    ->where("tds_spell_highscore.score = ".$score_for_rank."))", NULL, FALSE)
                     ->limit(1);
         $query = $this->db->get();
         if ( $query->num_rows() > 0 )

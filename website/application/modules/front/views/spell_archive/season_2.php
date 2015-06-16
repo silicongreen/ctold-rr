@@ -65,7 +65,7 @@
                     <center><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/archive/s2/4th_place.png'); ?>" style="width:90%;cursor: pointer;" class="scalup toolbar"></center>   
                 </div>
                 <div class="aright">
-                    <p class="f2" style="color:#FDCB08;font-size:16px;margin-bottom: 5px;text-transform: uppercase;">Top 1</p>
+                    <p class="f2" style="color:#FDCB08;font-size:16px;margin-bottom: 5px;text-transform: uppercase;">FINALIST</p>
                     <p style="font-weight:bold;"><i>Raisa Rownak</i></p>
                     <p>Class - X</p>
                     <p>Tulip Intl. School</p>
@@ -79,7 +79,7 @@
                     <center><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/archive/s2/5th_place.png'); ?>" style="width:90%;cursor: pointer;" class="scalup toolbar"></center>   
                 </div>
                 <div class="aright">
-                    <p class="f2" style="color:#FDCB08;font-size:16px;margin-bottom: 5px;text-transform: uppercase;">FINALISTS</p>
+                    <p class="f2" style="color:#FDCB08;font-size:16px;margin-bottom: 5px;text-transform: uppercase;">FINALIST</p>
                     <p style="font-weight:bold;"><i>Atiqul Huq</i></p>
                     <p>Class - IX</p>
                     <p>Ananda Niketan</p>
@@ -93,7 +93,7 @@
                     <center><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/archive/s2/6th_place.jpg'); ?>" style="width:90%;cursor: pointer;" class="scalup toolbar"></center>   
                 </div>
                 <div class="aright">
-                    <p class="f2" style="color:#FDCB08;font-size:16px;margin-bottom: 5px;text-transform: uppercase;">FINALISTS</p>
+                    <p class="f2" style="color:#FDCB08;font-size:16px;margin-bottom: 5px;text-transform: uppercase;">FINALIST</p>
                     <p style="font-weight:bold;"><i>Saif rahman</i></p>
                     <p>Class - VIII</p>
                     <p>The City School</p>

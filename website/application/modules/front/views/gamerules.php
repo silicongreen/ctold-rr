@@ -171,6 +171,10 @@ nav {
     .row{
         padding: 0px 30px 30px;
     }
+    .row ol li
+    {
+        font-family: Arial !important;
+    }
     .row p
     {
         font-family: Arial;

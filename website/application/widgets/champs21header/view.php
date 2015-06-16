@@ -352,7 +352,7 @@ height: 46px;
                                                     $divsion_data['Khulna'] = 'Khulna';
                                                     $divsion_data['Sylhet'] = 'Sylhet';
                                                     $divsion_data['Rangpur'] = 'Rangpur';
-                                                    $divsion_data['Barishal'] = 'Barishal';
+                                                    $divsion_data['Barisal'] = 'Barisal';
                                                     
 
                                                     $class_string = 'id="division" class="droppify"';

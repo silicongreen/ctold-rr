@@ -239,7 +239,7 @@ class Service
             $check = Settings::getSpellingBeeCache($cache_name_checkpoint);
             $score_count = 0;
             
-            if(isset($check) && isset($check))
+            if(isset($check))
             {
                 if(isset($check['user_checkpoint_score']))
                 {
@@ -273,9 +273,12 @@ class Service
             
             $highscore = new Highscore();
             $user_score_data = $highscore->getUserScore($data);
+            
+            $score_count = (int)$objParams->checkpoint * (int)Settings::$checkPointSize;
+            
             $current_score = $score_count;
             
-            if ($user_score_data->score < $current_score)
+            if ( empty($user_score_data) || ($current_score > $user_score_data->score) )
             {
                 $objUser = new Freeusers();
                 $user_data = $objUser->findByPk($data);
@@ -285,7 +288,11 @@ class Service
                 $highscore->enddate = time();
                 $highscore->score = (int) $current_score;
                 $highscore->is_cheat = 0;
-                $play_total_time = (int)$user_score_data->test_time + (int)$total_time;
+                if (empty($user_score_data)) {
+                    $play_total_time = (int)$total_time;
+                } else {
+                    $play_total_time = (int)$user_score_data->test_time + (int)$total_time;
+                }
                 $highscore->play_total_time = $play_total_time;
                 $highscore->spell_year = date('Y');
                 $highscore->division = strtolower($user_data->division);
@@ -294,7 +301,7 @@ class Service
 
                 $check['current_score'] = $current_score;
                 $check['current_time'] = $total_time;
-                $check['prev_id'] = $user_score_data->id;
+                $check['prev_id'] = (empty($user_score_data)) ? 0 : $user_score_data->id;
                 $check['play_total_time'] = $play_total_time;
             }
             

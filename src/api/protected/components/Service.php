@@ -271,6 +271,7 @@ class Service
             
             Settings::setSpellingBeeCache($cache_name_userdata, $response);
             
+            $highscore = new Highscore();
             $user_score_data = $highscore->getUserScore($data);
             $current_score = $score_count;
             

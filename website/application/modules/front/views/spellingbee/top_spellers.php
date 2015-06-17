@@ -33,15 +33,15 @@
                     <li class="<?php if($active_tab == "season1"){ echo "active";}?>" rel="tab3"><a href="javascript:return false;">Season 1</a> </li>
                 </ul>
 
-                <div class="tabbody active" id="tab1" style="display: block;">
+                <div class="tabbody active" id="tab1" style="display: <?php if($active_tab == "season3"){ echo "block;";}else{echo "none;";}?>">
                    <?php $this->load->view('leaderboard/barishal'); ?>
                 </div>
 
-                <div class="tabbody" id="tab2" style="display: none;">
+                <div class="tabbody" id="tab2" style="display: <?php if($active_tab == "season2"){ echo "block;";}else{echo "none;";}?>">
                   <?php $this->load->view('leaderboard/rangpur'); ?>  
                 </div>
                 
-                <div class="tabbody" id="tab3" style="display: none;">
+                <div class="tabbody" id="tab3" style="display: <?php if($active_tab == "season1"){ echo "block;";}else{echo "none;";}?>">
                   <?php $this->load->view('leaderboard/sylhet'); ?>  
                 </div>          
                 

@@ -76,13 +76,13 @@ class Spellingbee extends CActiveRecord
         {
             $criteria->addNotInCondition('t.id', $user_word_played);
         }
-        $cache_name_word = "YII-SPELLINGBEE-CURRENTUSERWORD";
+        $cache_name_word = "YII-SPELLINGBEE-CURRENTUSERWORD-" . $iUserId;
         $responseword = Settings::getSpellingBeeCache($cache_name_word);
         
         if ($year == 0) {
-            if(isset($responseword) && isset($responseword[$iUserId]) && isset($responseword[$iUserId][$iLevel]['words']))
+            if(isset($responseword) && isset($responseword[$iLevel]['words']))
             {
-                 $criteria->addNotInCondition('t.id', $responseword[$iUserId][$iLevel]['words']);
+                 $criteria->addNotInCondition('t.id', $responseword[$iLevel]['words']);
             }
         }
         
@@ -93,13 +93,13 @@ class Spellingbee extends CActiveRecord
         
         if(count($data)==0)
         { 
-            $cache_name = "YII-SPELLINGBEE-LEVEL-STATUS";  
+            $cache_name = "YII-SPELLINGBEE-LEVEL-STATUS-" . $iUserId;
             $levelstatus = Settings::getSpellingBeeCache($cache_name);
            
             $all_clear = true;
             for($i =0; $i<4; $i++)
             {
-                if(!isset($levelstatus) || !isset($levelstatus[$iUserId]) || !isset($levelstatus[$iUserId][$i]))
+                if(!isset($levelstatus) || !isset($levelstatus[$i]))
                 {
                     $all_clear = false;
                     break;
@@ -108,15 +108,15 @@ class Spellingbee extends CActiveRecord
             
             if($all_clear)
             {
-                unset($levelstatus[$iUserId]);
+                unset($levelstatus);
                 Settings::setSpellingBeeCache($cache_name, $levelstatus);
                 
                 
-                $cache_name_word = "YII-SPELLINGBEE-USERWORD";
+                $cache_name_word = "YII-SPELLINGBEE-USERWORD-" . $iUserId;
                 $responseword = Settings::getSpellingBeeCache($cache_name_word);
-                if(isset($responseword[$iUserId]))
+                if(isset($responseword))
                 {
-                    unset($responseword[$iUserId]);
+                    unset($responseword);
                 }
                 Settings::setSpellingBeeCache($cache_name_word, $responseword);
                 
@@ -133,9 +133,9 @@ class Spellingbee extends CActiveRecord
                 $response['word_complete'] = 1;
                 $response['level'] = $iLevel; 
                 
-                $cache_name = "YII-SPELLINGBEE-LEVEL-STATUS";
+                $cache_name = "YII-SPELLINGBEE-LEVEL-STATUS-" . $iUserId;
                 $responsecache = Settings::getSpellingBeeCache($cache_name);
-                $responsecache[$iUserId][$iLevel] = 1;
+                $responsecache[$iLevel] = 1;
                 Settings::setSpellingBeeCache($cache_name, $responsecache);
             }
         }
@@ -147,20 +147,20 @@ class Spellingbee extends CActiveRecord
             if(count($data)!=$iMaxWord)
             {
                 $response['word_complete'] = 1;
-                $cache_name = "YII-SPELLINGBEE-LEVEL-STATUS";
+                $cache_name = "YII-SPELLINGBEE-LEVEL-STATUS-" . $iUserId;
                 
                 $responsecache = Settings::getSpellingBeeCache($cache_name);
-                $responsecache[$iUserId][$iLevel] = 1;
+                $responsecache[$iLevel] = 1;
                 Settings::setSpellingBeeCache($cache_name, $responsecache);
             }
             
-            $cache_name_word = "YII-SPELLINGBEE-CURRENTUSERWORD";
+            $cache_name_word = "YII-SPELLINGBEE-CURRENTUSERWORD-" . $iUserId;
             $responseword = Settings::getSpellingBeeCache($cache_name_word);
             foreach($data as $value)
             {
-                if(!isset($responseword[$iUserId][$iLevel]['words']) || !in_array($value->id, $responseword[$iUserId][$iLevel]['words']))
+                if(!isset($responseword[$iLevel]['words']) || !in_array($value->id, $responseword[$iLevel]['words']))
                 {
-                    $responseword[$iUserId][$iLevel]['words'][] = $value->id;
+                    $responseword[$iLevel]['words'][] = $value->id;
                 }
                 
             }

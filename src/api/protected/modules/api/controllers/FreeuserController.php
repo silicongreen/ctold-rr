@@ -29,7 +29,7 @@ class FreeuserController extends Controller
                     , "schoolsearch", "school", "createschool", "schoolpage", "schoolactivity", "candle"
                     , "garbagecollector", "getschoolteacherbylinepost", "createcachesinglenews", "addwow", "can_share_from_web",
                     'set_preference', 'addcomments', 'getcomments', 'get_preference', 'addgcm', 'getallgcm', 'shareschoolfeed',
-                    'getschoolinfo', 'joinschool', 'candleschool', 'leaveschool', 'folderdelete', 'assesmenttopscore', 'relatednews'),
+                    'getschoolinfo', 'joinschool', 'candleschool', 'leaveschool', 'folderdelete', 'assesmenttopscore', 'relatednews', 'regenspellcache'),
                 'users' => array('*'),
             ),
             array('deny', // deny all users
@@ -128,12 +128,12 @@ class FreeuserController extends Controller
             $highscore = new Highscore();
             $current_score = 0;
             $current_time = 0;
-            $cache_name = "YII-SPELLINGBEE-USERDATA";
-            $response = Settings::getSpellingBeeCache($cache_name);
-            if (isset($response[$user_id]) && isset($response[$user_id]['current_score']))
+            $cache_name_userdata = "YII-SPELLINGBEE-USERDATA-" . $user_id;
+            $response = Settings::getSpellingBeeCache($cache_name_userdata);
+            if (isset($response) && isset($response['current_score']))
             {
-                $current_score = $response[$user_id]['current_score'];
-                $current_time = $response[$user_id]['current_time'];
+                $current_score = $response['current_score'];
+                $current_time = $response['current_time'];
             }
             else
             {
@@ -242,10 +242,8 @@ class FreeuserController extends Controller
 
                 if ($user_data)
                 {
-                    
-                    
-                    $cache_name = "YII-SPELLINGBEE-USERDATA";
-                    $response = Settings::getSpellingBeeCache($cache_name);
+                    $cache_name_userdata = "YII-SPELLINGBEE-USERDATA-" . $iUserId;
+                    $response = Settings::getSpellingBeeCache($cache_name_userdata);
 
                     $current_score = 0;
                     $current_time = 0;
@@ -256,26 +254,26 @@ class FreeuserController extends Controller
                     if ($response !== FALSE)
                     {
 
-                        if (isset($response[$iUserId]) && isset($response[$iUserId]['current_score']) && isset($response[$iUserId]['current_time']) && isset($response[$iUserId]['prev_id']) && isset($response[$iUserId]['play_total_time']))
+                        if (isset($response) && isset($response['current_score']) && isset($response['current_time']) && isset($response['prev_id']) && isset($response['play_total_time']))
                         {
 
-                            $current_score = $response[$iUserId]['current_score'];
-                            $current_time = $response[$iUserId]['current_time'];
-                            $prev_id = $response[$iUserId]['prev_id'];
-                            $play_total_time = $response[$iUserId]['play_total_time'] = $response[$iUserId]['play_total_time'] + $objParams->total_time;
-                            Settings::setSpellingBeeCache($cache_name, $response);
+                            $current_score = $response['current_score'];
+                            $current_time = $response['current_time'];
+                            $prev_id = $response['prev_id'];
+                            $play_total_time = $response['play_total_time'] = $response['play_total_time'] + $objParams->total_time;
+                            Settings::setSpellingBeeCache($cache_name_userdata, $response);
                         }
                         else
                         {
                             $user_score_data = $highscore->getUserScore($iUserId);
                             if ($user_score_data)
                             {
-                                $response[$iUserId]['current_score'] = $current_score = $user_score_data->score;
-                                $response[$iUserId]['current_time'] = $current_time = $user_score_data->test_time;
-                                $response[$iUserId]['prev_id'] = $prev_id = $user_score_data->id;
-                                $response[$iUserId]['play_total_time'] = $play_total_time = $user_score_data->play_total_time + $objParams->total_time;
+                                $response['current_score'] = $current_score = $user_score_data->score;
+                                $response['current_time'] = $current_time = $user_score_data->test_time;
+                                $response['prev_id'] = $prev_id = $user_score_data->id;
+                                $response['play_total_time'] = $play_total_time = $user_score_data->play_total_time + $objParams->total_time;
 
-                                Settings::setSpellingBeeCache($cache_name, $response);
+                                Settings::setSpellingBeeCache($cache_name_userdata, $response);
                             }
                             else
                             {
@@ -290,11 +288,11 @@ class FreeuserController extends Controller
                         $user_score_data = $highscore->getUserScore($iUserId);
                         if ($user_score_data)
                         {
-                            $response[$iUserId]['current_score'] = $current_score = $user_score_data->score;
-                            $response[$iUserId]['current_time'] = $current_time = $user_score_data->test_time;
-                            $response[$iUserId]['prev_id'] = $prev_id = $user_score_data->id;
-                            $response[$iUserId]['play_total_time'] = $play_total_time = $user_score_data->play_total_time + $objParams->total_time;
-                            Settings::setSpellingBeeCache($cache_name, $response);
+                            $response['current_score'] = $current_score = $user_score_data->score;
+                            $response['current_time'] = $current_time = $user_score_data->test_time;
+                            $response['prev_id'] = $prev_id = $user_score_data->id;
+                            $response['play_total_time'] = $play_total_time = $user_score_data->play_total_time + $objParams->total_time;
+                            Settings::setSpellingBeeCache($cache_name_userdata, $response);
                         }
                         else
                         {
@@ -323,11 +321,11 @@ class FreeuserController extends Controller
                         $highscore->country = $user_data->tds_country_id;
                         $highscore->save();
 
-                        $response[$iUserId]['current_score'] = $score_for_rank;
-                        $response[$iUserId]['current_time'] = $time_for_rank;
-                        $response[$iUserId]['prev_id'] = $highscore->id;
-                        $response[$iUserId]['play_total_time'] = $play_total_time;
-                        Settings::setSpellingBeeCache($cache_name, $response);
+                        $response['current_score'] = $score_for_rank;
+                        $response['current_time'] = $time_for_rank;
+                        $response['prev_id'] = $highscore->id;
+                        $response['play_total_time'] = $play_total_time;
+                        Settings::setSpellingBeeCache($cache_name_userdata, $response);
                     }
                     else
                     {
@@ -3650,6 +3648,32 @@ class FreeuserController extends Controller
 
         echo CJSON::encode($response);
         Yii::app()->end();
+    }
+    
+    public function actionRegenspellcache() {
+        
+        $ar_cache_names = array(
+            'YII-SPELLINGBEE-CURRENTUSERWORD'
+        );
+        
+        foreach ($ar_cache_names as $cache_name_old_userdata) {
+            
+            $response = Settings::getSpellingBeeCache($cache_name_old_userdata);
+
+            foreach ($response as $key => $value) {
+                $cache_name = $cache_name_old_userdata . '-' . $key;
+
+                $data = $value;
+
+                $response = Settings::setSpellingBeeCache($cache_name, $data);
+            }
+            echo $cache_name_old_userdata . '-done<br/>';
+        
+        }
+        
+        
+        exit;
+        
     }
 
 }

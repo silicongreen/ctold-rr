@@ -33,9 +33,9 @@ class Settings
     public static $check_service = false;
     public static $check_id = 259;
     
-    public static $spellingbeeConfig = TRUE;
+    public static $spellingbeeConfig = false;
     public static $alwaysAgreementCheck = TRUE;
-    public static $checkPointSize = 25;
+    public static $checkPointSize = 20;
     public static $dailyWord = 20;
     public static $easyWord = 50;
     public static $normalWord = 50;
@@ -447,13 +447,13 @@ class Settings
     }
     public static function clearCurrentWord($iUserId)
     {
-        $cache_name_word = "YII-SPELLINGBEE-CURRENTUSERWORD";
+        $cache_name_word = "YII-SPELLINGBEE-CURRENTUSERWORD-" . $iUserId;
         $responseword = self::getSpellingBeeCache($cache_name_word);
-        if(isset($responseword) && isset($responseword[$iUserId]) )
+        if(isset($responseword))
         {
-          unset($responseword[$iUserId]);
+          unset($responseword);
         }
-        self::setSpellingBeeCache($cache_name_word, $responseword);
+//        self::setSpellingBeeCache($cache_name_word, $responseword);
     }        
 
     public static function createUserToken($user_id)

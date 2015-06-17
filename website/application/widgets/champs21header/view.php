@@ -1149,12 +1149,13 @@ if($('.header-logo-div').is(':visible')) {
 #country-list li:hover{background:#F0F0F0;}
 #search-box1{padding: 10px;border: #F0F0F0 1px solid;}
 #suggesstion-box1 {
-    display:none;
+  display:none;
   max-height: 150px;
   overflow-y: scroll;
   position: absolute;
   border: #ccc 1px solid;
   font-size:12px;
+  z-index:1000;
 }
 .text_field_school {
   background-color: #adb2b5;

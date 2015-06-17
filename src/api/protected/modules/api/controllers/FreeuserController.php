@@ -3663,17 +3663,17 @@ class FreeuserController extends Controller
             'prev_id' => 19,
             'play_total_time' => 2979
         );
-//        $responsesss = array(
-//            3946,3879,3799,4004,3741,3698,3685
-//        );
+        $responsesss = array(
+            3946,3879,3799,4004,3741,3698,3685
+        );
         
-//        foreach ($responsesss as $userdata) {
-//            $cache_name_old_userdata = 'YII-SPELLINGBEE-USERDATA-' . $userdata;
-//            $response = Settings::getSpellingBeeCache($cache_name_old_userdata);
-//            echo '<pre>';
-//            print_r($response);
-//        }
-//        exit;
+        foreach ($responsesss as $userdata) {
+            $cache_name_old_userdata = 'YII-SPELLINGBEE-USERDATA-' . $userdata;
+            $response = Settings::getSpellingBeeCache($cache_name_old_userdata);
+            echo '<pre>';
+            print_r($response);
+        }
+        exit;
         
         
 //        $ar_cache_names = array(
@@ -3695,8 +3695,8 @@ class FreeuserController extends Controller
 //        
 //        }
 //        
-        $cache_name_old_userdata = 'YII-SPELLINGBEE-USERDATA-3685';
-        $response = Settings::setSpellingBeeCache($cache_name_old_userdata, $response);
+//        $cache_name_old_userdata = 'YII-SPELLINGBEE-USERDATA-3685';
+//        $response = Settings::setSpellingBeeCache($cache_name_old_userdata, $response);
         
 //        echo '<pre>';
 //        print_r($response);

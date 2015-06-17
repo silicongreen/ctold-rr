@@ -33,7 +33,7 @@ class Settings
     public static $check_service = false;
     public static $check_id = 259;
     
-    public static $spellingbeeConfig = TRUE;
+    public static $spellingbeeConfig = false;
     public static $alwaysAgreementCheck = TRUE;
     public static $checkPointSize = 20;
     public static $dailyWord = 20;

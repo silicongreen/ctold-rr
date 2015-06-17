@@ -35,7 +35,7 @@ class Settings
     
     public static $spellingbeeConfig = TRUE;
     public static $alwaysAgreementCheck = TRUE;
-    public static $checkPointSize = 25;
+    public static $checkPointSize = 20;
     public static $dailyWord = 20;
     public static $easyWord = 50;
     public static $normalWord = 50;

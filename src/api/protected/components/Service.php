@@ -96,24 +96,17 @@ class Service
             
             if(isset($response) && isset($response))
             {
-                if (isset($response['user_checkpoint']))
-                {
-                    $arUserMode['user_checkpoint'] = $response['user_checkpoint'];
+                if(isset($response['current_score'])) {
+                    $current_score = (int)$response['current_score'];
+                    $rem = (int)$current_score % (int)Settings::$checkPointSize;
+                    $check_point_score = $current_score - $rem;
+                    $arUserMode['user_checkpoint_score'] = $check_point_score;
+                    $arUserMode['user_checkpoint'] = floor($check_point_score / (int)Settings::$checkPointSize);
+                } else {
+                    $arUserMode['user_checkpoint'] = 0;
+                    $arUserMode['user_checkpoint_score'] = 0;
                 }
                 
-                if(isset($response['user_checkpoint_score']))
-                {
-                    if(isset($response['current_score'])) {
-                        $current_score = (int)$response['current_score'];
-                        $rem = (int)$current_score % 25;
-                        $check_point_score = $current_score - $rem;
-                        $arUserMode['user_checkpoint_score'] = $check_point_score;
-                    } else {
-                        $arUserMode['user_checkpoint'] = 0;
-                        $arUserMode['user_checkpoint_score'] = 0;
-                    }
-                } 
-
                 if(isset($response['remaining_word']))
                 {
                     $arUserMode['remaining_word'] = $response['remaining_word'];

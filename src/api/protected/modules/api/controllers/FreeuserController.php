@@ -3653,27 +3653,27 @@ class FreeuserController extends Controller
     public function actionRegenspellcache() {
         
         $response = array(
-            'total_time' => 2979,
-            'remaining_word' => 25,
+            'total_time' => 245,
+            'remaining_word' => 20,
             'current_level' => 1,
-            'user_checkpoint_score' => 100,
-            'user_checkpoint' => 5,
-            'current_score' => 100,
-            'current_time' => 196,
-            'prev_id' => 19,
-            'play_total_time' => 2979
+            'user_checkpoint_score' => 260,
+            'user_checkpoint' => 13,
+            'current_score' => 260,
+            'current_time' => 245,
+            'prev_id' => 134,
+            'play_total_time' => 3979
         );
-        $responsesss = array(
-            3946,3879,3799,4004,3741,3698,3685
-        );
-        
-        foreach ($responsesss as $userdata) {
-            $cache_name_old_userdata = 'YII-SPELLINGBEE-USERDATA-' . $userdata;
-            $response = Settings::getSpellingBeeCache($cache_name_old_userdata);
-            echo '<pre>';
-            print_r($response);
-        }
-        exit;
+//        $responsesss = array(
+//            3946,3879,3799,4004,3741,3698,3685
+//        );
+//        
+//        foreach ($responsesss as $userdata) {
+//            $cache_name_old_userdata = 'YII-SPELLINGBEE-USERDATA-' . $userdata;
+//            $response = Settings::getSpellingBeeCache($cache_name_old_userdata);
+//            echo '<pre>';
+//            print_r($response);
+//        }
+//        exit;
         
         
 //        $ar_cache_names = array(
@@ -3695,8 +3695,8 @@ class FreeuserController extends Controller
 //        
 //        }
 //        
-//        $cache_name_old_userdata = 'YII-SPELLINGBEE-USERDATA-3685';
-//        $response = Settings::setSpellingBeeCache($cache_name_old_userdata, $response);
+        $cache_name_old_userdata = 'YII-SPELLINGBEE-USERDATA-3946';
+        $response = Settings::setSpellingBeeCache($cache_name_old_userdata, $response);
         
 //        echo '<pre>';
 //        print_r($response);

@@ -280,6 +280,9 @@ class Service
             
             if ( empty($user_score_data) || ($current_score > $user_score_data->score) )
             {
+                if(!empty($user_score_data)) {
+                    $highscore = $highscore->findByPk($user_score_data->id);
+                }
                 $objUser = new Freeusers();
                 $user_data = $objUser->findByPk($data);
                 

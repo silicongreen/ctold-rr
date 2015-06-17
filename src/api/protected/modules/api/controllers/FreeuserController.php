@@ -3653,9 +3653,7 @@ class FreeuserController extends Controller
     public function actionRegenspellcache() {
         
         $ar_cache_names = array(
-            'YII-SPELLINGBEE-USERDATA',
-            'YII-SPELLINGBEE-USERWORD',
-            'YII-SPELLINGBEE-LEVEL-STATUS'
+            'YII-SPELLINGBEE-CURRENTUSERWORD'
         );
         
         foreach ($ar_cache_names as $cache_name_old_userdata) {

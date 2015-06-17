@@ -271,7 +271,31 @@ class Service
             
             Settings::setSpellingBeeCache($cache_name_userdata, $response);
             
-           
+            $user_score_data = $highscore->getUserScore($data);
+            $current_score = $score_count;
+            
+            if ($user_score_data->score < $current_score)
+            {
+                $objUser = new Freeusers();
+                $user_data = $objUser->findByPk($iUserId);
+                
+                $highscore->userid = $data;
+                $highscore->test_time = $total_time;
+                $highscore->enddate = time();
+                $highscore->score = (int) $current_score;
+                $highscore->is_cheat = 0;
+                $play_total_time = (int)$user_score_data->test_time + (int)$total_time;
+                $highscore->play_total_time = $play_total_time;
+                $highscore->spell_year = date('Y');
+                $highscore->division = strtolower($user_data->division);
+                $highscore->country = $user_data->tds_country_id;
+                $highscore->save();
+
+                $check['current_score'] = $current_score;
+                $check['current_time'] = $total_time;
+                $check['prev_id'] = $user_score_data->id;
+                $check['play_total_time'] = $play_total_time;
+            }
             
             $check['total_time'] = $total_time;
             $check['remaining_word'] = $remaining_word;
@@ -283,14 +307,8 @@ class Service
             Settings::clearCurrentWord($data);
             
             return TRUE;
-            
-            
         }
         return FALSE;
-        
-         
-        
-        
     }
 
     public function getWords($objParams)

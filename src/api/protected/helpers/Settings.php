@@ -447,11 +447,11 @@ class Settings
     }
     public static function clearCurrentWord($iUserId)
     {
-        $cache_name_word = "YII-SPELLINGBEE-CURRENTUSERWORD";
+        $cache_name_word = "YII-SPELLINGBEE-CURRENTUSERWORD-" . $iUserId;
         $responseword = self::getSpellingBeeCache($cache_name_word);
-        if(isset($responseword) && isset($responseword[$iUserId]) )
+        if(isset($responseword))
         {
-          unset($responseword[$iUserId]);
+          unset($responseword);
         }
         self::setSpellingBeeCache($cache_name_word, $responseword);
     }        

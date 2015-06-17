@@ -94,17 +94,17 @@ class Service
             $cache_name_userdata = "YII-SPELLINGBEE-USERDATA-" . $iUserId;
             $response = Settings::getSpellingBeeCache($cache_name_userdata);
             
-            if(isset($response[$iUserId]) && isset($response[$iUserId]))
+            if(isset($response) && isset($response))
             {
-                if (isset($response[$iUserId]['user_checkpoint']))
+                if (isset($response['user_checkpoint']))
                 {
-                    $arUserMode['user_checkpoint'] = $response[$iUserId]['user_checkpoint'];
+                    $arUserMode['user_checkpoint'] = $response['user_checkpoint'];
                 }
                 
-                if(isset($response[$iUserId]['user_checkpoint_score']))
+                if(isset($response['user_checkpoint_score']))
                 {
-                    if(isset($response[$iUserId]['current_score'])) {
-                        $current_score = (int)$response[$iUserId]['current_score'];
+                    if(isset($response['current_score'])) {
+                        $current_score = (int)$response['current_score'];
                         $rem = (int)$current_score % 25;
                         $check_point_score = $current_score - $rem;
                         $arUserMode['user_checkpoint_score'] = $check_point_score;
@@ -114,17 +114,17 @@ class Service
                     }
                 } 
 
-                if(isset($response[$iUserId]['remaining_word']))
+                if(isset($response['remaining_word']))
                 {
-                    $arUserMode['remaining_word'] = $response[$iUserId]['remaining_word'];
+                    $arUserMode['remaining_word'] = $response['remaining_word'];
                 }
-                if(isset($response[$iUserId]['current_level']))
+                if(isset($response['current_level']))
                 {
-                    $arUserMode['current_level'] = $response[$iUserId]['current_level'];
+                    $arUserMode['current_level'] = $response['current_level'];
                 }
-                if(isset($response[$iUserId]['total_time']))
+                if(isset($response['total_time']))
                 {
-                    $arUserMode['total_time'] = $response[$iUserId]['total_time'];
+                    $arUserMode['total_time'] = $response['total_time'];
                 }
                 
             }
@@ -133,9 +133,9 @@ class Service
             $cache_name_userword = "YII-SPELLINGBEE-USERWORD-" . $iUserId;
             $response = Settings::getSpellingBeeCache($cache_name_userword);
             
-            if(isset($response) && isset($response[$iUserId]) && isset($response[$iUserId]['words']))
+            if(isset($response) && isset($response) && isset($response['words']))
             {
-                $arUserMode['word_count'] = count($response[$iUserId]['words']);
+                $arUserMode['word_count'] = count($response['words']);
             }
             $cache_name_old_status = "YII-SPELLINGBEE-LEVEL-STATUS";
             $cache_name_status = "YII-SPELLINGBEE-LEVEL-STATUS-" . $iUserId;
@@ -145,7 +145,7 @@ class Service
             {
                 $level_name = "level".$i;
                 $arUserMode['level_status']->$level_name = 0;
-                if(isset($responsecache) && isset($responsecache[$iUserId]) && isset($responsecache[$iUserId][$i]))
+                if(isset($responsecache) && isset($responsecache) && isset($responsecache[$i]))
                 {
                     $arUserMode['level_status']->$level_name = 1;
                 }
@@ -324,9 +324,9 @@ class Service
             $response = Settings::getSpellingBeeCache($cache_name_userword);
            
     
-            if (isset($response[$iUserId]) && isset($response[$iUserId]) && isset($response[$iUserId]['words']))
+            if (isset($response) && isset($response) && isset($response['words']))
             {
-                $user_word_played = $response[$iUserId]['words'];
+                $user_word_played = $response['words'];
             }
             
           
@@ -423,13 +423,13 @@ class Service
                 if ($response !== FALSE)
                 {
                     
-                    if (isset($response[$iUserId]) && isset($response[$iUserId]['current_score']) && isset($response[$iUserId]['current_time']) && isset($response[$iUserId]['prev_id']) && isset($response[$iUserId]['play_total_time']))
+                    if (isset($response) && isset($response['current_score']) && isset($response['current_time']) && isset($response['prev_id']) && isset($response['play_total_time']))
                     {
                         
-                        $current_score = $response[$iUserId]['current_score'];
-                        $current_time = $response[$iUserId]['current_time'];
-                        $prev_id = $response[$iUserId]['prev_id'];
-                        $play_total_time = $response[$iUserId]['play_total_time'] = $response[$iUserId]['play_total_time'] + $objParams->total_time;
+                        $current_score = $response['current_score'];
+                        $current_time = $response['current_time'];
+                        $prev_id = $response['prev_id'];
+                        $play_total_time = $response['play_total_time'] = $response['play_total_time'] + $objParams->total_time;
                         Settings::setSpellingBeeCache($cache_name_userdata, $response);
                     }
                     else
@@ -437,10 +437,10 @@ class Service
                         $user_score_data = $highscore->getUserScore($iUserId);
                         if ($user_score_data)
                         {
-                            $response[$iUserId]['current_score'] = $current_score = $user_score_data->score;
-                            $response[$iUserId]['current_time'] = $current_time = $user_score_data->test_time;
-                            $response[$iUserId]['prev_id'] = $prev_id = $user_score_data->id;
-                            $response[$iUserId]['play_total_time'] = $play_total_time = $user_score_data->play_total_time + $objParams->total_time;
+                            $response['current_score'] = $current_score = $user_score_data->score;
+                            $response['current_time'] = $current_time = $user_score_data->test_time;
+                            $response['prev_id'] = $prev_id = $user_score_data->id;
+                            $response['play_total_time'] = $play_total_time = $user_score_data->play_total_time + $objParams->total_time;
 
                             Settings::setSpellingBeeCache($cache_name_userdata, $response);
                         }
@@ -457,10 +457,10 @@ class Service
                     $user_score_data = $highscore->getUserScore($iUserId);
                     if ($user_score_data)
                     {
-                        $response[$iUserId]['current_score'] = $current_score = $user_score_data->score;
-                        $response[$iUserId]['current_time'] = $current_time = $user_score_data->test_time;
-                        $response[$iUserId]['prev_id'] = $prev_id = $user_score_data->id;
-                        $response[$iUserId]['play_total_time'] = $play_total_time = $user_score_data->play_total_time + $objParams->total_time;
+                        $response['current_score'] = $current_score = $user_score_data->score;
+                        $response['current_time'] = $current_time = $user_score_data->test_time;
+                        $response['prev_id'] = $prev_id = $user_score_data->id;
+                        $response['play_total_time'] = $play_total_time = $user_score_data->play_total_time + $objParams->total_time;
                         Settings::setSpellingBeeCache($cache_name_userdata, $response);
                     }
                     else
@@ -491,10 +491,10 @@ class Service
                     $highscore->save();
                    
                     
-                    $response[$iUserId]['current_score'] = $score_for_rank;
-                    $response[$iUserId]['current_time'] = $time_for_rank;
-                    $response[$iUserId]['prev_id'] = $highscore->id;
-                    $response[$iUserId]['play_total_time'] = $play_total_time;
+                    $response['current_score'] = $score_for_rank;
+                    $response['current_time'] = $time_for_rank;
+                    $response['prev_id'] = $highscore->id;
+                    $response['play_total_time'] = $play_total_time;
                     Settings::setSpellingBeeCache($cache_name_userdata, $response);
                 }
                 else

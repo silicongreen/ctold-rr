@@ -278,7 +278,7 @@ class Service
             if ($user_score_data->score < $current_score)
             {
                 $objUser = new Freeusers();
-                $user_data = $objUser->findByPk($iUserId);
+                $user_data = $objUser->findByPk($data);
                 
                 $highscore->userid = $data;
                 $highscore->test_time = $total_time;

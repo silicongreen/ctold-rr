@@ -3652,6 +3652,19 @@ class FreeuserController extends Controller
     
     public function actionRegenspellcache() {
         
+        $response = array(
+            'total_time' => 719,
+            'remaining_word' => 25,
+            'current_level' => 2,
+            'user_checkpoint_score' => 100,
+            'user_checkpoint' => 5,
+            'current_score' => 100,
+            'current_time' => 377,
+            'prev_id' => 165,
+            'play_total_time' => 1484
+        );
+        
+        
 //        $ar_cache_names = array(
 //            'YII-SPELLINGBEE-CURRENTUSERWORD'
 //        );
@@ -3672,7 +3685,8 @@ class FreeuserController extends Controller
 //        }
 //        
         $cache_name_old_userdata = 'YII-SPELLINGBEE-USERDATA-3920';
-        $response = Settings::getSpellingBeeCache($cache_name_old_userdata);
+        $response = Settings::setSpellingBeeCache($cache_name_old_userdata, $response);
+        
         echo '<pre>';
         print_r($response);
         exit;

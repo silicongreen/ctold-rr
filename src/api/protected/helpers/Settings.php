@@ -453,7 +453,7 @@ class Settings
         {
           unset($responseword);
         }
-        self::setSpellingBeeCache($cache_name_word, $responseword);
+//        self::setSpellingBeeCache($cache_name_word, $responseword);
     }        
 
     public static function createUserToken($user_id)

@@ -3652,26 +3652,29 @@ class FreeuserController extends Controller
     
     public function actionRegenspellcache() {
         
-        $ar_cache_names = array(
-            'YII-SPELLINGBEE-CURRENTUSERWORD'
-        );
-        
-        foreach ($ar_cache_names as $cache_name_old_userdata) {
-            
-            $response = Settings::getSpellingBeeCache($cache_name_old_userdata);
-
-            foreach ($response as $key => $value) {
-                $cache_name = $cache_name_old_userdata . '-' . $key;
-
-                $data = $value;
-
-                $response = Settings::setSpellingBeeCache($cache_name, $data);
-            }
-            echo $cache_name_old_userdata . '-done<br/>';
-        
-        }
-        
-        
+//        $ar_cache_names = array(
+//            'YII-SPELLINGBEE-CURRENTUSERWORD'
+//        );
+//        
+//        foreach ($ar_cache_names as $cache_name_old_userdata) {
+//            
+//            $response = Settings::getSpellingBeeCache($cache_name_old_userdata);
+//
+//            foreach ($response as $key => $value) {
+//                $cache_name = $cache_name_old_userdata . '-' . $key;
+//
+//                $data = $value;
+//
+//                $response = Settings::setSpellingBeeCache($cache_name, $data);
+//            }
+//            echo $cache_name_old_userdata . '-done<br/>';
+//        
+//        }
+//        
+        $cache_name_old_userdata = 'YII-SPELLINGBEE-USERDATA-3920';
+        $response = Settings::getSpellingBeeCache($cache_name_old_userdata);
+        echo '<pre>';
+        print_r($response);
         exit;
         
     }

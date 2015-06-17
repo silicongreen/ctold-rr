@@ -240,16 +240,16 @@ class Service
             $check = Settings::getSpellingBeeCache($cache_name_checkpoint);
             $score_count = 0;
             
-            if(isset($check) && isset($check[$data]))
+            if(isset($check) && isset($check))
             {
-                if(isset($check[$data]['user_checkpoint_score']))
+                if(isset($check['user_checkpoint_score']))
                 {
-                    $score_count = $check[$data]['user_checkpoint_score'];
+                    $score_count = $check['user_checkpoint_score'];
                 }
 
-                if(isset($check[$data]['total_time']))
+                if(isset($check['total_time']))
                 {
-                    $total_time = $total_time+$check[$data]['total_time'];
+                    $total_time = $total_time+$check['total_time'];
                 } 
             }
            
@@ -261,7 +261,7 @@ class Service
                 {
                     if($value!="")
                     {
-                        $response[$data]['words'][] = $value;
+                        $response['words'][] = $value;
                         $score_count++;
                     }
 
@@ -274,11 +274,11 @@ class Service
             
            
             
-            $check[$data]['total_time'] = $total_time;
-            $check[$data]['remaining_word'] = $remaining_word;
-            $check[$data]['current_level'] = $current_level;
-            $check[$data]['user_checkpoint_score'] = $score_count;
-            $check[$data]['user_checkpoint'] = $checkpoint;
+            $check['total_time'] = $total_time;
+            $check['remaining_word'] = $remaining_word;
+            $check['current_level'] = $current_level;
+            $check['user_checkpoint_score'] = $score_count;
+            $check['user_checkpoint'] = $checkpoint;
             Settings::setSpellingBeeCache($cache_name_checkpoint, $check);
             
             Settings::clearCurrentWord($data);

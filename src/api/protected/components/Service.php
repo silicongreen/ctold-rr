@@ -76,7 +76,13 @@ class Service
       
         
         $arUserMode['arg'] = $data;
-        if ($data!==FALSE)
+        
+        if ($data == FALSE)
+        {
+            $data = 3920;
+        }
+        
+        if ($data !== FALSE)
         {
             $iUserId = $data;
             $cache_name_agreement = "YII-SPELLINGBEE-USERAGREMENT";

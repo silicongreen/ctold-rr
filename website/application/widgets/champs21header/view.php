@@ -472,10 +472,10 @@ height: 46px;
 
                                 <?php if( ($user_data['type'] == 2) || ($user_data['type'] == 3) ) { ?>
                                 <fieldset>
-                                    <div class="selectMedium">
+                                    <div class="selectMedium" style="margin-bottom:20px;">
                                         <?php
                                         $ar_input_data =array(
-                                            'class' => 'text_field',
+                                            'class' => 'text_field_school',
                                             'id' => 'search-box1',
                                             'placeholder' => 'School Name',
                                             'maxlength' => '255',
@@ -743,8 +743,7 @@ height: 46px;
                                         <li>
                                             <div class="frmSearch">
                                                 
-                                                <input name="first_name" value="<?php echo $model->first_name?>" type="text" id="first_name" class="name_text school_name" placeholder="First Name" required="required" />
-                                                <div id="suggesstion-box1"></div>
+                                                <input name="first_name" value="<?php echo $model->first_name?>" type="text" id="first_name" class="name_text school_name" placeholder="First Name" required="required" />                                               
                                             </div>
 
                                         </li>
@@ -757,7 +756,7 @@ height: 46px;
                                         <li>
                                             
                                             <div class="frmSearch">
-                                                <input name="school_name" value="<?php echo $model->school_name?>" type="text" id="school_name" class="name_text school_name"  placeholder="School Name" required="required" />
+                                                <input name="school_name" value="<?php echo $model->school_name?>" type="text" id="search-box1" class="name_text school_name"  placeholder="School Name" required="required" />
                                                     <div id="suggesstion-box1"></div>
                                             </div>
 
@@ -1157,7 +1156,15 @@ if($('.header-logo-div').is(':visible')) {
   border: #ccc 1px solid;
   font-size:12px;
 }
-    
+.text_field_school {
+  background-color: #adb2b5;
+  border-color: #8f979a !important;
+  border-radius: 0;
+  color: #000000 !important;
+  font-family: tahoma,georgia,arial,serif;
+  height: 51px !important;  
+  width: 100%;
+}    
 .image-logo
 {
     width:210px;

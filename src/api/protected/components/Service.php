@@ -228,8 +228,6 @@ class Service
         
         if($valid_user)
         {
-            
-            $word_id_array = explode(",", $words_id);
             $cache_name_userword = "YII-SPELLINGBEE-USERWORD-" . $data;
             $response = Settings::getSpellingBeeCache($cache_name_userword);
             
@@ -260,24 +258,23 @@ class Service
                     $total_time = $total_time+$check['total_time'];
                 } 
             }
-           
-           
             
-            if(count($word_id_array)>0)
+            $word_id_array = explode(",", $words_id);
+            if(count($word_id_array) > 0)
             {
                 foreach($word_id_array as $value)
                 {
                     if($value!="" && $value != '0')
                     {
-//                        $response_played['words'][] = $value;
-//                        $response['words'][] = $value;
+                        if(!in_array($value, $cache_name_userword_played['words'])) {
+                            $response_played['words'][] = $value;
+                            $response['words'][] = $value;
+                        }
                         $score_count++;
                     }
-
                 }
             }
             
-
             
             Settings::setSpellingBeeCache($cache_name_userword, $response);
             Settings::setSpellingBeeCache($cache_name_userword_played, $response_played);

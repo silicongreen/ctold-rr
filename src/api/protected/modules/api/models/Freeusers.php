@@ -272,7 +272,7 @@ class Freeusers extends CActiveRecord {
     }
     public function getPaidUserInfo()
     {
-        if(Yii::app()->user->id)
+        if(!Yii::app()->user->isGuest && Yii::app()->user->id)
         {
             $school_obj  = new Schools();
             $school_details = $school_obj->findByPk(Yii::app()->user->schoolId);

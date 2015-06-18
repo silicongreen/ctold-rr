@@ -3718,11 +3718,11 @@ class FreeuserController extends Controller
          foreach ($resulsts as $rows) {
             $user_words = 'YII-SPELLINGBEE-CURRENTUSERWORD-' . $rows['userid'];
             $response_words = Settings::getSpellingBeeCache($user_words);
-            echo '<pre>';
-            print_r($response_words);
+//            echo '<pre>';
+//            print_r($response_words);
             
             $num_words = 0;
-            foreach ($response_words as $words) {
+            if(!empty($response_words)) foreach ($response_words as $words) {
                 $num_words += count($words['words']);
             }
             

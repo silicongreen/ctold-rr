@@ -3651,7 +3651,14 @@ class FreeuserController extends Controller
     }
     
     public function actionRegenspellcache() {
-
+        
+        $cache_name_old_userdata = 'YII-SPELLINGBEE-USERWORD';
+        $response = Settings::getSpellingBeeCache($cache_name_old_userdata);
+        echo '<pre>';
+        print_r($response);
+        
+        exit;
+        
         $responsesss = array(
             3946,3879,3799,4004,3741,3698,3685
         );

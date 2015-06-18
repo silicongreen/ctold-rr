@@ -3716,7 +3716,7 @@ class FreeuserController extends Controller
             $high_score = (int)$rows['score'];
             $diff_score = $num_wrods - $high_score;
             
-            echo $num_wrods . '=' . $high_score . '=' . $diff_score . '<br />';
+            echo $rows['userid'] . '=' . $num_wrods . '=' . $high_score . '=' . $diff_score . '<br />';
             $i++;
             
             if ($diff_score < 0) {

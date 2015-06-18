@@ -3718,7 +3718,8 @@ class FreeuserController extends Controller
          foreach ($resulsts as $rows) {
             $user_words = 'YII-SPELLINGBEE-CURRENTUSERWORD-' . $rows['userid'];
             $response_words = Settings::getSpellingBeeCache($user_words);
-            
+            print_r($response_words);
+            exit;
             $num_wrods = (int)count($response_words['words']);
             $high_score = (int)$rows['score'];
             $diff_score = $num_wrods - $high_score;

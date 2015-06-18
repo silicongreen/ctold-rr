@@ -3651,27 +3651,53 @@ class FreeuserController extends Controller
     }
     
     public function actionRegenspellcache() {
-        
-        $ar_cache_names = array(
-            'YII-SPELLINGBEE-CURRENTUSERWORD'
+
+        $responsesss = array(
+            3946,3879,3799,4004,3741,3698,3685
         );
         
-        foreach ($ar_cache_names as $cache_name_old_userdata) {
-            
+        foreach ($responsesss as $userdata) {
+            $cache_name_old_userdata = 'YII-SPELLINGBEE-USERDATA-' . $userdata;
             $response = Settings::getSpellingBeeCache($cache_name_old_userdata);
-
-            foreach ($response as $key => $value) {
-                $cache_name = $cache_name_old_userdata . '-' . $key;
-
-                $data = $value;
-
-                $response = Settings::setSpellingBeeCache($cache_name, $data);
-            }
-            echo $cache_name_old_userdata . '-done<br/>';
-        
+            echo '<pre>';
+            print_r($response);
         }
+        exit;
         
-        
+//        $response = array(
+//            'total_time' => 117,
+//            'remaining_word' => 30,
+//            'current_level' => 1,
+//            'user_checkpoint_score' => 260,
+//            'user_checkpoint' => 13,
+//            'current_score' => 260,
+//            'current_time' => 117,
+//            'prev_id' => 26,
+//            'play_total_time' => 3979
+//        );        
+//        $ar_cache_names = array(
+//            'YII-SPELLINGBEE-CURRENTUSERWORD'
+//        );
+//        
+//        foreach ($ar_cache_names as $cache_name_old_userdata) {
+//            
+//            $response = Settings::getSpellingBeeCache($cache_name_old_userdata);
+//
+//            foreach ($response as $key => $value) {
+//                $cache_name = $cache_name_old_userdata . '-' . $key;
+//
+//                $data = $value;
+//
+//                $response = Settings::setSpellingBeeCache($cache_name, $data);
+//            }
+//            echo $cache_name_old_userdata . '-done<br/>';
+//        
+//        }
+//        
+//        $cache_name_old_userdata = 'YII-SPELLINGBEE-USERDATA-3741';
+//        $response = Settings::setSpellingBeeCache($cache_name_old_userdata, $response);
+//        echo '<pre>';
+//        print_r($response);
         exit;
         
     }

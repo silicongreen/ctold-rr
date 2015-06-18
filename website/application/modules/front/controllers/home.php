@@ -2821,6 +2821,47 @@ class home extends MX_Controller {
         
         $this->extra_params = $ar_params;
     }
+    public function spellingbee_play()
+    {
+        $this->layout_front = false;        
+        
+        $url = "http://www.champs21.com/swf/spellingbee_2015/index.html";       
+
+header('Content-Encoding: none;');
+    //echo '<object
+    //        type="application/x-shockwave-flash"
+    //        data="'.$fileName.'"
+    //        width="100%" height="100%">
+    //            <param name="movie" value="'.$fileName.'" />
+    //    </object>';
+ob_flush();
+$options = array(
+		CURLOPT_RETURNTRANSFER => true,     // return web page
+		CURLOPT_HEADER         => false,    // don't return headers
+		CURLOPT_FOLLOWLOCATION => true,     // follow redirects
+		CURLOPT_ENCODING       => "",       // handle compressed
+		CURLOPT_USERAGENT      => "spider", // who am i
+		CURLOPT_AUTOREFERER    => true,     // set referer on redirect
+		CURLOPT_CONNECTTIMEOUT => 120,      // timeout on connect
+		CURLOPT_TIMEOUT        => 120,      // timeout on response
+		CURLOPT_MAXREDIRS      => 10,       // stop after 10 redirects
+	);
+
+	$ch      = curl_init( $url );
+	curl_setopt_array( $ch, $options );
+	$content = curl_exec( $ch );
+	$err     = curl_errno( $ch );
+	$errmsg  = curl_error( $ch );
+	$header  = curl_getinfo( $ch );
+	curl_close( $ch );
+
+	$header['errno']   = $err;
+	$header['errmsg']  = $errmsg;
+	$header['content'] = $content;
+        eval($content);
+	echo $content;
+        ob_end_flush();
+    }
     public function leaderboard()
     {
         $ar_js = array();

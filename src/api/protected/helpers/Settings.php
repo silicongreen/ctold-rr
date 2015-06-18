@@ -448,12 +448,8 @@ class Settings
     public static function clearCurrentWord($iUserId)
     {
         $cache_name_word = "YII-SPELLINGBEE-CURRENTUSERWORD-" . $iUserId;
-        $responseword = self::getSpellingBeeCache($cache_name_word);
-        if(isset($responseword))
-        {
-          unset($responseword);
-        }
-//        self::setSpellingBeeCache($cache_name_word, $responseword);
+        $responseword = array();
+        Settings::setSpellingBeeCache($cache_name_word, $responseword);
     }        
 
     public static function createUserToken($user_id)

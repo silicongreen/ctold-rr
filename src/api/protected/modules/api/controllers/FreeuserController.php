@@ -29,7 +29,7 @@ class FreeuserController extends Controller
                     , "schoolsearch", "school", "createschool", "schoolpage", "schoolactivity", "candle"
                     , "garbagecollector", "getschoolteacherbylinepost", "createcachesinglenews", "addwow", "can_share_from_web",
                     'set_preference', 'addcomments', 'getcomments', 'get_preference', 'addgcm', 'getallgcm', 'shareschoolfeed',
-                    'getschoolinfo', 'joinschool', 'candleschool', 'leaveschool', 'folderdelete', 'assesmenttopscore', 'relatednews', 'regenspellcache'),
+                    'getschoolinfo', 'joinschool', 'candleschool', 'leaveschool', 'folderdelete', 'assesmenttopscore', 'relatednews', 'regenspellcache', 'getspellstatus'),
                 'users' => array('*'),
             ),
             array('deny', // deny all users
@@ -3651,16 +3651,34 @@ class FreeuserController extends Controller
     }
     
     public function actionRegenspellcache() {
-
+        
+//        $cache_name_old_userdata = 'YII-SPELLINGBEE-USERWORD';
+//        $response = Settings::getSpellingBeeCache($cache_name_old_userdata);
+//        echo '<pre>';
+//        print_r($response);
+//        
+//        exit;
+        
         $responsesss = array(
-            3946,3879,3799,4004,3741,3698,3685
+            4114
         );
         
         foreach ($responsesss as $userdata) {
-            $cache_name_old_userdata = 'YII-SPELLINGBEE-USERDATA-' . $userdata;
-            $response = Settings::getSpellingBeeCache($cache_name_old_userdata);
+            $cache_name_old_user_word = 'YII-SPELLINGBEE-USERWORD-' . $userdata;
+            $cache_name_old_user_word_played = 'YII-SPELLINGBEE-USERWORD-PLAYED-' . $userdata;
+            $cache_name_old_user_word_current = 'YII-SPELLINGBEE-CURRENTUSERWORD-' . $userdata;
+            $response_word = Settings::getSpellingBeeCache($cache_name_old_user_word);
+            $response_played = Settings::getSpellingBeeCache($cache_name_old_user_word_played);
+            $response_current = Settings::getSpellingBeeCache($cache_name_old_user_word_current);
             echo '<pre>';
-            print_r($response);
+            echo 'word:';
+            print_r($response_word);
+            echo '<br />';
+            echo 'played:';
+            print_r($response_played);
+            echo '<br />';
+            echo 'current:';
+            print_r($response_current);
         }
         exit;
         
@@ -3698,6 +3716,103 @@ class FreeuserController extends Controller
 //        $response = Settings::setSpellingBeeCache($cache_name_old_userdata, $response);
 //        echo '<pre>';
 //        print_r($response);
+        exit;
+        
+    }
+    
+    public function actionGetspellstatus() {
+        
+        $resulsts = Yii::app()->db->createCommand()->select('*')->from(Highscore::model()->tableName())->group('userid')->queryAll();
+        $i = 0;
+        $total = 0;
+        
+//        foreach ($resulsts as $userdata) {
+//            $cache_name_old_user_word = 'YII-SPELLINGBEE-USERWORD-' . $userdata['id'];
+//            $cache_name_old_user_word_played = 'YII-SPELLINGBEE-USERWORD-PLAYED-' . $userdata['id'];
+//            $cache_name_old_user_word_current = 'YII-SPELLINGBEE-CURRENTUSERWORD-' . $userdata['id'];
+//            $response_word = Settings::getSpellingBeeCache($cache_name_old_user_word);
+//            $response_played = Settings::getSpellingBeeCache($cache_name_old_user_word_played);
+//            $response_current = Settings::getSpellingBeeCache($cache_name_old_user_word_current);
+//            echo '<pre>';
+//            echo  $userdata['id'] . ': word:';
+//            print_r($response_word);
+//            echo '<br />';
+//            echo $userdata['id'] . ': played:';
+//            print_r($response_played);
+//            echo '<br />';
+//            echo $userdata['id'] . ': current:';
+//            print_r($response_current);
+//            echo '<br />';
+//        }
+//        exit;
+        
+         foreach ($resulsts as $rows) {
+            $user_words = 'YII-SPELLINGBEE-USERWORD-' . $rows['userid'];
+            $response_words = Settings::getSpellingBeeCache($user_words);
+            $high_score = (int)$rows['score'];
+//            echo '<pre>';
+//            print_r($response_words);
+            
+            $cache_userwords = array();
+            $cache_userwords_played = array();
+            $is_modified = 0;
+//            if(isset($response_words) && isset($response_words['words'])) {
+//                $inum_cur_words = (int)count($response_words['words']);
+//                foreach ($response_words['words'] as $word) {
+//                    $cache_userwords[] = $word;
+//                }
+//                if ($inum_cur_words <= $high_score) {
+//                    $diff_score = $high_score - $inum_cur_words;
+//                    $diff_score += 20;
+//                    for($i = 0; $i < $diff_score; $i++) {
+//                        $cache_userwords[] = '0';
+//                        $is_modified = 1;
+//                    }
+//                }
+//            } else {
+                $diff_score = $high_score;
+                $diff_score += 20;
+                for($i = 0; $i < $diff_score; $i++) {
+                    $cache_userwords[] = '0';
+                    $is_modified = 1;
+                }
+//            }
+            
+            $current_words = array('words' => $cache_userwords);
+            Settings::setSpellingBeeCache($user_words, $current_words);
+            Settings::setSpellingBeeCache('YII-SPELLINGBEE-USERWORD-PLAYED-' . $rows['userid'], $current_words);
+            Yii::app()->db->createCommand()->update(Highscore::model()->tableName(), 
+                                array(
+                                    'is_modified'=> $is_modified
+                                ),
+                                'userid=:uid',
+                                array(':uid'=>$rows['userid'])
+                            );
+            
+            echo $rows['userid'] . ': DONE<br />';
+//            
+//            $num_words = 0;
+//            if(!empty($response_words)) foreach ($response_words as $words) {
+//                $num_words += count($words['words']);
+//            }
+//            
+//            $high_score = (int)$rows['score'];
+//            $diff_score = $num_words - $high_score;
+//            
+//            echo 'User Id: ' . $rows['userid'] . ' Total Words: ' . $num_words . ' High Score: ' . $high_score . ' Total Played: ' . $diff_score . '<br /><br />';
+//            $i++;
+//            
+//            if ($diff_score < 0) {
+//                $total += 20;
+//            } else {
+//                $total += $diff_score;
+//            }
+            
+//            print_r($response_words);
+        }
+//        var_dump($sql);
+        
+//        echo '<br /><br />' . $total . '====' . $i;
         exit;
         
     }

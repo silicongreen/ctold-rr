@@ -228,19 +228,26 @@ class Service
         
         if($valid_user)
         {
+            $cache_name_userword = "YII-SPELLINGBEE-USERWORD-" . $data;
+            $response = Settings::getSpellingBeeCache($cache_name_userword);
             
-            $word_id_array = explode(",", $words_id);
-            $cache_name_old_userdata = "YII-SPELLINGBEE-USERWORD";
-            $cache_name_userdata = "YII-SPELLINGBEE-USERWORD-" . $data;
-            $response = Settings::getSpellingBeeCache($cache_name_userdata);
+            $cache_name_userword_played = "YII-SPELLINGBEE-USERWORD-PLAYED-" . $data;
+            $response_played = Settings::getSpellingBeeCache($cache_name_userword_played);
             
-            $cache_name_old_checkpoint = "YII-SPELLINGBEE-USERDATA";
-            $cache_name_checkpoint = "YII-SPELLINGBEE-USERDATA-" . $data;
-            $check = Settings::getSpellingBeeCache($cache_name_checkpoint);
+            $cache_name_userdata = "YII-SPELLINGBEE-USERDATA-" . $data;
+            $check = Settings::getSpellingBeeCache($cache_name_userdata);
             $score_count = 0;
             
             if(isset($check))
             {
+                if(isset($check['current_score'])) {
+                    $current_score = (int)$check['current_score'];
+                    $rem = (int)$current_score % (int)Settings::$checkPointSize;
+                    $check_point_score = $current_score - $rem;
+                    $check['user_checkpoint_score'] = $check_point_score;
+                } else {
+                    $check['user_checkpoint_score'] = 0;
+                }
                 if(isset($check['user_checkpoint_score']))
                 {
                     $score_count = $check['user_checkpoint_score'];
@@ -251,25 +258,26 @@ class Service
                     $total_time = $total_time+$check['total_time'];
                 } 
             }
-           
-           
             
-            if(count($word_id_array)>0)
+            $word_id_array = explode(",", $words_id);
+            if(count($word_id_array) > 0)
             {
                 foreach($word_id_array as $value)
                 {
-                    if($value!="")
+                    if($value!="" && $value != '0')
                     {
-                        $response['words'][] = $value;
+                        if(!in_array($value, $response_played['words'])) {
+                            $response_played['words'][] = $value;
+                            $response['words'][] = $value;
+                        }
                         $score_count++;
                     }
-
                 }
             }
             
-
             
-            Settings::setSpellingBeeCache($cache_name_userdata, $response);
+            Settings::setSpellingBeeCache($cache_name_userword, $response);
+            Settings::setSpellingBeeCache($cache_name_userword_played, $response_played);
             
             $highscore = new Highscore();
             $user_score_data = $highscore->getUserScore($data);
@@ -313,7 +321,7 @@ class Service
             $check['current_level'] = $current_level;
             $check['user_checkpoint_score'] = $score_count;
             $check['user_checkpoint'] = $checkpoint;
-            Settings::setSpellingBeeCache($cache_name_checkpoint, $check);
+            Settings::setSpellingBeeCache($cache_name_userdata, $check);
             
             Settings::clearCurrentWord($data);
             
@@ -347,12 +355,11 @@ class Service
             $iUserId = $data;
             $iLevelId = $objParams->level;
             $user_word_played = array();
-            $cache_name_old_userword = "YII-SPELLINGBEE-USERWORD";
             $cache_name_userword = "YII-SPELLINGBEE-USERWORD-" . $iUserId;
             $response = Settings::getSpellingBeeCache($cache_name_userword);
            
     
-            if (isset($response) && isset($response) && isset($response['words']))
+            if (isset($response) && isset($response['words']))
             {
                 $user_word_played = $response['words'];
             }
@@ -436,7 +443,65 @@ class Service
            
             if ($user_data)
             {
+                $user_word_played = array();
+                $iScore = (int) $objParams->score;
+                
+                $cache_name_userdata = "YII-SPELLINGBEE-USERDATA-" . $iUserId;
+                $response_check = Settings::getSpellingBeeCache($cache_name_userdata);
+
+                if(isset($response_check) && isset($response_check))
+                {
+                    if(isset($response_check['current_score'])) {
+                        $current_score = (int)$response_check['current_score'];
+                        $rem = (int)$current_score % (int)Settings::$checkPointSize;
+                        $check_point_score = $current_score - $rem;
+                        
+                    } else {
+                        $check_point_score = 0;
+                    }
+
+                }
+                $iScore = $iScore - $check_point_score;
+                $cache_name_word = "YII-SPELLINGBEE-CURRENTUSERWORD-" . $iUserId;
+                $responseword = Settings::getSpellingBeeCache($cache_name_word);
+                if(isset($responseword) && isset($responseword['words'])) {
+                    $i = 0;
+                    foreach ($responseword['words'] as $words) {
+                        $user_word_played[] = $words;
+                        $i++;
+                        if($i > $iScore) {
+                            break;
+                        }
+                    }
+                }
                 Settings::clearCurrentWord($iUserId);
+                
+                $cache_name_userword = "YII-SPELLINGBEE-USERWORD-" . $iUserId;
+                $response = Settings::getSpellingBeeCache($cache_name_userword);
+                
+                $current_words = array('words' => $user_word_played);
+                
+                if(isset($response) && isset($response['words'])) {
+                    foreach ($user_word_played as $word) {
+                        $response['words'][] = $word;
+                    }
+                } else {
+                    $response = $current_words;
+                }
+                Settings::setSpellingBeeCache($cache_name_userword, $response);
+                
+                $cache_name_userword_played = "YII-SPELLINGBEE-USERWORD-PLAYED-" . $iUserId;
+                $response = Settings::getSpellingBeeCache($cache_name_userword_played);
+                
+                if(isset($response) && isset($response['words'])) {
+                    foreach ($user_word_played as $word) {
+                        $response['words'][] = $word;
+                    }
+                } else {
+                    $response = $current_words;
+                }
+                Settings::setSpellingBeeCache($cache_name_userword_played, $response);
+                
                 $cache_name_old_userdata = "YII-SPELLINGBEE-USERDATA";
                 $cache_name_userdata = "YII-SPELLINGBEE-USERDATA-" . $iUserId;
                 $response = Settings::getSpellingBeeCache($cache_name_userdata);
@@ -503,9 +568,13 @@ class Service
                     $score_for_rank = $objParams->score;
                     $time_for_rank = $objParams->total_time;
 
-                    if ($prev_id)
-                    {
-                        $highscore = $highscore->findByPk($prev_id);
+//                    if ($prev_id)
+//                    {
+//                        $highscore = $highscore->findByAttributes(array('userid' => $iUserId));
+                        $highscore = $highscore->getUserScore($iUserId);
+//                    }
+                    if(empty($highscore)) {
+                        $highscore = new Highscore();
                     }
                     $highscore->userid = $iUserId;
                     $highscore->test_time = $objParams->total_time;

@@ -12,7 +12,6 @@
  */
 class HomepageData extends CActiveRecord
 {
-
     /**
      * @return string the associated database table name
      */
@@ -204,7 +203,8 @@ class HomepageData extends CActiveRecord
         {
              $target_date = strtotime($date_value);
              $date_value = date("Y-m-d", strtotime(Settings::$news_in_index['days_to_retrieve_news'], $target_date));
-             $criteria->addCondition("t.date >= '" . $date_value . "'"); 
+//             $criteria->addCondition("t.date >= '" . $date_value . "'");
+             $criteria->addBetweenCondition('t.date', $date_value, date("Y-m-d"));
         }
         else
         {

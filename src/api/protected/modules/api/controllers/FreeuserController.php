@@ -3726,6 +3726,26 @@ class FreeuserController extends Controller
         $i = 0;
         $total = 0;
         
+//        foreach ($resulsts as $userdata) {
+//            $cache_name_old_user_word = 'YII-SPELLINGBEE-USERWORD-' . $userdata['id'];
+//            $cache_name_old_user_word_played = 'YII-SPELLINGBEE-USERWORD-PLAYED-' . $userdata['id'];
+//            $cache_name_old_user_word_current = 'YII-SPELLINGBEE-CURRENTUSERWORD-' . $userdata['id'];
+//            $response_word = Settings::getSpellingBeeCache($cache_name_old_user_word);
+//            $response_played = Settings::getSpellingBeeCache($cache_name_old_user_word_played);
+//            $response_current = Settings::getSpellingBeeCache($cache_name_old_user_word_current);
+//            echo '<pre>';
+//            echo  $userdata['id'] . ': word:';
+//            print_r($response_word);
+//            echo '<br />';
+//            echo $userdata['id'] . ': played:';
+//            print_r($response_played);
+//            echo '<br />';
+//            echo $userdata['id'] . ': current:';
+//            print_r($response_current);
+//            echo '<br />';
+//        }
+//        exit;
+        
          foreach ($resulsts as $rows) {
             $user_words = 'YII-SPELLINGBEE-USERWORD-' . $rows['userid'];
             $response_words = Settings::getSpellingBeeCache($user_words);
@@ -3736,27 +3756,27 @@ class FreeuserController extends Controller
             $cache_userwords = array();
             $cache_userwords_played = array();
             $is_modified = 0;
-            if(isset($response_words) && isset($response_words['words'])) {
-                $inum_cur_words = (int)count($response_words['words']);
-                foreach ($response_words['words'] as $word) {
-                    $cache_userwords[] = $word;
-                }
-                if ($inum_cur_words <= $high_score) {
-                    $diff_score = $high_score - $inum_cur_words;
-                    $diff_score += 20;
-                    for($i = 0; $i < $diff_score; $i++) {
-                        $cache_userwords[] = '0';
-                        $is_modified = 1;
-                    }
-                }
-            } else {
+//            if(isset($response_words) && isset($response_words['words'])) {
+//                $inum_cur_words = (int)count($response_words['words']);
+//                foreach ($response_words['words'] as $word) {
+//                    $cache_userwords[] = $word;
+//                }
+//                if ($inum_cur_words <= $high_score) {
+//                    $diff_score = $high_score - $inum_cur_words;
+//                    $diff_score += 20;
+//                    for($i = 0; $i < $diff_score; $i++) {
+//                        $cache_userwords[] = '0';
+//                        $is_modified = 1;
+//                    }
+//                }
+//            } else {
                 $diff_score = $high_score;
                 $diff_score += 20;
                 for($i = 0; $i < $diff_score; $i++) {
                     $cache_userwords[] = '0';
                     $is_modified = 1;
                 }
-            }
+//            }
             
             $current_words = array('words' => $cache_userwords);
             Settings::setSpellingBeeCache($user_words, $current_words);
@@ -3769,7 +3789,7 @@ class FreeuserController extends Controller
                                 array(':uid'=>$rows['userid'])
                             );
             
-//            echo $rows['userid'] . ': DONE<br />';
+            echo $rows['userid'] . ': DONE<br />';
 //            
 //            $num_words = 0;
 //            if(!empty($response_words)) foreach ($response_words as $words) {

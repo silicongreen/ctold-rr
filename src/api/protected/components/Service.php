@@ -441,6 +441,23 @@ class Service
             {
                 $user_word_played = array();
                 $iScore = (int) $objParams->score;
+                
+                $cache_name_userdata = "YII-SPELLINGBEE-USERDATA-" . $iUserId;
+                $response_check = Settings::getSpellingBeeCache($cache_name_userdata);
+
+                if(isset($response_check) && isset($response_check))
+                {
+                    if(isset($response_check['current_score'])) {
+                        $current_score = (int)$response_check['current_score'];
+                        $rem = (int)$current_score % (int)Settings::$checkPointSize;
+                        $check_point_score = $current_score - $rem;
+                        
+                    } else {
+                        $check_point_score = 0;
+                    }
+
+                }
+                $iScore = $iScore - $check_point_score;
                 $cache_name_word = "YII-SPELLINGBEE-CURRENTUSERWORD-" . $iUserId;
                 $responseword = Settings::getSpellingBeeCache($cache_name_word);
                 if(isset($responseword) && isset($responseword['words'])) {

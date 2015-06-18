@@ -274,7 +274,7 @@ class Freeusers extends CActiveRecord {
     {
         if(!Yii::app()->user->isGuest && Yii::app()->user->id)
         {
-            if ( Yii::app()->user->schoolId )
+            if ( isset(Yii::app()->user->schoolId) )
             {
                 $school_obj  = new Schools();
                 $school_details = $school_obj->findByPk(Yii::app()->user->schoolId);

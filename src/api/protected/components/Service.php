@@ -347,12 +347,11 @@ class Service
             $iUserId = $data;
             $iLevelId = $objParams->level;
             $user_word_played = array();
-            $cache_name_old_userword = "YII-SPELLINGBEE-USERWORD";
             $cache_name_userword = "YII-SPELLINGBEE-USERWORD-" . $iUserId;
             $response = Settings::getSpellingBeeCache($cache_name_userword);
            
     
-            if (isset($response) && isset($response) && isset($response['words']))
+            if (isset($response) && isset($response['words']))
             {
                 $user_word_played = $response['words'];
             }

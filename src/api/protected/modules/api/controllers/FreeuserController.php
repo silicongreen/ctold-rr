@@ -3716,7 +3716,7 @@ class FreeuserController extends Controller
         $total = 0;
         
          foreach ($resulsts as $rows) {
-            $user_words = 'YII-SPELLINGBEE-USERWORD-' . $rows['userid'];
+            $user_words = 'YII-SPELLINGBEE-CURRENTUSERWORD-' . $rows['userid'];
             $response_words = Settings::getSpellingBeeCache($user_words);
             
             $num_wrods = (int)count($response_words['words']);

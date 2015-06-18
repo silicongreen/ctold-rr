@@ -3727,7 +3727,7 @@ class FreeuserController extends Controller
             }
             
             $high_score = (int)$rows['score'];
-            $diff_score = $num_wrods - $high_score;
+            $diff_score = $num_words - $high_score;
             
             echo 'User Id: ' . $rows['userid'] . ' Total Words: ' . $num_words . ' High Score: ' . $high_score . ' Total Played: ' . $diff_score . '<br /><br />';
             $i++;

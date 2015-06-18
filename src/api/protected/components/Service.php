@@ -266,7 +266,7 @@ class Service
                 {
                     if($value!="" && $value != '0')
                     {
-                        if(!in_array($value, $cache_name_userword_played['words'])) {
+                        if(!in_array($value, $response_played['words'])) {
                             $response_played['words'][] = $value;
                             $response['words'][] = $value;
                         }

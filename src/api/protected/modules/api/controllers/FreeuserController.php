@@ -3718,26 +3718,31 @@ class FreeuserController extends Controller
          foreach ($resulsts as $rows) {
             $user_words = 'YII-SPELLINGBEE-CURRENTUSERWORD-' . $rows['userid'];
             $response_words = Settings::getSpellingBeeCache($user_words);
+            echo '<pre>';
             print_r($response_words);
             
-//            $num_wrods = (int)count($response_words['words']);
-//            $high_score = (int)$rows['score'];
-//            $diff_score = $num_wrods - $high_score;
-//            
-//            echo 'User Id: ' . $rows['userid'] . ' Total Words: ' . $num_wrods . ' High Score: ' . $high_score . ' Total Played: ' . $diff_score . '<br /><br />';
-//            $i++;
-//            
-//            if ($diff_score < 0) {
-//                $total += 20;
-//            } else {
-//                $total += $diff_score;
-//            }
+            $num_words = 0;
+            foreach ($response_words as $words) {
+                $num_words += count($words['words']);
+            }
+            
+            $high_score = (int)$rows['score'];
+            $diff_score = $num_wrods - $high_score;
+            
+            echo 'User Id: ' . $rows['userid'] . ' Total Words: ' . $num_words . ' High Score: ' . $high_score . ' Total Played: ' . $diff_score . '<br /><br />';
+            $i++;
+            
+            if ($diff_score < 0) {
+                $total += 20;
+            } else {
+                $total += $diff_score;
+            }
             
 //            print_r($response_words);
         }
 //        var_dump($sql);
         
-//        echo '<br /><br />' . $total . '====' . $i;
+        echo '<br /><br />' . $total . '====' . $i;
         exit;
         
     }

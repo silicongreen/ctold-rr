@@ -98,6 +98,7 @@ class Highscore extends CActiveRecord
         $criteria->select = 't.id,t.play_total_time,t.score,t.test_time';
         $criteria->compare('t.userid', $user_id);
         $criteria->compare('t.is_cancel', 0);
+        $criteria->order = 't.score DESC';
         $data = $this->find($criteria);
         return $data;
         

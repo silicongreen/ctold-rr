@@ -72,19 +72,23 @@ class Spellingbee extends CActiveRecord
             $criteria->compare('t.year', $year);
         }
         
-        if(count($user_word_played)>0)
+//        $cache_name_word = "YII-SPELLINGBEE-CURRENTUSERWORD-" . $iUserId;
+//        $responseword = Settings::getSpellingBeeCache($cache_name_word);
+//        if(isset($responseword) && isset($responseword['words'])) {
+//            foreach ($responseword['words'] as $words) {
+//                $user_word_played[] = $words;
+//            }
+//        }
+        if(count($user_word_played) > 0)
         {
             $criteria->addNotInCondition('t.id', $user_word_played);
         }
-        $cache_name_word = "YII-SPELLINGBEE-CURRENTUSERWORD-" . $iUserId;
-        $responseword = Settings::getSpellingBeeCache($cache_name_word);
-        
-        if ($year == 0) {
-            if(isset($responseword) && isset($responseword[$iLevel]['words']))
-            {
-                 $criteria->addNotInCondition('t.id', $responseword[$iLevel]['words']);
-            }
-        }
+//        if ($year == 0) {
+//            if(isset($responseword) && isset($responseword['words']))
+//            {
+//                 $criteria->addNotInCondition('t.id', $responseword['words']);
+//            }
+//        }
         
         $criteria->order = 't.year DESC, RAND()';
         
@@ -113,19 +117,12 @@ class Spellingbee extends CActiveRecord
                 
                 
                 $cache_name_word = "YII-SPELLINGBEE-USERWORD-" . $iUserId;
-                $responseword = Settings::getSpellingBeeCache($cache_name_word);
-                if(isset($responseword))
-                {
-                    unset($responseword);
-                }
+                $responseword = array();
                 Settings::setSpellingBeeCache($cache_name_word, $responseword);
-                
                 Settings::clearCurrentWord($iUserId);
-                
                 
                 $data = $this->getWordsByLevel( $iLevel, $iMaxWord,array(),$iUserId);
                 return $data;
-                
             }    
             else
             {    
@@ -158,9 +155,9 @@ class Spellingbee extends CActiveRecord
             $responseword = Settings::getSpellingBeeCache($cache_name_word);
             foreach($data as $value)
             {
-                if(!isset($responseword[$iLevel]['words']) || !in_array($value->id, $responseword[$iLevel]['words']))
+                if(!isset($responseword['words']) || !in_array($value->id, $responseword['words']))
                 {
-                    $responseword[$iLevel]['words'][] = $value->id;
+                    $responseword['words'][] = $value->id;
                 }
                 
             }

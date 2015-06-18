@@ -1,6 +1,6 @@
 <?php $arCustomNews = getFormatedContentAll($news, 125); ?>
 
-
+<script type="text/javascript" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/jquery.popupWindow.js'); ?>"></script>
 <li  id="post-<?php echo $news->post_id; ?>" class="post-<?php echo $news->post_id; ?> <?php echo $s_post_class; ?> type-post post-
      content-showed status-publish format-image has-post-thumbnail hentry 
      category-post-format tag-description tag-image tag-people tag-text 
@@ -31,7 +31,7 @@
                         <?php
                             $is_joined_spellbee = get_free_user_session('is_joined_spellbee');
                             if($is_joined_spellbee == 1 || get_free_user_session('type') != 2) {
-                        ?>
+                        ?>  <a href="http://www.champs21.com/swf/spellingbee_2015/index.html" title="Spelling Bee | Season 4" class="example2demo play_image" style="border:0px;" name="Spelling Bee">
                             <a name="windowX" title="Spelling Bee | Season 4" id="play_spellbee_4" class="play_image" style="border:0px;" href="javascript:void(0);">
                                 <img id="play_image_1" class="no_toolbar" src="/styles/layouts/tdsfront/spelling_bee/2015/images/play.png" />
                                 <img id="play_image_2" class="no_toolbar" src="/styles/layouts/tdsfront/spelling_bee/2015/images/play-hover.png" style="display:none;" />
@@ -145,10 +145,18 @@
     </div> 
 
 </li>
+<script type="text/javascript"> 
+$('.example2demo').popupWindow({ 
+centerBrowser:1 ,
+height:600,
+width:800,
+resizable:1
+}); 
+</script>
 <style>
     .height_value a {
         color: #333333;
-        font-size: 16px;
+        font-size: 18px;
     }
     @media (min-width: 300px)
     {
@@ -701,8 +709,8 @@
     {
         .height_value
         {
-            font-size: 14px; 
-            line-height: 15px;
+            font-size: 15px; 
+            line-height: 16px;
         }
         .date-string
         {
@@ -847,8 +855,8 @@
     {
         .height_value
         {
-            font-size: 12px; 
-            line-height: 15px;
+            font-size: 16px; 
+            line-height: 18px;
         }
         .date-string
         {

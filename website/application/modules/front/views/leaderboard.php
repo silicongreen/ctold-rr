@@ -1,5 +1,6 @@
 <script type="text/javascript" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/jquery.mCustomScrollbar.concat.min.js'); ?>"></script>
 <link rel="stylesheet" href="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/jquery.mCustomScrollbar.css'); ?>">
+<script type="text/javascript" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/jquery.popupWindow.js'); ?>"></script>
 <div class="container" id="tabContainer" style="width: 77%; min-height: 250px; margin-bottom: 250px;">
     <div style="float:left;margin-left:20px;width: 96%;">
         <a href="<?php echo base_url('spellingbee'); ?>">
@@ -85,8 +86,8 @@
                         <?php $is_joined_spellbee = get_free_user_session('is_joined_spellbee');
                         if($is_joined_spellbee == 1 || get_free_user_session('type') != 2){
                         ?>                                        
-                        <a name="windowX" title="Spelling Bee | Season 4" id="play_spellbee_4" style="float: left;width:110px;" href="javascript:void(0);">
-                            <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/play_again.png'); ?>" style="width:100%;" onMouseOver="MouseRollover(this)" onMouseOut="MouseOut(this)">
+                        <a href="http://www.champs21.com/swf/spellingbee_2015/index.html" title="Spelling Bee | Season 4" class="example2demo" style="float: left;width:110px;" name="Spelling Bee">
+                            <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/play.png'); ?>" style="width:100%;" onMouseOver="MouseRollover(this)" onMouseOut="MouseOut(this)">
                         </a>
                         <?php } else { ?>
                             <a  id="join_spellbee_reg" style="float: left;width:110px;" href="javascript:void(0);">
@@ -322,6 +323,14 @@ nav {
         function MouseOut(MyImage) {
         MyImage.src = "styles/layouts/tdsfront/spelling_bee/2015/images/play_again.png";
     }
+</script>
+<script type="text/javascript"> 
+$('.example2demo').popupWindow({ 
+centerBrowser:1 ,
+height:600,
+width:800,
+resizable:1
+}); 
 </script>
 <style>
     table a:link {

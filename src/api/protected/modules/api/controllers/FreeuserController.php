@@ -3716,7 +3716,7 @@ class FreeuserController extends Controller
             $high_score = (int)$rows['score'];
             $diff_score = $num_wrods - $high_score;
             
-            echo $rows['userid'] . '=' . $num_wrods . '=' . $high_score . '=' . $diff_score . '<br />';
+            echo 'User Id: ' . $rows['userid'] . ' Total Words: ' . $num_wrods . ' High Score: ' . $high_score . ' Total Played: ' . $diff_score . '<br /><br />';
             $i++;
             
             if ($diff_score < 0) {
@@ -3729,7 +3729,7 @@ class FreeuserController extends Controller
         }
 //        var_dump($sql);
         
-        echo '<br /><br />' . $total . '=' . $i;
+        echo '<br /><br />' . $total . '====' . $i;
         exit;
         
     }

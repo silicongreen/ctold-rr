@@ -29,7 +29,7 @@ class FreeuserController extends Controller
                     , "schoolsearch", "school", "createschool", "schoolpage", "schoolactivity", "candle"
                     , "garbagecollector", "getschoolteacherbylinepost", "createcachesinglenews", "addwow", "can_share_from_web",
                     'set_preference', 'addcomments', 'getcomments', 'get_preference', 'addgcm', 'getallgcm', 'shareschoolfeed',
-                    'getschoolinfo', 'joinschool', 'candleschool', 'leaveschool', 'folderdelete', 'assesmenttopscore', 'relatednews', 'regenspellcache'),
+                    'getschoolinfo', 'joinschool', 'candleschool', 'leaveschool', 'folderdelete', 'assesmenttopscore', 'relatednews', 'regenspellcache', 'getspellstatus'),
                 'users' => array('*'),
             ),
             array('deny', // deny all users
@@ -3698,6 +3698,38 @@ class FreeuserController extends Controller
 //        $response = Settings::setSpellingBeeCache($cache_name_old_userdata, $response);
 //        echo '<pre>';
 //        print_r($response);
+        exit;
+        
+    }
+    
+    public function actionGetspellstatus() {
+        
+        $resulsts = Yii::app()->db->createCommand()->select('*')->from(Highscore::model()->tableName())->group('userid')->queryAll();
+        $i = 0;
+        $total = 0;
+        
+         foreach ($resulsts as $rows) {
+            $user_words = 'YII-SPELLINGBEE-USERWORD-' . $rows['userid'];
+            $response_words = Settings::getSpellingBeeCache($user_words);
+            
+            $num_wrods = (int)count($response_words['words']);
+            $high_score = (int)$rows['score'];
+            $diff_score = $num_wrods - $high_score;
+            
+            echo $num_wrods . '=' . $high_score . '=' . $diff_score . '<br />';
+            $i++;
+            
+            if ($diff_score < 0) {
+                $total += 20;
+            } else {
+                $total += $diff_score;
+            }
+            
+//            print_r($response_words);
+        }
+//        var_dump($sql);
+        
+        echo '<br /><br />' . $total . '=' . $i;
         exit;
         
     }

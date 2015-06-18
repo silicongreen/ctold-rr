@@ -236,13 +236,20 @@ class Service
             $cache_name_userword_played = "YII-SPELLINGBEE-USERWORD-PLAYED-" . $data;
             $response_played = Settings::getSpellingBeeCache($cache_name_userword_played);
             
-            $cache_name_old_checkpoint = "YII-SPELLINGBEE-USERDATA";
             $cache_name_userdata = "YII-SPELLINGBEE-USERDATA-" . $data;
             $check = Settings::getSpellingBeeCache($cache_name_userdata);
             $score_count = 0;
             
             if(isset($check))
             {
+                if(isset($check['current_score'])) {
+                    $current_score = (int)$check['current_score'];
+                    $rem = (int)$current_score % (int)Settings::$checkPointSize;
+                    $check_point_score = $current_score - $rem;
+                    $check['user_checkpoint_score'] = $check_point_score;
+                } else {
+                    $check['user_checkpoint_score'] = 0;
+                }
                 if(isset($check['user_checkpoint_score']))
                 {
                     $score_count = $check['user_checkpoint_score'];
@@ -260,10 +267,10 @@ class Service
             {
                 foreach($word_id_array as $value)
                 {
-                    if($value!="")
+                    if($value!="" && $value != '0')
                     {
-                        $response_played['words'][] = $value;
-                        $response['words'][] = $value;
+//                        $response_played['words'][] = $value;
+//                        $response['words'][] = $value;
                         $score_count++;
                     }
 

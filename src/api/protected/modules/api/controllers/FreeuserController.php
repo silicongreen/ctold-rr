@@ -3809,11 +3809,11 @@ class FreeuserController extends Controller
 //            }
             
 //            print_r($response_words);
-        }
+//        }
 //        var_dump($sql);
         
 //        echo '<br /><br />' . $total . '====' . $i;
-        exit;
+//        exit;
         
     }
 

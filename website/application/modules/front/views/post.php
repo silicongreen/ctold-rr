@@ -677,7 +677,7 @@
             }
             echo $s_more_content;
         ?>
-        <div id="gif_ad" style="position:fixed;bottom:0px;width:20%;margin: 0px auto;right:-270px; " >
+        <div id="gif_ad" style="position:fixed;bottom:0px;width:20%;margin: 0px auto;right:-270px;display:none; " >
             <span class="gif_ad_close" style="cursor: pointer;padding: 10px;position: absolute;right: 22px;top: 6px;"></span>
             <center><a href="https://play.google.com/store/apps/details?id=com.champs21.schoolapp" target="_blank"> <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/small-ad-Animated-version.gif'); ?>" style="width:100%;"></a></center>
         </div>
@@ -1348,10 +1348,10 @@
         var imgw = 270;
         var rightm = (docWidth - imgw)/2;
         var tright = rightm+imgw;
-        beeLeft();
+        //beeLeft();
         
         function beeLeft() {
-           $("#gif_ad").animate({ right: "+="+docWidth}, 1500, "swing");            
+           //$("#gif_ad").animate({ right: "+="+docWidth}, 1500, "swing");            
         }
      });
     

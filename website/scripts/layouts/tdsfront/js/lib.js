@@ -1234,7 +1234,8 @@ $(document).ready(function () {
             'fitToView': false,
             'autoSize': false,
             'padding': 0,
-            'margin': 0,            
+            'margin': 0,     
+            afterLoad: function(){ setTimeout( function() {$.fancybox.close(); },9000); }
         });
      });
     $(document).on("click", '#play_spellbee_4', function () {

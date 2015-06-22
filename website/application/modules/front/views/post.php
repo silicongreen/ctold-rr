@@ -678,8 +678,8 @@
             echo $s_more_content;
         ?>
         <div id="gif_ad" style="position:fixed;bottom:0px;width:760px;margin: 0px auto;right:-760px; " >
-            <span class="gif_ad_close" style="cursor: pointer;padding: 20px;position: absolute;right: 71px;top: 19px;"></span>
-            <center><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/small-ad-Animated-version.gif'); ?>" style="width:100%;"></center>
+            <span class="gif_ad_close" style="cursor: pointer;padding: 16px;position: absolute;right: 147px;top: 13px;"></span>
+            <center><a href="https://play.google.com/store/apps/details?id=com.champs21.schoolapp" target="_blank"> <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/small-ad-Animated-version.gif'); ?>" style="width:75%;"></a></center>
         </div>
         <script type="text/javascript">
 

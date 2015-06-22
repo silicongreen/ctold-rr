@@ -677,7 +677,10 @@
             }
             echo $s_more_content;
         ?>
-        
+        <div id="gif_ad" style="position:fixed;bottom:0px;width:760px;margin: 0px auto;right:-760px; " >
+            <span class="gif_ad_close" style="cursor: pointer;padding: 20px;position: absolute;right: 71px;top: 19px;"></span>
+            <center><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/small-ad-Animated-version.gif'); ?>" style="width:100%;"></center>
+        </div>
         <script type="text/javascript">
 
             function load_print_popup(url)
@@ -1331,3 +1334,26 @@
     
     echo $s_inner_content;
 ?>
+<script type="text/javascript">
+    $(document).on("click", ".gif_ad_close", function () {                
+        $('#gif_ad').hide();
+    });
+    $(document).ready(function(){
+        //var divname= "gif_ad";
+        //$("#"+divname).show("slide", { direction: "left" }, 3000);
+        //$("#"+divname).parent().siblings(":visible").hide("slide", { direction: "left" }, 6000);
+    });
+    //$(window).bind("load", function() {        
+    $(document).ready(function(){
+        var docWidth = window.innerWidth;
+        var imgw = 760;
+        var rightm = (docWidth - imgw)/2;
+        var tright = rightm+imgw;
+        beeLeft();
+        
+        function beeLeft() {
+           $("#gif_ad").animate({ right: "+="+tright}, 1500, "swing");            
+        }
+     });
+    
+</script>

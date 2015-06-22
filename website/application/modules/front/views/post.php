@@ -1343,8 +1343,7 @@
         //$("#"+divname).show("slide", { direction: "left" }, 3000);
         //$("#"+divname).parent().siblings(":visible").hide("slide", { direction: "left" }, 6000);
     });
-    //$(window).bind("load", function() {        
-    $(document).ready(function(){
+    $(window).bind("load", function() {            
         var docWidth = window.innerWidth;
         var imgw = 760;
         var rightm = (docWidth - imgw)/2;

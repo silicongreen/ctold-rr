@@ -116,6 +116,11 @@
                 }
                 
                 foreach ($obj_post_news as $news) :
+                    if(in_array($news->post_id, $exclude))
+                    {
+                        continue;
+                    }
+                    
                     ?>
                     <?php
                     $is_exclusive_found = false;

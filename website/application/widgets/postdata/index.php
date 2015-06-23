@@ -34,7 +34,7 @@ class postdata extends widget
 
     function run( $s_category_name, $s_category_ids = "", $target = "inner", $b_featured = FALSE,
             $i_featured_position = 0, $page = "index", $current_page = 0, $limit = 9,$is_game = 0,
-            $q = '', $mix_category = NULL, $b_get_related = false, $post_id = 0)
+            $q = '', $mix_category = NULL, $b_get_related = false, $post_id = 0, $exclude=array())
     {
        
         $CI = & get_instance();        
@@ -310,6 +310,8 @@ class postdata extends widget
 
             $data['widget_title'] = $widget_title;
         }
+        
+        $data['exclude'] = $exclude;
         
 //        print '<pre>';
 //        print_r($data);

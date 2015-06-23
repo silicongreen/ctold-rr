@@ -1338,21 +1338,22 @@
     $(document).on("click", ".gif_ad_close", function () {                
         $('#gif_ad').hide();
     });
-    $(document).ready(function(){
-        //var divname= "gif_ad";
-        //$("#"+divname).show("slide", { direction: "left" }, 3000);
-        //$("#"+divname).parent().siblings(":visible").hide("slide", { direction: "left" }, 6000);
-    });
     $(window).bind("load", function() {            
-        var docWidth = window.innerWidth;
-        var imgw = 270;
-        var rightm = (docWidth - imgw)/2;
-        var tright = rightm+imgw;
-        //beeLeft();
-        
-        function beeLeft() {
-           //$("#gif_ad").animate({ right: "+="+docWidth}, 1500, "swing");            
-        }
+        var html_frm_reg = $('#gif_ad').html();
+
+        $.fancybox({
+            'content': html_frm_reg,            
+            'height': 'auto',
+            'transitionIn': 'fade',
+            'transitionOut': 'fade',
+            'openEffect': 'elastic',
+            'openSpeed': 350,
+            'fitToView': false,
+            'autoSize': false,
+            'padding': 0,
+            'margin': 0,     
+            afterLoad: function(){ setTimeout( function() {$.fancybox.close(); },12000); }
+        });
      });
     
 </script>

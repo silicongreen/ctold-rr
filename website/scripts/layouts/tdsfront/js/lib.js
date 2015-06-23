@@ -1221,23 +1221,7 @@ $(document).ready(function () {
             'margin': 0,            
         });
     });
-    $(window).bind("load", function() {            
-        var html_frm_reg = $('#gif_ad').html();
-
-        $.fancybox({
-            'content': html_frm_reg,            
-            'height': 'auto',
-            'transitionIn': 'fade',
-            'transitionOut': 'fade',
-            'openEffect': 'elastic',
-            'openSpeed': 350,
-            'fitToView': false,
-            'autoSize': false,
-            'padding': 0,
-            'margin': 0,     
-            afterLoad: function(){ setTimeout( function() {$.fancybox.close(); },9000); }
-        });
-     });
+    
     $(document).on("click", '#play_spellbee_4', function () {
 
         var nzData = 'http://www.champs21.com/swf/spellingbee_2015/index.html';

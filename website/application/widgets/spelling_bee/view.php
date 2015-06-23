@@ -18,11 +18,15 @@
             <div class="col-lg-6" style="padding:5px 0px;">
 
                 <div class="col-lg-12 float-4">
-                    <img class="no_toolbar" style="width: 90%;" src="/styles/layouts/tdsfront/spelling_bee/2015/images/join_msg.png" />
+                     <a href="/spellingbee">
+                        <img class="no_toolbar" style="width: 90%;" src="/styles/layouts/tdsfront/spelling_bee/2015/images/join_msg.png" />
+                    </a>
                 </div>
 
                 <div class="col-lg-6 float-4">
-                    <img class="no_toolbar" src="/styles/layouts/tdsfront/spelling_bee/2015/sp-logo.png" />
+                    <a href="/spellingbee">
+                        <img class="no_toolbar" src="/styles/layouts/tdsfront/spelling_bee/2015/sp-logo.png" />
+                    </a>
                 </div>
 
                 <div class="col-lg-6 float-4">

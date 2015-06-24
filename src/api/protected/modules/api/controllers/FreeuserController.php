@@ -3756,8 +3756,20 @@ class FreeuserController extends Controller
 //        exit;
         
          foreach ($resulsts as $rows) {
-            $user_words = 'YII-SPELLINGBEE-USERWORD-PLAYED-' . $rows['userid'];
+            $user_words = 'YII-SPELLINGBEE-USERDATA-'. $rows['userid'];
             $response_words = Settings::getSpellingBeeCache($user_words);
+            
+            if(!isset($response_words['user_checkpoint']) && $response_words['current_score']<20)
+            {
+                $i++;
+                echo ",";
+                echo $rows['userid'];
+            }
+            echo "<br/>";
+            echo "<br/>";
+            echo $i;
+            exit;
+            
             $high_score = (int)$rows['score'];
 //            echo '<pre>';
 //            print_r($response_words);

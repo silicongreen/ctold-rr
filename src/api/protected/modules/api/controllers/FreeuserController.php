@@ -147,6 +147,15 @@ class FreeuserController extends Controller
                 }
             }
             
+            if($user_division_main=="rajshashi")
+            {
+                $user_division_main = "rajshahi";
+            }  
+            if($user_division=="rajshashi")
+            {
+                $user_division = "rajshahi";
+            }
+            
             
             $rresponse['data']['rank'] = $highscore->getUserRank($current_score, $current_time,$country, $user_division_main);
             

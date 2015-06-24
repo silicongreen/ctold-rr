@@ -3767,10 +3767,11 @@ class FreeuserController extends Controller
                 echo ",";
                 echo $rows['userid'];
             }
+            
+         }
             echo "<br/>";
             echo "<br/>";
             echo $i;
-         }
             exit;
             
             $high_score = (int)$rows['score'];

@@ -3659,14 +3659,20 @@ class FreeuserController extends Controller
 //        
 //        exit;
         
+        
+        
         $responsesss = array(
-            4655
+            4695
         );
         
         foreach ($responsesss as $userdata) {
             $cache_name_old_user_word = 'YII-SPELLINGBEE-USERWORD-' . $userdata;
+            
+            $cache_name_user_data = 'YII-SPELLINGBEE-USERDATA-' . $userdata;
             $cache_name_old_user_word_played = 'YII-SPELLINGBEE-USERWORD-PLAYED-' . $userdata;
             $cache_name_old_user_word_current = 'YII-SPELLINGBEE-CURRENTUSERWORD-' . $userdata;
+            
+            $response_user_data = Settings::getSpellingBeeCache($cache_name_user_data);
             $response_word = Settings::getSpellingBeeCache($cache_name_old_user_word);
             $response_played = Settings::getSpellingBeeCache($cache_name_old_user_word_played);
             $response_current = Settings::getSpellingBeeCache($cache_name_old_user_word_current);
@@ -3679,6 +3685,9 @@ class FreeuserController extends Controller
             echo '<br />';
             echo 'current:';
             print_r($response_current);
+            echo '<br />';
+            echo 'Uesr Data:';
+            print_r($response_user_data);
         }
         exit;
         
@@ -3746,37 +3755,53 @@ class FreeuserController extends Controller
 //        }
 //        exit;
         
+      
+        
          foreach ($resulsts as $rows) {
-            $user_words = 'YII-SPELLINGBEE-USERWORD-' . $rows['userid'];
+            $user_words = 'YII-SPELLINGBEE-USERDATA-'. $rows['userid'];
             $response_words = Settings::getSpellingBeeCache($user_words);
+            
+            if(!isset($response_words['user_checkpoint']) && $response_words['current_score']>=20)
+            {
+                $i++;
+                echo ",";
+                echo $rows['userid'];
+            }
+            
+         }
+            echo "<br/>";
+            echo "<br/>";
+            echo $i;
+            exit;
+            
             $high_score = (int)$rows['score'];
 //            echo '<pre>';
 //            print_r($response_words);
             
-            $cache_userwords = array();
-            $cache_userwords_played = array();
-            $is_modified = 0;
-            if(isset($response_words) && isset($response_words['words'])) {
-                $inum_cur_words = (int)count($response_words['words']);
-                foreach ($response_words['words'] as $word) {
-                    $cache_userwords[] = $word;
-                }
-                if ($inum_cur_words <= $high_score) {
-                    $diff_score = $high_score - $inum_cur_words;
-                    $diff_score += 20;
-                    for($i = 0; $i < $diff_score; $i++) {
-                        $cache_userwords[] = '0';
-                        $is_modified = 1;
-                    }
-                }
-            } else {
-                $diff_score = $high_score;
-                $diff_score += 20;
-                for($i = 0; $i < $diff_score; $i++) {
-                    $cache_userwords[] = '0';
-                    $is_modified = 1;
-                }
-            }
+//            $cache_userwords = array();
+//            $cache_userwords_played = array();
+//            $is_modified = 0;
+//            if(isset($response_words) && isset($response_words['words'])) {
+//                $inum_cur_words = (int)count($response_words['words']);
+//                foreach ($response_words['words'] as $word) {
+//                    $cache_userwords[] = $word;
+//                }
+//                if ($inum_cur_words <= $high_score) {
+//                    $diff_score = $high_score - $inum_cur_words;
+//                    $diff_score += 20;
+//                    for($i = 0; $i < $diff_score; $i++) {
+//                        $cache_userwords[] = '0';
+//                        $is_modified = 1;
+//                    }
+//                }
+//            } else {
+//                $diff_score = $high_score;
+//                $diff_score += 20;
+//                for($i = 0; $i < $diff_score; $i++) {
+//                    $cache_userwords[] = '0';
+//                    $is_modified = 1;
+//                }
+//            }
 //            
 //            $current_words = array('words' => $cache_userwords);
 //            Settings::setSpellingBeeCache($user_words, $current_words);
@@ -3791,29 +3816,29 @@ class FreeuserController extends Controller
 //            
 //            echo $rows['userid'] . ': DONE<br />';
 //            
-            $num_words = 0;
-            if(!empty($response_words) && isset($words['words'])) foreach ($response_words as $words) {
-                $num_words += count($words['words']);
-            }
-            
-            $high_score = (int)$rows['score'];
-            $diff_score = $num_words - $high_score;
-            
-            echo 'User Id: ' . $rows['userid'] . ' Total Words: ' . $num_words . ' High Score: ' . $high_score . ' Total Played: ' . $diff_score . '<br /><br />';
-            $i++;
-            
-            if ($diff_score < 0) {
-                $total += 20;
-            } else {
-                $total += $diff_score;
-            }
-            
+//            $num_words = 0;
+//            if(!empty($response_words) && isset($words['words'])) foreach ($response_words as $words) {
+//                $num_words += count($words['words']);
+//            }
+//            
+//            $high_score = (int)$rows['score'];
+//            $diff_score = count($response_words['words']) - $high_score;
+//            
+//            echo 'User Id: ' . $rows['userid'] . ' Total Words: ' . count($response_words['words']) . ' High Score: ' . $high_score . ' Total Played: ' . $diff_score . '<br /><br />';
+//            $i++;
+//            
+//            if ($diff_score < 0) {
+//                $total += 20;
+//            } else {
+//                $total += $diff_score;
+//            }
+//            
 //            print_r($response_words);
-        }
+//        }
 //        var_dump($sql);
         
-        echo '<br /><br />' . $total . '====' . $i;
-        exit;
+//        echo '<br /><br />' . $total . '====' . $i;
+//        exit;
         
     }
 

@@ -3659,14 +3659,20 @@ class FreeuserController extends Controller
 //        
 //        exit;
         
+        
+        
         $responsesss = array(
             4655
         );
         
         foreach ($responsesss as $userdata) {
             $cache_name_old_user_word = 'YII-SPELLINGBEE-USERWORD-' . $userdata;
+            
+            $cache_name_user_data = 'YII-SPELLINGBEE-USERDATA-' . $userdata;
             $cache_name_old_user_word_played = 'YII-SPELLINGBEE-USERWORD-PLAYED-' . $userdata;
             $cache_name_old_user_word_current = 'YII-SPELLINGBEE-CURRENTUSERWORD-' . $userdata;
+            
+            $response_user_data = Settings::getSpellingBeeCache($cache_name_user_data);
             $response_word = Settings::getSpellingBeeCache($cache_name_old_user_word);
             $response_played = Settings::getSpellingBeeCache($cache_name_old_user_word_played);
             $response_current = Settings::getSpellingBeeCache($cache_name_old_user_word_current);
@@ -3679,6 +3685,9 @@ class FreeuserController extends Controller
             echo '<br />';
             echo 'current:';
             print_r($response_current);
+            echo '<br />';
+            echo 'Uesr Data:';
+            print_r($response_user_data);
         }
         exit;
         
@@ -3747,36 +3756,36 @@ class FreeuserController extends Controller
 //        exit;
         
          foreach ($resulsts as $rows) {
-            $user_words = 'YII-SPELLINGBEE-USERWORD-' . $rows['userid'];
+            $user_words = 'YII-SPELLINGBEE-USERWORD-PLAYED-' . $rows['userid'];
             $response_words = Settings::getSpellingBeeCache($user_words);
             $high_score = (int)$rows['score'];
 //            echo '<pre>';
 //            print_r($response_words);
             
-            $cache_userwords = array();
-            $cache_userwords_played = array();
-            $is_modified = 0;
-            if(isset($response_words) && isset($response_words['words'])) {
-                $inum_cur_words = (int)count($response_words['words']);
-                foreach ($response_words['words'] as $word) {
-                    $cache_userwords[] = $word;
-                }
-                if ($inum_cur_words <= $high_score) {
-                    $diff_score = $high_score - $inum_cur_words;
-                    $diff_score += 20;
-                    for($i = 0; $i < $diff_score; $i++) {
-                        $cache_userwords[] = '0';
-                        $is_modified = 1;
-                    }
-                }
-            } else {
-                $diff_score = $high_score;
-                $diff_score += 20;
-                for($i = 0; $i < $diff_score; $i++) {
-                    $cache_userwords[] = '0';
-                    $is_modified = 1;
-                }
-            }
+//            $cache_userwords = array();
+//            $cache_userwords_played = array();
+//            $is_modified = 0;
+//            if(isset($response_words) && isset($response_words['words'])) {
+//                $inum_cur_words = (int)count($response_words['words']);
+//                foreach ($response_words['words'] as $word) {
+//                    $cache_userwords[] = $word;
+//                }
+//                if ($inum_cur_words <= $high_score) {
+//                    $diff_score = $high_score - $inum_cur_words;
+//                    $diff_score += 20;
+//                    for($i = 0; $i < $diff_score; $i++) {
+//                        $cache_userwords[] = '0';
+//                        $is_modified = 1;
+//                    }
+//                }
+//            } else {
+//                $diff_score = $high_score;
+//                $diff_score += 20;
+//                for($i = 0; $i < $diff_score; $i++) {
+//                    $cache_userwords[] = '0';
+//                    $is_modified = 1;
+//                }
+//            }
 //            
 //            $current_words = array('words' => $cache_userwords);
 //            Settings::setSpellingBeeCache($user_words, $current_words);

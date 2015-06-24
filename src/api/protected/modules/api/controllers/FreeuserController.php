@@ -3755,6 +3755,20 @@ class FreeuserController extends Controller
 //        }
 //        exit;
         
+        
+        $user_words = 'YII-SPELLINGBEE-USERDATA-4655';
+        $response_words = Settings::getSpellingBeeCache($user_words);
+        if(!isset($response_words['user_checkpoint']))
+            {
+                $i++;
+                echo ",";
+                echo $rows['userid'];
+            }
+        echo "<br/>";
+        echo "<br/>";
+        echo $i;
+        exit;
+        
          foreach ($resulsts as $rows) {
             $user_words = 'YII-SPELLINGBEE-USERDATA-'. $rows['userid'];
             $response_words = Settings::getSpellingBeeCache($user_words);

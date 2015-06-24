@@ -3662,7 +3662,7 @@ class FreeuserController extends Controller
         
         
         $responsesss = array(
-            3698,4655,3639,3681
+            4655
         );
         
         foreach ($responsesss as $userdata) {

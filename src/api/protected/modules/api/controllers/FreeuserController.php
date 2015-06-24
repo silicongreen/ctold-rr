@@ -300,7 +300,7 @@ class FreeuserController extends Controller
                         }
                     }
 
-                    if ($objParams->score > $current_score || ($objParams->score == $current_score && $objParams->total_time < $current_time))
+                    if  ( $play_total_time > $current_score && ( $objParams->score > $current_score || ($objParams->score == $current_score && $objParams->total_time < $current_time) ))
                     {
 
                         $score_for_rank = $objParams->score;
@@ -319,6 +319,8 @@ class FreeuserController extends Controller
                         $highscore->spell_year = date('Y');
                         $highscore->division = strtolower($user_data->division);
                         $highscore->country = $user_data->tds_country_id;
+                        $highscore->from_mobile = 1;
+                        
                         $highscore->save();
 
                         $response['current_score'] = $score_for_rank;

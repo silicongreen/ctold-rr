@@ -3759,7 +3759,7 @@ class FreeuserController extends Controller
             $user_words = 'YII-SPELLINGBEE-USERDATA-'. $rows['userid'];
             $response_words = Settings::getSpellingBeeCache($user_words);
             
-            if(!isset($response_words['user_checkpoint']) && $response_words['current_score']<20)
+            if(!isset($response_words['user_checkpoint']))
             {
                 $i++;
                 echo ",";

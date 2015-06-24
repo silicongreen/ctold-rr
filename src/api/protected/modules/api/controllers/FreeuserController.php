@@ -3755,20 +3755,7 @@ class FreeuserController extends Controller
 //        }
 //        exit;
         
-        print_r($resulsts);
-        exit;
-        $user_words = 'YII-SPELLINGBEE-USERDATA-4655';
-        $response_words = Settings::getSpellingBeeCache($user_words);
-        if(!isset($response_words['user_checkpoint']))
-            {
-                $i++;
-                echo ",";
-                echo 4655;
-            }
-        echo "<br/>";
-        echo "<br/>";
-        echo $i;
-        exit;
+      
         
          foreach ($resulsts as $rows) {
             $user_words = 'YII-SPELLINGBEE-USERDATA-'. $rows['userid'];
@@ -3783,6 +3770,7 @@ class FreeuserController extends Controller
             echo "<br/>";
             echo "<br/>";
             echo $i;
+         }
             exit;
             
             $high_score = (int)$rows['score'];
@@ -3827,29 +3815,29 @@ class FreeuserController extends Controller
 //            
 //            echo $rows['userid'] . ': DONE<br />';
 //            
-            $num_words = 0;
-            if(!empty($response_words) && isset($words['words'])) foreach ($response_words as $words) {
-                $num_words += count($words['words']);
-            }
-            
-            $high_score = (int)$rows['score'];
-            $diff_score = count($response_words['words']) - $high_score;
-            
-            echo 'User Id: ' . $rows['userid'] . ' Total Words: ' . count($response_words['words']) . ' High Score: ' . $high_score . ' Total Played: ' . $diff_score . '<br /><br />';
-            $i++;
-            
-            if ($diff_score < 0) {
-                $total += 20;
-            } else {
-                $total += $diff_score;
-            }
-            
+//            $num_words = 0;
+//            if(!empty($response_words) && isset($words['words'])) foreach ($response_words as $words) {
+//                $num_words += count($words['words']);
+//            }
+//            
+//            $high_score = (int)$rows['score'];
+//            $diff_score = count($response_words['words']) - $high_score;
+//            
+//            echo 'User Id: ' . $rows['userid'] . ' Total Words: ' . count($response_words['words']) . ' High Score: ' . $high_score . ' Total Played: ' . $diff_score . '<br /><br />';
+//            $i++;
+//            
+//            if ($diff_score < 0) {
+//                $total += 20;
+//            } else {
+//                $total += $diff_score;
+//            }
+//            
 //            print_r($response_words);
-        }
+//        }
 //        var_dump($sql);
         
-        echo '<br /><br />' . $total . '====' . $i;
-        exit;
+//        echo '<br /><br />' . $total . '====' . $i;
+//        exit;
         
     }
 

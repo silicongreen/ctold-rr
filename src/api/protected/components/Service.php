@@ -461,7 +461,13 @@ class Service
                     }
 
                 }
+                
                 $iScore = $iScore - $check_point_score;
+                if($iScore>Settings::$checkPointSize)
+                {
+                    return NULL;
+                }
+                
                 $cache_name_word = "YII-SPELLINGBEE-CURRENTUSERWORD-" . $iUserId;
                 $responseword = Settings::getSpellingBeeCache($cache_name_word);
                 if(isset($responseword) && isset($responseword['words'])) {
@@ -474,6 +480,7 @@ class Service
                         }
                     }
                 }
+                
                 Settings::clearCurrentWord($iUserId);
                 
                 $cache_name_userword = "YII-SPELLINGBEE-USERWORD-" . $iUserId;

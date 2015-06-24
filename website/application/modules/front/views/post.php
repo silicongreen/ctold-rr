@@ -1340,20 +1340,37 @@
     });
     $(window).bind("load", function() {            
         var html_frm_reg = $('#gif_ad').html();
+        var cookieValue = readCookie('spellingbee_ad');
+        //alert(cookieValue);
+        if(cookieValue != 1){
+                $.fancybox({
+                'content': html_frm_reg,            
+                'height': 'auto',
+                'transitionIn': 'fade',
+                'transitionOut': 'fade',
+                'openEffect': 'elastic',
+                'openSpeed': 350,
+                'fitToView': false,
+                'autoSize': false,
+                'padding': 0,
+                'margin': 0,     
+                afterLoad: function(){ setTimeout( function() {$.fancybox.close(); },12000); }
+            });
 
-        $.fancybox({
-            'content': html_frm_reg,            
-            'height': 'auto',
-            'transitionIn': 'fade',
-            'transitionOut': 'fade',
-            'openEffect': 'elastic',
-            'openSpeed': 350,
-            'fitToView': false,
-            'autoSize': false,
-            'padding': 0,
-            'margin': 0,     
-            afterLoad: function(){ setTimeout( function() {$.fancybox.close(); },12000); }
-        });
+            //document.cookie = "spellingbee_ad=1";
+            document.cookie = "spellingbee_ad=1; ";
+        }        
+        
+        function readCookie(name) {
+            var nameEQ = name + "=";
+            var ca = document.cookie.split(';');
+            for(var i=0;i < ca.length;i++) {
+                    var c = ca[i];
+                    while (c.charAt(0)==' ') c = c.substring(1,c.length);
+                    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+            }
+            return null;
+        }
      });
     
 </script>

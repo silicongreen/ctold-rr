@@ -105,12 +105,21 @@
             </div>
         </div>
         
-        <div style="margin-top:30px;clear: both;height: 145px;">
+        <div style="margin-top:30px;clear: both;float:left; width:100%;height: 145px;">
             <center><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/sponser.png'); ?>" style="width:100%;"></center>
+        </div>
+
+        <div  class="more-news f2" style="clear: both; float:left; width:106%; margin-left:-3%;">
+             <?php
+                $obj_widget = new Widget;
+                $obj_widget->run('postdata', "spelling Bee", 7, 'inner', FALSE, 0, 'index', 0, 9, 0,'', "spelling Bee", FALSE, 0,array(1596,1598));
+              ?>
+
         </div>
     </div>
 </div>
 <script>
+ 
  $('.tabheading li').click(function () {
         var tabid = $(this).attr("rel");
         $(this).parents('.tabcontainer').find('.active').removeClass('active');
@@ -122,6 +131,10 @@
     });
 </script>
 <style>
+    .more-news > div:nth-child(2)
+    {
+        width: 100% !important;
+    }
     .spellingbee
     {
         

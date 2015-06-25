@@ -2102,14 +2102,7 @@ if(!function_exists('get_alphabets'))
 if (!function_exists('set_session_cookie')) {
 
     function set_session_cookie($cookie_token) {
-        $cookie = array(
-            'name' => 'c21_session',
-            'value' => $cookie_token,
-            'expire' => 2592000,
-            'domain' => str_replace('www.', '', $_SERVER['SERVER_NAME'])
-        );
-        
-        setcookie('c21_session', $cookie_token, time() + 2592000, '/', str_replace('www.', '', $_SERVER['SERVER_NAME']));
+        return setcookie('c21_session', $cookie_token, time() + 2592000, '/', str_replace('www.', '', $_SERVER['SERVER_NAME']));
     }
 
 }

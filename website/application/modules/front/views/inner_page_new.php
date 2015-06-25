@@ -3,21 +3,21 @@
     
 ?>
 <?php
-    $b_checked_cache = FALSE;
-    if ( ( list($i_type_id_cache, $i_category_id_cache, $s_category_name_cache) = get_category_type(sanitize($ci_key)) ) ) 
-    {
-       $b_checked_cache = TRUE; 
-    }
-    
-    if ((isset($_GET['archive']) &&  strlen($_GET['archive']) != "0") || (isset($_GET['date']) &&  strlen($_GET['date']) != "0" && $_GET['date']!=date("Y-m-d")))
-    {
-        $b_checked_cache = FALSE;
-    }
-    $CI = & get_instance();
-    $CI->load->driver('cache',array('adapter' => 'file'));
-    $cache_name = "INNER_CONTENT_CACHE_".$i_category_id_cache."_". str_replace(":", "-",  str_replace(".", "-", str_replace("/", "-", base_url()))) . date("Y_m_d");
-    
-    ob_start();
+//    $b_checked_cache = FALSE;
+//    if ( ( list($i_type_id_cache, $i_category_id_cache, $s_category_name_cache) = get_category_type(sanitize($ci_key)) ) ) 
+//    {
+//       $b_checked_cache = TRUE; 
+//    }
+//    
+//    if ((isset($_GET['archive']) &&  strlen($_GET['archive']) != "0") || (isset($_GET['date']) &&  strlen($_GET['date']) != "0" && $_GET['date']!=date("Y-m-d")))
+//    {
+//        $b_checked_cache = FALSE;
+//    }
+//    $CI = & get_instance();
+//    $CI->load->driver('cache',array('adapter' => 'file'));
+//    $cache_name = "INNER_CONTENT_CACHE_".$i_category_id_cache."_". str_replace(":", "-",  str_replace(".", "-", str_replace("/", "-", base_url()))) . date("Y_m_d");
+//    
+//    ob_start();
 
     $widget = new Widget;
 

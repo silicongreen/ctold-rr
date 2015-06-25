@@ -137,7 +137,7 @@ if (!function_exists('set_user_sessions')) {
     function set_user_sessions($obj_user, $pwd = NULL, $remember = false, $b_refresh_cookie = false) {
 
         $CI = &get_instance();
-        
+
         $remeber = TRUE;
         $sessionData['free_user']['id'] = $obj_user->id;
         $sessionData['free_user']['mobile_no'] = $obj_user->mobile_no;
@@ -175,23 +175,26 @@ if (!function_exists('set_user_sessions')) {
         }
 
         $CI->session->set_userdata($sessionData);
-        
+
         if ($remember || $b_refresh_cookie) {
-
-            $cookie_key = get_session_key();
-            $cookie_token = get_session_cookie_token($obj_user, $cookie_key);
-            set_session_cookie($cookie_token);
-
-            $cookie_data = array(
-                'cookie_token' => $cookie_token,
-                'cookie_key' => $cookie_key,
-                'cookie_expire' => date('Y-m-d', time() + 2592000)
-            );
-
-            $CI->db->where('id', $obj_user->id);
-            $CI->db->update('tds_free_users', $cookie_data);
+            $sess_cookie = $_COOKIE['c21_session'];
+//            $cookie_key = (!empty($obj_user->cookie_key)) ? $obj_user->cookie_key : get_session_key();
+//            $cookie_token = (!empty($obj_user->cookie_token)) ? $obj_user->cookie_token : get_session_cookie_token($obj_user, $cookie_key);
+//            if (set_session_cookie($cookie_token)) {
+                $cookie_data = array(
+                    'cookie_token' => $sess_cookie,
+//                    'cookie_token' => $cookie_token,
+//                    'cookie_key' => $cookie_key,
+//                    'cookie_expire' => date('Y-m-d', time() + 2592000)
+                );
+//
+                if($obj_user->cookie_token != $sess_cookie){
+                    $CI->db->where('id', $obj_user->id);
+                    $CI->db->update('tds_free_users', $cookie_data);
+                }
+//            }
         }
-        
+
         set_type_cookie($obj_user->user_type);
     }
 

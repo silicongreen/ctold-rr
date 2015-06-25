@@ -80,6 +80,10 @@
                 </div>
                 <div class="login_reg_div_box">
                     
+                    <?php
+//                        var_dump(free_user_logged_in());exit;
+                    ?>
+                    
                     <?php if( !free_user_logged_in() ){ ?>
                         <div id="settings_div" class="mobile_log_reg_box" style="float: right; float: right; margin: 10px 0 0; padding: 0px; background-color: #fff;">
                             <div style="" class="settings-btn"></div>

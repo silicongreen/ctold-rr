@@ -30,6 +30,8 @@ $config[ 'api_index' ] = array('index','inner','inner-popular');
 
 $config[ 'accept_without_cookie' ] = array('school_feed_for_paid');
 
+$config[ 'not_loggable' ] = array('styles', 'upload');
+
 $config[ 'assessment' ] = array(
     'types' => array(
         1 => 'Assessment',

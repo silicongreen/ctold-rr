@@ -463,10 +463,10 @@ class Service
                 }
                 
                 $iScore = $iScore - $check_point_score;
-//                if($iScore>Settings::$checkPointSize)
-//                {
-//                    return NULL;
-//                }
+                if($iScore>Settings::$checkPointSize)
+                {
+                    return NULL;
+                }
                 
                 $cache_name_word = "YII-SPELLINGBEE-CURRENTUSERWORD-" . $iUserId;
                 $responseword = Settings::getSpellingBeeCache($cache_name_word);
@@ -578,7 +578,7 @@ class Service
 //                    if ($prev_id)
 //                    {
 //                        $highscore = $highscore->findByAttributes(array('userid' => $iUserId));
-                        $highscore = $highscore->getUserScore($iUserId);
+                        $highscore = $highscore->getUserScore($iUserId,true);
 //                    }
                     if(empty($highscore)) {
                         $highscore = new Highscore();

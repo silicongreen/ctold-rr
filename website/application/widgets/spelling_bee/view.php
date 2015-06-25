@@ -18,11 +18,15 @@
             <div class="col-lg-6" style="padding:5px 0px;">
 
                 <div class="col-lg-12 float-4">
-                    <img style="width: 90%;" src="/styles/layouts/tdsfront/spelling_bee/2015/images/join_msg.png" />
+                     <a href="/spellingbee">
+                        <img class="no_toolbar" style="width: 90%;" src="/styles/layouts/tdsfront/spelling_bee/2015/images/join_msg.png" />
+                    </a>
                 </div>
 
                 <div class="col-lg-6 float-4">
-                    <img src="/styles/layouts/tdsfront/spelling_bee/2015/sp-logo.png" />
+                    <a href="/spellingbee">
+                        <img class="no_toolbar" src="/styles/layouts/tdsfront/spelling_bee/2015/sp-logo.png" />
+                    </a>
                 </div>
 
                 <div class="col-lg-6 float-4">
@@ -32,7 +36,7 @@
                             $is_joined_spellbee = get_free_user_session('is_joined_spellbee');
                             if($is_joined_spellbee == 1 || get_free_user_session('type') != 2) {
                         ?>  <a href="http://www.champs21.com/swf/spellingbee_2015/index.html" title="Spelling Bee | Season 4" class="example2demo play_image" style="border:0px;" name="Spelling Bee">
-                            <a name="windowX" title="Spelling Bee | Season 4" id="play_spellbee_4" class="play_image" style="border:0px;" href="javascript:void(0);">
+<!--                            <a name="windowX" title="Spelling Bee | Season 4" id="play_spellbee_4" class="play_image" style="border:0px;" href="javascript:void(0);">-->
                                 <img id="play_image_1" class="no_toolbar" src="/styles/layouts/tdsfront/spelling_bee/2015/images/play.png" />
                                 <img id="play_image_2" class="no_toolbar" src="/styles/layouts/tdsfront/spelling_bee/2015/images/play-hover.png" style="display:none;" />
                             </a>
@@ -57,9 +61,7 @@
                 <a href="/gamerules">
                     <div class="col-lg-12 leader leader_board1">
                         <div class="col-lg-3">
-                            <img 
-                                src="styles/layouts/tdsfront/images/spellingbee/ruls.png"  style="" 
-                                />
+                            <img class="no_toolbar" src="styles/layouts/tdsfront/images/spellingbee/ruls.png"  />
                         </div>
                         <div class="col-lg-8 f2" style="color: #ffffff;">
                             GAME RULES 
@@ -70,8 +72,7 @@
                 <a href="/leaderboard">
                     <div class="col-lg-12 leader leader_board2">
                         <div class="col-lg-3">
-                            <img 
-                                src="styles/layouts/tdsfront/images/spellingbee/leaderboard.png" />
+                            <img class="no_toolbar" src="styles/layouts/tdsfront/images/spellingbee/leaderboard.png" />
                         </div>
                         <div class="col-lg-8 f2" style="color: #ffffff;">
                             LEADER BOARD

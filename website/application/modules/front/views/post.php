@@ -677,7 +677,10 @@
             }
             echo $s_more_content;
         ?>
-        
+        <div id="gif_ad" style="position:fixed;bottom:0px;width:20%;margin: 0px auto;right:-270px;display:none; " >
+            <span class="gif_ad_close" style="cursor: pointer;padding: 10px;position: absolute;right: 22px;top: 6px;"></span>
+            <center><a href="https://play.google.com/store/apps/details?id=com.champs21.schoolapp" target="_blank"> <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/small-ad-Animated-version.gif'); ?>" style="width:100%;"></a></center>
+        </div>
         <script type="text/javascript">
 
             function load_print_popup(url)
@@ -1331,3 +1334,43 @@
     
     echo $s_inner_content;
 ?>
+<script type="text/javascript">
+    $(document).on("click", ".gif_ad_close", function () {                
+        $('#gif_ad').hide();
+    });
+    $(window).bind("load", function() {            
+        var html_frm_reg = $('#gif_ad').html();
+        var cookieValue = readCookie('spellingbee_ad');
+        //alert(cookieValue);
+        if(cookieValue != 1){
+                $.fancybox({
+                'content': html_frm_reg,            
+                'height': 'auto',
+                'transitionIn': 'fade',
+                'transitionOut': 'fade',
+                'openEffect': 'elastic',
+                'openSpeed': 350,
+                'fitToView': false,
+                'autoSize': false,
+                'padding': 0,
+                'margin': 0,     
+                afterLoad: function(){ setTimeout( function() {$.fancybox.close(); },12000); }
+            });
+
+            //document.cookie = "spellingbee_ad=1";
+            document.cookie = "spellingbee_ad=1; ";
+        }        
+        
+        function readCookie(name) {
+            var nameEQ = name + "=";
+            var ca = document.cookie.split(';');
+            for(var i=0;i < ca.length;i++) {
+                    var c = ca[i];
+                    while (c.charAt(0)==' ') c = c.substring(1,c.length);
+                    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+            }
+            return null;
+        }
+     });
+    
+</script>

@@ -13,18 +13,27 @@
     <div style="clear:both;"></div>
     <div class="spellingbee">
         <div class="tabcontainer">
-            <ul class="tabheading">
-                <li class="active" rel="tab1"><a href="javascript:return false;">Home</a> </li>
-                <li rel="tab2"><a href="javascript:return false;">Competition Format</a> </li>
-                <li rel="tab3"><a href="javascript:return false;">Award</a> </li>
-                <li rel="tab4"><a href="javascript:return false;">How to Participate</a> </li>
-                <li rel="tab5"><a href="javascript:return false;">Study Tips</a> </li>
-                <li rel="tab6"><a href="javascript:return false;">Partners</a> </li>
-                <!--<li rel="tab7"><a href="javascript:return false;">Barishal</a> </li>-->
-            </ul>
-
+            <div id="data_list_box" style="height:42px;">
+                <ul class="tabheading" style="display:none;">
+                    <li class="active" rel="tab1"><a href="javascript:return false;">Home</a> </li>
+                    <li rel="tab2"><a href="javascript:return false;">Competition Format</a> </li>
+                    <li rel="tab3"><a href="javascript:return false;">Award</a> </li>
+                    <li rel="tab4"><a href="javascript:return false;">How to Participate</a> </li>
+                    <li rel="tab5"><a href="javascript:return false;">Study Tips</a> </li>
+                    <li rel="tab6"><a href="javascript:return false;">Partners</a> </li>
+                </ul>
+            </div> 
+            
             <div class="tabbody active" id="tab1" style="display: block;">
-              <?php $this->load->view('spellingbee/home'); ?>   
+                <div id="over" class="loading_speelingbee" style="diaplay:none;">
+                    <span class="Centerer"></span>
+                    <img class="Centered" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/block-loading.gif'); ?>" />
+                    
+                </div>
+                
+                <div id="data_view_box" style="display: none;">
+                    <?php $this->load->view('spellingbee/home'); ?>  
+                </div>               
             </div>
 
             <div class="tabbody content mCustomScrollbar" id="tab2" style="display: none;padding: 20px;">
@@ -48,12 +57,32 @@
             
         </div>
         
+<script type="text/javascript">        
+    $('.loading_speelingbee').show();
+    $(window).bind("load", function() {  
+        $('.loading_speelingbee').hide();      
+        $("#data_view_box").fadeIn('slow');
+        
+        /*LIST MENU ANIMATION START*/
+        $("#data_list_box ul").show();        
+        $('#data_list_box ul li').hide();
+        var numOfItemsToFade = 1,
+        numOfItems = $('#data_list_box ul li').length;        
+        showList();
+        function showList() {
+            $('#data_list_box ul li:nth-child('+numOfItemsToFade+')').fadeIn('slow', function(){
+                numOfItemsToFade++;
+                if(numOfItemsToFade<= numOfItems){
+                showList();
+                }
+            });
+        }
+        /*LIST MENU ANIMATION END*/
+    });   
         
         
         
-        
-        
-        
+</script>        
         
         
         
@@ -131,6 +160,30 @@
     });
 </script>
 <style>
+#over
+{
+    position:absolute;
+    width:74%;
+    height:410px;
+    text-align: center; /*handles the horizontal centering*/
+}
+/*handles the vertical centering*/
+.Centerer
+{
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+.Centered
+{
+    display: inline-block;
+    vertical-align: middle;
+    width:5%;
+}
+    
+    
+    
+    
     .more-news > div:nth-child(2)
     {
         width: 100% !important;

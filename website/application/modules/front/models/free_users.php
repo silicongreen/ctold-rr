@@ -27,7 +27,7 @@ class Free_users extends DataMapper {
         ),
         'password' => array(
             'label' => 'Enter Password',
-            'rules' => array('required', 'min_length' => 6, 'encrypt'),
+            'rules' => array('required', 'min_length' => 4, 'encrypt'),
         ),
         'cnf_password' => array(// accessed via $this->cnf_password
             'label' => 'Re-enter Password',

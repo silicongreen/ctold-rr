@@ -107,6 +107,7 @@ class FreeuserController extends Controller
         if($user_id || $division)
         {
             $user_division = "";
+            $user_division_main = "";
             if($user_id)
             {
                 $objUser = new Freeusers();
@@ -115,6 +116,7 @@ class FreeuserController extends Controller
                 if($user_data->division)
                 {
                     $user_division = $user_data->division;
+                    $user_division_main = $user_data->division;
                 }
                 $country = $user_data->tds_country_id;
             }
@@ -145,15 +147,24 @@ class FreeuserController extends Controller
                 }
             }
             
+            if($user_division_main=="rajshashi")
+            {
+                $user_division_main = "rajshahi";
+            }  
+            if($user_division=="rajshashi")
+            {
+                $user_division = "rajshahi";
+            }
             
-            $rresponse['data']['rank'] = $highscore->getUserRank($current_score, $current_time,$country, $user_division);
+            
+            $rresponse['data']['rank'] = $highscore->getUserRank($current_score, $current_time,$country, $user_division_main);
             
             
             
             
             $arUserScores = $highscore->getLeaderBoard($limit, $user_division, $country);
             $rresponse['data']['leaderboard'] = (array)$arUserScores;
-            $rresponse['data']['division'] = $user_division;
+            $rresponse['data']['division'] = $user_division_main;
             $rresponse['data']['best_score'] = $current_score;
             $rresponse['status']['code'] = 200;
             $rresponse['status']['msg'] = "Success";
@@ -300,7 +311,7 @@ class FreeuserController extends Controller
                         }
                     }
 
-                    if ($objParams->score > $current_score || ($objParams->score == $current_score && $objParams->total_time < $current_time))
+                    if  ( $play_total_time > $current_score && ( $objParams->score > $current_score || ($objParams->score == $current_score && $objParams->total_time < $current_time) ))
                     {
 
                         $score_for_rank = $objParams->score;
@@ -319,6 +330,8 @@ class FreeuserController extends Controller
                         $highscore->spell_year = date('Y');
                         $highscore->division = strtolower($user_data->division);
                         $highscore->country = $user_data->tds_country_id;
+                        $highscore->from_mobile = 1;
+                        
                         $highscore->save();
 
                         $response['current_score'] = $score_for_rank;
@@ -3662,7 +3675,7 @@ class FreeuserController extends Controller
         
         
         $responsesss = array(
-            4695
+            4283
         );
         
         foreach ($responsesss as $userdata) {

@@ -1341,7 +1341,7 @@
     $(window).bind("load", function() {            
         var html_frm_reg = $('#gif_ad').html();
         var cookieValue = readCookie('spellingbee_ad');
-        //alert(cookieValue);
+        alert(cookieValue);
         if(cookieValue != 1){
                 $.fancybox({
                 'content': html_frm_reg,            
@@ -1358,7 +1358,7 @@
             });
 
             //document.cookie = "spellingbee_ad=1";
-            document.cookie = "spellingbee_ad=1; ";
+            document.cookie = "spellingbee_ad=1;expires=Thu, 2 Aug 9999 20:47:11 UTC;";
         }        
         
         function readCookie(name) {

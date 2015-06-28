@@ -92,11 +92,12 @@ class Highscore extends CActiveRecord
         }    
     }
     
-    public function getUserScore($user_id)
+    public function getUserScore($user_id,$with_cancel=false)
     {
         $criteria = new CDbCriteria;
         $criteria->select = 't.id,t.play_total_time,t.score,t.test_time';
         $criteria->compare('t.userid', $user_id);
+        if($with_cancel===false)
         $criteria->compare('t.is_cancel', 0);
         $criteria->order = 't.score DESC';
         $data = $this->find($criteria);

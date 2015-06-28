@@ -461,7 +461,13 @@ class Service
                     }
 
                 }
+                
                 $iScore = $iScore - $check_point_score;
+                if($iScore>Settings::$checkPointSize)
+                {
+                    return NULL;
+                }
+                
                 $cache_name_word = "YII-SPELLINGBEE-CURRENTUSERWORD-" . $iUserId;
                 $responseword = Settings::getSpellingBeeCache($cache_name_word);
                 if(isset($responseword) && isset($responseword['words'])) {
@@ -474,6 +480,7 @@ class Service
                         }
                     }
                 }
+                
                 Settings::clearCurrentWord($iUserId);
                 
                 $cache_name_userword = "YII-SPELLINGBEE-USERWORD-" . $iUserId;
@@ -571,7 +578,7 @@ class Service
 //                    if ($prev_id)
 //                    {
 //                        $highscore = $highscore->findByAttributes(array('userid' => $iUserId));
-                        $highscore = $highscore->getUserScore($iUserId);
+                        $highscore = $highscore->getUserScore($iUserId,true);
 //                    }
                     if(empty($highscore)) {
                         $highscore = new Highscore();
@@ -585,6 +592,7 @@ class Service
                     $highscore->spell_year = date('Y');
                     $highscore->division = strtolower($user_data->division);
                     $highscore->country = $user_data->tds_country_id;
+                    $highscore->from_web = 1;
                     $highscore->save();
                    
                     

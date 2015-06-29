@@ -1340,8 +1340,10 @@
     });
     $(window).bind("load", function() {            
         var html_frm_reg = $('#gif_ad').html();
-        var cookieValue = readCookie('spellingbee_ad');
-        //alert(cookieValue);
+        //var cookieValue = readCookie('spellingbee_ad');
+        var cookieValue = document.cookie.replace(/(?:(?:^|.*;\s*)spellingbee_ad\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+
+       //alert(cookieValue);
         if(cookieValue != 1){
                 $.fancybox({
                 'content': html_frm_reg,            
@@ -1356,9 +1358,9 @@
                 'margin': 0,     
                 afterLoad: function(){ setTimeout( function() {$.fancybox.close(); },12000); }
             });
-
-            //document.cookie = "spellingbee_ad=1";
-            document.cookie = "spellingbee_ad=1;expires=Thu, 2 Aug 9999 20:47:11 UTC;";
+            
+            document.cookie = "spellingbee_ad=1;path=/;";
+            //document.cookie = "spellingbee_ad=1;expires=Thu, 2 Aug 9999 20:47:11 UTC;path=/www.champs21.com";
         }        
         
         function readCookie(name) {

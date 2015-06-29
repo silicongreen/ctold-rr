@@ -1221,9 +1221,7 @@ $(document).ready(function () {
             'margin': 0,            
         });
     });
-    $(window).unload(function() {
-        document.cookie = 'spellingbee_ad=;';        
-    });
+    
     $(document).on("click", '#play_spellbee_4', function () {
 
         var nzData = 'http://www.champs21.com/swf/spellingbee_2015/index.html';

@@ -33,8 +33,8 @@ class SiteController extends Controller
         echo $data;
                 $cookies = Yii::app()->request->cookies;
                 $user_cookie = "";
-                if (isset($cookies['c21_session'])) {
-                    $user_cookie = $cookies['c21_session']->value;
+                if (isset($cookies['champs_session'])) {
+                    $user_cookie = $cookies['champs_session']->value;
                 }
                  echo $user_cookie;
                 exit;

@@ -9,9 +9,9 @@ class AmfController extends Controller {
                 
                 $session_id = "";
                 $cookies = Yii::app()->request->cookies;
-                if (isset($cookies['c21_session'])) 
+                if (isset($cookies['champs_session'])) 
                 {
-                    $session_id =  $cookies['c21_session']->value;
+                    $session_id =  $cookies['champs_session']->value;
                 }
 		$server->setClass("Service","",$session_id);
 

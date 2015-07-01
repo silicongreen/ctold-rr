@@ -110,13 +110,13 @@ Number of Schools participated this season soared to 1600 with a whopping number
 </div>
 <div style="margin-top:30px;clear: both;height: 290px;">
     <div class="spelling_bee_play swing google_bg" style="">
-        <center><a href="<?php echo base_url('top_spellers?st=season3'); ?>"><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/top_90.png'); ?>" style="width:100%;cursor: pointer;" class="scalup"></a></center>                
+        <center><a href="<?php echo base_url('top_spellers?st=season3'); ?>"><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/top_90.png'); ?>" style="width:76%;cursor: pointer;" class="scalup"></a></center>                
     </div>
     <div class="swing" style="float: left;width: 31%;background: #fff;height: 288px;">
-        <center><a href="https://www.youtube.com/channel/UCywQj51MiCqHzQAa0Mg4KXg" target="_blank"><img data="spellato" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/youtube_v.png'); ?>" style="width:100%;cursor: pointer;" class="scalup"></a></center>                
+        <center><a href="https://www.youtube.com/channel/UCywQj51MiCqHzQAa0Mg4KXg" target="_blank"><img data="spellato" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/youtube_v.png'); ?>" style="width:76%;cursor: pointer;" class="scalup"></a></center>                
     </div>
     <div class="swing" style="float: right;width: 31%;background-color: #fff;height: 288px;">        
-        <center><img id="gallery_s3" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/gallery.png'); ?>" style="width:95%;cursor: pointer;" class="scalup"></center>                
+        <center><img id="gallery_s3" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/gallery.png'); ?>" style="width:76%;cursor: pointer;" class="scalup"></center>                
     </div>
 </div>
 

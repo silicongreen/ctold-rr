@@ -388,7 +388,7 @@
   display: block;
   font-size: 17px;
   font-weight: normal;
-  margin:8px 23%;
+  margin:8px auto;
   padding: 10px 17px;
   text-decoration: none;
   transition: all 0.25s ease-in 0s;

@@ -28,3 +28,4 @@ class ApiModule extends CWebModule {
         } else
             return false;
     }
+}

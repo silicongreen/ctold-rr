@@ -16,8 +16,9 @@ class ApiModule extends CWebModule {
 
         $controller_widthout_session = array("user","freeuser","freeschool");
         if (!in_array($controller->id,$controller_widthout_session) && !isset(Yii::app()->user->user_secret)) {
+			$temp = (int)isset(Yii::app()->user->user_secret);			
             $response['status']['code'] = 406;
-            $response['status']['msg'] = "SESSION_TIMEOUT";
+            $response['status']['msg'] = "SESSION_TIMEOUT".$temp.",cid = ".$controller->id ;
             echo CJSON::encode($response);
             Yii::app()->end();
         } else if (parent::beforeControllerAction($controller, $action)) {
@@ -27,5 +28,3 @@ class ApiModule extends CWebModule {
         } else
             return false;
     }
-
-}

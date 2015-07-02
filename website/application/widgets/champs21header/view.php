@@ -664,7 +664,7 @@ height: 46px;
                                         </div>
 
                                         <div class="f5 login_reset_password">
-                                            <a href="javascript:void(0);">Forgot Password?</a>
+<!--                                            <a href="javascript:void(0);">Forgot Password?</a>-->
                                         </div>
                                     </div>
 

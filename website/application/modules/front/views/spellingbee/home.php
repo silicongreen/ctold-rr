@@ -10,7 +10,7 @@
             <img id="season_4" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/season-4.png'); ?>" style="">
         </div>
         <div style="width: 58%;float:right;z-index: 100;">
-            <div class="f5" style="float:left;width: 100%;font-size: 20px;">
+            <div class="f5" style="float:left;width: 80%;font-size: 20px;">
                 <center><img id="join_msg" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/join_msg.png'); ?>" style="width:75%;"></center>
             </div>
             <div style="clear: both;float:left;width: 100%;margin-top:10px;">

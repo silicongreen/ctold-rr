@@ -3675,7 +3675,7 @@ class FreeuserController extends Controller
         
         
         $responsesss = array(
-            4283
+            4528
         );
         
         foreach ($responsesss as $userdata) {
@@ -3692,6 +3692,9 @@ class FreeuserController extends Controller
             echo '<pre>';
             echo 'word:';
             print_r($response_word);
+            echo '<pre>';
+            echo 'unique word:';
+            print_r(array_unique($response_word));
             echo '<br />';
             echo 'played:';
             print_r($response_played);

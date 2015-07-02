@@ -11,9 +11,9 @@ class Service
     {
         $objfreeuser = new Freeusers();
         $cookies = Yii::app()->request->cookies;
-        if (isset($cookies['c21_session']))
+        if (isset($cookies['champs_session']))
         {
-            $user_cookie = $cookies['c21_session']->value;
+            $user_cookie = $cookies['champs_session']->value;
         }
         $data = $objfreeuser->getFreeuserByCookie(func_get_arg(0));
         return ( is_int($data)) ? TRUE : FALSE;

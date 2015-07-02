@@ -136,7 +136,7 @@
             </div>
             <div class="swing" style="float: right;width: 31%;background-color: #fff;height: 250px;">
                 <h2 class="f2" style="margin-left:30px;font-size: 16px;">Download Spellato</h2>
-                <center><img data="spellato" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/spellato.png'); ?>" style="width:55%;margin-top:15px;cursor: pointer;" class="scalup spellato_dl_link"></center>                
+                <center><img data="spellato" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/spellato.png'); ?>" style="width:42%;margin-top:15px;cursor: pointer;" class="scalup spellato_dl_link"></center>                
             </div>
         </div>
         
@@ -388,7 +388,7 @@
   display: block;
   font-size: 17px;
   font-weight: normal;
-  margin:8px 56px;
+  margin:8px auto;
   padding: 10px 17px;
   text-decoration: none;
   transition: all 0.25s ease-in 0s;

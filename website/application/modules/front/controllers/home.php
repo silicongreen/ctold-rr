@@ -22,6 +22,7 @@ class home extends MX_Controller {
         $this->load->library('datamapper');
         $this->load->helper('form');
         $this->load->config("huffas");
+
         
 //        $ar_accept_without_cookie = $this->config->config['accept_without_cookie'];
 //        $sess_cookie = $_COOKIE['c21_session'];

@@ -102,7 +102,7 @@ class FreeuserController extends Controller
         
         if(!$limit)
         {
-            $limit = 10;
+            $limit = 30;
         } 
         if($user_id || $division)
         {

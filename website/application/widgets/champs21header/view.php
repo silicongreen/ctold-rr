@@ -80,6 +80,10 @@
                 </div>
                 <div class="login_reg_div_box">
                     
+                    <?php
+//                        var_dump(free_user_logged_in());exit;
+                    ?>
+                    
                     <?php if( !free_user_logged_in() ){ ?>
                         <div id="settings_div" class="mobile_log_reg_box" style="float: right; float: right; margin: 10px 0 0; padding: 0px; background-color: #fff;">
                             <div style="" class="settings-btn"></div>
@@ -1005,9 +1009,9 @@ height: 46px;
                     //$widget = new Widget;
                     //$widget->run('champs21slidemenu');
                     ?>  
-                </div>end class plazart-megamenu          
+                </div>          
             </div>            
-        </div>-->  
+        </div> --> 
         
         
         
@@ -1442,6 +1446,10 @@ if($('.header-logo-div').is(':visible')) {
         {
             display:none;
         }
+        .new_top_menu
+        {
+            display:none;
+        }
         .responsive_height
         {
             display:block !important;
@@ -1628,6 +1636,10 @@ if($('.header-logo-div').is(':visible')) {
             font-size:8px;
           }
         .category-fixed-menu
+        {
+            display:none;
+        }
+        .new_top_menu
         {
             display:none;
         }
@@ -1870,6 +1882,10 @@ if($('.header-logo-div').is(':visible')) {
             font-size:8px;
           }
         .category-fixed-menu
+        {
+            display:none;
+        }
+        .new_top_menu
         {
             display:none;
         }

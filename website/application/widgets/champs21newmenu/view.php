@@ -11,7 +11,7 @@
 $my_uri = $_SERVER[REQUEST_URI];
 $my_uri = explode("/", $my_uri);
 ?>
-<div style="float: left; width: 77%; height:38px; margin-top: 5px; overflow: hidden;">
+<div class="new_top_menu" style="float: left; width: 77%; height:38px; margin-top: 5px; overflow: hidden;">
     <ul class="ca-menu-new">
         <?php if ($slidemenu) : ?>
             <?php

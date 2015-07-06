@@ -1,7 +1,7 @@
 <script type="text/javascript" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/jquery.popupWindow.js'); ?>"></script>
 <div class="home_box">    
     <div style="width: 100%;">
-        <div style="" class="flying_bee1">
+        <div class="flying_bee1">
             <img id="flying_bee1_bg" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/BG.png'); ?>" style="width:100%;height: 410px;">
             <div id="over1">
                 <span class="Centerer1"></span>
@@ -9,11 +9,11 @@
             </div>
             <img id="season_4" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/season-4.png'); ?>" style="">
         </div>
-        <div style="width: 58%;float:right;z-index: 100;">
-            <div class="f5" style="float:left;width: 80%;font-size: 20px;">
+        <div class="flying_bee1_content">
+            <div class="f5 join_msg_box">
                 <center><img id="join_msg" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/join_msg.png'); ?>" style="width:75%;"></center>
             </div>
-            <div style="clear: both;float:left;width: 100%;margin-top:10px;">
+            <div class="sp_btn_pack_box">
                 <nav id="sp_btn_pack">
                 <?php if( free_user_logged_in() ) { ?>
                     <?php $is_joined_spellbee = get_free_user_session('is_joined_spellbee');
@@ -48,7 +48,7 @@
                 <a href="https://www.facebook.com/spellbangladesh" target="_blank" class="f2 button-filter3 sp_btn_4" style="position:relative;z-index: 70;">Facebook</a>
                 </nav>
             </div>
-            <div class="jointext" style="float:left;width: 41%;font-size: 12px;margin-top: 200px;letter-spacing: 0px;margin-right: 20px;transition: all 0.5s ease-in 0s;position:absolute;">
+            <div class="jointext">
                 Spelling Bee is back with its 4th season in Bangladesh! Join the Spelling Bee Competition and join the top spellers of the country to fight for the trophy and the prestigious title of Spelling Bee Champion.
             </div>
         </div>
@@ -126,6 +126,17 @@ resizable:1
     });
 </script>
 <style>
+.sp_btn_pack_box
+{
+    clear: both;
+    float:left;
+    width: 100%;
+    margin-top:10px;
+}
+.join_msg_box
+{
+    float:left;width: 80%;font-size: 20px;
+}
 #over1
 {
     position:absolute;
@@ -171,6 +182,12 @@ resizable:1
   top: 0px;
   overflow:hidden;
   z-index: 10;
+}
+.flying_bee1_content
+{
+    width: 58%;
+    float:right;
+    z-index: 100;
 }
 .anim {
   -webkit-animation: spin 1s 1 ease-in;  
@@ -404,7 +421,16 @@ resizable:1
   from {margin-left:-185px;opacity:0;}
   to {margin-left:0px;opacity:1;}
 }
-
+.jointext
+{
+    float:left;width: 41%;
+    font-size: 12px;
+    margin-top: 200px;
+    letter-spacing: 0px;
+    margin-right: 20px;
+    transition: all 0.5s ease-in 0s;
+    position:absolute;
+}
 .jointext_slide
 {
     -webkit-animation: jointext_slidedown 1s forwards;    
@@ -759,3 +785,5 @@ resizable:1
   }
 }
 </style>
+
+

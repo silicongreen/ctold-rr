@@ -3740,6 +3740,8 @@ class FreeuserController extends Controller
         $cache_name_old_userdata = 'YII-SPELLINGBEE-USERDATA-4994';
         $response = Settings::setSpellingBeeCache($cache_name_old_userdata, $response);
         
+        echo 'USERDATA-done';
+        
         $array_words_played = array();
         for($i = 0; $i <= 260; $i++ ) {
             $array_words_played['words'][] = 0;
@@ -3747,9 +3749,12 @@ class FreeuserController extends Controller
         
         $cache_name_userword = "YII-SPELLINGBEE-USERWORD-4994";
         Settings::setSpellingBeeCache($cache_name_userword, $array_words_played);
-
+        echo '<br />USERWORD-done';
+        
         $cache_name_userword_played = "YII-SPELLINGBEE-USERWORD-PLAYED-4994";
         Settings::setSpellingBeeCache($cache_name_userword_played, $array_words_played);
+        echo '<br />PLAYED-done';
+        
         echo '<pre>';
         print_r($response);
         exit;

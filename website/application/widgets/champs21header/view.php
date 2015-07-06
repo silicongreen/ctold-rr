@@ -1009,9 +1009,9 @@ height: 46px;
                     //$widget = new Widget;
                     //$widget->run('champs21slidemenu');
                     ?>  
-                </div>end class plazart-megamenu          
+                </div>          
             </div>            
-        </div>-->  
+        </div> --> 
         
         
         
@@ -1446,6 +1446,10 @@ if($('.header-logo-div').is(':visible')) {
         {
             display:none;
         }
+        .new_top_menu
+        {
+            display:none;
+        }
         .responsive_height
         {
             display:block !important;
@@ -1632,6 +1636,10 @@ if($('.header-logo-div').is(':visible')) {
             font-size:8px;
           }
         .category-fixed-menu
+        {
+            display:none;
+        }
+        .new_top_menu
         {
             display:none;
         }
@@ -1874,6 +1882,10 @@ if($('.header-logo-div').is(':visible')) {
             font-size:8px;
           }
         .category-fixed-menu
+        {
+            display:none;
+        }
+        .new_top_menu
         {
             display:none;
         }

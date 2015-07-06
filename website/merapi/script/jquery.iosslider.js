@@ -1199,7 +1199,7 @@
 				'hardwareAccelBuffer': 5,
 				'stageCSS': {
 					position: 'relative',
-					top: '0',
+					top: '100',
 					left: '0',
 					overflow: 'hidden',
 					zIndex: 1
@@ -1496,7 +1496,7 @@
 					}
 					
 					containerHeight = $(stageNode).parent().outerHeight(true);
-					stageHeight = 50;
+					stageHeight = 38;
 					
 					if(settings.responsiveSlideContainer) {
 						stageHeight = (stageHeight > containerHeight) ? containerHeight : stageHeight;

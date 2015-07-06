@@ -102,7 +102,7 @@ class FreeuserController extends Controller
         
         if(!$limit)
         {
-            $limit = 10;
+            $limit = 30;
         } 
         if($user_id || $division)
         {
@@ -3675,7 +3675,7 @@ class FreeuserController extends Controller
         
         
         $responsesss = array(
-            4528
+            4994
         );
         
         foreach ($responsesss as $userdata) {
@@ -3707,17 +3707,17 @@ class FreeuserController extends Controller
         }
         exit;
         
-//        $response = array(
-//            'total_time' => 117,
-//            'remaining_word' => 30,
-//            'current_level' => 1,
-//            'user_checkpoint_score' => 260,
-//            'user_checkpoint' => 13,
-//            'current_score' => 260,
-//            'current_time' => 117,
-//            'prev_id' => 26,
-//            'play_total_time' => 3979
-//        );        
+        $response = array(
+            'total_time' => 104533,
+            'remaining_word' => 30,
+            'current_level' => 1,
+            'user_checkpoint_score' => 260,
+            'user_checkpoint' => 13,
+            'current_score' => 260,
+            'current_time' => 3876,
+            'prev_id' => 1196,
+            'play_total_time' => 104533
+        );        
 //        $ar_cache_names = array(
 //            'YII-SPELLINGBEE-CURRENTUSERWORD'
 //        );
@@ -3737,10 +3737,26 @@ class FreeuserController extends Controller
 //        
 //        }
 //        
-//        $cache_name_old_userdata = 'YII-SPELLINGBEE-USERDATA-3741';
+//        $cache_name_old_userdata = 'YII-SPELLINGBEE-USERDATA-4994';
 //        $response = Settings::setSpellingBeeCache($cache_name_old_userdata, $response);
-//        echo '<pre>';
-//        print_r($response);
+//        
+//        echo 'USERDATA-done';
+//        
+//        $array_words_played = array();
+//        for($i = 0; $i <= 260; $i++ ) {
+//            $array_words_played['words'][] = 0;
+//        }
+//        
+//        $cache_name_userword = "YII-SPELLINGBEE-USERWORD-4994";
+//        Settings::setSpellingBeeCache($cache_name_userword, $array_words_played);
+//        echo '<br />USERWORD-done';
+//        
+//        $cache_name_userword_played = "YII-SPELLINGBEE-USERWORD-PLAYED-4994";
+//        Settings::setSpellingBeeCache($cache_name_userword_played, $array_words_played);
+//        echo '<br />PLAYED-done';
+//        
+        echo '<pre>';
+        print_r($response);
         exit;
         
     }

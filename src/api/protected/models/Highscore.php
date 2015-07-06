@@ -148,11 +148,11 @@ class Highscore extends CActiveRecord
            
             foreach ($data as $value)
             {
-                if (isset($value['UserFree']->email))
-                {
+//                if (isset($value['UserFree']->email))
+//                {
                     $arUser = array();
                     $arUser['high_score'] = $value->score;
-                    $arUser['time'] = $value->test_time;
+                    $arUser['time'] = (!empty($value->test_time)) ? $value->test_time : '00:50:50';
                     if($value['UserFree']->school_name)
                     {
                         $arUser['school_name'] = $value['UserFree']->school_name;
@@ -180,7 +180,7 @@ class Highscore extends CActiveRecord
                     }
                     array_push( $arScoresData, ( object ) $arUser );
                 
-                }
+//                }
             }
         }
 

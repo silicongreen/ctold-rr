@@ -126,21 +126,21 @@
                 <p style="font-size: 12px !important;line-height: 16px;padding: 0 30px;width: 225px;">
                     Now you can play online round from your android mobile.Go to Play Store and download the App <a href="https://play.google.com/store/apps/details?id=com.champs21.schoolapp&hl=en" target="_blank">Champs21</a>
                 </p>
-                <a style="margin-left:30px;" href="https://play.google.com/store/apps/details?id=com.champs21.schoolapp&hl=en" target="_blank"><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/google_play.png'); ?>" style="width:55%;margin-top:15px;" class="scalup"></a>
+                <a style="margin-left:30px;" href="https://play.google.com/store/apps/details?id=com.champs21.schoolapp&hl=en" target="_blank"><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/google_play.png'); ?>" class="scalup google_logo"></a>
             </div>
-            <div class="swing" style="float: left;width: 31%;background: #fff;height: 250px;">
+            <div class="swing archive_box">
                 <h2 class="f2" style="margin-left:30px;font-size: 16px;">Archive</h2>
                 <a  href="<?php echo base_url('archive?st=season3'); ?>" class="f2 button-filter">Season 3</a>
                 <a  href="<?php echo base_url('archive?st=season2'); ?>" class="f2 button-filter">Season 2</a>
                 <a  href="<?php echo base_url('archive?st=season1'); ?>" class="f2 button-filter">Season 1</a>
             </div>
-            <div class="swing" style="float: right;width: 31%;background-color: #fff;height: 250px;">
+            <div class="swing spellato_box">
                 <h2 class="f2" style="margin-left:30px;font-size: 16px;">Download Spellato</h2>
-                <center><img data="spellato" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/spellato.png'); ?>" style="width:42%;margin-top:15px;cursor: pointer;" class="scalup spellato_dl_link"></center>                
+                <center><img data="spellato" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/spellato.png'); ?>" class="scalup spellato_dl_link"></center>                
             </div>
         </div>
         
-        <div style="margin-top:30px;clear: both;float:left; width:100%;height: 145px;">
+        <div class="sponser_box">
             <center><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/sponser.png'); ?>" style="width:100%;"></center>
         </div>
 
@@ -166,6 +166,14 @@
     });
 </script>
 <style>
+.spellato_dl_link
+{
+    width:42%;margin-top:15px;cursor: pointer;
+}
+.google_logo
+{
+    width:55%;margin-top:15px;
+}
 #over
 {
     position:absolute;
@@ -338,6 +346,14 @@
   background-color: #fff;  
 
 }
+.archive_box
+{
+    float: left;width: 31%;background: #fff;height: 250px;
+}
+.spellato_box
+{
+    float: right;width: 31%;background-color: #fff;height: 250px;
+}
 #tab2 ul li, #tab3 ul li, #tab5 ul li {
     list-style: disc !important;
 }
@@ -356,7 +372,10 @@
     position: relative;
     top: 2px;    
 }
-
+.sponser_box
+{
+    margin-top:30px;clear: both;float:left; width:100%;height: 125px;
+}
 
 .scalup
 {
@@ -436,4 +455,514 @@
     }
 }
 
+</style>
+<style>
+@media all and (min-width: 200px) and (max-width: 320px) {
+    .tabheading li a 
+    {       
+        padding: 10px 4px;
+        font-size:4px;
+    }
+    #over
+    {        
+        width:80%;     
+    }
+    .tabbody
+    {
+        height:820px;
+    }
+    .flying_bee1_content
+    {
+        float: left;
+        width: 100%;        
+    }
+    .flying_bee1
+    {        
+        float: left;        
+        width: 100%;        
+    }
+    
+    .spelling_bee_play{        
+        width: 100%;
+    }
+    .archive_box
+    {        
+        width: 100%; 
+        margin-top: 20px;
+    }
+    .spellato_box
+    {
+        float: left;
+        width: 100%;
+        margin-top: 20px;
+    }
+    .sponser_box
+    {
+        height: 35px;
+    }
+    .join_msg_box
+    {
+        float:left;width: 100%;
+    }
+    .sp_btn_pack_box
+    {
+        -ms-transform: scale(.5); /* IE 9 */
+        -webkit-transform: scale(.5); /* Safari */
+        -o-transform: scale(.5); /* Safari */
+        transform: scale(.5);
+        text-align: center;
+        width: 180%;
+        margin-left: -100px;
+    }
+    .jointext
+    {
+        float:left;
+        width: 90%;
+        font-size: 12px;
+        margin: 0px 20px 20px;
+        letter-spacing: 0px;
+        transition: all 0.5s ease-in 0s;
+        position:relative;
+    }
+    .jointext_slide
+{
+    -webkit-animation: jointext_slidedown 1s forwards;    
+    -moz-animation: jointext_slidedown 1s forwards;    
+    -o-animation: jointext_slidedown 1s forwards;    
+    animation: jointext_slidedown 1s forwards;
+}
+
+    /* Webkit, Chrome and Safari */
+    @-webkit-keyframes jointext_slidedown {
+
+    }
+    /* Mozilla Firefox 15 below */
+    @-moz-keyframes jointext_slidedown {    
+
+    }
+    /* Opera 12.0 */
+    @-o-keyframes jointext_slidedown {    
+
+    }
+    /* W3, Opera 12+, Firefox 16+ */
+    @keyframes jointext_slidedown {    
+
+    }
+}
+@media all and (min-width: 321px) and (max-width: 449px) {
+    .tabheading li a 
+    {       
+        padding: 10px 4px;
+        font-size:7px;
+    }
+    #over
+    {        
+        width:90%;     
+    }
+    .tabbody
+    {
+        height:820px;
+    }
+    .flying_bee1_content
+    {
+        float: left;
+        width: 100%;        
+    }
+    .flying_bee1
+    {        
+        float: left;        
+        width: 100%;        
+    }
+    
+    .spelling_bee_play{        
+        width: 100%;
+    }
+    .archive_box
+    {        
+        width: 100%; 
+        margin-top: 20px;
+    }
+    .spellato_box
+    {
+        float: left;
+        width: 100%;
+        margin-top: 20px;
+    }
+    .sponser_box
+    {
+        height: 50px;
+    }
+    .spellato_dl_link
+    {
+        width:30%;
+    }
+    .join_msg_box
+    {
+        float:left;width: 100%;
+    }
+    .sp_btn_pack_box
+    {
+        -ms-transform: scale(.5); /* IE 9 */
+        -webkit-transform: scale(.5); /* Safari */
+        -o-transform: scale(.5); /* Safari */
+        transform: scale(.5);
+        text-align: center;
+        width: 160%;
+        margin-left: -60px;
+    }
+    .jointext
+    {
+        float:left;
+        width: 90%;
+        font-size: 12px;
+        margin: 0px 20px 20px;
+        letter-spacing: 0px;
+        transition: all 0.5s ease-in 0s;
+        position:relative;
+    }
+    .jointext_slide
+    {
+        -webkit-animation: jointext_slidedown 1s forwards;    
+        -moz-animation: jointext_slidedown 1s forwards;    
+        -o-animation: jointext_slidedown 1s forwards;    
+        animation: jointext_slidedown 1s forwards;
+    }
+
+    /* Webkit, Chrome and Safari */
+    @-webkit-keyframes jointext_slidedown {
+
+    }
+    /* Mozilla Firefox 15 below */
+    @-moz-keyframes jointext_slidedown {    
+
+    }
+    /* Opera 12.0 */
+    @-o-keyframes jointext_slidedown {    
+
+    }
+    /* W3, Opera 12+, Firefox 16+ */
+    @keyframes jointext_slidedown {    
+
+    }
+}
+
+@media all and (min-width: 450px) and (max-width: 599px) {
+    .tabheading li a 
+    {       
+        padding: 10px 4px;
+        font-size:10px;
+    }
+    #over
+    {        
+        width:90%;     
+    }
+    .tabbody
+    {
+        height:820px;
+    }
+    .flying_bee1_content
+    {
+        float: left;
+        width: 100%;        
+    }
+    .flying_bee1
+    {        
+        float: left;        
+        width: 100%;        
+    }
+    
+    .spelling_bee_play{        
+        width: 100%;
+    }
+    .google_logo
+    {
+        width:40%;
+    }
+    .archive_box
+    {        
+        width: 100%; 
+        margin-top: 20px;
+    }
+    .spellato_box
+    {
+        float: left;
+        width: 100%;
+        margin-top: 20px;
+    }
+    .spellato_dl_link
+    {
+        width:30%;
+    }
+    .sponser_box
+    {
+        height: 65px;
+    }
+    .join_msg_box
+    {
+        float:left;width: 100%;
+    }
+    .sp_btn_pack_box
+    {
+        -ms-transform: scale(.7); /* IE 9 */
+        -webkit-transform: scale(.7); /* Safari */
+        -o-transform: scale(.7); /* Safari */
+        transform: scale(.7);
+        text-align: center;
+        width: 160%;
+        margin-left: -60px;
+    }
+    .jointext
+    {
+        float:left;
+        width: 90%;
+        font-size: 12px;
+        margin: 0px 20px 20px;
+        letter-spacing: 0px;
+        transition: all 0.5s ease-in 0s;
+        position:relative;
+    }
+    .jointext_slide
+    {
+        -webkit-animation: jointext_slidedown 1s forwards;    
+        -moz-animation: jointext_slidedown 1s forwards;    
+        -o-animation: jointext_slidedown 1s forwards;    
+        animation: jointext_slidedown 1s forwards;
+    }
+
+    /* Webkit, Chrome and Safari */
+    @-webkit-keyframes jointext_slidedown {
+
+    }
+    /* Mozilla Firefox 15 below */
+    @-moz-keyframes jointext_slidedown {    
+
+    }
+    /* Opera 12.0 */
+    @-o-keyframes jointext_slidedown {    
+
+    }
+    /* W3, Opera 12+, Firefox 16+ */
+    @keyframes jointext_slidedown {    
+
+    }
+}
+@media all and (min-width: 600px) and (max-width: 799px) {
+    .tabheading {
+        margin-left: -230px !important;  
+        transform: scale(0.6);
+        width: 165%;
+    }
+    #over
+    {        
+        width:90%;     
+    }
+    .tabbody
+    {
+        height:820px;
+    }
+    .flying_bee1_content
+    {
+        float: left;
+        width: 100%;        
+    }
+    .flying_bee1
+    {        
+        float: left;        
+        width: 100%;        
+    }
+    
+    .spelling_bee_play{        
+        width: 100%;
+    }
+    .google_logo
+    {
+        width:40%;
+    }
+    .archive_box
+    {        
+        width: 100%; 
+        margin-top: 20px;
+    }
+    .spellato_box
+    {
+        float: left;
+        width: 100%;
+        margin-top: 20px;
+    }
+    .spellato_dl_link
+    {
+        width:25%;
+    }
+    .sponser_box
+    {
+        height: 85px;
+    }
+    .join_msg_box
+    {
+        float:left;width: 100%;
+    }
+    .sp_btn_pack_box
+    {
+        -ms-transform: scale(.7); /* IE 9 */
+        -webkit-transform: scale(.7); /* Safari */
+        -o-transform: scale(.7); /* Safari */
+        transform: scale(.7);
+        text-align: center;
+        width: 160%;
+        margin-left: -60px;
+    }
+    .jointext
+    {
+        float:left;
+        width: 90%;
+        font-size: 12px;
+        margin: 0px 20px 20px;
+        letter-spacing: 0px;
+        transition: all 0.5s ease-in 0s;
+        position:relative;
+    }
+    .jointext_slide
+    {
+        -webkit-animation: jointext_slidedown 1s forwards;    
+        -moz-animation: jointext_slidedown 1s forwards;    
+        -o-animation: jointext_slidedown 1s forwards;    
+        animation: jointext_slidedown 1s forwards;
+    }
+
+    /* Webkit, Chrome and Safari */
+    @-webkit-keyframes jointext_slidedown {
+
+    }
+    /* Mozilla Firefox 15 below */
+    @-moz-keyframes jointext_slidedown {    
+
+    }
+    /* Opera 12.0 */
+    @-o-keyframes jointext_slidedown {    
+
+    }
+    /* W3, Opera 12+, Firefox 16+ */
+    @keyframes jointext_slidedown {    
+
+    }
+}
+@media all and (min-width: 800px) and (max-width: 991px) {
+    .tabheading {
+        margin-left: -180px !important;  
+        transform: scale(0.6);
+        width: 161%;
+      }
+    .spelling_bee_play
+    {
+        margin-right: 20px;
+    }
+    .sponser_box
+    {
+        height: 75px;
+    }
+    .sp_btn_pack_box
+    {
+        -ms-transform: scale(.7); /* IE 9 */
+        -webkit-transform: scale(.7); /* Safari */
+        -o-transform: scale(.7); /* Safari */
+        transform: scale(.7);
+        text-align: center;
+        width: 160%;
+        margin-left: -60px;
+    }
+    .button-filter
+    {
+        width:120px;
+    }
+    .jointext
+    {
+        float:left;
+        width: 90%;
+        font-size: 12px;
+        margin: 0px 20px 20px;
+        letter-spacing: 0px;
+        transition: all 0.5s ease-in 0s;
+        position:relative;
+    }
+    .jointext_slide
+    {
+        -webkit-animation: jointext_slidedown 1s forwards;    
+        -moz-animation: jointext_slidedown 1s forwards;    
+        -o-animation: jointext_slidedown 1s forwards;    
+        animation: jointext_slidedown 1s forwards;
+    }
+
+    /* Webkit, Chrome and Safari */
+    @-webkit-keyframes jointext_slidedown {
+
+    }
+    /* Mozilla Firefox 15 below */
+    @-moz-keyframes jointext_slidedown {    
+
+    }
+    /* Opera 12.0 */
+    @-o-keyframes jointext_slidedown {    
+
+    }
+    /* W3, Opera 12+, Firefox 16+ */
+    @keyframes jointext_slidedown {    
+
+    }
+}
+@media all and (min-width: 992px) and (max-width: 1150px) {
+    .sponser_box
+    {
+        height: 95px;
+    }
+    .sp_btn_pack_box
+    {
+        -ms-transform: scale(.8); /* IE 9 */
+        -webkit-transform: scale(.8); /* Safari */
+        -o-transform: scale(.8); /* Safari */
+        transform: scale(.8);
+        text-align: center;
+        width: 160%;
+        margin-left: -60px;
+    }
+    .jointext
+    {
+        float:left;
+        width: 90%;
+        font-size: 12px;
+        margin: 0px 20px 20px;
+        letter-spacing: 0px;
+        transition: all 0.5s ease-in 0s;
+        position:relative;
+    }
+    .jointext_slide
+    {
+        -webkit-animation: jointext_slidedown 1s forwards;    
+        -moz-animation: jointext_slidedown 1s forwards;    
+        -o-animation: jointext_slidedown 1s forwards;    
+        animation: jointext_slidedown 1s forwards;
+    }
+
+    /* Webkit, Chrome and Safari */
+    @-webkit-keyframes jointext_slidedown {
+
+    }
+    /* Mozilla Firefox 15 below */
+    @-moz-keyframes jointext_slidedown {    
+
+    }
+    /* Opera 12.0 */
+    @-o-keyframes jointext_slidedown {    
+
+    }
+    /* W3, Opera 12+, Firefox 16+ */
+    @keyframes jointext_slidedown {    
+
+    }
+}
+@media all and (min-width: 1151px) and (max-width: 1251px) {
+    .sponser_box
+    {
+        height: 95px;
+    }
+}
 </style>

@@ -22,6 +22,7 @@ log
 nbproject
 website/git_pull
 website/application/cache/
+website/application/c21_session/
 website/application/config/champs21.php
 website/application/config/minify.php
 website/upload

@@ -679,7 +679,7 @@
         ?>
         <div id="gif_ad" style="position:fixed;bottom:0px;width:20%;margin: 0px auto;right:-270px;display:none; " >
             <span class="gif_ad_close" style="cursor: pointer;padding: 10px;position: absolute;right: 22px;top: 6px;"></span>
-            <center><a href="https://play.google.com/store/apps/details?id=com.champs21.schoolapp" target="_blank"> <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/small-ad-Animated-version.gif'); ?>" style="width:100%;"></a></center>
+            <center><a href="https://play.google.com/store/apps/details?id=com.champs21.schoolapp" target="_blank"> <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/small-ad-Animated-version-2.gif'); ?>" style="width:100%;"></a></center>
         </div>
         <script type="text/javascript">
 

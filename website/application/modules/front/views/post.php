@@ -1346,8 +1346,9 @@
        //alert(cookieValue);
         if(cookieValue != 1){
                 $.fancybox({
-                'content': html_frm_reg,            
-                'height': 'auto',
+                'content': html_frm_reg, 
+                'width': 250,
+                'height': 500,
                 'transitionIn': 'fade',
                 'transitionOut': 'fade',
                 'openEffect': 'elastic',

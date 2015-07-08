@@ -2103,13 +2103,13 @@ if (!function_exists('set_session_cookie')) {
 
     function set_session_cookie($cookie_token) {
         $cookie = array(
-            'name' => 'c21_session',
+            'name' => 'champs_session',
             'value' => $cookie_token,
             'expire' => 2592000,
             'domain' => str_replace('www.', '', $_SERVER['SERVER_NAME'])
         );
         
-        setcookie('c21_session', $cookie_token, time() + 2592000, '/', str_replace('www.', '', $_SERVER['SERVER_NAME']));
+        setcookie('champs_session', $cookie_token, time() + 2592000, '/', str_replace('www.', '', $_SERVER['SERVER_NAME']));
     }
 
 }
@@ -2117,7 +2117,7 @@ if (!function_exists('set_session_cookie')) {
 if (!function_exists('get_session_cookie')) {
 
     function get_session_cookie() {
-        $cookie = $_COOKIE['c21_session'];
+        $cookie = $_COOKIE['champs_session'];
         if ($cookie) {
             return $cookie;
         } else {

@@ -23,17 +23,17 @@ class home extends MX_Controller {
         $this->load->helper('form');
         
         $this->load->config("huffas");
-//        if(isset($_COOKIE['champs_session']))
-//        {
-//            $this->db->where("cookie_token",$_COOKIE['champs_session']);
-//            $user_data_valid = $this->db->get("free_users");
-//            
-//            if($user_data_valid->num_rows()<1)
-//            {
-//                $this->logout_user();
-//            }    
-//            
-//        }
+        if(free_user_logged_in() && isset($_COOKIE['champs_session']))
+        {
+            $this->db->where("cookie_token",$_COOKIE['champs_session']);
+            $user_data_valid = $this->db->get("free_users");
+            
+            if($user_data_valid->num_rows()<1)
+            {
+                $this->logout_user();
+            }    
+            
+        }
         
 //        $ar_accept_without_cookie = $this->config->config['accept_without_cookie'];
 //        $sess_cookie = $_COOKIE['c21_session'];

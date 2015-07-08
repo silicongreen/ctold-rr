@@ -1340,10 +1340,13 @@
     });
     $(window).bind("load", function() {            
         var html_frm_reg = $('#gif_ad').html();
+
         //var cookieValue = readCookie('spellingbee_ad');
         var cookieValue = document.cookie.replace(/(?:(?:^|.*;\s*)spellingbee_ad\s*\=\s*([^;]*).*$)|^.*$/, "$1");
 
        //alert(cookieValue);
+       
+
         if(cookieValue != 1){
                 $.fancybox({
                 'content': html_frm_reg,                 

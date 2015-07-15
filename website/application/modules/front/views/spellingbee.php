@@ -135,8 +135,19 @@
                 <a  href="<?php echo base_url('archive?st=season1'); ?>" class="f2 button-filter">Season 1</a>
             </div>
             <div class="swing spellato_box">
-                <h2 class="f2" style="margin-left:30px;font-size: 16px;">Download Spellato</h2>
-                <center><img data="spellato" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/spellato.png'); ?>" class="scalup spellato_dl_link"></center>                
+                
+                <!-- On Download Bee Mag -->
+                <h2 class="f2" style="margin-left:30px;font-size: 16px;">Download Bee Mag</h2>
+                <div style=" cursor: pointer;">
+                    <center>
+                        <a href="http://www.champs21.dev/download?f_path=upload/attach_file/sb_magazine.pdf">
+                            <img width="80px" src="http://www.champs21.com/styles/layouts/tdsfront/image/downloads.png">
+                        </a>
+                    </center>
+                </div>
+                
+                <!-- Off Spellato -->
+                <!--<center><img data="spellato" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/spellato.png'); ?>" class="scalup spellato_dl_link"></center>-->                
             </div>
         </div>
         

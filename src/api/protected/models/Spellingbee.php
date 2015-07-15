@@ -112,9 +112,8 @@ class Spellingbee extends CActiveRecord
             
             if($all_clear)
             {
-                unset($levelstatus);
                 Settings::setSpellingBeeCache($cache_name, $levelstatus);
-                
+                unset($levelstatus);
                 
                 $cache_name_word = "YII-SPELLINGBEE-USERWORD-" . $iUserId;
                 $responseword = array();

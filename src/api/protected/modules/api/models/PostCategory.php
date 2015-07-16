@@ -335,7 +335,7 @@ class PostCategory extends CActiveRecord
         $website_only = (int)$website_only;
         if($website_only == 1) {
             $criteria->addInCondition("post.website_only", array(1,2));
-        } else {
+        } else { 
             $criteria->addInCondition("post.website_only", array(0,1));
         }
         

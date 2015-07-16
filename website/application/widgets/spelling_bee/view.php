@@ -83,7 +83,7 @@
                         <div class="col-lg-11">
                         <!--<div class="col-lg-12">-->
                         <!--<div class="col-lg-3">-->
-                            <img class="no_toolbar" src="/styles/layouts/tdsfront/spelling_bee/2015/divisional_button.png" />
+                            <img class="no_toolbar" src="/styles/layouts/tdsfront/spelling_bee/2015/divisional_button_1.png" />
                         </div>
                         <!--div class="col-lg-8 f2" style="color: #ffffff;">
                             LEADER BOARD

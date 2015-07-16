@@ -9,7 +9,7 @@
             </h1>
         </a>                
         <h1 style="color:#93989C;float: left;" class="title noPrint f2">
-            > Leader Board 
+            > Divisional Participants
         </h1>        
     </div>
     <div style="clear:both;"></div>
@@ -17,7 +17,7 @@
         <div style="float: left;width: 100%;padding: 10px 50px;margin-top:20px;">
             <a href="<?php echo base_url('leaderboard'); ?>">
                 <h1 style="float: left;color:#000;font-size:40px;margin-top: 20px;" class="title noPrint f2">
-                    Leader Board
+                    Divisional Participants
                 </h1>
             </a>
             <a href="<?php echo base_url('spellingbee'); ?>">

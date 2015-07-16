@@ -1380,10 +1380,47 @@ class ajax extends MX_Controller
     {
         if(!empty($_POST["stdivision"])) {
             $division = $_POST["stdivision"];
-            $obj_post = new Post_model();            
-            $obj_post_data = $obj_post->get_leader_board($division);
-            if($obj_post_data != 0)
+            
+            /* old leaderboard */
+//            $obj_post = new Post_model();
+//            $obj_post_data = $obj_post->get_leader_board($division);
+            
+            /* new leaderboard from excel */
+            
+            //load our new PHPExcel library
+            $file = 'score_board_16_7.xlsx';
+            
+            $this->load->library('EXcel');
+            
+            $inputFileType = PHPExcel_IOFactory::identify($file);
+            $objReader = PHPExcel_IOFactory::createReader($inputFileType);
+    
+            $objExcel = $objReader->load($file);
+            
+            $division = strtolower($division);
+            
+            $division_name_a = '';
+            $division_name_b = '';
+            if($division == 'dhaka') {
+                $division_name_a = $division.'a';
+                $division_name_b = $division.'b';
+            }
+            
+            if(!empty($division_name_a) && !empty($division_name_b)) {
+                $obj_post_data_a = $objSheet = $objExcel->getSheetByName($division_name_a);
+                $obj_post_data_b = $objSheet = $objExcel->getSheetByName($division_name_b);
+            } else {
+                $obj_post_data_a = $objSheet = $objExcel->getSheetByName($division);
+            }
+            
+            if( !empty($obj_post_data_a) || !empty($obj_post_data_b) )
             {
+                $highestRow_a = $obj_post_data_a->getHighestRow();
+                
+                if(!empty($obj_post_data_b)) {
+                    $highestRow_b = $obj_post_data_b->getHighestRow();
+                }
+                
                 $rank= 1;
                 echo "<table cellspacing='0'>                       
                         <thead>
@@ -1395,22 +1432,55 @@ class ajax extends MX_Controller
                         </thead>
                         <tbody>";
                 
-                foreach ($obj_post_data as $value)
-                {
+                /* old leaderboard */
+//                foreach ($obj_post_data as $value)
+//                {
+//                    echo "<tr>";
+//                    echo "<td>".$rank."</td>";
+//                    echo "<td>".ucfirst($value->first_name)." ".ucfirst($value->middle_name)." ".ucfirst($value->last_name)." "."(".ucfirst($value->school_name).")"."</td>";
+//                    echo "<td>".$value->score."</td></tr>";
+//                    $rank++;
+//                }
+                
+                /* new leaderboard from excel */
+                if(!empty($obj_post_data_b)) {
                     echo "<tr>";
-                    echo "<td>".$rank."</td>";
-                    echo "<td>".ucfirst($value->first_name)." ".ucfirst($value->middle_name)." ".ucfirst($value->last_name)." "."(".ucfirst($value->school_name).")"."</td>";
-                    echo "<td>".$value->score."</td></tr>";
-                    $rank++;
+                        echo "<td colspan=\"3\" style=\"text-align: center; background-color: #aaaaaa; color: #ffffff; font-size: 18px;\">Dhaka A</td>";
+                    echo "</tr>";
                 }
+                
+                for($i = 2; $i <= $highestRow_a; $i++) {
+                    echo "<tr>";
+                        echo "<td>".$obj_post_data_a->getCell('A' . $i)->getValue()."</td>";
+                        echo "<td>".$obj_post_data_a->getCell('B' . $i)->getValue()." "."(".$obj_post_data_a->getCell('C' . $i)->getValue().")"."</td>";
+                        echo "<td>".$obj_post_data_a->getCell('D' . $i)->getValue()."</td>";
+                    echo "</tr>";
+                }
+                
+                /* new leaderboard from excel */
+                if(!empty($obj_post_data_b)) {
+                    echo "<tr>";
+                        echo "<td colspan=\"3\" style=\"text-align: center; background-color: #aaaaaa; color: #ffffff; font-size: 18px;\">Dhaka B</td>";
+                    echo "</tr>";
+                    
+                    for($i = 2; $i <= $highestRow_b; $i++) {
+                        echo "<tr>";
+                            echo "<td>".$obj_post_data_b->getCell('A' . $i)->getValue()."</td>";
+                            echo "<td>".$obj_post_data_b->getCell('B' . $i)->getValue()." "."(".$obj_post_data_b->getCell('C' . $i)->getValue().")"."</td>";
+                            echo "<td>".$obj_post_data_b->getCell('D' . $i)->getValue()."</td>";
+                        echo "</tr>";
+                    }
+
+                }
+                
+                
                 echo "</tbody>
                     </table>";
-                
             }
             else
             {
                 echo "<p>No Data Found.</p>";
-            }            
+            }
         }
     }
     public function createArchiveCache()

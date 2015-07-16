@@ -44,7 +44,7 @@
                     <?php } } else { ?>
                 <!--a href="javascript:void(0);" class="f2 button-filter1 login-user sp_btn_2" style="position:relative;">Join</a-->
                 <?php } ?>
-                <a href="<?php echo base_url('leaderboard'); ?>" class="f2 button-filter2 sp_btn_3" style="position:relative;z-index: 80;">Leaderboard</a>
+                <a href="<?php echo base_url('leaderboard'); ?>" class="f2 button-filter2 sp_btn_3" style="position:relative;z-index: 80;">Divisional Participants</a>
                 <a href="https://www.facebook.com/spellbangladesh" target="_blank" class="f2 button-filter3 sp_btn_4" style="position:relative;z-index: 70;">Facebook</a>
                 </nav>
             </div>

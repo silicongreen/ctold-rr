@@ -21,6 +21,7 @@
                     <li rel="tab4"><a href="javascript:return false;">How to Participate</a> </li>
                     <li rel="tab5"><a href="javascript:return false;">Study Tips</a> </li>
                     <li rel="tab6"><a href="javascript:return false;">Partners</a> </li>
+                    <li rel="tab7"><a href="javascript:return false;" style="color: #ED1C24;">Venue</a> </li>
                 </ul>
             </div> 
             
@@ -53,6 +54,9 @@
             </div>
             <div class="tabbody content mCustomScrollbar" id="tab6" style="display: none;padding: 20px;">
               <?php $this->load->view('spellingbee/term_n_condition'); ?>  
+            </div>
+            <div class="tabbody content mCustomScrollbar" id="tab7" style="display: none;padding: 20px;">
+              <?php $this->load->view('spellingbee/venue'); ?>  
             </div>
             
         </div>
@@ -140,7 +144,7 @@
                 <h2 class="f2" style="margin-left:30px;font-size: 16px;">Download Bee Mag</h2>
                 <div style=" cursor: pointer;">
                     <center>
-                        <a href="http://www.champs21.dev/download?f_path=upload/attach_file/sb_magazine.pdf">
+                        <a href="http://www.champs21.com/download?f_path=upload/attach_file/sb_magazine.pdf">
                             <img width="80px" src="http://www.champs21.com/styles/layouts/tdsfront/image/downloads.png">
                         </a>
                     </center>
@@ -310,7 +314,7 @@
     padding: 10px 0px;
 }
 .tabheading li a { 
-    padding: 10px 33px;
+    padding: 10px 20px;
     color:#88A5B3;
 }
 .tabbody.active {

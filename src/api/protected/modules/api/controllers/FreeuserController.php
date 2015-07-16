@@ -2705,7 +2705,6 @@ class FreeuserController extends Controller
 
     public function actionGetcategorypost()
     {
-        $website_only = 0;
         $page_number = Yii::app()->request->getPost('page_number');
         $total_showed = Yii::app()->request->getPost('total_showed');
         $page_size = Yii::app()->request->getPost('page_size');
@@ -2716,7 +2715,6 @@ class FreeuserController extends Controller
         $game_type = Yii::app()->request->getPost('game_type');
         $user_type_set = Yii::app()->request->getPost('user_type');
         $callded_for_cache = Yii::app()->request->getPost('callded_for_cache');
-        $website_only = Yii::app()->request->getPost('website_only');
 
         $last_api_call = Yii::app()->request->getPost('last_api_call');
 
@@ -2800,21 +2798,21 @@ class FreeuserController extends Controller
             $postcategoryObj = new PostCategory();
             if ($already_showed)
             {
-                $post = $postcategoryObj->getPost($news_category, $user_type, $total_showed, $page_size, $popular_sort, $game_type, $fetaured, $already_showed, $website_only);
+                $post = $postcategoryObj->getPost($news_category, $user_type, $total_showed, $page_size, $popular_sort, $game_type, $fetaured, $already_showed);
             }
             else
             {
-                $post = $postcategoryObj->getPost($news_category, $user_type, $total_showed, $page_size, $popular_sort, $game_type, $fetaured, false, $website_only);
+                $post = $postcategoryObj->getPost($news_category, $user_type, $total_showed, $page_size, $popular_sort, $game_type, $fetaured);
             }
             
             
             if ($already_showed)
             {
-                $response['data']['total'] = $postcategoryObj->getPostTotal($news_category, $user_type, $already_showed, $website_only);
+                $response['data']['total'] = $postcategoryObj->getPostTotal($news_category, $user_type, $already_showed);
             }
             else
             {
-                $response['data']['total'] = $postcategoryObj->getPostTotal($news_category, $user_type, false, $website_only);
+                $response['data']['total'] = $postcategoryObj->getPostTotal($news_category, $user_type);
             }
             $has_next = false;
             if ($response['data']['total'] > $page_number * $page_size)

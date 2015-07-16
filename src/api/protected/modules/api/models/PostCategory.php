@@ -108,7 +108,7 @@ class PostCategory extends CActiveRecord
         return parent::model($className);
     }
 
-    public function getPostTotal($category_id, $user_type, $already_showed = false, $website_only = 0)
+    public function getPostTotal($category_id, $user_type, $already_showed = false)
     {
 
         $criteria = new CDbCriteria();
@@ -136,14 +136,6 @@ class PostCategory extends CActiveRecord
                 )
             ),
         );
-        
-        $website_only = (int)$website_only;
-        if($website_only == 1) {
-            $criteria->addInCondition("post.website_only", array(1,2));
-        } else {
-            $criteria->addInCondition("post.website_only", array(0,1));
-        }
-        
         $criteria->group = "t.category_id";
         $criteria->order = 'DATE(post.published_date) DESC, t.inner_priority ASC';
 
@@ -276,7 +268,7 @@ class PostCategory extends CActiveRecord
         return $post_array;
     }
 
-    public function getPost($category_id, $user_type, $page = 1, $page_size = 10,$popular_sort = false,$game_type = false,$fetaured=false, $already_showed = false, $website_only = 0)
+    public function getPost($category_id, $user_type, $page = 1, $page_size = 10,$popular_sort = false,$game_type = false,$fetaured=false, $already_showed = false)
     {
         $criteria = new CDbCriteria;
         $criteria->select = 't.id';
@@ -331,14 +323,6 @@ class PostCategory extends CActiveRecord
         {
             $criteria->addNotInCondition('post.id', explode(",",$already_showed));
         }
-        
-        $website_only = (int)$website_only;
-        if($website_only == 1) {
-            $criteria->addInCondition("post.website_only", array(1,2));
-        } else { 
-            $criteria->addInCondition("post.website_only", array(0,1));
-        }
-        
         $criteria->together = true;
 
         $obj_post = $this->findAll($criteria);

@@ -81,25 +81,25 @@
                     <p class="user_rank"><span></span>Rank&nbsp;:&nbsp;<?php echo $spellbee_user_rank[0]->rank;?></p>
                     <?php }?>
                 </div>
-                <div style="float:right;width:20%;height:120px; ">
-                    <?php if( free_user_logged_in() ) { ?>
-                        <?php $is_joined_spellbee = get_free_user_session('is_joined_spellbee');
-                        if($is_joined_spellbee == 1 || get_free_user_session('type') != 2){
+                <!--div style="float:right;width:20%;height:120px; ">
+                    <?php // if( free_user_logged_in() ) { ?>
+                        <?php // $is_joined_spellbee = get_free_user_session('is_joined_spellbee');
+//                        if($is_joined_spellbee == 1 || get_free_user_session('type') != 2){
                         ?>                                        
                         <a href="http://www.champs21.com/swf/spellingbee_2015/index.html" title="Spelling Bee | Season 4" class="example2demo" style="float: left;width:110px;" name="Spelling Bee">
-                            <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/play.png'); ?>" style="width:100%;" onMouseOver="MouseRollover(this)" onMouseOut="MouseOut(this)">
+                            <img src="<?php // echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/play.png'); ?>" style="width:100%;" onMouseOver="MouseRollover(this)" onMouseOut="MouseOut(this)">
                         </a>
-                        <?php } else { ?>
+                        <?php // } else { ?>
                             <a  id="join_spellbee_reg" style="float: left;width:110px;" href="javascript:void(0);">
-                                <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/play_again.png'); ?>" style="width:100%;" onMouseOver="MouseRollover(this)" onMouseOut="MouseOut(this)">
+                                <img src="<?php // echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/play_again.png'); ?>" style="width:100%;" onMouseOver="MouseRollover(this)" onMouseOut="MouseOut(this)">
                             </a>
-                        <?php }
-                        } else { ?>
+                        <?php // }
+//                        } else { ?>
                         <a  class="f2 login-user" style="float: left;width:110px;" href="javascript:void(0);">
-                            <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/play_again.png'); ?>" style="width:100%;" onMouseOver="MouseRollover(this)" onMouseOut="MouseOut(this)">
+                            <img src="<?php // echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/play_again.png'); ?>" style="width:100%;" onMouseOver="MouseRollover(this)" onMouseOut="MouseOut(this)">
                         </a>
-                    <?php } ?>
-                </div>
+                    <?php // } ?>
+                </div-->
             </div>
         </div>
             <?php } ?>

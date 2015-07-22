@@ -18,10 +18,15 @@
             <a href="<?php echo base_url('leaderboard'); ?>">
                 <h1 style="float: left;color:#000;font-size:40px;margin-top: 20px;" class="title noPrint f2">
                     Divisional Participants
-                </h1>
+                </h1>                
             </a>
+            <p style="clear: both; float: left; width: 70%;">
+                Congratulation Spellers! 
+Here is the list of Top Spellers who will be competing in the upcoming Divisional Round.
+Look up your name & find <a href="http://www.champs21.com/spelling-bee-season-4-divisional-schedule-1687">when and where</a> to come for the next level of competition. 
+            </p>
             <a href="<?php echo base_url('spellingbee'); ?>">
-                <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/sp-logo.png'); ?>" style="float: right;width:15%;">
+                <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/sp-logo.png'); ?>" style="float: right;width:15%; margin-top: -55px;">
             </a>
             
         </div>

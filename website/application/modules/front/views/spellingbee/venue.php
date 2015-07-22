@@ -19,13 +19,13 @@
           </tr>
           <tr>
             <td>2</td>
-            <td>Rangpur Zilla Perishad Auditorium</td>
+            <td>Zilla Perishad Auditorium, Rangpur</td>
             <td>Thursday, July 30, 2015</td>
             <td>11:00 AM</td>
           </tr>
           <tr>
             <td>3</td>
-            <td>Fairway Community Hall, Khulna</td>
+            <td>Fairway Community Hall, BNS Titumir, Khalishpur, Khulna</td>
             <td>Saturday, August 01, 2015</td>
             <td>11:00 AM</td>
           </tr>
@@ -43,14 +43,20 @@
           </tr>
           <tr>
             <td>6</td>
-            <td>Rima Convention Center, Chittagong</td>
+            <td>Rima Convention Center, Shahid Saifuddin Khaled Road, Chittagong</td>
             <td>Saturday, August 08, 2015</td>
             <td>11:00 AM</td>
           </tr>
           <tr>
             <td>7</td>
-            <td>Institution of Diploma Engineers, Dhaka</td>
-            <td>Tuesday, August 11,2015 & Wednesday, August 12, 2015</td>
+            <td>Institution of Diploma Engineers, Kakrail, Dhaka</td>
+            <td>Tuesday, August 11,2015 <br /> (Dhaka A)</td>
+            <td>11:00 AM</td>
+          </tr>
+          <tr>
+            <td>8</td>
+            <td>Institution of Diploma Engineers, Kakrail, Dhaka</td>
+            <td>Wednesday, August 12, 2015 <br /> (Dhaka B)</td>
             <td>11:00 AM</td>
           </tr>
         </tbody>

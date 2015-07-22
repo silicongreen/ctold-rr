@@ -141,7 +141,7 @@
             <div class="swing spellato_box">
                 
                 <!-- On Download Bee Mag -->
-                <h2 class="f2" style="margin-left:30px;font-size: 16px;">Download Bee Mag</h2>
+                <h2 class="f2" style="margin-left:30px;font-size: 16px;">Download "The Bee Mag"</h2>
                 <div style=" cursor: pointer;">
                     <center>
                         <a href="http://www.champs21.com/download?f_path=upload/attach_file/sb_magazine.pdf">

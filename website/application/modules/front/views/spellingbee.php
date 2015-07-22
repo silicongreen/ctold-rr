@@ -145,7 +145,7 @@
                 <div style=" cursor: pointer;">
                     <center>
                         <a href="http://www.champs21.com/download?f_path=upload/attach_file/sb_magazine.pdf">
-                            <img width="80px" src="http://www.champs21.com/styles/layouts/tdsfront/image/downloads.png">
+                            <img class="no_toolbar" src="<?php echo base_url('/styles/layouts/tdsfront/spelling_bee/2015/bee_mag.png'); ?>" style="width:60%;" />
                         </a>
                     </center>
                 </div>

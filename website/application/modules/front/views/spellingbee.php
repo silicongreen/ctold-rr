@@ -156,7 +156,7 @@
         </div>
         
         <div class="sponser_box">
-            <center><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/sponser.png'); ?>" style="width:100%;"></center>
+            <center><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/sponsors_2.png'); ?>" style="width:100%;"></center>
         </div>
 
         <div  class="more-news f2" style="clear: both; float:left; width:106%; margin-left:-3%;">

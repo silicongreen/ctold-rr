@@ -1398,20 +1398,22 @@ class ajax extends MX_Controller
             $objExcel = $objReader->load($file);
             
             $division = strtolower($division);
+            $division = str_replace(' ', '', $division);
             
-            $division_name_a = '';
-            $division_name_b = '';
-            if($division == 'dhaka') {
-                $division_name_a = $division.'a';
-                $division_name_b = $division.'b';
-            }
+//            var_dump($division);exit;
+//            $division_name_a = '';
+//            $division_name_b = '';
+//            if($division == 'dhaka') {
+//                $division_name_a = $division.'a';
+//                $division_name_b = $division.'b';
+//            }
             
-            if(!empty($division_name_a) && !empty($division_name_b)) {
-                $obj_post_data_a = $objSheet = $objExcel->getSheetByName($division_name_a);
-                $obj_post_data_b = $objSheet = $objExcel->getSheetByName($division_name_b);
-            } else {
+//            if(!empty($division_name_a) && !empty($division_name_b)) {
+//                $obj_post_data_a = $objSheet = $objExcel->getSheetByName($division_name_a);
+//                $obj_post_data_b = $objSheet = $objExcel->getSheetByName($division_name_b);
+//            } else {
                 $obj_post_data_a = $objSheet = $objExcel->getSheetByName($division);
-            }
+//            }
             
             if( !empty($obj_post_data_a) || !empty($obj_post_data_b) )
             {

@@ -113,7 +113,8 @@ Look up your name & find <a href="http://www.champs21.com/spelling-bee-season-4-
             <div class="tabcontainer">
 
                 <ul class="tabheading">
-                    <li class="active" rel="tab1"><a href="javascript:return false;">Dhaka</a> </li>
+                    <li class="active" rel="tab1"><a href="javascript:return false;">Dhaka A</a> </li>
+                    <li rel="tab8"><a href="javascript:return false;">Dhaka B</a> </li>
                     <li rel="tab2"><a href="javascript:return false;">Chittagong</a> </li>
                     <li rel="tab3"><a href="javascript:return false;">Rajshahi</a> </li>
                     <li rel="tab4"><a href="javascript:return false;">Khulna</a> </li>
@@ -136,6 +137,10 @@ Look up your name & find <a href="http://www.champs21.com/spelling-bee-season-4-
                   <?php //$this->load->view('leaderboard/dhaka'); ?> 
                 </div>
 
+                <div class="tabbody" id="tab8" style="display: none;">
+                  <?php //$this->load->view('leaderboard/chittagong'); ?>  
+                </div>
+                
                 <div class="tabbody" id="tab2" style="display: none;">
                   <?php //$this->load->view('leaderboard/chittagong'); ?>  
                 </div>
@@ -228,8 +233,9 @@ nav {
     padding: 10px 0px;
 }
 .tabheading li a { 
-    padding: 10px 33px;
-    color:#88A5B3;
+    color: #88a5b3;
+    font-size: 14px;
+    padding: 10px 20px;
 }
 .tabbody.active {
     display: block;

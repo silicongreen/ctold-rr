@@ -233,16 +233,19 @@ class home extends MX_Controller {
         $ar_segmens = $this->uri->segment_array();
         if($b_frame == '1') {
             
+            $data['ci_key'] = 'schools';
+            
             $school_name = $ar_segmens[2];
             $data['school_name'] = $school_name;
             
             $s_content = $this->load->view('schools_frame', $data, true);
+            
+            // User Data
+            $data['join_user_types'] = $this->get_school_join_user_types();
+            // User Data
 
-            //has some work in right view
-            $s_right_view = $this->load->view('right', $data, TRUE);
-            //echo "<pre>";
-            //print_r($data);
-
+            $s_right_view = '';
+            
             $str_title = "Schools";
             $ar_js = array();
             $ar_css = array();
@@ -263,7 +266,6 @@ class home extends MX_Controller {
             );
 
             $this->extra_params = $ar_params;
-            
         }
         else if(count($ar_segmens) < 2)
         {

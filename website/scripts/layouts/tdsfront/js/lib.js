@@ -143,11 +143,10 @@ $(document).ready(function () {
             }
             
         }
-        
-        if (e.data.indexOf("SHOW_POST") > -1)
-        {
-            getPostData();
-        }
+//        else if (e.data.indexOf("SHOW_POST") > -1)
+//        {
+//            getPostData();
+//        }
     }, false);
 
     if ($(".post").length != 0)

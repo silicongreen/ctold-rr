@@ -53,9 +53,7 @@ height="3318"
         }
 
         if (anchor = event.data['setAnchor']) {
-            console.log(anchor);
-            return false;
-            window.location.href = anchor;
+            window.location.href = 'http://schoolpage.champs21.com/cardiff-international-school/'+anchor;
         }
 
         if (offset = event.data['offset']) {

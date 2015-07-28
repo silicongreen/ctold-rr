@@ -13,13 +13,13 @@
         <tbody>
           <tr>
             <td>1</td>
-            <td>Rajshahi Medical College Auditorium</td>
+            <td>Rajshahi Medical College Auditorium, Rajshahi</td>
             <td>Tuesday, July 28, 2015</td>
             <td>11:00 AM</td>
           </tr>
           <tr>
             <td>2</td>
-            <td>Zilla Perishad Auditorium, Rangpur</td>
+            <td>Zilla Parishad Auditorium, Pouro Bazar Road, Rangpur</td>
             <td>Thursday, July 30, 2015</td>
             <td>11:00 AM</td>
           </tr>
@@ -31,19 +31,20 @@
           </tr>
           <tr>
             <td>4</td>
-            <td>Barisal Medical College Auditorium</td>
+            <td>Sher-e-Bangla Medical College Auditorium, Sagardi, Barishal</td>
             <td>Monday, August 03, 2015</td>
             <td>11:00 AM</td>
           </tr>
           <tr>
             <td>5</td>
-            <td>Kazi Nazrul Islam Auditorium, Sylhet</td>
+            <td>Rima Convention Center, Shahid Saifuddin Khaled Road, Chittagong</td>
             <td>Thursday, August 06, 2015</td>
             <td>11:00 AM</td>
           </tr>
           <tr>
             <td>6</td>
-            <td>Rima Convention Center, Shahid Saifuddin Khaled Road, Chittagong</td>
+            <td>Kazi Nazrul Islam Auditorium, Rekabi Bazar, Sylhet</td>
+
             <td>Saturday, August 08, 2015</td>
             <td>11:00 AM</td>
           </tr>

@@ -250,6 +250,14 @@ class home extends MX_Controller {
             $school_name = $ar_segmens[2];
             $data['school_name'] = $school_name;
             
+//            $body = get_school_page($school_name);
+            
+//            $body = str_replace('"bootstrap/css/', '"http://schoolpage.champs21.com/'.$school_name.'/bootstrap/css/', $body);
+//            $body = str_replace('"css/', '"http://schoolpage.champs21.com/'.$school_name.'/css/', $body);
+//            $body = str_replace('"js/', '"http://schoolpage.champs21.com/'.$school_name.'/js/', $body);
+            
+//            $data['school_page_body'] = $body;
+            
             $s_content = $this->load->view('schools_frame', $data, true);
             
             // User Data

@@ -1,5 +1,4 @@
 <!--<script src="/scripts/layouts/tdsfront/js/iframe_resizer/js/iframeResizer.min.js"></script>-->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 <?php $s_ci_key = (isset($ci_key)) ? $ci_key : NULL; ?>
 
 <script>

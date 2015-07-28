@@ -94,6 +94,46 @@ String.prototype.in_array = function (haystack, argStrict)
 
 
 $(document).ready(function () {
+    
+    window.addEventListener('message', function (event) {
+        if (event.data == 'ready') {
+            sendHash();
+        }
+        
+        if (anchor = event.data['setAnchor']) {
+            console.log(event.data + 'set anchor');
+            window.location.href = anchor;
+        }
+        
+        if (offset = event.data['offset']) {
+            console.log(event.data + 'offset');
+            window.scrollTo(0, $('iframe').offset().top + offset);
+        }
+        
+    });
+
+    sendHash = function () {
+        hash = window.location.hash.substring(1);
+        console.log('hash');
+        $('iframe')[0].contentWindow.postMessage({"findElement": hash}, '*');
+        console.log($('iframe')[0].attr('src'));
+    }
+
+    $(window).on('hashchange', sendHash);
+
+//    window.addEventListener('message', function (event) {
+//        if (anchor = event.data['findElement']) {
+//            element = $('[href="' + anchor + '"]');
+//            window.parent.postMessage({"offset": element.offset().top}, "*");
+//        }
+//    });
+
+//    window.addEventListener('message', function (event) {
+//        if (offset = event.data['offset']) {
+//            window.scrollTo(0, $('iframe').offset().top + offset);
+//        }
+//    });
+
 
     /* var c21_session = readCookie('c21_session');
     var cookie_check = $('#cookie_check').val();

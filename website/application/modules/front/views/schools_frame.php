@@ -53,7 +53,7 @@ height="3318"
         }
 
         if (anchor = event.data['setAnchor']) {
-            window.location.href = 'http://schoolpage.champs21.com/cardiff-international-school/'+anchor;
+            window.location.href = anchor;
         }
 
         if (offset = event.data['offset']) {
@@ -69,12 +69,12 @@ height="3318"
 
     $(window).on('hashchange', sendHash);
 
-    window.addEventListener('message', function (event) {
-        if (anchor = event.data['findElement']) {
-            element = $('[href="' + anchor + '"]');
-            window.parent.postMessage({"offset": element.offset().top}, "*");
-        }
-    });
+//    window.addEventListener('message', function (event) {
+//        if (anchor = event.data['findElement']) {
+//            element = $('[href="' + anchor + '"]');
+//            window.parent.postMessage({"offset": element.offset().top}, "*");
+//        }
+//    });
 
     window.addEventListener('message', function (event) {
         if (offset = event.data['offset']) {

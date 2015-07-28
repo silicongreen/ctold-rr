@@ -2142,6 +2142,19 @@ if (!function_exists('get_session_key')) {
     }
 }
 
+if (!function_exists('get_school_page')) {
+    
+    function get_school_page($school_name) {
+        $ch = curl_init("http://schoolpage.champs21.com/".$school_name."/");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_BINARYTRANSFER, true);
+        $content = curl_exec($ch);
+        curl_close($ch);
+        
+        return $content;
+    }
+}
+
 // ------------------------------------------------------------------------
 
 /* End of file MY_html_helper.php */

@@ -127,8 +127,8 @@ $(document).ready(function () {
     eventer(messageEvent, function (e) {
         
         if(e.data.setAnchor != undefined) {
-            console.log(e.data.setAnchor);
-            return false;
+//            console.log(e.data.setAnchor);
+//            return false;
             
             if (e.data == 'ready') {
                 sendHash();

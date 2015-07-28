@@ -5,8 +5,8 @@
         <thead>
           <tr>
             <th>Sl</th>
-            <th>Venue name</th>
-            <th>Event Date</th>
+            <th>Venue Name</th>
+            <th>Event Date**</th>
             <th>Reporting Time</th>
           </tr>
         </thead>
@@ -31,7 +31,7 @@
           </tr>
           <tr>
             <td>4</td>
-            <td>Sher-e-Bangla Medical College Auditorium, Sagardi, Barishal</td>
+            <td>Sher-e-Bangla Medical College Auditorium, Sagardi, Barisal</td>
             <td>Monday, August 03, 2015</td>
             <td>11:00 AM</td>
           </tr>
@@ -66,7 +66,7 @@
 
 <div>
     <p>
-        ** NOTE: The schedule may change so keep your eye on champs21.com for updates.
+        ** NOTE: The schedule may change. So, keep your eye on champs21.com for updates.
     </p>
 </div>
 

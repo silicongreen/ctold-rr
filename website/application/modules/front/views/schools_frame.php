@@ -67,7 +67,8 @@ height="3318"
     sendHash = function () {
         hash = window.location.hash.substring(1);
         console.log('hash');
-        $('#school_iframe').contentWindow.postMessage({"findElement": hash}, '*');
+        $('iframe')[0].contentWindow.postMessage({"findElement": hash}, '*');
+        console.log($('iframe')[0].attr('src'));
     }
 
     $(window).on('hashchange', sendHash);

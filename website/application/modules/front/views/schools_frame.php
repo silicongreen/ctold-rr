@@ -51,12 +51,14 @@ height="3318"
         if (event.data == 'ready') {
             sendHash();
         }
-
+        
         if (anchor = event.data['setAnchor']) {
+            console.log(event.data + 'set anchor');
             window.location.href = anchor;
         }
-
+        
         if (offset = event.data['offset']) {
+            console.log(event.data + 'offset');
             window.scrollTo(0, $('iframe').offset().top + offset);
         }
         
@@ -64,6 +66,7 @@ height="3318"
 
     sendHash = function () {
         hash = window.location.hash.substring(1);
+        console.log(event.data + 'hash');
         $('iframe')[0].contentWindow.postMessage({"findElement": hash}, '*');
     }
 
@@ -76,10 +79,10 @@ height="3318"
 //        }
 //    });
 
-    window.addEventListener('message', function (event) {
-        if (offset = event.data['offset']) {
-            window.scrollTo(0, $('iframe').offset().top + offset);
-        }
-    });
+//    window.addEventListener('message', function (event) {
+//        if (offset = event.data['offset']) {
+//            window.scrollTo(0, $('iframe').offset().top + offset);
+//        }
+//    });
 
 </script>

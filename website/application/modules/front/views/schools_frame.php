@@ -11,7 +11,7 @@
 
 </script>
 
-<iframe src="http://schoolpage.champs21.com/<?php echo $school_name; ?>" width="100%" frameborder="0" scrolling="no" onload="resizeIframe(this);" ></iframe>
+<iframe id="school_iframe" src="http://schoolpage.champs21.com/<?php echo $school_name; ?>" width="100%" frameborder="0" scrolling="no" onload="resizeIframe(this);" ></iframe>
 
 <!--<div>-->
 <?php // echo $school_page_header; ?>
@@ -51,12 +51,14 @@ height="3318"
         if (event.data == 'ready') {
             sendHash();
         }
-
+        
         if (anchor = event.data['setAnchor']) {
+            console.log(event.data + 'set anchor');
             window.location.href = anchor;
         }
-
+        
         if (offset = event.data['offset']) {
+            console.log(event.data + 'offset');
             window.scrollTo(0, $('iframe').offset().top + offset);
         }
         
@@ -64,22 +66,23 @@ height="3318"
 
     sendHash = function () {
         hash = window.location.hash.substring(1);
-        $('iframe')[0].contentWindow.postMessage({"findElement": hash}, '*');
+        console.log('hash');
+        $('#school_iframe').contentWindow.postMessage({"findElement": hash}, '*');
     }
 
     $(window).on('hashchange', sendHash);
 
-    window.addEventListener('message', function (event) {
-        if (anchor = event.data['findElement']) {
-            element = $('[href="' + anchor + '"]');
-            window.parent.postMessage({"offset": element.offset().top}, "*");
-        }
-    });
+//    window.addEventListener('message', function (event) {
+//        if (anchor = event.data['findElement']) {
+//            element = $('[href="' + anchor + '"]');
+//            window.parent.postMessage({"offset": element.offset().top}, "*");
+//        }
+//    });
 
-    window.addEventListener('message', function (event) {
-        if (offset = event.data['offset']) {
-            window.scrollTo(0, $('iframe').offset().top + offset);
-        }
-    });
+//    window.addEventListener('message', function (event) {
+//        if (offset = event.data['offset']) {
+//            window.scrollTo(0, $('iframe').offset().top + offset);
+//        }
+//    });
 
 </script>

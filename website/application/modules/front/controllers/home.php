@@ -228,8 +228,44 @@ class home extends MX_Controller {
     }
     function schools()
     {   
+        $b_frame = $_GET['iframe'];
+        
         $ar_segmens = $this->uri->segment_array();
-        if(count($ar_segmens) < 2)
+        if($b_frame == '1') {
+            
+            $school_name = $ar_segmens[2];
+            $data['school_name'] = $school_name;
+            
+            $s_content = $this->load->view('schools_frame', $data, true);
+
+            //has some work in right view
+            $s_right_view = $this->load->view('right', $data, TRUE);
+            //echo "<pre>";
+            //print_r($data);
+
+            $str_title = "Schools";
+            $ar_js = array();
+            $ar_css = array();
+            $extra_js = '';
+            $meta_description = META_DESCRIPTION;
+            $keywords = KEYWORDS;
+            $ar_params = array(
+                "javascripts" => $ar_js,
+                "css" => $ar_css,
+                "extra_head" => $extra_js,
+                "title" => $str_title,
+                "description" => $meta_description,
+                "keywords" => $keywords,
+                "side_bar" => $s_right_view,
+                "target" => "schools",
+                "fb_contents" => NULL,
+                "content" => $s_content
+            );
+
+            $this->extra_params = $ar_params;
+            
+        }
+        else if(count($ar_segmens) < 2)
         {
             //$this->show_404_custom();
             $joined_school = get_user_school_joined();

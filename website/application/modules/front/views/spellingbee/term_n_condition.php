@@ -14,7 +14,7 @@
                     <p>To know more visit <a href="http://www.summitgroupbd.com/index.php" target="_blank">www.thedailystar.net</a></p>
                 </div>
             </div>
-            <div style="border: 1px solid #cccccc;float: left; margin: 20px 23px;width: 100%;"></div>
+<!--            <div style="border: 1px solid #cccccc;float: left; margin: 20px 23px;width: 100%;"></div>-->
         </li>
         <li>
             <div style="clear: both;float:left;width: 100%;height: 255px;">
@@ -30,7 +30,7 @@
                     <p>To know more visit <a href="http://www.summitgroupbd.com/index.php" target="_blank">www.summitgroupbd.com</a></p>
                 </div>
             </div>
-            <div style="border: 1px solid #cccccc;float: left; margin: 25px 23px;width: 100%;"></div>
+<!--            <div style="border: 1px solid #cccccc;float: left; margin: 25px 23px;width: 100%;"></div>-->
         </li>
         <li>
             <div style="clear: both;float:left;width: 100%;height: 255px;">
@@ -43,6 +43,37 @@
                     <p>Channel i is a privately owned Television network in Bangladesh. Channel i is the telecast partner of Spelling Bee since the 1st season.  </p>
                     <p>It is owned by the Impress Group, among the largest conglomerates in Bangladesh with interests in textiles, pharmaceuticals and media.The Impress Group first moved beyond textile production and into television in the early 1980s under the tutelage of Faridur Reza Sagor, who had previously worked at state-run Bangladesh Television (BTV) on a freelance basis. Channel i features top quality productions with focus on popular drama serials, games shows, children’s programs, reality shows, films, comedy shows News and views, as well as entertainment programs. It currently broadcasts satellite transmissions using PanAm Sat, which covers most of Asia and parts of Australia and Europe where it has started broadcasting in October, 1, 1999.</p>
                     
+                </div>
+            </div>
+            
+        </li>
+        <li>
+            <div style="clear: both;float:left;width: 100%;height: 255px;">
+                <div class="aleft">
+                    <center><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/bloop.png'); ?>" style="width:90%;cursor: pointer;" class="scalup toolbar"></center>   
+                </div>
+                <div class="aright">
+                    <h2 class="f2" style="color:#FDCB08;font-size:24px;margin-bottom: 5px;">BLOOP</h2>
+                    
+                    <p>BLOOP joined the Spelling Bee family in 2015 and is the associate partner in Spelling Bee Season 4.</p>
+                    <p>BLOOP is the new entrant in the ice cream industry form Golden Harvest Ltd. Golden 
+
+Harvest has set up a brand new plant from Tetra Pack Sweden and is being operated under 
+
+the supervision of a highly experienced Danish production manager. The brand offers 
+
+around 40 various variants including sticks, cups, cones, calippo, sorbets, tubs, cakes and 
+
+many more. Golden Harvest is one of Bangladesh’s leading business group with diversified 
+
+interests in Food, Dairy, Commodity, Information Technology, Logistics, Real Estate, 
+
+Aviation, Infrastructure Development and Insurance. BLOOP is trending a new experience in 
+
+the taste of ice cream and the whole experience comes as “One bite and you will go 
+
+BLOOP”.</p>
+        <p>To know more visit: <a href=" http://www.goldenharvestbd.com/golden-harvest-ice-cream-ltd/" target="_blank">www.goldenharvestbd.com</a></p>            
                 </div>
             </div>
             

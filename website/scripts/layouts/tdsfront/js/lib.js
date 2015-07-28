@@ -119,35 +119,35 @@ $(document).ready(function () {
 
     } */
 
-    var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
-    var eventer = window[eventMethod];
-
-    var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
-
-    eventer(messageEvent, function (e) {
-        
-        if(e.data.setAnchor != undefined) {
-//            console.log(e.data.setAnchor);
-//            return false;
-            
-            if (e.data == 'ready') {
-                sendHash();
-            }
-
-            if (anchor = e.data['setAnchor']) {
-                window.location.href = anchor;
-            }
-
-            if (offset = e.data['offset']) {
-                window.scrollTo(0, $('iframe').offset().top + offset);
-            }
-            
-        }
-//        else if (e.data.indexOf("SHOW_POST") > -1)
-//        {
-//            getPostData();
+//    var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
+//    var eventer = window[eventMethod];
+//
+//    var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
+//
+//    eventer(messageEvent, function (e) {
+//        
+//        if(e.data.setAnchor != undefined) {
+////            console.log(e.data.setAnchor);
+////            return false;
+//            
+//            if (e.data == 'ready') {
+//                sendHash();
+//            }
+//
+//            if (anchor = e.data['setAnchor']) {
+//                window.location.href = anchor;
+//            }
+//
+//            if (offset = e.data['offset']) {
+//                window.scrollTo(0, $('iframe').offset().top + offset);
+//            }
+//            
 //        }
-    }, false);
+////        else if (e.data.indexOf("SHOW_POST") > -1)
+////        {
+////            getPostData();
+////        }
+//    }, false);
 
     if ($(".post").length != 0)
     {

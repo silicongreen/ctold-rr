@@ -11,7 +11,7 @@
 
 </script>
 
-<iframe src="http://schoolpage.champs21.com/<?php echo $school_name; ?>" width="100%" frameborder="0" scrolling="no" onload="resizeIframe(this);" ></iframe>
+<iframe id="school_iframe" src="http://schoolpage.champs21.com/<?php echo $school_name; ?>" width="100%" frameborder="0" scrolling="no" onload="resizeIframe(this);" ></iframe>
 
 <!--<div>-->
 <?php // echo $school_page_header; ?>
@@ -67,7 +67,7 @@ height="3318"
     sendHash = function () {
         hash = window.location.hash.substring(1);
         console.log('hash');
-        $('iframe')[0].contentWindow.postMessage({"findElement": hash}, '*');
+        $('#school_iframe').contentWindow.postMessage({"findElement": hash}, '*');
     }
 
     $(window).on('hashchange', sendHash);

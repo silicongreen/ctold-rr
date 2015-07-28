@@ -53,6 +53,8 @@ height="3318"
         }
 
         if (anchor = event.data['setAnchor']) {
+            console.log(anchor);
+            return false;
             window.location.href = anchor;
         }
 

@@ -125,6 +125,8 @@ $(document).ready(function () {
     var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
 
     eventer(messageEvent, function (e) {
+        console.log(e.data);
+        return false;
         if (e.data.indexOf("SHOW_POST") > -1)
         {
             getPostData();

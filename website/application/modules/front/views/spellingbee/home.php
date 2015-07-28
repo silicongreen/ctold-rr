@@ -19,32 +19,32 @@
                     <?php $is_joined_spellbee = get_free_user_session('is_joined_spellbee');
                     if($is_joined_spellbee == 1 || get_free_user_session('type') != 2){
                     ?> 
-                    <a href="http://www.champs21.com/swf/spellingbee_2015/index.html" title="Spelling Bee | Season 4" class="example2demo sp_btn_1" style="float: left;width:110px;position:relative;z-index: 100;" name="Spelling Bee">
+                    <!--a href="http://www.champs21.com/swf/spellingbee_2015/index.html" title="Spelling Bee | Season 4" class="example2demo sp_btn_1" style="float: left;width:110px;position:relative;z-index: 100;" name="Spelling Bee">
                         <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/play.png'); ?>" style="width:100%;" onMouseOver="MouseRollover(this)" onMouseOut="MouseOut(this)">
-                    </a> 
+                    </a--> 
 <!--                    <a name="windowX" title="Spelling Bee | Season 4" id="play_spellbee_4" style="float: left;width:110px;" href="javascript:void(0);">
                         <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/play.png'); ?>" style="width:100%;" onMouseOver="MouseRollover(this)" onMouseOut="MouseOut(this)">
                     </a>-->
                     <?php } else { ?>
-                        <a class="sp_btn_1" id="join_spellbee_reg" style="float: left;width:110px;position:relative;z-index: 100;" href="javascript:void(0);">
+                        <!--a class="sp_btn_1" id="join_spellbee_reg" style="float: left;width:110px;position:relative;z-index: 100;" href="javascript:void(0);">
                             <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/play.png'); ?>" style="width:100%;" onMouseOver="MouseRollover(this)" onMouseOut="MouseOut(this)">
-                        </a>
+                        </a-->
                     <?php }
                     } else { ?>
-                    <a class="f2 login-user sp_btn_1" style="float: left;width:110px;position:relative;z-index: 100;" href="javascript:void(0);">
+                    <!--a class="f2 login-user sp_btn_1" style="float: left;width:110px;position:relative;z-index: 100;" href="javascript:void(0);">
                         <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/play.png'); ?>" style="width:100%;" onMouseOver="MouseRollover(this)" onMouseOut="MouseOut(this)">
-                    </a>
+                    </a-->
                 <?php } ?>
                 <?php if( free_user_logged_in() ) { ?>
                     <?php $is_joined_spellbee = get_free_user_session('is_joined_spellbee');
                     if($is_joined_spellbee == 0 && get_free_user_session('type') == 2){
                     ?>                    
-                    <a  href="javascript:void(0);" id="join_spellbee_reg" class="f2 button-filter1 sp_btn_2" style="position:relative;z-index: 90;">Join</a>
+                    <!--a href="javascript:void(0);" id="join_spellbee_reg" class="f2 button-filter1 sp_btn_2" style="position:relative;z-index: 90;">Join</a-->
                     
                     <?php } } else { ?>
-                <a href="javascript:void(0);" class="f2 button-filter1 login-user sp_btn_2" style="position:relative;">Join</a>
+                <!--a href="javascript:void(0);" class="f2 button-filter1 login-user sp_btn_2" style="position:relative;">Join</a-->
                 <?php } ?>
-                <a href="<?php echo base_url('leaderboard'); ?>" class="f2 button-filter2 sp_btn_3" style="position:relative;z-index: 80;">Leaderboard</a>
+                <a href="<?php echo base_url('leaderboard'); ?>" class="f2 button-filter2 sp_btn_3" style="position:relative;z-index: 80;">Divisional Participants</a>
                 <a href="https://www.facebook.com/spellbangladesh" target="_blank" class="f2 button-filter3 sp_btn_4" style="position:relative;z-index: 70;">Facebook</a>
                 </nav>
             </div>

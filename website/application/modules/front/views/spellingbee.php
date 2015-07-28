@@ -21,6 +21,7 @@
                     <li rel="tab4"><a href="javascript:return false;">How to Participate</a> </li>
                     <li rel="tab5"><a href="javascript:return false;">Study Tips</a> </li>
                     <li rel="tab6"><a href="javascript:return false;">Partners</a> </li>
+                    <li rel="tab7"><a href="javascript:return false;" style="color: #ED1C24;">Venue</a> </li>
                 </ul>
             </div> 
             
@@ -53,6 +54,9 @@
             </div>
             <div class="tabbody content mCustomScrollbar" id="tab6" style="display: none;padding: 20px;">
               <?php $this->load->view('spellingbee/term_n_condition'); ?>  
+            </div>
+            <div class="tabbody content mCustomScrollbar" id="tab7" style="display: none;padding: 20px;">
+              <?php $this->load->view('spellingbee/venue'); ?>  
             </div>
             
         </div>
@@ -135,13 +139,24 @@
                 <a  href="<?php echo base_url('archive?st=season1'); ?>" class="f2 button-filter">Season 1</a>
             </div>
             <div class="swing spellato_box">
-                <h2 class="f2" style="margin-left:30px;font-size: 16px;">Download Spellato</h2>
-                <center><img data="spellato" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/spellato.png'); ?>" class="scalup spellato_dl_link"></center>                
+                
+                <!-- On Download Bee Mag -->
+                <h2 class="f2" style="margin-left:30px;font-size: 16px;">Download "The Bee Mag"</h2>
+                <div style=" cursor: pointer;">
+                    <center>
+                        <a href="http://www.champs21.com/download?f_path=upload/attach_file/sb_magazine.pdf">
+                            <img class="no_toolbar" src="<?php echo base_url('/styles/layouts/tdsfront/spelling_bee/2015/bee_mag.png'); ?>" style="width:60%;" />
+                        </a>
+                    </center>
+                </div>
+                
+                <!-- Off Spellato -->
+                <!--<center><img data="spellato" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/spellato.png'); ?>" class="scalup spellato_dl_link"></center>-->                
             </div>
         </div>
         
         <div class="sponser_box">
-            <center><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/sponser.png'); ?>" style="width:100%;"></center>
+            <center><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/sponsors_2.png'); ?>" style="width:100%;"></center>
         </div>
 
         <div  class="more-news f2" style="clear: both; float:left; width:106%; margin-left:-3%;">
@@ -299,7 +314,7 @@
     padding: 10px 0px;
 }
 .tabheading li a { 
-    padding: 10px 33px;
+    padding: 10px 20px;
     color:#88A5B3;
 }
 .tabbody.active {

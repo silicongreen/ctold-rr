@@ -9,7 +9,7 @@
             </h1>
         </a>                
         <h1 style="color:#93989C;float: left;" class="title noPrint f2">
-            > Leader Board 
+            > Divisional Participants
         </h1>        
     </div>
     <div style="clear:both;"></div>
@@ -17,11 +17,16 @@
         <div style="float: left;width: 100%;padding: 10px 50px;margin-top:20px;">
             <a href="<?php echo base_url('leaderboard'); ?>">
                 <h1 style="float: left;color:#000;font-size:40px;margin-top: 20px;" class="title noPrint f2">
-                    Leader Board
-                </h1>
+                    Divisional Participants
+                </h1>                
             </a>
+            <p style="clear: both; float: left; width: 70%;">
+                Congratulation Spellers! 
+Here is the list of Top Spellers who will be competing in the upcoming Divisional Round.
+Look up your name & find <a href="http://www.champs21.com/spelling-bee-season-4-divisional-schedule-1687">when and where</a> to come for the next level of competition. 
+            </p>
             <a href="<?php echo base_url('spellingbee'); ?>">
-                <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/sp-logo.png'); ?>" style="float: right;width:15%;">
+                <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/sp-logo.png'); ?>" style="float: right;width:15%; margin-top: -55px;">
             </a>
             
         </div>
@@ -81,25 +86,25 @@
                     <p class="user_rank"><span></span>Rank&nbsp;:&nbsp;<?php echo $spellbee_user_rank[0]->rank;?></p>
                     <?php }?>
                 </div>
-                <div style="float:right;width:20%;height:120px; ">
-                    <?php if( free_user_logged_in() ) { ?>
-                        <?php $is_joined_spellbee = get_free_user_session('is_joined_spellbee');
-                        if($is_joined_spellbee == 1 || get_free_user_session('type') != 2){
+                <!--div style="float:right;width:20%;height:120px; ">
+                    <?php // if( free_user_logged_in() ) { ?>
+                        <?php // $is_joined_spellbee = get_free_user_session('is_joined_spellbee');
+//                        if($is_joined_spellbee == 1 || get_free_user_session('type') != 2){
                         ?>                                        
                         <a href="http://www.champs21.com/swf/spellingbee_2015/index.html" title="Spelling Bee | Season 4" class="example2demo" style="float: left;width:110px;" name="Spelling Bee">
-                            <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/play.png'); ?>" style="width:100%;" onMouseOver="MouseRollover(this)" onMouseOut="MouseOut(this)">
+                            <img src="<?php // echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/play.png'); ?>" style="width:100%;" onMouseOver="MouseRollover(this)" onMouseOut="MouseOut(this)">
                         </a>
-                        <?php } else { ?>
+                        <?php // } else { ?>
                             <a  id="join_spellbee_reg" style="float: left;width:110px;" href="javascript:void(0);">
-                                <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/play_again.png'); ?>" style="width:100%;" onMouseOver="MouseRollover(this)" onMouseOut="MouseOut(this)">
+                                <img src="<?php // echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/play_again.png'); ?>" style="width:100%;" onMouseOver="MouseRollover(this)" onMouseOut="MouseOut(this)">
                             </a>
-                        <?php }
-                        } else { ?>
+                        <?php // }
+//                        } else { ?>
                         <a  class="f2 login-user" style="float: left;width:110px;" href="javascript:void(0);">
-                            <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/play_again.png'); ?>" style="width:100%;" onMouseOver="MouseRollover(this)" onMouseOut="MouseOut(this)">
+                            <img src="<?php // echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/play_again.png'); ?>" style="width:100%;" onMouseOver="MouseRollover(this)" onMouseOut="MouseOut(this)">
                         </a>
-                    <?php } ?>
-                </div>
+                    <?php // } ?>
+                </div-->
             </div>
         </div>
             <?php } ?>
@@ -108,7 +113,8 @@
             <div class="tabcontainer">
 
                 <ul class="tabheading">
-                    <li class="active" rel="tab1"><a href="javascript:return false;">Dhaka</a> </li>
+                    <li class="active" rel="tab1"><a href="javascript:return false;">Dhaka A</a> </li>
+                    <li rel="tab8"><a href="javascript:return false;">Dhaka B</a> </li>
                     <li rel="tab2"><a href="javascript:return false;">Chittagong</a> </li>
                     <li rel="tab3"><a href="javascript:return false;">Rajshahi</a> </li>
                     <li rel="tab4"><a href="javascript:return false;">Khulna</a> </li>
@@ -131,6 +137,10 @@
                   <?php //$this->load->view('leaderboard/dhaka'); ?> 
                 </div>
 
+                <div class="tabbody" id="tab8" style="display: none;">
+                  <?php //$this->load->view('leaderboard/chittagong'); ?>  
+                </div>
+                
                 <div class="tabbody" id="tab2" style="display: none;">
                   <?php //$this->load->view('leaderboard/chittagong'); ?>  
                 </div>
@@ -223,8 +233,9 @@ nav {
     padding: 10px 0px;
 }
 .tabheading li a { 
-    padding: 10px 33px;
-    color:#88A5B3;
+    color: #88a5b3;
+    font-size: 14px;
+    padding: 10px 20px;
 }
 .tabbody.active {
     display: block;

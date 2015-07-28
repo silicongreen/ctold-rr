@@ -557,7 +557,8 @@
             <div class="suggested-post-container">
                 <div class="adme-div">
                     <a href="/spellingbee" style="display: block">
-                        <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/small-ad-Animated-version-2.gif'); ?>">
+                        <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/spellingbee_single_ad.png'); ?>">
+                        <!--<img src="<?php // echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/small-ad-Animated-version-2.gif'); ?>">-->
                     </a>
                 </div>
                 <div class="clearfix"></div>
@@ -677,10 +678,10 @@
             }
             echo $s_more_content;
         ?>
-        <div id="gif_ad" style="position:fixed;bottom:0px;width:20%;margin: 0px auto;right:-270px;display:none; " >
+        <!--div id="gif_ad" style="position:fixed;bottom:0px;width:20%;margin: 0px auto;right:-270px;display:none; " >
             <span class="gif_ad_close" style="cursor: pointer;padding: 10px;position: absolute;right: 22px;top: 6px;"></span>
-            <center><a href="https://play.google.com/store/apps/details?id=com.champs21.schoolapp" target="_blank"> <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/small-ad-Animated-version.gif'); ?>" style="width:100%;"></a></center>
-        </div>
+            <center><a href="https://play.google.com/store/apps/details?id=com.champs21.schoolapp" target="_blank"> <img src="<?php // echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/small-ad-Animated-version.gif'); ?>" style="width:100%;"></a></center>
+        </div-->
         <script type="text/javascript">
 
             function load_print_popup(url)
@@ -1335,6 +1336,9 @@
     echo $s_inner_content;
 ?>
 <script type="text/javascript">
+    eraseCookie('spellingbee_ad');
+</script>
+<!--script type="text/javascript">
     $(document).on("click", ".gif_ad_close", function () {                
         $('#gif_ad').hide();
     });
@@ -1378,4 +1382,4 @@
         }
      });
     
-</script>
+</script-->

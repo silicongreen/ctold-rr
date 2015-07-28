@@ -23,42 +23,47 @@
                     </a>
                 </div>
 
-                <div class="col-lg-6 float-4">
+                <div class="col-lg-6 float-4 align-center">
                     <a href="/spellingbee">
                         <img class="no_toolbar" src="/styles/layouts/tdsfront/spelling_bee/2015/sp-logo.png" />
                     </a>
                 </div>
+                
+                <!-- Off spellingbee play -->
 
-                <div class="col-lg-6 float-4">
+                <!--div class="col-lg-6 float-4">
                     
-                    <?php if( free_user_logged_in() ) { ?>
+                    <?php //if( free_user_logged_in() ) { ?>
                         <?php
-                            $is_joined_spellbee = get_free_user_session('is_joined_spellbee');
-                            if($is_joined_spellbee == 1 || get_free_user_session('type') != 2) {
+                            //$is_joined_spellbee = get_free_user_session('is_joined_spellbee');
+                            //if($is_joined_spellbee == 1 || get_free_user_session('type') != 2) {
                         ?>  <a href="http://www.champs21.com/swf/spellingbee_2015/index.html" title="Spelling Bee | Season 4" class="example2demo play_image" style="border:0px;" name="Spelling Bee">
 <!--                            <a name="windowX" title="Spelling Bee | Season 4" id="play_spellbee_4" class="play_image" style="border:0px;" href="javascript:void(0);">-->
-                                <img id="play_image_1" class="no_toolbar" src="/styles/layouts/tdsfront/spelling_bee/2015/images/play.png" />
+                                <!--img id="play_image_1" class="no_toolbar" src="/styles/layouts/tdsfront/spelling_bee/2015/images/play.png" />
                                 <img id="play_image_2" class="no_toolbar" src="/styles/layouts/tdsfront/spelling_bee/2015/images/play-hover.png" style="display:none;" />
                             </a>
-                        <?php } else { ?>
+                        <?php //} else { ?>
                             <a id="join_spellbee_reg" class="play_image" style="border:0px;" href="javascript:void(0);">
                                 <img id="play_image_1" class="no_toolbar" src="/styles/layouts/tdsfront/spelling_bee/2015/images/play.png" />
                                 <img id="play_image_2" class="no_toolbar" src="/styles/layouts/tdsfront/spelling_bee/2015/images/play-hover.png" style="display:none;" />
                             </a>
-                        <?php } ?>
+                        <?php //} ?>
                         
-                    <?php } else { ?>
+                    <?php //} else { ?>
                         <a class="play_image login-user" style="border:0px;" href="javascript:void(0);">
                             <img id="play_image_1" class="no_toolbar" src="/styles/layouts/tdsfront/spelling_bee/2015/images/play.png" />
                             <img id="play_image_2" class="no_toolbar" src="/styles/layouts/tdsfront/spelling_bee/2015/images/play-hover.png" style="display:none;" />
                         </a>
-                    <?php }?>
+                    <?php //} ?>
                     
-                </div>
+                </div-->
                 
-            </div>  
+            </div>
+            
             <div class="col-lg-6 links-spell">
-                <a href="/gamerules">
+                
+                <!-- Off spellingbee gamerules -->
+                <!--a href="/gamerules">
                     <div class="col-lg-12 leader leader_board1">
                         <div class="col-lg-3">
                             <img class="no_toolbar" src="styles/layouts/tdsfront/images/spellingbee/ruls.png"  />
@@ -67,20 +72,29 @@
                             GAME RULES 
                         </div>
                     </div>
-                </a>
-
+                </a-->
+                <!-- Off spellingbee gamerules -->
+                
+                <!-- Off spellingbee leaderborad -->
+                <!-- On Division qualifiers -->
+                
                 <a href="/leaderboard">
                     <div class="col-lg-12 leader leader_board2">
-                        <div class="col-lg-3">
-                            <img class="no_toolbar" src="styles/layouts/tdsfront/images/spellingbee/leaderboard.png" />
+                        <div class="col-lg-11">
+                        <!--<div class="col-lg-12">-->
+                        <!--<div class="col-lg-3">-->
+                            <img class="no_toolbar" src="/styles/layouts/tdsfront/spelling_bee/2015/divisional_button_1.png" />
                         </div>
-                        <div class="col-lg-8 f2" style="color: #ffffff;">
+                        <!--div class="col-lg-8 f2" style="color: #ffffff;">
                             LEADER BOARD
-                        </div>
+                        </div-->
 
                     </div>
                 </a>
-
+                
+                <!-- On Division qualifiers -->
+                <!-- Off spellingbee leaderborad -->
+                
                 <?php
                 if (count($news->related_news_spelling_bee) > 0)
                     :
@@ -187,10 +201,13 @@ resizable:1
         {
             overflow: hidden;
             float: left;
-            width: 30px;
-            height: 20px;
+            width: 92%;
+            /*height: 20px;*/
             border: 0;
-            margin: 25px;
+            margin: 12px;
+        }
+        .align-center {
+            margin-left: 17px;
         }
         .float-4 .play_image img
         {
@@ -298,6 +315,9 @@ resizable:1
 
     @media (min-width: 420px)
     {
+        .align-center {
+            margin-left: 43px;
+        }
         .date-string
         {
             float:left;
@@ -324,10 +344,10 @@ resizable:1
         {
             overflow: hidden;
             float: left;
-            width: 30px;
-            height: 20px;
+            width: 94%;
+            /*height: 20px;*/
             border: 0;
-            margin: 25px;
+            margin: 12px;
         }
         .float-4 .play_image img
         {
@@ -436,6 +456,9 @@ resizable:1
 
     @media (min-width: 360px)
     {
+        .align-center {
+            margin-left: 28px;
+        }
         .date-string
         {
             float:left;
@@ -462,10 +485,10 @@ resizable:1
         {
             overflow: hidden;
             float: left;
-            width: 30px;
-            height: 20px;
+            width: 92%;
+            /*height: 20px;*/
             border: 0;
-            margin: 25px;
+            margin: 12px;
         }
         .float-4 .play_image img
         {
@@ -574,6 +597,9 @@ resizable:1
 
     @media (min-width: 760px)
     {
+        .align-center {
+            margin-left: 70px;
+        }
         .date-string
         {
             float:left;
@@ -600,9 +626,9 @@ resizable:1
         {
             overflow: hidden;
             float: left;
-            width: 35px;
+            width: 92%;
             border: 0;
-            margin: 28px;
+            margin: 13px;
         }
         .float-4 .play_image img
         {
@@ -708,6 +734,9 @@ resizable:1
 
     @media (min-width: 800px)
     {
+        .align-center {
+            margin-left: 70px;
+        }
         .height_value
         {
             font-size: 15px; 
@@ -746,9 +775,9 @@ resizable:1
         {
             overflow: hidden;
             float: left;
-            width: 35px;
+            width: 90%;
             border: 0;
-            margin: 19px;
+            margin: 16px;
         }
         .float-4 .play_image img
         {
@@ -854,6 +883,9 @@ resizable:1
 
     @media (min-width: 952px)
     {
+        .align-center {
+            margin-left: 70px;
+        }
         .height_value
         {
             font-size: 16px; 
@@ -885,9 +917,9 @@ resizable:1
         {
             overflow: hidden;
             float: left;
-            width: 30px;
+            width: 90%;
             border: 0;
-            margin: 16px;
+            margin: 5x;
         }
         .float-4 .play_image img
         {
@@ -993,6 +1025,9 @@ resizable:1
 
     @media (min-width: 1152px)
     {
+        .align-center {
+            margin-left: 70px;
+        }
         .date-string
         {
             float:left;
@@ -1019,10 +1054,10 @@ resizable:1
         {
             overflow: hidden;
             float: left;
-            width: 25px;
-            height: 16px;
+            width: 90%;
+            /*height: 16px;*/
             border: 0;
-            margin: 23px;
+            margin: 11px;
         }
         .float-4 .play_image img
         {
@@ -1129,6 +1164,9 @@ resizable:1
 
     @media (min-width: 1280px)
     {
+        .align-center {
+            margin-left: 70px;
+        }
         .date-string
         {
             float:left;
@@ -1155,10 +1193,10 @@ resizable:1
         {
             overflow: hidden;
             float: left;
-            width: 30px;
-            height: 20px;
+            width: 98%;
+            /*height: 20px;*/
             border: 0;
-            margin: 25px;
+            margin: 12px;
         }
         .float-4 .play_image img
         {
@@ -1268,6 +1306,9 @@ resizable:1
 
     @media (min-width: 1400px)
     {
+        .align-center {
+            margin-left: 70px;
+        }
         .date-string
         {
             float:left;
@@ -1294,10 +1335,10 @@ resizable:1
         {
             overflow: hidden;
             float: left;
-            width: 40px;
-            height: 28px;
+            width: 98%;
+            /*height: 28px;*/
             border: 0;
-            margin: 25px;
+            margin: 12px;
         }
         .float-4 .play_image img
         {
@@ -1404,6 +1445,9 @@ resizable:1
 
     @media (min-width: 1600px)
     {
+        .align-center {
+            margin-left: 70px;
+        }
         .height_value
         {
             height: 73px;
@@ -1422,10 +1466,10 @@ resizable:1
         {
             overflow: hidden;
             float: left;
-            width: 51px;
-            height: 38px;
+            width: 98%;
+            /*height: 38px;*/
             border: 0;
-            margin: 25px;
+            margin: 12px;
         }
         .float-4 .play_image img
         {

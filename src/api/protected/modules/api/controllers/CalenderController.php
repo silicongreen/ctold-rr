@@ -610,7 +610,7 @@ class CalenderController extends Controller
             {
                 $reminderrecipients[] = $grdata->user_id;
                 $batch_ids[$grdata->user_id] = $studentdata->batch_id;
-                $student_id[$grdata->user_id] = $studentdata->id;
+                $student_ids[$grdata->user_id] = $studentdata->id;
             }
         }
         $approved_text = "Denied";

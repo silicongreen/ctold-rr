@@ -22,7 +22,21 @@ class home extends MX_Controller {
         $this->load->library('datamapper');
         $this->load->helper('form');
         $this->load->config("huffas");
+<<<<<<< HEAD
 
+=======
+        if(free_user_logged_in() && isset($_COOKIE['champs_session']))
+        {
+            $this->db->where("cookie_token",$_COOKIE['champs_session']);
+            $user_data_valid = $this->db->get("free_users");
+            
+            if($user_data_valid->num_rows()<1)
+            {
+                $this->logout_user();
+            }    
+            
+        }
+>>>>>>> hotfix/Hotfix-450
         
 //        $ar_accept_without_cookie = $this->config->config['accept_without_cookie'];
 //        $sess_cookie = $_COOKIE['c21_session'];
@@ -226,8 +240,46 @@ class home extends MX_Controller {
     }
     function schools()
     {   
+        $b_frame = $_GET['iframe'];
+        
         $ar_segmens = $this->uri->segment_array();
-        if(count($ar_segmens) < 2)
+        if($b_frame == '1') {
+            
+            $data['ci_key'] = 'schools';
+            
+            $school_name = $ar_segmens[2];
+            $data['school_name'] = $school_name;
+            
+            $s_content = $this->load->view('schools_frame', $data, true);
+            
+            // User Data
+            $data['join_user_types'] = $this->get_school_join_user_types();
+            // User Data
+
+            $s_right_view = '';
+            
+            $str_title = "Schools";
+            $ar_js = array();
+            $ar_css = array();
+            $extra_js = '';
+            $meta_description = META_DESCRIPTION;
+            $keywords = KEYWORDS;
+            $ar_params = array(
+                "javascripts" => $ar_js,
+                "css" => $ar_css,
+                "extra_head" => $extra_js,
+                "title" => $str_title,
+                "description" => $meta_description,
+                "keywords" => $keywords,
+                "side_bar" => $s_right_view,
+                "target" => "schools",
+                "fb_contents" => NULL,
+                "content" => $s_content
+            );
+
+            $this->extra_params = $ar_params;
+        }
+        else if(count($ar_segmens) < 2)
         {
             //$this->show_404_custom();
             $joined_school = get_user_school_joined();
@@ -2501,8 +2553,8 @@ class home extends MX_Controller {
         $array_items = array('free_user' => array());
         $this->session->unset_userdata($array_items);
         $this->session->sess_destroy();
-        unset($_COOKIE['c21_session']);
-        setcookie('c21_session', NULL, time() - 100, '/', str_replace('www.', '', $_SERVER['SERVER_NAME']));
+        unset($_COOKIE['champs_session']);
+        setcookie('champs_session', NULL, time() - 100, '/', str_replace('www.', '', $_SERVER['SERVER_NAME']));
         set_type_cookie(1);
         redirect(base_url());
         
@@ -2887,23 +2939,104 @@ $options = array(
         $obj_post = new Post_model();    
         $user_score = $obj_post->get_user_score($user_id);
         $user_rank = $obj_post->get_user_rank($user_score[0]->score,$user_score[0]->test_time,$user_score[0]->country_id,strtolower($user_division));
-                
-        $obj_post_data = $obj_post->get_leader_board();
         
-        if($obj_post_data != 0)
-        {
-        $rank= 1;$shtml = "";
-        foreach ($obj_post_data as $srow){
-                   
-		$shtml .= "<tr>";
-                $shtml .= "<td>".$rank."</td>";
-		$shtml .= "<td>".ucfirst($srow->first_name)." ".ucfirst($srow->middle_name)." ".ucfirst($srow->last_name)." "."(".ucfirst($srow->school_name).")"."</td>";
-		$shtml .= "<td>".$srow->score."</td>";
-		$shtml .= "</tr>";
-            $rank++;
+        /* old leaderboard */
+//        $obj_post_data = $obj_post->get_leader_board();
+//        
+//        if($obj_post_data != 0)
+//        {
+        $rank= 1;
+        $shtml = "";
+//        foreach ($obj_post_data as $srow){
+//                   
+//		$shtml .= "<tr>";
+//                $shtml .= "<td>".$rank."</td>";
+//		$shtml .= "<td>".ucfirst($srow->first_name)." ".ucfirst($srow->middle_name)." ".ucfirst($srow->last_name)." "."(".ucfirst($srow->school_name).")"."</td>";
+//		$shtml .= "<td>".$srow->score."</td>";
+//		$shtml .= "</tr>";
+//            $rank++;
+//        }
+//        }else{$shtml = "<p>No Data Found.</p>";}
+        
+        /* new leaderboard from excel */
+        
+        $file = 'score_board_16_7.xlsx';
+            
+        $this->load->library('EXcel');
+
+        $inputFileType = PHPExcel_IOFactory::identify($file);
+        $objReader = PHPExcel_IOFactory::createReader($inputFileType);
+
+        $objExcel = $objReader->load($file);
+
+        $division = strtolower('dhaka');
+
+        $division_name_a = '';
+        $division_name_b = '';
+        if($division == 'dhaka') {
+            $division_name_a = $division.'a';
+            $division_name_b = $division.'b';
         }
-        }else{$shtml = "<p>No Data Found.</p>";}
-                
+
+        if(!empty($division_name_a) && !empty($division_name_b)) {
+            $obj_post_data_a = $objSheet = $objExcel->getSheetByName($division_name_a);
+            $obj_post_data_b = $objSheet = $objExcel->getSheetByName($division_name_b);
+        } else {
+            $obj_post_data_a = $objSheet = $objExcel->getSheetByName($division);
+        }
+        
+        if( !empty($obj_post_data_a) || !empty($obj_post_data_b) )
+        {
+            $highestRow_a = $obj_post_data_a->getHighestRow();
+
+            if(!empty($obj_post_data_b)) {
+                $highestRow_b = $obj_post_data_b->getHighestRow();
+            }
+
+            /* old leaderboard */
+//                foreach ($obj_post_data as $value)
+//                {
+//                    echo "<tr>";
+//                    echo "<td>".$rank."</td>";
+//                    echo "<td>".ucfirst($value->first_name)." ".ucfirst($value->middle_name)." ".ucfirst($value->last_name)." "."(".ucfirst($value->school_name).")"."</td>";
+//                    echo "<td>".$value->score."</td></tr>";
+//                    $rank++;
+//                }
+
+            /* new leaderboard from excel */
+            if(!empty($obj_post_data_b)) {
+                $shtml .= "<tr>";
+                    $shtml .= "<td colspan=\"3\" style=\"text-align: center; background-color: #aaaaaa; color: #ffffff; font-size: 18px;\">Dhaka A</td>";
+                $shtml .= "</tr>";
+            }
+
+            for($i = 2; $i <= $highestRow_a; $i++) {
+                $shtml .= "<tr>";
+                    $shtml .= "<td>".$obj_post_data_a->getCell('A' . $i)->getValue()."</td>";
+                    $shtml .= "<td>".$obj_post_data_a->getCell('B' . $i)->getValue()." "."(".$obj_post_data_a->getCell('C' . $i)->getValue().")"."</td>";
+                    $shtml .= "<td>".$obj_post_data_a->getCell('D' . $i)->getValue()."</td>";
+                $shtml .= "</tr>";
+            }
+
+            /* new leaderboard from excel */
+            if(!empty($obj_post_data_b)) {
+                $shtml .= "<tr>";
+                    $shtml .= "<td colspan=\"3\" style=\"text-align: center; background-color: #aaaaaa; color: #ffffff; font-size: 18px;\">Dhaka B</td>";
+                $shtml .= "</tr>";
+
+                for($i = 2; $i <= $highestRow_b; $i++) {
+                    $shtml .= "<tr>";
+                        $shtml .= "<td>".$obj_post_data_b->getCell('A' . $i)->getValue()."</td>";
+                        $shtml .= "<td>".$obj_post_data_b->getCell('B' . $i)->getValue()." "."(".$obj_post_data_b->getCell('C' . $i)->getValue().")"."</td>";
+                        $shtml .= "<td>".$obj_post_data_b->getCell('D' . $i)->getValue()."</td>";
+                    $shtml .= "</tr>";
+                }
+
+            }
+        }
+        
+        /* new leaderboard from excel */
+        
         $data['spellbee_user_score'] = $user_score;
         $data['spellbee_user_rank']  = $user_rank;
         $data['spellbee_data']    = $shtml;

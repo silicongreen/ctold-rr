@@ -66,7 +66,7 @@ height="3318"
 
     sendHash = function () {
         hash = window.location.hash.substring(1);
-        console.log(event.data + 'hash');
+        console.log('hash');
         $('iframe')[0].contentWindow.postMessage({"findElement": hash}, '*');
     }
 

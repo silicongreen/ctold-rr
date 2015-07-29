@@ -1,0 +1,294 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+<div class="container" style="width: 77%; min-height:250px;">
+    <div style="margin:30px 20px; height:60px;">
+        <div style="float:left">
+            <h2 class="f2">School Information</h2>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+
+    <div class="wrapper">
+
+        <div class="new-school-wrapper">
+
+            <!-- Template information -->
+            <div class="template-header">
+
+                <div class="template-header-left col-md-5">
+
+                    <div class="template-image-wrapper">
+
+                        <div class="template-image">
+                            <img class="template-image-image" src="/styles/layouts/tdsfront/images/wide-angle.png" />
+                            <div class="template-type-tag">
+                                <img src="/styles/layouts/tdsfront/images/tag-500tk.png" />
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+
+                        <div class="template-buttons">
+                            <button type="button" class="btn btn-danger col-sm-5 f2">Diselect</button>
+                            <button type="button" class="btn btn-info col-sm-6 f2">View Demo</button>
+                        </div>
+
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                    <div class="template-hint">Change Your theme anytime by cllicking diselect button.</div>
+
+                </div>
+
+                <div class="template-header-right col-md-7">
+
+                    <div class="top-ribbon f2">
+                        Your Template: 
+                    </div>
+
+                    <div class="feature-list-wrapper">
+                        <ul>
+                            <li><i class="fa fa-check"></i>One Page Responsive Website</li>
+                            <li><i class="fa fa-check"></i>Make Maximum 10 Page</li>
+                            <li><i class="fa fa-check"></i>Full Access Admin Panel</li>
+                            <li><i class="fa fa-check"></i>100% Free!!!</li>
+                        </ul>
+                    </div>
+
+                </div>
+
+            </div>
+            <!-- Template information -->
+
+
+            <!-- Template form -->
+            <div class="template-form">
+
+                <form class="form-inline">
+
+                    <div class="template-form-label f2">Fill up the information</div>
+                    <div class="clearfix"></div>
+
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="full_name" id="full_name" placeholder="Your Name" required="required" />
+                    </div>
+                    <div class="form-group">
+                        <input type="email" class="form-control" name="email_addr" id="email_addr" placeholder="Your Email" required="required" />
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <div class="form-group text-wrapper">
+                        <input type="text" class="form-control" name="school_name" id="school_name" placeholder="Your School Name" required="required" />
+                    </div>
+                    <div class="clearfix"></div>
+                    
+                    <div class="form-group textarea-wrapper">
+                        <textarea class="form-control" rows="3" name="school_addr" id="school_addr" placeholder="Your School Address" required="required" /></textarea>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="phone_number" id="phone_number" placeholder="Your Phone Number" required="required" />
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="home_phone" id="home_phone" placeholder="Your Home Phone Number (* If any)">
+                    </div>
+                    <div class="clearfix"></div>
+                    
+                    <div class="template-form-label f2">Fill up your school information</div>
+                    <div class="clearfix"></div>
+                    
+                    <div class="form-group textarea-wrapper">
+                        <textarea class="form-control" rows="3" name="school_about" id="school_about" placeholder="About your school" required="required" /></textarea>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <div class="form-group textarea-wrapper">
+                        <textarea class="form-control" rows="3" name="school_admission" id="school_admission" placeholder="Admission details" required="required" /></textarea>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <div class="form-group textarea-wrapper">
+                        <textarea class="form-control" rows="3" name="school_facilities" id="school_facilities" placeholder="Facilities" required="required" /></textarea>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <div class="form-group textarea-wrapper">
+                        <textarea class="form-control" rows="3" name="school_achievements" id="school_achievements" placeholder="Achievements" required="required" /></textarea>
+                    </div>
+                    <div class="clearfix"></div>
+                    
+                    <div class="form-group textarea-wrapper">
+                        <label for="school_image" class="btn btn-success f2 col-sm-2">Upload Picture</label>
+                        <input type="file" id="school_image" name="school_image" style="display: none;" />
+                        
+                        <label for="school_file" class="btn btn-info f2 col-sm-2">Upload File</label>
+                        <input type="file" id="school_file" name="school_file" style="display: none;" />
+                        
+                        <button type="submit" class="btn btn-primary col-sm-2 f2">Submit</button>
+                        
+                    </div>
+                </form>
+
+
+            </div>
+            <!-- Template form -->
+
+            
+            <!-- Template footer -->
+            <div class="template-footer">
+
+            </div>
+            <!-- Template footer -->
+
+        </div>
+
+    </div>
+
+</div>
+
+<style type="text/css">
+    .new-school-wrapper {
+        background-color: #efefef;
+        box-shadow: 0 0 5px 1px #ccc;
+        float: left;
+        margin-left: 20px;
+        width: 97%;
+    }
+    .template-header, .template-footer {
+        box-shadow: 0 2px 5px 0 #bbbbbb;
+        float: left;
+        padding-bottom: 40px;
+        width: 100%;
+    }
+    .template-header-left {
+        padding: 40px 15px 0 20px;
+    }
+    .template-header-right {
+        padding: 40px 0 0 0;
+    }
+    .template-image-wrapper {
+        background-color: #ffffff;
+        float: left;
+        width: 80%;
+    }
+    .template-hint {
+        font-size: 10px;
+        color: #777777;
+        width: 80%;
+        padding: 20px 0px 0px;
+    }
+    .template-image {
+        margin-left: auto;
+        margin-right: auto;
+        position: relative;
+    }
+    .template-image-image {
+        padding: 20px;
+        width: 100%;
+    }
+    .template-type-tag {
+        left: 20px;
+        position: absolute;
+        top: 20px;
+    }
+    .template-type-tag img {
+        width: 60%;
+    }
+    .template-buttons {
+        float: left;
+        padding: 0 20px 15px;
+        width: 100%;
+    }
+    .template-buttons .btn.btn-danger {
+        background-color: #DC3434;
+    }
+    .template-buttons .btn.btn-danger:hover {
+        background-color: #E35D5D;
+    }
+    .template-buttons .btn.btn-info {
+        background-color: #3F515D;
+    }
+    .template-buttons .btn.btn-info:hover {
+        background-color: #65747D;
+    }
+    .top-ribbon {
+        background-color: #37a67c;
+        color: #ffffff;
+        font-size: 30px;
+        padding: 10px 20px;
+    }
+    .feature-list-wrapper {
+        margin-top: 40px;
+    }
+    .feature-list-wrapper ul {
+        margin: 0;
+    }
+    .feature-list-wrapper ul li {
+        color: #010101;
+        line-height: 30px;
+    }
+    .feature-list-wrapper ul li i {
+        font-size: 25px;
+        margin-right: 25px;
+    }
+
+    .template-form {
+        background-color: #ffffff;
+        float: left;
+        margin-top: 3px;
+        width: 100%;
+    }
+    .template-form-label {
+        color: #3f515d;
+        font-size: 45px;
+        padding: 40px 0 20px;
+        text-align: center;
+        width: 100%;
+    }
+    .form-inline {
+        margin-left: auto;
+        margin-right: auto;
+        padding: 0 10px;
+        text-align: center;
+        width: 90%;
+    }
+    .form-inline .form-group {
+        margin-bottom: 15px;
+        width: 49%;
+    }
+    .form-inline .form-control {
+        height: 45px;
+        width: 98%;
+    }
+    .form-inline .text-wrapper, .form-inline .textarea-wrapper {
+        width: 98%;
+    }
+    .form-inline .text-wrapper .form-control, .form-inline .textarea-wrapper .form-control {
+        width: 99.5%;
+    }
+    .form-inline .textarea-wrapper .form-control {
+        height: 90px;
+    }
+    .btn.btn-success {
+        background-color: #52D0A0;
+    }
+    .btn.btn-success:hover {
+        background-color: #75D9B3;
+    }
+    .btn.btn-info {
+        background-color: #6598B7;
+    }
+    .btn.btn-info:hover {
+        background-color: #90B5CB;
+    }
+    .btn.btn-primary {
+        background-color: #813186;
+    }
+    .btn.btn-primary:hover {
+        background-color: #B383B6;
+    }
+    
+    .template-footer {
+        margin-top: 3px;
+    }
+</style>

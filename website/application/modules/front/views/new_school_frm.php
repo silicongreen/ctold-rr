@@ -1,4 +1,12 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+<link rel="stylesheet" href="/scripts/flexslider/flexslider.css" type="text/css" media="screen" />
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="js/libs/jquery-1.7.min.js">\x3C/script>')</script>
+
+<script src="/scripts/flexslider/js/modernizr.js"></script>
+
 <div class="container" style="width: 77%; min-height:250px;">
     <div style="margin:30px 20px; height:60px;">
         <div style="float:left">
@@ -19,16 +27,16 @@
                     <div class="template-image-wrapper">
 
                         <div class="template-image">
-                            <img class="template-image-image" src="/styles/layouts/tdsfront/images/wide-angle.png" />
+                            <img class="template-image-image" src="<?php echo $ar_templates['cover_url']; ?>" />
                             <div class="template-type-tag">
-                                <img src="/styles/layouts/tdsfront/images/tag-500tk.png" />
+                                <img src="<?php echo ($ar_templates['price'] > 0) ? $ar_templates['price_tag_url'] : '/styles/layouts/tdsfront/school_templates/free_icon.png'; ?>" />
                             </div>
                         </div>
                         <div class="clearfix"></div>
 
                         <div class="template-buttons">
                             <button type="button" class="btn btn-danger col-sm-5 f2">Diselect</button>
-                            <button type="button" class="btn btn-info col-sm-6 f2">View Demo</button>
+                            <button type="button" class="btn btn-info col-sm-6 f2" onclick="window.open('<?php echo $ar_templates['demo_url']; ?>', '_blank')">View Demo</button>
                         </div>
 
                     </div>
@@ -42,7 +50,7 @@
                 <div class="template-header-right col-md-7">
 
                     <div class="top-ribbon f2">
-                        Your Template: 
+                        Your Template: <?php echo $ar_templates['name']; ?>
                     </div>
 
                     <div class="feature-list-wrapper">
@@ -80,7 +88,7 @@
                         <input type="text" class="form-control" name="school_name" id="school_name" placeholder="Your School Name" required="required" />
                     </div>
                     <div class="clearfix"></div>
-                    
+
                     <div class="form-group textarea-wrapper">
                         <textarea class="form-control" rows="3" name="school_addr" id="school_addr" placeholder="Your School Address" required="required" /></textarea>
                     </div>
@@ -93,10 +101,10 @@
                         <input type="text" class="form-control" name="home_phone" id="home_phone" placeholder="Your Home Phone Number (* If any)">
                     </div>
                     <div class="clearfix"></div>
-                    
+
                     <div class="template-form-label f2">Fill up your school information</div>
                     <div class="clearfix"></div>
-                    
+
                     <div class="form-group textarea-wrapper">
                         <textarea class="form-control" rows="3" name="school_about" id="school_about" placeholder="About your school" required="required" /></textarea>
                     </div>
@@ -116,16 +124,16 @@
                         <textarea class="form-control" rows="3" name="school_achievements" id="school_achievements" placeholder="Achievements" required="required" /></textarea>
                     </div>
                     <div class="clearfix"></div>
-                    
+
                     <div class="form-group textarea-wrapper">
                         <label for="school_image" class="btn btn-success f2 col-sm-2">Upload Picture</label>
                         <input type="file" id="school_image" name="school_image" style="display: none;" />
-                        
+
                         <label for="school_file" class="btn btn-info f2 col-sm-2">Upload File</label>
                         <input type="file" id="school_file" name="school_file" style="display: none;" />
-                        
+
                         <button type="submit" class="btn btn-primary col-sm-2 f2">Submit</button>
-                        
+
                     </div>
                 </form>
 
@@ -133,9 +141,47 @@
             </div>
             <!-- Template form -->
 
-            
+
             <!-- Template footer -->
             <div class="template-footer">
+
+                <section class="slider">
+                    <div class="flexslider carousel">
+                        <ul class="slides">
+
+                            <?php
+                            foreach ($all_ar_templates as $template) {
+
+                                if ($template['name'] != $ar_templates['name']) {
+                                    ?>
+
+                                    <li>
+                                        <div class="template-image-wrapper">
+
+                                            <div class="template-image">
+                                                <img class="template-image-image" src="<?php echo $template['cover_url']; ?>" />
+                                                <div class="template-type-tag">
+                                                    <img src="<?php echo ($template['price'] > 0) ? $template['price_tag_url'] : '/styles/layouts/tdsfront/school_templates/free_icon.png'; ?>" />
+                                                </div>
+                                            </div>
+                                            <div class="clearfix"></div>
+
+                                            <div class="template-buttons">
+                                                <button type="button" class="btn btn-danger f2 col-sm-4" onclick="window.location.href = '<?php echo base_url('submit-new-school?id=' . $template['name']); ?>'">Select</button>
+                                                <button type="button" class="btn btn-info f2 col-sm-6" onclick="window.open('<?php echo $template['demo_url']; ?>', '_blank')">View Demo</button>
+                                            </div>
+
+                                        </div>
+                                    </li>
+
+                                    <?php
+                                }
+                            }
+                            ?>
+
+                        </ul>
+                    </div>
+                </section>
 
             </div>
             <!-- Template footer -->
@@ -169,7 +215,7 @@
     .template-image-wrapper {
         background-color: #ffffff;
         float: left;
-        width: 80%;
+        width: 86%;
     }
     .template-hint {
         font-size: 10px;
@@ -234,6 +280,7 @@
 
     .template-form {
         background-color: #ffffff;
+        box-shadow: -4px 7px 10px -7px #bbbbbb;
         float: left;
         margin-top: 3px;
         width: 100%;
@@ -287,8 +334,64 @@
     .btn.btn-primary:hover {
         background-color: #B383B6;
     }
-    
+
     .template-footer {
         margin-top: 3px;
+        padding-bottom: 0;
+    }
+
+    .flexslider {
+        margin-bottom: 30px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 40px;
+        width: 95%;
+    }
+    .flexslider .slides .template-type-tag img {
+        width: 60%;
+    }
+    .flexslider .slides .template-image-wrapper {
+        width: 94%;
+    }
+    .flexslider .slides .template-buttons {
+        padding: 0 5px 0 15px;
+    }
+    .flexslider .slides .template-buttons .btn.btn-danger, .flexslider .slides .template-buttons .btn.btn-info {
+        font-size: 12px;
+        padding: 10px 0;
+    }
+    .flex-direction-nav a {
+        overflow: visible !important;
     }
 </style>
+
+<!-- FlexSlider -->
+<script defer src="/scripts/flexslider/jquery.flexslider.js"></script>
+
+<script type="text/javascript">
+                                                            $(function () {
+                                                            SyntaxHighlighter.all();
+                                                            });
+                                                            $(window).load(function () {
+                                                                $('.flexslider').flexslider({
+                                                    animation: "slide",
+                                                            slideShow: false,
+                                                            animationLoop: false,
+                                                            itemWidth: 210,
+                                                            itemMargin: 0,
+                                                            minItems: 2,
+                                                            maxItems: 4,
+                                                            controlNav: false,
+                                                            nextText: "",
+                                                            prevText: "",
+                                                            start: function (slider) {
+                                                                $('body').removeClass('loading');
+                                                            }
+                                                        });
+                                                    });
+</script>
+
+<!-- Optional FlexSlider Additions -->
+<!--<script src="/scripts/flexslider/js/jquery.easing.js"></script>
+<script src="/scripts/flexslider/js/jquery.mousewheel.js"></script>
+<script defer src="/scripts/flexslider/js/demo.js"></script>-->

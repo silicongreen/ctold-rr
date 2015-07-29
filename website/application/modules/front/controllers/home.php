@@ -44,9 +44,18 @@ class home extends MX_Controller {
     }
     
     public function submit_new_school() {
-            
+        
+        $data['all_ar_templates'] = $this->config->config['school_templates'];
+        
+        if ( !isset($_GET['id']) || !isset($data['all_ar_templates'][$_GET['id']] ) ) {
+            redirect('/create-school-website');
+        }
+        
+        $id = $_GET['id'];
         $data['ci_key'] = 'new_school';
-
+        
+        $data['ar_templates'] = $data['all_ar_templates'][$id];
+        
         $s_content = $this->load->view('new_school_frm', $data, true);
 
         // User Data
@@ -259,39 +268,6 @@ class home extends MX_Controller {
             header("Location: ".$url);
             exit;
         }
-    }
-    function create_school_website()
-    {
-        $data['ci_key'] = 'Create School Website';
-
-        $s_content = $this->load->view('create_school_website', $data, true);
-
-        // User Data
-        $data['join_user_types'] = $this->get_school_join_user_types();
-        // User Data
-
-        $s_right_view = '';
-
-        $str_title = "Create School Website";
-        $ar_js = array();
-        $ar_css = array();
-        $extra_js = '';
-        $meta_description = META_DESCRIPTION;
-        $keywords = KEYWORDS;
-        $ar_params = array(
-            "javascripts" => $ar_js,
-            "css" => $ar_css,
-            "extra_head" => $extra_js,
-            "title" => $str_title,
-            "description" => $meta_description,
-            "keywords" => $keywords,
-            "side_bar" => $s_right_view,
-            "target" => "schools",
-            "fb_contents" => NULL,
-            "content" => $s_content
-        );
-
-        $this->extra_params = $ar_params; 
     }
     function schools()
     {   

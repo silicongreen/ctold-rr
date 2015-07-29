@@ -1,6 +1,6 @@
-<link href="scripts/flexslider/css/shCore.css" rel="stylesheet" type="text/css" />
+<!--<link href="scripts/flexslider/css/shCore.css" rel="stylesheet" type="text/css" />
 <link href="scripts/flexslider/css/shThemeDefault.css" rel="stylesheet" type="text/css" />
-<link rel="stylesheet" href="scripts/flexslider/css/demo.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="scripts/flexslider/css/demo.css" type="text/css" media="screen" />-->
 <link rel="stylesheet" href="scripts/flexslider/flexslider.css" type="text/css" media="screen" />
 <script src="scripts/flexslider/js/modernizr.js"></script>
 <?php $s_ci_key = (isset($ci_key)) ? $ci_key : NULL; ?>
@@ -32,7 +32,7 @@
                         
                         <div class="template-image">
                             <img class="template-image-image" src="styles/layouts/tdsfront/images/wide-angle.png" />
-                           <div class="template-type-tag">
+                           <div class="template-type-tag2">
                                 <img src="scripts/flexslider/images/free_icon.png" />
                             </div>
                         </div>
@@ -51,7 +51,7 @@
 
                                 <div class="template-image">
                                     <img class="template-image-image" src="styles/layouts/tdsfront/images/wide-angle.png" />
-                                 <div class="template-type-tag">
+                                 <div class="template-type-tag2">
                                         <img src="scripts/flexslider/images/free_icon.png" />
                                     </div>
                                 </div>
@@ -69,7 +69,7 @@
 
                                 <div class="template-image">
                                     <img class="template-image-image" src="styles/layouts/tdsfront/images/wide-angle.png" />
-                                   <div class="template-type-tag">
+                                   <div class="template-type-tag2">
                                         <img src="scripts/flexslider/images/free_icon.png" />
                                     </div>
                                 </div>
@@ -87,7 +87,25 @@
 
                                 <div class="template-image">
                                     <img class="template-image-image" src="styles/layouts/tdsfront/images/wide-angle.png" />
-                                   <div class="template-type-tag">
+                                   <div class="template-type-tag2">
+                                        <img src="scripts/flexslider/images/free_icon.png" />
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+
+                                <div class="template-buttons">
+                                    <button type="button" class="diselect f2">Select</button>
+                                    <button type="button" class="view_demo f2">View Demo</button>
+                                </div>
+
+                            </div>
+  	    		</li>
+                        <li>
+                            <div class="template-image-wrapper">
+
+                                <div class="template-image">
+                                    <img class="template-image-image" src="styles/layouts/tdsfront/images/wide-angle.png" />
+                                   <div class="template-type-tag2">
                                         <img src="scripts/flexslider/images/free_icon.png" />
                                     </div>
                                 </div>
@@ -198,8 +216,61 @@
         
       </div>
 </div>
+<div class="foter_background">
+    <div class="image_and_text">
+        <div class='text-footer'>
+            <p class="contact_us">
+                Contact us
+            </p> 
+            <p class="phone">
+               <img src="scripts/flexslider/images/phone_icon.png" /> 01740 21 21 21
+            </p> 
+            <p class="mail">
+                <img src="scripts/flexslider/images/mail_icon.png" /> info@champs21.com
+            </p>
+        </div>  
+        <div  class='text-footer'>
+            <img width='250' style='margin-left:100px;' src="scripts/flexslider/images/element_1.png" />
+        </div>
+    </div> 
+    
+    
+</div>
 
 <style type="text/css" media="all">
+    .image_and_text
+    {
+        float:left;
+        clear:both;
+        margin-top:150px;
+        width: 100%;
+    }
+    .text-footer
+    {
+        float:left;
+        width: 35%;
+        margin-left: 13%;
+    }
+    .contact_us
+    {
+        font-size: 65px;
+        color: #56AA89;
+        font-weight: bold;
+        margin-left: 10px;
+        line-height: 65px;
+    }
+    .phone
+    {
+        font-size: 28px;
+        color: white;
+        font-weight: bold;
+    }
+    .mail
+    {
+        font-size: 25px;
+        color: white;
+        font-weight: bold;
+    }
     .slider
     {
         box-sizing: content-box !important;
@@ -226,10 +297,15 @@
         padding: 20px;
         width: 100%;
     }
+    .template-type-tag2 {
+    left: 14px;
+    position: absolute;
+    top: 15px;
+}
     .template-type-tag {
-        left: 20px;
+        left: 13px;
         position: absolute;
-        top: 20px;
+        top: 11px;
     }
     .template-type-tag img {
         width: 60%;
@@ -265,6 +341,29 @@
         margin: -25px auto;
         font-weight: bold;
     }
+    #content-wrapper
+    {
+        margin-bottom: 0 !important;
+    }
+    .flex-direction-nav a
+    {
+        overflow: visible !important;
+    }
+ 
+    .footer
+    {
+        border-top: none !important;
+    }
+   .foter_background
+   {
+       float: left;
+       clear: both;
+       width: 100%;
+       height: 593px;
+       background: url("scripts/flexslider/images/bg-bottom.png");
+       background-size: contain;
+   }
+    
    .container .create_school_banner
    {
        margin-top:19px;
@@ -400,12 +499,15 @@
     });
     $(window).load(function(){
       $('.flexslider').flexslider({
+        slideshow:false,
         animation: "slide",
         animationLoop: false,
         itemWidth: 210,
         itemMargin: 0,
         minItems: 2,
         maxItems: 4,
+        prevText: "",    //String: Set the text for the "previous" directionNav item
+        nextText: "", 
         controlNav:false,
         start: function(slider){
           $('body').removeClass('loading');
@@ -416,9 +518,9 @@
 
 
   <!-- Syntax Highlighter -->
-  <script type="text/javascript" src="scripts/flexslider/js/shCore.js"></script>
+<!--  <script type="text/javascript" src="scripts/flexslider/js/shCore.js"></script>
   <script type="text/javascript" src="scripts/flexslider/js/shBrushXml.js"></script>
-  <script type="text/javascript" src="scripts/flexslider/js/shBrushJScript.js"></script>
+  <script type="text/javascript" src="scripts/flexslider/js/shBrushJScript.js"></script>-->
 
   <!-- Optional FlexSlider Additions -->
   <script src="scripts/flexslider/js/jquery.easing.js"></script>

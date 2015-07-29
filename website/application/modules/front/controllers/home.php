@@ -226,6 +226,39 @@ class home extends MX_Controller {
             exit;
         }
     }
+    function create_school_website()
+    {
+        $data['ci_key'] = 'Create School Website';
+
+        $s_content = $this->load->view('create_school_website', $data, true);
+
+        // User Data
+        $data['join_user_types'] = $this->get_school_join_user_types();
+        // User Data
+
+        $s_right_view = '';
+
+        $str_title = "Create School Website";
+        $ar_js = array();
+        $ar_css = array();
+        $extra_js = '';
+        $meta_description = META_DESCRIPTION;
+        $keywords = KEYWORDS;
+        $ar_params = array(
+            "javascripts" => $ar_js,
+            "css" => $ar_css,
+            "extra_head" => $extra_js,
+            "title" => $str_title,
+            "description" => $meta_description,
+            "keywords" => $keywords,
+            "side_bar" => $s_right_view,
+            "target" => "schools",
+            "fb_contents" => NULL,
+            "content" => $s_content
+        );
+
+        $this->extra_params = $ar_params; 
+    }
     function schools()
     {   
         $b_frame = $_GET['iframe'];

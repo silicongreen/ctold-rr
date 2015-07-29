@@ -43,6 +43,42 @@ class home extends MX_Controller {
 //        }
     }
     
+    public function create_school_website() {
+        
+        $data['all_ar_templates'] = $this->config->config['school_templates'];
+        
+       
+        
+        $s_content = $this->load->view('create_school_website', $data, true);
+
+        // User Data
+        $data['join_user_types'] = $this->get_school_join_user_types();
+        // User Data
+
+        $s_right_view = '';
+
+        $str_title = "New School";
+        $ar_js = array();
+        $ar_css = array();
+        $extra_js = '';
+        $meta_description = META_DESCRIPTION;
+        $keywords = KEYWORDS;
+        $ar_params = array(
+            "javascripts" => $ar_js,
+            "css" => $ar_css,
+            "extra_head" => $extra_js,
+            "title" => $str_title,
+            "description" => $meta_description,
+            "keywords" => $keywords,
+            "side_bar" => $s_right_view,
+            "target" => "schools",
+            "fb_contents" => NULL,
+            "content" => $s_content
+        );
+
+        $this->extra_params = $ar_params;
+    }
+    
     public function submit_new_school() {
         
         $data['all_ar_templates'] = $this->config->config['school_templates'];

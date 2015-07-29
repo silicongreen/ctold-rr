@@ -25,99 +25,38 @@
         <section class="slider">
         <div class="flexslider carousel">
           <ul class="slides">
-            <li>
-                
+              <?php
+                            foreach ($all_ar_templates as $template) {
 
-                    <div class="template-image-wrapper">
-                        
-                        <div class="template-image">
-                            <img class="template-image-image" src="styles/layouts/tdsfront/images/wide-angle.png" />
-                           <div class="template-type-tag2">
-                                <img src="scripts/flexslider/images/free_icon.png" />
-                            </div>
-                        </div>
-                        <div class="clearfix"></div>
-                        
-                        <div class="template-buttons">
-                            <button type="button" class="diselect f2">Select</button>
-                            <button type="button" class="view_demo f2">View Demo</button>
-                        </div>
+                                if ($template['name'] != $ar_templates['name']) {
+                                    if($template['price'] > 0)
+                                        continue;
+                                    ?>
 
-                    </div>
-                    
-  	    		</li>
-  	    		<li>
-                            <div class="template-image-wrapper">
+                                    <li>
+                                        <div class="template-image-wrapper">
 
-                                <div class="template-image">
-                                    <img class="template-image-image" src="styles/layouts/tdsfront/images/wide-angle.png" />
-                                 <div class="template-type-tag2">
-                                        <img src="scripts/flexslider/images/free_icon.png" />
-                                    </div>
-                                </div>
-                                <div class="clearfix"></div>
+                                            <div class="template-image">
+                                                <img class="template-image-image" src="<?php echo $template['cover_url']; ?>" />
+                                                <div class="template-type-tag2">
+                                                     <img src="scripts/flexslider/images/free_icon.png" />
+                                                 </div>
+                                            </div>
+                                            <div class="clearfix"></div>
 
-                                <div class="template-buttons">
-                                    <button type="button" class="diselect f2">Select</button>
-                                    <button type="button" class="view_demo f2">View Demo</button>
-                                </div>
+                                            <div class="template-buttons">
+                                                <button type="button" class="diselect f2" onclick="window.location.href = '<?php echo base_url('submit-new-school?id=' . $template['name']); ?>'">Select</button>
+                                                <button type="button" class="view_demo f2" onclick="window.open('<?php echo $template['demo_url']; ?>', '_blank')">View Demo</button>
+                                            </div>
 
-                            </div>
-  	    		</li>
-  	    		<li>
-                            <div class="template-image-wrapper">
+                                        </div>
+                                    </li>
 
-                                <div class="template-image">
-                                    <img class="template-image-image" src="styles/layouts/tdsfront/images/wide-angle.png" />
-                                   <div class="template-type-tag2">
-                                        <img src="scripts/flexslider/images/free_icon.png" />
-                                    </div>
-                                </div>
-                                <div class="clearfix"></div>
-
-                                <div class="template-buttons">
-                                    <button type="button" class="diselect f2">Select</button>
-                                    <button type="button" class="view_demo f2">View Demo</button>
-                                </div>
-
-                            </div>
-  	    		</li>
-  	    		<li>
-                            <div class="template-image-wrapper">
-
-                                <div class="template-image">
-                                    <img class="template-image-image" src="styles/layouts/tdsfront/images/wide-angle.png" />
-                                   <div class="template-type-tag2">
-                                        <img src="scripts/flexslider/images/free_icon.png" />
-                                    </div>
-                                </div>
-                                <div class="clearfix"></div>
-
-                                <div class="template-buttons">
-                                    <button type="button" class="diselect f2">Select</button>
-                                    <button type="button" class="view_demo f2">View Demo</button>
-                                </div>
-
-                            </div>
-  	    		</li>
-                        <li>
-                            <div class="template-image-wrapper">
-
-                                <div class="template-image">
-                                    <img class="template-image-image" src="styles/layouts/tdsfront/images/wide-angle.png" />
-                                   <div class="template-type-tag2">
-                                        <img src="scripts/flexslider/images/free_icon.png" />
-                                    </div>
-                                </div>
-                                <div class="clearfix"></div>
-
-                                <div class="template-buttons">
-                                    <button type="button" class="diselect f2">Select</button>
-                                    <button type="button" class="view_demo f2">View Demo</button>
-                                </div>
-
-                            </div>
-  	    		</li>
+                    <?php
+                }
+            }
+            ?>
+            
   	    		
           </ul>
         </div>
@@ -134,81 +73,39 @@
         <section class="slider">
         <div class="flexslider carousel">
           <ul class="slides">
-            <li>
-                
+              <?php
+                            foreach ($all_ar_templates as $template) {
 
-                    <div class="template-image-wrapper">
-                        
-                        <div class="template-image">
-                            <img class="template-image-image" src="styles/layouts/tdsfront/images/wide-angle.png" />
-                           <div class="template-type-tag">
-                                <img src="scripts/flexslider/images/Tag-500tk.png" />
-                            </div>
-                        </div>
-                        <div class="clearfix"></div>
-                        
-                        <div class="template-buttons">
-                            <button type="button" class="diselect f2">Select</button>
-                            <button type="button" class="view_demo f2">View Demo</button>
-                        </div>
+                                if ($template['name'] != $ar_templates['name']) {
+                                    if($template['price'] == 0)
+                                        continue;
+                                    ?>
 
-                    </div>
-                    
-  	    		</li>
-  	    		<li>
-                            <div class="template-image-wrapper">
+                                    <li>
+                                        <div class="template-image-wrapper">
 
-                                <div class="template-image">
-                                    <img class="template-image-image" src="styles/layouts/tdsfront/images/wide-angle.png" />
-                                 <div class="template-type-tag">
-                                        <img src="scripts/flexslider/images/Tag-500tk.png" />
-                                    </div>
-                                </div>
-                                <div class="clearfix"></div>
+                                            <div class="template-image">
+                                                <img class="template-image-image" src="<?php echo $template['cover_url']; ?>" />
+                                                <div class="template-type-tag">
+                                                    <img src="scripts/flexslider/images/Tag-500tk.png" />
+                                                </div>
+                                            </div>
+                                            <div class="clearfix"></div>
 
-                                <div class="template-buttons">
-                                    <button type="button" class="diselect f2">Select</button>
-                                    <button type="button" class="view_demo f2">View Demo</button>
-                                </div>
+                                            <div class="template-buttons">
+                                                <button type="button" class="diselect f2" onclick="window.location.href = '<?php echo base_url('submit-new-school?id=' . $template['name']); ?>'">Select</button>
+                                                <button type="button" class="view_demo f2" onclick="window.open('<?php echo $template['demo_url']; ?>', '_blank')">View Demo</button>
+                                            </div>
 
-                            </div>
-  	    		</li>
-  	    		<li>
-                            <div class="template-image-wrapper">
+                                        </div>
+                                    </li>
 
-                                <div class="template-image">
-                                    <img class="template-image-image" src="styles/layouts/tdsfront/images/wide-angle.png" />
-                                   <div class="template-type-tag">
-                                        <img src="scripts/flexslider/images/Tag-500tk.png" />
-                                    </div>
-                                </div>
-                                <div class="clearfix"></div>
-
-                                <div class="template-buttons">
-                                    <button type="button" class="diselect f2">Select</button>
-                                    <button type="button" class="view_demo f2">View Demo</button>
-                                </div>
-
-                            </div>
-  	    		</li>
-  	    		<li>
-                            <div class="template-image-wrapper">
-
-                                <div class="template-image">
-                                    <img class="template-image-image" src="styles/layouts/tdsfront/images/wide-angle.png" />
-                                   <div class="template-type-tag">
-                                        <img src="scripts/flexslider/images/Tag-500tk.png" />
-                                    </div>
-                                </div>
-                                <div class="clearfix"></div>
-
-                                <div class="template-buttons">
-                                    <button type="button" class="diselect f2">Select</button>
-                                    <button type="button" class="view_demo f2">View Demo</button>
-                                </div>
-
-                            </div>
-  	    		</li>
+                    <?php
+                }
+            }
+            ?>
+              
+           
   	    		
           </ul>
         </div>

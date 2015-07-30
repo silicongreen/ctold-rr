@@ -71,8 +71,8 @@
             <!-- Template form -->
             <div class="template-form">
 
-                <form class="form-inline">
-
+                <form action="/submit-new-school?id=<?php echo $ar_templates['name']; ?>" method="post" class="form-inline" enctype='multipart/form-data'>
+                    <input type="hidden" name="template_id" value="<?php echo $ar_templates['name']; ?>">
                     <div class="template-form-label f2">Fill up the information</div>
                     <div class="clearfix"></div>
 
@@ -126,13 +126,17 @@
                     <div class="clearfix"></div>
 
                     <div class="form-group textarea-wrapper">
-                        <label for="school_image" class="btn btn-success f2 col-sm-2">Upload Picture</label>
-                        <input type="file" id="school_image" name="school_image" style="display: none;" />
+                        <p style="text-align:left;margin:0px;">Allowed file types: gif , jpg , jpeg , png , docx , doc , zip</p>
+                    </div>
+                    <div class="form-group textarea-wrapper">
+                        <label for="school_image" class="btn btn-success f2 col-sm-2">Upload Image</label>
+                        <input type="file" id="school_image" name="school_image"  style="display: none;" />
 
                         <label for="school_file" class="btn btn-info f2 col-sm-2">Upload File</label>
                         <input type="file" id="school_file" name="school_file" style="display: none;" />
-
+                        
                         <button type="submit" class="btn btn-primary col-sm-2 f2">Submit</button>
+                        
 
                     </div>
                 </form>

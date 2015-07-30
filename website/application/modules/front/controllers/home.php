@@ -83,6 +83,44 @@ class home extends MX_Controller {
         
         $data['all_ar_templates'] = $this->config->config['school_templates'];
         
+        if($this->input->post('template_id'))
+        {
+           $User_school_information = new User_school_information();
+           
+           $User_school_information->name = $this->input->post('full_name');
+           $User_school_information->email = $this->input->post('email_addr');
+           $User_school_information->school_name = $this->input->post('school_name');
+           $User_school_information->school_address = $this->input->post('school_addr');
+           $User_school_information->phone = $this->input->post('phone_number');
+           $User_school_information->hphone = $this->input->post('home_phone');
+           $User_school_information->about_school = $this->input->post('school_about');
+           $User_school_information->admission_details = $this->input->post('school_admission');
+           $User_school_information->facilities = $this->input->post('school_facilities');
+           $User_school_information->achievement = $this->input->post('school_achievements');
+           $User_school_information->template_id = $this->input->post('template_id');
+           
+           
+           if(isset($_FILES['school_image']))
+           {	
+               $school_image = $this->doUpload("school_image");
+               $User_school_information->image_location = $school_image;
+           }
+           if(isset($_FILES['school_file']))
+           {	
+               $school_file = $this->doUpload("school_file");
+               $User_school_information->file_location = $school_file;
+           }
+           
+           if($User_school_information->save()){
+               redirect('/successfully-school-information_send?id='.$this->input->post('template_id'));
+           }
+           else
+           {
+               redirect('/submit-new-school?id='.$this->input->post('template_id'));
+           }
+           
+        }
+       
         if ( !isset($_GET['id']) || !isset($data['all_ar_templates'][$_GET['id']] ) ) {
             redirect('/create-school-website');
         }
@@ -4854,5 +4892,52 @@ $options = array(
         $message .= '</head>';
         
         return $message;
+    }
+    
+    public function doUpload($field_name)
+    {
+       $config['upload_path'] = 'upload/school_imformation/'.date('Y').'/'.date('m').'/'.date('d').'/';
+
+       $config['allowed_types'] = 'gif|jpg|jpeg|png|docx|doc|zip';
+
+       $config['file_name'] = 'info_'.time();
+
+       $config['max_size'] = '5000';
+
+       $config['max_width'] = '3920';
+
+       $config['max_height'] = '4280';
+
+       if(!is_dir($config['upload_path'])) //create the folder if it's not already exists
+       {
+         mkdir($config['upload_path'],0755,TRUE);
+       }
+
+
+
+       $this->load->library('upload', $config);
+
+
+
+      
+
+       if(!$this->upload->do_upload($field_name))
+       {
+           $error = array('error' => $this->upload->display_errors());
+       }
+       else
+       {	
+           $fInfo = $this->upload->data();
+
+           //$this->_createThumbnail($fInfo['file_name']);
+
+           $data['uploadInfo'] = $fInfo;
+
+           $data['thumbnail_name'] = $fInfo['file_name'];
+
+           return $config['upload_path'].$fInfo['file_name'];
+
+       }
+
     }
 }

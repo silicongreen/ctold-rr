@@ -4769,6 +4769,49 @@ $options = array(
         exit;
     }
     
+    public function successfully_school_information_send() {
+        
+        $data['all_ar_templates'] = $this->config->config['school_templates'];
+        
+        if ( !isset($_GET['id']) || !isset($data['all_ar_templates'][$_GET['id']] ) ) {
+            redirect('/create-school-website');
+        }
+        
+        $id = $_GET['id'];
+        $data['ci_key'] = 'new_school';
+        
+        $data['ar_templates'] = $data['all_ar_templates'][$id];
+        
+        $s_content = $this->load->view('successfully_school_information_send', $data, true);
+
+        // User Data
+        $data['join_user_types'] = $this->get_school_join_user_types();
+        // User Data
+
+        $s_right_view = '';
+
+        $str_title = "New School Information Send";
+        $ar_js = array();
+        $ar_css = array();
+        $extra_js = '';
+        $meta_description = META_DESCRIPTION;
+        $keywords = KEYWORDS;
+        $ar_params = array(
+            "javascripts" => $ar_js,
+            "css" => $ar_css,
+            "extra_head" => $extra_js,
+            "title" => $str_title,
+            "description" => $meta_description,
+            "keywords" => $keywords,
+            "side_bar" => $s_right_view,
+            "target" => "schools",
+            "fb_contents" => NULL,
+            "content" => $s_content
+        );
+
+        $this->extra_params = $ar_params;
+    }
+    
     private function validate_cookie($cookie) {
         
         $free_user = new Free_users();

@@ -111,7 +111,7 @@
         
         
         
-       <div class="submenu">
+<!--       <div class="submenu">
             <div class='ribbon'>
                 <a id="tabHeader_1" href='#'><span>Home</span></a>
                 <a id="tabHeader_2" href='#'><span>Competition Format</span></a>
@@ -120,7 +120,7 @@
                 <a id="tabHeader_9" href='#'><span>Registration</span></a>
                 <a id="tabHeader_10" href='#'><span>Study Tips</span></a>
             </div>
-        </div>
+        </div>-->
         
         
         <div style="margin-top:30px;clear: both;height: 250px;">

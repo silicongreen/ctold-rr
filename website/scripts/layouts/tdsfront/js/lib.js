@@ -114,7 +114,7 @@ $(document).ready(function () {
 
     sendHash = function () {
         hash = window.location.hash.substring(1);
-        console.log('hash');
+        console.log(hash);
         $('iframe')[3].contentWindow.postMessage({"findElement": hash}, '*');
        
     }

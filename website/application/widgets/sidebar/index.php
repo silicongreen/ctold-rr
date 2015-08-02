@@ -77,6 +77,7 @@ class sidebar extends widget
                     "Add ALL School Page"    => array("schoolpage","add_all"),
                     "School Activities"    => array("schoolactivities"),
                     "User Submitted School"    => array("userschool"),
+                    "School Info"    => array("userschoolinfo"),
                     "Arrange School"    => array("school","sort_school")
                 ),
             "Assessment" => 

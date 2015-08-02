@@ -106,7 +106,7 @@ $(document).ready(function () {
         }
         
         if (offset = event.data['offset']) {
-            console.log(event.data + 'offset');
+            console.log(offset);
             window.scrollTo(0, $('iframe')[3].offset().top + offset);
         }
         

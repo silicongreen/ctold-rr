@@ -96,6 +96,9 @@ String.prototype.in_array = function (haystack, argStrict)
 $(document).ready(function () {
     
     window.addEventListener('message', function (event) {
+        console.log("start...");
+        
+        console.log(event.data);
         if (event.data == 'ready') {
             sendHash();
         }
@@ -106,6 +109,7 @@ $(document).ready(function () {
         }
         
         if (offset = event.data['offset']) {
+            console.log("offset:");
             console.log(offset);
             window.scrollTo(0, $('iframe')[3].offset().top + offset);
         }

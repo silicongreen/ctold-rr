@@ -120,15 +120,15 @@ $(document).ready(function () {
     }
 
     $(window).on('hashchange', sendHash);
-
-
-    window.addEventListener('message', function (event) {
-        console.log('loading');
-        if (offset = event.data['offset']) {
-            console.log('done');
-            window.scrollTo(0, $('iframe').offset().top + offset);
-        }
-    });
+//
+//
+//    window.addEventListener('message', function (event) {
+//        console.log('loading');
+//        if (offset = event.data['offset']) {
+//            console.log('done');
+//            window.scrollTo(0, $('iframe').offset().top + offset);
+//        }
+//    });
 
 
     /* var c21_session = readCookie('c21_session');

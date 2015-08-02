@@ -111,8 +111,7 @@
         
         
         
-        
-<!--        <div class="submenu">
+<!--       <div class="submenu">
             <div class='ribbon'>
                 <a id="tabHeader_1" href='#'><span>Home</span></a>
                 <a id="tabHeader_2" href='#'><span>Competition Format</span></a>

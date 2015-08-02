@@ -270,3 +270,38 @@ $config['post-ads'] = array(
                                "class"=> array("candlepopup","","","","","","","","","","","",""),
                                "id"   => array("","","","","good_read","","","","","","","","")
                             );
+
+$config['school_templates'] = array(
+    'FT001' => array(
+        'id' => 1,
+        'name' => 'FT001',
+        'price' => 0,
+        'cover_url' => '/styles/layouts/tdsfront/school_templates/FT001/cover.png',
+        'price_tag_url' => '/styles/layouts/tdsfront/school_templates/FT001/price.png',
+        'demo_url' => 'http://schoolpage.champs21.com/free-template/template2.html',
+    ),
+    'FT002' => array(
+        'id' => 2,
+        'name' => 'FT002',
+        'price' => 0,
+        'cover_url' => '/styles/layouts/tdsfront/school_templates/FT002/cover.png',
+        'price_tag_url' => '/styles/layouts/tdsfront/school_templates/FT002/price.png',
+        'demo_url' => 'http://schoolpage.champs21.com/free-template/template3.html',
+    ),
+    'FT003' => array(
+        'id' => 3,
+        'name' => 'FT003',
+        'price' => 0,
+        'cover_url' => '/styles/layouts/tdsfront/school_templates/FT003/cover.png',
+        'price_tag_url' => '/styles/layouts/tdsfront/school_templates/FT003/price.png',
+        'demo_url' => 'http://schoolpage.champs21.com/free-template/template4.html',
+    ),
+    'FT004' => array(
+        'id' => 4,
+        'name' => 'FT004',
+        'price' => 0,
+        'cover_url' => '/styles/layouts/tdsfront/school_templates/FT004/cover.png',
+        'price_tag_url' => '/styles/layouts/tdsfront/school_templates/FT004/price.png',
+        'demo_url' => 'http://schoolpage.champs21.com/free-template/template1.html',
+    )
+);

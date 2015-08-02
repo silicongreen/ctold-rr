@@ -896,6 +896,9 @@ height: 46px;
                 <li data="magic_mart" class="before-login-user-back" onclick="location.href='<?php echo base_url() . 'schools'; ?>'">                
                     <div class="icon-my-school">&nbsp;</div> 
                 </li>
+                <li data="school_template" class="before-login-user-back" onclick="location.href='<?php echo base_url() . 'create-school-website'; ?>'">                
+                    <div class="icon-school-template">&nbsp;</div> 
+                </li>
                 <?php if($this->config->config['android_app_dl_popup_show'] == true):?>
                     <?php #$ua = strtolower($_SERVER['HTTP_USER_AGENT']); ?>
                     <?php #if(stripos($ua,'android') !== false): ?>
@@ -1422,6 +1425,12 @@ if($('.header-logo-div').is(':visible')) {
             height:43px !important;
             top:-1px;
         }
+        .icon-school-template
+        {
+            width:60px !important;
+            height:43px !important;
+            top:-1px;
+        }
         .icon-mobile-app
         {
             width:60px !important;
@@ -1616,6 +1625,12 @@ if($('.header-logo-div').is(':visible')) {
             top:-1px;
         }
         .icon-my-school
+        {
+            width:60px !important;
+            height:43px !important;
+            top:-1px;
+        }
+        .icon-school-template
         {
             width:60px !important;
             height:43px !important;
@@ -1862,6 +1877,12 @@ if($('.header-logo-div').is(':visible')) {
             top:-1px;
         }
         .icon-my-school
+        {
+            width:60px !important;
+            height:43px !important;
+            top:-1px;
+        }
+        .icon-school-template
         {
             width:60px !important;
             height:43px !important;
@@ -2226,6 +2247,18 @@ if($('.header-logo-div').is(':visible')) {
 .icon-my-school:hover
 {
     background: url(<?php echo base_url('styles/layouts/tdsfront/image/my_school_black.png'); ?>) no-repeat;
+    background-size:70%;    
+}
+.icon-school-template
+{
+    background: url(<?php echo base_url('styles/layouts/tdsfront/image/create_website_red.png'); ?>) no-repeat;
+    background-size:70%;
+    width:118px;
+    height:79px;
+}
+.icon-school-template:hover
+{
+    background: url(<?php echo base_url('styles/layouts/tdsfront/image/create_website_hover.png'); ?>) no-repeat;
     background-size:70%;    
 }
 .icon-diary21-school

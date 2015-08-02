@@ -47,30 +47,31 @@ height="3318"
 
 
     // site end
-    window.addEventListener('message', function (event) {
-        if (event.data == 'ready') {
-            sendHash();
-        }
-        
-        if (anchor = event.data['setAnchor']) {
-            console.log(event.data + 'set anchor');
-            window.location.href = anchor;
-        }
-        
-        if (offset = event.data['offset']) {
-            console.log(event.data + 'offset');
-            window.scrollTo(0, $('iframe').offset().top + offset);
-        }
-        
-    });
-
-    sendHash = function () {
-        hash = window.location.hash.substring(1);
-        console.log('hash');
-        $('#school_iframe').contentWindow.postMessage({"findElement": hash}, '*');
-    }
-
-    $(window).on('hashchange', sendHash);
+//    window.addEventListener('message', function (event) {
+//        if (event.data == 'ready') {
+//            sendHash();
+//        }
+//        
+//        if (anchor = event.data['setAnchor']) {
+//            console.log(event.data + 'set anchor');
+//            window.location.href = anchor;
+//        }
+//        
+//        if (offset = event.data['offset']) {
+//            console.log(event.data + 'offset');
+//            window.scrollTo(0, $('iframe').offset().top + offset);
+//        }
+//        
+//    });
+//
+//    sendHash = function () {
+//        hash = window.location.hash.substring(1);
+//        console.log('hash');
+//        $('iframe')[0].contentWindow.postMessage({"findElement": hash}, '*');
+//        console.log($('iframe')[0].attr('src'));
+//    }
+//
+//    $(window).on('hashchange', sendHash);
 
 //    window.addEventListener('message', function (event) {
 //        if (anchor = event.data['findElement']) {

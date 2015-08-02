@@ -30,9 +30,10 @@
                     foreach ($all_ar_templates as $template) {
 
                         if ($template['name'] != $ar_templates['name']) {
-                            if ($template['price'] > 0)
+                            if ($template['price'] > 0){
                                 $has_premium = true;
-                            continue;
+                                continue;
+                            }
                             ?>
 
                             <li>

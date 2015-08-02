@@ -107,7 +107,7 @@ $(document).ready(function () {
         
         if (offset = event.data['offset']) {
             console.log(event.data + 'offset');
-            window.scrollTo(0, $('iframe').offset().top + offset);
+            window.scrollTo(0, $('iframe')[3].offset().top + offset);
         }
         
     });
@@ -116,23 +116,19 @@ $(document).ready(function () {
         hash = window.location.hash.substring(1);
         console.log('hash');
         $('iframe')[3].contentWindow.postMessage({"findElement": hash}, '*');
-        console.log($('iframe')[3]);
+       
     }
 
     $(window).on('hashchange', sendHash);
 
-//    window.addEventListener('message', function (event) {
-//        if (anchor = event.data['findElement']) {
-//            element = $('[href="' + anchor + '"]');
-//            window.parent.postMessage({"offset": element.offset().top}, "*");
-//        }
-//    });
 
-//    window.addEventListener('message', function (event) {
-//        if (offset = event.data['offset']) {
-//            window.scrollTo(0, $('iframe').offset().top + offset);
-//        }
-//    });
+    window.addEventListener('message', function (event) {
+        console.log('loading');
+        if (offset = event.data['offset']) {
+            console.log('done');
+            window.scrollTo(0, $('iframe').offset().top + offset);
+        }
+    });
 
 
     /* var c21_session = readCookie('c21_session');

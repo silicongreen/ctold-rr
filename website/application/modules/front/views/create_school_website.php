@@ -214,7 +214,8 @@
         border: 0 none;
         border-radius: 8px;
         color: #ffffff;
-        padding: 10px;
+        font-size: 12px;
+        padding: 10px 6px;
         width: 48%;
     }
     .diselect {

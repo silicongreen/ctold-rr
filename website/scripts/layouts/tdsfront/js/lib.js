@@ -111,7 +111,7 @@ $(document).ready(function () {
         if (offset = event.data['offset']) {
             console.log("offset:");
             console.log(offset);
-            window.scrollTo(0, $('iframe')[3].offset().top + offset);
+            window.scrollTo(0, $('#school_iframe').offset().top + offset);
         }
         
     });

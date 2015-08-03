@@ -377,26 +377,26 @@
 <script defer src="/scripts/flexslider/jquery.flexslider.js"></script>
 
 <script type="text/javascript">
-//        $(function () {
-//            SyntaxHighlighter.all();
-//        });
-//        $(window).load(function () {
-//            $('.flexslider').flexslider({
-//                animation: "slide",
-//                slideShow: false,
-//                animationLoop: false,
-//                itemWidth: 210,
-//                itemMargin: 0,
-//                minItems: 2,
-//                maxItems: 4,
-//                controlNav: false,
-//                nextText: "",
-//                prevText: "",
-//                start: function (slider) {
-//                    $('body').removeClass('loading');
-//                }
-//        });
-//    });
+        $(function () {
+            SyntaxHighlighter.all();
+        });
+        $(window).load(function () {
+            $('.flexslider').flexslider({
+                animation: "slide",
+                slideShow: false,
+                animationLoop: false,
+                itemWidth: 210,
+                itemMargin: 0,
+                minItems: 2,
+                maxItems: 4,
+                controlNav: false,
+                nextText: "",
+                prevText: "",
+                start: function (slider) {
+                    $('body').removeClass('loading');
+                }
+        });
+    });
    $(document).ready(function() { 
        
     $(document).on('change',"#school_image",function(){

@@ -49,7 +49,8 @@
 
                                     <div class="template-buttons">
                                         <button type="button" class="diselect f2" onclick="window.location.href = '<?php echo base_url('submit-new-school?id=' . $template['name']); ?>'">Select</button>
-                                        <button type="button" class="view_demo f2" onclick="window.open('<?php echo $template['demo_url']; ?>', '_blank')">View Demo</button>
+                                        <button type="button" class="view_demo f2" onclick="window.open('<?php echo base_url('demo-school-template?id=' . $template['name']); ?>','_self')">View Demo</button>
+<!--                                        <button type="button" class="view_demo f2" onclick="window.open('<?php echo $template['demo_url']; ?>', '_blank')">View Demo</button>-->
                                     </div>
 
                                 </div>
@@ -98,7 +99,8 @@
 
                                     <div class="template-buttons">
                                         <button type="button" class="diselect f2" onclick="window.location.href = '<?php echo base_url('submit-new-school?id=' . $template['name']); ?>'">Select</button>
-                                        <button type="button" class="view_demo f2" onclick="window.open('<?php echo $template['demo_url']; ?>', '_blank')">View Demo</button>
+                                        <button type="button" class="view_demo f2" onclick="window.open('<?php echo base_url('demo-school-template?id=' . $template['name']); ?>',"_self"">View Demo</button>
+<!--                                        <button type="button" class="view_demo f2" onclick="window.open('<?php echo $template['demo_url']; ?>', '_blank')">View Demo</button>-->
                                     </div>
 
                                 </div>
@@ -127,7 +129,7 @@
                 <img src="scripts/flexslider/images/phone_icon.png" /> 01740 21 21 21
             </p> 
             <p class="mail">
-                <img src="scripts/flexslider/images/mail_icon.png" /> info@champs21.com
+                <img src="scripts/flexslider/images/mail_icon.png" /><a href="mailto:info@champs21.com?Subject=School%20Template" target="_top"> info@champs21.com</a>
             </p>
         </div>  
         <div  class='text-footer'>
@@ -262,17 +264,27 @@
         clear: both;
         width: 100%;
         height: 593px;
-        background: url("scripts/flexslider/images/bg-bottom.png");
-        background-size: contain;
+        
+        
+        background-attachment: scroll;
+        background-color: rgba(0, 0, 0, 0);
+        background-image: url("scripts/flexslider/images/bg-bottom.png");
+        background-position: 0 top;
+        background-repeat: no-repeat;
+        background-size: 100%;
     }
 
     .container .create_school_banner
     {
-        margin-top:19px;
-        background: url("images/school/create_school_banner.png");
-        height: 70%;
-        background-size: contain;
+        background-attachment: scroll;
+        background-color: rgba(0, 0, 0, 0);
+        background-image: url("images/school/create_school_banner.png");
+        background-position: 0 top;
         background-repeat: no-repeat;
+        background-size: 100%;
+        height: 420px;
+        margin-top: 19px;
+        width: 100%;
     }
     .title_create_school
     {

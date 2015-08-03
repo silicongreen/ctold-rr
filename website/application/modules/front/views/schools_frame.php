@@ -12,7 +12,12 @@
 </script>
 
 <iframe id="school_iframe" src="http://schoolpage.champs21.com/<?php echo $school_name; ?>" width="100%" frameborder="0" scrolling="no" onload="resizeIframe(this);" ></iframe>
-
+<style>
+   #content-wrapper 
+   {
+       margin-bottom: 0px !important;
+   }
+</style>    
 <!--<div>-->
 <?php // echo $school_page_header; ?>
 <?php // echo $school_page_body; ?>

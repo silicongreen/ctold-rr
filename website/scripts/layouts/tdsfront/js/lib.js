@@ -96,29 +96,27 @@ String.prototype.in_array = function (haystack, argStrict)
 $(document).ready(function () {
     
     window.addEventListener('message', function (event) {
-        console.log("start...");
         
-        console.log(event.data);
         if (event.data == 'ready') {
             sendHash();
         }
         
         if (anchor = event.data['setAnchor']) {
-            console.log(event.data + 'set anchor');
+            
             window.location.href = anchor;
         }
         
         if (offset = event.data['offset']) {
-            console.log("offset:");
-            console.log(offset);
-            window.scrollTo(0, $('#school_iframe').offset().top + offset);
+            
+            $('html,body').animate({
+                 scrollTop: $('#school_iframe').offset().top + offset
+            }, 1000);
         }
         
     });
 
     sendHash = function () {
         hash = window.location.hash.substring(1);
-        console.log(hash);
         $('iframe')[3].contentWindow.postMessage({"findElement": hash}, '*');
        
     }

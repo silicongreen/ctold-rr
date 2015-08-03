@@ -100,18 +100,26 @@ class home extends MX_Controller {
            $User_school_information->template_id = $this->input->post('template_id');
            
            
+           $file_data = array();
            if(isset($_FILES['school_image']))
            {	
                $school_image = $this->doUpload("school_image");
-               $User_school_information->image_location = $school_image;
+               $file_data[] = array("file_location"=>$school_image,"file_type"=>"image");
+               //$User_school_information->image_location = $school_image;
            }
            if(isset($_FILES['school_file']))
            {	
                $school_file = $this->doUpload("school_file");
-               $User_school_information->file_location = $school_file;
+               $file_data[] = array("file_location"=>$school_file,"file_type"=>"file");
+               //$User_school_information->file_location = $school_file;
            }
            
            if($User_school_information->save()){
+               if($file_data)
+               {
+                   $this->db->insert_batch('user_school_file', $file_data); 
+               }
+               
                redirect('/successfully-school-information_send?id='.$this->input->post('template_id'));
            }
            else

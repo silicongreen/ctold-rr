@@ -19,7 +19,7 @@ $config['android_app_dl_url']   = 'https://play.google.com/store/apps/details?id
 
 $config['education_changes_life'] = TRUE;
 
-$config[ 'from_api' ] = False;
+$config[ 'from_api' ] = TRUE;
 $config[ 'go_to_assessment' ] = TRUE;
 
 $config[ 'normal_view_count_add' ] = 1;

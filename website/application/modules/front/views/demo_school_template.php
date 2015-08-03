@@ -27,7 +27,7 @@
                     <div class="container" style="width: 75%;">
                         <div class="row">
                             <div class="col-md-3">                        
-                                <a href="http://www.champs21.dev/"><img src="http://www.champs21.dev/styles/layouts/tdsfront/images/logo-new.png" style="width:80%;" alt="logo"></a>                        
+                                <a href="<?php echo base_url();?>"><img src="<?php echo base_url('styles/layouts/tdsfront/images/logo-new.png');?>" style="width:80%;" alt="logo"></a>                        
                             </div>
                             <div class="col-md-6">
                                 <div class="template-buttons">

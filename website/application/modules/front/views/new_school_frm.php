@@ -129,15 +129,19 @@
                         <p style="text-align:left;margin:0px;">Allowed file types: gif , jpg , jpeg , png , docx , doc , zip</p>
                     </div>
                     <div class="form-group textarea-wrapper">
-                        <label for="school_image" class="btn btn-success f2 col-sm-2">Upload Image</label>
-                        <input type="file" id="school_image" name="school_image"  style="display: none;" />
-
+                        <label for="school_image" id="school_image1" class="btn btn-success f2 col-sm-2">Upload Image</label>
+                        <input type="file" id="school_image" name="school_image" style="display: none;" />
+                        
                         <label for="school_file" class="btn btn-info f2 col-sm-2">Upload File</label>
                         <input type="file" id="school_file" name="school_file" style="display: none;" />
                         
                         <button type="submit" class="btn btn-primary col-sm-2 f2">Submit</button>
                         
 
+                    </div>
+                    <div class="form-group textarea-wrapper">
+                        <p id="school_image_src" style="float:left;background-color: #6DD7AE;padding:5px 10px;color:#fff;display: none;"></p>
+                        <p id="school_file_src" style="clear:both;float:left;background-color: #90B5CB;padding:5px 10px;color:#fff;display: none;"></p>
                     </div>
                 </form>
 
@@ -373,26 +377,42 @@
 <script defer src="/scripts/flexslider/jquery.flexslider.js"></script>
 
 <script type="text/javascript">
-                                                            $(function () {
-                                                            SyntaxHighlighter.all();
-                                                            });
-                                                            $(window).load(function () {
-                                                                $('.flexslider').flexslider({
-                                                    animation: "slide",
-                                                            slideShow: false,
-                                                            animationLoop: false,
-                                                            itemWidth: 210,
-                                                            itemMargin: 0,
-                                                            minItems: 2,
-                                                            maxItems: 4,
-                                                            controlNav: false,
-                                                            nextText: "",
-                                                            prevText: "",
-                                                            start: function (slider) {
-                                                                $('body').removeClass('loading');
-                                                            }
-                                                        });
-                                                    });
+//        $(function () {
+//            SyntaxHighlighter.all();
+//        });
+//        $(window).load(function () {
+//            $('.flexslider').flexslider({
+//                animation: "slide",
+//                slideShow: false,
+//                animationLoop: false,
+//                itemWidth: 210,
+//                itemMargin: 0,
+//                minItems: 2,
+//                maxItems: 4,
+//                controlNav: false,
+//                nextText: "",
+//                prevText: "",
+//                start: function (slider) {
+//                    $('body').removeClass('loading');
+//                }
+//        });
+//    });
+   $(document).ready(function() { 
+       
+    $(document).on('change',"#school_image",function(){
+        var image_name = $("#school_image").val(); 
+        $("#school_image_src").html(image_name);
+        $("#school_image_src").show();
+    });
+    $(document).on('change',"#school_file",function(){
+        var file_name = $("#school_file").val(); 
+        $("#school_file_src").html(file_name);
+        $("#school_file_src").show();
+    });
+        
+       
+    });
+
 </script>
 
 <!-- Optional FlexSlider Additions -->

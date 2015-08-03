@@ -12,7 +12,12 @@
 </script>
 
 <iframe id="school_iframe" src="http://schoolpage.champs21.com/<?php echo $school_name; ?>" width="100%" frameborder="0" scrolling="no" onload="resizeIframe(this);" ></iframe>
-
+<style>
+   #content-wrapper 
+   {
+       margin-bottom: 0px !important;
+   }
+</style>    
 <!--<div>-->
 <?php // echo $school_page_header; ?>
 <?php // echo $school_page_body; ?>
@@ -85,5 +90,19 @@ height="3318"
 //            window.scrollTo(0, $('iframe').offset().top + offset);
 //        }
 //    });
+$('a[href*=#]:not([href=#])').click(function() {
+    if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') 
+        || location.hostname == this.hostname) {
+
+        var target = $(this.hash);
+        target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+           if (target.length) {
+             $('html,body').animate({
+                 scrollTop: target.offset().top
+            }, 1000);
+            return false;
+        }
+    }
+});
 
 </script>

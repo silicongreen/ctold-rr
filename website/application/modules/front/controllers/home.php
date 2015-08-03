@@ -79,6 +79,15 @@ class home extends MX_Controller {
         $this->extra_params = $ar_params;
     }
     
+    public function demo_school_template() {
+        $data['all_ar_templates'] = $this->config->config['school_templates'];
+        
+        
+        
+        $this->load->view('demo_school_template', $data);
+
+        $this->layout_front = false;
+    }
     public function submit_new_school() {
         
         $data['all_ar_templates'] = $this->config->config['school_templates'];

@@ -36,7 +36,7 @@
 
                         <div class="template-buttons">
                             <button type="button" class="btn btn-danger col-sm-5 f2">Diselect</button>
-                            <button type="button" class="btn btn-info col-sm-6 f2" onclick="window.open('<?php echo $ar_templates['demo_url']; ?>', '_blank')">View Demo</button>
+                            <button type="button" class="btn btn-info col-sm-6 f2" onclick="window.open('<?php echo base_url('demo-school-template?id=' . $ar_templates['name']); ?>','_self')">View Demo</button>
                         </div>
 
                     </div>
@@ -176,7 +176,7 @@
 
                                             <div class="template-buttons">
                                                 <button type="button" class="btn btn-danger f2 col-sm-4" onclick="window.location.href = '<?php echo base_url('submit-new-school?id=' . $template['name']); ?>'">Select</button>
-                                                <button type="button" class="btn btn-info f2 col-sm-6" onclick="window.open('<?php echo $template['demo_url']; ?>', '_blank')">View Demo</button>
+                                                <button type="button" class="btn btn-info f2 col-sm-6" onclick="window.open('<?php echo base_url('demo-school-template?id=' . $template['name']); ?>','_self')">View Demo</button>
                                             </div>
 
                                         </div>

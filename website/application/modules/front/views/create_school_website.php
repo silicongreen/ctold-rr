@@ -49,7 +49,8 @@
 
                                     <div class="template-buttons">
                                         <button type="button" class="diselect f2" onclick="window.location.href = '<?php echo base_url('submit-new-school?id=' . $template['name']); ?>'">Select</button>
-                                        <button type="button" class="view_demo f2" onclick="window.open('<?php echo $template['demo_url']; ?>', '_blank')">View Demo</button>
+                                        <button type="button" class="view_demo f2" onclick="window.open('<?php echo base_url('demo-school-template?id=' . $template['name']); ?>','_self')">View Demo</button>
+<!--                                        <button type="button" class="view_demo f2" onclick="window.open('<?php echo $template['demo_url']; ?>', '_blank')">View Demo</button>-->
                                     </div>
 
                                 </div>
@@ -98,7 +99,8 @@
 
                                     <div class="template-buttons">
                                         <button type="button" class="diselect f2" onclick="window.location.href = '<?php echo base_url('submit-new-school?id=' . $template['name']); ?>'">Select</button>
-                                        <button type="button" class="view_demo f2" onclick="window.open('<?php echo $template['demo_url']; ?>', '_blank')">View Demo</button>
+                                        <button type="button" class="view_demo f2" onclick="window.open('<?php echo base_url('demo-school-template?id=' . $template['name']); ?>',"_self"">View Demo</button>
+<!--                                        <button type="button" class="view_demo f2" onclick="window.open('<?php echo $template['demo_url']; ?>', '_blank')">View Demo</button>-->
                                     </div>
 
                                 </div>

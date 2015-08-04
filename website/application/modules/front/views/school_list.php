@@ -28,7 +28,7 @@
                     <div class="srch_item_container" <?php echo ( isset($row['is_paid']) && ($row['is_paid'] == 1) ) ? 'style="background-color: #FFF1E0"' : ''; ?>>
                         <div class="srch_item_pic">
                             <!--<img src="<?php // echo base_url($row['logo']); ?>" width="220">-->
-                            <img src="http://schoolpage.champs21.com/elements/images/uploads/<?php echo $row['sites_id'] .'_' . $row['sites_cover']; ?>" width="220">
+                            <img src="http://schools.champs21.com/elements/images/uploads/<?php echo $row['sites_id'] .'_' . $row['sites_cover']; ?>" width="220">
                         </div>
                         <div class="srch_item_info">
                             <p class="f2 s1"><a style="color:#60cb97;" href="<?php echo base_url() . 'schools/' . sanitize($row['sites_name']); ?>"><?php echo $row['sites_name']; ?></a></p>                            

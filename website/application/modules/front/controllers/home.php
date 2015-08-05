@@ -51,6 +51,7 @@ class home extends MX_Controller {
         
         $sb_db->from('sites');
         $sb_db->where('sites_trashed', 0);
+        $sb_db->where('sites_published', 1);
         $qry = $sb_db->get();
         $data['schooldata'] = $qry->result_array();
         

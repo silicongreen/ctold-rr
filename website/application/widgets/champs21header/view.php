@@ -896,9 +896,9 @@ height: 46px;
                 <li data="magic_mart" class="before-login-user-back" onclick="location.href='<?php echo base_url() . 'schools'; ?>'">                
                     <div class="icon-my-school">&nbsp;</div> 
                 </li>
-                <li data="school_template" class="before-login-user-back" onclick="location.href='<?php echo base_url() . 'create-school-website'; ?>'">                
+<!--                <li data="school_template" class="before-login-user-back" onclick="location.href='<?php echo base_url() . 'create-school-website'; ?>'">                
                     <div class="icon-school-template">&nbsp;</div> 
-                </li>
+                </li>-->
                 <?php if($this->config->config['android_app_dl_popup_show'] == true):?>
                     <?php #$ua = strtolower($_SERVER['HTTP_USER_AGENT']); ?>
                     <?php #if(stripos($ua,'android') !== false): ?>

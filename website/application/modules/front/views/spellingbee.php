@@ -140,17 +140,18 @@
             <div class="swing spellato_box">
                 
                 <!-- On Download Bee Mag -->
-                <h2 class="f2" style="margin-left:30px;font-size: 16px;">Download "The Bee Mag"</h2>
+<!--                <h2 class="f2" style="margin-left:30px;font-size: 16px;">Download "The Bee Mag"</h2>
                 <div style=" cursor: pointer;">
                     <center>
                         <a href="http://www.champs21.com/download?f_path=upload/attach_file/sb_magazine.pdf">
                             <img class="no_toolbar" src="<?php echo base_url('/styles/layouts/tdsfront/spelling_bee/2015/bee_mag.png'); ?>" style="width:60%;" />
                         </a>
                     </center>
-                </div>
+                </div>-->
                 
                 <!-- Off Spellato -->
-                <!--<center><img data="spellato" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/spellato.png'); ?>" class="scalup spellato_dl_link"></center>-->                
+                <h2 class="f2" style="margin-left:30px;font-size: 16px;">Download Spellato</h2>
+                <center><img data="spellato" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/spellato.png'); ?>" class="scalup spellato_dl_link"></center>                
             </div>
         </div>
         

@@ -31,7 +31,7 @@ class home extends MX_Controller {
         } else {
             $ip = $_SERVER['REMOTE_ADDR'];
         }
-        print $ip;
+        
         if(free_user_logged_in() && isset($_COOKIE['champs_session']))
         {
             $this->db->where("cookie_token",$_COOKIE['champs_session']);

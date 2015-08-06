@@ -1591,16 +1591,16 @@ $(document).ready(function () {
             success: function (data) {
 
                 if (data.logged_in == true) {
-                    var d = new Date();
-                    if ( window.location.href.indexOf('?') != -1 )
-                    {
-                        window.location.href = window.location.href + '&tts=' + d.getTime();
-                    }
-                    else
-                    {
-                        window.location.href = window.location.href + '?tts=' + d.getTime();
-                    }
-                    //window.location.reload();
+//                    var d = new Date();
+//                    if ( window.location.href.indexOf('?') != -1 )
+//                    {
+//                        window.location.href = window.location.href + '&tts=' + d.getTime();
+//                    }
+//                    else
+//                    {
+//                        window.location.href = window.location.href + '?tts=' + d.getTime();
+//                    }
+                    window.location.reload();
                 } else {
 
                     var err_html = '<ul class="err-list">';
@@ -2397,16 +2397,16 @@ function processGoogleLogin(resp) {
                 g_call_counter = 1;
 
                 if ((data.logged_in == true)) {
-                    //window.location.reload();
-                    var d = new Date();
-                    if ( window.location.href.indexOf('?') != -1 )
-                    {
-                        window.location.href = window.location.href + '&tts=' + d.getTime();
-                    }
-                    else
-                    {
-                        window.location.href = window.location.href + '?tts=' + d.getTime();
-                    }
+                    window.location.reload();
+//                    var d = new Date();
+//                    if ( window.location.href.indexOf('?') != -1 )
+//                    {
+//                        window.location.href = window.location.href + '&tts=' + d.getTime();
+//                    }
+//                    else
+//                    {
+//                        window.location.href = window.location.href + '?tts=' + d.getTime();
+//                    }
                 } else {
 
                     if (data.errors.login == 'unregistered') {
@@ -2543,16 +2543,16 @@ function processAndLoginFb(resp, profileImage) {
                 f_call_counter = 1;
 
                 if ((data.logged_in == true)) {
-                    //window.location.reload();
-                    var d = new Date();
-                    if ( window.location.href.indexOf('?') != -1 )
-                    {
-                        window.location.href = window.location.href + '&tts=' + d.getTime();
-                    }
-                    else
-                    {
-                        window.location.href = window.location.href + '?tts=' + d.getTime();
-                    }
+                    window.location.reload();
+//                    var d = new Date();
+//                    if ( window.location.href.indexOf('?') != -1 )
+//                    {
+//                        window.location.href = window.location.href + '&tts=' + d.getTime();
+//                    }
+//                    else
+//                    {
+//                        window.location.href = window.location.href + '?tts=' + d.getTime();
+//                    }
                 } else {
 
                     if (data.errors.login == 'unregistered') {

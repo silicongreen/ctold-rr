@@ -146,6 +146,22 @@ $ua = $_SERVER['HTTP_USER_AGENT'];
 
 $found = false;
 
+if(file_exists('ip_black_list')) {
+    $ip_black_list = fopen("ip_black_list", "r");
+    $str_ip_list = fread($ip_black_list, filesize('ip_black_list'));
+    
+    if($ip == '182.160.115.228') {
+        echo filesize('ip_black_list').'<br />';
+        echo $str_ip_list;
+        exit;
+    }
+    
+    if(stripos($str_ip_list, $ip) !== false) {
+        echo "Your ip has been blacklisted. if you think something is wrong please contact mailto:huffas.abdhullah@champs21.com";
+        exit;
+    }
+}
+
 foreach($arr_blacklist_bots as $bot) {
     if(stripos($ua, $bot) !== false) {
         $found = true;

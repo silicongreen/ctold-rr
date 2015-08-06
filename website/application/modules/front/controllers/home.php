@@ -2733,7 +2733,7 @@ class home extends MX_Controller {
         header("Cache-Control: no-cache, max-age=0, no-store, must-revalidate"); // HTTP/1.1
         header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
         header("Pragma: no-cache");
-        header("Location: " . base_url() . "?action=success_logout&ttl=" . time());
+        header("Location: " . base_url() . "?ttl=" . time());
         
     }
     

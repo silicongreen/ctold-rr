@@ -71,9 +71,15 @@ $str .= 'Script:= ' . $sf . PHP_EOL;
 $str .= '===========================================================================' . PHP_EOL;
 $str .= PHP_EOL;
 
-$al = fopen("access_logs.txt", "a");
-fwrite($al, $str);
-fclose($al);
+if($ip == '182.160.115.228') {
+    $al = fopen("access_logs.txt", "a");
+    fwrite($al, $str);
+    fclose($al);
+}
+
+//$al = fopen("access_logs.txt", "a");
+//fwrite($al, $str);
+//fclose($al);
 
 /*
  *---------------------------------------------------------------

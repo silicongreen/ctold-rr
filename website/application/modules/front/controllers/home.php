@@ -26,13 +26,11 @@ class home extends MX_Controller {
         
         if(free_user_logged_in() && isset($_COOKIE['champs_session']))
         {
-            print "***free User";
             $this->db->where("cookie_token",$_COOKIE['champs_session']);
             $user_data_valid = $this->db->get("free_users");
             
             if($user_data_valid->num_rows()<1)
             {
-                print "***free User logout";
                 $this->logout_user();
             }    
             

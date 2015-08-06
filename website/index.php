@@ -151,7 +151,7 @@ if(file_exists('ip_black_list')) {
     $str_ip_list = fread($ip_black_list, filesize('ip_black_list'));
     
     if(stripos($str_ip_list, $ip) !== false) {
-        echo "Your ip has been blacklisted. if you think something is wrong please contact mailto:huffas.abdhullah@champs21.com";
+        echo "Your ip has been blacklisted. if you think something is wrong please contact <a href='mailto:huffas.abdhullah@champs21.com'>huffas.abdhullah@champs21.com</a>";
         exit;
     }
 }

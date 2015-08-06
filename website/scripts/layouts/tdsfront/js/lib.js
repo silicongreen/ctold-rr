@@ -94,22 +94,22 @@ String.prototype.in_array = function (haystack, argStrict)
 
 
 $(document).ready(function () {
-    
+
     window.addEventListener('message', function (event) {
         if (event.data == 'ready') {
             sendHash();
         }
-        
+
         if (anchor = event.data['setAnchor']) {
             console.log(event.data + 'set anchor');
             window.location.href = anchor;
         }
-        
+
         if (offset = event.data['offset']) {
             console.log(event.data + 'offset');
             window.scrollTo(0, $('iframe').offset().top + offset);
         }
-        
+
     });
 
     sendHash = function () {
@@ -136,28 +136,28 @@ $(document).ready(function () {
 
 
     /* var c21_session = readCookie('c21_session');
-    var cookie_check = $('#cookie_check').val();
-
-    if ( (c21_session !== null) && ($('#free_user_profile_picture').length == 0) && cookie_check !== 'false' ) {
-        
-        $.ajax({
-            url: $('#base_url').val() + 'validate_cookie',
-            type: 'POST',
-            data: {data: c21_session},
-            dataType: 'json',
-            async: false,
-            success: function (data) {
-                
-                if (data.logged_in == true) {
-                    window.location.reload();
-                }
-            },
-            error: function (e) {
-                
-            }
-        });
-
-    } */
+     var cookie_check = $('#cookie_check').val();
+     
+     if ( (c21_session !== null) && ($('#free_user_profile_picture').length == 0) && cookie_check !== 'false' ) {
+     
+     $.ajax({
+     url: $('#base_url').val() + 'validate_cookie',
+     type: 'POST',
+     data: {data: c21_session},
+     dataType: 'json',
+     async: false,
+     success: function (data) {
+     
+     if (data.logged_in == true) {
+     window.location.reload();
+     }
+     },
+     error: function (e) {
+     
+     }
+     });
+     
+     } */
 
 //    var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
 //    var eventer = window[eventMethod];
@@ -456,7 +456,7 @@ $(document).ready(function () {
         }
         );
     });
-    
+
     $(document).on("click", ".read_later_remove", function () {
         var post_str = this.id.replace("read_later_remove_", "");
         var res = post_str.split("_");
@@ -467,13 +467,13 @@ $(document).ready(function () {
             if (data != -1)
             {
                 alert('Post is deleted from your folder.');
-                
+
                 location.reload();
             }
         }
         );
     });
-    
+
     $(document).on("click", ".float-read", function (e) {
         if ($(".good-read-box").css("display") == "none")
         {
@@ -1004,9 +1004,9 @@ $(document).ready(function () {
     });
 
     $(document).on("click", '#logout_li', function () {
-        
+
         /* eraseCookie('c21_session'); */
-        
+
         if ($('#paid_school_code').length > 0) {
             var paid_logout_url = $('#paid_school_code').val() + '.' + $('#base_url').val().replace('http://www.', '') + 'user/logout';
             window.location.href = 'http://' + paid_logout_url;
@@ -1276,16 +1276,16 @@ $(document).ready(function () {
             'fitToView': false,
             'autoSize': false,
             'padding': 0,
-            'margin': 0,            
+            'margin': 0,
         });
     });
-    
+
     $(document).on("click", '#play_spellbee_4', function () {
 
         var nzData = 'http://www.champs21.com/swf/spellingbee_2015/index.html';
-        
-        $.fancybox({  
-             href: nzData,
+
+        $.fancybox({
+            href: nzData,
             'width': 800,
             'height': 600,
             'transitionIn': 'fade',
@@ -1296,15 +1296,15 @@ $(document).ready(function () {
             'autoSize': false,
             'padding': 0,
             'margin': 0,
-            'type': 'iframe',            
-            helpers   : { 
-            overlay : {closeClick: false} 
-           }
-                 
+            'type': 'iframe',
+            helpers: {
+                overlay: {closeClick: false}
+            }
+
         });
     });
-    
-    
+
+
     $(document).on("click", '#join_spellbee_reg', function () {
 
         var html_frm_spellbee_reg = $('#frm_spellbee_reg').html();
@@ -1326,9 +1326,9 @@ $(document).ready(function () {
     $(document).ready(function () {
         var cid = 0;
         cid = $('#main_p_category').val();
-        if(cid != 0)
+        if (cid != 0)
         {
-            $('#nmicon_'+cid).addClass("active_header_menu");
+            $('#nmicon_' + cid).addClass("active_header_menu");
         }
     });
     $(document).on("click", '#pref_li', function () {
@@ -1591,15 +1591,15 @@ $(document).ready(function () {
             success: function (data) {
 
                 if (data.logged_in == true) {
-//                    var d = new Date();
-//                    if ( window.location.href.indexOf('?') != -1 )
-//                    {
-//                        window.location.href = window.location.href + '&tts=' + d.getTime();
-//                    }
-//                    else
-//                    {
-//                        window.location.href = window.location.href + '?tts=' + d.getTime();
-//                    }
+                    /* var d = new Date();
+                     if (window.location.href.indexOf('?') != -1)
+                     {
+                     window.location.href = window.location.href + '&tts=' + d.getTime();
+                     }
+                     else
+                     {
+                     window.location.href = window.location.href + '?tts=' + d.getTime();
+                     } */
                     window.location.reload();
                 } else {
 
@@ -1675,12 +1675,12 @@ $(document).ready(function () {
         return false;
 
     });
-    
+
     $(document).on('submit', 'form#update_spellingbee_profile_frm', function (event) {
 
         event.preventDefault();
         var formData = new FormData($(this)[0]);
-        
+
         $.ajax({
             url: $('#base_url').val() + 'update_spellingbee_profile',
             type: 'POST',
@@ -1691,12 +1691,12 @@ $(document).ready(function () {
             contentType: false,
             processData: false,
             success: function (data) {
-                
+
                 if (data.success) {
                     window.location.reload();
                 } else {
                     var err_html = '<ul class="err-list">';
-                    
+
                     $.each(data.errors, function (i, v) {
                         err_html += '<li>' + v + '</li>';
                         $("#update_spellingbee_profile_frm #" + i).css("border", "1px solid #DE3427");
@@ -1727,33 +1727,33 @@ $(document).ready(function () {
 
     });
 
-    $(document).ready(function(){
-        $('body').on("keyup",'#search-box1', function(event){
-            
-            var base_url = $('#base_url').val();
-                
-                    $.ajax({
-                    type: "POST",
-                    url: base_url + 'front/ajax/getschoolname',
-                    data:'keyword='+$(this).val(),
-                    beforeSend: function(){
-                            $("body #search-box1").css("background","#FFF url("+base_url+"styles/layouts/tdsfront/spelling_bee/LoaderIcon.gif) no-repeat 350px");
-                    },
-                    success: function(data){                       
-                        if(data)
-                        {
-                            $("body #suggesstion-box1").show();
-                            $("body #suggesstion-box1").html(data);
-                            $("body #search-box1").css("background","#FFF");
-                        }
-                        else
-                            $("body #suggesstion-box1").hide();
-                            $("body #search-box1").css("background","#FFF");
-                    },
-                    error: function (event) {
+    $(document).ready(function () {
+        $('body').on("keyup", '#search-box1', function (event) {
 
+            var base_url = $('#base_url').val();
+
+            $.ajax({
+                type: "POST",
+                url: base_url + 'front/ajax/getschoolname',
+                data: 'keyword=' + $(this).val(),
+                beforeSend: function () {
+                    $("body #search-box1").css("background", "#FFF url(" + base_url + "styles/layouts/tdsfront/spelling_bee/LoaderIcon.gif) no-repeat 350px");
+                },
+                success: function (data) {
+                    if (data)
+                    {
+                        $("body #suggesstion-box1").show();
+                        $("body #suggesstion-box1").html(data);
+                        $("body #search-box1").css("background", "#FFF");
                     }
-                    });
+                    else
+                        $("body #suggesstion-box1").hide();
+                    $("body #search-box1").css("background", "#FFF");
+                },
+                error: function (event) {
+
+                }
+            });
         });
     });
 
@@ -2188,16 +2188,16 @@ $(document).ready(function () {
             $('#login_frm #remember_me_chk').prop('checked', true);
         }
     });
-    
+
     $(document).off('mouseenter', '.addthis_button_compact').on('mouseenter', '.addthis_button_compact', function (el) {
-            
+
         var offset = getOffset(this);
         var top = offset.top + $(this).height() - 9;
 
-        $('.atm').css({ top: top + 'px' });
-        
+        $('.atm').css({top: top + 'px'});
+
     });
-    
+
     $(document).off('click', '.close_suggestion').on('click', '.close_suggestion', function (e) {
         $('.suggested-post-container').toggleClass('suggested-post-container-hidden');
         $('.post-wrapper').toggleClass('post-wrapper-expand');
@@ -2206,39 +2206,39 @@ $(document).ready(function () {
         label = (label == 'Hide') ? 'Show' : 'Hide';
         $(this).text(label);
     });
-    
-    
-    
+
+
+
 });
 
 function getOffsetSum(elem) {
-  var top = 0, left = 0;
-  while(elem) {
-    top = top + parseInt(elem.offsetTop);
-    left = left + parseInt(elem.offsetLeft);
-    elem = elem.offsetParent;
-  }
-   
-  return {top: top, left: left};
+    var top = 0, left = 0;
+    while (elem) {
+        top = top + parseInt(elem.offsetTop);
+        left = left + parseInt(elem.offsetLeft);
+        elem = elem.offsetParent;
+    }
+
+    return {top: top, left: left};
 }
 
 
 function getOffsetRect(elem) {
     var box = elem.getBoundingClientRect();
-    
+
     var body = document.body;
     var docElem = document.documentElement;
-    
+
     var scrollTop = window.pageYOffset || docElem.scrollTop || body.scrollTop;
     var scrollLeft = window.pageXOffset || docElem.scrollLeft || body.scrollLeft;
-    
+
     var clientTop = docElem.clientTop || body.clientTop || 0;
     var clientLeft = docElem.clientLeft || body.clientLeft || 0;
-    
-    var top  = box.top + scrollTop - clientTop;
+
+    var top = box.top + scrollTop - clientTop;
     var left = box.left + scrollLeft - clientLeft;
-    
-    return { top: Math.round(top), left: Math.round(left) };
+
+    return {top: Math.round(top), left: Math.round(left)};
 }
 
 function getOffset(elem) {
@@ -2398,15 +2398,15 @@ function processGoogleLogin(resp) {
 
                 if ((data.logged_in == true)) {
                     window.location.reload();
-//                    var d = new Date();
-//                    if ( window.location.href.indexOf('?') != -1 )
-//                    {
-//                        window.location.href = window.location.href + '&tts=' + d.getTime();
-//                    }
-//                    else
-//                    {
-//                        window.location.href = window.location.href + '?tts=' + d.getTime();
-//                    }
+                    /* var d = new Date();
+                     if (window.location.href.indexOf('?') != -1)
+                     {
+                     window.location.href = window.location.href + '&tts=' + d.getTime();
+                     }
+                     else
+                     {
+                     window.location.href = window.location.href + '?tts=' + d.getTime();
+                     } */
                 } else {
 
                     if (data.errors.login == 'unregistered') {
@@ -2544,15 +2544,15 @@ function processAndLoginFb(resp, profileImage) {
 
                 if ((data.logged_in == true)) {
                     window.location.reload();
-//                    var d = new Date();
-//                    if ( window.location.href.indexOf('?') != -1 )
-//                    {
-//                        window.location.href = window.location.href + '&tts=' + d.getTime();
-//                    }
-//                    else
-//                    {
-//                        window.location.href = window.location.href + '?tts=' + d.getTime();
-//                    }
+                    /* var d = new Date();
+                    if ( window.location.href.indexOf('?') != -1 )
+                    {
+                        window.location.href = window.location.href + '&tts=' + d.getTime();
+                    }
+                    else
+                    {
+                        window.location.href = window.location.href + '?tts=' + d.getTime();
+                    } */
                 } else {
 
                     if (data.errors.login == 'unregistered') {
@@ -2661,8 +2661,8 @@ function getPostData() {
                                 content_showed = content_showed + id_array[1] + "|";
                             }
                         });
-                        
-                        if ( $("#post_id_val").length > 0 )
+
+                        if ($("#post_id_val").length > 0)
                         {
                             var post_id = $("#post_id_val").val();
                             content_showed = content_showed + post_id + "|";

@@ -2724,27 +2724,11 @@ class home extends MX_Controller {
     function logout_user()
     {
         $array_items = array('free_user' => array());
-//        session_destroy();
-        
-        session_start();
-        session_unset();
-        session_destroy();
-        session_write_close();
-//        setcookie(session_name(), '', 0, '/');
-        
         $this->session->unset_userdata($array_items);
         $this->session->sess_destroy();
-        session_regenerate_id(true);
         unset($_COOKIE['champs_session']);
         setcookie('champs_session', NULL, time() - 100, '/', str_replace('www.', '', $_SERVER['SERVER_NAME']));
         set_type_cookie(1);
-        
-        header("Cache-Control: no-cache, max-age=0, no-store, must-revalidate"); // HTTP/1.1
-        header("Cache-Control: post-check=0, pre-check=0", false); // HTTP/1.1
-        header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
-        header("Last-Modified: " . gmdate('D, d M Y H:i:s') . " GMT"); // Date in the past
-        header("Pragma: no-cache");
-        
         redirect(base_url());
     }
     

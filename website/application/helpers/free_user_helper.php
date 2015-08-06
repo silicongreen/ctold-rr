@@ -108,7 +108,7 @@ if (!function_exists('free_user_logged_in')) {
         $CI = &get_instance();
 
         $free_user_session_data = $CI->session->userdata('free_user');
-
+        print "***free Info" . serialize($CI->session->userdata('free_user'));
         return (!empty($free_user_session_data)) ? TRUE : FALSE;
     }
 

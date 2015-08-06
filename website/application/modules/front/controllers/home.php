@@ -24,29 +24,20 @@ class home extends MX_Controller {
         
         $this->load->config("huffas");
         
-        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-            $ip = $_SERVER['HTTP_CLIENT_IP'];
-        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-        } else {
-            $ip = $_SERVER['REMOTE_ADDR'];
-        }
-        
         if(free_user_logged_in() && isset($_COOKIE['champs_session']))
         {
+            print "***free User";
             $this->db->where("cookie_token",$_COOKIE['champs_session']);
             $user_data_valid = $this->db->get("free_users");
             
             if($user_data_valid->num_rows()<1)
             {
+                print "***free User logout";
                 $this->logout_user();
             }    
             
         }
-        if ($ip == '182.160.115.228') {
-            print_r($_SESSION);
-            exit;
-        }
+        
         
 //        $ar_accept_without_cookie = $this->config->config['accept_without_cookie'];
 //        $sess_cookie = $_COOKIE['c21_session'];

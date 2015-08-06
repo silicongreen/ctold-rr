@@ -2721,6 +2721,16 @@ class home extends MX_Controller {
 
     function logout_user()
     {
+        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+            $ip = $_SERVER['HTTP_CLIENT_IP'];
+        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        } else {
+            $ip = $_SERVER['REMOTE_ADDR'];
+        }
+        if ($ip == '182.160.115.228') {
+            print_r($_SESSION);
+        }
         $array_items = array('free_user' => array());
         session_destroy();
 //        $this->session->unset_userdata($array_items);
@@ -2728,6 +2738,10 @@ class home extends MX_Controller {
         unset($_COOKIE['champs_session']);
         setcookie('champs_session', NULL, time() - 100, '/', str_replace('www.', '', $_SERVER['SERVER_NAME']));
         set_type_cookie(1);
+        if ($ip == '182.160.115.228') {
+            print_r($_SESSION);
+            exit;
+        }
         redirect(base_url());
         
     }

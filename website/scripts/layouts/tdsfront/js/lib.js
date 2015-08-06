@@ -96,38 +96,40 @@ String.prototype.in_array = function (haystack, argStrict)
 $(document).ready(function () {
     
     window.addEventListener('message', function (event) {
-        
         if (event.data == 'ready') {
             sendHash();
         }
         
         if (anchor = event.data['setAnchor']) {
-            
+            console.log(event.data + 'set anchor');
             window.location.href = anchor;
         }
         
         if (offset = event.data['offset']) {
-            
-            $('html,body').animate({
-                 scrollTop: $('#school_iframe').offset().top + offset
-            }, 1000);
+            console.log(event.data + 'offset');
+            window.scrollTo(0, $('iframe').offset().top + offset);
         }
         
     });
 
     sendHash = function () {
         hash = window.location.hash.substring(1);
+        console.log('hash');
         $('iframe')[3].contentWindow.postMessage({"findElement": hash}, '*');
-       
+        console.log($('iframe')[3]);
     }
 
     $(window).on('hashchange', sendHash);
-//
-//
+
 //    window.addEventListener('message', function (event) {
-//        console.log('loading');
+//        if (anchor = event.data['findElement']) {
+//            element = $('[href="' + anchor + '"]');
+//            window.parent.postMessage({"offset": element.offset().top}, "*");
+//        }
+//    });
+
+//    window.addEventListener('message', function (event) {
 //        if (offset = event.data['offset']) {
-//            console.log('done');
 //            window.scrollTo(0, $('iframe').offset().top + offset);
 //        }
 //    });
@@ -1589,7 +1591,16 @@ $(document).ready(function () {
             success: function (data) {
 
                 if (data.logged_in == true) {
-                    window.location.reload();
+                    var d = new Date();
+                    if ( window.location.href.indexOf('?') != -1 )
+                    {
+                        window.location.href = window.location.href + '&tts=' + d.getTime();
+                    }
+                    else
+                    {
+                        window.location.href = window.location.href + '?tts=' + d.getTime();
+                    }
+                    //window.location.reload();
                 } else {
 
                     var err_html = '<ul class="err-list">';
@@ -2386,7 +2397,16 @@ function processGoogleLogin(resp) {
                 g_call_counter = 1;
 
                 if ((data.logged_in == true)) {
-                    window.location.reload();
+                    //window.location.reload();
+                    var d = new Date();
+                    if ( window.location.href.indexOf('?') != -1 )
+                    {
+                        window.location.href = window.location.href + '&tts=' + d.getTime();
+                    }
+                    else
+                    {
+                        window.location.href = window.location.href + '?tts=' + d.getTime();
+                    }
                 } else {
 
                     if (data.errors.login == 'unregistered') {
@@ -2523,7 +2543,16 @@ function processAndLoginFb(resp, profileImage) {
                 f_call_counter = 1;
 
                 if ((data.logged_in == true)) {
-                    window.location.reload();
+                    //window.location.reload();
+                    var d = new Date();
+                    if ( window.location.href.indexOf('?') != -1 )
+                    {
+                        window.location.href = window.location.href + '&tts=' + d.getTime();
+                    }
+                    else
+                    {
+                        window.location.href = window.location.href + '?tts=' + d.getTime();
+                    }
                 } else {
 
                     if (data.errors.login == 'unregistered') {

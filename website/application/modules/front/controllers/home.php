@@ -2733,8 +2733,8 @@ class home extends MX_Controller {
         setcookie(session_name(), '', 0, '/');
         session_regenerate_id(true);
 
-//        $this->session->unset_userdata($array_items);
-//        $this->session->sess_destroy();
+        $this->session->unset_userdata($array_items);
+        $this->session->sess_destroy();
         unset($_COOKIE['champs_session']);
         setcookie('champs_session', NULL, time() - 100, '/', str_replace('www.', '', $_SERVER['SERVER_NAME']));
         set_type_cookie(1);

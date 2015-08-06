@@ -54,6 +54,20 @@ if (defined('ENVIRONMENT'))
 //ini_set('display_startup_errors',1);
 //error_reporting(-1);
 
+$ip = $_SERVER['REMOTE_ADDR'];
+$ua = $_SERVER['HTTP_USER_AGENT'];
+$sf = $_SERVER['SCRIPT_FILENAME'];
+
+$str = 'IP:= ' . $ip . PHP_EOL;
+$str .= 'Bowser:= ' . $ua . PHP_EOL;
+$str .= 'Script:= ' . $sf . PHP_EOL;
+$str .= '===========================================================================' . PHP_EOL;
+$str .= PHP_EOL;
+
+$al = fopen("access_logs.txt", "a");
+fwrite($al, $str);
+fclose($al);
+
 /*
  *---------------------------------------------------------------
  * SYSTEM FOLDER NAME

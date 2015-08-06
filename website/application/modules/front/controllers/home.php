@@ -36,6 +36,7 @@ class home extends MX_Controller {
         {
             if ($ip == '182.160.115.228') {
             print "ASDasd";
+            exit;
         }
             $this->db->where("cookie_token",$_COOKIE['champs_session']);
             $user_data_valid = $this->db->get("free_users");
@@ -48,6 +49,7 @@ class home extends MX_Controller {
         }
         if ($ip == '182.160.115.228') {
             print_r($_SESSION);
+            exit;
         }
         
 //        $ar_accept_without_cookie = $this->config->config['accept_without_cookie'];

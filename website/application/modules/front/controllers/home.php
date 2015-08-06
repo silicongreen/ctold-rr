@@ -31,13 +31,9 @@ class home extends MX_Controller {
         } else {
             $ip = $_SERVER['REMOTE_ADDR'];
         }
-        
+        print $ip;
         if(free_user_logged_in() && isset($_COOKIE['champs_session']))
         {
-            if ($ip == '182.160.115.228') {
-            print "ASDasd";
-            exit;
-        }
             $this->db->where("cookie_token",$_COOKIE['champs_session']);
             $user_data_valid = $this->db->get("free_users");
             

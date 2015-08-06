@@ -2730,9 +2730,10 @@ class home extends MX_Controller {
         unset($_COOKIE['champs_session']);
         setcookie('champs_session', NULL, time() - 100, '/', str_replace('www.', '', $_SERVER['SERVER_NAME']));
         set_type_cookie(1);
-        header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
+        header("Cache-Control: no-cache, max-age=0, no-store, must-revalidate"); // HTTP/1.1
         header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
-        redirect(base_url());
+        header("Pragma: no-cache");
+        header("Location: " . base_url() . "?action=success_logout&ttl=" . time());
         
     }
     

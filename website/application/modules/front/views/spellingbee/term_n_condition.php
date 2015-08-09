@@ -50,7 +50,7 @@
         <li>
             <div style="clear: both;float:left;width: 100%;height: 255px;">
                 <div class="aleft">
-                    <center><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/bloop.png'); ?>" style="width:90%;cursor: pointer;" class="scalup toolbar"></center>   
+                    <center><img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/bloop_1.png'); ?>" style="width:90%;cursor: pointer;" class="scalup toolbar"></center>   
                 </div>
                 <div class="aright">
                     <h2 class="f2" style="color:#FDCB08;font-size:24px;margin-bottom: 5px;">BLOOP</h2>
@@ -70,9 +70,7 @@ interests in Food, Dairy, Commodity, Information Technology, Logistics, Real Est
 
 Aviation, Infrastructure Development and Insurance. BLOOP is trending a new experience in 
 
-the taste of ice cream and the whole experience comes as “One bite and you will go 
-
-BLOOP”.</p>
+the taste of ice cream and the whole experience comes as “Jokhon e Khete Chai, Bahanar Obhab Nai”.</p>
         <p>To know more visit: <a href=" http://www.goldenharvestbd.com/golden-harvest-ice-cream-ltd/" target="_blank">www.goldenharvestbd.com</a></p>            
                 </div>
             </div>

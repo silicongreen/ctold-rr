@@ -124,6 +124,7 @@ class minify extends CI_Controller {
                 $cache = Array();
                 $cache['headers'] = Array();
                 $cache['headers']['Expires'] = gmdate("D, d M Y H:i:s", time() + $this->_offset) . " GMT";
+                $cache['headers']['Cache-Control'] = "public";
                 switch($this->_type)
                 {
                         case 'js':

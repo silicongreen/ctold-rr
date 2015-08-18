@@ -41,8 +41,8 @@ class SpelltvController extends Controller
         //need to build
          $user_id = Yii::app()->request->getPost('free_id');
          if($user_id)
-        {
-           
+         { 
+            
             $highscore = new Spelltvhighscore();
             $current_score = 0;
             $cache_name_userdata = "YII-SPELLTV-USERDATA-" . $user_id;
@@ -59,14 +59,15 @@ class SpelltvController extends Controller
                     $current_score = $user_score_data->score;
                 }
             }
-            
+
             $checkpoint = floor($current_score/Settings::$checkpointValue)*Settings::$checkpointValue;
-            
-            
-           
+
+
+
             $rresponse['data']['user_checkpoint'] = $checkpoint;
             $rresponse['status']['code'] = 200;
             $rresponse['status']['msg'] = "Success";
+               
            
         }
         else

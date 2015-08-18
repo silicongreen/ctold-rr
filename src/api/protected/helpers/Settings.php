@@ -40,6 +40,7 @@ class Settings
     public static $easyWord = 50;
     public static $normalWord = 50;
     public static $hardWord = 20;
+    public static $checkpointValue = 20;
     
     
     public static $school_join_approved = array(

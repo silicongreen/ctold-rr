@@ -39,6 +39,43 @@ class SpelltvController extends Controller
     public function actionindex()
     {
         //need to build
+         $user_id = Yii::app()->request->getPost('free_id');
+         if($user_id)
+        {
+           
+            $highscore = new Spelltvhighscore();
+            $current_score = 0;
+            $cache_name_userdata = "YII-SPELLTV-USERDATA-" . $user_id;
+            $response = Settings::getSpellTvCache($cache_name_userdata);
+            if (isset($response) && isset($response['current_score']))
+            {
+                $current_score = $response['current_score'];
+            }
+            else
+            {
+                $user_score_data = $highscore->getUserScore($user_id);
+                if ($user_score_data)
+                {
+                    $current_score = $user_score_data->score;
+                }
+            }
+            
+            $checkpoint = floor($current_score/Settings::$checkpointValue)*Settings::$checkpointValue;
+            
+            
+           
+            $rresponse['data']['user_checkpoint'] = $checkpoint;
+            $rresponse['status']['code'] = 200;
+            $rresponse['status']['msg'] = "Success";
+           
+        }
+        else
+        {
+            $rresponse['status']['code'] = 400;
+            $rresponse['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($rresponse);
+        Yii::app()->end();
     }
     public function actiongetLeaderboard()
     {

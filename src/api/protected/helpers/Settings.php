@@ -421,7 +421,33 @@ class Settings
             }    
         }  
         return false;
-    }  
+    } 
+    
+    
+    public static function setSpellTvBeeCache($cache_name,$response)
+    {
+        $cachefile = new CFileCache();
+        $cachefile->cachePath = "protected/runtime/cache/spelltv";
+        if(!is_dir($cachefile->cachePath))
+        {
+            mkdir($cachefile->cachePath, 0777);
+        }
+        $cachefile->set($cache_name, $response, 31536000);
+    }
+    public static function getSpellTvBeeCache($cache_name)
+    {
+        $cachefile = new CFileCache();
+        $cachefile->cachePath = "protected/runtime/cache/spelltv";
+        if(!is_dir($cachefile->cachePath))
+        {
+            mkdir($cachefile->cachePath, 0777);
+            
+        }
+        $response = $cachefile->get($cache_name);
+        return $response;
+    }
+    
+    
     
     public static function setSpellingBeeCache($cache_name,$response)
     {

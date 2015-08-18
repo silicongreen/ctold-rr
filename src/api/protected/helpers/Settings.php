@@ -424,7 +424,7 @@ class Settings
     } 
     
     
-    public static function setSpellTvBeeCache($cache_name,$response)
+    public static function setSpellTvCache($cache_name,$response)
     {
         $cachefile = new CFileCache();
         $cachefile->cachePath = "protected/runtime/cache/spelltv";
@@ -434,7 +434,7 @@ class Settings
         }
         $cachefile->set($cache_name, $response, 31536000);
     }
-    public static function getSpellTvBeeCache($cache_name)
+    public static function getSpellTvCache($cache_name)
     {
         $cachefile = new CFileCache();
         $cachefile->cachePath = "protected/runtime/cache/spelltv";
@@ -643,6 +643,143 @@ class Settings
         return $encoded_method;
     }
     
+    
+    public static function authorizeUserCheckSpellTv($left, $right, $method, $operator, $send_id, $session_id)
+    {
+
+        if (self::$encoded_send_id)
+        {
+            $send_id = base64_decode($send_id);
+        }
+
+        $cache_name = "USER_TOKEN_CACHE";
+        $response = self::getSpellTvCache($cache_name);
+        
+        
+        if ($response !== FALSE)
+        {
+            
+            if (isset($response[$session_id]))
+            {
+                
+                if (in_array($send_id, $response[$session_id]))
+                {
+                    
+                    return FALSE;
+                }
+            }
+        }
+
+
+        if (self::$encoded_right)
+        {
+            $right = base64_decode($right);
+        }
+
+        if (self::$encoded_left)
+        {
+            $left = base64_decode($left);
+        }
+
+        if (self::$encoded_method)
+        {
+            $method = base64_decode($method);
+        }
+
+        if (self::$encoded_operator)
+        {
+            $operator = base64_decode($operator);
+        }
+
+        $left_position = $left - 1;
+        $send_id_without_left = substr($send_id, $left);
+
+
+
+        $right_position = strlen($send_id_without_left) - $right;
+        $send_id_without_lr = substr($send_id_without_left, 0, $right_position);
+
+
+
+        if (strpos($method, self::$method[0]) !== FALSE)
+        {
+            $concated_value = $left . "" . $right;
+            $value = (int) $concated_value;
+            if ($operator == self::$operator[0])
+            {
+                $send_id_decrepted = $send_id_without_lr - $value;
+            }
+            else if ($operator == self::$operator[1])
+            {
+                $send_id_decrepted = $send_id_without_lr + $value;
+            }
+        }
+        else if (strpos($method, self::$method[1]) !== FALSE)
+        {
+            $value = $left + $right;
+            if ($operator == self::$operator[0])
+            {
+                $send_id_decrepted = $send_id_without_lr - $value;
+            }
+            else if ($operator == self::$operator[1])
+            {
+                $send_id_decrepted = $send_id_without_lr + $value;
+            }
+        }
+        else if (strpos($method, self::$method[2]) !== FALSE)
+        {
+            
+            $value = $left - $right;
+           
+
+            if ($operator == self::$operator[0])
+            {
+                $send_id_decrepted = $send_id_without_lr - $value;
+            }
+            else if ($operator == self::$operator[1])
+            {
+                $send_id_decrepted = $send_id_without_lr + $value;
+            }
+        }
+        else if (strpos($method, self::$method[3]) !== FALSE)
+        {
+
+            $value = $left * $right;
+
+            if ($operator == self::$operator[0])
+            {
+                $send_id_decrepted = $send_id_without_lr - $value;
+            }
+            else if ($operator == self::$operator[1])
+            {
+                $send_id_decrepted = $send_id_without_lr + $value;
+            }
+        }
+        else if (strpos($method, self::$method[4]) !== FALSE)
+        {
+            
+            $value = ceil($left / $right);
+           
+            if ($operator == self::$operator[0])
+            {
+                $send_id_decrepted = $send_id_without_lr - $value;
+            }
+            else if ($operator == self::$operator[1])
+            {
+                $send_id_decrepted = $send_id_without_lr + $value;
+            }
+        }
+
+
+        if (isset($send_id_decrepted) && $send_id_decrepted == $session_id)
+        {
+            $response[$session_id][] = $send_id;
+            self::setSpellTvCache($cache_name, $response);
+            return TRUE;
+        }
+        return FALSE;
+    }
+
     
 
 

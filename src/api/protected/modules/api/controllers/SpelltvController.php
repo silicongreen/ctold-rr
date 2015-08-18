@@ -74,7 +74,7 @@ class SpelltvController extends Controller
             $current_score = 0;
             $current_time = 0;
             $cache_name_userdata = "YII-SPELLTV-USERDATA-" . $user_id;
-            $response = Settings::getSpellTvBeeCache($cache_name_userdata);
+            $response = Settings::getSpellTvCache($cache_name_userdata);
             if (isset($response) && isset($response['current_score']))
             {
                 $current_score = $response['current_score'];
@@ -172,7 +172,7 @@ class SpelltvController extends Controller
                 if ($user_data)
                 {
                     $cache_name_userdata = "YII-SPELLTV-USERDATA-" . $iUserId;
-                    $response = Settings::getSpellTvBeeCache($cache_name_userdata);
+                    $response = Settings::getSpellTvCache($cache_name_userdata);
 
                     $current_score = 0;
                     $current_time = 0;
@@ -190,7 +190,7 @@ class SpelltvController extends Controller
                             $current_time = $response['current_time'];
                             $prev_id = $response['prev_id'];
                             $play_total_time = $response['play_total_time'] = $response['play_total_time'] + $objParams->total_time;
-                            Settings::setSpellTvBeeCache($cache_name_userdata, $response);
+                            Settings::setSpellTvCache($cache_name_userdata, $response);
                         }
                         else
                         {
@@ -202,7 +202,7 @@ class SpelltvController extends Controller
                                 $response['prev_id'] = $prev_id = $user_score_data->id;
                                 $response['play_total_time'] = $play_total_time = $user_score_data->play_total_time + $objParams->total_time;
 
-                                Settings::setSpellTvBeeCache($cache_name_userdata, $response);
+                                Settings::setSpellTvCache($cache_name_userdata, $response);
                             }
                             else
                             {
@@ -221,7 +221,7 @@ class SpelltvController extends Controller
                             $response['current_time'] = $current_time = $user_score_data->test_time;
                             $response['prev_id'] = $prev_id = $user_score_data->id;
                             $response['play_total_time'] = $play_total_time = $user_score_data->play_total_time + $objParams->total_time;
-                            Settings::setSpellTvBeeCache($cache_name_userdata, $response);
+                            Settings::setSpellTvCache($cache_name_userdata, $response);
                         }
                         else
                         {
@@ -256,7 +256,7 @@ class SpelltvController extends Controller
                         $response['current_time'] = $time_for_rank;
                         $response['prev_id'] = $highscore->id;
                         $response['play_total_time'] = $play_total_time;
-                        Settings::setSpellTvBeeCache($cache_name_userdata, $response);
+                        Settings::setSpellTvCache($cache_name_userdata, $response);
                     }
                     else
                     {

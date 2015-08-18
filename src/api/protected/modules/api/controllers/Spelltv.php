@@ -36,6 +36,10 @@ class SpelltvController extends Controller
             ),
         );
     }
+    public function actionindex()
+    {
+        //need to build
+    }
     public function actiongetLeaderboard()
     {
         $limit = Yii::app()->request->getPost('limit');

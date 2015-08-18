@@ -161,7 +161,7 @@ class SpelltvController extends Controller
             $data = (int)$data;
             
             
-            $valid_user = Settings::authorizeUserCheck($objParams->left, $objParams->right, $objParams->method, $objParams->operator, $objParams->send_id, $data);
+            $valid_user = Settings::authorizeUserCheckSpellTv($objParams->left, $objParams->right, $objParams->method, $objParams->operator, $objParams->send_id, $data);
             
             if ($valid_user)
             {

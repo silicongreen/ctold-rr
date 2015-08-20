@@ -38,6 +38,8 @@
     protected $custom_string_field_position;
     protected $primary_key;
     protected $image_field_position;
+    protected $extra_string_replace_array = array();
+    protected $uc_words = false;
     
     protected $buttons  = array();
 
@@ -53,6 +55,16 @@
     * If you establish multiple databases in config/database.php this will allow you to
     * set the database (other than $active_group) - more info: http://codeigniter.com/forums/viewthread/145901/#712942
     */
+    public function set_uc_word($value)
+    {
+	$this->uc_words = $value;
+    }
+    
+    public function extra_string_replace_array($array_value)
+    {
+	$this->extra_string_replace_array = $array_value;
+    }
+    
     public function set_database($db_name)
     {
 	$db_data = $this->ci->load->database($db_name, TRUE);
@@ -541,13 +553,37 @@
                 
         } 
         
+        
         if($this->custom_string_field_position)
         {
             foreach($this->custom_string_field_position as $key=>$a_custom_string_field_position)
             {
                 if(in_array($a_custom_string_field_position,array_keys($aaData[$row_key])))
                 {
-                    $aaData[$row_key][$a_custom_string_field_position] = $this->custom_string_array[$key][$aaData[$row_key][$a_custom_string_field_position]];
+                    if(isset($this->custom_string_array[$key][$aaData[$row_key][$a_custom_string_field_position]]))
+                    {
+                        $aaData[$row_key][$a_custom_string_field_position] = $this->custom_string_array[$key][$aaData[$row_key][$a_custom_string_field_position]];
+                    }
+                    else
+                    {
+                        $value_changed = $aaData[$row_key][$a_custom_string_field_position];
+                        if($this->extra_string_replace_array)
+                        {
+                            foreach ($this->extra_string_replace_array as  $evalue=>$cvalue) 
+                            {
+                               $value_changed = str_replace($evalue,$cvalue, $value_changed);
+                            }
+                            $value_changed = str_replace("_", " ", $value_changed);
+                            
+                            if($this->uc_words)
+                            {
+                               
+                                $value_changed = ucwords($value_changed);
+                            }
+                            
+                        }    
+                        $aaData[$row_key][$a_custom_string_field_position] = $value_changed; 
+                    }
                 }
             }
         } 
@@ -560,6 +596,7 @@
                 {
                     $aaData[$row_key][$a_date_string_field_position] = date("Y-m-d",  strtotime($aaData[$row_key][$a_date_string_field_position]));
                 }
+                
             }
         }
         

@@ -115,6 +115,73 @@ class paidstatictis extends MX_Controller
         echo $this->datatables->generate();
         $this->db->dbprefix = 'tds_';
     }
+    function new_stat()
+    {
+        $school_id = $this->input->post("school");
+        $start_date = $this->input->post("start_date");
+        $end_date = $this->input->post("end_date");
+        $data['stat'] = $this->getinfo($school_id,$start_date,$end_date);
+        $data['user_type'] = array(1 => 'Student', 2 => 'Parent', 3 => 'Teacher', 4=> 'Admin');
+        $this->load->view("admin/paidstatictis/_partialstat",$data);
+    }
+    function overall()
+    {
+        $data['has_daterange_stat'] = true;
+        $this->db->dbprefix = '';
+        $this->db->where("is_deleted",0);
+        
+        $obj_schools = $this->db->get('schools')->result();
+        
+        $this->db->dbprefix = 'tds_';
+        $select_schools = array();
+        $i = 0;
+        foreach ($obj_schools as $value)
+        {
+            if($i==0)
+            {
+                $first_school = $value->id;
+            }
+            $select_schools[$value->id] = $value->name;
+            $i++;
+        }
+        
+        $data['schools'] = $select_schools;
+        
+        $data['stat'] = $this->getinfo($first_school);
+        $data['user_type'] = array(1 => 'Student', 2 => 'Parent', 3 => 'Teacher', 4=> 'Admin');
+        $this->render('admin/paidstatictis/overall',$data);
+    }
+    private function getinfo($school_id, $start_date="", $end_date="")
+    {
+        if(!$start_date)
+        {
+            if($end_date)
+            {
+                $start_date = $end_date;
+            }
+            else 
+            {
+                $start_date = date("Y-m-d");
+            }
+            
+        }
+        if(!$end_date)
+        {
+            $end_date = $start_date;
+        } 
+        
+        $this->db->dbprefix = '';
+        $this->db->select("Count(Distinct user_id) As countUsers,user_type_paid");
+        $this->db->where("free_site",0);
+        $this->db->where("ip !=",'182.160.115.228');
+        $this->db->where("school_id",$school_id);
+        $this->db->where("DATE(created_at) <=",$end_date);
+        $this->db->where("DATE(created_at) >=",$start_date);
+        $this->db->group_by("user_type_paid"); 
+        $statistics_info = $this->db->get("activity_logs")->result(); 
+        $this->db->dbprefix = 'tds_';
+        return $statistics_info;
+    }        
    
 
     

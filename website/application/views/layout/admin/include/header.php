@@ -20,7 +20,9 @@
 
 		<link href="<?php echo base_url()?>images/interface/iOS_icon.png" rel="apple-touch-icon">
 
-
+                <?php if ( isset($has_daterange_stat) && $has_daterange_stat == true) : ?>
+                    <link href="<?php echo  base_url() ?>scripts/timepicker/bootstrap.min.css" rel="stylesheet" type="text/css" >
+                <?php endif; ?>
 
 		<link rel="stylesheet" href="<?php echo base_url()?>styles/adminica/reset.css">
 		
@@ -151,6 +153,12 @@
 		<script src="<?php echo base_url()?>scripts/adminica/adminica_wizard.js"></script>
 		<script src="<?php echo base_url()?>scripts/adminica/adminica_forms.js"></script>
 		<script src="<?php echo base_url()?>scripts/adminica/adminica_load.js"></script>
+                
+                <?php if ( isset($has_daterange_stat) && $has_daterange_stat == true) : ?>
+                    <script src="<?php echo  base_url() ?>scripts/timepicker/moment.js" type="text/javascript"></script>  
+                    <link href="<?php echo  base_url() ?>scripts/timepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" >
+                    <script src="<?php echo  base_url() ?>scripts/timepicker/daterangepicker.js" type="text/javascript"></script> 
+                <?php endif; ?>
 		
                 <?php if ( isset($has_daterange) && $has_daterange == true) : ?>
                     <script src="<?php echo  base_url() ?>scripts/timepicker/moment.js" type="text/javascript"></script>  

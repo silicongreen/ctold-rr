@@ -45,12 +45,13 @@
                                 ?>
                                 <fieldset class="top">
                                     <label style="font-size: 20px; font-weight: bold;" ><?php echo $user_type[$value->user_type_paid]; ?></label>
-                                    <div style="margin-top:10px; font-size: 20px; font-weight: bold;">
+                                    <div style="margin-top:10px; font-size: 20px; font-weight: bold; cursor: pointer;" class="user_full_stat" id="<?php echo $user_type[$value->user_type_paid]; ?>_full">
                                         <?php echo $value->countUsers ?>
                                     </div>
                                 </fieldset>
+                       
                                 <?php
-                                $total = $total + $user_type[$value->user_type_paid];
+                                $total = $total + $value->countUsers;
                                 unset($user_type[$value->user_type_paid]);
                                 ?>
                             <?php endforeach; ?>
@@ -79,6 +80,7 @@
         </div>
 
         <script type="text/javascript">
+            
             var startDate_stat = moment();
             var endDate_stat = moment();
             $(document).ready(function () {
@@ -145,6 +147,24 @@
                 );
 
                 $('.dateranger_stat span').html(moment().format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
+            });
+            
+             $(document).on("click", ".user_full_stat", function(){
+   
+                    var idFilter = this.id;
+                    var $filterIdArray =  idFilter.split("_");
+                    $.fancybox({
+                        'width'		        : "40%",
+                        'height'                : "60%",
+                        'autoScale'             : true,
+                        'href'			: $("#base_url").val() + "admin/paidstatictis/full_stat/"+$("#select_school").val()+"/"+$filterIdArray[0]+"/"+startDate_stat.format("YYYY-MM-DD")+"/"+endDate_stat.format("YYYY-MM-DD"),
+                        'title'                 : false,
+                        'transitionIn'		: 'none',
+                        'transitionOut'		: 'none',
+                        'type'		        : 'iframe'
+
+                    });
+
             });
 
         </script>    

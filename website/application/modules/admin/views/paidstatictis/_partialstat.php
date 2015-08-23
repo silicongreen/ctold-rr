@@ -7,12 +7,12 @@
         ?>
         <fieldset class="top">
             <label style="font-size: 20px; font-weight: bold;" ><?php echo $user_type[$value->user_type_paid]; ?></label>
-            <div style="margin-top:10px; font-size: 20px; font-weight: bold;">
+            <div style="margin-top:10px; font-size: 20px; font-weight: bold; cursor:pointer"  class="user_full_stat" id="<?php echo $user_type[$value->user_type_paid]; ?>_full">
                 <?php echo $value->countUsers ?>
             </div>
         </fieldset>
         <?php
-        $total = $total + $user_type[$value->user_type_paid];
+        $total = $total + $value->countUsers;
         unset($user_type[$value->user_type_paid]);
         ?>
     <?php endforeach; ?>

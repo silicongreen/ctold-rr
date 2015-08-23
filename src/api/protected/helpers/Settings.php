@@ -1,7 +1,6 @@
 <?php
 
-class Settings
-{
+class Settings {
 
     public static $domain_name = 'http://www.champs21.com/';
     public static $image_path = 'http://www.champs21.com/';
@@ -20,7 +19,6 @@ class Settings
     public static $AssignmentText = "New Assignment";
     public static $education_changes_life = 59;
     public static $notification_url = "http://www.champs21.com/front/ajax/send_paid_notification";
-    
     //spelling bee config
     public static $method = array("c", "p", "s", "m", "d");
     public static $operator = array("m", "p");
@@ -29,10 +27,8 @@ class Settings
     public static $encoded_method = TRUE;
     public static $encoded_operator = TRUE;
     public static $encoded_send_id = TRUE;
-    
     public static $check_service = false;
     public static $check_id = 259;
-    
     public static $spellingbeeConfig = false;
     public static $alwaysAgreementCheck = TRUE;
     public static $checkPointSize = 20;
@@ -41,8 +37,6 @@ class Settings
     public static $normalWord = 50;
     public static $hardWord = 20;
     public static $checkpointValue = 20;
-    
-    
     public static $school_join_approved = array(
         1 => false,
         2 => false,
@@ -148,7 +142,70 @@ class Settings
             'after_finish' => FALSE,
         )
     );
-    
+    public static $change_name_cm = Array
+        (
+        'calender GetAttendence' => "attendence index",
+        'calender Academic' => "calender index",
+        'calender AddAttendenceSingle' => "add attendence",
+        'calender AddAttendence' => "add attendence",
+        'calender StudentAttendenceReport' => "attendence report",
+        'calender GetBatchStudentAttendence' => "attendence index",
+        'calender GetBatchStudentAttendence' => "attendence index",
+        'calender GetStudentInfo' => "student info",
+        'calender GetBatch' => "batch info",
+        'dashboard GetHome' => "dashboard index",
+        'event ReadReminder' => "notice index",
+        'event GetuserReminder' => "notice show",
+        'event Fees' => "Fees index",
+        'event StudentLeaves' => "Leave index",
+        'event TeacherLeaves' => "Leave index",
+        'event LeaveType' => "Leave index",
+        'event ReportManagerTeacher' => "Leave index",
+        'event StudentLeavesParent' => "Leave index",
+        'event AddLeaveStudent' => "Add Leave",
+        'event AddLeaveTeacher' => "Add index",
+        'event AddMeetingParent' => "Add Meeting",
+        'event MeetingStatus' => "Meeting index",
+        'event MeetingRequestSingle' => "Meeting index",
+        'event GetSingleEvent' => "Event index",
+        'event index' => "Event index",
+        'homework AssessmentScore' => "Assessment Mark",
+        'homework SaveAssessment' => "Save Assessment",
+        'homework GetAssessment' => "Assessment index",
+        'homework Assessment' => "Assessment index",
+        'homework SingleTeacher' => "homework index",
+        'homework SingleHomework' => "homework show",
+        'homework index' => "homework index",
+        'homework HomeworkStatus' => "homework index",
+        'homework TeacherHomework' => "homework index",
+        'homework AddHomework' => "Add Homework",
+        'homework Done' => "Done Homework",
+        'homework TeacherQuiz' => "Quiz index",
+        'notice GetSingleNotice' => "notice index",
+        'notice GetNotice' => "notice index",
+        'notice index' => "notice index",
+        'notice Acknowledge' => "notice Acknowledge",
+        'report ProgressAll' => "Exam Report Prograss",
+        'report Progress' => "Exam Report Prograss",
+        'report GetExamReport' => "Exam Report",
+        'report ClassTestReport' => "Class Test Report",
+        'routine GetDateRoutine' => "Routine index",
+        'routine Teacher' => "Routine index",
+        'routine index' => "Routine index",
+        'routine TeacherExam' => "Exam Routine",
+        'routine Exam' => "Exam Routine",
+        'routine AllExam' => "Exam Routine",
+        'syllabus index' => "Syllabus index",
+        'syllabus Terms' => "Syllabus index",
+        'syllabus Single' => "Syllabus Show",
+        'syllabus Singlelessonplans' => "Lessonplans Show",
+        'syllabus AddLessonPlan' => "Add LessonPlan",
+        'syllabus AssignLesson' => "Assign LessonPlan",
+        'task index' => "Task index",
+        'task Details' => "Task index",
+        'transport index' => "Transport index"
+    );
+
     public static function getBingTokens($grantType, $scopeUrl, $clientID, $clientSecret, $authUrl) {
         try {
             //Initialize the Curl Session.
@@ -175,7 +232,7 @@ class Settings
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             //Execute the  cURL session.
             $strResponse = curl_exec($ch);
-            
+
             //Get the Error Code returned by Curl.
             $curlErrno = curl_errno($ch);
             if ($curlErrno) {
@@ -186,7 +243,7 @@ class Settings
             curl_close($ch);
             //Decode the returned JSON string.
             $objResponse = json_decode($strResponse);
-            if (isset( $objResponse->error )) {
+            if (isset($objResponse->error)) {
                 throw new Exception($objResponse->error_description);
             }
             return $objResponse->access_token;
@@ -194,293 +251,230 @@ class Settings
             echo "Exception-" . $e->getMessage();
         }
     }
-    public static function download_bing_audio($strWord)
-    {
+
+    public static function download_bing_audio($strWord) {
         $sound_status = 0;
         $clientID = '00000000480E8A3E';
         $clientSecret = 'VvjLerJ7T8v5X4g+9r4WKWOG3Ih0yNEwz2tpveoYmsw=';
         $authUrl = 'https://datamarket.accesscontrol.windows.net/v2/OAuth2-13/';
         $scopeUrl = 'http://api.microsofttranslator.com';
         $grantType = 'client_credentials';
-        $accessToken = self::getBingTokens( $grantType, $scopeUrl, $clientID, $clientSecret, $authUrl );
-        if($accessToken)
-        {
-            try
-            {
+        $accessToken = self::getBingTokens($grantType, $scopeUrl, $clientID, $clientSecret, $authUrl);
+        if ($accessToken) {
+            try {
                 $strLang = 'en';
                 $strAuthHeader = "Authorization: Bearer " . $accessToken;
-                $strParams = "text=" . urlencode( $strWord ) . "&language=" . $strLang . "&format=audio/mp3";
+                $strParams = "text=" . urlencode($strWord) . "&language=" . $strLang . "&format=audio/mp3";
                 $strURL = "http://api.microsofttranslator.com/V2/Http.svc/Speak?" . $strParams;
-                $strResponse = curlRequest( $strURL, $strAuthHeader );
+                $strResponse = curlRequest($strURL, $strAuthHeader);
                 return $strResponse;
-            }
-            catch ( Exception $e )
-            {
+            } catch (Exception $e) {
                 return false;
             }
-        }
-        else
-        {
+        } else {
             return false;
-        } 
+        }
         return false;
     }
-    public static function downloadMP3( $strWord )
-    {
-       
-        $strDestination = self::$main_path."upload/spellingbee";
-        if (!is_dir($strDestination))
-        {
+
+    public static function downloadMP3($strWord) {
+
+        $strDestination = self::$main_path . "upload/spellingbee";
+        if (!is_dir($strDestination)) {
             @mkdir($strDestination, 0777, true);
         }
-        $strMusicFile = $strDestination."/".strtolower( trim( $strWord ) ) . ".mp3";
+        $strMusicFile = $strDestination . "/" . strtolower(trim($strWord)) . ".mp3";
         $sound_status = 1;
         @unlink($strMusicFile);
-        if(!is_file($strMusicFile))  
-        {
-            $objCURL = curl_init( "http://translate.google.com/translate_tts?q=" . str_replace( " ", "+", strtolower( trim( $strWord ) ) ) . "&tl=en" );
-            $fp = fopen( $strMusicFile, "w+" );
+        if (!is_file($strMusicFile)) {
+            $objCURL = curl_init("http://translate.google.com/translate_tts?q=" . str_replace(" ", "+", strtolower(trim($strWord))) . "&tl=en");
+            $fp = fopen($strMusicFile, "w+");
 
-            curl_setopt( $objCURL, CURLOPT_FILE, $fp );
-            curl_setopt( $objCURL, CURLOPT_HEADER, 0 );
+            curl_setopt($objCURL, CURLOPT_FILE, $fp);
+            curl_setopt($objCURL, CURLOPT_HEADER, 0);
 
-            curl_exec( $objCURL );
-            $curl_status = curl_getinfo ($objCURL);
-            if($curl_status['http_code']==200)
-            {
+            curl_exec($objCURL);
+            $curl_status = curl_getinfo($objCURL);
+            if ($curl_status['http_code'] == 200) {
                 $sound_status = 1;
-                curl_close( $objCURL );
-                fclose( $fp );
-                if(filesize($strMusicFile)<500)
-                {
-                   $sound_status = 0; 
-                }    
-            }
-            else
-            {
+                curl_close($objCURL);
+                fclose($fp);
+                if (filesize($strMusicFile) < 500) {
+                    $sound_status = 0;
+                }
+            } else {
                 $sound_status = 0;
-                curl_close( $objCURL );
-                fclose( $fp );
+                curl_close($objCURL);
+                fclose($fp);
                 @unlink($strMusicFile);
-            } 
-            
+            }
         }
-        if($sound_status==0)
-        {
+        if ($sound_status == 0) {
             @unlink($strMusicFile);
             $file_response = self::download_bing_audio($strWord);
-            if($file_response)
-            {
+            if ($file_response) {
                 $sound_status = 1;
-                file_put_contents( $strMusicFile, $file_response );
-            }   
-        } 
-        
-        return $sound_status;
-      
-    }
-    
-    
-    public static function retriveWord($left, $right,$operator, $word, $top,$bottom)
-    {
-       
-        $left_decrepted = self::decreptmobilestyle($left);
-        if($left_decrepted==0)
-        {
-            return false;
-        }    
-        $word_without_left = substr($word, $left_decrepted);
-        
-        $right_decrepted = self::decreptmobilestyle($right);
-        if($right_decrepted==0)
-        {
-            return false;
-        }
-        
-        $right_position = strlen($word_without_left) - $right_decrepted;
-        $word_without_lr = substr($word_without_left, 0, $right_position);
-        
-       
-        
-        
-        if((strlen($word_without_lr)%2)!=0)
-        {
-            return false;
-        }    
-        $array_string = str_split($word_without_lr, 2);
-        
-      
-        $main_array = array();
-        
-        $i = 2;
-        foreach($array_string as $value)
-        {
-            if(($i%2)==0)
-            {
-                if($operator=="pm")
-                {
-                    $main_array[] = $value-$left_decrepted;
-                }
-                else if($operator=="am")
-                {
-                    $main_array[] = $value+$left_decrepted;
-                } 
+                file_put_contents($strMusicFile, $file_response);
             }
-            else
-            {
-                if($operator=="pm")
-                {
-                    $main_array[] = $value+$right_decrepted;
-                }
-                else if($operator=="am")
-                {
-                    $main_array[] = $value-$right_decrepted;
-                }
-                
-            }    
-            $i++;
-        } 
-      
-     
-        
-        $character_array = self::createCharacterArray($top,$bottom);
-    
-     
-        $return_string = "";
-        
-        if(!$main_array)
-        {
-            return false;
-        }
-        else
-        {
-            foreach($main_array as $value)
-            {
-                if(isset($character_array[$value]))
-                {
-                    $return_string.=$character_array[$value];
-                }
-                else
-                {
-                    return false;
-                    break;
-                }    
-            }    
-        }
-        return $return_string;
-        
-        
-    } 
-    public static function createCharacterArray($top,$bottom)
-    {
-        $character_array = array();
-       
-        $characters = 'abcdefghijklmnopqrstuvwxyz';
-        $charactersLength = strlen($characters);
-      
-        for ($i = 0; $i < $charactersLength; $i++)
-        {
-            if($i>0)
-            {
-                $top = $top+$bottom;
-            }    
-            $character_array[$top]= $characters[$i];
         }
 
-        
+        return $sound_status;
+    }
+
+    public static function retriveWord($left, $right, $operator, $word, $top, $bottom) {
+
+        $left_decrepted = self::decreptmobilestyle($left);
+        if ($left_decrepted == 0) {
+            return false;
+        }
+        $word_without_left = substr($word, $left_decrepted);
+
+        $right_decrepted = self::decreptmobilestyle($right);
+        if ($right_decrepted == 0) {
+            return false;
+        }
+
+        $right_position = strlen($word_without_left) - $right_decrepted;
+        $word_without_lr = substr($word_without_left, 0, $right_position);
+
+
+
+
+        if ((strlen($word_without_lr) % 2) != 0) {
+            return false;
+        }
+        $array_string = str_split($word_without_lr, 2);
+
+
+        $main_array = array();
+
+        $i = 2;
+        foreach ($array_string as $value) {
+            if (($i % 2) == 0) {
+                if ($operator == "pm") {
+                    $main_array[] = $value - $left_decrepted;
+                } else if ($operator == "am") {
+                    $main_array[] = $value + $left_decrepted;
+                }
+            } else {
+                if ($operator == "pm") {
+                    $main_array[] = $value + $right_decrepted;
+                } else if ($operator == "am") {
+                    $main_array[] = $value - $right_decrepted;
+                }
+            }
+            $i++;
+        }
+
+
+
+        $character_array = self::createCharacterArray($top, $bottom);
+
+
+        $return_string = "";
+
+        if (!$main_array) {
+            return false;
+        } else {
+            foreach ($main_array as $value) {
+                if (isset($character_array[$value])) {
+                    $return_string.=$character_array[$value];
+                } else {
+                    return false;
+                    break;
+                }
+            }
+        }
+        return $return_string;
+    }
+
+    public static function createCharacterArray($top, $bottom) {
+        $character_array = array();
+
+        $characters = 'abcdefghijklmnopqrstuvwxyz';
+        $charactersLength = strlen($characters);
+
+        for ($i = 0; $i < $charactersLength; $i++) {
+            if ($i > 0) {
+                $top = $top + $bottom;
+            }
+            $character_array[$top] = $characters[$i];
+        }
+
+
 
         return $character_array;
     }
-    
-    public static function decreptmobilestyle($string)
-    {
-        $mobile_keyboard = array(2=>"abc",3=>"def",4=>"ghi",5=>"jkl",6=>"mno",7=>"pqrs",8=>"tuv",9=>"wxyz");
+
+    public static function decreptmobilestyle($string) {
+        $mobile_keyboard = array(2 => "abc", 3 => "def", 4 => "ghi", 5 => "jkl", 6 => "mno", 7 => "pqrs", 8 => "tuv", 9 => "wxyz");
         $convertvalue = 0;
-        foreach($mobile_keyboard as $key=>$value)
-        {
-            if (strpos($value, $string) !== FALSE)
-            {
+        foreach ($mobile_keyboard as $key => $value) {
+            if (strpos($value, $string) !== FALSE) {
                 $convertvalue = $key;
                 break;
             }
-        }  
+        }
         return $convertvalue;
-    }        
+    }
 
-    public static function getSessionId()
-    {
-        if(self::$check_service)
-        {
+    public static function getSessionId() {
+        if (self::$check_service) {
             return self::$check_id;
-        }
-        else
-        {
+        } else {
             $id = Yii::app()->user->free_id;
-            if($id)
-            {
-                return (int)$id;
-            }    
-        }  
+            if ($id) {
+                return (int) $id;
+            }
+        }
         return false;
-    } 
-    
-    
-    public static function setSpellTvCache($cache_name,$response)
-    {
+    }
+
+    public static function setSpellTvCache($cache_name, $response) {
         $cachefile = new CFileCache();
         $cachefile->cachePath = "protected/runtime/cache/spelltv";
-        if(!is_dir($cachefile->cachePath))
-        {
+        if (!is_dir($cachefile->cachePath)) {
             mkdir($cachefile->cachePath, 0777);
         }
         $cachefile->set($cache_name, $response, 31536000);
     }
-    public static function getSpellTvCache($cache_name)
-    {
+
+    public static function getSpellTvCache($cache_name) {
         $cachefile = new CFileCache();
         $cachefile->cachePath = "protected/runtime/cache/spelltv";
-        if(!is_dir($cachefile->cachePath))
-        {
+        if (!is_dir($cachefile->cachePath)) {
             mkdir($cachefile->cachePath, 0777);
-            
         }
         $response = $cachefile->get($cache_name);
         return $response;
     }
-    
-    
-    
-    public static function setSpellingBeeCache($cache_name,$response)
-    {
+
+    public static function setSpellingBeeCache($cache_name, $response) {
         $cachefile = new CFileCache();
         $cachefile->cachePath = "protected/runtime/cache/spellingbee";
-        if(!is_dir($cachefile->cachePath))
-        {
+        if (!is_dir($cachefile->cachePath)) {
             mkdir($cachefile->cachePath, 0777);
         }
         $cachefile->set($cache_name, $response, 31536000);
     }
-    public static function getSpellingBeeCache($cache_name)
-    {
+
+    public static function getSpellingBeeCache($cache_name) {
         $cachefile = new CFileCache();
         $cachefile->cachePath = "protected/runtime/cache/spellingbee";
-        if(!is_dir($cachefile->cachePath))
-        {
+        if (!is_dir($cachefile->cachePath)) {
             mkdir($cachefile->cachePath, 0777);
-            
         }
         $response = $cachefile->get($cache_name);
         return $response;
     }
-    public static function clearCurrentWord($iUserId)
-    {
+
+    public static function clearCurrentWord($iUserId) {
         $cache_name_word = "YII-SPELLINGBEE-CURRENTUSERWORD-" . $iUserId;
         $responseword = array();
         Settings::setSpellingBeeCache($cache_name_word, $responseword);
-    }        
+    }
 
-    public static function createUserToken($user_id)
-    {
+    public static function createUserToken($user_id) {
         $leftstring = rand(1000, 1000000);
         $rightstring = rand(100, 100000);
 
@@ -510,122 +504,90 @@ class Settings
 
 
         $return1 = $return = array("left" => $leftvalue, "right" => $rightvalue, "method" => $encoded_method, "operator" => $operator_main, "user_id_token" => $user_id_created);
-        
+
         $cache_name = "USER_TOKEN_CACHE";
         $response[$user_id][] = $user_id_created;
         self::setSpellingBeeCache($cache_name, $response);
 
-        if (self::$encoded_right)
-        {
+        if (self::$encoded_right) {
             $return['right'] = base64_encode($return['right']);
         }
 
-        if (self::$encoded_left)
-        {
+        if (self::$encoded_left) {
             $return['left'] = base64_encode($return['left']);
         }
 
-        if (self::$encoded_send_id)
-        {
+        if (self::$encoded_send_id) {
             $return['user_id_token'] = base64_encode($return['user_id_token']);
         }
 
-        if (self::$encoded_method)
-        {
+        if (self::$encoded_method) {
             $return['method'] = base64_encode($return['method']);
         }
 
-        if (self::$encoded_operator)
-        {
+        if (self::$encoded_operator) {
             $return['operator'] = base64_encode($return['operator']);
         }
 
         return (object) $return;
     }
 
-    public static function createEncriptedUserID($method, $operator, $send_id_without_lr, $left, $right)
-    {
+    public static function createEncriptedUserID($method, $operator, $send_id_without_lr, $left, $right) {
         $send_id_decrepted = 0;
-        if (strpos($method, self::$method[0]) !== FALSE)
-        {
+        if (strpos($method, self::$method[0]) !== FALSE) {
             $concated_value = $left . "" . $right;
             $value = (int) $concated_value;
-            if ($operator == self::$operator[0])
-            {
+            if ($operator == self::$operator[0]) {
                 $send_id_decrepted = $send_id_without_lr + $value;
-            }
-            else if ($operator == self::$operator[1])
-            {
+            } else if ($operator == self::$operator[1]) {
                 $send_id_decrepted = $send_id_without_lr - $value;
             }
-        }
-        else if (strpos($method, self::$method[1]) !== FALSE)
-        {
+        } else if (strpos($method, self::$method[1]) !== FALSE) {
             $value = $left + $right;
-            if ($operator == self::$operator[0])
-            {
+            if ($operator == self::$operator[0]) {
                 $send_id_decrepted = $send_id_without_lr + $value;
-            }
-            else if ($operator == self::$operator[1])
-            {
+            } else if ($operator == self::$operator[1]) {
                 $send_id_decrepted = $send_id_without_lr - $value;
             }
-        }
-        else if (strpos($method, self::$method[2]) !== FALSE)
-        {
-            
-            $value = $left - $right;
-           
+        } else if (strpos($method, self::$method[2]) !== FALSE) {
 
-            if ($operator == self::$operator[0])
-            {
+            $value = $left - $right;
+
+
+            if ($operator == self::$operator[0]) {
                 $send_id_decrepted = $send_id_without_lr + $value;
-            }
-            else if ($operator == self::$operator[1])
-            {
+            } else if ($operator == self::$operator[1]) {
                 $send_id_decrepted = $send_id_without_lr - $value;
             }
-        }
-        else if (strpos($method, self::$method[3]) !== FALSE)
-        {
+        } else if (strpos($method, self::$method[3]) !== FALSE) {
 
             $value = $left * $right;
 
-            if ($operator == self::$operator[0])
-            {
+            if ($operator == self::$operator[0]) {
                 $send_id_decrepted = $send_id_without_lr + $value;
-            }
-            else if ($operator == self::$operator[1])
-            {
+            } else if ($operator == self::$operator[1]) {
                 $send_id_decrepted = $send_id_without_lr - $value;
             }
-        }
-        else if (strpos($method, self::$method[4]) !== FALSE)
-        {
-           
+        } else if (strpos($method, self::$method[4]) !== FALSE) {
+
             $value = ceil($left / $right);
-            
-            if ($operator == self::$operator[0])
-            {
+
+            if ($operator == self::$operator[0]) {
                 $send_id_decrepted = $send_id_without_lr + $value;
-            }
-            else if ($operator == self::$operator[1])
-            {
+            } else if ($operator == self::$operator[1]) {
                 $send_id_decrepted = $send_id_without_lr - $value;
             }
         }
         return $send_id_decrepted;
     }
 
-    public static function createMethodEncoded($method_main)
-    {
+    public static function createMethodEncoded($method_main) {
         $length = rand(2, 5);
         $characters = 'abefghijklnoqrtuvwxyz';
         $charactersLength = strlen($characters);
         $encoded_method = '';
         $randomString1 = '';
-        for ($i = 0; $i < $length; $i++)
-        {
+        for ($i = 0; $i < $length; $i++) {
             $randomString1 .= $characters[rand(0, $charactersLength - 1)];
         }
 
@@ -633,8 +595,7 @@ class Settings
 
 
         $randomString2 = '';
-        for ($i = 0; $i < $length; $i++)
-        {
+        for ($i = 0; $i < $length; $i++) {
             $randomString2 .= $characters[rand(0, $charactersLength - 1)];
         }
 
@@ -643,52 +604,42 @@ class Settings
 
         return $encoded_method;
     }
-    
-    
-    public static function authorizeUserCheckSpellTv($left, $right, $method, $operator, $send_id, $session_id)
-    {
 
-        if (self::$encoded_send_id)
-        {
+    public static function authorizeUserCheckSpellTv($left, $right, $method, $operator, $send_id, $session_id) {
+
+        if (self::$encoded_send_id) {
             $send_id = base64_decode($send_id);
         }
 
         $cache_name = "USER_TOKEN_CACHE";
         $response = self::getSpellTvCache($cache_name);
-        
-        
-        if ($response !== FALSE)
-        {
-            
-            if (isset($response[$session_id]))
-            {
-                
-                if (in_array($send_id, $response[$session_id]))
-                {
-                    
+
+
+        if ($response !== FALSE) {
+
+            if (isset($response[$session_id])) {
+
+                if (in_array($send_id, $response[$session_id])) {
+
                     return FALSE;
                 }
             }
         }
 
 
-        if (self::$encoded_right)
-        {
+        if (self::$encoded_right) {
             $right = base64_decode($right);
         }
 
-        if (self::$encoded_left)
-        {
+        if (self::$encoded_left) {
             $left = base64_decode($left);
         }
 
-        if (self::$encoded_method)
-        {
+        if (self::$encoded_method) {
             $method = base64_decode($method);
         }
 
-        if (self::$encoded_operator)
-        {
+        if (self::$encoded_operator) {
             $operator = base64_decode($operator);
         }
 
@@ -702,78 +653,53 @@ class Settings
 
 
 
-        if (strpos($method, self::$method[0]) !== FALSE)
-        {
+        if (strpos($method, self::$method[0]) !== FALSE) {
             $concated_value = $left . "" . $right;
             $value = (int) $concated_value;
-            if ($operator == self::$operator[0])
-            {
+            if ($operator == self::$operator[0]) {
                 $send_id_decrepted = $send_id_without_lr - $value;
-            }
-            else if ($operator == self::$operator[1])
-            {
+            } else if ($operator == self::$operator[1]) {
                 $send_id_decrepted = $send_id_without_lr + $value;
             }
-        }
-        else if (strpos($method, self::$method[1]) !== FALSE)
-        {
+        } else if (strpos($method, self::$method[1]) !== FALSE) {
             $value = $left + $right;
-            if ($operator == self::$operator[0])
-            {
+            if ($operator == self::$operator[0]) {
                 $send_id_decrepted = $send_id_without_lr - $value;
-            }
-            else if ($operator == self::$operator[1])
-            {
+            } else if ($operator == self::$operator[1]) {
                 $send_id_decrepted = $send_id_without_lr + $value;
             }
-        }
-        else if (strpos($method, self::$method[2]) !== FALSE)
-        {
-            
-            $value = $left - $right;
-           
+        } else if (strpos($method, self::$method[2]) !== FALSE) {
 
-            if ($operator == self::$operator[0])
-            {
+            $value = $left - $right;
+
+
+            if ($operator == self::$operator[0]) {
                 $send_id_decrepted = $send_id_without_lr - $value;
-            }
-            else if ($operator == self::$operator[1])
-            {
+            } else if ($operator == self::$operator[1]) {
                 $send_id_decrepted = $send_id_without_lr + $value;
             }
-        }
-        else if (strpos($method, self::$method[3]) !== FALSE)
-        {
+        } else if (strpos($method, self::$method[3]) !== FALSE) {
 
             $value = $left * $right;
 
-            if ($operator == self::$operator[0])
-            {
+            if ($operator == self::$operator[0]) {
                 $send_id_decrepted = $send_id_without_lr - $value;
-            }
-            else if ($operator == self::$operator[1])
-            {
+            } else if ($operator == self::$operator[1]) {
                 $send_id_decrepted = $send_id_without_lr + $value;
             }
-        }
-        else if (strpos($method, self::$method[4]) !== FALSE)
-        {
-            
+        } else if (strpos($method, self::$method[4]) !== FALSE) {
+
             $value = ceil($left / $right);
-           
-            if ($operator == self::$operator[0])
-            {
+
+            if ($operator == self::$operator[0]) {
                 $send_id_decrepted = $send_id_without_lr - $value;
-            }
-            else if ($operator == self::$operator[1])
-            {
+            } else if ($operator == self::$operator[1]) {
                 $send_id_decrepted = $send_id_without_lr + $value;
             }
         }
 
 
-        if (isset($send_id_decrepted) && $send_id_decrepted == $session_id)
-        {
+        if (isset($send_id_decrepted) && $send_id_decrepted == $session_id) {
             $response[$session_id][] = $send_id;
             self::setSpellTvCache($cache_name, $response);
             return TRUE;
@@ -781,53 +707,41 @@ class Settings
         return FALSE;
     }
 
-    
+    public static function authorizeUserCheck($left, $right, $method, $operator, $send_id, $session_id) {
 
-
-    public static function authorizeUserCheck($left, $right, $method, $operator, $send_id, $session_id)
-    {
-
-        if (self::$encoded_send_id)
-        {
+        if (self::$encoded_send_id) {
             $send_id = base64_decode($send_id);
         }
 
         $cache_name = "USER_TOKEN_CACHE";
         $response = self::getSpellingBeeCache($cache_name);
-        
-        
-        if ($response !== FALSE)
-        {
-            
-            if (isset($response[$session_id]))
-            {
-                
-                if (in_array($send_id, $response[$session_id]))
-                {
-                    
+
+
+        if ($response !== FALSE) {
+
+            if (isset($response[$session_id])) {
+
+                if (in_array($send_id, $response[$session_id])) {
+
                     return FALSE;
                 }
             }
         }
 
 
-        if (self::$encoded_right)
-        {
+        if (self::$encoded_right) {
             $right = base64_decode($right);
         }
 
-        if (self::$encoded_left)
-        {
+        if (self::$encoded_left) {
             $left = base64_decode($left);
         }
 
-        if (self::$encoded_method)
-        {
+        if (self::$encoded_method) {
             $method = base64_decode($method);
         }
 
-        if (self::$encoded_operator)
-        {
+        if (self::$encoded_operator) {
             $operator = base64_decode($operator);
         }
 
@@ -841,78 +755,53 @@ class Settings
 
 
 
-        if (strpos($method, self::$method[0]) !== FALSE)
-        {
+        if (strpos($method, self::$method[0]) !== FALSE) {
             $concated_value = $left . "" . $right;
             $value = (int) $concated_value;
-            if ($operator == self::$operator[0])
-            {
+            if ($operator == self::$operator[0]) {
                 $send_id_decrepted = $send_id_without_lr - $value;
-            }
-            else if ($operator == self::$operator[1])
-            {
+            } else if ($operator == self::$operator[1]) {
                 $send_id_decrepted = $send_id_without_lr + $value;
             }
-        }
-        else if (strpos($method, self::$method[1]) !== FALSE)
-        {
+        } else if (strpos($method, self::$method[1]) !== FALSE) {
             $value = $left + $right;
-            if ($operator == self::$operator[0])
-            {
+            if ($operator == self::$operator[0]) {
                 $send_id_decrepted = $send_id_without_lr - $value;
-            }
-            else if ($operator == self::$operator[1])
-            {
+            } else if ($operator == self::$operator[1]) {
                 $send_id_decrepted = $send_id_without_lr + $value;
             }
-        }
-        else if (strpos($method, self::$method[2]) !== FALSE)
-        {
-            
-            $value = $left - $right;
-           
+        } else if (strpos($method, self::$method[2]) !== FALSE) {
 
-            if ($operator == self::$operator[0])
-            {
+            $value = $left - $right;
+
+
+            if ($operator == self::$operator[0]) {
                 $send_id_decrepted = $send_id_without_lr - $value;
-            }
-            else if ($operator == self::$operator[1])
-            {
+            } else if ($operator == self::$operator[1]) {
                 $send_id_decrepted = $send_id_without_lr + $value;
             }
-        }
-        else if (strpos($method, self::$method[3]) !== FALSE)
-        {
+        } else if (strpos($method, self::$method[3]) !== FALSE) {
 
             $value = $left * $right;
 
-            if ($operator == self::$operator[0])
-            {
+            if ($operator == self::$operator[0]) {
                 $send_id_decrepted = $send_id_without_lr - $value;
-            }
-            else if ($operator == self::$operator[1])
-            {
+            } else if ($operator == self::$operator[1]) {
                 $send_id_decrepted = $send_id_without_lr + $value;
             }
-        }
-        else if (strpos($method, self::$method[4]) !== FALSE)
-        {
-            
+        } else if (strpos($method, self::$method[4]) !== FALSE) {
+
             $value = ceil($left / $right);
-           
-            if ($operator == self::$operator[0])
-            {
+
+            if ($operator == self::$operator[0]) {
                 $send_id_decrepted = $send_id_without_lr - $value;
-            }
-            else if ($operator == self::$operator[1])
-            {
+            } else if ($operator == self::$operator[1]) {
                 $send_id_decrepted = $send_id_without_lr + $value;
             }
         }
 
 
-        if (isset($send_id_decrepted) && $send_id_decrepted == $session_id)
-        {
+        if (isset($send_id_decrepted) && $send_id_decrepted == $session_id) {
             $response[$session_id][] = $send_id;
             self::setSpellingBeeCache($cache_name, $response);
             return TRUE;
@@ -920,8 +809,7 @@ class Settings
         return FALSE;
     }
 
-    public static function sendCurlNotification($user_id, $notification_id)
-    {
+    public static function sendCurlNotification($user_id, $notification_id) {
         $url = Settings::$notification_url;
         $fields = array(
             'user_id' => $user_id,
@@ -930,8 +818,7 @@ class Settings
 
         $fields_string = "";
 
-        foreach ($fields as $key => $value)
-        {
+        foreach ($fields as $key => $value) {
             $fields_string .= $key . '=' . $value . '&';
         }
 
@@ -956,8 +843,7 @@ class Settings
         curl_close($ch);
     }
 
-    public static function getFedenaToken($school_code, $username, $password)
-    {
+    public static function getFedenaToken($school_code, $username, $password) {
         $endPoint = "champs21.com";
 
         $client_id = sha1($school_code . Settings::$client_id);
@@ -982,20 +868,16 @@ class Settings
         return $joutput;
     }
 
-    public static function getDataApi($data, $url_end, $type = "get")
-    {
+    public static function getDataApi($data, $url_end, $type = "get") {
         $url = 'http://' . Yii::app()->user->school_code . '.' . self::$endPoint . "/" . $url_end;
 
         $headers = array('Content-type' => 'application/x-www-form-urlencoded',
             'Authorization' => 'Token token="' . Yii::app()->user->access_token_user . '"'
         );
 
-        if ($type == "post")
-        {
+        if ($type == "post") {
             $output = Yii::app()->curl->setHeaders($headers)->post($url, $data);
-        }
-        else
-        {
+        } else {
             $output = Yii::app()->curl->setHeaders($headers)->get($url, $data);
         }
 
@@ -1005,8 +887,7 @@ class Settings
         return $array;
     }
 
-    public static function getCurrentDay($date = '')
-    {
+    public static function getCurrentDay($date = '') {
 
         $date = (!empty($date)) ? $date : \date('Y-m-d', \time());
 
@@ -1014,20 +895,15 @@ class Settings
         return $day;
     }
 
-    public static function formatTime($time, $b_12_hour = TRUE)
-    {
+    public static function formatTime($time, $b_12_hour = TRUE) {
 
         return $time = ($b_12_hour) ? date('h:i a', strtotime($time)) : $time;
     }
 
-    public static function get_diff_date($end, $out_in_array = true, $start_date = false)
-    {
-        if ($start_date == false)
-        {
+    public static function get_diff_date($end, $out_in_array = true, $start_date = false) {
+        if ($start_date == false) {
             $intervalo = date_diff(date_create($end), date_create());
-        }
-        else
-        {
+        } else {
             $intervalo = date_diff(date_create($end), date_create($start_date));
         }
         $out = $intervalo->format("Years:%Y,Months:%M,Days:%d,Hours:%H,Minutes:%i,Seconds:%s");
@@ -1035,111 +911,80 @@ class Settings
             return $out;
         $a_out = array();
         $outs = explode(',', $out);
-        foreach ($outs as $val)
-        {
+        foreach ($outs as $val) {
             $v = explode(':', $val);
             $a_out[$v[0]] = $v[1];
         }
         return $a_out;
     }
 
-    public static function get_post_time($published_date, $to = 6, $check = true, $start_date = false)
-    {
+    public static function get_post_time($published_date, $to = 6, $check = true, $start_date = false) {
         $datediff = self::get_diff_date($published_date, true, $start_date);
         $datestring = "";
         $findvalue = false;
-        if ($datediff['Years'] > 0 && $to > 0)
-        {
-            if ($datediff['Years'] > 1)
-            {
+        if ($datediff['Years'] > 0 && $to > 0) {
+            if ($datediff['Years'] > 1) {
                 $datestring.= $datediff['Years'] . " Years";
-            }
-            else
-            {
+            } else {
                 $datestring.= $datediff['Years'] . " Year";
             }
             $findvalue = true;
         }
-        if ($datediff['Months'] > 0 && ($findvalue === false || $check == false) && $to > 1)
-        {
-            if ($findvalue)
-            {
+        if ($datediff['Months'] > 0 && ($findvalue === false || $check == false) && $to > 1) {
+            if ($findvalue) {
                 $datestring.= ", ";
             }
-            if ($datediff['Months'] > 1)
-            {
+            if ($datediff['Months'] > 1) {
                 $datestring.= $datediff['Months'] . " Months";
-            }
-            else
-            {
+            } else {
                 $datestring.= $datediff['Months'] . " Month";
             }
 
             $findvalue = true;
         }
-        if ($datediff['Days'] > 0 && ($findvalue === false || $check == false) && $to > 2)
-        {
-            if ($findvalue)
-            {
+        if ($datediff['Days'] > 0 && ($findvalue === false || $check == false) && $to > 2) {
+            if ($findvalue) {
                 $datestring.= ", ";
             }
-            if ($datediff['Days'] > 1)
-            {
+            if ($datediff['Days'] > 1) {
                 $datestring.= $datediff['Days'] . " Days";
-            }
-            else
-            {
+            } else {
                 $datestring.= $datediff['Days'] . " Day";
             }
 
             $findvalue = true;
         }
-        if ($datediff['Hours'] > 0 && ($findvalue === false || $check == false) && $to > 3)
-        {
-            if ($findvalue)
-            {
+        if ($datediff['Hours'] > 0 && ($findvalue === false || $check == false) && $to > 3) {
+            if ($findvalue) {
                 $datestring.= ", ";
             }
-            if ($datediff['Hours'] > 1)
-            {
+            if ($datediff['Hours'] > 1) {
                 $datestring.= $datediff['Hours'] . " Hours";
-            }
-            else
-            {
+            } else {
                 $datestring.= $datediff['Hours'] . " Hour";
             }
 
             $findvalue = true;
         }
-        if ($datediff['Minutes'] > 0 && ($findvalue === false || $check == false) && $to > 4)
-        {
-            if ($findvalue)
-            {
+        if ($datediff['Minutes'] > 0 && ($findvalue === false || $check == false) && $to > 4) {
+            if ($findvalue) {
                 $datestring.= ", ";
             }
-            if ($datediff['Minutes'] > 1)
-            {
+            if ($datediff['Minutes'] > 1) {
                 $datestring.= $datediff['Minutes'] . " Minutes";
-            }
-            else
-            {
+            } else {
                 $datestring.= $datediff['Minutes'] . " Minute";
             }
 
             $findvalue = true;
         }
-        if ($datediff['Seconds'] > 0 && ($findvalue === false || $check == false) && $to > 5)
-        {
-            if ($findvalue)
-            {
+        if ($datediff['Seconds'] > 0 && ($findvalue === false || $check == false) && $to > 5) {
+            if ($findvalue) {
                 $datestring.= ", ";
             }
-            if ($datediff['Seconds'] > 1)
-            {
+            if ($datediff['Seconds'] > 1) {
                 $datestring.= $datediff['Seconds'] . " Seconds";
-            }
-            else
-            {
+            } else {
                 $datestring.= $datediff['Seconds'] . " Second";
             }
 
@@ -1150,46 +995,38 @@ class Settings
         return $datestring;
     }
 
-    public static function formatDateTime($date_time, $b_12_hour = TRUE)
-    {
+    public static function formatDateTime($date_time, $b_12_hour = TRUE) {
 
         return $time = ($b_12_hour) ? date('Y-m-d h:i a', strtotime($date_time)) : $time;
     }
 
-    public static function get_crop_image($url, $replace_url = "gallery/facebook/")
-    {
+    public static function get_crop_image($url, $replace_url = "gallery/facebook/") {
         $image = str_replace("gallery/", $replace_url, $url);
 
-        foreach (self::$url_array as $value)
-        {
+        foreach (self::$url_array as $value) {
             $image = str_replace($value, self::$real_path, $image);
         }
 
-        if (!file_exists($image))
-        {
+        if (!file_exists($image)) {
             return $url;
         }
         return str_replace(self::$real_path, self::$image_path, $image);
     }
 
-    public static function get_mobile_image($url, $replace_url = "gallery/mobile/")
-    {
+    public static function get_mobile_image($url, $replace_url = "gallery/mobile/") {
         $image = str_replace("gallery/", $replace_url, $url);
 
-        foreach (self::$url_array as $value)
-        {
+        foreach (self::$url_array as $value) {
             $image = str_replace($value, self::$real_path, $image);
         }
 
-        if (!file_exists($image))
-        {
+        if (!file_exists($image)) {
             return $url;
         }
         return str_replace(self::$real_path, self::$image_path, $image);
     }
 
-    public static function sanitize($str, $char = '-')
-    {
+    public static function sanitize($str, $char = '-') {
         // Lower case the string and remove whitespace from the beginning or end
         $str = trim(strtolower($str));
 
@@ -1209,16 +1046,12 @@ class Settings
         return $str;
     }
 
-    public static function get_simple_post_layout($postValue)
-    {
+    public static function get_simple_post_layout($postValue) {
         $post_type = 0;
         $edu_check = false;
-        if (isset($postValue['postCategories']) && count($postValue['postCategories']) > 0)
-        {
-            foreach ($postValue['postCategories'] as $value)
-            {
-                if (self::$education_changes_life == $value['category']->id)
-                {
+        if (isset($postValue['postCategories']) && count($postValue['postCategories']) > 0) {
+            foreach ($postValue['postCategories'] as $value) {
+                if (self::$education_changes_life == $value['category']->id) {
                     $edu_check = true;
                     break;
                 }
@@ -1226,73 +1059,45 @@ class Settings
         }
 
 
-        if ($postValue->school_id > 0)
-        {
+        if ($postValue->school_id > 0) {
             $post_type = 8;
-        }
-        else if ($edu_check)
-        {
+        } else if ($edu_check) {
             $post_type = 9;
-        }
-        else if ($postValue->post_layout == 1 && $postValue->inside_image != "" && $postValue->inside_image != null)
-        {
+        } else if ($postValue->post_layout == 1 && $postValue->inside_image != "" && $postValue->inside_image != null) {
             $post_type = 2;
-        }
-        else if ($postValue->post_layout == 2 && $postValue['postGalleries'] && count($postValue['postGalleries']) > 2)
-        {
+        } else if ($postValue->post_layout == 2 && $postValue['postGalleries'] && count($postValue['postGalleries']) > 2) {
             $post_type = 3;
-        }
-        else if ($postValue->post_layout == 3)
-        {
+        } else if ($postValue->post_layout == 3) {
             $post_type = 1;
-        }
-        else if ($postValue->short_title != "")
-        {
-            if ($postValue->sort_title_type == 2 && $postValue['postGalleries'] && count($postValue['postGalleries']) > 1)
-            {
+        } else if ($postValue->short_title != "") {
+            if ($postValue->sort_title_type == 2 && $postValue['postGalleries'] && count($postValue['postGalleries']) > 1) {
                 $post_type = 6;
-            }
-            else if ($postValue->sort_title_type == 3)
-            {
+            } else if ($postValue->sort_title_type == 3) {
                 $post_type = 7;
-            }
-            else if ($postValue->sort_title_type == 4 && isset($postValue['postAuthor']) && $postValue['postAuthor']->image != "")
-            {
+            } else if ($postValue->sort_title_type == 4 && isset($postValue['postAuthor']) && $postValue['postAuthor']->image != "") {
                 $post_type = 4;
-            }
-            else if ($postValue->sort_title_type == 5)
-            {
+            } else if ($postValue->sort_title_type == 5) {
                 $post_type = 5;
             }
         }
         return $post_type;
     }
 
-    public static function get_post_link_url($news)
-    {
+    public static function get_post_link_url($news) {
         $link_array = array();
-        if ($news->post_type == 2)
-        {
-            if ($news->lead_link != null && $news->lead_link != "")
-            {
+        if ($news->post_type == 2) {
+            if ($news->lead_link != null && $news->lead_link != "") {
                 $link_array['link'] = $news->lead_link;
                 $link_array['use_link'] = 1;
-            }
-            else
-            {
+            } else {
                 $link_array['link'] = "";
                 $link_array['use_link'] = 1;
             }
-        }
-        else
-        {
-            if ($news->lead_link != null && $news->lead_link != "")
-            {
+        } else {
+            if ($news->lead_link != null && $news->lead_link != "") {
                 $link_array['link'] = $news->lead_link;
                 $link_array['use_link'] = 1;
-            }
-            else
-            {
+            } else {
                 $link_array['link'] = self::$image_path . self::sanitize($news->headline) . "-" . $news->id;
                 $link_array['use_link'] = 0;
             }
@@ -1300,34 +1105,24 @@ class Settings
         return $link_array;
     }
 
-    public static function add_caption_and_link($postValue)
-    {
+    public static function add_caption_and_link($postValue) {
 
         $all_image = array();
-        if ($postValue->lead_material && strlen(trim($postValue->lead_material)) > 0)
-        {
+        if ($postValue->lead_material && strlen(trim($postValue->lead_material)) > 0) {
             $all_image[0]['ad_image'] = self::get_mobile_image(self::$image_path . $postValue->lead_material);
             $all_image[0]['ad_image_link'] = $postValue->lead_source;
             $all_image[0]['ad_image_caption'] = $postValue->lead_caption;
-        }
-        else
-        {
+        } else {
             $doc = new DOMDocument();
             @$doc->loadHTML($postValue->content);
             $images = $doc->getElementsByTagName('img');
             $i = 0;
-            foreach ($images as $image)
-            {
-                if (strpos($image->getAttribute('src'), "relatednews.jpg") !== FALSE)
-                {
+            foreach ($images as $image) {
+                if (strpos($image->getAttribute('src'), "relatednews.jpg") !== FALSE) {
                     continue;
-                }
-                else if (strpos($image->getAttribute('class'), "no_slider") !== FALSE)
-                {
+                } else if (strpos($image->getAttribute('class'), "no_slider") !== FALSE) {
                     continue;
-                }
-                else
-                {
+                } else {
                     $all_image[$i]['ad_image'] = self::get_mobile_image($image->getAttribute('src'));
                     $all_image[$i]['ad_image_link'] = $image->getAttribute('longdesc');
                     $all_image[$i]['ad_image_caption'] = $image->getAttribute('title');
@@ -1338,19 +1133,16 @@ class Settings
         return $all_image;
     }
 
-    public static function get_embeded_url($content)
-    {
+    public static function get_embeded_url($content) {
         preg_match('/src="([^"]+)"/', $content, $match);
         $url = $match[1];
         return $url;
     }
 
-    public static function get_solution($content)
-    {
+    public static function get_solution($content) {
         $value = preg_match_all('/<div(.*?)id=\"solution\-text\"(.*?)>(.*?)<\/div>/s', $content, $estimates);
         $soultion = "";
-        if ($value)
-        {
+        if ($value) {
             $soultion = str_replace("<hr />", "", $estimates[count($estimates) - 1][0]);
             $soultion = str_replace("<hr/>", "", $soultion);
             $soultion = str_replace("\n", "", $soultion);
@@ -1359,23 +1151,18 @@ class Settings
         return $soultion;
     }
 
-    public static function remove_solution_button($content)
-    {
+    public static function remove_solution_button($content) {
         $value = preg_replace('/<p(.*?)id=\"solution-\-p\"(.*?)>(.*?)<\/p>/s', "", $content);
         return $value;
     }
 
-    public static function getSingleNewsFromCache($id)
-    {
+    public static function getSingleNewsFromCache($id) {
         $cache_name = "YII-SINGLE-POST-CACHE-" . $id;
-        if (!$singlepost = Yii::app()->cache->get($cache_name))
-        {
+        if (!$singlepost = Yii::app()->cache->get($cache_name)) {
             $postModel = new Post();
             $singlepost = $postModel->getSinglePost($id);
             Yii::app()->cache->set($cache_name, $singlepost, 5184000);
-        }
-        else
-        {
+        } else {
             $datestring = self::get_post_time($singlepost['published_date']);
             $singlepost['current_date'] = date("Y-m-d H:i:s");
             $singlepost['published_date_string'] = $datestring;
@@ -1383,26 +1170,22 @@ class Settings
         return $singlepost;
     }
 
-    public static function formatData($postValue)
-    {
+    public static function formatData($postValue) {
         $post_array = array();
-        if ($postValue)
-        {
+        if ($postValue) {
             $post_array['title'] = $postValue->headline;
 
             $post_array['is_spelling_bee'] = $postValue->is_spelling_bee;
 
             $post_array['related_news_spelling_bee'] = array();
 
-            if ($postValue->is_spelling_bee)
-            {
+            if ($postValue->is_spelling_bee) {
 
                 $objrelated = new RelatedNews();
                 $rnews = $objrelated->getRelatedNews($postValue->id);
                 $post_data = array();
                 $i = 0;
-                foreach ($rnews as $value)
-                {
+                foreach ($rnews as $value) {
                     $post_data[$i] = self::getSingleNewsFromCache($value['id']);
                     $i++;
                 }
@@ -1415,8 +1198,7 @@ class Settings
             $post_array['post_type'] = $postValue->post_type;
 
             $post_array['ad_target'] = 1;
-            if (isset($postValue->ad_target))
-            {
+            if (isset($postValue->ad_target)) {
                 $post_array['ad_target'] = $postValue->ad_target;
             }
 
@@ -1424,21 +1206,17 @@ class Settings
             $post_array['subcategory_id_to_use'] = "";
             $post_array['school_id'] = "";
             $post_array['education_changes_life'] = 0;
-            if (isset($postValue->school_id) && $postValue->school_id)
-            {
+            if (isset($postValue->school_id) && $postValue->school_id) {
                 $post_array['school_id'] = $postValue->school_id;
             }
 
-            if (isset($postValue->category_id) && $postValue->category_id)
-            {
+            if (isset($postValue->category_id) && $postValue->category_id) {
                 $post_array['category_id_to_use'] = $postValue->category_id;
-                if (self::$education_changes_life == $postValue->category_id)
-                {
+                if (self::$education_changes_life == $postValue->category_id) {
                     $post_array['education_changes_life'] = 1;
                 }
 
-                if (isset($postValue->subcategory_id_to_use) && $postValue->subcategory_id_to_use)
-                {
+                if (isset($postValue->subcategory_id_to_use) && $postValue->subcategory_id_to_use) {
                     $post_array['subcategory_id_to_use'] = $postValue->subcategory_id_to_use;
                 }
             }
@@ -1459,8 +1237,7 @@ class Settings
 
             $post_array['assessment_played'] = 0;
 
-            if (isset($postValue['postAssessment']->title) && $postValue['postAssessment']->title)
-            {
+            if (isset($postValue['postAssessment']->title) && $postValue['postAssessment']->title) {
                 $post_array['assessment_title'] = $postValue['postAssessment']->title;
                 $post_array['assessment_played'] = $postValue['postAssessment']->played;
             }
@@ -1515,56 +1292,44 @@ class Settings
 
             $post_array['author'] = "";
             $post_array['designation'] = "";
-            if (isset($postValue->author_image_post))
-            {
+            if (isset($postValue->author_image_post)) {
                 $post_array['author_image'] = $postValue->author_image_post;
-            }
-            else
-            {
+            } else {
                 $post_array['author_image'] = "";
             }
 
-            if (isset($postValue['freeUser']))
-            {
+            if (isset($postValue['freeUser'])) {
                 $auther_name = "";
-                if (isset($postValue['freeUser']->profile_image))
-                {
+                if (isset($postValue['freeUser']->profile_image)) {
                     $post_array['author_image'] = $postValue['freeUser']->profile_image;
                 }
-                if (isset($postValue['freeUser']->first_name) && $postValue['freeUser']->first_name)
-                {
+                if (isset($postValue['freeUser']->first_name) && $postValue['freeUser']->first_name) {
                     $auther_name .= $postValue['freeUser']->first_name . " ";
                 }
-                if (isset($postValue['freeUser']->middle_name) && $postValue['freeUser']->middle_name)
-                {
+                if (isset($postValue['freeUser']->middle_name) && $postValue['freeUser']->middle_name) {
                     $auther_name .= $postValue['freeUser']->middle_name . " ";
                 }
-                if (isset($postValue['freeUser']->last_name) && $postValue['freeUser']->last_name)
-                {
+                if (isset($postValue['freeUser']->last_name) && $postValue['freeUser']->last_name) {
                     $auther_name .= $postValue['freeUser']->last_name;
                 }
-                if (!$auther_name)
-                {
+                if (!$auther_name) {
                     if (isset($postValue['freeUser']->email))
                         $auther_name = $postValue['freeUser']->email;
                 }
                 $post_array['author'] = $auther_name;
 
-                if (isset($postValue['freeUser']->designation) && $postValue['freeUser']->designation)
-                {
+                if (isset($postValue['freeUser']->designation) && $postValue['freeUser']->designation) {
                     $post_array['designation'] = $postValue['freeUser']->designation;
                 }
             }
 
 
-            if (isset($postValue['postAuthor']))
-            {
+            if (isset($postValue['postAuthor'])) {
                 $post_array['author'] = $postValue['postAuthor']->title;
                 if ($postValue['postAuthor']->image)
                     $post_array['author_image'] = Settings::$image_path . $postValue['postAuthor']->image;
 
-                if (isset($postValue['postAuthor']->designation) && $postValue['postAuthor']->designation)
-                {
+                if (isset($postValue['postAuthor']->designation) && $postValue['postAuthor']->designation) {
                     $post_array['designation'] = $postValue['postAuthor']->designation;
                 }
             }
@@ -1619,33 +1384,26 @@ class Settings
             $post_array['image_width'] = "";
             $post_array['image_height'] = "";
 
-            if ($postValue['postGalleries'])
-            {
+            if ($postValue['postGalleries']) {
                 $j = 0;
                 $k = 0;
-                foreach ($postValue['postGalleries'] as $value)
-                {
-                    if (trim($value['material']->material_url) && $value->type == 2)
-                    {
+                foreach ($postValue['postGalleries'] as $value) {
+                    if (trim($value['material']->material_url) && $value->type == 2) {
                         $post_array['crop_images'][] = Settings::get_crop_image(Settings::$image_path . $value['material']->material_url);
                         $post_array['images'][] = Settings::get_mobile_image(Settings::$image_path . $value['material']->material_url);
 
                         $post_array['add_images'][$j]['ad_image'] = Settings::get_mobile_image(Settings::$image_path . $value['material']->material_url);
                         $post_array['add_images'][$j]['ad_image_link'] = $value->source;
                         $post_array['add_images'][$j]['ad_image_caption'] = $value->caption;
-                        if ($j == 1)
-                        {
+                        if ($j == 1) {
                             list($image_width, $image_height, $image_type, $image_attr) = @getimagesize($post_array['images'][$j]);
-                            if (isset($image_width) && isset($image_height))
-                            {
+                            if (isset($image_width) && isset($image_height)) {
                                 $post_array['image_width'] = $image_width;
                                 $post_array['image_height'] = $image_height;
                             }
                         }
                         $j++;
-                    }
-                    else if (trim($value['material']->material_url) && $value->type == 1)
-                    {
+                    } else if (trim($value['material']->material_url) && $value->type == 1) {
 
                         $post_array['web_images'][$k]['image'] = Settings::$image_path . $value['material']->material_url;
                         $post_array['web_images'][$k]['source'] = $value->source;
@@ -1656,24 +1414,19 @@ class Settings
                 }
             }
 
-            if (empty($post_array['images']))
-            {
-                if (!empty($post_array['lead_material']))
-                {
+            if (empty($post_array['images'])) {
+                if (!empty($post_array['lead_material'])) {
                     $post_array['images'][] = Settings::get_mobile_image(Settings::$image_path . $post_array['lead_material']);
                     $post_array['crop_images'][] = Settings::get_crop_image(Settings::$image_path . $post_array['lead_material']);
                 }
             }
 
             //need to change 2
-            if (isset($postValue->mobile_content) && strlen(Settings::substr_with_unicode($postValue->mobile_content, true)) > 0)
-            {
+            if (isset($postValue->mobile_content) && strlen(Settings::substr_with_unicode($postValue->mobile_content, true)) > 0) {
                 $post_array['mobile_content'] = Settings::remove_solution_button($postValue->mobile_content);
                 $post_array['full_content'] = Settings::substr_with_unicode($postValue->mobile_content, true);
                 $post_array['solution'] = Settings::get_solution($postValue->mobile_content);
-            }
-            else
-            {
+            } else {
                 $post_array['mobile_content'] = Settings::remove_solution_button($postValue->content);
                 $post_array['full_content'] = Settings::substr_with_unicode($postValue->content, true);
                 $post_array['solution'] = Settings::get_solution($postValue->content);
@@ -1682,13 +1435,10 @@ class Settings
             $post_array['summary'] = "";
 
 
-            if ($postValue->summary)
-            {
+            if ($postValue->summary) {
                 $post_array['has_summary'] = 1;
                 $post_array['summary'] = $postValue->summary;
-            }
-            else
-            {
+            } else {
                 $post_array['has_summary'] = 0;
                 $post_array['summary'] = Settings::substr_with_unicode($postValue->content);
             }
@@ -1721,14 +1471,10 @@ class Settings
 
 
 
-            if (isset($postValue['postCategories'][0]['category']->name))
-            {
-                if (isset($postValue['postCategories'][0]['category']->display_name) && $postValue['postCategories'][0]['category']->display_name != "")
-                {
+            if (isset($postValue['postCategories'][0]['category']->name)) {
+                if (isset($postValue['postCategories'][0]['category']->display_name) && $postValue['postCategories'][0]['category']->display_name != "") {
                     $post_array['category_name'] = $postValue['postCategories'][0]['category']->display_name;
-                }
-                else
-                {
+                } else {
                     $post_array['category_name'] = $postValue['postCategories'][0]['category']->name;
                 }
             }
@@ -1745,14 +1491,10 @@ class Settings
             if (isset($postValue['postCategories'][1]['category']->id))
                 $post_array['second_category_id'] = $postValue['postCategories'][1]['category']->id;
 
-            if (isset($postValue['postCategories'][1]['category']->name))
-            {
-                if (isset($postValue['postCategories'][1]['category']->display_name) && $postValue['postCategories'][1]['category']->display_name != "")
-                {
+            if (isset($postValue['postCategories'][1]['category']->name)) {
+                if (isset($postValue['postCategories'][1]['category']->display_name) && $postValue['postCategories'][1]['category']->display_name != "") {
                     $post_array['second_category_name'] = $postValue['postCategories'][1]['category']->display_name;
-                }
-                else
-                {
+                } else {
                     $post_array['second_category_name'] = $postValue['postCategories'][1]['category']->name;
                 }
                 $post_array['second_category_id'] = $postValue['postCategories'][1]['category']->id;
@@ -1763,8 +1505,7 @@ class Settings
 
             $j = 0;
             if ($postValue['postTags'])
-                foreach ($postValue['postTags'] as $value)
-                {
+                foreach ($postValue['postTags'] as $value) {
                     $post_array['tags'][$j]['name'] = $value['tag']->tags_name;
                     $post_array['tags'][$j]['id'] = $value['tag']->id;
                     $j++;
@@ -1775,11 +1516,9 @@ class Settings
             $post_array['attach_download_link'] = "";
             $post_array['attachment'] = array();
 
-            if ($postValue['postAttachment'] && count($postValue['postAttachment']) > 0)
-            {
+            if ($postValue['postAttachment'] && count($postValue['postAttachment']) > 0) {
                 $ai = 0;
-                foreach ($postValue['postAttachment'] as $avalue)
-                {
+                foreach ($postValue['postAttachment'] as $avalue) {
                     $post_array['attachment'][$ai]['attach'] = Settings::$image_path . $avalue->file_name;
 
                     $post_array['attachment'][$ai]['content'] = '<iframe frameborder="0" style="width: 100%; height: 500px;" src="http://docs.google.com/gview?url=' . Settings::$image_path . $avalue->file_name . '&embedded=true"></iframe>';
@@ -1792,41 +1531,29 @@ class Settings
             }
 
             return $post_array;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
 
-    public static function content_images($content, $first_image = true, $lead_material = false)
-    {
+    public static function content_images($content, $first_image = true, $lead_material = false) {
         $doc = new DOMDocument();
         @$doc->loadHTML($content);
         $images = $doc->getElementsByTagName('img');
         $all_image = array();
 
-        if ($lead_material)
-        {
+        if ($lead_material) {
             $all_image[] = self::get_mobile_image(self::$image_path . $lead_material);
         }
         $i = 1;
-        foreach ($images as $image)
-        {
-            if (strpos($image->getAttribute('src'), "relatednews.jpg") !== FALSE)
-            {
+        foreach ($images as $image) {
+            if (strpos($image->getAttribute('src'), "relatednews.jpg") !== FALSE) {
                 continue;
-            }
-            else if (strpos($image->getAttribute('class'), "no_slider") !== FALSE)
-            {
+            } else if (strpos($image->getAttribute('class'), "no_slider") !== FALSE) {
                 continue;
-            }
-            else if ($i == 1 && $first_image === false)
-            {
+            } else if ($i == 1 && $first_image === false) {
                 continue;
-            }
-            else
-            {
+            } else {
                 $all_image[] = self::get_mobile_image($image->getAttribute('src'));
             }
             $i++;
@@ -1834,8 +1561,7 @@ class Settings
         return $all_image;
     }
 
-    public static function substr_with_unicode($string, $full_length = false, $length = 400)
-    {
+    public static function substr_with_unicode($string, $full_length = false, $length = 400) {
         $string = preg_replace('/<div (.*?)>Source:(.*?)<\/div>/', '', $string);
         $string = preg_replace('/<div class="img_caption" (.*?)>(.*?)<\/div>/', '', $string);
 
@@ -1843,52 +1569,42 @@ class Settings
         $string = str_replace("&nbsp;", '', $string);
         $string = str_replace("<p></p>", '', $string);
 
-        if ($full_length === false)
-        {
+        if ($full_length === false) {
 
             $main_string = mb_substr(strip_tags(html_entity_decode($string, ENT_QUOTES, 'UTF-8')), 0, $length, 'UTF-8');
             return trim($main_string);
-        }
-        else
-        {
+        } else {
             $main_string = strip_tags(html_entity_decode($string, ENT_QUOTES, 'UTF-8'));
             $main_string = mb_substr($main_string, 0, mb_strlen($main_string, 'UTF-8'), 'UTF-8');
             return trim($main_string);
         }
     }
 
-    public static function getProfileModel()
-    {
+    public static function getProfileModel() {
 
         $mod_name = 'Employees';
 
-        if (Yii::app()->user->isStudent)
-        {
+        if (Yii::app()->user->isStudent) {
             $mod_name = 'Students';
         }
 
-        if (Yii::app()->user->isParent)
-        {
+        if (Yii::app()->user->isParent) {
             $mod_name = 'Guardians';
         }
 
         return $mod_name;
     }
 
-    public static function extractIds($array_or_obj, $key = 'id')
-    {
+    public static function extractIds($array_or_obj, $key = 'id') {
 
         $ar_ids = array();
 
-        foreach ($array_or_obj as $value)
-        {
-            if (is_object($array_or_obj))
-            {
+        foreach ($array_or_obj as $value) {
+            if (is_object($array_or_obj)) {
                 $ar_ids[] = $value->$key;
             }
 
-            if (is_array($array_or_obj))
-            {
+            if (is_array($array_or_obj)) {
                 $ar_ids[] = $value[$key];
             }
         }

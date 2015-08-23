@@ -198,12 +198,19 @@ class Settings {
         'syllabus index' => "Syllabus index",
         'syllabus Terms' => "Syllabus index",
         'syllabus Single' => "Syllabus Show",
+        'syllabus lessonplans' => "Lessonplans index",
+        'syllabus lessonplanedit' => "Lessonplans Edit",
+        'syllabus addlessonplan' => "Lessonplans Add",
         'syllabus Singlelessonplans' => "Lessonplans Show",
         'syllabus AddLessonPlan' => "Add LessonPlan",
         'syllabus AssignLesson' => "Assign LessonPlan",
         'task index' => "Task index",
         'task Details' => "Task index",
-        'transport index' => "Transport index"
+        'transport index' => "Transport index",
+        'syllabus lessonplandelete' => "Lessonplans Remove",
+        'syllabus getsubject' => "Lessonplans Index",
+        'syllabus lsubjects' => "Lessonplans Index",
+        'syllabus lessonplansstd' => "Lessonplans Index"
     );
 
     public static function getBingTokens($grantType, $scopeUrl, $clientID, $clientSecret, $authUrl) {

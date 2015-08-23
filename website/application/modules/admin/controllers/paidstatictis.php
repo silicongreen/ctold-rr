@@ -142,6 +142,7 @@ class paidstatictis extends MX_Controller
         
         $this->db->dbprefix = 'tds_';
         $select_schools = array();
+        $select_schools[0] = "Select School";
         $i = 0;
         foreach ($obj_schools as $value)
         {
@@ -155,11 +156,11 @@ class paidstatictis extends MX_Controller
         
         $data['schools'] = $select_schools;
         
-        $data['stat'] = $this->getinfo($first_school);
+        $data['stat'] = $this->getinfo();
         $data['user_type'] = array(1 => 'Student', 2 => 'Parent', 3 => 'Teacher', 4=> 'Admin');
         $this->render('admin/paidstatictis/overall',$data);
     }
-    private function getinfo_full($user_type_paid=1,$school_id, $start_date="", $end_date="")
+    private function getinfo_full($user_type_paid=0,$school_id, $start_date="", $end_date="")
     {
         if(!$start_date)
         {
@@ -186,8 +187,14 @@ class paidstatictis extends MX_Controller
         $this->db->join("schools", "schools.id=activity_logs.school_id", 'LEFT');
         $this->db->where("activity_logs.free_site",0);
         $this->db->where("activity_logs.ip !=",'182.160.115.228');
-        $this->db->where("activity_logs.school_id",$school_id);
-        $this->db->where("activity_logs.user_type_paid",$user_type_paid);
+        if($school_id>0)
+        {
+            $this->db->where("activity_logs.school_id",$school_id);
+        }
+        if($user_type_paid>0)
+        {
+            $this->db->where("activity_logs.user_type_paid",$user_type_paid);
+        }
         $this->db->where("DATE(activity_logs.created_at) <=",$end_date);
         $this->db->where("DATE(activity_logs.created_at) >=",$start_date);
         $this->db->group_by("activity_logs.user_id"); 
@@ -196,7 +203,7 @@ class paidstatictis extends MX_Controller
         return $statistics_info;
     }  
     
-    private function getinfo($school_id, $start_date="", $end_date="")
+    private function getinfo($school_id=0, $start_date="", $end_date="")
     {
         if(!$start_date)
         {
@@ -219,7 +226,10 @@ class paidstatictis extends MX_Controller
         $this->db->select("Count(Distinct user_id) As countUsers,user_type_paid");
         $this->db->where("free_site",0);
         $this->db->where("ip !=",'182.160.115.228');
-        $this->db->where("school_id",$school_id);
+        if($school_id>0)
+        {
+            $this->db->where("school_id",$school_id);
+        }
         $this->db->where("DATE(created_at) <=",$end_date);
         $this->db->where("DATE(created_at) >=",$start_date);
         $this->db->group_by("user_type_paid"); 

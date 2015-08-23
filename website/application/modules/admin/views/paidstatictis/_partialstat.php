@@ -26,7 +26,7 @@
     <?php endforeach; ?>
     <fieldset class="top">
         <label  style="font-size: 20px; font-weight: bold;" for="required_field">Total</label>
-        <div style="margin-top:10px; font-size: 20px; font-weight: bold;">
+        <div style="margin-top:10px; font-size: 20px; font-weight: bold; cursor: pointer;" class="user_full_stat" id="0_full">
             <?php echo $total ?>
         </div>
     </fieldset>

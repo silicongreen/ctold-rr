@@ -329,6 +329,7 @@ class Freeusers extends CActiveRecord {
 
                 $user_info['children'] = array();
                 if (Yii::app()->user->isParent) {
+                    $user = new Users();
                     $user_info['children'] = $user->studentList(Yii::app()->user->profileId);
                     $gurdianModel = new Guardians();
                     $gurdian = $gurdianModel->findBypk(Yii::app()->user->profileId);

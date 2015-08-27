@@ -64,6 +64,11 @@ class sidebar extends widget
                         "Gallery Photo" => array("gallery_photo"),
                         
                      ),
+            "School Activities" => 
+                array(
+                    "Over All Activities"    => array("paidstatictis","overall"),
+                    "Activities"    => array("paidstatictis")
+                ),
             "Post Arrangement" => 
                 array(
                     "Arrange Category Posts"    => array("news","inner_news_arrangement"),

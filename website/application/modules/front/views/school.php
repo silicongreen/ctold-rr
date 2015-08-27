@@ -4,10 +4,9 @@ $cover_image = base_url() . "Profiler/images/right/banner.png";
 if ($school_details->cover) {
 
     $cover_image_url = base_url() . $school_details->cover;
-    list($width, $height, $type, $attr) = @getimagesize($cover_image_url);
-    if (isset($width)) {
-        $cover_image = $cover_image_url;
-    }
+   
+     $cover_image = $cover_image_url;
+   
 }
 
 $logo_image = base_url() . "images/backgrounds/bg_content.png";
@@ -15,10 +14,8 @@ $logo_image = base_url() . "images/backgrounds/bg_content.png";
 if ($school_details->logo) {
 
     $logo_image_url = base_url() . $school_details->logo;
-    list($width, $height, $type, $attr) = @getimagesize($logo_image_url);
-    if (isset($width)) {
-        $logo_image = $logo_image_url;
-    }
+    $logo_image = $logo_image_url;
+  
 }
 
 $userschool = get_user_school($school_details->id);

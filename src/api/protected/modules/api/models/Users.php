@@ -234,6 +234,7 @@ class Users extends CActiveRecord {
             $criteria->compare('username', $username);
         }
 
+        $criteria->addCondition("is_deleted = 0 OR parent=1");
         $criteria->compare('is_deleted', 0);
 
         $user = $this->find($criteria);

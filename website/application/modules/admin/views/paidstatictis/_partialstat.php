@@ -23,7 +23,7 @@
                 ?>
             <?php endforeach; ?>
             <?php foreach ($user_type as $value): ?>
-                <tr class="even"><td>0</td><td>0</td>
+                <tr class="even"><td><?php echo $value; ?></td><td>0</td>
                     <td>0</td><td>0</td></tr>
             <?php endforeach; ?>
             <tr class="even"><td>All</td><td> <?php echo $total ?></td>

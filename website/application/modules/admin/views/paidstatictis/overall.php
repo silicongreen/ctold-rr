@@ -37,7 +37,7 @@
                 <?php if (isset($stat)): ?>
                     <div class="box grid_16" id="change_data_ajax">
                         <div class="block">
-                            <h2 class="section">Paid Statistics &nbsp;&nbsp;<span class="loading-msg">(Loading Data This will take some time...)</span></h2>
+                            <h2 class="section"><span class="loading-msg">Loading Data This will take some time...</span></h2>
                             <div class="CSSTableGenerator" >
                                 <table   style="width: 100%;">
                                 

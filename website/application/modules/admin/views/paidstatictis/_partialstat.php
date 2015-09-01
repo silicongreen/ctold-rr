@@ -1,6 +1,5 @@
 <div class="block">
     <h2 class="section"><span class="loading-msg">Loading Data This will take some time...</span></h2>
-
     <div class="CSSTableGenerator" >
         <table   style="width: 100%;">
 
@@ -13,8 +12,16 @@
             foreach ($stat as $value):
                 ?>
 
-                <tr class="even"><td><?php echo $user_type[$value->user_type_paid]; ?></td><td> <a href="javascript:void(0)" class="user_full_stat" id="<?php echo $value->user_type_paid; ?>_full_stat"><?php echo $value->countUsers ?></td>
-                    <td> <?php echo $value->snumber ?></td><td><?php echo round($value->stime / 60); ?></td></tr>
+                <tr class="even"><td><?php echo $user_type[$value->user_type_paid]; ?></td><td> <a href="javascript:void(0)" class="user_full_stat" id="<?php echo $value->user_type_paid; ?>_full_stat"><?php echo $value->countUsers ?></a></td>
+                    <td> 
+                        <a href="javascript:void(0)" class="user_full_stat_session" id="<?php echo $value->user_type_paid; ?>_full_stat_s1">
+                            <?php echo $value->snumber ?>
+                        </a>
+                    </td><td>
+                        <a href="javascript:void(0)" class="user_full_stat_session" id="<?php echo $value->user_type_paid; ?>_full_stat_s2">
+                            <?php echo round($value->stime / 60); ?>
+                        </a>
+                    </td></tr>
                 <?php
                 $total = $total + $value->countUsers;
                 $totalsession = $totalsession + $value->snumber;
@@ -27,10 +34,10 @@
                     <td>0</td><td>0</td></tr>
             <?php endforeach; ?>
             <tr class="even"><td>All</td><td> <?php echo $total ?></td>
-                <td> <?php echo $totalsession ?></td><td><?php echo round($totaltime/60); ?></td></tr>
+                <td> <?php echo $totalsession ?></td><td><?php echo round($totaltime / 60); ?></td></tr>
 
         </table>
-    </div> 
+    </div>     
 
 
 </div>

@@ -125,6 +125,14 @@ class paidstatictis extends MX_Controller
         $data['user_type'] = array(1 => 'Student', 2 => 'Parent', 3 => 'Teacher', 4=> 'Admin');
         $this->load->view("admin/paidstatictis/_partialstat",$data);
     }
+    function full_session_stat($school_id,$user_type,$start_date,$end_date)
+    {
+        $data['has_daterange_stat'] = true;
+        $data['user_type_array'] = array(1 => 'Student', 2 => 'Parent', 3 => 'Teacher', 4=> 'Admin');
+        $user_type = array_search($user_type, $data['user_type_array']);
+        $data['stat'] = $this->getinfo_full_session($user_type,$school_id,$start_date,$end_date);
+        $this->render("admin/paidstatictis/full_stat_session",$data);
+    }
     function full_stat($school_id,$user_type,$start_date,$end_date)
     {
         $data['has_daterange_stat'] = true;
@@ -217,7 +225,52 @@ class paidstatictis extends MX_Controller
                
         }    
         $this->db->dbprefix = 'tds_';
-    }        
+    }  
+    
+    private function getinfo_full_session($user_type_paid=0,$school_id, $start_date="", $end_date="")
+    {
+        if(!$start_date)
+        {
+            if($end_date)
+            {
+                $start_date = $end_date;
+            }
+            else 
+            {
+                $start_date = date("Y-m-d");
+            }
+            
+        }
+        if(!$end_date)
+        {
+            $end_date = $start_date;
+        } 
+        
+        $this->db->dbprefix = '';
+        $this->db->select("schools.name,activity_logs.user_id,CONCAT_WS(' ',users.first_name,,users.last_name) as username"
+                . ",activity_logs.user_type_paid,activity_logs.session_time", false);
+        $this->db->from("activity_logs");
+        $this->db->join("users", "users.id=activity_logs.user_id", 'LEFT');
+        $this->db->join("schools", "schools.id=activity_logs.school_id", 'LEFT');
+        $this->db->where("activity_logs.free_site",0);
+        $this->db->where("activity_logs.session_end",1);
+        $this->db->where("activity_logs.ip !=",'182.160.115.228');
+        $this->db->where("activity_logs.ip !=",'182.160.115.228');
+        if($school_id>0)
+        {
+            $this->db->where("activity_logs.school_id",$school_id);
+        }
+        if($user_type_paid>0)
+        {
+            $this->db->where("activity_logs.user_type_paid",$user_type_paid);
+        }
+        $this->db->where("DATE(activity_logs.created_at) <=",$end_date);
+        $this->db->where("DATE(activity_logs.created_at) >=",$start_date);
+         
+        $statistics_info = $this->db->get()->result(); 
+        $this->db->dbprefix = 'tds_';
+        return $statistics_info;
+    }  
    
     private function getinfo_full($user_type_paid=0,$school_id, $start_date="", $end_date="")
     {

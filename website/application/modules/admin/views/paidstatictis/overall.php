@@ -37,7 +37,7 @@
                 <?php if (isset($stat)): ?>
                     <div class="box grid_16" id="change_data_ajax">
                         <div class="block">
-                            <h2 class="section">Paid Statistics</h2>
+                            <h2 class="section">Paid Statistics &nbsp;&nbsp;<span class="loading-msg">(Loading Data This will take some time...)</span></h2>
                             <div class="CSSTableGenerator" >
                                 <table   style="width: 100%;">
                                 
@@ -86,9 +86,11 @@
             var endDate_stat = moment();
             $(document).ready(function () {
                 $(document).on("change", "#select_school", function () {
+                    $(".loading-msg").show();
                     $.post($("#base_url").val() + "admin/paidstatictis/new_stat", {school: $("#select_school").val(), start_date: startDate_stat.format("YYYY-MM-DD"), end_date: endDate_stat.format("YYYY-MM-DD")})
                             .done(function (data) {
                                 $("#change_data_ajax").html(data);
+                                $(".loading-msg").hide();
                             });
 
 
@@ -170,7 +172,10 @@
 
         </script>   
         <style>
-            
+            .loading-msg
+            {
+                display:none;
+            }
             .CSSTableGenerator {
 	margin:0px;padding:0px;
 	width:100%;

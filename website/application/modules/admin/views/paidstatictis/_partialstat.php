@@ -1,5 +1,5 @@
 <div class="block">
-    <h2 class="section">Paid Statistics</h2>
+    <h2 class="section">Paid Statistics &nbsp;&nbsp;<span class="loading-msg">(Loading Data This will take some time...)</span></h2>
 
     <div class="CSSTableGenerator" >
         <table   style="width: 100%;">

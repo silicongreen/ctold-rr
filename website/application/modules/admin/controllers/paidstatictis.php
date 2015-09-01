@@ -120,6 +120,7 @@ class paidstatictis extends MX_Controller
         $school_id = $this->input->post("school");
         $start_date = $this->input->post("start_date");
         $end_date = $this->input->post("end_date");
+        $this->finishSession($school_id);
         $data['stat'] = $this->getinfo($school_id,$start_date,$end_date);
         $data['user_type'] = array(1 => 'Student', 2 => 'Parent', 3 => 'Teacher', 4=> 'Admin');
         $this->load->view("admin/paidstatictis/_partialstat",$data);
@@ -142,7 +143,7 @@ class paidstatictis extends MX_Controller
         
         $this->db->dbprefix = 'tds_';
         $select_schools = array();
-        $select_schools[0] = "Select School";
+        //$select_schools[0] = "Select School";
         $i = 0;
         foreach ($obj_schools as $value)
         {
@@ -156,10 +157,68 @@ class paidstatictis extends MX_Controller
         
         $data['schools'] = $select_schools;
         
-        $data['stat'] = $this->getinfo();
+        $this->finishSession($first_school);
+        $data['stat'] = $this->getinfo($first_school);
         $data['user_type'] = array(1 => 'Student', 2 => 'Parent', 3 => 'Teacher', 4=> 'Admin');
         $this->render('admin/paidstatictis/overall',$data);
     }
+    private function finishSession($school_id, $start_date="", $end_date="")
+    {
+        if(!$start_date)
+        {
+            if($end_date)
+            {
+                $start_date = $end_date;
+            }
+            else 
+            {
+                $start_date = date("Y-m-d");
+            }
+            
+        }
+        if(!$end_date)
+        {
+            $end_date = $start_date;
+        }
+        
+        $time_fifteen = date('Y-m-d H:i:s', strtotime('-15 minutes'));
+        $this->db->dbprefix = '';
+        $sql  ="SELECT act.*
+        FROM activity_logs act
+        where id in
+            (SELECT MAX(id) as main_id
+            FROM activity_logs where free_site=0 and ip != '182.160.115.228'  and school_id=".$school_id." 
+            GROUP BY user_id) 
+        and act.session_end!=1 and act.created_at < '".$time_fifteen."'";
+        
+        $query = $this->db->query($sql);
+        $statistics_info = $query->result(); 
+        
+        foreach($statistics_info as $value)
+        {
+            $sql_2 = "SELECT MIN(created_at) as mcreated from activity_logs where id > "
+                    . "(select MAX(id) as main_id from activity_logs where session_end=1 "
+                    . "and free_site=0 and ip != '182.160.115.228'  and user_id=".$value->user_id."  and school_id=".$school_id.")";
+            $query2 = $this->db->query($sql2);
+            $statistics_info2 = $query2->row(); 
+            
+            if($statistics_info2)
+            {
+                $now = strtotime($value->created_at);
+                $from_time = strtotime($statistics_info2->mcreated);
+                $session_time = $now - $from_time;
+                $data = array(
+                       'session_end' => 1,
+                       'session_time' => $session_time
+                );
+                $this->db->where('id', $value->id);
+                $this->db->update('activity_logs', $data); 
+            }
+               
+        }    
+        $this->db->dbprefix = 'tds_';
+    }        
+   
     private function getinfo_full($user_type_paid=0,$school_id, $start_date="", $end_date="")
     {
         if(!$start_date)
@@ -223,7 +282,7 @@ class paidstatictis extends MX_Controller
         } 
         
         $this->db->dbprefix = '';
-        $this->db->select("Count(Distinct user_id) As countUsers,user_type_paid");
+        $this->db->select("Count(Distinct user_id) As countUsers,SUM(session_time) as stime,SUM(session_end) as snumber,user_type_paid");
         $this->db->where("free_site",0);
         $this->db->where("ip !=",'182.160.115.228');
         if($school_id>0)

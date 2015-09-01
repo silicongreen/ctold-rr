@@ -33,8 +33,21 @@
                 <tr class="even"><td><?php echo $value; ?></td><td>0</td>
                     <td>0</td><td>0</td></tr>
             <?php endforeach; ?>
-            <tr class="even"><td>All</td><td> <?php echo $total ?></td>
-                <td> <?php echo $totalsession ?></td><td><?php echo round($totaltime / 60); ?></td></tr>
+            <tr class="even"><td>All</td><td> 
+                                        <a href="javascript:void(0)" class="user_full_stat" id="0_full_stat">
+                                        <?php echo $total ?>
+                                        </a>
+                                        </td>
+                                        <td> 
+                                            <a href="javascript:void(0)" class="user_full_stat_session" id="0_full_stat_s1">
+                                                    <?php echo $totalsession ?>
+                                            </a>
+                                            </td><td>
+                                                <a href="javascript:void(0)" class="user_full_stat_session" id="0_full_stat_s2">
+                                                <?php echo round($totaltime / 60); ?>
+                                                </a>
+                                            </td>
+                                        </tr>
 
         </table>
     </div>     

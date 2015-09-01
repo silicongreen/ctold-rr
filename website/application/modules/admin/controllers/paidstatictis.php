@@ -129,7 +129,7 @@ class paidstatictis extends MX_Controller
     {
         $data['has_daterange_stat'] = true;
         $data['user_type_array'] = array(1 => 'Student', 2 => 'Parent', 3 => 'Teacher', 4=> 'Admin');
-        $user_type = array_search($user_type, $data['user_type_array']);
+       // $user_type = array_search($user_type, $data['user_type_array']);
         $data['stat'] = $this->getinfo_full_session($user_type,$school_id,$start_date,$end_date);
         $this->render("admin/paidstatictis/full_stat_session",$data);
     }
@@ -137,7 +137,7 @@ class paidstatictis extends MX_Controller
     {
         $data['has_daterange_stat'] = true;
         $data['user_type_array'] = array(1 => 'Student', 2 => 'Parent', 3 => 'Teacher', 4=> 'Admin');
-        $user_type = array_search($user_type, $data['user_type_array']);
+        //$user_type = array_search($user_type, $data['user_type_array']);
         $data['stat'] = $this->getinfo_full($user_type,$school_id,$start_date,$end_date);
         $this->render("admin/paidstatictis/full_stat",$data);
     }

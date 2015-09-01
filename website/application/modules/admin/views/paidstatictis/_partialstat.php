@@ -27,7 +27,7 @@
                     <td>0</td><td>0</td></tr>
             <?php endforeach; ?>
             <tr class="even"><td>All</td><td> <?php echo $total ?></td>
-                <td> <?php echo $totalsession ?></td><td><?php echo $totaltime ?></td></tr>
+                <td> <?php echo $totalsession ?></td><td><?php echo round($totaltime/60); ?></td></tr>
 
         </table>
     </div> 

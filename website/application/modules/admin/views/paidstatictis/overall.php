@@ -38,35 +38,36 @@
                     <div class="box grid_16" id="change_data_ajax">
                         <div class="block">
                             <h2 class="section">Paid Statistics</h2>
-                            
-                            <table   class="table table-bordered" style="width: 100%;">
-                                <thead>
-                                    <tr class="even"><th>User Type</th><th>User</th><th>Session</th><th>Session Time (Min)</th></tr>
-                                </thead>
-                                <?php
-                                    $total = 0;
-                                    $totalsession = 0;
-                                    $totaltime = 0;
-                                    foreach ($stat as $value):
-                                ?>
+                            <div class="CSSTableGenerator" >
+                                <table   style="width: 100%;">
                                 
-                                <tr class="even"><td><?php echo $user_type[$value->user_type_paid]; ?></td><td> <a href="javascript:void(0)" class="user_full_stat" id="<?php echo $value->user_type_paid; ?>_full_stat"><?php echo $value->countUsers ?></td>
-                                    <td> <?php echo $value->snumber ?></td><td><?php echo round($value->stime/60); ?></td></tr>
-                                <?php
-                                    $total = $total + $value->countUsers;
-                                    $totalsession = $totalsession+$value->snumber;
-                                    $totaltime = $totaltime+$value->stime;
-                                    unset($user_type[$value->user_type_paid]);
-                                ?>
-                                <?php endforeach; ?>
-                                <?php foreach ($user_type as $value): ?>
-                                <tr class="even"><td>0</td><td>0</td>
-                                    <td>0</td><td>0</td></tr>
-                                <?php endforeach; ?>
-                                <tr class="even"><td>All</td><td> <?php echo $total ?></td>
-                                    <td> <?php echo $totalsession ?></td><td><?php echo $totaltime ?></td></tr>
-                                
-                            </table>
+                                        <tr class="even"><td>User Type</td><td>User</td><td>Session</td><td>Session Time (Min)</td></tr>
+                                  
+                                    <?php
+                                        $total = 0;
+                                        $totalsession = 0;
+                                        $totaltime = 0;
+                                        foreach ($stat as $value):
+                                    ?>
+
+                                    <tr class="even"><td><?php echo $user_type[$value->user_type_paid]; ?></td><td> <a href="javascript:void(0)" class="user_full_stat" id="<?php echo $value->user_type_paid; ?>_full_stat"><?php echo $value->countUsers ?></td>
+                                        <td> <?php echo $value->snumber ?></td><td><?php echo round($value->stime/60); ?></td></tr>
+                                    <?php
+                                        $total = $total + $value->countUsers;
+                                        $totalsession = $totalsession+$value->snumber;
+                                        $totaltime = $totaltime+$value->stime;
+                                        unset($user_type[$value->user_type_paid]);
+                                    ?>
+                                    <?php endforeach; ?>
+                                    <?php foreach ($user_type as $value): ?>
+                                    <tr class="even"><td>0</td><td>0</td>
+                                        <td>0</td><td>0</td></tr>
+                                    <?php endforeach; ?>
+                                    <tr class="even"><td>All</td><td> <?php echo $total ?></td>
+                                        <td> <?php echo $totalsession ?></td><td><?php echo $totaltime ?></td></tr>
+
+                                </table>
+                           </div>     
 
                             
                         </div>
@@ -167,4 +168,102 @@
 
             });
 
-        </script>    
+        </script>   
+        <style>
+            
+            .CSSTableGenerator {
+	margin:0px;padding:0px;
+	width:100%;
+	box-shadow: 10px 10px 5px #888888;
+	border:1px solid #000000;
+	
+	-moz-border-radius-bottomleft:0px;
+	-webkit-border-bottom-left-radius:0px;
+	border-bottom-left-radius:0px;
+	
+	-moz-border-radius-bottomright:0px;
+	-webkit-border-bottom-right-radius:0px;
+	border-bottom-right-radius:0px;
+	
+	-moz-border-radius-topright:0px;
+	-webkit-border-top-right-radius:0px;
+	border-top-right-radius:0px;
+	
+	-moz-border-radius-topleft:0px;
+	-webkit-border-top-left-radius:0px;
+	border-top-left-radius:0px;
+}.CSSTableGenerator table{
+    border-collapse: collapse;
+        border-spacing: 0;
+	width:100%;
+	height:100%;
+	margin:0px;padding:0px;
+}.CSSTableGenerator tr:last-child td:last-child {
+	-moz-border-radius-bottomright:0px;
+	-webkit-border-bottom-right-radius:0px;
+	border-bottom-right-radius:0px;
+}
+.CSSTableGenerator table tr:first-child td:first-child {
+	-moz-border-radius-topleft:0px;
+	-webkit-border-top-left-radius:0px;
+	border-top-left-radius:0px;
+}
+.CSSTableGenerator table tr:first-child td:last-child {
+	-moz-border-radius-topright:0px;
+	-webkit-border-top-right-radius:0px;
+	border-top-right-radius:0px;
+}.CSSTableGenerator tr:last-child td:first-child{
+	-moz-border-radius-bottomleft:0px;
+	-webkit-border-bottom-left-radius:0px;
+	border-bottom-left-radius:0px;
+}.CSSTableGenerator tr:hover td{
+	
+}
+.CSSTableGenerator tr:nth-child(odd){ background-color:#e5e5e5; }
+.CSSTableGenerator tr:nth-child(even)    { background-color:#ffffff; }.CSSTableGenerator td{
+	vertical-align:middle;
+	
+	
+	border:1px solid #000000;
+	border-width:0px 1px 1px 0px;
+	text-align:center;
+	padding:9px;
+	font-size:14px;
+	font-family:Arial;
+	font-weight:bold;
+	color:#000000;
+}.CSSTableGenerator tr:last-child td{
+	border-width:0px 1px 0px 0px;
+}.CSSTableGenerator tr td:last-child{
+	border-width:0px 0px 1px 0px;
+}.CSSTableGenerator tr:last-child td:last-child{
+	border-width:0px 0px 0px 0px;
+}
+.CSSTableGenerator tr:first-child td{
+		background:-o-linear-gradient(bottom, #cccccc 5%, #b2b2b2 100%);	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #cccccc), color-stop(1, #b2b2b2) );
+	background:-moz-linear-gradient( center top, #cccccc 5%, #b2b2b2 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#cccccc", endColorstr="#b2b2b2");	background: -o-linear-gradient(top,#cccccc,b2b2b2);
+
+	background-color:#cccccc;
+	border:0px solid #000000;
+	text-align:center;
+	border-width:0px 0px 1px 1px;
+	font-size:17px;
+	font-family:Arial;
+	font-weight:bold;
+	color:#000000;
+}
+.CSSTableGenerator tr:first-child:hover td{
+	background:-o-linear-gradient(bottom, #cccccc 5%, #b2b2b2 100%);	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #cccccc), color-stop(1, #b2b2b2) );
+	background:-moz-linear-gradient( center top, #cccccc 5%, #b2b2b2 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#cccccc", endColorstr="#b2b2b2");	background: -o-linear-gradient(top,#cccccc,b2b2b2);
+
+	background-color:#cccccc;
+}
+.CSSTableGenerator tr:first-child td:first-child{
+	border-width:0px 0px 1px 0px;
+}
+.CSSTableGenerator tr:first-child td:last-child{
+	border-width:0px 0px 1px 1px;
+}
+        </style>

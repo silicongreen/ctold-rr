@@ -51,7 +51,7 @@ class ApiModule extends CWebModule {
                     $last_log = $activityLog->find(array('order' => 'created_at DESC', 'condition' => 'user_id=:x', 'params' => array(':x' => Yii::app()->user->id)));
                     if ($last_log) {
                         $now = time();
-                        $from_time = strtotime($last_log->created_at);
+                        $from_time = ( isset($last_log->created_at) && !empty($last_log->created_at) ) ? strtotime($last_log->created_at) : $now;
                         $time_last_log = round(($now - $from_time) / 60);
                       
                         if ($time_last_log > $session_end_time_diff and $last_log->session_end != 1) {
@@ -59,7 +59,7 @@ class ApiModule extends CWebModule {
 
                             if ($last_session_log) {
                                 $session_start_log = $activityLog->find(array('order' => 'created_at ASC', 'condition' => 'user_id=:x and created_at>:y', 'params' => array(':x' => Yii::app()->user->id, 'y' => $last_session_log->created_at)));
-                                $from_time = strtotime($session_start_log->created_at);
+                                $from_time = ( isset($session_start_log->created_at) && !empty($session_start_log->created_at) ) ? strtotime($session_start_log->created_at) : $now;
                                 $sesstion_time = $now - $from_time;
                                 $activity_log_update = $activityLog->findByPk($last_log->id);
                                 $activity_log_update->session_end = 1;
@@ -68,7 +68,7 @@ class ApiModule extends CWebModule {
                             } else {
                                 $last_session_log = $activityLog->find(array('order' => 'created_at ASC', 'condition' => 'user_id=:x', 'params' => array(':x' => Yii::app()->user->id)));
                                 if ($last_session_log) {
-                                    $from_time = strtotime($last_session_log->created_at);
+                                    $from_time = ( isset($session_start_log->created_at) && !empty($session_start_log->created_at) ) ? strtotime($session_start_log->created_at) : $now;
                                     $sesstion_time = $now - $from_time;
                                     $activity_log_update = $activityLog->findByPk($last_log->id);
                                     $activity_log_update->session_end = 1;

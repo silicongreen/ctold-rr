@@ -1,4 +1,7 @@
 <div class="block">
+    <pre>
+                                    <?php print_r($stat_homework); ?>
+                                    </pre>
                             <h2 class="section"><span class="loading-msg">Loading Data This will take some time...</span></h2>
                             <div class="CSSTableGenerator" >
                                 <table   style="width: 100%;">
@@ -17,11 +20,10 @@
                                         <td>Syllabus</td>
                                         <td>Meetings</td>
                                     </tr>
+                                    
                                     <?php foreach ($user_type as $key=>$value): ?>
                                     <?php $index = $key-1; ?>
-                                    <pre>
-                                    <?php print_r($stat_homework); ?>
-                                    </pre>
+                                    
                                     <tr class="even">
                                         <td><?php echo $value; ?></td>
                                         <?php echo create_html_td($stat_homework,$index); ?>

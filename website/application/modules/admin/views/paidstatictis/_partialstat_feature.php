@@ -19,8 +19,9 @@
                                     </tr>
                                     <?php foreach ($user_type as $key=>$value): ?>
                                     <?php $index = $key-1; ?>
+                                    <pre>
                                     <?php print_r($stat_homework); ?>
-                                    <?php print_r($stat_attendence); ?>
+                                    </pre>
                                     <tr class="even">
                                         <td><?php echo $value; ?></td>
                                         <?php echo create_html_td($stat_homework,$index); ?>

@@ -23,6 +23,9 @@
                                     School
                                 </th>
                                 <th>
+                                    Number Of Session
+                                </th>
+                                <th>
                                     Session Time
                                 </th>
                             </tr>
@@ -37,6 +40,9 @@
                                 </td>
                                 <td>
                                     <?php echo $value->name ?>
+                                </td>
+                                <td>
+                                    <?php echo $value->snumber; ?>
                                 </td>
                                 <td>
                                     <?php echo round($value->session_time/60); ?>

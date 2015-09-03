@@ -248,7 +248,7 @@ class paidstatictis extends MX_Controller
         
         $this->db->dbprefix = '';
         $this->db->select("schools.name,activity_logs.user_id,CONCAT_WS(' ',users.first_name,,users.last_name) as username"
-                . ",activity_logs.user_type_paid,activity_logs.session_time", false);
+                . ",activity_logs.user_type_paid,,SUM(activity_logs.session_time) as session_time,SUM(activity_logs.session_end) as snumber", false);
         $this->db->from("activity_logs");
         $this->db->join("users", "users.id=activity_logs.user_id", 'LEFT');
         $this->db->join("schools", "schools.id=activity_logs.school_id", 'LEFT');
@@ -266,6 +266,7 @@ class paidstatictis extends MX_Controller
         }
         $this->db->where("DATE(activity_logs.created_at) <=",$end_date);
         $this->db->where("DATE(activity_logs.created_at) >=",$start_date);
+        $this->db->group_by("activity_logs.user_id"); 
          
         $statistics_info = $this->db->get()->result(); 
         $this->db->dbprefix = 'tds_';

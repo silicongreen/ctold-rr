@@ -17,7 +17,7 @@ if (!function_exists('create_html_td'))
         {
             if(isset($td_obj[$index]->countUsers) && $td_obj[$index]->countUsers>0)
             {
-                $td_string = "<td><a href='javascript:void(0)' class='user_full_stat' id='".$user_type."_"+$type+"'>".$td_obj[$index]->countUsers."</a></td>";
+                $td_string = "<td><a href='javascript:void(0)' class='user_full_stat' id='".$user_type."_".$type."'>".$td_obj[$index]->countUsers."</a></td>";
             }
             else
             {

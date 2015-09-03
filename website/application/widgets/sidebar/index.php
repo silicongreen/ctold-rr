@@ -67,6 +67,7 @@ class sidebar extends widget
             "School Activities" => 
                 array(
                     "Over All Activities"    => array("paidstatictis","overall"),
+                    "Feature Activities"    => array("paidstatictis","overall_feature"),
                     "Activities"    => array("paidstatictis")
                 ),
             "Post Arrangement" => 

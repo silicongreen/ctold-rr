@@ -35,6 +35,9 @@ return array(
     ),
     // application components
     'components' => array(
+        'errorHandler'=>array(
+            'errorAction'=>'api/user/error',
+        ),
         'zend'=>array(
             'class'=>'ext.zend.EZendAutoloader'
         ),
@@ -108,10 +111,10 @@ return array(
             'class' => 'system.caching.CFileCache',
             'cachePath' => 'protected/runtime/cache/news'
         ),
-        'errorHandler' => array(
-            // use 'site/error' action to display errors
-            'errorAction' => 'site/error',
-        ),
+//        'errorHandler' => array(
+//            // use 'site/error' action to display errors
+//            'errorAction' => 'site/error',
+//        ),
         'log' => array(
             'class' => 'CLogRouter',
             'routes' => array(

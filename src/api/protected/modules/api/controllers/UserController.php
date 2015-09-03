@@ -20,7 +20,7 @@ class UserController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('auth','setfreeuserid',"unsetfreeuserid",'checkauth','geterrors','logout','updateprofile','updateprofilepaiduser','createuser','delete_by_paid_id'),
+                'actions' => array('error','auth','setfreeuserid',"unsetfreeuserid",'checkauth','geterrors','logout','updateprofile','updateprofilepaiduser','createuser','delete_by_paid_id'),
                 'users' => array('*'),
             ),
 //            array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -41,7 +41,56 @@ class UserController extends Controller {
     {
         return hash('sha512', $salt . $field);
     }
-    
+    public function actionError()
+    {
+        if($error=Yii::app()->errorHandler->error)
+        {
+            
+            $error_log = new ErrorLogYii();
+            if(isset($error['code']))
+            {
+                $error_log->ecode = $error['code'];
+            }
+            if(isset($error['type']))
+            {
+                $error_log->etype = $error['type'];
+            }
+            if(isset($error['message']))
+            {
+                $error_log->emsg = $error['message'];
+            }
+            if(isset($error['file']))
+            {
+                $error_log->efile = $error['file'];
+            }
+            if(isset($error['line']))
+            {
+                $error_log->eline = $error['line'];
+            }      
+            if(isset($error['trace']))
+            {
+                $error_log->etrace = $error['trace'];
+            } 
+            if(isset(Yii::app()->user->id))
+            {
+                $error_log->is_paid = 1;
+                $error_log->paid_user_id = Yii::app()->user->id;
+            }
+            if(isset(Yii::app()->user->free_id))
+            {
+                $error_log->user_id = Yii::app()->user->free_id;
+            }
+            $error_log->save();
+          
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "System Error";
+            echo CJSON::encode($response);
+            Yii::app()->end();
+                
+        }
+        
+    } 
+   
     public function actionCreateUser()
     {
         

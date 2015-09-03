@@ -132,28 +132,30 @@ class paidstatictis extends MX_Controller
         $end_date = $this->input->post("end_date");
         
         $hdetect = array("assignments","dashboards employee_homework_data",'dashboards homework_data');
-        $attendence = array('attendances','student_attendance');
+        $attendence = array('attendances','student_attendance','attendance_reports');
         $syllabus = array('syllabus');
-        $exam_reports = array('reports index','dashboards exam_result_data_student','student class_test_report','student term_test_report');
-        $class_routines = array('dashboards routine_data','dashboards class_routine_data_student','timetable student_view');
-        $exam_routines = array('dashboards employee_exam_routine_data','dashboards exam_routine_data_student','exam student_exam_schedule');
+        $exam_reports = array('exams','reports index','dashboards exam_result_data_student','exam_reports','student class_test_report','student term_test_report','dashboards employee_exam_routine_data','dashboards exam_routine_data_student','exam student_exam_schedule');
+        $class_routines = array('dashboards routine_data','dashboards class_routine_data_student','timetable student_view','class_timings','class_timing_sets');
         $leave = array('employee_attendance');
         $quize = array('online_student_exam');
         $lesson_plan = array('lesson_plan');
         $events = array('calendar');
+        $notice = array('notice','reminder');
+        $mettings = array('meetings');
         
-        $data['stat_homework'] = $this->getinfo_feature($school_id,$start_date,$end_date,$hdetect);
-        $data['stat_attendence'] = $this->getinfo_feature($school_id,$start_date,$end_date,$attendence);
-        $data['stat_syllabus'] = $this->getinfo_feature($school_id,$start_date,$end_date,$syllabus);
+        $data['stat_homework'] = $this->getinfo_feature($first_school,"","",$hdetect);
+        $data['stat_attendence'] = $this->getinfo_feature($first_school,"","",$attendence);
+        $data['stat_syllabus'] = $this->getinfo_feature($first_school,"","",$syllabus);
         
-        $data['stat_exam_reports'] = $this->getinfo_feature($school_id,$start_date,$end_date,$exam_reports);
-        $data['stat_class_routines'] = $this->getinfo_feature($school_id,$start_date,$end_date,$class_routines);
-        $data['stat_exam_routines'] = $this->getinfo_feature($school_id,$start_date,$end_date,$exam_routines);
+        $data['stat_exams'] = $this->getinfo_feature($first_school,"","",$exam_reports);
+        $data['stat_class_routines'] = $this->getinfo_feature($first_school,"","",$class_routines);
         
-        $data['stat_leave'] = $this->getinfo_feature($school_id,$start_date,$end_date,$leave);
-        $data['stat_quize'] = $this->getinfo_feature($school_id,$start_date,$end_date,$quize);
-        $data['stat_lesson_plan'] = $this->getinfo_feature($school_id,$start_date,$end_date,$lesson_plan);
-        $data['stat_events'] = $this->getinfo_feature($school_id,$start_date,$end_date,$events);
+        $data['stat_leave'] = $this->getinfo_feature($first_school,"","",$leave);
+        $data['stat_quize'] = $this->getinfo_feature($first_school,"","",$quize);
+        $data['stat_lesson_plan'] = $this->getinfo_feature($first_school,"","",$lesson_plan);
+        $data['stat_events'] = $this->getinfo_feature($first_school,"","",$events);
+        $data['stat_notice'] = $this->getinfo_feature($first_school,"","",$notice);
+        $data['stat_mettings'] = $this->getinfo_feature($first_school,"","",$mettings);
         
         $data['user_type'] = array(1 => 'Student', 2 => 'Parent', 3 => 'Teacher', 4=> 'Admin');
         $this->load->view("admin/paidstatictis/_partialstat_feature",$data);
@@ -198,28 +200,30 @@ class paidstatictis extends MX_Controller
         
         $data['schools'] = $select_schools;
         $hdetect = array("assignments","dashboards employee_homework_data",'dashboards homework_data');
-        $attendence = array('attendances','student_attendance');
+        $attendence = array('attendances','student_attendance','attendance_reports');
         $syllabus = array('syllabus');
-        $exam_reports = array('reports index','dashboards exam_result_data_student','student class_test_report','student term_test_report');
-        $class_routines = array('dashboards routine_data','dashboards class_routine_data_student','timetable student_view');
-        $exam_routines = array('dashboards employee_exam_routine_data','dashboards exam_routine_data_student','exam student_exam_schedule');
+        $exam_reports = array('exams','reports index','dashboards exam_result_data_student','exam_reports','student class_test_report','student term_test_report','dashboards employee_exam_routine_data','dashboards exam_routine_data_student','exam student_exam_schedule');
+        $class_routines = array('dashboards routine_data','dashboards class_routine_data_student','timetable student_view','class_timings','class_timing_sets');
         $leave = array('employee_attendance');
         $quize = array('online_student_exam');
         $lesson_plan = array('lesson_plan');
         $events = array('calendar');
+        $notice = array('notice','reminder');
+        $mettings = array('meetings');
         
         $data['stat_homework'] = $this->getinfo_feature($first_school,"","",$hdetect);
         $data['stat_attendence'] = $this->getinfo_feature($first_school,"","",$attendence);
         $data['stat_syllabus'] = $this->getinfo_feature($first_school,"","",$syllabus);
         
-        $data['stat_exam_reports'] = $this->getinfo_feature($first_school,"","",$exam_reports);
+        $data['stat_exams'] = $this->getinfo_feature($first_school,"","",$exam_reports);
         $data['stat_class_routines'] = $this->getinfo_feature($first_school,"","",$class_routines);
-        $data['stat_exam_routines'] = $this->getinfo_feature($first_school,"","",$exam_routines);
         
         $data['stat_leave'] = $this->getinfo_feature($first_school,"","",$leave);
         $data['stat_quize'] = $this->getinfo_feature($first_school,"","",$quize);
         $data['stat_lesson_plan'] = $this->getinfo_feature($first_school,"","",$lesson_plan);
         $data['stat_events'] = $this->getinfo_feature($first_school,"","",$events);
+        $data['stat_notice'] = $this->getinfo_feature($first_school,"","",$notice);
+        $data['stat_mettings'] = $this->getinfo_feature($first_school,"","",$mettings);
         
         $data['user_type'] = array(1 => 'Student', 2 => 'Parent', 3 => 'Teacher', 4=> 'Admin');
         $this->render('admin/paidstatictis/overall_feature',$data);

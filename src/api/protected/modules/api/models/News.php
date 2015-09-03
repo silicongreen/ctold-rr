@@ -179,7 +179,18 @@ class News extends CActiveRecord {
         $criteria = new CDbCriteria;
         $criteria->select = 't.id, t.category_id, t.title, t.content, t.created_at, t.updated_at';
         $criteria->compare('t.school_id', $school_id);
-        $criteria->compare('category_id', $notice_type);
+        if($notice_type!=1)
+        {
+            if($notice_type==2)
+            {
+                $criteria->compare('category_id', 1);
+            }
+            else
+            {
+                $criteria->compare('category_id', 2);
+            }
+            
+        }
         $criteria->order = 't.id DESC';
         $start = ($page_number-1)*$page_size;
         $criteria->limit = $page_size;

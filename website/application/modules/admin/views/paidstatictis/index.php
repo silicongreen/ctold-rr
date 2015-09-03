@@ -107,14 +107,14 @@
                 }
                 );
 
-                $('.dateranger2 span').html(moment().subtract('years', 1).format('MMMM D, YYYY') + ' - ' + moment().add('years', 1).format('MMMM D, YYYY'));
+                $('.dateranger2 span').html(moment().format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
 
 
                 var idFilter = $('.dateranger2').attr("id");
                 var $filterIdArray = idFilter.split("_");
 
 
-                oTable.fnFilter(moment().subtract('years', 1).format('YYYY-MM-DD 00:00:00') + ' - ' + moment().add('years', 1).format('YYYY-MM-DD 59:00:00'), $filterIdArray[1], 'between');
+                oTable.fnFilter(moment().format('YYYY-MM-DD 00:00:00') + ' - ' + moment().format('YYYY-MM-DD 59:00:00'), $filterIdArray[1], 'between');
             }
         </script>    
 

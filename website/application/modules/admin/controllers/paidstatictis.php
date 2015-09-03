@@ -160,6 +160,26 @@ class paidstatictis extends MX_Controller
         $data['user_type'] = array(1 => 'Student', 2 => 'Parent', 3 => 'Teacher', 4=> 'Admin');
         $this->load->view("admin/paidstatictis/_partialstat_feature",$data);
     }
+    function full_stat_feature($school_id,$user_type,$start_date,$end_date,$type)
+    {
+        $hm = array("assignments","dashboards employee_homework_data",'dashboards homework_data');
+        $at = array('attendances','student_attendance','attendance_reports');
+        $sy = array('syllabus');
+        $ex = array('exams','reports index','dashboards exam_result_data_student','exam_reports','student class_test_report','student term_test_report','dashboards employee_exam_routine_data','dashboards exam_routine_data_student','exam student_exam_schedule');
+        $cr = array('dashboards routine_data','dashboards class_routine_data_student','timetable student_view','class_timings','class_timing_sets');
+        $le = array('employee_attendance');
+        $qu = array('online_student_exam');
+        $lp = array('lesson_plan');
+        $ev = array('calendar');
+        $no = array('notice','reminder');
+        $me = array('meetings');
+        
+        $data['has_daterange_stat'] = true;
+        $data['user_type_array'] = array(1 => 'Student', 2 => 'Parent', 3 => 'Teacher', 4=> 'Admin');
+        //$user_type = array_search($user_type, $data['user_type_array']);
+        $data['stat'] = $this->getinfo_full_feature($user_type,$school_id,$start_date,$end_date,$$type);
+        $this->render("admin/paidstatictis/full_stat",$data);
+    }
     function full_session_stat($school_id,$user_type,$start_date,$end_date)
     {
         $data['has_daterange_stat'] = true;
@@ -358,7 +378,91 @@ class paidstatictis extends MX_Controller
         $statistics_info = $this->db->get()->result(); 
         $this->db->dbprefix = 'tds_';
         return $statistics_info;
-    }  
+    }
+    
+    private function getinfo_full_feature($user_type_paid=0,$school_id, $start_date="", $end_date="",$actions = array())
+    {
+        if(!$start_date)
+        {
+            if($end_date)
+            {
+                $start_date = $end_date;
+            }
+            else 
+            {
+                $start_date = date("Y-m-d");
+            }
+            
+        }
+        if(!$end_date)
+        {
+            $end_date = $start_date;
+        } 
+        
+        $this->db->dbprefix = '';
+        $this->db->select("schools.name,activity_logs.user_id,CONCAT_WS(' ',users.first_name,,users.last_name) as username"
+                . ",activity_logs.user_type_paid", false);
+        $this->db->from("activity_logs");
+        $this->db->join("users", "users.id=activity_logs.user_id", 'LEFT');
+        $this->db->join("schools", "schools.id=activity_logs.school_id", 'LEFT');
+        $this->db->where("activity_logs.free_site",0);
+        $this->db->where("activity_logs.ip !=",'182.160.115.228');
+        if($school_id>0)
+        {
+            $this->db->where("activity_logs.school_id",$school_id);
+        }
+        if($user_type_paid>0)
+        {
+            $this->db->where("activity_logs.user_type_paid",$user_type_paid);
+        }
+        $this->db->where("DATE(activity_logs.created_at) <=",$end_date);
+        $this->db->where("DATE(activity_logs.created_at) >=",$start_date);
+        if($actions)
+        {
+            $i = 1;
+            $total_a = count($actions);
+            $w_string = "";
+            foreach($actions as $value)
+            {
+                $mc = explode(" ", $value);
+                
+                if($i == 1)
+                {
+                   $w_string.= "( "; 
+                }     
+                
+                $w_string.= "( ";
+                
+                $w_string.=" controller='".$mc[0]."'";
+                if(isset($mc[1]))
+                {
+                   $w_string.=" AND action='".$mc[1]."'"; 
+                }
+                
+                $w_string.= " )";
+                if($total_a != $i)
+                {
+                    $w_string.= " OR "; 
+                }
+                
+                if($total_a == $i)
+                {
+                    $w_string.= " ) "; 
+                }
+                $i++;
+                
+            } 
+            if($w_string)
+            {
+                $this->db->where($w_string);
+            }
+        }
+        
+        $this->db->group_by("activity_logs.user_id"); 
+        $statistics_info = $this->db->get()->result(); 
+        $this->db->dbprefix = 'tds_';
+        return $statistics_info;
+    }
    
     private function getinfo_full($user_type_paid=0,$school_id, $start_date="", $end_date="")
     {
@@ -397,6 +501,9 @@ class paidstatictis extends MX_Controller
         }
         $this->db->where("DATE(activity_logs.created_at) <=",$end_date);
         $this->db->where("DATE(activity_logs.created_at) >=",$start_date);
+        
+        
+        
         $this->db->group_by("activity_logs.user_id"); 
         $statistics_info = $this->db->get()->result(); 
         $this->db->dbprefix = 'tds_';

@@ -22,16 +22,16 @@
                                     <tr class="even">
                                         <td><?php echo $value; ?></td>
                                         <?php echo create_html_td($stat_homework,$index); ?>
-                                        <?php echo create_html_td($stat_attendence,$index); ?>
-                                        <?php echo create_html_td($stat_exams,$index); ?>
-                                        <?php echo create_html_td($stat_class_routines,$index); ?>
-                                        <?php echo create_html_td($stat_events,$index); ?>
-                                        <?php echo create_html_td($stat_notice,$index); ?>
-                                        <?php echo create_html_td($stat_leave,$index); ?> 
-                                        <?php echo create_html_td($stat_quize,$index); ?> 
-                                        <?php echo create_html_td($stat_lesson_plan,$index); ?>
-                                        <?php echo create_html_td($stat_syllabus,$index); ?>
-                                        <?php echo create_html_td($stat_mettings,$index); ?>
+                                        <?php echo create_html_td($stat_attendence,$index,"at"); ?>
+                                        <?php echo create_html_td($stat_exams,$index,'ex'); ?>
+                                        <?php echo create_html_td($stat_class_routines,$index,'cr'); ?>
+                                        <?php echo create_html_td($stat_events,$index,'ev'); ?>
+                                        <?php echo create_html_td($stat_notice,$index,'no'); ?>
+                                        <?php echo create_html_td($stat_leave,$index,'le'); ?> 
+                                        <?php echo create_html_td($stat_quize,$index,'qu'); ?> 
+                                        <?php echo create_html_td($stat_lesson_plan,$index,'lp'); ?>
+                                        <?php echo create_html_td($stat_syllabus,$index,'sy'); ?>
+                                        <?php echo create_html_td($stat_mettings,$index,'me'); ?>
                                     </tr>  
                                     <?php endforeach; ?>
 

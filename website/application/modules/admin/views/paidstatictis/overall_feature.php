@@ -60,16 +60,16 @@
                                     <tr class="even">
                                         <td><?php echo $value; ?></td>
                                         <?php echo create_html_td($stat_homework,$index); ?>
-                                        <?php echo create_html_td($stat_attendence,$index); ?>
-                                        <?php echo create_html_td($stat_exams,$index); ?>
-                                        <?php echo create_html_td($stat_class_routines,$index); ?>
-                                        <?php echo create_html_td($stat_events,$index); ?>
-                                        <?php echo create_html_td($stat_notice,$index); ?>
-                                        <?php echo create_html_td($stat_leave,$index); ?> 
-                                        <?php echo create_html_td($stat_quize,$index); ?> 
-                                        <?php echo create_html_td($stat_lesson_plan,$index); ?>
-                                        <?php echo create_html_td($stat_syllabus,$index); ?>
-                                        <?php echo create_html_td($stat_mettings,$index); ?>
+                                        <?php echo create_html_td($stat_attendence,$index,"at"); ?>
+                                        <?php echo create_html_td($stat_exams,$index,'ex'); ?>
+                                        <?php echo create_html_td($stat_class_routines,$index,'cr'); ?>
+                                        <?php echo create_html_td($stat_events,$index,'ev'); ?>
+                                        <?php echo create_html_td($stat_notice,$index,'no'); ?>
+                                        <?php echo create_html_td($stat_leave,$index,'le'); ?> 
+                                        <?php echo create_html_td($stat_quize,$index,'qu'); ?> 
+                                        <?php echo create_html_td($stat_lesson_plan,$index,'lp'); ?>
+                                        <?php echo create_html_td($stat_syllabus,$index,'sy'); ?>
+                                        <?php echo create_html_td($stat_mettings,$index,'me'); ?>
                                     </tr>  
                                     <?php endforeach; ?>
 
@@ -169,7 +169,7 @@
                     'width': "40%",
                     'height': "60%",
                     'autoScale': true,
-                    'href': $("#base_url").val() + "admin/paidstatictis/full_stat+_feature/" + $("#select_school").val() + "/" + $filterIdArray[0] + "/" + startDate_stat.format("YYYY-MM-DD") + "/" + endDate_stat.format("YYYY-MM-DD")+"/"+$filterIdArray[1],
+                    'href': $("#base_url").val() + "admin/paidstatictis/full_stat_feature/" + $("#select_school").val() + "/" + $filterIdArray[0] + "/" + startDate_stat.format("YYYY-MM-DD") + "/" + endDate_stat.format("YYYY-MM-DD")+"/"+$filterIdArray[1],
                     'title': false,
                     'transitionIn': 'none',
                     'transitionOut': 'none',

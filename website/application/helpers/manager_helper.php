@@ -8,15 +8,16 @@
  */
 if (!function_exists('create_html_td'))
 {
-    function create_html_td($td_obj,$index)
+    function create_html_td($td_obj,$index,$type="hm")
     {
         $td_string = "";
+        $user_type = $index+1;
     
         if($td_obj)
         {
-            if(isset($td_obj[$index]->countUsers))
+            if(isset($td_obj[$index]->countUsers) && $td_obj[$index]->countUsers>0)
             {
-                $td_string = "<td>".$td_obj[$index]->countUsers."</td>";
+                $td_string = "<td><a href='javascript:void(0)' class='user_full_stat' id='".$user_type."_"+$type+"'>".$td_obj[$index]->countUsers."</a></td>";
             }
             else
             {

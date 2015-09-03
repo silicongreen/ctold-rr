@@ -11,24 +11,26 @@ if (!function_exists('create_html_td'))
     function create_html_td($td_obj,$index,$type="hm")
     {
         $td_string = "";
-        $user_type = $index+1;
-    
+        $user_type = $index;
+        $alread_showed = false;
         if($td_obj)
         {
-            if(isset($td_obj[$index]->countUsers) && $td_obj[$index]->countUsers>0)
+            
+            foreach($td_obj as $value)
             {
-                $td_string = "<td><a href='javascript:void(0)' class='user_full_stat' id='".$user_type."_".$type."'>".$td_obj[$index]->countUsers."</a></td>";
+                if($value->user_type_paid==$index)
+                {
+                    $td_string = "<td><a href='javascript:void(0)' class='user_full_stat' id='".$user_type."_".$type."'>".$value->countUsers."</a></td>";
+                    $alread_showed = true;
+                    break;
+                }    
             }
-            else
-            {
-                $td_string = "<td>0</td>";
-            }    
+               
         
         }
-        else 
+        if(!$alread_showed)
         {
-             $td_string = "<td>0</td>";
-        
+            $td_string = "<td>0</td>";
         }
         return $td_string;
                                             

@@ -1,7 +1,4 @@
 <div class="block">
-    <pre>
-                                    <?php print_r($stat_attendence); ?>
-                                    </pre>
                             <h2 class="section"><span class="loading-msg">Loading Data This will take some time...</span></h2>
                             <div class="CSSTableGenerator" >
                                 <table   style="width: 100%;">
@@ -22,7 +19,7 @@
                                     </tr>
                                     
                                     <?php foreach ($user_type as $key=>$value): ?>
-                                    <?php $index = $key-1; ?>
+                                    <?php $index = $key; ?>
                                     
                                     <tr class="even">
                                         <td><?php echo $value; ?></td>

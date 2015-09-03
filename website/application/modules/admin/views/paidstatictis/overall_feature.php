@@ -56,7 +56,7 @@
                                         <td>Meetings</td>
                                     </tr>
                                     <?php foreach ($user_type as $key=>$value): ?>
-                                    <?php $index = $key-1; ?>
+                                    <?php $index = $key; ?>
                                     <tr class="even">
                                         <td><?php echo $value; ?></td>
                                         <?php echo create_html_td($stat_homework,$index); ?>

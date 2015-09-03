@@ -174,8 +174,6 @@ class paidstatictis extends MX_Controller
         $no = array('notice','reminder');
         $me = array('meetings');
         
-        print_r($$type);
-        
         $data['has_daterange_stat'] = true;
         $data['user_type_array'] = array(1 => 'Student', 2 => 'Parent', 3 => 'Teacher', 4=> 'Admin');
         //$user_type = array_search($user_type, $data['user_type_array']);

@@ -1,4 +1,14 @@
 <div class="block">
+    <pre>
+        <?php print_r($stat_homework); ?>
+<?php print_r($stat_attendence); ?> 
+<?php print_r($stat_exams); ?> 
+<?php print_r($stat_class_routines); ?> <?php print_r($stat_events); ?> <?php print_r($stat_notice); ?> <?php print_r($stat_leave); ?> 
+    <?php print_r($stat_quize); ?>
+<?php print_r($stat_lesson_plan); ?> 
+<?php print_r($stat_syllabus); ?> 
+<?php print_r($stat_mettings); ?>
+    </pre>
                             <h2 class="section"><span class="loading-msg">Loading Data This will take some time...</span></h2>
                             <div class="CSSTableGenerator" >
                                 <table   style="width: 100%;">

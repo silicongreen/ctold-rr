@@ -6,6 +6,33 @@
 /**
  * Take a filter array as param and make filtering for datatable
  */
+if (!function_exists('create_html_td'))
+{
+    function create_html_td($td_obj,$index)
+    {
+        $td_string = "";
+    
+        if($td_obj)
+        {
+            if(isset($td_obj[$index]->countUsers))
+            {
+                $td_string = "<td>".$td_obj[$index]->countUsers."</td>";
+            }
+            else
+            {
+                $td_string = "<td>0</td>";
+            }    
+        
+        }
+        else 
+        {
+             $td_string = "<td>0</td>";
+        
+        }
+        return $td_string;
+                                            
+    }
+}
 if (!function_exists('create_filter'))
 {
 

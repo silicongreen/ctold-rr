@@ -85,7 +85,7 @@ class paidstatictis extends MX_Controller
             'dashboards employee_homework_data'=>'Homework',"dashboards exam_result_data_student"=>"Report Card","syllabus syllabus_view"=>"Syllabus","syllabus syllabus_by_term"=>"Syllabus",
             'dashboards employee_quiz_data'=>'Quize',"dashboards quize_data"=>"Quize","dashboards class_routine_data_student"=>"Class Routine","dashboards exam_routine_data_student"=>"Exam Routine",
             'dashboards employee_exam_routine_data'=>'Exam Routine',"student_attendance month_report"=>"Month Attendance Report","student_attendance year_report"=>"Yearly Attendance Report",
-            'dashboards routine_data'=>'Class Routine',"user change_password"=>"Change Password",
+            'dashboards routine_data'=>'Class Routine',"user change_password"=>"Change Password",'dashboards homework_data'=>'Homework',
             'syllabus classes_view'=>'Syllabus',
             'syllabus show_syllabus'=>'Syllabus',
             'syllabus all'=>'Syllabus',
@@ -125,6 +125,39 @@ class paidstatictis extends MX_Controller
         $data['user_type'] = array(1 => 'Student', 2 => 'Parent', 3 => 'Teacher', 4=> 'Admin');
         $this->load->view("admin/paidstatictis/_partialstat",$data);
     }
+     function new_stat_feature()
+    {
+        $school_id = $this->input->post("school");
+        $start_date = $this->input->post("start_date");
+        $end_date = $this->input->post("end_date");
+        
+        $hdetect = array("assignments","dashboards employee_homework_data",'dashboards homework_data');
+        $attendence = array('attendances','student_attendance');
+        $syllabus = array('syllabus');
+        $exam_reports = array('reports index','dashboards exam_result_data_student','student class_test_report','student term_test_report');
+        $class_routines = array('dashboards routine_data','dashboards class_routine_data_student','timetable student_view');
+        $exam_routines = array('dashboards employee_exam_routine_data','dashboards exam_routine_data_student','exam student_exam_schedule');
+        $leave = array('employee_attendance');
+        $quize = array('online_student_exam');
+        $lesson_plan = array('lesson_plan');
+        $events = array('calendar');
+        
+        $data['stat_homework'] = $this->getinfo_feature($school_id,$start_date,$end_date,$hdetect);
+        $data['stat_attendence'] = $this->getinfo_feature($school_id,$start_date,$end_date,$attendence);
+        $data['stat_syllabus'] = $this->getinfo_feature($school_id,$start_date,$end_date,$syllabus);
+        
+        $data['stat_exam_reports'] = $this->getinfo_feature($school_id,$start_date,$end_date,$exam_reports);
+        $data['stat_class_routines'] = $this->getinfo_feature($school_id,$start_date,$end_date,$class_routines);
+        $data['stat_exam_routines'] = $this->getinfo_feature($school_id,$start_date,$end_date,$exam_routines);
+        
+        $data['stat_leave'] = $this->getinfo_feature($school_id,$start_date,$end_date,$leave);
+        $data['stat_quize'] = $this->getinfo_feature($school_id,$start_date,$end_date,$quize);
+        $data['stat_lesson_plan'] = $this->getinfo_feature($school_id,$start_date,$end_date,$lesson_plan);
+        $data['stat_events'] = $this->getinfo_feature($school_id,$start_date,$end_date,$events);
+        
+        $data['user_type'] = array(1 => 'Student', 2 => 'Parent', 3 => 'Teacher', 4=> 'Admin');
+        $this->load->view("admin/paidstatictis/_partialstat_feature",$data);
+    }
     function full_session_stat($school_id,$user_type,$start_date,$end_date)
     {
         $data['has_daterange_stat'] = true;
@@ -140,6 +173,56 @@ class paidstatictis extends MX_Controller
         //$user_type = array_search($user_type, $data['user_type_array']);
         $data['stat'] = $this->getinfo_full($user_type,$school_id,$start_date,$end_date);
         $this->render("admin/paidstatictis/full_stat",$data);
+    }
+    function overall_feature()
+    {
+        $data['has_daterange_stat'] = true;
+        $this->db->dbprefix = '';
+        $this->db->where("is_deleted",0);
+        
+        $obj_schools = $this->db->get('schools')->result();
+        
+        $this->db->dbprefix = 'tds_';
+        $select_schools = array();
+        //$select_schools[0] = "Select School";
+        $i = 0;
+        foreach ($obj_schools as $value)
+        {
+            if($i==0)
+            {
+                $first_school = $value->id;
+            }
+            $select_schools[$value->id] = $value->name;
+            $i++;
+        }
+        
+        $data['schools'] = $select_schools;
+        $hdetect = array("assignments","dashboards employee_homework_data",'dashboards homework_data');
+        $attendence = array('attendances','student_attendance');
+        $syllabus = array('syllabus');
+        $exam_reports = array('reports index','dashboards exam_result_data_student','student class_test_report','student term_test_report');
+        $class_routines = array('dashboards routine_data','dashboards class_routine_data_student','timetable student_view');
+        $exam_routines = array('dashboards employee_exam_routine_data','dashboards exam_routine_data_student','exam student_exam_schedule');
+        $leave = array('employee_attendance');
+        $quize = array('online_student_exam');
+        $lesson_plan = array('lesson_plan');
+        $events = array('calendar');
+        
+        $data['stat_homework'] = $this->getinfo_feature($first_school,"","",$hdetect);
+        $data['stat_attendence'] = $this->getinfo_feature($first_school,"","",$attendence);
+        $data['stat_syllabus'] = $this->getinfo_feature($first_school,"","",$syllabus);
+        
+        $data['stat_exam_reports'] = $this->getinfo_feature($first_school,"","",$exam_reports);
+        $data['stat_class_routines'] = $this->getinfo_feature($first_school,"","",$class_routines);
+        $data['stat_exam_routines'] = $this->getinfo_feature($first_school,"","",$exam_routines);
+        
+        $data['stat_leave'] = $this->getinfo_feature($first_school,"","",$leave);
+        $data['stat_quize'] = $this->getinfo_feature($first_school,"","",$quize);
+        $data['stat_lesson_plan'] = $this->getinfo_feature($first_school,"","",$lesson_plan);
+        $data['stat_events'] = $this->getinfo_feature($first_school,"","",$events);
+        
+        $data['user_type'] = array(1 => 'Student', 2 => 'Parent', 3 => 'Teacher', 4=> 'Admin');
+        $this->render('admin/paidstatictis/overall_feature',$data);
     }
     function overall()
     {
@@ -314,7 +397,84 @@ class paidstatictis extends MX_Controller
         $statistics_info = $this->db->get()->result(); 
         $this->db->dbprefix = 'tds_';
         return $statistics_info;
-    }  
+    }
+    
+    private function getinfo_feature($school_id=0, $start_date="", $end_date="",$actions=array())
+    {
+        if(!$start_date)
+        {
+            if($end_date)
+            {
+                $start_date = $end_date;
+            }
+            else 
+            {
+                $start_date = date("Y-m-d");
+            }
+            
+        }
+        if(!$end_date)
+        {
+            $end_date = $start_date;
+        } 
+        
+        $this->db->dbprefix = '';
+        $this->db->select("Count(Distinct user_id) As countUsers,user_type_paid");
+        $this->db->where("free_site",0);
+        $this->db->where("ip !=",'182.160.115.228');
+        if($school_id>0)
+        {
+            $this->db->where("school_id",$school_id);
+        }
+        if($actions)
+        {
+            $i = 1;
+            $total_a = count($actions);
+            $w_string = "";
+            foreach($actions as $value)
+            {
+                $mc = explode(" ", $value);
+                
+                if($i == 1)
+                {
+                   $w_string.= "( "; 
+                }     
+                
+                $w_string.= "( ";
+                
+                $w_string.=" controller='".$mc[0]."'";
+                if(isset($mc[1]))
+                {
+                   $w_string.=" AND action='".$mc[1]."'"; 
+                }
+                
+                $w_string.= " )";
+                if($total_a != $i)
+                {
+                    $w_string.= " OR "; 
+                }
+                
+                if($total_a == $i)
+                {
+                    $w_string.= " ) "; 
+                }
+                $i++;
+                
+            } 
+            if($w_string)
+            {
+                $this->db->where($w_string);
+            }
+        }    
+        $this->db->where("DATE(created_at) <=",$end_date);
+        $this->db->where("DATE(created_at) >=",$start_date);
+        $this->db->group_by("user_type_paid"); 
+        $this->db->order_by("user_type_paid");
+        
+        $statistics_info = $this->db->get("activity_logs")->result(); 
+        $this->db->dbprefix = 'tds_';
+        return $statistics_info;
+    } 
     
     private function getinfo($school_id=0, $start_date="", $end_date="")
     {
@@ -343,6 +503,7 @@ class paidstatictis extends MX_Controller
         {
             $this->db->where("school_id",$school_id);
         }
+         
         $this->db->where("DATE(created_at) <=",$end_date);
         $this->db->where("DATE(created_at) >=",$start_date);
         $this->db->group_by("user_type_paid"); 

@@ -580,7 +580,7 @@ class paidstatictis extends MX_Controller
         $this->db->where("DATE(created_at) <=",$end_date);
         $this->db->where("DATE(created_at) >=",$start_date);
         $this->db->group_by("user_type_paid"); 
-        $this->db->order_by("user_type_paid");
+        $this->db->order_by("user_type_paid","ASC");
         
         $statistics_info = $this->db->get("activity_logs")->result(); 
         $this->db->dbprefix = 'tds_';

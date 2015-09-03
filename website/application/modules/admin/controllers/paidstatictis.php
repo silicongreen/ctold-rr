@@ -143,19 +143,19 @@ class paidstatictis extends MX_Controller
         $notice = array('notice','reminder');
         $mettings = array('meetings');
         
-        $data['stat_homework'] = $this->getinfo_feature($first_school,"","",$hdetect);
-        $data['stat_attendence'] = $this->getinfo_feature($first_school,"","",$attendence);
-        $data['stat_syllabus'] = $this->getinfo_feature($first_school,"","",$syllabus);
+        $data['stat_homework'] = $this->getinfo_feature($first_school,$start_date,$end_date,$hdetect);
+        $data['stat_attendence'] = $this->getinfo_feature($first_school,$start_date,$end_date,$attendence);
+        $data['stat_syllabus'] = $this->getinfo_feature($first_school,$start_date,$end_date,$syllabus);
         
-        $data['stat_exams'] = $this->getinfo_feature($first_school,"","",$exam_reports);
-        $data['stat_class_routines'] = $this->getinfo_feature($first_school,"","",$class_routines);
+        $data['stat_exams'] = $this->getinfo_feature($first_school,$start_date,$end_date,$exam_reports);
+        $data['stat_class_routines'] = $this->getinfo_feature($first_school,$start_date,$end_date,$class_routines);
         
-        $data['stat_leave'] = $this->getinfo_feature($first_school,"","",$leave);
-        $data['stat_quize'] = $this->getinfo_feature($first_school,"","",$quize);
-        $data['stat_lesson_plan'] = $this->getinfo_feature($first_school,"","",$lesson_plan);
-        $data['stat_events'] = $this->getinfo_feature($first_school,"","",$events);
-        $data['stat_notice'] = $this->getinfo_feature($first_school,"","",$notice);
-        $data['stat_mettings'] = $this->getinfo_feature($first_school,"","",$mettings);
+        $data['stat_leave'] = $this->getinfo_feature($first_school,$start_date,$end_date,$leave);
+        $data['stat_quize'] = $this->getinfo_feature($first_school,$start_date,$end_date,$quize);
+        $data['stat_lesson_plan'] = $this->getinfo_feature($first_school,$start_date,$end_date,$lesson_plan);
+        $data['stat_events'] = $this->getinfo_feature($first_school,$start_date,$end_date,$events);
+        $data['stat_notice'] = $this->getinfo_feature($first_school,$start_date,$end_date,$notice);
+        $data['stat_mettings'] = $this->getinfo_feature($first_school,$start_date,$end_date,$mettings);
         
         $data['user_type'] = array(1 => 'Student', 2 => 'Parent', 3 => 'Teacher', 4=> 'Admin');
         $this->load->view("admin/paidstatictis/_partialstat_feature",$data);

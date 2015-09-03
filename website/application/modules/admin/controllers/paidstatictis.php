@@ -433,10 +433,10 @@ class paidstatictis extends MX_Controller
                 
                 $w_string.= "( ";
                 
-                $w_string.=" controller='".$mc[0]."'";
+                $w_string.=" activity_logs.controller='".$mc[0]."'";
                 if(isset($mc[1]))
                 {
-                   $w_string.=" AND action='".$mc[1]."'"; 
+                   $w_string.=" AND activity_logs.action='".$mc[1]."'"; 
                 }
                 
                 $w_string.= " )";

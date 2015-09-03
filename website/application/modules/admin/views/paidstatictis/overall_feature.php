@@ -160,6 +160,24 @@
 
                 $('.dateranger_stat span').html(moment().format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
             });
+            
+            $(document).on("click", ".user_full_stat", function () {
+
+                var idFilter = this.id;
+                var $filterIdArray = idFilter.split("_");
+                $.fancybox({
+                    'width': "40%",
+                    'height': "60%",
+                    'autoScale': true,
+                    'href': $("#base_url").val() + "admin/paidstatictis/full_stat+_feature/" + $("#select_school").val() + "/" + $filterIdArray[0] + "/" + startDate_stat.format("YYYY-MM-DD") + "/" + endDate_stat.format("YYYY-MM-DD")+"/"+$filterIdArray[1],
+                    'title': false,
+                    'transitionIn': 'none',
+                    'transitionOut': 'none',
+                    'type': 'iframe'
+
+                });
+
+            });
 
 
 

@@ -155,7 +155,19 @@ class News extends CActiveRecord {
         $criteria = new CDbCriteria;
         $criteria->select = 'count(t.id) as total';
         $criteria->compare('t.school_id', $school_id);
-        $criteria->compare('category_id', $notice_type);
+        if($notice_type!=1)
+        {
+            if($notice_type==2)
+            {
+                $criteria->compare('category_id', 1);
+            }
+            else
+            {
+                $criteria->compare('category_id', 2);
+            }
+            
+        }
+            
         $data = $this->find($criteria);
 
         return $data->total;

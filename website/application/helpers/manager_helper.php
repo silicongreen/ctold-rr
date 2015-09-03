@@ -85,6 +85,22 @@ if (!function_exists('create_filter'))
                         </fieldset>
                      </div>';
             }
+            else if(is_array($value) && $value[1] == 'input_daterange2')
+            {
+             
+                $filterString .='<div class="col_50">
+                        <fieldset class="label_top top">
+                        <label for="text_field_inline">' . str_replace("_", " ", $value[0]) . '</label>
+                            <div style="float:left;">
+                                <div class="dateranger2" id="filter_' . $key . '"  style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+                                      <i class="glyphicon glyphicon-calendar icon-calendar icon-large"></i>
+                                      <span id="range_data"></span> <b class="caret"></b>
+                                </div>
+                                
+                            </div>   
+                        </fieldset>
+                     </div>';
+            }
             else if (is_array($value) && $value[1] == 'form_dropdown')
             {
 

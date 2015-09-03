@@ -36,7 +36,7 @@
                 $filter_array[4] = array("Ip", "input");
                 $filter_array[5] = array("User Agent", "input");
                 $filter_array[6] = array("users_from", "form_dropdown",$users_from);
-                $filter_array[7] = array("Date", "input_daterange");
+                $filter_array[7] = array("Date", "input_daterange2");
                 
                 create_filter($filter_array);
                 ?>

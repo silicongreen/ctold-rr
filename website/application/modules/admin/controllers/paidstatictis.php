@@ -577,7 +577,7 @@ class paidstatictis extends MX_Controller
                 $this->db->where($w_string);
             }
         }    
-        $this->db->where("DATE(created_at) <=",$end_date);
+        $this->db->where("DATE(created_at1) <=",$end_date);
         $this->db->where("DATE(created_at) >=",$start_date);
         $this->db->group_by("user_type_paid"); 
         

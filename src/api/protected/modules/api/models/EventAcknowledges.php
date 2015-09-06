@@ -110,11 +110,17 @@ class EventAcknowledges extends CActiveRecord {
         $criteria->compare('event_id', $event_id);
 
         if (Yii::app()->user->isStudent) {
-            $ack_by = '0';
+            $ack_by = 0;
         }
 
         if (Yii::app()->user->isParent) {
-            $ack_by = '1';
+            $ack_by = 1;
+        }
+        if (Yii::app()->user->isTeacher) {
+            $ack_by = 2;
+        }
+        if (Yii::app()->user->isAdmin) {
+            $ack_by = 3;
         }
 
         $ack_by_id = Yii::app()->user->profileId;
@@ -257,6 +263,9 @@ class EventAcknowledges extends CActiveRecord {
 
         if (Yii::app()->user->isTeacher) {
             $ack_by = 2;
+        }
+        if (Yii::app()->user->isAdmin) {
+            $ack_by = 3;
         }
 
         $ack_by_id = Yii::app()->user->profileId;

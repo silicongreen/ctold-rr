@@ -155,6 +155,13 @@ class News extends CActiveRecord {
         $criteria = new CDbCriteria;
         $criteria->select = 'count(t.id) as total';
         $criteria->compare('t.school_id', $school_id);
+        
+        /**
+         * DONT CHANGE THE LOGIC. APP SEND THE WRONG PARAMITER SO HAVE TO CHANGE LOGIC
+         * 1=ALL
+         * 2=ACADEMIC (1)
+         * 3=EXTRA ACADAMIC (2)
+         */
         if($notice_type!=1)
         {
             if($notice_type==2)
@@ -179,6 +186,13 @@ class News extends CActiveRecord {
         $criteria = new CDbCriteria;
         $criteria->select = 't.id, t.category_id, t.title, t.content, t.created_at, t.updated_at';
         $criteria->compare('t.school_id', $school_id);
+        
+        /**
+         * DONT CHANGE THE LOGIC. APP SEND THE WRONG PARAMITER SO HAVE TO CHANGE LOGIC
+         * 1=ALL
+         * 2=ACADEMIC (1)
+         * 3=EXTRA ACADAMIC (2)
+         */
         if($notice_type!=1)
         {
             if($notice_type==2)

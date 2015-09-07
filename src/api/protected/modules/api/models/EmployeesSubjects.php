@@ -150,7 +150,8 @@ class EmployeesSubjects extends CActiveRecord
                     )
                 )
             );
-           
+            
+            $criteria->compare("Subjectbatch.is_deleted", 0);
             $criteria->group = "Subjectbatch.id";
 
             
@@ -191,6 +192,7 @@ class EmployeesSubjects extends CActiveRecord
                     )
                 )
             );
+            $criteria->compare("Subjectbatch.is_deleted", 0);
             $criteria->compare("courseDetails.is_deleted", 0);
            
             $criteria->group = "Subjectbatch.id";
@@ -236,6 +238,7 @@ class EmployeesSubjects extends CActiveRecord
             );
            
 
+            $criteria->compare("Subjectbatch.is_deleted", 0);
             $criteria->compare("courseDetails.is_deleted", 0);
             
             $obj_subject = $this->findAll($criteria);

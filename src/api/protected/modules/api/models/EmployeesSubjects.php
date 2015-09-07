@@ -183,7 +183,7 @@ class EmployeesSubjects extends CActiveRecord
                             'joinType' => "INNER JOIN",
                             'with' => array(
                                 "courseDetails" => array(
-                                    "select" => "Subjectbatch.id,courseDetails.course_name",
+                                    "select" => "courseDetails.id,courseDetails.course_name",
                                     'joinType' => "INNER JOIN",
                                 )
                             )
@@ -191,6 +191,7 @@ class EmployeesSubjects extends CActiveRecord
                     )
                 )
             );
+            $criteria->compare("courseDetails.is_deleted", 0);
            
             $criteria->group = "Subjectbatch.id";
 
@@ -235,7 +236,7 @@ class EmployeesSubjects extends CActiveRecord
             );
            
 
-
+            $criteria->compare("courseDetails.is_deleted", 0);
             
             $obj_subject = $this->findAll($criteria);
         

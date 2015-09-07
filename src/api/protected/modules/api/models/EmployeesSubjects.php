@@ -180,11 +180,11 @@ class EmployeesSubjects extends CActiveRecord
                     'joinType' => "INNER JOIN",
                     'with' => array(
                         "Subjectbatch" => array(
-                            "select" => "Subjectbatch.id,Subjectbatch.name",
+                            "select" => "Subjectbatch.id,Subjectbatch.name,Subjectbatch.is_deleted",
                             'joinType' => "INNER JOIN",
                             'with' => array(
                                 "courseDetails" => array(
-                                    "select" => "courseDetails.id,courseDetails.course_name",
+                                    "select" => "courseDetails.id,courseDetails.course_name,courseDetails.is_deleted",
                                     'joinType' => "INNER JOIN",
                                 )
                             )
@@ -204,9 +204,12 @@ class EmployeesSubjects extends CActiveRecord
             $i = 0; 
             foreach ($obj_subject as $value)
             {
-               $subject[$i]['id'] = $value['subject']['Subjectbatch']->id;
-               $subject[$i]['name'] = $value['subject']['Subjectbatch']->name." ".$value['subject']['Subjectbatch']['courseDetails']->course_name;
-               $i++; 
+               if($value['subject']['Subjectbatch']->is_deleted==0 && $value['subject']['Subjectbatch']['courseDetails']->is_deleted==0 )
+               {
+                    $subject[$i]['id'] = $value['subject']['Subjectbatch']->id;
+                    $subject[$i]['name'] = $value['subject']['Subjectbatch']->name." ".$value['subject']['Subjectbatch']['courseDetails']->course_name;
+                    $i++; 
+               }
             }
 
             return $subject;

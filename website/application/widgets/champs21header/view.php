@@ -73,7 +73,7 @@
                 <div class="search_box_head">
                     <div style="float: left;margin:5px;">                
                                        
-                            <input class="field" name="s" id="s-auto" class='search' placeholder="Search this site" type="search" style="width: 160px; margin-top: 3px;">
+                            <input class="field" autocomplete="off" name="s" id="s-auto" class='search' placeholder="Search this site" type="search" style="width: 160px; margin-top: 3px;">
                             <div id="divResult">
                             </div>
                                     

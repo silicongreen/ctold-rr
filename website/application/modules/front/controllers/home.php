@@ -70,7 +70,7 @@ class home extends MX_Controller {
                 echo '<div class="display_box" align="left" style="float:left; clear:both; width:100%;">';
                 if($fb_image)
                 {
-                    echo '<img src="'.$fb_image.'" style="width:50px; height:50px; float:left; margin-right:6px;" />';
+                    echo '<img src="'.base_url($fb_image).'" style="width:50px; height:50px; float:left; margin-right:6px;" />';
                 }
                 echo '<span style="font-size:13px; color:black" class="name">'.$values->headline.'</span>'; 
                 echo '<br/><span style="font-size:11px; color:#999999">Published: '.$values->published_date.'</span>';

@@ -61,7 +61,9 @@ class home extends MX_Controller {
         $posts = $this->db->get("post");
         if(count($posts->result())>0)
         {
-            echo '<div class="display_box" style="float:left; clear:both; width:100%;" align="left"><b style="font-size:15px;">News</b></div>';
+            echo '<div class="display_box" style="float:left; clear:both; width:100%;background-color: #C9364A;
+    color: white;
+    padding: 10px" align="left"><b style="font-size:15px;">News</b></div>';
             foreach ($posts->result() as $values)
             {
                 $fb_image = getImageForFacebook($values);
@@ -86,7 +88,9 @@ class home extends MX_Controller {
         $posts = $this->db->get("school");
         if(count($posts->result())>0)
         {
-            echo '<div class="display_box" style="float:left; clear:both; width:100%;" align="left"><b style="font-size:15px;">Schools</b></div>';
+            echo '<div class="display_box" style="float:left; clear:both; width:100%;background-color: #C9364A;
+    color: white;
+    padding: 10px" align="left"><b style="font-size:15px;">Schools</b></div>';
             foreach ($posts->result() as $values)
             {
                 $fb_image = $values->logo;

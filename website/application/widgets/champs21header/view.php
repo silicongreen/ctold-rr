@@ -3354,7 +3354,7 @@ if($('.header-logo-div').is(':visible')) {
         {
                 position:absolute;
                 width:350px;
-                height: 400px;
+                max-height: 400px;
                 display:none;
                 margin-top:-1px;
                 border-top:0px;

@@ -3354,10 +3354,11 @@ if($('.header-logo-div').is(':visible')) {
         {
                 position:absolute;
                 width:350px;
+                height: 400px;
                 display:none;
                 margin-top:-1px;
                 border-top:0px;
-                overflow:hidden;
+                overflow-y: auto;
                 border-width: 0px 1px 1px;
                 border-style: solid;
                 border-color: #DEDEDE;

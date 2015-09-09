@@ -83,7 +83,6 @@ class home extends MX_Controller {
         
         $this->db->select("*");
         $this->db->like("name", $this->input->post("searchword"));
-        $this->db->limit(3);
         $posts = $this->db->get("school");
         if(count($posts->result())>0)
         {

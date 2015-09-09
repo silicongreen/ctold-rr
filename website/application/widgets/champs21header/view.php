@@ -3363,6 +3363,7 @@ if($('.header-logo-div').is(':visible')) {
                 border-style: solid;
                 border-color: #DEDEDE;
                 background-color: white;
+                z-index:6001;
         }
         .display_box
         {

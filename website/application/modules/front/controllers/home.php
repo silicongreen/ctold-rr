@@ -59,7 +59,7 @@ class home extends MX_Controller {
         $this->db->order_by("published_date", "DESC");
         $this->db->limit(7);
         $posts = $this->db->get("post");
-        if(count($posts)>0)
+        if(count($posts->result())>0)
         {
             echo '<div class="display_box" style="float:left; clear:both; width:100%;" align="left"><b style="font-size:15px;">News</b></div>';
             foreach ($posts->result() as $values)
@@ -85,7 +85,7 @@ class home extends MX_Controller {
         $this->db->like("name", $this->input->post("searchword"));
         $this->db->limit(3);
         $posts = $this->db->get("school");
-        if(count($posts)>0)
+        if(count($posts->result())>0)
         {
             echo '<div class="display_box" style="float:left; clear:both; width:100%;" align="left"><b style="font-size:15px;">Schools</b></div>';
             foreach ($posts->result() as $values)

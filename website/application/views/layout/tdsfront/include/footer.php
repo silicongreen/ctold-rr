@@ -95,10 +95,13 @@ $widget = new Widget;
        
         $("#s-auto").keyup(function ()
         {
+            var loading = '<div class="display_box" align="left" style="float:left; clear:both; width:100%;"><span style="font-size:13px; color:black" class="name">Loading...</div></div>';
+            var no_result = '<div class="display_box" align="left" style="float:left; clear:both; width:100%;"><span style="font-size:13px; color:black" class="name">No Result Found</div></div>'
             var inputSearch = $(this).val();
             var dataString = 'searchword=' + inputSearch;
             if (inputSearch != '' && inputSearch.length>2)
             {
+                $("#divResult").html(loading).show();  
                 $.ajax({
                     type: "POST",
                     url: $("#base_url").val() + "search_full_site",
@@ -113,7 +116,7 @@ $widget = new Widget;
                         }
                         else
                         {
-                           $("#divResult").html("").hide(); 
+                           $("#divResult").html(no_result).show(); 
                         }    
                     }
                 });

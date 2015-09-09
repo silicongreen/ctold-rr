@@ -45,6 +45,67 @@ class home extends MX_Controller {
 //        }
     }
     
+    function search_full_site()
+    {
+        if (!$this->input->is_ajax_request())
+        {
+            exit('No direct script access allowed');
+        }
+        $this->layout_front = false;
+        $this->db->select("*");
+        $this->db->like("headline", $this->input->post("searchword"));
+        $this->db->where("status", 5);  
+        $this->db->where("post_type", 1);
+        $this->db->order_by("published_date", "DESC");
+        $this->db->limit(7);
+        $posts = $this->db->get("post");
+        if(count($posts)>0)
+        {
+            echo '<div class="display_box" style="float:left; clear:both; width:100%;" align="left"><b style="font-size:15px;">News</b></div>';
+            foreach ($posts->result() as $values)
+            {
+                $fb_image = getImageForFacebook($values);
+                echo '<a href="'.create_link_url("index", $values->headline, $values->id).'" style="float:left; clear:both; width:100%;">';
+              
+                echo '<div class="display_box" align="left" style="float:left; clear:both; width:100%;">';
+                if($fb_image)
+                {
+                    echo '<img src="'.$fb_image.'" style="width:50px; height:50px; float:left; margin-right:6px;" />';
+                }
+                echo '<span style="font-size:13px; color:black" class="name">'.$values->headline.'</span>'; 
+                echo '<br/><span style="font-size:11px; color:#999999">Published: '.$values->published_date.'</span>';
+                echo '</div>'; 
+                echo '</a>';
+            }
+        }
+        
+        
+        
+        $this->db->select("*");
+        $this->db->like("name", $this->input->post("searchword"));
+        $this->db->limit(3);
+        $posts = $this->db->get("school");
+        if(count($posts)>0)
+        {
+            echo '<div class="display_box" style="float:left; clear:both; width:100%;" align="left"><b style="font-size:15px;">Schools</b></div>';
+            foreach ($posts->result() as $values)
+            {
+                $fb_image = $values->logo;
+                echo '<a href="'.base_url() . 'schools/' . sanitize($values->name).'" style="float:left; clear:both; width:100%;">';
+                echo '<div class="display_box" align="left" style="float:left; clear:both; width:100%;">';
+                if($fb_image)
+                {
+                    echo '<img src="'.$fb_image.'" style="width:50px; height:50px; float:left; margin-right:6px;" />';
+                }
+                
+                echo '<span style="font-size:13px; color:black" class="name">'.$values->name.'</span>'; 
+                echo '<br/><span style="font-size:11px; color:#999999">Published: '.$values->district.'&nbsp;'.$values->location.'</span>';
+                echo '</div>'; 
+                echo '</a>';
+            }
+        }
+    }
+    
     public function school_list()
     {
         $data['ci_key'] = 'school_list';

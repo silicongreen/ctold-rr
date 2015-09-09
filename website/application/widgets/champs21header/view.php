@@ -72,10 +72,11 @@
             <div class="login_reg_div">
                 <div class="search_box_head">
                     <div style="float: left;margin:5px;">                
-                        <form method="get" class="searchform" action="<?php echo base_url('search'); ?>" role="search">                    
-                            <input class="field" name="s" id="s" class='search' placeholder="Search this site" type="search" style="border-radius: 6px; -moz-border-radius: 6px; -webkit-border-radius: 6px; width: 160px; margin-top: 3px;">
-                            <input class="submit search-button" value="" type="submit" />
-                        </form>                
+                                       
+                            <input class="field" name="s" id="s-auto" class='search' placeholder="Search this site" type="search" style="width: 160px; margin-top: 3px;">
+                            <div id="divResult">
+                            </div>
+                                    
                     </div>
                 </div>
                 <div class="login_reg_div_box">
@@ -3348,5 +3349,30 @@ if($('.header-logo-div').is(':visible')) {
     :-ms-input-placeholder { /* Internet Explorer 10+ */
        color: #444444 !important;
     }
+    
+    #divResult
+        {
+                position:absolute;
+                width:350px;
+                display:none;
+                margin-top:-1px;
+                border-top:0px;
+                overflow:hidden;
+                border-width: 0px 1px 1px;
+                border-style: solid;
+                border-color: #DEDEDE;
+                background-color: white;
+        }
+        .display_box
+        {
+                padding:7px; border-top:solid 1px #dedede; 
+                font-size:12px;
+        }
+        .display_box:hover
+        {
+                background:#3bb998;
+                color:#FFFFFF;
+                cursor:pointer;
+        }
 </style>
 

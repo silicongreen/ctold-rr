@@ -3363,7 +3363,7 @@ if($('.header-logo-div').is(':visible')) {
                 border-style: solid;
                 border-color: #DEDEDE;
                 background-color: white;
-                z-index:6001;
+                z-index:1000;
         }
         .display_box
         {
@@ -3375,6 +3375,10 @@ if($('.header-logo-div').is(':visible')) {
                 background:#3bb998;
                 color:#FFFFFF;
                 cursor:pointer;
+        }
+        #toPopup
+        {
+            z-index: 999 !important;
         }
 </style>
 

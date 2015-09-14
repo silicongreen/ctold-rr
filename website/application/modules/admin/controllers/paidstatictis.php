@@ -313,7 +313,8 @@ class paidstatictis extends MX_Controller
         {
             $sql_2 = "SELECT MIN(created_at) as mcreated from activity_logs where id > "
                     . "(select MAX(id) as main_id from activity_logs where session_end=1 "
-                    . "and free_site=0 and ip != '182.160.115.228'  and user_id=".$value->user_id."  and school_id=".$school_id.")";
+                    . "and free_site=0 and ip != '182.160.115.228'  and user_id=".$value->user_id."  and school_id=".$school_id.") and "
+                    . "free_site=0 and ip != '182.160.115.228'  and user_id=".$value->user_id."  and school_id=".$school_id." and session_end!=1";
             $query2 = $this->db->query($sql_2);
             $statistics_info2 = $query2->row(); 
             

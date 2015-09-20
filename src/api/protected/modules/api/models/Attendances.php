@@ -230,6 +230,7 @@ class Attendances extends CActiveRecord {
             $fullname = ($value->first_name)?$value->first_name." ":"";
             $fullname.= ($value->middle_name)?$value->middle_name." ":"";
             $fullname.= ($value->last_name)?$value->last_name:"";
+            $attendence[$i]['viewed_by_teacher'] = 0;
             
             $attendence[$i]['student_name'] = $fullname;
             
@@ -281,6 +282,7 @@ class Attendances extends CActiveRecord {
                 $attendence[$i]['leave_id'] = $leave_today['leave_id'][$key];
                 $attendence[$i]['leave_start_date'] = $leave_today['start_date'][$key];
                 $attendence[$i]['leave_end_date'] = $leave_today['end_date'][$key];
+                $attendence[$i]['viewed_by_teacher'] = $leave_today['viewed_by_teacher'][$key];
             }
             if(isset($leave_today['unapproved']) && in_array($value->id, $leave_today['unapproved']))
             {
@@ -293,7 +295,7 @@ class Attendances extends CActiveRecord {
                 $attendence[$i]['leave_id'] = $leave_today['leave_id'][$key];
                 $attendence[$i]['leave_start_date'] = $leave_today['start_date'][$key];
                 $attendence[$i]['leave_end_date'] = $leave_today['end_date'][$key];
-                
+                $attendence[$i]['viewed_by_teacher'] = $leave_today['viewed_by_teacher'][$key];
             }
             
             $i++;

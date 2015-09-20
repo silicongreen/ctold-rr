@@ -322,10 +322,8 @@ class EventController extends Controller
         $start_date = Yii::app()->request->getPost('start_date');
         $end_date = Yii::app()->request->getPost('end_date');
         $student_id = Yii::app()->request->getPost('student_id');
-        if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isParent && $reason && $student_id && $start_date && $end_date )
+        if ( (Yii::app()->user->user_secret === $user_secret && $reason && $student_id && $start_date && $end_date) && (Yii::app()->user->isParent || Yii::app()->user->isTeacher) )
         {
-             
-            
             $leave = new ApplyLeaveStudents();
             
             if($leave->checkLeaveOk($student_id,$start_date,$end_date))
@@ -341,7 +339,9 @@ class EventController extends Controller
                 }
                 $leave->created_at = date("Y-m-d H:i:s");
                 $leave->updated_at = date("Y-m-d H:i:s");
-                $leave->save();
+                if($leave->save()){
+                    $leave_id = $leave->id;
+                }
 
                 //reminder code
                 $std = new Students();
@@ -350,7 +350,7 @@ class EventController extends Controller
                 $emsubject = new EmployeesSubjects();
 
                 $employess = $emsubject->getEmployee($stddata->batch_id);
-                if($employess)
+                if($employess && !Yii::app()->user->isTeacher)
                 {
                     $notification_ids = array();
                     $reminderrecipients = array();
@@ -378,12 +378,13 @@ class EventController extends Controller
                         $user_id = implode(",", $reminderrecipients);
                         Settings::sendCurlNotification($user_id, $notification_id);
                     }
-                }    
+                }
 
                 //reminder code  
 
                 $response['status']['code'] = 200;
                 $response['status']['msg'] = "Success";
+                $response['data']['leave_id'] = $leave_id;
             }
             else
             {

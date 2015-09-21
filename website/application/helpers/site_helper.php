@@ -2102,9 +2102,7 @@ if(!function_exists('get_alphabets'))
 if (!function_exists('set_session_cookie')) {
 
     function set_session_cookie($cookie_token) {
-<<<<<<< HEAD
         return setcookie('c21_session', $cookie_token, time() + 2592000, '/', str_replace('www.', '', $_SERVER['SERVER_NAME']));
-=======
         $cookie = array(
             'name' => 'champs_session',
             'value' => $cookie_token,
@@ -2113,7 +2111,6 @@ if (!function_exists('set_session_cookie')) {
         );
         
         setcookie('champs_session', $cookie_token, time() + 2592000, '/', str_replace('www.', '', $_SERVER['SERVER_NAME']));
->>>>>>> hotfix/Hotfix-450
     }
 
 }

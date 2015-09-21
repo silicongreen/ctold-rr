@@ -73,8 +73,6 @@ class NoticeController extends Controller {
                 
                 $url = "../../../premium/school/public/uploads/news/attachments/" . $id . "/original/" . str_replace(" ", "+", $newsObj->attachment_file_name) . "?" . $attachment_extra;
                 
-                var_dump((file_exists($url)));exit;
-                
                 if (file_exists($url)) {
                     return Yii::app()->getRequest()->sendFile($newsObj->attachment_file_name, @file_get_contents($url));
                 }

@@ -20,85 +20,107 @@ class NoticeController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index','getnotice','getsinglenotice', 'acknowledge'),
+                'actions' => array('index', 'getnotice', 'getsinglenotice', 'acknowledge', 'downloadnoticeattachment'),
                 'users' => array('@'),
+            ),
+            array('allow', // allow authenticated user to perform 'create' and 'update' actions
+                'actions' => array('downloadnoticeattachment'),
+                'users' => array('*'),
             ),
             array('deny', // deny all users
                 'users' => array('*'),
             ),
         );
     }
-    public function actionGetSingleNotice()
-    {
+
+    public function actionGetSingleNotice() {
         $user_secret = Yii::app()->request->getPost('user_secret');
         $id = Yii::app()->request->getPost('id');
-        if ($id && Yii::app()->user->user_secret === $user_secret)
-        {
+        if ($id && Yii::app()->user->user_secret === $user_secret) {
             $news = new News;
             $news = $news->getSingleNews($id);
-            
-            if($news)
-            {
-               $response['data']['notice'] = $news;
-               $response['status']['code'] = 200;
-               $response['status']['msg'] = 'NOTICE_FOUND.'; 
-            } 
-            else
-            {
+
+            if ($news) {
+                $response['data']['notice'] = $news;
+                $response['status']['code'] = 200;
+                $response['status']['msg'] = 'NOTICE_FOUND.';
+            } else {
                 $response['status']['code'] = 400;
                 $response['status']['msg'] = "Bad Request.";
-            }    
-        }
-        else
-        {
+            }
+        } else {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request.";
         }
         echo CJSON::encode($response);
         Yii::app()->end();
     }
-    
+
+    public function actionDownloadnoticeattachment() {
+        $id = Yii::app()->request->getParam('id');
+        
+        if ($id) {
+            $news = new News();
+            $newsObj = $news->findByPk($id);
+            if ($newsObj->attachment_file_name) {
+                $attachment_datetime_chunk = explode(" ", $newsObj->attachment_updated_at);
+
+                $attachment_date_chunk = explode("-", $attachment_datetime_chunk[0]);
+                $attachment_time_chunk = explode(":", $attachment_datetime_chunk[1]);
+
+                $attachment_extra = $attachment_date_chunk[0] . $attachment_date_chunk[1] . $attachment_date_chunk[2];
+                $attachment_extra.= $attachment_time_chunk[0] . $attachment_date_chunk[1] . $attachment_time_chunk[2];
+                
+                $url = "../../../premium/school/public/uploads/news/attachments/" . $id . "/original/" . str_replace(" ", "+", $newsObj->attachment_file_name) . "?" . $attachment_extra;
+
+                if (file_exists($url)) {
+                    return Yii::app()->getRequest()->sendFile($newsObj->attachment_file_name, @file_get_contents($url));
+                }
+//
+//
+//                header("Content-Disposition: attachment; filename=" . $newsObj->attachment_file_name);
+//                header("Content-Type: {$newsObj->attachment_content_type}");
+//                header("Content-Length: " . $newsObj->attachment_file_size);
+//                readfile($url);
+            }
+        }
+    }
+
     public function actionGetNotice() {
 
         if ((Yii::app()->request->isPostRequest) && !empty($_POST)) {
 
             $user_secret = Yii::app()->request->getPost('user_secret');
             $notice_type = Yii::app()->request->getPost('notice_type');
-        
+
 
             $response = array();
             if (Yii::app()->user->user_secret === $user_secret) {
                 $page_number = Yii::app()->request->getPost('page_number');
                 $page_size = Yii::app()->request->getPost('page_size');
-                if (empty($page_number))
-                {
+                if (empty($page_number)) {
                     $page_number = 1;
                 }
-                if (empty($page_size))
-                {
+                if (empty($page_size)) {
                     $page_size = 10;
                 }
-                if(!$notice_type)
-                {
+                if (!$notice_type) {
                     $notice_type = 1;
                 }
 
-               
+
                 $news = new News;
-                
-                
+
+
                 $response['data']['total'] = $news->getNoticeCount($notice_type);
                 $has_next = false;
-                if ($response['data']['total'] > $page_number * $page_size)
-                {
+                if ($response['data']['total'] > $page_number * $page_size) {
                     $has_next = true;
                 }
                 $response['data']['has_next'] = $has_next;
-                $response['data']['notice'] = $news->getNotice($notice_type,$page_number,$page_size);
+                $response['data']['notice'] = $news->getNotice($notice_type, $page_number, $page_size);
                 $response['status']['code'] = 200;
                 $response['status']['msg'] = 'NOTICE_FOUND.';
-
-                
             } else {
                 $response['status']['code'] = 403;
                 $response['status']['msg'] = "Access Denied.";
@@ -117,7 +139,7 @@ class NoticeController extends Controller {
         if ((Yii::app()->request->isPostRequest) && !empty($_POST)) {
 
             $user_secret = Yii::app()->request->getPost('user_secret');
-            
+
             $notice_type = Yii::app()->request->getPost('notice_type');
             $author_id = Yii::app()->request->getPost('author');
 
@@ -164,7 +186,7 @@ class NoticeController extends Controller {
         if ((Yii::app()->request->isPostRequest) && !empty($_POST)) {
 
             $user_secret = Yii::app()->request->getPost('user_secret');
-            
+
             $notice_id = Yii::app()->request->getPost('notice_id');
 
             if (empty($notice_id)) {

@@ -122,13 +122,14 @@ class News extends CActiveRecord {
     {
         $criteria = new CDbCriteria;
 
-        $criteria->select = 't.id, t.category_id, t.title, t.content, t.created_at, t.updated_at';
+        $criteria->select = 't.id, t.category_id, t.title, t.content, t.created_at, t.updated_at, t.attachment_file_name, t.attachment_content_type, t.attachment_file_size, t.attachment_updated_at';
         $criteria->compare('t.id', $id);
 
         $data = $this->with('authorDetails', 'newsAcknowledge')->find($criteria);
 
         return (!empty($data)) ? $this->formatSingleNotice($data) : \FALSE;
     }
+    
     public function formatSingleNotice($row) 
     {
         $_data['notice_id'] = $row->id;
@@ -136,6 +137,10 @@ class News extends CActiveRecord {
         $_data['notice_type_text'] = ucfirst(Settings::$ar_notice_type[$row->category_id]);
         $_data['notice_title'] = $row->title;
         $_data['notice_content'] = $row->content;
+        $_data['file_name'] = (!empty($row->attachment_file_name)) ? $row->attachment_file_name : '';
+        $_data['file_type'] = (!empty($row->attachment_content_type)) ? $row->attachment_content_type : '';
+        $_data['file_size'] = (!empty($row->attachment_file_size)) ? $row->attachment_file_size : '';
+        $_data['file_updated_at'] = (!empty($row->attachment_updated_at)) ? $row->attachment_updated_at : '';
         $_data['published_at'] = date('Y-m-d H:i:s', strtotime($row->created_at));
         $_data['updated_at'] = date('Y-m-d H:i:s', strtotime($row->updated_at));
         $_data['author_id'] = rtrim($row['authorDetails']->id);
@@ -149,6 +154,7 @@ class News extends CActiveRecord {
 
         return $_data;
     }
+    
     public function getNoticeCount($notice_type=1) {
         
         $school_id = Yii::app()->user->schoolId;

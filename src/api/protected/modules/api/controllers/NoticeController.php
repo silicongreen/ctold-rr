@@ -58,7 +58,7 @@ class NoticeController extends Controller {
 
     public function actionDownloadnoticeattachment() {
         $id = Yii::app()->request->getParam('id');
-        var_dump($id);exit;
+        
         if ($id) {
             $news = new News();
             $newsObj = $news->findByPk($id);
@@ -72,7 +72,9 @@ class NoticeController extends Controller {
                 $attachment_extra.= $attachment_time_chunk[0] . $attachment_date_chunk[1] . $attachment_time_chunk[2];
                 
                 $url = "../../../premium/school/public/uploads/news/attachments/" . $id . "/original/" . str_replace(" ", "+", $newsObj->attachment_file_name) . "?" . $attachment_extra;
-
+                
+                var_dump((file_exists($url)));exit;
+                
                 if (file_exists($url)) {
                     return Yii::app()->getRequest()->sendFile($newsObj->attachment_file_name, @file_get_contents($url));
                 }

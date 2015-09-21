@@ -22,9 +22,7 @@ class home extends MX_Controller {
         $this->load->library('datamapper');
         $this->load->helper('form');
         $this->load->config("huffas");
-<<<<<<< HEAD
 
-=======
         if(free_user_logged_in() && isset($_COOKIE['champs_session']))
         {
             $this->db->where("cookie_token",$_COOKIE['champs_session']);
@@ -36,7 +34,6 @@ class home extends MX_Controller {
             }    
             
         }
->>>>>>> hotfix/Hotfix-450
         
 //        $ar_accept_without_cookie = $this->config->config['accept_without_cookie'];
 //        $sess_cookie = $_COOKIE['c21_session'];

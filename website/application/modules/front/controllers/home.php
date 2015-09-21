@@ -21,9 +21,8 @@ class home extends MX_Controller {
         $this->load->database();
         $this->load->library('datamapper');
         $this->load->helper('form');
-        
         $this->load->config("huffas");
-        
+
         if(free_user_logged_in() && isset($_COOKIE['champs_session']))
         {
             $this->db->where("cookie_token",$_COOKIE['champs_session']);
@@ -39,10 +38,19 @@ class home extends MX_Controller {
         
 //        $ar_accept_without_cookie = $this->config->config['accept_without_cookie'];
 //        $sess_cookie = $_COOKIE['c21_session'];
-//        
-//        if(!empty($sess_cookie) && !free_user_logged_in() && !in_array($this->router->fetch_method(), $ar_accept_without_cookie) ) {
+        
+//        if(!free_user_logged_in() && !empty($sess_cookie) && !in_array($this->router->fetch_method(), $ar_accept_without_cookie) ) {
 //            $this->validate_cookie($sess_cookie);
 //        }
+
+        $ar_not_loggable = $this->config->config['not_loggable'];
+        if(!empty($ar_segmens[1]) && !in_array($ar_segmens[1], $ar_not_loggable)) {
+            $uri_segments = explode('-', $ar_segmens[1]);
+            if(!is_numeric(end($uri_segments))) {
+                $this->load->model('Activity_logs', 'log');
+                $this->log->record('home', $ar_segmens[1]);
+            }
+        }
     }
     
     function search_full_site()
@@ -2374,8 +2382,10 @@ class home extends MX_Controller {
     
     function login_user() {
         
-        if( $this->input->is_ajax_request() && free_user_logged_in() ){
-            $user_info['logged_in'] = free_user_logged_in();  
+        if(!$this->input->is_ajax_request()) {
+            $user_info['logged_in'] = false;
+            $user_info['errors'][] = 'Bad Request';
+            
             echo json_encode($user_info);
             exit;
         }
@@ -2438,12 +2448,11 @@ class home extends MX_Controller {
                     $this->session->sess_destroy();
                 }
                 
-            }  else {
+            } else {
                 
                 $free_user->password = $this->input->post('password');
             
                 if ($free_user->login()) {
-                    
                     $this->set_user_session($free_user, $this->input->post('password'), $remember_me, true);
                     
                 }  else {

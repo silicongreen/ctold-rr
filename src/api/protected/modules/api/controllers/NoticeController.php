@@ -58,7 +58,7 @@ class NoticeController extends Controller {
 
     public function actionDownloadnoticeattachment() {
         $id = Yii::app()->request->getParam('id');
-        
+        var_dump($id);exit;
         if ($id) {
             $news = new News();
             $newsObj = $news->findByPk($id);

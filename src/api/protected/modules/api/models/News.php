@@ -19,6 +19,7 @@ class News extends CActiveRecord {
      * @return string the associated database table name
      */
     public $total;
+
     public function tableName() {
         return 'news';
     }
@@ -117,9 +118,8 @@ class News extends CActiveRecord {
     public static function model($className = __CLASS__) {
         return parent::model($className);
     }
-    
-    public function getSingleNews($id) 
-    {
+
+    public function getSingleNews($id) {
         $criteria = new CDbCriteria;
 
         $criteria->select = 't.id, t.category_id, t.title, t.content, t.created_at, t.updated_at, t.attachment_file_name, t.attachment_content_type, t.attachment_file_size, t.attachment_updated_at';
@@ -129,9 +129,8 @@ class News extends CActiveRecord {
 
         return (!empty($data)) ? $this->formatSingleNotice($data) : \FALSE;
     }
-    
-    public function formatSingleNotice($row) 
-    {
+
+    public function formatSingleNotice($row) {
         $_data['notice_id'] = $row->id;
         $_data['notice_type_id'] = $row->category_id;
         $_data['notice_type_text'] = ucfirst(Settings::$ar_notice_type[$row->category_id]);
@@ -146,7 +145,7 @@ class News extends CActiveRecord {
         $_data['author_id'] = rtrim($row['authorDetails']->id);
         $_data['author_first_name'] = rtrim($row['authorDetails']->first_name);
         $_data['author_full_name'] = rtrim($row['authorDetails']->first_name . ' ' . $row['authorDetails']->last_name);
-        
+
         $_data['acknowledge'] = array();
         if (sizeof($row['newsAcknowledge']) > 0) {
             $_data['acknowledge'] = $this->formatAcknowledge($row['newsAcknowledge']);
@@ -154,65 +153,55 @@ class News extends CActiveRecord {
 
         return $_data;
     }
-    
-    public function getNoticeCount($notice_type=1) {
-        
+
+    public function getNoticeCount($notice_type = 1) {
+
         $school_id = Yii::app()->user->schoolId;
         $criteria = new CDbCriteria;
         $criteria->select = 'count(t.id) as total';
         $criteria->compare('t.school_id', $school_id);
-        
+
         /**
          * DONT CHANGE THE LOGIC. APP SEND THE WRONG PARAMITER SO HAVE TO CHANGE LOGIC
          * 1=ALL
          * 2=ACADEMIC (1)
          * 3=EXTRA ACADAMIC (2)
          */
-        if($notice_type!=1)
-        {
-            if($notice_type==2)
-            {
+        if ($notice_type != 1) {
+            if ($notice_type == 2) {
                 $criteria->compare('category_id', 1);
-            }
-            else
-            {
+            } else {
                 $criteria->compare('category_id', 2);
             }
-            
         }
-            
+
         $data = $this->find($criteria);
 
         return $data->total;
     }
-    
-    public function getNotice($notice_type=1,$page_number=1,$page_size=10) {
-        
+
+    public function getNotice($notice_type = 1, $page_number = 1, $page_size = 10) {
+
         $school_id = Yii::app()->user->schoolId;
         $criteria = new CDbCriteria;
-        $criteria->select = 't.id, t.category_id, t.title, t.content, t.created_at, t.updated_at';
+        $criteria->select = 't.id, t.category_id, t.title, t.content, t.created_at, t.updated_at, t.attachment_file_name, t.attachment_content_type, t.attachment_file_size, t.attachment_updated_at';
         $criteria->compare('t.school_id', $school_id);
-        
+
         /**
          * DONT CHANGE THE LOGIC. APP SEND THE WRONG PARAMITER SO HAVE TO CHANGE LOGIC
          * 1=ALL
          * 2=ACADEMIC (1)
          * 3=EXTRA ACADAMIC (2)
          */
-        if($notice_type!=1)
-        {
-            if($notice_type==2)
-            {
+        if ($notice_type != 1) {
+            if ($notice_type == 2) {
                 $criteria->compare('category_id', 1);
-            }
-            else
-            {
+            } else {
                 $criteria->compare('category_id', 2);
             }
-            
         }
         $criteria->order = 't.id DESC';
-        $start = ($page_number-1)*$page_size;
+        $start = ($page_number - 1) * $page_size;
         $criteria->limit = $page_size;
         $criteria->offset = $start;
         $data = $this->with('authorDetails', 'newsAcknowledge')->findAll($criteria);
@@ -254,6 +243,10 @@ class News extends CActiveRecord {
             $_data['notice_type_text'] = ucfirst(Settings::$ar_notice_type[$row->category_id]);
             $_data['notice_title'] = $row->title;
             $_data['notice_content'] = $row->content;
+            $_data['file_name'] = (!empty($row->attachment_file_name)) ? $row->attachment_file_name : '';
+            $_data['file_type'] = (!empty($row->attachment_content_type)) ? $row->attachment_content_type : '';
+            $_data['file_size'] = (!empty($row->attachment_file_size)) ? $row->attachment_file_size : '';
+            $_data['file_updated_at'] = (!empty($row->attachment_updated_at)) ? $row->attachment_updated_at : '';
             $_data['published_at'] = date('Y-m-d H:i:s', strtotime($row->created_at));
             $_data['updated_at'] = date('Y-m-d H:i:s', strtotime($row->updated_at));
             $_data['author_id'] = rtrim($row['authorDetails']->id);

@@ -14,6 +14,7 @@ class ajax extends MX_Controller
 
         $this->load->database();
         $this->load->library('datamapper');
+        $this->load->helper('form');
 
         $this->layout_front = false;
         $this->obj_post = new Post_model();
@@ -1315,6 +1316,13 @@ class ajax extends MX_Controller
     {
         $this->cache->clean();
     }
+    
+    public function getpositiondropudown()
+    {
+        $category_id = $this->input->post("category_id");
+        $dropdown = get_paid_employee_position_droupdown($school_id, $category_id);
+        echo $dropdown;
+    }        
 
     public function cat_home()
     {

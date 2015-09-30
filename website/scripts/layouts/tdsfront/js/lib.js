@@ -360,6 +360,33 @@ $(document).ready(function () {
             $(this).addClass("selected-folder");
         }
     });
+    
+    $(document).on("change", "#change_position", function () {
+        $.post($("#base_url").val() + 'front/ajax/getpositiondropudown/',
+                        {category_id: $(this).val()}, function (data) {
+                    $("#position_dropdown").html(data);
+                }
+        );
+    });
+    $(document).on("click", ".add_guardian", function () {
+        if($(this).val()=="no")
+        {
+            $(".gfield").hide();
+            $(".gfield2").hide();
+        }
+        
+        if($(this).val()=="one" )
+        {
+            $(".gfield").show();
+            $(".gfield2").hide();
+        }
+        if($(this).val()=="two" )
+        {
+            $(".gfield").show();
+            $(".gfield2").show();
+        }
+    });
+    
     $(document).on("click", ".good-read-box2 .remove-folder", function () {
         $(".good-read-box2").fadeOut("normal");
     });

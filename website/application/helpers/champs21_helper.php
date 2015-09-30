@@ -724,6 +724,235 @@ if ( ! function_exists("get_diff_date"))
         return $a_out;
     }
 }
+if(!function_exists("get_parent_children"))
+{
+    function get_parent_children($str,$user_data)
+    {
+     
+        $CI = &get_instance();
+        $CI->db->dbprefix = '';
+        $CI->db->select('*');
+        $CI->db->from('students');
+        $CI->db->where('admission_no', trim($str));
+        $CI->db->where('school_id',$user_data->paid_school_id); 
+        $std = $CI->db->get()->row();
+        $CI->db->dbprefix = 'tds_';
+        if($std)
+        {
+            return $std;
+        }
+        else
+        {
+            return FALSE;
+        }
+        
+    }
+}
+
+if(!function_exists("get_paid_employee_position_droupdown"))
+{
+    function get_paid_employee_position_droupdown($school_id=0,$category_id=0,$selected='')
+    {
+        $s_array = array(NULL=>"select position");
+        if($category_id)
+        {
+            $CI = &get_instance();
+            $CI->db->dbprefix = '';
+            $CI->db->select('id,name');
+            $CI->db->from('employee_positions');
+            if($school_id>0)
+            {
+                $CI->db->where('school_id',$school_id);
+            }
+            $CI->db->where('employee_category_id',$category_id);
+            $CI->db->where('status',1);
+            $position = $CI->db->get()->result();
+            $CI->db->dbprefix = 'tds_';
+            
+            foreach($position as $value)
+            {
+
+                $s_array[$value->id] = $value->name;
+
+            }
+        } 
+        $class='class="cd-input f5" style="height:30" ';
+        $droup_down = form_dropdown('employee_position_id', $s_array, $selected,$class);
+        return $droup_down;
+    }
+}
+
+if(!function_exists("get_paid_employee_category_droupdown"))
+{
+    function get_paid_employee_category_droupdown($school_id,$selected='')
+    {
+        $CI = &get_instance();
+        $CI->db->dbprefix = '';
+        $CI->db->select('id,name');
+        $CI->db->from('employee_categories');
+        $CI->db->where('school_id',$school_id);
+        $CI->db->where('status',1);
+        $category = $CI->db->get()->result();
+        $CI->db->dbprefix = 'tds_';
+        $s_array = array(NULL=>"select category");
+        foreach($category as $value)
+        {
+            
+            $s_array[$value->id] = $value->name;
+            
+        }
+        $class='class="cd-input f5" id="change_position" style="height:30" ';
+        $droup_down = form_dropdown('employee_category', $s_array,$selected,$class);
+        return $droup_down;
+    }
+}
+
+if(!function_exists("get_paid_employee_grade_droupdown"))
+{
+    function get_paid_employee_grade_droupdown($school_id,$selected='')
+    {
+        $CI = &get_instance();
+        $CI->db->dbprefix = '';
+        $CI->db->select('id,name');
+        $CI->db->from('employee_grades');
+        $CI->db->where('school_id',$school_id);
+        $CI->db->where('status',1);
+        $grade = $CI->db->get()->result();
+        $CI->db->dbprefix = 'tds_';
+        $s_array = array(NULL=>"select department");
+        foreach($grade as $value)
+        {
+            
+            $s_array[$value->id] = $value->name;
+            
+        }
+        $class='class="cd-input f5" style="height:30" ';
+        $droup_down = form_dropdown('employee_grade_id', $s_array,$selected,$class);
+        return $droup_down;
+    }
+}
+
+if(!function_exists("get_paid_employee_department_droupdown"))
+{
+    function get_paid_employee_department_droupdown($school_id,$selected='')
+    {
+        $CI = &get_instance();
+        $CI->db->dbprefix = '';
+        $CI->db->select('id,name');
+        $CI->db->from('employee_departments');
+        $CI->db->where('status',1);
+        $CI->db->where('school_id',$school_id);
+        $department = $CI->db->get()->result();
+        $CI->db->dbprefix = 'tds_';
+        $s_array = array(NULL=>"select department");
+        foreach($department as $value)
+        {
+            
+            $s_array[$value->id] = $value->name;
+            
+        }
+        $class='class="cd-input f5" style="height:30" ';
+        $droup_down = form_dropdown('employee_department_id', $s_array, $selected,$class);
+        return $droup_down;
+    }
+}
+if(!function_exists("get_paid_school_droupdown"))
+{
+    function get_paid_school_droupdown()
+    {
+        $CI = &get_instance();
+        $CI->db->select('paid_school_id,name,code');
+        $CI->db->from('school');
+        $CI->db->where('is_paid',1);
+        $CI->db->where('status',1);
+        $schools = $CI->db->get()->result();
+        $s_array = array(NULL=>"select school");
+        foreach($schools as $value)
+        {
+            if($value->paid_school_id)
+            {
+                $s_array[$value->paid_school_id] = $value->name;
+            }
+        }
+        $droup_down = form_dropdown('paid_school_id', $s_array, '');
+        return $droup_down;
+    }
+}
+if(!function_exists("make_paid_username"))
+{
+    function make_paid_username($user_data,$admission_no,$parent=true,$from_std=false)
+    {
+        $extra = "";
+        if(($user_data->user_type==4 && $parent) || ($from_std && $user_data->user_type==2))
+        {
+            $extra = "p1";
+            $CI = &get_instance();
+            $CI->db->dbprefix = '';
+            $CI->db->select('count(id) as tp');
+            $CI->db->from('users');
+            $CI->db->like('username', trim($admission_no), 'before');
+            $CI->db->where('school_id',$user_data->paid_school_id);
+            $CI->db->where('parent',1);
+            $std = $CI->db->get()->row();
+            if($std && $std->tp)
+            {
+                $p_number = $std->tp+1;
+                $extra = "p".$p_number;
+            }
+            $CI->db->dbprefix = 'tds_';
+        }
+        $use_id = true;
+        $admission_no = $extra.$admission_no;
+        
+        if ($use_id) {
+            if ($user_data->paid_school_id < 10) {
+                $idchange = "0" . $user_data->paid_school_id;
+            } else {
+                $idchange = $user_data->paid_school_id;
+            }
+            $username = $idchange . "-" . $admission_no;
+        } else {
+            $CI = &get_instance();
+            $CI->db->dbprefix = '';
+            $CI->db->select('code');
+            $CI->db->from('schools');
+            $CI->db->where('id', $user_data->paid_school_id);
+            $school = $CI->db->get()->row();
+            $CI->db->dbprefix = 'tds_';
+            $username = $school->code . "-" . $admission_no;
+        }
+        return $username;
+        
+    }
+}
+if(!function_exists("get_paid_school_class"))
+{
+    function get_paid_school_class($school_id,$selected='')
+    {
+        $CI = &get_instance();
+        $CI->db->dbprefix = '';
+        $CI->db->select('batches.id as bid,batches.name as bname,courses.course_name,courses.section_name');
+        $CI->db->from('batches');
+        $CI->db->join('courses', 'courses.id = batches.course_id');
+        $CI->db->where('batches.is_deleted',0);
+        $CI->db->where('courses.is_deleted',0);
+        $CI->db->where('batches.is_active',1);
+        $CI->db->where('batches.school_id',$school_id);
+        $CI->db->order_by("bname ASC,courses.course_name ASC,courses.section_name ASC");
+        $course_batch = $CI->db->get()->result();
+        $CI->db->dbprefix = 'tds_';
+        $s_array = array(NULL=>"select class");
+        foreach($course_batch as $value)
+        {
+            
+          $s_array[$value->bid] = $value->bname." ".$value->course_name." ".$value->section_name;
+          
+        }
+        $class='class="cd-input f5" style="height:30" ';
+        $droup_down = form_dropdown('batch_id', $s_array, $selected,$class);
+        return $droup_down;
+    }
+}
 
 if( !function_exists("send_notification_paid"))
 {

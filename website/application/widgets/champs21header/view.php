@@ -202,6 +202,7 @@ height: 46px;
                         $action = base_url('update_profile');
                         $frm_id = 'update_profile_frm';
                     }
+                    $paid_schools = get_paid_school_droupdown();
                 ?>
 
                 <?php echo form_open($action, array('class' => 'validate_form', 'id' => $frm_id, 'enctype' => 'multipart/form-data', 'autocomplete' => 'off')); ?>
@@ -258,6 +259,23 @@ height: 46px;
                                         </ul>
                                     </div>
                                 </fieldset>
+<!--                                <fieldset>
+
+                                    <ul class="radio-holder drop-big" style="margin:10px 0 10px 33px">    
+                                        <li>
+                                            <fieldset style="color:black;">Teacher/Student/Parent Of A Premium School (Optional)?</fieldset>
+
+                                            <div class="custom_dropdown">
+                                                <div>
+                                                   <?php //echo $paid_schools; ?>
+                                                </div>
+                                            </div>
+
+                                        </li>
+                                        
+                                    </ul>
+                                </fieldset>-->
+                               
 
                                 <div class="clearfix" <?php echo ($edit) ? 'style="margin-bottom: 30px"' : ''; ?>></div>
                             <?php } ?>
@@ -1150,7 +1168,7 @@ if($('.header-logo-div').is(':visible')) {
  .fancybox-wrap { 
   top: 30px !important; 
   
-}   
+}  
 .frmSearch {}
 #country-list{float:left;list-style:none;margin:0;padding:0;width:380px;}
 #country-list li{float:none;margin-bottom:0px;padding: 10px; background:#FAFAFA;border-bottom:#F0F0F0 1px solid;}
@@ -2670,6 +2688,15 @@ if($('.header-logo-div').is(':visible')) {
     fieldset select{
         width: 190px;
         overflow: hidden;
+    }
+    
+    fieldset .drop-big select 
+    {
+        width: 300px;
+        float: left;
+        overflow: hidden;
+        margin-top: 10px;
+        height: 30;
     }
 
     ul.radio-holder{

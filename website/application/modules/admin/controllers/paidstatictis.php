@@ -101,7 +101,7 @@ class paidstatictis extends MX_Controller
         $this->datatables->set_custom_string(7, array(1 => 'Yes', 0 => 'No'));
         $this->datatables->set_date_string(8);
         
-        $this->datatables->select("activity_logs.id as primary_id,schools.name,CONCAT_WS(' ',users.first_name,,users.last_name) as username"
+        $this->datatables->select("activity_logs.id as primary_id,schools.name,CONCAT_WS(' ',users.first_name,users.last_name) as username"
                 . ",activity_logs.user_type_paid,CONCAT_WS(' ',activity_logs.controller,"
                 . "activity_logs.action) as actions,activity_logs.ip,activity_logs.user_agent,activity_logs.using_web"
                 . ",activity_logs.created_at,TIME(activity_logs.created_at) as time_value", false)
@@ -355,7 +355,7 @@ class paidstatictis extends MX_Controller
         } 
         
         $this->db->dbprefix = '';
-        $this->db->select("schools.name,activity_logs.user_id,CONCAT_WS(' ',users.first_name,,users.last_name) as username"
+        $this->db->select("schools.name,activity_logs.user_id,CONCAT_WS(' ',users.first_name,users.last_name) as username"
                 . ",activity_logs.user_type_paid,,SUM(activity_logs.session_time) as session_time,SUM(activity_logs.session_end) as snumber", false);
         $this->db->from("activity_logs");
         $this->db->join("users", "users.id=activity_logs.user_id", 'LEFT');
@@ -401,7 +401,7 @@ class paidstatictis extends MX_Controller
         } 
         
         $this->db->dbprefix = '';
-        $this->db->select("schools.name,activity_logs.user_id,CONCAT_WS(' ',users.first_name,,users.last_name) as username"
+        $this->db->select("schools.name,activity_logs.user_id,CONCAT_WS(' ',users.first_name,users.last_name) as username"
                 . ",activity_logs.user_type_paid", false);
         $this->db->from("activity_logs");
         $this->db->join("users", "users.id=activity_logs.user_id", 'LEFT');
@@ -485,7 +485,7 @@ class paidstatictis extends MX_Controller
         } 
         
         $this->db->dbprefix = '';
-        $this->db->select("schools.name,activity_logs.user_id,CONCAT_WS(' ',users.first_name,,users.last_name) as username"
+        $this->db->select("schools.name,activity_logs.user_id,CONCAT_WS(' ',users.first_name,users.last_name) as username"
                 . ",activity_logs.user_type_paid", false);
         $this->db->from("activity_logs");
         $this->db->join("users", "users.id=activity_logs.user_id", 'LEFT');

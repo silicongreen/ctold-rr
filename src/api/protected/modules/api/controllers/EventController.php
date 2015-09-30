@@ -599,8 +599,8 @@ class EventController extends Controller
                 if($grdata->user_id)
                 {
                     $receptionist_id = $grdata->user_id;
-                    $batch_id = $std_data->batch_id;
-                    $student_id = $std_data->id;
+                    $batch_id = $studentdata->batch_id;
+                    $student_id = $studentdata->id;
                 }
                 if($receptionist_id)
                 {

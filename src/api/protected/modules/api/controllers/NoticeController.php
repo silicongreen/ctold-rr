@@ -62,7 +62,7 @@ class NoticeController extends Controller {
         if ($id) {
             $news = new News();
             $newsObj = $news->findByPk($id);
-            if ($newsObj->attachment_file_name) {
+            if ($newsObj && $newsObj->attachment_file_name) {
                 $attachment_datetime_chunk = explode(" ", $newsObj->attachment_updated_at);
 
                 $attachment_date_chunk = explode("-", $attachment_datetime_chunk[0]);

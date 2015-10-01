@@ -80,7 +80,12 @@
             <div class="post-wrapper">
 
                 <div style="width: 100%;">
-                    <a id="google-play-link" href="https://play.google.com/store/apps/details?id=com.champs21.schoolapp" target="_blank"><img style="width: 100%;"  src="<?php echo base_url("styles/layouts/tdsfront/image/app_name.jpg"); ?>"></a>
+<!--                    <a id="google-play-link" href="https://play.google.com/store/apps/details?id=com.champs21.schoolapp" target="_blank">
+                        <img style="width: 100%;"  src="<?php // echo base_url("styles/layouts/tdsfront/image/app_name.jpg"); ?>">
+                    </a>-->
+                     <a href="javascript:void(0);">
+                        <img style="width: 100%;"  src="<?php echo base_url("styles/layouts/tdsfront/image/single_page_top.jpg"); ?>">
+                    </a>
         <!--            <a id="world-cup-play-link" href="<?php // echo base_url();                                 ?><?php // echo $CI->config->config['world_cup_quize_link']                                 ?>" ><img style="width: 100%; height:223px;" src="<?php // echo base_url("styles/layouts/tdsfront/image/world-cup-page-banner.jpg");                                 ?>"></a>-->
                 </div>
 
@@ -556,9 +561,11 @@
             <!-- Suggested Post Wrapper Start -->
             <div class="suggested-post-container">
                 <div class="adme-div">
-                    <a href="/spellingbee" style="display: block">
-                        <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/spellingbee_single_ad.png'); ?>">
-                        <!--<img src="<?php // echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/small-ad-Animated-version-2.gif'); ?>">-->
+<!--                    <a href="/spellingbee" style="display: block">
+                        <img src="<?php // echo base_url('styles/layouts/tdsfront/spelling_bee/2015/spellingbee_single_ad.png'); ?>">
+                    </a>-->
+                    <a href="javascript:void(0);" style="display: block">
+                        <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/single_page_top_right.jpg'); ?>">
                     </a>
                 </div>
                 <div class="clearfix"></div>

@@ -686,7 +686,7 @@ ob_start();
         }
         echo $s_more_content;
         ?>
-        <div id="gif_ad" style="position:fixed;bottom:0px;width:450px;margin: 0px auto;right:-270px;display:none; " >
+        <div id="gif_ad" style="position:fixed;bottom:0px;width:350px;margin: 0px auto;right:-270px;display:none; " >
             <span class="gif_ad_close" style="cursor: pointer;padding: 10px;position: absolute;right: 22px;top: 6px;"></span>
             <center>
                 <!--<a href="https://play.google.com/store/apps/details?id=com.champs21.schoolapp" target="_blank">-->
@@ -1365,7 +1365,7 @@ echo $s_inner_content;
 
         if (cookieValue != 1) {
             $.fancybox({
-                width: 450,
+                width: 350,
                 content: html_frm_reg,
                 height: 'auto',
                 transitionIn: 'fade',

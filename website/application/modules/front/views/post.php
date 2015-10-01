@@ -1,7 +1,7 @@
 <?php
-    $CI = &get_instance();
-    $cache_name = "POST" . '_' . $post_id;
-    ob_start();
+$CI = &get_instance();
+$cache_name = "POST" . '_' . $post_id;
+ob_start();
 ?>
 <script type="text/javascript" src="<?php echo base_url('scripts/jquery/jquery.als-1.6.min.js'); ?>"></script>
 
@@ -30,7 +30,7 @@
                             </h1>
                         </a>
                     </div>
-                <input type="hidden" value="<?php echo $parent_category_id;?>" name="main_p_category" id="main_p_category">
+                    <input type="hidden" value="<?php echo $parent_category_id; ?>" name="main_p_category" id="main_p_category">
                     <div style="clear:both;"></div>
 
                     <?php $parent_category = $name; ?>
@@ -39,7 +39,7 @@
                             <li class="layout_<?php echo $post_type; ?>">All</li>
                             <?php foreach ($obj_child_categories as $categories) : ?>
                                 <li class="layout_<?php echo $post_type; ?> <?php echo ( in_array($categories->id, $a_category_ids) ) ? "selected" : ""; ?>">
-                                <!--<li class="layout_<?php //echo $post_type;                                     ?> <?php //echo ( in_array($categories->id, $a_category_ids) ) ? "selected_" . $post_type : "";                                     ?>">-->
+                                <!--<li class="layout_<?php //echo $post_type;                                            ?> <?php //echo ( in_array($categories->id, $a_category_ids) ) ? "selected_" . $post_type : "";                                            ?>">-->
                                     <a href="<?php echo base_url(sanitize($parent_category) . "/" . sanitize($categories->name)); ?>" style="<?php echo ( in_array($categories->id, $a_category_ids) ) ? "" : "color: #93989C;"; ?>">
 
                                         <?php
@@ -80,13 +80,13 @@
             <div class="post-wrapper">
 
                 <div style="width: 100%;">
-<!--                    <a id="google-play-link" href="https://play.google.com/store/apps/details?id=com.champs21.schoolapp" target="_blank">
-                        <img style="width: 100%;"  src="<?php // echo base_url("styles/layouts/tdsfront/image/app_name.jpg"); ?>">
-                    </a>-->
-                     <a href="javascript:void(0);">
+                    <!--                    <a id="google-play-link" href="https://play.google.com/store/apps/details?id=com.champs21.schoolapp" target="_blank">
+                                            <img style="width: 100%;"  src="<?php // echo base_url("styles/layouts/tdsfront/image/app_name.jpg");        ?>">
+                                        </a>-->
+                    <a href="javascript:void(0);">
                         <img style="width: 100%;"  src="<?php echo base_url("styles/layouts/tdsfront/image/single_page_top.jpg"); ?>">
                     </a>
-        <!--            <a id="world-cup-play-link" href="<?php // echo base_url();                                 ?><?php // echo $CI->config->config['world_cup_quize_link']                                 ?>" ><img style="width: 100%; height:223px;" src="<?php // echo base_url("styles/layouts/tdsfront/image/world-cup-page-banner.jpg");                                 ?>"></a>-->
+        <!--            <a id="world-cup-play-link" href="<?php // echo base_url();                                        ?><?php // echo $CI->config->config['world_cup_quize_link']                                        ?>" ><img style="width: 100%; height:223px;" src="<?php // echo base_url("styles/layouts/tdsfront/image/world-cup-page-banner.jpg");                                        ?>"></a>-->
                 </div>
 
                 <div class="inner-container">
@@ -117,7 +117,7 @@
                         <?php endif; ?>
                     <?php endif; ?>
                     <!-- AddThis Button END -->  
-                    
+
                     <?php if (strlen($shoulder) > 0) : ?>
                         <?php if ($post_type == 1 || $post_type == 3) : ?>    
                             <p class="sports-inner-container-paragraph5">
@@ -451,7 +451,7 @@
 
                     <?php if ($b_layout) : ?>    
 
-                                                                                                                                                <!--	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>-->
+                                                                                                                                                                            <!--	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>-->
                         <div class="noPrint">
                             <center>
                                 <?php
@@ -561,9 +561,9 @@
             <!-- Suggested Post Wrapper Start -->
             <div class="suggested-post-container">
                 <div class="adme-div">
-<!--                    <a href="/spellingbee" style="display: block">
-                        <img src="<?php // echo base_url('styles/layouts/tdsfront/spelling_bee/2015/spellingbee_single_ad.png'); ?>">
-                    </a>-->
+                    <!--                    <a href="/spellingbee" style="display: block">
+                                            <img src="<?php // echo base_url('styles/layouts/tdsfront/spelling_bee/2015/spellingbee_single_ad.png');        ?>">
+                                        </a>-->
                     <a href="javascript:void(0);" style="display: block">
                         <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/single_page_top_right.jpg'); ?>">
                     </a>
@@ -576,7 +576,7 @@
 
                 <div id="demo2">
                     <?php // $widget->run('postdata', 'index', '', 'inner', FALSE, 0, 'index', 0, 9, 0, $q = '', NULL, true, $post_id); ?>
-                    <?php $widget->run('postdata', 'index', '', 'inner', FALSE, 0, 'index', 0, 9, 0,'', NULL, true, $post_id);?>
+                    <?php $widget->run('postdata', 'index', '', 'inner', FALSE, 0, 'index', 0, 9, 0, '', NULL, true, $post_id); ?>
                     <span class="als-prev"></span>
                     <span class="als-next"></span>
                 </div>
@@ -645,50 +645,57 @@
           <?php endif; */ ?>
 
         <div class="clearfix"></div>
-        
-        <?php
-            $more_cache_name = 'MORE_OF_' . $parent_category_id . '_FOR_POST_' . $post_id;
-            $s_more_content = $CI->cache->get($more_cache_name);
-            
-            if($s_more_content !== false) {
-                $s_more_content = $s_more_content;
-            } else { ?>
-        <?php
-            ob_start();
-        ?>
 
-        <div class="more-news-wrapper">
-            
-            <div class="more-news-header f2">
-                More in <?php echo $parent_category; ?>
-            </div>
-            
-            <div class="more-news f2">
-                <?php
-                    if($parent_category_id == 59) {
+        <?php
+        $more_cache_name = 'MORE_OF_' . $parent_category_id . '_FOR_POST_' . $post_id;
+        $s_more_content = $CI->cache->get($more_cache_name);
+
+        if ($s_more_content !== false) {
+            $s_more_content = $s_more_content;
+        } else {
+            ?>
+            <?php
+            ob_start();
+            ?>
+
+            <div class="more-news-wrapper">
+
+                <div class="more-news-header f2">
+                    More in <?php echo $parent_category; ?>
+                </div>
+
+                <div class="more-news f2">
+                    <?php
+                    if ($parent_category_id == 59) {
                         $mix_category = (isset($display_name) && $display_name != "") ? $display_name : $name;
                     } else {
                         $mix_category = $obj_child_categories;
                     }
-                ?>
-                <?php
-                $obj_widget = new Widget;
-                $obj_widget->run('postdata', $parent_category, $parent_category_id, 'inner', FALSE, 0, 'index', 0, 9, 0,'', $mix_category, FALSE, $post_id);
-                ?>
+                    ?>
+                    <?php
+                    $obj_widget = new Widget;
+                    $obj_widget->run('postdata', $parent_category, $parent_category_id, 'inner', FALSE, 0, 'index', 0, 9, 0, '', $mix_category, FALSE, $post_id);
+                    ?>
+                </div>
+
             </div>
 
-        </div>
-        
-        <?php
-                $s_more_content = ob_get_contents();
-                ob_end_clean();
-            }
-            echo $s_more_content;
+            <?php
+            $s_more_content = ob_get_contents();
+            ob_end_clean();
+        }
+        echo $s_more_content;
         ?>
-        <!--div id="gif_ad" style="position:fixed;bottom:0px;width:20%;margin: 0px auto;right:-270px;display:none; " >
+        <div id="gif_ad" style="position:fixed;bottom:0px;width:20%;margin: 0px auto;right:-270px;display:none; " >
             <span class="gif_ad_close" style="cursor: pointer;padding: 10px;position: absolute;right: 22px;top: 6px;"></span>
-            <center><a href="https://play.google.com/store/apps/details?id=com.champs21.schoolapp" target="_blank"> <img src="<?php // echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/small-ad-Animated-version.gif'); ?>" style="width:100%;"></a></center>
-        </div-->
+            <center>
+                <!--<a href="https://play.google.com/store/apps/details?id=com.champs21.schoolapp" target="_blank">-->
+                <a href="javascript:void(0);">
+                    <!--<img src="<?php // echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/small-ad-Animated-version.gif');?>" style="width:100%;">-->
+                    <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/spelling_be_popup_ad.jpg');?>" style="width:100%;">
+                </a>
+            </center>
+        </div>
         <script type="text/javascript">
 
             function load_print_popup(url)
@@ -720,7 +727,7 @@
                 //              $( "#google-play-link" ).show();
                 //            }
                 //        }, 8000);
-                <?php if (!free_user_logged_in()): ?>
+<?php if (!free_user_logged_in()): ?>
 
                     $(".check_login").each(function () {
                         if ($(this).attr("id").length > 0)
@@ -737,7 +744,7 @@
                             $(this).removeClass("candlepopup");
                         }
                     });
-                <?php endif; ?>
+<?php endif; ?>
 
                 if ($('.suggested-post-container #grid_1').length > 0) {
                     $("#demo2").als({
@@ -1107,8 +1114,9 @@
         width: 100%;
     }
     .adme-div {
-        width: 97%;
+        display: none;
         margin: 0 auto;
+        width: 97%;
     }
     .adme-div img {
         padding: 15px 10px;
@@ -1334,33 +1342,30 @@
     }
 </style>
 <?php
-    $s_inner_content = ob_get_contents();
-    ob_end_clean();
-    
-    $CI->cache->save($more_cache_name, $s_more_content, 86400);
-    $CI->cache->save($cache_name, $s_inner_content, 86400);
-    
-    echo $s_inner_content;
+$s_inner_content = ob_get_contents();
+ob_end_clean();
+
+$CI->cache->save($more_cache_name, $s_more_content, 86400);
+$CI->cache->save($cache_name, $s_inner_content, 86400);
+
+echo $s_inner_content;
 ?>
+
 <script type="text/javascript">
-    eraseCookie('spellingbee_ad');
-</script>
-<!--script type="text/javascript">
-    $(document).on("click", ".gif_ad_close", function () {                
+
+    $(document).on("click", ".gif_ad_close", function () {
         $('#gif_ad').hide();
     });
-    $(window).bind("load", function() {            
+
+    $(document).ready(function () {
         var html_frm_reg = $('#gif_ad').html();
 
-        //var cookieValue = readCookie('spellingbee_ad');
-        var cookieValue = document.cookie.replace(/(?:(?:^|.*;\s*)spellingbee_ad\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+        //var cookieValue = document.cookie.replace(/(?:(?:^|.*;\s*)spellingbee_ad\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+        var cookieValue = readCookie('spellingbee_ad');
 
-       //alert(cookieValue);
-       
-
-        if(cookieValue != 1){
-                $.fancybox({
-                'content': html_frm_reg,                 
+        if (cookieValue != 1) {
+            $.fancybox({
+                'content': html_frm_reg,
                 'height': 'auto',
                 'transitionIn': 'fade',
                 'transitionOut': 'fade',
@@ -1369,24 +1374,19 @@
                 'fitToView': false,
                 'autoSize': false,
                 'padding': 0,
-                'margin': 0,     
-                afterLoad: function(){ setTimeout( function() {$.fancybox.close(); },12000); }
+                'margin': 0
+//                ,afterLoad: function () {
+//                    setTimeout(function () {
+//                        $.fancybox.close();
+//                    }, 12000);
+//                }
             });
-            
-            document.cookie = "spellingbee_ad=1;path=/;";
+
+            createCookie('spellingbee_ad', 1);
+//            document.cookie = "spellingbee_ad=1;path=/;";
             //document.cookie = "spellingbee_ad=1;expires=Thu, 2 Aug 9999 20:47:11 UTC;path=/www.champs21.com";
-        }        
-        
-        function readCookie(name) {
-            var nameEQ = name + "=";
-            var ca = document.cookie.split(';');
-            for(var i=0;i < ca.length;i++) {
-                    var c = ca[i];
-                    while (c.charAt(0)==' ') c = c.substring(1,c.length);
-                    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-            }
-            return null;
         }
-     });
-    
-</script-->
+
+    });
+
+</script>

@@ -26,11 +26,6 @@ $widget = new Widget;
     </ul>
 </div>
 
-
-
-
-
-
 <!--###############################################################################-->
 <div class="poweredby f5">    
     <p>Powered by <a href="http://www.team-creative.net" style="color:red;">Team Creative</a></p>
@@ -92,16 +87,16 @@ $widget = new Widget;
             }
         });
 
-       
+
         $("#s-auto").keyup(function ()
         {
             var loading = '<div class="display_box" align="left" style="float:left; clear:both; width:100%;"><span style="font-size:13px; color:black" class="name">Loading...</div></div>';
             var no_result = '<div class="display_box" align="left" style="float:left; clear:both; width:100%;"><span style="font-size:13px; color:black" class="name">No Result Found</div></div>'
             var inputSearch = $(this).val();
             var dataString = 'searchword=' + inputSearch;
-            if (inputSearch != '' && inputSearch.length>2)
+            if (inputSearch != '' && inputSearch.length > 2)
             {
-                $("#divResult").html(loading).show();  
+                $("#divResult").html(loading).show();
                 $.ajax({
                     type: "POST",
                     url: $("#base_url").val() + "search_full_site",
@@ -109,29 +104,29 @@ $widget = new Widget;
                     cache: false,
                     success: function (html)
                     {
-                        
-                        if(html)
+
+                        if (html)
                         {
                             $("#divResult").html(html).show();
                         }
                         else
                         {
-                           $("#divResult").html(no_result).show(); 
-                        }    
+                            $("#divResult").html(no_result).show();
+                        }
                     }
                 });
             }
             else
             {
                 $("#divResult").html("").hide();
-            }    
+            }
             return false;
         });
 
-      
-        
 
-       
+
+
+
 
 
 

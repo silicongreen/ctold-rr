@@ -1357,7 +1357,7 @@ echo $s_inner_content;
         $('#gif_ad').hide();
     });
 
-    $(document).ready(function () {
+    $(window).load(function () {
         var html_frm_reg = $('#gif_ad').html();
 
         //var cookieValue = document.cookie.replace(/(?:(?:^|.*;\s*)spellingbee_ad\s*\=\s*([^;]*).*$)|^.*$/, "$1");

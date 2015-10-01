@@ -1,6 +1,7 @@
 <?php $s_ci_key = (isset($ci_key)) ? $ci_key : NULL; ?>
 
-<div class="container" style="width: 77%;min-height:250px;">	 
+<div class="container" style="width: 77%;min-height:250px;">
+        
 	<div style="margin:30px 20px;height:60px;">
 			<div style="float:left">
 				<h2 class="f2">Apply for Teacher Admission</h2>
@@ -12,6 +13,7 @@
     
     
     <div class="createpage">
+        <?php echo user_admission_top(); ?>
         <?= form_open('', array('id' => 'validate_form_school', 'class' => 'validate_form', 'enctype' => "multipart/form-data")); ?>
         <div class="error_validation"><?php echo validation_errors(); ?></div>
         <div id="section_form_school">
@@ -47,6 +49,10 @@
                     
                 </label>
                 <label class="candle-input" style="padding:10px 0px;">
+                    <span><font style="color:red; font-weight:bold;float: left; font-size: 16px;">*</font>select Shift Class and section (if class teacher)</span>
+                     <?php echo get_paid_school_class($user_data->paid_school_id,$post_data['batch_id']); ?>
+                </label>
+                <label class="candle-input" style="padding:10px 0px;">
                     <div style="float:left; width:54px"><input type="radio" <?php if($post_data['gender']!="f") { ?> checked="checked"<?php } ?> name="gender" id="gender" value="m" style="float:left; width:10px;"> &nbsp; Male</div>
                     <div style="float:left; width:70px; margin-left:20px;"><input type="radio" <?php if($post_data['gender']=="f") { ?> checked="checked"<?php } ?> name="gender" id="gender" value="f" style="float:left; width:10px;">&nbsp;Female</div>
                   
@@ -76,14 +82,7 @@
                 </label>
                 
             </div>
-            <div class="createpage_right">
-                <img src="<?php echo base_url('Profiler/images/right/have_a_smiley_face.png');?>" style="width:100%;" />
-                
-                <p>All your 
-                <span class="a">Information</span> need to be
-                <span class="b">Parfect</span>.
-                </p>
-            </div>
+            <?php echo user_admission_right(); ?>
             <div class="createpage_full">
                 <label>
                     <input type="submit" id="submit_form_school"  value="Submit" />
@@ -94,7 +93,6 @@
         </div>
         <?= form_close(); ?>
     </div>
-
 
 
 </div> <!--toPopup end-->
@@ -403,7 +401,7 @@
     .createpage p { padding:8px 16px; color: #fff; margin: 0; }
     #button-bottom { width: 100px; position: absolute; left: 75%; top: 240px; padding-left: 100px;overflow: hidden;}
     .createpage_left{width:60%;float:left; clear:both;}
-    .createpage_right{width:30%;float:right;padding-left:20px;}
+    .createpage_right{width:30%;margin-top:30px;float:right;padding-left:20px;}
     .createpage_right span{text-align:left;font-size: 16px;}
     .createpage_full{width:100%;}
     .createpage_right p{color:gray;font-size:27px;}

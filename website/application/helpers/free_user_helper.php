@@ -87,6 +87,31 @@ if (!function_exists('wow_login')) {
     }
 
 }
+if ( ! function_exists('user_admission_top'))
+{
+	function user_admission_top()
+	{
+            return '<div class="text-fields-wrapper">
+                <div>
+                    <img src="/styles/layouts/tdsfront/image/privacy_policy.png" />
+                </div>
+         </div>';
+	}
+}
+if ( ! function_exists('user_admission_right'))
+{
+	function user_admission_right()
+	{
+            return '<div class="createpage_right">
+                <img src="'.base_url('Profiler/images/right/SB-Web-300x600.jpg').'" style="width:100%;" />
+                
+                <p>All your 
+                <span class="a">Information</span> need to be
+                <span class="b">Parfect</span>.
+                </p>
+            </div>';
+	}
+}
 
 if (!function_exists('get_free_user_session')) {
 

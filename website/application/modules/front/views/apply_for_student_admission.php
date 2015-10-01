@@ -12,6 +12,7 @@
     
     
     <div class="createpage">
+        <?php echo user_admission_top(); ?>
         <?= form_open('', array('id' => 'validate_form_school', 'class' => 'validate_form', 'enctype' => "multipart/form-data")); ?>
         <div class="error_validation"><?php echo validation_errors(); ?></div>
         <div id="section_form_school">
@@ -110,7 +111,7 @@
                 </label>
                 <label class="candle-input gfield" style="padding:10px 0px;<?php if($post_data['add_guardian']=="no") { ?>display:none;<?php } ?>">
                     <span><font style="color:red; font-weight:bold;float: left; font-size: 16px;">*</font>Guardian Password</span>
-                    <input type="gpassword" name="gpassword" id="gpassword" value="" class="cd-input f5">
+                    <input type="password" name="gpassword" id="gpassword" value="" class="cd-input f5">
                 </label>
                 
                 <label class="candle-input gfield2" style="padding:10px 0px;<?php if($post_data['add_guardian']!="two") { ?>display:none;<?php } ?>">
@@ -131,18 +132,11 @@
                 </label>
                 <label class="candle-input gfield2" style="padding:10px 0px;<?php if($post_data['add_guardian']!="two") { ?>display:none;<?php } ?>">
                     <span><font style="color:red; font-weight:bold;float: left; font-size: 16px;">*</font>Guardian Password (2nd)</span>
-                    <input type="gpassword2" name="gpassword2" id="gpassword2" value="" class="cd-input f5">
+                    <input type="password" name="gpassword2" id="gpassword2" value="" class="cd-input f5">
                 </label>
                 
             </div>
-            <div class="createpage_right">
-                <img src="<?php echo base_url('Profiler/images/right/have_a_smiley_face.png');?>" style="width:100%;" />
-                
-                <p>All your 
-                <span class="a">Information</span> need to be
-                <span class="b">Parfect</span>.
-                </p>
-            </div>
+            <?php echo user_admission_right(); ?>
             <div class="createpage_full">
                 <label>
                     <input type="submit" id="submit_form_school"  value="Submit" />
@@ -462,7 +456,7 @@
     .createpage p { padding:8px 16px; color: #fff; margin: 0; }
     #button-bottom { width: 100px; position: absolute; left: 75%; top: 240px; padding-left: 100px;overflow: hidden;}
     .createpage_left{width:60%;float:left; clear:both;}
-    .createpage_right{width:30%;float:right;padding-left:20px;}
+    .createpage_right{width:30%;margin-top:30px;float:right;padding-left:20px;}
     .createpage_right span{text-align:left;font-size: 16px;}
     .createpage_full{width:100%;}
     .createpage_right p{color:gray;font-size:27px;}

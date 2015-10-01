@@ -686,7 +686,7 @@ ob_start();
         }
         echo $s_more_content;
         ?>
-        <div id="gif_ad" style="position:fixed;bottom:0px;width:20%;margin: 0px auto;right:-270px;display:none; " >
+        <div id="gif_ad" style="position:fixed;bottom:0px;width:450px;margin: 0px auto;right:-270px;display:none; " >
             <span class="gif_ad_close" style="cursor: pointer;padding: 10px;position: absolute;right: 22px;top: 6px;"></span>
             <center>
                 <!--<a href="https://play.google.com/store/apps/details?id=com.champs21.schoolapp" target="_blank">-->
@@ -1365,21 +1365,22 @@ echo $s_inner_content;
 
         if (cookieValue != 1) {
             $.fancybox({
-                'content': html_frm_reg,
-                'height': 'auto',
-                'transitionIn': 'fade',
-                'transitionOut': 'fade',
-                'openEffect': 'elastic',
-                'openSpeed': 350,
-                'fitToView': false,
-                'autoSize': false,
-                'padding': 0,
-                'margin': 0
-//                ,afterLoad: function () {
-//                    setTimeout(function () {
-//                        $.fancybox.close();
-//                    }, 12000);
-//                }
+                width: 450,
+                content: html_frm_reg,
+                height: 'auto',
+                transitionIn: 'fade',
+                transitionOut: 'fade',
+                openEffect: 'elastic',
+                openSpeed: 350,
+                fitToView: false,
+                autoSize: false,
+                padding: 0,
+                margin: 0
+                ,afterLoad: function () {
+                    setTimeout(function () {
+                        $.fancybox.close();
+                    }, 12000);
+                }
             });
 
             createCookie('spellingbee_ad', 1);

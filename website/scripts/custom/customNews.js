@@ -293,28 +293,28 @@ $(document).ready(function() {
 
     });
 
-    $(".dialog_content_preview").dialog({
-        autoOpen: false,
-        resizable: false,
-        show: "fade",
-        hide: "fade",
-        modal: true,
-        width: "1000",
-        show:{
-            effect: "fade",
-            duration: 500
-        },
-        hide:{
-            effect: "fade",
-            duration: 500
-        },
-        create: function() {
-            $('.dialog_content_preview.no_dialog_titlebar').dialog('option', 'dialogClass', 'no_dialog_titlebar');
-        },
-        open: function() {
-            setTimeout(columnHeight, 100);
-        }
-    });
+//    $(".dialog_content_preview").dialog({
+//        autoOpen: false,
+//        resizable: false,
+//        show: "fade",
+//        hide: "fade",
+//        modal: true,
+//        width: "1000",
+//        show:{
+//            effect: "fade",
+//            duration: 500
+//        },
+//        hide:{
+//            effect: "fade",
+//            duration: 500
+//        },
+//        create: function() {
+//            $('.dialog_content_preview.no_dialog_titlebar').dialog('option', 'dialogClass', 'no_dialog_titlebar');
+//        },
+//        open: function() {
+//            setTimeout(columnHeight, 100);
+//        }
+//    });
     
     
     

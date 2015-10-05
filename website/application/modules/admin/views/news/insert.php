@@ -857,6 +857,40 @@
 
 
                 </div>
+                <?php
+                if(!$model->editor_picks)
+                {
+                    $model->editor_picks = 10;
+                }
+                if(!$model->top_rated)
+                {
+                    $model->top_rated = 10;
+                }
+                if(!$model->most_popular)
+                {
+                    $model->most_popular = 10;
+                }
+                ?>
+                 <div class="clearfix block">
+                    <fieldset class="top">
+                        <label for="required_field">Number Of Editor Picks to Show (Numeric Value)</label>
+                        <div>
+                            <input id="keywords" name="editor_picks" value="<?php echo $model->editor_picks  ?>"  type="text"    />    
+                        </div>
+                    </fieldset>
+                    <fieldset class="top">
+                        <label for="required_field">Number Of Top rated news to Show (Numeric Value)</label>
+                        <div>
+                            <input id="keywords" name="top_rated" value="<?php echo $model->top_rated   ?>"  type="text"    />    
+                        </div>
+                    </fieldset>
+                    <fieldset class="top">
+                        <label for="required_field">Number Of Most Popular news to Show (Numeric Value)</label>
+                        <div>
+                            <input id="keywords" name="most_popular" value="<?php echo $model->most_popular   ?>"  type="text"    />    
+                        </div>
+                    </fieldset>
+                 </div>
 
             </div>
 

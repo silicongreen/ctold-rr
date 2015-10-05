@@ -606,11 +606,8 @@ class UserController extends Controller {
                         $freedata->school_name = $school_details->name;
                         $freedata->save();
                         
-                        $response['data']['can_play_spellingbee'] = 1;
-                        if($freedata->user_type==2 && $freedata->is_joined_spellbee==0)
-                        {
-                            $response['data']['can_play_spellingbee'] = 0;
-                        }
+                        $response['data']['can_play_spellingbee'] = Settings::can_play_spelling_bee($freedata);
+                       
                         
                         
                         $folderObj = new UserFolder();
@@ -702,11 +699,9 @@ class UserController extends Controller {
                         
                         $free_user->save();
                         
-                        $response['data']['can_play_spellingbee'] = 1;
-                        if($free_user->user_type==2 && $free_user->is_joined_spellbee==0)
-                        {
-                            $response['data']['can_play_spellingbee'] = 0;
-                        }
+                        $response['data']['can_play_spellingbee'] = Settings::can_play_spelling_bee($free_user);
+                       
+                        
                         
                         $folderObj = new UserFolder();
                     
@@ -812,11 +807,10 @@ class UserController extends Controller {
 //                    $response['data']['session'] =  Yii::app()->session->getSessionID();
                     //for paid
                     
-                    $response['data']['can_play_spellingbee'] = 1;
-                    if($data->user_type==2 && $data->is_joined_spellbee==0)
-                    {
-                        $response['data']['can_play_spellingbee'] = 0;
-                    }
+                    $response['data']['can_play_spellingbee'] = Settings::can_play_spelling_bee($data);
+                        
+                   
+                   
                     
                     Yii::app()->user->setState("free_id",$data->id);
                     $response['data']['user_type'] = 0;

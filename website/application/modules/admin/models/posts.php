@@ -37,7 +37,19 @@ class Posts extends DataMapper {
         'published_date' => array(
             'label' => 'Published Date',
             'rules' => array('required','trim'),
-        )
+        ),
+        'editor_picks' => array(
+            'label' => 'Editor Picks',
+            'rules' => array('required', 'integer'),
+        ),
+        'top_rated' => array(
+            'label' => 'Top Rated',
+            'rules' => array('required', 'integer'),
+        ),
+        'most_popular' => array(
+            'label' => 'Most Popular',
+            'rules' => array('required', 'integer'),
+        ),
     );
     
     

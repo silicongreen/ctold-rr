@@ -258,6 +258,17 @@ class Settings {
             echo "Exception-" . $e->getMessage();
         }
     }
+    
+    public static function can_play_spelling_bee($freeuserObj)
+    {
+        $response = 0;
+                        
+        if($freeuserObj->mobile_no && $freeuserObj->email)
+        {
+            $response = 1;
+        }
+        return $response;
+    }        
 
     public static function download_bing_audio($strWord) {
         $sound_status = 0;

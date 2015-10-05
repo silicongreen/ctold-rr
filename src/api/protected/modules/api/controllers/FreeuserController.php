@@ -3010,11 +3010,9 @@ class FreeuserController extends Controller
 
                     $response['data'] = $freeuserObj->getPaidUserInfo($freeuserObj);
                     
-                    $response['data']['can_play_spellingbee'] = 1;
-                    if($user->user_type==2 && $user->is_joined_spellbee==0)
-                    {
-                        $response['data']['can_play_spellingbee'] = 0;
-                    }
+                   
+                    $response['data']['can_play_spellingbee'] = Settings::can_play_spelling_bee($user);
+                    
                     
                     $response['data']['free_id'] = $user->id;
                     $response['data']['user'] = $freeuserObj->getUserInfo($user->id);
@@ -3068,11 +3066,11 @@ class FreeuserController extends Controller
 
                     $response['data'] = $freeuserObj->getPaidUserInfo($freeuserObj);
                     
-                    $response['data']['can_play_spellingbee'] = 1;
-                    if($freeuserObj->user_type==2 && $freeuserObj->is_joined_spellbee==0)
-                    {
-                        $response['data']['can_play_spellingbee'] = 0;
-                    }
+                    
+                    
+                    $response['data']['can_play_spellingbee'] = Settings::can_play_spelling_bee($freeuserObj);
+                   
+                    
                     
                     $response['data']['free_id'] = $freeuserObj->id;
                     $response['data']['user'] = $freeuserObj->getUserInfo($freeuserObj->id);
@@ -3094,11 +3092,10 @@ class FreeuserController extends Controller
                     $folderObj->createGoodReadFolder($user->id);
                     $response['data'] = $freeuserObj->getPaidUserInfo($freeuserObj);
                     
-                    $response['data']['can_play_spellingbee'] = 1;
-                    if($user->user_type==2 && $user->is_joined_spellbee==0)
-                    {
-                        $response['data']['can_play_spellingbee'] = 0;
-                    }
+                    $response['data']['can_play_spellingbee'] = Settings::can_play_spelling_bee($user);
+                        
+                   
+                    
                     
                     $response['data']['free_id'] = $user->id;
                     $response['data']['user'] = $freeuserObj->getUserInfo($user->id);
@@ -3151,11 +3148,11 @@ class FreeuserController extends Controller
 
                     $response['data'] = $freeuserObj->getPaidUserInfo($freeuserObj);
                     
-                    $response['data']['can_play_spellingbee'] = 1;
-                    if($freeuserObj->user_type==2 && $freeuserObj->is_joined_spellbee==0)
-                    {
-                        $response['data']['can_play_spellingbee'] = 0;
-                    }
+                    
+                    
+                    $response['data']['can_play_spellingbee'] = Settings::can_play_spelling_bee($freeuserObj);
+                   
+                    
                     
                     $response['data']['free_id'] = $freeuserObj->id;
                     $response['data']['user'] = $freeuserObj->getUserInfo($freeuserObj->id);
@@ -3331,11 +3328,12 @@ class FreeuserController extends Controller
                 $this->sendRegistrationMail($freeuserObj);
                 $response['data'] = $freeuserObj->getPaidUserInfo($freeuserObj);
                 
-                $response['data']['can_play_spellingbee'] = 1;
-                if($freeuserObj->user_type==2 && $freeuserObj->is_joined_spellbee==0)
-                {
-                    $response['data']['can_play_spellingbee'] = 0;
-                }
+                
+                
+                $response['data']['can_play_spellingbee'] = Settings::can_play_spelling_bee($freeuserObj);
+               
+                    
+                
                 
                 $response['data']['free_id'] = $freeuserObj->id;
                 $response['data']['user'] = $freeuserObj->getUserInfo($freeuserObj->id);
@@ -3360,11 +3358,11 @@ class FreeuserController extends Controller
                 Yii::app()->user->setState("free_id",$freeuserObj->id);
 
                 $response['data'] = $freeuserObj->getPaidUserInfo($freeuserObj);
-                $response['data']['can_play_spellingbee'] = 1;
-                if($freeuserObj->user_type==2 && $freeuserObj->is_joined_spellbee==0)
-                {
-                    $response['data']['can_play_spellingbee'] = 0;
-                }
+                
+                $response['data']['can_play_spellingbee'] = Settings::can_play_spelling_bee($freeuserObj);
+                        
+               
+                
                 $response['data']['free_id'] = $freeuserObj->id;
                 $response['data']['countries'] = $countryObj->getCountryies();
                 $response['data']['user'] = $freeuserObj->getUserInfo($freeuserObj->id);

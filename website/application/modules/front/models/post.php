@@ -214,9 +214,15 @@ class post extends CI_Model{
             $this->db
                  ->join("bylines as byline", "post.byline_id = byline.id", 'LEFT')
                  ->join("post_category as postCategories", "post.id = postCategories.post_id", 'LEFT')
-                 ->join("categories as category", "category.id = postCategories.category_id", 'LEFT')
-                 ->where("tds_post.status",5,false);
-
+                 ->join("categories as category", "category.id = postCategories.category_id", 'LEFT');
+            if ($this->session->userdata("admin"))
+            {
+                
+            }
+            else
+            {
+                $this->db->where("tds_post.status",5,false);
+            }    
 
 
             if ( $b_featured == 1  )

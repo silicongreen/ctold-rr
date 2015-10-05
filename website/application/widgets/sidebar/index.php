@@ -52,6 +52,7 @@ class sidebar extends widget
                         "Posts" => array("news"),
                         "Add Post" => array("news","add"),
                         "Post Properties" => array("newsfeatures"),
+                        "Editor Picks" => array("editorpicks"),
                         "Pin Post" => array("pinpost"),
                         "Feature Post" => array("featurepost"),
                         "Trash"    => array("news","trash"),

@@ -102,6 +102,7 @@ class newsfeatures extends MX_Controller
             exit('No direct script access allowed');
         }
         $this->datatables->set_buttons("pin_post","model2");
+        $this->datatables->set_buttons("editor_picks","model2");
         $this->datatables->set_buttons("feature_post","model2");
         
         
@@ -285,6 +286,48 @@ class newsfeatures extends MX_Controller
         if(!$_POST || !$_POST['position'] || !$_POST['post_id'] )
         {
             $this->render('admin/newsfeature/pin_post', $data);
+        }
+        else
+        {
+            
+            echo "<script>parent.oTable.fnClearTable(true); parent.$.fancybox.close();</script>";
+        }
+    }
+    
+    public function editor_picks($id)
+    {
+        
+        if ($_POST && $_POST['position'] && $_POST['post_id'] )
+        {
+            $this->db->where("post_id",$this->input->post("post_id"));
+            $this->db->delete("editor_picks");
+            
+            $this->db->where("position",$this->input->post("position"));
+            $this->db->delete("editor_picks");
+            
+            $insert['post_id']  = $this->input->post("post_id");
+            $insert['position']  = $this->input->post("position");
+            $this->db->insert("editor_picks",$insert);
+            
+            
+        }
+        
+        $position = array(1=>"1st",2=>"2nd",3=>"3rd");
+        
+        for($i=4;$i<=50;$i++)
+        {
+            $position[$i] = $i."th";
+            
+        } 
+        
+        $data['position'] = $position;
+        
+        $post_model= new posts($id);
+        $data['model'] = $post_model;
+        
+        if(!$_POST || !$_POST['position'] || !$_POST['post_id'] )
+        {
+            $this->render('admin/newsfeature/editor_picks', $data);
         }
         else
         {

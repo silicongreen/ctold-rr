@@ -60,7 +60,7 @@
     <?php } else { ?>
 
         <div class="candel-ecl-banner candlepopup">
-            <img src="/styles/layouts/tdsfront/image/banner-candle.png" >
+            <img src="<?php echo $ecl_banner; ?>" >
         </div>
 
     <?php } ?>

@@ -247,8 +247,14 @@ class postdata extends widget
         $data['related'] = $b_get_related;
         
         $data['ecl'] = FALSE;
+        $data['ecl_top_banner'] = array();
         if(isset($CI->config->config[sanitize($s_category_name)]['ecl_ids'])) {
             $data['ecl'] = in_array($data['category'],  $CI->config->config[sanitize($s_category_name)]['ecl_ids'] ) ? TRUE : FALSE;
+            
+            if($data['ecl']) {
+                $data['ecl_top_banner'] = $CI->config->config[sanitize($s_category_name)]['top_banner'];
+            }
+            
         }
         
         $data['opinion'] = FALSE;

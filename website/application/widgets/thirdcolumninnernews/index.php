@@ -41,7 +41,21 @@ class thirdcolumninnernews extends widget
         $data['extra_column_name'] = $extra_column_name;
         $data['ar_extra_config'] = $ar_extra_config;
         
-        $data['ecl'] = in_array((int) $ar_extra_config['category_id'],  $CI->config->config['education-changes-life']['ecl_ids'] ) ? TRUE : FALSE;
+        $ecl_config = $CI->config->config['education-changes-life'];
+        $ecl = in_array((int) $ar_extra_config['category_id'], $ecl_config['ecl_ids'] ) ? TRUE : FALSE;
+        
+        if(!$ecl) {
+            $ecl_config = $CI->config->config['nation-builder'];
+            $ecl = in_array((int) $ar_extra_config['category_id'], $ecl_config['ecl_ids'] ) ? TRUE : FALSE;
+        }
+        
+        $candle_banner = '';
+        if($ecl) {
+            $candle_banner = $ecl_config['3rd-column']['candle_banner'];
+        }
+        
+        $data['ecl'] = $ecl;
+        $data['ecl_banner'] = $candle_banner;
         
         $this->render($data);
     }

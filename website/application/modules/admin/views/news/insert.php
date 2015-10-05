@@ -705,9 +705,11 @@
                             <span><?= ($model->status == 5) ? "Unpublish" : "Publish"; ?></span>
                         </button>
                     <?php endif; ?>
-                    <button class="green"  id="preview"  type="button">
+                    <?php if ($model->id): ?>
+                    <button class="green"  id="preview" onclick="window.open('<?php echo base_url();?>news-admin-view-<?php echo $model->id; ?>')" type="button">
                         <span>Preview</span>
                     </button>
+                    <?php endif; ?>
 
                 </div> 
                 <?php if ($model->id): ?>

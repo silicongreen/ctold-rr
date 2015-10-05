@@ -315,34 +315,37 @@ $(document).ready(function() {
             setTimeout(columnHeight, 100);
         }
     });
+    
+    
+    
 
-    $(document).on("click", "#preview", function()
-    {
-        $("#shoulder_preview").html($("#shoulder").val());
-
-        $("#headline_preview").html($("#headline").val());
-
-        $("#subhead_preview").html($("#sub_head").val());
-
-        $("#byline_preview").html($("#byline_id").val());
-
-        if ($("#published_date").val())
-        {
-            var dateinformat = parseDate($("#published_date").val());
-            if (dateinformat)
-            {
-                $("#publish_preview").html(dateinformat);
-
-            }
-        }
-
-
-        $("#content_preview").html(CKEDITOR.instances.content.getData());
-
-        $("#dialog_news_preview").dialog("open");
-
-
-    });
+//    $(document).on("click", "#preview", function()
+//    {
+//        $("#shoulder_preview").html($("#shoulder").val());
+//
+//        $("#headline_preview").html($("#headline").val());
+//
+//        $("#subhead_preview").html($("#sub_head").val());
+//
+//        $("#byline_preview").html($("#byline_id").val());
+//
+//        if ($("#published_date").val())
+//        {
+//            var dateinformat = parseDate($("#published_date").val());
+//            if (dateinformat)
+//            {
+//                $("#publish_preview").html(dateinformat);
+//
+//            }
+//        }
+//
+//
+//        $("#content_preview").html(CKEDITOR.instances.content.getData());
+//
+//        $("#dialog_news_preview").dialog("open");
+//
+//
+//    });
 
     function parseDate(value)
     {

@@ -327,6 +327,15 @@ class post extends CI_Model{
                     {
                         $this->db->like('tds_post.headline', $value); 
                     }
+                    else if($key == "b_get_related")
+                    {
+                       //do nothing 
+                    }
+                    else if($key == "post_id")
+                    {
+                        $this->db->where("tds_post.id",$value);
+                       //do nothing 
+                    }
                     else if($key == "force_limit")
                     {
                         $i_limit = 1;

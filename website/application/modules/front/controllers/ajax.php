@@ -25,8 +25,13 @@ class ajax extends MX_Controller
         echo "getExclusiveNews";
     }
     
-   
-   
+    public function filter_by_language() {
+        $lang = $this->input->post("lang");
+        $ar_languages = get_language();
+        $lang_key = array_search($lang, $ar_languages);
+        var_dump($lang_key);
+        exit;
+    }
     
     public function send_paid_notification()
     {

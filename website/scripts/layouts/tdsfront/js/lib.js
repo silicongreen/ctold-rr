@@ -2163,9 +2163,8 @@ $(document).ready(function () {
             $('.settings-elm-holder-div').slideUp(500);
             $('.settings-btn').removeClass('settings-btn-active');
         }
-
     });
-
+    
     $('html').click(function () {
 
         if ($('.settings-elm-holder-div').is(':visible')) {

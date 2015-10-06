@@ -34,9 +34,9 @@ class postdata extends widget
 
     function run( $s_category_name, $s_category_ids = "", $target = "inner", $b_featured = FALSE,
             $i_featured_position = 0, $page = "index", $current_page = 0, $limit = 9,$is_game = 0,
-            $q = '', $mix_category = NULL, $b_get_related = false, $post_id = 0, $exclude=array())
+            $q = '', $mix_category = NULL, $b_get_related = false, $post_id = 0, $exclude = array(),
+            $lang = '')
     {
-       
         $CI = & get_instance();        
         $CI->load->config("huffas");
         
@@ -62,6 +62,10 @@ class postdata extends widget
                 $data['ar_extra_config'] = $category_config['3rd-column'];
                 
                 $ar_post_params = ( $category_config['3rd-column']['force_limit'] ) ? array('force_limit' => $category_config['3rd-column']['force_limit']) : 0;
+                
+                if(!empty($lang)) {
+                    $a_post_params['lang'] = $lang;
+                }
                 
                 $ar_post_news_additional = $this->post->gePostNews( $ar_post_params, "inner", "smaller", "tds_post.published_date, asc", $data['ar_extra_config']['category_id'], $data['ar_extra_config']['count'], 0, false, 0);
                 $data['ar_3rd_column_extra_data'] = $ar_post_news_additional['data'];
@@ -208,7 +212,12 @@ class postdata extends widget
         if($target == "school" || $target=="teacher")
         {
             $a_post_params = array();
-            $a_post_params['stbid'] =$s_category_ids; 
+            $a_post_params['stbid'] =$s_category_ids;
+
+            if(!empty($lang)) {
+                $a_post_params['lang'] = $lang;
+            }
+
             $ar_post_news = $this->post->gePostNews($a_post_params, $target, "smaller", $s_priority, 0, $limit, $current_page, $b_featured, $i_featured_position);
         }
         else
@@ -236,6 +245,10 @@ class postdata extends widget
 //            
 //            exit;
             }
+            if(!empty($lang)) {
+                $a_post_params['lang'] = $lang;
+            }
+
             $ar_post_news = $this->post->gePostNews($a_post_params, $target, "smaller", $s_priority, $s_category_ids, $limit, $current_page, $b_featured, $i_featured_position); 
         }
         $data['target'] = $target;

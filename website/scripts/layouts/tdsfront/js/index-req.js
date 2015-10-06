@@ -172,6 +172,7 @@ function format_date(obj_date, yesterday) {
     
     
     $( window ).scroll(function() {
+        
         var screen_height = $(document).innerHeight() - 400;
         
         var scroll_top = $(this).scrollTop();
@@ -185,6 +186,7 @@ function format_date(obj_date, yesterday) {
             } 
             
         });
+        
         setTimeout(function(){
         if ( (($("#content-wrapper").height()-$(window).height()) - scroll_top) <= 100 && licount == 0 )
         {
@@ -195,13 +197,17 @@ function format_date(obj_date, yesterday) {
                 var page_limit = new Number( $("#page-limit").val() );
                 var q = $("#q").val();
                 var callcount = 0;
+                var lang = readCookie('local');
+                
+                if(lang !== null) {
+                    lang = lang;
+                } else {
+                    lang = '';
+                }
                 
                 current_page = new Number( $("#current-page").val());
                 //console.log(current_page);
                 var page_to_load = current_page + 1;
-                
-                
-                
                 
                 sent_request = true;
                 $(".loading-box").show();
@@ -222,7 +228,7 @@ function format_date(obj_date, yesterday) {
                 
                 $.ajax({
                     type: "GET",
-                    url: $("#base_url").val() + 'front/ajax/getPosts/' + $("#category").val() + "/" + $("#target").val() + "/" + $("#page").val() + "/" + $("#page-limit").val() + "/" + page_to_load,
+                    url: $("#base_url").val() + 'front/ajax/getPosts/' + $("#category").val() + "/" + $("#target").val() + "/" + $("#page").val() + "/" + $("#page-limit").val() + "/" + page_to_load + "/" + lang,
                     data: { content_showed:content_showed, s: q},
                     async: true,
                     success: function(data) {

@@ -20,6 +20,7 @@
 //    ob_start();
 
     $widget = new Widget;
+    $lang = get_language_cookie();
 
 ?>
 <?php $s_ci_key = (isset($ci_key)) ? $ci_key : NULL; ?>
@@ -131,7 +132,7 @@
         }
 //    var_dump($mix_category);exit; ?>
     
-    <?php $widget->run('postdata', $category_name, $s_category_ids, $ci_key, FALSE, 0, "index", 0, 9, 0, '', $mix_category); ?>
+    <?php $widget->run('postdata', $category_name, $s_category_ids, $ci_key, FALSE, 0, "index", 0, 9, 0, '', $mix_category, false, 0, array(), $lang); ?>
     <?php //$widget->run('postdata', "featured", $s_category_ids, 'inner', true, 2); ?>
     <?php $widget->run('mediagallery', $ci_key, "inner", 21, date("Y-m-d"), false); ; ?>
     <?php //$widget->run('postdata', "featured", $s_category_ids, 'inner', true, 3); ?>

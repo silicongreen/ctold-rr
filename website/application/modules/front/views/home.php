@@ -19,8 +19,7 @@
         $pa_url = base_url()."front/ajax/unset_type_cookie";
     }
     
-   
-    
+    $lang = get_language_cookie();
 ?>
 <?php $s_ci_key = (isset($ci_key)) ? $ci_key : NULL; ?>
 <div class="container" style="width: 77%;">
@@ -46,5 +45,8 @@
         </div>
         <div class="col-xs-1"></div>
     </div>
-    <?php $widget->run('postdata', "index", $s_category_ids, 'index'); ?>
+    <?php $widget->run(
+            'postdata', "index", $s_category_ids, 'index', FALSE,
+            0, 'index', 0, 9, 0, '', NULL, false, 0, array(), $lang
+            ); ?>
 </div>

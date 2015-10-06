@@ -25,14 +25,6 @@ class ajax extends MX_Controller
         echo "getExclusiveNews";
     }
     
-    public function filter_by_language() {
-        $lang = $this->input->post("lang");
-        $ar_languages = get_language();
-        $lang_key = array_search($lang, $ar_languages);
-        var_dump($lang_key);
-        exit;
-    }
-    
     public function send_paid_notification()
     {
         $user_id = $this->input->post("user_id");
@@ -954,7 +946,7 @@ class ajax extends MX_Controller
     }
     
 
-    public function getPosts($s_category_ids = "", $target = "inner", $page = "index", $i_limit = 9, $current_page = 0)
+    public function getPosts($s_category_ids = "", $target = "inner", $page = "index", $i_limit = 9, $current_page = 0, $lang = '')
     {
         $CI = & get_instance();
         $CI->load->config("huffas");
@@ -998,8 +990,11 @@ class ajax extends MX_Controller
                    $a_post_params = array(
                             "NOT_IN"=>array("tds_post.id",$content_array)
                     );  
-                }    
-               
+                }
+                if(!empty($lang)) {
+                    $a_post_params['lang'] = $lang;
+                }
+
             }
 //            print_r($a_post_params);
 //            exit;
@@ -1010,7 +1005,10 @@ class ajax extends MX_Controller
             
             $a_post_params = array(
                                 "tds_post.referance_id" => 0
-            ); 
+            );
+            if(!empty($lang)) {
+                $a_post_params['lang'] = $lang;
+            }
             
             $ar_post_news = $this->post->gePostNews($a_post_params, $target, "smaller", "DATE(tds_post.published_date),desc+postCategories.inner_priority,asc", $s_category_ids, $i_limit, $current_page, $b_featured, $i_featured_position);
         }
@@ -1022,6 +1020,9 @@ class ajax extends MX_Controller
             }
             
             $a_post_params['q'] = $q;
+            if(!empty($lang)) {
+                $a_post_params['lang'] = $lang;
+            }
             $s_priority = "DATE(tds_post.published_date), DESC";
             $ar_post_news = $this->post->gePostNews($a_post_params, $target, "smaller", $s_priority, $s_category_ids, $i_limit, $current_page, $b_featured, $i_featured_position);
         }
@@ -1031,8 +1032,10 @@ class ajax extends MX_Controller
             $a_post_params = array(
                                 "tds_post.referance_id" => 0
                 );
+            if(!empty($lang)) {
+                $a_post_params['lang'] = $lang;
+            }
             $ar_post_news = $this->post->gePostNews($a_post_params, $target, "smaller", $s_priority, $s_category_ids, $i_limit, $current_page, $b_featured, $i_featured_position);
-             
         }    
 
 

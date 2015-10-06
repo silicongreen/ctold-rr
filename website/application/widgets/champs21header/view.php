@@ -78,8 +78,8 @@
                         <img src="/styles/layouts/tdsfront/image/search.png" />
                     </div>
                     
-                    <div class="settings-elm-holder-div" style="display: none;">
-                        <div class="settings-elm-list-div">
+                    <div class="search-elm-holder-div" style="display: none;">
+                        <div class="search-elm-list-div">
                             <ul class="">
                                 <li style="cursor: pointer;">
                                     <input class="field" autocomplete="off" name="s" id="s-auto" class='search' placeholder="Search this site" type="search" style="width: 100%;">
@@ -1247,24 +1247,6 @@ if($('.header-logo-div').is(':visible')) {
     .mobile_log_reg_box
     {
         display:none;
-    }
-    .search_box_head
-    {
-        cursor: pointer;
-        display: block;
-        float: right;
-    }
-    .search_box_head img
-    {
-        width: 75%;
-    }
-    .search_box_head .settings-elm-holder-div {
-        position: absolute;
-        right: 20px;
-        width: 349px;
-    }
-    .search_box_head .settings-elm-holder-div .settings-elm-list-div ul li{
-        padding: 2px;
     }
     @media all and (min-width: 200px) and (max-width: 314px) {
         .fancybox-wrap
@@ -3133,6 +3115,75 @@ if($('.header-logo-div').is(':visible')) {
         margin-right: 0;
         width: auto;
     }
+    /* Search Box */
+    .search_box_head
+    {
+        cursor: pointer;
+        display: block;
+        float: right;
+    }
+    .search-elm-holder-div {
+        border: 1.75px solid #DC3434;
+
+        box-shadow: 0 0 9px 0 #aaa;
+        -moz-box-shadow: 0 0 9px 0 #aaa;
+        -webkit-box-shadow: 0 0 9px 0 #aaa;
+        -ms-box-shadow: 0 0 9px 0 #aaa;
+        -o-box-shadow: 0 0 9px 0 #aaa;
+
+        width:190px;
+        position:absolute;
+        right:85px;
+        top:60px;
+        background-color: #fff;
+        z-index: 5000;
+    }
+    .search-elm-list-div ul{
+        margin:0px;
+    }
+    .search-elm-list-div ul li {
+        cursor: pointer;
+        font-size: 11px;
+        margin: 0;
+        padding: 10px;
+    }
+    .search-elm-list-div ul li:hover{
+        background-color: #CC161E;
+        color: #ffffff;
+        -webkit-transition: background-color 0.5s ease;
+        -moz-transition: background-color 0.5s ease;
+        -o-transition: background-color 0.5s ease;
+        -ms-transition: background-color 0.5s ease;
+        transition: background-color 0.5s ease;
+    }
+    .search-elm-list-div ul li a {
+        color: #666;
+    }
+    .search-elm-list-div ul li:hover a {
+        color: #ffffff;
+    }
+    .search-elm-list-div ul li label {
+        cursor: pointer;
+        display: inline;
+    }
+    .search_box_head .settings-elm-holder-div {
+        position: search;
+        right: 20px;
+        width: 349px;
+    }
+    .search_box_head img
+    {
+        width: 75%;
+    }
+    .search_box_head .search-elm-holder-div {
+        position: absolute;
+        right: 20px;
+        width: 349px;
+    }
+    .search_box_head .search-elm-holder-div .search-elm-list-div ul li{
+        padding: 2px;
+    }
+    /* Search Box */
     .settings-elm-holder-div {
         border: 1.75px solid #DC3434;
 
@@ -3454,44 +3505,3 @@ if($('.header-logo-div').is(':visible')) {
         background-color: #DC3434;
     }
 </style>
-
-<script type="text/javascript">
-     $(document).off("click", ".lang-filter div").on("click", ".lang-filter div", function (event) {
-        
-        var isActive = $(this).hasClass('active');
-        if(isActive) {
-            $(this).removeClass('active');
-        } else {
-            $(this).parent('div').find('.active').removeClass('active');
-            $(this).addClass('active');
-        }
-        
-        var lang = '';
-        if($(this).parent('div').find('.active').length > 0) {
-            lang = $(this).parent('div').find('.active').attr('data');
-        }
-        $.ajax({
-            url: '/front/ajax/filter_by_language',
-            type: 'post',
-            dataType: 'json',
-            data: {lang: lang},
-            success: function(resp) {
-
-            },
-            error: function(err) {
-
-            }
-        });
-     });
-     
-     $(document).off("click", ".search_box_head").on("click", ".search_box_head", function (event) {
-        if (!$(this).children('.settings-elm-holder-div').is(':visible')) {
-            $(this).children('.settings-elm-holder-div').slideDown(500);
-            $(this).children('.settings-btn').addClass('settings-btn-active');
-            $('#s-auto').focus();
-        }
-    });
-    
-    
-    
-</script>

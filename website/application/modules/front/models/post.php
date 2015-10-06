@@ -75,6 +75,10 @@ class post extends CI_Model{
             $b_from_api = FALSE;
         }
         
+        if( (isset($a_post_params['lang']) && !empty($a_post_params['lang']))) {
+            $lang = $a_post_params['lang'];
+        }
+        
         if( $target == 'Single' ) {
             $b_from_api = FALSE;
         }
@@ -143,7 +147,9 @@ class post extends CI_Model{
                 $b_get_related = true;
                 $stbid = $a_post_params['post_id'];
             }
-            return get_api_data_from_yii($a_exclude_id,$page_number,$link,$category_id,$popular,$paze_size,$game_type,$fetaured,$stbid,$target, $b_get_related, $i_post_id);
+            return get_api_data_from_yii($a_exclude_id, $page_number, $link, $category_id,
+                    $popular, $paze_size, $game_type, $fetaured, $stbid, $target,
+                    $b_get_related, $i_post_id, $lang);
             
         }
         else

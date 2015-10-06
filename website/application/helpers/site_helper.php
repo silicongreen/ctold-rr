@@ -2049,6 +2049,17 @@ if(!function_exists('get_type_cookie'))
     }
 }
 
+if(!function_exists('get_language_cookie'))
+{
+    function get_language_cookie() 
+    {
+        $CI = & get_instance();
+        $lang = $CI->input->cookie('local');
+        
+        return ($lang) ? $lang : false;
+    }
+}
+
 if(!function_exists('get_language'))
 {
     function get_language( $lng = NULL) 

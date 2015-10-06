@@ -1104,7 +1104,9 @@ if( !function_exists("send_notification"))
 
 if ( !function_exists("get_api_data_from_yii") )
 {
-    function get_api_data_from_yii($a_exclude_id,$page_number,$link="",$category_id = 0,$popular = false,$page_size = 9,$game_type=false,$fetaured=0,$stbid=0,$target=false, $b_get_related = false)
+    function get_api_data_from_yii($a_exclude_id, $page_number, $link="", $category_id = 0,
+            $popular = false, $page_size = 9, $game_type = false, $fetaured = 0, $stbid = 0,
+            $target = false, $b_get_related = false, $i_post_id = 0, $lang = '')
     {
        
         $url = get_curl_url($link);
@@ -1136,6 +1138,11 @@ if ( !function_exists("get_api_data_from_yii") )
             $fields['game_type'] = $game_type;
         }
         
+        if(!empty($lang))
+        {
+            $fields['lang'] = $lang;
+        }
+        
         if(count($a_exclude_id)>0)
         {
            $fields['already_showed'] = implode(",", $a_exclude_id); 
@@ -1161,7 +1168,7 @@ if ( !function_exists("get_api_data_from_yii") )
         $fields['website_only'] = 1;
         
         $fields_string = http_build_query($fields);
-        
+
         $ch = curl_init();
 
         //set the url, number of POST vars, POST data
@@ -1183,7 +1190,9 @@ if ( !function_exists("get_api_data_from_yii") )
         curl_close($ch);
         
         $a_data = format_data(json_decode($result));
-        
+//        echo '<pre>';
+//        var_dump($a_data);
+//        exit;
         return $a_data;
     }
 }

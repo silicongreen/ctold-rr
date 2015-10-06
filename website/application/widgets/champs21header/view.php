@@ -32,10 +32,10 @@
                 
             </div>
             
-            <div class="lang-filter">
+<!--            <div class="lang-filter">
                 <div data="ENG" class="lng-eng">English</div>
                 <div data="BAN" class="lng-bng">বাংলা</div>
-            </div>
+            </div>-->
             
             <?php if( free_user_logged_in() ): ?>
             <div class="header-logo-div">
@@ -3505,3 +3505,6 @@ if($('.header-logo-div').is(':visible')) {
         background-color: #DC3434;
     }
 </style>
+<script type="text/javascript">
+    eraseCookie('local');
+</script>

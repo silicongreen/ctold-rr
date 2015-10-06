@@ -2,6 +2,8 @@
  var current_page = 0;
  var msnroy;
  var pageSizeDefault = 9;
+ var filter_call_count = 0;
+ 
 function setCookie() {
     var exdays = 1;
     var d = new Date();
@@ -242,7 +244,12 @@ function format_date(obj_date, yesterday) {
                         }
                         //$(".posts-" + current_page).append("<div class='clear-box-" + current_page + "' style='clear:both;'></div>");
                         //$("#grid").append(data);
-                        $("#grid").append(data);
+                        if(filter_call_count > 1) {
+                            $("#grid").append(data);
+                        } else {
+                            $("#grid").html(data);
+                        }
+                        
                         addthis.toolbox('.addthis_toolbox');
                         
 //                        if(callcount > 1)

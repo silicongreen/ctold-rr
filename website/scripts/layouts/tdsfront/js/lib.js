@@ -4,6 +4,8 @@ var apiKey = 'AIzaSyAEZOSmfxFmROGdV2u9aCxGO5fW2AuGDmM';
 var scopes = 'https://www.googleapis.com/auth/plus.profile.emails.read';
 var g_call_counter = 0;
 var f_call_counter = 0;
+var filter_call_count = 0;
+
 function triggershare(id)
 {
     $('#addthisbutton_' + id).show();
@@ -96,7 +98,6 @@ String.prototype.in_array = function (haystack, argStrict)
 $(document).ready(function () {
     
     var lang = readCookie('local');
-    var filter_call_count = 0;
     
     $( "div[data='"+lang+"']" ).addClass('active');
     

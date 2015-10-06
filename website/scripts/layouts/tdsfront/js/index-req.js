@@ -2,7 +2,7 @@
  var current_page = 0;
  var msnroy;
  var pageSizeDefault = 9;
- var filter_call_count = 0;
+ var filter_call_count = 1;
  
 function setCookie() {
     var exdays = 1;
@@ -236,6 +236,7 @@ function format_date(obj_date, yesterday) {
                     success: function(data) {
 			runScrool = true;			
 			callcount += 1;
+                        filter_call_count += 1;
                         page_size += pageSizeDefault;
                         $("#page-size").val(page_size);
                         if ( page_size >= total_post )

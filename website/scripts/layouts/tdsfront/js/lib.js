@@ -2753,6 +2753,8 @@ function getPostData() {
                         success: function (data) {
                             runScrool = true;
                             callcount += 1;
+                            filter_call_count += 1;
+                            
                             page_size += pageSizeDefault;
                             $("#page-size").val(page_size);
                             if (page_size >= total_post)
@@ -2761,7 +2763,12 @@ function getPostData() {
                             }
                             //$(".posts-" + current_page).append("<div class='clear-box-" + current_page + "' style='clear:both;'></div>");
                             //$("#grid").append(data);
-                            $("#grid").append(data);
+                            if(filter_call_count > 1) {
+                                $("#grid").append(data);
+                            } else {
+                                $("#grid").html(data);
+                            }
+                            
                             //                        if(callcount > 1)
                             //                        {
                             //                                alert(1);

@@ -258,7 +258,6 @@ $(document).ready(function () {
     $(document).off("click", ".lang-filter div").on("click", ".lang-filter div", function (event) {
         
         var isActive = $(this).hasClass('active');
-        filter_call_count = 1;
         
         if(isActive) {
             $(this).removeClass('active');
@@ -2942,12 +2941,9 @@ function getLangPostData() {
                     {
                         $(".loading-box").remove();
                     }
-                    if(filter_call_count > 1) {
-                        $("#grid").append(data);
-                    } else {
-                        $("#grid").html(data);
-                    }
-
+                    
+                    $("#grid").html(data);
+                    
                     current_page += 1;
                     $("#current-page").val(current_page);
 

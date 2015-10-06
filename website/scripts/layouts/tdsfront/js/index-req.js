@@ -2,7 +2,6 @@
  var current_page = 0;
  var msnroy;
  var pageSizeDefault = 9;
- var filter_call_count = 1;
  
 function setCookie() {
     var exdays = 1;
@@ -236,7 +235,6 @@ function format_date(obj_date, yesterday) {
                     success: function(data) {
 			runScrool = true;			
 			callcount += 1;
-                        filter_call_count += 1;
                         page_size += pageSizeDefault;
                         $("#page-size").val(page_size);
                         if ( page_size >= total_post )
@@ -245,11 +243,7 @@ function format_date(obj_date, yesterday) {
                         }
                         //$(".posts-" + current_page).append("<div class='clear-box-" + current_page + "' style='clear:both;'></div>");
                         //$("#grid").append(data);
-                        if(filter_call_count > 1) {
-                            $("#grid").append(data);
-                        } else {
-                            $("#grid").html(data);
-                        }
+                        $("#grid").append(data);
                         
                         addthis.toolbox('.addthis_toolbox');
                         

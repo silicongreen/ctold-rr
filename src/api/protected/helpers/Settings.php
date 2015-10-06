@@ -212,6 +212,8 @@ class Settings {
         'syllabus lsubjects' => "Lessonplans Index",
         'syllabus lessonplansstd' => "Lessonplans Index"
     );
+    
+    public static $_ar_language = array( 'en' => 'ENG', 'bn' => 'BAN',);
 
     public static function getBingTokens($grantType, $scopeUrl, $clientID, $clientSecret, $authUrl) {
         try {

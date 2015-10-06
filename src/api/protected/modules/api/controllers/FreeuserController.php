@@ -2328,7 +2328,9 @@ class FreeuserController extends Controller
         $already_showed = Yii::app()->request->getPost('already_showed');
         $from_main_site = Yii::app()->request->getPost('from_main_site');
         $callded_for_cache = Yii::app()->request->getPost('callded_for_cache');
-
+        
+        $lang = array_search(Yii::app()->request->getPost('lang'), Settings::$_ar_language);
+        
         $content_showed_for_caching = "top";
         if ($already_showed)
             $content_showed_for_caching = md5(str_replace(",", "-", $already_showed));
@@ -2390,6 +2392,11 @@ class FreeuserController extends Controller
 
 
         $cache_name = "YII-RESPONSE-HOME-" . $total_showed . "-" . $page_size . "-" . $content_showed_for_caching . "-" . $category_filter . "-" . $user_type;
+        
+        if(!empty($lang)) {
+            $cache_name .= '-'.$lang;
+        }
+        
         $this->createAllCache($cache_name);
         $response = Yii::app()->cache->get($cache_name);
 
@@ -2401,14 +2408,18 @@ class FreeuserController extends Controller
 
             if ($already_showed)
             {
-                $homepage_post = $homepageObj->getHomePagePost($website_only, $user_type, $page_number, $page_size, false, $already_showed, $from_main_site, $category_not_to_show);
+                $homepage_post = $homepageObj->getHomePagePost($website_only, $user_type, $page_number,
+                        $page_size, false, $already_showed, $from_main_site, $category_not_to_show,
+                        $lang);
             }
             else
             {
-                $homepage_post = $homepageObj->getHomePagePost($website_only, $user_type, $page_number, $page_size, false, false, $from_main_site, $category_not_to_show);
+                $homepage_post = $homepageObj->getHomePagePost($website_only, $user_type, $page_number,
+                        $page_size, false, false, $from_main_site, $category_not_to_show,
+                        $lang);
             }
 
-            $response['data']['total'] = $homepageObj->getPostTotal($user_type, false, $category_not_to_show);
+            $response['data']['total'] = $homepageObj->getPostTotal($user_type, false, $category_not_to_show, $lang);
             $has_next = false;
             if ($response['data']['total'] > $page_number * $page_size)
             {
@@ -2721,7 +2732,8 @@ class FreeuserController extends Controller
         $check_news_update = Yii::app()->request->getPost('check_news_update');
         
         $already_showed = Yii::app()->request->getPost('already_showed');
-
+        $lang = array_search(Yii::app()->request->getPost('lang'), Settings::$_ar_language);
+        
         $news_category = $category_id;
         if ($subcategory_id)
         {
@@ -2790,6 +2802,11 @@ class FreeuserController extends Controller
         }
 
         $cache_name = "YII-RESPONSE-CATEGORY-" . $news_category . "-" . $total_showed . "-" . $page_size . "-" . $user_type . $extra;
+        
+        if(!empty($lang)) {
+            $cache_name .= '-'.$lang;
+        }
+        
         $this->createAllCache($cache_name);
         $response = Yii::app()->cache->get($cache_name);
         if ($response === false)
@@ -2798,21 +2815,23 @@ class FreeuserController extends Controller
             $postcategoryObj = new PostCategory();
             if ($already_showed)
             {
-                $post = $postcategoryObj->getPost($news_category, $user_type, $total_showed, $page_size, $popular_sort, $game_type, $fetaured, $already_showed);
+                $post = $postcategoryObj->getPost($news_category, $user_type, $total_showed,
+                        $page_size, $popular_sort, $game_type, $fetaured, $already_showed, $lang);
             }
             else
             {
-                $post = $postcategoryObj->getPost($news_category, $user_type, $total_showed, $page_size, $popular_sort, $game_type, $fetaured);
+                $post = $postcategoryObj->getPost($news_category, $user_type, $total_showed,
+                        $page_size, $popular_sort, $game_type, $fetaured, false, $lang);
             }
             
             
             if ($already_showed)
             {
-                $response['data']['total'] = $postcategoryObj->getPostTotal($news_category, $user_type, $already_showed);
+                $response['data']['total'] = $postcategoryObj->getPostTotal($news_category, $user_type, $already_showed, $lang);
             }
             else
             {
-                $response['data']['total'] = $postcategoryObj->getPostTotal($news_category, $user_type);
+                $response['data']['total'] = $postcategoryObj->getPostTotal($news_category, $user_type, FALSE, $lang);
             }
             $has_next = false;
             if ($response['data']['total'] > $page_number * $page_size)

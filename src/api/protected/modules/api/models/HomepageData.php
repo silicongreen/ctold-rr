@@ -103,7 +103,7 @@ class HomepageData extends CActiveRecord
     {
         return parent::model($className);
     }
-    public function getPostTotal($user_type,$date_value=false,$category_not_to_show=false)
+    public function getPostTotal($user_type,$date_value=false,$category_not_to_show=false, $lang = FALSE)
     {
         if($date_value==false)
         {
@@ -115,6 +115,12 @@ class HomepageData extends CActiveRecord
         $criteria->compare("post.status", 5);
         $criteria->compare("post.school_id", 0);
         $criteria->compare("post.teacher_id", 0);
+        
+        if($lang)
+        {
+            $criteria->compare("post.language", $lang);
+        }
+        
         if($category_not_to_show)
         {
             //$criteria->addInCondition('postCategories.category_id', explode(",",$category_not_to_show));
@@ -175,7 +181,9 @@ class HomepageData extends CActiveRecord
         return $return;
     }
 
-    public function getHomePagePost($website_only, $user_type, $page = 1, $page_size = 9,$date_value=false,$already_showed=false,$from_main_site=false,$category_not_to_show=false)
+    public function getHomePagePost($website_only, $user_type, $page = 1, $page_size = 9,
+            $date_value = false, $already_showed = false, $from_main_site = false,
+            $category_not_to_show = false, $lang = FALSE)
     {
         if($date_value==false)
         {
@@ -188,6 +196,10 @@ class HomepageData extends CActiveRecord
         $criteria->compare("post.status", 5);
         $criteria->compare("post.school_id", 0);
         $criteria->compare("post.teacher_id", 0);
+        
+        if($lang) {
+            $criteria->compare("post.language", $lang);
+        }
         
         $criteria->compare("t.status", 1);
         if($category_not_to_show)

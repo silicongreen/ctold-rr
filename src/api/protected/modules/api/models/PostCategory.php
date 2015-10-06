@@ -108,7 +108,7 @@ class PostCategory extends CActiveRecord
         return parent::model($className);
     }
 
-    public function getPostTotal($category_id, $user_type, $already_showed = false)
+    public function getPostTotal($category_id, $user_type, $already_showed = false, $lang = FALSE)
     {
 
         $criteria = new CDbCriteria();
@@ -268,7 +268,8 @@ class PostCategory extends CActiveRecord
         return $post_array;
     }
 
-    public function getPost($category_id, $user_type, $page = 1, $page_size = 10,$popular_sort = false,$game_type = false,$fetaured=false, $already_showed = false)
+    public function getPost($category_id, $user_type, $page = 1, $page_size = 10, $popular_sort = false,
+            $game_type = false, $fetaured = false, $already_showed = false, $lang = false)
     {
         $criteria = new CDbCriteria;
         $criteria->select = 't.id';
@@ -283,6 +284,11 @@ class PostCategory extends CActiveRecord
         else if($fetaured == 2 && $fetaured!=false)
         {
             $criteria->addCondition("post.is_featured = 0 OR post.is_featured IS NULL");
+        }
+        
+        if($lang)
+        {
+            $criteria->compare("post.language", $lang);
         }    
         
         if(!$popular_sort)

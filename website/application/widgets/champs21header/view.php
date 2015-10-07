@@ -273,7 +273,7 @@ height: 46px;
                                 </fieldset>
                                 <?php
                                     $this->load->config("huffas");
-                                    if(isset($this->config->config['paid_registration']) && $this->config->config['paid_registration']):
+                                    if((isset($this->config->config['paid_registration']) && $this->config->config['paid_registration']) || $_GET['test']=="paid_school"):
                                  ?>
                                 <fieldset>
 

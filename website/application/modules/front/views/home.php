@@ -19,10 +19,10 @@
         $pa_url = base_url()."front/ajax/unset_type_cookie";
     }
     
-    if (isset($_COOKIE['local'])) {
-        unset($_COOKIE['local']);
-        setcookie('local', null, -1, '/');
-    }
+//    if (isset($_COOKIE['local'])) {
+//        unset($_COOKIE['local']);
+//        setcookie('local', null, -1, '/');
+//    }
     
     $lang = get_language_cookie();
 ?>

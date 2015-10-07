@@ -23,6 +23,11 @@
                     
                 </label>
                 <label class="candle-input" style="padding:10px 0px;">
+                    <span><font style="color:red; font-weight:bold;float: left; font-size: 16px;">*</font>Admission Date</span>
+                    <input type="text" name="admission_date" value="<?php echo $post_data['admission_date']; ?>" id="admission_date" class="cd-input f5 datepicker" >
+                    
+                </label>
+                <label class="candle-input" style="padding:10px 0px;">
                     <span><font style="color:red; font-weight:bold;float: left; font-size: 16px;">*</font>Your Login Password</span>
                     <input type="password" name="password" id="password" value="" class="cd-input f5">
                     

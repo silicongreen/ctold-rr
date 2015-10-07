@@ -4165,12 +4165,15 @@ class home extends MX_Controller {
                 $data['post_data'] = $_POST;
                 $this->load->library('form_validation');
                 $this->form_validation->set_rules('admission_no', 'Admission No', 'required|ci_check_admission_no');
+                $this->form_validation->set_rules('admission_date', 'Admission Date', 'required');
                 $this->form_validation->set_rules('password', 'Password', 'required|ci_check_password');
                 $this->form_validation->set_rules('first_name', 'First Name', 'required');
                 $this->form_validation->set_rules('last_name', 'Last Name', 'required');
                 $this->form_validation->set_rules('batch_id', 'Class Name', 'required');
                 $this->form_validation->set_rules('date_of_birth', 'Birth date', 'required|ci_validate_date');
                 $this->form_validation->set_rules('city', 'City', 'required');
+                
+                
                 
                 $add_guardian = $this->input->post("add_guardian");
                 

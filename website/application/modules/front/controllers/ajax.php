@@ -991,10 +991,9 @@ class ajax extends MX_Controller
                             "NOT_IN"=>array("tds_post.id",$content_array)
                     );  
                 }
-                if(!empty($lang)) {
-                    $a_post_params['lang'] = $lang;
-                }
-
+            }
+            if(!empty($lang)) {
+                $a_post_params['lang'] = $lang;
             }
 //            print_r($a_post_params);
 //            exit;

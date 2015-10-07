@@ -2873,132 +2873,99 @@ function eraseCookie(name) {
 
 function getLangPostData() {
     
-    var licount = 0;
-    $('#grid li').each(function (el, i) {
-
-        if (!$(this).hasClass('shown') && !$(this).hasClass('animate'))
-        {
-            licount++;
-        }
-    });
-
     setTimeout(function () {
-        if ($(".loading-box").length > 0 && sent_request == false)
-        {
-            var total_post = new Number($("#total_data").val());
-            var page_size = new Number($("#page-size").val());
-            var page_limit = new Number($("#page-limit").val());
-            var q = $("#q").val();
-            var callcount = 0;
-            var lang = readCookie('local');
+        
+        var total_post = new Number( $("#total_data").val() );
+        var page_size = new Number($("#page-size").val());
+        var page_limit = new Number( $("#page-limit").val() );
+        var q = $("#q").val();
+        var callcount = 0;
+        var lang = readCookie('local');
 
-            if(lang !== null) {
-                lang = lang;
-            } else {
-                lang = '';
-            }
+        if(lang !== null) {
+            lang = lang;
+        } else {
+            lang = '';
+        }
 
-            current_page = new Number($("#current-page").val());
-            var page_to_load = 0;
+        current_page = new Number($("#current-page").val());
+        var page_to_load = 0;
+        
+        $(".loading-box").show();
+        
+        runScrool = false;
+        var content_showed = "";
+        
+        $.ajax({
+            type: "GET",
+            url: $("#base_url").val() + 'front/ajax/getPosts/' + $("#category").val() + "/" + $("#target").val() + "/" + $("#page").val() + "/" + $("#page-limit").val() + "/" + page_to_load + "/" + lang,
+            data: {
+                content_showed: content_showed,
+                s: q
+            },
+            async: true,
+            success: function (data) {
+                runScrool = true;
+                callcount += 0;
+                page_size += pageSizeDefault;
+                $("#page-size").val(page_size);
+                
+                $("#grid").html(data);
 
-            sent_request = true;
-            $(".loading-box").show();
-            runScrool = false;
-            var content_showed = "";
-            if ($(".container ul#grid").length > 0)
-            {
-                $(".container ul#grid li.post-content-showed").each(function ()
-                {
-                    if (this.id)
-                    {
-                        var post_id = this.id;
-                        var id_array = post_id.split("-");
-                        content_showed = content_showed + id_array[1] + "|";
-                    }
-                });
+                $("#current-page").val(0);
 
-                if ($("#post_id_val").length > 0)
-                {
-                    var post_id = $("#post_id_val").val();
-                    content_showed = content_showed + post_id + "|";
-                }
-            }
+                setTimeout(function () {
+                    var $container = jQuery("[id=grid]");
+                    $container.imagesLoaded(function () {
+                        $("#grid li").removeClass("ajax-hide");
 
-            $.ajax({
-                type: "GET",
-                url: $("#base_url").val() + 'front/ajax/getPosts/' + $("#category").val() + "/" + $("#target").val() + "/" + $("#page").val() + "/" + $("#page-limit").val() + "/" + page_to_load + "/" + lang,
-                data: {
-                    content_showed: content_showed,
-                    s: q
-                },
-                async: true,
-                success: function (data) {
-                    runScrool = true;
-                    callcount += 1;
-                    page_size += pageSizeDefault;
-                    $("#page-size").val(page_size);
-                    if (page_size >= total_post)
-                    {
-                        $(".loading-box").remove();
-                    }
-                    
-                    $("#grid").html(data);
-                    
-                    current_page += 1;
-                    $("#current-page").val(current_page);
+                        jQuery('.flex-wrapper .flexslider').flexslider({
+                            slideshow: false,
+                            animation: 'fade',
+                            pauseOnHover: true,
+                            animationSpeed: 400,
+                            smoothHeight: false,
+                            directionNav: true,
+                            controlNav: false,
+                            after: function () {
+                                $("#grid").masonry('reload');
+                                jQuery('#tz_mainmenu').tinyscrollbar();
+                            }
+                        });
 
-                    setTimeout(function () {
-                        var $container = jQuery("[id=grid]");
-                        $container.imagesLoaded(function () {
-                            $("#grid li").removeClass("ajax-hide");
-
-                            jQuery('.flex-wrapper .flexslider').flexslider({
+                        if ($(".flex-wrapper_news").length > 0)
+                        {
+                            jQuery('.flex-wrapper_news .flexslider_news').flexslider({
                                 slideshow: false,
                                 animation: 'fade',
                                 pauseOnHover: true,
                                 animationSpeed: 400,
                                 smoothHeight: false,
-                                directionNav: true,
-                                controlNav: false,
+                                directionNav: false,
+                                selector: ".slides_news > li.news_slides",
                                 after: function () {
                                     $("#grid").masonry('reload');
                                     jQuery('#tz_mainmenu').tinyscrollbar();
                                 }
                             });
+                        }
 
-                            if ($(".flex-wrapper_news").length > 0)
-                            {
-                                jQuery('.flex-wrapper_news .flexslider_news').flexslider({
-                                    slideshow: false,
-                                    animation: 'fade',
-                                    pauseOnHover: true,
-                                    animationSpeed: 400,
-                                    smoothHeight: false,
-                                    directionNav: false,
-                                    selector: ".slides_news > li.news_slides",
-                                    after: function () {
-                                        $("#grid").masonry('reload');
-                                        jQuery('#tz_mainmenu').tinyscrollbar();
-                                    }
-                                });
-                            }
+                        $("#grid").masonry('reload');
+                        scrollPage();
+                        
+                        sent_request = false;
+                        $(".loading-box").hide();
+                                    
+                        if ($("#triangle-bottomright").length > 0)
+                        {
+                            $("#triangle-bottomright").css("border-left-width", $("#post-image").width() + "px");
+                        }
 
-                            $("#grid").masonry('reload');
-                            scrollPage();
-                            if ($("#triangle-bottomright").length > 0)
-                            {
-                                $("#triangle-bottomright").css("border-left-width", $("#post-image").width() + "px");
-                            }
-
-                            setTimeout(function () {
-                                sent_request = false;
-                                $(".loading-box").hide();
-                            }, 500);
-                        });
-                    }, 200);
-                }
-            });
-        }
+                    });
+                }, 200);
+            }
+        });
+        
 
     }, 100);
 }

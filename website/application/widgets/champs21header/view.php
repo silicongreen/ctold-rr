@@ -22,7 +22,7 @@
             <div class="logo-div">
                 <a href="<?php echo base_url(); ?>" ><img  src="<?php echo base_url('styles/layouts/tdsfront/images/logo-new.png'); ?>" class="image-logo" alt="logo"></a>
             </div>
-            <div style="float: left;width: 58%;height:50px;">
+            <div style="float: left;width: 65%;height:50px;">
                 
                 
                     <?php

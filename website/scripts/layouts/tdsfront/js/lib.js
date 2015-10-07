@@ -1534,7 +1534,8 @@ $(document).ready(function () {
             success: function (data) {
 
                 if ((data.registered == true && data.logged_in == true)) {
-                    window.location.reload();
+                    window.location.href = $('#base_url').val() + "check_paid_register";
+//                    window.location.reload();
                     first_register = 1;
                 } else {
 

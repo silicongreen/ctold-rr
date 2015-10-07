@@ -1993,6 +1993,12 @@ class home extends MX_Controller {
             }
 
             if (isset($_POST['data'])) {
+                $_POST['school_code'] = $_POST['data']['school_code'];
+            } else {
+                $_POST['school_code'] = $_POST['school_code'];
+            }
+            
+            if (isset($_POST['data'])) {
                 $_POST['paid_school_id'] = $_POST['data']['paid_school_id'];
             } else {
                 $_POST['paid_school_id'] = $_POST['paid_school_id'];
@@ -2043,6 +2049,7 @@ class home extends MX_Controller {
         if (isset($_POST) && !empty($_POST)) {
 
             foreach ($_POST as $key => $value) {
+                if($key!="school_code")
                 $free_user->$key = $value;
             }
 
@@ -2062,7 +2069,32 @@ class home extends MX_Controller {
                     echo json_encode($data);
                     exit;
                 }
+                  
             }
+            
+            if($_POST['paid_school_id'])
+            {
+                if(!$_POST['school_code'])
+                {
+                    $data['errors'][] = 'You have to give school code if you select premium school';
+
+                    $data['registered'] = FALSE;
+                    $data['logged_in'] = FALSE;
+
+                    echo json_encode($data);
+                    exit;
+                }
+                else if(!check_school_code_paid($_POST['paid_school_id'],$_POST['school_code']))
+                {
+                    $data['errors'][] = 'Invalid School Code';
+
+                    $data['registered'] = FALSE;
+                    $data['logged_in'] = FALSE;
+
+                    echo json_encode($data);
+                    exit;
+                }    
+            }  
 
             if ($free_user->save()) {
 
@@ -4441,12 +4473,12 @@ class home extends MX_Controller {
     
 
     public function check_paid_register() {
-        $user_type = array(2, 3, 4);
+        $user_type = array(2, 3);
         if ($user_data = $this->check_user_valid($user_type)) {
             if ($user_data->user_type == 2) {
                 redirect('/apply-for-student-admission');
             } else if ($user_data->user_type == 3) {
-                redirect('/apply-for-teaher-admission');
+                redirect('/apply-for-teacher-admission');
             } else if ($user_data->user_type == 4) {
                 redirect('/apply-for-parent-admission');
             }

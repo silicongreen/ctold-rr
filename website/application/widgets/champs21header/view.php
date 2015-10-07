@@ -271,22 +271,30 @@ height: 46px;
                                         </ul>
                                     </div>
                                 </fieldset>
-<!--                                <fieldset>
+                                <?php
+                                    $this->load->config("huffas");
+                                    if(isset($this->config->config['paid_registration']) && $this->config->config['paid_registration']):
+                                 ?>
+                                <fieldset>
 
                                     <ul class="radio-holder drop-big" style="margin:10px 0 10px 33px">    
                                         <li>
-                                            <fieldset style="color:black;">Teacher/Student/Parent Of A Premium School (Optional)?</fieldset>
+                                            <fieldset style="color:black;">Teacher/Student Of A Premium School (Optional)?</fieldset>
 
-                                            <div class="custom_dropdown">
-                                                <div>
-                                                   <?php //echo $paid_schools; ?>
+                                            <div class="custom_dropdown" style="float:left; width:100%;">
+                                                <div style="float:left; width:70%;">
+                                                   <?php echo $paid_schools; ?>
                                                 </div>
+                                                <input  style="float: left; width: 29%; margin-top: 9px; height:32px; border: 1px solid black;" placeholder="School Code" id="school_code" name="school_code" value="" type="text" maxlength="60" >
                                             </div>
+                                            
 
                                         </li>
                                         
+                                        
                                     </ul>
-                                </fieldset>-->
+                                </fieldset>
+                                <?php endif; ?>
                                
 
                                 <div class="clearfix" <?php echo ($edit) ? 'style="margin-bottom: 30px"' : ''; ?>></div>
@@ -2698,7 +2706,7 @@ if($('.header-logo-div').is(':visible')) {
 
     fieldset .drop-big select 
     {
-        width: 300px;
+        width: 270px;
         float: left;
         overflow: hidden;
         margin-top: 10px;

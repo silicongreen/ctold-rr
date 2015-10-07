@@ -20,6 +20,8 @@ $config['android_app_dl_url'] = 'https://play.google.com/store/apps/details?id=c
 $config['education_changes_life'] = TRUE;
 $config['nation_builder'] = TRUE;
 
+$config['paid_registration'] = FALSE;
+
 $config['from_api'] = TRUE;
 $config['go_to_assessment'] = TRUE;
 

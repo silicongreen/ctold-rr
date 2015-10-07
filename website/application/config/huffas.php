@@ -7,7 +7,7 @@
  */
 $config['news_in_index'] = array(
     'show_old_news' => TRUE,
-    'days_to_retrieve_news' => "-30 days"
+    'days_to_retrieve_news' => "-90 days"
 );
 
 $config['world_cup_quize_link'] = '/cricaddict/day-2-2-13/1';

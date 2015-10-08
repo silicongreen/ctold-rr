@@ -276,29 +276,23 @@ $(document).ready(function () {
         generate_result(current_page);
     }
     
-    $(document).off("click", ".lang-filter div").on("click", ".lang-filter div", function (event) {
-        
-        var isActive = $(this).hasClass('active');
-        
-        if(isActive) {
-            $(this).removeClass('active');
-        } else {
-            $(this).parent('div').find('.active').removeClass('active');
-            $(this).addClass('active');
-        }
-        
+    $(document).off("click",".lang-wrapper ul li").on("click",".lang-wrapper ul li",function(event){
         var lang = '';
-        if($(this).parent('div').find('.active').length > 0) {
-            lang = $(this).parent('div').find('.active').attr('data');
-            createCookie('local', lang);
-        } else {
+        $(this).parent('ul').find('li.active').removeClass('active');
+        $(this).addClass('active');
+        lang = $(this).attr('data');
+        
+        if(lang != ''){
+            createCookie('local',lang);
+        }else{
             eraseCookie('local');
         }
         
-        var postData = setTimeout(function () {
+        var postData=setTimeout(function(){
             getLangPostData();
-        }, 100);
-     });
+            clearTimeout(postData);
+        },100);
+    });
      
      $(document).off("click", ".search_box_head").on("click", ".search_box_head", function (event) {
         if (!$(this).children('.search-elm-holder-div').is(':visible')) {

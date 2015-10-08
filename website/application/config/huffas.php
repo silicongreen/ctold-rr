@@ -22,7 +22,7 @@ $config['nation_builder'] = TRUE;
 
 $config['paid_registration'] = FALSE;
 
-$config['from_api'] = false;
+$config['from_api'] = TRUE;
 $config['go_to_assessment'] = TRUE;
 
 $config['normal_view_count_add'] = 1;

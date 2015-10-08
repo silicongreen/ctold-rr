@@ -106,7 +106,7 @@
 	.postlist-tab #grid_1{margin: 0px auto !important;}
 	.postlist-tab ul.nav{margin:0px;}
 	.postlist-tab ul.nav-tabs{border:0px;}
-	.postlist-tab ul.nav-tabs li{width:33.33%;height:62px;float: left;line-height: 20px;    display: list-item;list-style: none;margin-bottom:0px;}
+	.postlist-tab ul.nav-tabs li{letter-spacing:0px;width:33.33%;height:62px;float: left;line-height: 20px;    display: list-item;list-style: none;margin-bottom:0px;}
 	.postlist-tab ul.nav-tabs > .active > a, .nav-tabs > .active > a:hover, .nav-tabs > .active > a:focus {
 						color: #fff;
 						background: #DC3434;						

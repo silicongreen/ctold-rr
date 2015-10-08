@@ -9,7 +9,7 @@
 			<ul class="nav nav-tabs">
 				<li class="active"><a href="#tab1" data-toggle="tab">Top Rated</a></li>
 				<li><a href="#tab2" data-toggle="tab">Most Populer</a></li>
-				<li><a href="#tab3" data-toggle="tab" style="padding-right:9px;">Editor's Pick</a></li>
+				<li><a href="#tab3" data-toggle="tab" style="">Editor's Pick</a></li>
 			</ul>
 			<div class="tab-content">
 				<div class="tab-pane active" id="tab1">
@@ -106,21 +106,20 @@
 	.postlist-tab #grid_1{margin: 0px auto !important;}
 	.postlist-tab ul.nav{margin:0px;}
 	.postlist-tab ul.nav-tabs{border:0px;}
-	.postlist-tab ul.nav-tabs li{width:auto;float: left;line-height: 20px;    display: list-item;list-style: none;margin-bottom:0px;}
+	.postlist-tab ul.nav-tabs li{width:33.33%;height:62px;float: left;line-height: 20px;    display: list-item;list-style: none;margin-bottom:0px;}
 	.postlist-tab ul.nav-tabs > .active > a, .nav-tabs > .active > a:hover, .nav-tabs > .active > a:focus {
 						color: #fff;
 						background: #DC3434;						
 						cursor: default;
 						padding-bottom: 12px;
 						line-height: 20px;
-                                                padding-right: 11px;
-						padding-left: 11px;
+                                                padding:10%;
 						border: 1px solid #DEE9EB;
 						font-family:Arial;
 						}
 	.postlist-tab ul.nav-tabs > li > a {                                        
 						color: #000;
-						padding:10px;
+						padding:10%;
 						margin:0px;
 						line-height: 20px;
 						border: 1px solid #DEE9EB;

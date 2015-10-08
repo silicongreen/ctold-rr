@@ -37,9 +37,9 @@
           
                 <div style="clear: both;" class="noPrint"></div>
                 <?php if($full_template) { ?>
-                    <div class="ym-wbox footer noPrint">  <!-- Start Footer -->
+                    
                         <?php echo $footer; ?>
-                    </div>                        <!-- End Footer -->
+                                           <!-- End Footer -->
                 <?php } ?>
             </div>                             <!-- End container -->
 

@@ -88,10 +88,11 @@
     }
     .new-sb-banner {
         float: left;
+        height: 100%;
         width: 68%;
     }
-    .flexslider ul li img {
-        
+    .flexslider .slides img {
+        height: 100%;
     }
 </style>
 

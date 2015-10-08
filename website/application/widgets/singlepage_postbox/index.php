@@ -29,7 +29,7 @@ class singlepage_postbox extends widget
             if (isset($r_news->content)) {				
 
                     $ar_news_id['id'] = $r_news->id;				
-                    $ar_news = getFormatedContentAll($r_news, 150,'inner');
+                    $ar_news = getFormatedContentAll($r_news, 150,'index');
                     $ar_news_data[$i] = $ar_news_id + $ar_news;
             }
             $i++;
@@ -51,7 +51,7 @@ class singlepage_postbox extends widget
                 if (isset($r_news->content)) {				
 
                         $ar_news_id['id'] = $r_news->id;				
-                        $ar_news = getFormatedContentAll($r_news, 150,'inner');
+                        $ar_news = getFormatedContentAll($r_news, 150,'index');
                         $ar_news_data[$i] = $ar_news_id + $ar_news;
                 }
                 $i++;
@@ -81,7 +81,7 @@ class singlepage_postbox extends widget
             if (isset($r_news->content)) {				
 
                     $ar_news_id['id'] = $r_news->id;				
-                    $ar_news = getFormatedContentAll($r_news, 150,'inner');
+                    $ar_news = getFormatedContentAll($r_news, 150,'index');
                     $ar_news_data[$i] = $ar_news_id + $ar_news;
             }
             $i++;

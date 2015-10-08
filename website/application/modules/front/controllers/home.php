@@ -1416,11 +1416,15 @@ class home extends MX_Controller {
                 if (!isset($r_news->content)) {
                     $link = $r_news->new_link;
                     $headline = $r_news->title;
-                    $related_news_id = str_replace(base_url() . sanitize($headline) . "-", "", $link);
-
+                    
+                    
+                    //$related_news_id = str_replace(base_url() . sanitize($headline) . "-", "", $link);
+                    $ar_text = explode('-',$link);
+                    $related_news_id = end($ar_text);
+                    
                     $obj_related_news = $obj_post->get_by_id($related_news_id);
-                    $ar_news_data = getFormatedContentAll($obj_related_news, 150);
-
+                    $ar_news_data = getFormatedContentAll($obj_related_news, 150); 
+                    
                     $r_news->lead_material = $ar_news_data['lead_material'];
                     $r_news->content = $ar_news_data['content'];
                     $r_news->image = $ar_news_data['image'];

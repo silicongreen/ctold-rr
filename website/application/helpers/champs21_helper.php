@@ -475,7 +475,7 @@ if (!function_exists("getFormatedContentAll"))
         $s_caption = $xpath->evaluate("string(//div[contains(@class, 'img_caption')])");
         $arData['caption_inside'] = $s_caption;
 
-        $images = $doc->getElementsByTagName('img');
+        $images = $doc->getElementsByTagName('img');        
         
         $arData['image'] = "";
         $arData['all_image'] = array();

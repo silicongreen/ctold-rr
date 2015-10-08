@@ -568,19 +568,20 @@ ob_start();
                         <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/single_page_top_right.jpg'); ?>">
                     </a>
                 </div>
-                <div class="clearfix"></div>
+                <!--<div class="clearfix"></div>
 
                 <div class="suggest-header-div">
                     <div class="f2">suggested for you</div>
                 </div>
 
-                <div id="demo2">
-                    <?php // $widget->run('postdata', 'index', '', 'inner', FALSE, 0, 'index', 0, 9, 0, $q = '', NULL, true, $post_id); ?>
-                    <?php $widget->run('postdata', 'index', '', 'inner', FALSE, 0, 'index', 0, 9, 0, '', NULL, true, $post_id); ?>
+                <div id="demo2">                    
+                    <?php //$widget->run('postdata', 'index', '', 'inner', FALSE, 0, 'index', 0, 9, 0, '', NULL, true, $post_id); ?>
                     <span class="als-prev"></span>
                     <span class="als-next"></span>
-                </div>
-
+                </div>-->
+                <div class="clearfix"></div>
+                <?php $widget->run('singlepage_postbox',$post_id); ?>
+                <div class="clearfix"></div>
             </div>
 
             <div class="close_suggestion f2">
@@ -588,7 +589,83 @@ ob_start();
             </div>
 
             <!-- Suggested Post Wrapper Ends -->
+            <div class="clearfix"></div>
+            <div class="row" style="padding:10px;">
+                
+                <div class="col-md-12 col-sm-12">
+                     
 
+                    <style>
+                        .flexslider .slides > li
+                        {
+                            margin-right:20px;
+                        }
+                        .flexslider .slides > li:last-child 
+                        {
+                            margin-right:0px;
+                        }
+                        .flex-caption34534535 {
+                            width: 100%;
+                            padding: 3%;
+                            left: 0;
+                            bottom: 0;
+                            background: rgba(0, 0, 0, 0.6) none repeat scroll 0 0;
+                            color: #fff;
+                            text-shadow: 0 -1px 0 rgba(0,0,0,.3);
+                            font-size: 14px;
+                            line-height: 18px;
+                          }
+
+div.flex-caption{  
+    background-color: black;
+    bottom: 0;
+    color: white;
+    font-family: "tahoma";
+    font-size: 15px;
+    opacity: 1;
+    filter:alpha(opacity=100); 
+    position: absolute;
+    width: 302px;
+}  
+p.description_content{  
+    padding:10px;  
+    margin:0px;  
+}  
+                          li.css a {
+                            border-radius: 0;
+                          }
+                          .flex-direction-nav a
+                          {
+                              line-height: 33px;                              
+                          }
+                          .flex-control-nav
+                          {
+                              bottom:-18px;
+                          }
+                          .flexslider
+                          {
+                              box-shadow:0 0px 0px rgba(0, 0, 0, 0.2) !important;
+                          }
+                          .flex-direction-nav{margin:0px;}
+                    </style>
+                    
+                    <script>
+                        $(window).load(function(){
+                            $('.flexslider').flexslider({
+                              animation: "slide",
+                              animationLoop: true,
+                              itemWidth: 302,
+                              itemMargin: 5,
+                              minItems: 2,
+                              maxItems: 3,
+                              start: function(slider){
+                                $('body').removeClass('loading');
+                              }
+                            });
+                          });
+                    </script>
+                </div>
+            </div>
         </div>
         <!-- Post Wrapper Container Ends -->
 
@@ -601,53 +678,100 @@ ob_start();
             </div>
         <?php endif; ?>
 
-        <?php /* if ($post_type == 1 || $post_type == 3) : ?>
-          <?php if ($has_related && $b_layout && $school_id == 0) : ?>
-          <div class="inner-container_related" style="margin: 20px; width: 96%;">
-          <div class="related_news_headline f2">
-          You May Also Like
-          </div>
-          <div class="related_post">
-          <?php
-          $i = 0;
-          foreach ($related_news as $news):
-          ?>
-          <?php if ($i % 2 == 0) : ?>
-          <div style="clear: both; height: 30px;"></div>
-          <?php endif; ?>
-          <div class="related_post_content">
+        <?php  if ($post_type == 1 || $post_type == 3) : ?>
+            <?php if ($has_related && $b_layout && $school_id == 0) : ?>
+                <div class="f2" style="font-size:33px;padding:0px 25px ">
+                    You May Also Like
+                </div>
+                <div class="inner-container_related" style="margin: 20px; width: 96%;">
+                    
+                    <div class="related_post">
+                        
+                        <section class="slider">
+                            <div class="flexslider carousel">
+                                <ul class="slides">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <?php
+                        $i = 0;
+                        foreach ($related_news as $news):
+                        ?>
+                            <?php if ($i % 2 == 0) : ?>
+                    <!--          <div style="clear: both; height: 30px;"></div>-->
+                            <?php endif; ?>
+                             <li style="width:302px; float: left; display: block;">
+                                    
+                                    
+                               
 
-          <?php
-          $image_related = "";
-          if (isset($news->lead_material) && $news->lead_material) {
-          $image_related = $news->lead_material;
-          } else if (isset($news->image) && $news->image) {
+                                    <?php
+                                        $image_related = "";
+                                        if (isset($news->lead_material) && $news->lead_material) {
+                                            $image_related = $news->lead_material;
+                                        } else if (isset($news->image) && $news->image) {
 
-          $image_related = $news->image;
-          }
-          ?>
-          <?php if ($image_related): ?>
-          <a href="<?php echo $news->new_link; ?>" style="border:0px;"><img src="<?php echo $image_related; ?>" width="120" height="120" style="overflow:hidden;float: left; border:0; margin-right:15px;" /></a>
-          <?php endif; ?>
+                                            $image_related = $news->image;
+                                        }
+                                    ?>
+                                    <?php if ($image_related): ?>
+                                        <div style="height:180px;overflow:hidden;float: left; border:0;"><a href="<?php echo $news->new_link; ?>" style="border:0px;"><img src="<?php echo $image_related; ?>" width="120" height="120" style="overflow:hidden;float: left; border:0; margin-right:15px;" /></a></div>
+                                    <?php endif; ?>
 
-          <div style="margin-right:30px;">
-          <p style="margin:0px;line-height:20px; "><a href="<?php echo $news->new_link; ?>"><?php echo $news->title; ?></a></p>
-          <p style="margin:0px; line-height:16px;font-size:12px;"><a style="color:black;" href="<?php echo $news->new_link; ?>"><?php echo $news->content; ?></a></p>
-          </div>
-          </div>
-          <?php
-          $i++;
-          endforeach;
-          ?>
-          </div>
-          </div>
-          <?php endif; ?>
-          <?php endif; */ ?>
+                                    
+                                        <div class="flex-caption" style="margin:0px;line-height:20px; "><p class="description_content"><a style="color:#fff;" href="<?php echo $news->new_link; ?>"><?php echo $news->title; ?></a></p></div>
+<!--                                        <p style="margin:0px; line-height:16px;font-size:12px;"><a style="color:black;" href="<?php echo $news->new_link; ?>"><?php echo $news->content; ?></a></p>-->
+                                   
+                                
+                            </li>
+                            
+                            <?php
+                            $i++;
+                        endforeach;
+                        ?>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                                </ul>
+                            </div>
+                        </section>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    </div>
+                </div>
+            <?php endif; ?>
+        <?php endif;  ?>
 
         <div class="clearfix"></div>
 
         <?php
-        $more_cache_name = 'MORE_OF_' . $parent_category_id . '_FOR_POST_' . $post_id;
+        /*$more_cache_name = 'MORE_OF_' . $parent_category_id . '_FOR_POST_' . $post_id;
         $s_more_content = $CI->cache->get($more_cache_name);
 
         if ($s_more_content !== false) {
@@ -684,7 +808,7 @@ ob_start();
             $s_more_content = ob_get_contents();
             ob_end_clean();
         }
-        echo $s_more_content;
+        echo $s_more_content;*/
         ?>
         <div id="gif_ad" style="position:fixed;bottom:0px;width:350px;margin: 0px auto;right:-270px;display:none; " >
             <span class="gif_ad_close" style="cursor: pointer;padding: 10px;position: absolute;right: 22px;top: 6px;"></span>

@@ -24,6 +24,8 @@
 
 								$image_toprated = $toprated['image'];
 							}
+                                                        
+                                                        $link_top =  base_url() . sanitize($toprated['headline']) . "-" . $toprated['id'];
 						?>
 						<div class="media">
 						  <div class="media-left">
@@ -31,11 +33,11 @@
 							<!--a href="#">
 							  <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="<?php echo $toprated?>" data-holder-rendered="true" style="width: 64px; height: 64px;">
 							</a-->
-							<a href="<?php echo $toprated['ci_key']; ?>" style="border:0px;"><img src="<?php echo $image_toprated; ?>" class="media-object" data-holder-rendered="true" style="width: 64px; height: 64px;" /></a>
+							<a href="<?php echo $link_top; ?>" style="border:0px;"><img src="<?php echo $image_toprated; ?>" class="media-object" data-holder-rendered="true" style="width: 64px; height: 64px;" /></a>
 						  <?php endif; ?>
 						  </div>
 						  <div class="media-body">
-							<p class="media-heading"><a style="color:#000;" href="<?php echo $toprated['ci_key']; ?>"><?php echo $toprated['headline']; ?></a></p>                                            
+							<p class="media-heading"><a style="color:#000;" href="<?php echo $link_top; ?>"><?php echo $toprated['headline']; ?></a></p>                                            
 						  </div>
 						</div>
 					<?php } ?>	
@@ -53,6 +55,8 @@
 
 								$image_mostpopuler = $mostpopuler['image'];
 							}
+                                                        
+                                                         $link_most =  base_url() . sanitize($mostpopuler['headline']) . "-" . $mostpopuler['id'];
 						?>
 						<div class="media">
 						  <div class="media-left">
@@ -60,11 +64,11 @@
 							<!--a href="#">
 							  <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="<?php echo $image_mostpopuler?>" data-holder-rendered="true" style="width: 64px; height: 64px;">
 							</a-->
-							<a href="<?php echo $mostpopuler['ci_key']; ?>" style="border:0px;"><img src="<?php echo $image_mostpopuler; ?>" class="media-object" data-holder-rendered="true" style="width: 64px; height: 64px;" /></a>
+							<a href="<?php echo $link_most; ?>" style="border:0px;"><img src="<?php echo $image_mostpopuler; ?>" class="media-object" data-holder-rendered="true" style="width: 64px; height: 64px;" /></a>
 						  <?php endif; ?>
 						  </div>
 						  <div class="media-body">
-							<p class="media-heading"><a style="color:#000;" href="<?php echo $mostpopuler['ci_key']; ?>"><?php echo $mostpopuler['headline']; ?></a></p>                                            
+							<p class="media-heading"><a style="color:#000;" href="<?php echo $link_most; ?>"><?php echo $mostpopuler['headline']; ?></a></p>                                            
 						  </div>
 						</div>
 					<?php } ?>	
@@ -81,6 +85,7 @@
 
 								$image_editorpicks = $editorpicks['image'];
 							}
+                                                        $link_picks =  base_url() . sanitize($editorpicks['headline']) . "-" . $editorpicks['id'];
 						?>
 						<div class="media">
 						  <div class="media-left">
@@ -88,11 +93,11 @@
 							<!--a href="#">
 							  <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="<?php echo $image_editorpicks?>" data-holder-rendered="true" style="width: 64px; height: 64px;">
 							</a-->
-							<a href="<?php echo $editorpicks['ci_key']; ?>" style="border:0px;"><img src="<?php echo $image_editorpicks; ?>" class="media-object" data-holder-rendered="true" style="width: 64px; height: 64px;" /></a>
+							<a href="<?php echo $link_picks; ?>" style="border:0px;"><img src="<?php echo $image_editorpicks; ?>" class="media-object" data-holder-rendered="true" style="width: 64px; height: 64px;" /></a>
 						  <?php endif; ?>
 						  </div>
 						  <div class="media-body">
-							<p class="media-heading"><a style="color:#000;" href="<?php echo $editorpicks['ci_key']; ?>"><?php echo $editorpicks['headline']; ?></a></p>                                            
+							<p class="media-heading"><a style="color:#000;" href="<?php echo $link_picks; ?>"><?php echo $editorpicks['headline']; ?></a></p>                                            
 						  </div>
 						</div>
 					<?php } ?>

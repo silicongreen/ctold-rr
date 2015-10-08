@@ -62,7 +62,7 @@ class singlepage_postbox extends widget
     
     function editorpicks_news($limit)
     {
-        $this->db->select('*');
+        $this->db->select('tds_post.*');
         $this->db->from('post');
         $this->db->join('tds_editor_picks', 'tds_editor_picks.post_id = tds_post.id');
         $this->db->limit($limit);

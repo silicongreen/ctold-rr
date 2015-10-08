@@ -94,6 +94,9 @@
     .flexslider .slides img {
         height: 100%;
     }
+    .flex-direction-nav li {
+        line-height: 40px;
+    }
 </style>
 
 <script language="javascript">

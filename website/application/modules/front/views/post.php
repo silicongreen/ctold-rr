@@ -771,7 +771,7 @@ p.description_content{
         <div class="clearfix"></div>
 
         <?php
-        $more_cache_name = 'MORE_OF_' . $parent_category_id . '_FOR_POST_' . $post_id;
+        /*$more_cache_name = 'MORE_OF_' . $parent_category_id . '_FOR_POST_' . $post_id;
         $s_more_content = $CI->cache->get($more_cache_name);
 
         if ($s_more_content !== false) {
@@ -808,7 +808,7 @@ p.description_content{
             $s_more_content = ob_get_contents();
             ob_end_clean();
         }
-        echo $s_more_content;
+        echo $s_more_content;*/
         ?>
         <div id="gif_ad" style="position:fixed;bottom:0px;width:350px;margin: 0px auto;right:-270px;display:none; " >
             <span class="gif_ad_close" style="cursor: pointer;padding: 10px;position: absolute;right: 22px;top: 6px;"></span>

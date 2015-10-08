@@ -1171,6 +1171,11 @@ height: 46px;
    </div>
     
 </header>
+
+<?php 
+$sencond_menu['my_school_menu_uri'] = $my_school_menu_uri;
+$sencond_menu['school_icon_class '] = $school_icon_class;
+$widget->run('champs21secondheader',$sencond_menu);?>
 <script>
     function selectCountry(val) {
     $("body #search-box1").val(val);
@@ -1283,6 +1288,14 @@ if($('.header-logo-div').is(':visible')) {
         {
             display:none;
         }
+        .second-header-wrapper
+        {
+            display:none;
+        }
+        .fixed-menu
+        {
+            display:inline-block !important;;
+        }
     }
     @media all and (min-width: 315px) and (max-width: 449px) {
         .fancybox-wrap
@@ -1308,6 +1321,14 @@ if($('.header-logo-div').is(':visible')) {
         .ch-grid-header
         {
             margin-right:20px !important;
+        }
+        .second-header-wrapper
+        {
+            display:none;
+        }
+        .fixed-menu
+        {
+            display:inline-block !important;;
         }
     }
     @media all and (max-width: 449px) {
@@ -1570,7 +1591,14 @@ if($('.header-logo-div').is(':visible')) {
         {
             font-size:9px !important;
         }
-
+        .second-header-wrapper
+        {
+            display:none;
+        }
+        .fixed-menu
+        {
+            display:inline-block !important;;
+        }
     } 
     @media all and (min-width: 450px) and (max-width: 599px) {
         .container
@@ -1614,7 +1642,10 @@ if($('.header-logo-div').is(':visible')) {
         {
             font-size:5px;
         }*/
-
+        .fixed-menu
+        {
+            display:inline-block !important;;
+        }
         .fixed-menu
         {
             top:initial !important;  
@@ -1632,6 +1663,10 @@ if($('.header-logo-div').is(':visible')) {
         .fixed-menu li
         {
             display:inline-block !important;
+        }
+        .second-header-wrapper
+        {
+            display:none;
         }
         .icon-good-read
         {
@@ -1866,7 +1901,14 @@ if($('.header-logo-div').is(':visible')) {
             margin-top:7px !important;
         }
 
-
+        .fixed-menu
+        {
+            display:inline-block !important;;
+        }
+        .second-header ul li div
+        {
+            font-size:7px;
+        }
         .fixed-menu
         {
             top:initial !important;  
@@ -1884,6 +1926,10 @@ if($('.header-logo-div').is(':visible')) {
         .fixed-menu li
         {
             display:inline-block !important;
+        }
+        .second-header-wrapper
+        {
+            display:none;
         }
         .icon-good-read
         {
@@ -2130,6 +2176,14 @@ if($('.header-logo-div').is(':visible')) {
             width:33.33%;
             float:left;
         }
+        .fixed-menu
+        {
+            display:none;
+        }
+        .second-header ul li div
+        {
+            font-size:7px;
+        }
     }
     @media all and (min-width: 992px) and (max-width: 1251px) {
         .fancybox-wrap
@@ -2148,6 +2202,10 @@ if($('.header-logo-div').is(':visible')) {
         ul.radio-holder li{        
             padding-right: 20px !important;
             padding-left: 0px !important;
+        }
+        .fixed-menu
+        {
+            display:none;
         }
     }
 
@@ -2184,6 +2242,10 @@ if($('.header-logo-div').is(':visible')) {
         cursor:pointer;
         display: none;
 
+    }
+    .fixed-menu
+    {
+        display:none;
     }
     .fixed-menu
     {

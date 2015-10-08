@@ -1,35 +1,34 @@
 <?php
 $ci_key = (isset($ci_key)) ? $ci_key : 'index';
 $widget = new Widget;
-
-
 //$widget->run('menufooter');
 ?>
-<a href="#" class="champs21_scrollToTop"><!--Scroll To Top--></a>
-<div class="footerlink f5">
-    <ul>
-        <li><a href="<?php echo base_url('about-us'); ?>">About Us</a></li>
-        <li>|</li>
-        <li><a href="<?php echo base_url('terms'); ?>">Terms</a></li>
-        <li>|</li>
-        <li><a href="<?php echo base_url('privacy-policy'); ?>">Privacy Policy</a></li>
-        <li>|</li>
-        <li><a href="<?php echo base_url('copyright'); ?>">Copyright</a></li>
-        <li>|</li>
-        <li><a href="/contact-us">Contact Us</a></li>
-        <!--        <li>|</li>
-                <li><a href="#">Online purchase</a></li>
-                <li>|</li>
-                <li><a href="#">Career</a></li>
-                <li>|</li>
-        -->
-    </ul>
+<a href="javascript:;" class="champs21_scrollToTop"><!--Scroll To Top--></a>
+
+<div class="ym-wbox footer noPrint" style="padding:5px 35px 5px 15px;position:fixed;bottom:0px;display:none;">
+    
+    <div class="footerlink f5">
+        <ul>
+            <li><a href="<?php echo base_url('about-us'); ?>">About Us</a></li>
+            <li>|</li>
+            <li><a href="<?php echo base_url('terms'); ?>">Terms</a></li>
+            <li>|</li>
+            <li><a href="<?php echo base_url('privacy-policy'); ?>">Privacy Policy</a></li>
+            <li>|</li>
+            <li><a href="<?php echo base_url('copyright'); ?>">Copyright</a></li>
+            <li>|</li>
+            <li><a href="/contact-us">Contact Us</a></li>        
+        </ul>
+    </div>
+
+    <div class="poweredby f5">    
+        <p>Powered by <a href="http://www.team-creative.net" style="color:red;">Team Creative</a></p>
+    </div>
+
 </div>
 
-<!--###############################################################################-->
-<div class="poweredby f5">    
-    <p>Powered by <a href="http://www.team-creative.net" style="color:red;">Team Creative</a></p>
-</div>
+
+
 <!--<script type="text/javascript">
 //THIS IS FOR ONLY SNOW FALL EFFECT
 //snowStorm.snowColor = '#fff'; // blue-ish snow!?
@@ -134,8 +133,10 @@ $widget = new Widget;
         $(window).scroll(function () {
             if ($(this).scrollTop() > 400) {
                 $('.champs21_scrollToTop').fadeIn();
+                $('.footer').fadeIn();
             } else {
                 $('.champs21_scrollToTop').fadeOut();
+                $('.footer').fadeOut();
             }
         });
 
@@ -144,7 +145,6 @@ $widget = new Widget;
             $('html, body').animate({scrollTop: 0}, 800);
             return false;
         });
-
     });
 </script>
 
@@ -175,7 +175,7 @@ $widget = new Widget;
         height:40px;	
         background: whiteSmoke;	
         position:fixed;
-        bottom:80px;
+        bottom:100px;
         right:4px;
         display:none;
         background: url('<?php echo base_url('styles/layouts/tdsfront/images/arrow_up.png'); ?>') no-repeat;

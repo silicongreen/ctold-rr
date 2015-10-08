@@ -83,7 +83,7 @@ ob_start();
                     <!--                    <a id="google-play-link" href="https://play.google.com/store/apps/details?id=com.champs21.schoolapp" target="_blank">
                                             <img style="width: 100%;"  src="<?php // echo base_url("styles/layouts/tdsfront/image/app_name.jpg");        ?>">
                                         </a>-->
-                    <a href="javascript:void(0);">
+                    <a href="/spellingbee">
                         <img style="width: 100%;"  src="<?php echo base_url("styles/layouts/tdsfront/image/single_page_top.jpg"); ?>">
                     </a>
         <!--            <a id="world-cup-play-link" href="<?php // echo base_url();                                        ?><?php // echo $CI->config->config['world_cup_quize_link']                                        ?>" ><img style="width: 100%; height:223px;" src="<?php // echo base_url("styles/layouts/tdsfront/image/world-cup-page-banner.jpg");                                        ?>"></a>-->
@@ -771,7 +771,7 @@ p.description_content{
         <div class="clearfix"></div>
 
         <?php
-        /*$more_cache_name = 'MORE_OF_' . $parent_category_id . '_FOR_POST_' . $post_id;
+        $more_cache_name = 'MORE_OF_' . $parent_category_id . '_FOR_POST_' . $post_id;
         $s_more_content = $CI->cache->get($more_cache_name);
 
         if ($s_more_content !== false) {
@@ -808,7 +808,7 @@ p.description_content{
             $s_more_content = ob_get_contents();
             ob_end_clean();
         }
-        echo $s_more_content;*/
+        echo $s_more_content;
         ?>
         <div id="gif_ad" style="position:fixed;bottom:0px;width:350px;margin: 0px auto;right:-270px;display:none; " >
             <span class="gif_ad_close" style="cursor: pointer;padding: 10px;position: absolute;right: 22px;top: 6px;"></span>

@@ -120,7 +120,7 @@
 						}
 	.postlist-tab ul.nav-tabs > li > a {                                        
 						color: #000;
-						padding:11px;
+						padding:10px;
 						margin:0px;
 						line-height: 20px;
 						border: 1px solid #DEE9EB;

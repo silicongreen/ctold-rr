@@ -895,7 +895,8 @@ if(!function_exists("get_paid_school_droupdown"))
                 $s_array[$value->paid_school_id] = $value->name;
             }
         }
-        $droup_down = form_dropdown('paid_school_id', $s_array, '');
+        $class='id="paid_school_dropdown"';
+        $droup_down = form_dropdown('paid_school_id', $s_array, '',$class);
         return $droup_down;
     }
 }

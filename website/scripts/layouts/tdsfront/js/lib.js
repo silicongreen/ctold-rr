@@ -101,6 +101,27 @@ $(document).ready(function () {
     
     $( "div[data='"+lang+"']" ).addClass('active');
     
+    $(document).on("change", ".user_type_class", function () {
+     
+        var user_type_value = $('input[name="user_type"]:checked').val();
+        
+        if($("#paid_school_and_code_change").length>0)
+        {
+            
+            if(user_type_value=="2" || user_type_value=="3") 
+            {
+                $("fieldset#paid_school_and_code_change").show();
+            }
+            else
+            {
+                $("fieldset#paid_school_and_code_change").hide();
+                $("fieldset#paid_school_and_code_change  #paid_school_dropdown").val("");
+                $("fieldset#paid_school_and_code_change  #school_code").val("");
+            }    
+        }
+       
+    });
+    
     window.addEventListener('message', function (event) {
         if (event.data == 'ready') {
             sendHash();

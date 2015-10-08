@@ -254,7 +254,7 @@ height: 46px;
                                         <ul class="radio-holder">
                                             <?php $i = 0; foreach ($free_user_types as $key => $value) { ?>
                                                 <li class="user_type_radio" <?php echo ($i > 0) ? 'style="padding-left: 60px !important;"' : '' ?>>
-                                                    <input class="css-checkbox" id="<?php echo $value; ?>" name="user_type" value="<?php echo $key; ?>" type="radio" 
+                                                    <input class="css-checkbox user_type_class" id="<?php echo $value; ?>" name="user_type" value="<?php echo $key; ?>" type="radio" 
                                                         <?php
 
                                                         if ($edit && ($model->user_type >= 0 ) && ($key == $model->user_type)) {
@@ -275,9 +275,9 @@ height: 46px;
                                     $this->load->config("huffas");
                                     if((isset($this->config->config['paid_registration']) && $this->config->config['paid_registration']) || $_GET['test']=="paid_school"):
                                  ?>
-                                <fieldset>
+                            <fieldset id="paid_school_and_code_change" style="display:none;">
 
-                                    <ul class="radio-holder drop-big" style="margin:10px 0 10px 33px">    
+                                    <ul class="radio-holder drop-big" style="margin:10px 0 10px 33px;">    
                                         <li>
                                             <fieldset style="color:black;">Teacher/Student Of A Premium School (Optional)?</fieldset>
 

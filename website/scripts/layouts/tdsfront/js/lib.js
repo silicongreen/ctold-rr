@@ -288,6 +288,11 @@ $(document).ready(function () {
             eraseCookie('local');
         }
         
+        if($('.page-limit').length < 1) {
+            var loader_html = '<div style="" class="loading-box"><div class="loading"></div></div>';
+            $('.container').append(loader_html);
+        }
+        
         getLangPostData();
     });
      

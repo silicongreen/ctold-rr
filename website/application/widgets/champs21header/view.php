@@ -1905,10 +1905,6 @@ if($('.header-logo-div').is(':visible')) {
         {
             display:inline-block !important;;
         }
-        .second-header ul li div
-        {
-            font-size:7px;
-        }
         .fixed-menu
         {
             top:initial !important;  
@@ -2179,10 +2175,6 @@ if($('.header-logo-div').is(':visible')) {
         .fixed-menu
         {
             display:none;
-        }
-        .second-header ul li div
-        {
-            font-size:7px;
         }
     }
     @media all and (min-width: 992px) and (max-width: 1251px) {

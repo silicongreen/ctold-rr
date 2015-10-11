@@ -6,7 +6,7 @@
         <div class="icon-wrapper">
             <ul>
                 <?php if (get_free_user_session('paid_id') && get_free_user_session('paid_school_code')) { ?>
-                    <li data="magic_mart" class="before-login-user-back" onclick="location.href = '<?php echo $my_school_menu_uri; ?>'">
+                    <li data="magic_mart" class="before-login-user-back" onclick="location.href = '<?php echo $my_school_menu_uri; ?>'" data-toggle="tooltip" data-placement="bottom" data-original-title="Default tooltip likhon">
                         <div class="icon">
                             <img src="/styles/layouts/tdsfront/images/icon/second_header/diary21.png">
                         </div>
@@ -15,9 +15,9 @@
                 <?php } ?>
 
                 <?php if (free_user_logged_in()) { ?>
-                    <li onclick="location.href = '<?php echo base_url('/good-read'); ?>'">
+                    <li onclick="location.href = '<?php echo base_url('/good-read'); ?>'" data-toggle="tooltip" data-placement="bottom" data-original-title="Save/collect articles that you like using 'Good Read' feature.">
                     <?php } else { ?>
-                    <li data="good_read" class="before-login-user">
+                    <li data="good_read" class="before-login-user" data-toggle="tooltip" data-placement="bottom" data-original-title="Save/collect articles that you like using 'Good Read' feature.">
                     <?php } ?>
                     <div class="icon">
                         <img src="/styles/layouts/tdsfront/images/icon/second_header/good_read.png" />
@@ -25,25 +25,25 @@
                     <div class="text">Good Read</div>
                 </li>
 
-                <li data="candle" class="<?php echo ( free_user_logged_in() ) ? 'candlepopup' : 'before-login-user'; ?>">
+                <li data="candle" class="<?php echo ( free_user_logged_in() ) ? 'candlepopup' : 'before-login-user'; ?>" data-toggle="tooltip" data-placement="bottom" data-original-title="This is where you make your voice heard. Candle lets user to publish their articles and give feedback.">
                     <div class="icon">
                         <img src="/styles/layouts/tdsfront/images/icon/second_header/candle.png" />
                     </div>
                     <div class="text">Candle</div>
                 </li>
 
-                <li data="magic_mart" class="before-login-user-back" onclick="location.href = '<?php echo base_url() . 'schools'; ?>'">
+                <li data="magic_mart" class="before-login-user-back" onclick="location.href = '<?php echo base_url() . 'schools'; ?>'" data-toggle="tooltip" data-placement="bottom" data-original-title="Search & find information on 100+ schools in the Dhaka & around the nation.">
                     <div class="icon">
                         <img src="/styles/layouts/tdsfront/images/icon/second_header/my_school.png" />
                     </div>
                     <div class="text">My School</div>
                 </li>
                 <?php if ($this->config->config['android_app_dl_popup_show'] == true) { ?>
-                    <li data="android-app" class="pop-without-login">
+                    <li data="android-app" class="pop-without-login" data-toggle="tooltip" data-placement="bottom" data-original-title="Download Android Application of Champs21.">
                         <div class="icon">
                             <img src="/styles/layouts/tdsfront/images/icon/second_header/my_app.png" />
                         </div>
-                        <div class="text">My App</div>
+                        <div class="text">Champs21 App</div>
                     </li>
                 <?php } ?>
             </ul>
@@ -394,4 +394,9 @@
         lastScrollTop = st;
     });
 
+</script>
+<script type="text/javascript">
+$(document).ready(function(){
+    $('.second-header ul li').tooltip();
+});
 </script>

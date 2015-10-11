@@ -2891,9 +2891,8 @@ function eraseCookie(name) {
 
 function getLangPostData() {
 
-    var page_size = new Number($("#page-size").val());
     var q = $("#q").val();
-    var callcount = 0;
+    
     var lang = readCookie('local');
 
     if (lang !== null) {
@@ -2901,8 +2900,7 @@ function getLangPostData() {
     } else {
         lang = '';
     }
-
-    current_page = new Number($("#current-page").val());
+    
     var page_to_load = 0;
 
     $(".loading-box").show();
@@ -2911,7 +2909,7 @@ function getLangPostData() {
 
     $.ajax({
         type: "GET",
-        url: $("#base_url").val() + 'front/ajax/getPosts/' + $("#category").val() + "/" + $("#target").val() + "/" + $("#page").val() + "/" + $("#page-limit").val() + "/" + page_to_load + "/" + lang,
+        url: $("#base_url").val() + 'front/ajax/getPosts/' + $("#category").val() + "/" + $("#target").val() + "/" + $("#page").val() + "/9/" + page_to_load + "/" + lang,
         data: {
             content_showed: content_showed,
             s: q
@@ -2919,9 +2917,7 @@ function getLangPostData() {
         async: true,
         success: function (data) {
             
-            callcount += 0;
-            page_size += pageSizeDefault;
-            $("#page-size").val(page_size);
+            $("#page-size").val(9);
 
             $("#grid").html(data);
 

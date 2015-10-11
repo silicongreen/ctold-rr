@@ -43,7 +43,7 @@
                         <div class="icon">
                             <img src="/styles/layouts/tdsfront/images/icon/second_header/my_app.png" />
                         </div>
-                        <div class="text">My App</div>
+                        <div class="text">Android</div>
                     </li>
                 <?php } ?>
             </ul>

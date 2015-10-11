@@ -33,8 +33,8 @@ class champs21secondheader extends widget {
 
     function run($ar_params = array()) {
         
-        $data['my_school_menu_uri'] = $my_school_menu_uri;
-        $data['school_icon_class '] = $school_icon_class;
+        $data['my_school_menu_uri'] = $ar_params['my_school_menu_uri'];
+        $data['school_icon_class '] = $ar_params['$school_icon_class'];
         
         $this->render($data);
     }

@@ -164,6 +164,19 @@
                                 </div>
                             </div>
                         </fieldset>
+                        
+                         <fieldset class="label_side top">
+                            <label for="required_field">Is Visible</label>
+                            <div>
+                                <?php
+                                $a_visible = array(1 => 'Yes', 2 => 'No');
+
+                                if (!$model->is_visible)
+                                    $model->is_visible = 1;
+                                echo form_dropdown('is_visible', $a_visible, $model->is_visible);
+                                ?>
+                            </div>
+                        </fieldset>
 
 
 

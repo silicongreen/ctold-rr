@@ -513,6 +513,8 @@ class home extends MX_Controller {
             ($this->input->post('district') != "") ? $this->db->or_like('division', $this->input->post('division'), 'after') : '';
             ($this->input->post('level') != "") ? $this->db->or_like('level', $this->input->post('level'), 'after') : '';
             ($this->input->get('str') != "") ? $this->db->like('name', $this->input->get('str'), 'after') : '';
+            
+            $this->db->where("is_visible",1);
 
             $this->db->order_by("is_paid DESC, name ASC");
 
@@ -2387,6 +2389,7 @@ class home extends MX_Controller {
         ($this->input->post('district') != "") ? $this->db->or_like('division', $this->input->post('division'), 'after') : '';
         ($this->input->post('level') != "") ? $this->db->or_like('level', $this->input->post('level'), 'after') : '';
         ($this->input->get('str') != "") ? $this->db->like('name', $this->input->get('str'), 'after') : '';
+        $this->db->where("is_visible",1);
         $query = $this->db->get();
         $data['schooldata'] = $query->result_array();
 

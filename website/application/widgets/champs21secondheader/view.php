@@ -43,7 +43,7 @@
                         <div class="icon">
                             <img src="/styles/layouts/tdsfront/images/icon/second_header/my_app.png" />
                         </div>
-                        <div class="text">Champs21 App</div>
+                        <div class="text">My App</div>
                     </li>
                 <?php } ?>
             </ul>

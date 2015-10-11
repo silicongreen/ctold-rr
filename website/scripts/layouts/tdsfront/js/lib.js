@@ -2891,9 +2891,7 @@ function eraseCookie(name) {
 
 function getLangPostData() {
 
-    var total_post = new Number($("#total_data").val());
     var page_size = new Number($("#page-size").val());
-    var page_limit = new Number($("#page-limit").val());
     var q = $("#q").val();
     var callcount = 0;
     var lang = readCookie('local');

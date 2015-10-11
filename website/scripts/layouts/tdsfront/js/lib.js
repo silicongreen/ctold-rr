@@ -289,7 +289,6 @@ $(document).ready(function () {
         }
         
         getLangPostData();
-        clearTimeout(postData);
     });
      
      $(document).off("click", ".search_box_head").on("click", ".search_box_head", function (event) {

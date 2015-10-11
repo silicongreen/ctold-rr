@@ -6,7 +6,7 @@
         <div class="icon-wrapper">
             <ul>
                 <?php if (get_free_user_session('paid_id') && get_free_user_session('paid_school_code')) { ?>
-                    <li data="magic_mart" class="before-login-user-back" onclick="location.href = '<?php echo $my_school_menu_uri; ?>'" data-toggle="tooltip" data-placement="bottom" data-original-title="Default tooltip likhon">
+                    <li data="magic_mart" class="before-login-user-back" onclick="location.href = '<?php echo $my_school_menu_uri; ?>'" data-toggle="tooltip" data-placement="bottom" data-original-title="My School">
                         <div class="icon">
                             <img src="/styles/layouts/tdsfront/images/icon/second_header/diary21.png">
                         </div>

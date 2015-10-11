@@ -2890,12 +2890,7 @@ function eraseCookie(name) {
 }
 
 function getLangPostData() {
-
-    var total_post = new Number($("#total_data").val());
-    var page_size = new Number($("#page-size").val());
-    var page_limit = new Number($("#page-limit").val());
-    var q = $("#q").val();
-    var callcount = 0;
+    
     var lang = readCookie('local');
 
     if (lang !== null) {
@@ -2904,7 +2899,6 @@ function getLangPostData() {
         lang = '';
     }
 
-    current_page = new Number($("#current-page").val());
     var page_to_load = 0;
 
     $(".loading-box").show();
@@ -2921,10 +2915,6 @@ function getLangPostData() {
         async: true,
         success: function (data) {
             
-            callcount += 0;
-            page_size += pageSizeDefault;
-            $("#page-size").val(page_size);
-
             $("#grid").html(data);
 
             $("#current-page").val(0);

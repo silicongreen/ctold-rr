@@ -2443,29 +2443,37 @@ class FreeuserController extends Controller
             $all_pinpost = $pinpostobj->getPinPost(0, $website_only);
             $new_post = array();
             $i = 0;
-            foreach ($response['data']['post'] as $value)
-            {
-                for ($k = $i; $k < 10; $k++)
+            
+            if(!empty($response['data']['post'])) {
+                foreach ($response['data']['post'] as $value)
                 {
-                    if (isset($all_pinpost[$k + 1]))
+                    for ($k = $i; $k < 10; $k++)
                     {
-                        $new_post[]['id'] = $all_pinpost[$k + 1];
-                        if ($k > $i)
+                        if (isset($all_pinpost[$k + 1]))
                         {
-                            $i = $k;
+                            $new_post[]['id'] = $all_pinpost[$k + 1];
+                            if ($k > $i)
+                            {
+                                $i = $k;
+                            }
+                        }
+                        else
+                        {
+                            break;
                         }
                     }
-                    else
+                    if (!in_array($value['id'], $all_pinpost))
                     {
-                        break;
+                        $new_post[]['id'] = $value['id'];
                     }
+                    $i++;
                 }
-                if (!in_array($value['id'], $all_pinpost))
-                {
-                    $new_post[]['id'] = $value['id'];
+            } else {
+                foreach ($all_pinpost as $value) {
+                    $new_post[]['id'] = $value;
                 }
-                $i++;
             }
+            
             $response['data']['post'] = $new_post;
         }
 
@@ -2856,35 +2864,41 @@ class FreeuserController extends Controller
         $all_pinpost = $pinpostobj->getPinPost($news_category);
         if ($page_number == 1)
         {
-
-
             $new_post = array();
             $i = 0;
-            foreach ($response['data']['post'] as $value)
-            {
-                for ($k = $i; $k < 10; $k++)
+            
+            if(!empty($response['data']['post'])) {
+                foreach ($response['data']['post'] as $value)
                 {
-                    if (isset($all_pinpost[$k + 1]))
+                    for ($k = $i; $k < 10; $k++)
                     {
-                        $new_post[]['id'] = $all_pinpost[$k + 1];
-                        if ($k > $i)
+                        if (isset($all_pinpost[$k + 1]))
                         {
-                            $i = $k;
+                            $new_post[]['id'] = $all_pinpost[$k + 1];
+                            if ($k > $i)
+                            {
+                                $i = $k;
+                            }
+                        }
+                        else
+                        {
+                            break;
                         }
                     }
-                    else
+
+
+                    if (!in_array($value['id'], $all_pinpost))
                     {
-                        break;
+                        $new_post[]['id'] = $value['id'];
                     }
+                    $i++;
                 }
-
-
-                if (!in_array($value['id'], $all_pinpost))
-                {
-                    $new_post[]['id'] = $value['id'];
+            } else {
+                foreach ($all_pinpost as $value) {
+                    $new_post[]['id'] = $value;
                 }
-                $i++;
             }
+            
             $response['data']['post'] = $new_post;
         }
         else

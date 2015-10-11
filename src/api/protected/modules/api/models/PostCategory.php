@@ -286,10 +286,9 @@ class PostCategory extends CActiveRecord
             $criteria->addCondition("post.is_featured = 0 OR post.is_featured IS NULL");
         }
         
-        if($lang)
-        {
-            $criteria->compare("post.language", $lang);
-        }    
+        if($lang) {
+            $criteria->addCondition("post.language = '".$lang."' OR post.post_type = '2'");
+        }
         
         if(!$popular_sort)
         {

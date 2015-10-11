@@ -191,14 +191,14 @@ class HomepageData extends CActiveRecord
         }
         
         $criteria = new CDbCriteria;
-        $criteria->together = false;
+        $criteria->together = true;
         $criteria->select = 'MAX(t.priority) as maxorder';
         $criteria->compare("post.status", 5);
         $criteria->compare("post.school_id", 0);
         $criteria->compare("post.teacher_id", 0);
         
         if($lang) {
-            $criteria->compare("post.language", $lang);
+            $criteria->addCondition("post.language = '".$lang."' OR post.post_type = '2'");
         }
         
         $criteria->compare("t.status", 1);
@@ -259,6 +259,8 @@ class HomepageData extends CActiveRecord
 
         $criteria->offset = 0;
         
+//        $subQuery=$this->getCommandBuilder()->createFindCommand($this->getTableSchema(),$criteria)->getText();
+//        var_dump($subQuery);exit;
         $obj_post = $this->findAll($criteria);
        
         if(Settings::$news_in_index['show_old_news'] === false)

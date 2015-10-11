@@ -288,10 +288,10 @@ $(document).ready(function () {
             eraseCookie('local');
         }
         
-//        if($('.loading-boxt').length < 1) {
-//            var loader_html = '<div style="" class="loading-box"><div class="loading"></div></div>';
-//            $('.container').append(loader_html);
-//        }
+        if($('.loading-boxt').length < 1) {
+            var loader_html = '<div style="" class="loading-box"><div class="loading"></div></div>';
+            $('.container').append(loader_html);
+        }
         
         getLangPostData();
     });

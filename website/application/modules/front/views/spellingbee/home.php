@@ -2,49 +2,49 @@
 <div class="home_box">    
 <!--    <div style="width: 100%;">
         <div class="flying_bee1">
-            <img id="flying_bee1_bg" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/BG.png'); ?>" style="width:100%;height: 410px;">
+            <img id="flying_bee1_bg" src="<?php // echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/BG.png'); ?>" style="width:100%;height: 410px;">
             <div id="over1">
                 <span class="Centerer1"></span>
-                <img class="Centered1" id="flying_bee1_logo" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/sp-logo-2.png'); ?>" style="">                   
+                <img class="Centered1" id="flying_bee1_logo" src="<?php // echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/sp-logo-2.png'); ?>" style="">                   
             </div>
-            <img id="season_4" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/season-4.png'); ?>" style="">
+            <img id="season_4" src="<?php // echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/season-4.png'); ?>" style="">
         </div>
         <div class="flying_bee1_content">
             <div class="f5 join_msg_box">
-                <center><img id="join_msg" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/join_msg.png'); ?>" style="width:75%;"></center>
+                <center><img id="join_msg" src="<?php // echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/join_msg.png'); ?>" style="width:75%;"></center>
             </div>
             <div class="sp_btn_pack_box">
                 <nav id="sp_btn_pack">
-                <?php if( free_user_logged_in() ) { ?>
-                    <?php $is_joined_spellbee = get_free_user_session('is_joined_spellbee');
-                    if($is_joined_spellbee == 1 || get_free_user_session('type') != 2){
+                <?php // if( free_user_logged_in() ) { ?>
+                    <?php // $is_joined_spellbee = get_free_user_session('is_joined_spellbee');
+//                    if($is_joined_spellbee == 1 || get_free_user_session('type') != 2){
                     ?> 
                     a href="http://www.champs21.com/swf/spellingbee_2015/index.html" title="Spelling Bee | Season 4" class="example2demo sp_btn_1" style="float: left;width:110px;position:relative;z-index: 100;" name="Spelling Bee">
-                        <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/play.png'); ?>" style="width:100%;" onMouseOver="MouseRollover(this)" onMouseOut="MouseOut(this)">
+                        <img src="<?php // echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/play.png'); ?>" style="width:100%;" onMouseOver="MouseRollover(this)" onMouseOut="MouseOut(this)">
                     </a 
                     <a name="windowX" title="Spelling Bee | Season 4" id="play_spellbee_4" style="float: left;width:110px;" href="javascript:void(0);">
-                        <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/play.png'); ?>" style="width:100%;" onMouseOver="MouseRollover(this)" onMouseOut="MouseOut(this)">
+                        <img src="<?php // echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/play.png'); ?>" style="width:100%;" onMouseOver="MouseRollover(this)" onMouseOut="MouseOut(this)">
                     </a>
-                    <?php } else { ?>
+                    <?php // } else { ?>
                         a class="sp_btn_1" id="join_spellbee_reg" style="float: left;width:110px;position:relative;z-index: 100;" href="javascript:void(0);">
-                            <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/play.png'); ?>" style="width:100%;" onMouseOver="MouseRollover(this)" onMouseOut="MouseOut(this)">
+                            <img src="<?php // echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/play.png'); ?>" style="width:100%;" onMouseOver="MouseRollover(this)" onMouseOut="MouseOut(this)">
                         </a
-                    <?php }
-                    } else { ?>
+                    <?php // }
+//                    } else { ?>
                     a class="f2 login-user sp_btn_1" style="float: left;width:110px;position:relative;z-index: 100;" href="javascript:void(0);">
-                        <img src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/play.png'); ?>" style="width:100%;" onMouseOver="MouseRollover(this)" onMouseOut="MouseOut(this)">
+                        <img src="<?php // echo base_url('styles/layouts/tdsfront/spelling_bee/2015/images/play.png'); ?>" style="width:100%;" onMouseOver="MouseRollover(this)" onMouseOut="MouseOut(this)">
                     </a
-                <?php } ?>
-                <?php if( free_user_logged_in() ) { ?>
-                    <?php $is_joined_spellbee = get_free_user_session('is_joined_spellbee');
-                    if($is_joined_spellbee == 0 && get_free_user_session('type') == 2){
+                <?php // } ?>
+                <?php // if( free_user_logged_in() ) { ?>
+                    <?php // $is_joined_spellbee = get_free_user_session('is_joined_spellbee');
+//                    if($is_joined_spellbee == 0 && get_free_user_session('type') == 2){
                     ?>                    
                     a href="javascript:void(0);" id="join_spellbee_reg" class="f2 button-filter1 sp_btn_2" style="position:relative;z-index: 90;">Join</a
                     
-                    <?php } } else { ?>
+                    <?php // } } else { ?>
                 a href="javascript:void(0);" class="f2 button-filter1 login-user sp_btn_2" style="position:relative;">Join</a
-                <?php } ?>
-                <a href="<?php echo base_url('leaderboard'); ?>" class="f2 button-filter2 sp_btn_3" style="position:relative;z-index: 80;">Divisional Participants</a>
+                <?php // } ?>
+                <a href="<?php // echo base_url('leaderboard'); ?>" class="f2 button-filter2 sp_btn_3" style="position:relative;z-index: 80;">Divisional Participants</a>
                 <a href="https://www.facebook.com/spellbangladesh" target="_blank" class="f2 button-filter3 sp_btn_4" style="position:relative;z-index: 70;">Facebook</a>
                 </nav>
             </div>
@@ -63,10 +63,10 @@
             <li onclick="location.href='<?php echo base_url() . 'nation-builder'; ?>'">
                 <img src="/styles/layouts/tdsfront/spelling_bee/2015/slides/slider_1.png" />
             </li>
-            <li onclick="location.href='<?php echo base_url() . 'spellingbee'; ?>'">
+            <li data="android-app" class="pop-without-login">
                 <img src="/styles/layouts/tdsfront/spelling_bee/2015/slides/slider_2.png" />
             </li>
-            <li data="android-app" class="pop-without-login">
+            <li onclick="location.href='<?php echo base_url() . 'spellingbee'; ?>'">
                 <img src="/styles/layouts/tdsfront/spelling_bee/2015/slides/slider_3.png" />
             </li>
         </ul>
@@ -90,6 +90,9 @@
         float: left;
         height: 100%;
         width: 68%;
+    }
+    .flexslider {
+        cursor: pointer;
     }
     .flexslider .slides img {
         height: 100%;

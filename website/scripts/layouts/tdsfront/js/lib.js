@@ -290,6 +290,7 @@ $(document).ready(function () {
         }else{
             eraseCookie('local');
         }
+        window.location.reload();
     });
      
      $(document).off("click", ".search_box_head").on("click", ".search_box_head", function (event) {

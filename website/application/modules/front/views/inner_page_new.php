@@ -19,10 +19,10 @@
 //    
 //    ob_start();
 
-    if (isset($_COOKIE['local'])) {
-        unset($_COOKIE['local']);
-        setcookie('local', null, -1, '/');
-    }
+//    if (isset($_COOKIE['local'])) {
+//        unset($_COOKIE['local']);
+//        setcookie('local', null, -1, '/');
+//    }
 
     $widget = new Widget;
     $lang = get_language_cookie();

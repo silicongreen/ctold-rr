@@ -32,11 +32,6 @@
                 
             </div>
             
-<!--            <div class="lang-filter">
-                <div data="ENG" class="lng-eng">English</div>
-                <div data="BAN" class="lng-bng">বাংলা</div>
-            </div>-->
-            
             <?php if( free_user_logged_in() ): ?>
             <div class="header-logo-div">
                 <a href="<?php echo base_url(); ?>" ><img  src="<?php echo base_url('styles/layouts/tdsfront/images/logo-new.png'); ?>" class="image-logo" alt="logo"></a>

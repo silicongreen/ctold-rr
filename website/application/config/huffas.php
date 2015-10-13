@@ -82,7 +82,7 @@ $config['education-changes-life'] = array(
 $config['nation-builder'] = array(
     'ecl_ids' => array(74),
     'top_banner' => array(
-        'title' => '/styles/layouts/tdsfront/image/nation-title-banner.png',
+        'title' => '/styles/layouts/tdsfront/image/nation-title-banner-new.png',
         'logo' => '',
     ),
     "li-class-name" => 'col-sm-5',

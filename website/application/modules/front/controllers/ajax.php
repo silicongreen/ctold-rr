@@ -19,6 +19,12 @@ class ajax extends MX_Controller
         $this->layout_front = false;
         $this->obj_post = new Post_model();
     }
+    
+    public function gotoplaystore() {
+        $this->load->config('huffas');
+        $app_url = $this->config->config['android_app_dl_url'];
+        redirect($app_url);
+    }
 
     public function getExclusiveNews()
     {

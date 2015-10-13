@@ -61,7 +61,7 @@
     <div class="new-sb-banner flexslider">
         <ul class="slides">
             <li onclick="location.href='<?php echo base_url() . 'nation-builder'; ?>'">
-                <img src="/styles/layouts/tdsfront/spelling_bee/2015/slides/slider_1.png" />
+                <img src="/styles/layouts/tdsfront/spelling_bee/2015/slides/slider_1_new.png" />
             </li>
             <li data="android-app" class="pop-without-login">
                 <img src="/styles/layouts/tdsfront/spelling_bee/2015/slides/slider_2.png" />
@@ -102,23 +102,21 @@
     }
 </style>
 
-<script language="javascript">
+<script type="text/javascript">
         function MouseRollover(MyImage) {
         MyImage.src = "styles/layouts/tdsfront/spelling_bee/2015/images/play-hover.png";
     }
         function MouseOut(MyImage) {
         MyImage.src = "styles/layouts/tdsfront/spelling_bee/2015/images/play.png";
     }
-</script>
-<script type="text/javascript"> 
-$('.example2demo').popupWindow({ 
-centerBrowser:1 ,
-height:600,
-width:800,
-resizable:1
-}); 
-</script>
-<script type="text/javascript"> 
+
+    $('.example2demo').popupWindow({ 
+        centerBrowser:1,
+        height:600,
+        width:800,
+        resizable:1
+    });
+    
     var numOfItemsSp = $('#sp_btn_pack a').length;     
     $('#sp_btn_pack a').hide();
 
@@ -169,13 +167,14 @@ resizable:1
                 
                 
                 
-            }, 3000); 
+            }, 100); 
     });
     
     $(window).load(function() {
         $('.flexslider').flexslider();
     });
 </script>
+
 <style>
 .sp_btn_pack_box
 {

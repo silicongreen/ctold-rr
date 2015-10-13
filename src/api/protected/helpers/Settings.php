@@ -1105,7 +1105,7 @@ class Settings {
 
     public static function get_post_link_url($news) {
         $link_array = array();
-        if ($news->post_type == 2) {
+        /*if ($news->post_type == 2) {
             if ($news->lead_link != null && $news->lead_link != "") {
                 $link_array['link'] = $news->lead_link;
                 $link_array['use_link'] = 1;
@@ -1121,7 +1121,7 @@ class Settings {
                 $link_array['link'] = self::$image_path . self::sanitize($news->headline) . "-" . $news->id;
                 $link_array['use_link'] = 0;
             }
-        }
+        }*/
         return $link_array;
     }
 

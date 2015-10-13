@@ -6,7 +6,7 @@
         <div class="icon-wrapper">
             <ul>
                 <?php if (get_free_user_session('paid_id') && get_free_user_session('paid_school_code')) { ?>
-                    <li data="magic_mart" class="before-login-user-back" onclick="location.href = '<?php echo $my_school_menu_uri; ?>'" data-toggle="tooltip" data-placement="bottom" data-original-title="My School">
+                    <li data="magic_mart" class="before-login-user-back" onclick="location.href = '<?php echo $my_school_menu_uri; ?>'" data-toggle="tooltip" data-placement="bottom" data-original-title="Your School Management System.">
                         <div class="icon">
                             <img src="/styles/layouts/tdsfront/images/icon/second_header/diary21.png">
                         </div>
@@ -15,9 +15,9 @@
                 <?php } ?>
 
                 <?php if (free_user_logged_in()) { ?>
-                    <li onclick="location.href = '<?php echo base_url('/good-read'); ?>'" data-toggle="tooltip" data-placement="bottom" data-original-title="Save/collect articles that you like using 'Good Read' feature.">
+                    <li onclick="location.href = '<?php echo base_url('/good-read'); ?>'" data-toggle="tooltip" data-placement="bottom" data-original-title="Save articles in your personal folder.">
                     <?php } else { ?>
-                    <li data="good_read" class="before-login-user" data-toggle="tooltip" data-placement="bottom" data-original-title="Save/collect articles that you like using 'Good Read' feature.">
+                    <li data="good_read" class="before-login-user" data-toggle="tooltip" data-placement="bottom" data-original-title="Save articles in your personal folder.">
                     <?php } ?>
                     <div class="icon">
                         <img src="/styles/layouts/tdsfront/images/icon/second_header/good_read.png" />
@@ -25,21 +25,21 @@
                     <div class="text">Good Read</div>
                 </li>
 
-                <li data="candle" class="<?php echo ( free_user_logged_in() ) ? 'candlepopup' : 'before-login-user'; ?>" data-toggle="tooltip" data-placement="bottom" data-original-title="This is where you make your voice heard. Candle lets user to publish their articles and give feedback.">
+                <li data="candle" class="<?php echo ( free_user_logged_in() ) ? 'candlepopup' : 'before-login-user'; ?>" data-toggle="tooltip" data-placement="bottom" data-original-title="Write to us!">
                     <div class="icon">
                         <img src="/styles/layouts/tdsfront/images/icon/second_header/candle.png" />
                     </div>
                     <div class="text">Candle</div>
                 </li>
 
-                <li data="magic_mart" class="before-login-user-back" onclick="location.href = '<?php echo base_url() . 'schools'; ?>'" data-toggle="tooltip" data-placement="bottom" data-original-title="Search & find information on 100+ schools in the Dhaka & around the nation.">
+                <li data="magic_mart" class="before-login-user-back" onclick="location.href = '<?php echo base_url() . 'schools'; ?>'" data-toggle="tooltip" data-placement="bottom" data-original-title="Search/Create school website.">
                     <div class="icon">
                         <img src="/styles/layouts/tdsfront/images/icon/second_header/my_school.png" />
                     </div>
                     <div class="text">My School</div>
                 </li>
                 <?php if ($this->config->config['android_app_dl_popup_show'] == true) { ?>
-                    <li data="android-app" class="pop-without-login" data-toggle="tooltip" data-placement="bottom" data-original-title="Download Android Application of Champs21.">
+                    <li data="android-app" class="pop-without-login" data-toggle="tooltip" data-placement="bottom" data-original-title="Download Champs21 Android Application.">
                         <div class="icon">
                             <img src="/styles/layouts/tdsfront/images/icon/second_header/my_app.png" />
                         </div>
@@ -61,13 +61,19 @@
 </div>
 
 <style type="text/css" media="all">
+    div.tooltip-inner {
+        text-align: center;
+        font-size: 11px;
+        max-width: 280px;
+        width: 280px;
+    }
     .container {
         margin-top: 120px;
     }
     .second-header-wrapper-hide {
         visibility: hidden;
         opacity: 0;
-        
+
         transition: all 300ms ease-in-out;
         -webkit-transition: all 300ms ease-in-out;
         -ms-transition: all 300ms ease-in-out;
@@ -77,14 +83,14 @@
     .second-header-wrapper-show {
         visibility: visible;
         opacity: 1;
-        
+
         transition: all 300ms ease-in-out;
         -webkit-transition: all 300ms ease-in-out;
         -ms-transition: all 300ms ease-in-out;
         -moz-transition: all 300ms ease-in-out;
         -o-transition: all 300ms ease-in-out;
     }
-    
+
     .second-header-wrapper {
         background-color: #AAB2B5;
         float: left;
@@ -221,7 +227,7 @@
         border-width: 10px;
         margin-left: -10px;
     }
-    
+
     @media all and (min-width: 1920px) {
         .icon-wrapper ul li div.icon {
             width: 25%;
@@ -396,7 +402,7 @@
 
 </script>
 <script type="text/javascript">
-$(document).ready(function(){
-    $('.second-header ul li').tooltip();
-});
+    $(document).ready(function () {
+        $('.second-header ul li').tooltip();
+    });
 </script>

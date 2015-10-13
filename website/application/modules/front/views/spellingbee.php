@@ -14,14 +14,15 @@
     <div class="spellingbee">
         <div class="tabcontainer">
             <div id="data_list_box" style="height:42px;">
-                <ul class="tabheading" style="display:none;">
+                <ul class="tabheading" style="display:block;">
                     <li class="active" rel="tab1"><a href="javascript:return false;">Home</a> </li>
                     <li rel="tab2"><a href="javascript:return false;">Competition Format</a> </li>
                     <li rel="tab3"><a href="javascript:return false;">Award</a> </li>
                     <li rel="tab4"><a href="javascript:return false;">How to Participate</a> </li>
-                    <li rel="tab5"><a href="javascript:return false;">Study Tips</a> </li>
+                    <!--<li rel="tab5"><a href="javascript:return false;">Study Tips</a> </li>-->
                     <li rel="tab6"><a href="javascript:return false;">Partners</a> </li>
-                    <li rel="tab7"><a href="javascript:return false;" style="color: #ED1C24;">Venue</a> </li>
+                    <!--<li rel="tab7"><a href="javascript:return false;" style="color: #ED1C24;">Venue</a> </li>-->
+                    <li rel="nation-builder"><a href="/nation-builder">Nation Builder</a></li>
                 </ul>
             </div> 
             
@@ -174,10 +175,15 @@
         var tabid = $(this).attr("rel");
         $(this).parents('.tabcontainer').find('.active').removeClass('active');
         $('.tabbody').hide();
-        $('#' + tabid).show();
-        $(this).addClass('active');
+        
+        if(tabid == 'nation-builder') {
+            window.location.href = $('#base_url').val() + tabid;
+        } else [
+            $('#' + tabid).show();
+            $(this).addClass('active');
 
-        return false;
+            return false;
+        ]
     });
 </script>
 <style>

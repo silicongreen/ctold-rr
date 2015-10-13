@@ -893,6 +893,23 @@
                         </div>
                     </fieldset>
                  </div>
+                
+                  <div class="clearfix block">
+
+                        <fieldset class="top">
+                            <label for="required_field">Post Visibility</label>
+                            <div>
+                                <?php
+                                $f_array = array(1 => 'Common', 2 => "Only Web", 0 => "Only Mobile");
+
+
+                                echo form_dropdown('website_only', $f_array, $model->website_only);
+                                ?>
+
+
+                            </div>
+                        </fieldset>
+                    </div>  
 
             </div>
 

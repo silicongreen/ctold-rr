@@ -1,4 +1,11 @@
-<?php $arCustomNews = getFormatedContentAll($news, 125); ?>
+<?php $arCustomNews = getFormatedContentAll($news, 125);
+//echo "<pre>";
+//print_r($news);exit;
+
+$active_video_slider = true;
+$active_banner_slider = true;
+$active_common_view = false;
+?>
 
 <script type="text/javascript" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/jquery.popupWindow.js'); ?>"></script>
 <li  id="post-<?php echo $news->post_id; ?>" class="post-<?php echo $news->post_id; ?> <?php echo $s_post_class; ?> type-post post-
@@ -14,7 +21,132 @@
 
     <div class="post-content clearfix spellingbee_post">
         <div class="intro-post spellingbee">
-
+            <!--active_banner_slider start here-->
+            <?php
+                if( $active_banner_slider == true ):
+            ?>
+                <a class="add-link" title="<?php echo $news->lead_caption; ?>" href="<?php echo $news->lead_link; ?>"   <?php if ($news->ad_target != 2): ?> target="_blank"<?php endif; ?>>       
+                    <img src="<?php echo $arCustomNews['lead_material']; ?>" class="attachment-post-thumbnail wp-post-image no_toolbar" alt="<?php echo $news->headline; ?>" style="width:645px;height:356px;">
+                </a>
+            <?php endif; ?>
+            <!--active_banner_slider end here-->
+            <!--active_video_slider start here-->
+            <?php
+                if( $active_video_slider == true ):
+            ?>
+                <section class="slider">
+                    <div id="over" class="loading_speelingbee" style="diaplay:none;">
+                        <span class="Centerer"></span>
+                        <img class="Centered" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/loader_home_slider.gif'); ?>" />
+                    </div>
+                    <div class="flexslider carousel" style="height:100px;margin:10px;overflow: hidden;diaplay:none;">
+                        <ul class="slides">
+                            <?php if (count($news->related_news_spelling_bee) > 0): ?>
+                                <?php foreach ($news->related_news_spelling_bee as $newsrelated): 
+                                    //echo "<pre>";
+                                    //print_r($newsrelated);
+                                    ?>
+                                    <li style="width:145px; float: left; display: block;">
+                                        <a class="add-link" title="<?php echo $newsrelated->headline; ?>" href="<?php echo create_link_url("index", $newsrelated->headline, $newsrelated->id) ?>"   target="_blank">       
+                                            <img src="<?php echo $newsrelated->lead_material; ?>" class="attachment-post-thumbnail wp-post-image no_toolbar" alt="<?php echo $newsrelated->headline; ?>" style="width:145px;height:100px;">
+                                        </a>        
+                                    </li>                                    
+                                <?php endforeach; ?>
+                            <?php endif;  ?>
+                        </ul>
+                    </div>
+                </section>
+                <style>
+                    #over
+                    {
+                        position:absolute;
+                        width:100%;
+                        height:115px;
+                        text-align: center; /*handles the horizontal centering*/
+                        z-index: 100;
+                        background-color: #fff;
+                    }
+                    /*handles the vertical centering*/
+                    .Centerer
+                    {
+                        display: inline-block;
+                        height: 100%;
+                        vertical-align: middle;
+                    }
+                    .Centered
+                    {
+                        display: inline-block;
+                        vertical-align: middle;
+                        width:5%;
+                    }
+                    .flexslider .slides > li
+                    {
+                        margin-right:15px;
+                    }
+                    .flexslider .slides > li:last-child 
+                    {
+                        margin-right:0px;
+                    }                    
+                    div.flex-caption{  
+                        background-color: black;
+                        bottom: 0;
+                        color: white;
+                        font-family: "tahoma";
+                        font-size: 15px;
+                        opacity: 1;
+                        filter:alpha(opacity=100); 
+                        position: absolute;
+                        width: 302px;
+                    }  
+                    p.description_content{  
+                        padding:10px;  
+                        margin:0px;  
+                    }  
+                    li.css a {
+                      border-radius: 0;
+                    }
+                    .flex-direction-nav a
+                    {
+                        line-height: 33px;                              
+                    }
+                    .flex-control-nav
+                    {
+                        bottom:-18px;
+                    }
+                    .flexslider
+                    {
+                        box-shadow:0 0px 0px rgba(0, 0, 0, 0.2) !important;
+                    }
+                    .flex-direction-nav{margin:0px;}
+                    ol.flex-control-nav { display: none; }
+                </style>
+                    
+                <script>
+                    $('.loading_speelingbee').show();
+                    $(window).bind("load", function() {  
+                        $('.loading_speelingbee').hide();
+                        
+                        $(".flexslider").show();  
+                        
+                        $('.flexslider').flexslider({
+                            animation: "slide",
+                            animationLoop: true,
+                            itemWidth: 145,
+                            itemMargin: 3,
+                            minItems: 2,
+                            maxItems: 4,
+                            start: function(slider){
+                              $('body').removeClass('loading');
+                            }
+                        });
+                     
+                    });
+                    
+                </script>
+            <?php endif; ?>
+            <!--active_video_slider end here-->
+            <!--active_common_view start here-->
+            <?php if($active_common_view == true): ?>
             <div class="col-lg-6" style="padding:5px 0px;">
 
                 <div class="col-lg-12 float-4">
@@ -153,7 +285,7 @@
                     ?>
                 <?php endif; ?>
             </div>
-
+            <?php endif; ?><!--active_common_view end here-->
 
         </div> 
 

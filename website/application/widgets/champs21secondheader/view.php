@@ -63,7 +63,7 @@
 <style type="text/css" media="all">
     div.tooltip-inner {
         text-align: center;
-        font-size: 11px;
+        font-size: 12px;
         max-width: 280px;
         width: 280px;
     }

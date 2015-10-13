@@ -182,7 +182,7 @@ $active_common_view = false;
                     }
                     
                     .speelingbee_banner_box{display: block;}
-                    .video_play_box{text-align: center;display: none;}
+                    .video_play_box{text-align: center;display: none;height: 356px;}
                     .video_see_more{height:20px;margin: 10px 20px;;}
                     .video_see_more p a{color:#000;cursor: pointer;font-family: Arial;letter-spacing:0px;font-size:13px;}
                     a.boxclose {

@@ -86,7 +86,7 @@ $active_common_view = false;
                 </section>
                 <div class="clearfix"></div>
                 <div class="video_see_more">
-                    <p style="float: right;"><a href="<?php echo base_url('/videos');?>">See More</a></p>
+                    <p style="float: right;"><a href="<?php echo base_url('/videos/spelling-bee-season-4');?>">See More</a></p>
                 </div>
                 <style>
                     #over
@@ -156,8 +156,9 @@ $active_common_view = false;
                         box-shadow:0 0px 0px rgba(0, 0, 0, 0.2) !important;
                     }
                     .flex-direction-nav{margin:0px;}
-                    ol.flex-control-nav { display: none; }
-                    
+                    .slider ol.flex-control-nav { display: none; }
+                    .slider1 .flex-control-nav { bottom:5px;}
+                    .slider1 .flex-control-nav li{margin:5px !important;}
                     
                     .video_play_btn{}
                     a.video_play_btn {

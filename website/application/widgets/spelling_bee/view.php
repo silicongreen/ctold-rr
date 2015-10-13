@@ -55,7 +55,7 @@ $active_common_view = false;
                 
                 <?php if (count($news->related_news_spelling_bee) > 0): ?>
                     <div class="video_play_box">
-                        <a class="boxclose" id="boxclose"></a>
+                        <a class="boxclose" id="boxclose" onclick="showVideosClose();"></a>
                         <?php foreach ($news->related_news_spelling_bee as $newsrelated): ?>
                             <p id="video_embed_<?php echo $newsrelated->id;?>" style="display:none;"><?php echo $newsrelated->embedded; ?></p>
                         <?php endforeach; ?>
@@ -73,9 +73,8 @@ $active_common_view = false;
                                     //echo "<pre>";
                                     //print_r($newsrelated);
                                     ?>
-                                    <li style="width:145px; float: left; display: block;">
-                                        <p id="video_embed_<?php echo $newsrelated->id;?>" style="display:none;"><?php echo $newsrelated->embedded; ?></p>
-                                        <a class="add-link video_play_btn" title="<?php echo $newsrelated->headline; ?>" href="<?php echo create_link_url("index", $newsrelated->headline, $newsrelated->id) ?>">       
+                                    <li style="width:145px; float: left; display: block;">                                        
+                                        <a class="add-link video_play_btn" onclick="showVideos(<?php echo $newsrelated->id;?>);" title="<?php echo $newsrelated->headline; ?>" href="javascript:void(0);<?php //echo create_link_url("index", $newsrelated->headline, $newsrelated->id) ?>">       
                                             <span></span>
                                             <img src="<?php echo $newsrelated->lead_material; ?>" class="attachment-post-thumbnail wp-post-image no_toolbar" alt="<?php echo $newsrelated->headline; ?>" style="width:145px;height:100px;">
                                         </a>        
@@ -238,7 +237,22 @@ $active_common_view = false;
                             $('body').removeClass('loading');
                           }
                         });
+                        
+                        
                     });
+                    function showVideos(id)
+                    {
+                        $('.video_play_box p').hide();
+                        $('.slider1').hide();
+                        $('.video_play_box').show();
+                        $('#video_embed_'+id).show();
+                    }
+                    function showVideosClose()
+                    {
+                        $('.video_play_box p').hide();
+                        $('.video_play_box').hide();                        
+                        $('.slider1').show();
+                    }
                     //slideshow: false,
                 </script>
             <?php endif; ?>

@@ -25,27 +25,46 @@ $active_common_view = false;
             <?php
                 if( $active_banner_slider == true ):
             ?>
-                <section class="slider1">                    
-                    <div class="flexslider1 carousel" style="height:356px;overflow: hidden;diaplay:none;">
-                        <ul class="slides">
-                            <li style="width:645px; float: left; display: block;">
-                                <a class="speelingbee_banner_box" title="The School of Excellence" href="http://www.champs21.com/spellingbee" target="_blank">       
-                                    <img src="<?php echo base_url('styles/layouts/tdsfront/home_slider/slider-1.png'); ?>" class="attachment-post-thumbnail wp-post-image no_toolbar" alt="The School of Excellence" style="width:645px;height:356px;">
-                                </a>                            
-                            </li>
-                            <li style="width:645px; float: left; display: block;">
-                                <a class="speelingbee_banner_box" title="Spell Champs" href="https://play.google.com/store/apps/details?id=com.champs21.schoolapp&hl=en" target="_blank">       
-                                    <img src="<?php echo base_url('styles/layouts/tdsfront/home_slider/slider-2.jpg'); ?>" class="attachment-post-thumbnail wp-post-image no_toolbar" alt="Spell Champs" style="width:645px;height:356px;">
-                                </a>                            
-                            </li>
-                            <li style="width:645px; float: left; display: block;">
-                                <a class="speelingbee_banner_box" title="Nation Builders" href="http://www.champs21.com/nation-builder" target="_blank">       
-                                    <img src="<?php echo base_url('styles/layouts/tdsfront/home_slider/slider-3.png'); ?>" class="attachment-post-thumbnail wp-post-image no_toolbar" alt="Nation Builders" style="width:645px;height:356px;">
-                                </a>                            
-                            </li>
-                        </ul>
+            <div class="slider1" style="height:356px;overflow: hidden;">
+                <div id="myCarousel" class="carousel" data-ride="carousel">
+                    <!-- Indicators -->
+                    <ol class="carousel-indicators">
+                      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                      <li data-target="#myCarousel" data-slide-to="1"></li>
+                      <li data-target="#myCarousel" data-slide-to="2"></li>
+                    </ol>
+
+                    <!-- Wrapper for slides -->
+                    <div class="carousel-inner" role="listbox">
+                        <div class="item active">
+                          <a class="speelingbee_banner_box" title="The School of Excellence" href="http://www.champs21.com/spellingbee" target="_blank">       
+                                  <img src="<?php echo base_url('styles/layouts/tdsfront/home_slider/slider-1.png'); ?>" class="attachment-post-thumbnail wp-post-image no_toolbar" alt="The School of Excellence" style="width:100%;">
+                          </a> 
+                        </div>
+
+                        <div class="item">
+                          <a class="speelingbee_banner_box" title="Spell Champs" href="https://play.google.com/store/apps/details?id=com.champs21.schoolapp&hl=en" target="_blank">       
+                                  <img src="<?php echo base_url('styles/layouts/tdsfront/home_slider/slider-2.jpg'); ?>" class="attachment-post-thumbnail wp-post-image no_toolbar" alt="Spell Champs" style="width:100%;">
+                          </a> 
+                        </div>
+
+                        <div class="item">
+                            <a class="speelingbee_banner_box" title="Nation Builders" href="http://www.champs21.com/nation-builder" target="_blank">       
+                                    <img src="<?php echo base_url('styles/layouts/tdsfront/home_slider/slider-3.png'); ?>" class="attachment-post-thumbnail wp-post-image no_toolbar" alt="Nation Builders" style="width:100%;">
+                            </a>
+                        </div>
+
+                    <!-- Left and right controls -->
+                    
                     </div>
-                </section>
+                </div>
+            </div>
+            <style>
+                .carousel-indicators { top:330px;};
+                .carousel .item {-webkit-transition: opacity 3s; -moz-transition: opacity 3s; -ms-transition: opacity 3s; -o-transition: opacity 3s; transition: opacity 3s;}
+                .carousel .active.left {left:0;opacity:0;z-index:2;}
+            </style>
+                
             <?php endif; ?>
             <!--active_banner_slider end here-->
             <!--active_video_slider start here-->
@@ -66,7 +85,7 @@ $active_common_view = false;
                         <span class="Centerer"></span>
                         <img class="Centered" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/loader_home_slider.gif'); ?>" />
                     </div>
-                    <div class="flexslider carousel" style="height:100px;margin:10px 20px;overflow: hidden;diaplay:none;">
+                    <div class="flexslider carousel" style="height:145px;margin:10px 20px;overflow: hidden;diaplay:none;">
                         <ul class="slides">
                             <?php if (count($news->related_news_spelling_bee) > 0): ?>
                                 <?php foreach ($news->related_news_spelling_bee as $newsrelated): 
@@ -77,6 +96,7 @@ $active_common_view = false;
                                         <a class="add-link video_play_btn" onclick="showVideos(<?php echo $newsrelated->id;?>);" title="<?php echo $newsrelated->headline; ?>" href="javascript:void(0);<?php //echo create_link_url("index", $newsrelated->headline, $newsrelated->id) ?>">       
                                             <span></span>
                                             <img src="<?php echo $newsrelated->lead_material; ?>" class="attachment-post-thumbnail wp-post-image no_toolbar" alt="<?php echo $newsrelated->headline; ?>" style="width:145px;height:100px;">
+                                            <p style="font-family: arial;letter-spacing: 0px;line-height: 20px;"><?php echo substr_with_unicode($newsrelated->headline, false, 30) . " ... "; ?></p>
                                         </a>        
                                     </li>                                    
                                 <?php endforeach; ?>
@@ -93,7 +113,7 @@ $active_common_view = false;
                     {
                         position:absolute;
                         width:100%;
-                        height:115px;
+                        height:160px;
                         text-align: center; /*handles the horizontal centering*/
                         z-index: 100;
                         background-color: #fff;
@@ -156,9 +176,7 @@ $active_common_view = false;
                         box-shadow:0 0px 0px rgba(0, 0, 0, 0.2) !important;
                     }
                     .flex-direction-nav{margin:0px;}
-                    .slider ol.flex-control-nav { display: none; }
-                    .slider1 .flex-control-nav { bottom:5px;}
-                    .slider1 .flex-control-nav li{margin:5px !important;}
+                    .slider ol.flex-control-nav { display: none; }                    
                     
                     .video_play_btn{}
                     a.video_play_btn {
@@ -167,7 +185,7 @@ $active_common_view = false;
                     }
                     a.video_play_btn span {
                       width: 100%;
-                      height: 100%;
+                      height: 65%;
                       position: absolute;
                       background: url("http://www.champs21.dev/styles/layouts/tdsfront/images/icon/video_play_btn.png") no-repeat;
                       background-position: 50% 50%;
@@ -175,7 +193,7 @@ $active_common_view = false;
                     }
                     a.video_play_btn span:hover {
                       width: 100%;
-                      height: 100%;
+                      height: 65%;
                       position: absolute;
                       background: url("http://www.champs21.dev/styles/layouts/tdsfront/images/icon/video_play_btn_hover.png") no-repeat;
                       background-position: 50% 50%;
@@ -203,7 +221,7 @@ $active_common_view = false;
                     .boxclose:before {
                         content: "X";
                     }
-                    .slider1 .carousel li{margin:0px;border: 0px;}
+                    
                 </style>
                     
                 <script>
@@ -226,21 +244,7 @@ $active_common_view = false;
                         });
                      
                     });
-                    $(window).load(function(){
-                        $('.flexslider1').flexslider({
-                          animation: "slide",
-                          animationLoop: true,
-                          itemWidth: 645,
-                          itemMargin: 0,
-                          minItems: 1,
-                          maxItems: 1,                          
-                          start: function(slider){
-                            $('body').removeClass('loading');
-                          }
-                        });
-                        
-                        
-                    });
+                    
                     function showVideos(id)
                     {
                         $('.video_play_box p').hide();

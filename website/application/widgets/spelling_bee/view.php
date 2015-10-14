@@ -96,7 +96,8 @@ $active_common_view = false;
                                         <a class="add-link video_play_btn" onclick="showVideos(<?php echo $newsrelated->id;?>);" title="<?php echo $newsrelated->headline; ?>" href="javascript:void(0);<?php //echo create_link_url("index", $newsrelated->headline, $newsrelated->id) ?>">       
                                             <span></span>
                                             <img src="<?php echo $newsrelated->lead_material; ?>" class="attachment-post-thumbnail wp-post-image no_toolbar" alt="<?php echo $newsrelated->headline; ?>" style="width:145px;height:100px;">
-                                            <p style="font-family: arial;letter-spacing: 0px;line-height: 20px;"><?php echo substr_with_unicode($newsrelated->headline, false, 30) . " ... "; ?></p>
+                                            <p style="font-family: arial;letter-spacing: 0px;line-height: 20px;">
+                                                <?php if(strlen($newsrelated->headline) >= 30){ echo substr_with_unicode( $newsrelated->headline, false, 30) . " ... ";}else{echo $newsrelated->headline;} ?></p>
                                         </a>        
                                     </li>                                    
                                 <?php endforeach; ?>

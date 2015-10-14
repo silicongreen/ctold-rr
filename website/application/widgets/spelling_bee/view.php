@@ -93,7 +93,9 @@ $active_common_view = false;
                         <span class="Centerer"></span>
                         <img class="Centered" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/loader_home_slider.gif'); ?>" />
                     </div>
+                    
                     <div class="flexslider carousel" style="height:145px;margin:10px 20px;overflow: hidden;diaplay:none;">
+                        <h4 style="font-size:16px;letter-spacing:0px;margin-left:20px;color:#000;">Spelling Bee Season 4 Videos</h4>
                         <ul class="slides">
                             <?php if (count($news->related_news_spelling_bee) > 0): ?>
                                 <?php foreach ($news->related_news_spelling_bee as $newsrelated): 
@@ -196,7 +198,7 @@ $active_common_view = false;
                       width: 100%;
                       height: 65%;
                       position: absolute;
-                      background: url("http://www.champs21.dev/styles/layouts/tdsfront/images/icon/video_play_btn.png") no-repeat;
+                      background: url("<?php echo base_url('styles/layouts/tdsfront/images/icon/video_play_btn.png'); ?>") no-repeat;
                       background-position: 50% 50%;
                       background-size: 40%;
                     }
@@ -204,7 +206,7 @@ $active_common_view = false;
                       width: 100%;
                       height: 65%;
                       position: absolute;
-                      background: url("http://www.champs21.dev/styles/layouts/tdsfront/images/icon/video_play_btn_hover.png") no-repeat;
+                      background: url("<?php echo base_url('styles/layouts/tdsfront/images/icon/video_play_btn_hover.png'); ?>") no-repeat;
                       background-position: 50% 50%;
                       background-size: 40%;
                     }

@@ -94,8 +94,8 @@ $active_common_view = false;
                         <img class="Centered" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/loader_home_slider.gif'); ?>" />
                     </div>
                     
-                    <div class="flexslider carousel" style="height:145px;margin:10px 20px;overflow: hidden;diaplay:none;">
-                        <h4 style="font-size:16px;letter-spacing:0px;margin-left:20px;color:#000;">Spelling Bee Season 4 Videos</h4>
+                    <div class="flexslider carousel" style="height:210px;margin:10px 20px;overflow: hidden;diaplay:none;">
+                        <h4 style="font-size:16px;letter-spacing:0px;margin-left:20px;color:rgb(202, 35, 42);padding: 10px 0;">Spelling Bee Season 4 Videos</h4>
                         <ul class="slides">
                             <?php if (count($news->related_news_spelling_bee) > 0): ?>
                                 <?php foreach ($news->related_news_spelling_bee as $newsrelated): 
@@ -124,7 +124,7 @@ $active_common_view = false;
                     {
                         position:absolute;
                         width:100%;
-                        height:160px;
+                        height:225px;
                         text-align: center; /*handles the horizontal centering*/
                         z-index: 100;
                         background-color: #fff;
@@ -146,7 +146,7 @@ $active_common_view = false;
                     .slider
                     {
                         border-top: 2px solid #ccc;
-                        padding-top: 30px;
+                        padding-top: 0px;
                     }
                     .flexslider .slides > li
                     {

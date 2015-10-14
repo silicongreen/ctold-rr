@@ -60,9 +60,12 @@ $active_common_view = false;
                 </div>
             </div>
             <script>
-            $('#myCarousel').carousel({
-			interval: 3000
-		});
+            $(document).ready(function() {
+                $('.carousel').carousel({
+                    interval: 3000,
+                    cycle: true
+                })
+           });  
             </script>
             <style>
                 .carousel-indicators { top:330px;};

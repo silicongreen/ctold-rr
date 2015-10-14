@@ -59,6 +59,11 @@ $active_common_view = false;
                     </div>
                 </div>
             </div>
+            <script>
+            $('#myCarousel').carousel({
+			interval: 3000
+		});
+            </script>
             <style>
                 .carousel-indicators { top:330px;};
                 .carousel .item {-webkit-transition: opacity 3s; -moz-transition: opacity 3s; -ms-transition: opacity 3s; -o-transition: opacity 3s; transition: opacity 3s;}

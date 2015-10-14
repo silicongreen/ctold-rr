@@ -258,7 +258,7 @@ ob_start();
                                                 <div class="assessment_dialogue">
                                                     <p class="f2" style="padding-top: 7px;">How smart are you?</p>
                                                     <div class="clearfix"></div>
-                                                    <p class="f2">Take this quiz on this topic &amp;</p>
+                                                    <p class="f2">Take this quiz and ..;</p>
                                                 </div>
                                                 <div class="assessment_find_out">
                                                     <div class="find_out f5">Find Out</div>

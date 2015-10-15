@@ -291,7 +291,14 @@ class post extends CI_Model{
             }
             else if ( $s_issue_date_condition == "smaller" )
             {
-                $this->db->where('post.published_date <= "'. date('Y-m-d H:i:s', strtotime($s_issue_date_to)). '"');
+                if ($this->session->userdata("admin"))
+                {
+
+                }
+                else
+                {
+                    $this->db->where('post.published_date <= "'. date('Y-m-d H:i:s', strtotime($s_issue_date_to)). '"');
+                }
             }
             else if ( $s_issue_date_condition == "greater" )
             {

@@ -36,13 +36,13 @@ $active_common_view = false;
 
                     <!-- Wrapper for slides -->
                     <div class="carousel-inner" role="listbox">
-                        <div class="item1 active">
+                        <div class="item active">
                           <a class="speelingbee_banner_box" title="The School of Excellence" href="http://www.champs21.com/spellingbee" target="_blank">       
                                   <img src="<?php echo base_url('styles/layouts/tdsfront/home_slider/slider-1.png'); ?>" class="attachment-post-thumbnail wp-post-image no_toolbar" alt="The School of Excellence" style="width:100%;">
                           </a> 
                         </div>
 
-                        <div class="item1">
+                        <div class="item">
                           <a class="speelingbee_banner_box" title="Spell Champs" href="https://play.google.com/store/apps/details?id=com.champs21.schoolapp&hl=en" target="_blank">       
                                   <img src="<?php echo base_url('styles/layouts/tdsfront/home_slider/spell-champs.png'); ?>" class="attachment-post-thumbnail wp-post-image no_toolbar" alt="Spell Champs" style="width:100%;">
                           </a> 

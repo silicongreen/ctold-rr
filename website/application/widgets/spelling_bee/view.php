@@ -36,22 +36,23 @@ $active_common_view = false;
 
                     <!-- Wrapper for slides -->
                     <div class="carousel-inner" role="listbox">
-                        <div class="item active">
+                        <div class="item1 active">
                           <a class="speelingbee_banner_box" title="The School of Excellence" href="http://www.champs21.com/spellingbee" target="_blank">       
                                   <img src="<?php echo base_url('styles/layouts/tdsfront/home_slider/slider-1.png'); ?>" class="attachment-post-thumbnail wp-post-image no_toolbar" alt="The School of Excellence" style="width:100%;">
                           </a> 
                         </div>
 
-                        <div class="item">
+                        <div class="item1">
                           <a class="speelingbee_banner_box" title="Spell Champs" href="https://play.google.com/store/apps/details?id=com.champs21.schoolapp&hl=en" target="_blank">       
                                   <img src="<?php echo base_url('styles/layouts/tdsfront/home_slider/spell-champs.png'); ?>" class="attachment-post-thumbnail wp-post-image no_toolbar" alt="Spell Champs" style="width:100%;">
                           </a> 
                         </div>
 
                         <div class="item">
-                            <a class="speelingbee_banner_box" title="Nation Builders" href="http://www.champs21.com/nation-builder" target="_blank">       
-                                    <img src="<?php echo base_url('styles/layouts/tdsfront/home_slider/slider-nation-builder.png'); ?>" class="attachment-post-thumbnail wp-post-image no_toolbar" alt="Nation Builders" style="width:100%;">
+                            <a class="speelingbee_banner_box" title="Nation Builders" href="http://www.champs21.com/nation-builder" target="_blank">                                           
+                                    <img src="<?php echo base_url('styles/layouts/tdsfront/home_slider/slider-nation-builder.png'); ?>" class="attachment-post-thumbnail wp-post-image no_toolbar" alt="Nation Builders" style="width:100%;">                                    
                             </a>
+                            <a href="" data="candle" class="<?php echo ( free_user_logged_in() ) ? 'candlepopup' : 'before-login-user'; ?> likhun_btn"><span></span></a>
                         </div>
 
                     <!-- Left and right controls -->
@@ -62,8 +63,8 @@ $active_common_view = false;
             <script>
             $(document).ready(function() {
                 $('.carousel').carousel({
-                    interval: 3000,
-                    cycle: true
+                    //interval: 3000,
+                    //cycle: true
                 })
            });  
             </script>
@@ -71,6 +72,26 @@ $active_common_view = false;
                 .carousel-indicators { top:330px;};
                 .carousel .item {-webkit-transition: opacity 3s; -moz-transition: opacity 3s; -ms-transition: opacity 3s; -o-transition: opacity 3s; transition: opacity 3s;}
                 .carousel .active.left {left:0;opacity:0;z-index:2;}
+                a.likhun_btn span {
+                    width: 30%;
+                    height: 14%;
+                    position: absolute;
+                    background: url("<?php echo $ecl_button;?>") no-repeat;
+                    background-position: 50% 50%;
+                    background-size: 100%;
+                    bottom:55px;
+                    left: 225px;
+                  }
+                  a.likhun_btn span:hover {
+                    width: 30%;
+                    height: 14%;
+                    position: absolute;
+                    background: url("<?php echo $ecl_button;?>") no-repeat;
+                    background-position: 50% 50%;
+                    background-size: 100%;
+                    bottom:55px;
+                    left: 225px;
+                  }
             </style>
                 
             <?php endif; ?>
@@ -232,6 +253,7 @@ $active_common_view = false;
                     .boxclose:before {
                         content: "X";
                     }
+                    
                     
                 </style>
                     

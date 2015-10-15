@@ -1327,8 +1327,8 @@ class news extends MX_Controller
                     if($ar_data_vals[$keys])
                     {
                         $cat_sub = $this->getcategory_subcategory_from_link($ar_data_vals[$keys]);
-                        $reletad_gallery[$i_loop3]['category_id'] = $cat_sub['category_id'];
-                        $reletad_gallery[$i_loop3]['subcategory_id'] = $cat_sub['subcategory_id'];
+                        $reletad_gallery[$i_loop3]['category_id'] = $cat_sub['category'];
+                        $reletad_gallery[$i_loop3]['subcategory_id'] = $cat_sub['subcategory'];
                         
                     }
                 }

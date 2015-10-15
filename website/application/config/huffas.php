@@ -75,7 +75,8 @@ $config['education-changes-life'] = array(
         "count" => 1,
         "force_limit" => TRUE,
         "char_count" => 1,
-        'candle_banner' => '/styles/layouts/tdsfront/image/banner-candle.png'
+        'candle_banner' => '/styles/layouts/tdsfront/image/banner-candle.png',
+        'candle_button' => ''
     )
 );
 
@@ -93,7 +94,8 @@ $config['nation-builder'] = array(
         "count" => 1,
         "force_limit" => TRUE,
         "char_count" => 1,
-        'candle_banner' => '/styles/layouts/tdsfront/image/nation-banner-candle.png'
+        'candle_banner' => '/styles/layouts/tdsfront/image/nation-banner-candle.png',
+        'candle_button' => '/styles/layouts/tdsfront/image/ekhane-likhun.png'
     )
 );
 

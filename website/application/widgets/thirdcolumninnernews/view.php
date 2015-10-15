@@ -41,7 +41,7 @@
 
                                 </div><!-- post-title --> 
 
-                                <div class="akmanda-excerpt"> <?php show_summary($arCustomNews['content'],$news); ?></div>
+                                <div class="akmanda-excerpt"> <?php show_summary($arCustomNews['content'], $news); ?></div>
                             </div>
 
                         </div><!-- post-content -->    
@@ -54,20 +54,35 @@
                     <?php endif; ?> 
                     <!-- <div class="box-shadow"></div> --> 
                 </div>
-                <?php $i++;
-            endforeach; ?>
+                <?php
+                $i++;
+            endforeach;
+        ?>
 
     <?php } else { ?>
 
         <div class="candel-ecl-banner candlepopup">
-            <img src="<?php echo $ecl_banner; ?>" >
+            <img class="right-banner" src="<?php echo $ecl_banner; ?>" >
+
+            <?php if (!empty($ecl_button)) { ?>
+                <img class="right-banner-button" src="<?php echo $ecl_button; ?>" >
+            <?php } ?>
         </div>
 
     <?php } ?>
 </div>
 
 <style type="text/css">
-    .candel-ecl-banner img{
+    .candel-ecl-banner {
+        position: relative;
+    }
+    .candel-ecl-banner img.right-banner {
         width: 100%;
+    }
+    .candel-ecl-banner img.right-banner-button {
+        bottom: 16%;
+        position: absolute;
+        right: 25%;
+        width: 55%;
     }
 </style>

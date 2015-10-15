@@ -50,12 +50,15 @@ class thirdcolumninnernews extends widget
         }
         
         $candle_banner = '';
+        $candle_button = '';
         if($ecl) {
             $candle_banner = $ecl_config['3rd-column']['candle_banner'];
+            $candle_button = $ecl_config['3rd-column']['candle_button'];
         }
         
         $data['ecl'] = $ecl;
         $data['ecl_banner'] = $candle_banner;
+        $data['ecl_button'] = $candle_button;
         
         $this->render($data);
     }

@@ -34,6 +34,9 @@ class spelling_bee extends widget
 
     function run( $obj_post_news, $style, $s_post_class, $li_class_name, $i, $count_show, $is_exclusive_found, $target, $from = "main",$category_id = 0)
     {
+        $CI = & get_instance();
+        $CI->load->config("huffas");
+        
         $data['news'] = $obj_post_news;
         $data['style'] = $style;
         $data['s_post_class'] = $s_post_class;
@@ -46,6 +49,9 @@ class spelling_bee extends widget
         $data['from'] = $from;
         //$this->load->model('post');
         //$obj_post_gallery = $this->post->get_post_gallery($obj_post_news->post_id);
+        
+        $ecl_config = $CI->config->config['nation-builder'];
+        $data['ecl_button'] = $ecl_config['3rd-column']['candle_button'];
         
         $data['images'] = $obj_post_news->web_images;
         $this->render($data);

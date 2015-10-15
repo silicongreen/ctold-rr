@@ -44,13 +44,13 @@ $active_common_view = false;
 
                         <div class="item">
                           <a class="speelingbee_banner_box" title="Spell Champs" href="https://play.google.com/store/apps/details?id=com.champs21.schoolapp&hl=en" target="_blank">       
-                                  <img src="<?php echo base_url('styles/layouts/tdsfront/home_slider/slider-2.jpg'); ?>" class="attachment-post-thumbnail wp-post-image no_toolbar" alt="Spell Champs" style="width:100%;">
+                                  <img src="<?php echo base_url('styles/layouts/tdsfront/home_slider/spell-champs.png'); ?>" class="attachment-post-thumbnail wp-post-image no_toolbar" alt="Spell Champs" style="width:100%;">
                           </a> 
                         </div>
 
                         <div class="item">
                             <a class="speelingbee_banner_box" title="Nation Builders" href="http://www.champs21.com/nation-builder" target="_blank">       
-                                    <img src="<?php echo base_url('styles/layouts/tdsfront/home_slider/slider-3.png'); ?>" class="attachment-post-thumbnail wp-post-image no_toolbar" alt="Nation Builders" style="width:100%;">
+                                    <img src="<?php echo base_url('styles/layouts/tdsfront/home_slider/slider-nation-builder.png'); ?>" class="attachment-post-thumbnail wp-post-image no_toolbar" alt="Nation Builders" style="width:100%;">
                             </a>
                         </div>
 

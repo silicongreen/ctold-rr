@@ -1236,9 +1236,9 @@ class news extends MX_Controller
     private function getcategory_subcategory_from_link($link)
     {
         $category_sub = array("category"=>0,"subcategory"=>0);
-        if(strpos($link,"http:/www.champs21.com/")!==FALSE)
+        if(strpos($link,"http://www.champs21.com/")!==FALSE)
         {
-            $category_name = str_replace("http:/www.champs21.com/", "", $link);
+            $category_name = str_replace("http://www.champs21.com/", "", $link);
             if($category_name)
             {
                 $category_name_clean = trim($category_name);

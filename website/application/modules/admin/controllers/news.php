@@ -1245,12 +1245,12 @@ class news extends MX_Controller
                 if($category_name_clean)
                 {
                     $category_all = explode("/", $category_name_clean);
-                    $category_name_main = $category_all[0];
+                    $category_name_main = str_replace("-"," ",$category_all[0]);
                     if(count($category_all)>1)
                     {
                         if($category_all[1])
                         {
-                            $category_name_main = $category_all[1];
+                            $category_name_main = str_replace("-"," ",$category_all[1]);
                         }
                     }    
                     $this->db->where("name",$category_name_main);

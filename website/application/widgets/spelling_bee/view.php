@@ -52,7 +52,7 @@ $active_common_view = false;
                             <a class="speelingbee_banner_box" title="Nation Builders" href="http://www.champs21.com/nation-builder" target="_blank">                                           
                                     <img src="<?php echo base_url('styles/layouts/tdsfront/home_slider/slider-nation-builder.png'); ?>" class="attachment-post-thumbnail wp-post-image no_toolbar" alt="Nation Builders" style="width:100%;">                                    
                             </a>
-                            <a href="" data="candle" class="<?php echo ( free_user_logged_in() ) ? 'candlepopup' : 'before-login-user'; ?> likhun_btn"><span></span></a>
+                            <a href="javascript:void(0);" data="candle" class="<?php echo ( free_user_logged_in() ) ? 'candlepopup' : 'before-login-user'; ?> likhun_btn"><span></span></a>
                         </div>
 
                     <!-- Left and right controls -->
@@ -63,8 +63,8 @@ $active_common_view = false;
             <script>
             $(document).ready(function() {
                 $('.carousel').carousel({
-                    //interval: 3000,
-                    //cycle: true
+                    interval: 3000,
+                    cycle: true
                 })
            });  
             </script>

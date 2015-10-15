@@ -422,7 +422,7 @@ class Post extends CActiveRecord
                 'select' => 'postAttachment.file_name,postAttachment.show,postAttachment.caption'
             ),
             'postGalleries' => array(
-                'select' => 'postGalleries.type,postGalleries.caption,postGalleries.source',
+                'select' => 'postGalleries.type,postGalleries.caption,postGalleries.source,postGalleries.category_id,postGalleries.subcategory_id',
                 'joinType' => "LEFT OUTER JOIN",
                 'with' => array(
                     "material" => array(

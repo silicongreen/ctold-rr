@@ -1415,6 +1415,9 @@ class Settings {
                         $post_array['add_images'][$j]['ad_image'] = Settings::get_mobile_image(Settings::$image_path . $value['material']->material_url);
                         $post_array['add_images'][$j]['ad_image_link'] = $value->source;
                         $post_array['add_images'][$j]['ad_image_caption'] = $value->caption;
+                        
+                        $post_array['add_images'][$j]['ad_image_category'] = $value->category_id;
+                        $post_array['add_images'][$j]['ad_image_subcategory'] = $value->subcategory_id;
                         if ($j == 1) {
                             list($image_width, $image_height, $image_type, $image_attr) = @getimagesize($post_array['images'][$j]);
                             if (isset($image_width) && isset($image_height)) {

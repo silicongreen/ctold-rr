@@ -1233,7 +1233,47 @@ class news extends MX_Controller
         if ($reletad_tags)
             $this->db->insert_batch('post_tags', $reletad_tags);
     }
-     private function insert_gallery_mobile($post, $id)
+    private function getcategory_subcategory_from_link($link)
+    {
+        $category_sub = array("category"=>0,"subcategory"=>0);
+        if(strpos($link,"http:/www.champs21.com/")!==FALSE)
+        {
+            $category_name = str_replace("http:/www.champs21.com/", "", $link);
+            if($category_name)
+            {
+                $category_name_clean = trim($category_name);
+                if($category_name_clean)
+                {
+                    $category_all = explode("/", $category_name_clean);
+                    $category_name_main = $category_all[0];
+                    if(count($category_all)>1)
+                    {
+                        if($category_all[1])
+                        {
+                            $category_name_main = $category_all[1];
+                        }
+                    }    
+                    $this->db->where("name",$category_name_main);
+                    $category = $this->db->get("categories")->row();
+                    if($category)
+                    {
+                        if($category->parent_id)
+                        {
+                            $category_sub['category'] = $category->parent_id;
+                            $category_sub['subcategory'] = $category->id;
+                        }
+                        else
+                        {
+                            $category_sub['category'] = $category->id;
+                        }    
+                    }
+                }
+            }
+            
+        } 
+        return $category_sub;
+    }        
+    private function insert_gallery_mobile($post, $id)
     {
         $reletad_gallery = array();
         $xml_field = array();
@@ -1282,6 +1322,15 @@ class news extends MX_Controller
                 if (isset($ar_data_vals[$keys]))
                 {
                     $reletad_gallery[$i_loop3]['source'] = $ar_data_vals[$keys];
+                    $reletad_gallery[$i_loop3]['category_id'] = 0;
+                    $reletad_gallery[$i_loop3]['subcategory_id'] = 0;
+                    if($ar_data_vals[$keys])
+                    {
+                        $cat_sub = $this->getcategory_subcategory_from_link($ar_data_vals[$keys]);
+                        $reletad_gallery[$i_loop3]['category_id'] = $cat_sub['category_id'];
+                        $reletad_gallery[$i_loop3]['subcategory_id'] = $cat_sub['subcategory_id'];
+                        
+                    }
                 }
                 $i_loop3++;
             }

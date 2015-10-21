@@ -145,20 +145,40 @@ $widget = new Widget;
             $('html, body').animate({scrollTop: 0}, 800);
             return false;
         });
+		
+		//$('img').prop('src', function () { return this.src.replace('http://www.champs21.dev','http://www.champs21.com'); })
     });
 </script>
 
 <script>
-    window.fbAsyncInit = function () {
+    var isLoaded = false;
+	window.fbAsyncInit = function () {
         FB.init({
             appId: '850059515022967',
             /* appId      : '164223470298622', */
             xfbml: false,
             version: 'v2.1'
         });
+		isLoaded = true;
     };
+	function checkIfLoaded() {
+		if(isLoaded) console.log("LOADED!");
+		else console.log("NOT YET!");
 
-    (function (d, s, id) {
+		return false;
+	}
+	
+	// Load the SDK Asynchronously
+	(function(d){
+		var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+		if (d.getElementById(id)) {return;}
+		js = d.createElement('script'); js.id = id; js.async = true;
+		js.src = "//connect.facebook.net/en_US/all.js";
+		ref.parentNode.insertBefore(js, ref);
+	}(document));
+    /*
+	OLDER THAN 21.10.2015
+	(function (d, s, id) {
         var js, fjs = d.getElementsByTagName(s)[0];
         if (d.getElementById(id)) {
             return;
@@ -167,7 +187,7 @@ $widget = new Widget;
         js.id = id;
         js.src = "//connect.facebook.net/en_US/sdk.js";
         fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));
+    }(document, 'script', 'facebook-jssdk'));*/
 </script>
 <style>
     .champs21_scrollToTop{

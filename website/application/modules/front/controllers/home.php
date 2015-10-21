@@ -1215,8 +1215,7 @@ class home extends MX_Controller {
 
         $cache_name = "POST" . '_' . $obj_post_data->post_id;
         $s_content = $this->cache->get($cache_name);
-
-
+        
         $s_content = false;
         if ($s_content !== false) {
             $s_content = $s_content;
@@ -1453,7 +1452,7 @@ class home extends MX_Controller {
                 $data['main_headline'] = $obj_post_data->headline;
                 $data['main_referance_id'] = $obj_post_data->referance_id;
             }
-
+            
             $data['related_news'] = $related_news;
 
             $data['post_images'] = $obj_post->get_related_gallery($obj_post_data->post_id, array(1, 5));
@@ -1752,7 +1751,7 @@ class home extends MX_Controller {
         $funcs = get_class_methods($this);
 
         $ar_segmens = $this->uri->segment_array();
-
+        
         $i_count_segments = count($ar_segmens);
 
         if ($i_count_segments > 0) {
@@ -1801,21 +1800,20 @@ class home extends MX_Controller {
 
             $obj_category = new Category_model();
             $i_parent_category_id = 0;
-
             if ($i_count_segments > 1) {
                 //Now Come on to the multiple segments, let say we have only categories and news will be passed through the remap
                 //Give me hell Yeah: Huffas
                 $i_count = count($ar_segmens) - 1;
                 $s_category = array_pop($ar_segmens);
-
+                
                 $i_parent_category_id = check_categories_recursive($ar_segmens);
+                
                 if (!$i_parent_category_id) {
                     //TRY FOR NEWS POST
                     $s_news_category = array_pop($ar_segmens);
 
                     $s_data = $s_category;
-
-
+                    
                     if (!empty($ar_segmens)) {
 
                         $i_parent_category_id = check_categories_recursive($ar_segmens);
@@ -1824,7 +1822,7 @@ class home extends MX_Controller {
                             $this->show_404_custom();
                         }
                     }
-
+                    
                     $news_title = explode("-", $s_news_category);
                     $i_post_id = $news_title[count($news_title) - 1];
 
@@ -1832,14 +1830,12 @@ class home extends MX_Controller {
                     if (strlen($s_data) > 0) {
                         $lang = $s_data;
                     }
-
+                    
                     $a_post_id_pop = array_pop($news_title);
                     $s_headline_sanitize = implode("-", $news_title);
                     $s_headline = ucwords(unsanitize($s_headline_sanitize));
-
-
+                    
                     if ($i_parent_category_id == 0) {
-
                         $a_post_params = array("tds_post.referance_id" => $i_post_id, "tds_post.language" => $lang, "ignore_post_type" => true);
                     } else {
                         $a_post_params = array(
@@ -1847,9 +1843,9 @@ class home extends MX_Controller {
                             "category.id" => $i_parent_category_id
                         );
                     }
-
+                    
                     $a_post = $this->post->gePostNews($a_post_params);
-
+                    
                     if (!is_array($a_post)) {
                         if ($i_parent_category_id == 0) {
                             $a_post_params = array(
@@ -1865,7 +1861,6 @@ class home extends MX_Controller {
                             return;
                         }
                     } else {
-
                         $obj_post_data = $a_post['data'][0];
                         $this->process_post_view($obj_post_data->id, $obj_post_data);
                         return;
@@ -1874,7 +1869,7 @@ class home extends MX_Controller {
             } else {
                 $s_category = $ar_segmens[1];
             }
-
+            
             $b_popular = FALSE;
             if ($s_category == "popular") {
                 $b_popular = TRUE;
@@ -1949,8 +1944,6 @@ class home extends MX_Controller {
                 } else {
                     $obj_post_data = $a_post['data'][0];
 
-//                    if ( urldecode($s_headline_sanitize) == sanitize($obj_post_data->headline) )
-//                    {
                     $b_layout = TRUE;
                     $ar_segmens = $this->uri->segment_array();
                     foreach ($ar_segmens as $segment) {
@@ -1960,11 +1953,6 @@ class home extends MX_Controller {
                         }
                     }
                     $this->process_post_view($obj_post_data->id, $obj_post_data, $b_layout);
-                    //}
-//                    else
-//                    {
-//                        $this->show_404_custom();
-//                    }
                 }
             } else {
                 $this->__inner($obj_cate->id, $obj_cate->name);

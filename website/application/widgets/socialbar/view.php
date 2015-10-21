@@ -43,7 +43,7 @@
                     <?php echo get_language($language); ?>
                 </em> 
             </a>
-
+            
             <?php if (!empty($other_language) && $s_lang) { ?>
                 <?php
                 $ar_lang = explode(",", $s_lang);
@@ -57,8 +57,10 @@
                                 <?php echo get_language($a_l[0]); ?>
                             </em>
                         </a>
-                    <?php } else { ?>
-                        <a href="<?php echo base_url(sanitize($main_headline) . '-' . $main_post_id . '/' . $a_l[0]); ?>">
+                    <?php } else {
+                        $url_lang = ($post_id == $main_post_id) ? $a_l[0] : '';
+                        ?>
+                        <a href="<?php echo base_url( sanitize($main_headline) . '-' . $main_post_id . '/' . $url_lang ); ?>">
                             <em class="sports-inner-container-font12 f2">
                                 &nbsp;/
                                 <?php echo get_language($a_l[0]); ?>

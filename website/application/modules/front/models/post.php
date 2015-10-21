@@ -79,6 +79,10 @@ class post extends CI_Model{
             $lang = $a_post_params['lang'];
         }
         
+        if( (isset($a_post_params['tds_post.referance_id']) && !empty($a_post_params['tds_post.referance_id']))) {
+            $b_from_api = FALSE;
+        }
+        
         if( $target == 'Single' ) {
             $b_from_api = FALSE;
         }

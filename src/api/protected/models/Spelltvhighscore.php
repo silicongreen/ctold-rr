@@ -100,7 +100,7 @@ class Spelltvhighscore extends CActiveRecord
     public function getLeaderBoard($iLimit = 10)
     {
         $criteria = new CDbCriteria;
-        $criteria->select = 't.userid,t.division,t.score,SEC_TO_TIME(t.test_time) as test_time';
+        $criteria->select = 't.userid,t.division,t.score,SEC_TO_TIME(t.play_total_time) as test_time';
 
         $criteria->with = array(
             'UserFree' => array(

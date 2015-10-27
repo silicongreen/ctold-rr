@@ -146,11 +146,11 @@ if ($obj_post_news)
                                         <?php echo $news->headline; ?>
                                     </a>
                                 </h2>
-                                <?php if ($target == "inner") : ?>
+                                <?php if ($target == "inner" && !$ecl) : ?>
                                     <span class="brown-subtitle">
                                         <?php echo $news->name; ?>  |   <?php echo date("d M", strtotime($news->published_date)); ?>
                                     </span>
-                                <?php elseif ($target == "index") : ?>
+                                <?php elseif ($target == "index" && !$ecl) : ?>
                                     <span class="brown-subtitle">
                                         <?php echo get_post_time($news->published_date); ?>
                                     </span>

@@ -1061,6 +1061,10 @@ class ajax extends MX_Controller
             $data['ecl'] = in_array($data['category'],  $CI->config->config['education-changes-life']['ecl_ids'] ) ? TRUE : FALSE;
         }
         
+        if (isset($CI->config->config['nation-builder']['ecl_ids'])) {
+            $data['ecl'] = in_array($data['category'], $CI->config->config['nation-builder']['ecl_ids']) ? TRUE : FALSE;
+        }
+        
         $data['opinion'] = FALSE;
         if(isset($CI->config->config['opinion']['op_ids'])) {
             $data['opinion'] = in_array($data['category'],  $CI->config->config['opinion']['op_ids'] ) ? TRUE : FALSE;

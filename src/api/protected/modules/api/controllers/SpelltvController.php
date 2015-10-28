@@ -92,6 +92,7 @@ class SpelltvController extends Controller
             $user_division = "";
             $user_division_main = "";
             $current_score = "N/A";
+            $highscore = new Spelltvhighscore();
             if($user_id)
             {
                 $objUser = new Freeusers();
@@ -109,7 +110,7 @@ class SpelltvController extends Controller
             
             
                 $user_division = ucfirst($user_division);
-                $highscore = new Spelltvhighscore();
+                
                 $current_score = 0;
                 $current_time = 0;
                 $cache_name_userdata = "YII-SPELLTV-USERDATA-" . $user_id;

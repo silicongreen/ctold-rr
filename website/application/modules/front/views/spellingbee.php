@@ -178,12 +178,12 @@
         
         if(tabid == 'nation-builder') {
             window.location.href = $('#base_url').val() + tabid;
-        } else [
+        } else {
             $('#' + tabid).show();
             $(this).addClass('active');
 
             return false;
-        ]
+        }
     });
 </script>
 <style>

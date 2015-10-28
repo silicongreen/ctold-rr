@@ -87,10 +87,11 @@ class SpelltvController extends Controller
         {
             $limit = 15;
         } 
-        if($user_id)
-        {
+//        if($user_id)
+//        {
             $user_division = "";
             $user_division_main = "";
+            $current_score = "N/A";
             if($user_id)
             {
                 $objUser = new Freeusers();
@@ -105,33 +106,38 @@ class SpelltvController extends Controller
                     $user_division = "Dhaka";
                 }    
                 $country = $user_data->tds_country_id;
-            }
             
-            $user_division = ucfirst($user_division);
-            $highscore = new Spelltvhighscore();
-            $current_score = 0;
-            $current_time = 0;
-            $cache_name_userdata = "YII-SPELLTV-USERDATA-" . $user_id;
-            $response = Settings::getSpellTvCache($cache_name_userdata);
-            if (isset($response) && isset($response['current_score']))
-            {
-                $current_score = $response['current_score'];
-                $current_time = $response['current_time'];
+            
+                $user_division = ucfirst($user_division);
+                $highscore = new Spelltvhighscore();
+                $current_score = 0;
+                $current_time = 0;
+                $cache_name_userdata = "YII-SPELLTV-USERDATA-" . $user_id;
+                $response = Settings::getSpellTvCache($cache_name_userdata);
+                if (isset($response) && isset($response['current_score']))
+                {
+                    $current_score = $response['current_score'];
+                    $current_time = $response['current_time'];
+                }
+                else
+                {
+                    $user_score_data = $highscore->getUserScore($user_id);
+                    if ($user_score_data)
+                    {
+                        $current_score = $user_score_data->score;
+                        $current_time = $user_score_data->test_time;
+                    }
+                }
+
+
+
+
+                $rresponse['data']['rank'] = $highscore->getUserRank($current_score, $current_time);
             }
             else
             {
-                $user_score_data = $highscore->getUserScore($user_id);
-                if ($user_score_data)
-                {
-                    $current_score = $user_score_data->score;
-                    $current_time = $user_score_data->test_time;
-                }
-            }
-            
-        
-            
-            
-            $rresponse['data']['rank'] = $highscore->getUserRank($current_score, $current_time);
+                $rresponse['data']['rank'] = "N/A";
+            }    
             
             $arUserScores = $highscore->getLeaderBoard($limit);
             $rresponse['data']['leaderboard'] = (array)$arUserScores;
@@ -140,12 +146,12 @@ class SpelltvController extends Controller
             $rresponse['status']['code'] = 200;
             $rresponse['status']['msg'] = "Success";
            
-        }
-        else
-        {
-            $rresponse['status']['code'] = 400;
-            $rresponse['status']['msg'] = "Bad Request";
-        }
+//        }
+//        else
+//        {
+//            $rresponse['status']['code'] = 400;
+//            $rresponse['status']['msg'] = "Bad Request";
+//        }
         echo CJSON::encode($rresponse);
         Yii::app()->end();
     }

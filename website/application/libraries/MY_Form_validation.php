@@ -39,6 +39,16 @@ class MY_Form_validation extends CI_Form_validation {
 
         return $query->num_rows() === 0;
     }
+    public function ci_school_code_check($str) {
+        $paid_school_id = $this->CI->input->post('paid_school_id');
+
+        if (!check_school_code_paid($paid_school_id, $str)) {
+            $this->CI->form_validation->set_message('ci_school_code_check', 'Invalid School Code');
+            return FALSE;
+        } else {
+            return TRUE;
+        }
+    }
     public function ci_check_admission_no_parent($str)
     { 
         
@@ -47,7 +57,7 @@ class MY_Form_validation extends CI_Form_validation {
         if (free_user_logged_in()) 
         {
             $user_data = get_user_data();
-            if (!$user_data->applied_paid && !$user_data->paid_id && $user_data->user_type != 1 && $user_data->paid_school_id) 
+            if (!$user_data->applied_paid && !$user_data->paid_id && $user_data->paid_school_id) 
             {
                 $std = get_parent_children($str,$user_data);
 
@@ -71,7 +81,7 @@ class MY_Form_validation extends CI_Form_validation {
         if (free_user_logged_in()) 
         {
             $user_data = get_user_data();
-            if (!$user_data->applied_paid && !$user_data->paid_id && $user_data->user_type != 1 && $user_data->paid_school_id) 
+            if (!$user_data->applied_paid && !$user_data->paid_id && $user_data->paid_school_id) 
             {
                 $user_name = make_paid_username($user_data, trim($str));
                 $this->CI->db->dbprefix = '';
@@ -102,7 +112,7 @@ class MY_Form_validation extends CI_Form_validation {
         if (free_user_logged_in()) 
         {
             $user_data = get_user_data();
-            if (!$user_data->applied_paid && !$user_data->paid_id && $user_data->user_type != 1 && $user_data->paid_school_id) 
+            if (!$user_data->applied_paid && !$user_data->paid_id && $user_data->paid_school_id) 
             {
                 if(hash('sha512', $user_data->salt . $str)==$user_data->password)
                 {
@@ -119,7 +129,7 @@ class MY_Form_validation extends CI_Form_validation {
         if (free_user_logged_in()) 
         {
             $user_data = get_user_data();
-            if (!$user_data->applied_paid && !$user_data->paid_id && $user_data->user_type != 1 && $user_data->paid_school_id) 
+            if (!$user_data->applied_paid && !$user_data->paid_id && $user_data->paid_school_id) 
             {
                 if (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/",$str))
                 {

@@ -776,7 +776,7 @@ if(!function_exists("get_paid_employee_position_droupdown"))
 
             }
         } 
-        $class='class="cd-input f5" style="height:30" ';
+        $class='class="cd-input f5 form-control" style="height:30"  required="" ';
         $droup_down = form_dropdown('employee_position_id', $s_array, $selected,$class);
         return $droup_down;
     }
@@ -801,7 +801,7 @@ if(!function_exists("get_paid_employee_category_droupdown"))
             $s_array[$value->id] = $value->name;
             
         }
-        $class='class="cd-input f5" id="change_position" style="height:30" ';
+        $class='class="cd-input f5 form-control" id="change_position" style="height:30"  required="" ';
         $droup_down = form_dropdown('employee_category', $s_array,$selected,$class);
         return $droup_down;
     }
@@ -826,7 +826,7 @@ if(!function_exists("get_paid_employee_grade_droupdown"))
             $s_array[$value->id] = $value->name;
             
         }
-        $class='class="cd-input f5" style="height:30" ';
+        $class='class="cd-input f5 form-control" style="height:30" ';
         $droup_down = form_dropdown('employee_grade_id', $s_array,$selected,$class);
         return $droup_down;
     }
@@ -851,7 +851,7 @@ if(!function_exists("get_paid_employee_department_droupdown"))
             $s_array[$value->id] = $value->name;
             
         }
-        $class='class="cd-input f5" style="height:30" ';
+        $class='class="cd-input f5 form-control" style="height:30"  required="" ';
         $droup_down = form_dropdown('employee_department_id', $s_array, $selected,$class);
         return $droup_down;
     }
@@ -895,17 +895,17 @@ if(!function_exists("get_paid_school_droupdown"))
                 $s_array[$value->paid_school_id] = $value->name;
             }
         }
-        $class='id="paid_school_dropdown"';
+        $class='id="paid_school_dropdown" class="form-control" required=""';
         $droup_down = form_dropdown('paid_school_id', $s_array, '',$class);
         return $droup_down;
     }
 }
 if(!function_exists("make_paid_username"))
 {
-    function make_paid_username($user_data,$admission_no,$parent=true,$from_std=false)
+    function make_paid_username($user_data,$admission_no,$parent=false,$from_std=false)
     {
         $extra = "";
-        if(($user_data->user_type==4 && $parent) || ($from_std && $user_data->user_type==2))
+        if($parent || $from_std)
         {
             $extra = "p1";
             $CI = &get_instance();
@@ -970,7 +970,7 @@ if(!function_exists("get_paid_school_class"))
           $s_array[$value->bid] = $value->bname." ".$value->course_name." ".$value->section_name;
           
         }
-        $class='class="cd-input f5" style="height:30" ';
+        $class='class="cd-input f5 form-control" style="height:30" ';
         $droup_down = form_dropdown('batch_id', $s_array, $selected,$class);
         return $droup_down;
     }

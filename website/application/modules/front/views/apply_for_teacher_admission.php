@@ -1,533 +1,191 @@
-<?php $s_ci_key = (isset($ci_key)) ? $ci_key : NULL; ?>
 
-<div class="container" style="width: 77%;min-height:250px;">
+<html>
+    <head>
+        <title>Select School</title>
+        <link rel="stylesheet" id="bootstrap-css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" type="text/css" media="all" />
+        <link rel="stylesheet" id="bootstrap-css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker.css" type="text/css" media="all" />
         
-	<div style="margin:30px 20px;height:60px;">
-			<div style="float:left">
-				<h2 class="f2">Apply for Teacher Admission</h2>
-			</div>
-			
-	</div>
-	<div id="toPopup"> 
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
+            <!--[if lt IE 9]>
+             <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+             <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+    <form class="form-horizontal col-md-10" method="post" action="">
+            <div class="error_validation" class="col-md-12" ><?php echo validation_errors(); ?></div>
+            <fieldset>
 
-    
-    
-    <div class="createpage">
-        <?php echo user_admission_top(); ?>
-        <?= form_open('', array('id' => 'validate_form_school', 'class' => 'validate_form', 'enctype' => "multipart/form-data")); ?>
-        <div class="error_validation"><?php echo validation_errors(); ?></div>
-        <div id="section_form_school">
-            <div class="createpage_left">
-                <label class="candle-input" style="padding:10px 0px;">
-                    <span><font style="color:red; font-weight:bold; float: left; font-size: 16px;">*</font>Employee NO Of Your School/if not available unique username</span>
-                    <input type="text" name="admission_no" id="admission_no" value="<?php echo $post_data['admission_no']; ?>" class="cd-input f5" >
-                    
-                </label>
-                <label class="candle-input" style="padding:10px 0px;">
-                    <span><font style="color:red; font-weight:bold;float: left; font-size: 16px;">*</font>Your Login Password</span>
-                    <input type="password" name="password" id="password" value="" class="cd-input f5">
-                    
-                </label>
-                 <label class="candle-input" style="padding:10px 0px;">
-                    <span><font style="color:red; font-weight:bold;float: left; font-size: 16px;">*</font>Joining Date</span>
-                    <input type="text" name="joining_date" value="<?php echo $post_data['joining_date']; ?>" id="joining_date" class="cd-input f5 datepicker" >
-                    
-                </label>
-                <label class="candle-input" style="padding:10px 0px;">
-                    <span><font style="color:red; font-weight:bold;float: left; font-size: 16px;">*</font>First Name</span>
-                    <input type="text" name="first_name" value="<?php echo $post_data['first_name']; ?>" id="first_name" class="cd-input f5" >
-                    
-                </label>
-                <label class="candle-input" style="padding:10px 0px;">
-                    <span>Middle Name</span>
-                    <input type="text" name="middle_name" value="<?php echo $post_data['middle_name']; ?>" id="middle_name" class="cd-input f5" >
-                    
-                </label>
-                <label class="candle-input" style="padding:10px 0px;">
-                    <span><font style="color:red; font-weight:bold;float: left; font-size: 16px;">*</font>Last Name</span>
-                    <input type="text" name="last_name" value="<?php echo $post_data['last_name']; ?>" id="last_name" class="cd-input f5" >
-                    
-                </label>
-                <label class="candle-input" style="padding:10px 0px;">
-                    <span><font style="color:red; font-weight:bold;float: left; font-size: 16px;">*</font>select Shift Class and section (if class teacher)</span>
-                     <?php echo get_paid_school_class($user_data->paid_school_id,$post_data['batch_id']); ?>
-                </label>
-                <label class="candle-input" style="padding:10px 0px;">
-                    <div style="float:left; width:54px"><input type="radio" <?php if($post_data['gender']!="f") { ?> checked="checked"<?php } ?> name="gender" id="gender" value="m" style="float:left; width:10px;"> &nbsp; Male</div>
-                    <div style="float:left; width:70px; margin-left:20px;"><input type="radio" <?php if($post_data['gender']=="f") { ?> checked="checked"<?php } ?> name="gender" id="gender" value="f" style="float:left; width:10px;">&nbsp;Female</div>
-                  
-                </label>
-                <label class="candle-input" style="padding:10px 0px;">
-                    <span><font style="color:red; font-weight:bold;float: left; font-size: 16px;">*</font>Department</span>
-                     <?php echo get_paid_employee_department_droupdown($user_data->paid_school_id,$post_data['employee_department_id']); ?>
-                </label>
-                <label class="candle-input" style="padding:10px 0px;">
-                    <span><font style="color:red; font-weight:bold;float: left; font-size: 16px;">*</font>Category</span>
-                     <?php echo get_paid_employee_category_droupdown($user_data->paid_school_id,$post_data['employee_category']); ?>
-                </label>
-                <label class="candle-input" style="padding:10px 0px;">
-                    <span><font style="color:red; font-weight:bold;float: left; font-size: 16px;">*</font>Position</span>
-                     <span id="position_dropdown" style="float: left; clear:both; width:100%;">
-                         <?php echo get_paid_employee_position_droupdown($user_data->paid_school_id,$post_data['employee_category'],$post_data['employee_position_id']); ?>
-                     </span>    
-                </label>
-                <label class="candle-input" style="padding:10px 0px;">
-                    <span>Grade</span>
-                     <?php echo get_paid_employee_grade_droupdown($user_data->paid_school_id,$post_data['employee_grade_id']); ?>
-                </label>
-                <label class="candle-input" style="padding:10px 0px;">
-                    <span><font style="color:red; font-weight:bold;float: left; font-size: 16px;">*</font>Select Birth Date</span>
-                    <input type="text" name="date_of_birth" value="<?php echo $post_data['date_of_birth']; ?>" id="date_of_birth" class="cd-input f5 datepicker" >
-                    
-                </label>
+                <!-- Form Name -->
+                <legend></legend>
+
+                <!-- Select Basic -->
+                 <div class="form-group">
+                    <label class="col-md-4 control-label" for="school_code">Employee NO Of Your School/if not available unique username</label>  
+                    <div class="col-md-4">
+                        <input type="text" name="admission_no" id="admission_no" value="<?php echo $post_data['admission_no']; ?>" required="" class="form-control input-md" >
+                        <span class="help-block"></span>  
+                    </div>
+                </div>
+                 <div class="form-group">
+                    <label class="col-md-4 control-label" for="school_code">Your Login Password</label>  
+                    <div class="col-md-4">
+                        <input type="password" name="password" id="password" value="" class="form-control input-md" required="">
+                        
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="school_code">Joining Date</label>  
+                    <div class="col-md-4">
+                        
+                            <input data-date-format="yyyy-mm-dd" type="text" class="form-control datepicker" required=""  name="joining_date" value="<?php echo $post_data['joining_date']; ?>" >
+                         
+                        
+                       
+                    </div>
+                </div>
                 
-            </div>
-            <?php echo user_admission_right(); ?>
-            <div class="createpage_full">
-                <label>
-                    <input type="submit" id="submit_form_school"  value="Submit" />
-                </label>
                 
-            </div>
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="school_code">First Name</label>  
+                    <div class="col-md-4">
+                        <input type="text" name="first_name" value="<?php echo $post_data['first_name']; ?>" id="first_name" class="form-control input-md" required="">
+                     
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="school_code">Middle Name</label>  
+                    <div class="col-md-4">
+                        <input type="text" name="middle_name" value="<?php echo $post_data['middle_name']; ?>" id="middle_name" class="form-control input-md">
+                     
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="school_code">Last Name</label>  
+                    <div class="col-md-4">
+                        <input type="text" name="last_name" value="<?php echo $post_data['last_name']; ?>" id="last_name" class="form-control input-md" required="">
+                     
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="radios">Select Gender</label>
+                    <div class="col-md-4">
+                        <div class="radio">
+                            <label for="radios-0">
+                                <input type="radio" <?php if($post_data['gender']!="f") { ?> checked="checked"<?php } ?> name="radios" id="radios-0" value="m" checked="checked">
+                                Male
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label for="radios-1">
+                                <input type="radio" <?php if($post_data['gender']=="f") { ?> checked="checked"<?php } ?> name="radios" id="radios-1" value="f">
+                                Female
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="selectbasic">Select Shift Class and section (select if only class teacher)</label>
+                    
+                    <div class="col-md-4">
+                        <?php echo get_paid_school_class($user_data->paid_school_id,$post_data['batch_id']); ?>
+                    </div>
+                </div>
+                
+                
+                
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="selectbasic">Department</label>
+                    
+                    <div class="col-md-4">
+                        <?php echo get_paid_employee_department_droupdown($user_data->paid_school_id,$post_data['employee_department_id']); ?>
+                    </div>
+                </div>
+                
+                
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="selectbasic">Category</label>
+                    
+                    <div class="col-md-4">
+                        <?php echo get_paid_employee_category_droupdown($user_data->paid_school_id,$post_data['employee_category']); ?>
+                    </div>
+                </div>
+                
+                
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="selectbasic">Position</label>
+                    
+                    <div class="col-md-4" id="position_dropdown">
+                        <?php echo get_paid_employee_position_droupdown($user_data->paid_school_id,$post_data['employee_category'],$post_data['employee_position_id']); ?>
+                    </div>
+                </div>
+                
+                
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="selectbasic">Grade</label>
+                    
+                    <div class="col-md-4">
+                        <?php echo get_paid_employee_grade_droupdown($user_data->paid_school_id,$post_data['employee_grade_id']); ?>
+                    </div>
+                </div>
+                
+                
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="school_code">Select Birth Date</label>  
+                    <div class="col-md-4">
+                            <input data-date-format="yyyy-mm-dd" type="text" class="form-control datepicker" required=""  name="date_of_birth" value="<?php echo $post_data['date_of_birth']; ?>" >
+                        
+                    </div>
+                </div>
+                
+                
+               
 
-        </div>
-        <?= form_close(); ?>
-    </div>
+               
+                
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="singlebutton"></label>
+                    <div class="col-md-4">
+                        <button name="submit" type="submit" id="submit" class="btn btn-primary btn-success btn-lg">
+                            <i class="fa fa-thumbs-up"></i> Apply
+                        </button>
+                    </div>
+                </div>
 
+            </fieldset>
+        </form>
 
-</div> <!--toPopup end-->
+  </body>
+</html>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function () {
+    $(document).on("change", "#change_position", function () {
+        $.post('front/ajax/getpositiondropudown/',
+                        {category_id: $(this).val()}, function (data) {
+                      // alert(data);
+                    $("#position_dropdown").html(data);
+                }
+        );
+    });
+    $('.datepicker').datepicker();
+});    
+</script>
 
 <style>
-.createpage .error_validation p {
+.error_validation p {
     color: red;
-    float: left;
-    clear: both;
     padding: 5px 0px;
     font-weight: bold;
-}
- .datepicker {
-  padding: 4px;
-  margin-top: 1px;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  border-radius: 4px;
-  direction: ltr;
-  /*.dow {
-		border-top: 1px solid #ddd !important;
-	}*/
-
-}
-.datepicker-inline {
-  width: 220px;
-}
-.datepicker.datepicker-rtl {
-  direction: rtl;
-}
-.datepicker.datepicker-rtl table tr td span {
-  float: right;
-}
-.datepicker-dropdown {
-  top: 0;
-  left: 0;
-}
-.datepicker-dropdown:before {
-  content: '';
-  display: inline-block;
-  border-left: 7px solid transparent;
-  border-right: 7px solid transparent;
-  border-bottom: 7px solid #ccc;
-  border-bottom-color: rgba(0, 0, 0, 0.2);
-  position: absolute;
-  top: -7px;
-  left: 6px;
-}
-.datepicker-dropdown:after {
-  content: '';
-  display: inline-block;
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-  border-bottom: 6px solid #ffffff;
-  position: absolute;
-  top: -6px;
-  left: 7px;
-}
-.datepicker > div {
-  display: none;
-}
-.datepicker.days div.datepicker-days {
-  display: block;
-}
-.datepicker.months div.datepicker-months {
-  display: block;
-}
-.datepicker.years div.datepicker-years {
-  display: block;
-}
-.datepicker table {
-  margin: 0;
-}
-.datepicker td,
-.datepicker th {
-  text-align: center;
-  width: 20px;
-  height: 20px;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  border-radius: 4px;
-  border: none;
-}
-.table-striped .datepicker table tr td,
-.table-striped .datepicker table tr th {
-  background-color: transparent;
-}
-.datepicker table tr td.day:hover {
-  background: #eeeeee;
-  cursor: pointer;
-}
-.datepicker table tr td.old,
-.datepicker table tr td.new {
-  color: #999999;
-}
-.datepicker table tr td.disabled,
-.datepicker table tr td.disabled:hover {
-  background: none;
-  color: #999999;
-  cursor: default;
-}
-.datepicker table tr td.today,
-.datepicker table tr td.today:hover,
-.datepicker table tr td.today.disabled,
-.datepicker table tr td.today.disabled:hover {
-  background-color: #fde19a;
-  background-image: -moz-linear-gradient(top, #fdd49a, #fdf59a);
-  background-image: -ms-linear-gradient(top, #fdd49a, #fdf59a);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#fdd49a), to(#fdf59a));
-  background-image: -webkit-linear-gradient(top, #fdd49a, #fdf59a);
-  background-image: -o-linear-gradient(top, #fdd49a, #fdf59a);
-  background-image: linear-gradient(top, #fdd49a, #fdf59a);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fdd49a', endColorstr='#fdf59a', GradientType=0);
-  border-color: #fdf59a #fdf59a #fbed50;
-  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
-}
-.datepicker table tr td.today:hover,
-.datepicker table tr td.today:hover:hover,
-.datepicker table tr td.today.disabled:hover,
-.datepicker table tr td.today.disabled:hover:hover,
-.datepicker table tr td.today:active,
-.datepicker table tr td.today:hover:active,
-.datepicker table tr td.today.disabled:active,
-.datepicker table tr td.today.disabled:hover:active,
-.datepicker table tr td.today.active,
-.datepicker table tr td.today:hover.active,
-.datepicker table tr td.today.disabled.active,
-.datepicker table tr td.today.disabled:hover.active,
-.datepicker table tr td.today.disabled,
-.datepicker table tr td.today:hover.disabled,
-.datepicker table tr td.today.disabled.disabled,
-.datepicker table tr td.today.disabled:hover.disabled,
-.datepicker table tr td.today[disabled],
-.datepicker table tr td.today:hover[disabled],
-.datepicker table tr td.today.disabled[disabled],
-.datepicker table tr td.today.disabled:hover[disabled] {
-  background-color: #fdf59a;
-}
-.datepicker table tr td.today:active,
-.datepicker table tr td.today:hover:active,
-.datepicker table tr td.today.disabled:active,
-.datepicker table tr td.today.disabled:hover:active,
-.datepicker table tr td.today.active,
-.datepicker table tr td.today:hover.active,
-.datepicker table tr td.today.disabled.active,
-.datepicker table tr td.today.disabled:hover.active {
-  background-color: #fbf069 \9;
-}
-.datepicker table tr td.active,
-.datepicker table tr td.active:hover,
-.datepicker table tr td.active.disabled,
-.datepicker table tr td.active.disabled:hover {
-  background-color: #006dcc;
-  background-image: -moz-linear-gradient(top, #0088cc, #0044cc);
-  background-image: -ms-linear-gradient(top, #0088cc, #0044cc);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0088cc), to(#0044cc));
-  background-image: -webkit-linear-gradient(top, #0088cc, #0044cc);
-  background-image: -o-linear-gradient(top, #0088cc, #0044cc);
-  background-image: linear-gradient(top, #0088cc, #0044cc);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#0088cc', endColorstr='#0044cc', GradientType=0);
-  border-color: #0044cc #0044cc #002a80;
-  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
-  color: #fff;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-}
-.datepicker table tr td.active:hover,
-.datepicker table tr td.active:hover:hover,
-.datepicker table tr td.active.disabled:hover,
-.datepicker table tr td.active.disabled:hover:hover,
-.datepicker table tr td.active:active,
-.datepicker table tr td.active:hover:active,
-.datepicker table tr td.active.disabled:active,
-.datepicker table tr td.active.disabled:hover:active,
-.datepicker table tr td.active.active,
-.datepicker table tr td.active:hover.active,
-.datepicker table tr td.active.disabled.active,
-.datepicker table tr td.active.disabled:hover.active,
-.datepicker table tr td.active.disabled,
-.datepicker table tr td.active:hover.disabled,
-.datepicker table tr td.active.disabled.disabled,
-.datepicker table tr td.active.disabled:hover.disabled,
-.datepicker table tr td.active[disabled],
-.datepicker table tr td.active:hover[disabled],
-.datepicker table tr td.active.disabled[disabled],
-.datepicker table tr td.active.disabled:hover[disabled] {
-  background-color: #0044cc;
-}
-.datepicker table tr td.active:active,
-.datepicker table tr td.active:hover:active,
-.datepicker table tr td.active.disabled:active,
-.datepicker table tr td.active.disabled:hover:active,
-.datepicker table tr td.active.active,
-.datepicker table tr td.active:hover.active,
-.datepicker table tr td.active.disabled.active,
-.datepicker table tr td.active.disabled:hover.active {
-  background-color: #003399 \9;
-}
-.datepicker table tr td span {
-  display: block;
-  width: 23%;
-  height: 54px;
-  line-height: 54px;
-  float: left;
-  margin: 1%;
-  cursor: pointer;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  border-radius: 4px;
-}
-.datepicker table tr td span:hover {
-  background: #eeeeee;
-}
-.datepicker table tr td span.disabled,
-.datepicker table tr td span.disabled:hover {
-  background: none;
-  color: #999999;
-  cursor: default;
-}
-.datepicker table tr td span.active,
-.datepicker table tr td span.active:hover,
-.datepicker table tr td span.active.disabled,
-.datepicker table tr td span.active.disabled:hover {
-  background-color: #006dcc;
-  background-image: -moz-linear-gradient(top, #0088cc, #0044cc);
-  background-image: -ms-linear-gradient(top, #0088cc, #0044cc);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0088cc), to(#0044cc));
-  background-image: -webkit-linear-gradient(top, #0088cc, #0044cc);
-  background-image: -o-linear-gradient(top, #0088cc, #0044cc);
-  background-image: linear-gradient(top, #0088cc, #0044cc);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#0088cc', endColorstr='#0044cc', GradientType=0);
-  border-color: #0044cc #0044cc #002a80;
-  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
-  color: #fff;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-}
-.datepicker table tr td span.active:hover,
-.datepicker table tr td span.active:hover:hover,
-.datepicker table tr td span.active.disabled:hover,
-.datepicker table tr td span.active.disabled:hover:hover,
-.datepicker table tr td span.active:active,
-.datepicker table tr td span.active:hover:active,
-.datepicker table tr td span.active.disabled:active,
-.datepicker table tr td span.active.disabled:hover:active,
-.datepicker table tr td span.active.active,
-.datepicker table tr td span.active:hover.active,
-.datepicker table tr td span.active.disabled.active,
-.datepicker table tr td span.active.disabled:hover.active,
-.datepicker table tr td span.active.disabled,
-.datepicker table tr td span.active:hover.disabled,
-.datepicker table tr td span.active.disabled.disabled,
-.datepicker table tr td span.active.disabled:hover.disabled,
-.datepicker table tr td span.active[disabled],
-.datepicker table tr td span.active:hover[disabled],
-.datepicker table tr td span.active.disabled[disabled],
-.datepicker table tr td span.active.disabled:hover[disabled] {
-  background-color: #0044cc;
-}
-.datepicker table tr td span.active:active,
-.datepicker table tr td span.active:hover:active,
-.datepicker table tr td span.active.disabled:active,
-.datepicker table tr td span.active.disabled:hover:active,
-.datepicker table tr td span.active.active,
-.datepicker table tr td span.active:hover.active,
-.datepicker table tr td span.active.disabled.active,
-.datepicker table tr td span.active.disabled:hover.active {
-  background-color: #003399 \9;
-}
-.datepicker table tr td span.old {
-  color: #999999;
-}
-.datepicker th.switch {
-  width: 145px;
-}
-.datepicker thead tr:first-child th,
-.datepicker tfoot tr:first-child th {
-  cursor: pointer;
-}
-.datepicker thead tr:first-child th:hover,
-.datepicker tfoot tr:first-child th:hover {
-  background: #eeeeee;
-}
-.input-append.date .add-on i,
-.input-prepend.date .add-on i {
-  display: block;
-  cursor: pointer;
-  width: 16px;
-  height: 16px;
-}   
-.datepicker.dropdown-menu {
-    opacity: 1;
-    visibility: visible;
-    width:auto;
-}
-    #button-top { width: 100px; position: absolute; left: 75%; top: 40px; padding-left: 100px;overflow: hidden;}
-    #button-top:hover, #button-bottom:hover {cursor: pointer;}
-    .createpage { margin: 0 auto; width: 90%;  text-align: center; }  
-    .createpage label{width:100%;}
-    .createpage label span{color: black;    float: left;    font-size: 13px;}
-    .createpage p { padding:8px 16px; color: #fff; margin: 0; }
-    #button-bottom { width: 100px; position: absolute; left: 75%; top: 240px; padding-left: 100px;overflow: hidden;}
-    .createpage_left{width:60%;float:left; clear:both;}
-    .createpage_right{width:30%;margin-top:30px;float:right;padding-left:20px;}
-    .createpage_right span{text-align:left;font-size: 16px;}
-    .createpage_full{width:100%;}
-    .createpage_right p{color:gray;font-size:27px;}
-    .createpage_right span.a{color:#71B0DF;font-size:35px;font-weight: bold;line-height: 40px;}
-   .createpage_right span.b{color:#DB3434;font-size:37px;font-weight: bold;line-height: 40px;}
-
-
-    input[type=checkbox].css-checkbox {
-        position: absolute; 
-        overflow: hidden; 
-        clip: rect(0 0 0 0); 
-        height:1px; 
-        width:1px; 
-        margin:-1px; 
-        padding:0;
-        border:0;
-    }
-
-    input[type=checkbox].css-checkbox + label.css-label {
-        padding-left:31px;
-        height:20px; 
-        display:inline-block;
-        line-height:20px;
-        background-repeat:no-repeat;
-        background-position: 0 0;
-        font-size:15px;
-        color:#A6AEAF;
-        vertical-align:middle;
-        cursor:pointer;
-        margin-right:26px;
-    }
-
-    input[type=checkbox].css-checkbox:checked + label.css-label {
-        background-position: 0 -20px;
-    }
-
-    .css-label{ background-image:url("Profiler/images/right/checkbox.png"); }
-
-
-
-    .select-style {
-        border: 1px solid #ccc;
-        width: 440px;
-        height:35px;
-        border-radius: 2px;
-        overflow: hidden;
-        background: #E7EBEE url("Profiler/images/right/downarrow.png") no-repeat 100% 50%;
-    }
-
-    .select-style select {
-        padding: 5px 8px;
-        color:#3D3D3B;
-        opacity: 0.5;
-        font-size: 13px;
-        width: 105%;
-        border: none;
-        box-shadow: none;
-        background: transparent;
-        background-image: none;
-        -webkit-appearance: none;
-    }
-
-    .select-style select:focus {
-        outline: none;
-    }					
-
-
-
-
-
-
-
-
-
-
-</style>
-
-	
-</div>
-
-<style>
-#backgroundPopup { 
-	z-index:5000;
-	position: fixed;
-	display:none;
-	height:100%;
-	width:100%;
-	background:#000000;	
-	top:0px;
-	left:0px;
-}
-#toPopup {
-	font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
-    background: none repeat scroll 0 0 #FFFFFF;
-    padding: 40px 20px !important;	
-    border-radius: 3px 3px 3px 3px;
-    color: #333333;
-    display: block !important;
-    font-size: 14px;
-    position: relative !important;
-    left: 0px !important;
-    top: 0px !important;
-    width: 96% !important;
-    z-index: 6000 !important;
-	margin:30px 20px !important;
-}
-div.loader {
-    background: url("../merapi/img/bx_loader.gif") no-repeat scroll 0 0 transparent;
-    height: 32px;
-    width: 32px;
-	display: none;
-	z-index: 9999;
-	top: 40%;
-	left: 50%;
-	position: absolute;
-	margin-left: -10px;
-}
-div.close {
-    background: url("../merapi/img/close.png") no-repeat scroll 0 0 transparent;
-    bottom: 30px;
-    cursor: pointer;
-    float: right;
-    height: 30px;
-    left: 10px;
-    position: relative;
-    width: 31px;
-	display:none !important;
 }
 </style>

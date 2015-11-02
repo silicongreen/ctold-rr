@@ -32,11 +32,17 @@ $active_common_view = false;
                       <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
                       <li data-target="#myCarousel" data-slide-to="1"></li>
                       <li data-target="#myCarousel" data-slide-to="2"></li>
+                      <li data-target="#myCarousel" data-slide-to="3"></li>
                     </ol>
 
                     <!-- Wrapper for slides -->
                     <div class="carousel-inner" role="listbox">
                         <div class="item active">
+                          <a class="speelingbee_banner_box" title="Spelling Bee Two" href="http://www.champs21.com/spellingbee" target="_blank">       
+                                  <img src="<?php echo base_url('styles/layouts/tdsfront/home_slider/dhorjo-joto-dur-toto-913x504.jpg'); ?>" class="attachment-post-thumbnail wp-post-image no_toolbar" alt="Spelling Bee Two" style="width:100%;">
+                          </a> 
+                        </div>
+                        <div class="item">
                           <a class="speelingbee_banner_box" title="The School of Excellence" href="http://www.champs21.com/spellingbee" target="_blank">       
                                   <img src="<?php echo base_url('styles/layouts/tdsfront/home_slider/slider-1.png'); ?>" class="attachment-post-thumbnail wp-post-image no_toolbar" alt="The School of Excellence" style="width:100%;">
                           </a> 
@@ -47,6 +53,8 @@ $active_common_view = false;
                                   <img src="<?php echo base_url('styles/layouts/tdsfront/home_slider/slider-spellchamps-prize.jpg'); ?>" class="attachment-post-thumbnail wp-post-image no_toolbar" alt="Spell Champs" style="width:100%;">
                           </a> 
                         </div>
+                        
+                        
 
                         <div class="item">
                             <a class="speelingbee_banner_box" title="Nation Builders" href="http://www.champs21.com/nation-builder" target="_blank">                                           

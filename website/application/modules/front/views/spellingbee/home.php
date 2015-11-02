@@ -77,6 +77,9 @@
                     <!--<img class="banner-button" src="<?php // echo $candle_button; ?>" >-->
                 <?php // } ?>
             </li>
+            <li onclick="location.href = '<?php echo base_url() . 'spellingbee'; ?>'">
+                <img src="/styles/layouts/tdsfront/home_slider/dhorjo-joto-dur-toto-913x504.jpg" />
+            </li>
             <li data="android-app" class="pop-without-login">
                 <img src="/styles/layouts/tdsfront/spelling_bee/2015/slides/slider-spellchamps-prize.jpg" />
             </li>

@@ -55,6 +55,9 @@ $paid_schools = get_paid_school_droupdown();
 </html>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+<link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+<script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
 <style>
 .error_validation p {
     color: red;
@@ -62,4 +65,9 @@ $paid_schools = get_paid_school_droupdown();
     font-weight: bold;
 }
 </style>
+<script>
 
+$(document).ready(function() {
+  $('.selectpicker').select2();
+});
+</script>

@@ -234,7 +234,7 @@ class Users extends CActiveRecord {
             $criteria->compare('username', $username);
         }
 
-        $criteria->addCondition("is_deleted = 0 OR parent=1");
+        $criteria->addCondition("(is_deleted = 0 OR parent=1) and is_approved=1");
       
 
         $user = $this->find($criteria);
@@ -307,23 +307,17 @@ class Users extends CActiveRecord {
     
     public function studentListParent($profile_id)
     {
-        $gurdianModel = new Guardians();
-        $gurdian = $gurdianModel->findBypk($profile_id);
-
-        $studentModel = new Students();
-        $first_student = $studentModel->findBypk($gurdian->ward_id);
-
-        $other_student = new Students();
-        $other_students = $other_student->getStudentBySiblings($first_student->id);
+        $other_student = new GuardianStudent();
+        $other_students = $other_student->getChildren($profile_id);
 
         $user_array = array();
 
         if ($other_students) {
             $i = 0;
             foreach ($other_students as $value) {
-                $middle_name = (!empty($value->middle_name)) ? $value->middle_name . ' ' : '';
-                $user_array[$i]['full_name'] = rtrim($value->first_name . ' ' . $middle_name . $value->last_name);
-                $user_array[$i]['batch'] = $value['batchDetails']['courseDetails']->course_name." ".$value['batchDetails']->name;
+                $middle_name = (!empty($value['students']->middle_name)) ? $value['students']->middle_name . ' ' : '';
+                $user_array[$i]['full_name'] = rtrim($value['students']->first_name . ' ' . $middle_name . $value['students']->last_name);
+                $user_array[$i]['batch'] = $value['students']['batchDetails']['courseDetails']->course_name." ".$value['students']['batchDetails']->name;
                
                 $i++;
             }
@@ -331,49 +325,119 @@ class Users extends CActiveRecord {
 
         return $user_array;
     }
+    
+//    public function studentListParent($profile_id)
+//    {
+//        $gurdianModel = new Guardians();
+//        $gurdian = $gurdianModel->findBypk($profile_id);
+//
+//        $studentModel = new Students();
+//        $first_student = $studentModel->findBypk($gurdian->ward_id);
+//
+//        $other_student = new Students();
+//        $other_students = $other_student->getStudentBySiblings($first_student->id);
+//
+//        $user_array = array();
+//
+//        if ($other_students) {
+//            $i = 0;
+//            foreach ($other_students as $value) {
+//                $middle_name = (!empty($value->middle_name)) ? $value->middle_name . ' ' : '';
+//                $user_array[$i]['full_name'] = rtrim($value->first_name . ' ' . $middle_name . $value->last_name);
+//                $user_array[$i]['batch'] = $value['batchDetails']['courseDetails']->course_name." ".$value['batchDetails']->name;
+//               
+//                $i++;
+//            }
+//        }
+//
+//        return $user_array;
+//    }
+//    
+//        public function studentList($profile_id) {
+//
+//        $gurdianModel = new Guardians();
+//        $gurdian = $gurdianModel->findBypk($profile_id);
+//
+//        $studentModel = new Students();
+//        $first_student = $studentModel->findBypk($gurdian->ward_id);
+//
+//        $other_student = new Students();
+//        $other_students = $other_student->getStudentBySiblings($first_student->id);
+//
+//        $user_array = array();
+//
+//        if ($other_students) {
+//            $i = 0;
+//            foreach ($other_students as $value) {
+//                $middle_name = (!empty($value->middle_name)) ? $value->middle_name . ' ' : '';
+//
+//                $exam_category = new ExamGroups;
+//                $exam_category = $exam_category->getExamCategory($value->school_id, $value->batch_id, 3);
+//
+//                $freobj = new Freeusers();
+//                $profile_image = $freobj->getUserImage($value->user_id);
+//
+//
+//                $schoolobj = new Schools();
+//                $schoo_data = $schoolobj->findByPk($value->school_id);
+//
+//                $user_array[$i]['id'] = $value->user_id;
+//                $user_array[$i]['profile_id'] = $value->id;
+//                $user_array[$i]['profile_image'] = "";
+//                if (isset($profile_image['profile_image'])) {
+//                    $user_array[$i]['profile_image'] = $profile_image['profile_image'];
+//                }
+//                $user_array[$i]['full_name'] = rtrim($value->first_name . ' ' . $middle_name . $value->last_name);
+//                $user_array[$i]['school_id'] = $value->school_id;
+//                $user_array[$i]['batch_id'] = $value->batch_id;
+//                $user_array[$i]['school_name'] = $schoo_data->name;
+//                $user_array[$i]['batch_name'] = $value['batchDetails']->name;
+//                $user_array[$i]['course_name'] = $value['batchDetails']['courseDetails']->course_name;
+//                $user_array[$i]['section_name'] = $value['batchDetails']['courseDetails']->section_name;
+//                $user_array[$i]['terms'] = $exam_category;
+//                $i++;
+//            }
+//        }
+//
+//        return $user_array;
+//    }
 
-    public function studentList($profile_id) {
-
-        $gurdianModel = new Guardians();
-        $gurdian = $gurdianModel->findBypk($profile_id);
-
-        $studentModel = new Students();
-        $first_student = $studentModel->findBypk($gurdian->ward_id);
-
-        $other_student = new Students();
-        $other_students = $other_student->getStudentBySiblings($first_student->id);
+    public function studentList($profile_id) 
+    {
+        $other_student = new GuardianStudent();
+        $other_students = $other_student->getChildren($profile_id);
 
         $user_array = array();
 
         if ($other_students) {
             $i = 0;
             foreach ($other_students as $value) {
-                $middle_name = (!empty($value->middle_name)) ? $value->middle_name . ' ' : '';
+                $middle_name = (!empty($value['students']->middle_name)) ? $value['students']->middle_name . ' ' : '';
 
                 $exam_category = new ExamGroups;
-                $exam_category = $exam_category->getExamCategory($value->school_id, $value->batch_id, 3);
+                $exam_category = $exam_category->getExamCategory($value['students']->school_id, $value['students']->batch_id, 3);
                 
                 $freobj = new Freeusers();
-                $profile_image = $freobj->getUserImage($value->user_id);
+                $profile_image = $freobj->getUserImage($value['students']->user_id);
                 
                 
                 $schoolobj = new Schools();
-                $schoo_data = $schoolobj->findByPk($value->school_id);
+                $schoo_data = $schoolobj->findByPk($value['students']->school_id);
 
-                $user_array[$i]['id'] = $value->user_id;
-                $user_array[$i]['profile_id'] = $value->id;
+                $user_array[$i]['id'] = $value['students']->user_id;
+                $user_array[$i]['profile_id'] = $value['students']->id;
                 $user_array[$i]['profile_image'] = "";
                 if(isset($profile_image['profile_image']))
                 {
                    $user_array[$i]['profile_image'] = $profile_image['profile_image']; 
                 }
-                $user_array[$i]['full_name'] = rtrim($value->first_name . ' ' . $middle_name . $value->last_name);
-                $user_array[$i]['school_id'] = $value->school_id;
-                $user_array[$i]['batch_id'] = $value->batch_id;
+                $user_array[$i]['full_name'] = rtrim($value['students']->first_name . ' ' . $middle_name . $value['students']->last_name);
+                $user_array[$i]['school_id'] = $value['students']->school_id;
+                $user_array[$i]['batch_id'] = $value['students']->batch_id;
                 $user_array[$i]['school_name'] = $schoo_data->name;
-                $user_array[$i]['batch_name'] = $value['batchDetails']->name;
-                $user_array[$i]['course_name'] = $value['batchDetails']['courseDetails']->course_name;
-                $user_array[$i]['section_name'] = $value['batchDetails']['courseDetails']->section_name;
+                $user_array[$i]['batch_name'] = $value['students']['batchDetails']->name;
+                $user_array[$i]['course_name'] = $value['students']['batchDetails']['courseDetails']->course_name;
+                $user_array[$i]['section_name'] = $value['students']['batchDetails']['courseDetails']->section_name;
                 $user_array[$i]['terms'] = $exam_category;
                 $i++;
             }

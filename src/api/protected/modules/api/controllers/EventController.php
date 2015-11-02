@@ -481,12 +481,12 @@ class EventController extends Controller
     public function actionAddMeetingParent()
     {
         $user_secret = Yii::app()->request->getPost('user_secret');
-        $batch_id = Yii::app()->request->getPost('batch_id');
+        //$batch_id = Yii::app()->request->getPost('batch_id');
         $description = Yii::app()->request->getPost('description');
         $datetime = Yii::app()->request->getPost('datetime');
         $parent_id = Yii::app()->request->getPost('parent_id');
         $student_id = Yii::app()->request->getPost('student_id');
-        if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isParent && $student_id && $batch_id && $description && $datetime && $parent_id)
+        if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isParent && $student_id && $description && $datetime && $parent_id)
         {
 
             $meetingreq = new Meetingrequest();
@@ -572,11 +572,11 @@ class EventController extends Controller
     public function actionAddMeetingRequest()
     {
         $user_secret = Yii::app()->request->getPost('user_secret');
-        $batch_id = Yii::app()->request->getPost('batch_id');
+        //$batch_id = Yii::app()->request->getPost('batch_id');
         $description = Yii::app()->request->getPost('description');
         $datetime = Yii::app()->request->getPost('datetime');
         $parent_id = Yii::app()->request->getPost('parent_id');
-        if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher && $batch_id && $description && $datetime && $parent_id)
+        if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher  && $description && $datetime && $parent_id)
         {
 
             $meetingreq = new Meetingrequest();
@@ -592,34 +592,43 @@ class EventController extends Controller
             $student = new Students();
             $studentdata = $student->findByPk($parent_id);
             
-            if(isset($studentdata->immediate_contact_id) && isset($techer_profile->first_name))
+            $gstudent = new GuardianStudent(); 
+        
+            $all_g = $gstudent->getGuardians($parent_id);
+
+        
+            
+            if($all_g && isset($techer_profile->first_name))
             {
-                $gr = new Guardians();
-                $grdata = $gr->findByPk($studentdata->immediate_contact_id);
-                if($grdata->user_id)
+                foreach ($all_g as $value)
                 {
-                    $receptionist_id = $grdata->user_id;
-                    $batch_id = $studentdata->batch_id;
-                    $student_id = $studentdata->id;
-                }
-                if($receptionist_id)
-                {
-                    $reminder = new Reminders();
-                    $reminder->sender = Yii::app()->user->id;
-                    $reminder->subject = "New Meeting Request";
-                    $reminder->body = "New Meeting Request Send from " . $techer_profile->first_name . " at ".$datetime;
-                    $reminder->recipient = $receptionist_id;
-                    $reminder->school_id = Yii::app()->user->schoolId;
-                    $reminder->rid = $meetingreq->id;
-                    $reminder->rtype = 11;
-                    $reminder->batch_id = $batch_id;
-                    $reminder->student_id = $student_id;
-                    $reminder->created_at = date("Y-m-d H:i:s");
+                    $gr = new Guardians();
+                    $grdata = $gr->findByPk($value['guardian']->id);
+                    if($grdata->user_id)
+                    {
+                        $receptionist_id = $grdata->user_id;
+                        $batch_id = $studentdata->batch_id;
+                        $student_id = $studentdata->id;
+                    }
+                    if($receptionist_id)
+                    {
+                        $reminder = new Reminders();
+                        $reminder->sender = Yii::app()->user->id;
+                        $reminder->subject = "New Meeting Request";
+                        $reminder->body = "New Meeting Request Send from " . $techer_profile->first_name . " at ".$datetime;
+                        $reminder->recipient = $receptionist_id;
+                        $reminder->school_id = Yii::app()->user->schoolId;
+                        $reminder->rid = $meetingreq->id;
+                        $reminder->rtype = 11;
+                        $reminder->batch_id = $batch_id;
+                        $reminder->student_id = $student_id;
+                        $reminder->created_at = date("Y-m-d H:i:s");
 
-                    $reminder->updated_at = date("Y-m-d H:i:s");
-                    $reminder->save();
+                        $reminder->updated_at = date("Y-m-d H:i:s");
+                        $reminder->save();
 
-                    Settings::sendCurlNotification($receptionist_id, $reminder->id);
+                        Settings::sendCurlNotification($receptionist_id, $reminder->id);
+                    }
                 }
                 ///push notification
             }
@@ -703,9 +712,10 @@ class EventController extends Controller
                 }
                 $name = "";
                 $rtype = 13;
-                $recipient = 0;
-                $batch_id = 0;
-                $student_id = 0;
+//                $recipient = 0;
+//                $batch_id = 0;
+//                $student_id = 0;
+                $reminderrecipients = array();
                 if(Yii::app()->user->isParent)
                 {
                     $gr = new Guardians();
@@ -715,7 +725,12 @@ class EventController extends Controller
                     $employee = new Employees();
                     $emdata = $employee->findByPk($updatemeeting->teacher_id);
                     $rtype = 14;
-                    $recipient = $emdata->user_id;
+                    $reminderrecipients[] = $emdata->user_id;
+                    $batch_ids[$emdata->user_id] = 0;
+                    $student_ids[$emdata->user_id] = 0;
+                    
+                    
+                    //$recipient = $emdata->user_id;
                     
                 }
                 else
@@ -725,42 +740,89 @@ class EventController extends Controller
                     $name = $emdata->first_name." ".$emdata->last_name;
                     
                     $std = new Students();
-                    $std_data = $std->findByPk($updatemeeting->parent_id);
-                    if($std_data->immediate_contact_id)
+                    $studentdata = $std->findByPk($updatemeeting->parent_id);
+                    
+                    $gstudent = new GuardianStudent(); 
+        
+                    $all_g = $gstudent->getGuardians($updatemeeting->parent_id);
+
+                    if ($all_g)
                     {
-                        $gr = new Guardians();
-                        $grdata = $gr->findByPk($std_data->immediate_contact_id);
-                        if($grdata->user_id)
+                        foreach($all_g as $value)
                         {
-                            $recipient = $grdata->user_id;
-                            $batch_id = $std_data->batch_id;
-                            $student_id = $std_data->id;
-                        }
+                            $gr = new Guardians();
+                            $grdata = $gr->findByPk($value['guardian']->id);
+                            if($grdata->user_id)
+                            {
+                                $reminderrecipients[] = $grdata->user_id;
+                                $batch_ids[$grdata->user_id] = $studentdata->batch_id;
+                                $student_ids[$grdata->user_id] = $studentdata->id;
+                            }
+                        }    
+
                     }
-                }    
-                if($recipient)
+                    
+                    
+//                    if($std_data->immediate_contact_id)
+//                    {
+//                        $gr = new Guardians();
+//                        $grdata = $gr->findByPk($std_data->immediate_contact_id);
+//                        if($grdata->user_id)
+//                        {
+//                            $recipient = $grdata->user_id;
+//                            $batch_id = $std_data->batch_id;
+//                            $student_id = $std_data->id;
+//                        }
+//                    }
+                }   
+                if ($reminderrecipients)
                 {
-                    
-                    $reminder = new Reminders();
-                    $reminder->sender = Yii::app()->user->id;
-                    $reminder->subject = "Your Meeting Request is ".$status_text;
-                    $reminder->body = "Your meeting request with " . $name . " have been  ".$status_text." for ".date('l jS \of F Y h:i:s A',  strtotime($updatemeeting->datetime));
-                    $reminder->recipient = $recipient;
-                    $reminder->school_id = Yii::app()->user->schoolId;
-                    $reminder->rid = $updatemeeting->id;
-                    $reminder->rtype = $rtype;
-                    $reminder->batch_id = $batch_id;
-                    $reminder->student_id = $student_id;
-                    $reminder->created_at = date("Y-m-d H:i:s");
+                    $notification_ids = array();
+                    foreach ($reminderrecipients as $value)
+                    {
+                        $reminder = new Reminders();
+                        $reminder->sender = Yii::app()->user->id;
+                        $reminder->recipient = $value;
+                        $reminder->subject = "Your Meeting Request is ".$status_text;
+                        $reminder->body = "Your meeting request with " . $name . " have been  ".$status_text." for ".date('l jS \of F Y h:i:s A',  strtotime($updatemeeting->datetime));
+                        $reminder->created_at = date("Y-m-d H:i:s");
+                        $reminder->rid = $updatemeeting->id;
+                        $reminder->rtype = $rtype;
+                        $reminder->batch_id = $batch_ids[$value];
+                        $reminder->student_id = $student_ids[$value];
 
-                    $reminder->updated_at = date("Y-m-d H:i:s");
-                    $reminder->save();
-                    
-                    Settings::sendCurlNotification($recipient, $reminder->id);
-                   
-
-                    ///push notification
+                        $reminder->updated_at = date("Y-m-d H:i:s");
+                        $reminder->school_id = Yii::app()->user->schoolId;
+                        $reminder->save();
+                        $notification_ids[] = $reminder->id;
+                    }
+                    $notification_id = implode(",", $notification_ids);
+                    $user_id = implode(",", $reminderrecipients);
+                    Settings::sendCurlNotification($user_id, $notification_id);
                 }
+//                if($recipient)
+//                {
+//                    
+//                    $reminder = new Reminders();
+//                    $reminder->sender = Yii::app()->user->id;
+//                    $reminder->subject = "Your Meeting Request is ".$status_text;
+//                    $reminder->body = "Your meeting request with " . $name . " have been  ".$status_text." for ".date('l jS \of F Y h:i:s A',  strtotime($updatemeeting->datetime));
+//                    $reminder->recipient = $recipient;
+//                    $reminder->school_id = Yii::app()->user->schoolId;
+//                    $reminder->rid = $updatemeeting->id;
+//                    $reminder->rtype = $rtype;
+//                    $reminder->batch_id = $batch_id;
+//                    $reminder->student_id = $student_id;
+//                    $reminder->created_at = date("Y-m-d H:i:s");
+//
+//                    $reminder->updated_at = date("Y-m-d H:i:s");
+//                    $reminder->save();
+//                    
+//                    Settings::sendCurlNotification($recipient, $reminder->id);
+//                   
+//
+//                    ///push notification
+//                }
                 
             }
             else

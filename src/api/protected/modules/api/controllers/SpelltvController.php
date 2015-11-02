@@ -85,7 +85,7 @@ class SpelltvController extends Controller
         
         if(!$limit)
         {
-            $limit = 15;
+            $limit = 30;
         } 
 //        if($user_id)
 //        {

@@ -552,17 +552,25 @@ class CalenderController extends Controller
             $message = $studentdata->first_name . " " . $studentdata->last_name . " is absent on (forenoon)" . $newattendence->month_date;
         else
             $message = $studentdata->first_name . " " . $studentdata->last_name . " is absent on " . $newattendence->month_date;
+        
+        $gstudent = new GuardianStudent(); 
+        
+        $all_g = $gstudent->getGuardians($student_id);
 
-        if ($studentdata->immediate_contact_id)
+        if ($all_g)
         {
-            $gr = new Guardians();
-            $grdata = $gr->findByPk($studentdata->immediate_contact_id);
-            if($grdata->user_id)
+            foreach($all_g as $value)
             {
-                $reminderrecipients[] = $grdata->user_id;
-                $batch_ids[$grdata->user_id] = $studentdata->batch_id;
-                $student_ids[$grdata->user_id] = $studentdata->id;
-            }
+                $gr = new Guardians();
+                $grdata = $gr->findByPk($value['guardian']->id);
+                if($grdata->user_id)
+                {
+                    $reminderrecipients[] = $grdata->user_id;
+                    $batch_ids[$grdata->user_id] = $studentdata->batch_id;
+                    $student_ids[$grdata->user_id] = $studentdata->id;
+                }
+            }    
+            
         }
 
 
@@ -601,18 +609,38 @@ class CalenderController extends Controller
         $studentobj = new Students();
         $studentdata = $studentobj->findByPk($student_id);
         $reminderrecipients = array();
+        
+        $gstudent = new GuardianStudent(); 
+        
+        $all_g = $gstudent->getGuardians($student_id);
 
-        if ($studentdata->immediate_contact_id)
+        if ($all_g)
         {
-            $gr = new Guardians();
-            $grdata = $gr->findByPk($studentdata->immediate_contact_id);
-            if($grdata->user_id)
+            foreach($all_g as $value)
             {
-                $reminderrecipients[] = $grdata->user_id;
-                $batch_ids[$grdata->user_id] = $studentdata->batch_id;
-                $student_ids[$grdata->user_id] = $studentdata->id;
-            }
+                $gr = new Guardians();
+                $grdata = $gr->findByPk($value['guardian']->id);
+                if($grdata->user_id)
+                {
+                    $reminderrecipients[] = $grdata->user_id;
+                    $batch_ids[$grdata->user_id] = $studentdata->batch_id;
+                    $student_ids[$grdata->user_id] = $studentdata->id;
+                }
+            }    
+            
         }
+
+//        if ($studentdata->immediate_contact_id)
+//        {
+//            $gr = new Guardians();
+//            $grdata = $gr->findByPk($studentdata->immediate_contact_id);
+//            if($grdata->user_id)
+//            {
+//                $reminderrecipients[] = $grdata->user_id;
+//                $batch_ids[$grdata->user_id] = $studentdata->batch_id;
+//                $student_ids[$grdata->user_id] = $studentdata->id;
+//            }
+//        }
         $approved_text = "Denied";
         if ($status == 1)
         {

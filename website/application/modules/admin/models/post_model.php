@@ -326,7 +326,10 @@ class Post_model extends DataMapper
             }
             else
             {*/
+            
                 $obj_rows = $this->get();
+//                var_dump($this->db->last_query());
+//                exit;
             //}
             
             if ( $i_limit > 0 && $b_limit_check )

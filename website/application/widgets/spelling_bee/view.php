@@ -43,14 +43,7 @@ $active_common_view = false;
                                     <img src="<?php echo base_url('styles/layouts/tdsfront/home_slider/dhorjo-joto-dur-toto-913x504.jpg'); ?>" class="attachment-post-thumbnail wp-post-image no_toolbar" alt="Spelling Bee Two" style="width:100%;">
                                 </a> 
                             </div>
-
-                            <div class="item">
-                                <a class="speelingbee_banner_box" title="Nation Builders" href="http://www.champs21.com/nation-builder" target="_blank">                                           
-                                    <img src="<?php echo base_url('styles/layouts/tdsfront/home_slider/slider-nation-builder.png'); ?>" class="attachment-post-thumbnail wp-post-image no_toolbar" alt="Nation Builders" style="width:100%;">                                    
-                                </a>
-                                <a href="javascript:void(0);" data="candle" class="<?php echo ( free_user_logged_in() ) ? 'candlepopup' : 'before-login-user'; ?> likhun_btn"><span></span></a>
-                            </div>
-
+                            
                             <div class="item">
                                 <a class="speelingbee_banner_box" title="Spell Champs" href="https://play.google.com/store/apps/details?id=com.champs21.schoolapp&hl=en" target="_blank">       
                                     <img src="<?php echo base_url('styles/layouts/tdsfront/home_slider/slider-spellchamps-prize.jpg'); ?>" class="attachment-post-thumbnail wp-post-image no_toolbar" alt="Spell Champs" style="width:100%;">
@@ -61,6 +54,13 @@ $active_common_view = false;
                                 <a class="speelingbee_banner_box" title="The School of Excellence" href="http://www.champs21.com/spellingbee" target="_blank">       
                                     <img src="<?php echo base_url('styles/layouts/tdsfront/home_slider/slider-1.png'); ?>" class="attachment-post-thumbnail wp-post-image no_toolbar" alt="The School of Excellence" style="width:100%;">
                                 </a> 
+                            </div>
+                            
+                            <div class="item">
+                                <a class="speelingbee_banner_box" title="Nation Builders" href="http://www.champs21.com/nation-builder" target="_blank">                                           
+                                    <img src="<?php echo base_url('styles/layouts/tdsfront/home_slider/slider-nation-builder.png'); ?>" class="attachment-post-thumbnail wp-post-image no_toolbar" alt="Nation Builders" style="width:100%;">                                    
+                                </a>
+                                <a href="javascript:void(0);" data="candle" class="<?php echo ( free_user_logged_in() ) ? 'candlepopup' : 'before-login-user'; ?> likhun_btn"><span></span></a>
                             </div>
                             <!-- Left and right controls -->
 

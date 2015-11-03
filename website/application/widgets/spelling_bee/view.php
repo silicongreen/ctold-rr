@@ -1,4 +1,5 @@
-<?php $arCustomNews = getFormatedContentAll($news, 125);
+<?php
+$arCustomNews = getFormatedContentAll($news, 125);
 //echo "<pre>";
 //print_r($news);exit;
 
@@ -23,137 +24,137 @@ $active_common_view = false;
         <div class="intro-post spellingbee">
             <!--active_banner_slider start here-->
             <?php
-                if( $active_banner_slider == true ):
-            ?>
-            <div class="slider1" style="height:356px;overflow: hidden;">
-                <div id="myCarousel" class="carousel" data-ride="carousel">
-                    <!-- Indicators -->
-                    <ol class="carousel-indicators">
-                      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                      <li data-target="#myCarousel" data-slide-to="1"></li>
-                      <li data-target="#myCarousel" data-slide-to="2"></li>
-                      <li data-target="#myCarousel" data-slide-to="3"></li>
-                    </ol>
+            if ($active_banner_slider == true):
+                ?>
+                <div class="slider1" style="height:356px;overflow: hidden;">
+                    <div id="myCarousel" class="carousel" data-ride="carousel">
+                        <!-- Indicators -->
+                        <ol class="carousel-indicators">
+                            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                            <li data-target="#myCarousel" data-slide-to="1"></li>
+                            <li data-target="#myCarousel" data-slide-to="2"></li>
+                            <li data-target="#myCarousel" data-slide-to="3"></li>
+                        </ol>
 
-                    <!-- Wrapper for slides -->
-                    <div class="carousel-inner" role="listbox">
-                        <div class="item active">
-                          <a class="speelingbee_banner_box" title="Spelling Bee Two" href="http://www.champs21.com/spellingbee" target="_blank">       
-                                  <img src="<?php echo base_url('styles/layouts/tdsfront/home_slider/dhorjo-joto-dur-toto-913x504.jpg'); ?>" class="attachment-post-thumbnail wp-post-image no_toolbar" alt="Spelling Bee Two" style="width:100%;">
-                          </a> 
-                        </div>
-                        <div class="item">
-                          <a class="speelingbee_banner_box" title="The School of Excellence" href="http://www.champs21.com/spellingbee" target="_blank">       
-                                  <img src="<?php echo base_url('styles/layouts/tdsfront/home_slider/slider-1.png'); ?>" class="attachment-post-thumbnail wp-post-image no_toolbar" alt="The School of Excellence" style="width:100%;">
-                          </a> 
-                        </div>
+                        <!-- Wrapper for slides -->
+                        <div class="carousel-inner" role="listbox">
+                            <div class="item active">
+                                <a class="speelingbee_banner_box" title="Spelling Bee Two" href="http://www.champs21.com/spellingbee" target="_blank">       
+                                    <img src="<?php echo base_url('styles/layouts/tdsfront/home_slider/dhorjo-joto-dur-toto-913x504.jpg'); ?>" class="attachment-post-thumbnail wp-post-image no_toolbar" alt="Spelling Bee Two" style="width:100%;">
+                                </a> 
+                            </div>
 
-                        <div class="item">
-                          <a class="speelingbee_banner_box" title="Spell Champs" href="https://play.google.com/store/apps/details?id=com.champs21.schoolapp&hl=en" target="_blank">       
-                                  <img src="<?php echo base_url('styles/layouts/tdsfront/home_slider/slider-spellchamps-prize.jpg'); ?>" class="attachment-post-thumbnail wp-post-image no_toolbar" alt="Spell Champs" style="width:100%;">
-                          </a> 
-                        </div>
-                        
-                        
-
-                        <div class="item">
-                            <a class="speelingbee_banner_box" title="Nation Builders" href="http://www.champs21.com/nation-builder" target="_blank">                                           
+                            <div class="item">
+                                <a class="speelingbee_banner_box" title="Nation Builders" href="http://www.champs21.com/nation-builder" target="_blank">                                           
                                     <img src="<?php echo base_url('styles/layouts/tdsfront/home_slider/slider-nation-builder.png'); ?>" class="attachment-post-thumbnail wp-post-image no_toolbar" alt="Nation Builders" style="width:100%;">                                    
-                            </a>
-                            <a href="javascript:void(0);" data="candle" class="<?php echo ( free_user_logged_in() ) ? 'candlepopup' : 'before-login-user'; ?> likhun_btn"><span></span></a>
-                        </div>
+                                </a>
+                                <a href="javascript:void(0);" data="candle" class="<?php echo ( free_user_logged_in() ) ? 'candlepopup' : 'before-login-user'; ?> likhun_btn"><span></span></a>
+                            </div>
 
-                    <!-- Left and right controls -->
-                    
+                            <div class="item">
+                                <a class="speelingbee_banner_box" title="Spell Champs" href="https://play.google.com/store/apps/details?id=com.champs21.schoolapp&hl=en" target="_blank">       
+                                    <img src="<?php echo base_url('styles/layouts/tdsfront/home_slider/slider-spellchamps-prize.jpg'); ?>" class="attachment-post-thumbnail wp-post-image no_toolbar" alt="Spell Champs" style="width:100%;">
+                                </a> 
+                            </div>
+
+                            <div class="item">
+                                <a class="speelingbee_banner_box" title="The School of Excellence" href="http://www.champs21.com/spellingbee" target="_blank">       
+                                    <img src="<?php echo base_url('styles/layouts/tdsfront/home_slider/slider-1.png'); ?>" class="attachment-post-thumbnail wp-post-image no_toolbar" alt="The School of Excellence" style="width:100%;">
+                                </a> 
+                            </div>
+                            <!-- Left and right controls -->
+
+                        </div>
                     </div>
                 </div>
-            </div>
-            <script>
-            $(document).ready(function() {
-                $('.carousel').carousel({
-                    interval: 3000,
-                    cycle: true
-                })
-           });  
-            </script>
-            <style>
-                .carousel-indicators { top:330px;};
-                .carousel .item {-webkit-transition: opacity 3s; -moz-transition: opacity 3s; -ms-transition: opacity 3s; -o-transition: opacity 3s; transition: opacity 3s;}
-                .carousel .active.left {left:0;opacity:0;z-index:2;}
-                a.likhun_btn span {
-                    width: 30%;
-                    height: 14%;
-                    position: absolute;
-                    background: url("<?php echo $ecl_button;?>") no-repeat;
-                    background-position: 50% 50%;
-                    background-size: 100%;
-                    bottom:55px;
-                    left: 225px;
-                  }
-                  a.likhun_btn span:hover {
-                    width: 30%;
-                    height: 14%;
-                    position: absolute;
-                    background: url("<?php echo $ecl_button;?>") no-repeat;
-                    background-position: 50% 50%;
-                    background-size: 100%;
-                    bottom:55px;
-                    left: 225px;
-                  }
-            </style>
-                
+                <script>
+                    $(document).ready(function () {
+                        $('.carousel').carousel({
+                            interval: 3000,
+                            cycle: true
+                        })
+                    });
+                </script>
+                <style>
+                    .carousel-indicators { top:330px;};
+                    .carousel .item {-webkit-transition: opacity 3s; -moz-transition: opacity 3s; -ms-transition: opacity 3s; -o-transition: opacity 3s; transition: opacity 3s;}
+                    .carousel .active.left {left:0;opacity:0;z-index:2;}
+                    a.likhun_btn span {
+                        width: 30%;
+                        height: 14%;
+                        position: absolute;
+                        background: url("<?php echo $ecl_button; ?>") no-repeat;
+                        background-position: 50% 50%;
+                        background-size: 100%;
+                        bottom:55px;
+                        left: 225px;
+                    }
+                    a.likhun_btn span:hover {
+                        width: 30%;
+                        height: 14%;
+                        position: absolute;
+                        background: url("<?php echo $ecl_button; ?>") no-repeat;
+                        background-position: 50% 50%;
+                        background-size: 100%;
+                        bottom:55px;
+                        left: 225px;
+                    }
+                </style>
+
             <?php endif; ?>
             <!--active_banner_slider end here-->
             <!--active_video_slider start here-->
             <?php
-                if( $active_video_slider == true ):
-            ?>
-                
+            if ($active_video_slider == true):
+                ?>
+
                 <?php if (count($news->related_news_spelling_bee) > 0): ?>
                     <div class="video_play_box">
                         <a class="boxclose" id="boxclose" onclick="showVideosClose();"></a>
                         <?php foreach ($news->related_news_spelling_bee as $newsrelated): ?>
-                            <p id="video_embed_<?php echo $newsrelated->id;?>" style="display:none;"><?php echo $newsrelated->embedded; ?></p>
+                            <p id="video_embed_<?php echo $newsrelated->id; ?>" style="display:none;"><?php echo $newsrelated->embedded; ?></p>
                         <?php endforeach; ?>
                     </div>
-                <?php endif;  ?>
+                <?php endif; ?>
                 <section class="slider">                    
                     <div id="over" class="loading_speelingbee" style="diaplay:none;">
                         <span class="Centerer"></span>
                         <img class="Centered" src="<?php echo base_url('styles/layouts/tdsfront/spelling_bee/loader_home_slider.gif'); ?>" />
                     </div>
-                    
+
                     <div class="flexslider carousel" style="height:200px;margin:10px 20px;overflow: hidden;diaplay:none;">
                         <h4 class="f2" style="font-size:16px;letter-spacing:0px;margin-left:0px;color:rgb(202, 35, 42);padding: 0 0 5px;">Spelling Bee Season 4 Videos</h4>
                         <ul class="slides">
                             <?php if (count($news->related_news_spelling_bee) > 0): ?>
-                                <?php foreach ($news->related_news_spelling_bee as $newsrelated): 
+                                <?php
+                                foreach ($news->related_news_spelling_bee as $newsrelated):
                                     //echo "<pre>";
                                     //print_r($newsrelated);
                                     ?>
                                     <li style="width:145px; float: left; display: block;">                                        
-                                        <a class="add-link video_play_btn" onclick="showVideos(<?php echo $newsrelated->id;?>);" title="<?php echo $newsrelated->headline; ?>" href="javascript:void(0);<?php //echo create_link_url("index", $newsrelated->headline, $newsrelated->id) ?>">       
+                                        <a class="add-link video_play_btn" onclick="showVideos(<?php echo $newsrelated->id; ?>);" title="<?php echo $newsrelated->headline; ?>" href="javascript:void(0);<?php //echo create_link_url("index", $newsrelated->headline, $newsrelated->id)   ?>">       
                                             <span></span>
                                             <img src="<?php echo $newsrelated->lead_material; ?>" class="attachment-post-thumbnail wp-post-image no_toolbar" alt="<?php echo $newsrelated->headline; ?>" style="width:145px;height:100px;">
                                             <p style="font-family: arial;letter-spacing: 0px;line-height: 20px;">
-                                                <?php                                                 
-                                                if(strlen($newsrelated->headline) >= 30){
-                                                    $subtext = substr($newsrelated->headline,0,30);
-                                                    echo  $subtext." ... ";
-                                                    
-                                                }else{
-                                                    echo $newsrelated->headline;} ?>
+                                                <?php
+                                                if (strlen($newsrelated->headline) >= 30) {
+                                                    $subtext = substr($newsrelated->headline, 0, 30);
+                                                    echo $subtext . " ... ";
+                                                } else {
+                                                    echo $newsrelated->headline;
+                                                }
+                                                ?>
                                             </p>
                                         </a>        
                                     </li>                                    
                                 <?php endforeach; ?>
-                            <?php endif;  ?>
+                            <?php endif; ?>
                         </ul>
                     </div>
                 </section>
                 <div class="clearfix"></div>
                 <div class="video_see_more">
-                    <p style="float: right;"><a href="<?php echo base_url('/videos/spelling-bee-season-4');?>">See More</a></p>
+                    <p style="float: right;"><a href="<?php echo base_url('/videos/spelling-bee-season-4'); ?>">See More</a></p>
                 </div>
                 <style>
                     #over
@@ -178,7 +179,7 @@ $active_common_view = false;
                         vertical-align: middle;
                         width:5%;
                     }
-                    
+
                     .slider
                     {
                         border-top: 2px solid #ccc;
@@ -208,7 +209,7 @@ $active_common_view = false;
                         margin:0px;  
                     }  
                     li.css a {
-                      border-radius: 0;
+                        border-radius: 0;
                     }
                     .flex-direction-nav a
                     {
@@ -224,29 +225,29 @@ $active_common_view = false;
                     }
                     .flex-direction-nav{margin:0px;}
                     .slider ol.flex-control-nav { display: none; }                    
-                    
+
                     .video_play_btn{}
                     a.video_play_btn {
                         float: left;
                         position: relative;
                     }
                     a.video_play_btn span {
-                      width: 100%;
-                      height: 65%;
-                      position: absolute;
-                      background: url("<?php echo base_url('styles/layouts/tdsfront/images/icon/video_play_btn.png'); ?>") no-repeat;
-                      background-position: 50% 50%;
-                      background-size: 40%;
+                        width: 100%;
+                        height: 65%;
+                        position: absolute;
+                        background: url("<?php echo base_url('styles/layouts/tdsfront/images/icon/video_play_btn.png'); ?>") no-repeat;
+                        background-position: 50% 50%;
+                        background-size: 40%;
                     }
                     a.video_play_btn span:hover {
-                      width: 100%;
-                      height: 65%;
-                      position: absolute;
-                      background: url("<?php echo base_url('styles/layouts/tdsfront/images/icon/video_play_btn_hover.png'); ?>") no-repeat;
-                      background-position: 50% 50%;
-                      background-size: 40%;
+                        width: 100%;
+                        height: 65%;
+                        position: absolute;
+                        background: url("<?php echo base_url('styles/layouts/tdsfront/images/icon/video_play_btn_hover.png'); ?>") no-repeat;
+                        background-position: 50% 50%;
+                        background-size: 40%;
                     }
-                    
+
                     .speelingbee_banner_box{display: block;}
                     .video_play_box{text-align: center;display: none;height: 356px;}
                     .video_see_more{height:20px;margin: 0px 20px 10px;}
@@ -268,17 +269,17 @@ $active_common_view = false;
                     .boxclose:before {
                         content: "X";
                     }
-                    
-                    
+
+
                 </style>
-                    
+
                 <script>
                     $('.loading_speelingbee').show();
-                    $(window).bind("load", function() {  
+                    $(window).bind("load", function () {
                         $('.loading_speelingbee').hide();
-                        
-                        $(".flexslider").show();  
-                        
+
+                        $(".flexslider").show();
+
                         $('.flexslider').flexslider({
                             animation: "slide",
                             animationLoop: true,
@@ -286,24 +287,24 @@ $active_common_view = false;
                             itemMargin: 3,
                             minItems: 2,
                             maxItems: 4,
-                            start: function(slider){
-                              $('body').removeClass('loading');
+                            start: function (slider) {
+                                $('body').removeClass('loading');
                             }
                         });
-                     
+
                     });
-                    
+
                     function showVideos(id)
                     {
                         $('.video_play_box p').hide();
                         $('.slider1').hide();
                         $('.video_play_box').show();
-                        $('#video_embed_'+id).show();
+                        $('#video_embed_' + id).show();
                     }
                     function showVideosClose()
                     {
                         $('.video_play_box p').hide();
-                        $('.video_play_box').hide();                        
+                        $('.video_play_box').hide();
                         $('.slider1').show();
                     }
                     //slideshow: false,
@@ -311,145 +312,145 @@ $active_common_view = false;
             <?php endif; ?>
             <!--active_video_slider end here-->
             <!--active_common_view start here-->
-            <?php if($active_common_view == true): ?>
-            <div class="col-lg-6" style="padding:5px 0px;">
+            <?php if ($active_common_view == true): ?>
+                <div class="col-lg-6" style="padding:5px 0px;">
 
-                <div class="col-lg-12 float-4">
-                     <a href="/spellingbee">
-                        <img class="no_toolbar" style="width: 90%;" src="/styles/layouts/tdsfront/spelling_bee/2015/images/join_msg.png" />
-                    </a>
-                </div>
-
-                <div class="col-lg-6 float-4 align-center">
-                    <a href="/spellingbee">
-                        <img class="no_toolbar" src="/styles/layouts/tdsfront/spelling_bee/2015/sp-logo.png" />
-                    </a>
-                </div>
-                
-                <!-- Off spellingbee play -->
-
-                <!--div class="col-lg-6 float-4">
-                    
-                    <?php //if( free_user_logged_in() ) { ?>
-                        <?php
-                            //$is_joined_spellbee = get_free_user_session('is_joined_spellbee');
-                            //if($is_joined_spellbee == 1 || get_free_user_session('type') != 2) {
-                        ?>  <a href="http://www.champs21.com/swf/spellingbee_2015/index.html" title="Spelling Bee | Season 4" class="example2demo play_image" style="border:0px;" name="Spelling Bee">
-<!--                            <a name="windowX" title="Spelling Bee | Season 4" id="play_spellbee_4" class="play_image" style="border:0px;" href="javascript:void(0);">-->
-                                <!--img id="play_image_1" class="no_toolbar" src="/styles/layouts/tdsfront/spelling_bee/2015/images/play.png" />
-                                <img id="play_image_2" class="no_toolbar" src="/styles/layouts/tdsfront/spelling_bee/2015/images/play-hover.png" style="display:none;" />
-                            </a>
-                        <?php //} else { ?>
-                            <a id="join_spellbee_reg" class="play_image" style="border:0px;" href="javascript:void(0);">
-                                <img id="play_image_1" class="no_toolbar" src="/styles/layouts/tdsfront/spelling_bee/2015/images/play.png" />
-                                <img id="play_image_2" class="no_toolbar" src="/styles/layouts/tdsfront/spelling_bee/2015/images/play-hover.png" style="display:none;" />
-                            </a>
-                        <?php //} ?>
-                        
-                    <?php //} else { ?>
-                        <a class="play_image login-user" style="border:0px;" href="javascript:void(0);">
-                            <img id="play_image_1" class="no_toolbar" src="/styles/layouts/tdsfront/spelling_bee/2015/images/play.png" />
-                            <img id="play_image_2" class="no_toolbar" src="/styles/layouts/tdsfront/spelling_bee/2015/images/play-hover.png" style="display:none;" />
+                    <div class="col-lg-12 float-4">
+                        <a href="/spellingbee">
+                            <img class="no_toolbar" style="width: 90%;" src="/styles/layouts/tdsfront/spelling_bee/2015/images/join_msg.png" />
                         </a>
-                    <?php //} ?>
-                    
-                </div-->
-                
-            </div>
-            
-            <div class="col-lg-6 links-spell">
-                
-                <!-- Off spellingbee gamerules -->
-                <!--a href="/gamerules">
-                    <div class="col-lg-12 leader leader_board1">
-                        <div class="col-lg-3">
-                            <img class="no_toolbar" src="styles/layouts/tdsfront/images/spellingbee/ruls.png"  />
-                        </div>
-                        <div class="col-lg-8 f2" style="color: #ffffff;">
-                            GAME RULES 
-                        </div>
                     </div>
-                </a-->
-                <!-- Off spellingbee gamerules -->
-                
-                <!-- Off spellingbee leaderborad -->
-                <!-- On Division qualifiers -->
-                
-                <a href="/leaderboard">
-                    <div class="col-lg-12 leader leader_board2">
-                        <div class="col-lg-11">
-                        <!--<div class="col-lg-12">-->
-                        <!--<div class="col-lg-3">-->
-                            <img class="no_toolbar" src="/styles/layouts/tdsfront/spelling_bee/2015/divisional_button_1.png" />
-                        </div>
-                        <!--div class="col-lg-8 f2" style="color: #ffffff;">
-                            LEADER BOARD
-                        </div-->
 
+                    <div class="col-lg-6 float-4 align-center">
+                        <a href="/spellingbee">
+                            <img class="no_toolbar" src="/styles/layouts/tdsfront/spelling_bee/2015/sp-logo.png" />
+                        </a>
                     </div>
-                </a>
-                
-                <!-- On Division qualifiers -->
-                <!-- Off spellingbee leaderborad -->
-                
-                <?php
-                if (count($news->related_news_spelling_bee) > 0)
-                    :
-                    ?>
+
+                    <!-- Off spellingbee play -->
+
+                    <!--div class="col-lg-6 float-4">
+                        
+                    <?php //if( free_user_logged_in() ) { ?>
                     <?php
-                    $i = 0;
-                    foreach ($news->related_news_spelling_bee as $newsrelated):
-                        ?>
+                    //$is_joined_spellbee = get_free_user_session('is_joined_spellbee');
+                    //if($is_joined_spellbee == 1 || get_free_user_session('type') != 2) {
+                    ?>  <a href="http://www.champs21.com/swf/spellingbee_2015/index.html" title="Spelling Bee | Season 4" class="example2demo play_image" style="border:0px;" name="Spelling Bee">
+                    <!--                            <a name="windowX" title="Spelling Bee | Season 4" id="play_spellbee_4" class="play_image" style="border:0px;" href="javascript:void(0);">-->
+                    <!--img id="play_image_1" class="no_toolbar" src="/styles/layouts/tdsfront/spelling_bee/2015/images/play.png" />
+                    <img id="play_image_2" class="no_toolbar" src="/styles/layouts/tdsfront/spelling_bee/2015/images/play-hover.png" style="display:none;" />
+                </a>
+                    <?php //} else {  ?>
+                <a id="join_spellbee_reg" class="play_image" style="border:0px;" href="javascript:void(0);">
+                    <img id="play_image_1" class="no_toolbar" src="/styles/layouts/tdsfront/spelling_bee/2015/images/play.png" />
+                    <img id="play_image_2" class="no_toolbar" src="/styles/layouts/tdsfront/spelling_bee/2015/images/play-hover.png" style="display:none;" />
+                </a>
+                    <?php //}  ?>
+            
+                    <?php //} else {  ?>
+            <a class="play_image login-user" style="border:0px;" href="javascript:void(0);">
+                <img id="play_image_1" class="no_toolbar" src="/styles/layouts/tdsfront/spelling_bee/2015/images/play.png" />
+                <img id="play_image_2" class="no_toolbar" src="/styles/layouts/tdsfront/spelling_bee/2015/images/play-hover.png" style="display:none;" />
+            </a>
+                    <?php //}  ?>
+        
+    </div-->
 
-                        <?php
-                        if ($i == 2) {
-                            break;
-                        }
-                        ?>
-                        <?php
-                        if ($i == 1):
-                            ?>
-                            <div class="col-lg-12 float-5">
-                                <hr style="margin:0px 0px 0px 0px; width:95%;"/>
+                </div>
+
+                <div class="col-lg-6 links-spell">
+
+                    <!-- Off spellingbee gamerules -->
+                    <!--a href="/gamerules">
+                        <div class="col-lg-12 leader leader_board1">
+                            <div class="col-lg-3">
+                                <img class="no_toolbar" src="styles/layouts/tdsfront/images/spellingbee/ruls.png"  />
                             </div>
-                        <?php endif; ?>
+                            <div class="col-lg-8 f2" style="color: #ffffff;">
+                                GAME RULES 
+                            </div>
+                        </div>
+                    </a-->
+                    <!-- Off spellingbee gamerules -->
 
-                        <div class="col-lg-12 float-10">
+                    <!-- Off spellingbee leaderborad -->
+                    <!-- On Division qualifiers -->
+
+                    <a href="/leaderboard">
+                        <div class="col-lg-12 leader leader_board2">
+                            <div class="col-lg-11">
+                                <!--<div class="col-lg-12">-->
+                                <!--<div class="col-lg-3">-->
+                                <img class="no_toolbar" src="/styles/layouts/tdsfront/spelling_bee/2015/divisional_button_1.png" />
+                            </div>
+                            <!--div class="col-lg-8 f2" style="color: #ffffff;">
+                                LEADER BOARD
+                            </div-->
+
+                        </div>
+                    </a>
+
+                    <!-- On Division qualifiers -->
+                    <!-- Off spellingbee leaderborad -->
+
+                    <?php
+                    if (count($news->related_news_spelling_bee) > 0)
+                        :
+                        ?>
+                        <?php
+                        $i = 0;
+                        foreach ($news->related_news_spelling_bee as $newsrelated):
+                            ?>
 
                             <?php
-                            $image_related = "";
-                            if (isset($newsrelated->crop_images) && count
-                                            ($newsrelated->crop_images) > 0) {
-                                $image_related = $newsrelated->crop_images[0];
+                            if ($i == 2) {
+                                break;
                             }
                             ?>
-                            <div class="col-lg-3">
-                                <?php if ($image_related): ?>
-                                    <a href="" style="border:0px;"><img src="<?php echo $image_related; ?>"  /></a>
-                                <?php endif; ?>
-                            </div>
+                            <?php
+                            if ($i == 1):
+                                ?>
+                                <div class="col-lg-12 float-5">
+                                    <hr style="margin:0px 0px 0px 0px; width:95%;"/>
+                                </div>
+                            <?php endif; ?>
 
-                            <div class="col-lg-7">
-                                <div class="col-lg-12 height_value"  >
-                                    <a href="<?php
-                                    echo create_link_url
-                                            ("index", $newsrelated->title, $newsrelated->id)
-                                    ?>"><?php
-                                           echo
-                                           $newsrelated->title;
-                                           ?></a>
+                            <div class="col-lg-12 float-10">
+
+                                <?php
+                                $image_related = "";
+                                if (isset($newsrelated->crop_images) && count
+                                                ($newsrelated->crop_images) > 0) {
+                                    $image_related = $newsrelated->crop_images[0];
+                                }
+                                ?>
+                                <div class="col-lg-3">
+                                    <?php if ($image_related): ?>
+                                        <a href="" style="border:0px;"><img src="<?php echo $image_related; ?>"  /></a>
+                                    <?php endif; ?>
                                 </div>
-                                <div class="col-lg-12 date-string">
-                                    <?php echo $newsrelated->published_date_string; ?> Ago
+
+                                <div class="col-lg-7">
+                                    <div class="col-lg-12 height_value"  >
+                                        <a href="<?php
+                                        echo create_link_url
+                                                ("index", $newsrelated->title, $newsrelated->id)
+                                        ?>"><?php
+                                               echo
+                                               $newsrelated->title;
+                                               ?></a>
+                                    </div>
+                                    <div class="col-lg-12 date-string">
+                                        <?php echo $newsrelated->published_date_string; ?> Ago
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <?php
-                        $i++;
-                    endforeach;
-                    ?>
-                <?php endif; ?>
-            </div>
+                            <?php
+                            $i++;
+                        endforeach;
+                        ?>
+                    <?php endif; ?>
+                </div>
             <?php endif; ?><!--active_common_view end here-->
 
         </div> 
@@ -457,13 +458,13 @@ $active_common_view = false;
     </div> 
 
 </li>
-<script type="text/javascript"> 
-$('.example2demo').popupWindow({ 
-centerBrowser:1 ,
-height:600,
-width:800,
-resizable:1
-}); 
+<script type="text/javascript">
+    $('.example2demo').popupWindow({
+        centerBrowser: 1,
+        height: 600,
+        width: 800,
+        resizable: 1
+    });
 </script>
 <style>
     .height_value a {

@@ -11,7 +11,7 @@ return array(
     'timeZone' => 'Asia/Dhaka',
     'name' => 'champs21-school.com',
     // preloading 'log' component
-    'preload' => array('log','zend'),
+    'preload' => array('log', 'zend'),
     // autoloading model and component classes
     'import' => array(
         'application.models.*',
@@ -19,9 +19,8 @@ return array(
         'application.components.vo.*',
         'application.vendors.*',
         'application.helpers.*',
-	'ext.YiiMailer.YiiMailer',
+        'ext.YiiMailer.YiiMailer',
     ),
-    
     'modules' => array(
         // uncomment the following to enable the Gii tool
 
@@ -35,32 +34,26 @@ return array(
     ),
     // application components
     'components' => array(
-        'errorHandler'=>array(
-            'errorAction'=>'api/user/error',
-        ),
-        'zend'=>array(
-            'class'=>'ext.zend.EZendAutoloader'
+        'zend' => array(
+            'class' => 'ext.zend.EZendAutoloader'
         ),
         'session' => array(
             "timeout" => 3153600000
         ),
-		
-        /*'cache'  => array(
-                'class'  => 'system.caching.CFileCache',
-        ),*/
-
+        /* 'cache'  => array(
+          'class'  => 'system.caching.CFileCache',
+          ), */
         'user' => array(
             // enable cookie-based authentication
-            'allowAutoLogin'  => true,
+            'allowAutoLogin' => true,
             'autoRenewCookie' => true,
-            'authTimeout'     => 3153600000
+            'authTimeout' => 3153600000
         ),
-		
-        /*'cache'  => array(
-                'class'  => 'system.caching.CFileCache',
-        ),*/
+        /* 'cache'  => array(
+          'class'  => 'system.caching.CFileCache',
+          ), */
 
-        
+
         // uncomment the following to enable URLs in path-format
 //        'session' => array(
 //            'autoStart' => true,
@@ -89,14 +82,14 @@ return array(
                 array('api/report', 'pattern' => 'api/<model:\w+>', 'verb' => 'POST'),
                 array('api/report/getclasstestproject', 'pattern' => 'api/<model:\w+>', 'verb' => 'POST'),
                 array('api/calender/getAttendence', 'pattern' => 'api/<model:\w+>', 'verb' => 'POST'),
-                array('api/event', 'pattern'=>'api/<model:\w+>', 'verb'=>'POST'),
+                array('api/event', 'pattern' => 'api/<model:\w+>', 'verb' => 'POST'),
                 array('api/event/acknowledge', 'pattern' => 'api/<model:\w+>', 'verb' => 'POST'),
-                array('api/club', 'pattern'=>'api/<model:\w+>', 'verb'=>'POST'),
+                array('api/club', 'pattern' => 'api/<model:\w+>', 'verb' => 'POST'),
                 array('api/club/acknowledge', 'pattern' => 'api/<model:\w+>', 'verb' => 'POST'),
-                array('api/routine', 'pattern'=>'api/<model:\w+>', 'verb'=>'POST'),
-                array('api/syllabus', 'pattern'=>'api/<model:\w+>', 'verb'=>'POST'),
-                array('api/syllabus/terms', 'pattern'=>'api/<model:\w+>', 'verb'=>'POST'),
-                array('api/freeuser/create', 'pattern'=>'api/<model:\w+>', 'verb'=>'POST'),
+                array('api/routine', 'pattern' => 'api/<model:\w+>', 'verb' => 'POST'),
+                array('api/syllabus', 'pattern' => 'api/<model:\w+>', 'verb' => 'POST'),
+                array('api/syllabus/terms', 'pattern' => 'api/<model:\w+>', 'verb' => 'POST'),
+                array('api/freeuser/create', 'pattern' => 'api/<model:\w+>', 'verb' => 'POST'),
             ),
         ),
         /*
@@ -111,16 +104,15 @@ return array(
             'class' => 'system.caching.CFileCache',
             'cachePath' => 'protected/runtime/cache/news'
         ),
-//        'errorHandler' => array(
-//            // use 'site/error' action to display errors
-//            'errorAction' => 'site/error',
-//        ),
+        'errorHandler' => array(
+            'errorAction' => 'api/user/error',
+        ),
         'log' => array(
             'class' => 'CLogRouter',
             'routes' => array(
                 array(
                     'class' => 'CFileLogRoute',
-                    'levels' => 'error, warning',
+                    'levels' => 'error, warning, trace, log',
                 ),
             // uncomment the following to show log messages on web pages
             /*
@@ -131,7 +123,6 @@ return array(
             ),
         ),
     ),
-
     // application-level parameters that can be accessed
     // using Yii::app()->params['paramName']
     'params' => array(

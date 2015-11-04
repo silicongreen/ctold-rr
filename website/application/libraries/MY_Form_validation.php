@@ -87,9 +87,8 @@ class MY_Form_validation extends CI_Form_validation {
                 $this->CI->db->dbprefix = '';
                 $this->CI->db->select('id');
                 $this->CI->db->from('users');
-                $this->CI->db->like('username', trim($user_name));
-                $this->CI->db->where('school_id',$user_data->paid_school_id); 
-                $this->CI->db->where('is_deleted',0);
+                $this->CI->db->where('username', trim($user_name));
+                $this->CI->db->where('school_id',$user_data->paid_school_id);                 
                 $std = $this->CI->db->get()->row();
                 $this->CI->db->dbprefix = 'tds_';
 

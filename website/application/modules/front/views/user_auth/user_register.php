@@ -166,15 +166,7 @@
 		$('#pluswrap').show();
 		$(window).bind("load", function() {  
 			$('#pluswrap').hide();			
-			$("#content_signup").show();  
-			
-			// for validation
-			addEventListener('load', prettyPrint, false);
-			$(document).ready(function(){
-				$('pre').addClass('prettyprint linenums');				
-			});
-			
-		 
+			$("#content_signup").show();  					 
 		});
 	</script>
 </body>

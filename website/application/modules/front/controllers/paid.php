@@ -145,9 +145,13 @@ class paid extends MX_Controller {
             $data['user_data'] = $user_data;
             $data['post_data'] = $this->process_post_data($user_data);
 
-
             if (isset($_POST) && !empty($_POST)) {
                 $data['post_data'] = $_POST;
+                
+                //echo "<pre>";
+                //print_r($data['post_data']);
+                //exit;
+                
                 $this->load->library('form_validation');
                 $this->form_validation->set_rules('admission_no', 'Admission No', 'required|ci_check_admission_no');
                 $this->form_validation->set_rules('admission_date', 'Admission Date', 'required');
@@ -158,34 +162,45 @@ class paid extends MX_Controller {
                 $this->form_validation->set_rules('date_of_birth', 'Birth date', 'required|ci_validate_date');
                 $this->form_validation->set_rules('city', 'City', 'required');
 
-
-
                 $add_guardian = $this->input->post("add_guardian");
-
-                if ($add_guardian == "one" || $add_guardian == "two") {
-                    $this->form_validation->set_rules('gfirst_name', 'Guardian First Name', 'required');
-                    $this->form_validation->set_rules('glast_name', 'Guardian Last Name', 'required');
-                    $this->form_validation->set_rules('gpassword', 'Guardian Password', 'required');
-                    $this->form_validation->set_rules('relation', 'Relation', 'required');
+                $choose_guardian = $this->input->post("choose_guardian");
+                $choose_guardian2 = $this->input->post("choose_guardian2");
+                
+                if ($add_guardian == "one") {
+                    if($choose_guardian == "choose")
+                    {
+                        $guardian1_id = $this->input->post("g_id");
+                    }
+                    else
+                    {
+                        $this->guardian_one_validation_rule();
+                    }
                 }
-                if ($add_guardian == "two") {
-                    $this->form_validation->set_rules('gfirst_name2', 'Guardian First Name (2nd)', 'required');
-                    $this->form_validation->set_rules('glast_name2', 'Guardian Last Name (2nd)', 'required');
-                    $this->form_validation->set_rules('gpassword2', 'Guardian Password (2nd)', 'required');
-                    $this->form_validation->set_rules('relation2', 'Relation (2nd)', 'required');
-                }
+                if ($add_guardian == "two") 
+                {
+                    if($choose_guardian == "choose")
+                    {
+                        $guardian1_id = $this->input->post("g_id");
+                    }
+                    else
+                    {                        
+                        $this->guardian_one_validation_rule();
+                    }
 
+                    if($choose_guardian2 == "choose")
+                    {
+                        $guardian2_id = $this->input->post("g_id2");
+                    }
+                    else
+                    {
+                        $this->guardian_two_validation_rule();
+                    }
+                }                        
+                
                 if ($this->form_validation->run() == TRUE) {
-
-
-
                     //insert user data
-
-                    $u_id = $this->create_paid_user_for_all($user_data, $this->input->post());
-
-
+                    $u_id = $this->create_paid_user_for_all($user_data, $this->input->post());                    
                     //insert student data
-
                     if ($u_id[0]) {
                         $this->update_user_before_apply($user_data, $this->input->post(), $u_id[1]);
                         $this->db->dbprefix = '';
@@ -207,23 +222,47 @@ class paid extends MX_Controller {
                         $this->db->insert('students', $st);
 
                         $std_id = $this->db->insert_id();
-
-                        $sb['sibling_id'] = $std_id;
+                        
+                        $sb['sibling_id'] = $std_id;                        
                         $this->db->where('id', $std_id);
                         $this->db->update('students', $sb);
-
-                        $n_g = 1;
-                        if ($add_guardian == "two") {
-                            $n_g = 2;
-                        }
+                                                
                         //create guardian
-                        $this->db->dbprefix = 'tds_';
-                        if ($add_guardian == "one" || $add_guardian == "two") {
-                            $this->createGuardianStudent($this->input->post(), $n_g, $std_id, $user_data);
+                        //$this->db->dbprefix = 'tds_';
+                        if ($add_guardian == "one") {
+                            if($guardian1_id > 0)
+                            {
+                                $this->existing_guardian_add_to_student($guardian1_id,$std_id,$this->input->post("relation"));
+                            }
+                            else
+                            {   
+                                $n_g = 1;
+                                $this->createGuardianStudent($this->input->post(), $n_g, $std_id, $user_data);
+                            }
                         }
+                        
+                        if ($add_guardian == "two") {
+                            if($guardian1_id > 0)
+                            {
+                                $this->existing_guardian_add_to_student($guardian1_id,$std_id,$this->input->post("relation"));
+                            }
+                            else
+                            {
+                                $n_g = 1;
+                                $this->createGuardianStudent($this->input->post(), $n_g, $std_id, $user_data);
+                            }
+                            
+                            if($guardian2_id > 0)
+                            {
+                                $this->existing_guardian_add_to_student($guardian2_id,$std_id,$this->input->post("relation2"));                            
+                            }
+                            else
+                            {
+                                $n_g = 2;
+                                $this->createGuardianStudent($this->input->post(), $n_g, $std_id, $user_data);
+                            }
+                        }                        
                     }
-
-
 
                     $back = $this->redirect_parent_url($back_url);
                     echo $back;
@@ -232,7 +271,6 @@ class paid extends MX_Controller {
             }
 
             $this->load->view('apply_for_student_admission', $data);
-
             
         } else {
             $back = $this->redirect_parent_url(base_url());
@@ -444,7 +482,73 @@ class paid extends MX_Controller {
             redirect(base_url());
         }
     }
+    
+    public function existing_guardian_add_to_student($gu_id,$std_id,$relation) {
+        $g_data = $this->get_guardian_data_by_user_id($gu_id);
+        if($this->isnot_already_guardian_added_to_student($std_id,$g_data['gid']))
+        {
+            if($this->update_student_immediate_contact_id($std_id,$g_data['gid']))
+            {
+                if($this->new_guardian_student_relation($std_id,$g_data['gid'],$relation))
+                {
+                    return 1;
+                }else {return 2;}
+            }else {return 3;}
+        }else {return 4;}
+    }
+    public function is_guardian_exist() 
+    {
+        $requestedUsername  = $_REQUEST['g_username'];
+        $this->db->dbprefix = '';
+        $this->db->select("*");
+        $this->db->where("username", $requestedUsername);
+        $this->db->where("parent", 1);
+        $parents = $this->db->get("users")->result();
 
+        if ($parents) {
+            foreach ($parents as $value) {
+                $data['id'] = $value->id;
+                $data['first_name'] = $value->first_name;
+                $data['last_name'] = $value->last_name;
+            }
+            
+            echo json_encode($data);
+        }
+        else
+        {
+            echo 'false';
+        }
+    }
+    public function is_student_username_exist() 
+    {
+        if (free_user_logged_in()) 
+        {
+            $user_data = get_user_data();
+            if (!$user_data->applied_paid && !$user_data->paid_id && $user_data->paid_school_id) 
+            {
+                $admission_no  = $_REQUEST['admission_no'];
+                $user_name = make_paid_username($user_data, trim($admission_no));
+                $this->db->dbprefix = '';
+                $this->db->select('id');
+                $this->db->from('users');
+                $this->db->where('username', trim($user_name));
+                $this->db->where('school_id',$user_data->paid_school_id);                 
+                $std = $this->db->get()->row();
+                $this->db->dbprefix = 'tds_';
+
+                if($std)
+                {
+                    echo 'false';
+                }
+                else
+                {
+                    echo 'true';
+                }
+            }
+        }
+        
+    }
+    /****PRIVATE FUNCTIONS****/
     private function check_success_user($user_type) {
         if (free_user_logged_in()) {
             $user_data = get_user_data();
@@ -615,88 +719,81 @@ class paid extends MX_Controller {
 
     private function createGuardianStudent($s_array, $n_g, $sid, $user_data) {
 
-        for ($i = 1; $i <= $n_g; $i++) {
-            $f_user_data = new Free_users();
-            $extra = "";
-            if ($i > 1) {
-                $extra = $i;
-            }
-
-            $f_user_data->nick_name = 1;
-            $f_user_data->first_name = $s_array['gfirst_name' . $extra];
-            $f_user_data->email = $s_array['admission_no'] . "@champs21.com";
-            $f_user_data->cnf_email = $s_array['admission_no'] . "@champs21.com";
-            $f_user_data->password = $s_array['gpassword' . $extra];
-            $f_user_data->cnf_password = $s_array['gpassword' . $extra];
-            $f_user_data->dob = date("Y-m-d");
-            $f_user_data->paid_school_id = $user_data->paid_school_id;
-
-            $f_user_data->tds_country_id = 14;
-            $f_user_data->division = $s_array['city'];
-
-            $f_user_data->last_name = $s_array['glast_name' . $extra];
-            $f_user_data->user_type = 4;
-            $f_user_data->paid_password = $s_array['gpassword' . $extra];
-
-            if ($f_user_data->save()) {
-                $user['username'] = make_paid_username($user_data, $s_array["admission_no"], true, true);
-                $user['salt'] = $this->generateRandomString();
-                $user['hashed_password'] = sha1($user['salt'] . $s_array['gpassword' . $extra]);
-                $user['admin'] = 0;
-                $user['student'] = 0;
-                $user['parent'] = 1;
-                $user['employee'] = 0;
-                $user['free_user_id'] = $f_user_data->id;
-                $user['is_approved'] = 0;
-                $user['first_name'] = $s_array['gfirst_name' . $extra];
-                $user['last_name'] = $s_array['glast_name' . $extra];
-                $user['is_first_login'] = 0;
-                $user['is_deleted'] = 1;
-                $user['school_id'] = $user_data->paid_school_id;
-                $user['created_at'] = date("Y-m-d H:i:s");
-                $user['updated_at'] = date("Y-m-d H:i:s");
-                $this->db->dbprefix = '';
-                $this->db->insert('users', $user);
-                $u_id = $this->db->insert_id();
-
-
-
-
-                $ward = get_parent_children($s_array["admission_no"], $user_data);
-                $data['user_id'] = $u_id;
-                $data['country_id'] = 14;
-                $data['school_id'] = $user_data->paid_school_id;
-                $data['created_at'] = date("Y-m-d H:i:s");
-                $data['updated_at'] = date("Y-m-d H:i:s");
-                $data['first_name'] = $s_array['gfirst_name' . $extra];
-                $data['last_name'] = $s_array['glast_name' . $extra];
-                $data['city'] = $s_array['city'];
-                $data['relation'] = $s_array['relation' . $extra];
-                $data['ward_id'] = $sid;
-
-                $this->db->dbprefix = '';
-                $this->db->insert('guardians', $data);
-
-                $gid_id = $this->db->insert_id();
-
-                if (!$ward->immediate_contact_id) {
-                    $this->db->dbprefix = '';
-                    $sb['immediate_contact_id'] = $gid_id;
-                    $this->db->where('id', $ward->id);
-                    $this->db->update('students', $sb);
-                }
-
-                $this->db->dbprefix = 'tds_';
-
-                //update user data
-                $f_user['email'] = $user['username'];
-                $f_user['applied_paid'] = 1;
-                $f_user['dob'] = NULL;
-
-                $this->db->where('id', $f_user_data->id);
-                $this->db->update('free_users', $f_user);
-            }
+        $f_user_data = new Free_users();
+        $extra = "";
+        if ($n_g > 1) {
+            $extra = $n_g;
         }
+        
+        $f_user_data->nick_name = $s_array['gfirst_name' . $extra];
+        $f_user_data->first_name = $s_array['gfirst_name' . $extra];
+        $f_user_data->email = $s_array['admission_no'] . "@champs21.com";
+        $f_user_data->cnf_email = $s_array['admission_no'] . "@champs21.com";
+        $f_user_data->password = $s_array['gpassword' . $extra];
+        $f_user_data->cnf_password = $s_array['gpassword' . $extra];
+        $f_user_data->dob = date("Y-m-d");
+        $f_user_data->paid_school_id = $user_data->paid_school_id;
+
+        $f_user_data->tds_country_id = 14;
+        $f_user_data->division = $s_array['city'];
+
+        $f_user_data->last_name = $s_array['glast_name' . $extra];
+        $f_user_data->user_type = 4;
+        $f_user_data->paid_password = $s_array['gpassword' . $extra];
+
+        if ($f_user_data->save()) {
+            $user['username'] = make_paid_username($user_data, $s_array["admission_no"], true, true);
+            $user['salt'] = $this->generateRandomString();
+            $user['hashed_password'] = sha1($user['salt'] . $s_array['gpassword' . $extra]);
+            $user['admin'] = 0;
+            $user['student'] = 0;
+            $user['parent'] = 1;
+            $user['employee'] = 0;
+            $user['free_user_id'] = $f_user_data->id;
+            $user['is_approved'] = 0;
+            $user['first_name'] = $s_array['gfirst_name' . $extra];
+            $user['last_name'] = $s_array['glast_name' . $extra];
+            $user['is_first_login'] = 0;
+            $user['is_deleted'] = 1;
+            $user['school_id'] = $user_data->paid_school_id;
+            $user['created_at'] = date("Y-m-d H:i:s");
+            $user['updated_at'] = date("Y-m-d H:i:s");
+            $this->db->dbprefix = '';
+
+            $this->db->insert('users', $user);
+            $u_id = $this->db->insert_id();
+
+            $ward = get_parent_children($s_array["admission_no"], $user_data);
+            $data['user_id'] = $u_id;
+            $data['country_id'] = 14;
+            $data['school_id'] = $user_data->paid_school_id;
+            $data['created_at'] = date("Y-m-d H:i:s");
+            $data['updated_at'] = date("Y-m-d H:i:s");
+            $data['first_name'] = $s_array['gfirst_name' . $extra];
+            $data['last_name'] = $s_array['glast_name' . $extra];
+            $data['city'] = $s_array['city'];
+            $data['relation'] = $s_array['relation' . $extra];
+            $data['ward_id'] = $sid;
+
+            $this->db->dbprefix = '';
+            $this->db->insert('guardians', $data);
+
+            $gid_id = $this->db->insert_id();
+
+            if (!$ward->immediate_contact_id) {
+                $this->db->dbprefix = '';
+                $sb['immediate_contact_id'] = $gid_id;
+                $this->db->where('id', $ward->id);
+                $this->db->update('students', $sb);
+            }
+
+            $this->new_guardian_student_relation($sid,$gid_id,$s_array['relation' . $extra]) ;
+
+            $this->update_freeuser_applied_status($user['username'],$f_user_data->id);
+
+        }
+
+        return $u_id;
     }
 
     private function get_student_parents($user_id) {
@@ -729,5 +826,105 @@ class paid extends MX_Controller {
 
         return $all_guardian;
     }
+    
+    private function get_guardian_data_by_user_id($user_id) 
+    {        
+        $this->db->dbprefix = '';
+        $this->db->select("*");
+        $this->db->where("user_id", $user_id);
+        $parents = $this->db->get("guardians")->result();
 
+        if ($parents) {
+            foreach ($parents as $value) {
+                $data['gid'] = $value->id;
+            }
+            return $data;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    private function isnot_already_guardian_added_to_student($s_id,$g_id) 
+    {        
+        $this->db->dbprefix = '';
+        $this->db->where('guardian_id	',$g_id);
+        $this->db->where('student_id',$s_id);
+        $query = $this->db->get('guardian_students');
+        if ($query->num_rows() > 0){
+                $data = $query->row_array();
+                return false;
+        }
+        else{
+                return true;
+        }
+    }
+    private function update_student_immediate_contact_id($s_id,$g_id) 
+    {        
+        $this->db->dbprefix = '';
+        $data['immediate_contact_id'] = $g_id;
+        
+        $this->db->where('id',$s_id);
+        $this->db->update('students', $data);
+        
+        $this->db->trans_status();
+        if ($this->db->affected_rows() == '1') {
+                return TRUE;
+        } else {		
+                return false;
+        }        
+    }
+    private function update_freeuser_applied_status($username,$fu_id) 
+    {   
+        //update freeuser data
+        $this->db->dbprefix = 'tds_';
+        $f_user['email'] = $username;
+        $f_user['applied_paid'] = 1;
+        $f_user['dob'] = NULL;
+
+        $this->db->where('id', $fu_id);
+        $this->db->update('free_users', $f_user);
+        
+        $this->db->trans_status();
+        if ($this->db->affected_rows() == '1') {
+                return TRUE;
+        } else {		
+                return false;
+        }        
+    }
+    private function new_guardian_student_relation($s_id,$g_id,$reation) 
+    {        
+        $this->db->dbprefix = '';
+        $data['student_id'] = $s_id;
+        $data['guardian_id'] = $g_id;
+        $data['relation'] = $reation;
+        
+        $this->db->insert('guardian_students', $data);
+        
+        $this->db->trans_status();
+        if($insert_id > 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+        
+    }
+    private function guardian_one_validation_rule()
+    {
+        $this->form_validation->set_rules('gfirst_name', 'Guardian First Name', 'required');
+        $this->form_validation->set_rules('glast_name', 'Guardian Last Name', 'required');
+        $this->form_validation->set_rules('gpassword', 'Guardian Password', 'required');
+        $this->form_validation->set_rules('relation', 'Relation', 'required');
+    }
+    private function guardian_two_validation_rule()
+    {
+        $this->form_validation->set_rules('gfirst_name2', 'Guardian First Name (2nd)', 'required');
+        $this->form_validation->set_rules('glast_name2', 'Guardian Last Name (2nd)', 'required');
+        $this->form_validation->set_rules('gpassword2', 'Guardian Password (2nd)', 'required');
+        $this->form_validation->set_rules('relation2', 'Relation (2nd)', 'required');
+    }
+    
 }

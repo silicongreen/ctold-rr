@@ -963,14 +963,14 @@ if(!function_exists("get_paid_school_class"))
         $CI->db->order_by("bname ASC,courses.course_name ASC,courses.section_name ASC");
         $course_batch = $CI->db->get()->result();
         $CI->db->dbprefix = 'tds_';
-        $s_array = array(NULL=>"select class");
+        $s_array = array(NULL=>"Select class*");
         foreach($course_batch as $value)
         {
             
           $s_array[$value->bid] = $value->bname." ".$value->course_name." ".$value->section_name;
           
         }
-        $class='class="cd-input f5 form-control" style="height:30" ';
+        $class='class="cd-input f5 form-control" style="height:30" id="batch_id" ';
         $droup_down = form_dropdown('batch_id', $s_array, $selected,$class);
         return $droup_down;
     }

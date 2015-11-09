@@ -216,6 +216,35 @@ class Users extends CActiveRecord {
             
         }
     }
+    
+     public function checkStudentExists($user_id,$school_id)
+    {
+        $criteria = new CDbCriteria;
+        $criteria->select = "id";
+        $criteria->compare('username', $user_id);
+        $criteria->compare('school_id', $school_id);
+        $criteria->compare('student', 1);
+        $user = $this->find($criteria);
+ 
+        if($user)
+        {
+            return $user;
+        }
+        return FALSE;
+    } 
+    
+    public function checkUserExists($user_id)
+    {
+        $criteria = new CDbCriteria;
+        $criteria->select = "id";
+        $criteria->compare('username', $user_id);
+        $user = $this->find($criteria);
+        if($user)
+        {
+            return FALSE;
+        }
+        return TRUE;
+    }        
 
     /**
      * Finds user by provided username.

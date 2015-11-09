@@ -133,4 +133,49 @@ class Batches extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        public function checkSchoolBatch($school_id,$batch_id)
+        {
+            $criteria = new CDbCriteria();
+            $criteria->select = "t.id";
+            $criteria->compare("t.school_id", $school_id);
+            $criteria->compare("t.id", $batch_id);
+            $batch = $this->find($criteria);
+            if($batch)
+            {
+                return TRUE;
+            }
+            return FALSE;
+        }
+        
+        public function getSchoolBatches($school_id)
+        {
+            $criteria = new CDbCriteria();
+            $criteria->select = "t.id,t.name";
+            $criteria->compare("t.school_id", $school_id);
+            $criteria->with = array(
+                'courseDetails' => array(
+                    'select' => 'courseDetails.id,courseDetails.course_name,courseDetails.section_name',
+                    'joinType' => "INNER JOIN"
+                )
+            );
+            $criteria->compare("t.is_deleted", 0);
+            $criteria->compare("courseDetails.is_deleted", 0);
+            $batches = $this->findAll($criteria);
+            
+            $b_array = array();
+            $i = 0; 
+            foreach ($batches as $value)
+            {
+               
+                    $b_array[$i]['id'] = $value->id;
+                    $b_array[$i]['name'] = $value->name." ".$value['courseDetails']->course_name." ".$value['courseDetails']->section_name;
+                    $i++; 
+           
+            }
+
+            return $b_array;
+            
+            
+            
+        }        
 }

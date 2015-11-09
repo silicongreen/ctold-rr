@@ -52,6 +52,18 @@ class GuardianStudent extends CActiveRecord
         );
     }
     
+    public function data_exists($student_id,$guardian_id)
+    {
+        $criteria = new CDbCriteria;
+        $criteria->select = 't.id';
+        $criteria->compare("t.student_id", $student_id);
+        $criteria->compare("t.guardian_id", $guardian_id);
+        
+        $obj = $this->find($criteria);
+
+        return $obj;
+    }
+    
     public function getGuardians($student_id)
     {
         $criteria = new CDbCriteria;

@@ -122,4 +122,15 @@ class Schools extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        
+        public function getschoolbycode($schoolcode)
+        {
+            $criteria = new CDbCriteria();
+            $criteria->select = "t.id,t.name,t.code";
+            $criteria->compare("t.activation_code", $schoolcode);
+            $userschools = $this->find($criteria);
+
+
+            return $userschools;
+        }
 }

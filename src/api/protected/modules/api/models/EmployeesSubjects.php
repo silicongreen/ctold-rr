@@ -273,7 +273,7 @@ class EmployeesSubjects extends CActiveRecord
                 else
                 {
                     $subject[$i]['id'] = $value['subject']->id;
-                    $subject[$i]['name'] = $value['subject']->name." ".$value['subject']['Subjectbatch']->name." ".$value['subject']['Subjectbatch']['courseDetails']->course_name;
+                    $subject[$i]['name'] = $value['subject']->name." ".$value['subject']['Subjectbatch']->name." ".$value['subject']['Subjectbatch']['courseDetails']->course_name." ".$value['subject']['Subjectbatch']['courseDetails']->section_name;
                     $subject[$i]['selected'] = 0;
                     if(in_array($value['subject']->id, $subject_selected))
                     {

@@ -780,7 +780,7 @@ class PaidController extends Controller
         $freeuserObj->tds_country_id = 14;
         $freeuserObj->mobile_no = $contact_no;
         $freeuserObj->dob = $date_of_birth;
-        $freeuserObj->dob = $selected_school->name;
+        $freeuserObj->school_name = $selected_school->name;
         $freeuserObj->is_joined_spellbee = 1;
         
         if (isset($file['profile_image']['name']) && !empty($file['profile_image']['name']))

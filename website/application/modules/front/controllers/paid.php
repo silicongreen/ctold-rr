@@ -68,6 +68,7 @@ class paid extends MX_Controller {
             }
             else
             {
+                $data['back_url'] = $back_url;
                 $data['user_type'] = $user_type_send;
                 $this->load->view('select_school',$data);
             }

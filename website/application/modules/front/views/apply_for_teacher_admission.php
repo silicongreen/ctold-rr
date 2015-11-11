@@ -236,7 +236,7 @@
 document.domain = "champs21.com";
 $(document).ready(function () {
     $(document).on("change", "#change_position", function () {
-        $.post('front/ajax/getpositiondropudown/',
+        $.post('/front/ajax/getpositiondropudown/',
                         {category_id: $(this).val(),school_id:$( "#paid_school_id" ).val()}, function (data) {
                       // alert(data);
                     $("#position_dropdown").html(data);

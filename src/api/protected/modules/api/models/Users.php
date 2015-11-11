@@ -221,8 +221,8 @@ class Users extends CActiveRecord {
     {
         $criteria = new CDbCriteria;
         $criteria->select = "id";
-        $criteria->compare('username', $user_id);
-        $criteria->compare('school_id', $school_id);
+        $criteria->compare('t.username', $user_id);
+        $criteria->compare('t.school_id', $school_id);
         $criteria->compare('student', 1);
         $user = $this->with('studentDetails')->find($criteria);
  

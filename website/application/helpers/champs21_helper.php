@@ -819,7 +819,7 @@ if(!function_exists("get_paid_employee_grade_droupdown"))
         $CI->db->where('status',1);
         $grade = $CI->db->get()->result();
         $CI->db->dbprefix = 'tds_';
-        $s_array = array(NULL=>"select department");
+        $s_array = array(NULL=>"Select Grade");
         foreach($grade as $value)
         {
             

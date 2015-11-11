@@ -88,7 +88,7 @@
 
                     <div class="col-md-12">
                         <div class="row-fluid">
-                            <form id="select_school_for_sign_up_form" class="form-horizontal" method="post" action="<?php echo base_url('front/paid/select_school?back_url=http://diary21.champs21.com&user_type='.$user_type); ?>">
+                            <form id="select_school_for_sign_up_form" class="form-horizontal" method="post" action="<?php echo base_url('front/paid/select_school?back_url='.$user_type.'&user_type='.$user_type); ?>">
                                 <legend></legend>
                                 
                                 <fieldset>                                    

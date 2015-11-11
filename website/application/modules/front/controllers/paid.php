@@ -618,9 +618,11 @@ class paid extends MX_Controller {
 
     public function apply_for_teacher_admission() {
         $this->layout_front = false;
-        $user_type = array(1, 2, 3, 4);
+        $user_type_send = $this->input->get("user_type");
         $back_url = $this->input->get("back_url");
-        if ($back_url && $user_data = $this->check_user_valid($user_type)) {
+        $user_type = array(1, 2, 3, 4);
+        $user_type_check = array(2, 3, 4);
+        if ($user_type_send==3) {
             $ar_js = array();
             $ar_css = array();
             $extra_js = '';
@@ -635,7 +637,12 @@ class paid extends MX_Controller {
 
 
             if (isset($_POST) && !empty($_POST)) {
-                $data['post_data'] = $_POST;
+                $form1_data=$_POST['form1_data']; 
+                $data['form1_data'] = $form1_data;
+                unset($_POST['form1_data']);
+                $ar_form1_data = unserialize($form1_data);
+                $post_data = $_POST + $ar_form1_data;
+                
                 $this->load->library('form_validation');
                 $this->form_validation->set_rules('admission_no', 'Employee NO', 'required|ci_check_admission_no');
                 $this->form_validation->set_rules('password', 'Password', 'required|ci_check_password');
@@ -651,42 +658,49 @@ class paid extends MX_Controller {
                 if ($this->form_validation->run() == TRUE) {
 
 
+                    if($user_data = $this->createFreeUser($post_data))
+                    {
+
+                        $u_id = $this->create_paid_user_for_all($user_data, $post_data,3);
 
 
-                    $u_id = $this->create_paid_user_for_all($user_data, $this->input->post());
+                        if ($u_id[0]) {
+                            $this->update_user_before_apply($user_data, $post_data, $u_id[1]);
+                            $this->db->dbprefix = '';
+                            $st = $this->get_user_default_data($user_data, $u_id[0]);
+                            $st['employee_number'] = make_paid_username($user_data, $post_data['admission_no']);
+                            $st['employee_category_id'] = $post_data["employee_category"];
+                            $st['employee_position_id'] = $post_data["employee_position_id"];
+                            $st['employee_department_id'] = $post_data["employee_department_id"];
+                            $st['employee_grade_id'] = $post_data["employee_grade_id"];
+                            $st['first_name'] = $post_data["first_name"];
+                            $st['last_name'] = $post_data["last_name"];
+                            $st['date_of_birth'] = $post_data["date_of_birth"];
+                            $st['joining_date'] = $post_data["joining_date"];
 
+                            $this->db->insert('employees', $st);
 
-                    if ($u_id[0]) {
-                        $this->update_user_before_apply($user_data, $this->input->post(), $u_id[1]);
-                        $this->db->dbprefix = '';
-                        $st = $this->get_user_default_data($user_data, $u_id[0]);
-                        $st['employee_number'] = make_paid_username($user_data, $this->input->post('admission_no'));
-                        $st['employee_category_id'] = $this->input->post("employee_category");
-                        $st['employee_position_id'] = $this->input->post("employee_position_id");
-                        $st['employee_department_id'] = $this->input->post("employee_department_id");
-                        $st['employee_grade_id'] = $this->input->post("employee_grade_id");
-                        $st['first_name'] = $this->input->post("first_name");
-                        $st['last_name'] = $this->input->post("last_name");
-                        $st['date_of_birth'] = $this->input->post("date_of_birth");
-                        $st['joining_date'] = $this->input->post("joining_date");
+                            $std_id = $this->db->insert_id();
 
-                        $this->db->insert('employees', $st);
+                            if (isset($_POST['batch_id']) && $_POST['batch_id']) {
+                                $eb['employee_id'] = $std_id;
+                                $eb['batch_id'] = $post_data["batch_id"];
+                                $this->db->insert('batch_tutors', $eb);
+                            }
 
-                        $std_id = $this->db->insert_id();
-
-                        if (isset($_POST['batch_id']) && $_POST['batch_id']) {
-                            $eb['employee_id'] = $std_id;
-                            $eb['batch_id'] = $this->input->post("batch_id");
-                            $this->db->insert('batch_tutors', $eb);
+                            $this->db->dbprefix = 'tds_';
                         }
 
-                        $this->db->dbprefix = 'tds_';
+
+                        $back = $this->redirect_parent_url($back_url);
+                        echo $back;
+                        exit;
                     }
-
-
-                    $back = $this->redirect_parent_url($back_url);
-                    echo $back;
-                    exit;
+                    else
+                    {
+                        $data['error'] = "Something went wrong please try again later or contact with champs21";
+                        $this->load_view('apply_for_teacher_admission',$data);
+                    }
                 }
             }
 
@@ -838,6 +852,29 @@ class paid extends MX_Controller {
             echo 'true';
         }     
     }
+    public function is_teacher_username_exist() 
+    {        
+        $admission_no  = $_REQUEST['admission_no'];
+        $paid_school_id  = $_REQUEST['paid_school_id'];
+                
+        $this->db->dbprefix = '';
+        $this->db->select('id');
+        $this->db->from('users');
+        $this->db->where("employee", 1);
+        $this->db->where('username', trim($admission_no));
+        $this->db->where('school_id',$paid_school_id);                 
+        $std = $this->db->get()->row();
+        $this->db->dbprefix = 'tds_';
+
+        if($std)
+        {
+            echo 'false';
+        }
+        else
+        {
+            echo 'true';
+        }     
+    }
     /****PRIVATE FUNCTIONS****/
     private function check_success_user($user_type) {
         if (free_user_logged_in()) {
@@ -892,7 +929,7 @@ class paid extends MX_Controller {
 
         $user['free_user_id'] = $user_data->id;
 
-        $user['is_approved'] = 0;
+        $user['is_approved'] = 1;
 
         $user['first_name'] = $postdata["first_name"];
         $user['last_name'] = $postdata["last_name"];
@@ -902,7 +939,7 @@ class paid extends MX_Controller {
         }
         $user['is_first_login'] = 0;
 
-        $user['is_deleted'] = 1;
+        $user['is_deleted'] = 0;
         $user['school_id'] = $user_data->paid_school_id;
         $user['created_at'] = date("Y-m-d H:i:s");
         $user['updated_at'] = date("Y-m-d H:i:s");
@@ -915,6 +952,7 @@ class paid extends MX_Controller {
 
     private function update_user_before_apply($user_data, $u_array, $u_id) {
         $f_user['paid_password'] = $u_array['password'];
+        $f_user['paid_username'] = $u_id;
         $f_user['email'] = $u_id;
 
         if (isset($u_array['first_name']) && $u_array['first_name']) {
@@ -967,8 +1005,8 @@ class paid extends MX_Controller {
             $data['country_id'] = 14;
         }
         if ($user_data->user_type == 2) {
-            $data['is_active'] = 0;
-            $data['is_deleted'] = 1;
+            $data['is_active'] = 1;
+            $data['is_deleted'] = 0;
         }
         $data['user_id'] = $u_id;
         $data['school_id'] = $user_data->paid_school_id;
@@ -1043,7 +1081,8 @@ class paid extends MX_Controller {
             $user['first_name'] = $s_array['gfirst_name' . $extra];
             $user['last_name'] = $s_array['glast_name' . $extra];
             $user['is_first_login'] = 0;
-            $user['is_deleted'] = 1;
+            $user['is_deleted'] = 0;
+            $user['is_approved'] = 1;
             if (isset($s_array['gemail']) && $s_array['gemail']) {
                 $f_user['email'] = $s_array['gemail'];
             }

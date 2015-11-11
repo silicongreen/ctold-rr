@@ -330,6 +330,9 @@ class paid extends MX_Controller {
                 $length = strlen($school_code);
                 $postdata["admission_no"] = substr($admission_no, $length);
                 
+                $data['student'][$i]['fulname'] = $paid_st_data["first_name"]." ".$paid_st_data["middle_name"]." ".$paid_st_data["last_name"];
+                $data['student'][$i]['username'] = $u_id[1];
+                $data['student'][$i]['admission_no'] = $paid_st_data["admission_no"];
             }
             else
             {
@@ -1350,6 +1353,10 @@ class paid extends MX_Controller {
         if ($parents) {
             foreach ($parents as $value) {
                 $data['sid'] = $value->id;
+                $data['first_name'] = $value->id;
+                $data['last_name'] = $value->last_name;
+                $data['middle_name'] = $value->middle_name;
+                $data['admission_no'] = $value->admission_no;
             }
             return $data;
         }

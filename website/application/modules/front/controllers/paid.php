@@ -644,14 +644,11 @@ class paid extends MX_Controller {
                 $post_data = $_POST + $ar_form1_data;
                 
                 $this->load->library('form_validation');
-                $this->form_validation->set_rules('admission_no', 'Employee NO', 'required|ci_check_admission_no');
-                $this->form_validation->set_rules('password', 'Password', 'required|ci_check_password');
-                $this->form_validation->set_rules('first_name', 'First Name', 'required');
-                $this->form_validation->set_rules('last_name', 'Last Name', 'required');
+                $this->form_validation->set_rules('admission_no', 'Employee NO', 'required');                
                 $this->form_validation->set_rules('employee_department_id', 'Employee Department', 'required');
                 $this->form_validation->set_rules('employee_category', 'Employee Category', 'required');
                 $this->form_validation->set_rules('employee_position_id', 'Employee Position', 'required');
-                $this->form_validation->set_rules('date_of_birth', 'Birth date', 'required|ci_validate_date');
+                $this->form_validation->set_rules('date_of_birth', 'Birth date', 'required');
                 $this->form_validation->set_rules('joining_date', 'Joining date', 'required');
 
 

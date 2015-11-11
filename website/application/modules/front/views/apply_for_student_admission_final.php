@@ -125,11 +125,11 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script>
  document.domain = "champs21.com";
-    //$('#pluswrap').show();
-    //$(window).bind("load", function() {  
-    //        $('#pluswrap').hide();			
-    //        $("#content_signup").show(); 
-    //});
+    $('#pluswrap').show();
+    $(window).bind("load", function() {  
+            $('#pluswrap').hide();			
+            $("#content_signup").show(); 
+    });
 </script>
 <style>
 .error_validation p {

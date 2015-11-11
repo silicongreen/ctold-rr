@@ -676,9 +676,16 @@ class paid extends MX_Controller {
                         $this->load->view('apply_for_student_admission',$data);
                     }
                 }
+                else
+                {
+                    $this->load->view('apply_for_student_admission', $data);
+                }
             }
-
-            $this->load->view('apply_for_student_admission', $data);
+            else
+            {
+                $this->load->view('apply_for_student_admission', $data);
+            }
+            
             
         } else {
             $back = $this->redirect_parent_url(base_url());

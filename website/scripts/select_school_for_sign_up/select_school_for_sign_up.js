@@ -56,11 +56,11 @@ $(document).ready(function(){
 
 			email: {
 				required: true,
-				email: true,
-				remote: {
-                                    url: $('#ci_base_url').val() + "front/paid/email_unique",
-                                    type: "post"
-                                }
+				email: true
+				//remote: {
+                                //    url: $('#ci_base_url').val() + "front/paid/email_unique",
+                                //    type: "post"
+                                // }
 			},
 			
 			confirm_email: {

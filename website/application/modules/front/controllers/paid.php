@@ -448,6 +448,8 @@ class paid extends MX_Controller {
         $back_url = $this->input->get("back_url");
         $user_type = array(1, 2, 3, 4);
         $user_type_check = array(2, 3, 4);
+        $success = false;
+        
         if ($user_type_send==2) {
             $ar_js = array();
             $ar_css = array();
@@ -529,6 +531,11 @@ class paid extends MX_Controller {
                         $u_id = $this->create_paid_user_for_all($user_data, $post_data,$user_type_send);                    
                         //insert student data
                         if ($u_id[0]) {
+                            unset($data);
+                            $data['student']['fulname'] = $post_data["first_name"]." ".$post_data["middle_name"]." ".$post_data["last_name"];
+                            $data['student']['username'] = $u_id[1];
+                            $data['student']['admission_no'] = $post_data["admission_no"];
+                            
                             $this->update_user_before_apply($user_data, $post_data, $u_id[1]);
                             $this->db->dbprefix = '';
                             $st = $this->get_user_default_data($user_data, $u_id[0]);
@@ -558,40 +565,107 @@ class paid extends MX_Controller {
                             if ($add_guardian == "one") {
                                 if($guardian1_id > 0)
                                 {
-                                    $this->existing_guardian_add_to_student($guardian1_id,$std_id,$post_data["relation"]);
+                                    if($this->existing_guardian_add_to_student($guardian1_id,$std_id,$post_data["relation"]))
+                                    {
+                                        $data['guardian'][1]['username'] = $post_data['g_username'];
+                                        $data['guardian'][1]['fulname'] = '';
+                                        $success = true;
+                                    }
+                                    else
+                                    {
+                                        $success = false;
+                                    }
                                 }
                                 else
                                 {   
                                     $n_g = 1;
-                                    $this->createGuardianStudent($post_data, $n_g, $std_id, $user_data);
+                                    $gu_id1 = $this->createGuardianStudent($post_data, $n_g, $std_id, $user_data);
+                                    if($gu_id1)
+                                    {
+                                        $data['guardian'][1]['username'] = make_paid_username($user_data, $post_data["admission_no"], true, true);;
+                                        $data['guardian'][1]['fulname'] = $post_data["gfirst_name"]." ".$post_data["glast_name"];
+                                        $success = true;
+                                    }
+                                    else
+                                    {
+                                        $success = false;
+                                    }
                                 }
                             }
 
                             if ($add_guardian == "two") {
                                 if($guardian1_id > 0)
                                 {
-                                    $this->existing_guardian_add_to_student($guardian1_id,$std_id,$post_data["relation"]);
+                                    if($this->existing_guardian_add_to_student($guardian1_id,$std_id,$post_data["relation"]))
+                                    {
+                                        $data['guardian'][1]['username'] = $post_data['g_username'];
+                                        $data['guardian'][1]['fulname'] = '';
+                                        $success = true;
+                                    }
+                                    else
+                                    {
+                                        $success = false;
+                                    }
                                 }
                                 else
                                 {
                                     $n_g = 1;
-                                    $this->createGuardianStudent($post_data, $n_g, $std_id, $user_data);
+                                    $gu_id1 = $this->createGuardianStudent($post_data, $n_g, $std_id, $user_data);
+                                    if($gu_id1)
+                                    {
+                                        $data['guardian'][1]['username'] = make_paid_username($user_data, $post_data["admission_no"], true, true);;
+                                        $data['guardian'][1]['fulname'] = $post_data["gfirst_name"]." ".$post_data["glast_name"];
+                                        $success = true;
+                                    }
+                                    else
+                                    {
+                                        $success = false;
+                                    }
                                 }
 
                                 if($guardian2_id > 0)
-                                {
-                                    $this->existing_guardian_add_to_student($guardian2_id,$std_id,$post_data["relation2"]);                            
+                                {                                                                
+                                    if($this->existing_guardian_add_to_student($guardian2_id,$std_id,$post_data["relation2"]))
+                                    {
+                                        $data['guardian'][2]['username'] = $post_data['g_username2'];
+                                        $data['guardian'][2]['fulname'] = '';
+                                        $success = true;
+                                    }
+                                    else
+                                    {
+                                        $success = false;
+                                    }
                                 }
                                 else
                                 {
                                     $n_g = 2;
-                                    $this->createGuardianStudent($post_data, $n_g, $std_id, $user_data);
+                                    $gu_id2 = $this->createGuardianStudent($post_data, $n_g, $std_id, $user_data);
+                                    if($gu_id2)
+                                    {
+                                        $data['guardian'][2]['username'] = make_paid_username($user_data, $post_data["admission_no"], true, true);;
+                                        $data['guardian'][2]['fulname'] = $post_data["gfirst_name2"]." ".$post_data["glast_name2"];
+                                        
+                                        $success = true;
+                                    }
+                                    else
+                                    {
+                                        $success = false;
+                                    }
                                 }
                             }                        
                         }
-
-                        $back = $this->redirect_parent_url($back_url);
-                        echo $back;
+                        if($success)
+                        {
+                            $data['error'] = 0;
+                            $this->load->view('apply_for_student_admission_final',$data);
+                        }
+                        else
+                        {
+                            $data['error'] = 1;//
+                            $this->load->view('apply_for_student_admission_final',$data);
+                        }
+                        //$back = $this->redirect_parent_url($back_url);
+                        //echo $back;
                         exit;
                     }
                     else

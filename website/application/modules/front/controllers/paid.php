@@ -654,6 +654,8 @@ class paid extends MX_Controller {
                                 }
                             }                        
                         }
+                        
+                       
                         if($success)
                         {
                             $data['error'] = 0;
@@ -666,12 +668,12 @@ class paid extends MX_Controller {
                         }
                         //$back = $this->redirect_parent_url($back_url);
                         //echo $back;
-                        exit;
+                        //exit;
                     }
                     else
                     {
                         $data['error'] = "Something went wrong please try again later or contact with champs21";
-                        $this->load_view('apply_for_student_admission',$data);
+                        $this->load->view('apply_for_student_admission',$data);
                     }
                 }
             }

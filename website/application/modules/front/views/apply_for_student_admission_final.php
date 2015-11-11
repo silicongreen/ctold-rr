@@ -50,7 +50,7 @@
                 <div class="container">			  
                     <div class="col-md-12" style="padding:0px; margin-top: 40px;">
                         <h2 class="lead text-center editContent">
-                                Sign Up For Student
+                                <?php if($error) :?>Sign Up Error For Student<?php else: ?>Sign Up Success For Student <?php endif; ?>
                         </h2>
                     </div>
                     <div class="col-md-12">
@@ -124,7 +124,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script>
- document.domain = "champs21.com";
+ //document.domain = "champs21.com";
     $('#pluswrap').show();
         $(window).bind("load", function() {  
                 $('#pluswrap').hide();			

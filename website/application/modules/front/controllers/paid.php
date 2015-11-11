@@ -359,6 +359,10 @@ class paid extends MX_Controller {
 
                     if($u_id[0])
                     {
+                        $data['student'][$i]['fulname'] = $postdata["first_name"]." ".$postdata["last_name"];
+                        $data['student'][$i]['username'] = $u_id[1];
+                        $data['student'][$i]['admission_no'] = $postdata["admission_no"];
+                        
                         $postdata["middle_name"] = $ar_form_data['student_data'][$i]['s_middle_name'];                    
                         $postdata["city"] = $ar_form_data['form_data']['city'];
                         $postdata["date_of_birth"] = $ar_form_data['student_data'][$i]['date_of_birth'];
@@ -409,6 +413,9 @@ class paid extends MX_Controller {
                     $gu_id = $this->createGuardianStudent($postdata, $n_g, $std_id, $user_data);
                     if($gu_id)
                     {
+                        $data['guardian']['fulname'] = $postdata["gfirst_name"]." ".$postdata["glast_name"];
+                        $data['guardian']['username'] = $u_id[1];
+                        $data['guardian']['admission_no'] = "";
                         $success = true;
                     }
                     else

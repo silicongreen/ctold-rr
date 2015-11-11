@@ -62,6 +62,54 @@
                                 <div class="alert alert-success">
                                   Your Sign Up process is complete.Please Sign In.
                                 </div>
+                                <div class="col-md-8">
+                                    <div class="row-fluid">
+                                        <?php if($guardian['fulname'] != ""):?>
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label">Your Name :</label>  
+                                                <div class="col-md-4">
+                                                    <?php echo $guardian['fulname'];?>
+                                                </div>
+                                            </div>
+                                        <?php endif; ?>
+                                        <?php if($guardian['username'] != ""):?>
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label">UserName :</label>  
+                                                <div class="col-md-4">
+                                                    <?php echo $guardian['username'];?>
+                                                </div>
+                                            </div>
+                                        <?php endif; ?>
+                                        <?php if($guardian['admission_no'] != ""):?>
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label">Admission No :</label>  
+                                                <div class="col-md-4">
+                                                    <?php echo $guardian['admission_no'];?>
+                                                </div>
+                                            </div>
+                                        <?php endif; ?>
+                                        <legend></legend>
+                                        <?php foreach($student as $row):?>
+                                            <?php if($row['username'] != ""):?>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">Student UserName :</label>  
+                                                    <div class="col-md-4">
+                                                        <?php echo $row['username'];?>
+                                                    </div>
+                                                </div>
+                                            <?php endif; ?>
+                                            <?php if($row['fulname'] != ""):?>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">Student Name :</label>  
+                                                    <div class="col-md-4">
+                                                        <?php echo $row['fulname'];?>
+                                                    </div>
+                                                </div>
+                                            <?php endif; ?>
+                                            <legend></legend>
+                                        <?php endforeach; ?>
+                                    </div>
+                                </div>
                         <?php endif; ?>
                     </div>
                     

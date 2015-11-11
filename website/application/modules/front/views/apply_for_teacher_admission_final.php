@@ -65,27 +65,27 @@
                         
                         <div class="col-md-8">
                             <div class="row-fluid">
-                                <?php if($student['fulname'] != ""):?>
+                                <?php if($teacher['fulname'] != ""):?>
                                     <div class="form-group">
                                         <label class="col-md-4 control-label">Your Name :</label>  
                                         <div class="col-md-4">
-                                            <?php echo $student['fulname'];?>
+                                            <?php echo $teacher['fulname'];?>
                                         </div>
                                     </div>
                                 <?php endif; ?>
-                                <?php if($student['username'] != ""):?>
+                                <?php if($teacher['username'] != ""):?>
                                     <div class="form-group">
                                         <label class="col-md-4 control-label">UserName :</label>  
                                         <div class="col-md-4">
-                                            <?php echo $student['username'];?>
+                                            <?php echo $teacher['username'];?>
                                         </div>
                                     </div>
                                 <?php endif; ?>
-                                <?php if($student['admission_no'] != ""):?>
+                                <?php if($teacher['admission_no'] != ""):?>
                                     <div class="form-group">
-                                        <label class="col-md-4 control-label">Admission No :</label>  
+                                        <label class="col-md-4 control-label">Employee No :</label>  
                                         <div class="col-md-4">
-                                            <?php echo $student['admission_no'];?>
+                                            <?php echo $teacher['admission_no'];?>
                                         </div>
                                     </div>
                                 <?php endif; ?>

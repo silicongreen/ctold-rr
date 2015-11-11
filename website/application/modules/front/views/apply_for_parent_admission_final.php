@@ -80,16 +80,17 @@
                                                 </div>
                                             </div>
                                         <?php endif; ?>
-                                        <?php if($guardian['admission_no'] != ""):?>
-                                            <div class="form-group">
-                                                <label class="col-md-4 control-label">Admission No :</label>  
-                                                <div class="col-md-4">
-                                                    <?php echo $guardian['admission_no'];?>
-                                                </div>
-                                            </div>
-                                        <?php endif; ?>
+                                        
                                         <legend></legend>
                                         <?php foreach($student as $row):?>
+                                            <?php if($row['fulname'] != ""):?>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">Student Name :</label>  
+                                                    <div class="col-md-4">
+                                                        <?php echo $row['fulname'];?>
+                                                    </div>
+                                                </div>
+                                            <?php endif; ?>
                                             <?php if($row['username'] != ""):?>
                                                 <div class="form-group">
                                                     <label class="col-md-4 control-label">Student UserName :</label>  
@@ -98,11 +99,12 @@
                                                     </div>
                                                 </div>
                                             <?php endif; ?>
-                                            <?php if($row['fulname'] != ""):?>
+                                            
+                                            <?php if($row['admission_no'] != ""):?>
                                                 <div class="form-group">
-                                                    <label class="col-md-4 control-label">Student Name :</label>  
+                                                    <label class="col-md-4 control-label">Admission No :</label>  
                                                     <div class="col-md-4">
-                                                        <?php echo $row['fulname'];?>
+                                                        <?php echo $row['admission_no'];?>
                                                     </div>
                                                 </div>
                                             <?php endif; ?>

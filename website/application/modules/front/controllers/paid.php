@@ -331,7 +331,7 @@ class paid extends MX_Controller {
                 $postdata["admission_no"] = substr($admission_no, $length);
                 
                 $data['student'][$i]['fulname'] = $paid_st_data["first_name"]." ".$paid_st_data["middle_name"]." ".$paid_st_data["last_name"];
-                $data['student'][$i]['username'] = $u_id[1];
+                $data['student'][$i]['username'] = $admission_no;
                 $data['student'][$i]['admission_no'] = $paid_st_data["admission_no"];
             }
             else
@@ -417,8 +417,8 @@ class paid extends MX_Controller {
                     if($gu_id)
                     {
                         $data['guardian']['fulname'] = $postdata["gfirst_name"]." ".$postdata["glast_name"];
-                        $data['guardian']['username'] = $u_id[1];
-                        $data['guardian']['admission_no'] = "";
+                        $data['guardian']['username'] = make_paid_username($user_data, $postdata["admission_no"], true, true);
+                        
                         $success = true;
                     }
                     else

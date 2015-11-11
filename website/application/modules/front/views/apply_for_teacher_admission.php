@@ -129,31 +129,6 @@
                                             </div>
                                         </div>
 
-
-                                        <div class="form-group">
-                                            <label class="col-md-4 control-label" for="school_code">First Name</label>  
-                                            <div class="col-md-4">
-                                                <input type="text" name="first_name" value="<?php echo $post_data['first_name']; ?>" id="first_name" class="form-control input-md" required="">
-
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label class="col-md-4 control-label" for="school_code">Middle Name</label>  
-                                            <div class="col-md-4">
-                                                <input type="text" name="middle_name" value="<?php echo $post_data['middle_name']; ?>" id="middle_name" class="form-control input-md">
-
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label class="col-md-4 control-label" for="school_code">Last Name</label>  
-                                            <div class="col-md-4">
-                                                <input type="text" name="last_name" value="<?php echo $post_data['last_name']; ?>" id="last_name" class="form-control input-md" required="">
-
-                                            </div>
-                                        </div>
-
                                         <div class="form-group">
                                             <label class="col-md-4 control-label" for="radios">Select Gender</label>
                                             <div class="col-md-4">

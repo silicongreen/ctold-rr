@@ -113,7 +113,7 @@
                                             </div>
                                     </div>
                                     <?php
-                                    if($user_type==2){
+                                    if($user_type==2 || $user_type==3){
                                     ?>
                                     <div class="form-group">
                                         <label class="col-md-4 control-label" for="middle_name">Middle Name</label>  

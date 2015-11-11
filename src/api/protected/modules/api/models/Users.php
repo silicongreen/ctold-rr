@@ -224,7 +224,7 @@ class Users extends CActiveRecord {
         $criteria->compare('username', $user_id);
         $criteria->compare('school_id', $school_id);
         $criteria->compare('student', 1);
-        $user = $this->find($criteria);
+        $user = $this->with('studentDetails')->find($criteria);
  
         if($user)
         {

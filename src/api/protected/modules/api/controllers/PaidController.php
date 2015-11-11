@@ -420,6 +420,8 @@ class PaidController extends Controller
                 $user = new Users();
                 if($student = $user->checkStudentExists($student_id,$selected_school->id))
                 {
+                    $middle_name = (!empty($student['studentDetails']->middle_name)) ? $student['studentDetails']->middle_name . ' ' : '';
+                    $response['data']['full_name'] = rtrim($value['studentDetails']->first_name . ' ' . $middle_name . $value['studentDetails']->last_name);
                     $response['data']['std_id'] = $student->id;
                     $response['status']['code'] = 200;
                     $response['status']['msg'] = "Success";

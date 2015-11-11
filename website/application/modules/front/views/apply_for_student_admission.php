@@ -86,7 +86,9 @@
                     </div>
                     <div class="col-md-12">
                         <div class="row-fluid">
-                            <form class="form-horizontal" id="apply_for_student_admission" method="post" action="">
+                            <form class="form-horizontal" id="apply_for_student_admission" method="post" action="<?php echo base_url('front/paid/apply_for_student_admission?back_url='.$back_url.'&user_type='.$user_type); ?>">
+                                <input type="hidden" id="form1_data" name="form1_data" value="<?php echo $form1_data; ?>" >
+                                <input type="hidden" id="paid_school_id" name="paid_school_id" value="<?php echo $paid_school_id; ?>" >
                                 <div class="error_validation" class="col-md-12" ><?php echo validation_errors(); ?></div>
                                 <fieldset>
 
@@ -94,20 +96,20 @@
                                     <legend></legend>
 
                                     <!-- Select Basic -->
-                                     <div class="form-group">
-                                        <label class="col-md-5 control-label" for="school_code">Admission NO Of Your School/if not available unique username</label>  
+                                    <div class="form-group">
+                                        <label class="col-md-5 control-label" for="school_code">Admission No</label>  
                                         <div class="col-md-4">
-                                            <input type="text" name="admission_no" id="admission_no" value="<?php echo $post_data['admission_no']; ?>" required="" class="form-control input-md" placeholder="User Name *" >                                            
+                                            <input type="text" name="admission_no" id="admission_no" required="" class="form-control input-md" placeholder="Admission No *" >                                            
                                             <span class="help-block"><font color="#ccc" size="1">It will be use for generate your new username for school and champs21</font></span>
                                         </div>
                                     </div>
-                                     <div class="form-group">
-                                        <label class="col-md-5 control-label" for="school_code">Your Login Password</label>  
+                                    <div class="form-group">
+                                        <label class="col-md-5 control-label" for="sn_username">User Name</label>  
                                         <div class="col-md-4">
-                                            <input type="password" name="password" id="password" value="" class="form-control input-md" required="" placeholder="Password *">
-                                            <span><font color="#ccc" size="1">At least 6 character</font></span>
+                                            <input type="text" name="sn_username" id="sn_username" class="form-control input-md" <?php if($post_data['add_guardian']!="no") { ?>required=""<?php } ?> readonly placeholder="User Name *">                                            
                                         </div>
                                     </div>
+                                    
                                     <div class="form-group">
                                         <label class="col-md-5 control-label" for="school_code">Admission date</label>  
                                         <div class="col-md-4">
@@ -120,32 +122,7 @@
                                     <div class="form-group">
                                         <label class="col-md-5 control-label" for="school_code">Roll No (If available)</label>  
                                         <div class="col-md-4">
-                                            <input type="text" name="class_roll_no" value="<?php echo $post_data['class_roll_no']; ?>" id="class_roll_no" class="form-control input-md" placeholder="Roll No" >
-
-                                        </div>
-                                    </div>
-
-
-                                    <div class="form-group">
-                                        <label class="col-md-5 control-label" for="school_code">First Name</label>  
-                                        <div class="col-md-4">
-                                            <input type="text" name="first_name" value="<?php echo $post_data['first_name']; ?>" id="first_name" class="form-control input-md" required="" placeholder="First Name">
-
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="col-md-5 control-label" for="school_code">Middle Name</label>  
-                                        <div class="col-md-4">
-                                            <input type="text" name="middle_name" value="<?php echo $post_data['middle_name']; ?>" id="middle_name" class="form-control input-md" placeholder="Middle Name">
-
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="col-md-5 control-label" for="school_code">Last Name</label>  
-                                        <div class="col-md-4">
-                                            <input type="text" name="last_name" value="<?php echo $post_data['last_name']; ?>" id="last_name" class="form-control input-md" required="" placeholder="Last Name">
+                                            <input type="text" name="class_roll_no" id="class_roll_no" class="form-control input-md" placeholder="Roll No" >
 
                                         </div>
                                     </div>
@@ -154,14 +131,14 @@
                                         <label class="col-md-5 control-label" for="selectbasic">select Shift Class and section</label>
 
                                         <div class="col-md-4">
-                                            <?php echo get_paid_school_class($user_data->paid_school_id,$post_data['batch_id']); ?>
+                                            <?php echo get_paid_school_class($paid_school_id); ?>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
                                         <label class="col-md-5 control-label" for="school_code">Select Birth Date</label>  
                                         <div class="col-md-4">
-                                                <input data-date-format="yyyy-mm-dd" type="text" class="form-control datepicker" required=""  name="date_of_birth" value="<?php echo $post_data['date_of_birth']; ?>" placeholder="yyyy-mm-dd" >
+                                                <input data-date-format="yyyy-mm-dd" type="text" class="form-control datepicker" required=""  name="date_of_birth" placeholder="yyyy-mm-dd" >
 
                                         </div>
                                     </div>
@@ -171,13 +148,13 @@
                                         <div class="col-md-4">
                                             <div class="radio">
                                                 <label for="radios-0">
-                                                    <input type="radio" <?php if($post_data['gender']!="f") { ?> checked="checked"<?php } ?> name="radios" id="radios-m" value="m" checked="checked">
+                                                    <input type="radio" name="gender" id="radios-m" value="m" checked="checked">
                                                     Male
                                                 </label>
                                             </div>
                                             <div class="radio">
                                                 <label for="radios-f">
-                                                    <input type="radio" <?php if($post_data['gender']=="f") { ?> checked="checked"<?php } ?> name="radios" id="radios-f" value="f">
+                                                    <input type="radio" name="gender" id="radios-f" value="f">
                                                     Female
                                                 </label>
                                             </div>
@@ -187,7 +164,7 @@
                                     <div class="form-group">
                                         <label class="col-md-5 control-label" for="school_code">Your City</label>  
                                         <div class="col-md-4">
-                                            <input type="text" name="city" value="<?php echo $post_data['city']; ?>" id="city" class="form-control input-md" required="" placeholder="City*">
+                                            <input type="text" name="city" id="city" class="form-control input-md" required="" placeholder="City*">
 
                                         </div>
                                     </div>
@@ -197,108 +174,108 @@
                                         <div class="col-md-4">
                                             <div class="radio">
                                                 <label for="radios-0">
-                                                    <input type="radio" <?php if($post_data['add_guardian']!="no" && $post_data['add_guardian']!="two") { ?> checked="checked"<?php } ?> id="radios-0" name="add_guardian" class="add_guardian" value="one" checked="checked">
+                                                    <input type="radio" id="radios-0" name="add_guardian" class="add_guardian" value="one" checked="checked">
                                                     One Person
                                                 </label>
                                             </div>
                                             <div class="radio">
                                                 <label for="radios-1">
-                                                    <input type="radio" <?php if($post_data['add_guardian']=="two") { ?> checked="checked"<?php } ?> id="radios-1"  name="add_guardian" class="add_guardian" value="two" >
+                                                    <input type="radio" id="radios-1"  name="add_guardian" class="add_guardian" value="two" >
                                                     Two Persons
                                                 </label>
                                             </div>
                                             <div class="radio">
                                                 <label for="radios-2">
-                                                    <input type="radio" <?php if($post_data['add_guardian']=="no") { ?> checked="checked"<?php } ?> id="radios-2"   name="add_guardian" class="add_guardian" value="no">
+                                                    <input type="radio" id="radios-2"   name="add_guardian" class="add_guardian" value="no">
                                                     Skip
                                                 </label>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group gfield checkbox-group" <?php if($post_data['add_guardian']=="no") { ?>style="display:none;"<?php } ?>>
+                                    <div class="form-group gfield checkbox-group">
                                         <label class="col-md-5 control-label" for="school_code">Guardian Choose From Existing</label>  
                                         <div class="col-md-4">
                                             <input type="checkbox" id="checkbox-1"  class="checkbox choose_guardian"  name="choose_guardian" value="choose">
                                             
                                         </div>
                                     </div>
-                                    <div class="form-group gfield choosebox-group" <?php if($post_data['add_guardian']!="no") { ?>style="display:none;"<?php } ?>>
+                                    <div class="form-group gfield choosebox-group" style="display:none;">
                                         <label class="col-md-5 control-label" for="school_code">Guardian User Name</label>  
                                         <div class="col-md-4">
-                                            <input type="text" name="g_username" value="<?php echo $post_data['gfirst_name']; ?>" id="g_username" class="form-control input-md g_username" <?php if($post_data['add_guardian']!="no") { ?>required=""<?php } ?> placeholder="Guardian User Name *">
+                                            <input type="text" name="g_username" id="g_username" class="form-control input-md g_username" placeholder="Guardian User Name *">
                                             <input type="hidden" id="g_id" name="g_id" value="">
                                             <span class="g_fullname" style="color:green;font-size: 13px;"></span>
                                         </div>
                                     </div>
-                                    <div class="form-group gfield" <?php if($post_data['add_guardian']=="no") { ?>style="display:none;"<?php } ?>>
+                                    <div class="form-group gfield" >
                                         <label class="col-md-5 control-label" for="school_code">Guardian First Name</label>  
                                         <div class="col-md-4">
-                                            <input type="text" name="gfirst_name" value="<?php echo $post_data['gfirst_name']; ?>" id="gfirst_name" class="form-control input-md" <?php if($post_data['add_guardian']!="no") { ?>required=""<?php } ?> placeholder="First Name *">
+                                            <input type="text" name="gfirst_name" id="gfirst_name" class="form-control input-md" placeholder="First Name *">
 
                                         </div>
                                     </div>
-                                    <div class="form-group gfield" <?php if($post_data['add_guardian']=="no") { ?>style="display:none;"<?php } ?>>
+                                    <div class="form-group gfield" >
                                         <label class="col-md-5 control-label" for="school_code">Guardian Last Name</label>  
                                         <div class="col-md-4">
-                                            <input type="text" name="glast_name" value="<?php echo $post_data['glast_name']; ?>" id="glast_name" class="form-control input-md" <?php if($post_data['add_guardian']!="no") { ?>required=""<?php } ?>  placeholder="Last Name *">
+                                            <input type="text" name="glast_name" id="glast_name" class="form-control input-md" placeholder="Last Name *">
 
                                         </div>
                                     </div>
-                                    <div class="form-group gfield relationbox-group" <?php if($post_data['add_guardian']=="no") { ?>style="display:none;"<?php } ?>>
+                                    <div class="form-group gfield relationbox-group" >
                                         <label class="col-md-5 control-label" for="school_code">Relation</label>  
                                         <div class="col-md-4">
-                                            <input type="text" name="relation" value="<?php echo $post_data['relation']; ?>" id="relation" class="form-control input-md" <?php if($post_data['add_guardian']!="no") { ?>required=""<?php } ?> placeholder="Relation *">
+                                            <input type="text" name="relation" id="relation" class="form-control input-md" placeholder="Relation *">
 
                                         </div>
                                     </div>
-                                    <div class="form-group gfield" <?php if($post_data['add_guardian']=="no") { ?>style="display:none;"<?php } ?>>
+                                    <div class="form-group gfield" >
                                         <label class="col-md-5 control-label" for="school_code">Guardian Password</label>  
                                         <div class="col-md-4">
-                                            <input type="password" name="gpassword" id="gpassword" value="" class="form-control input-md" <?php if($post_data['add_guardian']!="no") { ?>required=""<?php } ?> placeholder="Password *">
+                                            <input type="password" name="gpassword" id="gpassword" value="" class="form-control input-md" placeholder="Password *">
                                             <span class="help-block"><font color="#ccc" size="1">At least 6 character</font></span>
                                         </div>
                                     </div>
                                     
-                                    <div class="form-group gfield2 checkbox-group2" <?php if($post_data['add_guardian']!="two") { ?>style="display:none;"<?php } ?>>
+                                    <div class="form-group gfield2 checkbox-group2" style="display:none;">
                                         <label class="col-md-5 control-label" for="school_code">Guardian (2nd) Choose From Existing</label>  
                                         <div class="col-md-4">
                                             <input type="checkbox" id="checkbox-2"  class="checkbox choose_guardian2"  name="choose_guardian2" value="choose">
                                             
                                         </div>
                                     </div>
-                                    <div class="form-group gfield2 choosebox-group2" <?php if($post_data['add_guardian']!="two") { ?>style="display:none;"<?php } ?>>
+                                    <div class="form-group gfield2 choosebox-group2" style="display:none;">
                                         <label class="col-md-5 control-label" for="school_code">Guardian User Name (2nd)</label>  
                                         <div class="col-md-4">
-                                            <input type="text" name="g_username2" value="<?php echo $post_data['gfirst_name']; ?>" id="g_username2" class="form-control input-md g_username2" <?php if($post_data['add_guardian']!="no") { ?>required=""<?php } ?> placeholder="Guardian User Name *">
+                                            <input type="text" name="g_username2" id="g_username2" class="form-control input-md g_username2" placeholder="Guardian User Name *">
                                             <input type="hidden" id="g_id2" name="g_id2" value="">
                                             <span class="g_fullname2" style="color:green;font-size: 13px;"></span>
                                         </div>
                                     </div>
-                                    <div class="form-group gfield2" <?php if($post_data['add_guardian']!="two") { ?>style="display:none;"<?php } ?>>
+                                    <div class="form-group gfield2" style="display:none;">
                                         <label class="col-md-5 control-label" for="school_code">Guardian First Name (2nd)</label>  
                                         <div class="col-md-4">
-                                            <input type="text" name="gfirst_name2" value="<?php echo $post_data['gfirst_name2']; ?>" id="gfirst_name2" class="form-control input-md"   <?php if($post_data['add_guardian']=="two") { ?>required=""<?php } ?> placeholder="First Name *">
+                                            <input type="text" name="gfirst_name2" id="gfirst_name2" class="form-control input-md" placeholder="First Name *">
 
                                         </div>
                                     </div>
-                                    <div class="form-group gfield2" <?php if($post_data['add_guardian']!="two") { ?>style="display:none;"<?php } ?>>
+                                    <div class="form-group gfield2" style="display:none;">
                                         <label class="col-md-5 control-label" for="school_code">Guardian Last Name (2nd)</label>  
                                         <div class="col-md-4">
-                                            <input type="text" name="glast_name2" value="<?php echo $post_data['glast_name2']; ?>" id="glast_name2" class="form-control input-md"   <?php if($post_data['add_guardian']=="two") { ?>required=""<?php } ?> placeholder="Last Name *">
+                                            <input type="text" name="glast_name2" id="glast_name2" class="form-control input-md" placeholder="Last Name *">
 
                                         </div>
                                     </div>
-                                    <div class="form-group gfield2 relationbox-group2" <?php if($post_data['add_guardian']!="two") { ?>style="display:none;"<?php } ?>>
+                                    <div class="form-group gfield2 relationbox-group2" style="display:none;">
                                         <label class="col-md-5 control-label" for="school_code">Relation (2nd)</label>  
                                         <div class="col-md-4">
-                                            <input type="text" name="relation2" value="<?php echo $post_data['relation2']; ?>" id="relation2" class="form-control input-md"   <?php if($post_data['add_guardian']=="two") { ?>required=""<?php } ?> placeholder="Relation *">
+                                            <input type="text" name="relation2" id="relation2" class="form-control input-md" placeholder="Relation *">
 
                                         </div>
                                     </div>
-                                    <div class="form-group gfield2" <?php if($post_data['add_guardian']!="two") { ?>style="display:none;"<?php } ?>>
+                                    <div class="form-group gfield2" style="display:none;">
                                         <label class="col-md-5 control-label" for="school_code">Guardian Password (2nd)</label>  
                                         <div class="col-md-4">
-                                            <input type="password" name="gpassword2" id="gpassword2" value="" class="form-control input-md"   <?php if($post_data['add_guardian']=="two") { ?>required=""<?php } ?> placeholder="Password *">
+                                            <input type="password" name="gpassword2" id="gpassword2" value="" class="form-control input-md" placeholder="Password *">
                                             <span class="help-block"><font color="#ccc" size="1">At least 6 character</font></span>
                                         </div>
                                     </div>
@@ -361,6 +338,7 @@ $(document).ready(function () {
             $(".gfield input").attr("required",true);            
         }
         
+        $('input[type=checkbox]').attr('checked',false);   
         $('input[type=checkbox]').attr('required',false);   
         $(".choosebox-group").hide();
         $(".choosebox-group input").attr("required",false);
@@ -442,6 +420,13 @@ $(document).ready(function () {
         $(window).bind("load", function() {  
                 $('#pluswrap').hide();			
                 $("#content_signup").show(); 
+        });
+        $("#admission_no").bind("keyup paste", function() {
+            var paid_school_id = $("#paid_school_id").val();
+            if(paid_school_id < 10)
+                $("#sn_username").val(0+paid_school_id+"-"+$(this).val());
+            else
+                $("#sn_username").val(paid_school_id+"-"+$(this).val());
         });
 </script>
 <style>

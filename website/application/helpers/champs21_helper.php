@@ -858,19 +858,18 @@ if(!function_exists("get_paid_employee_department_droupdown"))
 }
 if(!function_exists("check_school_code_paid"))
 {
-    function check_school_code_paid($school_id,$activation_code)
+    function check_school_code_paid($activation_code)
     {
         $CI = &get_instance();
         $CI->db->dbprefix = '';
-        $CI->db->select('id');
-        $CI->db->from('schools');
-        $CI->db->where('id',$school_id);
+        $CI->db->select('id,name');
+        $CI->db->from('schools');        
         $CI->db->where('activation_code',$activation_code);
         $schools = $CI->db->get()->row();
         $CI->db->dbprefix = 'tds_';
         if($schools)
         {
-            return true;
+            return $schools;
         }    
     
         return false;

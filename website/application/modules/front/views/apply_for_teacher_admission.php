@@ -111,13 +111,7 @@
                                                 <input type="text" name="tn_username" id="tn_username" class="form-control input-md" readonly placeholder="User Name *">                                            
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4 control-label" for="school_code">Your Login Password</label>  
-                                            <div class="col-md-4">
-                                                <input type="password" name="password" id="password" value="" class="form-control input-md" required="">
-
-                                            </div>
-                                        </div>
+                                        
                                         <div class="form-group">
                                             <label class="col-md-4 control-label" for="school_code">Joining Date</label>  
                                             <div class="col-md-4">

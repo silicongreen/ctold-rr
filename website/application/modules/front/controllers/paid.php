@@ -705,6 +705,8 @@ class paid extends MX_Controller {
         $back_url = $this->input->get("back_url");
         $user_type = array(1, 2, 3, 4);
         $user_type_check = array(2, 3, 4);
+        $success = false;
+        
         if ($user_type_send==3) {
             $ar_js = array();
             $ar_css = array();
@@ -745,6 +747,11 @@ class paid extends MX_Controller {
 
 
                         if ($u_id[0]) {
+                            unset($data);
+                            $data['teacher']['fulname'] = $post_data["first_name"]." ".$post_data["middle_name"]." ".$post_data["last_name"];
+                            $data['teacher']['username'] = $u_id[1];
+                            $data['teacher']['admission_no'] = $post_data["admission_no"];
+                            
                             $this->update_user_before_apply($user_data, $post_data, $u_id[1]);
                             $this->db->dbprefix = '';
                             $st = $this->get_user_default_data($user_data, $u_id[0]);
@@ -761,7 +768,7 @@ class paid extends MX_Controller {
                             $this->db->insert('employees', $st);
 
                             $std_id = $this->db->insert_id();
-
+                            $success = true;
                             if (isset($_POST['batch_id']) && $_POST['batch_id']) {
                                 $eb['employee_id'] = $std_id;
                                 $eb['batch_id'] = $post_data["batch_id"];
@@ -770,11 +777,21 @@ class paid extends MX_Controller {
 
                             $this->db->dbprefix = 'tds_';
                         }
+                        
+                        if($success)
+                        {
+                            $data['error'] = 0;
+                            $this->load->view('apply_for_teacher_admission_final',$data);
+                        }
+                        else
+                        {
+                            $data['error'] = 1;//
+                            $this->load->view('apply_for_teacher_admission_final',$data);
+                        }
 
-
-                        $back = $this->redirect_parent_url($back_url);
-                        echo $back;
-                        exit;
+                        //$back = $this->redirect_parent_url($back_url);
+                        //echo $back;
+                        //exit;
                     }
                     else
                     {
@@ -782,9 +799,17 @@ class paid extends MX_Controller {
                         $this->load_view('apply_for_teacher_admission',$data);
                     }
                 }
+                else
+                {
+                    $this->load->view('apply_for_teacher_admission', $data);
+                }
+            }
+            else
+            {
+                $this->load->view('apply_for_teacher_admission', $data);
             }
 
-            $this->load->view('apply_for_teacher_admission', $data);
+            
         } else {
             $back = $this->redirect_parent_url(base_url());
             echo $back;

@@ -1337,6 +1337,7 @@ class ajax extends MX_Controller
     public function getpositiondropudown()
     {
         $category_id = $this->input->post("category_id");
+        $school_id = $this->input->post("school_id");
         $dropdown = get_paid_employee_position_droupdown($school_id, $category_id);
         echo $dropdown;
     }        

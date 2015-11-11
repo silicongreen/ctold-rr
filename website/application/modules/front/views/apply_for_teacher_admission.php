@@ -169,6 +169,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.min.js"></script>
 <script type="text/javascript">
+document.domain = "champs21.com";
 $(document).ready(function () {
     $(document).on("change", "#change_position", function () {
         $.post('front/ajax/getpositiondropudown/',

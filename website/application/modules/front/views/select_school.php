@@ -198,8 +198,8 @@
 }
 </style>
 <script>
-
-$(document).ready(function() {
+    document.domain = "champs21.com";
+$(document).ready(function() {    
   $('.selectpicker').select2();
 });
 

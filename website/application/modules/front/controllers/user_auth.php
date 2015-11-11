@@ -16,80 +16,80 @@ class User_auth extends MX_Controller {
 	
 	public function index() 
 	{
-		if(isset($_GET["back_url"])) {
-			$this->input->get('back_url', TRUE);
-		}
-		else
-		{
-			$back_url = "";
-		}
-		$back_url = "";
-		$newdata = array('back_url'  => $back_url);
-		$this->session->set_userdata($newdata);		
-		
-		if(free_user_logged_in())
-		{
-			$this->load_view('user_auth/already_done');
-		} 
-		
-		$data['back_url'] = $back_url;
-		$this->form_validation->set_rules('first_name', 'First Name', 'required|min_length[3]');
-		$this->form_validation->set_rules('last_name', 'Last Name', 'required|min_length[3]');
-		$this->form_validation->set_rules('email', 'Email', 'required|valid_email|callback_email_check');
-		$this->form_validation->set_rules('confirm_email', 'Confirm Email', 'required|valid_email|matches[email]');
-		$this->form_validation->set_rules('password', 'Password', 'required|min_length[6]');
-		$this->form_validation->set_rules('confirm_password', 'Confirm Password', 'required|min_length[6]|matches[password]');
-		
-		if ($this->form_validation->run() == FALSE)
-		{
-			$this->load_view('user_auth/user_register',$data);
-		}
-		else
-		{			
-			$p = $this->generate_passowrd_and_salt($this->input->post('password'));
-			
-			$user_data['nick_name'] = $this->input->post('first_name');
-			$user_data['password'] = $p['password'];
-			$user_data['salt'] = $p['salt'];
-			
-			$user_data['email'] = $this->input->post('email');
-			$user_data['cnf_email'] = $this->input->post('email');
-			$user_data['cnf_password'] = $p['password'];
-			$user_data['first_name'] = $this->input->post('first_name');
-			$user_data['last_name'] = $this->input->post('last_name');
-			$user_data['user_type'] = 1;
-		   
-			$free_user = new Free_users();
-						
-			foreach ($user_data as $key => $value) {
-                
-                $free_user->$key = $value;
+            if(isset($_GET["back_url"])) {
+                $this->input->get('back_url', TRUE);
             }
-			
-			if ($free_user->save()) {
-
-                $free_user->login();
-                $this->set_user_session($free_user, $this->input->post('password'), false, true);
-                $this->create_free_user_folders();
-
-                if($back_url)
-				{
-					$this->redirect_parent_url($back_url);
-				}
-				else
-				{					
-					$this->load->view('user_auth/success_message');
-				}
-				
+            else
+            {
+                $back_url = "";
             }
-			else 
-			{
-				$data['error'] = "Something went wrong please try again later or contact with champs21";
-				$this->load_view('user_auth/user_register',$data);
-				
-			}
-			
-		}
+            $back_url = "";
+            $newdata = array('back_url'  => $back_url);
+            $this->session->set_userdata($newdata);		
+
+            if(free_user_logged_in())
+            {
+                $this->load_view('user_auth/already_done');
+            } 
+
+            $data['back_url'] = $back_url;
+            $this->form_validation->set_rules('first_name', 'First Name', 'required|min_length[3]');
+            $this->form_validation->set_rules('last_name', 'Last Name', 'required|min_length[3]');
+            $this->form_validation->set_rules('email', 'Email', 'required|valid_email|callback_email_check');
+            $this->form_validation->set_rules('confirm_email', 'Confirm Email', 'required|valid_email|matches[email]');
+            $this->form_validation->set_rules('password', 'Password', 'required|min_length[6]');
+            $this->form_validation->set_rules('confirm_password', 'Confirm Password', 'required|min_length[6]|matches[password]');
+
+            if ($this->form_validation->run() == FALSE)
+            {
+                $this->load_view('user_auth/user_register',$data);
+            }
+            else
+            {			
+                $p = $this->generate_passowrd_and_salt($this->input->post('password'));
+
+                $user_data['nick_name'] = $this->input->post('first_name');
+                $user_data['password'] = $p['password'];
+                $user_data['salt'] = $p['salt'];
+
+                $user_data['email'] = $this->input->post('email');
+                $user_data['cnf_email'] = $this->input->post('email');
+                $user_data['cnf_password'] = $p['password'];
+                $user_data['first_name'] = $this->input->post('first_name');
+                $user_data['last_name'] = $this->input->post('last_name');
+                $user_data['user_type'] = 1;
+
+                $free_user = new Free_users();
+
+                foreach ($user_data as $key => $value) {
+
+                    $free_user->$key = $value;
+                }
+
+                if ($free_user->save()) {
+
+                    $free_user->login();
+                    $this->set_user_session($free_user, $this->input->post('password'), false, true);
+                    $this->create_free_user_folders();
+
+                    if($back_url)
+                    {
+                            $this->redirect_parent_url($back_url);
+                    }
+                    else
+                    {					
+                            $this->load->view('user_auth/success_message');
+                    }
+
+                }
+                else 
+                {
+                        $data['error'] = "Something went wrong please try again later or contact with champs21";
+                        $this->load_view('user_auth/user_register',$data);
+
+                }
+
+            }
 	}
 	public function email_check($str)
 	{

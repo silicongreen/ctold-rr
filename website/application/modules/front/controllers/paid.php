@@ -16,123 +16,438 @@ class paid extends MX_Controller {
         $this->layout_front = false;
         $this->obj_post = new Post_model();
     }
+    public function test_view() {
+        $this->load->view('test_view');
+    }
 
-    public function apply_for_parent_admission() {
-        $user_type = array(4);
-        if ($user_data = $this->check_user_valid($user_type)) {
-            $ar_js = array();
-            $ar_css = array();
-            $extra_js = '';
-
-            $data = array();
-
-            $data['ci_key'] = "apply_for_parent_admission";
-            $data['ci_key_for_cover'] = "apply_for_parent_admission";
-            $data['s_category_ids'] = "0";
-            $data['user_data'] = $user_data;
-
-            $data['post_data'] = $this->process_post_data($user_data);
-
-            if (isset($_POST) && !empty($_POST)) {
-
-                $data['post_data'] = $_POST;
+    public function select_school() {
+        $user_type_send = $this->input->get("user_type");
+        $back_url = $this->input->get("back_url");
+        $user_type = array(1, 2, 3, 4);
+        $user_type_check = array(2, 3, 4);
+        
+        if (!$user_type || !$back_url || !in_array($user_type_send, $user_type_check)) {
+            
+            $back = $this->redirect_parent_url(base_url());
+            echo $back;
+        }else if ($user_type_send){
+            if((isset($_POST) && !empty($_POST)) )
+            {            
                 $this->load->library('form_validation');
-                $this->form_validation->set_rules('admission_no', 'Admission No', 'required|ci_check_admission_no_parent');
-                $this->form_validation->set_rules('password', 'Password', 'required|ci_check_password');
-                $this->form_validation->set_rules('first_name', 'First Name', 'required');
-                $this->form_validation->set_rules('last_name', 'Last Name', 'required');
-                $this->form_validation->set_rules('relation', 'Relation', 'required');
-                $this->form_validation->set_rules('dob', 'Birth date', 'required|ci_validate_date');
-                $this->form_validation->set_rules('city', 'City', 'required');
+                $this->form_validation->set_rules('paid_school_id', 'School', 'required');
+                $this->form_validation->set_rules('school_code', 'School Code', 'required|callback_school_code_check');
+                
+                $this->form_validation->set_rules('first_name', 'First Name', 'required|min_length[3]');
+                $this->form_validation->set_rules('last_name', 'Last Name', 'required|min_length[3]');
+                $this->form_validation->set_rules('email', 'Email', 'required|valid_email|callback_email_check');
+                $this->form_validation->set_rules('confirm_email', 'Confirm Email', 'required|valid_email|matches[email]');
+                $this->form_validation->set_rules('password', 'Password', 'required|min_length[6]');
+                $this->form_validation->set_rules('confirm_password', 'Confirm Password', 'required|min_length[6]|matches[password]');
 
+                
                 if ($this->form_validation->run() == TRUE) {
-
-
-                    //update free user
-                    //insert user data
-
-                    $u_id = $this->create_paid_user_for_all($user_data, $this->input->post());
-                    if ($u_id[0]) {
-                        //update free user
-                        $this->update_user_before_apply($user_data, $this->input->post(), $u_id[1]);
-
-                        $ward = get_user_default_data($this->input->post("admission_no"), $user_data);
-                        $this->db->dbprefix = '';
-                        $st = $this->get_parent_default_data($user_data, $u_id[0]);
-
-                        $st['first_name'] = $this->input->post("first_name");
-                        $st['last_name'] = $this->input->post("last_name");
-                        $st['dob'] = $this->input->post("dob");
-                        $st['city'] = $this->input->post("city");
-                        $st['relation'] = $this->input->post("relation");
-                        $st['ward_id'] = $ward->id;
-
-
-                        $st['occupation'] = $this->input->post("occupation");
-                        $st['mobile_phone'] = $this->input->post("mobile_phone");
-
-                        $this->db->insert('guardians', $st);
-
-                        $gid_id = $this->db->insert_id();
-
-                        if (!$ward->immediate_contact_id) {
-                            $sb['immediate_contact_id'] = $gid_id;
-                            $this->db->where('id', $ward->id);
-                            $this->db->update('students', $sb);
-                        }
-
-                        $this->db->dbprefix = 'tds_';
+                    
+                    $form_data=serialize($_POST); 
+                    $encoded=htmlentities($form_data);
+                    $data['form1_data'] = $encoded;
+                    $data['paid_school_id'] = $_POST['paid_school_id'];
+                    $data['back_url'] = $back_url;
+                    $data['user_type'] = $user_type_send;
+                    
+                    if($user_type_send == 2) {
+                        $this->load->view('apply_for_student_admission',$data);
+                        //redirect('front/paid/apply_for_student_admission?back_url=' . $back_url);
+                    } else if ($user_type_send == 3) {
+                        $this->load->view('apply_for_teacher_admission',$data);
+                        //redirect('front/paid/apply_for_teacher_admission?back_url=' . $back_url);
+                    } else if ($user_type_send == 4) {
+                        $this->load->view('apply_for_parent_admission',$data);
+                        //redirect('front/paid/apply_for_parent_admission?back_url=' . $back_url);
                     }
-
-
-
-
-                    redirect(base_url("user-apply-success"));
                 }
             }
-
-            $s_content = $this->load->view('apply_for_parrent_admission', $data, true);
-
-            $s_right_view = "";
-            $cache_name = "common/right_view";
-            if (!$s_widgets = $this->cache->file->get($cache_name)) {
-                $this->db->where('is_enabled', 1);
-                $query = $this->db->get('widget');
-
-                $obj_widgets = $query->result();
-
-                if ($obj_widgets) {
-                    $data2['free_user_types'] = $this->get_free_user_types();
-                }
+            else
+            {
+                $data['user_type'] = $user_type_send;
+                $this->load->view('select_school',$data);
             }
-
-            $str_title = WEBSITE_NAME . " | Create Page";
-
-            $meta_description = META_DESCRIPTION;
-            $keywords = KEYWORDS;
-            $ar_params = array(
-                "javascripts" => $ar_js,
-                "css" => $ar_css,
-                "extra_head" => $extra_js,
-                "title" => $str_title,
-                "description" => $meta_description,
-                "keywords" => $keywords,
-                "side_bar" => $s_right_view,
-                "target" => "contact-us",
-                "fb_contents" => NULL,
-                "content" => $s_content
-            );
-
-            $this->extra_params = $ar_params;
+            
+            
         } else {
-            redirect(base_url());
+            
+            $back = $this->redirect_parent_url(base_url());
+            echo $back;
+        }
+    }
+
+    public function school_code_check($str = "") {
+        if($str == "")
+        {
+            $str = $this->input->post('school_code');
+            if ($data = check_school_code_paid($str)) {                
+                echo json_encode($data);
+            } else {
+                echo "false";
+            }
+        }else
+        {   
+            if (!check_school_code_paid($str)) {
+                $this->form_validation->set_message('school_code_check', 'Invalid School Code');
+                return FALSE;
+            } else {
+                return TRUE;
+            }
+        }        
+    }
+    
+    public function email_unique() 
+    {
+            $free_user = new Free_users();
+            $requestedEmail  = $_REQUEST['email'];
+            $free_user->email = $requestedEmail;
+
+            if (!$free_user->_email_unique()) {
+                    echo 'false';
+            }
+            else{
+                    echo 'true';
+            }
+    }
+    public function email_check($str)
+    {
+            $this->db->where("email",$str);
+            $user_data = $this->db->get("free_users")->row();
+            if ($user_data)
+            {
+                $this->form_validation->set_message('email_check', '{field} Address is already taken');
+                return FALSE;
+            }
+            else
+            {
+                return TRUE;
+            }
+    }
+    
+    public function apply_for_parent_addmission() {
+              
+        $user_type_send = $this->input->get("user_type");
+        $back_url = $this->input->get("back_url");
+        $user_type = array(1, 2, 3, 4);
+        $user_type_check = array(2, 3, 4);
+        
+        if (!$user_type || !$back_url || !in_array($user_type_send, $user_type_check)) {
+            
+            $back = $this->redirect_parent_url(base_url());
+            echo $back;
+        }else if ($user_type_send){
+            if((isset($_POST) && !empty($_POST)) )
+            {                     
+                $this->load->library('form_validation');
+                $this->form_validation->set_rules('date_of_birth', 'Birth date', 'required');
+                $this->form_validation->set_rules('city', 'City', 'required');
+                $this->form_validation->set_rules('address', 'Address', 'required');
+                
+                if ($this->form_validation->run() == TRUE) {
+                    
+                    $form1_data=$_POST['form1_data']; 
+                    unset($_POST['form1_data']);
+                    $ar_form1_data = unserialize($form1_data);
+                    $form_data_1 = $ar_form1_data;
+                    //echo "<pre>";
+                    //print_r($_POST);
+                    //exit;
+                                        
+                    $form_data['form_data'] = $form_data_1 + $_POST;                    
+                    $form_data_serialize = serialize($form_data); 
+                    $encoded=htmlentities($form_data_serialize);
+                    $data['form_data'] = $encoded;
+                    
+                    $data['back_url'] = $back_url;
+                    $data['user_type'] = $user_type_send;
+                    $data['paid_school_id'] = $ar_form1_data['paid_school_id'];
+                    $data['student_no'] = 1;
+                    
+                   if ($user_type_send == 4) {
+                        $this->load->view('apply_for_parent_admission_2',$data);
+                        //redirect('front/paid/apply_for_parent_admission?back_url=' . $back_url);
+                    }
+                }
+                else {
+                    $form1_data=$_POST['form1_data'];
+                    $data['form_data'] = $form1_data;
+                    $data['back_url'] = $back_url;
+                    $data['user_type'] = $user_type_send;
+                    $data['error'] = "Something went wrong please try again later or contact with champs21";
+                    $this->load->view('apply_for_parent_addmission',$data);
+                }
+            }
+            else
+            {
+                $form_data=serialize($_POST['form1_data']); 
+                $encoded=htmlentities($form_data);
+                $data['form1_data'] = $encoded;
+                $data['back_url'] = $back_url;
+                $data['user_type'] = $user_type_send;
+                $this->load->view('apply_for_parent_admission',$data);
+            }
+            
+            
+        } else {
+            
+            $back = $this->redirect_parent_url(base_url());
+            echo $back;
+        }
+    }
+    public function apply_for_parent_addmission_2() {
+              
+        $user_type_send = $this->input->get("user_type");
+        $back_url = $this->input->get("back_url");
+        $user_type = array(1, 2, 3, 4);
+        $user_type_check = array(2, 3, 4);
+        
+        if (!$user_type || !$back_url || !in_array($user_type_send, $user_type_check)) {
+            
+            $back = $this->redirect_parent_url(base_url());
+            echo $back;
+        }else if ($user_type_send){
+            if((isset($_POST) && !empty($_POST)) )
+            {                     
+                $this->load->library('form_validation');
+                
+                $choose_guardian = $this->input->post("choose_guardian");
+                if($choose_guardian != "choose")
+                {
+                    $this->form_validation->set_rules('s_admission_no', 'Admission No', 'required');
+                    $this->form_validation->set_rules('s_admission_date', 'Admission Date', 'required');
+                    $this->form_validation->set_rules('s_first_name', 'First Name', 'required');
+                    $this->form_validation->set_rules('s_last_name', 'Last Name', 'required');
+                    $this->form_validation->set_rules('batch_id', 'Class Name', 'required');
+                    $this->form_validation->set_rules('date_of_birth', 'Birth date', 'required');
+                }                
+                $this->form_validation->set_rules('s_relation', 'Relation', 'required');
+                
+                if ($this->form_validation->run() == TRUE) {
+                    
+                    $form_data=$_POST['form_data']; 
+                    $ar_form_data = unserialize($form_data);
+                    unset($_POST['form_data']);                                      
+                                        
+                    $data['paid_school_id'] = $_POST['paid_school_id'];
+                    $old_student_no = $_POST['student_no'];
+                    $data['student_no'] = $old_student_no + 1;
+                    unset($_POST['student_no']);                    
+                    
+                    for($i=1;$i<=$old_student_no;$i++)
+                    {
+                        if($i==$old_student_no)
+                        {   
+                            $ar_form_data['student_data'][$i] = $_POST;
+                        }
+                    }
+                    
+                    $form_data_serialize = serialize($ar_form_data); 
+                    $encoded=htmlentities($form_data_serialize);
+                    
+                    $data['form_data'] = $encoded;                
+                    $data['back_url'] = $back_url;
+                    $data['user_type'] = $user_type_send;
+                    
+                    if($user_type_send == 2) {
+                        $this->load->view('apply_for_student_admission_2',$data);
+                        //redirect('front/paid/apply_for_student_admission?back_url=' . $back_url);
+                    } else if ($user_type_send == 3) {
+                        $this->load->view('apply_for_teacher_admission_2',$data);
+                        //redirect('front/paid/apply_for_teacher_admission?back_url=' . $back_url);
+                    } else if ($user_type_send == 4) {
+                        $this->load->view('apply_for_parent_admission_2',$data);
+                        //redirect('front/paid/apply_for_parent_admission?back_url=' . $back_url);
+                    }
+                }
+                else {
+                    $form_data=$_POST['form_data'];                                         
+                    $data['form_data'] = $form_data;
+                    
+                    $data['paid_school_id'] = $_POST['paid_school_id'];
+                    $data['student_no'] = $_POST['student_no'];                    
+                    
+                    $data['back_url'] = $back_url;
+                    $data['user_type'] = $user_type_send;
+                    $data['error'] = "Something went wrong please try again later or contact with champs21";
+                    $this->load->view('apply_for_parent_admission_2',$data);
+                }
+            }
+            else
+            {
+                $form_data=serialize($_POST['form_data']); 
+                $encoded=htmlentities($form_data);
+                $data['form_data'] = $encoded;
+                $data['back_url'] = $back_url;
+                $data['user_type'] = $user_type_send;
+                $this->load->view('apply_for_parent_admission',$data);
+            }
+            
+            
+        } else {
+            
+            $back = $this->redirect_parent_url(base_url());
+            echo $back;
+        }
+    }
+    public function apply_for_parent_admission_final() {
+        $user_type_send = $this->input->get("user_type");
+        $back_url = $this->input->get("back_url");
+        
+        $form_data=$_POST['form_data'];                 
+        $ar_form_data = unserialize($form_data);       
+        
+        $student_no = $_POST['student_no'];
+        
+        $ar_form_data['form_data']['user_type'] = $user_type_send;
+        //echo "<pre>";
+        //print_r($ar_form_data);
+        //exit;
+        $success = false;
+        
+        for($i=1;$i<$student_no;$i++)
+        {
+            $existing_student = $ar_form_data['student_data'][$i]['choose_guardian'];
+            if($existing_student == "choose")
+            {
+                $su_id = $ar_form_data['student_data'][$i]['s_id'];
+                $paid_st_data = $this->get_student_data_by_user_id($su_id);
+                $std_id = $paid_st_data['sid'];
+                $user_data = new stdClass();
+                $user_data->paid_school_id = $ar_form_data['form_data']['paid_school_id'];
+                $admission_no = $ar_form_data['student_data'][$i]['s_username'];
+                
+                if ($user_data->paid_school_id < 10) {
+                    $idchange = "0" . $user_data->paid_school_id;
+                } else {
+                    $idchange = $user_data->paid_school_id;
+                }
+                $school_code = $idchange . "-";
+                $length = strlen($school_code);
+                $postdata["admission_no"] = substr($admission_no, $length);
+                
+            }
+            else
+            {
+                //STUDENT FREE USER CREATION//
+                $student_data['user_type'] = 2;
+                $student_data['first_name'] = $ar_form_data['student_data'][$i]['s_first_name']." ".$ar_form_data['student_data'][$i]['s_middle_name'];
+                $student_data['password'] = $ar_form_data['student_data'][$i]['s_password'];
+                $student_data['last_name'] = $ar_form_data['student_data'][$i]['s_last_name'];
+                $student_data['email'] = $ar_form_data['form_data']['email'];
+                $student_data['gender'] = $ar_form_data['student_data'][$i]['s_gender'];
+                $student_data['date_of_birth'] = $ar_form_data['student_data'][$i]['date_of_birth'];
+                $student_data['paid_school_id'] = $ar_form_data['student_data'][$i]['paid_school_id'];
+                if($user_data = $this->createFreeUser($student_data))
+                {                
+                    unset($postdata);
+                    $postdata["admission_no"] = $ar_form_data['student_data'][$i]['s_admission_no'];
+                    $postdata["admission_date"] = $ar_form_data['student_data'][$i]['s_admission_date'];
+                    $postdata["class_roll_no"] = $ar_form_data['student_data'][$i]['s_class_roll_no'];
+                    $postdata["batch_id"] = $ar_form_data['student_data'][$i]['batch_id'];
+                    $postdata["password"] = $ar_form_data['student_data'][$i]['s_password'];
+                    $postdata["first_name"] = $ar_form_data['student_data'][$i]['s_first_name']." ".$ar_form_data['student_data'][$i]['s_middle_name'];
+                    $postdata["last_name"] = $ar_form_data['student_data'][$i]['s_last_name'];
+                    $postdata['paid_school_id'] = $ar_form_data['student_data'][$i]['paid_school_id'];
+                    $postdata['email'] = $ar_form_data['form_data']['email'];
+
+                    $u_id = $this->create_paid_user_for_all($user_data, $postdata,2);  
+
+                    if($u_id[0])
+                    {
+                        $postdata["middle_name"] = $ar_form_data['student_data'][$i]['s_middle_name'];                    
+                        $postdata["city"] = $ar_form_data['form_data']['city'];
+                        $postdata["date_of_birth"] = $ar_form_data['student_data'][$i]['date_of_birth'];
+                        $postdata["gender"] = $ar_form_data['student_data'][$i]['s_gender'];
+                        $postdata["mobile_phone"] = $ar_form_data['form_data']['mobile_code'].$ar_form_data['form_data']['phone_ext'].$ar_form_data['form_data']['phone_number'];
+
+                        $this->update_user_before_apply($user_data, $postdata, $u_id[1]);
+                        $this->db->dbprefix = '';
+                        $st = $this->get_user_default_data($user_data, $u_id[0]);
+                        $st['admission_no'] = $postdata["admission_no"];
+                        $st['admission_date'] = $postdata["admission_date"];
+                        $st['class_roll_no'] = $postdata["class_roll_no"];
+                        $st['batch_id'] = $postdata["batch_id"];
+
+                        $st['first_name'] = $postdata["first_name"];
+                        $st['middle_name'] = $postdata["middle_name"];
+                        $st['last_name'] = $postdata["last_name"];
+
+                        $st['date_of_birth'] = $postdata["date_of_birth"];
+                        $st['city'] = $postdata["city"];
+                        $st['gender'] = $postdata["gender"];
+                        $st['phone2'] = $postdata["mobile_phone"];
+                        $st['address_line2'] = $ar_form_data['form_data']['address'];
+
+                        $this->db->insert('students', $st);
+                        $std_id = $this->db->insert_id();
+
+                        $sb['sibling_id'] = $std_id;                        
+                        $this->db->where('id', $std_id);
+                        $this->db->update('students', $sb);
+                    }
+                }
+            }
+            
+            if($std_id)
+            {
+                $n_g = 1;
+                $postdata["gfirst_name"] = $ar_form_data['form_data']['first_name'];
+                $postdata["glast_name"] = $ar_form_data['form_data']['last_name'];
+                $postdata["gpassword"] = $ar_form_data['form_data']['password'];
+                $postdata["gdate_of_birth"] = $ar_form_data['form_data']['date_of_birth'];
+                $postdata["gmobile_phone"] = $ar_form_data['form_data']['mobile_code'].$ar_form_data['form_data']['phone_ext'].$ar_form_data['form_data']['phone_number'];
+                $postdata["gemail"] = $ar_form_data['form_data']['email'];
+                $postdata["gaddress"] = $ar_form_data['form_data']['address'];
+                $postdata["relation"] = $ar_form_data['student_data'][$i]['s_relation'];
+                if($i==1)
+                {
+                    $gu_id = $this->createGuardianStudent($postdata, $n_g, $std_id, $user_data);
+                    if($gu_id)
+                    {
+                        $success = true;
+                    }
+                    else
+                    {
+                        $success = false;
+                    }
+                }
+                else
+                {
+                    if($this->existing_guardian_add_to_student($gu_id,$std_id,$postdata["relation"]))
+                    {
+                        $success = true;
+                    }
+                    else
+                    {
+                        $success = false;
+                    }
+                }
+            }
+                                
+             
+        }
+        if($success)
+        {
+            $data['error'] = 0;
+            $this->load->view('apply_for_parent_admission_final',$data);
+        }
+        else
+        {
+            $data['error'] = 1;//
+            $this->load->view('apply_for_parent_admission_final',$data);
         }
     }
 
     public function apply_for_student_admission() {
-        $user_type = array(1, 2, 3, 4);
+        $user_type_send = $this->input->get("user_type");
         $back_url = $this->input->get("back_url");
-        if ($back_url && $user_data = $this->check_user_valid($user_type)) {
+        $user_type = array(1, 2, 3, 4);
+        $user_type_check = array(2, 3, 4);
+        if ($user_type_send==2) {
             $ar_js = array();
             $ar_css = array();
             $extra_js = '';
@@ -141,25 +456,27 @@ class paid extends MX_Controller {
 
             $data['ci_key'] = "apply_for_student_admission";
             $data['ci_key_for_cover'] = "apply_for_student_admission";
-            $data['s_category_ids'] = "0";
-            $data['user_data'] = $user_data;
-            $data['post_data'] = $this->process_post_data($user_data);
+            $data['s_category_ids'] = "0";   
 
             if (isset($_POST) && !empty($_POST)) {
                 $data['post_data'] = $_POST;
-                
-                //echo "<pre>";
-                //print_r($data['post_data']);
-                //exit;
+                $data['paid_school_id'] = $_POST['paid_school_id'];
+                $user_type_send = $this->input->get("user_type");
+                $back_url = $this->input->get("back_url");
+                $data['back_url'] = $back_url;
+                $data['user_type'] = $user_type_send;
+//                echo "<pre>";
+//                print_r($data['post_data']);
+//                exit;
                 
                 $this->load->library('form_validation');
-                $this->form_validation->set_rules('admission_no', 'Admission No', 'required|ci_check_admission_no');
+                $this->form_validation->set_rules('admission_no', 'Admission No', 'required');
                 $this->form_validation->set_rules('admission_date', 'Admission Date', 'required');
-                $this->form_validation->set_rules('password', 'Password', 'required|ci_check_password');
-                $this->form_validation->set_rules('first_name', 'First Name', 'required');
-                $this->form_validation->set_rules('last_name', 'Last Name', 'required');
+//                $this->form_validation->set_rules('password', 'Password', 'required|ci_check_password');
+//                $this->form_validation->set_rules('first_name', 'First Name', 'required');
+//                $this->form_validation->set_rules('last_name', 'Last Name', 'required');
                 $this->form_validation->set_rules('batch_id', 'Class Name', 'required');
-                $this->form_validation->set_rules('date_of_birth', 'Birth date', 'required|ci_validate_date');
+                $this->form_validation->set_rules('date_of_birth', 'Birth date', 'required');
                 $this->form_validation->set_rules('city', 'City', 'required');
 
                 $add_guardian = $this->input->post("add_guardian");
@@ -198,75 +515,89 @@ class paid extends MX_Controller {
                 }                        
                 
                 if ($this->form_validation->run() == TRUE) {
+                    $form1_data=$_POST['form1_data']; 
+                    $data['form1_data'] = $form1_data;
+                    unset($_POST['form1_data']);
+                    $ar_form1_data = unserialize($form1_data);
+                    $post_data = $_POST + $ar_form1_data;
+                                        
                     //insert user data
-                    $u_id = $this->create_paid_user_for_all($user_data, $this->input->post());                    
-                    //insert student data
-                    if ($u_id[0]) {
-                        $this->update_user_before_apply($user_data, $this->input->post(), $u_id[1]);
-                        $this->db->dbprefix = '';
-                        $st = $this->get_user_default_data($user_data, $u_id[0]);
-                        $st['admission_no'] = $this->input->post("admission_no");
-                        $st['first_name'] = $this->input->post("first_name");
-                        $st['last_name'] = $this->input->post("last_name");
-                        $st['admission_date'] = $this->input->post("admission_date");
-                        
-                        $st['batch_id'] = $this->input->post("batch_id");
-                        $st['date_of_birth'] = $this->input->post("date_of_birth");
-                        $st['city'] = $this->input->post("city");
-
-                        $st['class_roll_no'] = $this->input->post("class_roll_no");
-                        $st['middle_name'] = $this->input->post("middle_name");
-                        
-                        $st['gender'] = $this->input->post("gender");
-
-                        $this->db->insert('students', $st);
-
-                        $std_id = $this->db->insert_id();
-                        
-                        $sb['sibling_id'] = $std_id;                        
-                        $this->db->where('id', $std_id);
-                        $this->db->update('students', $sb);
-                                                
-                        //create guardian
-                        //$this->db->dbprefix = 'tds_';
-                        if ($add_guardian == "one") {
-                            if($guardian1_id > 0)
-                            {
-                                $this->existing_guardian_add_to_student($guardian1_id,$std_id,$this->input->post("relation"));
-                            }
-                            else
-                            {   
-                                $n_g = 1;
-                                $this->createGuardianStudent($this->input->post(), $n_g, $std_id, $user_data);
-                            }
-                        }
-                        
-                        if ($add_guardian == "two") {
-                            if($guardian1_id > 0)
-                            {
-                                $this->existing_guardian_add_to_student($guardian1_id,$std_id,$this->input->post("relation"));
-                            }
-                            else
-                            {
-                                $n_g = 1;
-                                $this->createGuardianStudent($this->input->post(), $n_g, $std_id, $user_data);
-                            }
+                    if($user_data = $this->createFreeUser($post_data))
+                    {
+                        //insert user data
+                        $u_id = $this->create_paid_user_for_all($user_data, $post_data,$user_type_send);                    
+                        //insert student data
+                        if ($u_id[0]) {
+                            $this->update_user_before_apply($user_data, $post_data, $u_id[1]);
+                            $this->db->dbprefix = '';
+                            $st = $this->get_user_default_data($user_data, $u_id[0]);
+                            $st['admission_no'] = $post_data["admission_no"];
+                            $st['admission_date'] = $post_data["admission_date"];
+                            $st['class_roll_no'] = $post_data["class_roll_no"];
+                            $st['batch_id'] = $post_data["batch_id"];
                             
-                            if($guardian2_id > 0)
-                            {
-                                $this->existing_guardian_add_to_student($guardian2_id,$std_id,$this->input->post("relation2"));                            
-                            }
-                            else
-                            {
-                                $n_g = 2;
-                                $this->createGuardianStudent($this->input->post(), $n_g, $std_id, $user_data);
-                            }
-                        }                        
-                    }
+                            $st['first_name'] = $post_data["first_name"];
+                            $st['middle_name'] = $post_data["middle_name"];
+                            $st['last_name'] = $post_data["last_name"];
+                            
+                            $st['date_of_birth'] = $post_data["date_of_birth"];
+                            $st['city'] = $post_data["city"];
+                            $st['gender'] = $post_data["gender"];
 
-                    $back = $this->redirect_parent_url($back_url);
-                    echo $back;
-                    exit;
+                            $this->db->insert('students', $st);
+
+                            $std_id = $this->db->insert_id();
+
+                            $sb['sibling_id'] = $std_id;                        
+                            $this->db->where('id', $std_id);
+                            $this->db->update('students', $sb);
+
+                            //create guardian
+                            //$this->db->dbprefix = 'tds_';
+                            if ($add_guardian == "one") {
+                                if($guardian1_id > 0)
+                                {
+                                    $this->existing_guardian_add_to_student($guardian1_id,$std_id,$post_data["relation"]);
+                                }
+                                else
+                                {   
+                                    $n_g = 1;
+                                    $this->createGuardianStudent($post_data, $n_g, $std_id, $user_data);
+                                }
+                            }
+
+                            if ($add_guardian == "two") {
+                                if($guardian1_id > 0)
+                                {
+                                    $this->existing_guardian_add_to_student($guardian1_id,$std_id,$post_data["relation"]);
+                                }
+                                else
+                                {
+                                    $n_g = 1;
+                                    $this->createGuardianStudent($post_data, $n_g, $std_id, $user_data);
+                                }
+
+                                if($guardian2_id > 0)
+                                {
+                                    $this->existing_guardian_add_to_student($guardian2_id,$std_id,$post_data["relation2"]);                            
+                                }
+                                else
+                                {
+                                    $n_g = 2;
+                                    $this->createGuardianStudent($post_data, $n_g, $std_id, $user_data);
+                                }
+                            }                        
+                        }
+
+                        $back = $this->redirect_parent_url($back_url);
+                        echo $back;
+                        exit;
+                    }
+                    else
+                    {
+                        $data['error'] = "Something went wrong please try again later or contact with champs21";
+                        $this->load_view('apply_for_student_admission',$data);
+                    }
                 }
             }
 
@@ -282,66 +613,7 @@ class paid extends MX_Controller {
     private function redirect_parent_url($url) {
         $return = "<script>window.top.location.href = '" . $url . "'</script>";
         return $return;
-    }
-
-    public function test_view() {
-        $this->load->view('test_view');
-    }
-
-    public function select_school() {
-        $user_type_send = $this->input->get("user_type");
-        $back_url = $this->input->get("back_url");
-        $user_type = array(1, 2, 3, 4);
-        $user_type_check = array(2, 3, 4);
-        if (!$user_type || !$back_url || !in_array($user_type_send, $user_type_check)) {
-            $back = $this->redirect_parent_url(base_url());
-            echo $back;
-        } else if ($user_data = $this->check_user_valid($user_type)) {
-           
-            if ($user_type_send == 2) {
-                redirect('front/paid/apply_for_student_admission?back_url=' . $back_url);
-            } else if ($user_type_send == 3) {
-                redirect('front/paid/apply_for_teacher_admission?back_url=' . $back_url);
-            } else if ($user_type_send == 4) {
-                redirect('front/paid/apply_for_parent_admission?back_url=' . $back_url);
-            }
-        } else if ($user_data = $this->check_user_valid($user_type, false)) {
-            $this->load->library('form_validation');
-            $this->form_validation->set_rules('paid_school_id', 'School', 'required');
-            $this->form_validation->set_rules('school_code', 'School Code', 'required|ci_school_code_check');
-            
-            
-            if ($this->form_validation->run() == TRUE) {
-                
-                $free_users = new Free_users($user_data->id);
-                $free_users->paid_school_id = $this->input->post("paid_school_id");
-                $free_users->save();
-                        
-                if($user_type_send == 2) {
-                    redirect('front/paid/apply_for_student_admission?back_url=' . $back_url);
-                } else if ($user_type_send == 3) {
-                    redirect('front/paid/apply_for_teacher_admission?back_url=' . $back_url);
-                } else if ($user_type_send == 4) {
-                    redirect('front/paid/apply_for_parent_admission?back_url=' . $back_url);
-                }
-            }
-            $this->load->view('select_school');
-        } else {
-            $back = $this->redirect_parent_url(base_url());
-            echo $back;
-        }
-    }
-
-    public function school_code_check($str) {
-        $paid_school_id = $this->input->post('paid_school_id');
-
-        if (!check_school_code_paid($paid_school_id, $str)) {
-            $this->form_validation->set_message('school_code_check', 'Invalid School Code');
-            return FALSE;
-        } else {
-            return TRUE;
-        }
-    }
+    }   
 
     public function apply_for_teacher_admission() {
         $this->layout_front = false;
@@ -519,34 +791,51 @@ class paid extends MX_Controller {
             echo 'false';
         }
     }
-    public function is_student_username_exist() 
+    public function is_student_exist_username() 
     {
-        if (free_user_logged_in()) 
-        {
-            $user_data = get_user_data();
-            if (!$user_data->applied_paid && !$user_data->paid_id && $user_data->paid_school_id) 
-            {
-                $admission_no  = $_REQUEST['admission_no'];
-                $user_name = make_paid_username($user_data, trim($admission_no));
-                $this->db->dbprefix = '';
-                $this->db->select('id');
-                $this->db->from('users');
-                $this->db->where('username', trim($user_name));
-                $this->db->where('school_id',$user_data->paid_school_id);                 
-                $std = $this->db->get()->row();
-                $this->db->dbprefix = 'tds_';
-
-                if($std)
-                {
-                    echo 'false';
-                }
-                else
-                {
-                    echo 'true';
-                }
-            }
-        }
+        $requestedUsername  = $_REQUEST['s_username'];
+        $this->db->dbprefix = '';
+        $this->db->select("*");
+        $this->db->where("username", $requestedUsername);
+        $this->db->where("student", 1);
+        $students = $this->db->get("users")->result();
         
+        if ($students) {
+            foreach ($students as $value) {
+                $data['id'] = $value->id;
+                $data['first_name'] = $value->first_name;
+                $data['last_name'] = $value->last_name;
+            }
+            
+            echo json_encode($data);
+        }
+        else
+        {
+            echo 'false';
+        }
+    }
+    public function is_student_username_exist() 
+    {        
+        $admission_no  = $_REQUEST['admission_no'];
+        $paid_school_id  = $_REQUEST['paid_school_id'];
+                
+        $this->db->dbprefix = '';
+        $this->db->select('id');
+        $this->db->from('users');
+        $this->db->where("student", 1);
+        $this->db->where('username', trim($admission_no));
+        $this->db->where('school_id',$paid_school_id);                 
+        $std = $this->db->get()->row();
+        $this->db->dbprefix = 'tds_';
+
+        if($std)
+        {
+            echo 'false';
+        }
+        else
+        {
+            echo 'true';
+        }     
     }
     /****PRIVATE FUNCTIONS****/
     private function check_success_user($user_type) {
@@ -588,7 +877,7 @@ class paid extends MX_Controller {
         return $randomString;
     }
 
-    private function create_paid_user_for_all($user_data, $postdata) {
+    private function create_paid_user_for_all($user_data, $postdata,$user_type = 0) {
 
         $user['username'] = make_paid_username($user_data, $postdata["admission_no"]);
         $user['salt'] = $this->generateRandomString();
@@ -596,17 +885,9 @@ class paid extends MX_Controller {
         $user['hashed_password'] = sha1($user['salt'] . $postdata["password"]);
 
         $user['admin'] = 0;
-        $user['student'] = 0;
-        $user['parent'] = 0;
-        $user['employee'] = 0;
-
-        if ($user_data->user_type == 2) {
-            $user['student'] = 1;
-        } else if ($user_data->user_type == 3) {
-            $user['employee'] = 1;
-        } else if ($user_data->user_type == 4) {
-            $user['parent'] = 1;
-        }
+        $user['student'] = ($user_type == 2)?1:0;        
+        $user['employee'] = ($user_type == 3)?1:0;
+        $user['parent'] = ($user_type == 4)?1:0;
 
         $user['free_user_id'] = $user_data->id;
 
@@ -614,7 +895,10 @@ class paid extends MX_Controller {
 
         $user['first_name'] = $postdata["first_name"];
         $user['last_name'] = $postdata["last_name"];
-
+        
+        if (isset($postdata['email']) && $postdata['email']) {
+            $user['email'] = $postdata['email'];
+        }
         $user['is_first_login'] = 0;
 
         $user['is_deleted'] = 1;
@@ -666,7 +950,7 @@ class paid extends MX_Controller {
         }
 
         $f_user['tds_country_id'] = 14;
-        $f_user['nick_name'] = 1;
+        $f_user['nick_name'] = $u_array['first_name'];
         $f_user['last_name'] = $u_array['last_name'];
         $f_user['applied_paid'] = 1;
         $this->db->where('id', $user_data->id);
@@ -675,12 +959,10 @@ class paid extends MX_Controller {
 
     private function get_user_default_data($user_data, $u_id) {
 
+        if ($user_data->user_type == 2 || $user_data->user_type == 3) {
+            $data['nationality_id'] = 14;        }
 
-        if ($user_data->user_type == 2 or $user_data->user_type == 3) {
-            $data['nationality_id'] = 14;
-        }
-
-        if ($user_data->user_type == 2 or $user_data->user_type == 4) {
+        if ($user_data->user_type == 2 || $user_data->user_type == 4) {
             $data['country_id'] = 14;
         }
         if ($user_data->user_type == 2) {
@@ -727,17 +1009,23 @@ class paid extends MX_Controller {
         
         $f_user_data->nick_name = $s_array['gfirst_name' . $extra];
         $f_user_data->first_name = $s_array['gfirst_name' . $extra];
+        $f_user_data->last_name = $s_array['glast_name' . $extra];
         $f_user_data->email = $s_array['admission_no'] . "@champs21.com";
         $f_user_data->cnf_email = $s_array['admission_no'] . "@champs21.com";
         $f_user_data->password = $s_array['gpassword' . $extra];
-        $f_user_data->cnf_password = $s_array['gpassword' . $extra];
-        $f_user_data->dob = date("Y-m-d");
+        $f_user_data->cnf_password = $s_array['gpassword' . $extra];        
         $f_user_data->paid_school_id = $user_data->paid_school_id;
-
+        if (isset($s_array['gdate_of_birth']) && $s_array['gdate_of_birth']) {
+            $f_user_data->dob = $s_array['gdate_of_birth'];
+        }
+        if (isset($s_array['gmobile_phone']) && $s_array['gmobile_phone']) {
+            $f_user_data->mobile_no = $s_array['gmobile_phone'];
+        }
+        
+        
         $f_user_data->tds_country_id = 14;
-        $f_user_data->division = $s_array['city'];
-
-        $f_user_data->last_name = $s_array['glast_name' . $extra];
+        $f_user_data->city = $s_array['city'];
+        
         $f_user_data->user_type = 4;
         $f_user_data->paid_password = $s_array['gpassword' . $extra];
 
@@ -755,11 +1043,14 @@ class paid extends MX_Controller {
             $user['last_name'] = $s_array['glast_name' . $extra];
             $user['is_first_login'] = 0;
             $user['is_deleted'] = 1;
+            if (isset($s_array['gemail']) && $s_array['gemail']) {
+                $f_user['email'] = $s_array['gemail'];
+            }
             $user['school_id'] = $user_data->paid_school_id;
             $user['created_at'] = date("Y-m-d H:i:s");
             $user['updated_at'] = date("Y-m-d H:i:s");
             $this->db->dbprefix = '';
-
+            
             $this->db->insert('users', $user);
             $u_id = $this->db->insert_id();
 
@@ -774,7 +1065,19 @@ class paid extends MX_Controller {
             $data['city'] = $s_array['city'];
             $data['relation'] = $s_array['relation' . $extra];
             $data['ward_id'] = $sid;
-
+            if (isset($s_array['gemail']) && $s_array['gemail']) {
+                $data['email'] = $s_array['gemail'];
+            }
+            if (isset($s_array['gmobile_phone']) && $s_array['gmobile_phone']) {
+                $data['mobile_phone'] = $s_array['gmobile_phone'];
+            }
+            if (isset($s_array['gaddress']) && $s_array['gaddress']) {
+                $data['office_address_line1'] = $s_array['gaddress'];
+            }
+            if (isset($s_array['gdate_of_birth']) && $s_array['gdate_of_birth']) {
+                $data['dob'] = $s_array['gdate_of_birth'];
+            }
+            
             $this->db->dbprefix = '';
             $this->db->insert('guardians', $data);
 
@@ -795,7 +1098,41 @@ class paid extends MX_Controller {
 
         return $u_id;
     }
+    private function createFreeUser($s_array) {
 
+        $p = $this->generate_passowrd_and_salt($s_array['password']);
+
+        $user_data['nick_name'] = $s_array['first_name'];
+        $user_data['password'] = $p['password'];
+        $user_data['salt'] = $p['salt'];
+
+        $user_data['email'] = $s_array['email'];
+        $user_data['cnf_email'] = $s_array['email'];
+        $user_data['cnf_password'] = $p['password'];
+        $user_data['first_name'] = $s_array['first_name'];
+        $user_data['last_name'] = $s_array['last_name'];
+        $user_data['gender'] = ($s_array['gender']=='m' || $s_array['gender']==1)?1:0;
+        $user_data['dob'] = $s_array['date_of_birth'];
+        $user_data['user_type'] = $s_array['user_type'];
+        $user_data['paid_school_id'] = $s_array['paid_school_id'];
+        $user_data['password'] = $p['password'];
+        $user_data['tds_country_id'] = 14;
+        
+        $free_user = new Free_users();
+
+        foreach ($user_data as $key => $value) {
+
+            $free_user->$key = $value;
+        }
+        
+        if ($free_user->save()) {
+            return $free_user;
+        }else
+        {
+            return false;
+        }
+        
+    }
     private function get_student_parents($user_id) {
         $this->db->dbprefix = '';
 
@@ -826,7 +1163,13 @@ class paid extends MX_Controller {
 
         return $all_guardian;
     }
-    
+    private function generate_passowrd_and_salt($password) {
+        // Don't encrypt an empty string
+
+        $p['salt'] = md5(uniqid(rand(), true));
+        $p['password'] = hash('sha512', $p['salt'] . $password);
+        return $p;
+    }
     private function get_guardian_data_by_user_id($user_id) 
     {        
         $this->db->dbprefix = '';
@@ -837,6 +1180,24 @@ class paid extends MX_Controller {
         if ($parents) {
             foreach ($parents as $value) {
                 $data['gid'] = $value->id;
+            }
+            return $data;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    private function get_student_data_by_user_id($user_id) 
+    {        
+        $this->db->dbprefix = '';
+        $this->db->select("*");
+        $this->db->where("user_id", $user_id);
+        $parents = $this->db->get("students")->result();
+
+        if ($parents) {
+            foreach ($parents as $value) {
+                $data['sid'] = $value->id;
             }
             return $data;
         }

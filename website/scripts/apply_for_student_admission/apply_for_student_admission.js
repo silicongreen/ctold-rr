@@ -12,23 +12,18 @@ $(document).ready(function(){
 				required: true,
                                 remote: {
                                 url: $('#ci_base_url').val() + "front/paid/is_student_username_exist",
-                                type: "post"
+                                type: "post",
+                                data: {
+                                    admission_no: function() {
+                                      return $( "#sn_username" ).val();
+                                    },
+                                    paid_school_id: function() {
+                                      return $( "#paid_school_id" ).val();
+                                    }
+                                }
                              }
-			},
-			first_name: {
-				minlength: 3,
-				required: true
-			},
-		  
-			last_name: {
-				minlength: 3,
-				required: true
-			},
+			},			
 
-			password: {
-				required: true,
-				minlength: 6
-			},
                         g_username: {
                                 minlength: 6,
                                 required: function() {                                  

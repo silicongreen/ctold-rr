@@ -418,7 +418,7 @@ class paid extends MX_Controller {
                     {
                         $data['guardian']['fulname'] = $postdata["gfirst_name"]." ".$postdata["glast_name"];
                         $data['guardian']['username'] = make_paid_username($user_data, $postdata["admission_no"], true, true);
-                        $data['email'] = $postdata['email'];
+                        $data['email'] = $postdata['gemail'];
                         $data['email_name'] = $postdata["gfirst_name"]." ".$postdata["glast_name"];
                         $success = true;
                     }

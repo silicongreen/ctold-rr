@@ -90,7 +90,7 @@
                                     </div>
                                 <?php endif; ?>
                                 <legend></legend>
-                                <?php foreach($guardian as $row):?>
+                                <?php foreach($guardians as $row):?>
                                     <?php if($row['username'] != ""):?>
                                         <div class="form-group">
                                             <label class="col-md-4 control-label">Guardian UserName :</label>  

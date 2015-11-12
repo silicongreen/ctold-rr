@@ -418,7 +418,8 @@ class paid extends MX_Controller {
                     {
                         $data['guardian']['fulname'] = $postdata["gfirst_name"]." ".$postdata["glast_name"];
                         $data['guardian']['username'] = make_paid_username($user_data, $postdata["admission_no"], true, true);
-                        
+                        $data['email'] = $postdata['email'];
+                        $data['email_name'] = $postdata["gfirst_name"]." ".$postdata["glast_name"];
                         $success = true;
                     }
                     else
@@ -444,6 +445,7 @@ class paid extends MX_Controller {
         if($success)
         {
             $data['error'] = 0;
+            $this->send_email_to_user($data);
             $this->load->view('apply_for_parent_admission_final',$data);
         }
         else
@@ -545,6 +547,8 @@ class paid extends MX_Controller {
                             $data['student']['fulname'] = $post_data["first_name"]." ".$post_data["middle_name"]." ".$post_data["last_name"];
                             $data['student']['username'] = $u_id[1];
                             $data['student']['admission_no'] = $post_data["admission_no"];
+                            $data['email'] = $post_data['email'];
+                            $data['email_name'] = $post_data["first_name"]." ".$post_data["middle_name"]." ".$post_data["last_name"];
                             
                             $this->update_user_before_apply($user_data, $post_data, $u_id[1]);
                             $this->db->dbprefix = '';
@@ -577,8 +581,8 @@ class paid extends MX_Controller {
                                 {
                                     if($this->existing_guardian_add_to_student($guardian1_id,$std_id,$post_data["relation"]))
                                     {
-                                        $data['guardian'][1]['username'] = $post_data['g_username'];
-                                        $data['guardian'][1]['fulname'] = '';
+                                        $data['guardians'][1]['username'] = $post_data['g_username'];
+                                        $data['guardians'][1]['fulname'] = '';
                                         $success = true;
                                     }
                                     else
@@ -592,8 +596,8 @@ class paid extends MX_Controller {
                                     $gu_id1 = $this->createGuardianStudent($post_data, $n_g, $std_id, $user_data);
                                     if($gu_id1)
                                     {
-                                        $data['guardian'][1]['username'] = make_paid_username($user_data, $post_data["admission_no"], true, true);;
-                                        $data['guardian'][1]['fulname'] = $post_data["gfirst_name"]." ".$post_data["glast_name"];
+                                        $data['guardians'][1]['username'] = make_paid_username($user_data, $post_data["admission_no"], true, true);;
+                                        $data['guardians'][1]['fulname'] = $post_data["gfirst_name"]." ".$post_data["glast_name"];
                                         $success = true;
                                     }
                                     else
@@ -608,8 +612,8 @@ class paid extends MX_Controller {
                                 {
                                     if($this->existing_guardian_add_to_student($guardian1_id,$std_id,$post_data["relation"]))
                                     {
-                                        $data['guardian'][1]['username'] = $post_data['g_username'];
-                                        $data['guardian'][1]['fulname'] = '';
+                                        $data['guardians'][1]['username'] = $post_data['g_username'];
+                                        $data['guardians'][1]['fulname'] = '';
                                         $success = true;
                                     }
                                     else
@@ -623,8 +627,8 @@ class paid extends MX_Controller {
                                     $gu_id1 = $this->createGuardianStudent($post_data, $n_g, $std_id, $user_data);
                                     if($gu_id1)
                                     {
-                                        $data['guardian'][1]['username'] = make_paid_username($user_data, $post_data["admission_no"], true, true);;
-                                        $data['guardian'][1]['fulname'] = $post_data["gfirst_name"]." ".$post_data["glast_name"];
+                                        $data['guardians'][1]['username'] = make_paid_username($user_data, $post_data["admission_no"], true, true);;
+                                        $data['guardians'][1]['fulname'] = $post_data["gfirst_name"]." ".$post_data["glast_name"];
                                         $success = true;
                                     }
                                     else
@@ -637,8 +641,8 @@ class paid extends MX_Controller {
                                 {                                                                
                                     if($this->existing_guardian_add_to_student($guardian2_id,$std_id,$post_data["relation2"]))
                                     {
-                                        $data['guardian'][2]['username'] = $post_data['g_username2'];
-                                        $data['guardian'][2]['fulname'] = '';
+                                        $data['guardians'][2]['username'] = $post_data['g_username2'];
+                                        $data['guardians'][2]['fulname'] = '';
                                         $success = true;
                                     }
                                     else
@@ -652,8 +656,8 @@ class paid extends MX_Controller {
                                     $gu_id2 = $this->createGuardianStudent($post_data, $n_g, $std_id, $user_data);
                                     if($gu_id2)
                                     {
-                                        $data['guardian'][2]['username'] = make_paid_username($user_data, $post_data["admission_no"], true, true);;
-                                        $data['guardian'][2]['fulname'] = $post_data["gfirst_name2"]." ".$post_data["glast_name2"];
+                                        $data['guardians'][2]['username'] = make_paid_username($user_data, $post_data["admission_no"], true, true);;
+                                        $data['guardians'][2]['fulname'] = $post_data["gfirst_name2"]." ".$post_data["glast_name2"];
                                         
                                         $success = true;
                                     }
@@ -761,6 +765,8 @@ class paid extends MX_Controller {
                             $data['teacher']['fulname'] = $post_data["first_name"]." ".$post_data["middle_name"]." ".$post_data["last_name"];
                             $data['teacher']['username'] = $u_id[1];
                             $data['teacher']['admission_no'] = $post_data["admission_no"];
+                            $data['email'] = $post_data['email'];
+                            $data['email_name'] = $post_data["first_name"]." ".$post_data["middle_name"]." ".$post_data["last_name"];
                             
                             $this->update_user_before_apply($user_data, $post_data, $u_id[1]);
                             $this->db->dbprefix = '';
@@ -1447,4 +1453,29 @@ class paid extends MX_Controller {
         $this->form_validation->set_rules('relation2', 'Relation (2nd)', 'required');
     }
     
+    private function send_email_to_user($data)
+    {
+
+       $config['protocol'] = 'smtp';
+       $config['smtp_host'] = 'host.champs21.com';   //examples: ssl://smtp.googlemail.com, myhost.com
+       $config['smtp_user'] = 'info@champs21.com';
+       $config['smtp_pass'] = '174097@hM&^256';
+       $config['smtp_port'] = '465';
+       $config['charset'] = 'utf-8';  // Default should be utf-8 (this should be a text field)
+       $config['newline'] = "\r\n"; //"\r\n" or "\n" or "\r". DEFAULT should be "\r\n"
+       $config['crlf'] = "\r\n"; //"\r\n" or "\n" or "\r" DEFAULT should be "\r\n"
+
+       $this->load->library('email');
+
+       $this->email->set_mailtype("html");
+       $this->email->from("info@champs21.com", "Champs21");
+       $this->email->subject('Classtune Signup Success');
+       $this->email->to($data['email'], $data['email_name']);
+       
+       $mail_html = $this->load->view('email_template/singup',$data, true);
+
+       $this->email->message($mail_html);
+
+       $this->email->send();
+   }
 }

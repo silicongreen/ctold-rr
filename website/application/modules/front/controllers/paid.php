@@ -1297,11 +1297,14 @@ class paid extends MX_Controller {
 
             $free_user->$key = $value;
         }
-        
+        echo "<pre>";
+        print_r($free_user);
         if ($free_user->save()) {
+            echo "free1";
             return $free_user;
         }else
         {
+            echo "free12";
             return false;
         }
         

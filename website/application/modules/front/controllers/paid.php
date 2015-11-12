@@ -1279,8 +1279,6 @@ class paid extends MX_Controller {
         $user_data['salt'] = $p['salt'];
 
         $user_data['email'] = $s_array['email'];
-        $user_data['cnf_email'] = $s_array['email'];
-        $user_data['cnf_password'] = $p['password'];
         $user_data['first_name'] = $s_array['first_name'];
         $user_data['last_name'] = $s_array['last_name'];
         $user_data['gender'] = ($s_array['gender']=='m' || $s_array['gender']==1)?1:0;

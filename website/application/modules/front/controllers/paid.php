@@ -396,8 +396,19 @@ class paid extends MX_Controller {
                         $sb['sibling_id'] = $std_id;                        
                         $this->db->where('id', $std_id);
                         $this->db->update('students', $sb);
+                        
+                        $success = true;
+                    }
+                    else
+                    {
+                        $success = false;echo 14;
                     }
                 }
+                else
+                {
+                    $success = false;echo 13;
+                }
+                
             }
             
             if($std_id)
@@ -425,6 +436,7 @@ class paid extends MX_Controller {
                     else
                     {
                         $success = false;
+                        echo 11;
                     }
                 }
                 else
@@ -435,7 +447,7 @@ class paid extends MX_Controller {
                     }
                     else
                     {
-                        $success = false;
+                        $success = false;echo 12;
                     }
                 }
             }

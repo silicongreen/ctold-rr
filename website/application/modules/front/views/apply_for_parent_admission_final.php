@@ -70,7 +70,7 @@
                                                 <div class="col-md-4">
                                                     <?php echo $guardian['fulname'];?>
                                                 </div>
-                                            </div>
+                                            </div><br /><br />
                                         <?php endif; ?>
                                         <?php if($guardian['username'] != ""):?>
                                             <div class="form-group">
@@ -78,7 +78,7 @@
                                                 <div class="col-md-4">
                                                     <?php echo $guardian['username'];?>
                                                 </div>
-                                            </div>
+                                            </div><br /><br />
                                         <?php endif; ?>
                                         
                                         <legend></legend>
@@ -89,7 +89,7 @@
                                                     <div class="col-md-4">
                                                         <?php echo $row['fulname'];?>
                                                     </div>
-                                                </div>
+                                                </div><br /><br />
                                             <?php endif; ?>
                                             <?php if($row['username'] != ""):?>
                                                 <div class="form-group">
@@ -97,7 +97,7 @@
                                                     <div class="col-md-4">
                                                         <?php echo $row['username'];?>
                                                     </div>
-                                                </div>
+                                                </div><br />
                                             <?php endif; ?>
                                             
                                             <?php if($row['admission_no'] != ""):?>
@@ -125,7 +125,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script>
- document.domain = "champs21.com";
+ //document.domain = "champs21.com";
     $('#pluswrap').show();
         $(window).bind("load", function() {  
                 $('#pluswrap').hide();			

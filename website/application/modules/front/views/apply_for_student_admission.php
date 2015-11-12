@@ -309,7 +309,7 @@
 <script src="<?php echo base_url('scripts/apply_for_student_admission/apply_for_student_admission.js'); ?>"></script>
 
 <script type="text/javascript">
-document.domain = "champs21.com";
+//document.domain = "champs21.com";
 $(document).ready(function () {
     $(document).on("click", ".add_guardian", function () {
        

@@ -546,7 +546,7 @@ class paid extends MX_Controller {
                     unset($_POST['form1_data']);
                     $ar_form1_data = unserialize($form1_data);
                     $post_data = $_POST + $ar_form1_data;
-                                        
+                    $post_data['user_type'] = $user_type_send ;       
                     //insert user data
                     if($user_data = $this->createFreeUser($post_data))
                     {
@@ -753,6 +753,7 @@ class paid extends MX_Controller {
                 unset($_POST['form1_data']);
                 $ar_form1_data = unserialize($form1_data);
                 $post_data = $_POST + $ar_form1_data;
+                $post_data['user_type'] = $user_type_send ;     
                 
                 $this->load->library('form_validation');
                 $this->form_validation->set_rules('admission_no', 'Employee NO', 'required');                

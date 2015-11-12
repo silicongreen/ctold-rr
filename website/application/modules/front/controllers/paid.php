@@ -1290,7 +1290,7 @@ class paid extends MX_Controller {
         $user_data['password'] = $p['password'];
         $user_data['tds_country_id'] = 14;
                 
-        $this->db->insert('free_user', $user_data);
+        $this->db->insert('free_users', $user_data);
         $sftd_id = $this->db->insert_id();
         
         $free_user = new Free_users($sftd_id);       

@@ -1455,7 +1455,8 @@ class paid extends MX_Controller {
     
     private function send_email_to_user($data)
     {
-
+       echo "<pre>";
+       print_r($data);
        $config['protocol'] = 'smtp';
        $config['smtp_host'] = 'host.champs21.com';   //examples: ssl://smtp.googlemail.com, myhost.com
        $config['smtp_user'] = 'info@champs21.com';
@@ -1472,7 +1473,7 @@ class paid extends MX_Controller {
        $this->email->subject('Classtune Signup Success');
        $this->email->to($data['email'], $data['email_name']);
        
-       $mail_html = $this->load->view('email_template/singup',$data, true);
+       echo $mail_html = $this->load->view('email_template/singup',$data, true);
 
        $this->email->message($mail_html);
 

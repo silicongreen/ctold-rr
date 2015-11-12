@@ -401,12 +401,12 @@ class paid extends MX_Controller {
                     }
                     else
                     {
-                        $success = false;echo 14;
+                        $success = false;
                     }
                 }
                 else
                 {
-                    $success = false;echo 13;
+                    $success = false;
                 }
                 
             }
@@ -436,7 +436,6 @@ class paid extends MX_Controller {
                     else
                     {
                         $success = false;
-                        echo 11;
                     }
                 }
                 else
@@ -447,7 +446,7 @@ class paid extends MX_Controller {
                     }
                     else
                     {
-                        $success = false;echo 12;
+                        $success = false;
                     }
                 }
             }
@@ -1290,21 +1289,16 @@ class paid extends MX_Controller {
         $user_data['paid_school_id'] = $s_array['paid_school_id'];
         $user_data['password'] = $p['password'];
         $user_data['tds_country_id'] = 14;
+                
+        $this->db->insert('free_user', $user_data);
+        $sftd_id = $this->db->insert_id();
         
-        $free_user = new Free_users();
-
-        foreach ($user_data as $key => $value) {
-
-            $free_user->$key = $value;
-        }
-        echo "<pre>";
-        print_r($free_user);
-        if ($free_user->save()) {
-            echo "free1";
+        $free_user = new Free_users($sftd_id);       
+       
+        if ($free_user) {
             return $free_user;
         }else
         {
-            echo "free12";
             return false;
         }
         

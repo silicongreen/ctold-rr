@@ -70,7 +70,7 @@
                                                 <div class="col-md-4">
                                                     <?php echo $guardian['fulname'];?>
                                                 </div>
-                                            </div><br /><br />
+                                            </div>
                                         <?php endif; ?>
                                         <?php if($guardian['username'] != ""):?>
                                             <div class="form-group">
@@ -78,7 +78,7 @@
                                                 <div class="col-md-4">
                                                     <?php echo $guardian['username'];?>
                                                 </div>
-                                            </div><br /><br />
+                                            </div>
                                         <?php endif; ?>
                                         
                                         <legend></legend>
@@ -89,7 +89,7 @@
                                                     <div class="col-md-4">
                                                         <?php echo $row['fulname'];?>
                                                     </div>
-                                                </div><br /><br />
+                                                </div>
                                             <?php endif; ?>
                                             <?php if($row['username'] != ""):?>
                                                 <div class="form-group">
@@ -97,7 +97,7 @@
                                                     <div class="col-md-4">
                                                         <?php echo $row['username'];?>
                                                     </div>
-                                                </div><br />
+                                                </div>
                                             <?php endif; ?>
                                             
                                             <?php if($row['admission_no'] != ""):?>

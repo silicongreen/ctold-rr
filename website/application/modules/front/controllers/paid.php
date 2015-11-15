@@ -330,9 +330,9 @@ class paid extends MX_Controller {
                 $length = strlen($school_code);
                 $postdata["admission_no"] = substr($admission_no, $length);
                 
-                $data['student'][$i]['fulname'] = $paid_st_data["first_name"]." ".$paid_st_data["middle_name"]." ".$paid_st_data["last_name"];
-                $data['student'][$i]['username'] = $admission_no;
-                $data['student'][$i]['admission_no'] = $paid_st_data["admission_no"];
+                $data['students'][$i]['fulname'] = $paid_st_data["first_name"]." ".$paid_st_data["middle_name"]." ".$paid_st_data["last_name"];
+                $data['students'][$i]['username'] = $admission_no;
+                $data['students'][$i]['admission_no'] = $paid_st_data["admission_no"];
             }
             else
             {
@@ -362,9 +362,9 @@ class paid extends MX_Controller {
 
                     if($u_id[0])
                     {
-                        $data['student'][$i]['fulname'] = $postdata["first_name"]." ".$postdata["last_name"];
-                        $data['student'][$i]['username'] = $u_id[1];
-                        $data['student'][$i]['admission_no'] = $postdata["admission_no"];
+                        $data['students'][$i]['fulname'] = $postdata["first_name"]." ".$postdata["last_name"];
+                        $data['students'][$i]['username'] = $u_id[1];
+                        $data['students'][$i]['admission_no'] = $postdata["admission_no"];
                         
                         $postdata["middle_name"] = $ar_form_data['student_data'][$i]['s_middle_name'];                    
                         $postdata["city"] = $ar_form_data['form_data']['city'];
@@ -1369,7 +1369,7 @@ class paid extends MX_Controller {
         if ($parents) {
             foreach ($parents as $value) {
                 $data['sid'] = $value->id;
-                $data['first_name'] = $value->id;
+                $data['first_name'] = $value->first_name;
                 $data['last_name'] = $value->last_name;
                 $data['middle_name'] = $value->middle_name;
                 $data['admission_no'] = $value->admission_no;

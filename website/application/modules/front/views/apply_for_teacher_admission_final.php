@@ -93,6 +93,12 @@
                             </div>
                         </div>
                         <?php endif; ?>
+                        <div class="form-group">                                            
+                            <div class="col-md-12">
+                                <p><span>Please <a style="color: #2CABE1;" href="<?php echo base_url('login'); ?>">Click here</a> to login into your account or go to the following url:</span></p>
+                                <a style="color: #2CABE1;" href="<?php echo base_url('login'); ?>"><?php echo base_url('login'); ?></a>
+                            </div>
+                        </div>
                     </div>
                     
                 </div><!-- /.container -->

@@ -88,7 +88,7 @@
                                                                                             </strong></span>     <br />                                                                                        
                                                                                         <?php endif; ?>
                                                                                         <legend style="border-bottom: 1px dotted;margin: 10px 0px;"></legend>
-                                                                                        <?php foreach($student as $row):?>
+                                                                                        <?php foreach($students as $row):?>
                                                                                             <?php if($row['fulname'] != ""):?>
                                                                                                 <span>Student Name :</span>  
                                                                                                 <span><strong>
@@ -115,17 +115,17 @@
                                                                                         <?php if($teacher['fulname'] != ""):?>
                                                                                             <span>Your Name :</span>  
                                                                                             <span><strong>
-                                                                                                    <?php echo $teacher['admission_no'];?>
+                                                                                                    <?php echo $teacher['fulname'];?>
                                                                                             </strong></span> <br />
                                                                                         <?php endif; ?>
                                                                                         <?php if($teacher['username'] != ""):?>
                                                                                             <span>UserName :</span>  
                                                                                                 <span><strong>
-                                                                                                        <?php echo $teacher['admission_no'];?>
+                                                                                                        <?php echo $teacher['username'];?>
                                                                                             </strong></span> <br />
                                                                                         <?php endif; ?>
                                                                                         <?php if($teacher['admission_no'] != ""):?>
-                                                                                            <span>Admission No :</span>  
+                                                                                            <span>Employee No :</span>  
                                                                                             <span><strong>
                                                                                                 <?php echo $teacher['admission_no'];?>
                                                                                             </strong></span> <br />
@@ -171,6 +171,15 @@
                                                                                             <?php endif; ?>
                                                                                             <legend style="border-bottom: 1px dotted;margin: 10px 0px;"></legend>
                                                                                         <?php endforeach; ?>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td width="100%" height="40" style="border-collapse:collapse"></td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td valign="top" style="vertical-align:top;font-family:Helvetica,arial,sans-serif;font-size:14.5px;color:#666666;text-align:left;line-height:20px;border-collapse:collapse" align="left">                                                                                        
+                                                                                        <p><span>Please <a style="color: #2CABE1;" href="<?php echo base_url('login'); ?>">Click here</a> to login into your account or go to the following url:</span></p>
+                                                                                        <a style="color: #2CABE1;" href="<?php echo base_url('login'); ?>"><?php echo base_url('login'); ?></a>
                                                                                     </td>
                                                                                 </tr>
                                                                                 <tr>

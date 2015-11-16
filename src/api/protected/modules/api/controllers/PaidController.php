@@ -126,7 +126,7 @@ class PaidController extends Controller
                 else
                 {
                     $response['status']['code'] = 401;
-                    $response['status']['msg'] = "Student admission no exists";
+                    $response['status']['msg'] = "Employee Number already used";
                 }
             }
         }

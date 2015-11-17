@@ -73,7 +73,7 @@ class RoutineController extends Controller {
     public function actionTeacherExam() {
         $user_secret = Yii::app()->request->getPost('user_secret');
         $limit = Yii::app()->request->getPost('limit');
-        if (Yii::app()->user->isTeacher && Yii::app()->user->user_secret === $user_secret) 
+        if ((Yii::app()->user->isTeacher || Yii::app()->user->isAdmin) && Yii::app()->user->user_secret === $user_secret) 
         {
             if(!$limit)
             {
@@ -99,7 +99,7 @@ class RoutineController extends Controller {
             $user_secret = Yii::app()->request->getPost('user_secret');
             $school_id = Yii::app()->user->schoolId;
             $response = array();
-            if (Yii::app()->user->isTeacher && $school_id && Yii::app()->user->user_secret === $user_secret) {
+            if ((Yii::app()->user->isTeacher || Yii::app()->user->isAdmin) && $school_id && Yii::app()->user->user_secret === $user_secret) {
                 $time_table = new TimetableEntries;
                 $time_table = $time_table->getNextTeacher($school_id, Yii::app()->user->profileId);
                 
@@ -136,7 +136,7 @@ class RoutineController extends Controller {
             $day_id = Yii::app()->request->getPost('day_id');
             $date = (!empty($date)) ? $date : \date('Y-m-d', \time());
             $response = array();
-            if (Yii::app()->user->isTeacher && $school_id && Yii::app()->user->user_secret === $user_secret) {
+            if ((Yii::app()->user->isTeacher || Yii::app()->user->isAdmin) && $school_id && Yii::app()->user->user_secret === $user_secret) {
                 $time_table = new TimetableEntries;
                 $time_table = $time_table->getTimeTablesTeacher($school_id,$date, Yii::app()->user->profileId, $day_id);
 

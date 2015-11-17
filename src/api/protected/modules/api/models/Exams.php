@@ -202,32 +202,61 @@ class Exams extends CActiveRecord {
         $criteria = new CDbCriteria;
         $criteria->select = 't.id, t.start_time, t.end_time'; 
         $criteria->together = true;
-        $criteria->with = array(
-            'Subjects' => array(
-                'select' => 'Subjects.name,Subjects.icon_number',
-                'with' => array(
-                    'Subjectbatch' => array(
-                        'select' => 'Subjectbatch.name',
-                        'with' => array(
-                                'courseDetails' => array(
-                                    'select' => 'courseDetails.course_name,courseDetails.section_name',
-                                ),
-                         )
-                    ),
-                    'employee'=>array(
-                        'select'=>''
+        
+        if(Yii::app()->user->isAdmin)
+        {
+            $criteria->with = array(
+                'Subjects' => array(
+                    'select' => 'Subjects.name,Subjects.icon_number',
+                    'with' => array(
+                        'Subjectbatch' => array(
+                            'select' => 'Subjectbatch.name',
+                            'with' => array(
+                                    'courseDetails' => array(
+                                        'select' => 'courseDetails.course_name,courseDetails.section_name',
+                                    ),
+                             )
+                        )
+
                     )
-                  
-                )
-            ),
-            'Examgroup' => array(
-                'select' => 'Examgroup.name',
-            ),
-            'studentSubject' => array(
-                'select' => 'studentSubject.id',
-            ),
-        );
-        $criteria->compare("employee.employee_id", Yii::app()->user->profileId);
+                ),
+                'Examgroup' => array(
+                    'select' => 'Examgroup.name',
+                ),
+                'studentSubject' => array(
+                    'select' => 'studentSubject.id',
+                ),
+            );
+        } 
+        else
+        {
+            $criteria->with = array(
+                'Subjects' => array(
+                    'select' => 'Subjects.name,Subjects.icon_number',
+                    'with' => array(
+                        'Subjectbatch' => array(
+                            'select' => 'Subjectbatch.name',
+                            'with' => array(
+                                    'courseDetails' => array(
+                                        'select' => 'courseDetails.course_name,courseDetails.section_name',
+                                    ),
+                             )
+                        ),
+                        'employee'=>array(
+                            'select'=>''
+                        )
+
+                    )
+                ),
+                'Examgroup' => array(
+                    'select' => 'Examgroup.name',
+                ),
+                'studentSubject' => array(
+                    'select' => 'studentSubject.id',
+                ),
+            );
+            $criteria->compare("employee.employee_id", Yii::app()->user->profileId);
+        }
         $criteria->limit = $limit;
         $criteria->addCondition("DATE(t.start_time)>='".date("Y-m-d")."'");
         $criteria->order = "t.start_time ASC";

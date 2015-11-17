@@ -81,7 +81,11 @@ class Assignments extends CActiveRecord
             {
                 $criteria->compare('DATE(t.duedate)', $duedate);
             }
-            $criteria->compare('t.employee_id', $employee_id);
+            
+            if(!Yii::app()->user->isAdmin)
+            {
+                $criteria->compare('t.employee_id', $employee_id);
+            }
             
             $data = $this->find($criteria);
             return $data->total;
@@ -93,7 +97,11 @@ class Assignments extends CActiveRecord
             
             $criteria = new CDbCriteria();
             $criteria->select = 't.*';
-            $criteria->compare('t.employee_id', $employee_id);
+            if(!Yii::app()->user->isAdmin)
+            {
+                $criteria->compare('t.employee_id', $employee_id);
+            }
+            
             if($subject_id!=NULL)
             {
                 $criteria->compare('t.subject_id', $subject_id);

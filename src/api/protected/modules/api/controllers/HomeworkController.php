@@ -641,7 +641,7 @@ class HomeworkController extends Controller
     {
         $user_secret = Yii::app()->request->getPost('user_secret');
         $employee_id = Yii::app()->user->profileId;
-        if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher)
+        if (Yii::app()->user->user_secret === $user_secret && (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin) )
         {
             $homework = new Assignments();
             $page_number = Yii::app()->request->getPost('page_number');
@@ -855,11 +855,13 @@ class HomeworkController extends Controller
             }
             
             $response = array();
-            if (Yii::app()->user->user_secret === $user_secret) {
+            if (Yii::app()->user->user_secret === $user_secret && (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin)) {
                 
                 $mod_timetable_entries = TimetableEntries::model()->findAllByAttributes( array('employee_id' => Yii::app()->user->profileId), array('select' => 'subject_id', 'group' => 'batch_id') );
                 
                 $subject_ids = array();
+                
+                if($mod_timetable_entries)
                 foreach($mod_timetable_entries as $te) {
                     $subject_ids[] = $te->subject_id;
                 }

@@ -227,6 +227,7 @@ class Exams extends CActiveRecord {
                     'select' => 'studentSubject.id',
                 ),
             );
+            $criteria->compare('t.school_id', Yii::app()->user->schoolId);
         } 
         else
         {

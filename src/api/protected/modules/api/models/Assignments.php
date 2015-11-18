@@ -86,6 +86,11 @@ class Assignments extends CActiveRecord
             {
                 $criteria->compare('t.employee_id', $employee_id);
             }
+            else
+            {
+                $criteria->compare('t.school_id', Yii::app()->user->schoolId);
+                
+            }    
             
             $data = $this->find($criteria);
             return $data->total;
@@ -100,6 +105,11 @@ class Assignments extends CActiveRecord
             if(!Yii::app()->user->isAdmin)
             {
                 $criteria->compare('t.employee_id', $employee_id);
+            }
+            else
+            {
+                $criteria->compare('t.school_id', Yii::app()->user->schoolId);
+                
             }
             
             if($subject_id!=NULL)

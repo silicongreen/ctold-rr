@@ -19,6 +19,9 @@ class Settings {
     public static $AssignmentText = "New Assignment";
     public static $education_changes_life = 59;
     public static $notification_url = "http://www.champs21.com/front/ajax/send_paid_notification";
+    public static $mail_url = "http://www.champs21.com/front/ajax/send_email_to_user_api";
+    
+    
     //spelling bee config
     public static $method = array("c", "p", "s", "m", "d");
     public static $operator = array("m", "p");
@@ -827,6 +830,41 @@ class Settings {
             return TRUE;
         }
         return FALSE;
+    }
+    
+    public static function sendCurlMail($data) {
+        $url = Settings::$mail_url;
+        $fields = array(
+            'data' => $data
+        );
+
+//        $fields_string = "";
+//
+//        foreach ($fields as $key => $value) {
+//            $fields_string .= $key . '=' . $value . '&';
+//        }
+//
+//        rtrim($fields_string, '&');
+        
+        $fields_string = http_build_query($fields);
+        $ch = curl_init();
+
+        //set the url, number of POST vars, POST data
+        curl_setopt($ch, CURLOPT_URL, $url);
+
+        curl_setopt($ch, CURLOPT_POST, count($fields));
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Accept: application/json',
+            'Content-Length: ' . strlen($fields_string)
+                )
+        );
+
+        $result = curl_exec($ch);
+
+        curl_close($ch);
     }
 
     public static function sendCurlNotification($user_id, $notification_id) {

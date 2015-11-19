@@ -107,6 +107,18 @@ class PaidController extends Controller
                                     $embatch->employee_id = $emp_id;
                                     $embatch->save();
                                 }
+                                
+                                
+                                //making data for send mail
+                                $data['teacher']['fulname'] = $first_name." ".$last_name;
+                                $data['teacher']['username'] = $user_id;
+                                $data['teacher']['admission_no'] = $employee_number;
+                                $data['email'] = $email;
+                                $data['email_name'] = $first_name." ".$last_name;
+                                //making data for sending mail
+                                
+                                Settings::sendCurlMail($data);
+                                
                                 $response = $this->create_return_value($free_user_id,$user_id,$password);
                             }
                             else 
@@ -526,6 +538,38 @@ class PaidController extends Controller
                                 if($parent_id)
                                 {
                                     $this->updateFreeUser($paid_user_id,$user_id,$password,$selected_school,$free_user_id);
+                                    
+                                    //making data for sending mail
+                                    $gstd = new GuardianStudent();
+                                    $students = $gstd->getChildren($parent_id);
+                                    
+                                    if($students)
+                                    {
+                                        foreach($students as $key=>$value)
+                                        {
+                                            $data['students'][$key]['fulname'] = $value['students']->first_name." ".$value['students']->last_name;
+                                            $data['students'][$key]['username'] = "";
+                                            $usersmodel = new Users();
+                                            $udata = $usersmodel->findByPk($value['students']->user_id);
+                                            if($udata)
+                                            {
+                                                $data['students'][$key]['username'] = $udata->username;
+                                            }
+                                            $data['students'][$key]['admission_no'] = $value['students']->admission_no; 
+                                        }    
+                                    }
+                                    
+                                    
+                                    
+                                    $data['guardian']['fulname'] = $first_name." ".$last_name;
+                                    $data['guardian']['username'] = $user_id;
+                                    $data['email'] = $email;
+                                    $data['email_name'] = $first_name." ".$last_name;
+                                    // end sending mail
+                                    
+                                    Settings::sendCurlMail($data);
+                                    
+                                    
                                     $response = $this->create_return_value($free_user_id,$user_id,$password);
                                 }
                                 else 
@@ -614,6 +658,19 @@ class PaidController extends Controller
                                 if($student_id)
                                 {
                                     $this->updateFreeUser($paid_user_id,$user_id,$password,$selected_school,$free_user_id);
+                                    
+                                    //create data for sending mail
+                                    $data['student']['fulname'] = $first_name." ".$last_name;
+                                    $data['student']['username'] = $user_id;
+                                    $data['student']['admission_no'] = $admission;
+                                    $data['email'] = $email;
+                                    $data['email_name'] = $first_name." ".$last_name;
+                                    
+                                    //create data for sending mail
+                                    
+                                    Settings::sendCurlMail($data);
+                                    
+                                    
                                     $response = $this->create_return_value($free_user_id,$user_id,$password);
                                 }
                                 else 

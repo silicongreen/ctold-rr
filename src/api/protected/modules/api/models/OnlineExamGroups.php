@@ -217,6 +217,7 @@ class OnlineExamGroups extends CActiveRecord {
         $criteria->select = 't.*';
         $criteria->compare('t.id', $id);
         $criteria->compare('t.batch_id', $batch_id);
+        $criteria->compare('t.school_id', Yii::app()->user->schoolId);
         $criteria->compare('t.is_deleted', 0);
         $criteria->compare('t.is_published', 1);
         $criteria->addCondition("DATE(start_date) <= '" . $cur_date . "' ");
@@ -354,6 +355,7 @@ class OnlineExamGroups extends CActiveRecord {
         $criteria->compare('t.is_deleted', 0);
         $criteria->compare('t.batch_id', $batch_id);
         $criteria->compare('t.is_published', 1);
+        $criteria->compare('t.school_id', Yii::app()->user->schoolId);
         if ($subject_id > 0) {
             $criteria->compare('t.subject_id', $subject_id);
         }
@@ -369,6 +371,7 @@ class OnlineExamGroups extends CActiveRecord {
         $criteria->compare('t.batch_id', $batch_id);
         $criteria->compare('t.is_deleted', 0);
         $criteria->compare('t.is_published', 1);
+        $criteria->compare('t.school_id', Yii::app()->user->schoolId);
         $criteria->compare('DATE(t.start_date)', $duedate);
         $criteria->order = "t.created_at DESC";
 
@@ -398,6 +401,7 @@ class OnlineExamGroups extends CActiveRecord {
         $criteria = new CDbCriteria();
         $criteria->select = 't.id,t.name,t.start_date,t.end_date,t.maximum_time,t.pass_percentage';
         $criteria->compare('t.batch_id', $batch_id);
+        $criteria->compare('t.school_id', Yii::app()->user->schoolId);
         $criteria->compare('t.is_deleted', 0);
         $criteria->compare('t.is_published', 1);
         if ($created_at) {
@@ -502,6 +506,7 @@ class OnlineExamGroups extends CActiveRecord {
         } else {
             $criteria->select = 't.id, t.name, t.start_date, t.end_date, t.maximum_time, t.pass_percentage, (SELECT COUNT(examgiven.id) FROM `online_exam_attendances` AS examgiven WHERE `examgiven`.`online_exam_group_id` = `t`.`id`) AS perticipated';
         }
+        $criteria->compare('t.school_id', Yii::app()->user->schoolId);
         if (!empty($subject_ids)) {
             $criteria->compare('t.subject_id', $subject_ids);
         }

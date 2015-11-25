@@ -310,6 +310,8 @@ class Freeusers extends CActiveRecord {
                 $user_info['paid_user']['profile_id'] = Yii::app()->user->profileId;
                 $user_info['paid_user']['is_parent'] = Yii::app()->user->isParent;
                 $user_info['paid_user']['is_teacher'] = Yii::app()->user->isTeacher;
+                
+                $user_info['paid_user']['school_type'] = $school_obj->getschooltype(Yii::app()->user->schoolId);
                 $user_info['paid_user']['school_id'] = Yii::app()->user->schoolId;
                 $user_info['paid_user']['school_name'] = $school_details->name;
 

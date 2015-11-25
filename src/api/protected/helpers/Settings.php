@@ -20,7 +20,7 @@ class Settings {
     public static $education_changes_life = 59;
     public static $notification_url = "http://www.champs21.com/front/ajax/send_paid_notification";
     public static $mail_url = "http://www.champs21.com/front/ajax/send_email_to_user_api";
-    
+    public static $free_domain_string = array("free");
     
     //spelling bee config
     public static $method = array("c", "p", "s", "m", "d");

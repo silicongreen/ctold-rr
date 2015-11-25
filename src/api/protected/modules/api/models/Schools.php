@@ -52,6 +52,8 @@ class Schools extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+                    
+                        'domain' => array(self::HAS_MANY, 'SchoolDomains', 'linkable_id' )
 		);
 	}
 
@@ -122,6 +124,35 @@ class Schools extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        public function getschooltype($id)
+        {
+            $criteria = new CDbCriteria();
+            $criteria->select = "id";
+            $criteria->compare("t.id", $id);
+            $criteria->with = array(
+                'domain' => array(
+                    'select' => 'domain.domain'
+                )
+            );
+            $school_domains = $this->find($criteria);
+            
+            $school_type = 1;
+            if($school_domains['domain'])
+            {
+                foreach($school_domains['domain'] as $value)
+                {
+                    foreach(Settings::$free_domain_string as $fs)
+                    {
+                        if(strpos($value->domain, $fs)!==false)
+                        {
+                            $school_type = 0;
+                        }        
+                    }    
+                }    
+            }
+            return $school_type;
+            
+        }
         
         public function getschoolbycode($schoolcode)
         {

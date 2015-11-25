@@ -739,12 +739,13 @@ class UserController extends Controller {
                         if($exam_category)
                         $response['data']['paid_user']['terms'] = $exam_category;
                     }
-
+                    
                     
                     $response['data']['paid_user']['profile_id'] = Yii::app()->user->profileId;
                     $response['data']['paid_user']['is_parent'] = Yii::app()->user->isParent;
                     $response['data']['paid_user']['is_teacher'] = Yii::app()->user->isTeacher;
                     $response['data']['paid_user']['school_id'] = Yii::app()->user->schoolId;
+                    $response['data']['paid_user']['school_type'] = $school_obj->getschooltype(Yii::app()->user->schoolId);
                     $response['data']['paid_user']['school_name'] = $school_details->name;
                     
                     

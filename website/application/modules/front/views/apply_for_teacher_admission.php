@@ -143,7 +143,7 @@
 
 
                                         <div class="form-group">
-                                            <label class="col-md-4 control-label" for="selectbasic">Select Shift Class and section (select if only class teacher)</label>
+                                            <label class="col-md-4 control-label" for="selectbasic">Shift Class and Section (Select if only class teacher)</label>
 
                                             <div class="col-md-4">
                                                 <?php echo get_paid_school_class($paid_school_id); ?>
@@ -189,7 +189,7 @@
 
 
                                         <div class="form-group">
-                                            <label class="col-md-4 control-label" for="school_code">Select Birth Date</label>  
+                                            <label class="col-md-4 control-label" for="school_code">Date of birth</label>  
                                             <div class="col-md-4">
                                                     <input data-date-format="yyyy-mm-dd" type="text" class="form-control datepicker" required=""  name="date_of_birth" value="<?php echo $post_data['date_of_birth']; ?>" >
 

@@ -35,12 +35,12 @@ $(document).ready(function(){
                                 }
 			},
                         first_name: {
-				minlength: 3,
+			
 				required: true
 			},
 		  
 			last_name: {
-				minlength: 3,
+				
 				required: true
 			},
 

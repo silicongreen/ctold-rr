@@ -75,7 +75,7 @@
 
                     <div class="col-md-12" style="padding:0px; margin-top: 30px;">
                             <h2 class="lead text-center editContent">
-                                    Select School
+                                    Register
                             </h2>
                     </div>
                     <div class="col-md-12">                            
@@ -99,7 +99,7 @@
                                             <input id="school_code" name="school_code" type="text" placeholder="school code" class="form-control input-md" >
                                             <input type="hidden" id="paid_school_id" name="paid_school_id" value="">
                                             <span class="school_name" style="color:green;font-size: 13px;"></span>
-                                            <span class="help-block"><font color="#ccc" size="1">Code supplied from your school for Sign Up</font></span>   
+                                            <span class="help-block"><font color="#ccc" size="1">Ask your school for the code</font></span>   
                                              <?php echo form_error('school_code', '<div class="error">', '</div>'); ?>
                                             
                                         </div>
@@ -108,7 +108,7 @@
                                             <label class="col-md-4 control-label" for="name">First Name</label>
                                             <div class="col-md-4">
                                                     <input type="text" value="<?php echo $this->input->post("first_name")?>" class="form-control input-xlarge" name="first_name" id="first_name" placeholder="First Name *" required>
-                                                    <span><font color="#ccc" size="1">More then 3 character</font></span>
+                                                    <span><font color="#ccc" size="1"></font></span>
                                                     <?php echo form_error('first_name', '<div class="error">', '</div>'); ?>
                                             </div>
                                     </div>
@@ -127,23 +127,23 @@
                                             <label class="col-md-4 control-label" for="name">Last Name</label>
                                             <div class="col-md-4">
                                             <input type="text" value="<?php echo $this->input->post("last_name")?>" class="form-control input-xlarge" name="last_name" id="last_name" placeholder="Last Name *" required>
-                                            <span><font color="#ccc" size="1">More then 3 character</font></span>
+                                            <span><font color="#ccc" size="1"></font></span>
                                             <?php echo form_error('last_name', '<div class="error">', '</div>'); ?>
                                             </div>
                                     </div>
                                     <div class="form-group">
-                                            <label class="col-md-4 control-label" for="name">Email</label>
+                                            <label class="col-md-4 control-label" for="name">Email Address</label>
                                             <div class="col-md-4">
                                             <input type="email" value="<?php echo $this->input->post("email")?>" class="form-control input-xlarge" id="email" name="email" id="email" placeholder="Email *" required>
-                                            <span><font color="#ccc" size="1">Valid Email like info@champs21.com</font></span>
+                                            <span><font color="#ccc" size="1">Valid Email Address. Ex : info@champs21.com</font></span>
                                             <?php echo form_error('email', '<div class="error">', '</div>'); ?>
                                             </div>
                                     </div>
                                     <div class="form-group">
-                                            <label class="col-md-4 control-label" for="name">Confirm Email</label>
+                                            <label class="col-md-4 control-label" for="name">Confirm Email Address</label>
                                             <div class="col-md-4">
                                             <input type="email" value="<?php echo $this->input->post("confirm_email")?>" class="form-control input-xlarge" name="confirm_email" id="confirm_email" placeholder="Confirm Email *" required>
-                                            <span><font color="#ccc" size="1">Match with Email</font></span>
+                                            <span><font color="#ccc" size="1">Match with Email Address</font></span>
                                             <?php echo form_error('confirm_email', '<div class="error">', '</div>'); ?> 
                                             </div>
                                     </div>

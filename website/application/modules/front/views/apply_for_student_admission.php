@@ -97,10 +97,10 @@
 
                                     <!-- Select Basic -->
                                     <div class="form-group">
-                                        <label class="col-md-5 control-label" for="school_code">Admission No</label>  
+                                        <label class="col-md-5 control-label" for="school_code">Unique Id</label>  
                                         <div class="col-md-4">
                                             <input type="text" name="admission_no" id="admission_no" required="" class="form-control input-md" placeholder="Admission No *" >                                            
-                                            <span class="help-block"><font color="#ccc" size="1">It will be use for generate your new username for school and champs21</font></span>
+                                            <span class="help-block"><font color="#ccc" size="1">Must be unique</font></span>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -111,7 +111,7 @@
                                     </div>
                                     
                                     <div class="form-group">
-                                        <label class="col-md-5 control-label" for="school_code">Admission date</label>  
+                                        <label class="col-md-5 control-label" for="school_code">Admission Date</label>  
                                         <div class="col-md-4">
 
                                                 <input data-date-format="yyyy-mm-dd" type="text" class="form-control datepicker" required=""  name="admission_date" value="<?php echo $post_data['admission_date']; ?>"  placeholder="yyyy-mm-dd">
@@ -128,7 +128,7 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="col-md-5 control-label" for="selectbasic">select Shift Class and section</label>
+                                        <label class="col-md-5 control-label" for="selectbasic">Shift Class and Section</label>
 
                                         <div class="col-md-4">
                                             <?php echo get_paid_school_class($paid_school_id); ?>
@@ -136,7 +136,7 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="col-md-5 control-label" for="school_code">Select Birth Date</label>  
+                                        <label class="col-md-5 control-label" for="school_code">Date of birth</label>  
                                         <div class="col-md-4">
                                                 <input data-date-format="yyyy-mm-dd" type="text" class="form-control datepicker" required=""  name="date_of_birth" placeholder="yyyy-mm-dd" >
 
@@ -200,7 +200,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group gfield choosebox-group" style="display:none;">
-                                        <label class="col-md-5 control-label" for="school_code">Guardian User Name</label>  
+                                        <label class="col-md-5 control-label" for="school_code">Guardian's User Name</label>  
                                         <div class="col-md-4">
                                             <input type="text" name="g_username" id="g_username" class="form-control input-md g_username" placeholder="Guardian User Name *">
                                             <input type="hidden" id="g_id" name="g_id" value="">
@@ -208,14 +208,14 @@
                                         </div>
                                     </div>
                                     <div class="form-group gfield" >
-                                        <label class="col-md-5 control-label" for="school_code">Guardian First Name</label>  
+                                        <label class="col-md-5 control-label" for="school_code">Guardian's First Name</label>  
                                         <div class="col-md-4">
                                             <input type="text" name="gfirst_name" id="gfirst_name" class="form-control input-md" placeholder="First Name *">
 
                                         </div>
                                     </div>
                                     <div class="form-group gfield" >
-                                        <label class="col-md-5 control-label" for="school_code">Guardian Last Name</label>  
+                                        <label class="col-md-5 control-label" for="school_code">Guardian's Last Name</label>  
                                         <div class="col-md-4">
                                             <input type="text" name="glast_name" id="glast_name" class="form-control input-md" placeholder="Last Name *">
 
@@ -229,7 +229,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group gfield" >
-                                        <label class="col-md-5 control-label" for="school_code">Guardian Password</label>  
+                                        <label class="col-md-5 control-label" for="school_code">Guardian's Password</label>  
                                         <div class="col-md-4">
                                             <input type="password" name="gpassword" id="gpassword" value="" class="form-control input-md" placeholder="Password *">
                                             <span class="help-block"><font color="#ccc" size="1">At least 6 character</font></span>
@@ -237,14 +237,14 @@
                                     </div>
                                     
                                     <div class="form-group gfield2 checkbox-group2" style="display:none;">
-                                        <label class="col-md-5 control-label" for="school_code">Guardian (2nd) Choose From Existing</label>  
+                                        <label class="col-md-5 control-label" for="school_code">Guardian Choose From Existing (2nd)</label>  
                                         <div class="col-md-4">
                                             <input type="checkbox" id="checkbox-2"  class="checkbox choose_guardian2"  name="choose_guardian2" value="choose">
                                             
                                         </div>
                                     </div>
                                     <div class="form-group gfield2 choosebox-group2" style="display:none;">
-                                        <label class="col-md-5 control-label" for="school_code">Guardian User Name (2nd)</label>  
+                                        <label class="col-md-5 control-label" for="school_code">Guardian's User Name (2nd)</label>  
                                         <div class="col-md-4">
                                             <input type="text" name="g_username2" id="g_username2" class="form-control input-md g_username2" placeholder="Guardian User Name *">
                                             <input type="hidden" id="g_id2" name="g_id2" value="">
@@ -252,14 +252,14 @@
                                         </div>
                                     </div>
                                     <div class="form-group gfield2" style="display:none;">
-                                        <label class="col-md-5 control-label" for="school_code">Guardian First Name (2nd)</label>  
+                                        <label class="col-md-5 control-label" for="school_code">Guardian's First Name (2nd)</label>  
                                         <div class="col-md-4">
                                             <input type="text" name="gfirst_name2" id="gfirst_name2" class="form-control input-md" placeholder="First Name *">
 
                                         </div>
                                     </div>
                                     <div class="form-group gfield2" style="display:none;">
-                                        <label class="col-md-5 control-label" for="school_code">Guardian Last Name (2nd)</label>  
+                                        <label class="col-md-5 control-label" for="school_code">Guardian's Last Name (2nd)</label>  
                                         <div class="col-md-4">
                                             <input type="text" name="glast_name2" id="glast_name2" class="form-control input-md" placeholder="Last Name *">
 
@@ -273,7 +273,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group gfield2" style="display:none;">
-                                        <label class="col-md-5 control-label" for="school_code">Guardian Password (2nd)</label>  
+                                        <label class="col-md-5 control-label" for="school_code">Guardian's Password (2nd)</label>  
                                         <div class="col-md-4">
                                             <input type="password" name="gpassword2" id="gpassword2" value="" class="form-control input-md" placeholder="Password *">
                                             <span class="help-block"><font color="#ccc" size="1">At least 6 character</font></span>

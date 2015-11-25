@@ -96,7 +96,7 @@
                                     <legend></legend>             
 
                                     <div class="form-group">
-                                        <label class="col-md-5 control-label" for="school_code">Select Birth Date</label>  
+                                        <label class="col-md-5 control-label" for="school_code">Date of birth</label>  
                                         <div class="col-md-4">
                                                 <input data-date-format="yyyy-mm-dd" type="text" id="date_of_birth" class="form-control datepicker" required=""  name="date_of_birth" value="<?php echo $post_data['date_of_birth']; ?>" placeholder="yyyy-mm-dd*" >
                                                 <?php echo form_error('dob', '<div class="error">', '</div>'); ?>

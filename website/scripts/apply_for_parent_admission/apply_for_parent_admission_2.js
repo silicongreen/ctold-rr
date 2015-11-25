@@ -24,12 +24,12 @@ $(document).ready(function(){
                                 }
 			},
 			s_first_name: {
-				minlength: 3,
+				
 				required: true
 			},
 		  
 			s_last_name: {
-				minlength: 3,
+				
 				required: true
 			},
 

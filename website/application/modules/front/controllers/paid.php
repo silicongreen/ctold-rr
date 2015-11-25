@@ -37,8 +37,8 @@ class paid extends MX_Controller {
                 $this->form_validation->set_rules('paid_school_id', 'School', 'required');
                 $this->form_validation->set_rules('school_code', 'School Code', 'required|callback_school_code_check');
                 
-                $this->form_validation->set_rules('first_name', 'First Name', 'required|min_length[3]');
-                $this->form_validation->set_rules('last_name', 'Last Name', 'required|min_length[3]');
+                $this->form_validation->set_rules('first_name', 'First Name', 'required');
+                $this->form_validation->set_rules('last_name', 'Last Name', 'required');
                 $this->form_validation->set_rules('email', 'Email', 'required|valid_email|callback_email_check');
                 $this->form_validation->set_rules('confirm_email', 'Confirm Email', 'required|valid_email|matches[email]');
                 $this->form_validation->set_rules('password', 'Password', 'required|min_length[6]');

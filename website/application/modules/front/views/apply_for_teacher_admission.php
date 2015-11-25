@@ -225,7 +225,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.14.0/jquery.validate.min.js"></script>
-<script src="<?php echo base_url('scripts/apply_for_teacher_admission/apply_for_teacher_admission.js'); ?>"></script>
+<script src="<?php echo base_url('scripts/apply_for_teacher_admission/apply_for_teacher_admission.js?v=1'); ?>"></script>
 <script type="text/javascript">
 document.domain = "champs21.com";
 $(document).ready(function () {

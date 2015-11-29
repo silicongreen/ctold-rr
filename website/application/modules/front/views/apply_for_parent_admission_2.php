@@ -72,8 +72,8 @@
             <div class="wrapper grey" >
 
                 <div class="container">			  
-                    <div class="col-md-12" style="padding:0px; margin-top: 40px;">
-                        <h2 class="lead text-center editContent">
+                    <div class="col-md-12" style="padding:0px; margin-top: 40px;" >
+                        <h2 class="lead text-center editContent"  style="color:#66D56A; font-weight: bold;">
                                 Sign Up For Guardian
                         </h2>
                     </div>
@@ -242,6 +242,7 @@
 </html>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="<?php echo base_url('scripts/iframe-resizer/js/iframeResizer.contentWindow.js?v=1'); ?>"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.14.0/jquery.validate.min.js"></script>
@@ -249,6 +250,7 @@
 
 <script type="text/javascript">
 //document.domain = "champs21.com";
+
 $(document).ready(function () {
     $(document).on("click", ".add_guardian", function () {
        
@@ -283,9 +285,8 @@ $(document).ready(function () {
         $(".choosebox-group input").attr("required",false);
         $(".choosebox-group2").hide();
         $(".choosebox-group2 input").attr("required",false);
-        
-        var height = $("#apply_for_parent_admission").height()+ 150;
-        window.parent.document.getElementById('iframe_change_height').style.height = height +'px';
+        var height_body = $("#apply_for_parent_admission_2").height()+ 100;
+        var timeout_var = setTimeout(function(){ window.parentIFrame.size(height_body); clearTimeout(timeout_var) }, 100);
     });
     $('.datepicker').datepicker();    
     
@@ -325,6 +326,9 @@ $(document).ready(function () {
             
             $('input[type=checkbox]').attr('required',false);  
         }
+        var height_body = $("#apply_for_parent_admission_2").height()+ 200;
+
+        var timeout_var2 = setTimeout(function(){ window.parentIFrame.size(height_body); clearTimeout(timeout_var2) }, 100);
         
     });
     $(document).on("click", ".choose_guardian2", function () {
@@ -349,6 +353,8 @@ $(document).ready(function () {
             
             $('input[type=checkbox]').attr('required',false);  
         }
+        var height_body = $("#apply_for_parent_admission_2").height()+ 200;
+        var timeout_var3 = setTimeout(function(){ window.parentIFrame.size(height_body); clearTimeout(timeout_var3) }, 100);
         
     });
 });    

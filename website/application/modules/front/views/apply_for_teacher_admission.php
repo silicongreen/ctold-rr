@@ -75,7 +75,7 @@
 
                 <div class="container">			  
                     <div class="col-md-12" style="padding:0px; margin-top: 40px;">
-                        <h2 class="lead text-center editContent">
+                        <h2 class="lead text-center editContent"  style="color:#66D56A; font-weight: bold;">
                                 Sign Up For Student
                         </h2>
                     </div>
@@ -222,6 +222,7 @@
 </html>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="<?php echo base_url('scripts/iframe-resizer/js/iframeResizer.contentWindow.js?v=1'); ?>"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.14.0/jquery.validate.min.js"></script>

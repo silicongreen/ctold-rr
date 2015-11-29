@@ -49,11 +49,11 @@
 
                 <div class="container">			  
                     <div class="col-md-12" style="padding:0px; margin-top: 40px;">
-                        <h2 class="lead text-center editContent"  style="color:#66D56A; font-weight: bold;">
+                        <h2 class="lead text-center editContent"  style="color:#66D56A; font-weight: bold; font-size:25px;">
                                 <?php if($error) :?>Sign Up Error For Teacher<?php else: ?>Congratulation!!! <?php endif; ?>
                         </h2>
                     </div>
-                    <div class="col-md-12">
+                    <div class="col-md-12" style="padding-left:0px; padding-right: 0px;">
                         <?php if($error) :?>					
                                 <div class="alert alert-danger">
                                   There is some Error.Try Again or Contact to the Admin.
@@ -62,8 +62,8 @@
                                 <div class="alert alert-success">
                                   Your Sign Up process is complete.Please Sign In.
                                 </div>
-                        <image src="/images/smile.png" style="position: absolute;" />
-                        <div class="col-md-8">
+                        <image src="/images/smile.png" id="smily" style="position: absolute;" />
+                        <div class="col-md-8  widthp_60">
                             <div class="row-fluid">
                                 <?php if($teacher['fulname'] != ""):?>
                                     <div class="form-group">
@@ -93,7 +93,7 @@
                             </div>
                         </div>
                         <?php endif; ?>
-                        <div class="form-group">                                            
+                        <div class="form-group" style="width: 60%;margin-left: 260px;">                                            
                             <div class="col-md-12">
                                 <p><span>Please <a style="color: #2CABE1;" href="<?php echo base_url('login'); ?>">Click here</a> to login into your account or go to the following url:</span></p>
                                 <a style="color: #2CABE1;" href="<?php echo base_url('login'); ?>"><?php echo base_url('login'); ?></a>
@@ -138,5 +138,27 @@
     width:100%;
     padding: 0px;
     margin: 0px;
+}
+#smily
+{
+    position: absolute;
+    margin-top: -30px;
+    
+}
+.widthp_60
+{
+    width: 60%;
+    margin-left: 200px;
+    margin-top: 45px;
+}
+.form-group {
+    margin-bottom: 15px;
+    width: 58%;
+    margin: 15px 130px;
+}
+.control-label
+{
+    width:50%;
+    float:left;
 }
 </style>

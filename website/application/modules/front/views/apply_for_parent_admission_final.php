@@ -50,7 +50,7 @@
                 <div class="container">			  
                     <div class="col-md-12" style="padding:0px; margin-top: 40px;">
                         <h2 class="lead text-center editContent"  style="color:#66D56A; font-weight: bold;">
-                                Sign Up For Guardian
+                                <?php if($error) :?>Sign Up Error For Guardian<?php else: ?>Congratulation!!! <?php endif; ?>
                         </h2>
                     </div>
                     <div class="col-md-12">
@@ -145,5 +145,12 @@
     color: red;
     padding: 5px 0px;
     font-weight: bold;
+}
+.alert-success
+{
+    color: #ffffff;
+    background-color: #61D766;
+    border-color: #d6e9c6;
+    text-align: center;
 }
 </style>

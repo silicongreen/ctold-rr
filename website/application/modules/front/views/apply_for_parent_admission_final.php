@@ -23,7 +23,7 @@
 	}
 
 	body {
-		margin: 0;
+		margin: 0px !important;
 	}
 
 	.plus {
@@ -62,6 +62,7 @@
                                 <div class="alert alert-success">
                                   Your Sign Up process is complete.Please Sign In.
                                 </div>
+                                <image src="/images/smile.png" style="position: absolute;" />
                                 <div class="col-md-8">
                                     <div class="row-fluid">
                                         <?php if($guardian['fulname'] != ""):?>
@@ -152,5 +153,6 @@
     background-color: #61D766;
     border-color: #d6e9c6;
     text-align: center;
+    padding:8px;
 }
 </style>

@@ -134,6 +134,8 @@
     border-color: #d6e9c6;
     text-align: center;
     padding:8px;
+    border-radius: 0px;
+    border: none;
 }
 .container
 {

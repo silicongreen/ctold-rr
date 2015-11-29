@@ -156,6 +156,14 @@
     border-color: #d6e9c6;
     text-align: center;
     padding:8px;
+    border-radius: 0px;
+    border: none;
+}
+.container
+{
+    width:100%;
+    padding: 0px;
+    margin: 0px;
 }
 #smily
 {

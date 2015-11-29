@@ -24,6 +24,8 @@
 
 	body {
 		margin: 0px !important;
+                float:left;
+                width: 100%;
 	}
 
 	.plus {
@@ -93,7 +95,7 @@
                             </div>
                         </div>
                         <?php endif; ?>
-                        <div class="form-group" style="width: 60%;margin-left: 260px;">                                            
+                        <div class="form-group" style="width: 60%;margin-left: 288px;">                                            
                             <div class="col-md-12">
                                 <p><span>Please <a style="color: #2CABE1;" href="<?php echo base_url('login'); ?>">Click here</a> to login into your account or go to the following url:</span></p>
                                 <a style="color: #2CABE1;" href="<?php echo base_url('login'); ?>"><?php echo base_url('login'); ?></a>
@@ -147,8 +149,8 @@
 }
 .widthp_60
 {
-    width: 60%;
-    margin-left: 200px;
+    width: 75%;
+    margin-left: 143px;
     margin-top: 45px;
 }
 .form-group {

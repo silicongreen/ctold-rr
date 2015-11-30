@@ -1,0 +1,124 @@
+<?php
+
+if (!defined('BASEPATH'))
+    exit('No direct script access allowed');
+
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+class Employee_category extends CI_Model {
+
+    public $table_name = 'employee_categories';
+    private $_now;
+    private $_school_id;
+
+    public function __construct() {
+        parent::__construct();
+        $this->db->set_dbprefix('');
+        $this->_now = date('Y-m-d H:i:s');
+    }
+
+    public function init($school_id = 0) {
+        $this->_school_id = $school_id;
+    }
+
+    /**
+     * @param array $param array('key' => 'value to the key filed', 'value' => 'value to the `value` filed')
+     * @return int last inserted id or bool false
+     * */
+    public function create($param) {
+        $data = $this->preprocess($param);
+        $this->clear();
+        
+        if(isset($data['error']) && !empty($data['error'])) {
+            return $data;
+        }
+        
+        return ($this->db->insert_batch($this->table_name, $data)) ? (int) $this->db->insert_id() : FALSE;
+    }
+
+    /**
+     * @param int $id
+     * @return assoc array data
+     * */
+    public function getDataById($id) {
+        $this->db->set_dbprefix('');
+        $this->db->select('*');
+        $this->db->where('id', $id);
+        $this->db->from($this->table_name);
+        $data = $this->db->get()->result_array();
+        return (!empty($data)) ? $data[0] : FALSE;
+    }
+
+    /**
+     * @param int $id
+     * @return bool true or false
+     * */
+    public function delete($id) {
+        $this->db->set_dbprefix('');
+        $this->db->where('id', $id);
+        return $this->db->delete($this->table_name);
+    }
+    
+    /**
+     * @param delete all records from table except System Admin
+     * @return nothing
+     * */
+    public function clear() {
+        $this->db->where('name <>', 'System Admin');
+        $this->db->where('school_id', $this->_school_id);
+        return $this->db->delete($this->table_name);
+    }
+
+    /**
+     * @param int $id id of the record to be updated
+     * @param array $param array('key' => 'value to the key filed', 'value' => 'value to the `value` filed')
+     * @return bool true or false
+     * */
+    public function update($id, $param) {
+        $this->db->set_dbprefix('');
+        $this->db->where('id', $id);
+        return $this->db->update($this->table_name, $param);
+    }
+
+    private function preprocess($data, $mode = 'create') {
+
+        $i = 0;
+        $response = array();
+        foreach ($data as $key => $value) {
+            preg_match('#\((.*?)\)#', $value, $emp_cate_prefix);
+
+            if (!empty($emp_cate_prefix)) {
+                $emp_cate_name = trim(preg_replace('#\((.*?)\)#', '', $value));
+                $emp_cate_prefix = trim($emp_cate_prefix[1]);
+
+                $response[$i]['name'] = $emp_cate_name;
+                $response[$i]['prefix'] = $emp_cate_prefix;
+                $response[$i]['school_id'] = $this->_school_id;
+
+                $response[$i] = array_merge($response[$i], $this->before_save());
+
+                $i++;
+            } else {
+                $response['error'] = 'No Employee Category code found. Must be like: Principle (PR).';
+                break;;
+            }
+            
+        }
+
+        return $response;
+    }
+
+    private function before_save() {
+        $data = array(
+            'created_at' => $this->_now,
+            'updated_at' => $this->_now,
+            'status' => 1
+        );
+
+        return $data;
+    }
+
+}

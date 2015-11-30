@@ -1,3 +1,6 @@
+<?php 
+$act = $_GET['local'];
+?>
 <div id="page" class="page" >
     <div class="item pricing" id="pricing_table2" style="margin-top:120px;">
 
@@ -5,19 +8,19 @@
 
             <div class="row">
 				<div class="col-md-12" style="padding:0px;background:#FFF;border-bottom:1px solid #ccc;">
-					<div class="col-md-6 pack_log" id="basic_log" style="text-align: center;padding:20px;cursor:pointer;">
+					<div class="col-md-6 pack_log" id="basic_log" style="<?php if($act == "premium"): ?>background:#F1F1F1;<?php endif;?>text-align: center;padding:20px;cursor:pointer;">
 						<i style="background:#0EB0C7;" class="fa-a fa fa-home"></i>
 						<h2 style="font-size:25px;">Basic</h2>
 						<p>Smart Free Start Up</p>
 					</div>
-					<div class="col-md-6 pack_log" id="premium_log" style="background:#F1F1F1;text-align: center;padding:20px;cursor:pointer;">
+					<div class="col-md-6 pack_log" id="premium_log" style="<?php if($act == "basic"): ?>background:#F1F1F1;<?php endif;?>text-align: center;padding:20px;cursor:pointer;">
 						<i style="background:#F56332;" class="fa-a fa fa-star"></i>
 						<h2 style="font-size:25px;">Premium</h2>
 						<p>$1 Per Month / Per Student</p>
 					</div>
 				</div>				
             </div><!-- /.row -->
-			<div class="row package-box" id="basic-box" style="padding:25px;">
+			<div class="row package-box <?php if($act == "premium"): ?>hide<?php endif;?>" id="basic-box" style="padding:25px;">
 				<div class="col-md-12"  style="">					
 					<div class="col-md-8" style="text-align: left;">
 						<h2 style="font-size:25px;font-weight:bold;margin-left:0px;">Create Your Free School...</h2>
@@ -94,7 +97,7 @@
 				</div>
 			</div>
 			
-			<div class="row hide package-box" id="primium-box" style="padding:25px;'">
+			<div class="row <?php if($act == "basic"): ?>hide<?php endif;?> package-box" id="primium-box" style="padding:25px;'">
 				
 				<div class="col-md-12"  style="">					
 					<div class="col-md-8" style="text-align: left;">

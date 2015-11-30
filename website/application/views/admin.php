@@ -15,9 +15,9 @@
 						<div class="col-sm-3" style="border:1px solid;margin-top:12px;"><span style=""></span></div>
 					</div>
 					<div class="col-sm-12" style="">
-					<div class="col-sm-6"><a href="<?php echo base_url()?>createschool/type?locale=basic" class="btn-basic-pack">
+					<div class="col-sm-6"><a href="<?php echo base_url()?>createschool/type?local=basic" class="btn-basic-pack">
 					Basic</a><span class="btn-basic-pack-text">Free</span></div> 
-					<div class="col-sm-6"><a href="<?php echo base_url()?>createschool/type?locale=premium" class="btn-primium-pack">
+					<div class="col-sm-6"><a href="<?php echo base_url()?>createschool/type?local=premium" class="btn-primium-pack">
 					Premium</a><span class="btn-primium-pack-text">$1 Per Month/Student</span></div> 
 					
 					

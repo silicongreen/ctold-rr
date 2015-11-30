@@ -23,7 +23,7 @@
 						<h2 style="font-size:25px;font-weight:bold;margin-left:0px;">Create Your Free School...</h2>
 					</div>
 					<div class="col-md-3" style="text-align: left;">				
-						<a href="<?php echo base_url()?>createschool/type?locale=basic" class="btn btn-info btn-basic" style="font-size:13px;padding:7px 20px;">
+						<a href="<?php echo base_url()?>createschool/userregister/free" class="btn btn-info btn-basic" style="font-size:13px;padding:7px 20px;">
 					Get Started Now</a>	
 					</div>
 				</div>
@@ -89,7 +89,7 @@
 					</div>	
 				</div>
 				<div class="col-md-12" style="text-align:center;margin-top:40px;margin-bottom:50px;">
-					<a href="<?php echo base_url()?>createschool/type?locale=basic" class="btn btn-info btn-basic">
+					<a href="<?php echo base_url()?>createschool/userregister/free" class="btn btn-info btn-basic">
 					Get Started Now</a>					
 				</div>
 			</div>
@@ -101,7 +101,7 @@
 						<h2 style="font-size:25px;font-weight:bold;margin-left:0px;">Create Your Premium School...</h2>
 					</div>
 					<div class="col-md-3" style="text-align: left;">				
-						<a href="<?php echo base_url()?>createschool/type?locale=basic" class="btn btn-danger btn-basic" style="font-size:13px;padding:7px 20px;">
+						<a href="<?php echo base_url()?>createschool/userregister/paid" class="btn btn-danger btn-basic" style="font-size:13px;padding:7px 20px;">
 					Get Started Now</a>	
 					</div>
 				</div>
@@ -236,7 +236,7 @@
                                     </div>
 				</div>
 				<div class="col-md-12" style="text-align:center;margin-top:40px;margin-bottom:50px;">
-					<a href="<?php echo base_url()?>createschool/type?locale=basic" class="btn btn-danger btn-basic">
+					<a href="<?php echo base_url()?>createschool/userregister/paid" class="btn btn-danger btn-basic">
 					Get Started Now</a>					
 				</div>
 			</div>

@@ -104,11 +104,9 @@
 <div id="preloader" style="width: 100%; height: 100%; position: fixed; top: 0px; left: 0px; background: transparent url(<?php echo base_url();?>images/80percentwhite.png) repeat top left; z-index: 999999;">
     <img src="<?php echo base_url();?>images/preloader.gif" alt="" title="" />
     <div class="counter"><span id="count">0</span>&nbsp;/&nbsp;150</div>
-<<<<<<< HEAD
+
     <div id="startinfotext"><div id="c735" class="csc-default"><div class="csc-text"><p class="bodytext"><b>Loading...</b></p></div></div></div>
-=======
-    <div id="startinfotext"><div id="c735" class="csc-default"><div class="csc-text"><p class="bodytext"></p></div></div></div>
->>>>>>> classtune edit 1
+
 </div>
 
 

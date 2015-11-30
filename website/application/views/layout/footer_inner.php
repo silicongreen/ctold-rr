@@ -89,26 +89,6 @@
     </div>
 </div>
 
-<<<<<<< HEAD
-<div id="scrollinfo">
-    <div id="c248" class="csc-default"><div class="csc-text"><p class="bodytext"><br />BITTE SCROLLEN</p></div></div>
-    <div id="cursor">
-        &nbsp;
-    </div>
-</div>
-
-<div id="ipadinfo">
-    <div class="ipadinfoPad">
-        <div id="c823" class="csc-default"><div class="csc-text"><p class="bodytext">Bitte drehen Sie Ihr Ipad&nbsp;in das Querformat fÃ¼r eine optimale Darstellung.</p></div></div>
-    </div>
-</div>
-</div>
-
-<div id="awwwards" class="left black">
-    <a href="http://www.awwwards.com" target="_blank">best websites of the world</a>
-=======
-
->>>>>>> classtune edit 1
 </div>
 
 

@@ -1257,7 +1257,7 @@ $(document).ready(function () {
 	});
 	
 	$('#cni_up').click(function () {
-		$('html, body').animate({scrollTop: 0, 500 );
+		$('html, body').animate({scrollTop: 0}, 500 );
 	});
 	$('#cni_down').click(function () {
 		alert(2);

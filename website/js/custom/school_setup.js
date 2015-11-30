@@ -67,10 +67,10 @@ $(document).ready(function () {
             });
 
         },
-//        onTabClick: function (tab, navigation, index) {
-//            alert('Save or skip to go to next step.');
-//            return false;
-//        }
+        onTabClick: function (tab, navigation, index) {
+            alert('Save or skip to go to next step.');
+            return false;
+        }
     });
 
     $(document).off('click', '.add_txt_field').on('click', '.add_txt_field', function () {

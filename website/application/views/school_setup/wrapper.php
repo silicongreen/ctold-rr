@@ -108,6 +108,7 @@
         float: left !important;
         font-size: 12px !important;
         line-height: inherit !important;
+        padding: 0 15px 10px;
         width: 100% !important;
     }
     #class_names_container .alert, .td_class_names_container .alert {
@@ -115,7 +116,7 @@
         border: 2px solid #ddd;
         color: #666;
         margin-right: 5px;
-        padding: 15px 16px 11px 5px;
+        padding: 0;
     }
     #class_names_container .alert:last-child, .td_class_names_container .alert:last-child  {
         margin-right: 0;
@@ -124,7 +125,7 @@
         margin-bottom: 8px;
     }
     #class_names_container .alert .close, .td_class_names_container .alert .close {
-        right: -10px;
+        right: 0;
     }
     .assign_to_class {
         margin-left: 10px;
@@ -165,7 +166,7 @@
         line-height: 0.5;
     }
     .alert .close {
-        line-height: 3px;
+        line-height: 40px;
     }
     #header20 {
         padding-bottom: 50px;

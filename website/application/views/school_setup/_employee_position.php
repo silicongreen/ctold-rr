@@ -15,7 +15,7 @@
     <?php if (!empty($data)) { ?>
         <div class="col-lg-5 panel panel-default">
             
-            <?php var_dump($data);exit; foreach ($data as $row) { ?>
+            <?php foreach ($data as $row) { ?>
                 <div class="form-group">
                     <label class="col-lg-12"><input name="checkbox" class="my_checkbox checkbox-inline right-margin-10" type="checkbox" value="<?php echo $row['value']; ?>"><?php echo $row['value']; ?></label></label>
                 </div>

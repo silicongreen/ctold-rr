@@ -93,6 +93,12 @@
 
 
 <style type="text/css">
+    .glyphicon {
+        top: 0;
+    }
+    input, textarea {
+        margin-top: inherit;
+    }
     #subjectModal .modal-body {
         padding: 20px 24px 0;
     }

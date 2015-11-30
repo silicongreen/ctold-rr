@@ -132,7 +132,7 @@
                     animationLoop: false,
                     slideshow: true,
                     itemWidth: 140,
-                    itemMargin: 5,
+                    itemMargin: 0,
                     asNavFor: '#slider'
                 });
 

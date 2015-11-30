@@ -27,7 +27,7 @@ class Createschool extends CI_Controller {
     public function initial_setup($school_id = 0) {
         $this->load->config('create_school');
         $data['setup_forms'] = $this->config->config['setup_forms'];
-        
+
         $data['school_id'] = $school_id;
         $this->load_view('school_setup/wrapper', $data);
     }
@@ -43,19 +43,27 @@ class Createschool extends CI_Controller {
         $this->load->config('create_school');
         $config = $this->config->config['setup_forms'];
         $form_name = $config[$page_index];
-        
+
         $school_id = $this->input->post('school_id');
-        
+
         $this->load->model($form_name, 'model');
 
         if (method_exists($this->model, 'getCategories')) {
             $this->model->init($school_id);
-            $data['categories'] = $this->model->formatForDropdown($this->model->getCategories());
+            
+            $categories_data = $this->model->getCategories();
+            if($categories_data !== FALSE) {
+                $data['categories'] = $this->model->formatForDropdown($categories_data);
+            }
         }
 
         if (method_exists($this->model, 'getCourses')) {
             $this->model->init($school_id);
-            $data['courses'] = $this->model->formatForDropdown($this->model->getCourses());
+            
+            $course_data = $this->model->getCourses();
+            if($course_data !== FALSE) {
+                $data['courses'] = $this->model->formatForDropdown($course_data);
+            }
         }
 
         $this->load->model('defaults');
@@ -79,7 +87,7 @@ class Createschool extends CI_Controller {
         $school_id = $this->input->post('school_id');
         unset($_POST['school_id']);
         unset($_POST['checkbox']);
-        
+
         if (!empty($_POST)) {
 
             $response = array();
@@ -91,20 +99,18 @@ class Createschool extends CI_Controller {
                 $this->model->init($school_id);
 
                 $data = $this->model->create($_POST[$model_name[1]]);
-                
+
                 if (!isset($data['error']) && ($data != FALSE)) {
 
                     $this->load->model($model_name[0], 'model_1');
                     $this->model_1->init($school_id);
 
                     $data = $this->model_1->create($_POST[$model_name[0]]);
-                   
                 }
-                
             } else {
                 $this->load->model($model_name[0], 'model');
                 $this->model->init($school_id);
-                
+
                 $data = $this->model->create($_POST[$model_name[0]]);
             }
 
@@ -196,8 +202,11 @@ class Createschool extends CI_Controller {
 
         if ($data !== FALSE) {
 
+            $this->load->library('school');
+
             $data['i_tmp_school_created_data_id'] = $i_tmp_school_created_data_id;
             $data['i_free_user_id'] = $i_free_user_id;
+            $data['ar_free_user_data'] = $this->school->getFreeUserDataById($i_free_user_id);
 
             $this->load_view('success', $data);
         } else {

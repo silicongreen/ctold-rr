@@ -13,8 +13,8 @@
 
         <base href="<?php base_url()?>" />
         
-        <link rel="shortcut icon" href="<?php base_url();?>images/favicon/32x32.png" type="image/x-icon; charset=binary" />
-        <link rel="icon" href="<?php base_url();?>images/favicon/32x32.png" type="image/x-icon; charset=binary" />
+        <link rel="shortcut icon" href="<?php echo base_url();?>images/favicon/32x32.png" type="image/x-icon; charset=binary" />
+        <link rel="icon" href="<?php echo base_url();?>images/favicon/32x32.png" type="image/x-icon; charset=binary" />
         
         <title>Classtune</title>
         <meta name="generator" content="CHAMPS21" />
@@ -46,7 +46,7 @@
         </script>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" type="text/css" media="all" />
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>css/default.css" />
-        <link rel="stylesheet" type="text/css" href="http://www.classtune.dev/css/flexslider.css" />
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>css/flexslider.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css" type="text/css" media="all" />
         
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>

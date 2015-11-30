@@ -1,13 +1,12 @@
 <form class="form-horizontal" id="<?php echo $form_name; ?>">
 
+    <div class="form-group">
+        <h4 class="col-lg-12 no-padding">Setup Employee Category</h4>
+    </div>
+
+    <div class="clearfix"></div>
+
     <?php if (!empty($data)) { ?>
-
-        <div class="form-group">
-            <h4 class="col-lg-12 no-padding">Setup Employee Category</h4>
-        </div>
-
-        <div class="clearfix"></div>
-
         <div class="col-lg-5 panel panel-default">
             <?php foreach ($data as $row) { ?>
 
@@ -17,22 +16,23 @@
 
             <?php } ?>
         </div>
-
-        <div class="col-lg-5 panel panel-default" id="extra_vaules">
-            <table class="table table-hover table-condensed table-bordered table-responsive">
-                <thead>
-                    <tr>
-                        <th>Category Name</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                </tbody>
-            </table>
-        </div>
-
-
     <?php } ?>
+
+    <div class="col-lg-5 panel panel-default" id="extra_vaules">
+        <table class="table table-hover table-condensed table-bordered table-responsive">
+            <thead>
+                <tr>
+                    <th>Category Name</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+
+
+
 
 </form>

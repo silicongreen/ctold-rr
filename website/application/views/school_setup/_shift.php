@@ -19,7 +19,7 @@
                             <input class="form-control additional_shift_txt" type="text" value="" placeholder="Enter Shift Name" />
                             <p>Press "Enter" when done</p>
                         </div>-->
-            
+
             <div class="form-group">
                 <label class="col-lg-12"><input name="checkbox" class="my_checkbox checkbox-inline right-margin-10" type="checkbox" value="Morning">Morning</label>
             </div>

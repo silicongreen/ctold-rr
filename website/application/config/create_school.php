@@ -1,18 +1,18 @@
 <?php
 
 $config['create_school'] = array(
-    'main_domain' => 'champs21.com',
+    'main_domain' => 'classtune.com',
     'default_import' => TRUE,
     'import' => 'default_class_seeds, default_emp_category_seeds, default_emp_dept_seeds, default_emp_grade_seeds, default_exam_grade_seeds',
 );
 
 $config['plus_api'] = array(
-    'url' => "http://plus.champs21.com/",
+    'url' => "http://plus.classtune.com/",
 );
 
 $config['custom_urls'] = array(
-    'activation' => "http://classtune.champs21.com/activation",
-    'login' => "http://classtune.champs21.com/login",
+    'activation' => "http://classtune.classtune.com/activation",
+    'login' => "http://classtune.classtune.com/login",
 );
 
 $config['setup_forms'] = array(

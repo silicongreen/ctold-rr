@@ -163,7 +163,7 @@
                         <img src="<?php echo base_url(); ?>slider/Slide-1/Layer-3/boy.png" alt="" title="" width="180" />
 
                         <div class="texticon" style="top: -5px; left: 120px;">
-                            <div class="text_l text_layer">
+                            <div class="text_l text_layer" style="display:block;">
                                 <div class="cb_top">&nbsp;</div>
                                 <div class="cb_middle">
                                     <div class="cb_middlePad">

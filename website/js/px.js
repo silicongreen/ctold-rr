@@ -1260,7 +1260,12 @@ $(document).ready(function () {
 		$('html, body').animate({scrollTop: 0}, 500 );
 	});
 	$('#cni_down').click(function () {
-		alert(2);
+		$('#imagesWrap, #thanks_endWrap').show();
+		$('#beforeWrap, #startWrap').hide();
+		$('#cronWrap').css('top', '0px');
+		$('#imagesWrap').css('top', cronheight+'px');		
+		$(window).scrollTop(maxscrolltop-450);
+		hidestat = 1;
 	});
 	
 	

@@ -655,14 +655,14 @@ class UserController < ApplicationController
       else
         champs21_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
         if champs21_config['from'] == "remote"
-          redirect_to "http://www.champs21.com/logout_user" and return
+          redirect_to "http://www.classtune.com/login" and return
         end
         redirect_to :controller => 'user', :action => 'login' and return
       end
     else
         champs21_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
         if champs21_config['from'] == "remote"
-          redirect_to "http://www.champs21.com/logout_user" and return
+          redirect_to "http://www.classtune.com/login" and return
         end
         redirect_to :controller => 'user', :action => 'login' and return
     end

@@ -1,0 +1,64 @@
+<%  if check_free_school? %>
+<div  id="notice_data_box">
+  <img src="images/premium.png" />
+</div>
+<% else %>
+
+  <div class="partial_notice" id="notice_data_box">
+    <%= link_to "<h2 class='f2'>NOTICE</h2>", :controller => "news", :action => "all" %> 
+    <div class="link_bar">
+      <ul class="champs21_feed">
+              <li class="<%= if type == 'all' then "active" end unless type.nil? %>">              
+                <%= link_to_remote "<div class='champs21_feed_item_box' style='width:20%'>All</div>",
+                :update => "notice_data_box",
+                :before => "Element.show('notice_loader')",
+                :success => "Element.hide('notice_loader')",
+                :url => {:controller=>"dashboards",:action => "notice_main", :category =>"all"} %>
+              </li>  
+              <li class="<%= if type == 'general' then "active" end unless type.nil? %>">
+                <%= link_to_remote "<div class='champs21_feed_item_box'>Academic</div>",
+                :update => "notice_data_box",
+                :before => "Element.show('notice_loader')",
+                :success => "Element.hide('notice_loader')",
+                :url => {:controller=>"dashboards",:action => "notice_main", :category =>"general"} %>              
+              </li>  
+              <li class="<%= if type == 'others' then "active" end unless type.nil? %>">
+                <%= link_to_remote "<div class='champs21_feed_item_box' style='width:48%'>Extra-Academic</div>",
+                :update => "notice_data_box",
+                :before => "Element.show('notice_loader')",
+                :success => "Element.hide('notice_loader')",
+                :url => {:controller=>"dashboards",:action => "notice_main", :category =>"others"} %>              
+              </li>  
+          </ul>
+    </div>
+    <div class="loader-image" id="notice_loader">
+      <%= image_tag("loader2.gif",
+        :align => "absmiddle",
+        :border => 0,
+        :id => "notice_loader",
+        :style =>"display: none;" ) %>
+    </div>
+    <div class="notice_data_box">     
+      <% unless news.nil? %>
+        <% news.each do |n| %>
+      <div class="portlet-subcontent">           
+        <div class="timetable_right">
+          <div class="subcontent-header themed_text"><%=  link_to n.title, :controller => 'news', :action => 'view', :id => n.id%></div>
+          <div class="subcontent-date">Posted at : <%= n.created_at.strftime("%A, %d %B %Y %l:%M %p") %></div>  
+          <% if n.created_at != n.updated_at %>
+          <div class="subcontent-info">Updated at : <%= n.updated_at.strftime("%A, %d %B %Y %l:%M %p") %> </div>   
+          <% end %>
+        </div>       
+      </div>
+      <% end %>
+
+      <div class="viewmore">
+        <%=  link_to "View More", :controller => 'news', :action => 'all' %><br/><br/>
+      </div>
+   <% else %>
+   <div class="portlet-subcontent">    
+     No Notice Submitted
+   </div>  
+   <% end  %>
+   </div>
+<% end %>

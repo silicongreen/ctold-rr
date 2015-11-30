@@ -1,7 +1,7 @@
 <div id="imagesWrap">
     <div id="images">
         <div id="worldmap">
-            <img src="<?php echo base_url(); ?>images/test/CLASSTUNE-JOIN-TODAY.png" alt="" title="" width="100%" />
+            <img src="<?php echo base_url(); ?>images/cover/web-device.png" alt="" title="" width="100%" />
         </div>
 
     </div>
@@ -93,7 +93,7 @@
 <script type="text/javascript" src="<?php echo base_url(); ?>js/jquery_timers.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>js/jquery.stellar.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>js/jquery.mousewheel.min.js"></script>
-<script src="http://diary21.champs21.com/js/bootstrap.min.js"></script>
+<script src="<?php echo base_url(); ?>js/bootstrap.min.js"></script>
 
 
 

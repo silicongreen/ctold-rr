@@ -1,7 +1,7 @@
 <div id="imagesWrap">
     <div id="images">
         <div id="worldmap">
-            <img src="<?php echo base_url(); ?>images/test/CLASSTUNE-JOIN-TODAY.png" alt="" title="" width="100%" />
+            <img src="<?php echo base_url(); ?>images/cover/web-device.png" alt="" title="" width="100%" />
         </div>
 
     </div>
@@ -101,35 +101,25 @@
     </div>
 </div>
 
-<div id="preloader" style="width: 100%; height: 100%; position: fixed; top: 0px; left: 0px; background: transparent url(http://www.150-years-geze.com/fileadmin/geze/templates/images/80percentwhite.png) repeat top left; z-index: 999999;">
-    <img src="http://www.150-years-geze.com/fileadmin/geze/templates/images/preloader.gif" alt="" title="" />
+<div id="preloader" style="width: 100%; height: 100%; position: fixed; top: 0px; left: 0px; background: transparent url(<?php echo base_url();?>images/80percentwhite.png) repeat top left; z-index: 999999;">
+    <img src="<?php echo base_url();?>images/preloader.gif" alt="" title="" />
     <div class="counter"><span id="count">0</span>&nbsp;/&nbsp;150</div>
+<<<<<<< HEAD
     <div id="startinfotext"><div id="c735" class="csc-default"><div class="csc-text"><p class="bodytext"><b>Loading...</b></p></div></div></div>
+=======
+    <div id="startinfotext"><div id="c735" class="csc-default"><div class="csc-text"><p class="bodytext"></p></div></div></div>
+>>>>>>> classtune edit 1
 </div>
 
-<div id="scrollinfo">
-    <div id="c248" class="csc-default"><div class="csc-text"><p class="bodytext"><br />BITTE SCROLLEN</p></div></div>
-    <div id="cursor">
-        &nbsp;
-    </div>
+
 </div>
 
-<div id="ipadinfo">
-    <div class="ipadinfoPad">
-        <div id="c823" class="csc-default"><div class="csc-text"><p class="bodytext">Bitte drehen Sie Ihr Ipad&nbsp;in das Querformat fÃ¼r eine optimale Darstellung.</p></div></div>
-    </div>
-</div>
-</div>
-
-<div id="awwwards" class="left black">
-    <a href="http://www.awwwards.com" target="_blank">best websites of the world</a>
-</div>
 
 
 <script type="text/javascript" src="<?php echo base_url(); ?>js/jquery_timers.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>js/jquery.stellar.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>js/jquery.mousewheel.min.js"></script>
-<script src="http://diary21.champs21.com/js/bootstrap.min.js"></script>
+<script src="<?php echo base_url();?>js/bootstrap.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>js/px.js"></script>
 
 

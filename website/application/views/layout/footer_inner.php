@@ -1,7 +1,7 @@
 <div id="imagesWrap" style="top:1300px;">
     <div id="images">
         <div id="worldmap">
-            <img src="<?php echo base_url(); ?>images/test/CLASSTUNE-JOIN-TODAY.png" alt="" title="" width="100%" />
+            <img src="<?php echo base_url(); ?>images/cover/web-device.png" alt="" title="" width="100%" />
         </div>
 
     </div>
@@ -89,6 +89,7 @@
     </div>
 </div>
 
+<<<<<<< HEAD
 <div id="scrollinfo">
     <div id="c248" class="csc-default"><div class="csc-text"><p class="bodytext"><br />BITTE SCROLLEN</p></div></div>
     <div id="cursor">
@@ -105,13 +106,16 @@
 
 <div id="awwwards" class="left black">
     <a href="http://www.awwwards.com" target="_blank">best websites of the world</a>
+=======
+
+>>>>>>> classtune edit 1
 </div>
 
 
 <script type="text/javascript" src="<?php echo base_url(); ?>js/jquery_timers.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>js/jquery.stellar.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>js/jquery.mousewheel.min.js"></script>
-<script src="http://diary21.champs21.com/js/bootstrap.min.js"></script>
+<script src="<?php echo base_url(); ?>js/bootstrap.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>js/jquery.flexslider.js"></script>	
 
 

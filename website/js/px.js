@@ -1255,6 +1255,18 @@ $(document).ready(function () {
 	$('#startWrap').oneTime(90000, 'windowload_backup', function () {
 		windowload();
 	});
+	
+	$('#cni_up').click(function () {
+		$('html, body').animate({scrollTop: 0, 500 );
+	});
+	$('#cni_down').click(function () {
+		alert(2);
+	});
+	
+	
+	
+	
+	
 });
 
 /*if (ie) {

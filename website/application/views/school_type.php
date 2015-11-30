@@ -18,7 +18,15 @@
 				</div>				
             </div><!-- /.row -->
 			<div class="row package-box" id="basic-box" style="padding:25px;">
-				<h2 style="font-size:25px;font-weight:bold;margin-left:30px;">Create Your Free School...</h2>
+				<div class="col-md-12"  style="">					
+					<div class="col-md-8" style="text-align: left;">
+						<h2 style="font-size:25px;font-weight:bold;margin-left:0px;">Create Your Free School...</h2>
+					</div>
+					<div class="col-md-3" style="text-align: left;">				
+						<a href="<?php echo base_url()?>createschool/type?locale=basic" class="btn btn-info btn-basic" style="font-size:13px;padding:7px 20px;">
+					Get Started Now</a>	
+					</div>
+				</div>
 				<div class="col-md-12"  style="">					
                                     <div class="col-md-6" style="text-align: left;">
                                         <h3 style="color:#0EB0C9;font-size:17px;margin-left:1px;">Features for Students</h3>
@@ -87,7 +95,16 @@
 			</div>
 			
 			<div class="row hide package-box" id="primium-box" style="padding:25px;'">
-				<h2 style="font-size:25px;font-weight:bold;margin-left:30px;">Create Your Premium School...</h2>
+				
+				<div class="col-md-12"  style="">					
+					<div class="col-md-8" style="text-align: left;">
+						<h2 style="font-size:25px;font-weight:bold;margin-left:0px;">Create Your Premium School...</h2>
+					</div>
+					<div class="col-md-3" style="text-align: left;">				
+						<a href="<?php echo base_url()?>createschool/type?locale=basic" class="btn btn-danger btn-basic" style="font-size:13px;padding:7px 20px;">
+					Get Started Now</a>	
+					</div>
+				</div>
 				<div class="col-md-12"  style="">		
                                      <h3 style="color:#F56332;font-size:17px;margin-left:15px;">Features for Student</h3>
                                     <div class="col-md-6" style="text-align: left;">                                       

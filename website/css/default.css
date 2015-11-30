@@ -247,7 +247,7 @@ input.radio { margin:0; }
 .hitem .video_layer H5 { font-size: 15px; color: #004389; margin: 0px; line-height: 20px; padding: 0px 0px 8px 0px; }
 .hitem .abspos { position: absolute; }
 /*#cronnav { position: absolute; top: 750px; left: 115px; color: #444444; font-size: 20px; display: none; margin: 0px; }*/
-#cronnav { position: fixed; top: 620px; left: 44%; color: #444444; font-size: 12px; display: none; margin: 0px 0px 0px -473px; }
+#cronnav { position: fixed; top: 620px; left: 44%; color: #444444; font-size: 12px; display: none; margin: 0px 0px 0px -500px; }
 #cronnav LI { float: left; margin: 0px; margin: 0px 20px 0px 0px; }
 #cronnav LI SPAN { border: 0px none; padding: 2px 0px 0px 0px; cursor: pointer; }
 #cronnav LI.act SPAN { border-top: 3px solid #444444; cursor: default; }
@@ -640,7 +640,25 @@ textarea {
     font-size:20px;
     font-weight:bold;
 }
-
+i.faq
+{
+    color:#fff;
+	background-color:#64B846;
+    font-size:15px;
+    padding: 5px;
+    display: inline-block;
+	cursor:pointer;
+    -moz-border-radius: 100px;
+    -webkit-border-radius: 100px;
+    border-radius: 100px;
+    -moz-box-shadow: 0px 0px 2px #888;
+    -webkit-box-shadow: 0px 0px 2px #888;
+    box-shadow: 0px 0px 2px #888;
+}
+i.faq:hover
+{
+	background-color:#9AFC76;
+}
 /** NISLAM **/
 .center {
     float: none;

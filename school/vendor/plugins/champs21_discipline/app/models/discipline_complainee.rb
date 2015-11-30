@@ -1,3 +1,0 @@
-class DisciplineComplainee < DisciplineParticipation
-  
-end

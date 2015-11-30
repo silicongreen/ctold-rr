@@ -1,2 +1,0 @@
-class DisciplineMaster < DisciplineParticipation
-end

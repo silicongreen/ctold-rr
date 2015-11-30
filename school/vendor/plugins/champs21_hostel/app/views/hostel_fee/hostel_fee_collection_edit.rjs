@@ -1,3 +1,0 @@
-page.replace_html 'modal-box', :partial => 'hostel_fee_collection_edit'
-page << "Modalbox.show($('modal-box'), {title: ''});"
-

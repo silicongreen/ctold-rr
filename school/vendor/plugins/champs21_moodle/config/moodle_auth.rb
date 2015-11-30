@@ -1,5 +1,0 @@
-authorization do
-
- 
-end
-

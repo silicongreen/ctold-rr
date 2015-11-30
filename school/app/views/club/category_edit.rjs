@@ -1,4 +1,0 @@
-
-page.replace_html 'event-category-form', :partial => 'event_category_edit_form'
-page.replace_html 'event-category-list',""
-page.replace_html 'flash_box', :text => ""

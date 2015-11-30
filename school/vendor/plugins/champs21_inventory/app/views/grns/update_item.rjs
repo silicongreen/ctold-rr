@@ -1,1 +1,0 @@
-page << "$('#{@i}').up(2).select('.nested_qty').first().value = '#{precision_label(@price)}'"

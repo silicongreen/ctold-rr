@@ -1,5 +1,0 @@
-if @exam_groups.empty?
-  page.replace_html 'syllabus', :partial => 'subjects'
-else
-  page.replace_html 'syllabus', :partial => 'subjects'
-end

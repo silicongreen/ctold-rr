@@ -1,0 +1,8 @@
+if @error
+  page.replace_html 'flash-box-popup', :text=>"<p class='flash-msg'>#{flash[:notice]}</p>" unless flash[:notice].nil?
+  page << "Modalbox.hide();"
+else
+	page.replace_html 'modal-box', :partial => 'assign_to_class'
+  page << "Modalbox.show($('modal-box'), {title: '#{t('assign_to_class')}', width: 500});"
+  page.visual_effect(:highlight, 'form-errors')
+end

@@ -1,0 +1,11 @@
+@font-face {
+    font-family: 'Agency FB';
+    src: url('./agency_fb.eot');
+    src: local('Agency FB'), url('./agency_fb.woff') format('woff'), url('./agency_fb.ttf') format('truetype');
+}
+/* use this class to attach this font to any element i.e. <p class="fontsforweb_fontid_11296">Text with this font applied</p> */
+body {
+    font-family: 'Agency FB' !important;
+}
+
+/* Font downloaded from FontsForWeb.com */

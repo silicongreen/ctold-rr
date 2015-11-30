@@ -1,0 +1,214 @@
+#page-yeild {
+    float: left;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.redactor_editor {
+    background-color: #f8f8fa !important;
+    height: 192px;
+    width: 98.9% !important;
+}
+.redactor_toolbar{
+    width: 99.75%;
+}
+.redactor_box{
+    float: left;
+    padding-top: 10px;
+    padding: 0 !important;
+    width: 100% !important;
+}
+/********My Leaves*********/
+.wrapper a:hover > .my_leave_row .my_leave_info_wrapper {
+    background-color: #f8f8f8;
+    transition: all 0.4s ease 0s;
+    -webkit-transition: all 0.4s ease 0s;
+    -moz-transition: all 0.4s ease 0s;
+    -ms-transition: all 0.4s ease 0s;
+    -o-transition: all 0.4s ease 0s;
+}
+.my_leave_row {
+    border-bottom: 1px solid #e7ecee;
+    float: left;
+    width: 100%;
+}
+.my_leave_info_wrapper {
+    border-right: 1px solid #e7ecee;
+    float: left;
+    padding: 20px;
+    width: 89%;
+}
+.student_info {
+    padding: 5px 0;
+}
+.student_name {
+    color: #505761;
+}
+.student_addition_info {
+    color: #868a8b;
+}
+.leave_info {
+    color: #868a8b;
+    padding: 5px 0;
+}
+.my_leave_status_wrapper {
+    float: right;
+    margin: 0;
+    padding: 0;
+}
+.my_leave_status_wrapper div {
+    padding: 43px 0;
+    width: 100%;
+}
+.my_leave_status_wrapper div.pending {
+    background-color: #fff;
+}
+.my_leave_status_wrapper div.approved {
+    background-color: #1094D3;
+    box-shadow: -4px 0 0 0 #0A73A5;
+    -moz-box-shadow: -4px 0 0 0 #0A73A5;
+    -webkit-box-shadow: -4px 0 0 0 #0A73A5;
+    -ms-box-shadow: -4px 0 0 0 #0A73A5;
+    -o-box-shadow: -4px 0 0 0 #0A73A5;
+}
+.my_leave_status_wrapper div.declined {
+    background-color: #99030A;
+    box-shadow: -4px 0 0 0 #6A0304;
+    -moz-box-shadow: -4px 0 0 0 #6A0304;
+    -webkit-box-shadow: -4px 0 0 0 #6A0304;
+    -ms-box-shadow: -4px 0 0 0 #6A0304;
+    -o-box-shadow: -4px 0 0 0 #6A0304;
+}
+.my_leave_status_wrapper div img {
+    height: 40px;
+    padding: 0 15px 0 14px;
+}
+.my_leave_status_wrapper div img.approved {
+    width: auto;
+}
+.my_leave_status_wrapper div img.declined {
+    width: auto;
+}
+.my_leave_status_wrapper div img.pending {
+    width: auto;
+}
+/********My Leaves*********/
+
+/********New Leaves*********/
+.wrapper a:hover > .new_leave_info_wrapper {
+    background-color: #f8f8f8;
+    transition: all 0.4s ease 0s;
+    -webkit-transition: all 0.4s ease 0s;
+    -moz-transition: all 0.4s ease 0s;
+    -ms-transition: all 0.4s ease 0s;
+    -o-transition: all 0.4s ease 0s;
+}
+.new_leave_row {
+    border-bottom: 1px solid #e7ecee;
+    float: left;
+    width: 100%;
+}
+.new_leave_info_wrapper {
+    border-right: 1px solid #e7ecee;
+    float: left;
+    padding: 20px 19px;
+    width: 83%;
+}
+.new_leave_status_wrapper {
+    border-left: 1px solid #e7ecee;
+    float: right;
+    margin: 0;
+    padding: 0;
+}
+.new_leave_status_wrapper:last-child {
+    border-left: none;
+}
+.new_leave_status_wrapper div {
+    cursor: pointer;
+    padding: 43px 0;
+    width: 100%;
+}
+.new_leave_status_wrapper div.pending {
+    background-color: #fff;
+}
+.new_leave_status_wrapper div.approve, .new_leave_status_wrapper div.decline {
+    transition: all 0.4s ease 0s;
+    -webkit-transition: all 0.4s ease 0s;
+    -moz-transition: all 0.4s ease 0s;
+    -ms-transition: all 0.4s ease 0s;
+    -o-transition: all 0.4s ease 0s;
+}
+.new_leave_status_wrapper div.approve:hover {
+    background-color: #1094D3;
+    box-shadow: -4px 0 0 0 #0A73A5;
+    -moz-box-shadow: -4px 0 0 0 #0A73A5;
+    -webkit-box-shadow: -4px 0 0 0 #0A73A5;
+    -ms-box-shadow: -4px 0 0 0 #0A73A5;
+    -o-box-shadow: -4px 0 0 0 #0A73A5;
+}
+
+.new_leave_status_wrapper div.approved {
+    background-color: #1094D3;
+    box-shadow: -4px 0 0 0 #0A73A5;
+    -moz-box-shadow: -4px 0 0 0 #0A73A5;
+    -webkit-box-shadow: -4px 0 0 0 #0A73A5;
+    -ms-box-shadow: -4px 0 0 0 #0A73A5;
+    -o-box-shadow: -4px 0 0 0 #0A73A5;
+}
+.new_leave_status_wrapper div.decline:hover {
+    background-color: #99030A;
+    box-shadow: -4px 0 0 0 #6A0304;
+    -moz-box-shadow: -4px 0 0 0 #6A0304;
+    -webkit-box-shadow: -4px 0 0 0 #6A0304;
+    -ms-box-shadow: -4px 0 0 0 #6A0304;
+    -o-box-shadow: -4px 0 0 0 #6A0304;
+}
+.new_leave_status_wrapper div.declined {
+    background-color: #99030A;
+    box-shadow: -4px 0 0 0 #6A0304;
+    -moz-box-shadow: -4px 0 0 0 #6A0304;
+    -webkit-box-shadow: -4px 0 0 0 #6A0304;
+    -ms-box-shadow: -4px 0 0 0 #6A0304;
+    -o-box-shadow: -4px 0 0 0 #6A0304;
+}
+.new_leave_status_wrapper div img {
+    height: 40px;
+    padding: 0 15px 0 14px;
+}
+.new_leave_status_wrapper div img.approved {
+    width: auto;
+}
+.new_leave_status_wrapper div img.declined {
+    width: auto;
+}
+.new_leave_status_wrapper div img.pending {
+    width: auto;
+}
+#submit-button {
+    float: left;
+    width: 100%;
+}
+#submit-button input {
+    background: none repeat scroll 0 0 #db3434;
+    border: 0 none;
+    box-shadow: 0 2px 4px 0 #993300;
+    -moz-box-shadow: 0 2px 4px 0 #993300;
+    -webkit-box-shadow: 0 2px 4px 0 #993300;
+    -ms-box-shadow: 0 2px 4px 0 #993300;
+    -o-box-shadow: 0 2px 4px 0 #993300;
+    color: #ffffff;
+    cursor: pointer;
+    margin: 15px 20px;
+    padding: 10px 30px;
+    transition: all 0.20s ease-in-out;
+    -moz-transition: all 0.20s ease-in-out;
+    -ms-transition: all 0.20s ease-in-out;
+    -webkit-transition: all 0.20s ease-in-out;
+    -o-transition: all 0.20s ease-in-out;
+}
+
+#submit-button input:hover {
+    background: none repeat scroll 0 0 #7e0000;
+}
+/********New Leaves*********/

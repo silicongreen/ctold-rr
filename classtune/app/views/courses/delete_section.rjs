@@ -1,0 +1,19 @@
+if @error.nil?
+  if @no_class.nil?
+    if @warn_notice.nil?
+      page.replace_html 'form-errors', :text => ''
+      page.replace_html 'category-list', :partial => 'category_list_data'
+      page.replace_html 'cate_sections_' + @main_course_id, :partial => 'sections_data'
+      page.replace_html 'flash-box-popup', :text=>"<p class='flash-msg'>#{flash[:notice]}</p>" unless flash[:notice].nil?
+    else
+      page.replace_html 'warn-message-popup', :text=>"<div id='errorExplanation' class='errorExplanation'>#{flash[:warn_notice]}</div>" unless flash[:warn_notice].nil?  
+    end  
+  else
+      page.replace_html 'cate_data_main', :partial => 'cate_data_main'
+      page.replace_html 'flash-box', :text=>"<p class='flash-msg'>#{flash[:notice]}</p>" unless flash[:notice].nil?
+      page << "Modalbox.hide();"
+  end
+else
+	page.replace_html 'form-errors', :partial => 'errors', :object => @course
+  page.visual_effect(:highlight, 'form-errors')
+end

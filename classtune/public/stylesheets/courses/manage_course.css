@@ -1,0 +1,146 @@
+#radio-buttons{
+    margin:0;
+}
+
+.submit_button {
+    margin-top: 15px;
+    margin-left: 210px;
+    padding: 7px 10px;
+    color: #fff;
+    background: #27292B;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    font-weight: bold;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+}
+
+#submit-button input{
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
+    background:#27292B none repeat scroll 0 0;
+    color:#FFFFFF;
+    font-size:14px;
+    font-weight:bold;
+    margin:0px auto;
+    float:left;
+    margin-top:35px;
+    padding:7px 10px;
+    border:none;
+    text-align:center;
+    width:auto;
+    cursor:pointer;
+}
+
+#category-list {
+    clear : both;
+    padding : 10px 0 40px 0px;
+    width:570px;
+    margin:0px auto;
+}
+
+#category-list .listeven{
+    background : #fff;
+    border-bottom:1px solid #d7d7d7;
+    color : #444;
+    min-height : 1.5em; width : 33em;
+    overflow: auto;
+    list-style-type : none;
+    padding : 0.5em 0 0 3em;
+}
+
+#category-list .listodd{
+    background : #f5f5f5;
+    border-bottom:1px solid #d7d7d7;
+    color : #444;
+    min-height : 1.5em; width : 33em;
+    overflow: auto;
+    list-style-type : none;
+    padding : 0.5em 0 0 3em;
+}
+
+#category-list li.heading {
+    background : none;
+    font-weight : bold;
+    list-style-type : none;
+    color : #444;
+    height : 1.5em; width : 30em;
+    padding : 0.5em 0 0 5em;
+}
+#category-list li div {
+    float : left;
+}
+#category-list li div.category-name {
+    width : 120px;
+    font-weight: bold;
+    font-size:13px;
+}
+#category-list li div.category-sections {
+    width : 195px;
+    font-weight: bold;
+    font-size:13px;
+}
+#MB_content{
+    overflow: hidden;
+}
+#category-list li div.category-sections span.section {
+    width: 50px;
+    background: #DDD;
+    margin-right: 8px;
+    padding: 2px 4px 2px 5px;
+    border: 1px solid #BBB;
+    position: relative;
+}
+#category-list li div.category-sections span.section span.close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 16px;
+    height: 14px;
+    z-index: 1000;
+    background: url('../../images/icons/in_close_button.png');
+}
+
+#category-list li div.category-edit{
+    font-size : 0.9em;
+    width : 160px;
+
+}
+#category-list li div.category-delete {
+    font-size : 0.9em;
+    width : 48px;
+
+}
+#category-list li div a {
+    color : #000;
+    font-size:14px;
+    text-decoration: none;
+}
+#category-list li div a:hover {
+    color : #d00;
+    text-decoration: underline;
+}
+
+
+p{
+    font-size:13px;
+}
+.bread_crumb {
+    margin-left: 10px;
+}
+
+.remove_batch {
+    color: #fff;
+    font-size: 21px;
+    background: #98090f;
+    -moz-border-radius: 5em;
+    -webkit-border-radius: 5em;
+    height: 25px;
+    width: 25px;
+    text-decoration: none;
+    margin-left:  10px;
+}
+.remove_batch span {
+    padding: 4px;
+}

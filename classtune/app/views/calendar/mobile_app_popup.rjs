@@ -1,0 +1,8 @@
+if @error
+  page.replace_html 'flash-box-popup', :text=>"<p class='flash-msg'>#{flash[:notice]}</p>" unless flash[:notice].nil?
+  page << "Modalbox.hide();"
+else
+	page.replace_html 'modal-box', :partial => 'mobile_app_popup'
+  page << "Modalbox.show($('modal-box'), {title: 'Android Application', width: 500});"
+  page.visual_effect(:highlight, 'form-errors')
+end

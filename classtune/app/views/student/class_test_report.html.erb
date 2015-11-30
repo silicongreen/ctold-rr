@@ -1,0 +1,300 @@
+<div id="page-yield" class="bg-disable">
+
+    <div class="header-wrapper">
+        <div class="header-title">
+            <div class="header-icon">
+                <%= image_tag '/images/icons/report-card.png', :html => {:alt => 'Report Card'} %>
+            </div>
+            <div class="header-title-text-wrapper">
+                <div class="header-title-main-text f2">
+                    Report Card
+                </div>
+                <div class="header-title-sub-text f5">
+                    <%= Time.now.strftime("%d/%m/%Y") %>
+                </div>
+            </div>
+        </div>
+        <%= link_to "<div class='button-link button-link-report'>Attendence Report</div>", :controller => "student_attendance", :action => "month_report" %>
+
+        <div class="clearfix"></div>
+
+        <div class="tabbed-header-wrapper">
+            <ul class="header-tabs">
+                <li class='<% if @extra=="class_test" %>active<% end %> class_test f2'>
+                    <%= link_to_remote "Class Test",
+                      :update => "report-data-all",
+                      :before => "Element.show('loader')",
+                      :success => "Element.hide('loader');j('.header-tabs li').removeClass('active');j('.header-tabs li.class_test').addClass('active');",
+                      :url => {:controller=>"student",:action => "class_test_report_single",:exam_group=>params[:exam_group]} %>
+                </li>
+                <li  class='<% if @extra == "term"  %>active <% end %> term_test_report f2'>
+                    <%= link_to_remote "Term Report",
+                      :update => "report-data-all",
+                      :before => "Element.show('loader')",
+                      :success => "Element.hide('loader');j('.header-tabs li').removeClass('active');j('.header-tabs li.term_test_report').addClass('active');",
+                      :url => {:controller=>"student",:action => "term_test_report"} %>
+                </li>
+                <li  class='<% if @extra == "progress"  %>active <% end %> progress_report f2'>
+                    <%= link_to_remote "Progress Graph",
+                      :update => "report-data-all",
+                      :before => "Element.show('loader')",
+                      :success => "Element.hide('loader');j('.header-tabs li').removeClass('active');j('.header-tabs li.progress_report').addClass('active');",
+                      :url => {:controller=>"student",:action => "progress_report"} %>
+                </li>
+
+            </ul>
+        </div>
+
+    </div>
+</div>
+<div style="clear:both;"></div>
+<div class="loader-image">
+    <%= image_tag("loader2.gif",
+      :align => "absmiddle",
+      :border => 0,
+      :id => "loader",
+      :style =>"display: none;" ) %>
+</div>
+<div style="clear:both;"></div>
+<div id="report-data-all">
+    <% if @extra == "term" %>
+      <%= render :partial => "term_test", :locals=>{:exam_groups=>@exam_groups} %>
+    <% elsif @extra == "progress" %>
+      <%= render :partial => "progress_report", :locals=>{:subjects=>@subjects} %>
+    <% else %>
+      <%= render :partial => "class_test", :locals=>{:class_test=>@class_test} %>
+    <% end %>
+
+</div>
+
+<style>
+    .subcontent-header a
+    {
+        color:#000;
+        text-decoration: none;
+    }
+    .subcontent-header a:hover
+    {
+        color: #C91018;
+    }
+    div.button-link-report:hover
+    {
+        background: #383838;
+    }
+    div.button-link-report
+    {
+
+        background: #C91018;
+        color:white;
+
+    }
+    .timetable_right_exam_name
+    {
+        float:left;
+        width:20%;
+        padding: 10px 0;
+        margin-left:20px;
+    }
+    .all_exam_and_project
+    {
+        float:left;
+        width:80%; 
+        border-left:1px dotted #cccccc; 
+        border-right:1px dotted #cccccc
+    }
+
+    .portlet-subcontent {
+        background-color: #ffffff;
+        float: left;
+        width: 80%;
+        clear:both;
+        margin-top:15px;
+        border: 1px solid #ccc;
+    }
+    .tabbed-header-wrapper_exam {
+        background-color: #fff;
+        float: left;
+        width: 100%;
+    }
+    .tabbed-header-wrapper_exam  div:hover{
+        color: #000;
+    }
+    .tabbed-header-wrapper_exam  div.hide_all_class_test:hover{
+        color:#9a9afb;
+    }
+    .tabbed-header-wrapper_exam  div.hide_all_project:hover{
+        color:#9a9afb;
+    }
+
+    .tabbed-header-wrapper_exam  div {
+        border-right: 1px solid #cccccc;
+        color: #9EA2A3;
+        cursor: pointer;
+        float: left;
+        width: 15%;
+        padding: 10px 120px 10px 152px;
+    }
+    .hide_all_project
+    {
+        color: white;
+        background:#000;
+    }
+    .hide_all_class_test
+    {
+        color: white;
+        background:#000;
+    }
+
+    .tabbed-header-wrapper_exam  .show_all_class_test,.hide_all_class_test
+    {
+        border-right:none;
+
+    }
+    .timetable_grade
+    {
+        float:left;
+
+        width:25%;
+        border-left: 1px dotted #cccccc;
+    }
+    .single_exam_result
+    {
+        float:left;
+        width:100%;
+        padding: 20px 0px;
+        border-bottom:1px dotted #cccccc
+    }
+    .timetable_right_mark
+    {
+        float:left;
+        width:30%;
+        border-right: 1px dotted #cccccc;
+        border-top: 1px dotted #cccccc;
+        border-left: 1px dotted #cccccc;
+    }
+    .percent-value
+    {
+        font-size:25px;
+        color:#B1B8BA;
+        margin-left: 30px;
+
+    }
+    .grade-value
+    {
+        margin-left:80px;
+        font-size:35px;
+        color: red;
+
+    }
+    .class_mark
+    {
+        float:left;
+        width:20%;
+        padding:5px 25px;
+
+    }
+    .class_mark_and_text
+    {
+        float:left;
+        width:100%; 
+        padding:0px;
+        border-bottom: 1px dotted #cccccc;
+    }
+    .class_mark_text
+    {
+        float:left;
+        width:50%;
+        padding:5px 5px;
+        background: #F4F6F6;
+    }
+
+    .CSSTableGenerator a:hover
+    {
+        background: #F31616 none repeat scroll 0 0;
+    }
+    .CSSTableGenerator a
+    {
+        -moz-border-radius: 3px;
+        -webkit-border-radius: 3px;
+        background: #CB1119 none repeat scroll 0 0;
+        color: #FFFFFF !important;
+        font-size: 14px;
+        font-weight: bold;
+        margin: 0px;
+        padding: 7px 10px;
+        border: none;
+        text-align: center;
+        width: auto;
+        cursor: pointer;
+        float: right;
+        text-decoration: none;
+        display: block;
+    }
+    .left-dev span
+    {
+        float:left;
+        margin-top:8px;
+    }
+    .left-dev
+    {
+        float:left;
+        width: 50%;
+        text-align: left;
+    }
+    .right-dev
+    {
+        float:left;
+        width: 50%;
+        text-align: right;
+    }
+    .CSSTableGenerator {
+        margin:0px;padding:0px;
+        width:100%;
+
+    }.CSSTableGenerator table{
+        width:100%;
+        height:100%;
+        margin:0px;padding:0px;
+    }
+
+    .CSSTableGenerator tr:nth-child(odd){ background-color:#ffffff; }
+    .CSSTableGenerator tr:nth-child(even)    { background-color:#ffffff; }
+    .CSSTableGenerator td{
+        vertical-align:middle;
+        border:1px solid #D7DBDD;
+        border-width:0px 1px 1px 0px;
+        text-align:left;
+        padding:20px;
+        font-size:12px;
+        font-weight:normal;
+        color:#000000;
+    }.CSSTableGenerator tr:last-child td{
+        border-width:0px 1px 0px 0px;
+    }.CSSTableGenerator tr td:last-child{
+        border-width:0px 0px 1px 0px;
+    }.CSSTableGenerator tr:last-child td:last-child{
+        border-width:0px 0px 0px 0px;
+    }
+    .CSSTableGenerator tr:first-child td{
+        background-color:#F0F2F3;	
+        text-align:left;
+        font-size:14px;
+        font-weight:bold;
+        color:#000000;
+    }
+    .CSSTableGenerator tr:first-child:hover td{
+
+        background-color:#F0F2F3;
+    }
+    .CSSTableGenerator tr:first-child td:first-child{
+        border-width:0px 0px 1px 0px;
+    }
+    .CSSTableGenerator tr:first-child td:last-child{
+        border-width:0px 0px 1px 1px;
+    }
+</style>  
+<%= stylesheet_link_tag 'tadded-header' %>
+<% content_for :head do %>
+  <%= javascript_include_tag "custom/assignment" %>
+<% end %>
+<%= stylesheet_link_tag 'pagination_and_table' %>

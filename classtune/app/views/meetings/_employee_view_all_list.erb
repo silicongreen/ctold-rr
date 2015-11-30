@@ -1,0 +1,19 @@
+<div class="label-field-pair details-row">
+  <div class="left-col col-3">
+    <label>
+      <%= t('select_employee') %> : 
+      <span class="necessary-field">*</span>
+    </label>
+  </div>
+  <div class="right-col col-9">
+
+    <% unless @employees.blank? %>  
+      <%= select :meeting_request, :teacher_id, @employees.map { |e| [e.full_name, e.id] },
+        {:prompt => "#{t('select_employee')}"}
+    %>
+    <% else %>
+      <p class="no_employee_found"><%= t('no_employee_found') %></p>
+    <% end %>
+  </div>
+
+</div>

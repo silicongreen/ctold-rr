@@ -1,0 +1,136 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+<div id="page-yield" class="bg-disable">
+
+  <div class="header-wrapper">
+    <div class="header-title">
+      <div class="header-icon">
+        <%= image_tag '/images/icons/leave-management.png', :html => {:alt => 'leave_management'} %>
+      </div>
+      <div class="header-title-text-wrapper">
+        <div class="header-title-main-text f2">
+          <%=t('leave_application')%>
+        </div>
+        <div class="header-title-sub-text">
+          <%= @local_tzone_time.to_date %>
+        </div>
+      </div>
+    </div>
+
+    <div class="clearfix"></div>
+
+    <div class="tabbed-header-wrapper">
+      <ul class="header-tabs">
+        <li class="active">
+          <%= link_to "Leave Management", :controller => 'student_attendance', :action => 'leaves', :id => @student.id %>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+
+  <div class="clearfix"></div>
+
+  <div id="data_div">
+    <div id="leave-info"  style="background:#fff; padding: 20px; float:left; width:96%">
+    <ul id="category-list">
+      <li class="list<%= cycle('odd','even') %>"><div class="category-name"><%= t('name') %>:</div>
+        <%= @student.first_name %></li>
+     
+      <li class="list<%= cycle('odd','even') %>"><div class="category-name"><%= t('leave_start_date') %>:</div>
+        <%= @applied_leave.start_date.strftime("%d %b, %Y") %></li>
+      <li class="list<%= cycle('odd','even') %>"><div class="category-name"><%= t('leave_end_date') %>:</div>
+        <%= @applied_leave.end_date.strftime("%d %b, %Y") %></li>
+      <li class="list<%= cycle('odd','even') %>"><div class="category-name">Subject:</div>
+        <%= @applied_leave.leave_subject %></li>
+      <li class="list<%= cycle('odd','even') %>"><div class="category-name"><%= t('reason') %>:</div>
+        <%= @applied_leave.reason %></li>
+      <li class="list<%= cycle('odd','even') %>"><div class="category-name"><%= t('status') %>:</div>
+        <%= "#{t('approved')}" if @applied_leave.approved == true and @applied_leave.viewed_by_teacher == true %>
+        <%= "#{t('denied')}" if @applied_leave.approved == false and @applied_leave.viewed_by_teacher == true %>
+        <%= "#{t('pending_approval')}" if(@applied_leave.approved == false or @applied_leave.approved.nil?) and @applied_leave.viewed_by_teacher == false %>
+      </li>
+      <li class="list<%= cycle('odd','even') %>"><div class="category-name"><%= t('teacher_remark') %>:</div>
+        <%= @applied_leave.teacher_remark %></li>
+    </ul>
+
+    <%= link_to "► #{t('cancel_leave')}",
+      {:action => "cancel_application", :id=>@applied_leave.id}, :class=>'user_button' ,:confirm=>"#{t('delete_confirm_msg')}" unless @applied_leave.viewed_by_teacher == true %>
+
+  </div>
+    
+  </div>
+  
+    
+</div>
+
+<%= stylesheet_link_tag 'tadded-header' %>
+<%= stylesheet_link_tag 'list_table' %>
+<%= stylesheet_link_tag 'syllabus/single_syllabus' %>
+<%= stylesheet_link_tag 'pagination_and_table' %>
+
+<% content_for :head do %>
+  <%= javascript_include_tag "custom/tabbed-header" %>
+<% end %>
+<%= load_redactor_script %>
+<style type="text/css">
+  .header-wrapper .header-title-sub-text {
+    letter-spacing: unset;
+  }
+    .timetable_last a
+  {
+      -moz-border-radius: 3px;
+      -webkit-border-radius: 3px;
+      background: #CB1119 none repeat scroll 0 0;
+      color: #FFFFFF !important;
+      font-size: 14px;
+      font-weight: bold;
+      margin-top: 20px;
+      padding: 7px 10px;
+      border: none;
+      text-align: center;
+      width: auto;
+      cursor: pointer;
+      float: left;
+      margin-left:8px;
+      text-decoration: none;
+      display: block;
+  }
+  .subcontent-date p
+  {
+       line-height: 1.8;
+      margin: 0px;
+      padding: 0;
+  }
+  #category-list li .listodd,.listeven {
+    height: auto;
+    padding: 5px;
+  }
+   div.button-link-report
+  {
+    
+    background: #C91018;
+    color:white;
+    
+  }
+  div.button-link-report:hover
+  {
+    background: #383838;
+  }
+</style>

@@ -1,0 +1,254 @@
+/**********************************************ACADEMIN CALENDAR********************************************************************/
+.event_title:hover
+{
+    color:#000;
+}
+.academic_calendar
+{
+    float: left;
+    width: 100%;
+    background-color:#fff;
+}
+.academic_calendar .attendance-status {
+    background-color: #ffffff;
+    float: right;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+table {
+    border-collapse: collapse !important;
+    width: 100% !important;
+}
+
+table tbody {
+
+}
+table tbody tr {
+    border-top: none !important;
+    border-bottom: 1px solid #cccccc !important;
+}
+.academic_calendar.attendance-status table tbody tr:last-child {
+    border-bottom: none !important;
+}
+.academic_calendar .attendance-status table tbody tr td {
+    border-right: 1px solid #cccccc !important;
+    color: #333333 !important;
+    font-size: 13px !important;
+    padding: 20px 30px !important;
+    text-align: left !important;
+    width: 40% !important;
+}
+.academic_calendar .attendance-status table tbody tr td.head
+{
+    background-color: #f0f0f0;
+    padding: 5px 30px !important
+}
+.academic_calendar .attendance-status table tbody tr td:first-child {
+    
+    width: 20% !important;
+}
+.academic_calendar .attendance-status table tbody tr td:last-child {
+    font-size: 28px !important;
+    font-weight: bold !important;
+    letter-spacing: 4px !important;
+    text-align: center !important;
+    width: 20% !important;
+}
+.academic_calendar .attendance-status table tbody tr td a
+{
+    color: #000;
+    text-decoration: none;
+}
+.academic_calendar .attendance-status table tbody tr td.total {
+    color: #11B4A7 !important;
+}
+.academic_calendar .attendance-status table tbody tr td.present {
+    color: #952DB3 !important;
+}
+.academic_calendar .attendance-status table tbody tr td.absent {
+    color: #E43B0D !important;
+}
+.academic_calendar .attendance-status table tbody tr td.late {
+    color: #F7941D !important;
+}
+.academic_calendar .attendance-status table tbody tr td.leave {
+    color: #1A93C2 !important;
+}
+
+/***Year Graph***/
+.academic_calendar #year_graph {
+    width: 100%;
+}
+/***Year Graph***/
+
+.academic_calendar #calendar {
+    background-color: #ffffff;
+    margin-top: 0;
+    float: left;
+    width: 100%;
+}
+.academic_calendar #calendar .image_loading {
+    position: absolute;
+    right: 115px;
+    top: 28px;
+}
+.academic_calendar #head-month {
+    background: none repeat scroll 0 0 #fff;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 4px;
+}
+.academic_calendar .header {
+    width: 100%;
+}
+.academic_calendar .prev {
+  float: left;
+  height: auto;
+  margin: 0;
+  padding: 15px 0 0 30px;
+  width: 6%;
+}
+.academic_calendar .prev a {
+    display: block;
+    text-decoration: none;
+}
+.academic_calendar .prev a div {
+    background-image: url("/images/icons/calendar/normal_left.png");
+    background-repeat: no-repeat;
+    background-size: 25px auto;
+    height: 50px;
+}
+.academic_calendar .prev a:hover > div {
+    background-image: url("/images/icons/calendar/hover_left.png");
+}
+.academic_calendar .next {
+  float: right;
+  height: auto;
+  margin: 0;
+  padding: 15px 0 0;
+  width: 6%;
+}
+.academic_calendar .next a {
+    text-decoration: none;
+}
+.academic_calendar .next a div {
+    background-image: url("/images/icons/calendar/normal_right.png");
+    background-repeat: no-repeat;
+    background-size: 25px auto;
+    height: 50px;
+}
+.academic_calendar .next a:hover > div {
+    background-image: url("/images/icons/calendar/hover_right.png");
+}
+.academic_calendar .month {
+    color: #333333;
+    float: left;
+    font-size: 25px;
+    padding: 20px 0;
+    position: relative;
+    text-align: center;
+    text-transform: uppercase;
+    width: 78%;
+}
+.academic_calendar table#calendar-table {
+    width: 95%;
+}
+
+.academic_calendar table#calendar-table thead tr th {
+    background-color: #fff;
+    color: #333333;
+    font-size: 18px;
+    font-weight: normal;
+    padding: 15px 0 5px;
+    text-align: center;
+}
+.academic_calendar table#calendar-table tbody tr td {
+    background: none repeat scroll 0 0 #f3f3f3;
+    cursor: pointer;
+    height: 67px;
+    padding: 0;
+    text-align: center;
+    width: 50px;
+}
+.academic_calendar table#calendar-table thead tr th.normal, table#calendar-table tbody tr td.normal {
+    color: #333333;
+}
+.academic_calendar table#calendar-table thead tr th.weekend, table#calendar-table tbody tr td.weekend {
+    color: #DC3433;
+}
+.academic_calendar table#calendar-table tbody tr td.absent {
+    background-color: #f35a00;
+    box-shadow: 0 2px 0 0 #c03d00;
+    -webkit-box-shadow: 0 2px 0 0 #c03d00;
+    -moz-box-shadow: 0 2px 0 0 #c03d00;
+    -ms-box-shadow: 0 2px 0 0 #c03d00;
+    -o-box-shadow: 0 2px 0 0 #c03d00;
+    color: #ffffff;
+}
+.academic_calendar table#calendar-table tbody tr td.late {
+    background-color: #FFC900;
+    box-shadow: 0 2px 0 0 #FF9C00;
+    -webkit-box-shadow: 0 2px 0 0 #FF9C00;
+    -moz-box-shadow: 0 2px 0 0 #FF9C00;
+    -ms-box-shadow: 0 2px 0 0 #FF9C00;
+    -o-box-shadow: 0 2px 0 0 #FF9C00;
+    color: #ffffff;
+}
+.academic_calendar table#calendar-table tbody tr td.leave {
+    background-color: #3EA8EA;
+    box-shadow: 0 2px 0 0 #0A73A5;
+    -webkit-box-shadow: 0 2px 0 0 #0A73A5;
+    -moz-box-shadow: 0 2px 0 0 #0A73A5;
+    -ms-box-shadow: 0 2px 0 0 #0A73A5;
+    -o-box-shadow: 0 2px 0 0 #0A73A5;
+    color: #ffffff;
+}
+.academic_calendar table#calendar-table tbody tr td.holiday {
+    background-color: #01B169;
+    box-shadow: 0 2px 0 0 #017500;
+    -webkit-box-shadow: 0 2px 0 0 #017500;
+    -moz-box-shadow: 0 2px 0 0 #017500;
+    -ms-box-shadow: 0 2px 0 0 #017500;
+    -o-box-shadow: 0 2px 0 0 #017500;
+    color: #ffffff;
+}
+.academic_calendar table#calendar-table tbody tr td.today {
+    background-color: #333333;
+    box-shadow: 0 2px 0 0 #333333;
+    -webkit-box-shadow: 0 2px 0 0 #333333;
+    -moz-box-shadow: 0 2px 0 0 #333333;
+    -ms-box-shadow: 0 2px 0 0 #333333;
+    -o-box-shadow: 0 2px 0 0 #333333;
+    color: #ffffff;
+}
+.academic_calendar table#calendar-table tbody tr td span {
+    background-color: #fff;
+    display: block;
+    height: 99%;
+    width: 99%;
+}
+.academic_calendar table#calendar-table tbody tr td span.absent {
+    background-color: #F25900;
+    display: block;
+    height: 99%;
+    width: 99%;
+}
+
+.viewmore {
+  background-color: #ed1c24;
+  border-radius: 4px;
+  color: #ffffff;
+  cursor: pointer;
+  float: left;
+  font-size: 12px;
+  height: 13px;
+  margin-bottom: 10px;
+  margin-left: 100px;
+  padding: 5px 2px;
+  text-align: center;
+  width: 25%;
+}
+.viewmore a {
+  color: #ffffff !important;
+  text-decoration: none;
+}

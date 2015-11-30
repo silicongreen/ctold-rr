@@ -1,0 +1,285 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+<div id="calendar">
+
+  <div id="head-month">
+    <div class="header">
+      <div class="prev">
+        <%= link_to_remote "<div></div>",
+          :before => "Element.show('loader')",
+          :success => "Element.hide('loader')",
+          :url=>{:controller=>"student_attendance", :action=>"new_calendar"},
+          :with => "'new_month=#{@show_month.month-1}'+ '&passed_date=#{@show_month}'"%>
+      </div>
+      <div class="month f5">
+        <%= I18n.l(@show_month,:format=>:month_year) %>
+
+        <div class="image_loading">
+          <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader",:style =>"display: none; float:left;" ) %>
+        </div>
+      </div>
+      <div class="next">
+        <%= link_to_remote "<div></div>",
+          :before => "Element.show('loader')",
+          :success => "Element.hide('loader')",
+          :url=>{:controller=>"student_attendance", :action=>"new_calendar"},
+          :with => "'new_month=#{@show_month.month+1}'+ '&passed_date=#{@show_month}'"%>
+      </div>
+      <div class="extender"></div>
+    </div>
+  </div>
+
+  <table id="calendar-table" align="center" width="100%">
+
+    <thead>
+      <tr class="week">
+        <% @days_of_week= ["#{t('sun')}","#{t('mon')}","#{t('tue')}","#{t('wed')}","#{t('thu')}","#{t('fri')}","#{t('sat')}"] %>
+        <%
+        i = 0
+        weekend_class = ''
+        @days_of_week.each do |d|
+          if @attendence['week_end'].include?(i)
+            weekend_class = ' weekend'
+          end
+        %>
+          <th class="f5<%= weekend_class %>"><%= d %></th>
+          <%
+          i = i + 1
+        end
+      %>
+      </tr>
+    </thead>
+
+    <tbody>
+      <%
+      i_absent = 0
+      i_late = 0.00
+      i_leave = 0
+    %>
+      <% (1..5).each do |r|%>
+        <tr class="day">
+          <% (1..7).each do |c|%>
+
+            <% dt = c - @start_date_day + (r-1) * 7 %>
+            <% day_style = (dt==@show_month.day && @local_tzone_time.to_date==@show_month)? "today" : nil %>
+            <% datetext = "#{@show_month.year}-#{@show_month.month}-#{dt}" %>
+            <% td_class = 'normal' %>
+            <% data_found = false %>
+
+    <%# Weekend %>
+            <% unless (r == 1 and c <= @start_date_day) %>
+              <% unless dt > @last_day.day %>
+                <% unless @attendence['week_end'].empty? %>
+                  <% @attendence['week_end'].each do |week_end| %>
+                    <% k=c-1; %>
+                    <% if k == week_end%>
+                      <%
+                      td_class = 'weekend'
+                      data_found = true
+                      break 
+                    %>
+                    <% end %>
+                  <% end %>
+                <% end %>
+              <% end %>
+            <% end %>
+    <%# Weekend %>
+
+    <%# Absent %>
+            <% unless (r == 1 and c <= @start_date_day) %>
+              <% unless dt > @last_day.day %>
+                <% unless @attendence['absent'].empty? or data_found == true %>
+                  <% @attendence['absent'].each do |absent| %>
+                    <% if absent['date'].to_date == "#{@show_month.year}-#{@show_month.month}-#{dt}".to_date %>
+                      <%
+                      td_class = 'absent'
+                      data_found = true
+                      i_absent = i_absent + 1
+                      break 
+                    %>
+                    <% end %>
+                  <% end %>
+                <% end %>
+              <% end %>
+            <% end %>
+    <%# Absent %>
+
+    <%# Late %>
+            <% unless (r == 1 and c <= @start_date_day) %>
+              <% unless dt > @last_day.day %>
+                <% unless @attendence['late'].empty? or data_found == true %>
+                  <% @attendence['late'].each do |late| %>
+                    <% if late['date'].to_date == "#{@show_month.year}-#{@show_month.month}-#{dt}".to_date %>
+                      <%
+                      td_class = 'late'
+                      data_found = true
+                      i_late = i_late + 0.5
+                      break 
+                    %>
+                    <% end %>
+                  <% end %>
+                <% end %>
+              <% end %>
+            <% end %>
+    <%# Late %>
+
+    <%# Leave %>
+            <% unless (r == 1 and c <= @start_date_day) %>
+              <% unless dt > @last_day.day %>
+                <% unless @attendence['leave'].empty? or data_found == true %>
+                  <% @attendence['leave'].each do |leave| %>
+                    <%  %>
+                    <% if leave['start_date'].to_date == "#{@show_month.year}-#{@show_month.month}-#{dt}".to_date %>
+                      <%
+                      td_class = 'leave'
+                      data_found = true
+                      i_leave = i_leave + 1
+                      break 
+                    %>
+                    <% end %>
+                  <% end %>
+                <% end %>
+              <% end %>
+            <% end %>
+    <%# Leave %>
+
+    <%# Holiday %>
+            <% unless (r == 1 and c <= @start_date_day) %>
+              <% unless dt > @last_day.day %>
+                <% unless @attendence['holiday'].empty? or data_found == true %>
+                  <% @attendence['holiday'].each do |holiday| %>
+                    <% if holiday['start_date'].to_date == "#{@show_month.year}-#{@show_month.month}-#{dt}".to_date %>
+                      <%
+                      td_class = 'holiday'
+                      data_found = true
+                      break 
+                    %>
+                    <% end %>
+                  <% end %>
+                <% end %>
+              <% end %>
+            <% end %>
+    <%# Holiday %>
+
+    <%# Today %>
+            <% unless (r == 1 and c <= @start_date_day) %>
+              <% unless dt > @last_day.day %>
+                <% unless @attendence['current_date'].empty? or data_found == true %>
+                  <% if @attendence['current_date'].to_date == "#{@show_month.year}-#{@show_month.month}-#{dt}".to_date %>
+                    <%
+                    td_class = 'today'
+                  %>
+                  <% end %>
+                <% end %>
+              <% end %>
+            <% end %>
+    <%# Today %>
+
+            <% td_title = '' %>
+            <% unless (r == 1 and c <= @start_date_day) %>
+              <% unless dt > @last_day.day %>
+                <% @attendence['msg'].each_with_index do |msg, datevalue| %>
+                  <% if "#{@show_month.year}-#{@show_month.month}-#{dt}".to_date == msg[0].to_date %>
+                    <% td_title = msg[1] %>
+                  <% end %>
+                <% end %>
+              <% end %>
+            <% end %>
+
+            <td class="<%= td_class %>" title="<%= td_title %>">
+              <% unless (r == 1 and c <= @start_date_day) %>
+                <% unless dt > @last_day.day %>
+                  <%= dt %>
+                <% end %>
+              <% end %>
+            </td>
+
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <div class="clearfix"></div>
+  <div class="legend-row">
+
+    <div class="legend-wrapper">
+      <div class="legend legend-today"></div>
+      <div class="legend-text legend-today-text">Today</div>
+    </div>
+
+    <div class="legend-wrapper">
+      <div class="legend legend-holiday"></div>
+      <div class="legend-text legend-holiday-text">Holiday</div>
+    </div>
+
+    <div class="legend-wrapper">
+      <div class="legend legend-late"></div>
+      <div class="legend-text legend-late-text">Late</div>
+    </div>
+
+    <div class="legend-wrapper">
+      <div class="legend legend-absent"></div>
+      <div class="legend-text legend-absent-text">Absent</div>
+    </div>
+
+    <div class="legend-wrapper">
+      <div class="legend legend-leave"></div>
+      <div class="legend-text legend-leave-text">Leave</div>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="attendance-status">
+  <table>
+    <tbody>
+      <tr>
+        <td class="f2">Total Class</td>
+        <td class="f5 total"><%= @attendence['total'] %></td>
+      </tr>
+
+      <tr>
+        <td class="f2">Present</td>
+        <td class="f5 present">
+          <%
+          present = (@attendence['total'].to_i - (i_absent + i_late + i_leave)).round
+        %>
+          <%= present %>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="f2">Absent</td>
+        <td class="f5 absent"><%= i_absent %></td>
+      </tr>
+
+      <tr>
+        <td class="f2">Late</td>
+        <td class="f5 late"><%= i_late %></td>
+      </tr>
+
+      <tr>
+        <td class="f2">Leave</td>
+        <td class="f5 leave"><%= i_leave %></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

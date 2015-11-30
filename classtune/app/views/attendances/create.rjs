@@ -1,0 +1,17 @@
+# page.replace_html 'register', :partial => 'register'
+if @error.nil?
+  if @config.config_value=="Daily"
+#    page.replace_html "attendance-student-#{@student.id}-class-hour-#{@absentee.month_date}", :partial => 'attendance_cell'
+    page.replace_html "attendance-student-#{@student.id}-class-hour-#{@absentee.month_date.strftime("%Y-%m-%d")}", :partial => 'attendance_cell'
+  else
+    page.replace_html "attendance-student-#{@student.id}-class-hour-#{@absentee.month_date.strftime("%Y-%m-%d")}-timing-#{@absentee.class_timing_id}", :partial => 'attendance_cell'
+  end
+  page << "Modalbox.hide();"
+  page.call "rebind"
+else
+	page.replace_html 'form-errors', :partial => 'errors', :object => @absentee
+  page.visual_effect(:highlight, 'form-errors')
+end
+#attendance-student-213-class-hour-2015-02-18
+#attendance-student-214-class-hour-18-02-2015
+#student-213-date-18-02-2015

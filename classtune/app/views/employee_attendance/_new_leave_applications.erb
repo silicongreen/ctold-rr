@@ -1,0 +1,136 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+<div class="wrapper">
+
+  <% unless @reporting_employees == [] %>
+    <% @reporting_employees.each do |e| %>
+      <% @applied_leaves = ApplyLeave.find_all_by_employee_id(e.id, :order=>"start_date DESC") %>
+      <% unless @applied_leaves == [] %>
+        <% @applied_leaves.each do |l| %>
+          <% if l.viewed_by_manager == false %>
+
+            <div class="new_leave_row">
+
+              <a href="/employee_attendance/leave_application/<%= l.id %>?target=employee">
+                <div class="new_leave_info_wrapper">
+                  <div class="student_info">
+                    <% employee = Employee.find(l.employee_id) %>
+                    <span class="student_name"><%= employee.full_name %>, </span>
+                    <span class="student_addition_info"><%= employee.employee_category.name %> <%= employee.employee_position.name %>, <%= employee.employee_department.name %></span>
+                  </div>
+                  <div class="leave_info">Apply Date: <%= I18n.l(l.created_at.to_date, :format=>'%d/%m/%Y') %></div>
+                  <div class="leave_info">Duration:
+                    <%= I18n.l(l.start_date.to_date, :format=>'%d/%m/%Y') %> to <%= I18n.l(l.end_date.to_date, :format=>'%d/%m/%Y') %>
+                  </div>
+                </div>
+              </a>
+
+              <div class="new_leave_status_wrapper">
+                <% if(l.approved == true or l.approved.nil?) %>
+                  <%= link_to_remote "<div class=\"decline\">#{image_tag "/images/icons/leave/decline.png", :class => 'decline'}</div>",
+                    :url => {:action => "deny_remarks", :id=>l.id, :target => 'employee'} %>
+                <% else %>
+                  <div class="declined">
+                    <%= image_tag "/images/icons/leave/declined.png", :class => 'declined' %>
+                  </div>
+                <% end %>
+              </div>
+
+              <div class="new_leave_status_wrapper">
+                <% if(l.approved == false or l.approved.nil?) %>
+                  <%= link_to_remote "<div class=\"approve\">#{image_tag "/images/icons/leave/approve.png", :class => 'approve'}</div>",
+                    :url => {:action => "approve_remarks", :id=>l.id, :target => 'employee'} %>
+                <% else %>
+                  <div class="approved">
+                    <%= image_tag "/images/icons/leave/approved.png", :class => 'approved' %>
+                  </div>
+                <% end %>
+              </div>
+
+            </div>
+
+          <% end %><!-- if -->
+        <% end %><!-- |l| -->
+      <% else %>
+      <% end %><!-- unless -->
+    <% end %><!-- each -->
+  <% end %><!-- unless -->
+  <!-- Employee -->
+
+
+  <% @count_student = ApplyLeaveStudent.count(:all,:conditions=>{:viewed_by_teacher=> false})  %>
+
+  <% if @count_student > 0 %>
+    <% @applied_leaves_students = ApplyLeaveStudent.find(:all,:conditions=>["viewed_by_teacher =?", false],:order=>"start_date DESC") %>
+    <% unless @applied_leaves_students == [] %>
+      <% @applied_leaves_students.each do |l| %>
+        <% if l.viewed_by_teacher == false %>
+
+          <div class="new_leave_row">
+            <a href="/employee_attendance/leave_application/<%= l.id %>?target=student">
+              <div class="new_leave_info_wrapper">
+                <div class="student_info">
+                  <% student = Student.find(l.student_id) %>
+                  <span class="student_name"><%= student.full_name %>, </span>
+                  <span class="student_addition_info">Section <%= student.batch.course.section_name %>, <%= student.batch.course.course_name %>, <%= student.batch.name %></span>
+                </div>
+                <div class="leave_info">Apply Date: <%= I18n.l(l.created_at.to_date, :format=>'%d/%m/%Y') %></div>
+                <div class="leave_info">Duration:
+                  <%= I18n.l(l.start_date.to_date, :format=>'%d/%m/%Y') %> to <%= I18n.l(l.end_date.to_date, :format=>'%d/%m/%Y') %>
+                </div>
+              </div>
+            </a>
+
+            <div class="new_leave_status_wrapper">
+              <% if(l.approved == true or l.approved.nil?) %>
+                <%= link_to_remote "<div class=\"decline\">#{image_tag "/images/icons/leave/decline.png", :class => 'decline'}</div>",
+                  :url => {:action => "deny_remarks", :id=>l.id, :target => 'student'} %>
+              <% else %>
+                <div class="declined">
+                  <%= image_tag "/images/icons/leave/declined.png", :class => 'declined' %>
+                </div>
+              <% end %>
+            </div>
+
+            <div class="new_leave_status_wrapper">
+              <% if( l.approved == false or l.approved.nil? ) %>
+                <%= link_to_remote "<div class=\"approve\">#{image_tag "/images/icons/leave/approve.png", :class => 'approve'}</div>",
+                  :url => {:action => "approve_remarks", :id=>l.id, :target => 'student'} %>
+              <% else %>
+                <div class="approved">
+                  <%= image_tag "/images/icons/leave/approved.png", :class => 'approved' %>
+                </div>
+              <% end %>
+            </div>
+
+          </div>
+
+        <% end %><!-- if -->
+      <% end %><!-- |l| -->
+    <% end %><!-- unless -->
+  <% end %><!-- if -->
+
+  <% if @applied_leaves.nil? and @applied_leaves_students.nil? %>
+    <div class="new_leave_row">
+      <div class="new_leave_info_wrapper">
+        No <%= t('new_leave_applications') %> Found
+      </div>
+    </div>
+  <% end %>
+</div>

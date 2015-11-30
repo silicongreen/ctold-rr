@@ -1,0 +1,100 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<div class="box">
+  <div id="class_name" style="padding: 10px;"><%= t('course_name')  %>: <span style="font-weight: bold;"><%= @course_name %></span> </div>  
+  <% unless @courses_data.nil? %>
+    <h4 align="center"><%= t('sections_text') %></h4>
+    <div id="warn-message-popup">
+        <% unless flash[:warn_notice].nil? %>
+          <div id="errorExplanation" class="errorExplanation"><%= flash[:warn_notice] %> </div>
+        <% end %>
+    </div>
+    <div id="flash-box-popup">
+      <% unless flash[:notice].nil? %>
+        <p class="flash-msg"> <%= flash[:notice] %> </p>
+      <% end %>
+    </div>  
+    <ul id="category-list" style="height: 132px; overflow-y: auto; overflow-x: hidden; ">
+    <% @courses_data.each do |course| %>
+        <li class="list<%=cycle('odd', 'even')%>">
+          <div class="category-name" style="width: 60%;"><%= course.section_name.strip.length > 0 ? course.section_name.strip : "no-section" %></div>
+          <div class="category-edit" style="width: 10%;">
+              <% if course.section_name.strip.length > 0 %>
+                <% if permitted_to? :edit, :courses %>
+                <%= link_to_remote(t('edit_text'),
+                :url => { :controller=>"courses",:action => 'edit_section', :id =>course, :main_course_id => @course_id},
+                :method => 'get', :before => "$('loading_" + course.id.to_s + "').show();", 
+                :complete => "$('loading_" + course.id.to_s + "').hide();" ) %>
+                <% end %>&nbsp;<span>|</span>&nbsp;
+              <% end %>
+          </div>
+          <% confirm_message = @courses_data.length > 1 ? t('delete_confirm_msg') : t('only_class') %>
+          <div class="category-delete" style="width: 10%;">   
+              <% if course.section_name.strip.length > 0 %>
+                <% if permitted_to? :destroy, :courses %> 
+                <%= link_to_remote(t('delete_text'),
+               :url => { :controller=>"courses",:action => 'delete_section', :id =>course, :main_course_id => @course_id},
+               :method => 'get', :before => "$('loading_" + course.id.to_s + "').show();", 
+               :confirm => "#{confirm_message}",
+               :complete => "$('loading_" + course.id.to_s + "').hide();" ) %>
+               <% end %>
+              <% end %>
+          </div>
+          <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_" + course.id.to_s, :style =>"display: none;  float: left;" ) %>
+        </li>
+    <% end %>
+    </ul>    
+  <% end %>
+  <div id="add_section">
+    <% form_remote_for @course, :url => {:action => "save_section", :before=>"$('submit_button').disable()",:complete=>"setTimeout(function(){$('submit_button').enable();},5000)"} do |f| %>
+      <%= f.hidden_field :id, :value => @course_id %>
+      <%= error_messages_for :course %>
+      <div id="form-errors"></div>
+
+      <div class="label-field-pair">
+        <div class="label-container"><%= f.label "#{t('section_name')}" %></div>
+        <div class="input-container"><%= f.text_field :section_name %></div>
+      </div>
+
+      <%= submit_tag "", :value => "► #{t('add')}", :class => "submit_button" %>
+
+    <% end %>
+  </div>  
+  <div class="extender"></div>
+</div>
+
+<style>
+  #MB_frame .label-field-pair {
+    margin: 5px auto;
+    width: 424px;
+    text-align: center;
+  }
+  .label-field-pair label {
+    color: #444;
+    display: block;
+    font-size: 14px;
+    margin: 0 0 0px 0;
+    float: left;
+    width: 100px;
+    padding-top: 10px;
+    font-weight: 600;
+  }
+</style>
+

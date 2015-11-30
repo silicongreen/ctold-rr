@@ -1,0 +1,134 @@
+<% if params[:exam_group] %>
+    <%= link_to "<div class='button-link button-link-report'>See All Class Test</div>", :controller => "student", :action => "class_test_report" %>
+<% end %>
+<% unless class_test.nil? or class_test.empty? %>
+  <div id="page-yield" class="bg-disable">
+    <% if @current_user.student? or @current_user.parent? %>
+      <% class_test.each_with_index do |class_test_data,j| %>
+        <% unless class_test_data['subject_name'].nil? %>
+          <div class="portlet-subcontent" style="width:100%; ">     
+              <div class="timetable_left" style="border-right:none;">
+                      <div class="subject_name"><%= class_test_data['subject_name'] %></div>
+                <% if class_test_data['subject_icon'] %>
+                      <%= image_tag("icons/subjects/"+class_test_data['subject_icon'] , :size=> "83x60", :alt=> class_test_data['subject_name']) %>
+                    <% else %>
+                      <%= image_tag("icons/subjects/8.png" , :size=> "83x60", :alt=> class_test_data['subject_name']) %>
+                <% end %>
+
+              </div>
+              <div class="all_exam_and_project" >
+                
+                <% unless class_test_data['subject_exam']['class_test'].nil? or class_test_data['subject_exam']['class_test'].empty?  %>
+                  <% class_test_data['subject_exam']['class_test'].each_with_index do |class_result,k| %>
+                    <div class="single_exam_result single_exam_result_<%= j %>" <% if k>0 %> style="display:none;" <% end %> id="single_exam_<%= j %>_<%= k %>">
+                        <div class="timetable_right_exam_name">
+                          <div class="subcontent-info">
+
+                            <%= I18n.l(class_result['exam_date'].to_time,:format=>:normal) unless class_result['exam_date'].empty? %>
+                          </div> 
+                          
+                          <div class="subcontent-header themed_text" style="margin-top:20px;">
+                            <%# unless params[:exam_group] %>
+                              <%#= link_to class_result['exam_name'], :controller => "student", :action => "class_test_report", :exam_group => class_result['exam_group_id'] %>
+                            <%# else %>
+                              <%= class_result['exam_name'] %>
+                            <%# end %>
+                              
+                          </div>  
+                                      
+                        </div>
+                        <div class="timetable_grade">
+                          <h2 class="grade-value"><%= class_result['your_grade'] %></h2>
+                        </div>
+                        <div class="timetable_right_mark">
+                          <div class="class_mark_and_text">
+                            <div class="class_mark_text">  Your Mark </div>
+                            <div class="class_mark">  <%= class_result['your_mark'].to_f %> </div>
+                          </div>
+                          <div class="class_mark_and_text">
+                            <div class="class_mark_text">  Highest </div>
+                            <div class="class_mark">  <%= class_result['max_mark'].to_f %> </div>
+                            
+                          
+                          </div>
+                          <div class="class_mark_and_text">
+                            <div class="class_mark_text">  Total </div>
+                            <div class="class_mark">  <%= class_result['total_mark'].to_i %> </div>
+                          </div>
+                        </div>
+                        <div class="timetable_right"  style="float:left;width:15%; margin-left:20px; padding:10px 15px;">
+                            <h2 class="percent-value"><%= class_result['your_percent'] %> %</h2>
+                        </div>  
+                     </div>
+                  <% end %>
+                <% else %>
+                    <div class="single_exam_result single_project_result_<%= j %>" style="display:none;" >
+                        <h2 style="padding: 5px 10px;">No Class Test Publish for <%= class_test_data['subject_name'] %></h2>
+                    </div>
+                <% end %>
+                
+                <% unless class_test_data['subject_exam']['project'].nil? or class_test_data['subject_exam']['project'].empty?  %>
+                  <% class_test_data['subject_exam']['project'].each_with_index do |class_result,k| %>
+                    <div class="single_exam_result single_project_result_<%= j %>" style="display:none;" >
+                        <div class="timetable_right_exam_name">
+                          <div class="subcontent-info">
+
+                            <%= I18n.l(class_result['exam_date'].to_time,:format=>:normal) unless class_result['exam_date'].empty? %>
+                          </div> 
+
+                          <div class="subcontent-header themed_text" style="margin-top:20px;">
+                            
+                          <%= class_result['exam_name'] %> 
+                          
+                          </div>  
+
+                        </div>
+                        <div class="timetable_grade">
+                          <h2 class="grade-value"><%= class_result['your_grade'] %></h2>
+                        </div>
+                        <div class="timetable_right_mark">
+                          <div class="class_mark_and_text">
+                            <div class="class_mark_text">  Your Mark </div>
+                            <div class="class_mark">  <%= class_result['your_mark'].to_f %> </div>
+                          </div>
+                          <div class="class_mark_and_text">
+                            <div class="class_mark_text">  Highest </div>
+                            <div class="class_mark">  <%= class_result['max_mark'].to_f %> </div>
+
+
+                          </div>
+                          <div class="class_mark_and_text">
+                            <div class="class_mark_text">  Total </div>
+                            <div class="class_mark">  <%= class_result['total_mark'].to_i %> </div>
+                          </div>
+                        </div>
+                        <div class="timetable_right"  style="float:left;width:15%; margin-left:20px; padding:10px 15px;">
+                            <h2 class="percent-value"><%= class_result['your_percent'] %> %</h2>
+                        </div>  
+                     </div>
+                  <% end %>
+                <% else %>
+                    <div class="single_exam_result single_project_result_<%= j %>" style="display:none;" >
+                        <h2 style="padding: 5px 10px;">No Project Publish for <%= class_test_data['subject_name'] %></h2>
+                    </div>
+                <% end %>
+                <% unless params[:exam_group] %>
+                <div class="tabbed-header-wrapper_exam">
+
+                    <div class="show_all_project show_all_project_<%= j %>" onclick="show_project(<%= j %>);">Project</div>
+                    <div class="hide_all_project hide_all_project_<%= j %>" style="display:none;" onclick="hide_project(<%= j %>);">Project</div>
+                    <div class="show_all_class_test show_all_class_test_<%= j %>" onclick="show_class_test(<%= j %>);">All Class Test</div>
+
+                    <div class="hide_all_class_test hide_all_class_test_<%= j %>" onclick="hide_class_test(<%= j %>);" style="display:none;">All Class Test</div>
+
+                </div>
+                <% end %>
+                  
+              </div>  
+          </div>  
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>
+

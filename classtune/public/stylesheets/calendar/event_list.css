@@ -1,0 +1,220 @@
+.events {
+    background-color: #fff;
+    padding-bottom: 100px;
+}
+.clearfix {
+    clear: both;
+}
+.tabbed-header {
+    margin-top: 35px;
+    width: 100%;
+}
+.tabbed-header .title {
+    color: #b0b8ba;
+    float: left;
+    font-size: 35px;
+    font-weight: bold;
+    padding: 25px 15px 0 0;
+    text-align: left;
+    width: 40%;
+}
+.title-wrapper {
+    width: 30%;
+}
+.custom-header-icon {
+    float: left;
+    padding: 15px;
+    width: 40%;
+}
+.custom-header-icon img {
+    float: right;
+    width: 50px;
+}
+.tabs-wrapper {
+    float: left;
+    padding: 25px 15px 0 0;
+    width: 57%;
+}
+.tabs-wrapper a {
+    text-decoration: none;
+}
+.tabs-wrapper span {
+    cursor: pointer;
+    float: left;
+    padding: 15px 10px;
+    text-align: center;
+    width: 25%;
+    position: relative;
+}
+.tabs-wrapper span a {
+    color: #434343;
+}
+.tabs-wrapper span:hover {
+    background: #F41F0F;
+    color: #ffffff;
+}
+.tabs-wrapper span:hover a {
+    color: #ffffff;
+}
+.tabs-wrapper span:hover:after {
+    top: 100%;
+    left: 43.5%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-color: rgba(244, 31, 15, 0);
+    border-top-color: #F41F0F;
+    border-width: 15px;
+}
+.span-active {
+    background: #F41F0F;
+}
+.span-active a {
+    color: #ffffff !important;
+}
+.span-active:after {
+    top: 100%;
+    left: 43.5%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-color: rgba(244, 31, 15, 0);
+    border-top-color: #F41F0F;
+    border-width: 15px;
+}
+.event-icon-wrapper {
+    float: left;
+    border-right: 1px solid #C1C1C1;
+}
+.event-list {
+    width: 100%;
+}
+.event-list ul {
+    list-style: none;
+}
+.event-list ul li {
+    border: 1px solid #C1C1C1;
+    margin-bottom: 0;
+}
+.event-list ul li:first-child {
+    margin-bottom: 0;
+}
+.event_custom_icon {
+    width: 120px;
+    
+}
+
+
+#category-list {
+    clear : both;
+    padding : 20px;
+    background: #d7d7d7;
+    width:700px;
+    margin:10px auto 0;
+}
+
+#category-list .listeven{
+    background : #FFFFFF;
+    border-bottom:1px solid #D7D7D7;
+    color : #444;
+    height : auto;
+    min-height: 50px;
+    list-style-type : none;
+    padding : 10px;
+}
+
+#category-list .listodd{
+    background : #F5F5F5;
+    border-bottom:1px solid #D7D7D7;
+    color : #444;
+    height: auto;
+    min-height: 25px;
+    list-style-type : none;
+    padding : 10px;
+}
+
+#category-list li.heading {
+    background : none;
+    font-weight : bold;
+    list-style-type : none;
+    color : #444;
+    height : 1.5em;
+    width : 30em;
+    padding : 0.5em 0 0 5em;
+}
+#category-list li div {
+    float : left;
+}
+#category-list li div.category-name {
+    font-size: 13px;
+    font-weight: bold;
+    width: 35%;
+}
+
+#category-list li div.category-code {
+    width : 250px;
+    font-weight: bold;
+    font-size:13px;
+}
+
+#category-list li div.category-edit,
+#category-list li div.category-delete {
+    font-size: 0.9em;
+    text-align: right;
+    width: 55px;
+
+}
+#category-list li div.category-assign{
+    font-size : 0.9em;
+    width : 120px;
+}
+#category-list li div a {
+    color : #000;
+    font-size:14px;
+    text-decoration: none;
+}
+#category-list li div a:hover {
+    color : #d00;
+    text-decoration: underline;
+}
+
+#category-list li .opt{
+    float: left;
+}
+.pagination {
+    margin-top: 30px;
+}
+.pagination a {
+    border: 1px solid #ccc;
+    text-decoration: none;
+    text-transform: none;
+    padding: 10px;
+    border-radius: 5px;
+}
+.pagination a:hover {
+    background-color: #d7d7d7;
+    -webkit-transition: background-color 0.5s ease;
+    -moz-transition: background-color 0.5s ease;
+    -o-transition: background-color 0.5s ease;
+    -ms-transition: background-color 0.5s ease;
+    transition: background-color 0.5s ease;
+}
+.pagination a.prev_page, .pagination a.next_page {
+    border: 1px solid #ccc;
+    text-decoration: none;
+    text-transform: none;
+}
+.pagination .disabled {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    text-decoration: none;
+    text-transform: none;
+    cursor: pointer;
+}

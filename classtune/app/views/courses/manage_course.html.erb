@@ -1,0 +1,182 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<div id="content-header">
+<%= show_header_icon %>
+  <h1><%= t('courses_text') %></h1>
+<div class='header-sep'>|</div>
+<div class='sub-header'><%= "#{t('manage_course')}" %></div>
+
+<div id="inner-tab-menu">
+  <ul>
+    <li class='themed_bg themed-dark-hover-background'>
+      <%= link_to_remote(t('new_text'),
+              :url => { :controller=>"courses",:action => 'new'},
+              :method => 'get' ) %>
+    </li>
+
+  </ul>
+</div>
+
+
+</div>
+<div id="page-yield">
+  <div class="bread_crumb">
+    <%= link_to "#{t('courses_text')}", :controller => "courses", :action => "index" %> <div class = "bread-crumb-separator"> > </div>
+    <%= t('manage_course') %>
+  </div>
+  
+  <div id="flash-box">
+    <% unless flash[:notice].nil? %>
+      <p class="flash-msg"> <%= flash[:notice] %> </p>
+    <% end %>
+  </div>  
+
+
+  <% unless flash[:warn_notice].nil? %>
+    <div id="errorExplanation" class="errorExplanation"><%= flash[:warn_notice] %> </div>
+  <% end %>
+
+  <div class="box">
+    <h4 align="center"><%= t('course_text') %></h4>
+    
+    <div id ="cate_data_main">
+      <ul id="category-list">
+        <% @courses.each do |course| %>
+          <li class="list<%=cycle('odd', 'even')%>">
+            <% sections = course.sections.split(',') %>
+            <%#*<div class="category-name"><%= link_to course.course_name, course_path(course) </div>%>
+            <div id="cate_name_<%= course.id %>" class="category-name"><%=  course.course_name %></div>
+            <div id="cate_sections_<%= course.id %>" class="category-sections">
+              <% if sections.empty? %>
+                <span class="section">No-Section</span>
+              <% else %>  
+                <% sections.each do |s| %>
+                  <span class="section"><%= s %> </span>
+                <% end %>  
+              <% end %>  
+            </div>
+            <div class="category-edit">
+                <% if permitted_to? :edit, :courses %>
+                <%= link_to_remote(t('edit_text'),
+                :url => { :controller=>"courses",:action => 'edit', :id =>course},
+                :method => 'get' ) %>
+                <% end %>&nbsp;<span>|</span>&nbsp;
+                <%= link_to_remote(t('manage_section'),
+                :url => { :controller=>"courses",:action => 'add_section', :id =>course},
+                :method => 'get' ) %>&nbsp;<span>|</span>&nbsp;
+            </div>
+            <div class="category-delete">   <%= link_to(t('delete_text'), course_path(course), :method => 'delete', :confirm => "#{t('delete_confirm_msg')}") if permitted_to? :destroy, :courses %></div>
+          </li>
+        <% end %>
+
+      </ul>
+    </div>
+    <%= will_paginate @courses, :previous_label=>t('previous_text'), :next_label=>t('next_text'), :style=>"margin-right: 200px;" %>
+
+    <div id="modal-box" style="display:none;"></div>
+    <div class="extender"></div>
+  </div>
+</div>
+<script type="text/javascript">
+  function remove_element(obj)
+  {
+    var id = obj.id.replace("remove_batch_","");
+    j("#batch_data_" + id).remove();
+    var i = 0;
+    j(".batches_data_div").each(function(){
+      var j_data = parseInt(i) + 1;
+      var div_id = this.id.replace("batch_data_","");
+      var ind = parseInt(div_id) - 1;
+      j('#start_date_' + div_id + ' .input-container input[name="course[batches_attributes][' + ind + '][start_date]"]').attr('id','course[batches_attributes]['  + i + '][start_date]');
+      j('#start_date_' + div_id + ' .input-container input[name="course[batches_attributes][' + ind + '][start_date]"]').attr('name','course[batches_attributes]['  + i + '][start_date]');
+
+      j('#end_date_' + div_id + ' .input-container input[name="course[batches_attributes][' + ind + '][end_date]"]').attr('id','course[batches_attributes]['  + i + '][end_date]');
+      j('#end_date_' + div_id + ' .input-container input[name="course[batches_attributes][' + ind + '][end_date]"]').attr('name','course[batches_attributes]['  + i + '][end_date]');
+
+      j('#batch_data_' + div_id + ' #course_batches_attributes_' + ind + '_name').attr('name','course[batches_attributes]['  + i + '][name]');
+      j('#batch_data_' + div_id + ' #course_batches_attributes_' + ind + '_name').attr('id','course_batches_attributes_'  + i + '_name');
+      
+      j('#batch_data_' + div_id + ' #name_' + div_id).attr('id', 'name_' + j_data); 
+      j('#batch_data_' + div_id + ' #remove_batch_' + div_id).attr('id', 'remove_batch_' + j_data); 
+      j('#batch_data_' + div_id + ' #start_date_' + div_id).attr('id', 'start_date_' + j_data);
+      j('#batch_data_' + div_id + ' #end_date_' + div_id).attr('id', 'end_date_' + j_data);
+      
+      if ( j_data > 1 )
+      {
+        j('#batch_data_' + div_id + ' #remove_batch_' + j_data).show(); 
+      }
+      
+      j('#batch_data_' + div_id).attr("id", "batch_data_" + j_data)
+      i += 1;
+    });
+  }
+  function add_more_batch()
+  {
+     var len = j('.batches_data_div').length;
+     var div_len = parseInt(len) - 1;
+     
+     var ind = parseInt(div_len) - 1;
+     var div_html = j('#batch_data_' + div_len).html();
+     
+     div_html = '<div id="batch_data_' + len + '" class="batches_data_div">' + div_html + '</div>';
+     j('#batch_data_' + div_len).after(div_html);
+     
+     j('#batch_data_' + len + ' #name_' + div_len).attr('id', 'name_' + len); 
+     j('#batch_data_' + len + ' #remove_batch_' + div_len).attr('id', 'remove_batch_' + len); 
+     j('#batch_data_' + len + ' #start_date_' + div_len).attr('id', 'start_date_' + len);
+     j('#batch_data_' + len + ' #end_date_' + div_len).attr('id', 'end_date_' + len);
+     
+     
+     j('#batch_data_' + len + ' #remove_batch_' + len).show(); 
+    
+     j('#start_date_' + len + ' .input-container input[name="course[batches_attributes][' + ind + '][start_date]"]').attr('id','course[batches_attributes]['  + div_len + '][start_date]');
+     j('#start_date_' + len + ' .input-container input[name="course[batches_attributes][' + ind + '][start_date]"]').attr('name','course[batches_attributes]['  + div_len + '][start_date]');
+     
+     j('#end_date_' + len + ' .input-container input[name="course[batches_attributes][' + ind + '][end_date]"]').attr('id','course[batches_attributes]['  + div_len + '][end_date]');
+     j('#end_date_' + len + ' .input-container input[name="course[batches_attributes][' + ind + '][end_date]"]').attr('name','course[batches_attributes]['  + div_len + '][end_date]');
+     
+     j('#batch_data_' + len + ' #course_batches_attributes_' + ind + '_name').attr('name','course[batches_attributes]['  + div_len + '][name]');
+     j('#batch_data_' + len + ' #course_batches_attributes_' + ind + '_name').attr('id','course_batches_attributes_'  + div_len + '_name');
+  }
+  function create_new_batch()
+  {
+    j(".batches_data").removeAttr("checked")
+    j("#new_batches_selection_").val(1)
+    j("#batch").show();
+    j("#ebatch").hide();
+  }
+  function hide_new_batch()
+  {
+    j(".batches_data").attr("checked",true)
+    j("#new_batches_selection_").val(0)
+    j("#batch").hide();
+    j("#ebatch").show();
+  }
+  function toggle_grading(){
+    if($('course_cce_enabled').checked){
+      $("grading").hide();
+      $('course_grading_type').value="Normal"
+    }
+    else{
+      $("grading").show();
+    }
+    return true;
+  }
+</script>

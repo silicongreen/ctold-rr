@@ -1,0 +1,25 @@
+<div id="content-header">
+    <div id="page-yield">
+        <h2>Batches List</h2>
+        <div class="box">
+          <% @batches = Batch.active %>
+          <% unless @batches.blank? %>
+            <ul id="category-list">
+              <% @batches.each do |b| %>
+                <li class="list<%=cycle('odd', 'even')%>">
+                  <label><div class="category-name"><%= "#{b.modified_full_name}" %></div></label>
+                </li>
+              <% end %>
+            </ul>
+          <% else %>
+            <ul id="category-list">
+              <li class="listheading">
+                <div class="heading-name"><%= "#{t('no_batches')}" %></div>
+                <div class="heading-edit">
+                </div>
+              </li>
+            </ul>
+          <% end %>
+        </div>
+    </div>
+</div>

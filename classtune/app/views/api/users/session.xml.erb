@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<% privilege_text = Array.new %>
+<%=
+@xml.session_detail{
+  @xml.session do
+    @xml.session(@sessionvalue)
+  end
+}%>

@@ -1,0 +1,72 @@
+<div id="page-yield" class="bg-disable" style="margin-top: 0px;">
+
+  <% unless flash[:notice].nil? %>
+    <p class="flash-msg"> <%= flash[:notice] %> </p>
+  <% end %>
+
+  <div id="all_news" class="partial_homework" style="margin-top:0px;">
+
+    <% unless @news.nil? %>
+
+      <% @news.each_with_index do |r,i| %>
+        <% @comments = NewsComment.find_all_by_news_id(r.id) %>
+        <% link_value = r.title %>
+        <div class="portlet-subcontent">
+          <div class="timetable_left">
+            <img width="30" src="/images/icons/notice.png" ALT="<%= link_value %>" />
+          </div>
+          <div class="timetable_right">
+            <div class="subcontent-header themed_text"><%=  link_to link_value, :controller => 'news', :action => 'view', :id => r.id%></div>            
+            <div class="subcontent-info">
+              <% unless r.author.blank?  %>
+                <%= r.author.first_name %> <%= '- admin' if r.author.admin==true%>
+              <% else %>
+                <%= t('user_deleted') %>
+              <% end %>
+            </div>              
+          </div>
+          <div class="timetable_right"  style="float:left;height: 70px;width: 35%;padding: 10px 0;border-left:1px dotted #cccccc">                            
+            <div class="subcontent-date">
+              <% if r.category_id == 1
+                @category = "General"
+              elsif r.category_id == 2
+                @category = "Circular"
+              elsif r.category_id == 3
+                @category = "Announcement"
+              else
+                @category = "None"
+              end %>
+
+              <b style="color:#000;"><%= @category %></b></div>  
+            <div class="subcontent-date"><b style="color:#000;">Post On : </b><%= time_ago_in_words(r.created_at) %> <%= t('ago') %></div>
+          </div>
+          <div class='timetable_last'>
+            <%=  link_to "View", :controller => 'news', :action => 'view', :id => r.id%>
+          </div>
+        </div>
+        <div style="float: left; margin: 7px; width: 95%;"></div> 
+      <% end %>
+
+
+
+      <% posted_params = params %>
+      <% posted_params.delete(:page) %>
+      <% posted_params.delete(:authenticity_token) %>
+      <% posted_params.delete(:controller) %>
+      <% posted_params.delete(:action) %>
+      <% @url_params = "" %>
+      <% posted_params.each{|k,v| @url_params = @url_params.to_s+k.to_s+"="+v.to_s+"&"}  %>
+      <%= will_paginate @news, :renderer => 'RemoteLinkRenderer', :remote=>{:update=>'data-div'}%>
+
+  <%#= will_paginate @news %>
+
+
+    <% else %>
+      <div class="portlet-subcontent">
+        No Notice found
+      </div>
+    <% end %>
+
+  </div>
+
+</div>

@@ -1,0 +1,107 @@
+<% form_for(@student, :url => {:action=> 'show'}, :html=> {:id=>'new_student'}) do |s| %>
+  <div id="page-yield"  style="margin-top:0px;">  
+      <div class="row" style="width:43.4%">  
+        <div class="row_label">
+          <div>
+            <%= t('class_label') %>
+          </div>
+        </div>
+        <div class="row_data">
+          <div>
+            <div class="custom_drop_wrapper" style="width:103%">
+             <%= select :batch, :id,
+          @batches.map {|b| [b.full_name, b.id] },
+          {:prompt => "#{t('select_a_batch')}"},
+          {:onchange => "#{remote_function(
+          :url => { :action => 'show_report' },
+          :with => "'batch_id='+value+'&date_report='+$('select_date').value",
+          :before => "Element.show('loader')",
+          :success => "Element.hide('loader')"  )}"} %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" style="width:50%">
+        <div class="row_label" >
+          <div>
+            Select date
+          </div>
+        </div>
+        <div class="row_data">
+          <div>
+            <%= calendar_date_select_tag "select_date",@date_today, :readonly=> true,:onchange => "#{remote_function(
+          :url => { :action => 'show_report' },
+          :with => "'batch_id='+$('batch_id').value+'&date_report='+value",
+          :before => "Element.show('loader')",
+          :success => "Element.hide('loader')"  )}", :popup=>:force, :placeholder => '', :image => '/images/icons/calendar/calendar-icon.png' %>
+          </div>
+        </div>
+      </div>
+    
+      
+    <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loader", :style =>"display: none;" ) %>
+
+
+  <% end %>
+  <%= hidden_field_tag 'time_zone_date',@date_today, :id=>'time_zone' %>
+  <div id="subjects"></div>
+  
+  <div id="register"></div>
+  <div id="modal-box" style="display:none;"></div>
+</div>
+<style>
+  
+  .row_data div img.calendar_date_select_popup_icon
+  {
+     width:22px;
+  }
+  .row_data div input[type="text"] {
+  font-size: 18px;
+  padding: 0px 0 0px 0px;
+  width: 90%;
+  }
+  
+  .row {
+  background-color: #f8f8fa;
+  border: 1px solid #DFE1E2;
+  float: left;
+  width: 30%;
+  margin-right: 28px;
+  border-right: 1px solid #DFE1E2;
+}
+.row_label {
+  background-color: #ffffff;
+  border-right: 1px solid #DFE1E2;
+  float: left;
+  width: 48.2%;
+  padding: 0px 0px;
+}
+.row_label div {
+  color: #868A8B;
+  float: left;
+  padding: 8px 10px;
+  width: 80%;
+}
+.row_data {
+  float: left;
+  width: 48.6%;
+}
+.custom_drop_wrapper select::-ms-expand {
+    display: none;
+}
+.custom_drop_wrapper select {
+  background-color: transparent;
+  background-image: url("/images/icons/drop_down_normal.png");
+  background-position: 98% 0;
+  background-repeat: no-repeat;
+  background-size: 37px 36px;
+  border: medium none;
+  cursor: pointer;
+  display: block;
+  height: 35px;
+  width: 100%;
+  -webkit-appearance: none;
+  /* border-right: 1px solid black; */
+}
+
+</style>  

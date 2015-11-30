@@ -1,0 +1,84 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<div id="content-header">
+<%= show_header_icon %>
+  <h1><%= t('batches_text') %></h1>
+<div class='header-sep'>|</div>
+<div class='sub-header'><%= "#{t('manage_batch')}" %></div>
+
+<div id="inner-tab-menu">
+  <ul>
+    <% if permitted_to? :index ,:grading_levels %>
+      <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('grading_system')}", grading_levels_path %></li>
+    <% end %>
+    <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('batch_transfer')}", :controller => 'batch_transfers' %></li>
+  </ul>
+</div>
+</div>
+<div id="page-yield">
+  <div id="flash-box">   
+    <% unless flash[:notice].nil? %>
+      <p class="flash-msg"> <%= flash[:notice] %> </p>
+    <% end %>
+  </div>
+    
+  <div class="box">
+    <% if @batches.length > 1 %>
+      <h4 align="center"><%= t('batches_available_text') %></h4>  
+      <ul id="category-list">
+          <% @batches.each do |batch| %>
+            <li class="list<%=cycle('odd', 'even')%>">
+                <div id="save_batches_<%= batch.id %>" class="category-name">
+                  <%= link_to_remote( batch.name.strip.downcase == 'general' ? 'General' : batch.name,
+                    :url => { :controller=>"courses",:action => 'get_batches_classes', :id =>batch.id, :name => batch.name},
+                    :method => 'get', :before => "$('loading_" + batch.id.to_s + "').show();", 
+                    :complete => "$('loading_" + batch.id.to_s + "').hide();" ) %>  
+                </div>
+                <div class="category-edit">
+                    <%= link_to_remote(t('edit_text'),
+                    :url => { :controller=>"courses",:action => 'edit_batches', :id =>batch.id},
+                    :method => 'get', :before => "$('loading_" + batch.id.to_s + "').show();", 
+                    :complete => "$('loading_" + batch.id.to_s + "').hide();" ) %>
+                </div>
+                <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_" + batch.id.to_s, :style =>"display: none;  float: left;" ) %>
+            </li>
+          <% end %>
+      </ul>
+    <% end %>
+    <div id="class_info" ></div>
+    <div class="label-field-pair" style="display: none;">
+      <label for="student_course"><%= "#{t('select_a_course')}" %>:
+        <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader", :style =>"display: none;" ) %>
+      </label>
+      <div class="text-input-bg">
+        <%= select :course, :name,
+          Course.active.map {|b| [b.course_name + " " + b.section_name.to_s, b.id]},
+          {:prompt => "#{t('select_a_course')}"},
+          {:onChange => "#{remote_function(:url => {:action => "update_batch"},
+          :with => "'course_name='+ value",
+          :before => "Element.show('loader')",
+          :success => "Element.hide('loader')"
+          )}"} %>
+      </div></div>
+
+    <div id="modal-box" style="display:none;"></div>
+    <div id="update_batch" ><%= render :partial=>'class_info' %></div>
+    <div class="extender"></div>
+  </div></div>

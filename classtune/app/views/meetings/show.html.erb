@@ -1,0 +1,197 @@
+<div class="header-wrapper">
+    <div class="header-title">
+        <div class="header-icon">
+            <%= image_tag '/images/icons/meeting-request-icon.png', :html => {:alt => 'Attendance'} %>
+        </div>
+        <div class="header-title-text-wrapper">
+            <div class="header-title-main-text f2">
+                <%= link_to "Meetings", :controller => "meetings", :action => "index" %> | Details
+
+            </div>
+            <div class="header-title-sub-text">
+                <%= @local_tzone_time.to_date %>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+
+
+</div>
+<div id="page-yield">
+<%#*<pre>%>
+<%#= debug @meetings.inspect %>
+    <% meeting = @meetings %>
+<%#= debug @current_user.parent.inspect %>
+<%#*</pre>%>
+    <% unless meeting.nil? %>
+
+      <%
+      teacher_full_name = '';
+      parent_full_name = ''
+
+      unless meeting.employee.nil?
+        unless meeting.employee.first_name.nil?
+          teacher_full_name = meeting.employee.first_name
+          end
+
+        unless meeting.employee.middle_name.nil?
+          teacher_full_name += ' ' + meeting.employee.middle_name
+          end
+
+        unless meeting.employee.last_name.nil?
+          teacher_full_name += ' ' + meeting.employee.last_name
+          end
+        teacher_full_name += ' ' + '(T)'
+        end
+
+      unless meeting.student.immediate_contact.nil?
+        unless @current_user.parent?
+          unless meeting.student.immediate_contact.first_name.nil?
+            parent_full_name = meeting.student.immediate_contact.first_name
+            end
+
+          unless meeting.student.immediate_contact.last_name.nil?
+            parent_full_name += ' ' + meeting.student.immediate_contact.last_name
+            end
+          parent_full_name += ' ' + '(G)'
+        end
+      end
+    %>
+
+      <div class="details-row">
+          <div class="left-col col-3">
+              <label class="view-lable"><%= t('from') %></label>
+          </div>
+          <div class="right-col col-9">
+              <label class="view-lable">
+                  <% if meeting.meeting_type == 1 %>
+                    <%
+                    if @current_user.employee_entry.id.to_i == meeting.teacher_id.to_i
+                      teacher_full_name = "Me"
+                      end
+                  %>
+                    <%= teacher_full_name %>
+                  <% else %>
+                    <%
+                    if !@student_ids.nil? and @student_ids.include?(meeting.parent_id)
+                      parent_full_name = "Me"
+                      end
+                  %>
+                    <%= parent_full_name %>&nbsp;&nbsp;
+                        <%= meeting.student.full_name %> (S) [<%= meeting.student.batch.full_name %> ]
+                  <% end %>
+              </label>
+          </div>
+      </div>
+
+      <div class="details-row">
+          <div class="left-col col-3">
+              <label class="view-lable"><%= t('to') %></label>
+          </div>
+          <div class="right-col col-9">
+              <label class="view-lable">
+                  <% if meeting.meeting_type == 2 %>
+                    <%
+                    if @current_user.employee_entry.id.to_i == meeting.teacher_id.to_i
+                      teacher_full_name = "Me"
+                      end
+                  %>
+                    <%= teacher_full_name %>
+                  <% else %>
+                    <%
+                    if !@student_ids.nil? and @student_ids.include?(meeting.parent_id)
+                      parent_full_name = "Me"
+                      end
+                  %>
+                    <%= parent_full_name %>&nbsp;&nbsp;
+                        <%= meeting.student.full_name %> (S) [<%= meeting.student.batch.full_name %> ]
+                  <% end %>
+              </label>
+          </div>
+      </div>
+
+      <div class="details-row">
+          <div class="left-col col-3">
+              <label class="view-lable"><%= t('description') %></label>
+          </div>
+          <div class="right-col col-9">
+              <label class="view-lable">
+                  <%= sanitize meeting.description , :tags => %w[b i a h1 h2 h3 u li ol strike p img font span sup sub tr td table th tbody thead strong em iframe], :attributes => %w[href src style border cellspacing cellpadding height width align]%>
+              </label>
+          </div>
+      </div>
+
+      <div class="details-row">
+          <div class="left-col col-3">
+              <label class="view-lable themed_text"><%= t('meeting_schedule') %></label>
+          </div>
+          <div class="right-col col-9">
+              <label class="view-lable themed_text">
+                  <%= I18n.l(meeting.datetime, :format=>"%A, %d %B, %Y %I:%M %p") %>
+              </label>
+          </div>
+      </div>
+
+      <div class="details-row">
+          <div class="left-col col-3">
+              <label class="view-lable"><%= t('status') %></label>
+          </div>
+          <div class="right-col col-9">
+              <label class="view-lable">
+                  <% if meeting.status.nil? or meeting.status.to_i == 0 or meeting.status.blank? %>
+                    <%= t('pending') %>
+                  <% elsif meeting.status == 1 %>
+                    <%= t('approved') %>
+                  <% else %>
+                    <%= t('rejected') %>
+                  <% end %>
+              </label>
+          </div>
+      </div>
+
+      <% if (!@current_user.admin? or teacher_full_name == 'Me') and (meeting.status == 0) and ( (meeting.meeting_type == 2 and parent_full_name != 'Me') or ((meeting.meeting_type == 1 and teacher_full_name != 'Me')) )  %>
+        <div class="details-row">
+            <div class="left-col col-3">
+                <%=  button_to "Accept", { :action => "update", :id => meeting.id }, {:method => :accept, :name => 'request'} %>
+            </div>
+            <div class="left-col col-3">
+                <%=  button_to "Reject", { :action => "update", :id => meeting.id }, {:method => :reject, :name => 'request'} %>
+            </div>
+        </div>
+      <% end %>
+
+      <% if (@current_user.admin?) and !meeting.forward %>
+        <div class="details-row">
+            <div class="left-col col-3">
+                <%=  button_to "Forward", { :action => "update", :id => meeting.id }, {:method => :forward, :name => 'request'} %>
+            </div>
+        </div>
+      <% end %>
+
+    <% else %>
+      <p class="flash-msg">No Meeting Request found.</p>
+    <% end %>
+
+</div>
+
+<%= stylesheet_link_tag 'pagination_and_table' %>
+<%#= stylesheet_link_tag 'bootstrap.css' %>
+<%= stylesheet_link_tag 'bootstrap_form' %>
+
+<% content_for :head do %>
+  <%= javascript_include_tag "custom/meetings" %>
+<% end %>
+
+
+<%= stylesheet_link_tag 'tadded-header' %>
+<%= stylesheet_link_tag 'list_table' %>
+<%= stylesheet_link_tag 'syllabus/single_syllabus' %>
+
+<% content_for :head do %>
+  <%= javascript_include_tag "custom/tabbed-header" %>
+<% end %>
+<style type="text/css">
+    .header-wrapper .header-title-sub-text {
+        letter-spacing: unset;
+    }
+</style>

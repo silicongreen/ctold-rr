@@ -1,0 +1,62 @@
+<div id="page-yield" style="width:100% !important;">
+  <div class="section">
+    <center>
+      <div class="hor_line"></div>
+      <h1><%= "Exam Routine" %></h1>
+      <div class="hor_line"></div>
+    </center>
+  </div>
+
+  <div class="box">
+    <div class="section">
+      <div id="main_info" class="f2"><br />
+          <%="Title" %> : <%= @exam_group.name %><br />
+          <%="Shift" %> : <%= @batch.name  %><br />
+          <%="Class" %> : <%=@course.course_name %><br />
+          <%="Section" %> : <%=@course.section_name %>     <br /><br />   
+      </div>
+    </div>
+   
+    <div class="section">
+    <% unless @exam_group.exam_type == 'Grades' %>      
+		<table id="pdf-table" width="100%" cellspacing="0">
+          <tr class="table-header">
+			<td class="col-pdf"><%= t('subject') %></td>
+			<td class="col-pdf"><%= "Date" %></td>
+			<td class="col-pdf"><%= "Start" %></td>
+			<td class="col-pdf"><%= "End" %></td>
+			<td class="col-pdf"><%= t('max_mark') %></td>
+			<td class="col-pdf"><%= t('min_mark') %></td>
+		  </tr>
+		  <tr class="tr-blank"></tr>
+        <% @exam_group.exams.each do |exam| %>
+          <% @exam = exam %>          
+            <tr class="<%= cycle('even' , 'odd') %>">
+              <% @exam = exam %>
+              <td class="col-pdf"><%= exam.subject.name %></td>
+              <td class="col-pdf"><%= I18n.l(exam.end_time.to_date,:format =>:long) %></td>
+              <td class="col-pdf"><%= I18n.l(exam.start_time,:format=>"%I:%M %p") %></td>
+              <td class="col-pdf"><%= I18n.l(exam.end_time,:format=>"%I:%M %p") %></td>
+              <td class="col-pdf"><span><%= exam.maximum_marks %></span></td>
+              <td class="col-pdf"><span><%= exam.minimum_marks %></span></td>             
+            </tr>          
+        <% end %>
+        </table>
+	
+    <% else %>
+      <table id="pdf-table" width="100%" cellspacing="0">
+        <tr class="table-header">
+          <td><%= t('subject') %></td>          
+        </tr>
+        <% @exam_group.exams.each do |exam| %>          
+            <tr class="tr-<%= cycle('odd', 'even') %>">
+              <% @exam = exam %>
+              <td class="col-pdf"><%= exam.subject.name %></td>              
+            </tr>         
+        <% end %>
+      </table>
+    <% end %>
+	</div>
+    <div class="extender"></div>
+  </div>
+</div>

@@ -1,0 +1,140 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<!--<div id="content-header">
+<%#= show_header_icon %>
+
+  <h1><%#= t('school_syllabus') %></h1>
+<div id="inner-tab-menu">
+  <ul>
+    <%# if permitted_to? :add,:news %>
+      <li class='themed_bg themed-dark-hover-background'><%#= link_to "#{t('add')}", :controller => 'syllabus', :action => 'add' %></li>
+    <%# end %>
+  </ul>
+</div>
+
+</div>-->
+
+<div class="header-wrapper">
+  <div class="header-title">
+    <div class="header-icon">
+      <%= image_tag '/images/icons/syllabus/syllabus.png', :html => {:alt => 'Syllabus'} %>
+    </div>
+    <div class="header-title-text-wrapper">
+      <div class="header-title-main-text f2">
+        <%= link_to "Syllabus", :controller => "syllabus", :action => "classes_view" %>
+        <span style="float: left;clear:both;font-size: 15px;"><%= Time.now.strftime("%Y-%m-%d") %></span>
+      </div>
+      <div class="header-title-sub-text f5">
+
+        </div>
+      </div>
+    </div>    
+    <div class="clearfix"></div>
+    <div class="tabbed-header-wrapper">        
+      <ul class="header-tabs">
+        <li class="active">
+          <%= link_to "#{t('view_all')}", {:controller => 'syllabus', :action => 'all'}, :class => "f2" %>
+        </li>
+        <% if permitted_to? :add,:syllabus %>
+          <% if @is_class %>
+            <li>
+              <%= link_to t('new'), {:controller => "syllabus", :action => 'new', :batch_id => @batch.id, :batch_name => @batch_name, :course_name => @course.course_name ,:class=> @is_class},:class => "f2",:target => "_blank"  %>
+            </li>
+          <% else %>
+              <li>
+              <%= link_to t('new'), {:controller => "syllabus", :action => 'new', :batch_id => @batch.id, :batch_name => @batch_name },:target => "_blank", :class => "f2" %>
+            </li>
+          <% end %>
+        <% end %>
+        
+      </ul>
+
+    </div>
+  </div>
+
+<div id="page-yield" style="padding: 0px 0px;width: 100%;margin:0px;">
+
+  <% unless flash[:notice].nil? %>
+    <p class="flash-msg"> <%= flash[:notice] %> </p>
+  <% end %>
+
+  <div id="all_news">
+    <table id="listing" align="center" width="100%" cellpadding="1" cellspacing="1">
+      <tr class="tr-head">
+        <td>
+          <%= t('sl_no') %>
+        </td>
+        <td>
+         <%= t('title') %>
+        </td>
+		<td>
+         <%= t('type') %>
+        </td>
+        <td>
+          <%= t('author') %>
+        </td>
+        <td>
+          <%= t('comments') %>
+        </td>
+        <td>
+         <%= t('posted') %>
+        </td>
+      </tr>
+      <tr class="tr-blank"></tr>
+      <% @syllabus.each_with_index do |r,i| %>
+        <% @comments = NewsComment.find_all_by_news_id(r.id) %>
+        <% link_value = r.title %>
+        <tr class="tr-<%= cycle('odd', 'even') %>">
+          <td class="col-1">
+            <%= i+1 %>
+          </td>
+          <td class="col-3">
+            <%=  link_to link_value, :controller => 'syllabus', :action => 'view', :id => r.id%>
+          </td>
+          <td class="col-3">           
+            <% if r.is_yearly == 1
+              @is_yearly = "Yearly"
+            else
+              @is_yearly = "Not Yearly"
+            end %>
+            <%= @is_yearly %>
+          </td>
+          <td class="col-3">
+            <% unless r.author.blank?  %>
+              <%= r.author.first_name %> <%= '- admin' if r.author.admin==true%>
+            <% else %>
+             <%= t('user_deleted') %>
+            <% end %>
+          </td>
+          <td class="col-1">
+            
+          </td>
+          <td class="col-3">
+            <%= time_ago_in_words(r.created_at) %> <%= t('ago') %>
+          </td>
+        </tr>
+      <% end %>
+
+    </table>
+    <%= will_paginate @news %>
+  </div>
+
+</div>
+<%= stylesheet_link_tag 'tadded-header' %>

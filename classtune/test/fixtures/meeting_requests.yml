@@ -1,0 +1,21 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  type: 1
+  teacher_id: 1
+  parent_id: 1
+  description: MyText
+  student_ids: MyText
+  reciver_messege: MyText
+  datetime: 
+  status: 1
+
+two:
+  type: 1
+  teacher_id: 1
+  parent_id: 1
+  description: MyText
+  student_ids: MyText
+  reciver_messege: MyText
+  datetime: 
+  status: 1

@@ -1,0 +1,23 @@
+.clearfix {
+    clear: both;
+}
+#page-yield{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+.wrapper {
+    background-color: #ffffff;
+    float: left;
+    width: 100%;
+}
+#payments_details {
+    background-color: #ffffff;
+}
+table#listing {
+    background-color: #ffffff;
+}
+.pdf-center{
+    width: 190px;
+    margin: 0 auto;
+}

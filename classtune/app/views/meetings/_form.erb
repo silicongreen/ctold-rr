@@ -1,0 +1,107 @@
+<% form_for(@meeting, :url => {:action => @action}, :html=> {:id=>'new_student'}) do |f| %>
+  <%= error_messages_for :meeting %>
+
+  <div class="left-col col-6">
+
+    <div class="label-field-pair details-row">
+      <div class="left-col col-3">
+        <label for="datetime">
+          <%= t('meeting_schedule') %>:
+          <span class="necessary-field">*</span>
+        </label>
+      </div>
+      <div class="text-input-bg right-col col-9">
+        <%= calendar_date_select_tag "datetime", I18n.l(1.week.since, :format=>("%Y-%m-%d %H:%M")), :time => true, :readonly=>true, :popup=>"force"%>
+      </div>
+    </div>
+
+    <div class="label-field-pair details-row">
+      <div class="left-col col-3">
+        <label for="title">
+          <%= t('description') %>:
+          <span class="necessary-field">*</span>
+        </label>
+      </div>
+      <div class="right-col col-9"><%= f.text_area "description", :autofocus => 'autofocus' %></div>
+    </div>
+
+    <div class="label-field-pair details-row" style="margin-top: 180px;">
+      <div class="left-col"><%= f.submit "►#{t('submit_meeting_request')}" %></div>
+    </div>
+
+  </div>
+
+  <div class="left-col col-6" style="margin-left: 25px;">
+
+    <% if @current_user.admin? or @current_user.employee? %>
+
+      <div class="label-field-pair details-row">
+        <div class="left-col col-3">
+          <label for="student_batch_name">
+            <%= t('shift_label') %>:
+            <span class="necessary-field">*</span>
+          </label>
+        </div>
+        <div class="right-col col-9"><%= select :student, :batch_name, options_for_select(Batch.active.find(:all, :group => "name").map {|b| [b.name, b.id]}, @batch_no.to_i), 
+            {:prompt => "#{t('select')}"},
+            {:onChange => "#{remote_function(:url => {:controller => "meetings", :action => "get_classes"}, :with => "'batch_id='+value+'&'+$('new_student').serialize()+'&section_page=section_view&section_partial=sections_view&page=course_new&partial_view=courses_new'" ,:before => "$('loading_2').show();",
+            :success => "$('loading_2').hide();")}"} %>
+          <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_2", :style =>"display: none;" ) %>
+        </div>
+      </div>
+
+      <div class="label-field-pair details-row">
+        <div class="left-col col-3">
+          <label for="class_label">
+            <%= t('class_label') %>:
+            <span class="necessary-field">*</span>
+          </label>
+        </div>
+        <div id="course_new" class="right-col col-9">
+          <%= render :partial => 'courses_new', :object => @courses %>
+        </div>
+      </div>
+
+      <div class="label-field-pair details-row" id="section_div">
+        <div class="left-col col-3">
+          <label for="shift_label">
+            <%= t('section_label') %>:
+            <span class="necessary-field">*</span>
+          </label>
+        </div>
+        <div id="section_view" class="right-col col-9">
+          <%= render :partial => 'sections_view', :object => @classes %>
+        </div>
+      </div>
+
+      <div id="students" class="label-field-pair details-row"></div>
+
+    <% end %>
+
+    <% if @current_user.parent? %>
+
+      <div class="label-field-pair details-row">
+        <div class="left-col col-3">
+          <label>
+            <%= t('select_department') %> : 
+            <span class="necessary-field">*</span>
+          </label>
+        </div>
+        <div class="right-col col-9">
+          <%= select :subject_assignment, :department_id, @departments.map { |s| [s.name, s.id] },
+            {:prompt => "#{t('select_department')}"},
+            {:onChange => "#{remote_function(:url => {:action => "employees_list"},
+            :with => "'department_id='+value",:before=>"$('loader').show();",:success=>"$('loader').hide();")}"} %>
+          <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loader", :style =>"display: none;" ) %>
+        </div>
+      </div>
+
+      <div id="employee_list"></div>
+
+    <% end %>
+
+
+  </div>
+
+
+<% end %>

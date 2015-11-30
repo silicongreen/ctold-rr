@@ -1,0 +1,33 @@
+
+<div class="CSSTableGenerator" >
+<% unless exam_groups.nil? or exam_groups.empty?  %>
+<table class="table-design">
+    <tr>
+        <td>
+          Date
+        </td> 
+        <td>
+          Term Test
+        </td>
+    </tr>
+<% exam_groups.each_with_index do |exam_group,k| %>
+   
+    <tr>
+        <td>
+          <%= I18n.l(exam_group.exam_date.to_time,:format=>:normal) unless exam_group.exam_date.nil? %>
+        </td> 
+        <td>
+          <div class="left-dev"><span><%= exam_group.name %></span></div>
+          <div class="right-dev">
+          <%= link_to "View" ,{:controller => 'exam', :action => 'generated_report',:exam_group=>exam_group.id, :student=>@student.id} %>
+          </div>
+        </td>
+    </tr>
+
+
+<% end %>
+</table>
+
+<% end %>
+</div>  
+ 

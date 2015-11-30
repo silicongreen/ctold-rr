@@ -1,0 +1,78 @@
+<% @elective_groups.each do |elective| %>
+  <% s_message = "" %>
+  <% if ! @show_batch_subject %>
+  <% 
+    elective_group_name = elective.name
+    half_no_of_batches_active = ( @batches.length / 2 ).floor
+    elective_active_batch_ids = ElectiveGroup.find(:all, :conditions => ["name like ? and batch_id IN (?) and is_deleted = 0", elective_group_name, @batches]).map{|b| b.batch_id}
+    active_batches_id = @batches - elective_active_batch_ids
+
+    tmp_elective = ElectiveGroup.new
+    if active_batches_id.length > 0
+       s_message = tmp_elective.get_message(elective_active_batch_ids, active_batches_id, half_no_of_batches_active )
+    end
+  %>
+
+  <% end %>
+  <li class="list<%=cycle('odd', 'even')%>">
+    <div class="category-name">
+      <% if @show_batch_subject %>  
+        <%= link_to elective.name, '/batches/' + @batch.id.to_s + '/electives/' + elective.id.to_s + '?from_action=' + @from_action %>
+      <% else %>  
+        <% if @batch_only %>
+          <%= link_to elective.name, '/batches/' + @batch.id.to_s + '/electives/' + elective.id.to_s + '?show_batch_subject=0' + '&from_action=' + @from_action + '&batch_only=1&batch_name=' + @batch_name %>
+        <% else %>
+          <%= link_to elective.name, '/batches/' + @batch.id.to_s + '/electives/' + elective.id.to_s + '?show_batch_subject=0' + '&from_action=' + @from_action %>
+        <% end %>
+        <small><%= s_message %></small>
+        <% if s_message.length > 0 %>
+          <small><%= link_to_remote "Assign to other section", :url => { :controller=>"subjects",:action => 'assign_elective_group', :id => elective.id, :show_batch_subject => "0", :from => "elective_groups"} %></small>
+        <% end %>
+      <% end %>    
+    </div>
+    <div class="category-edit">
+        <% if @show_batch_subject %>
+        <%= link_to t('edit_text'), :controller=>"elective_groups",:action => "edit", :id =>elective, :from_action => @from_action %> 
+        <% else %>
+          <% if @batch_only %>
+          <%= link_to t('edit_text'), :controller=>"elective_groups",:action => "edit", :id =>elective, :show_batch_subject => '0', :from_action => @from_action, :batch_only => "1", :batch_name => @batch_name  %> 
+          <% else %>
+          <%= link_to t('edit_text'), :controller=>"elective_groups",:action => "edit", :id =>elective, :show_batch_subject => '0', :from_action => @from_action  %> 
+          <% end %>
+        <% end %>
+    </div>
+    <% has_delete_link = true %>  
+    <%
+      unless elective_active_batch_ids.nil? 
+        elective_active_batch_ids.each do |eid|
+          @subjects= Subject.find_all_by_elective_group_id(eid, :conditions => "is_deleted = '0'")
+          unless @subjects.empty?
+            has_delete_link = false
+            break
+          end
+        end 
+      else  
+        has_delete_link = false
+      end
+    %>  
+    <% if has_delete_link %>
+      <div class="category-delete">
+        <% if @show_batch_subject %>
+        <%= link_to(t('delete_text'), '/batches/' + @batch.id.to_s + '/electives/' + elective.id.to_s + '?from_action=' + @from_action,
+          :method => 'delete',
+          :confirm => t('delete_confirm_msg')) %> 
+        <% else %>
+          <% if @batch_only %>
+          <%= link_to(t('delete_text'), '/batches/' + @batch.id.to_s + '/electives/' + elective.id.to_s + '?show_batch_subject=0&from_action=' + @from_action + '&batch_only=1&batch_name=' + @batch_name,
+          :method => 'delete',
+          :confirm => t('delete_confirm_msg')) %> 
+          <% else %>
+          <%= link_to(t('delete_text'), '/batches/' + @batch.id.to_s + '/electives/' + elective.id.to_s + '?show_batch_subject=0&from_action=' + @from_action,
+          :method => 'delete',
+          :confirm => t('delete_confirm_msg')) %> 
+          <% end %>
+        <% end %>  
+      </div>
+    <% end %>
+  </li>
+<% end %>

@@ -1,0 +1,33 @@
+<% unless @courses.nil? %>  
+  <% if Batch.active.find(:all, :group => "name").length == 1 %>
+    <h4 align="left"><%= t('batches_text')  %>: <%= Batch.active.find(:all, :group => "name")[0].name %> </h4>
+  <% end %>
+  <h4 align="center"><%= t('course_text') %></h4>
+
+  <ul id="category-list">
+    <% @courses.each do |course| %>
+      <li class="list<%=cycle('odd', 'even')%>">
+        <% courses_batches = course.courses_batches.split(',') %>
+        <%#*<div class="category-name"><%= link_to course.course_name, course_path(course) </div>%>
+        <div class="category-name" style="width: 100px; padding: 4px 2px 8px 8px;"><%=  course.course_name %></div>
+        <div id="cate_sections_<%= course.id %>" class="category-sections" style=" padding: 4px 2px 12px 8px;">
+          <% courses_batches.each do |cb| %>
+            <% a_course_batch_info = cb.split('-') %>
+            <% unless @for_exam %>
+            <%= link_to a_course_batch_info[0], [Course.find(a_course_batch_info[1]), Batch.find(a_course_batch_info[2])], :class=> "sections" %>
+            <% else %>
+            <%= link_to a_course_batch_info[0], batch_exam_groups_path(Batch.find(a_course_batch_info[2])), :class=> "sections" %>
+            <% end %>
+          <% end %>  
+        </div>
+        <% a_course_batch_info = courses_batches[0].split('-')   %>
+        <% batch_id = a_course_batch_info[2]   %>
+        <div class="category-name" style="padding: 0 2px 8px 8px; float: right; width: 80px; ">
+            <%#*new_batch_exam_group_path(Batch.find(batch_id),:class_exam=>true)%>
+            <%= link_to "#{t('exams_text')}", batch_exam_groups_path(Batch.find(batch_id),:class_exam=>true), :class => "user_button", :style => "margin-top: 0px;" %>
+        </div>
+      </li>
+    <% end %>
+
+  </ul>
+<% end %>

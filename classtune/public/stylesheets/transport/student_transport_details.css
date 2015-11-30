@@ -1,0 +1,84 @@
+.full-col {
+    clear: both;
+    float: left;
+    width: 100%;
+}
+.no-data-available {
+    background-color: #ffffff;
+}
+.no-data-available div {
+    padding: 25px;
+    color: #333333;
+}
+.left-col {
+    background-color: #ffffff;
+    float: left;
+    margin-right: 15px;
+    width: 40%;
+}
+.row {
+    width: 100%;
+}
+.pick-up {
+    border-bottom: 1px solid #cccccc;
+    float: left;
+}
+.icon {
+    background-color: #f7f8f9;
+    color: #333333;
+    float: left;
+    padding: 55px 0 40px 30px;
+    width: 30%;
+}
+.icon img {
+    float: left;
+    width: 55%;
+}
+.icon span {
+    float: left;
+    line-height: 1.25;
+    margin-top: 15px;
+    padding: 3px 12px 12px 0;
+    width: 80%;
+}
+.data {
+    float: left;
+    padding: 55px 30px;
+    width: 45%;
+}
+.drop-off {
+    float: left;
+}
+.right-col {
+    background-color: #ffffff;
+    float: right;
+    width: 58%;
+}
+.div-header-wrapper {
+    padding: 15px;
+}
+.div-header {
+    color: #231f20;
+    float: left;
+    font-size: 25px;
+    font-weight: bold;
+    padding: 0 0 10px;
+    width: 100%;
+}
+.div-sub-header {
+    color: #b1b8ba;
+    font-size: 14px;
+}
+.CSSTableGenerator table thead tr th {
+    border-top: 1px solid #d7dbdd;
+    background-color: #f9fafb;
+    color: #d71921;
+    font-weight: normal;
+    text-align: center;
+}
+.CSSTableGenerator td {
+    text-align: center;
+}
+.CSSTableGenerator td:first-child {
+    text-transform: capitalize;
+}

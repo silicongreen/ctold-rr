@@ -1,0 +1,93 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Jun 23, 2014, 5:34:59 PM
+    Author     : admin
+*/
+
+.redactor_editor {
+    height: 192px !important;
+    width: 463px !important;
+}
+.redactor_toolbar{
+    width: 482px;
+}
+.redactor_box{
+    float: left;
+    padding-top: 10px;
+}
+#attendance-report
+{
+    float:left; width:100%; clear:both;
+}
+#submit-button {
+    float: left;
+    margin: 20px 0 0 0;
+}
+#submit-button input{
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
+    background:#db3434 none repeat scroll 0 0;
+    color:#FFFFFF;
+    font-size:14px;
+    font-weight:bold;
+    margin: 0px auto;
+    padding:7px 12px;
+    border:none;
+    float:left;
+    text-align:center;
+    width:auto;
+    cursor:pointer;
+}
+.edit_button {
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
+    background:#db3434 none repeat scroll 0 0;
+    color:#FFFFFF;
+    font-size:14px;
+    font-weight:bold;
+    margin: 0px auto;
+    margin-top:30px;
+    margin-left:300px;
+    padding:7px 12px;
+    border:none;
+    float:left;
+    text-align:center;
+    width:auto;
+    cursor:pointer;
+    text-decoration: none;
+    color:#fff;
+}
+.edit_button:hover, .delete_button:hover, #submit-button input:hover{
+    background:  #7e0000;
+}
+.delete_button {
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
+    background:#db3434 none repeat scroll 0 0;
+    color:#FFFFFF;
+    font-size:14px;
+    font-weight:bold;
+    margin: 0px auto;
+    margin-top:30px;
+    margin-left:30px;
+    padding:7px 12px;
+    border:none;
+    float:left;
+    text-align:center;
+    width:auto;
+    cursor:pointer;
+    text-decoration: none;
+    color:#fff;
+}
+.label-field-pair-redactor {
+    height: 300px !important;
+    width: 900px;
+    padding-top: 3px;
+}
+.label-field-pair-redactor label {
+    width: 212px;
+}

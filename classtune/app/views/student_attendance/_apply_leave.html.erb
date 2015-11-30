@@ -1,0 +1,76 @@
+<div class="wrapper">
+
+  <% unless flash[:notice].nil? %>
+    <p class="flash-msg"> <%= flash[:notice] %> </p>
+  <% end %>
+  <%= error_messages_for :leave_apply %>
+
+  <% form_for :leave_apply, :html => {:id => 'new_student'} do |l| %>
+    <%= l.hidden_field :student_id, :value=>@student.id %>
+
+    <div class="row">
+      <div class="row_label">
+        <div>
+          <%= t('start_date') %>
+        </div>
+      </div>
+      <div class="row_data">
+        <div>
+          <% start_date = params[:leave_apply][:start_date] if params[:leave_apply].present? %>
+          <%= calendar_date_select_tag 'leave_apply[start_date]' ,I18n.l( start_date.present? ? start_date.to_date : Date.today, :format=>:default), :readonly=> true, :popup=>:force, :placeholder => 'Start Date', :image => '/images/icons/calendar/calendar-icon.png' %>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="row_label">
+        <div>
+          <%= t('end_date') %>
+        </div>
+      </div>
+      <div class="row_data">
+        <div>
+          <% end_date = params[:leave_apply][:end_date] if params[:leave_apply].present? %>
+          <%= calendar_date_select_tag 'leave_apply[end_date]' ,I18n.l( end_date.present? ? end_date.to_date : Date.today, :format=>:default), :readonly=> true, :popup=>:force, :placeholder => 'Start Date', :image => '/images/icons/calendar/calendar-icon.png' %>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="row_label">
+        <div>
+          Subject<span class="necessary-field">*</span>
+        </div>
+      </div>
+      <div class="row_data">
+        <div>
+          <%= l.text_field :leave_subject, :placeholder => 'Subject' %>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="row_label full_width">
+        <div>
+          <%= t('reason') %>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="row_data full_width">
+        <div class="redactor_wrapper">
+          <%= l.redactor :reason %>
+        </div>
+      </div>
+    </div>
+
+    <div id="submit-button">
+      <%=  submit_tag("#{t('apply')}") %>
+    </div>
+
+
+  <% end %>
+</div>
+
+

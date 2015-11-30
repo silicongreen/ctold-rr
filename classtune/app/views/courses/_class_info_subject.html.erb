@@ -1,0 +1,41 @@
+<% unless @courses.nil? %>  
+  <% @batches = Batch.active.find(:all, :group => "name") %>
+  <% if @batches.length > 1 %>
+  <ul id="category-list" style="float: left; width: 650px; padding: 10px 1px 0 10px; ">
+  <% else %>    
+  <ul id="category-list">    
+  <% end %>        
+    <% @courses.each do |course| %>
+      <li class="list<%=cycle('odd', 'even')%>">
+        <% courses_batches = course.courses_batches.split(',') %>
+        <%#*<div class="category-name"><%= link_to course.course_name, course_path(course) </div>%>
+        <div id="cate_name_<%= course.id %>" class="category-name" style="width: 100px; padding: 4px 2px 8px 8px;"><%=  course.course_name %></div>
+        <div id="cate_sections_<%= course.id %>" class="category-sections" style=" padding: 4px 2px 12px 8px;">
+          <% courses_batches.each do |cb| %>
+            <% a_course_batch_info = cb.split('-') %>
+            <% @batch_data =   Batch.find(a_course_batch_info[2]) %>
+            <%= link_to_remote(a_course_batch_info[0].strip.length > 0 ?  a_course_batch_info[0].strip : "no-section", 
+                :url => {:controller => "subjects",:action => "show", :id => "show", :batch_id => @batch_data.id, :show_batch_subject => "1"}, 
+                :html => {:class=> "sections", :id => "section_" + @batch_data.id.to_s },
+                :before => "$('loading_" + course.id.to_s + "').show(); $('section_" + @batch_data.id.to_s + "').addClassName('selected');", 
+                :complete => "highlight_section(" + @batch_data.id.to_s + "," + course.id.to_s + ");" ) %>
+          <% end %>  
+          <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_" + course.id.to_s, :style =>"display: none;  float: right; " ) %>
+        </div>
+        <% a_course_batch_info = courses_batches[0].split('-')   %>
+        <% batch_id = a_course_batch_info[2]   %>
+        <div class="category-name" style="padding: 0 2px 8px 8px; float: right; width: 80px; ">
+            <%#*new_batch_exam_group_path(Batch.find(batch_id),:class_exam=>true)%>
+            <% if @batches.length > 1 %>
+              <%= link_to_remote("#{t('subject')}", 
+                  :url => {:controller => "subjects",:action => "show", :id => "show", :batch_id => @batch_data.id, :show_batch_subject => "0", :batch_only => "1", :batch_name => @batch_data.name, :course_name => course.course_name}, 
+                  :html => {:class=> "user_button", :style => "margin-top: 0px;", :id => "section_" + @batch_data.id.to_s },
+                  :before => "$('loading_" + course.id.to_s + "').show(); ", 
+                  :complete => "highlight_name(" + @batch_data.id.to_s + "," + course.id.to_s + ");" ) %>
+            <% end %>
+        </div>
+      </li>
+    <% end %>
+
+  </ul>
+<% end %>

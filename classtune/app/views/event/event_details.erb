@@ -1,0 +1,109 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<!--<div id="content-header">
+  <%= show_header_icon %>
+  <h1><%= t('event_text') %></h1>
+</div>-->
+<div class="partial_homework">
+  <div class="header-wrapper">
+    <div class="header-title">
+      <div class="header-icon">
+        <%= image_tag '/images/icons/event.png', :html => {:alt => 'Notice'} %>
+      </div>
+      <div class="header-title-text-wrapper">
+        <div class="header-title-main-text f2">
+         <a href="/calendar/index/">Event | Details</a>
+        </div>
+        <div class="header-title-sub-text f5">
+
+          </div>
+        </div>
+      </div>    
+
+    <div class="header-form-wrapper">
+
+    </div>
+  </div>
+  
+  
+  <div class="portlet-subcontent" style="width:100%">     
+    <div class="timetable_left">    
+      <img width="30" src="/images/icons/event.png" ALT="<%= @event.title %>" />
+    </div>
+    <div class="timetable_right"  style="float:left;height: 70px;width: 40%;padding: 10px 0;">
+      <div class="subcontent-header themed_text">
+        <%= @event.title %>
+      </div>
+      <% unless @event.event_category_id.nil? %>
+        <% event_category = EventCategory.find(@event.event_category_id) %>
+      <div class="subcontent-info" style="font-size: 11px;">
+            <%=  event_category.name%>
+        </div>
+      <% end %>
+                                 
+      <div class="subcontent-info" style="font-size: 11px;"><b>Post on :</b> <%="<small>#{@event.created_at.strftime("%A, %d %B, %Y")}</small>"%> </div>
+    </div>
+    <div class="timetable_right"  style="float:left;height: 70px;width: 35%;padding: 10px 0;border-left:1px dotted #cccccc">                            
+      
+      <% if @event.start_date != @event.end_date %>
+        <div class="subcontent-date" style="color:#000;"><b>Date  &nbsp;&nbsp;&nbsp;&nbsp;: </b> <%="<small>#{@event.start_date.strftime("%A, %d %B, %Y")}</small>"%></div>  
+        <div class="subcontent-date" style="color:#000;"><b>Start at : </b> <%="<small>#{I18n.l(@event.start_date,:format=>"%I:%M %p")}</small>"%></div>  
+        <div class="subcontent-date" style="color:#000;"><b>End at&nbsp;&nbsp;: </b> <%="<small>#{I18n.l(@event.end_date,:format=>"%I:%M %p")}</small>"%> </div>                                    
+      <% else %>
+        <div class="subcontent-date" style="color:#000;"><b>Date : </b><%="<small>#{@event.start_date.strftime("%A, %d %B, %Y")}</small>"%></div>  
+        <div class="subcontent-date" style="color:#000;"><b>Start at : </b><%="<small>#{I18n.l(@event.start_date,:format=>"%I:%M %p")}</small>"%></div>  
+        
+      <% end %>
+      
+    </div>
+
+            <div class="answer_mark">
+
+            </div>
+
+  </div>
+  <div id="page-yield" style="margin-top: 0px;">
+
+    <% unless flash[:notice].nil? %>
+      <p class="flash-msg"> <%= flash[:notice] %> </p>
+    <% end %>
+    <div style="background-color: #ffffff; float: left; padding: 30px;width: 94%;">
+      
+        <%= @event.description %>
+      
+    </div>
+    
+
+    <div class="extender"></div>
+
+    <div class="extra">
+      <% if @event.is_common%>
+        <%#= t('common_to_all_message') %><br/><br/>
+      <% end %>
+
+    </div>
+
+  </div>
+</div>
+<% content_for :header do -%>
+  <%= stylesheet_link_tag 'event_details' %>
+<% end -%>
+
+<%= stylesheet_link_tag 'tadded-header' %>

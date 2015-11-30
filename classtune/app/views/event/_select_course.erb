@@ -1,0 +1,106 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+<label style="float: left;"><%= t('select_a_batch') %>:</label>
+<div class="select-list">
+  <b class="sel-list">
+    <%= link_to_function t('all'), "$$('input.category_select').each(function(checkbox) { checkbox.checked = true; }); highlight_selected_section();" %>,
+    <%= link_to_function t('none'), "$$('input.category_select').each(function(checkbox) { checkbox.checked = false; }); remove_highlight_selected_section();" %>
+  </b>
+            
+</div>
+<% batch_events = BatchEvent.find_all_by_event_id(@event_id).map{|be| be.batch_id} %>
+<% form_for :select_options, :url=>{:controller=>"event",:action=>"course_event", :id=>@event_id} do |m| %>
+  <ul id="category-list">
+    <% @batches.map{|b| b.name}.uniq.each do |batch| %>
+      <li class="list<%= cycle('odd','even') %>" style="font-size: 15px;">
+          <% 
+            selected = true
+            tmp_batches = Batch.find(:all, :conditions => ["name LIKE ?", batch]).map{|b| b.course_id} 
+            
+            courses = Course.find(:all, :conditions => ["id IN (?)", tmp_batches], :group => "course_name", :order => "cast(replace(course_name, 'Class ', '') as SIGNED INTEGER) asc")
+            unless courses.nil?
+              courses.each do |c|
+                if c.section_name.strip.length == 0
+                  t_batch = Batch.find_by_course_id_and_name(c.id, batch)
+                  unless batch_events.include?(t_batch.id.to_i)
+                    selected = false
+                    break
+                  end
+                else
+                  t_courses = Course.find_all_by_course_name(c.course_name, :conditions => {:is_deleted => false}, :select => "batches.id as batch_id, courses.section_name as section_name", :joins => ["INNER JOIN batches ON batches.course_id = courses.id AND batches.name = '" + batch + "'"])
+                  t_courses.map{|tc| tc.batch_id}.each do |t| 
+                    unless batch_events.include?(t.to_i)
+                      selected = false
+                      break
+                    end
+                  end 
+                end
+              end
+            end
+          %>
+          
+          <%= check_box_tag "batch_group_id", batch,selected,:class=>"category_select batch_name_group", :onclick => "javascript:select_batch_group(this)" %>&nbsp;&nbsp;&nbsp;&nbsp;
+          <%= batch.strip.downcase == 'general' ? 'no-shift' : batch %>
+          <% unless courses.nil? %>
+            <% courses.each do |c| %>
+              <li class="list<%= cycle('odd','even') %>" style="width: 66%; padding: 10px; padding-left: 20%; font-size: 13px;">
+                  <% if c.section_name.strip.length == 0 %>
+                    <% t_batch = Batch.find_by_course_id_and_name(c.id, batch) %>
+                    <% selected = batch_events.include?(t_batch.id.to_i) ? true : false %>
+                    <%= check_box_tag "select_options[batch_id][]", t_batch.id,selected,:class=>"category_select batch_group_" + batch %>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <%= c.course_name %>
+                  <% else %>
+                    <% t_courses = Course.find_all_by_course_name(c.course_name, :conditions => {:is_deleted => false}, :select => "batches.id as batch_id, courses.section_name as section_name", :joins => ["INNER JOIN batches ON batches.course_id = courses.id AND batches.name = '" + batch + "'"]) %>
+                    <% selected = true  %>
+                    <% 
+                      t_courses.map{|tc| tc.batch_id}.each do |t| 
+                        unless batch_events.include?(t.to_i)
+                          selected = false
+                          break
+                        end
+                      end 
+                    %>
+                    <%= check_box_tag c.id.to_s, c.id,selected,:class=>"category_select course_group_data batch_group_" + batch, :onclick => "javascript:select_course_group(this,'" + batch + "')" %>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <%= c.course_name %>
+                    <% unless t_courses.nil? %>
+                      <div style="float: right; text-align: right; margin-right: 10px; width: 200px;">
+                      <% t_courses.each do |tc| %>
+                          <% selected = batch_events.include?(tc.batch_id.to_i) ? true : false %>
+                          <span class="sections_span <%= batch_events.include?(tc.batch_id.to_i) ? 'select_section' : 'section_data' %> section_data_<%= c.id.to_s  %> section_data_<%= batch  %>_<%= c.id.to_s  %>  batch_section_data_<%= batch  %> " onclick="javascript:highlight_checkbox(this, '<%= tc.batch_id.to_s %>')">
+                            <%= check_box_tag "select_options[batch_id][]", tc.batch_id,selected,:class=>"category_select batch_dt_" + tc.batch_id +  " course_group_" + batch + "_" + c.id.to_s  + "  course_group_" + c.id.to_s, :style => "display: none;"%>&nbsp;
+                            <div class="radio_circle"></div>
+                            <div class="radio_circle_small"></div>
+                            <%= tc.section_name %>
+                          </span>  
+                      <% end %>
+                      </div>    
+                    <% end %>
+                  <% end %>
+              </li>
+            <% end %>
+          <% end %>
+      </li>    
+    <% end %>  
+    <% @batches.each do |batch| %>  
+  <% end %>
+  </ul>
+  <%= submit_tag "#{t('save')}", :class=>"create" %>
+<% end %>
+
+

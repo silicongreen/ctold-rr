@@ -1,0 +1,5 @@
+if @syllabus.empty?
+  page.replace_html 'syllabus', :partial => 'syllabus'
+else
+  page.replace_html 'syllabus', :partial => 'syllabus'
+end

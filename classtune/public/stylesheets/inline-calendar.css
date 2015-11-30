@@ -1,0 +1,163 @@
+/* 
+    Document   : inline-calendar
+    Created on : Apr 15, 2015, 5:24:30 PM
+    Author     : N!K
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+#calendar {
+    background-color: #ffffff;
+    margin-top: 0;
+    float: left;
+    padding-bottom: 20px;
+    width: 60%;
+}
+#calendar .image_loading {
+    position: absolute;
+    right: 115px;
+    top: 28px;
+}
+#head-month {
+    background: none repeat scroll 0 0 #fff;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 4px;
+}
+.header {
+    width: 100%;
+}
+.prev {
+    margin: 0;
+    padding: 15px 0 0 25px;
+    height: auto;
+    float: left;
+    width: 6%;
+}
+.prev a {
+    display: block;
+    text-decoration: none;
+}
+.prev a div {
+    background-image: url("/images/icons/calendar/normal_left.png");
+    background-repeat: no-repeat;
+    background-size: 25px auto;
+    height: 50px;
+}
+.prev a:hover > div {
+    background-image: url("/images/icons/calendar/hover_left.png");
+}
+.next {
+    float: right;
+    height: auto;
+    margin: 0;
+    padding: 15px 17px 0 0;
+    width: 6%;
+}
+.next a {
+    text-decoration: none;
+}
+.next a div {
+    background-image: url("/images/icons/calendar/normal_right.png");
+    background-repeat: no-repeat;
+    background-size: 25px auto;
+    height: 50px;
+}
+.next a:hover > div {
+    background-image: url("/images/icons/calendar/hover_right.png");
+}
+.month {
+    color: #333333;
+    float: left;
+    font-size: 25px;
+    padding: 20px 0;
+    position: relative;
+    text-align: center;
+    text-transform: uppercase;
+    width: 78%;
+}
+table#calendar-table {
+    width: 95%;
+}
+table#calendar-table thead tr th {
+    background-color: #fff;
+    color: #333333;
+    font-size: 18px;
+    font-weight: normal;
+    padding: 15px 0 5px;
+    text-align: center;
+}
+table#calendar-table tbody tr td {
+    background: none repeat scroll 0 0 #f3f3f3;
+    cursor: pointer;
+    height: 67px;
+    padding: 0;
+    text-align: center;
+    width: 50px;
+}
+table#calendar-table thead tr th.normal, table#calendar-table tbody tr td.normal {
+    color: #929292;
+}
+table#calendar-table thead tr th.weekend, table#calendar-table tbody tr td.weekend {
+    color: #23C2C8;
+}
+table#calendar-table tbody tr td.absent {
+    background-color: #ED1400;
+    box-shadow: 0 2px 0 0 #A60000;
+    -webkit-box-shadow: 0 2px 0 0 #A60000;
+    -moz-box-shadow: 0 2px 0 0 #A60000;
+    -ms-box-shadow: 0 2px 0 0 #A60000;
+    -o-box-shadow: 0 2px 0 0 #A60000;
+    color: #ffffff;
+}
+table#calendar-table tbody tr td.late {
+    background-color: #FFB800;
+    box-shadow: 0 2px 0 0 #FF9C00;
+    -webkit-box-shadow: 0 2px 0 0 #FF9C00;
+    -moz-box-shadow: 0 2px 0 0 #FF9C00;
+    -ms-box-shadow: 0 2px 0 0 #FF9C00;
+    -o-box-shadow: 0 2px 0 0 #FF9C00;
+    color: #ffffff;
+}
+table#calendar-table tbody tr td.leave {
+    background-color: #922CB0;
+    box-shadow: 0 2px 0 0 #610F79;
+    -webkit-box-shadow: 0 2px 0 0 #610F79;
+    -moz-box-shadow: 0 2px 0 0 #610F79;
+    -ms-box-shadow: 0 2px 0 0 #610F79;
+    -o-box-shadow: 0 2px 0 0 #610F79;
+    color: #ffffff;
+}
+table#calendar-table tbody tr td.holiday {
+    background-color: #20B0B6;
+    box-shadow: 0 2px 0 0 #017500;
+    -webkit-box-shadow: 0 2px 0 0 #017500;
+    -moz-box-shadow: 0 2px 0 0 #017500;
+    -ms-box-shadow: 0 2px 0 0 #017500;
+    -o-box-shadow: 0 2px 0 0 #017500;
+    color: #ffffff;
+}
+table#calendar-table tbody tr td.today {
+    background-color: #333333;
+    box-shadow: 0 2px 0 0 #333333;
+    -webkit-box-shadow: 0 2px 0 0 #333333;
+    -moz-box-shadow: 0 2px 0 0 #333333;
+    -ms-box-shadow: 0 2px 0 0 #333333;
+    -o-box-shadow: 0 2px 0 0 #333333;
+    color: #ffffff;
+}
+table#calendar-table tbody tr td span {
+    background-color: #fff;
+    display: block;
+    height: 99%;
+    width: 99%;
+}
+table#calendar-table tbody tr td span.absent {
+    background-color: #F25900;
+    display: block;
+    height: 99%;
+    width: 99%;
+}

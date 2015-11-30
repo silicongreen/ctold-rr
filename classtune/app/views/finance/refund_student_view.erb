@@ -1,0 +1,45 @@
+<div class="header-wrapper">
+
+  <div class="header-title">
+    <div class="header-icon">
+      <%= image_tag '/images/icons/profile-icon.png', :html => {:alt => 'Student Profile'} %>
+    </div>
+    <div class="header-title-text-wrapper">
+      <div class="header-title-main-text f2">
+        <%= link_to "Student refunds", :controller => "finance", :action => "refund_student_view", :id => params[:id] %>
+      </div>
+      <div class="clearfix"></div>
+      <div class="header-title-sub-text">
+        <%= I18n.l(@local_tzone_time.to_date, :format=>'%d/%m/%Y') %>
+      </div>
+    </div>
+  </div>
+
+  <div class="clearfix"></div>
+
+  <div class="tabbed-header-wrapper">
+    <ul class="header-tabs">
+      <li>
+        <%= link_to "#{t('fees_text')}", {:controller => 'student', :action => 'fees', :id => params[:id]}, {:class => 'f2'} %>
+      </li>
+      <li class="active">
+        <%= link_to "#{t('view_refunds')}", {:controller => 'finance', :action => "refund_student_view",:id => params[:id]}, {:class => 'f2'} %>
+      </li>
+      <li>
+        <%= link_to "#{t('student_profile')}", {:controller => 'student', :action => 'profile', :id => params[:id]}, {:class => 'f2'} %>
+      </li>
+    </ul>
+  </div>
+
+</div>
+
+<div id="page-yield" class="bg-disable">
+  <div class="wrapper">
+    <%= render :partial => 'finance/refund_student_view' %>
+  </div>
+</div>
+
+<%= stylesheet_link_tag 'tadded-header' %>
+<% content_for :head do %>
+  <%= javascript_include_tag "custom/tabbed-header" %>
+<% end %>

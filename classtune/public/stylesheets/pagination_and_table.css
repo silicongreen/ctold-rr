@@ -1,0 +1,161 @@
+/* 
+    Document   : Bootstrap pagination and table only
+    Created on : Apr 2, 2015, 7:17:41 PM
+    Author     : N!K
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+/* table and pagination */
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+.table {
+    width: 100%;
+}
+tbody {
+    border-color: inherit;
+    display: table-row-group;
+    vertical-align: middle;
+}
+.table-bordered {
+    border-collapse: separate;
+    border-image: none;
+    border-radius: 4px;
+    border-color: #dddddd;
+    border-style: solid solid solid none;
+    border-width: 1px 1px 1px 0;
+}
+.table-bordered {
+    border-collapse: separate;
+}
+
+
+.table-bordered thead:first-child tr:first-child th:first-child, .table-bordered tbody:first-child tr:first-child td:first-child {
+    border-radius: 4px 0 0;
+}
+.table-bordered thead:first-child tr:first-child th, .table-bordered tbody:first-child tr:first-child th, .table-bordered tbody:first-child tr:first-child td {
+    border-top: 0 none;
+}
+.table thead th {
+    vertical-align: bottom;
+}
+.table-bordered th, .table-bordered td {
+    border-left: 1px solid #dddddd;
+}
+.table th {
+    font-weight: bold;
+}
+.table th, .table td {
+    line-height: 18px;
+    padding: 8px;
+    text-align: left;
+    font-size: 13px;
+}
+.table th, .table td {
+    border-top: 1px solid #dddddd;
+    vertical-align: top;
+}
+.table-striped tbody tr:nth-child(2n+1) td, .table-striped tbody tr:nth-child(2n+1) th {
+    background-color: #f9f9f9;
+}
+.table tbody tr:hover td, .table tbody tr:hover th {
+  background-color: #f5f5f5;
+}
+
+.pagination {
+    margin-right: 0;
+    margin-top: 30px;
+}
+
+.pagination span.disabled {
+    background-color: transparent;
+    color: #999999;
+    cursor: default;
+}
+.pagination span {
+    float: left;
+    line-height: 34px;
+    padding: 0 14px;
+}
+.pagination span {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: #ddd;
+    border-image: none;
+    border-style: solid;
+    border-width: 1px 1px 1px 0;
+    text-decoration: none;
+}
+.pagination .disabled {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: #ddd;
+    border-image: none;
+    border-style: solid;
+    border-width: 1px 1px 1px 1px;
+    text-transform: none;
+    font-size: 13px;
+}
+
+.pagination span.current {
+    color: #999999;
+    cursor: default;
+}
+.pagination span.current {
+    background-color: #f5f5f5;
+}
+.pagination .current {
+    font-size: 13px;
+    font-weight: normal;
+    padding: 0 14px;
+}
+.pagination a.prev_page, .pagination a.next_page {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: #ddd;
+    border-image: none;
+    border-style: solid;
+    border-width: 1px 1px 1px 1px;
+    font-weight: normal;
+    text-decoration: none;
+    text-transform: none;
+}
+.pagination a {
+    color: #333;
+    font-size: 13px;
+    font-weight: normal;
+}
+.pagination a {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: #ddd;
+    border-image: none;
+    border-style: solid;
+    border-width: 1px 1px 1px 0;
+    float: left;
+    line-height: 34px;
+    padding: 0 14px;
+    text-decoration: none;
+}
+.pagination a:hover, .pagination .active a {
+    background-color: #f5f5f5;
+}
+.pagination a:hover {
+    color: #9a0000;
+}
+/* table and pagination */

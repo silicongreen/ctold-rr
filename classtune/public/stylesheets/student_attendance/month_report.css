@@ -1,0 +1,123 @@
+.clearfix {
+    clear: both;
+}
+#page-yield {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+.attendance-status {
+    background-color: #ffffff;
+    float: right;
+    margin: 0;
+    padding: 0;
+    width: 37.5%;
+}
+.attendance-status table {
+    border-collapse: collapse;
+    width: 100%;
+}
+.attendance-status table tbody {
+
+}
+.attendance-status table tbody tr {
+    border-top: none;
+    border-bottom: 1px solid #cccccc;
+}
+.attendance-status table tbody tr:last-child {
+    border-bottom: none;
+}
+.attendance-status table tbody tr td {
+    border-right: 1px solid #cccccc;
+    color: #333333;
+    font-size: 20px;
+    padding: 20px 30px;
+    text-align: left;
+    width: 50%;
+}
+.attendance-status table tbody tr td:last-child {
+    font-size: 28px;
+    font-weight: bold;
+    letter-spacing: 4px;
+    text-align: center;
+}
+.attendance-status table tbody tr td.total {
+    color: #333333;
+}
+.attendance-status table tbody tr td.present {
+    color: #1496D5;
+}
+.attendance-status table tbody tr td.absent {
+    color: #EC1300;
+}
+.attendance-status table tbody tr td.late {
+    color: #FFB800;
+}
+.attendance-status table tbody tr td.leave {
+    color: #922CB0;
+}
+
+/***Year Graph***/
+#year_graph {
+    width: 100%;
+}
+/***Year Graph***/
+
+/***Legend***/
+.legend-row {
+    float: left;
+    padding: 17px 17px 0;
+    width: 94%;
+}
+.legend-wrapper {
+    float: left;
+    width: 17%;
+    margin-left: 20px;
+}
+.legend-wrapper:first-child {
+    margin-left: 0;
+}
+.legend {
+    float: left;
+    height: 18px;
+    margin: 0;
+    padding: 0;
+    width: 18px;
+}
+.legend-text {
+    float: left;
+    font-size: 14px;
+    margin: 0;
+    padding: 0 0 0 10px;
+}
+.legend-today {
+    background-color: #333333;
+}
+.legend-today-text {
+    color: #333333
+}
+.legend-holiday {
+    background-color: #20B0B6;
+}
+.legend-holiday-text {
+    color: #20B0B6;
+}
+.legend-late {
+    background-color: #FFB800;
+}
+.legend-late-text {
+    color: #FFB800;
+}
+.legend-absent {
+    background-color: #EC1300;
+}
+.legend-absent-text {
+    color: #EC1300;
+}
+.legend-leave {
+    background-color: #922CB0;
+}
+.legend-leave-text {
+    color: #922CB0;
+}
+/***Legend***/

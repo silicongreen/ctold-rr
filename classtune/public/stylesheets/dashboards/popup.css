@@ -1,0 +1,74 @@
+/* 
+    Document   : popup
+    Created on : Apr 13, 2015, 1:57:22 PM
+    Author     : N!K
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+#MB_frame {
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    -ms-border-radius: 0;
+    -o-border-radius: 0;
+    border-radius: 0;
+}
+#MB_window {
+    top: 150px;
+}
+#MB_caption {
+    background-color: #C8575D;
+}
+#MB_frame #MB_caption {
+    padding: 16px 0;
+}
+#MB_frame #MB_caption div:first-child {
+    float: left;
+    margin-top: -8px;
+    width: 20%;
+}
+#MB_frame #MB_caption div:first-child img {
+    height: auto;
+    width: auto;
+}
+#MB_frame #MB_caption div:last-child {
+    color: #ffffff;
+    font-size: 20px;
+    text-align: center;
+    width: 75%;
+}
+#MB_close {
+    background-color: #C8575D;
+}
+
+.clearfix{
+    clear: both;
+}
+.row-div:first-child {
+    margin-top: 0;
+}
+.row-div {
+    float: left;
+    width: 100%;
+    margin-bottom: 15px;
+}
+.row-div:last-child {
+    margin-bottom: 0;
+}
+.label-div {
+    color: #4e4e4e;
+    float: left;
+    font-size: 14px;
+    width: 40%;
+}
+.data-div {
+    color: #4e4e4e;
+    float: left;
+    font-size: 14px;
+    width: 58%;
+}

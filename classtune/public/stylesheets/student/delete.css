@@ -1,0 +1,20 @@
+.clearfix {
+    clear: both;
+}
+#page-yield{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+.wrapper {
+    background-color: #ffffff;
+    float: left;
+    width: 100%;
+}
+#delete-student {
+    margin-bottom: 30px;
+    padding: 20px;
+}
+.user_button{
+    margin: 0 0 0 10px;
+}

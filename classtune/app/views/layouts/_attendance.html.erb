@@ -1,0 +1,152 @@
+<div class="partial_attendance"  <%  if check_free_school? %> style="float:right; width:40%;"<% end %>> 
+ <%  if !check_free_school? %>
+ <div class="portlet-subcontent">  
+ <% end %>    
+   <div class="timetable_left arrow">
+     <%#= debug @main_user_data %>
+      
+
+        <!-- FOR ROUND PICTURE<div id="profile_image_div" style="
+            margin:5px 30px; width: 60px;
+            height: 60px;
+            border-radius: 28px;
+            -webkit-border-radius: 28px;
+            -moz-border-radius: 28px;
+            background: url(<%#=  @profile_image %>) no-repeat;
+            background-position: 50%;
+            background-size:125%;">
+                           
+        </div>-->
+        <% 
+            @attendence_text_default = get_attendence_data_all 
+            @att_text_default = ''
+            @att_image_default = ''
+            if @attendence_text_default['status']['code'].to_i == 200
+              @att_text_default = @attendence_text_default['data']['text']
+              @att_image_default = @attendence_text_default['data']['profile_picture']
+            end
+        %>
+        
+         <% unless @att_image_default.empty? %>
+          <% @profile_image = @att_image_default %>
+          <% else %>
+            <% if @current_user.employee? || @current_user.admin? %>
+              <% @profile_image = "/images/HR/default_employee.png" %>
+            <% else %>
+              <% @profile_image = "/images/master_student/profile/default_student.png" %>
+            <% end %>
+          <% end %>
+        
+        <%if @current_user.parent? %>
+            <% 
+                student_id = @current_user.guardian_entry.current_ward_id      
+                student = Student.find_by_id(student_id)
+            %>
+         
+            <%  profile_text = "<div id='profile_image_div' style='background: url(  #{@profile_image}) no-repeat scroll 50% top / 100% auto rgba(0, 0, 0, 0);
+                height: 85px;
+                width: 120px;'
+                >                           
+            </div>" %>
+            <%  if !check_free_school? %>
+              <%= link_to profile_text, :controller => "student", :action => "profile", :id => student_id %>
+            <% else  %>
+              <%= profile_text %>
+            <% end %>
+
+            <p><%= student.full_name%></p>
+       <% elsif @current_user.student? %>
+        <% student_id = @current_user.student_record.id 
+            student = Student.find_by_id(student_id)
+      %>  
+           
+            <%  profile_text = "<div id='profile_image_div' style='background: url(  #{@profile_image}) no-repeat scroll 50% top / 100% auto rgba(0, 0, 0, 0);
+                height: 85px;
+                width: 120px;'
+                >                           
+            </div>" %>
+        <%  if !check_free_school? %>
+          <%= link_to profile_text, :controller => "student", :action => "profile", :id => student_id %>
+        <% else  %>
+          <%= profile_text %>
+        <% end %>
+        <p><%= @main_user_data.full_name %></p>
+      <% elsif @current_user.employee? || @current_user.admin? %> 
+        <% employee_id = @current_user.employee_record.id
+           employee = Employee.find_by_id(employee_id)
+      %>  
+            
+            <%  profile_text = "<div id='profile_image_div' style='background: url(  #{@profile_image}) no-repeat scroll 50% top / 100% auto rgba(0, 0, 0, 0);
+                height: 85px;
+                width: 120px;'
+                >                           
+            </div>" %>
+        <%  if !check_free_school? %>
+          <%= link_to profile_text, :controller => "employee", :action => "profile", :id => employee_id %>
+        <% else  %>
+          <%= profile_text %>
+        <% end %>
+        <p><%= @main_user_data.full_name %></p> 
+      <% else %> 
+            
+            
+            
+            <%  profile_text = "<div id='profile_image_div' style='background: url(  #{@profile_image}) no-repeat scroll 50% top / 100% auto rgba(0, 0, 0, 0);
+                height: 85px;
+                width: 120px;'
+                >                           
+            </div>" %>
+        <p><%= @main_user_data.full_name %></p>
+       <% end %>
+     
+   </div>
+   <%  if !check_free_school? %>
+   <div class="timetable_right">      
+     <div class="subcontent-date user_name" style="overflow:hidden;">
+       <p class="f2" style="color: #ffffff;
+                            font-size: 12px;
+                            margin-left: 75px;
+                            margin-top: 23px;">ATTENDANCE</p>       
+     </div>      
+     <div class="subcontent-info">
+       <ul class="champs21_feed">             
+           <li>
+             <div class="champs21_feed_item_box">
+               <%if @current_user.employee? || @current_user.admin? %>
+               <% else %>
+               <span style="font-size: 10px; color: rgb(72, 88, 139);"><%=  @att_text_default%>
+               <% end %>
+               </span>         
+             </div>
+           </li>  
+           <li>
+             <div class="champs21_feed_item_box">  
+                <div class="viewmore">
+                  <%if @current_user.employee? || @current_user.admin? %>
+                  <%= link_to "View Report", :controller => "attendances", :action => "index" %>
+                  <% else %>
+                  <%= link_to "View Report", :controller => "student_attendance", :action => "student", :id => student_id %>
+                  <% end %>
+                </div>
+             </div>
+           </li>              
+       </ul>
+     </div>              
+   </div>  
+    
+ </div>
+    
+ <% end %> 
+</div>
+<style>
+.timetable_left p {
+  color: #999999;
+  font-size: 11px;
+  height: 25px;
+  margin: 5px 10px;
+  overflow: hidden;
+  text-align: center;
+}
+</style>  
+
+

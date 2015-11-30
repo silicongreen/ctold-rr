@@ -96,7 +96,7 @@ class School {
             'subdomain' => $school_code
         );
 
-        $url = 'http://cp-api.champs21.com/cp2.php?' . http_build_query($url_param);
+        $url = 'http://cp-api.champs21.com/cp3.php?' . http_build_query($url_param);
         $client = new Client();
 
         try {

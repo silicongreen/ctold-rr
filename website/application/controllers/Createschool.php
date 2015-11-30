@@ -235,7 +235,7 @@ class Createschool extends CI_Controller {
         $i_free_user_id = $this->input->post('i_free_user_id');
         $i_tmp_school_created_data_id = $this->input->post('i_tmp_school_created_data_id');
 
-//        $this->sendMail($i_tmp_school_created_data_id, $i_free_user_id);
+        $this->sendMail($i_tmp_school_created_data_id, $i_free_user_id);
         $response['success'] = 'done';
 
         echo json_encode($response);
@@ -349,11 +349,11 @@ class Createschool extends CI_Controller {
         $this->load->library('school');
         $this->school->setCode($code);
 
-//        if ($this->school->createSubdomains($type)) {
+        if ($this->school->createSubdomains($type)) {
         $response['success'] = 'done';
-//        } else {
-//            $response['error'] = 'error';
-//        }
+        } else {
+            $response['error'] = 'error';
+        }
 
         echo json_encode($response);
         exit;

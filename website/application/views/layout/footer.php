@@ -104,7 +104,7 @@
 <div id="preloader" style="width: 100%; height: 100%; position: fixed; top: 0px; left: 0px; background: transparent url(http://www.150-years-geze.com/fileadmin/geze/templates/images/80percentwhite.png) repeat top left; z-index: 999999;">
     <img src="http://www.150-years-geze.com/fileadmin/geze/templates/images/preloader.gif" alt="" title="" />
     <div class="counter"><span id="count">0</span>&nbsp;/&nbsp;150</div>
-    <div id="startinfotext"><div id="c735" class="csc-default"><div class="csc-text"><p class="bodytext"><b>Bitte scrollen Sie durch die Inhalte der Microsite, <br />um das volle Seherlebnis zu erfahren.<br />Wir wÃ¼nschen Ihnen viel SpaÃŸ!</b><br /><br /></p></div></div></div>
+    <div id="startinfotext"><div id="c735" class="csc-default"><div class="csc-text"><p class="bodytext"><b>Loading...</b></p></div></div></div>
 </div>
 
 <div id="scrollinfo">

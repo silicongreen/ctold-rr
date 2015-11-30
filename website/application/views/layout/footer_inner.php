@@ -10,7 +10,7 @@
         <div id="thanks_end">					
             <div class="bottom">						
                 <div class="contact_form">
-                    <img src="http://www.classtune.dev/images/logo/happy-face.png" alt="" title="" width="25%" style="position:absolute;left:0px;z-index: 0;margin-top:-25px;" />
+                    <img src="<?php echo base_url('images/logo/happy-face.png');?>" alt="" title="" width="25%" style="position:absolute;left:0px;z-index: 0;margin-top:-25px;" />
                     <div style=" position: relative;top: -15px;z-index: 1;">
                         <a href="" style="background-color: #fff;color: #64B846;font-size: 20px;padding: 20px 40px;text-decoration: none;border-radius:5px;	-moz-border-radius:5px;	-webkit-border-radius:5px;border:1px solid #fff;box-shadow: 0 4px 2px -2px gray;">
                             Create Your FREE Account</a>
@@ -88,12 +88,6 @@
         </a>
     </div>
 </div>
-
-<!--div id="preloader" style="width: 100%; height: 100%; position: fixed; top: 0px; left: 0px; background: transparent url(http://www.150-years-geze.com/fileadmin/geze/templates/images/80percentwhite.png) repeat top left; z-index: 999999;">
-        <img src="http://www.150-years-geze.com/fileadmin/geze/templates/images/preloader.gif" alt="" title="" />
-        <div class="counter"><span id="count">0</span>&nbsp;/&nbsp;150</div>
-        <div id="startinfotext"><div id="c735" class="csc-default"><div class="csc-text"><p class="bodytext"><b>Bitte scrollen Sie durch die Inhalte der Microsite, <br />um das volle Seherlebnis zu erfahren.<br />Wir wÃ¼nschen Ihnen viel SpaÃŸ!</b><br /><br /></p></div></div></div>
-</div-->
 
 <div id="scrollinfo">
     <div id="c248" class="csc-default"><div class="csc-text"><p class="bodytext"><br />BITTE SCROLLEN</p></div></div>

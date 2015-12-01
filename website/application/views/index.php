@@ -13,10 +13,10 @@
 
                                 <a href="<?php echo base_url(); ?>signup/admin" style="color:gray;text-decoration:none;"><h3>For Admin</h3></a>
 
-                                <p style="color: gray;font-size: 12px;padding: 20px; text-align: left;">
-                                    All the collaboration tools you need to improve learning outcomes, productivity, and building teacher’s capacity.
+                                <p style="color: gray;font-size: 14px;padding: 20px; text-align: left;">
+                                    All the collaboration tools you need to improve learning outcomes, productivity, and building teacher’s capacity.<br><br>
                                 </p>
-                                <p style="background: #fff none repeat scroll 0 0;border-radius: 3px;bottom: 2px;margin: 0 auto;padding: 8px 0;position: relative;width: 80px;">
+                                <p style="background: #fff none repeat scroll 0 0;border-radius: 3px;bottom: 0px;margin: 0 auto;padding: 8px 0;position: relative;width: 80px;">
                                     <a href="<?php echo base_url(); ?>signup/admin" style="color:gray;text-decoration:none;">Learn More</a>
                                 </p>
 
@@ -29,10 +29,10 @@
 
                                 <a href="<?php echo base_url(); ?>signup/guardian" style="color:gray;text-decoration:none;"><h3>For Parent</h3></a>
 
-                                <p style="color: gray;font-size: 12px;padding: 20px; text-align: left;">
-                                    <b>classtune</b> is designed in such a way, that you get a simple and intuitive way to stay in your child’s learning activities.
+                                <p style="color: gray;font-size: 14px;padding: 20px; text-align: left;">
+                                    <b>classtune</b> is designed in such a way, that you get a simple and intuitive way to stay in your child’s learning activities.<br>
                                 </p>
-                                <p style="background: #fff none repeat scroll 0 0;border-radius: 3px;bottom: 2px;margin: 0 auto;padding: 8px 0;position: relative;width: 80px;">
+                                <p style="background: #fff none repeat scroll 0 0;border-radius: 3px;bottom: 0px;margin: 0 auto;padding: 8px 0;position: relative;width: 80px;">
                                     <a href="<?php echo base_url(); ?>signup/guardian" style="color:gray;text-decoration:none;">Learn More</a>
                                 </p>
 
@@ -46,10 +46,10 @@
 
                                 <a href="<?php echo base_url(); ?>signup/teacher" style="color:gray;text-decoration:none;"><h3>For Teacher</h3></a>
 
-                                <p style="color: gray;font-size: 12px;padding: 20px; text-align: left;">
+                                <p style="color: gray;font-size: 14px;padding: 20px; text-align: left;">
                                     <b>classtune</b> is designed in such a way, that you get a simple and intuitive way to stay in your child’s learning activities.
                                 </p>
-                                <p style="background: #fff none repeat scroll 0 0;border-radius: 3px;bottom: 2px;margin: 0 auto;padding: 8px 0;position: relative;width: 80px;">
+                                <p style="background: #fff none repeat scroll 0 0;border-radius: 3px;bottom: 0px;margin: 0 auto;padding: 8px 0;position: relative;width: 80px;">
                                     <a href="<?php echo base_url(); ?>signup/teacher" style="color:gray;text-decoration:none;">Learn More</a>
                                 </p>
 

@@ -93,6 +93,12 @@
 
 
 <style type="text/css">
+    #subjectModal .close, #myModal .close,
+    #classModal .close, #successModal .close,
+    .td_class_names_container .close
+    {
+        background: none !important;
+    }
     #str_courses {
         -webkit-appearance: menulist !important;
     }

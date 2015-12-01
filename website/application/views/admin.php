@@ -6,7 +6,7 @@
 
 		<div id="beforeWrap" style="background: transparent url(<?php echo base_url();?>images/cover/admin-page.png) no-repeat top left;">
 			<!--img src="http://www.classtune.dev/images/test/CLASSTUNE-COVER.png" alt="" title="" width="100%" /<li style="color:#64B846;">|</li>-->
-			<h2 class="f2" style="margin-top:100px;"><i>Explore Classtune today...</i></h2>
+			<h2 class="f2" style="margin-top:100px;"><i>Manage your School like never before!</i></h2>
 			<div class="postlist-tab">
 				<div style=" background-color: #fff;height: 220px;margin-left: 100px;position: relative;top: -120px;width: 500px;z-index: 1;box-shadow: 2px 4px 2px -3px gray;border:1px solid #ccc;">
 					<div class="col-sm-12" style="margin-top:40px;">

@@ -6,7 +6,7 @@
 
 		<div id="beforeWrap" style="background: transparent url(<?php echo base_url();?>images/cover/student-page.png) no-repeat top left;background-size:cover;">
 			<!--img src="<?php echo base_url(); ?>images/test/CLASSTUNE-COVER.png" alt="" title="" width="100%" /<li style="color:#64B846;">|</li>-->
-			<h2 class="f2" style="margin-top:100px;"><i>Explore Classtune today...</i></h2>
+			<h2 class="f2" style="float: right;margin-right: 120px;margin-top: 150px;width: 300px;clear:both;"><i>Things that will make you progress better!</i></h2>
 			<div class="postlist-tab">
 				<div style=" position: relative;top: 48px;z-index: 1;">
 					<a href="<?php echo base_url(); ?>signup?user_type=2" style="background-color: #64b846;color: #fff;font-size: 20px;padding: 20px 40px;text-decoration: none;border-radius:5px;	-moz-border-radius:5px;	-webkit-border-radius:5px;border:1px solid #fff;box-shadow: 0 4px 2px -2px gray;">

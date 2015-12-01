@@ -27,24 +27,24 @@
                         <a href="javascript:void(0);" style="color:black;" id="register_show">New user sign up</a> 
                     </div>    
                     <div class="form-group" id="register_from_login_div">
-                        <div class="col-md-12" style="padding-left:0px;">
+                        <div class="col-md-12" style="padding-left:5px;">
                             <div class="col-md-3">
-                                <button name="admin" onclick="location.href='<?php echo base_url();?>signup/admin'" type="button" id="admin_register" style="" class="btn btn-default">
+                                <button name="admin" onclick="location.href='<?php echo base_url();?>signup/admin'" type="button" id="admin_register" class="btn-sm btn btn-default">
                                     <i class="fa"></i> Admin
                                 </button>
                             </div>
                             <div class="col-md-3">
-                                <button name="student" onclick="location.href='<?php echo base_url();?>signup/student'" type="button" id="student_register" style="" class="btn btn-default">
+                                <button name="student" onclick="location.href='<?php echo base_url();?>signup/student'" type="button" id="student_register" class="btn-sm btn btn-default">
                                     <i class="fa"></i> Student
                                 </button>
                             </div>
                             <div class="col-md-3">
-                                <button name="parent" onclick="location.href='<?php echo base_url();?>signup/guardian'" type="button" id="parent_register" style="" class="btn btn-default">
+                                <button name="parent" onclick="location.href='<?php echo base_url();?>signup/guardian'" type="button" id="parent_register" class="btn-sm btn btn-default">
                                     <i class="fa"></i> Parent
                                 </button>
                             </div>
                             <div class="col-md-3">
-                                <button name="student" onclick="location.href='<?php echo base_url();?>signup/teacher'" type="button" id="student_register" style="" class="btn btn-default">
+                                <button name="student" onclick="location.href='<?php echo base_url();?>signup/teacher'" type="button" id="student_register" class="btn-sm btn btn-default">
                                     <i class="fa"></i> Student
                                 </button>
                             </div>

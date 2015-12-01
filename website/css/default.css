@@ -708,7 +708,7 @@ i.faq:hover
 {
     display:none;
     position:absolute;
-    margin:10px 0px 0px 10px;
+    margin:10px 0px 0px 0px;
     background:#ffffff;
     -webkit-box-shadow: 2px 2px 5px 0px rgba(170,170,171,1);
     -moz-box-shadow: 2px 2px 5px 0px rgba(170,170,171,1);

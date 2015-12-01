@@ -29,22 +29,22 @@
                     <div class="form-group" id="register_from_login_div">
                         <div class="row">
                             
-                            <button name="admin" onclick="location.href='<?php echo base_url();?>signup/admin'" type="button" id="admin_register" class="btn-xs btn btn-default">
+                            <button name="admin" onclick="location.href='<?php echo base_url();?>signup/admin'" type="button" id="admin_register" class="btn-primary btn-xs btn btn-default">
                                 <i class="fa"></i> Admin
                             </button>
 
 
-                            <button name="student" onclick="location.href='<?php echo base_url();?>signup/student'" type="button" id="student_register" class="btn-xs btn btn-default">
+                            <button name="student" onclick="location.href='<?php echo base_url();?>signup/student'" type="button" id="student_register" class="btn-info btn-xs btn btn-default">
                                 <i class="fa"></i> Student
                             </button>
 
 
-                            <button name="parent" onclick="location.href='<?php echo base_url();?>signup/guardian'" type="button" id="parent_register" class="btn-xs btn btn-default">
+                            <button name="parent" onclick="location.href='<?php echo base_url();?>signup/guardian'" type="button" id="parent_register" class="btn-warning btn-xs btn btn-default">
                                 <i class="fa"></i> Parent
                             </button>
 
 
-                            <button name="student" onclick="location.href='<?php echo base_url();?>signup/teacher'" type="button" id="student_register" class="btn-xs btn btn-default">
+                            <button name="student" onclick="location.href='<?php echo base_url();?>signup/teacher'" type="button" id="student_register" class="btn-danger btn-xs btn btn-default">
                                 <i class="fa"></i> Student
                             </button>
                            

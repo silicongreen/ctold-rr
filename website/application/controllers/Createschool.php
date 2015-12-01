@@ -102,7 +102,6 @@ class Createschool extends CI_Controller {
                 $_POST[$model_name[0]][] = 'General';
             }
             
-            
             if (count($model_name) > 1) {
                
                 $this->load->model($model_name[1], 'model');
@@ -138,7 +137,7 @@ class Createschool extends CI_Controller {
     }
 
     public function userregister($school_type = "free") {
-
+        
         if ($school_type != "paid" && $school_type != "free") {
             redirect("createschool/type");
         }
@@ -230,12 +229,18 @@ class Createschool extends CI_Controller {
         if (!$this->input->is_ajax_request()) {
             exit('No direct script access allowed');
         }
+        
+        $this->load->config('create_school');
+        $config = $this->config->config['create_school'];
 
         $notify = $this->input->post('notify');
         $i_free_user_id = $this->input->post('i_free_user_id');
         $i_tmp_school_created_data_id = $this->input->post('i_tmp_school_created_data_id');
-
-        $this->sendMail($i_tmp_school_created_data_id, $i_free_user_id);
+        
+        if($config['mail_mode'] == 'live') {
+            $this->sendMail($i_tmp_school_created_data_id, $i_free_user_id);
+        }
+        
         $response['success'] = 'done';
 
         echo json_encode($response);
@@ -342,15 +347,20 @@ class Createschool extends CI_Controller {
         if (!$this->input->is_ajax_request()) {
             exit('No direct script access allowed');
         }
+        
+        $this->load->config('create_school');
+        $config = $this->config->config['create_school'];
 
         $code = $this->input->post('code');
         $type = $this->input->post('type');
 
         $this->load->library('school');
         $this->school->setCode($code);
-
-        if ($this->school->createSubdomains($type)) {
-        $response['success'] = 'done';
+        
+        $b_subdomain_created = ($config['mail_mode'] == 'live') ? $this->school->createSubdomains($type) : TRUE;
+        
+        if ($b_subdomain_created) {
+            $response['success'] = 'done';
         } else {
             $response['error'] = 'error';
         }
@@ -379,7 +389,7 @@ class Createschool extends CI_Controller {
     }
 
     private function sendMail($i_tmp_school_created_data_id = 0, $i_free_user_id = 0) {
-
+        
         $this->load->config('create_school');
         $this->load->library('school');
 

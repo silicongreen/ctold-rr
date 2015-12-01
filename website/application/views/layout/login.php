@@ -10,7 +10,7 @@
                     <div class="form-group">
                          
                         <div class="col-md-12">
-                            <input type="text" class="form-control input-md" id="username" name="username" placeholder="User Name *" required="">
+                            <input type="text" class="form-control input-md" id="username" name="username" placeholder="Username *" required="">
 
                         </div>
                     </div>

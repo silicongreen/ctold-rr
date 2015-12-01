@@ -1,9 +1,13 @@
 <?php
 
+$host = $_SERVER['SERVER_NAME'];
+ // dev and live (dev will not send email or create subdomain)
+$local = strpos($host, 'classtune.dev');
+
 $config['create_school'] = array(
     'main_domain' => 'classtune.com',
     'default_import' => TRUE,
-    'mode' => 'live', // dev and live (dev will not send email or create subdomain)
+    'mode' => ($local === FALSE) ? 'live' : 'dev',
     'import' => 'default_class_seeds, default_emp_category_seeds, default_emp_dept_seeds, default_emp_grade_seeds, default_exam_grade_seeds',
 );
 

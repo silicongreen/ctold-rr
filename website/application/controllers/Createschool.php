@@ -141,6 +141,12 @@ class Createschool extends CI_Controller {
         if ($school_type != "paid" && $school_type != "free") {
             redirect("createschool/type");
         }
+        
+        $this->load->config('create_school');
+        $config = $this->config->config['create_school'];
+        
+        var_dump($config);
+        exit;
 
         if (!empty($_POST)) {
 

@@ -35,7 +35,7 @@
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										You can see attendance of your entire school at one platform. More specifically every class, every section. 
+										You will get real time notification of your child’s class attendance.
 									</p>
 									</div>									
 								</div>								
@@ -56,7 +56,7 @@
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										Upload your academic calendar and make it visible to everyone related. 
+										This feature will allow you to plan family holidays or any other important plans earlier as you get the access of the academic calendar. 
 									</p>
 									</div>									
 								</div>								
@@ -77,33 +77,13 @@
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										Lesson plan will be available online and you can modify when required. 
+									 This feature will allow you to plan family holidays or any other important plans earlier as you get the access of the academic calendar,
 									</p>
 									</div>									
 								</div>								
 							</div>		
 						</li>
-						<li>
-							<div class="col-sm-12" style="height:300px;width:1000px;">
-								<div class="col-sm-1" style="text-align:-moz-center;"></div>
-								<div class="col-sm-3" style="text-align:-moz-center;">
-									<img src="<?php echo base_url(); ?>images/dashpallete/view/Routine.png" style="width:170px;" />
-								</div>
-								<div class="col-sm-1" style="text-align:-moz-center;"></div>
-								<div class="col-sm-7">
-									<div class="col-sm-12">
-										<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php echo base_url(); ?>images/dashpallete/trachers_routine.png) no-repeat center;"></div>
-										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>Teacher’s Routine</i></p></div>
-									</div>
-									
-									<div class="col-sm-12"  style="margin-top:30px;">
-									<p>
-										You can upload Teacher’s routine for their convenience and better productivity. 
-									</p>
-									</div>									
-								</div>								
-							</div>		
-						</li>
+						
 						<li>
 							<div class="col-sm-12" style="height:300px;width:1000px;">
 								<div class="col-sm-1" style="text-align:-moz-center;"></div>
@@ -119,7 +99,7 @@
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										You can now check out homework of each class, each section to be specific. 
+										From your account, you can check the given homework and the deadlines. So catching up with child’s homework is no more of tension.
 									</p>
 									</div>									
 								</div>								
@@ -140,7 +120,7 @@
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-                                                                            You can upload your school’s tuition fees class wise and parents will be notified of their dues. You can label received once parent’s make the payment of monthly fees. . .  
+										You can avoid the bank line now and pay your child’s school fees from your mobile.
 									</p>
 									</div>									
 								</div>								
@@ -161,7 +141,7 @@
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										Upload all the necessary forms of your school. So that whoever needs it, can download and use. 
+										All sort of school forms are now available online. You can get them when needed despite of attending the long queue at school. 
 									</p>
 									</div>									
 								</div>								
@@ -182,7 +162,7 @@
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										We know how important it is to meet with all teachers and parents. You can set meetings easily now and even modify for any sudden changes. 
+										If you want to meet any of the teacher, you can request for a meeting through the app and set a time. 
 									</p>
 									</div>									
 								</div>								
@@ -203,7 +183,7 @@
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										Report cards will be available on classtune for your view and reference. 
+										Your child’s report card is online for your view. 
 									</p>
 									</div>									
 								</div>								
@@ -224,7 +204,7 @@
 
                                                                     <div class="col-sm-12"  style="margin-top:30px;">
                                                                     <p>
-                                                                            Use one common place to circulate all event updates. 
+                                                                            You won’t miss the sports day anymore! Get all the event updates here.
                                                                     </p>
                                                                     </div>									
                                                             </div>								
@@ -245,7 +225,7 @@
 
                                                                     <div class="col-sm-12"  style="margin-top:30px;">
                                                                     <p>
-                                                                            You can make all the transport plans and upload here. 
+                                                                           Do not worry about the transport if it is on time or not. You will get the notification beforehand.
                                                                     </p>
                                                                     </div>									
                                                             </div>								
@@ -266,7 +246,7 @@
 
                                                                     <div class="col-sm-12"  style="margin-top:30px;">
                                                                     <p>
-                                                                            You can make the routine of any class, any section here and keep it for everyone’s view. You have the freedom to make changes when necessary.
+                                                                            If there is any change in the routine, you will get the notification.
                                                                     </p>
                                                                     </div>									
                                                             </div>								
@@ -287,7 +267,7 @@
 
                                                                     <div class="col-sm-12"  style="margin-top:30px;">
                                                                     <p>
-                                                                            The yearly syllabus will be available here for everyone’s convenience. 
+                                                                            The syllabus is available on your phone now. You can refer anytime.
                                                                     </p>
                                                                     </div>									
                                                             </div>								
@@ -308,7 +288,7 @@
 
                                                                     <div class="col-sm-12"  style="margin-top:30px;">
                                                                     <p>
-                                                                            Any urgent notice to circulate? Not to worry! You can give notices here and send notification to the viewer. 
+                                                                            You will get all important notices on your parent account. 
                                                                     </p>
                                                                     </div>									
                                                             </div>								
@@ -329,7 +309,7 @@
 
                                                                     <div class="col-sm-12"  style="margin-top:30px;">
                                                                     <p>
-                                                                            You can see who are the teachers or students who has asked for leaves in coming days. You can approve their requests here. 
+                                                                            You can apply for your child’s leave easily from your account and check the leave status.  
                                                                     </p>
                                                                     </div>									
                                                             </div>								
@@ -349,9 +329,7 @@
 						<li>
 						<img src="<?php echo base_url(); ?>images/dashpallete/thumb/Lesson_Plan.png" style="width:140px;padding:5px;"  />
 						</li>
-						<li>
-						<img src="<?php echo base_url(); ?>images/dashpallete/thumb/Teachers_Routine.png" style="width:140px;padding:5px;"  />
-						</li>
+						
 						<li>
 							<img src="<?php echo base_url(); ?>images/dashpallete/thumb/Homework.png" style="width:140px;padding:5px;"  />
 						</li>

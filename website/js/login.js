@@ -46,7 +46,7 @@ $(document).on('click', '#form_login_classtune button#submit', function (e) {
                     }
                     else
                     {
-                        $("#form_login_classtune span.legend").html("<div class='alert alert-info'><strong>Redirecting to your school...</strong></div>");
+                        $("#form_login_classtune span.legend").html("<div class='alert alert-success'><strong>Redirecting to your school...</strong></div>");
                         location.href = data;
                     }
 

@@ -1,5 +1,5 @@
 <li id="login_button_classune"><a style="color:#000;text-decoration:none;" id="classtune_a"  href="javascript:void(0)"><span>Login</span></a>
-    <div id="login_form_classune" class="col-md-2" style="overflow: hidden;">
+    <div id="login_form_classune" class="col-md-3" style="overflow: hidden;">
         
         <div class="col-md-12">
             <div class="row-fluid">

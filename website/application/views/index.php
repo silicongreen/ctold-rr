@@ -97,7 +97,7 @@
                     <div class="hitem slide" id="hitem_35" style="top: 410px; left: 4600px; width: 263px; height: 180px;" data-stellar-ratio="0.90" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
                         <img src="<?php echo base_url(); ?>slider/Slide-3/Layer-2/bus.png" alt="" title="" />
                         <div class="texticon" style="top: -5px; left: -20px;">
-                            <div class="text_l text_layer">
+                            <div class="text_l text_layer" data-value="transport_layer">
                                 <div class="cb_top">&nbsp;</div>
                                 <div class="cb_middle">
                                     <div class="cb_middlePad">
@@ -120,7 +120,7 @@
                     <div data-stellar-horiz="1" data-stellar-vertical-offset="0" data-stellar-horizontal-offset="83" data-stellar-ratio="0.95" style="top: 450px; left: 3025.43px; width: 180px; height: 150px;" id="hitem_28" class="hitem slide">
                         <img title="" alt="" src="<?php echo base_url(); ?>slider/Slide-2/Layer-4/football.png" width="170">
                         <div class="texticon" style="top: -50px; left: 70px;">
-                            <div class="text_l text_layer">
+                            <div class="text_l text_layer" data-value="leave_layer">
                                 <div class="cb_top">&nbsp;</div>
                                 <div class="cb_middle">
                                     <div class="cb_middlePad">
@@ -163,7 +163,7 @@
                         <img src="<?php echo base_url(); ?>slider/Slide-1/Layer-3/boy.png" alt="" title="" width="180" />
 
                         <div class="texticon" style="top: -5px; left: 120px;">
-                            <div class="text_l text_layer" style="display:block;">
+                            <div class="text_l text_layer" style="display:block;" data-value="homework_layer">
                                 <div class="cb_top">&nbsp;</div>
                                 <div class="cb_middle">
                                     <div class="cb_middlePad">
@@ -190,9 +190,8 @@
 
                     <div class="hitem slide" id="hitem_3" style="top: 305px; left: 1070px; width: 205px; height: 193px;" data-stellar-ratio="0.80" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
                         <img src="<?php echo base_url(); ?>slider/Slide-1/Layer-3/teacher.png" alt="" title=""  width="200" />
-
                         <div class="texticon" style="top: -15px; left: 80px;">
-                            <div class="text_l text_layer">
+                            <div class="text_l text_layer" data-value="troutine_layer">
                                 <div class="cb_top">&nbsp;</div>
                                 <div class="cb_middle">
                                     <div class="cb_middlePad">
@@ -210,9 +209,8 @@
 
                     <div class="hitem slide" id="hitem_18" style="top: 360px; left: 1500px; width: 360px; height: 188px;" data-stellar-ratio="0.8" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
                         <img src="<?php echo base_url(); ?>slider/Slide-2/Layer-4/calendar.png" alt="" title="" width="350" />
-
                         <div class="texticon" style="top: -20px; left: 70px;">
-                            <div class="text_l text_layer">
+                            <div class="text_l text_layer" data-value="acalendar_layer">
                                 <div class="cb_top">&nbsp;</div>
                                 <div class="cb_middle">
                                     <div class="cb_middlePad">
@@ -257,7 +255,7 @@
                         <img src="<?php echo base_url(); ?>slider/Slide-4/Layer-4/fees_object.png" alt="" title="" width="300" />
 
                         <div class="texticon" style="top: 215px; left: 155px;">
-                            <div class="text_l text_layer">
+                            <div class="text_l text_layer" data-value="fees_layer">
                                 <div class="cb_top">&nbsp;</div>
                                 <div class="cb_middle">
                                     <div class="cb_middlePad">
@@ -280,7 +278,7 @@
                         <img src="<?php echo base_url(); ?>slider/Slide-4/Layer-3/form.png" alt="" title="" />
 
                         <div class="texticon" style="top: -40px; left: 30px;">
-                            <div class="text_l text_layer">
+                            <div class="text_l text_layer" data-value="forms_layer">
                                 <div class="cb_top">&nbsp;</div>
                                 <div class="cb_middle">
                                     <div class="cb_middlePad">
@@ -335,7 +333,7 @@
                     <div style="top: 390px; left: 775px; width: 215px; height: 200;" id="hitem_9" class="hitem">
                         <img width="115" title="" alt="" src="<?php echo base_url(); ?>slider/Slide-1/Layer-3/robote.png">
                         <div class="texticon" style="top: -15px; left: 100px; background-position: 0px 11px;">
-                            <div style="display: none; background-position: 0px 11px;" class="text_l text_layer">
+                            <div style="display: none; background-position: 0px 11px;" class="text_l text_layer" data-value="routine_layer">
                                 <div class="cb_top">&nbsp;</div>
                                 <div class="cb_middle">
                                     <div class="cb_middlePad">
@@ -361,7 +359,7 @@
                         <img title="" alt="" src="<?php echo base_url(); ?>slider/Slide-1/Layer-2/attendance.png" width="160">
 
                         <div style="top: 20px; left: 160px;" class="texticon">
-                            <div class="text_l text_layer" style="display: none;">
+                            <div class="text_l text_layer" style="display: none;" data-value="attendance_layer">
                                 <div class="cb_top">&nbsp;</div>
                                 <div class="cb_middle">
                                     <div class="cb_middlePad">
@@ -406,7 +404,7 @@
                         <img src="<?php echo base_url(); ?>slider/Slide-2/Layer-3/school.png" alt="" title="" width="200" />
 
                         <div class="texticon" style="top: 0px; left: 10px;">
-                            <div class="text_l text_layer">
+                            <div class="text_l text_layer" data-value="reportcard_layer">
                                 <div class="cb_top">&nbsp;</div>
                                 <div class="cb_middle">
                                     <div class="cb_middlePad">
@@ -429,8 +427,8 @@
 
                     <div class="hitem" id="hitem_30" style="top: 419px; left: 3600px; width: 250px; height: 85px;">
                         <img src="<?php echo base_url(); ?>slider/Slide-2/Layer-3/book.png" alt="" title="" />
-						<div class="texticon" style="top: -35px; left: 140px;">
-                            <div class="text_l text_layer">
+                        <div class="texticon" style="top: -35px; left: 140px;">
+                            <div class="text_l text_layer" data-value="lessonplan_layer">
                                 <div class="cb_top">&nbsp;</div>
                                 <div class="cb_middle">
                                     <div class="cb_middlePad">
@@ -447,7 +445,7 @@
                         <img src="<?php echo base_url(); ?>slider/Slide-3/Layer-3/board.png" alt="" title="" width="250" />
 
                         <div class="texticon" style="top: 15px; left: 250px;">
-                            <div class="text_l text_layer">
+                            <div class="text_l text_layer" data-value="notice_layer">
                                 <div class="cb_top">&nbsp;</div>
                                 <div class="cb_middle">
                                     <div class="cb_middlePad">
@@ -525,7 +523,7 @@
                     <div class="hitem slide" id="hitem_43" style="top: 380px; left: 5875px; width: 300px; height: 258px;" data-stellar-ratio="1.05" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
                         <img src="<?php echo base_url(); ?>slider/Slide-3/Layer-3/dog_girl.png" alt="" title="" width="250" />
                         <div class="texticon" style="top: -30px; left: -31px;">
-                            <div class="text_l text_layer">
+                            <div class="text_l text_layer" data-value="event_layer">
                                 <div class="cb_top">&nbsp;</div>
                                 <div class="cb_middle">
                                     <div class="cb_middlePad" style="padding-bottom: 2px;">
@@ -582,7 +580,7 @@
 
 
                         <div class="texticon" style="top: -40px; left: 230px;">
-                            <div class="text_l text_layer">
+                            <div class="text_l text_layer" data-value="meetingrequest_layer">
                                 <div class="cb_top">&nbsp;</div>
                                 <div class="cb_middle">
                                     <div class="cb_middlePad">
@@ -612,7 +610,7 @@
                         <img src="<?php echo base_url(); ?>slider/Slide-4/Layer-3/bird.png" alt="" title="" width="60" />
 
                         <div class="texticon" style="top: -39px; left: 0px;">
-                            <div class="text_l text_layer">
+                            <div class="text_l text_layer" data-value="syllabus_layer">
                                 <div class="cb_top">&nbsp;</div>
                                 <div class="cb_middle">
                                     <div class="cb_middlePad">
@@ -657,63 +655,63 @@
                     <div id="cronnav">
                         <ul>
 
-                            <li class="cronnavitem act" id="cni_75">
+                            <li class="cronnavitem act" id="cni_75" data-value="homework">
                                 <span>Homework</span>
                             </li>
 
-                            <li class="cronnavitem" id="cni_75">
+                            <li class="cronnavitem" id="cni_75" data-value="attendance">
                                 <span>Attendance</span>
                             </li>
 
-                            <li class="cronnavitem" id="cni_650">
+                            <li class="cronnavitem" id="cni_650" data-value="routine">
                                 <span>Routine</span>
                             </li>
 
-                            <li class="cronnavitem" id="cni_1100">
+                            <li class="cronnavitem" id="cni_1100" data-value="troutine">
                                 <span>Teacher's Routine</span>
                             </li>
 
-                            <li class="cronnavitem" id="cni_1600">
+                            <li class="cronnavitem" id="cni_1600" data-value="acalendar">
                                 <span>Academic Calendar</span>
                             </li>
 
-                            <li class="cronnavitem" id="cni_2400">
+                            <li class="cronnavitem" id="cni_2400" data-value="reportcard">
                                 <span>Report Card</span>
                             </li>
 
-                            <li class="cronnavitem" id="cni_3000">
+                            <li class="cronnavitem" id="cni_3000" data-value="leave">
                                 <span>Leave</span>
                             </li>
 
-                            <li class="cronnavitem" id="cni_3500">
+                            <li class="cronnavitem" id="cni_3500" data-value="lessonplan">
                                 <span>Lesson Plan</span>
                             </li>
 
-                            <li class="cronnavitem" id="cni_4000">
+                            <li class="cronnavitem" id="cni_4000" data-value="notice">
                                 <span>Notice</span>
                             </li>
 
-                            <li class="cronnavitem" id="cni_4500">
+                            <li class="cronnavitem" id="cni_4500" data-value="meetingrequest">
                                 <span>Meeting Request</span>
                             </li>
 
-                            <li class="cronnavitem" id="cni_5000">
+                            <li class="cronnavitem" id="cni_5000" data-value="transport">
                                 <span>Transport</span>
                             </li>
 
-                            <li class="cronnavitem" id="cni_5500">
+                            <li class="cronnavitem" id="cni_5500" data-value="event">
                                 <span>Event</span>
                             </li>
 
-                            <li class="cronnavitem" id="cni_6000">
+                            <li class="cronnavitem" id="cni_6000" data-value="syllabus">
                                 <span>Syllabus</span>
                             </li>
 
-                            <li class="cronnavitem" id="cni_6500">
+                            <li class="cronnavitem" id="cni_6500" data-value="forms">
                                 <span>Forms</span>
                             </li>
 
-                            <li class="cronnavitem" id="cni_7000">
+                            <li class="cronnavitem" id="cni_7000" data-value="fees">
                                 <span>Fees</span>
                             </li>
 							<li class="cronnavitem" id="cni_up">

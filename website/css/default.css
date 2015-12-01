@@ -430,7 +430,7 @@ input.radio { margin:0; }
 
 /* defaults für alle */
 .csc-default {  }
-.bodytext { margin:0 0 10px 0; padding:0; }
+.bodytext { margin:0 0 10px 0; padding:0;font-size:14px; }
 .csc-textpic-image { margin:0 0 10px 0; padding:0; }
 .csc-header { margin:0; padding:0; clear:both; }
 .csc-subheader { margin:0 0 10px 0; padding:0; clear:both; }

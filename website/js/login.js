@@ -38,6 +38,7 @@ $(document).on('click', '#form_login_classtune button#submit', function (e) {
                     }
                     else
                     {
+                        $("#form_login_classtune span.legend").html("Redirecting to your school...");
                         location.href = data;
                     }
 

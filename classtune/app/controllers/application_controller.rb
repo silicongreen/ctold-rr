@@ -118,11 +118,19 @@ class ApplicationController < ActionController::Base
             @last_session_log = ActivityLog.find(:first,:conditions=>{:user_id=>current_user.id,:session_end=>1},:order=>"created_at DESC",:limit=>1)
             if !@last_session_log.nil?
               @session_start_log = ActivityLog.find(:first,:conditions=>["user_id =#{current_user.id} and created_at >'#{@last_session_log.created_at}'"],:order=>"created_at ASC",:limit=>1)
-              @sesstion_time =  now.to_time-@session_start_log.created_at.to_time
-              activity_log_update = ActivityLog.find(@last_log.id)
-              activity_log_update.session_end = 1
-              activity_log_update.session_time = @sesstion_time
-              activity_log_update.save
+              if !@session_start_log.nil?
+                @sesstion_time =  now.to_time-@session_start_log.created_at.to_time
+                activity_log_update = ActivityLog.find(@last_log.id)
+                activity_log_update.session_end = 1
+                activity_log_update.session_time = @sesstion_time
+                activity_log_update.save
+              else
+                @sesstion_time =  now.to_time-@last_session_log.created_at.to_time
+                activity_log_update = ActivityLog.find(@last_log.id)
+                activity_log_update.session_end = 1
+                activity_log_update.session_time = @sesstion_time
+                activity_log_update.save
+              end
             else
               @last_session_log = ActivityLog.find(:first,:conditions=>{:user_id=>current_user.id},:order=>"created_at ASC",:limit=>1)
               if !@last_session_log.nil?

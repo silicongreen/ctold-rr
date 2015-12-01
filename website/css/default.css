@@ -687,10 +687,22 @@ i.faq:hover
 {
     color:#000000;
 }
+#mainnav li.act_login::after {
+    content: '';
+    position: absolute;
+    margin-left: -13px;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #449D44;
+    clear: both;
+}
 #mainnav li.act_login a
 {
     /*                color: #fff !important;*/
     font-weight: bold;
+    color:#449D44;
 }
 #login_form_classune
 {

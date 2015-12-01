@@ -717,10 +717,10 @@
                                 <span>Fees</span>
                             </li>
 							<li class="cronnavitem" id="cni_up">
-                                <i class="faq fa fa-hand-o-up"></i>
+                                <i class="faq fa fa-arrow-up"></i>
                             </li>
 							<li class="cronnavitem" id="cni_down">
-                                <i class="faq fa fa-hand-o-down"></i>
+                                <i class="faq fa fa-arrow-down"></i>
                             </li>
 
                         </ul>

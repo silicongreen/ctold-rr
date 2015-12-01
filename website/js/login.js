@@ -4,6 +4,12 @@
  * and open the template in the editor.
  */
 
+$(document).on('click', '#register_show', function () {
+        $("#register_show").hide();
+        $("#register_from_login_div").show();
+    
+});
+
 $(document).on('click', '#login_button_classune a#classtune_a', function () {
     if ($("#login_form_classune").is(":hidden")) {
         $("#login_form_classune").slideDown("slow");
@@ -13,13 +19,19 @@ $(document).on('click', '#login_button_classune a#classtune_a', function () {
         $("#login_form_classune").slideUp("slow");
         $("#login_button_classune").removeClass('act_login');
         $("#form_login_classtune span.legend").html("");
+        $("#register_show").show();
+        $("#register_from_login_div").hide();
     }
 });
 $(document).click(function(e) {
         if (!$(e.target).is('#login_button_classune, #login_button_classune *')) {
-            $("#login_form_classune").slideUp("slow");
+            
             $("#login_button_classune").removeClass('act_login');
             $("#form_login_classtune span.legend").html("");
+            $("#register_from_login_div").hide();
+            $("#register_show").show();
+            $("#login_form_classune").slideUp("slow");
+            
         }
  });
 $(document).on('click', '#form_login_classtune button#submit', function (e) {

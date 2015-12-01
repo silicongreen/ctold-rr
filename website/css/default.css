@@ -155,7 +155,7 @@ input.radio { margin:0; }
 #boxesBG { background: transparent repeat top left; width: 1000px; height: 492px; position: absolute; top: 115px; left: 50%; margin: 0px 0px 0px -500px; }
 #boxesBG .row1 { position: absolute; top: 25px; left: 138px; }
 #boxesBG .row2 { position: absolute; bottom: 25px; left: 25px; }
-#boxesBG .box { background:#DFE4E7;float: left; margin: 0px 16px 0px 0px; cursor: pointer; position: relative; width: 231px; height: 380px; overflow: hidden; }
+#boxesBG .box { background:#DFE4E7;float: left; margin: 0px 16px 0px 0px; cursor: pointer; position: relative; width: 231px; height: 345px; overflow: hidden; }
 #boxesBG .lastinrow { margin-right: 0px; }
 #boxesBG .hover { display: block; position: absolute; top: 0px; left: -10000px; width: 236px; height: 220px; background: transparent url(../images/hover_blue.png) repeat top left; color: white; text-align: center; }
 #boxesBG .hover P, #boxesBG .hover TD { color: white; padding: 0px; margin: 0px; font-size: 14px; }
@@ -430,7 +430,7 @@ input.radio { margin:0; }
 
 /* defaults für alle */
 .csc-default {  }
-.bodytext { margin:0 0 10px 0; padding:0;font-size:14px; }
+.bodytext { margin:0 0 10px 0; padding:0; }
 .csc-textpic-image { margin:0 0 10px 0; padding:0; }
 .csc-header { margin:0; padding:0; clear:both; }
 .csc-subheader { margin:0 0 10px 0; padding:0; clear:both; }
@@ -724,4 +724,16 @@ i.faq:hover
     border: 1px solid transparent;
     border-radius: 2px;
     font-size:12px;
+}
+#register_from_login_div
+{
+    display:none;
+}
+#mainnav li.act_login a#register_show
+{
+    color:black !important;
+}
+#mainnav li.act_login a#register_show:hover
+{
+    text-decoration: underline;
 }

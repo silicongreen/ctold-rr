@@ -673,7 +673,10 @@ i.faq:hover
 .bottom30 { margin-bottom:30px; }
 /** NISLAM **/
 
-
+#form_login_classtune span.legend
+{
+    color:greenyellow;
+}
 #form_login_classtune span.legend .error
 {
     color:red;

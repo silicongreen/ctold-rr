@@ -702,7 +702,7 @@ i.faq:hover
 {
     /*                color: #fff !important;*/
     font-weight: bold;
-    color:#449D44;
+    color:#449D44 !important;
 }
 #login_form_classune
 {

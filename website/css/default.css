@@ -679,15 +679,13 @@ i.faq:hover
 }
 #form_login_classtune span.legend .error
 {
-    color:red;
+    color:#EE444C;
+    font-weight: bold;
     display: none;
 }
-#mainnav li.act_login {
-    background: #F4FCF4;
-    color: #fff;
-    border-radius: 3px;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
+#form_login_classtune span.legend .error span
+{
+    color:#000000;
 }
 #mainnav li.act_login a
 {
@@ -698,8 +696,8 @@ i.faq:hover
 {
     display:none;
     position:absolute;
-    margin:3px 0px 0px -10px;
-    background:#F4FCF4;
+    margin:10px 0px 0px 10px;
+    background:#ffffff;
     -webkit-box-shadow: 2px 2px 5px 0px rgba(170,170,171,1);
     -moz-box-shadow: 2px 2px 5px 0px rgba(170,170,171,1);
     box-shadow: 2px 2px 5px 0px rgba(170,170,171,1);  
@@ -707,4 +705,11 @@ i.faq:hover
 #login_button_classune
 {
     cursor: pointer;
+}
+.alert {
+    padding: 6px;
+    margin-bottom: 0px;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    font-size:12px;
 }

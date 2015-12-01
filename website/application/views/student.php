@@ -18,7 +18,8 @@
 		<div id="cronWrap" style="background-color:#F4FAFA;background-image:none;top:500px;height:800px;">
 			<div style="border: 0 solid #ccc;left: 50%;margin: 0 0 0 -499px;position: absolute;width: 1000px;padding:81px 10px 0;">
 				<h2 class="f2" style="text-align:center;"><i>Manage your school with our features</i></h2><br>
-				<p><b>classtune</b> makes institutional monitoring and management of school activity easy and effective. Rich, align, and engage teachers, students, and parents from all your schools in one platform. It accelerates parental engagement and advocates corrective measures to improve learning outcomes.</p><br>
+				<p><b>classtune</b> is giving you everything that you need to maintain your good result, also enjoy all the school activities.</p>
+				<p><b>classtune</b> is designed in such a way that you get to connect, interact with your Teachers even when you are out of school and make your performance visible for your parents. Managing education and extracurricular activities is much simpler and presented in a way that you like. </p><br>
 				<div id="slider"  class="flexslider" style="margin-top:30px;width:1000px;">
 					<ul class="slides">
 						<li>
@@ -35,7 +36,7 @@
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										You can see attendance of your entire school at one platform. More specifically every class, every section. 
+										You can see your attendance report and the times you were late in the class. 
 									</p>
 									</div>									
 								</div>								
@@ -56,7 +57,7 @@
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										Upload your academic calendar and make it visible to everyone related. 
+										You can see your academic calendar online and make your vacation plans accordingly. 
 									</p>
 									</div>									
 								</div>								
@@ -77,33 +78,13 @@
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										Lesson plan will be available online and you can modify when required. 
+										Your teachers can upload their lesson plans and you can prepare yourself ahead of time and do better result. 
 									</p>
 									</div>									
 								</div>								
 							</div>		
 						</li>
-						<li>
-							<div class="col-sm-12" style="height:300px;width:1000px;">
-								<div class="col-sm-1" style="text-align:-moz-center;"></div>
-								<div class="col-sm-3" style="text-align:-moz-center;">
-									<img src="<?php echo base_url(); ?>images/dashpallete/view/Routine.png" style="width:170px;" />
-								</div>
-								<div class="col-sm-1" style="text-align:-moz-center;"></div>
-								<div class="col-sm-7">
-									<div class="col-sm-12">
-										<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php echo base_url(); ?>images/dashpallete/trachers_routine.png) no-repeat center;"></div>
-										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>Teacher’s Routine</i></p></div>
-									</div>
-									
-									<div class="col-sm-12"  style="margin-top:30px;">
-									<p>
-										You can upload Teacher’s routine for their convenience and better productivity. 
-									</p>
-									</div>									
-								</div>								
-							</div>		
-						</li>
+						
 						<li>
 							<div class="col-sm-12" style="height:300px;width:1000px;">
 								<div class="col-sm-1" style="text-align:-moz-center;"></div>
@@ -119,33 +100,13 @@
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										You can now check out homework of each class, each section to be specific. 
+										You can view your homework of specific subjects from your classtune account. It will also show the homework deadline. You can put done once you complete the work. 
 									</p>
 									</div>									
 								</div>								
 							</div>	
 						</li>
-						<li>
-							<div class="col-sm-12" style="height:300px;width:1000px;">
-								<div class="col-sm-1" style="text-align:-moz-center;"></div>
-								<div class="col-sm-3" style="text-align:-moz-center;">
-									<img src="<?php echo base_url(); ?>images/dashpallete/view/fees.png" style="width:170px;" />
-								</div>
-								<div class="col-sm-1" style="text-align:-moz-center;"></div>
-								<div class="col-sm-7">
-									<div class="col-sm-12">
-										<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php echo base_url(); ?>images/dashpallete/fees.png) no-repeat center;"></div>
-										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>Fees</i></p></div>
-									</div>
-									
-									<div class="col-sm-12"  style="margin-top:30px;">
-									<p>
-                                                                            You can upload your school’s tuition fees class wise and parents will be notified of their dues. You can label received once parent’s make the payment of monthly fees. . .  
-									</p>
-									</div>									
-								</div>								
-							</div>
-						</li>
+						
 						<li>
 							<div class="col-sm-12" style="height:300px;width:1000px;">
 								<div class="col-sm-1" style="text-align:-moz-center;"></div>
@@ -161,33 +122,13 @@
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										Upload all the necessary forms of your school. So that whoever needs it, can download and use. 
+										All forms that you might need from your school is now available here. 
 									</p>
 									</div>									
 								</div>								
 							</div>	
 						</li>
-						<li>
-							<div class="col-sm-12" style="height:300px;width:1000px;">
-								<div class="col-sm-1" style="text-align:-moz-center;"></div>
-								<div class="col-sm-3" style="text-align:-moz-center;">
-									<img src="<?php echo base_url(); ?>images/dashpallete/view/meeting_request.png" style="width:170px;" />
-								</div>
-								<div class="col-sm-1" style="text-align:-moz-center;"></div>
-								<div class="col-sm-7">
-									<div class="col-sm-12">
-										<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php echo base_url(); ?>images/dashpallete/meeting_request.png) no-repeat center;"></div>
-										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>Meeting Request</i></p></div>
-									</div>
-									
-									<div class="col-sm-12"  style="margin-top:30px;">
-									<p>
-										We know how important it is to meet with all teachers and parents. You can set meetings easily now and even modify for any sudden changes. 
-									</p>
-									</div>									
-								</div>								
-							</div>	
-						</li>
+						
 						<li>
 							<div class="col-sm-12" style="height:300px;width:1000px;">
 								<div class="col-sm-1" style="text-align:-moz-center;"></div>
@@ -203,7 +144,7 @@
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										Report cards will be available on classtune for your view and reference. 
+										Now you can see your report cards online and set it to view for your parents. 
 									</p>
 									</div>									
 								</div>								
@@ -224,7 +165,7 @@
 
                                                                     <div class="col-sm-12"  style="margin-top:30px;">
                                                                     <p>
-                                                                            Use one common place to circulate all event updates. 
+                                                                            Don’t miss out any events from now on! Get all your school event updates in classtune now.
                                                                     </p>
                                                                     </div>									
                                                             </div>								
@@ -245,7 +186,7 @@
 
                                                                     <div class="col-sm-12"  style="margin-top:30px;">
                                                                     <p>
-                                                                            You can make all the transport plans and upload here. 
+                                                                            You can check if your school transport is in time or not.
                                                                     </p>
                                                                     </div>									
                                                             </div>								
@@ -266,7 +207,7 @@
 
                                                                     <div class="col-sm-12"  style="margin-top:30px;">
                                                                     <p>
-                                                                            You can make the routine of any class, any section here and keep it for everyone’s view. You have the freedom to make changes when necessary.
+                                                                            Check your routine here and never forget to bring books or prepare for the class study material. 
                                                                     </p>
                                                                     </div>									
                                                             </div>								
@@ -287,7 +228,7 @@
 
                                                                     <div class="col-sm-12"  style="margin-top:30px;">
                                                                     <p>
-                                                                            The yearly syllabus will be available here for everyone’s convenience. 
+                                                                            Your syllabus will be here! You can refer to it anytime.
                                                                     </p>
                                                                     </div>									
                                                             </div>								
@@ -308,33 +249,12 @@
 
                                                                     <div class="col-sm-12"  style="margin-top:30px;">
                                                                     <p>
-                                                                            Any urgent notice to circulate? Not to worry! You can give notices here and send notification to the viewer. 
+                                                                            Check all your important school notice here.
                                                                     </p>
                                                                     </div>									
                                                             </div>								
                                                     </div>	
 						</li>	
-                                                <li>
-                                                    <div class="col-sm-12" style="height:300px;width:1000px;">
-                                                            <div class="col-sm-1" style="text-align:-moz-center;"></div>
-                                                            <div class="col-sm-3" style="text-align:-moz-center;">
-                                                                    <img src="<?php echo base_url(); ?>images/dashpallete/view/leave.png" style="width:170px;" />
-                                                            </div>
-                                                            <div class="col-sm-1" style="text-align:-moz-center;"></div>
-                                                            <div class="col-sm-7">
-                                                                    <div class="col-sm-12">
-                                                                            <div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php echo base_url(); ?>images/dashpallete/leave_application.png) no-repeat center;"></div>
-                                                                            <div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>Leave</i></p></div>
-                                                                    </div>
-
-                                                                    <div class="col-sm-12"  style="margin-top:30px;">
-                                                                    <p>
-                                                                            You can see who are the teachers or students who has asked for leaves in coming days. You can approve their requests here. 
-                                                                    </p>
-                                                                    </div>									
-                                                            </div>								
-                                                    </div>	
-						</li>
                                                 	
 					</ul>
 				</div>
@@ -349,21 +269,15 @@
 						<li>
 						<img src="<?php echo base_url(); ?>images/dashpallete/thumb/Lesson_Plan.png" style="width:140px;padding:5px;"  />
 						</li>
-						<li>
-						<img src="<?php echo base_url(); ?>images/dashpallete/thumb/Teachers_Routine.png" style="width:140px;padding:5px;"  />
-						</li>
+						
 						<li>
 							<img src="<?php echo base_url(); ?>images/dashpallete/thumb/Homework.png" style="width:140px;padding:5px;"  />
 						</li>
-						<li>
-							<img src="<?php echo base_url(); ?>images/dashpallete/thumb/Fees.png" style="width:140px;padding:5px;"  />
-						</li>						
+												
 						<li>
 							<img src="<?php echo base_url(); ?>images/dashpallete/thumb/Forms.png" style="width:140px;padding:5px;"  />
 						</li>
-						<li>
-							<img src="<?php echo base_url(); ?>images/dashpallete/thumb/Meeting_Request.png" style="width:140px;padding:5px;"  />
-						</li>
+						
 						<li>
 							<img src="<?php echo base_url(); ?>images/dashpallete/thumb/Report_Card.png" style="width:140px;padding:5px;"  />
 						</li>
@@ -382,9 +296,7 @@
                                                 <li>
 							<img src="<?php echo base_url(); ?>images/dashpallete/thumb/Notice.png" style="width:140px;padding:5px;"  />
 						</li>
-                                                <li>
-							<img src="<?php echo base_url(); ?>images/dashpallete/thumb/Leave.png" style="width:140px;padding:5px;"  />
-						</li>
+                        
                                                
 				    </ul>
 				</div>

@@ -142,12 +142,6 @@ class Createschool extends CI_Controller {
             redirect("createschool/type");
         }
         
-        $this->load->config('create_school');
-        $config = $this->config->config['create_school'];
-        
-        var_dump($config);
-        exit;
-
         if (!empty($_POST)) {
 
             if (isset($_POST['school_type']) && !empty($_POST['school_type'])) {

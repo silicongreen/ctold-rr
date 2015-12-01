@@ -44,7 +44,7 @@ class ApplicationController < ActionController::Base
   include CustomInPlaceEditing
   
   def get_subscrived_link(link_text)
-    link_return = "<a href='javascrip:void(0)' class='dim_link subscribed-messege' >#{link_text}</a>"
+    link_return = "<a href='javascript:void(0)' class='dim_link subscribed-messege' >#{link_text}</a>"
     return link_return
   end
   

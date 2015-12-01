@@ -12,8 +12,8 @@ $config['plus_api'] = array(
 );
 
 $config['custom_urls'] = array(
-    'activation' => "http://classtune.classtune.com/activation",
-    'login' => "http://classtune.classtune.com/login",
+    'activation' => "http://www.classtune.com/activation",
+    'login' => "http://www.classtune.com/login",
 );
 
 $config['setup_forms'] = array(

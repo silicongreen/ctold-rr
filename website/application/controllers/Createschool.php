@@ -237,7 +237,7 @@ class Createschool extends CI_Controller {
         $i_free_user_id = $this->input->post('i_free_user_id');
         $i_tmp_school_created_data_id = $this->input->post('i_tmp_school_created_data_id');
         
-        if($config['mail_mode'] == 'live') {
+        if($config['mode'] == 'live') {
             $this->sendMail($i_tmp_school_created_data_id, $i_free_user_id);
         }
         
@@ -357,7 +357,7 @@ class Createschool extends CI_Controller {
         $this->load->library('school');
         $this->school->setCode($code);
         
-        $b_subdomain_created = ($config['mail_mode'] == 'live') ? $this->school->createSubdomains($type) : TRUE;
+        $b_subdomain_created = ($config['mode'] == 'live') ? $this->school->createSubdomains($type) : TRUE;
         
         if ($b_subdomain_created) {
             $response['success'] = 'done';

@@ -16,7 +16,7 @@ $act = $_GET['local'];
 					<div class="col-md-6 pack_log" id="premium_log" style="<?php if($act == "basic"): ?>background:#F1F1F1;<?php endif;?>text-align: center;padding:20px;cursor:pointer;">
 						<i style="background:#F56332;" class="fa-a fa fa-star"></i>
 						<h2 style="font-size:25px;">Premium</h2>
-						<p>$1 Per Month / Per Student</p>
+						<p>$1.99 Per Month / Student</p>
 					</div>
 				</div>				
             </div><!-- /.row -->

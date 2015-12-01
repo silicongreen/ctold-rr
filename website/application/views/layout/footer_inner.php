@@ -109,6 +109,8 @@
                     controlNav: false,
                     animationLoop: false,
                     slideshow: true,
+                    slideshowSpeed:10000,
+                    pauseOnHover:true,
                     itemWidth: 140,
                     itemMargin: 0,
                     asNavFor: '#slider'
@@ -119,6 +121,8 @@
                     controlNav: false,
                     animationLoop: true,
                     slideshow: true,
+                    slideshowSpeed:10000,
+                    pauseOnHover:true,
                     sync: "#carousel",
                     start: function (slider) {
                         $('body').removeClass('loading');

@@ -18,7 +18,7 @@
 					<div class="col-sm-6"><a href="<?php echo base_url()?>createschool/type?local=basic" class="btn-basic-pack">
 					Basic</a><span class="btn-basic-pack-text">Free</span></div> 
 					<div class="col-sm-6"><a href="<?php echo base_url()?>createschool/type?local=premium" class="btn-primium-pack">
-					Premium</a><span class="btn-primium-pack-text">$1 Per Month/Student</span></div> 
+					Premium</a><span class="btn-primium-pack-text">$1.99 Per Month/ Student</span></div> 
 					
 					
 					</div>
@@ -29,7 +29,7 @@
 		<div id="cronWrap" style="background-color:#F4FAFA;background-image:none;top:500px;height:800px;">
 			<div style="border: 0 solid #ccc;left: 50%;margin: 0 0 0 -499px;position: absolute;width: 1000px;padding:81px 10px 0;">
 				<h2 class="f2" style="text-align:center;"><i>Manage your school with our features</i></h2><br>
-				<p><b>classtune</b> makes institutional monitoring and management of school activity easy and effective. Rich, align, and engage teachers, students, and parents from all your schools in one platform. It accelerates parental engagement and advocates corrective measures to improve learning outcomes.</p><br>
+				<p style="font-size:16px;"><b>classtune</b> makes institutional monitoring and management of school activity easy and effective. Rich, align, and engage teachers, students, and parents from all your schools in one platform. It accelerates parental engagement and advocates corrective measures to improve learning outcomes.</p><br>
 				<div id="slider"  class="flexslider" style="margin-top:30px;width:1000px;">
 					<ul class="slides">
 						<li>

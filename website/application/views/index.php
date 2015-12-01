@@ -67,7 +67,7 @@
 				<div class="col-md-5" style="text-align: left;"></div>
 				<div class="col-md-4" style="text-align: left;">				
 					<h2 class="f2" style="margin-top:130px;"><i>Managing School was never so easy...</i></h2>
-					<p style="margin-top:30px;font-size:14px;">The easiest and quickest way for Students-Parents-Teachers to connect with each other.School Administrators can connect each individual under one single platform.</p>
+					<p style="margin-top:30px;font-size:16px;">The easiest and quickest way for Students-Parents-Teachers to connect with each other.School Administrators can connect each individual under one single platform.</p>
 				</div>
 			</div>
             <div class="postlist-tab">

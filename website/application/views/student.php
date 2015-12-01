@@ -18,8 +18,8 @@
 		<div id="cronWrap" style="background-color:#F4FAFA;background-image:none;top:500px;height:800px;">
 			<div style="border: 0 solid #ccc;left: 50%;margin: 0 0 0 -499px;position: absolute;width: 1000px;padding:81px 10px 0;">
 				<h2 class="f2" style="text-align:center;"><i>Manage your school with our features</i></h2><br>
-				<p><b>classtune</b> is giving you everything that you need to maintain your good result, also enjoy all the school activities.</p>
-				<p><b>classtune</b> is designed in such a way that you get to connect, interact with your Teachers even when you are out of school and make your performance visible for your parents. Managing education and extracurricular activities is much simpler and presented in a way that you like. </p><br>
+				<p style="font-size:16px;"><b>classtune</b> is giving you everything that you need to maintain your good result, also enjoy all the school activities.</p>
+				<p style="font-size:16px;"><b>classtune</b> is designed in such a way that you get to connect, interact with your Teachers even when you are out of school and make your performance visible for your parents. Managing education and extracurricular activities is much simpler and presented in a way that you like. </p><br>
 				<div id="slider"  class="flexslider" style="margin-top:30px;width:1000px;">
 					<ul class="slides">
 						<li>

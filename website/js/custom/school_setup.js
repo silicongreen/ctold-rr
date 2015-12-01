@@ -78,6 +78,7 @@ $(document).ready(function () {
         var active_form = $('.tab-content .active form').attr('id');
 
         if (active_form == 'shift' || active_form == 'course') {
+
             $('#class_name_txt_box').val('');
             $('#section_name_txt_box').val('');
             $('#classModal').modal({
@@ -85,10 +86,18 @@ $(document).ready(function () {
                 keyboard: false,
                 backdrop: 'static'
             });
+
         } else {
 
+            $("#uLogin").parent('div').parent('div.form-group').find('p').remove();
             if (active_form == 'employee_category') {
                 $("#uLogin").parent('div').parent('div.form-group').append('<p>eg: Teacher (TE)</p>');
+            } else if (active_form == 'employee_position') {
+                $("#uLogin").parent('div').parent('div.form-group').append('<p>eg: Senior</p>');
+            } else if (active_form == 'employee_grade') {
+                $("#uLogin").parent('div').parent('div.form-group').append('<p>eg: Grade 1</p>');
+            } else if (active_form == 'employee_department') {
+                $("#uLogin").parent('div').parent('div.form-group').append('<p>eg: Bangla</p>');
             }
 
             if ($('.emp_category_wrapper').html() != '') {
@@ -128,15 +137,15 @@ $(document).ready(function () {
                 checkbox_of_cur_text.prop('checked', false);
             }
         });
-        
-        if($('.tab-content .active form div#extra_vaules_classes table tbody tr').length < 1) {
+
+        if ($('.tab-content .active form div#extra_vaules_classes table tbody tr').length < 1) {
             $('.tab-content .active form div#extra_vaules_classes').hide('slow');
         }
-        
-        if($('.tab-content .active form div#extra_vaules table tbody tr').length < 1) {
+
+        if ($('.tab-content .active form div#extra_vaules table tbody tr').length < 1) {
             $('.tab-content .active form div#extra_vaules').hide('slow');
         }
-        
+
     });
 
     $(document).off('click', '.button-save').on('click', '.button-save', function () {
@@ -183,9 +192,9 @@ $(document).ready(function () {
             var tbody = $('.tab-content .active form #extra_vaules table tbody');
             var tr = '<tr><td>';
             var item_name_td_html = '';
-            
-            
-            
+
+
+
             if (form_name == 'subject') {
                 item_name_td_html += '<input type="hidden" value="' + item_name_val + '" />' + item_name;
                 item_name_td_html += '<a href="javascript:void(0);" class="assign_to_class btn">Assign to class</a>';
@@ -211,8 +220,8 @@ $(document).ready(function () {
             } else {
                 tbody.append(tr);
                 $('.tab-content .tab-pane:not(.active) #extra_vaules').hide();
-                
-                if(!$('.tab-content .active #extra_vaules').is(':visible')) {
+
+                if (!$('.tab-content .active #extra_vaules').is(':visible')) {
                     $('.tab-content .active #extra_vaules').show('slow');
                 }
             }
@@ -275,21 +284,21 @@ $(document).ready(function () {
         $('.check_box_id').attr('id', '');
 
         if ($('#myModal .modal-body #str_categories').length > 0) {
-            
+
             cate_id = parseInt($('#myModal .modal-body #str_categories option:selected').val());
-            
-            if(cate_id <= 0) {
+
+            if (cate_id <= 0) {
                 alert('Please a category.');
                 return false;
             }
-            
+
             item_name_val = item_name_val + '==' + cate_id;
         }
 
         var tbody = $('.tab-content .active #extra_vaules table tbody');
         var tr = '<tr><td>';
         var item_name_td_html = '<input type="hidden" name="' + form_name + '[]" value="' + item_name_val.trim() + '" />' + item_name.trim();
-        
+
         if (form_name == 'subject') {
             item_name_td_html += '<a href="javascript:void(0);" class="assign_to_class btn">Assign to class</a>';
         }
@@ -317,8 +326,8 @@ $(document).ready(function () {
         } else {
             tbody.append(tr);
             $('.tab-content .tab-pane:not(.active) #extra_vaules').hide();
-            
-            if(!$('.tab-content .active #extra_vaules').is(':visible')) {
+
+            if (!$('.tab-content .active #extra_vaules').is(':visible')) {
                 $('.tab-content .active #extra_vaules').show('slow');
             }
             $('#myModal').modal('hide');
@@ -438,13 +447,13 @@ $(document).ready(function () {
             alert('This name is already added. Try another name.');
         } else {
             tbody.append(tr);
-            
+
             $('.tab-content .tab-pane:not(.active) #extra_vaules_classes').hide();
-            
-            if(!$('.tab-content .active #extra_vaules_classes').is(':visible')) {
+
+            if (!$('.tab-content .active #extra_vaules_classes').is(':visible')) {
                 $('.tab-content .active #extra_vaules_classes').show('slow');
             }
-            
+
             $('#classModal').modal('hide');
         }
     });
@@ -536,7 +545,7 @@ $(document).ready(function () {
     });
 
     $(document).off('click', '#successModal #setup_success').on('click', '#successModal #setup_success', function () {
-        window.location.href = '/login';
+        window.location.href = '/';
     });
 
     $(document).off('click', '#subjectModal #add_new_subject_class').on('click', '#subjectModal #add_new_subject_class', function () {

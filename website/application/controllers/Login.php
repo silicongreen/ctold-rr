@@ -11,7 +11,7 @@ class Login extends CI_Controller {
         $data['error'] = "";
         if ($this->form_validation->run() == FALSE) 
         {
-            $this->load_view('login',$data);
+            echo "0";
         } 
         else 
         {
@@ -39,25 +39,25 @@ class Login extends CI_Controller {
                         
                         $params = "?username=" . $username . "&password=" . $password . "&auth_id=" . $random . "&user_id=" . $users->id;
                         $url = "http://" .$domain->domain . $params;
-                        header("Location: " . $url);
+                        echo $url;
                     }
                     else
                     {
                         $data['error'] = "Wrong Username or Password";
-                        $this->load_view('login',$data);
+                        echo "0";
                     }    
                 }
                 else
                 {
                     $data['error'] = "Wrong Username or Password";
-                    $this->load_view('login',$data);
+                    echo "0";
                 }    
             }
             else
             {
                 
                 $data['error'] = "Wrong Username or Password"; 
-                $this->load_view('login',$data);
+                echo "0";
             } 
             
             $this->db->set_dbprefix('');

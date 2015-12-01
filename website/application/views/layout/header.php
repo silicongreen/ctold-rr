@@ -50,7 +50,8 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css" type="text/css" media="all" />
         
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
-
-
+        
+        <script type="text/javascript" src="<?php echo base_url(); ?>js/login.js"></script>
+         
     </head>
     <body>

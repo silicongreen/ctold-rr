@@ -643,11 +643,11 @@ textarea {
 i.faq
 {
     color:#fff;
-	background-color:#64B846;
+    background-color:#64B846;
     font-size:15px;
     padding: 5px;
     display: inline-block;
-	cursor:pointer;
+    cursor:pointer;
     -moz-border-radius: 100px;
     -webkit-border-radius: 100px;
     border-radius: 100px;
@@ -657,7 +657,7 @@ i.faq
 }
 i.faq:hover
 {
-	background-color:#9AFC76;
+    background-color:#9AFC76;
 }
 /** NISLAM **/
 .center {
@@ -672,3 +672,36 @@ i.faq:hover
 .bottom17 { margin-bottom:17px; }
 .bottom30 { margin-bottom:30px; }
 /** NISLAM **/
+
+
+#form_login_classtune span.legend .error
+{
+    color:red;
+    display: none;
+}
+#mainnav li.act_login {
+    background: #F4FCF4;
+    color: #fff;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+#mainnav li.act_login a
+{
+    /*                color: #fff !important;*/
+    font-weight: bold;
+}
+#login_form_classune
+{
+    display:none;
+    position:absolute;
+    margin:3px 0px 0px -10px;
+    background:#F4FCF4;
+    -webkit-box-shadow: 2px 2px 5px 0px rgba(170,170,171,1);
+    -moz-box-shadow: 2px 2px 5px 0px rgba(170,170,171,1);
+    box-shadow: 2px 2px 5px 0px rgba(170,170,171,1);  
+}  
+#login_button_classune
+{
+    cursor: pointer;
+}

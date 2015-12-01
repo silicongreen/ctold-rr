@@ -82,7 +82,7 @@
         <!--li><span onclick="window.location ='<?php echo base_url(); ?>?locale=about'">About us</span></li-->
         <li><span onclick="window.location = '<?php echo base_url(); ?>?locale=feature'">Features</span></li>
         <li><span onclick="window.location = '<?php echo base_url(); ?>?locale=contact'">Contact</span></li>
-        <li ><a style="color:#000;text-decoration:none;" href="<?php base_url() ?>/login"><span>Login</span></a></li>
+        <?php $this->load->view("layout/login"); ?>
     </ul>
     <div id="homelink">
         <a href="<?php echo base_url(); ?>" title="" >

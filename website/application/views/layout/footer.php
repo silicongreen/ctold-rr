@@ -92,7 +92,7 @@
         <!--li class="start act"><span>About us</span></li-->
         <li class="cron"><span>Features</span></li>
         <li class="images"><span>Contact</span></li>
-        <li ><a style="color:#000;text-decoration:none;" href="<?php base_url() ?>/login"><span>Login</span></a></li>
+        <?php $this->load->view("layout/login"); ?>
     </ul>
     <div id="homelink">
         <a href="<?php echo base_url(); ?>" title="" >
@@ -127,3 +127,4 @@
 
 </body>
 </html>
+   

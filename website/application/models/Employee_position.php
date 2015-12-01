@@ -93,6 +93,8 @@ class Employee_position extends CI_Model {
     public function formatForDropdown($param) {
 
         $response = array();
+
+        $response[0] = 'Select';
         foreach ($param as $row) {
             $response[$row['id']] = $row['name'] . ' (' . $row['prefix'] . ')';
         }

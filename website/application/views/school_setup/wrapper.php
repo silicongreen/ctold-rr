@@ -93,6 +93,9 @@
 
 
 <style type="text/css">
+    #str_courses {
+        -webkit-appearance: menulist !important;
+    }
     .glyphicon {
         top: 0;
     }
@@ -108,7 +111,8 @@
         float: left !important;
         font-size: 12px !important;
         line-height: inherit !important;
-        padding: 0 15px 10px;
+        margin-right: 5px;
+        padding: 0;
         width: 100% !important;
     }
     #class_names_container .alert, .td_class_names_container .alert {
@@ -116,7 +120,7 @@
         border: 2px solid #ddd;
         color: #666;
         margin-right: 5px;
-        padding: 0;
+        padding: 11px;
     }
     #class_names_container .alert:last-child, .td_class_names_container .alert:last-child  {
         margin-right: 0;
@@ -125,7 +129,9 @@
         margin-bottom: 8px;
     }
     #class_names_container .alert .close, .td_class_names_container .alert .close {
-        right: 0;
+        position: absolute;
+        right: -3px;
+        top: 10px;
     }
     .assign_to_class {
         margin-left: 10px;
@@ -151,6 +157,8 @@
     }
     p, #content_section25 p {
         color: #bbbbbb;
+        margin: 0;
+        padding: 0;
     }
     .form-control[readonly] {
         color: #555555;
@@ -166,7 +174,7 @@
         line-height: 0.5;
     }
     .alert .close {
-        line-height: 40px;
+        line-height: initial;
     }
     #header20 {
         padding-bottom: 50px;
@@ -197,6 +205,7 @@
         border-right: none; 
     }
     i.fa-trash-o {
+        color: #ff0000;
         cursor: pointer;
     }
     .dots-loader {

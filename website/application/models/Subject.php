@@ -90,6 +90,8 @@ class Subject extends CI_Model {
     public function formatForDropdown($param) {
 
         $response = array();
+        
+        $response[0] = 'Select';
         foreach ($param as $row) {
             $response[$row['id']] = $row['course_name'];
         }

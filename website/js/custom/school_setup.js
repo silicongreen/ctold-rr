@@ -3,7 +3,7 @@ var form_name = '';
 var last_tab = false;
 
 $(document).ready(function () {
-    
+
     $(window).keydown(function (event) {
         if (event.keyCode == 13) {
             event.preventDefault();
@@ -65,12 +65,11 @@ $(document).ready(function () {
                 $('.dots-loader').css('display', 'none');
                 console.log(err);
             });
-
         },
-        onTabClick: function (tab, navigation, index) {
-            alert('Save or skip to go to next step.');
-            return false;
-        }
+//        onTabClick: function (tab, navigation, index) {
+//            alert('Save or skip to go to next step.');
+//            return false;
+//        }
     });
 
     $(document).off('click', '.add_txt_field').on('click', '.add_txt_field', function () {
@@ -81,15 +80,27 @@ $(document).ready(function () {
         if (active_form == 'shift' || active_form == 'course') {
             $('#class_name_txt_box').val('');
             $('#section_name_txt_box').val('');
-            $('#classModal').modal('show');
+            $('#classModal').modal({
+                show: true,
+                keyboard: false,
+                backdrop: 'static'
+            });
         } else {
+
+            if (active_form == 'employee_category') {
+                $("#uLogin").parent('div').parent('div.form-group').append('<p>eg: Teacher (TE)</p>');
+            }
 
             if ($('.emp_category_wrapper').html() != '') {
                 $('.emp_category_wrapper').show();
             }
 
             $("#uLogin").val('');
-            $('#myModal').modal('show');
+            $('#myModal').modal({
+                show: true,
+                keyboard: false,
+                backdrop: 'static'
+            });
         }
 
     });
@@ -97,9 +108,16 @@ $(document).ready(function () {
     $(document).off('click', 'i.fa-trash-o').on('click', 'i.fa-trash-o', function () {
 
         var cur_row_text = $(this).parent('td').siblings('td:eq(0)').text().trim();
+        var active_form = $('.tab-content .active form').attr('id');
 
-        if (cur_row_text.indexOf('(') > -1) {
-            cur_row_text = cur_row_text.replace(/ *\([^)]*\) */g, "");
+        if (active_form != 'employee_category') {
+            if (cur_row_text.indexOf('(') > -1) {
+                cur_row_text = cur_row_text.replace(/ *\([^)]*\) */g, "");
+            }
+        }
+
+        if (cur_row_text.indexOf('Assign to class') > -1) {
+            cur_row_text = cur_row_text.replace('Assign to class', '');
         }
 
         $(this).parent('td').parent('tr').remove();
@@ -110,6 +128,15 @@ $(document).ready(function () {
                 checkbox_of_cur_text.prop('checked', false);
             }
         });
+        
+        if($('.tab-content .active form div#extra_vaules_classes table tbody tr').length < 1) {
+            $('.tab-content .active form div#extra_vaules_classes').hide('slow');
+        }
+        
+        if($('.tab-content .active form div#extra_vaules table tbody tr').length < 1) {
+            $('.tab-content .active form div#extra_vaules').hide('slow');
+        }
+        
     });
 
     $(document).off('click', '.button-save').on('click', '.button-save', function () {
@@ -147,11 +174,18 @@ $(document).ready(function () {
             if ($('.emp_category_wrapper').html() != '') {
                 $('.emp_category_wrapper').show();
             }
-            $('#myModal').modal();
+            $('#myModal').modal({
+                show: true,
+                keyboard: false,
+                backdrop: 'static'
+            });
         } else {
             var tbody = $('.tab-content .active form #extra_vaules table tbody');
             var tr = '<tr><td>';
             var item_name_td_html = '';
+            
+            
+            
             if (form_name == 'subject') {
                 item_name_td_html += '<input type="hidden" value="' + item_name_val + '" />' + item_name;
                 item_name_td_html += '<a href="javascript:void(0);" class="assign_to_class btn">Assign to class</a>';
@@ -176,8 +210,11 @@ $(document).ready(function () {
                 alert('This name is already added. Try another name.');
             } else {
                 tbody.append(tr);
-                $('.tab-content #extra_vaules').hide();
-                $('.tab-content .active #extra_vaules').show();
+                $('.tab-content .tab-pane:not(.active) #extra_vaules').hide();
+                
+                if(!$('.tab-content .active #extra_vaules').is(':visible')) {
+                    $('.tab-content .active #extra_vaules').show('slow');
+                }
             }
         }
 
@@ -238,13 +275,21 @@ $(document).ready(function () {
         $('.check_box_id').attr('id', '');
 
         if ($('#myModal .modal-body #str_categories').length > 0) {
-            cate_id = $('#myModal .modal-body #str_categories option:selected').val();
+            
+            cate_id = parseInt($('#myModal .modal-body #str_categories option:selected').val());
+            
+            if(cate_id <= 0) {
+                alert('Please a category.');
+                return false;
+            }
+            
             item_name_val = item_name_val + '==' + cate_id;
         }
 
         var tbody = $('.tab-content .active #extra_vaules table tbody');
         var tr = '<tr><td>';
         var item_name_td_html = '<input type="hidden" name="' + form_name + '[]" value="' + item_name_val.trim() + '" />' + item_name.trim();
+        
         if (form_name == 'subject') {
             item_name_td_html += '<a href="javascript:void(0);" class="assign_to_class btn">Assign to class</a>';
         }
@@ -271,9 +316,12 @@ $(document).ready(function () {
             alert('This name is already added. Try another name.');
         } else {
             tbody.append(tr);
-            $('.tab-content #extra_vaules').hide();
-            $('.tab-content .active #extra_vaules').show();
-            $('#myModal .modal-header .close').trigger('click');
+            $('.tab-content .tab-pane:not(.active) #extra_vaules').hide();
+            
+            if(!$('.tab-content .active #extra_vaules').is(':visible')) {
+                $('.tab-content .active #extra_vaules').show('slow');
+            }
+            $('#myModal').modal('hide');
         }
     });
 
@@ -289,6 +337,21 @@ $(document).ready(function () {
         }
 
         $("#uLogin").focus();
+    });
+
+    $("#classModal").on('hide.bs.modal', function () {
+        var check_box_id = $('#classModal .class_name_check_box_id').attr('id');
+        var section_names = $('#classModal #section_name_txt_box').val();
+
+        if (section_names == '') {
+            $('.tab-content .active form').find('input[type=checkbox]:checked').each(function (e) {
+                var checkbox_of_cur_text = $(this);
+                if (check_box_id == checkbox_of_cur_text.val().trim()) {
+                    checkbox_of_cur_text.prop('checked', false);
+                }
+            });
+        }
+
     });
 
 
@@ -343,6 +406,9 @@ $(document).ready(function () {
 
         if (section_names != '') {
             item_name_val += ' (' + section_names + ')';
+        } else {
+            alert('Provide at least 1 section name.');
+            return false;
         }
 
         $('#classModal .class_name_check_box_id').attr('id', '');
@@ -372,9 +438,14 @@ $(document).ready(function () {
             alert('This name is already added. Try another name.');
         } else {
             tbody.append(tr);
-            $('.tab-content #extra_vaules_classes').hide();
-            $('.tab-content .active #extra_vaules_classes').show();
-            $('#classModal .modal-header .close').trigger('click');
+            
+            $('.tab-content .tab-pane:not(.active) #extra_vaules_classes').hide();
+            
+            if(!$('.tab-content .active #extra_vaules_classes').is(':visible')) {
+                $('.tab-content .active #extra_vaules_classes').show('slow');
+            }
+            
+            $('#classModal').modal('hide');
         }
     });
 
@@ -388,9 +459,14 @@ $(document).ready(function () {
         var item_name_val = item_name;
         var check_box_id = $(this).val();
 
-        $('.class_name_check_box_id').attr('id', check_box_id);
-        $('#class_name_txt_box').val(item_name_val);
-        $('#classModal').modal('show');
+        $('#classModal .class_name_check_box_id').attr('id', check_box_id);
+        $('#classModal #class_name_txt_box').val(item_name_val);
+        $('#classModal #section_name_txt_box').val('');
+        $('#classModal').modal({
+            show: true,
+            keyboard: false,
+            backdrop: 'static'
+        });
     });
     /** Classes **/
 
@@ -416,7 +492,11 @@ $(document).ready(function () {
         $('#subjectModal .row_index').attr('id', row_index);
         $('#subjectModal .cel_index').attr('id', cel_index);
 
-        $('#subjectModal').modal('show');
+        $('#subjectModal').modal({
+            show: true,
+            keyboard: false,
+            backdrop: 'static'
+        });
     });
 
     $(document).off('change', '#str_courses').on('change', '#str_courses', function () {
@@ -424,7 +504,11 @@ $(document).ready(function () {
         var course_txt = $(this).children('option:selected').text();
         var subject_name = $('#subjectModal .class_name_subject_id').attr('id');
 
-        var courses_html = '<div class="alert alert-default panel panel-default pull-left">' +
+        if (course_txt.trim() == 'Select') {
+            return false;
+        }
+
+        var courses_html = '<div class="alert alert-default panel panel-default pull-left" style="position: relative;">' +
                 '<input type="hidden" name="subject[]" value="' + subject_name + '==' + course_txt.trim() + '" />' +
                 '<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><p>' +
                 course_txt

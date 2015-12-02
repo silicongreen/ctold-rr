@@ -13,7 +13,7 @@ $(document).on('click', '#contact_classtune input#sub', function (e) {
     e.preventDefault();
     if ($("#contact_classtune #name").val() == "")
     {
-        alert("here");
+
         $("#contact_classtune span.legend").html("<div class='alert alert-danger'><strong>Name</strong> can't be empty</div>");
         $("#contact_classtune span.legend .error").show("slow");
     }

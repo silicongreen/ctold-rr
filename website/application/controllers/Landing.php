@@ -26,49 +26,52 @@ class Landing extends CI_Controller {
     //ajax function
     public function send_mail() {
         if (isset($_SERVER['HTTP_X_REQUESTED_WITH'])) {
-            if (isset($_POST['name']) AND isset($_POST['email']) AND isset($_POST['phone']) AND isset($_POST['comment'])) {
+            if (isset($_POST['name']) AND isset($_POST['email']) AND isset($_POST['subject']) AND isset($_POST['massage'])) {
                 $to = 'info@champs21.com';
-                //$to = 'rlikhon@gmail.com';
-
                 $name = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
                 $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
-                $phone = filter_var($_POST['phone'], FILTER_SANITIZE_STRING);
-                $message_content = filter_var($_POST['comment'], FILTER_SANITIZE_STRING);
+                $subject = filter_var($_POST['subject'], FILTER_SANITIZE_STRING);
+                $message_content = filter_var($_POST['massage'], FILTER_SANITIZE_STRING);
 
-                $subject = "From Diary21 site Client Commnet";
+                $subject = $subject. "(Classtune contact)";
 
                 $message = "Name: " . $name . "<br/>";
                 $message .= "E-mail: " . $email . "<br/>";
-                $message .= "Phone Number: " . $phone . "<br/><br/>";
                 $message .= "Comment: " . $message_content . "<br/><br /><br />";
 
                 $sent = $this->email($to, $email, $name, $subject, $message);
                 if ($sent) {
 
-                    $auto_name = "Diary21.com";
-                    $auto_subject = "Greetings from Champs21 team";
+                    $auto_name = "classtune.com";
+                    $auto_subject = "Greetings from Classtune team";
                     $auto_message = "Dear " . $name . ",<br /><br />";
-                    $auto_message .= "Greetings from Champs21 team." . "<br /><br />";
+                    $auto_message .= "Greetings from Classtune team." . "<br /><br />";
                     $auto_message .= "Thank you very much for contacting with us. Our team will communicate with you within 48 hrs.  <br/><br />";
                     $auto_message .= "Your Contact Details: <br/><br />";
                     $auto_message .= "Name: " . $name . "<br/>";
                     $auto_message .= "E-mail: " . $email . "<br/>";
-                    $auto_message .= "Phone Number: " . $phone . "<br/><br/>";
                     $auto_message .= "Comment: " . $message_content . "<br/><br /><br />";
 
 
                     $auto_message .= "Regards,<br/>";
                     $auto_message .= "Customer Service Team<br/>";
-                    $auto_message .= "<img src='http://diary21.champs21.com/images/d21_logo.png' width='8%'>";
+                    $auto_message .= "<img src='http://www.classtune.dev/images/logo/classtune.png'>";
 
                     $sent2 = $this->autoreply_email($email, $to, $auto_name, $auto_subject, $auto_message);
                     if ($sent2)
+                    {
                         echo 'Message sent!Recently you will receive an email.';
+                    }
+                    else
+                    {
+                        echo 'Message sent!';
+                    }    
+                    
                 } else {
-                    echo 'Message couldn\'t sent!';
+                    echo "0";
                 }
             } else {
-                echo 'All Fields are required';
+                echo "1";
             }
             return;
         }

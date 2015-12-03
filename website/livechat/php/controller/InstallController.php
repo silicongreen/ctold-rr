@@ -251,8 +251,10 @@ CREATE TABLE IF NOT EXISTS %db_name%.mirrormx_customer_chat_data (
             }
             catch(Exception $e)
             {
+                print_r($e);
                 $data['success']  = false;
                 $data['message'] = $e->getMessage();
+                exit;
             }
             
             if($data['success'])

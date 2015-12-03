@@ -16,14 +16,15 @@
 		</div>
 
 		<div id="cronWrap" style="background-color:#F4FAFA;background-image:none;top:500px;height:800px;">
-			<div style="border: 0 solid #ccc;left: 50%;margin: 0 0 0 -499px;position: absolute;width: 1000px;padding:81px 10px 0;">
-				<h2 class="f2" style="text-align:center;"><i>Manage your school with our features</i></h2><br>
+			<div style="border: 0 solid #ccc;left: 50%;margin: 0 0 0 -499px;position: absolute;width: 1000px;padding:55px 10px 0;">
+				<h2 class="f2" style="text-align:center;"><i>Teachers, now you can focus more on your academic plans!</i></h2><br>
 				<p style="font-size:16px;"><b>classtune</b> empowers you to build relationships with your students in an environment they know and love. classtune  is free for teachers and always will be. With everything on one platform, classtune reinforces and enhances what you're already doing in the classroom. </p><br>
 				<div id="slider"  class="flexslider" style="margin-top:30px;width:1000px;">
 					<ul class="slides">
 						<li>
 							<div class="col-sm-12" style="height:300px;width:1000px;">								
-								<div class="col-sm-3" style="text-align:-moz-center;">
+								<div class="col-sm-1" style="text-align:-moz-center;"></div>
+                                                                <div class="col-sm-3" style="text-align:-moz-center;">
 									<img src="<?php echo base_url(); ?>images/dashpallete/view/attendance.png" style="width:170px;" />
 								</div>
 								<div class="col-sm-1" style="text-align:-moz-center;"></div>

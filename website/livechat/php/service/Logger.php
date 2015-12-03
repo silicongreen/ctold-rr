@@ -92,7 +92,8 @@ class Logger extends Service
     {
         if(file_exists($this->logFilePath))
         {
-            return file_get_contents($this->logFilePath);
+            $handle = fopen("$this->logFilePath",'r'); 
+            return fgets($handle);
         }
 
         return '';

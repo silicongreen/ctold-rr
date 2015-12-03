@@ -7,16 +7,16 @@ return array(
     
     // Database settings
     
-    'dbHost'     => '127.0.0.1',
+    'dbHost'     => 'localhost',
     'dbPort'     => 3306,
-    'dbUser'     => 'root',
-    'dbPassword' => '',
-    'dbName'     => 'mirrormx_customer_chat',
+    'dbUser'     => 'champs21_champ',
+    'dbPassword' => '1_84T~vADp2$',
+    'dbName'     => 'champs21_school',
     
     // Chat application admin user
     
     'superUser' => 'admin',
-    'superPass' => ''
+    'superPass' => '15975321'
 );
 
 ?>

@@ -1,6 +1,9 @@
 <div id="imagesWrap">
     <div id="images">
         <div id="worldmap">
+            <h2 class="f2" style="left: 35%;position: absolute;text-align: center;top: 40px;">
+                <i>Accessible from anywhere...</i>
+            </h2>
             <img src="<?php echo base_url(); ?>images/cover/web-device.png" alt="" title="" width="100%" />
         </div>
 
@@ -69,7 +72,7 @@
     </ul>
     <div id="homelink">
         <a href="<?php echo base_url(); ?>" title="" >
-            <img src="<?php echo base_url(); ?>images/logo/classtune.png" alt="" title="" width="200" height="" />
+            <img src="<?php echo base_url(); ?>images/logo/classtune.png" alt="" title="" width="215" height="" />
         </a>
     </div>
 </div>

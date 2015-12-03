@@ -30,7 +30,10 @@ table caption { margin:0; padding:0 0 10px 0; text-align:left; }
 table tr th { padding:0; margin:0; border:0; }
 table tr td { padding:0; margin:0; border:0; }
 img { border:0; }
-a { color:#004386; text-decoration:none; }
+a { color:#004386; text-decoration:none;outline: 0; }
+a:focus {
+  text-decoration:none;outline: 0;
+}
 a:hover { color:#004386; text-decoration:underline; }
 p { margin:0; padding:0 0 10px 0; }
 h1 { margin:0; padding: 0px; font-size: 49px; color: #333333; line-height: 49px; }
@@ -86,11 +89,11 @@ input.radio { margin:0; }
 /**
  * Navigation
  **/
-#mainnav { position: fixed; z-index: 999998; bottom: 0; font-family: Myriad Pro, Arial, sans-serif; font-weight: normal; font-size: 20px; }
-#mainnav { left: 0%; top: 0px; padding: 0px; margin: 0px; background: transparent url(../images/test/CLASSTUNE-MENU-BG.png) repeat-x bottom left; width: 100%; height: 80px; }
-#mainnav ul { margin: 28px 0px 0px 700px; }
-#mainnav li { float: left; height: 25px; color: #000; font-size: 14px; text-align: center; cursor: pointer; padding: 0px 10px; }
-#mainnav li.act { background: #64B846; color: #fff; cursor: default;border-radius:3px;	-moz-border-radius:3px;	-webkit-border-radius:3px; }
+#mainnav { position: fixed; z-index: 999998; bottom: 0; font-family: Arial, sans-serif; font-weight: normal; font-size: 20px; }
+#mainnav { left: 0%; top: 0px; padding: 0px; margin: 0px; background: #fff;/*transparent url(../images/test/CLASSTUNE-MENU-BG.png) repeat-x bottom left*/; width: 100%; height: 80px; }
+#mainnav ul { margin: 28px 0px 0px 55%; }
+#mainnav li { float: left; height: 30px; color: #000; font-size: 14px; text-align: center; cursor: pointer; padding: 0px 1px; }
+#mainnav li.act { /*background: #64B846; color: #fff;border-radius:3px;	-moz-border-radius:3px;	-webkit-border-radius:3px;*/border-bottom:3px solid #64B846; cursor: default;}
 #mainnav li:HOVER { background: white; color: #444444; }
 #mainnav SPAN { display: block; padding: 4px 12px 0px 12px; letter-spacing: 2px; }
 #mainnav li:HOVER a { color: #444444; }
@@ -103,7 +106,7 @@ input.radio { margin:0; }
 
 #beforeWrap { position: absolute; top: 0px; left: 0px; width: 100%; height: 500px; text-align: center; background: transparent url(../images/cover/cover-1.png) no-repeat top left;background-size:cover;}
 #before { color: black; /*width: 1200px;*/ height: 900px; text-align: left; margin: 0px auto; padding: 0px; position: relative; }
-#startWrap { position: absolute; /*top: 0px;*/ top: 500px; left: 0px; width: 100%; height: 570px; color: black; text-align: center; overflow: hidden; }
+#startWrap { position: absolute; /*top: 0px;*/ top: 500px; left: 0px; width: 100%; height: 570px; color: black; text-align: center; overflow: hidden;background-color: #fff; }
 #start { width: 1200px; height: 900px; position: relative; margin: 0px auto; text-align: left; }
 #start_bg { position: absolute; top: 0px; left: 0px; width: 100%; height: 900px; color: black; background: #f1f1f1 url(../images/bg_horizon.png) repeat-x top left; }
 #cronWrap { width: 100%; height: 900px; position: absolute; top: 1050px; left: 0px; overflow: hidden;  background: #f1f1f1 url(../images/bg_cron.png) repeat-x top left; }
@@ -121,7 +124,7 @@ input.radio { margin:0; }
 #cursor { position: fixed; z-index: 9999999; bottom: 125px; left: 50%; padding: 0px; margin: 0px 0px 0px -85px; width: 170px; height: 97px; background: transparent url(../images/cursor.png) no-repeat top left; display: none; }
 
 /** START **/
-#homelink { position: absolute; top: 15px; left: 200px; margin: 0px; padding: 0px; }
+#homelink { position: absolute; top: 10px; left: 200px; margin: 0px; padding: 0px; }
 #homelink A { float: left; margin: 0px; padding: 0px; height: 34px; }
 #homelink IMG { margin: 0px; padding: 0px; border: 0px; }
 #g150 { position: absolute; top: 260px; left: 370px; width: 697px; height: 353px; background-attachment: fixed; }
@@ -152,10 +155,10 @@ input.radio { margin:0; }
 
 /** ERLEBEN **/
 #before #beforeheader { position: absolute; top: 152px; left: 50%; margin: 0px 0px 0px -475px; }
-#boxesBG { background: transparent repeat top left; width: 1000px; height: 492px; position: absolute; top: 115px; left: 50%; margin: 0px 0px 0px -500px; }
+#boxesBG { background: transparent repeat top left; width: 1000px; height: 492px; position: absolute; top: 95px; left: 47%; margin: 0px 0px 0px -500px; }
 #boxesBG .row1 { position: absolute; top: 25px; left: 138px; }
 #boxesBG .row2 { position: absolute; bottom: 25px; left: 25px; }
-#boxesBG .box { background:#DFE4E7;float: left; margin: 0px 16px 0px 0px; cursor: pointer; position: relative; width: 231px; height: 380px; overflow: hidden; }
+#boxesBG .box { background:#DFE4E7;float: left; margin: 0px 16px 0px 0px; cursor: pointer; position: relative; width: 260px; height: 380px; overflow: hidden; }
 #boxesBG .lastinrow { margin-right: 0px; }
 #boxesBG .hover { display: block; position: absolute; top: 0px; left: -10000px; width: 236px; height: 220px; background: transparent url(../images/hover_blue.png) repeat top left; color: white; text-align: center; }
 #boxesBG .hover P, #boxesBG .hover TD { color: white; padding: 0px; margin: 0px; font-size: 14px; }
@@ -379,29 +382,43 @@ input.radio { margin:0; }
     padding: 10px 5px;
     margin-bottom: 10px;
 }
-.postlist-tab{  
-    border: 0px solid #ccc;
-    height: 60px;
-    left: 60%;
-    margin: 0 0 0 -496px;
-    position: absolute;
-    top: 441px;
-    width: 730px;
-
+.postlist-tab2 {
+  
+  border: 0 solid #ccc;
+  height: 115px;
+  left: 63.5%;
+  margin: 0 0 0 -496px;
+  padding-top: 40px;
+  position: absolute;
+  top: 386px;
+  width: 650px;
+  z-index: 10;
+}
+.postlist-tab {
+  background: transparent url("../images/new-1_03.png") no-repeat scroll top left / 100% auto;
+  border: 0 solid #ccc;
+  height: 115px;
+  left: 63.5%;
+  margin: 0 0 0 -496px;
+  padding-top: 40px;
+  position: absolute;
+  top: 386px;
+  width: 650px;
+  z-index: 10;
+  box-shadow: 0 4px 2px -2px gray;
 }
 .postlist-tab ul { list-style-type: none;  border: 0px solid black; margin: 0; padding: 0px; font-size: 0; }
 .postlist-tab ul li { display: inline; *display: inline; zoom: 1; }
 .postlist-tab ul li a {
-    background: #fff none repeat scroll 0 0;
-    border-right: 1px solid #ccc;
-    display: inline-block;
-    font-size: 13px;
-    float:left;
-    padding: 3.02% 3.6%;
-    text-decoration: none;
-    color:#AFAFAF;
-    font-weight:500;
-    box-shadow: 0 4px 2px -2px gray;
+  background: #fff none repeat scroll 0 0;
+  border-right: 1px solid #ccc;
+  color: #afafaf;
+  display: inline-block;
+  float: left;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 1.75em 2.25em;
+  text-decoration: none;
 }
 .postlist-tab ul li a:hover { background: #64B846;color:#fff; }
 .poweredby {
@@ -695,20 +712,21 @@ i.faq:hover
     height: 0;
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
-    border-top: 10px solid #449D44;
+    border-top: 10px solid #64B846;
     clear: both;
+    margin-top:6px;
 }
 #mainnav li.act_login a
 {
     /*                color: #fff !important;*/
     font-weight: bold;
-    color:#449D44 !important;
+    color:#fff !important;
 }
 #login_form_classune
 {
     display:none;
     position:absolute;
-    margin:10px 0px 0px 0px;
+    top:59px;
     background:#ffffff;
     -webkit-box-shadow: 2px 2px 5px 0px rgba(170,170,171,1);
     -moz-box-shadow: 2px 2px 5px 0px rgba(170,170,171,1);
@@ -717,6 +735,12 @@ i.faq:hover
 #login_button_classune
 {
     cursor: pointer;
+    margin-left:5px;
+    background: #64B846; color: #fff;border-radius:3px;	-moz-border-radius:3px;	-webkit-border-radius:3px;
+}
+#login_button_classune:hover
+{
+    background: #64B846!important;
 }
 .alert {
     padding: 6px;
@@ -737,3 +761,39 @@ i.faq:hover
 {
     text-decoration: underline;
 }
+//****flex slider tooltip***//
+.thumbnail-item {
+ /* position relative so that we can use position absolute for the tooltip */
+ position: relative;
+ float: left; 
+ margin: 0px 5px;
+}
+ 
+.thumbnail-item a {
+ display: block;
+}
+ 
+.thumbnail-item img.thumbnail {
+ border:3px solid #ccc;
+}
+   
+.tooltip {
+ /* by default, hide it */
+ display: none;
+ /* allow us to move the tooltip */
+ position: absolute;
+ /* align the image properly */
+ padding: 8px 0 0 8px;
+}
+ 
+ .tooltip span.overlay {
+  /* the png image, need ie6 hack though */
+  background: url(../images/overlay.png) no-repeat;
+  /* put this overlay on the top of the tooltip image */
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  display: block;
+  width: 350px;
+  height: 500px;
+ }

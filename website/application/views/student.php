@@ -16,15 +16,16 @@
 		</div>
 
 		<div id="cronWrap" style="background-color:#F4FAFA;background-image:none;top:500px;height:800px;">
-			<div style="border: 0 solid #ccc;left: 50%;margin: 0 0 0 -499px;position: absolute;width: 1000px;padding:81px 10px 0;">
-				<h2 class="f2" style="text-align:center;"><i>Manage your school with our features</i></h2><br>
+			<div style="border: 0 solid #ccc;left: 50%;margin: 0 0 0 -499px;position: absolute;width: 1000px;padding:55px 10px 0;">
+				<h2 class="f2" style="text-align:center;"><i>Students, maintaining your academic concerns are so easy now!</i></h2><br>
 				<p style="font-size:16px;"><b>classtune</b> is giving you everything that you need to maintain your good result, also enjoy all the school activities.</p>
 				<p style="font-size:16px;"><b>classtune</b> is designed in such a way that you get to connect, interact with your Teachers even when you are out of school and make your performance visible for your parents. Managing education and extracurricular activities is much simpler and presented in a way that you like. </p><br>
 				<div id="slider"  class="flexslider" style="margin-top:30px;width:1000px;">
 					<ul class="slides">
 						<li>
 							<div class="col-sm-12" style="height:300px;width:1000px;">								
-								<div class="col-sm-3" style="text-align:-moz-center;">
+								<div class="col-sm-1" style="text-align:-moz-center;"></div>
+                                                                <div class="col-sm-3" style="text-align:-moz-center;">
 									<img src="<?php echo base_url(); ?>images/dashpallete/view/attendance.png" style="width:170px;" />
 								</div>
 								<div class="col-sm-1" style="text-align:-moz-center;"></div>

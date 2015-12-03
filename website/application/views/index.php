@@ -14,10 +14,10 @@
                                 <a href="<?php echo base_url(); ?>signup/admin" style="color:gray;text-decoration:none;"><h3>For Admin</h3></a>
 
                                 <p style="color: gray;font-size: 14px;padding: 20px; text-align: left;">
-                                    All the collaboration tools you need to improve learning outcomes, productivity, and building teacher’s capacity.<br><br>
+                                    All the collaboration tools you need to improve learning outcomes, productivity, and building teacher’s capacity.<br>
                                 </p>
-                                <p style="background: #fff none repeat scroll 0 0;border-radius: 3px;bottom: 0px;margin: 0 auto;padding: 8px 0;position: relative;width: 80px;">
-                                    <a href="<?php echo base_url(); ?>signup/admin" style="color:gray;text-decoration:none;">Learn More</a>
+                                <p style="background: #DFE4E7 none repeat scroll 0 0;border-radius: 0px;bottom: 10px;padding: 8px 0;position: relative;width: 80px;left:10px;font-weight: bold;">
+                                    <a href="<?php echo base_url(); ?>signup/admin" style="color:#000;text-decoration:none;">Learn More</a>
                                 </p>
 
                             </div>
@@ -32,8 +32,8 @@
                                 <p style="color: gray;font-size: 14px;padding: 20px; text-align: left;">
                                     <b>classtune</b> is designed in such a way, that you get a simple and intuitive way to stay in your child’s learning activities.<br>
                                 </p>
-                                <p style="background: #fff none repeat scroll 0 0;border-radius: 3px;bottom: 0px;margin: 0 auto;padding: 8px 0;position: relative;width: 80px;">
-                                    <a href="<?php echo base_url(); ?>signup/guardian" style="color:gray;text-decoration:none;">Learn More</a>
+                                <p style="background: #DFE4E7 none repeat scroll 0 0;border-radius: 0px;bottom: 10px;padding: 8px 0;position: relative;width: 80px;left:10px;font-weight: bold;">
+                                    <a href="<?php echo base_url(); ?>signup/guardian" style="color:#000;text-decoration:none;">Learn More</a>
                                 </p>
 
                             </div>
@@ -49,8 +49,8 @@
                                 <p style="color: gray;font-size: 14px;padding: 20px; text-align: left;">
                                     <b>classtune</b> is designed in such a way, that you get a simple and intuitive way to stay in your child’s learning activities.
                                 </p>
-                                <p style="background: #fff none repeat scroll 0 0;border-radius: 3px;bottom: 0px;margin: 0 auto;padding: 8px 0;position: relative;width: 80px;">
-                                    <a href="<?php echo base_url(); ?>signup/teacher" style="color:gray;text-decoration:none;">Learn More</a>
+                                <p style="background: #DFE4E7 none repeat scroll 0 0;border-radius: 0px;bottom: 10px;padding: 8px 0;position: relative;width: 80px;left:10px;font-weight: bold;">
+                                    <a href="<?php echo base_url(); ?>signup/teacher" style="color:#000;text-decoration:none;">Learn More</a>
                                 </p>
 
                             </div>
@@ -67,13 +67,15 @@
 				<div class="col-md-5" style="text-align: left;"></div>
 				<div class="col-md-4" style="text-align: left;">				
 					<h2 class="f2" style="margin-top:130px;"><i>Managing School was never so easy...</i></h2>
-					<p style="margin-top:30px;font-size:16px;">The easiest and quickest way for Students-Parents-Teachers to connect with each other.School Administrators can connect each individual under one single platform.</p>
+					<p style="margin-top:30px;font-size:16px;">ClassTune is the bridge among Students, Parents and Teachers. It is the easiest and quickest way for 
+
+School Administrator to connect anyone related to School in a single platform.</p>
 				</div>
 			</div>
             <div class="postlist-tab">
                 <ul>
                     <li>
-                        <a href="javascript:void(0);" style="cursor: default;background: #E5ECF2 none repeat scroll 0 0;color:#999!important;">Registration Free! <i class="fa fa-long-arrow-right"></i></a>
+                        <!--a href="javascript:void(0);" style="cursor: default;background: #E5ECF2 none repeat scroll 0 0;color:#999!important;">Registration Free! <i class="fa fa-long-arrow-right"></i></a-->
                         <a href="<?php echo base_url(); ?>signup/admin" >I'm a School Admin</a>
                         <a href="<?php echo base_url(); ?>signup/student" >I'm a Student</a>
                         <a href="<?php echo base_url(); ?>signup/guardian" >I'm a Parent</a>

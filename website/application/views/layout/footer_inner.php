@@ -1,6 +1,9 @@
 <div id="imagesWrap" style="top:1300px;">
     <div id="images">
-        <div id="worldmap">
+        <div id="worldmap">            
+            <h2 class="f2" style="left: 35%;position: absolute;text-align: center;top: 40px;">
+                <i>Accessible from anywhere...</i>
+            </h2>
             <img src="<?php echo base_url(); ?>images/cover/web-device.png" alt="" title="" width="100%" />
         </div>
 
@@ -57,7 +60,7 @@
     </ul>
     <div id="homelink">
         <a href="<?php echo base_url(); ?>" title="" >
-            <img src="<?php echo base_url(); ?>images/logo/classtune.png" alt="" title="" width="200" height="" />
+            <img src="<?php echo base_url(); ?>images/logo/classtune.png" alt="" title="" width="215" height="" />
         </a>
     </div>
 </div>
@@ -102,6 +105,42 @@
                     }
                 });
             });
+// Load this script once the document is ready
+$(document).ready(function () {
+   
+ // Get all the thumbnail
+ $('div.thumbnail-item').mouseenter(function(e) {
+ 
+  // Calculate the position of the image tooltip
+  x = e.pageX - $(this).offset().left;
+  y = e.pageY - $(this).offset().top;
+ 
+  // Set the z-index of the current item,
+  // make sure it's greater than the rest of thumbnail items
+  // Set the position and display the image tooltip
+  $(this).css('z-index','1500')
+  .children("div.tooltip")
+  .css({'top': y + 10,'left': x + 20,'display':'block'});
+    
+ }).mousemove(function(e) {
+    
+  // Calculate the position of the image tooltip  
+  x = e.pageX - $(this).offset().left;
+  y = e.pageY - $(this).offset().top;
+    
+  // This line causes the tooltip will follow the mouse pointer
+  $(this).children("div.tooltip").css({'top': y + 10,'left': x + 20});
+    
+ }).mouseleave(function() {
+    
+  // Reset the z-index and hide the image tooltip
+  $(this).css('z-index','10000')
+  .children("div.tooltip")
+  .animate({"opacity": "hide"}, "fast");
+ });
+ 
+});
+
 </script>
 
 

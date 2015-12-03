@@ -45,7 +45,7 @@
 
 
                             <button name="student" onclick="location.href='<?php echo base_url();?>signup/teacher'" type="button" id="student_register" class="btn-danger btn-xs btn btn-default">
-                                <i class="fa"></i> Student
+                                <i class="fa"></i> Teacher
                             </button>
                            
                         </div>    

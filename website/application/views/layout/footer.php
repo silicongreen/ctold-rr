@@ -18,7 +18,7 @@
                     <div style=" position: relative;top: -15px;z-index: 1;">
                         <!--a href="" style="background-color: #fff;color: #64B846;font-size: 20px;padding: 20px 40px;text-decoration: none;border-radius:5px;	-moz-border-radius:5px;	-webkit-border-radius:5px;border:1px solid #fff;box-shadow: 0 4px 2px -2px gray;">
                         Create Your FREE Account</a-->
-                        <div class="postlist-tab" style=" position: relative;top: -15px;z-index: 1;">
+                        <div class="postlist-tab" style=" width:856px;background: none; position: relative;top: -60px;z-index: 1;">
                             <ul>
                                 <li>
                                     <a href="javascript:void(0);" style="cursor: default;background: #E5ECF2 none repeat scroll 0 0;color:#999!important;">Registration Free! <i class="fa fa-long-arrow-right"></i></a>

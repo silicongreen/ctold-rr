@@ -398,12 +398,12 @@ input.radio { margin:0; }
   background: transparent url("../images/new-1_03.png") no-repeat scroll top left / 100% auto;
   border: 0 solid #ccc;
   height: 115px;
-  left: 63.5%;
+  left: 60%;
   margin: 0 0 0 -496px;
   padding-top: 40px;
   position: absolute;
   top: 386px;
-  width: 650px;
+  width: 651px;
   z-index: 10;
   box-shadow: 0 4px 2px -2px gray;
 }

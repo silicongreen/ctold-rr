@@ -17,6 +17,7 @@ class School {
     public function __construct() {
         $this->_ci = & get_instance();
         $this->_ci->load->database();
+        $this->_ci->load->model('error_logs');
     }
 
     public function init($i_tmp_school_creation_data_id, $ar_tmp_free_user_data) {
@@ -24,9 +25,9 @@ class School {
         $this->_ci->load->model('tmp');
         $this->_ar_data = $param = $this->_ci->tmp->getData($i_tmp_school_creation_data_id);
         $this->_ci->tmp->delete($i_tmp_school_creation_data_id);
-        
+
         $this->_ar_tmp_free_user_data = $ar_tmp_free_user_data;
-        
+
         $ar_menu_data = $this->getMenuDataByPackageId($param['package'][0], 'menu_id');
         $this->_ar_data['menu_data'] = $ar_menu_data;
         $this->_school_type = ($param['package'][0] == 2) ? 'free' : 'paid';
@@ -55,9 +56,9 @@ class School {
             if ($this->_returned_school_info !== FALSE) {
                 $paid_user_data = $this->createDiaryUserForSchool();
                 if (!empty($paid_user_data)) {
-                    
+
                     $this->mergePaidUserWithFreeUser($paid_user_data);
-                    
+
                     $data['school_type'] = $this->_school_type;
                     $data['returned_school_info'] = $this->_returned_school_info;
                     $data['paid_user_data'] = $paid_user_data;
@@ -165,9 +166,9 @@ class School {
 
     private function createDiaryUserForSchool() {
         $now = date('Y-m-d H:i:s');
-        $ar_free_user = $this->getFreeUserDataById($this->_ar_tmp_free_user_data['free_user_id']);        
+        $ar_free_user = $this->getFreeUserDataById($this->_ar_tmp_free_user_data['free_user_id']);
         $ar_free_user['rp'] = (!isset($this->_ar_tmp_free_user_data['rp'])) ? '123456' : $this->_ar_tmp_free_user_data['rp'];
-        
+
         $paid_salt = $this->getToken(8);
 
         $data = array(
@@ -212,6 +213,12 @@ class School {
 
             $emp_palettes = $this->createPalettes($ar_res_data);
             $emp_palettes = $this->createMenuLinks($ar_res_data);
+        } else {
+            $_ar_errors['message'] = $this->_ci->db->_error_message();
+            $_ar_errors['code'] = $this->_ci->db->_error_number();
+            $_ar_errors['type'] = 'createDiaryUserForSchool';
+
+            $this->_ci->error_logs->record($_ar_errors);
         }
         return $ar_res_data;
     }
@@ -235,7 +242,13 @@ class School {
                 $menu_data = array_merge($menu_data, $this->before_insert());
                 unset($menu_data['status']);
 
-                $this->_ci->db->insert("user_menu_links", $menu_data);
+                if (!$this->_ci->db->insert("user_menu_links", $menu_data)) {
+                    $_ar_errors['message'] = $this->_ci->db->_error_message();
+                    $_ar_errors['code'] = $this->_ci->db->_error_number();
+                    $_ar_errors['type'] = 'createUserMenuLink';
+
+                    $this->_ci->error_logs->record($_ar_errors);
+                }
             }
             return TRUE;
         } else {
@@ -275,7 +288,13 @@ class School {
                 $palette_data = array_merge($palette_data, $this->before_insert());
                 unset($palette_data['status']);
 
-                $this->_ci->db->insert("user_palettes", $palette_data);
+                if (!$this->_ci->db->insert("user_palettes", $palette_data)) {
+                    $_ar_errors['message'] = $this->_ci->db->_error_message();
+                    $_ar_errors['code'] = $this->_ci->db->_error_number();
+                    $_ar_errors['type'] = 'createUserPalletes';
+
+                    $this->_ci->error_logs->record($_ar_errors);
+                }
             }
 //            echo '<pre>';
 //            var_dump($palette_data);
@@ -323,7 +342,17 @@ class School {
         $free_user_data = $this->getFreeUserDataById($this->_ar_tmp_free_user_data['free_user_id']);
         $this->_ci->db->set_dbprefix('tds_');
         $this->_ci->db->where('id', $free_user_data['id']);
-        return $this->_ci->db->update('free_users', $ar_paid_user_data);
+
+        if (!$this->_ci->db->update('free_users', $ar_paid_user_data)) {
+            $_ar_errors['message'] = $this->_ci->db->_error_message();
+            $_ar_errors['code'] = $this->_ci->db->_error_number();
+            $_ar_errors['type'] = 'updateFreeUser';
+
+            $this->_ci->error_logs->record($_ar_errors);
+            return FALSE;
+        } else {
+            return TRUE;
+        }
     }
 
     private function createEmployeeCategory() {
@@ -344,10 +373,17 @@ class School {
             $data['prefix'] = 'Admin';
             $data = array_merge($data, $this->before_insert());
 
-            $this->_ci->db->insert("employee_categories", $data);
-            $data['id'] = $this->_ci->db->insert_id();
+            if ($this->_ci->db->insert("employee_categories", $data)) {
+                $data['id'] = $this->_ci->db->insert_id();
+                return $data;
+            } else {
+                $_ar_errors['message'] = $this->_ci->db->_error_message();
+                $_ar_errors['code'] = $this->_ci->db->_error_number();
+                $_ar_errors['type'] = 'createEmployeeCategory';
 
-            return $data;
+                $this->_ci->error_logs->record($_ar_errors);
+                return FALSE;
+            }
         }
 
         return FALSE;
@@ -371,10 +407,17 @@ class School {
             $data['employee_category_id'] = $ar_category['id'];
             $data = array_merge($data, $this->before_insert());
 
-            $this->_ci->db->insert("employee_positions", $data);
-            $data['id'] = $this->_ci->db->insert_id();
+            if ($this->_ci->db->insert("employee_positions", $data)) {
+                $data['id'] = $this->_ci->db->insert_id();
+                return $data;
+            } else {
+                $_ar_errors['message'] = $this->_ci->db->_error_message();
+                $_ar_errors['code'] = $this->_ci->db->_error_number();
+                $_ar_errors['type'] = 'createEmployeePosition';
 
-            return $data;
+                $this->_ci->error_logs->record($_ar_errors);
+                return FALSE;
+            }
         }
         return FALSE;
     }
@@ -397,10 +440,17 @@ class School {
             $data['code'] = 'Admin';
             $data = array_merge($data, $this->before_insert());
 
-            $this->_ci->db->insert("employee_departments", $data);
-            $data['id'] = $this->_ci->db->insert_id();
+            if ($this->_ci->db->insert("employee_departments", $data)) {
+                $data['id'] = $this->_ci->db->insert_id();
+                return $data;
+            } else {
+                $_ar_errors['message'] = $this->_ci->db->_error_message();
+                $_ar_errors['code'] = $this->_ci->db->_error_number();
+                $_ar_errors['type'] = 'createEmployeeDepartment';
 
-            return $data;
+                $this->_ci->error_logs->record($_ar_errors);
+                return FALSE;
+            }
         }
         return FALSE;
     }
@@ -427,19 +477,26 @@ class School {
             $data['max_hours_week'] = NULL;
             $data = array_merge($data, $this->before_insert());
 
-            $this->_ci->db->insert("employee_grades", $data);
-            $data['id'] = $this->_ci->db->insert_id();
+            if ($this->_ci->db->insert("employee_grades", $data)) {
+                $data['id'] = $this->_ci->db->insert_id();
+                return $data;
+            } else {
+                $_ar_errors['message'] = $this->_ci->db->_error_message();
+                $_ar_errors['code'] = $this->_ci->db->_error_number();
+                $_ar_errors['type'] = 'createEmployeeGrade';
 
-            return $data;
+                $this->_ci->error_logs->record($_ar_errors);
+                return FALSE;
+            }
         }
         return FALSE;
     }
 
     private function createEmployee($paid_user_id, $ar_emp_category, $ar_emp_position, $ar_emp_department, $ar_emp_grade) {
         $now = date('Y-m-d H:i:s');
-        
+
         $ar_free_user = $this->getFreeUserDataById($this->_ar_tmp_free_user_data['free_user_id']);
-        
+
         $ar_emp_data['employee_number'] = $ar_free_user['email'];
         $ar_emp_data['joining_date'] = $now;
         $ar_emp_data['first_name'] = $ar_free_user['first_name'];
@@ -472,10 +529,17 @@ class School {
 
             unset($ar_emp_data['status']);
             $ar_emp_data = array_merge($ar_emp_data, $this->before_insert());
-            $this->_ci->db->insert("employees", $ar_emp_data);
-            $data['id'] = $this->_ci->db->insert_id();
+            if ($this->_ci->db->insert("employees", $ar_emp_data)) {
+                $data['id'] = $this->_ci->db->insert_id();
+                return $data;
+            } else {
+                $_ar_errors['message'] = $this->_ci->db->_error_message();
+                $_ar_errors['code'] = $this->_ci->db->_error_number();
+                $_ar_errors['type'] = 'createEmployee';
 
-            return $data;
+                $this->_ci->error_logs->record($_ar_errors);
+                return FALSE;
+            }
         }
         return FALSE;
     }

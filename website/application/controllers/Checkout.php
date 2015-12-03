@@ -9,6 +9,7 @@ class Checkout extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->model('tmp');
+        $this->load->model('error_logs');
     }
 
     public function index() {
@@ -72,10 +73,18 @@ class Checkout extends CI_Controller {
         $this->db->set_dbprefix('');
 
         $data = array_merge($data, $this->before_insert());
-        $this->db->insert("school_codes", $data);
+        if ($this->db->insert("school_codes", $data)) {
+            echo 'Last Generated Code is: ' . $data['code'];
+            exit;
+        } else {
+            $_ar_errors['message'] = $this->db->_error_message();
+            $_ar_errors['code'] = $this->db->_error_number();
+            $_ar_errors['type'] = 'createPurchaseCode';
 
-        echo 'Last Generated COde is: ' . $data['code'];
-        exit;
+            $this->error_logs->record($_ar_errors);
+            echo 'Purchase code not generated.';
+            exit;
+        }
     }
 
     public function payment($i_tmp_school_creation_data_id, $i_tmp_free_user_data_id) {
@@ -121,7 +130,7 @@ class Checkout extends CI_Controller {
             $customer = $this->check_customer(array('email' => $email));
             $b_new_customer = FALSE;
             $b_card_accepted = FALSE;
-            
+
             if (!$customer) {
 
                 try {
@@ -149,7 +158,7 @@ class Checkout extends CI_Controller {
                 if ($b_new_customer) {
                     $i_customer_id = $this->save_customer($customer);
                 }
-                
+
                 $ar_tmp_free_user_data = $this->tmp->getData($i_tmp_free_user_data_id);
                 $i_free_user_id = $ar_tmp_free_user_data['free_user_id'];
 
@@ -160,7 +169,7 @@ class Checkout extends CI_Controller {
                                 'currency' => ($charges_config['override_currency']) ?
                                         $charges['currency'] : $charges_config['default_currency'],
                     ));
-                    
+
                     if ($charge->status == 'succeeded') {
 
                         $data = $this->paidSchoolProcess($i_tmp_school_creation_data_id, $i_tmp_free_user_data_id);
@@ -195,7 +204,7 @@ class Checkout extends CI_Controller {
         $data['publishable_key'] = $stripe['publishable_key'];
         $data['error'] = $error;
         $data['message'] = $message;
-        
+
         $this->load_view('checkout/' . $payment_gateway . '/_form', $data);
     }
 
@@ -237,7 +246,15 @@ class Checkout extends CI_Controller {
         );
 
         $data = array_merge($data, $this->before_insert());
-        $this->db->insert('stripe_customer', $data);
+        if (!$this->db->insert('stripe_customer', $data)) {
+
+            $_ar_errors['message'] = $this->db->_error_message();
+            $_ar_errors['code'] = $this->db->_error_number();
+            $_ar_errors['type'] = 'createStripeCustomer';
+
+            $this->error_logs->record($_ar_errors);
+            return 0;
+        }
 
         return $this->db->insert_id();
     }
@@ -254,7 +271,14 @@ class Checkout extends CI_Controller {
 
         $data = array_merge($data, $this->before_insert());
 
-        $this->db->insert('tds_transaction', $data);
+        if (!$this->db->insert('tds_transaction', $data)) {
+            $_ar_errors['message'] = $this->db->_error_message();
+            $_ar_errors['code'] = $this->db->_error_number();
+            $_ar_errors['type'] = 'createTransaction';
+
+            $this->error_logs->record($_ar_errors);
+            return 0;
+        }
 
         return $this->db->insert_id();
     }
@@ -277,7 +301,16 @@ class Checkout extends CI_Controller {
         );
 
         $this->db->set_dbprefix('tds_');
-        return $this->db->insert('school_transaction', $data);
+        if (!$this->db->insert('school_transaction', $data)) {
+
+            $_ar_errors['message'] = $this->db->_error_message();
+            $_ar_errors['code'] = $this->db->_error_number();
+            $_ar_errors['type'] = 'createSchoolTransaction';
+
+            $this->error_logs->record($_ar_errors);
+            return FALSE;
+        }
+        return TRUE;
     }
 
     private function before_insert() {
@@ -383,7 +416,15 @@ class Checkout extends CI_Controller {
         $data['school_id'] = $ar_code['school_id'];
         $this->db->where('code', $ar_code['code']);
 
-        return $this->db->update('school_codes', $data);
+        if (!$this->db->update('school_codes', $data)) {
+
+            $_ar_errors['message'] = $this->db->_error_message();
+            $_ar_errors['code'] = $this->db->_error_number();
+            $_ar_errors['type'] = 'updateSchoolCode';
+
+            return FALSE;
+        }
+        return TRUE;
     }
 
     private function validatePaymentCode($ar_code) {

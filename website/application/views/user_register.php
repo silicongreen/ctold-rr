@@ -10,15 +10,17 @@
                             Registration For school Creation
                         </h2>
                     </div>
+
                     <div class="col-md-12">
-                        <?php echo form_error('first_name', '<div class="error">', '</div>'); ?>
-                        <?php echo form_error('last_name', '<div class="error">', '</div>'); ?>
-                        <?php echo form_error('email', '<div class="error">', '</div>'); ?>
-                        <?php echo form_error('confirm_email', '<div class="error">', '</div>'); ?> 
-                        <?php echo form_error('password', '<div class="error">', '</div>'); ?> 
-                        <?php echo form_error('confirm_password', '<div class="error">', '</div>'); ?>
+                        <?php echo form_error('first_name', '<div class="alert alert-danger">', '</div>'); ?>
+                        <?php echo form_error('last_name', '<div class="alert alert-danger">', '</div>'); ?>
+                        <?php echo form_error('email', '<div class="alert alert-danger">', '</div>'); ?>
+                        <?php echo form_error('confirm_email', '<div class="alert alert-danger">', '</div>'); ?> 
+                        <?php echo form_error('password', '<div class="alert alert-danger">', '</div>'); ?> 
+                        <?php echo form_error('confirm_password', '<div class="alert alert-danger">', '</div>'); ?>
                         <?php if (isset($error)) : ?>
                             <div class="alert alert-danger"><?php echo $error; ?></div>
+                            <legend></legend>
                         <?php endif; ?>
                     </div>
 

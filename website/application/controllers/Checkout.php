@@ -233,7 +233,7 @@ class Checkout extends CI_Controller {
                     //try {
                         $a_request = array(
                             "sellerId" => $this->config->config['PaymentParams']['2Checkout']['sellerID'],
-                            "merchantOrderId" => "115",
+                            "merchantOrderId" => uniqid(),
                             "token" => $_POST['token_request'],
                             "currency" => 'USD',
                             "total" => $no_of_student * $unit_price,

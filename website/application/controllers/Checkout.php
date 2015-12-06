@@ -226,7 +226,7 @@ class Checkout extends CI_Controller {
                     $unit_price = $this->config->config['PaymentRules']['unit_price'];
                     Twocheckout::privateKey($this->config->config['PaymentParams']['2Checkout']['private_key']);
                     Twocheckout::sellerId($this->config->config['PaymentParams']['2Checkout']['sellerID']);
-                    //Twocheckout::verifySSL(false);  // this is set to true by default
+                    Twocheckout::verifySSL(false);  // this is set to true by default
 
                     // To use your sandbox account set sandbox to true
                     Twocheckout::sandbox(true);

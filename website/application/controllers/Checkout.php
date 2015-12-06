@@ -238,7 +238,7 @@ class Checkout extends CI_Controller {
                             "currency" => 'USD',
                             "lineItems" => array(
                                 "name"          => $this->config->config['PaymentParams']['2Checkout']['product_name'],
-                                "price"         => $no_of_student * $unit_price,
+                                "price"         => number_format($no_of_student * $unit_price, 2),
                                 "type"          => "product",
                                 "quantity"      => "1",
                                 "recurrence"    => $this->config->config['PaymentRules']['recurrence_unit'] . " " . $this->config->config['PaymentRules']['recurrence_type']

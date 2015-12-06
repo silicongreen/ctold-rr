@@ -248,10 +248,10 @@ class Checkout extends CI_Controller {
                             ),
                             'recurrence'    => $this->config->config['PaymentRules']['recurrence_unit'] . " " . $this->config->config['PaymentRules']['recurrence_type']
                         );
-                        print_r($a_request);
-                        exit;
-                        $o_charge = Twocheckout_Charge::auth();
                         
+                        $o_charge = Twocheckout_Charge::auth($a_request);
+                        print_r($o_charge);
+                        exit;
                         if ( $o_charge['response']['responseCode'] == 'APPROVED' )
                         {
                             $data = $this->paidSchoolProcess($i_tmp_school_creation_data_id, $i_tmp_free_user_data_id);

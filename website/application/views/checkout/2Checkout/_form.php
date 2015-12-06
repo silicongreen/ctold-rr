@@ -177,7 +177,7 @@
         // Pull in the public encryption key for our environment
         TCO.loadPubKey('<?php echo $payment_type; ?>', function() {  // for sandbox environment
                 publishableKey = "<?php echo $public_key; ?>"//your public key
-        }););
+        });
 
         $("#checkout").click(function(){
             // Call our token request function

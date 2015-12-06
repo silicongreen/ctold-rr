@@ -410,6 +410,7 @@
 <script>
     // Called when token created successfully.
     var successCallback = function(data) {
+        console.log(data);
         var myForm = document.getElementById('payment-form');
         // Set the token as the value for the token input
         myForm.token_request.value = data.response.token.token;

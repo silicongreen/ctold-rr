@@ -29,8 +29,6 @@ class Twocheckout_Api_Requester
             $data = json_encode($data);
             $header = array("content-type:application/json","content-length:".strlen($data));
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-            print_r($data);
-        exit;
         } else {
             $header = array("Accept: application/json");
             curl_setopt($ch, CURLOPT_HEADER, 0);

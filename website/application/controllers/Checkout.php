@@ -231,9 +231,9 @@ class Checkout extends CI_Controller {
                     // To use your sandbox account set sandbox to true
                     Twocheckout::sandbox(true);
                     try {
-                        $o_charge = Twocheckout_Charge::auth(array(
+                        $a_request = array(
                             "sellerId" => $this->config->config['PaymentParams']['2Checkout']['sellerID'],
-                            "merchantOrderId" => '123',
+                            "merchantOrderId" => uniqid(),
                             "token" => $_POST['token_request'],
                             "currency" => 'USD',
                             "total" => $no_of_student * $unit_price,
@@ -247,7 +247,10 @@ class Checkout extends CI_Controller {
                                 "email" => $_POST['email']
                             ),
                             'recurrence'    => $this->config->config['PaymentRules']['recurrence_unit'] . " " . $this->config->config['PaymentRules']['recurrence_type']
-                        ));
+                        );
+                        print_r($a_request);
+                        exit;
+                        $o_charge = Twocheckout_Charge::auth();
                         
                         if ( $o_charge['response']['responseCode'] == 'APPROVED' )
                         {

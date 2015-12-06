@@ -229,7 +229,7 @@ class Checkout extends CI_Controller {
                     //Twocheckout::verifySSL(false);  // this is set to true by default
 
                     // To use your sandbox account set sandbox to true
-                    //Twocheckout::sandbox(true);
+                    Twocheckout::sandbox(true);
                     //try {
                         $a_request = array(
                             "sellerId" => $this->config->config['PaymentParams']['2Checkout']['sellerID'],

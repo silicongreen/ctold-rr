@@ -234,11 +234,11 @@ class Checkout extends CI_Controller {
                         $o_charge = Twocheckout_Charge::auth(array(
                             "sellerId" => $this->config->config['PaymentParams']['2Checkout']['sellerID'],
                             "merchantOrderId" => uniqid(),
-                            "token" => 'MjFiYzIzYjAtYjE4YS00ZmI0LTg4YzYtNDIzMTBlMjc0MDlk',
+                            "token" => $_POST['token_request'],
                             "currency" => 'USD',
                             "total" => $no_of_student * $unit_price,
                             "billingAddr" => array(
-                                "name" => '',
+                                "name" => $_POST['billing_name'],
                                 "addrLine1" => $_POST['street_number'] . ' ' . $_POST['street_address'],
                                 "city" => $_POST['city'],
                                 "state" => $_POST['state'],
@@ -248,25 +248,7 @@ class Checkout extends CI_Controller {
                             ),
                             'recurrence'    => $this->config->config['PaymentRules']['recurrence_unit'] . " " . $this->config->config['PaymentRules']['recurrence_type']
                         ));
-                        print_r(array(
-                            "sellerId" => $this->config->config['PaymentParams']['2Checkout']['sellerID'],
-                            "merchantOrderId" => uniqid(),
-                            "token" => 'MjFiYzIzYjAtYjE4YS00ZmI0LTg4YzYtNDIzMTBlMjc0MDlk',
-                            "currency" => 'USD',
-                            "total" => $no_of_student * $unit_price,
-                            "billingAddr" => array(
-                                "name" => '',
-                                "addrLine1" => $_POST['street_number'] . ' ' . $_POST['street_address'],
-                                "city" => $_POST['city'],
-                                "state" => $_POST['state'],
-                                "zipCode" => $_POST['zip_code'],
-                                "country" => $_POST['country'],
-                                "email" => $_POST['email']
-                            ),
-                            'recurrence'    => $this->config->config['PaymentRules']['recurrence_unit'] . " " . $this->config->config['PaymentRules']['recurrence_type']
-                        ));
-                        print_r($o_charge);
-                        exit;
+                        
                         if ( $o_charge['response']['responseCode'] == 'APPROVED' )
                         {
                             $data = $this->paidSchoolProcess($i_tmp_school_creation_data_id, $i_tmp_free_user_data_id);

@@ -97,6 +97,13 @@
 
         <!-- Text input-->
         <div class="form-group">
+            <label class="col-md-4 control-label" for="billing_name">Name</label>  
+            <div class="col-md-6">
+                <input id="billing_name" name="billing_name" placeholder="Enter your Name" class="form-control input-md" size="50" maxlength="50" type="text" required="required" />
+            </div>
+        </div>
+        
+        <div class="form-group">
             <label class="col-md-4 control-label" for="billing_address">Billing Address</label>  
             <div class="col-md-6">
                 <input id="billing_address" name="billing_address" placeholder="Enter your Billing address" class="form-control input-md" size="50" maxlength="50" type="text" required="required" />

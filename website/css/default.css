@@ -466,18 +466,15 @@ input.radio { margin:0; }
 
 
 .postlist-tab3 {
-  background: transparent url("../images/new-1_03.png") no-repeat scroll top left / 100% auto;
+  background: transparent url("../images/new-1_03.png") no-repeat scroll left top / 100% auto;
   border: 0 solid #ccc;
-  height: 115px;
-  left: 50%;
-  margin: 0 0 0 -25%;
+  box-shadow: 0 4px 2px -2px gray;
+  height: 113px;
+  margin-top: 60px;
   overflow: hidden;
   padding-top: 40px;
-  position: absolute;
-  top: 386px;
-  width: 50%;
+  width: 100%;
   z-index: 10;
-  box-shadow: 0 4px 2px -2px gray;
 }
 .postlist-tab3 ul { list-style-type: none;  border: 0px solid black; margin: 0; padding: 0px; font-size: 0; }
 .postlist-tab3 ul li { display: inline; *display: inline; zoom: 1; }

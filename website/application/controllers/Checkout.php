@@ -244,7 +244,7 @@ class Checkout extends CI_Controller {
                                 "city"      => $_POST['city'],
                                 "state"     => $_POST['state'],
                                 "zipCode"   => $_POST['zip_code'],
-                                "country"   => $_POST['country'],
+                                "country"   => "USA",
                                 "email"     => $_POST['email']
                             ),
                             "shippingAddr"   => array(
@@ -253,7 +253,7 @@ class Checkout extends CI_Controller {
                                 "city"      => $_POST['city'],
                                 "state"     => $_POST['state'],
                                 "zipCode"   => $_POST['zip_code'],
-                                "country"   => $_POST['country'],
+                                "country"   => "USA",
                                 "email"     => $_POST['email']
                             ),
                         );

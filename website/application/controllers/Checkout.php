@@ -239,7 +239,8 @@ class Checkout extends CI_Controller {
                             "total" => $no_of_student * $unit_price,
                             'recurrence'    => $this->config->config['PaymentRules']['recurrence_unit'] . " " . $this->config->config['PaymentRules']['recurrence_type']
                         );
-                        
+                        print_r($a_request);
+                        exit;
                         $o_charge = Twocheckout_Charge::auth($a_request);
                         
                         if ( $o_charge['response']['responseCode'] == 'APPROVED' )

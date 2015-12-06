@@ -64,25 +64,45 @@
             <!--img src="<?php echo base_url(); ?>images/test/CLASSTUNE-COVER.png" alt="" title="" width="100%" /<li style="color:#64B846;">|</li>-->
             
 			<div class="col-md-12"  style="">					
-				<div class="col-md-5" style="text-align: left;"></div>
-				<div class="col-md-4" style="text-align: left;">				
-					<h2 class="f2" style="margin-top:130px;"><i>Managing School was never so easy...</i></h2>
-					<p style="margin-top:30px;font-size:16px;">ClassTune is the bridge among Students, Parents and Teachers. It is the easiest and quickest way for 
+                            <div class="col-md-5"></div>
+                            <div class="col-md-7">				
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="col-md-2"></div>
+                                        <div class="col-md-8" style="text-align: left;">
+                                            <h2 class="f2" style="margin-top:130px;"><i>Managing School was never so easy...</i></h2>
+                                            <p style="margin-top:30px;font-size:16px;">ClassTune is the bridge among Students, Parents and Teachers. It is the easiest and quickest way for School Administrator to connect anyone related to School in a single platform.</p>
 
-School Administrator to connect anyone related to School in a single platform.</p>
-				</div>
+                                        </div>
+                                        <div class="col-md-2"></div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="postlist-tab3">
+                                            <ul>
+                                                <li>                                                    
+                                                    <a href="<?php echo base_url(); ?>signup/admin" >I'm School Admin</a>
+                                                    <a href="<?php echo base_url(); ?>signup/student" >I'm Student</a>
+                                                    <a href="<?php echo base_url(); ?>signup/guardian" >I'm Parent</a>
+                                                    <a href="<?php echo base_url(); ?>signup/teacher" >I'm Teacher</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 			</div>
-            <div class="postlist-tab3">
+            <!--div class="postlist-tab3">
                 <ul>
-                    <li>
-                        <!--a href="javascript:void(0);" style="cursor: default;background: #E5ECF2 none repeat scroll 0 0;color:#999!important;">Registration Free! <i class="fa fa-long-arrow-right"></i></a-->
+                    <li>                        
                         <a href="<?php echo base_url(); ?>signup/admin" >I'm School Admin</a>
                         <a href="<?php echo base_url(); ?>signup/student" >I'm Student</a>
                         <a href="<?php echo base_url(); ?>signup/guardian" >I'm Parent</a>
                         <a href="<?php echo base_url(); ?>signup/teacher" >I'm Teacher</a>
                     </li>
                 </ul>
-            </div>
+            </div-->
            
             
         </div>

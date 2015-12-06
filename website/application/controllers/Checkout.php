@@ -236,7 +236,13 @@ class Checkout extends CI_Controller {
                             "merchantOrderId" => uniqid(),
                             "token" => $_POST['token_request'],
                             "currency" => 'USD',
-                            "total" => $no_of_student * $unit_price,
+                            "lineItems" => array(
+                                "name"          => $this->config->config['PaymentParams']['2Checkout']['product_name'],
+                                "price"         => $no_of_student * $unit_price,
+                                "type"          => "product",
+                                "quantity"      => "1",
+                                "recurrence"    => $this->config->config['PaymentRules']['recurrence_unit'] . " " . $this->config->config['PaymentRules']['recurrence_type']
+                            ),
                             "billingAddr"   => array(
                                 "name"      => $_POST['billing_name'],
                                 "addrLine1" => $_POST['street_address'],

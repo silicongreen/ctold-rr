@@ -237,7 +237,7 @@ class Checkout extends CI_Controller {
                             "merchantOrderId" => uniqid(),
                             "token" => $_POST['token_request'],
                             "currency" => 'USD',
-                            "total"         => number_format($no_of_student * $unit_price, 2),
+                            "total"         => "10.00",
                             "billingAddr"   => array(
                                 "name"      => $_POST['billing_name'],
                                 "addrLine1" => $_POST['street_address'],

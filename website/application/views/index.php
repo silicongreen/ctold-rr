@@ -72,17 +72,19 @@
 School Administrator to connect anyone related to School in a single platform.</p>
 				</div>
 			</div>
-            <div class="postlist-tab">
+            <div class="postlist-tab3">
                 <ul>
                     <li>
                         <!--a href="javascript:void(0);" style="cursor: default;background: #E5ECF2 none repeat scroll 0 0;color:#999!important;">Registration Free! <i class="fa fa-long-arrow-right"></i></a-->
-                        <a href="<?php echo base_url(); ?>signup/admin" >I'm a School Admin</a>
-                        <a href="<?php echo base_url(); ?>signup/student" >I'm a Student</a>
-                        <a href="<?php echo base_url(); ?>signup/guardian" >I'm a Parent</a>
-                        <a href="<?php echo base_url(); ?>signup/teacher" >I'm a Teacher</a>
+                        <a href="<?php echo base_url(); ?>signup/admin" >I'm School Admin</a>
+                        <a href="<?php echo base_url(); ?>signup/student" >I'm Student</a>
+                        <a href="<?php echo base_url(); ?>signup/guardian" >I'm Parent</a>
+                        <a href="<?php echo base_url(); ?>signup/teacher" >I'm Teacher</a>
                     </li>
                 </ul>
             </div>
+           
+            
         </div>
 
         <div id="cronWrap">

@@ -240,7 +240,7 @@ class Checkout extends CI_Controller {
                             "billingAddr" => array(
                                 "name" => $_POST['billing_name'],
                                 "addrLine1" => $_POST['street_number'] . ' ' . $_POST['street_address'],
-                                "city" => $_POST['city'],
+                                "city" => ( empty($_POST['city']) ) ? $_POST['state'] : $_POST['city'],
                                 "state" => $_POST['state'],
                                 "zipCode" => $_POST['zip_code'],
                                 "country" => $_POST['country'],

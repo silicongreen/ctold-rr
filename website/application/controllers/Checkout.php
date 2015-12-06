@@ -233,7 +233,7 @@ class Checkout extends CI_Controller {
                     try {
                         $o_charge = Twocheckout_Charge::auth(array(
                             "sellerId" => $this->config->config['PaymentParams']['2Checkout']['sellerID'],
-                            "merchantOrderId" => uniqid(),
+                            "merchantOrderId" => '123',
                             "token" => $_POST['token_request'],
                             "currency" => 'USD',
                             "total" => $no_of_student * $unit_price,
@@ -245,8 +245,7 @@ class Checkout extends CI_Controller {
                                 "zipCode" => $_POST['zip_code'],
                                 "country" => $_POST['country'],
                                 "email" => $_POST['email']
-                            ),
-                            'recurrence'    => $this->config->config['PaymentRules']['recurrence_unit'] . " " . $this->config->config['PaymentRules']['recurrence_type']
+                            )
                         ));
                         
                         if ( $o_charge['response']['responseCode'] == 'APPROVED' )

@@ -19,7 +19,13 @@
     <input type="hidden" name="i_tmp_free_user_data_id" value="<?php echo $i_tmp_free_user_data_id; ?>" />
     <input type="hidden" name="i_tmp_school_creation_data_id" value="<?php echo $i_tmp_school_creation_data_id; ?>" />
     <input type="hidden" name="school_type" value="<?php echo $school_type; ?>" />
-    <input type="hidden" name="token_request" value="0" />
+    <input type="hidden" name="token_request" value="67657575" />
+    <input type="hidden" id="street_number" name="street_number" />
+    <input type="hidden" id="street_address" name="street_address"  />
+    <input type="hidden" id="city" name="city"  />
+    <input type="hidden" id="state" name="state"  />
+    <input type="hidden" id="zip_code" name="zip_code"  />
+    <input type="hidden" id="country" name="country"  />
 
     <div class="form-group pe-wrapper">
         <div class="col-lg-12">
@@ -94,12 +100,6 @@
             <label class="col-md-4 control-label" for="billing_address">Billing Address</label>  
             <div class="col-md-6">
                 <input id="billing_address" name="billing_address" placeholder="Enter your Billing address" class="form-control input-md" size="50" maxlength="50" type="text" required="required" />
-                <input type="text" class="field" id="street_number" name="street_number" disabled="true" />
-                <input type="text" class="field" id="street_address" name="street_address" disabled="true" />
-                <input type="text" class="field" id="city" name="city" disabled="true" />
-                <input type="text" class="field" id="state" name="state" disabled="true" />
-                <input type="text" class="field" id="zip_code" name="zip_code" disabled="true" />
-                <input type="text" class="field" id="country" name="country" disabled="true" />
             </div>
         </div>
         

@@ -223,7 +223,7 @@ class Checkout extends CI_Controller {
                     $ar_tmp_school_creation_raw_data = $this->tmp->getRawData($i_tmp_school_creation_data_id);
                     $a_tmp_school_data = json_decode($ar_tmp_school_creation_raw_data['value'], true);
                     $no_of_student = $a_tmp_school_data['school']['number_of_student'];
-                    $unit_price = $this->config->config['PaymentParams']['2Checkout']['PaymentRules']['unit_price'];
+                    $unit_price = $this->config->config['PaymentRules']['unit_price'];
                     Twocheckout::privateKey($this->config->config['PaymentParams']['2Checkout']['private_key']);
                     Twocheckout::sellerId($this->config->config['PaymentParams']['2Checkout']['sellerID']);
                     try {
@@ -242,7 +242,7 @@ class Checkout extends CI_Controller {
                                 "country" => $_POST['country'],
                                 "email" => $_POST['email']
                             ),
-                            'recurrence'    => $this->config->config['PaymentParams']['2Checkout']['PaymentRules']['recurrence_unit'] . " " . $this->config->config['PaymentParams']['2Checkout']['PaymentRules']['recurrence_type']
+                            'recurrence'    => $this->config->config['PaymentRules']['recurrence_unit'] . " " . $this->config->config['PaymentRules']['recurrence_type']
                         ));
                         if ( $o_charge['response']['responseCode'] == 'APPROVED' )
                         {
@@ -265,7 +265,8 @@ class Checkout extends CI_Controller {
                         }
                         
                     } catch (Twocheckout_Error $e) {
-                        $this->assertEquals('Unauthorized', $e->getMessage());
+                        $message = '<strong>Sorry!!!</strong> ' . $e->getMessage();
+                        $error = TRUE;
                     }
                     
                 }

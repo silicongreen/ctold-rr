@@ -230,6 +230,8 @@ class Checkout extends CI_Controller {
 
                     // To use your sandbox account set sandbox to true
                     Twocheckout::sandbox(true);
+                    print_r($_POST);
+                    exit;
                     try {
                         $o_charge = Twocheckout_Charge::auth(array(
                             "sellerId" => $this->config->config['PaymentParams']['2Checkout']['sellerID'],

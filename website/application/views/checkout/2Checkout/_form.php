@@ -19,7 +19,7 @@
     <input type="hidden" name="i_tmp_free_user_data_id" value="<?php echo $i_tmp_free_user_data_id; ?>" />
     <input type="hidden" name="i_tmp_school_creation_data_id" value="<?php echo $i_tmp_school_creation_data_id; ?>" />
     <input type="hidden" name="school_type" value="<?php echo $school_type; ?>" />
-    <input type="hidden" name="token_request" value="67657575" />
+    <input type="hidden" name="token_request" value="0" />
     <input type="hidden" id="street_number" name="street_number" />
     <input type="hidden" id="street_address" name="street_address"  />
     <input type="hidden" id="city" name="city"  />

@@ -27,6 +27,11 @@ class Signup extends CI_Controller {
         $this->load_view_inner('admin');
     }
     
+    public function help_demo()
+    {
+        $this->load_view_inner('help_demo');
+    }
+    
     //PRIVATE FUNCTION
     private function load_view($view_name, $data = array()) {
         $this->load->view('layout/header');

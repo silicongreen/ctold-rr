@@ -263,6 +263,7 @@ class Checkout extends CI_Controller {
                                 "email"     => $_POST['email']
                             ),
                         );
+                        print '<pre>';
                         print_r($a_request);
                         exit;
                         $o_charge = Twocheckout_Charge::auth($a_request);

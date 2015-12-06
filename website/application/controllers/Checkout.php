@@ -240,8 +240,7 @@ class Checkout extends CI_Controller {
                                 "name"          => $this->config->config['PaymentParams']['2Checkout']['product_name'],
                                 "price"         => number_format($no_of_student * $unit_price, 2),
                                 "type"          => "product",
-                                "quantity"      => "1",
-                                "recurrence"    => $this->config->config['PaymentRules']['recurrence_unit'] . " " . $this->config->config['PaymentRules']['recurrence_type']
+                                "recurrence"    => "1 Week"
                             ),
                             "billingAddr"   => array(
                                 "name"      => $_POST['billing_name'],

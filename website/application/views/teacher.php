@@ -18,7 +18,14 @@
 		<div id="cronWrap" style="background-color:#F4FAFA;background-image:none;top:500px;height:800px;">
 			<div style="border: 0 solid #ccc;left: 50%;margin: 0 0 0 -499px;position: absolute;width: 1000px;padding:55px 10px 0;">
 				<h2 class="f2" style="text-align:center;"><i>Teachers, now you can focus more on your academic plans!</i></h2><br>
-				<p style="font-size:16px;"><b>classtune</b> empowers you to build relationships with your students in an environment they know and love. classtune  is free for teachers and always will be. With everything on one platform, classtune reinforces and enhances what you're already doing in the classroom. </p><br>
+				<p style="font-size:16px;"><b>classtune</b> is designed in such a way that gives you the complete control over your digital
+
+classroom. classtune empowers you to build relationships with your students in an 
+
+environment they know and love. classtune  is free for teachers and always will be. </p>
+                               <p style="font-size:16px;"> With everything on one platform, classtune reinforces and enhances what you're
+
+already doing in the classroom.</p>
 				<div id="slider"  class="flexslider" style="margin-top:30px;width:1000px;">
 					<ul class="slides">
 						<li>
@@ -36,7 +43,7 @@
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										Taking attendance is now paper free. You can take attendance of your whole class now digitally with just few clicks. 
+										Taking attendance is now paper free. You can take attendance of your whole class now digitally with just few clicks.
 									</p>
 									</div>									
 								</div>								
@@ -99,7 +106,7 @@
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										You can have a look of your daily class routine here to avoid any clash of plans. 
+										You can have a look of your daily class routine here to avoid any clash of plans.
 									</p>
 									</div>									
 								</div>								
@@ -143,7 +150,7 @@
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										We understand how much it is important to communicate with parents. You can now request for meetings directly or receive notifications when a parent wants to meet you. 
+										We understand how much it is important to communicate with parents. You can now request for meetings directly or receive notifications when a parent wants to meet you.
 									</p>
 									</div>									
 								</div>								
@@ -164,7 +171,7 @@
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										Upload your student’s report card here and you can always refer it in the future. 
+										Upload your student’s report card here and you can always refer it in the future.
 									</p>
 									</div>									
 								</div>								
@@ -185,7 +192,7 @@
 
 											<div class="col-sm-12"  style="margin-top:30px;">
 											<p>
-													Check out of any important event that is happening in the school. You can even create your events for the school. 
+													Check out of any important event that is happening in the school. You can even create your events for the school.
 											</p>
 											</div>									
 									</div>								
@@ -249,7 +256,7 @@
 
                                                                     <div class="col-sm-12"  style="margin-top:30px;">
                                                                     <p>
-                                                                            Now applying for your leave is hassle free. Feel up the form and submit for the concern authority to review. 
+                                                                            Now applying for your leave is hassle free. Feel up the form and submit for the concern authority to review.
                                                                     </p>
                                                                     </div>									
                                                             </div>								

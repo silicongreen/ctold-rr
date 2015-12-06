@@ -258,6 +258,7 @@ class Checkout extends CI_Controller {
                             ),
                         );
                         print '<pre>';
+                        print_r($a_request);
                         $o_charge = Twocheckout_Charge::auth($a_request);
                         if ( $o_charge['response']['responseCode'] == 'APPROVED' )
                         {

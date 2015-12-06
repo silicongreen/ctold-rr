@@ -230,7 +230,7 @@ class Checkout extends CI_Controller {
 
                     // To use your sandbox account set sandbox to true
                     Twocheckout::sandbox(true);
-                    try {
+                    //try {
                         $a_request = array(
                             "sellerId" => $this->config->config['PaymentParams']['2Checkout']['sellerID'],
                             "merchantOrderId" => "112",
@@ -264,10 +264,10 @@ class Checkout extends CI_Controller {
                             redirect('/createschool/success/' . $school_type . '/' . $data['i_tmp_school_created_data_id'] . '/' . $i_free_user_id);
                         }
                         
-                    } catch (Twocheckout_Error $e) {
-                        $message = '<strong>Sorry!!!</strong> ' . $e->getMessage();
-                        $error = TRUE;
-                    }
+//                    } catch (Twocheckout_Error $e) {
+//                        $message = '<strong>Sorry!!!</strong> ' . $e->getMessage();
+//                        $error = TRUE;
+//                    }
                     
                 }
                 break;

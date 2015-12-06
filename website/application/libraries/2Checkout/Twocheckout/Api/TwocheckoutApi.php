@@ -21,8 +21,6 @@ class Twocheckout_Api_Requester
 	function doCall($urlSuffix, $data=array())
     {
         $url = $this->baseUrl . $urlSuffix;
-        print_r($data);
-        exit;
         $ch = curl_init($url);
         if (isset($data['api'])) {
             unset( $data['api'] );
@@ -31,6 +29,8 @@ class Twocheckout_Api_Requester
             $data = json_encode($data);
             $header = array("content-type:application/json","content-length:".strlen($data));
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+            print_r($data);
+        exit;
         } else {
             $header = array("Accept: application/json");
             curl_setopt($ch, CURLOPT_HEADER, 0);

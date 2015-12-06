@@ -140,10 +140,9 @@
     // Called when token created successfully.
     var successCallback = function(data) {
         var myForm = document.getElementById('payment-form');
-        console.log("here");
         // Set the token as the value for the token input
         myForm.token_request.value = data.response.token.token;
-
+console.log(data.response.token.token);
         // IMPORTANT: Here we call `submit()` on the form element directly instead of using jQuery to prevent and infinite token request loop.
         myForm.submit();
     };

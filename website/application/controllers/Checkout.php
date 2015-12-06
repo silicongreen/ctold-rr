@@ -226,20 +226,20 @@ class Checkout extends CI_Controller {
                     $unit_price = $this->config->config['PaymentRules']['unit_price'];
                     Twocheckout::privateKey($this->config->config['PaymentParams']['2Checkout']['private_key']);
                     Twocheckout::sellerId($this->config->config['PaymentParams']['2Checkout']['sellerID']);
-                    Twocheckout::verifySSL(false);  // this is set to true by default
+                    //Twocheckout::verifySSL(false);  // this is set to true by default
 
                     // To use your sandbox account set sandbox to true
-                    Twocheckout::sandbox(true);
+                    //Twocheckout::sandbox(true);
                     //try {
                         $a_request = array(
                             "sellerId" => $this->config->config['PaymentParams']['2Checkout']['sellerID'],
-                            "merchantOrderId" => "112",
+                            "merchantOrderId" => "113",
                             "token" => $_POST['token_request'],
                             "currency" => 'USD',
-                            "total" => $no_of_student * $unit_price,
-                            'recurrence'    => $this->config->config['PaymentRules']['recurrence_unit'] . " " . $this->config->config['PaymentRules']['recurrence_type']
+                            "total" => $no_of_student * $unit_price
+                            //'recurrence'    => $this->config->config['PaymentRules']['recurrence_unit'] . " " . $this->config->config['PaymentRules']['recurrence_type']
                         );
-                        
+                        print_r($a_request);
                         $o_charge = Twocheckout_Charge::auth($a_request);
                         print '<pre>';
                         print_r($o_charge);

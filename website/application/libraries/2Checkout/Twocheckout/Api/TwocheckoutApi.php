@@ -21,7 +21,7 @@ class Twocheckout_Api_Requester
 	function doCall($urlSuffix, $data=array())
     {
         $url = $this->baseUrl . $urlSuffix;
-        echo $url;
+        print_r($data);
         exit;
         $ch = curl_init($url);
         if (isset($data['api'])) {

@@ -236,14 +236,35 @@ class Checkout extends CI_Controller {
                             "merchantOrderId" => "115",
                             "token" => $_POST['token_request'],
                             "currency" => 'USD',
-                            "total" => $no_of_student * $unit_price
-                            //'recurrence'    => $this->config->config['PaymentRules']['recurrence_unit'] . " " . $this->config->config['PaymentRules']['recurrence_type']
+                            "total" => $no_of_student * $unit_price,
+                            "lineItems" => array(
+                                "name"          => $this->config->config['PaymentParams']['2Checkout']['product_name'],
+                                "price"         => $no_of_student * $unit_price,
+                                "type"          => "product",
+                                "quantity"      => "1",
+                                "startupFee"    => $this->config->config['PaymentRules']['recurrence_unit'],
+                                "recurrence"    => $this->config->config['PaymentRules']['recurrence_unit'] . " " . $this->config->config['PaymentRules']['recurrence_type']
+                            ),
+                            "billingAddr"   => array(
+                                "name"      => $_POST['billing_name'],
+                                "addrLine1" => $_POST['street_address'],
+                                "city"      => $_POST['city'],
+                                "state"     => $_POST['state'],
+                                "zipCode"   => $_POST['zip_code'],
+                                "country"   => $_POST['country'],
+                                "email"     => $_POST['email']
+                            ),
+                            "shippingAddr"   => array(
+                                "name"      => $_POST['billing_name'],
+                                "addrLine1" => $_POST['street_address'],
+                                "city"      => $_POST['city'],
+                                "state"     => $_POST['state'],
+                                "zipCode"   => $_POST['zip_code'],
+                                "country"   => $_POST['country'],
+                                "email"     => $_POST['email']
+                            ),
                         );
-                        print_r($a_request);
                         $o_charge = Twocheckout_Charge::auth($a_request);
-                        print '<pre>';
-                        print_r($o_charge);
-                        exit;
                         if ( $o_charge['response']['responseCode'] == 'APPROVED' )
                         {
                             $data = $this->paidSchoolProcess($i_tmp_school_creation_data_id, $i_tmp_free_user_data_id);

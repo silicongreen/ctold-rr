@@ -10,6 +10,7 @@ $config['PaymentModules'] = array("2Checkout" => 1, "stripe" => 0, "SSLCommerce"
 
 $config['PaymentParams']  = array(
         "2Checkout"     => array(
+            'product_name'  => 'Classtune School Subscription', 
             'private_key'   => '8CB1BE8D-1C8C-4784-BCDE-BDC7A4B82463',
             'public_key'    => 'FF3CBFCB-D0FE-4E03-A1EE-2FC6ED240962',
             'sellerID'      => '901300257',

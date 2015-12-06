@@ -63,8 +63,6 @@ class Twocheckout_Charge extends Twocheckout
         $params['api'] = 'checkout';
         $request = new Twocheckout_Api_Requester();
         $result = $request->doCall('/checkout/api/1/'.self::$sid.'/rs/authService', $params);
-        print_r($result);
-        exit;
         return Twocheckout_Util::returnResponse($result);
     }
 

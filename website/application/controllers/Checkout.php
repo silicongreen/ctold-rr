@@ -234,7 +234,7 @@ class Checkout extends CI_Controller {
                     //try {
                         $a_request = array(
                             "sellerId" => $this->config->config['PaymentParams']['2Checkout']['sellerID'],
-                            "merchantOrderId" => time(),
+                            "merchantOrderId" => "123",
                             "token" => $_POST['token_request'],
                             "currency" => 'USD',
                             "total"         => "10.00",
@@ -244,7 +244,7 @@ class Checkout extends CI_Controller {
                                 "city"      => $_POST['city'],
                                 "state"     => $_POST['state'],
                                 "zipCode"   => $_POST['zip_code'],
-                                "country"   => "USA",
+                                "country"   => $_POST['country'],
                                 "email"     => $_POST['email']
                             ),
                             "shippingAddr"   => array(
@@ -253,7 +253,7 @@ class Checkout extends CI_Controller {
                                 "city"      => $_POST['city'],
                                 "state"     => $_POST['state'],
                                 "zipCode"   => $_POST['zip_code'],
-                                "country"   => "USA",
+                                "country"   => $_POST['country'],
                                 "email"     => $_POST['email']
                             ),
                         );

@@ -9,7 +9,6 @@ class Checkout extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->model('tmp');
-        $this->load->model('error_logs');
     }
 
     public function index() {
@@ -73,20 +72,12 @@ class Checkout extends CI_Controller {
         $this->db->set_dbprefix('');
 
         $data = array_merge($data, $this->before_insert());
-        if ($this->db->insert("school_codes", $data)) {
-            echo 'Last Generated Code is: ' . $data['code'];
-            exit;
-        } else {
-            $_ar_errors['message'] = $this->db->_error_message();
-            $_ar_errors['code'] = $this->db->_error_number();
-            $_ar_errors['type'] = 'createPurchaseCode';
+        $this->db->insert("school_codes", $data);
 
-            $this->error_logs->record($_ar_errors);
-            echo 'Purchase code not generated.';
-            exit;
-        }
+        echo 'Last Generated COde is: ' . $data['code'];
+        exit;
     }
-
+    
     public function payment($i_tmp_school_creation_data_id, $i_tmp_free_user_data_id) {
         $payment_gateway = 'stripe';
         $paid = true;
@@ -95,116 +86,198 @@ class Checkout extends CI_Controller {
         $message = '';
         $school_type = 'paid';
         $error = false;
-
-        require_once( APPPATH . 'libraries/stripe/vendor/autoload.php');
-        $stripe = array(
-            "secret_key" => "sk_test_002dJofp6PF2BC6B0lMkDb0j",
-            "publishable_key" => "pk_test_9TfEoBZhdGU1iBx521GMjild"
-        );
-
-        \Stripe\Stripe::setApiKey($stripe['secret_key']);
-
-        if (isset($_POST) && !empty($_POST['stripeToken'])) {
-
-            if (isset($_POST['i_tmp_free_user_data_id']) && !empty($_POST['i_tmp_free_user_data_id'])) {
-                $i_tmp_free_user_data_id = $_POST['i_tmp_free_user_data_id'];
+        
+        $this->load->config("payment");
+        $a_paymentModules = $this->config->config['PaymentModules'];
+        $s_enable_modules = "";
+        foreach($a_paymentModules as $k => $v)
+        {
+            if ( $v )
+            {
+                $payment_gateway = $k;
+                break;
             }
+        }
+        
+        switch ($payment_gateway)
+        {
+            case 'stripe': 
+                require_once( APPPATH . 'libraries/stripe/vendor/autoload.php');
+                $stripe = array(
+                    "secret_key" => "sk_test_002dJofp6PF2BC6B0lMkDb0j",
+                    "publishable_key" => "pk_test_9TfEoBZhdGU1iBx521GMjild"
+                );
+                
+                \Stripe\Stripe::setApiKey($stripe['secret_key']);
+                
+                $data['publishable_key'] = $stripe['publishable_key'];
+                
+                if (isset($_POST) && !empty($_POST['stripeToken'])) {
 
-            if (isset($_POST['i_tmp_school_creation_data_id']) && !empty($_POST['i_tmp_school_creation_data_id'])) {
-                $i_tmp_school_creation_data_id = $_POST['i_tmp_school_creation_data_id'];
-            }
+                    if (isset($_POST['i_tmp_free_user_data_id']) && !empty($_POST['i_tmp_free_user_data_id'])) {
+                        $i_tmp_free_user_data_id = $_POST['i_tmp_free_user_data_id'];
+                    }
 
-            if (isset($_POST['school_type']) && !empty($_POST['school_type'])) {
-                $school_type = $_POST['school_type'];
-            }
+                    if (isset($_POST['i_tmp_school_creation_data_id']) && !empty($_POST['i_tmp_school_creation_data_id'])) {
+                        $i_tmp_school_creation_data_id = $_POST['i_tmp_school_creation_data_id'];
+                    }
 
-            $token = $this->input->post('stripeToken');
-            $email = $this->input->post('email');
+                    if (isset($_POST['school_type']) && !empty($_POST['school_type'])) {
+                        $school_type = $_POST['school_type'];
+                    }
 
-            $this->load->config('checkout');
-            $charges_config = $this->config->config['charges'];
+                    $token = $this->input->post('stripeToken');
+                    $email = $this->input->post('email');
 
-            $charges = $charges_config[$payment_gateway][$charges_ar_to_load];
+                    $this->load->config('checkout');
+                    $charges_config = $this->config->config['charges'];
 
-            $i_customer_id = 0;
-            $customer = $this->check_customer(array('email' => $email));
-            $b_new_customer = FALSE;
-            $b_card_accepted = FALSE;
+                    $charges = $charges_config[$payment_gateway][$charges_ar_to_load];
 
-            if (!$customer) {
+                    $i_customer_id = 0;
+                    $customer = $this->check_customer(array('email' => $email));
+                    $b_new_customer = FALSE;
+                    $b_card_accepted = FALSE;
+            
+                    if (!$customer) {
 
-                try {
-                    $customer = \Stripe\Customer::create(array(
-                                'email' => $email,
-                                'card' => $token
-                    ));
-                    $b_card_accepted = TRUE;
-                } catch (\Stripe\Error\Card $ex) {
-                    $message = '<strong>Sorry!!!</strong> ' . $ex->getJsonBody()['error']['message'];
-                    $error = TRUE;
-                }
+                        try {
+                            $customer = \Stripe\Customer::create(array(
+                                    'email' => $email,
+                                    'card' => $token
+                            ));
+                            $b_card_accepted = TRUE;
+                        } catch (\Stripe\Error\Card $ex) {
+                            $message = '<strong>Sorry!!!</strong> ' . $ex->getJsonBody()['error']['message'];
+                            $error = TRUE;
+                        }
 
-                if ($b_card_accepted) {
-                    $customer_id = $customer->id;
-                    $b_new_customer = TRUE;
-                }
-            } else {
-                $b_card_accepted = TRUE;
-                $i_customer_id = $customer->id;
-                $customer_id = $customer->customer_id;
-            }
+                        if ($b_card_accepted) {
+                            $customer_id = $customer->id;
+                            $b_new_customer = TRUE;
+                        }
+                    } 
+                    else 
+                    {
+                        $b_card_accepted = TRUE;
+                        $i_customer_id = $customer->id;
+                        $customer_id = $customer->customer_id;
+                    }
 
-            if (isset($customer_id) && !empty($customer_id) && $b_card_accepted) {
-                if ($b_new_customer) {
-                    $i_customer_id = $this->save_customer($customer);
-                }
+                    if (isset($customer_id) && !empty($customer_id) && $b_card_accepted) 
+                    {
+                        if ($b_new_customer) 
+                        {
+                            $i_customer_id = $this->save_customer($customer);
+                        }
+                        
+                        $ar_tmp_free_user_data = $this->tmp->getData($i_tmp_free_user_data_id);
+                        $i_free_user_id = $ar_tmp_free_user_data['free_user_id'];
 
-                $ar_tmp_free_user_data = $this->tmp->getData($i_tmp_free_user_data_id);
-                $i_free_user_id = $ar_tmp_free_user_data['free_user_id'];
-
-                try {
-                    $charge = \Stripe\Charge::create(array(
+                        try {
+                            $charge = \Stripe\Charge::create(array(
                                 'customer' => $customer_id,
                                 'amount' => (int) $charges['price'] * 100,
                                 'currency' => ($charges_config['override_currency']) ?
                                         $charges['currency'] : $charges_config['default_currency'],
-                    ));
+                            ));
+                    
+                            if ($charge->status == 'succeeded') 
+                            {
+                                $data = $this->paidSchoolProcess($i_tmp_school_creation_data_id, $i_tmp_free_user_data_id);
 
-                    if ($charge->status == 'succeeded') {
+                                $data['i_tmp_school_created_data_id'] = $this->tmp->create(array(
+                                    'key' => 'school_created_data',
+                                    'value' => json_encode($data)
+                                ));
 
-                        $data = $this->paidSchoolProcess($i_tmp_school_creation_data_id, $i_tmp_free_user_data_id);
+                                $transaction_id = $this->save_transaction($charge, $i_customer_id);
+                                $this->save_school_transaction($data['i_tmp_school_created_data_id'], $transaction_id, $i_tmp_free_user_data_id);
 
-                        $data['i_tmp_school_created_data_id'] = $this->tmp->create(array(
-                            'key' => 'school_created_data',
-                            'value' => json_encode($data)
-                        ));
+                                if (isset($data['success']) && $data['success'] === TRUE) 
+                                {
+                                    $b_all_done = true;
+                                }
 
-                        $transaction_id = $this->save_transaction($charge, $i_customer_id);
-                        $this->save_school_transaction($data['i_tmp_school_created_data_id'], $transaction_id, $i_tmp_free_user_data_id);
-
-                        if (isset($data['success']) && $data['success'] === TRUE) {
-                            $b_all_done = true;
+                                redirect('/createschool/success/' . $school_type . '/' . $data['i_tmp_school_created_data_id'] . '/' . $i_free_user_id);
+                            } 
+                            else 
+                            {
+                                $message = '<strong>Sorry!!!</strong> Payment failed.';
+                                $error = TRUE;
+                            }
+                        } catch (\Stripe\Error\Card $ex) {
+                            $message = '<strong>Sorry!!!</strong> ' . $ex->getJsonBody()['error']['message'];
+                            $error = TRUE;
                         }
-
-                        redirect('/createschool/success/' . $school_type . '/' . $data['i_tmp_school_created_data_id'] . '/' . $i_free_user_id);
-                    } else {
-                        $message = '<strong>Sorry!!!</strong> Payment failed.';
-                        $error = TRUE;
                     }
-                } catch (\Stripe\Error\Card $ex) {
-                    $message = '<strong>Sorry!!!</strong> ' . $ex->getJsonBody()['error']['message'];
-                    $error = TRUE;
                 }
-            }
-        }
+                break;
+            case '2Checkout':
+                require_once( APPPATH . 'libraries/2Checkout/Twocheckout.php');
+                $data['public_key'] = $this->config->config['PaymentParams']['2Checkout']['public_key'];
+                $data['seller_id'] = $this->config->config['PaymentParams']['2Checkout']['sellerID'];
+                $data['payment_type'] = ( $this->config->config['PaymentParams']['2Checkout']['SandBox'] ) ? 'sandbox'  : 'production';
+                if (isset($_POST['token_request']) && $_POST['token_request'] != "0") 
+                {
+                    $ar_tmp_school_creation_raw_data = $this->tmp->getRawData($i_tmp_school_creation_data_id);
+                    $a_tmp_school_data = json_decode($ar_tmp_school_creation_raw_data['value'], true);
+                    $no_of_student = $a_tmp_school_data['school']['number_of_student'];
+                    $unit_price = $this->config->config['PaymentParams']['2Checkout']['PaymentRules']['unit_price'];
+                    Twocheckout::privateKey($this->config->config['PaymentParams']['2Checkout']['private_key']);
+                    Twocheckout::sellerId($this->config->config['PaymentParams']['2Checkout']['sellerID']);
+                    try {
+                        $o_charge = Twocheckout_Charge::auth(array(
+                            "sellerId" => $this->config->config['PaymentParams']['2Checkout']['sellerID'],
+                            "merchantOrderId" => uniqid(),
+                            "token" => 'MjFiYzIzYjAtYjE4YS00ZmI0LTg4YzYtNDIzMTBlMjc0MDlk',
+                            "currency" => 'USD',
+                            "total" => $no_of_student * $unit_price,
+                            "billingAddr" => array(
+                                "name" => '',
+                                "addrLine1" => $_POST['street_number'] . ' ' . $_POST['street_address'],
+                                "city" => $_POST['city'],
+                                "state" => $_POST['state'],
+                                "zipCode" => $_POST['zipcode'],
+                                "country" => $_POST['country'],
+                                "email" => $_POST['email']
+                            ),
+                            'recurrence'    => $this->config->config['PaymentParams']['2Checkout']['PaymentRules']['recurrence_unit'] . " " . $this->config->config['PaymentParams']['2Checkout']['PaymentRules']['recurrence_type']
+                        ));
+                        if ( $o_charge['response']['responseCode'] == 'APPROVED' )
+                        {
+                            $data = $this->paidSchoolProcess($i_tmp_school_creation_data_id, $i_tmp_free_user_data_id);
 
+                            $data['i_tmp_school_created_data_id'] = $this->tmp->create(array(
+                                'key' => 'school_created_data',
+                                'value' => json_encode($data)
+                            ));
+
+                            $transaction_id = $this->save_transaction($charge, $i_customer_id);
+                            $this->save_school_transaction($data['i_tmp_school_created_data_id'], $transaction_id, $i_tmp_free_user_data_id);
+
+                            if (isset($data['success']) && $data['success'] === TRUE) 
+                            {
+                                $b_all_done = true;
+                            }
+
+                            redirect('/createschool/success/' . $school_type . '/' . $data['i_tmp_school_created_data_id'] . '/' . $i_free_user_id);
+                        }
+                        
+                    } catch (Twocheckout_Error $e) {
+                        $this->assertEquals('Unauthorized', $e->getMessage());
+                    }
+                    
+                }
+                break;
+                
+        }
         $data['school_type'] = $school_type;
         $data['i_tmp_free_user_data_id'] = $i_tmp_free_user_data_id;
         $data['i_tmp_school_creation_data_id'] = $i_tmp_school_creation_data_id;
-        $data['publishable_key'] = $stripe['publishable_key'];
         $data['error'] = $error;
         $data['message'] = $message;
-
+        
         $this->load_view('checkout/' . $payment_gateway . '/_form', $data);
     }
 
@@ -246,15 +319,7 @@ class Checkout extends CI_Controller {
         );
 
         $data = array_merge($data, $this->before_insert());
-        if (!$this->db->insert('stripe_customer', $data)) {
-
-            $_ar_errors['message'] = $this->db->_error_message();
-            $_ar_errors['code'] = $this->db->_error_number();
-            $_ar_errors['type'] = 'createStripeCustomer';
-
-            $this->error_logs->record($_ar_errors);
-            return 0;
-        }
+        $this->db->insert('stripe_customer', $data);
 
         return $this->db->insert_id();
     }
@@ -271,14 +336,7 @@ class Checkout extends CI_Controller {
 
         $data = array_merge($data, $this->before_insert());
 
-        if (!$this->db->insert('tds_transaction', $data)) {
-            $_ar_errors['message'] = $this->db->_error_message();
-            $_ar_errors['code'] = $this->db->_error_number();
-            $_ar_errors['type'] = 'createTransaction';
-
-            $this->error_logs->record($_ar_errors);
-            return 0;
-        }
+        $this->db->insert('tds_transaction', $data);
 
         return $this->db->insert_id();
     }
@@ -301,16 +359,7 @@ class Checkout extends CI_Controller {
         );
 
         $this->db->set_dbprefix('tds_');
-        if (!$this->db->insert('school_transaction', $data)) {
-
-            $_ar_errors['message'] = $this->db->_error_message();
-            $_ar_errors['code'] = $this->db->_error_number();
-            $_ar_errors['type'] = 'createSchoolTransaction';
-
-            $this->error_logs->record($_ar_errors);
-            return FALSE;
-        }
-        return TRUE;
+        return $this->db->insert('school_transaction', $data);
     }
 
     private function before_insert() {
@@ -416,15 +465,7 @@ class Checkout extends CI_Controller {
         $data['school_id'] = $ar_code['school_id'];
         $this->db->where('code', $ar_code['code']);
 
-        if (!$this->db->update('school_codes', $data)) {
-
-            $_ar_errors['message'] = $this->db->_error_message();
-            $_ar_errors['code'] = $this->db->_error_number();
-            $_ar_errors['type'] = 'updateSchoolCode';
-
-            return FALSE;
-        }
-        return TRUE;
+        return $this->db->update('school_codes', $data);
     }
 
     private function validatePaymentCode($ar_code) {

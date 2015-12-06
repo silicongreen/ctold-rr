@@ -24,7 +24,7 @@ class School {
 
         $this->_ci->load->model('tmp');
         $this->_ar_data = $param = $this->_ci->tmp->getData($i_tmp_school_creation_data_id);
-        $this->_ci->tmp->delete($i_tmp_school_creation_data_id);
+        //$this->_ci->tmp->delete($i_tmp_school_creation_data_id);
 
         $this->_ar_tmp_free_user_data = $ar_tmp_free_user_data;
 

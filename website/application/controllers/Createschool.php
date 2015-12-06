@@ -50,18 +50,18 @@ class Createschool extends CI_Controller {
 
         if (method_exists($this->model, 'getCategories')) {
             $this->model->init($school_id);
-            
+
             $categories_data = $this->model->getCategories();
-            if($categories_data !== FALSE) {
+            if ($categories_data !== FALSE) {
                 $data['categories'] = $this->model->formatForDropdown($categories_data);
             }
         }
 
         if (method_exists($this->model, 'getCourses')) {
             $this->model->init($school_id);
-            
+
             $course_data = $this->model->getCourses();
-            if($course_data !== FALSE) {
+            if ($course_data !== FALSE) {
                 $data['courses'] = $this->model->formatForDropdown($course_data);
             }
         }
@@ -92,9 +92,18 @@ class Createschool extends CI_Controller {
 
             $response = array();
             $model_name = array_keys($_POST);
-
+            
+            if ($model_name[0] == 'course') {
+                
+                $model_name[1] = 'course';
+                $_POST[$model_name[1]] = $_POST[$model_name[0]];
+                
+                $model_name[0] = 'shift';
+                $_POST[$model_name[0]][] = 'General';
+            }
+            
             if (count($model_name) > 1) {
-
+               
                 $this->load->model($model_name[1], 'model');
                 $this->model->init($school_id);
 
@@ -112,6 +121,7 @@ class Createschool extends CI_Controller {
                 $this->model->init($school_id);
 
                 $data = $this->model->create($_POST[$model_name[0]]);
+
             }
 
             if (!isset($data['error']) && ($data != FALSE)) {
@@ -127,11 +137,11 @@ class Createschool extends CI_Controller {
     }
 
     public function userregister($school_type = "free") {
-
+        
         if ($school_type != "paid" && $school_type != "free") {
             redirect("createschool/type");
         }
-
+        
         if (!empty($_POST)) {
 
             if (isset($_POST['school_type']) && !empty($_POST['school_type'])) {
@@ -219,12 +229,18 @@ class Createschool extends CI_Controller {
         if (!$this->input->is_ajax_request()) {
             exit('No direct script access allowed');
         }
+        
+        $this->load->config('create_school');
+        $config = $this->config->config['create_school'];
 
         $notify = $this->input->post('notify');
         $i_free_user_id = $this->input->post('i_free_user_id');
         $i_tmp_school_created_data_id = $this->input->post('i_tmp_school_created_data_id');
-
-        $this->sendMail($i_tmp_school_created_data_id, $i_free_user_id);
+        
+        if($config['mode'] == 'live') {
+            $this->sendMail($i_tmp_school_created_data_id, $i_free_user_id);
+        }
+        
         $response['success'] = 'done';
 
         echo json_encode($response);
@@ -331,14 +347,19 @@ class Createschool extends CI_Controller {
         if (!$this->input->is_ajax_request()) {
             exit('No direct script access allowed');
         }
+        
+        $this->load->config('create_school');
+        $config = $this->config->config['create_school'];
 
         $code = $this->input->post('code');
         $type = $this->input->post('type');
 
         $this->load->library('school');
         $this->school->setCode($code);
-
-        if ($this->school->createSubdomains($type)) {
+        
+        $b_subdomain_created = ($config['mode'] == 'live') ? $this->school->createSubdomains($type) : TRUE;
+        
+        if ($b_subdomain_created) {
             $response['success'] = 'done';
         } else {
             $response['error'] = 'error';
@@ -368,7 +389,7 @@ class Createschool extends CI_Controller {
     }
 
     private function sendMail($i_tmp_school_created_data_id = 0, $i_free_user_id = 0) {
-
+        
         $this->load->config('create_school');
         $this->load->library('school');
 
@@ -382,7 +403,7 @@ class Createschool extends CI_Controller {
 
         $config['protocol'] = 'smtp';
         $config['smtp_host'] = 'host.champs21.com';   //examples: ssl://smtp.googlemail.com, myhost.com
-        $config['smtp_user'] = 'info@classtune.com';
+        $config['smtp_user'] = 'info@champs21.com';
         $config['smtp_pass'] = '174097@hM&^256';
         $config['smtp_port'] = '465';
         $config['charset'] = 'utf-8';  // Default should be utf-8 (this should be a text field)

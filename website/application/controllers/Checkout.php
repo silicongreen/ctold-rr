@@ -242,7 +242,6 @@ class Checkout extends CI_Controller {
                                 "price"         => $no_of_student * $unit_price,
                                 "type"          => "product",
                                 "quantity"      => "1",
-                                "startupFee"    => $this->config->config['PaymentRules']['recurrence_unit'],
                                 "recurrence"    => $this->config->config['PaymentRules']['recurrence_unit'] . " " . $this->config->config['PaymentRules']['recurrence_type']
                             ),
                             "billingAddr"   => array(
@@ -264,6 +263,8 @@ class Checkout extends CI_Controller {
                                 "email"     => $_POST['email']
                             ),
                         );
+                        print_r($a_request);
+                        exit;
                         $o_charge = Twocheckout_Charge::auth($a_request);
                         if ( $o_charge['response']['responseCode'] == 'APPROVED' )
                         {

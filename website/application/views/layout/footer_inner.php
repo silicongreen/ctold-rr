@@ -54,7 +54,14 @@
     <ul>
         <li><span onclick="window.location = '<?php echo base_url(); ?>'">Home</span></li>
         <!--li><span onclick="window.location ='<?php echo base_url(); ?>?locale=about'">About us</span></li-->
-        <li><span onclick="window.location = '<?php echo base_url(); ?>?locale=feature'">Features</span></li>
+        <li><span onclick="window.location = '<?php echo base_url(); ?>?locale=feature'">Features</span>
+            <ul>
+                <li><a href="<?php echo base_url(); ?>signup/admin" >I'm School Admin</a></li>
+                <li><a href="<?php echo base_url(); ?>signup/student" >I'm Student</a></li>
+                <li><a href="<?php echo base_url(); ?>signup/guardian" >I'm Parent</a></li>
+                <li><a href="<?php echo base_url(); ?>signup/teacher" >I'm Teacher</a></li>
+            </ul>
+        </li>
         <li><span onclick="window.location = '<?php echo base_url(); ?>?locale=contact'">Contact</span></li>
         <?php $this->load->view("layout/login"); ?>
     </ul>

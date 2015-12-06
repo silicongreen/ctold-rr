@@ -236,12 +236,7 @@ class Checkout extends CI_Controller {
                             "merchantOrderId" => uniqid(),
                             "token" => $_POST['token_request'],
                             "currency" => 'USD',
-                            "lineItems" => array(
-                                "name"          => $this->config->config['PaymentParams']['2Checkout']['product_name'],
-                                "price"         => number_format($no_of_student * $unit_price, 2),
-                                "type"          => "product",
-                                "recurrence"    => "1 Week"
-                            ),
+                            "total"         => number_format($no_of_student * $unit_price, 2),
                             "billingAddr"   => array(
                                 "name"      => $_POST['billing_name'],
                                 "addrLine1" => $_POST['street_address'],

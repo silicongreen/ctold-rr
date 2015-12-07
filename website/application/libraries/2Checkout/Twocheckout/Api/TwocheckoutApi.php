@@ -40,6 +40,7 @@ class Twocheckout_Api_Requester
         if ($this->verifySSL == false) {
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
         }
+        print_r($data);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
         curl_setopt($ch, CURLOPT_USERAGENT, "2Checkout PHP/0.1.0%s");

@@ -234,10 +234,10 @@ class Checkout extends CI_Controller {
                     //try {
                         $a_request = array(
                             "sellerId" => $this->config->config['PaymentParams']['2Checkout']['sellerID'],
-                            "merchantOrderId" => "22232",
-                            "token" => $_POST['token_request'],
+                            "merchantOrderId" => "123",
+                            "token" => trim($_POST['token_request']),
                             "currency" => 'USD',
-                            "total"         => "0.99",
+                            "total"         => "10.99",
                             "billingAddr"   => array(
                                 "name"      => $_POST['billing_name'],
                                 "addrLine1" => $_POST['street_address'],
@@ -246,16 +246,7 @@ class Checkout extends CI_Controller {
                                 "zipCode"   => $_POST['zip_code'],
                                 "country"   => $_POST['country'],
                                 "email"     => $_POST['email']
-                            ),
-                            "shippingAddr"   => array(
-                                "name"      => $_POST['billing_name'],
-                                "addrLine1" => $_POST['street_address'],
-                                "city"      => $_POST['city'],
-                                "state"     => $_POST['state'],
-                                "zipCode"   => $_POST['zip_code'],
-                                "country"   => $_POST['country'],
-                                "email"     => $_POST['email']
-                            ),
+                            )
                         );
                         print '<pre>';
                         print_r($a_request);

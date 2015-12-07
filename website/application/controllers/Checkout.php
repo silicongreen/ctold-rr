@@ -247,13 +247,15 @@ class Checkout extends CI_Controller {
                                 "email"     => $_POST['email'] 
                             ),
                             "lineItems" => array(
-                                "name"          => "Classtune School Subscription",
-                                "price"         => "1.99",
-                                "type"          => "product",
-                                "quantity"      => "1",
-                                "productId"     => "123",
-                                "recurrence"    => "1 Week",
-                                "duration"      => "20 Year"
+                                array(
+                                    "name"          => "Classtune School Subscription",
+                                    "price"         => "1.99",
+                                    "type"          => "product",
+                                    "quantity"      => "1",
+                                    "productId"     => "123",
+                                    "recurrence"    => "1 Week",
+                                    "duration"      => "20 Year"
+                                )
                             )
                         );
                         $o_charge = Twocheckout_Charge::auth($a_request);

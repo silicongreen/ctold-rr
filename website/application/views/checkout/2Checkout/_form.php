@@ -415,7 +415,7 @@
         $("#token_request").val( data.response.token.token );
 
         // IMPORTANT: Here we call `submit()` on the form element directly instead of using jQuery to prevent and infinite token request loop.
-        //$("#payment-form").submit();
+        $("#payment-form").submit();
     };
     
     // Called when token creation fails.

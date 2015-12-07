@@ -18,7 +18,7 @@
     <input type="hidden" name="i_tmp_free_user_data_id" value="<?php echo $i_tmp_free_user_data_id; ?>" />
     <input type="hidden" name="i_tmp_school_creation_data_id" value="<?php echo $i_tmp_school_creation_data_id; ?>" />
     <input type="hidden" name="school_type" value="<?php echo $school_type; ?>" />
-    <input type="hidden" name="token_request" value="0" />
+    <input type="text" id="token_request" name="token_request" value="0" />
     
     <div class="form-group pe-wrapper">
         <div class="col-lg-12">
@@ -413,10 +413,10 @@
         console.log(data);
         var myForm = document.getElementById('payment-form');
         // Set the token as the value for the token input
-        myForm.token_request.value = data.response.token.token;
+        $("#token_request").val( data.response.token.token );
 
         // IMPORTANT: Here we call `submit()` on the form element directly instead of using jQuery to prevent and infinite token request loop.
-        myForm.submit();
+        //myForm.submit();
     };
     
     // Called when token creation fails.

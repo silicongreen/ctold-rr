@@ -21,6 +21,7 @@ class Twocheckout_Api_Requester
 	function doCall($urlSuffix, $data=array())
     {
         $url = $this->baseUrl . $urlSuffix;
+        print $url;
         $ch = curl_init($url);
         if (isset($data['api'])) {
             unset( $data['api'] );
@@ -44,6 +45,8 @@ class Twocheckout_Api_Requester
         curl_setopt($ch, CURLOPT_USERAGENT, "2Checkout PHP/0.1.0%s");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         $resp = curl_exec($ch);
+        print_r($resp);
+        exit;
         curl_close($ch);
         if ($resp === FALSE) {
             throw new Twocheckout_Error("cURL call failed", "403");

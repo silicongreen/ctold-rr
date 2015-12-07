@@ -431,12 +431,12 @@
     var tokenRequest = function() {
         // Setup token request arguments
         var args = {
-          sellerId: "<?php echo $seller_id; ?>",
-          publishableKey: "<?php echo $public_key; ?>",
-          ccNo: $("#card_number").val(),
-          cvv: $("#cvv").val(),
-          expMonth: $("#expire_month").val(),
-          expYear: $("#expire_year").val()
+          sellerId: "901300257",
+          publishableKey: "FF3CBFCB-D0FE-4E03-A1EE-2FC6ED240962",
+          ccNo: '4222222222222220',
+          cvv: '123',
+          expMonth: '12',
+          expYear: '2017'
         };
 
         // Make the token request
@@ -446,10 +446,7 @@
     
     $(function() {
         // Pull in the public encryption key for our environment
-        TCO.loadPubKey('<?php echo $payment_type; ?>', function() {  // for sandbox environment
-                alert('pahela');
-                publishableKey = "<?php echo $public_key; ?>"//your public key
-        });
+        TCO.loadPubKey('sandbox');
 
         $("#checkout").click(function(){
             // Call our token request function

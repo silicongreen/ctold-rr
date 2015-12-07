@@ -249,6 +249,8 @@ class Checkout extends CI_Controller {
                             )
                         );
                         $o_charge = Twocheckout_Charge::auth($a_request);
+                        print_r($o_charge);
+                        exit;
                         if ( $o_charge['response']['responseCode'] == 'APPROVED' )
                         {
                             $data = $this->paidSchoolProcess($i_tmp_school_creation_data_id, $i_tmp_free_user_data_id);

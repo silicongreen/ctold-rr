@@ -18,7 +18,7 @@
 		<div id="cronWrap" style="background-color:#F4FAFA;background-image:none;top:500px;height:800px;">
 			<div style="border: 0 solid #ccc;left: 50%;margin: 0 0 0 -499px;position: absolute;width: 1000px;padding:55px 10px 0;">
 				<h2 class="f2" style="text-align:center;"><i>Parents, Be on your child’s side when they achieve their goals!</i></h2><br>
-				<p style="font-size:16px;"><b>classtune</b> not only provides more visibility and actionable insight into your child’s learning trajectory, but also gives you something you can access on the go and on your schedule. By broadening the reach to you, classtune has enliven the world of learning even more for your child so they can achieve their full potential.</p><br>
+				<p style="font-size:16px;"><b>ClassTune</b> not only provides more visibility and actionable insight into your child’s learning trajectory, but also gives you something you can access on the go and on your schedule. By broadening the reach to you, ClassTune has enliven the world of learning even more for your child so they can achieve their full potential.</p><br>
 				<div id="slider"  class="flexslider" style="margin-top:30px;width:1000px;">
 					<ul class="slides">
 						<li>

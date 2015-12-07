@@ -18,12 +18,12 @@
 		<div id="cronWrap" style="background-color:#F4FAFA;background-image:none;top:500px;height:800px;">
 			<div style="border: 0 solid #ccc;left: 50%;margin: 0 0 0 -499px;position: absolute;width: 1000px;padding:55px 10px 0;">
 				<h2 class="f2" style="text-align:center;"><i>Teachers, now you can focus more on your academic plans!</i></h2><br>
-				<p style="font-size:16px;"><b>classtune</b> is designed in such a way that gives you the complete control over your digital
+				<p style="font-size:16px;"><b>ClassTune</b> is designed in such a way that gives you the complete control over your digital
 
-classroom. classtune empowers you to build relationships with your students in an 
+classroom. ClassTune empowers you to build relationships with your students in an 
 
-environment they know and love. classtune  is free for teachers and always will be. </p>
-                               <p style="font-size:16px;"> With everything on one platform, classtune reinforces and enhances what you're
+environment they know and love. ClassTune  is free for teachers and always will be. </p>
+                               <p style="font-size:16px;"> With everything on one platform, ClassTune reinforces and enhances what you're
 
 already doing in the classroom.</p>
 				<div id="slider"  class="flexslider" style="margin-top:30px;width:1000px;">

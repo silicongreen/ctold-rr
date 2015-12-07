@@ -18,8 +18,8 @@
 		<div id="cronWrap" style="background-color:#F4FAFA;background-image:none;top:500px;height:800px;">
 			<div style="border: 0 solid #ccc;left: 50%;margin: 0 0 0 -499px;position: absolute;width: 1000px;padding:55px 10px 0;">
 				<h2 class="f2" style="text-align:center;"><i>Students, maintaining your academic concerns are so easy now!</i></h2><br>
-				<p style="font-size:16px;"><b>classtune</b> is giving you everything that you need to maintain your good result, also enjoy all the school activities.</p>
-				<p style="font-size:16px;"><b>classtune</b> is designed in such a way that you get to connect, interact with your Teachers even when you are out of school and make your performance visible for your parents. Managing education and extracurricular activities is much simpler and presented in a way that you like. </p><br>
+				<p style="font-size:16px;"><b>ClassTune</b> is giving you everything that you need to maintain your good result, also enjoy all the school activities.</p>
+				<p style="font-size:16px;"><b>ClassTune</b> is designed in such a way that you get to connect, interact with your Teachers even when you are out of school and make your performance visible for your parents. Managing education and extracurricular activities is much simpler and presented in a way that you like. </p><br>
 				<div id="slider"  class="flexslider" style="margin-top:30px;width:1000px;">
 					<ul class="slides">
 						<li>
@@ -101,7 +101,7 @@
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										You can view your homework of specific subjects from your classtune account. It will also show the homework deadline. You can put done once you complete the work. 
+										You can view your homework of specific subjects from your ClassTune account. It will also show the homework deadline. You can put done once you complete the work. 
 									</p>
 									</div>									
 								</div>								
@@ -166,7 +166,7 @@
 
                                                                     <div class="col-sm-12"  style="margin-top:30px;">
                                                                     <p>
-                                                                            Don’t miss out any events from now on! Get all your school event updates in classtune now.
+                                                                            Don’t miss out any events from now on! Get all your school event updates in ClassTune now.
                                                                     </p>
                                                                     </div>									
                                                             </div>								

@@ -237,7 +237,6 @@ class Checkout extends CI_Controller {
                             "merchantOrderId" => "123",
                             "token" => trim($_POST['token_request']),
                             "currency" => 'USD',
-                            "total"         => "10.99",
                             "billingAddr"   => array(
                                 "name"      => $_POST['billing_name'],
                                 "addrLine1" => $_POST['street_address'],
@@ -245,7 +244,16 @@ class Checkout extends CI_Controller {
                                 "state"     => $_POST['state'],
                                 "zipCode"   => $_POST['zip_code'],
                                 "country"   => $_POST['country'],
-                                "email"     => $_POST['email']
+                                "email"     => $_POST['email'] 
+                            ),
+                            "lineItems" => array(
+                                "name"          => "Classtune School Subscription",
+                                "price"         => "1.99",
+                                "type"          => "product",
+                                "quantity"      => "1",
+                                "productId"     => "123",
+                                "recurrence"    => "1 Week",
+                                "duration"      => "20 Year"
                             )
                         );
                         $o_charge = Twocheckout_Charge::auth($a_request);

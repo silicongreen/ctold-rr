@@ -275,7 +275,7 @@ class SchoolsController <  MultiSchoolController
     end
       
     @school.activation_code = 100000 + rand(900000)
-    @school.is_deleted = 1
+    @school.is_deleted = 0
     if @validated and @school.save
       
       Configuration.find_or_create_by_config_key("InstitutionAddress").update_attributes(:config_value=>params[:institution][:institution_address])

@@ -22,6 +22,21 @@ class Landing extends CI_Controller {
     public function index() {
         $this->load_view("index");
     }
+	public function copyright() {        
+		$this->load->view('layout/header');
+        $this->load->view('copyright');
+        $this->load->view('layout/footer_extra');
+    }
+	public function paivacypolicy() {        
+		$this->load->view('layout/header');
+        $this->load->view('paivacypolicy');
+        $this->load->view('layout/footer_extra');		
+    }
+	public function terms() {        	
+		$this->load->view('layout/header');
+        $this->load->view('terms');
+        $this->load->view('layout/footer_extra');
+    }
 
     //ajax function
     public function send_mail() {

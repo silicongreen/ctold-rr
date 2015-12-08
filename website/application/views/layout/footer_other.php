@@ -29,7 +29,7 @@
                     </div>
                     <div style="float: left;margin-left: 370px;margin-top: 0px;">
                         <a href="<?php echo base_url(); ?>" title="" target="_blank">
-                            <img src="<?php echo base_url(); ?>images/logo/classtune-footer-logo.png" alt="" title="" width="215" height="" />
+                            <img src="<?php echo base_url(); ?>images/logo/classtune-footer-logo.png" alt="" title="" width="170" height="" />
                         </a>
                     </div>
 

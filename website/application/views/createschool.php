@@ -7,7 +7,7 @@
           
             <div class="col-md-12"  style="padding:0px; ">
                 <h2 class="lead text-center editContent"  style="color:#66D56A; font-weight: bold;margin-top: 20px;">
-                    CREATE SCHOOL
+                    Create your School
                 </h2>
             </div>
 
@@ -38,16 +38,15 @@
                     <div class="form-group">
                           <label class="col-md-2 control-label" for="school_code"></label> 
                           <div class="col-md-8">
-                                <input type="text" value="<?php echo $this->input->post("name") ?>" class="form-control input-md" id="school_name" name="name" placeholder="School Name *" required>
-                                <span class="help-block"><font color="#ccc" size="1">More then 5 character</font></span>
+                                <input type="text" value="<?php echo $this->input->post("name") ?>" class="form-control input-md" id="school_name" name="name" placeholder="Enter School Name *" required="required" />
+                                <!--<span class="help-block"><font color="#ccc" size="1">More then 5 character</font></span>-->
                           </div>
                     </div>
 
                     <div class="form-group">
                           <label class="col-md-2 control-label" for="school_code"></label> 
                           <div class="col-md-8">
-                            <input type="text" value="<?php echo $this->input->post("institution_address") ?>" class="form-control input-md" id="institution_address" name="institution_address" placeholder="Institution Address *" required>
-                            <span class="help-block"><font color="#ccc" size="1">More then 8 character</font></span>
+                            <input type="text" value="<?php echo $this->input->post("institution_address") ?>" class="form-control input-md" id="institution_address" name="institution_address" placeholder="School Address *" required="required" />
 
                             </div>
                     </div>
@@ -55,8 +54,7 @@
                     <div class="form-group">
                           <label class="col-md-2 control-label" for="school_code"></label> 
                           <div class="col-md-8">
-                            <input type="text" value="<?php echo $this->input->post("institution_phone_no") ?>" class="form-control input-md" id="institution_phone_no" name="institution_phone_no" placeholder="Institution phone no *" required />
-                            <span class="help-block"><font color="#ccc" size="1">More then 5 number</font></span>
+                            <input type="text" value="<?php echo $this->input->post("institution_phone_no") ?>" class="form-control input-md" id="institution_phone_no" name="institution_phone_no" placeholder="Contact Number *" required="required" />
                         </div>
                     </div>
                     <?php if ($school_type == "paid"): ?>
@@ -71,7 +69,7 @@
                     <div class="form-group">
                           <label class="col-md-2 control-label" for="school_code"></label> 
                           <div class="col-md-8">
-                            <input type="text" value="<?php echo $this->input->post("code") ?>" class="form-control input-md" id="code" name="code" placeholder="Required Subdomain *" required />
+                            <input type="text" value="<?php echo $this->input->post("code") ?>" class="form-control input-md" id="code" name="code" placeholder="Enter the Subdomain *" required="required" />
                             <span class="help-block"><font color="#ccc" size="1">Short code (3 to 8 character no space no special character ex: mos => Monipur school)</font></span>
                         </div>
                     </div>

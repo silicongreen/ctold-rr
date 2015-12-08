@@ -6,7 +6,7 @@ class Signup extends CI_Controller {
 
     public function index() {
         $data['user_type'] = $this->input->get("user_type");
-        $data['back_url'] = base_url().'/login';
+        $data['back_url'] = base_url().'login';
         $this->load_view('signup',$data);
     }
     

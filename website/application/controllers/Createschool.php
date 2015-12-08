@@ -150,7 +150,7 @@ class Createschool extends CI_Controller {
 
             $this->form_validation->set_rules('first_name', 'First Name', 'required|min_length[3]');
             $this->form_validation->set_rules('last_name', 'Last Name', 'required|min_length[3]');
-            $this->form_validation->set_rules('email', 'Email', 'required|valid_email|callback_email_check');
+            $this->form_validation->set_rules('email', 'email', 'required|valid_email|callback_email_check');
             $this->form_validation->set_rules('confirm_email', 'Confirm Email', 'required|valid_email|matches[email]');
             $this->form_validation->set_rules('password', 'Password', 'required|min_length[6]');
             $this->form_validation->set_rules('confirm_password', 'Confirm Password', 'required|min_length[6]|matches[password]');
@@ -195,7 +195,7 @@ class Createschool extends CI_Controller {
         $this->db->where("email", $str);
         $user_data = $this->db->get("free_users")->row();
         if ($user_data) {
-            $this->form_validation->set_message('email_check', '{field} Address is already taken');
+            $this->form_validation->set_message('email_check', 'This {field} address is already in use.');
             return FALSE;
         } else {
             return TRUE;

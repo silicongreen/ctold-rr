@@ -30,63 +30,58 @@
                             <input type="hidden" name="school_type" value="<?php echo $school_type; ?>" />
 
                             <div class="form-group">
-                                <label class="col-md-2 control-label" for="school_code"></label> 
+                                <label class="col-md-2 control-label" for="first_name"></label> 
                                 <div class="col-md-8">
-                                    <input type="text" value="<?php echo $this->input->post("first_name") ?>" class="form-control input-md" name="first_name" placeholder="First Name *" required>
-                                    <span class="help-block"><font color="#ccc" size="1">More then 3 character</font></span>
-
+                                    <input id="first_name" type="text" value="<?php echo $this->input->post("first_name") ?>" class="form-control input-md" name="first_name" placeholder="First Name *" required="required" />
                                 </div>
                             </div>
+                            
                             <div class="form-group">
-                                <label class="col-md-2 control-label" for="school_code"></label> 
+                                <label class="col-md-2 control-label" for="last_name"></label> 
                                 <div class="col-md-8">
-                                    <input type="text" value="<?php echo $this->input->post("last_name") ?>" class="form-control input-md" name="last_name" placeholder="Last Name *" required>
-                                    <span class="help-block"><font color="#ccc" size="1">More then 3 character</font></span>
+                                    <input id="last_name" type="text" value="<?php echo $this->input->post("last_name") ?>" class="form-control input-md" name="last_name" placeholder="Last Name *" required="required" />
                                 </div>
-                            </div>
-
-
-                            <div class="form-group">
-                                <label class="col-md-2 control-label" for="school_code"></label> 
-                                <div class="col-md-8">
-                                    <input type="email" value="<?php echo $this->input->post("email") ?>" class="form-control input-md" id="email" name="email" placeholder="Email *" required>
-                                    <span class="help-block"><font color="#ccc" size="1">Valid Email</font></span>
-                                </div>
-
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-2 control-label" for="school_code"></label> 
-                                <div class="col-md-8">
-                                    <input type="email" value="<?php echo $this->input->post("confirm_email") ?>" class="form-control input-md" name="confirm_email" placeholder="Confirm Email *" required>
-                                    <span class="help-block"><font color="#ccc" size="1">Confirm Email Match Email Address</font></span>
-                                </div>
-
                             </div>
 
                             <div class="form-group">
-                                <label class="col-md-2 control-label" for="school_code"></label> 
+                                <label class="col-md-2 control-label" for="email"></label> 
                                 <div class="col-md-8">
-                                    <input type="password" class="form-control input-md"  name="password" placeholder="Password *" required>
-                                    <span class="help-block"><font color="#ccc" size="1">More then 6 character</font></span>
+                                    <input id="email" type="email" value="<?php echo $this->input->post("email") ?>" class="form-control input-md" name="email" placeholder="Enter valid email address *" required="required" />
+                                    <span class="help-block"><font color="#ccc" size="1">Your email address is your username.</font></span>
                                 </div>
                             </div>
+                            
+                            <div class="form-group">
+                                <label class="col-md-2 control-label" for="conf_email"></label> 
+                                <div class="col-md-8">
+                                    <input id="conf_email" type="email" value="<?php echo $this->input->post("confirm_email") ?>" class="form-control input-md" name="confirm_email" placeholder="Confirm Email *" required="required" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-2 control-label" for="password"></label> 
+                                <div class="col-md-8">
+                                    <input id="password" type="password" class="form-control input-md"  name="password" placeholder="Password *" required="required" />
+                                    <span class="help-block"><font color="#ccc" size="1">Password must be at least 6 characters.</font></span>
+                                </div>
+                            </div>
+                            
                             <div class="form-group">
                                 <label class="col-md-2 control-label" for="school_code"></label> 
                                 <div class="col-md-8">
-                                    <input type="password" class="form-control input-md"  name="confirm_password" placeholder="Confirm Password *" required>
-                                    <span class="help-block"><font color="#ccc" size="1">Match Password</font></span>
-
+                                    <input type="password" class="form-control input-md"  name="confirm_password" placeholder="Confirm Password *" required="required" />
                                 </div>
-
                             </div>
+                            
                             <div class="form-group">
-                                <label class="col-md-2 control-label" for="singlebutton"></label>
+                                <label class="col-md-2 control-label" for="submit"></label>
                                 <div class="col-md-8">
                                     <button name="submit" type="submit" id="submit" class="btn btn-primary btn-success btn-lg">
-                                        <i class="fa fa-thumbs-up"></i> SEND
+                                        <i class="fa fa-thumbs-up"></i> Create Account
                                     </button>
                                 </div>
                             </div>
+                            
                         </form>
 
                     </div><!-- /.col-md-5 -->

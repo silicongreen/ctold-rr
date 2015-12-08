@@ -27,7 +27,7 @@ class Landing extends CI_Controller {
         $this->load->view('copyright');
         $this->load->view('layout/footer_extra');
     }
-	public function paivacypolicy() {        
+	public function privacypolicy() {        
 		$this->load->view('layout/header');
         $this->load->view('paivacypolicy');
         $this->load->view('layout/footer_extra');		

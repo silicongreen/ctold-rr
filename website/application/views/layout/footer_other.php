@@ -37,7 +37,7 @@
                         <ul>									
                             <li><a href="<?php echo base_url(); ?>landing/terms" style="color:#999;">Terms</a></li>
                             <li style="color:#64B846;">|</li>
-                            <li><a href="<?php echo base_url(); ?>landing/privacy-policy" style="color:#999;">Privacy Policy</a></li>
+                            <li><a href="<?php echo base_url(); ?>landing/privacypolicy" style="color:#999;">Privacy Policy</a></li>
                             <li style="color:#64B846;">|</li>
                             <li><a href="<?php echo base_url(); ?>landing/copyright" style="color:#999;">Copyright</a></li>									
                         </ul>

@@ -299,7 +299,7 @@
 
                     </div>
                     <div class="hitem slide" id="hitem_48" style="top: 350px; left: 5700px; width: 180; height: 210px;" data-stellar-ratio="0.85" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-                        <img src="<?php echo base_url(); ?>slider/Slide-4/Layer-3/form.png" alt="" title="" width="200" />
+                        <img src="<?php echo base_url(); ?>slider/Slide-4/Layer-3/form_green.png" alt="" title="" width="200" />
 
                         <div class="texticon" style="top: 60px; left: 175px;">
                             <div class="text_l text_layer" data-value="forms_layer">

@@ -301,7 +301,7 @@
                     <div class="hitem slide" id="hitem_48" style="top: 350px; left: 5700px; width: 180; height: 210px;" data-stellar-ratio="0.85" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
                         <img src="<?php echo base_url(); ?>slider/Slide-4/Layer-3/form.png" alt="" title="" />
 
-                        <div class="texticon" style="top: -40px; left: 30px;">
+                        <div class="texticon" style="top: 60px; left: 175px;">
                             <div class="text_l text_layer" data-value="forms_layer">
                                 <div class="cb_top">&nbsp;</div>
                                 <div class="cb_middle">
@@ -371,7 +371,7 @@
 
 
                     </div>
-                    <div class="hitem" id="hitem_9" style="top: 435px; left: 800px; width: 215px; height: 200;">
+                    <div class="hitem" id="hitem_9" style="top: 415px; left: 800px; width: 215px; height: 200;">
                         <img src="<?php echo base_url(); ?>slider/Slide-1/Layer-3/routine.png" alt="" title="" width="225" />
 
                     </div>
@@ -424,10 +424,10 @@
                         <img src="<?php echo base_url(); ?>slider/Slide-2/Layer-2/pencil.png" alt="" title="" width="100" />					
                     </div>
 
-                    <div class="hitem" id="hitem_27" style="top: 385px; left: 2600px; width: 210px; height: 135px;">
+                    <div class="hitem" id="hitem_27" style="top: 370px; left: 2600px; width: 210px; height: 135px;">
                         <img src="<?php echo base_url(); ?>slider/Slide-2/Layer-3/school.png" alt="" title="" width="200" />
 
-                        <div class="texticon" style="top: 0px; left: 10px;">
+                        <div class="texticon" style="top: -55px; left: 60px;">
                             <div class="text_l text_layer" data-value="reportcard_layer">
                                 <div class="cb_top">&nbsp;</div>
                                 <div class="cb_middle">
@@ -588,7 +588,7 @@
 
                     </div>
                     <div class="hitem" id="hitem_47" style="top: 396px; left: 6180px; width: 440px; height: 150px;">
-                        <img src="<?php echo base_url(); ?>slider/Slide-4/Layer-4/boy.png" alt="" title="" />
+                        <img src="<?php echo base_url(); ?>slider/Slide-4/Layer-4/boy.png" alt="" title="" width="170"  />
 
                     </div>
 

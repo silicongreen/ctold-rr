@@ -567,11 +567,11 @@ class StudentController < ApplicationController
         @sib_guardian = sibling.student_guardian
         unless @sib_guardian.empty?
           @sib_guardian.each do |sg|
-            check_guardian = GuardianStudents.find_by_student_id_and_guardian_id(@student.id,sg.guardian_id)
+            check_guardian = GuardianStudents.find_by_student_id_and_guardian_id(@student.id,sg.id)
             if check_guardian.nil?
               stdgu = GuardianStudents.new
               stdgu.student_id = @student.id
-              stdgu.guardian_id = sg.guardian_id
+              stdgu.guardian_id = sg.id
               stdgu.save
             end  
           end

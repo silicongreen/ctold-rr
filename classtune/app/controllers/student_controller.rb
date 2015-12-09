@@ -463,26 +463,27 @@ class StudentController < ApplicationController
     @categories = StudentCategory.active
     if request.post?
       #abort(params[:student_activation_code].inspect)      
-      @activation_code_no_error = true
-      @activation_code_free = params[:student][:student_activation_code]
-      if @user.is_visible and @user.admin
-        if params[:student][:student_activation_code]==""
-          @activation_code_no_error = false
-          @student.errors.add("Activation Code", "must not be empty")
-        else
-          @activation_code = StudentActivationCode.find(:first,:conditions=>{:school_id=>MultiSchool.current_school.id,:code=> @activation_code_free,:is_active=>1}) 
-          #abort(@activation_code.inspect) 
-          if @activation_code.nil?
-            @activation_code_no_error = false
-            @student.errors.add("Invalid", "Activation Code"+MultiSchool.current_school.id.to_s+" ="+@activation_code_free+"=")
-          end
-        end
-      end
+#      @activation_code_no_error = true
+#      @activation_code_free = params[:student][:student_activation_code]
+#      if @user.is_visible and @user.admin
+#        if params[:student][:student_activation_code]==""
+#          @activation_code_no_error = false
+#          @student.errors.add("Activation Code", "must not be empty")
+#        else
+#          @activation_code = StudentActivationCode.find(:first,:conditions=>{:school_id=>MultiSchool.current_school.id,:code=> @activation_code_free,:is_active=>1}) 
+#          #abort(@activation_code.inspect) 
+#          if @activation_code.nil?
+#            @activation_code_no_error = false
+#            @student.errors.add("Invalid", "Activation Code"+MultiSchool.current_school.id.to_s+" ="+@activation_code_free+"=")
+#          end
+#        end
+#      end
       
       #Huffas: Save to Free and Student Guardian Log
       @student.save_log = true
       @student.save_to_free = true
       #Huffas: Task end
+      @activation_code_no_error = true
       
       if @activation_code_no_error == true
         if @config.config_value.to_i == 1
@@ -594,13 +595,14 @@ class StudentController < ApplicationController
     @student = Student.find params[:id]
     @guardian = Guardian.new(params[:guardian])
     if request.post? and @guardian.save
-      
-      stdgu = GuardianStudents.new
-      stdgu.student_id = @student.id
-      stdgu.guardian_id = @guardian.id
-      stdgu.save 
-      
-      Guardian.create_guardian_user(@student,false)
+      check_guardian = GuardianStudents.find_by_student_id_and_guardian_id(@student.id,@guardian.id)
+      if check_guardian.nil?
+        stdgu = GuardianStudents.new
+        stdgu.student_id = @student.id
+        stdgu.guardian_id = @guardian.id
+        stdgu.save
+      end
+      @guardian.create_guardian_user(@student,false)
       
       redirect_to :controller => "student", :action => "admission2", :id => @student.id
     end

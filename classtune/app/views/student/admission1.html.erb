@@ -83,12 +83,16 @@
               :year_range => 15.years.ago..5.years.from_now, :readonly=>true, :popup=>"force" %>
           </div>
         </div>
-        <% if @user.is_visible and @user.admin %>  
-        <div class="student_activation_code">
-          <label for="student_activation_code"><%= t('student_activation_code') %><span class="necessary-field">*</span> </label>
-          <div class="text-input-bg-activation-code"><%= s.text_field :student_activation_code %></div>
-        </div>
-        <% end %>
+        <%# if @user.is_visible or !@user.admin %>  
+        <%#*<div class="student_activation_code">%>
+          <%#*<label for="student_activation_code">%>
+                <%#= t('student_activation_code') %>
+              <%#*<span class="necessary-field">*</span> </label>%>
+          <%#*<div class="text-input-bg-activation-code">%>
+            <%#= s.text_field :student_activation_code %>
+          <%#*</div>%>
+        <%#*</div>%>
+        <%# end %>
       </div>
       
       <span class="span-sub-heading"><%= t('personal_details') %></span>

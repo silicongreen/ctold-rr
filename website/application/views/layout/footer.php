@@ -68,10 +68,10 @@
         <!--li class="start act"><span>About us</span></li-->
         <li class="cron"><span>Features</span>
             <ul>
-                <li><a href="<?php echo base_url(); ?>signup/admin" >I'm School Admin</a></li>
-                <li><a href="<?php echo base_url(); ?>signup/student" >I'm Student</a></li>
-                <li><a href="<?php echo base_url(); ?>signup/guardian" >I'm Parent</a></li>
-                <li><a href="<?php echo base_url(); ?>signup/teacher" >I'm Teacher</a></li>
+                <li><a href="<?php echo base_url(); ?>signup/admin" >School Admin</a></li>
+                <li><a href="<?php echo base_url(); ?>signup/student" >Student</a></li>
+                <li><a href="<?php echo base_url(); ?>signup/guardian" >Parent</a></li>
+                <li><a href="<?php echo base_url(); ?>signup/teacher" >Teacher</a></li>
             </ul>
         </li>
         <li class="images"><span>Contact</span></li>

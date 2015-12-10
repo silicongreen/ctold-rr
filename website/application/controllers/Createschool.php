@@ -298,7 +298,7 @@ class Createschool extends CI_Controller {
                 $school_code = $this->input->post('code');
                 $school_domain = $school_code . '.free.' . $config['main_domain'];
                 $country_call_code = $this->input->post('country_call_code');
-                $phone_number = $country_call_code . $this->input->post('institution_phone_no');
+                $phone_number = $country_call_code . '-' . $this->input->post('institution_phone_no');
                 
                 $ar_data['institution']['institution_address'] = $this->input->post('institution_address');
                 $ar_data['institution']['institution_phone_no'] = $phone_number;

@@ -31,5 +31,28 @@ $(document).ready(function () {
         });
 
     }
+    
+    $(document).off('click', '.country-list li').on('click', '.country-list li', function() {
+        
+        var country_id = $(this).attr('id');
+        var country_call_code = $(this).attr('data-call-code');
+        var country_text = $(this).text();
+        country_text += '<span class="caret"></span>';
+        
+        console.log(country_id);
+        console.log(country_call_code);
+        console.log(country_text);
+        
+        $('#dropdownMenu1').attr('data-coutntry-id', country_id);
+        $('#dropdownMenu1').html(country_text);
+        $('#country_call_code').val(country_call_code);
+        
+        if(country_call_code == '') {
+            $('#country_call_code').prop('readonly', false);
+        } else {
+            $('#country_call_code').prop('readonly', true);
+        }
+        
+    });
 
 });

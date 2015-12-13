@@ -72,6 +72,7 @@ class School {
 
                     $data['school_type'] = $this->_school_type;
                     $data['returned_school_info'] = $this->_returned_school_info;
+                    $data['school_id'] = $this->_returned_school_info['school']['id'];
                     $data['paid_user_data'] = $paid_user_data;
                     $data['success'] = TRUE;
                     return $data;

@@ -202,8 +202,10 @@ class Createschool extends CI_Controller {
         }
     }
 
-    public function success($school_type = 'free', $i_tmp_school_created_data_id = 0, $i_free_user_id = 0) {
-
+    public function success($school_type = 'free', $i_tmp_school_created_data_id = 0, $i_free_user_id = 0) 
+    {
+        print $school_type . "  " . $i_tmp_school_created_data_id . "  " . $i_free_user_id;
+        exit;
         if (!$school_type || ( $school_type != "paid" && $school_type != "free" )) {
             //redirect("createschool/type");
         }

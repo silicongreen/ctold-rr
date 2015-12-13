@@ -150,7 +150,7 @@ class Createschool extends CI_Controller {
 
             $this->form_validation->set_rules('first_name', 'First Name', 'required|min_length[3]');
             $this->form_validation->set_rules('last_name', 'Last Name', 'required|min_length[3]');
-            $this->form_validation->set_rules('email', 'email', 'required|valid_email|callback_email_check');
+            $this->form_validation->set_rules('email', 'Email', 'required|valid_email|callback_email_check');
             $this->form_validation->set_rules('confirm_email', 'Confirm Email', 'required|valid_email|matches[email]');
             $this->form_validation->set_rules('password', 'Password', 'required|min_length[6]');
             $this->form_validation->set_rules('confirm_password', 'Confirm Password', 'required|min_length[6]|matches[password]');
@@ -195,7 +195,7 @@ class Createschool extends CI_Controller {
         $this->db->where("email", $str);
         $user_data = $this->db->get("free_users")->row();
         if ($user_data) {
-            $this->form_validation->set_message('email_check', 'This {field} address is already in use.');
+            $this->form_validation->set_message('email_check', '{field} Address is already taken');
             return FALSE;
         } else {
             return TRUE;
@@ -205,7 +205,7 @@ class Createschool extends CI_Controller {
     public function success($school_type = 'free', $i_tmp_school_created_data_id = 0, $i_free_user_id = 0) {
 
         if (!$school_type || ( $school_type != "paid" && $school_type != "free" )) {
-            redirect("createschool/type");
+            //redirect("createschool/type");
         }
 
         $data = $this->tmp->getData($i_tmp_school_created_data_id);
@@ -259,9 +259,7 @@ class Createschool extends CI_Controller {
 
         $this->load->config('create_school');
         $config = $this->config->config['create_school'];
-        $this->load->model('country');
-        $country_call_code = 880;
-        
+
         if (!empty($_POST)) {
 
             if (isset($_POST['school_type']) && !empty($_POST['school_type'])) {
@@ -271,15 +269,12 @@ class Createschool extends CI_Controller {
             if (isset($_POST['i_tmp_free_user_data_id']) && !empty($_POST['i_tmp_free_user_data_id'])) {
                 $i_tmp_free_user_data_id = $this->input->post('i_tmp_free_user_data_id');
             }
-            
-            $country_call_code = $this->input->post('country_call_code');
 
             $this->form_validation->set_rules('name', 'School Name', 'required|min_length[5]');
             if ($school_type == "paid") {
                 $this->form_validation->set_rules('number_of_student', 'Number Of student', 'required|is_natural_no_zero');
             }
 
-            $this->form_validation->set_rules('country_call_code', 'Country Code', 'required');
             $this->form_validation->set_rules('institution_address', 'Institution Address', 'required|min_length[8]');
             $this->form_validation->set_rules('institution_phone_no', 'Institution Phone Number', 'required|min_length[5]');
             $this->form_validation->set_rules('code', 'Sub domain', 'required|alpha_numeric|min_length[3]|max_length[8]');
@@ -297,11 +292,9 @@ class Createschool extends CI_Controller {
                 $i_num_student = $this->input->post('number_of_student');
                 $school_code = $this->input->post('code');
                 $school_domain = $school_code . '.free.' . $config['main_domain'];
-                $country_call_code = $this->input->post('country_call_code');
-                $phone_number = $country_call_code . '-' . $this->input->post('institution_phone_no');
-                
+
                 $ar_data['institution']['institution_address'] = $this->input->post('institution_address');
-                $ar_data['institution']['institution_phone_no'] = $phone_number;
+                $ar_data['institution']['institution_phone_no'] = $this->input->post('institution_phone_no');
                 $ar_data['school']['code'] = $school_code;
                 $ar_data['school']['inherit_smtp_settings'] = 0;
                 $ar_data['school']['school_domains_attributes'][0]['domain'] = $school_domain;
@@ -342,9 +335,7 @@ class Createschool extends CI_Controller {
                 }
             }
         }
-        
-        $data['country_call_code'] = $country_call_code;
-        $data['countries'] = $this->country->getAll();
+
         $data['school_type'] = $school_type;
         $data['i_tmp_free_user_data_id'] = $i_tmp_free_user_data_id;
 

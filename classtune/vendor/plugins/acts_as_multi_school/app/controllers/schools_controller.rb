@@ -46,10 +46,10 @@ class SchoolsController <  MultiSchoolController
       return
     end
     
-    @school_group = SchoolGroup.find(1, :conditions=>{:is_deleted=>false})
+    @school_group = SchoolGroup.find(2, :conditions=>{:is_deleted=>false})
     
     @school = @school_group.schools.build(params[:school])
-    @school.creator_id = 1
+    @school.creator_id = 2
     
     ##
     # UPLOAD Batch Excel File

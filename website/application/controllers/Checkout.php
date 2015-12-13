@@ -296,7 +296,7 @@ class Checkout extends CI_Controller {
                             
                             $ar_tmp_free_user_data = $this->tmp->getData($i_tmp_free_user_data_id);
                             $i_free_user_id = $ar_tmp_free_user_data['free_user_id'];
-                            redirect('/createschool/success/paid/' . $i_tmp_school_creation_data_id . '/' . $i_free_user_id);
+                            redirect('/createschool/success/paid/' . $data['i_tmp_school_created_data_id'] . '/' . $i_free_user_id);
                             exit;
                         }
                         

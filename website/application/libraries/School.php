@@ -40,7 +40,7 @@ class School {
         $this->school_code = $code;
     }
 
-    public function create() {
+    public function create( $a_payment_data = array() ) {
 
         if ($this->setToken()) {
 
@@ -54,6 +54,18 @@ class School {
             $this->_returned_school_info = $this->_ci->plus_api->call__('post', $userEndpoint, $this->_ar_data);
 
             if ($this->_returned_school_info !== FALSE) {
+                
+                if ( ! empty( $a_payment_data ) )
+                {
+                    $this->_ci->load->model('payment');
+                    foreach ($a_payment_data as $k=>$v)
+                    {
+                        $v['userid'] = $this->_ar_tmp_free_user_data['free_user_id'];
+                        $v['school_id'] = $this->_returned_school_info['school']['id'];
+                        $this->_ci->payment->create($k, $v);
+                    }
+                }
+                
                 $paid_user_data = $this->createDiaryUserForSchool();
                 if (!empty($paid_user_data)) {
 

@@ -25,7 +25,50 @@ $config['PaymentParams']  = array(
 );
 
 $config['PaymentRules']  = array(
-        'unit_price'        => '0.99',
         'recurrence_unit'   => 1,
         'recurrence_type'   => 'Week' //Month, Year
+);
+
+
+$config['PaymentPackages']  = array(
+        "1001" => array(
+            'package_name'        => 'First Package - 1000 Students',
+            'price'               => 1000,
+            'student'             => 1000,
+            'test_student'        => 5,
+            'type_purchase'       => 'Year', //Month, Year
+            'test_type_purchase'  => 'Week',
+            'grace_student_no'    => 5, 
+            'unlimited_allowed'   => false 
+        ),
+        "1002" => array(
+            'package_name'        => 'Second Package - 1500 Students',
+            'price'               => 1500,
+            'student'             => 1500,
+            'test_student'        => 6,
+            'type_purchase'       => 'Year', //Month, Year
+            'test_type_purchase'  => 'Week',
+            'grace_student_no'    => 5, 
+            'unlimited_allowed'   => false 
+        ),
+        "1003" => array(
+            'package_name'        => 'Third Package - 2000 Students',
+            'price'               => 2000,
+            'student'             => 2000,
+            'test_student'        => 7,
+            'type_purchase'       => 'Year', //Month, Year
+            'test_type_purchase'  => 'Week',
+            'grace_student_no'    => 5, 
+            'unlimited_allowed'   => false 
+        ),
+        "1004" => array(
+            'package_name'        => 'Fourth Package - 2500 Students',
+            'price'               => 2500,
+            'student'             => 2500,
+            'test_student'        => 8,
+            'type_purchase'       => 'Year', //Month, Year
+            'test_type_purchase'  => 'Week',
+            'grace_student_no'    => 5, 
+            'unlimited_allowed'   => true 
+        )
 );

@@ -89,6 +89,8 @@ class Checkout extends CI_Controller {
         
         $this->load->config("payment");
         $a_paymentModules = $this->config->config['PaymentModules'];
+        $a_paymentPackages = $this->config->config['PaymentPackages'];
+        $data['PaymentPackages'] = $a_paymentPackages;
         $s_enable_modules = "";
         foreach($a_paymentModules as $k => $v)
         {
@@ -98,7 +100,6 @@ class Checkout extends CI_Controller {
                 break;
             }
         }
-        
         switch ($payment_gateway)
         {
             case 'stripe': 
@@ -222,19 +223,20 @@ class Checkout extends CI_Controller {
                 {
                     $ar_tmp_school_creation_raw_data = $this->tmp->getRawData($i_tmp_school_creation_data_id);
                     $a_tmp_school_data = json_decode($ar_tmp_school_creation_raw_data['value'], true);
-                    $no_of_student = $a_tmp_school_data['school']['number_of_student'];
-                    $unit_price = $this->config->config['PaymentRules']['unit_price'];
                     Twocheckout::privateKey($this->config->config['PaymentParams']['2Checkout']['private_key']);
                     Twocheckout::sellerId($this->config->config['PaymentParams']['2Checkout']['sellerID']);
                     Twocheckout::verifySSL(false);  // this is set to true by default
 
                     // To use your sandbox account set sandbox to true
-                    Twocheckout::sandbox(true);
+                    if ( $this->config->config['PaymentParams']['2Checkout']['SandBox'] )
+                    {
+                        Twocheckout::sandbox(true);
+                    }
                     Twocheckout::format('json');
                     try {
                         $a_request = array(
                             "sellerId" => $this->config->config['PaymentParams']['2Checkout']['sellerID'],
-                            "merchantOrderId" => "123",
+                            "merchantOrderId" => $_POST['package_type'],
                             "token" => trim($_POST['token_request']),
                             "currency" => 'USD',
                             "billingAddr"   => array(
@@ -248,13 +250,13 @@ class Checkout extends CI_Controller {
                             ),
                             "lineItems" => array(
                                 array(
-                                    "name"          => "Classtune School Subscription",
-                                    "price"         => "1.99",
+                                    "name"          => $a_paymentPackages[$_POST['package_type']]['package_name'],
+                                    "price"         => $a_paymentPackages[$_POST['package_type']]['price'],
                                     "type"          => "product",
                                     "quantity"      => "1",
-                                    "productId"     => "123",
-                                    "recurrence"    => "1 Week",
-                                    "duration"      => "20 Year"
+                                    "productId"     => $_POST['package_type'],
+                                    "recurrence"    => (isset( $_POST['recurrence'] ) && $_POST['recurrence'] == "on") ? "1 Week" : "",
+                                    "duration"      => "20 Years"
                                 )
                             )
                         );
@@ -262,15 +264,30 @@ class Checkout extends CI_Controller {
                         $a_charge = json_decode($o_charge);
                         if ( $a_charge->response->responseCode == 'APPROVED' )
                         {
-                            $data = $this->paidSchoolProcess($i_tmp_school_creation_data_id, $i_tmp_free_user_data_id);
-
+                            $s_prefix = ( $this->config->config['PaymentParams']['2Checkout']['SandBox'] ) ? "test_" : '';
+                            $a_card_info = array(
+                                "card_number"   => base64_encode($_POST['card_number']),
+                                "expire_month"  => $_POST['expire_month'],
+                                "expire_year"   => $_POST['expire_year']
+                            );
+                            
+                            $a_subscription_info = array(
+                                "end_date"       => date("Y-m-d", strtotime("+1 " . $a_paymentPackages[$_POST['package_type']][$s_prefix . 'type_purchase'])),
+                                "no_of_student"  => $a_paymentPackages[$_POST['package_type']][$s_prefix . 'student'],
+                                "is_unlimited"   => ( $a_paymentPackages[$_POST['package_type']]['unlimited_allowed'] ) ? 1 : 0
+                            );
+                            
+                            $a_payment_info = array(
+                                "card_info"         => $a_card_info,
+                                "subscription_info" => $a_subscription_info
+                            );
+                            
+                            $data = $this->paidSchoolProcess($i_tmp_school_creation_data_id, $i_tmp_free_user_data_id, $a_payment_info);
+                            
                             $data['i_tmp_school_created_data_id'] = $this->tmp->create(array(
                                 'key' => 'school_created_data',
                                 'value' => json_encode($data)
                             ));
-
-                            $transaction_id = $this->save_transaction($charge, $i_customer_id);
-                            $this->save_school_transaction($data['i_tmp_school_created_data_id'], $transaction_id, $i_tmp_free_user_data_id);
 
                             if (isset($data['success']) && $data['success'] === TRUE) 
                             {
@@ -388,7 +405,7 @@ class Checkout extends CI_Controller {
         );
     }
 
-    private function paidSchoolProcess($i_tmp_school_creation_data_id, $i_tmp_free_user_data_id) {
+    private function paidSchoolProcess($i_tmp_school_creation_data_id, $i_tmp_free_user_data_id, $a_payment_data = array()) {
 
         $this->load->config('create_school');
         $config = $this->config->config['create_school'];
@@ -396,6 +413,7 @@ class Checkout extends CI_Controller {
         $this->load->library('school');
 
         $ar_tmp_free_user_data = $this->tmp->getData($i_tmp_free_user_data_id);
+        
         $ar_tmp_school_creation_raw_data = $this->tmp->getRawData($i_tmp_school_creation_data_id);
 
         $ar_data = json_decode($ar_tmp_school_creation_raw_data['value'], true);
@@ -410,7 +428,7 @@ class Checkout extends CI_Controller {
         ));
 
         $this->school->init($i_tmp_school_creation_data_id, $ar_tmp_free_user_data);
-        return $this->school->create();
+        return $this->school->create( $a_payment_data );
     }
 
     private function getPaymentCode($length) {

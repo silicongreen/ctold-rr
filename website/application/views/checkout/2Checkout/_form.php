@@ -49,6 +49,17 @@
     <fieldset>  
         <!-- Text input-->
         <div class="form-group">
+            <label class="col-md-4 control-label" for="package_type">Package Type</label>  
+            <div class="col-md-6" style="padding: 20px;">
+                <select name="package_type" id="package_type" class="form-control select">
+                    <?php foreach($PaymentPackages as $k => $v) : ?>
+                    <option value="<?php echo $k; ?>"><?php echo $v['package_name'];?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+        </div>
+        
+        <div class="form-group">
             <label class="col-md-4 control-label" for="billing_name">Name</label>  
             <div class="col-md-6">
                 <input id="billing_name" name="billing_name" placeholder="Enter your Name" class="form-control input-md" size="50" maxlength="50" type="text" required="required" />
@@ -59,7 +70,7 @@
         <div class="form-group">
             <label class="col-md-4 control-label" for="card_number">Card Number</label>  
             <div class="col-md-6">
-                <input id="card_number" placeholder="Card Number" class="form-control input-md" size="16" maxlength="16" type="text" required="required" />
+                <input name="card_number" id="card_number" placeholder="Card Number" class="form-control input-md" size="16" maxlength="16" type="text" required="required" />
             </div>
         </div>
 
@@ -67,7 +78,7 @@
         <div class="form-group">
             <label class="col-md-4 control-label" for="cvv">CVV</label>  
             <div class="col-md-3">
-                <input id="cvv" placeholder="CVV" class="form-control input-md" size="10" maxlength="4" type="text" required="required" />
+                <input name="cvv" id="cvv" placeholder="CVV" class="form-control input-md" size="10" maxlength="4" type="text" required="required" />
             </div>
         </div>
 
@@ -75,10 +86,10 @@
         <div class="form-group">
             <label class="col-md-4 control-label" for="expire_month">Expiration</label>  
             <div class="col-md-3">
-                <input id="expire_month" placeholder="Month" class="form-control input-md" size="4" maxlength="2" type="text" required="required" />
+                <input name="expire_month" id="expire_month" placeholder="Month" class="form-control input-md" size="4" maxlength="2" type="text" required="required" />
             </div>
             <div class="col-md-3">
-                <input id="expire_year" placeholder="Year" class="form-control input-md" size="2" maxlength="4" type="text" required="required" />
+                <input name="expire_year" id="expire_year" placeholder="Year" class="form-control input-md" size="2" maxlength="4" type="text" required="required" />
             </div>
         </div>
         
@@ -378,6 +389,15 @@
             <label class="col-md-4 control-label" for="email">Email</label>  
             <div class="col-md-6">
                 <input id="email" name="email" placeholder="Email" class="form-control input-md" required="required" type="email"  required="required" />
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="col-md-12">
+                <div class="col-md-1" style="padding-top: 13px;">
+                    <input id="recurrence" name="recurrence" class="form-control checkout-agreements" required="required" type="checkbox" style="width: 40px;" />
+                </div>
+                <label class="col-md-7 control-label" style="text-align: left;">Allow Recurring Billing </label>  
             </div>
         </div>
         

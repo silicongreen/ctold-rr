@@ -65,7 +65,6 @@ class School {
                         $this->_ci->payment->create($k, $v);
                     }
                 }
-                
                 $paid_user_data = $this->createDiaryUserForSchool();
                 if (!empty($paid_user_data)) {
 

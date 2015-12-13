@@ -110,6 +110,7 @@ class School {
         );
 
         $url = 'http://cp-api.champs21.com/cp3.php?' . http_build_query($url_param);
+        print $url;exit;
         $client = new Client();
 
         try {

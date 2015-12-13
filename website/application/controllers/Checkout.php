@@ -283,7 +283,9 @@ class Checkout extends CI_Controller {
                             );
                             
                             $data = $this->paidSchoolProcess($i_tmp_school_creation_data_id, $i_tmp_free_user_data_id, $a_payment_info);
-                            
+                            print '<pre>';
+                            print_r($data);
+                            exit;
                             if (isset($data['success']) && $data['success'] === TRUE) 
                             {
                                 $b_all_done = true;

@@ -840,39 +840,55 @@ i.faq:hover
 {
     text-decoration: underline;
 }
-//****flex slider tooltip***//
-.thumbnail-item {
- /* position relative so that we can use position absolute for the tooltip */
- position: relative;
- float: left; 
- margin: 0px 5px;
+
+
+.thumbnail-item { 
+	/* position relative so that we can use position absolute for the tooltip */
+	position: absolute; 
+	float: left;  
+	margin: 0px 5px; 
+        top:100px;
+        background-color: #fff;
 }
- 
-.thumbnail-item a {
- display: block;
+
+.thumbnail-item a { 
+	display: block; 
 }
- 
+
 .thumbnail-item img.thumbnail {
- border:3px solid #ccc;
+	border:3px solid #ccc;	
+        background-color: #fff;
 }
-   
-.tooltip {
- /* by default, hide it */
- display: none;
- /* allow us to move the tooltip */
- position: absolute;
- /* align the image properly */
- padding: 8px 0 0 8px;
+		
+.tooltip { 
+	/* by default, hide it */
+	display: none; 
+	/* allow us to move the tooltip */
+	position: absolute; 
+	/* align the image properly */
+	padding: 8px; 
+        border-radius:5px;
+        width:300px;
+         white-space:nowrap;
+        text-overflow:ellipsis;
+        background-color: #fff;
+        border:3px solid #ccc;	
+        text-align: center;
+    
 }
- 
- .tooltip span.overlay {
-  /* the png image, need ie6 hack though */
-  background: url(../images/overlay.png) no-repeat;
-  /* put this overlay on the top of the tooltip image */
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  display: block;
-  width: 350px;
-  height: 500px;
- }
+
+	.tooltip span.overlay { 
+		/* the png image, need ie6 hack though */
+		background: url(../images/overlay.png) no-repeat; 
+		/* put this overlay on the top of the tooltip image */
+		position: absolute; 
+		top: 0px; 
+		left: 0px; 
+		display: block; 
+		width: 350px; 
+		height: 200px;
+	}
+.flex-viewport .thumbnail-item
+{
+    position:static;
+}

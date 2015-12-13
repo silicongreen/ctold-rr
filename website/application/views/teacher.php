@@ -32,7 +32,9 @@ already doing in the classroom.</p>
 							<div class="col-sm-12" style="height:300px;width:1000px;">								
 								<div class="col-sm-1" style="text-align:-moz-center;"></div>
                                                                 <div class="col-sm-3" style="text-align:-moz-center;">
-									<img src="<?php echo base_url(); ?>images/dashpallete/view/attendance.png" style="width:170px;" />
+                                                                    <div class="thumbnail-item">
+                                                                        <a href="#"><img class="img-responsive" src="<?php echo base_url(); ?>images/dashpallete/view/attendance.png" style="width:170px;" /></a>                                                                        
+                                                                    </div>
 								</div>
 								<div class="col-sm-1" style="text-align:-moz-center;"></div>
 								<div class="col-sm-7">
@@ -53,7 +55,9 @@ already doing in the classroom.</p>
 							<div class="col-sm-12" style="height:300px;width:1000px;">
 								<div class="col-sm-1" style="text-align:-moz-center;"></div>
 								<div class="col-sm-3" style="text-align:-moz-center;">
-									<img src="<?php echo base_url(); ?>images/dashpallete/view/academic_calender.png" style="width:170px;" />
+                                                                    <div class="thumbnail-item">
+                                                                        <a href="#"><img class="img-responsive" src="<?php echo base_url(); ?>images/dashpallete/view/academic_calender.png" style="width:170px;" /></a>                                                                        
+                                                                    </div>
 								</div>
 								<div class="col-sm-1" style="text-align:-moz-center;"></div>
 								<div class="col-sm-7">
@@ -74,7 +78,9 @@ already doing in the classroom.</p>
 							<div class="col-sm-12" style="height:300px;width:1000px;">
 								<div class="col-sm-1" style="text-align:-moz-center;"></div>
 								<div class="col-sm-3" style="text-align:-moz-center;">
-									<img src="<?php echo base_url(); ?>images/dashpallete/view/lesson_plan.png" style="width:170px;" />
+                                                                    <div class="thumbnail-item">
+                                                                        <a href="#"><img class="img-responsive" src="<?php echo base_url(); ?>images/dashpallete/view/lesson_plan.png" style="width:170px;" /></a>                                                                        
+                                                                    </div>
 								</div>
 								<div class="col-sm-1" style="text-align:-moz-center;"></div>
 								<div class="col-sm-7">
@@ -95,7 +101,9 @@ already doing in the classroom.</p>
 							<div class="col-sm-12" style="height:300px;width:1000px;">
 								<div class="col-sm-1" style="text-align:-moz-center;"></div>
 								<div class="col-sm-3" style="text-align:-moz-center;">
-									<img src="<?php echo base_url(); ?>images/dashpallete/view/Routine.png" style="width:170px;" />
+                                                                    <div class="thumbnail-item">
+                                                                        <a href="#"><img class="img-responsive" src="<?php echo base_url(); ?>images/dashpallete/view/Routine.png" style="width:170px;" /></a>                                                                        
+                                                                    </div>
 								</div>
 								<div class="col-sm-1" style="text-align:-moz-center;"></div>
 								<div class="col-sm-7">
@@ -116,7 +124,9 @@ already doing in the classroom.</p>
 							<div class="col-sm-12" style="height:300px;width:1000px;">
 								<div class="col-sm-1" style="text-align:-moz-center;"></div>
 								<div class="col-sm-3" style="text-align:-moz-center;">
-									<img src="<?php echo base_url(); ?>images/dashpallete/view/Homework.png" style="width:170px;" />
+                                                                    <div class="thumbnail-item">
+                                                                        <a href="#"><img class="img-responsive" src="<?php echo base_url(); ?>images/dashpallete/view/Homework.png" style="width:170px;" /></a>                                                                        
+                                                                    </div>
 								</div>
 								<div class="col-sm-1" style="text-align:-moz-center;"></div>
 								<div class="col-sm-7">
@@ -139,7 +149,9 @@ already doing in the classroom.</p>
 							<div class="col-sm-12" style="height:300px;width:1000px;">
 								<div class="col-sm-1" style="text-align:-moz-center;"></div>
 								<div class="col-sm-3" style="text-align:-moz-center;">
-									<img src="<?php echo base_url(); ?>images/dashpallete/view/meeting_request.png" style="width:170px;" />
+                                                                    <div class="thumbnail-item">
+                                                                        <a href="#"><img class="img-responsive" src="<?php echo base_url(); ?>images/dashpallete/view/meeting_request.png" style="width:170px;" /></a>                                                                        
+                                                                    </div>
 								</div>
 								<div class="col-sm-1" style="text-align:-moz-center;"></div>
 								<div class="col-sm-7">
@@ -160,7 +172,9 @@ already doing in the classroom.</p>
 							<div class="col-sm-12" style="height:300px;width:1000px;">
 								<div class="col-sm-1" style="text-align:-moz-center;"></div>
 								<div class="col-sm-3" style="text-align:-moz-center;">
-									<img src="<?php echo base_url(); ?>images/dashpallete/view/report_card.png" style="width:170px;" />
+                                                                    <div class="thumbnail-item">
+                                                                        <a href="#"><img class="img-responsive" src="<?php echo base_url(); ?>images/dashpallete/view/report_card.png" style="width:170px;" /></a>                                                                        
+                                                                    </div>
 								</div>
 								<div class="col-sm-1" style="text-align:-moz-center;"></div>
 								<div class="col-sm-7">
@@ -181,7 +195,9 @@ already doing in the classroom.</p>
 							<div class="col-sm-12" style="height:300px;width:1000px;">
 									<div class="col-sm-1" style="text-align:-moz-center;"></div>
 									<div class="col-sm-3" style="text-align:-moz-center;">
-											<img src="<?php echo base_url(); ?>images/dashpallete/view/events.png" style="width:170px;" />
+                                                                            <div class="thumbnail-item">
+                                                                                <a href="#"><img class="img-responsive" src="<?php echo base_url(); ?>images/dashpallete/view/syllabus.png" style="width:170px;" /></a>                                                                        
+                                                                            </div>
 									</div>
 									<div class="col-sm-1" style="text-align:-moz-center;"></div>
 									<div class="col-sm-7">
@@ -203,7 +219,9 @@ already doing in the classroom.</p>
                                                     <div class="col-sm-12" style="height:300px;width:1000px;">
                                                             <div class="col-sm-1" style="text-align:-moz-center;"></div>
                                                             <div class="col-sm-3" style="text-align:-moz-center;">
-                                                                    <img src="<?php echo base_url(); ?>images/dashpallete/view/syllabus.png" style="width:170px;" />
+                                                                <div class="thumbnail-item">
+                                                                    <a href="#"><img class="img-responsive" src="<?php echo base_url(); ?>images/dashpallete/view/syllabus.png" style="width:170px;" /></a>                                                                        
+                                                                </div>
                                                             </div>
                                                             <div class="col-sm-1" style="text-align:-moz-center;"></div>
                                                             <div class="col-sm-7">
@@ -224,7 +242,9 @@ already doing in the classroom.</p>
                                                     <div class="col-sm-12" style="height:300px;width:1000px;">
                                                             <div class="col-sm-1" style="text-align:-moz-center;"></div>
                                                             <div class="col-sm-3" style="text-align:-moz-center;">
-                                                                    <img src="<?php echo base_url(); ?>images/dashpallete/view/notice.png" style="width:170px;" />
+                                                                <div class="thumbnail-item">
+                                                                    <a href="#"><img class="img-responsive" src="<?php echo base_url(); ?>images/dashpallete/view/notice.png" style="width:170px;" /></a>                                                                        
+                                                                </div>
                                                             </div>
                                                             <div class="col-sm-1" style="text-align:-moz-center;"></div>
                                                             <div class="col-sm-7">
@@ -245,7 +265,9 @@ already doing in the classroom.</p>
                                                     <div class="col-sm-12" style="height:300px;width:1000px;">
                                                             <div class="col-sm-1" style="text-align:-moz-center;"></div>
                                                             <div class="col-sm-3" style="text-align:-moz-center;">
-                                                                    <img src="<?php echo base_url(); ?>images/dashpallete/view/leave.png" style="width:170px;" />
+                                                                <div class="thumbnail-item">
+                                                                    <a href="#"><img class="img-responsive" src="<?php echo base_url(); ?>images/dashpallete/view/leave.png" style="width:170px;" /></a>                                                                        
+                                                                </div>
                                                             </div>
                                                             <div class="col-sm-1" style="text-align:-moz-center;"></div>
                                                             <div class="col-sm-7">

@@ -209,7 +209,8 @@ class Createschool extends CI_Controller {
         }
 
         $data = $this->tmp->getData($i_tmp_school_created_data_id);
-
+        print_r($data);
+        exit;
         if ($data !== FALSE) {
 
             $this->load->library('school');

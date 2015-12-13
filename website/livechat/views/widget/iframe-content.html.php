@@ -132,7 +132,7 @@
             </div>
             
             <div id="customer-chat-content-contact-form" class="customer-chat-content">
-                <div class="customer-chat-content-info">
+                <div class="customer-chat-content-info" id="contact_max_connection_info">
                     <?php echo $vars['ui']['contactInfo'] ?>
                 </div>
                 <div class="customer-chat-content-message-input">

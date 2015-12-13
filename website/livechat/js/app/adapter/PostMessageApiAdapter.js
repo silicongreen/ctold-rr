@@ -47,12 +47,14 @@
 
             switch(eventName)
             {
-                case 'operators:online':  apiCall = 'operatorsonline';  break;
-                case 'operators:offline': apiCall = 'operatorsoffline'; break;
-                case 'messages:new':      apiCall = 'message';          break;
-                case 'login:success':     apiCall = 'loginsuccess';     break;
-                case 'logout:success':    apiCall = 'logoutsuccess';    break;
-                case 'operator:typing':   apiCall = 'operatortyping';   break;
+                case 'operators:online':        apiCall = 'operatorsonline';  break;
+                case 'operators:maxconnection': apiCall = 'operatorsoffline'; break;
+                case 'operators:offline':       apiCall = 'operatorsoffline'; break;
+                
+                case 'messages:new':            apiCall = 'message';          break;
+                case 'login:success':           apiCall = 'loginsuccess';     break;
+                case 'logout:success':          apiCall = 'logoutsuccess';    break;
+                case 'operator:typing':         apiCall = 'operatortyping';   break;
             }
 
             // Forward the event to the parent window

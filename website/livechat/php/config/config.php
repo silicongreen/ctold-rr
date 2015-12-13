@@ -78,6 +78,7 @@ $config = Utils::arrayMergeRecursive(array(
         'endChatCancel'          => 'Cancel',
         'contactHeader'          => 'Contact us',
         'contactInfo'            => 'All operators are off-line. Use the below form to send us an e-mail with your question.',
+        'maxConnectionInfo'      => 'All operator are busy now please wait or Use the below form to send us an e-mail with your question.',
         'contactNameLabel'       => 'Your name',
         'contactMailLabel'       => 'Your e-mail',
         'contactQuestionLabel'   => 'Your question',

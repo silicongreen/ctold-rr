@@ -62,6 +62,11 @@
                 this.trigger('operators:online');
 
             }, this)
+            .once('operators:maxconnection', function()
+            {
+                this.trigger('operators:maxconnection');
+
+            }, this)
 
             .once('operators:offline', function()
             {

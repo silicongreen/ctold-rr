@@ -76,6 +76,7 @@
             this.$html                = $('html');
             this.$header              = this.$('.customer-chat-header');
             this.$title               = this.$('.customer-chat-header-title');
+            this.$contact_max_connection_info = this.$('#contact_max_connection_info');
             this.$mobileTitle         = $('#mobile-widget i');
             this.$toggleBtn           = this.$('#customer-chat-button-toggle');
             this.$settingsBtn         = this.$('#customer-chat-button-settings');
@@ -104,7 +105,9 @@
             // Check if operators are on-line/off-line
             
             this.model.once('operators:online',  this.autoLogin,   this);
+            this.model.once('operators:maxconnection', this.showMaxConnection, this);
             this.model.once('operators:offline', this.showContact, this);
+            
 
             // Handle on-line/off-line visibility
             
@@ -114,6 +117,20 @@
                 
                 this.initialized = true;
                 
+            }, this);
+            
+            this.model.once('operators:maxconnection', function()
+            {
+                if(!this.initialized && config.ui.hideWhenOffline === 'true')
+                {
+                    this.postMessage('hide');
+                }
+                else
+                {
+                    this.postMessage('show');
+                }
+               
+            
             }, this);
             
             this.model.once('operators:offline', function()
@@ -242,6 +259,13 @@
                     this.prevState = state;
                 break;
                 
+                case 'maxconnection':
+                    this.$el.addClass('contact-form');
+                    this.$title.html(config.ui.contactHeader);
+                    this.$contact_max_connection_info.html(config.ui.contactInfo);
+                    this.fullscreenOff();
+                    this.prevState = state; 
+                break;
                 case 'contact':
                     this.$el.addClass('contact-form');
                     this.$title.html(config.ui.contactHeader);
@@ -882,6 +906,10 @@
         showContact : function()
         {
             this.setState('contact');
+        },
+        showMaxConnection:function()
+        {
+            this.setState('maxconnection');
         },
         
         showLoading : function()

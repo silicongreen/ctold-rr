@@ -25,6 +25,7 @@
             // Handle chatting features
             
             this.once('operators:online', this.manageConnection, this);
+            this.once('operators:maxconnection', this.manageConnectionMax, this);
             
             this.on('messages:new', this.storeMessages,       this);
             this.on('messages:new', this.confirmMessagesRead, this);
@@ -148,16 +149,18 @@
             {
                 if(data.success)
                 {
-                    // Notify about online operator(s)
                     
                     _this.trigger('operators:online');
                 }
-                else
+                else if(data.maxconnection)
                 {
                     // Notify about no operator(s)
-                    
-                    _this.trigger('operators:offline');
+                    _this.trigger('operators:maxconnection');
                 }
+                else
+                {
+                    _this.trigger('operators:offline'); 
+                }    
             });
         },
         
@@ -386,6 +389,18 @@
             // Store the message
             
             this.storeMessages([ message.attributes ]);
+        },
+        manageConnectionMax : function()
+        {
+            var _this = this;
+            
+            this.connectionTimer = setInterval(function()
+            {
+               
+                _this.checkOperators();
+                _this.keepAlive();
+            
+            }, GuestChatModel.POLLING_INTERVAL);
         },
         
         manageConnection : function()

@@ -217,6 +217,23 @@ class UserModel extends Model
         
         return $result;
     }
+    public function countOperatorsOnline()
+    {
+        $users = UserModel::repo()->findBy(array('roles' => array('LIKE', '%OPERATOR%')));
+        $count = 0;
+        
+        if($users)
+        {
+            foreach($users as $user)
+            {
+                $lastActivityTime = strtotime($user->last_activity);
+                
+                if(time() - $lastActivityTime <= self::ONLINE_TIME) $count++;
+            }
+        }
+        
+        return $count;
+    }
     
     public function countGuestsOnline()
     {

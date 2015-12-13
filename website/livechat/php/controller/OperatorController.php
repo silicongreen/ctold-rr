@@ -332,16 +332,21 @@ class OperatorController extends Controller
         
         if(!$user->getId())
         {
+            
             $config       = $this->get('config');
             $guestsOnline = UserModel::repo()->countGuestsOnline();
             
-            if($guestsOnline >= $config->data['appSettings']['maxConnections'])
+            $operatorsOnline = UserModel::repo()->countOperatorsOnline();
+            $maxConnection = $operatorsOnline*$config->data['appSettings']['maxConnections'];
+            
+            if($guestsOnline >= $maxConnection && $operatorsOnline>0)
             {
-                return $this->json(array('success' => false));
+                
+                return $this->json(array('success' => false,'maxconnection'=>true));
             }
         }
         
-        return $this->json(array('success' => UserModel::repo()->isOperatorOnline()), array(), 'json', array(
+        return $this->json(array('success' => UserModel::repo()->isOperatorOnline(),'maxconnection'=>false), array(), 'json', array(
             
             array('Cache-Control', 'no-cache, no-store, must-revalidate'),
             array('Pragma', 'no-cache'),

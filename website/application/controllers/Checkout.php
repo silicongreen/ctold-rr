@@ -284,11 +284,6 @@ class Checkout extends CI_Controller {
                             
                             $data = $this->paidSchoolProcess($i_tmp_school_creation_data_id, $i_tmp_free_user_data_id, $a_payment_info);
                             
-                            $data['i_tmp_school_created_data_id'] = $this->tmp->create(array(
-                                'key' => 'school_created_data',
-                                'value' => json_encode($data)
-                            ));
-
                             if (isset($data['success']) && $data['success'] === TRUE) 
                             {
                                 $b_all_done = true;

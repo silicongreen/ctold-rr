@@ -220,7 +220,7 @@ class Createschool extends CI_Controller {
 
             $this->load_view('success', $data);
         } else {
-            redirect("createschool/type");
+            //redirect("createschool/type");
         }
     }
 

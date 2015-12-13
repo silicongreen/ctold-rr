@@ -283,9 +283,7 @@ class Checkout extends CI_Controller {
                             );
                             
                             $data = $this->paidSchoolProcess($i_tmp_school_creation_data_id, $i_tmp_free_user_data_id, $a_payment_info);
-                            print '<pre>';
-                            print_r($data);
-                            exit;
+                            
                             if (isset($data['success']) && $data['success'] === TRUE) 
                             {
                                 $b_all_done = true;
@@ -293,7 +291,7 @@ class Checkout extends CI_Controller {
                             
                             $ar_tmp_free_user_data = $this->tmp->getData($i_tmp_free_user_data_id);
                             $i_free_user_id = $ar_tmp_free_user_data['free_user_id'];
-                            redirect('/createschool/success/paid/' . $data['school_id'] . '/' . $i_free_user_id);
+                            redirect('/createschool/success/paid/' . $data['returned_school_info']['school']['id'] . '/' . $i_free_user_id);
                         }
                         
                     } catch (Twocheckout_Error $e) {

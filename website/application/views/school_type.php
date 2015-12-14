@@ -136,7 +136,7 @@ $act = $_GET['local'];
                                             <!--p> Teacher can upload the report card of class tests, exams, projects and students can see it online. Students can place it for parents view and after reviewing parents can send acknowledgement to school.</p-->
 					</div>
 					<div class="col-md-3" style="text-align: left;">				
-						<a href="<?php echo base_url()?>createschool/userregister/paid" class="btn btn-danger btn-basic" style="font-size:13px;padding:7px 20px;">
+						<a href="<?php echo base_url()?>createschool/subscription?local=premium" class="btn btn-danger btn-basic" style="font-size:13px;padding:7px 20px;">
 					Get Started Now</a>	
 					</div>
 				</div>
@@ -227,7 +227,7 @@ $act = $_GET['local'];
                                     </div>                                   
 				</div>
 				<div class="col-md-12" style="text-align:center;margin-top:40px;margin-bottom:50px;">
-					<a href="<?php echo base_url()?>createschool/userregister/paid" class="btn btn-danger btn-basic">
+					<a href="<?php echo base_url()?>createschool/subscription?local=premium" class="btn btn-danger btn-basic">
 					Get Started Now</a>					
 				</div>
 			</div>

@@ -371,6 +371,13 @@ class Createschool extends CI_Controller {
     public function type() {
         $this->load_view('school_type');
     }
+    public function subscription() {
+        $this->load->config('payment');        
+        $PaymentPackages = $this->config->config['PaymentPackages'];
+        
+        $data['subscription'] = $PaymentPackages;
+        $this->load_view('school_subscription', $data);
+    }
 
     //PRIVATE FUNCTION
     private function load_view($view_name, $data = array()) {

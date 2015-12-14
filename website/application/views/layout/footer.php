@@ -101,7 +101,6 @@
 <script type="text/javascript" src="<?php echo base_url(); ?>js/jquery.stellar.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>js/jquery.mousewheel.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url();?>js/bootstrap.min.js"></script>
-<script type="text/javascript" src="<?php echo base_url();?>js/bootstrap-lightbox.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>js/px.js"></script>
 
 

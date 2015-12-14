@@ -39,8 +39,9 @@
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										You can see your attendance report and the times you were late in the class. 
+										Find your attendance report on weekly, monthly or yearly basis. Watch out for the number of days you were late in the class.
 									</p>
+                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Keep a tab on your attendance report  </h3>
 									</div>									
 								</div>								
 							</div>	
@@ -62,8 +63,9 @@
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										You can see your academic calendar online and make your vacation plans accordingly. 
+										See your academic calendar online and help your family make vacation plans accordingly. Get all your school event updates in ClassTune now. 
 									</p>
+                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">All important updates are at your finger tips</h3>
 									</div>									
 								</div>								
 							</div>	
@@ -85,8 +87,9 @@
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										Your teachers can upload their lesson plans and you can prepare yourself ahead of time and do better result. 
+                                                                            Look out your lesson plans and prepare yourself accordingly. Be ahead of time and ensure better grades as you’ll be prepared.
 									</p>
+                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Be ahead of time! </h3>
 									</div>									
 								</div>								
 							</div>		
@@ -109,8 +112,9 @@
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										You can view your homework of specific subjects from your ClassTune account. It will also show the homework deadline. You can put done once you complete the work. 
+										View your homework of specific subjects from your ClassTune account and never miss the homework deadline. Set reminder and click done once completed. 
 									</p>
+                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Find assigned homework easily</h3>
 									</div>									
 								</div>								
 							</div>	
@@ -133,8 +137,9 @@
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										All forms that you might need from your school is now available here. 
+										All sorts of school forms are now available from phone and web. Fill up forms and submit it online. You don’t have to rush to school office for getting forms.
 									</p>
+                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">All necessary forms available online.</h3>
 									</div>									
 								</div>								
 							</div>	
@@ -157,8 +162,9 @@
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										Now you can see your report cards online and set it to view for your parents. 
+										See your report card online and set it for your parents to view. Keep your report card as archive.
 									</p>
+                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Online Archive of Report Cards </h3>
 									</div>									
 								</div>								
 							</div>	
@@ -180,8 +186,9 @@
 
                                                                     <div class="col-sm-12"  style="margin-top:30px;">
                                                                     <p>
-                                                                            Don’t miss out any events from now on! Get all your school event updates in ClassTune now.
+                                                                            Don’t miss out any events from now on! Be it sports day, club event or yearly picnic; get all your school event updates in ClassTune now. 
                                                                     </p>
+                                                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Be updated with all school events! </h3>
                                                                     </div>									
                                                             </div>								
                                                     </div>	
@@ -203,8 +210,9 @@
 
                                                                     <div class="col-sm-12"  style="margin-top:30px;">
                                                                     <p>
-                                                                            You can check if your school transport is in time or not.
+                                                                            Watch out pick up and drop of time of your school transport. Check out if transport is on time or not.
                                                                     </p>
+                                                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">See transport schedule</h3>
                                                                     </div>									
                                                             </div>								
                                                     </div>	
@@ -226,8 +234,9 @@
 
                                                                     <div class="col-sm-12"  style="margin-top:30px;">
                                                                     <p>
-                                                                            Check your routine here and never forget to bring books or prepare for the class study material. 
+                                                                           Check out your daily routine here and get instant updates. You’ll not ever forget to bring books and prepare for the class study material. 
                                                                     </p>
+                                                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Be prepared for tomorrow’s class </h3>
                                                                     </div>									
                                                             </div>								
                                                     </div>	
@@ -249,8 +258,9 @@
 
                                                                     <div class="col-sm-12"  style="margin-top:30px;">
                                                                     <p>
-                                                                            Your syllabus will be here! You can refer to it anytime.
+                                                                            Know your subject-wise and exam-wise syllabus from ClassTune in a single click. Prepare yourselves for exam accordingly. 
                                                                     </p>
+                                                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Your syllabus will be here!</h3>
                                                                     </div>									
                                                             </div>								
                                                     </div>	
@@ -272,8 +282,9 @@
 
                                                                     <div class="col-sm-12"  style="margin-top:30px;">
                                                                     <p>
-                                                                            Check all your important school notice here.
+                                                                            Missing some important school notices! Don’t worry; your school notice board is reflected in ClassTune.
                                                                     </p>
+                                                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Watch out your school notice board!</h3>
                                                                     </div>									
                                                             </div>								
                                                     </div>	

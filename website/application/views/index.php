@@ -380,7 +380,7 @@
 
                     </div>
                     <div data-stellar-horiz="1" data-stellar-vertical-offset="0" data-stellar-horizontal-offset="83" data-stellar-ratio="0.80" style="top: 331px; left: 450.7px; width: 180px; height: 250px;" id="hitem_3" class="hitem slide">
-                        <img title="" alt="" src="<?php echo base_url(); ?>slider/Slide-1/Layer-2/attendance.png" width="160">
+                        <img title="" alt="" src="<?php echo base_url(); ?>slider/Slide-1/Layer-2/attendance_green.png" width="160">
 
                         <div style="top: 20px; left: 160px;" class="texticon">
                             <div class="text_l text_layer" style="display: none;" data-value="attendance_layer">

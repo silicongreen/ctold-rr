@@ -53,8 +53,9 @@
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										You can see attendance of your entire school at one platform. More specifically every class, every section. 
+                                                                            See attendance of your entire school at one platform. More specifically every class, every section. Take help to keep track of entire school easily. Refer attendance record when needed. At-a-glance class and student views let you quickly get counts of total classes missed by student. 
 									</p>
+                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">See attendance of your entire school at one platform.</h3>
 									</div>									
 								</div>								
 							</div>	
@@ -79,8 +80,9 @@
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										Upload your academic calendar and make it visible to everyone related. 
+										Upload your academic calendar and make it visible to everyone related. Help everyone to plan for future. Post academic calendar at the beginning of the year with flexibility of modification as and when required.
 									</p>
+                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">All important dates are at your finger tips.</h3>
 									</div>									
 								</div>								
 							</div>	
@@ -106,8 +108,9 @@
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										Lesson plan will be available online and you can modify when required. 
+										Lesson plan will be available online and modify when required. Facilitate to trace lesson plan against academic calendar.    
 									</p>
+                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Updated lesson plan for school’s convenience.</h3>
 									</div>									
 								</div>								
 							</div>		
@@ -132,8 +135,9 @@
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										You can upload Teacher’s routine for their convenience and better productivity. 
+										Upload Teacher’s routine for their convenience and better productivity. Keep an eye on daily and weekly routine of an individual teacher. 
 									</p>
+                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Uploaded Teacher’s routine for their convenience. </h3>
 									</div>									
 								</div>								
 							</div>		
@@ -158,8 +162,9 @@
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										You can now check out homework of each class, each section to be specific. 
+										Check out homework of a student, a particular class section or whole school at one platform. 
 									</p>
+                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Flexibility to check every class’s homework.</h3>
 									</div>									
 								</div>								
 							</div>	
@@ -181,8 +186,9 @@
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-                                                                            You can upload your school’s tuition fees class wise and parents will be notified of their dues. You can label received once parent’s make the payment of monthly fees. . .  
+                                                                            Schedule fees and prompt automated fee reminder for pending payments. Never worry about managing fee collection and generating/maintaining receipts. Great tool for monitoring payment and keeping school’s accounts. 
 									</p>
+                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Hassle free fees collection.</h3>
 									</div>									
 								</div>								
 							</div>
@@ -204,8 +210,9 @@
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										Upload all the necessary forms of your school. So that whoever needs it, can download and use. 
+										Upload all the necessary forms of your school so that whoever needs it, can download and use. Lessen the queues in the office room and attain higher efficiency in administration.
 									</p>
+                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">All necessary forms available online.</h3>
 									</div>									
 								</div>								
 							</div>	
@@ -227,8 +234,9 @@
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										We know how important it is to meet with all teachers and parents. You can set meetings easily now and even modify for any sudden changes. 
+										How important it is to meet with all teachers and parents! Set meetings easily now and even modify for any sudden changes. Organize Parents’ Meet and notify them quickly. 
 									</p>
+                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Call for a meeting is so easy now! </h3>
 									</div>									
 								</div>								
 							</div>	
@@ -250,8 +258,9 @@
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										Report cards will be available on classtune for your view and reference. 
+										Class Tests, Exam Reports and Project Reports are now available absolutely in digital format. It will also serve as your archive. Create, customize, develop, and distribute report cards like never before.
 									</p>
+                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Online Archive of Report Cards </h3>
 									</div>									
 								</div>								
 							</div>	
@@ -273,8 +282,9 @@
 
                                                                     <div class="col-sm-12"  style="margin-top:30px;">
                                                                     <p>
-                                                                            Use one common place to circulate all event updates. 
+                                                                            Reach Students, Parents and Teachers instantly with event updates. Create and modify events anytime. Know how many students, teachers or parents are joining your event.  
                                                                     </p>
+                                                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">One platform for all event updates!</h3>
                                                                     </div>									
                                                             </div>								
                                                     </div>	
@@ -296,8 +306,9 @@
 
                                                                     <div class="col-sm-12"  style="margin-top:30px;">
                                                                     <p>
-                                                                            You can make all the transport plans and upload here. 
+                                                                            Make all the transport plans and upload here. Changes in transport schedules can now reach parents in minutes. 
                                                                     </p>
+                                                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">See transport schedule</h3>
                                                                     </div>									
                                                             </div>								
                                                     </div>	
@@ -319,8 +330,9 @@
 
                                                                     <div class="col-sm-12"  style="margin-top:30px;">
                                                                     <p>
-                                                                            You can make the routine of any class, any section here and keep it for everyone’s view. You have the freedom to make changes when necessary.
+                                                                            Make the routine of any class, any section here and publish it for everyone’s view. Enjoy the flexibility to make changes when necessary and send instant notification. 
                                                                     </p>
+                                                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Upload routine with the flexibility of modification</h3>
                                                                     </div>									
                                                             </div>								
                                                     </div>	
@@ -342,8 +354,9 @@
 
                                                                     <div class="col-sm-12"  style="margin-top:30px;">
                                                                     <p>
-                                                                            The yearly syllabus will be available here for everyone’s convenience. 
+                                                                            Enable schools to upload yearly syllabus in the system. Let you to generate class-wise or exam-wise syllabus and keep a track on the syllabus status of each class.  
                                                                     </p>
+                                                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Upload your school’s yearly syllabus</h3>
                                                                     </div>									
                                                             </div>								
                                                     </div>	
@@ -365,8 +378,9 @@
 
                                                                     <div class="col-sm-12"  style="margin-top:30px;">
                                                                     <p>
-                                                                            Any urgent notice to circulate? Not to worry! You can give notices here and send notification to the viewer. 
+                                                                            Any urgent notice to circulate? No worries! Notices are now real time, interactive and no more limitation of SMS of 160 characters. Send notice to a single student or a single class or the whole school.  
                                                                     </p>
+                                                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Circulate your notices instantly</h3>
                                                                     </div>									
                                                             </div>								
                                                     </div>	
@@ -388,8 +402,9 @@
 
                                                                     <div class="col-sm-12"  style="margin-top:30px;">
                                                                     <p>
-                                                                            You can see who are the teachers or students who has asked for leaves in coming days. You can approve their requests here. 
+                                                                            Facilitates online leave application, and approval with notifications. Stay away from maintaining leave approvals letter for year long. Leave application approval closely integrated with attendance. 
                                                                     </p>
+                                                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Easy to make and approve leave applications</h3>
                                                                     </div>									
                                                             </div>								
                                                     </div>	

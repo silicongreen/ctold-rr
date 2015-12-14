@@ -45,8 +45,9 @@ already doing in the classroom.</p>
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										Taking attendance is now paper free. You can take attendance of your whole class now digitally with just few clicks.
+										Taking attendance is now hassle and paper free. Complete attendance taking of whole class in 2 minutes digitally with just few clicks and send real time notification to respective parents. Concentrate more in class activities.  
 									</p>
+                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Taking Attendance is now just a tap away!</h3>
 									</div>									
 								</div>								
 							</div>	
@@ -68,8 +69,9 @@ already doing in the classroom.</p>
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										You can check out the academic calendar from your account and plan your holidays or any important events accordingly.
+										Check academic calendar from your ClassTune account and plan your holidays or any important events accordingly.
 									</p>
+                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Look up every important date</h3>
 									</div>									
 								</div>								
 							</div>	
@@ -91,8 +93,9 @@ already doing in the classroom.</p>
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										You can share your lesson plans with your students easily now.
+										Upload weekly, monthly and yearly lesson plans digitally and map it against school calendar. Share your lesson plans with your students. 
 									</p>
+                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Upload and share your Lesson Plan  </h3>
 									</div>									
 								</div>								
 							</div>		
@@ -114,8 +117,9 @@ already doing in the classroom.</p>
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										You can have a look of your daily class routine here to avoid any clash of plans.
+										Have a look of daily and weekly class routine and check scheduled meetings to attend.  View classes to take and avoid any conflict of schedules.
 									</p>
+                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Manage Schedule smoothly</h3>
 									</div>									
 								</div>								
 							</div>		
@@ -137,8 +141,9 @@ already doing in the classroom.</p>
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										No more writing in the diary! Write your daily homework here and your students will get the notification. You also can set the deadline.
+										No more writing in the diary! Write your daily homework here, set the deadline and send instant notification to whole class or an individual student. 
 									</p>
+                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Assign Homework digitally</h3>
 									</div>									
 								</div>								
 							</div>	
@@ -162,8 +167,9 @@ already doing in the classroom.</p>
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										We understand how much it is important to communicate with parents. You can now request for meetings directly or receive notifications when a parent wants to meet you.
+										Communicate with parents in single platform. Request an individual parent to a meeting or receive instantaneous notifications from parents for a meeting.
 									</p>
+                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Call for a Meeting is so easy now! </h3>
 									</div>									
 								</div>								
 							</div>	
@@ -185,34 +191,36 @@ already doing in the classroom.</p>
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										Upload your student’s report card here and you can always refer it in the future.
+										Lets you create, customize, develop, and distribute report cards like never before. Upload student report card here and retrieve it in the future. 
 									</p>
+                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Generate Report Card more efficiently </h3>
 									</div>									
 								</div>								
 							</div>	
 						</li>
 						<li>
-							<div class="col-sm-12" style="height:300px;width:1000px;">
-									<div class="col-sm-1" style="text-align:-moz-center;"></div>
-									<div class="col-sm-3" style="text-align:-moz-center;">
-                                                                            <div class="thumbnail-item">
-                                                                                <a href="#"><img class="img-responsive" src="<?php echo base_url(); ?>images/dashpallete/view/syllabus.png" style="width:170px;" /></a>                                                                        
-                                                                            </div>
-									</div>
-									<div class="col-sm-1" style="text-align:-moz-center;"></div>
-									<div class="col-sm-7">
-											<div class="col-sm-12">
-													<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php echo base_url(); ?>images/dashpallete/event.png) no-repeat center;"></div>
-													<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>Events</i></p></div>
-											</div>
+                                                    <div class="col-sm-12" style="height:300px;width:1000px;">
+                                                        <div class="col-sm-1" style="text-align:-moz-center;"></div>
+                                                        <div class="col-sm-3" style="text-align:-moz-center;">
+                                                            <div class="thumbnail-item">
+                                                                <a href="#"><img class="img-responsive" src="<?php echo base_url(); ?>images/dashpallete/view/syllabus.png" style="width:170px;" /></a>                                                                        
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-1" style="text-align:-moz-center;"></div>
+                                                        <div class="col-sm-7">
+                                                                        <div class="col-sm-12">
+                                                                                        <div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php echo base_url(); ?>images/dashpallete/event.png) no-repeat center;"></div>
+                                                                                        <div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>Events</i></p></div>
+                                                                        </div>
 
-											<div class="col-sm-12"  style="margin-top:30px;">
-											<p>
-													Check out of any important event that is happening in the school. You can even create your events for the school.
-											</p>
-											</div>									
-									</div>								
-							</div>	
+                                                                        <div class="col-sm-12"  style="margin-top:30px;">
+                                                                        <p>
+                                                                            Keep a list of all the extra-curricular activities happening in the school. Keep a track of the upcoming activities and create events when you are the organizer.    
+                                                                        </p>
+                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Be updated with all school Events! </h3>
+                                                                        </div>									
+                                                        </div>								
+                                                    </div>	
 						</li>	
                         	
                                                 <li>
@@ -232,8 +240,9 @@ already doing in the classroom.</p>
 
                                                                     <div class="col-sm-12"  style="margin-top:30px;">
                                                                     <p>
-                                                                            You can upload your syllabus for your students here and keep them updated.
+                                                                            Upload subject-wise or exam-wise syllabus and keep students and parents updated. Edit and modify as and when required.  
                                                                     </p>
+                                                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Upload Syllabus online </h3>
                                                                     </div>									
                                                             </div>								
                                                     </div>	
@@ -255,8 +264,9 @@ already doing in the classroom.</p>
 
                                                                     <div class="col-sm-12"  style="margin-top:30px;">
                                                                     <p>
-                                                                           Upload any notice you want to share with your students or their parents.
+                                                                           Miss any important school notice! No worries; your school notice board is reflected in ClassTune.
                                                                     </p>
+                                                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Watch out your school notice board!</h3>
                                                                     </div>									
                                                             </div>								
                                                     </div>	
@@ -278,8 +288,9 @@ already doing in the classroom.</p>
 
                                                                     <div class="col-sm-12"  style="margin-top:30px;">
                                                                     <p>
-                                                                            Now applying for your leave is hassle free. Feel up the form and submit for the concern authority to review.
+                                                                            Fill up the online leave form from phone or computer and submit it. Get notified once granted. Grant approval to student’s leave also. 
                                                                     </p>
+                                                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Applying for leave is hassle free! </h3>
                                                                     </div>									
                                                             </div>								
                                                     </div>	

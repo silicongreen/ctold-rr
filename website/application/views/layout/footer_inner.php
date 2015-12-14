@@ -118,41 +118,27 @@
             });
 // Load this script once the document is ready
 $(document).ready(function () {
-   
+  var n = 0; 
  // Get all the thumbnail
  $('div.thumbnail-item').mouseenter(function(e) {
  
-  // Calculate the position of the image tooltip
-  x = e.pageX - $(this).offset().left;
-  y = e.pageY - $(this).offset().top;
+    // Calculate the position of the image tooltip
+    x = e.pageX - $(this).offset().left;
+    y = e.pageY - $(this).offset().top;
  
-  // Set the z-index of the current item,
-  // make sure it's greater than the rest of thumbnail items
-  // Set the position and display the image tooltip
-  $(this).css('z-index','1500');
-  var  img = $(this).find('img').attr("src");
-
-  var html = '<div class="tooltip"><img src="'+img+'" alt="" style="width:100%;" /></div>'
+    //$(this).css('z-index','1500');
+    
+    if(n === 0)
+    {
+        var  img = $(this).find('img').attr("src");
   
-  if ($(".flex-viewport").next( "div.tooltip" ).length == 0)
-  {       
-        if($(this).children("div.tooltip").length == 0)
-        {
-            $(html).insertAfter(".flex-viewport");
-        }
-        else
-        {
-            $(this).find( "div.tooltip").first().insertAfter(".flex-viewport");        
-        }        
-  }
-  else
-  {
-        $(".flex-viewport").next( "div.tooltip" ).remove();
-        $(this).find( "div.tooltip" ).first().insertAfter(".flex-viewport");
-  }
-      
-    $(".flex-viewport").next( "div.tooltip" ).first().css({'top': y - 130,'left': x + 150,'display':'block','opacity':1,'z-index':'15000000'});
-      
+        var html = '<div class="tooltip"><img src="'+img+'" alt="" style="width:100%;" /></div>'
+        console.log(html);
+        $(html).insertAfter("#slider .flex-viewport").css({'top': y - 130,'left': x + 150,'display':'block','opacity':1,'z-index':'15000000'});
+        n = 1;
+    }
+    
+       
  }).mousemove(function(e) {
     
   // Calculate the position of the image tooltip  
@@ -161,29 +147,16 @@ $(document).ready(function () {
     
   // This line causes the tooltip will follow the mouse pointer
   //$(this).children("div.tooltip").css({'top': y + 10,'left': x + 20});
-  $(".flex-viewport").next( "div.tooltip" ).first().css({'top': y - 130,'left': x + 150});
+  $(".flex-viewport").next( "div.tooltip" ).css({'top': y - 130,'left': x + 150});
     
  }).mouseleave(function() {
-   $( "div.tooltip" ).css('display','none;'); 
-   if($(this).children("div.tooltip").length == 0)
-   {
-        $(".flex-viewport").next( "div.tooltip").first().appendTo($(this));
-        $(".flex-viewport").next( "div.tooltip" ).remove();
-   }
-   else
-   {
-        $(this).children("div.tooltip").remove();
-        $(".flex-viewport").next( "div.tooltip" ).first().appendTo($(this));
-        $(".flex-viewport").next( "div.tooltip" ).remove();
-   }
-   
-   
-  // Reset the z-index and hide the image tooltip
-  $(this).css('z-index','10000')
-  .children("div.tooltip").first()
-  .animate({"opacity": "hide"}, "fast");
-  
-  $( "div.tooltip" ).css('display','none;'); 
+    if(n = 1)
+    {
+        $( "div.tooltip" ).css('display','none;'); 
+        $(".flex-viewport").next( "div.tooltip" ).remove();     
+        $( "div.tooltip" ).animate({"opacity": "hide"}, "fast");
+        n = 0;
+    }    
 
  });
  

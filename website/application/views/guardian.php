@@ -38,8 +38,9 @@
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										You will get real time notification of your child’s class attendance.
+										Get real time notification of your child’s class attendance. Remain informed via various types of reports related to attendance.
 									</p>
+                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Have your child’s attendance report!</h3>
 									</div>									
 								</div>								
 							</div>	
@@ -61,8 +62,9 @@
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										This feature will allow you to plan family holidays or any other important plans earlier as you get the access of the academic calendar. 
+										Allow you to plan family holidays or other important events. Don’t miss out any important updates from now on!
 									</p>
+                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Holiday planning is now simpler!</h3>
 									</div>									
 								</div>								
 							</div>	
@@ -84,8 +86,9 @@
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-									 This feature will allow you to plan family holidays or any other important plans earlier as you get the access of the academic calendar,
+									 Review your child’s weekly or monthly or yearly lesson plans. Prepare your child for the exam and be ahead of time.
 									</p>
+                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Prepare your child for better result</h3>
 									</div>									
 								</div>								
 							</div>		
@@ -108,8 +111,9 @@
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										From your account, you can check the given homework and the deadlines. So catching up with child’s homework is no more of tension.
+										Check your child’s homework online and set reminder for the deadline. Child’s homework is no more a source of tension and get notified once completed.
 									</p>
+                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Now, don’t forget to follow up on your child’s homework! </h3>
 									</div>									
 								</div>								
 							</div>	
@@ -131,8 +135,9 @@
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										You can avoid the bank line now and pay your child’s school fees from your mobile.
+										No more worry about paying school fees! Avoid bank line now and pay your child’s school fees using credit card and mobile money.
 									</p>
+                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Check school fee due dates and set reminders! </h3>
 									</div>									
 								</div>								
 							</div>
@@ -154,8 +159,9 @@
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										All sort of school forms are now available online. You can get them when needed despite of attending the long queue at school. 
+										All sort of school forms are now available online and easy to access. Get them when needed despite of attending the long queue at school. 
 									</p>
+                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">No need to visit school, download school forms when necessary</h3>
 									</div>									
 								</div>								
 							</div>	
@@ -177,8 +183,9 @@
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										If you want to meet any of the teacher, you can request for a meeting through the app and set a time. 
+										Ask for a meeting with respective teacher. Set meetings easily now from your mobile or computer and get notified once approved. 
 									</p>
+                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Setting a meeting with a teacher is just a click away!</h3>
 									</div>									
 								</div>								
 							</div>	
@@ -200,8 +207,9 @@
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										Your child’s report card is online for your view. 
+										Watch out your child’s report card online and study the progress graph of your child. Send online acknowledgement instantly to school. 
 									</p>
+                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Check your child’s progress  </h3>
 									</div>									
 								</div>								
 							</div>	
@@ -223,8 +231,9 @@
 
                                                                     <div class="col-sm-12"  style="margin-top:30px;">
                                                                     <p>
-                                                                            You won’t miss the sports day anymore! Get all the event updates here.
+                                                                            Be it sports day, school event or yearly picnic; be updated about date, timing and venue. Get necessary reminders about any events.
                                                                     </p>
+                                                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Check out all the event details</h3>
                                                                     </div>									
                                                             </div>								
                                                     </div>	
@@ -246,8 +255,9 @@
 
                                                                     <div class="col-sm-12"  style="margin-top:30px;">
                                                                     <p>
-                                                                           Do not worry about the transport if it is on time or not. You will get the notification beforehand.
+                                                                           Check pick up and drop off time of your child by school transport. No worry about the transport if it is on time or not. Get the notification beforehand.
                                                                     </p>
+                                                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">No more tension about transport!</h3>
                                                                     </div>									
                                                             </div>								
                                                     </div>	
@@ -269,8 +279,9 @@
 
                                                                     <div class="col-sm-12"  style="margin-top:30px;">
                                                                     <p>
-                                                                            If there is any change in the routine, you will get the notification.
+                                                                            Check out your child’s daily routine, enjoy easy access and get instant updates if there is any change. 
                                                                     </p>
+                                                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Change in routine- gets notified! </h3>
                                                                     </div>									
                                                             </div>								
                                                     </div>	
@@ -292,8 +303,9 @@
 
                                                                     <div class="col-sm-12"  style="margin-top:30px;">
                                                                     <p>
-                                                                            The syllabus is available on your phone now. You can refer anytime.
+                                                                            Know your child’s subject-wise and exam-wise syllabus in a single click. Prepare your child accordingly for exam with confidence.
                                                                     </p>
+                                                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Watch exam syllabus online</h3>
                                                                     </div>									
                                                             </div>								
                                                     </div>	
@@ -315,8 +327,9 @@
 
                                                                     <div class="col-sm-12"  style="margin-top:30px;">
                                                                     <p>
-                                                                            You will get all important notices on your parent account. 
+                                                                            Notices are now real time and interactive. Get all important school notice in your ClassTune account. 
                                                                     </p>
+                                                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Any school notice will not be missed now!</h3>
                                                                     </div>									
                                                             </div>								
                                                     </div>	
@@ -338,8 +351,9 @@
 
                                                                     <div class="col-sm-12"  style="margin-top:30px;">
                                                                     <p>
-                                                                            You can apply for your child’s leave easily from your account and check the leave status.  
+                                                                           Apply for your child’s leave easily from your account and check the leave approval status. Get notified once granted.  
                                                                     </p>
+                                                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Applying for leave is so easy now! </h3>
                                                                     </div>									
                                                             </div>								
                                                     </div>	

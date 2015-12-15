@@ -261,6 +261,7 @@ en: # locale
         must_be_a_valid_email_address: "must be a valid email "
         cant_be_a_future_date: "cannot be a future date"
         should_not_be_admin: "Should Not Be Admin"
+        student_excessed_messege: "Student limit excessed for your school. Please Contact with school administrator."
         batch_cant_be_blank: "Batch cant be blank"
         must_be_positive: "must be positive"
         not_specified: "not specified"

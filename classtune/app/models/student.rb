@@ -105,6 +105,7 @@ class Student < ActiveRecord::Base
   end
 
   def validate
+    
     errors.add(:admission_date, :not_less_than_hundred_year) if self.admission_date.year < Date.today.year - 100 \
       if self.admission_date.present?
     errors.add(:date_of_birth, :not_less_than_hundred_year) if self.date_of_birth.year < Date.today.year - 100 \
@@ -117,11 +118,34 @@ class Student < ActiveRecord::Base
       if self.gender.present?
     errors.add(:admission_no,:error3) if self.admission_no=='0'
     errors.add(:admission_no, :should_not_be_admin) if self.admission_no.to_s.downcase== 'admin'
+    if check_student_limit?
+      errors.add_to_base(:student_excessed_messege)
+    end
     unless student_additional_details.blank?
       student_additional_details.each do |student_additional_detail|
         errors.add_to_base(student_additional_detail.errors.full_messages.map{|e| e.to_s+". Please add additional details."}.join(', ')) unless student_additional_detail.valid?
       end
     end
+  end
+  
+  def inc_student_count_subscription
+    school_subscription_info = SubscriptionInfo.find(:first,:conditions=>{:school_id=>MultiSchool.current_school.id},:limit=>1)
+    if !school_subscription_info.nil?
+      school_subscription_info.current_count = school_subscription_info.current_count+1
+      school_subscription_info.save;
+    end
+  end
+  def check_student_limit?
+    school_subscription_info = SubscriptionInfo.find(:first,:conditions=>{:school_id=>MultiSchool.current_school.id},:limit=>1)
+    
+    if !school_subscription_info.nil?
+      if  school_subscription_info.is_unlimited == false
+        if school_subscription_info.current_count.to_i >= school_subscription_info.no_of_student.to_i 
+          return true;
+        end
+      end
+    end
+    return false;
   end
 
   def is_active_true
@@ -605,6 +629,7 @@ class Student < ActiveRecord::Base
 
   def set_sibling
     Student.connection.execute("UPDATE `students` SET `sibling_id` = '#{id}' WHERE `id` = #{id};")
+    inc_student_count_subscription
   end
 
   def self.students_details (parameters)

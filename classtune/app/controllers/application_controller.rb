@@ -22,6 +22,7 @@ class ApplicationController < ActionController::Base
   helper_method :check_permission_link?
   helper_method :get_attendence_data_all
   helper_method :get_subscrived_link
+  helper_method :dec_student_count_subscription
   helper_method :check_free_school?
   helper_method :can_access_plugin?
   helper_method :can_access_feature?
@@ -46,6 +47,14 @@ class ApplicationController < ActionController::Base
   def get_subscrived_link(link_text)
     link_return = "<a href='javascript:void(0)' class='dim_link subscribed-messege' >#{link_text}</a>"
     return link_return
+  end
+  
+  def dec_student_count_subscription
+    school_subscription_info = SubscriptionInfo.find(:first,:conditions=>{:school_id=>MultiSchool.current_school.id},:limit=>1)
+    if !school_subscription_info.nil?
+      school_subscription_info.current_count = school_subscription_info.current_count-1
+      school_subscription_info.save;
+    end
   end
   
   def get_attendence_data_all

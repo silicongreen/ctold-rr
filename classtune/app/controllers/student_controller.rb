@@ -485,7 +485,8 @@ class StudentController < ApplicationController
       #Huffas: Task end
       @activation_code_no_error = true
       
-      if @activation_code_no_error == true
+      
+      if @activation_code_no_error == true 
         if @config.config_value.to_i == 1
           @exist = Student.find_by_admission_no(params[:student][:admission_no])
           #abort(@student.inspect)
@@ -499,6 +500,7 @@ class StudentController < ApplicationController
         else
           @status = @student.save
         end
+        
         if @status
 
           #          username = MultiSchool.current_school.code.to_s+"-"+@student.admission_no        
@@ -516,7 +518,9 @@ class StudentController < ApplicationController
           #          end
           #          inserts.push "('#{@student.admission_no}','#{username}','#{@student.pass}','#{@student.first_name}','#{@student.middle_name}','#{@student.last_name}','#{@student.user.id}','#{MultiSchool.current_school.id}')"
           #          sql = "insert into students_guardians (`admission_no`,`s_username`,`s_password`,`s_first_name`,`s_middle_name`,`s_last_name`,`student_id`,`school_id`) VALUES #{inserts.join(", ")}"
-          #          CONN.execute sql               
+          #          CONN.execute sql    
+          
+          
           
           sms_setting = SmsSetting.new()
           if sms_setting.application_sms_active and @student.is_sms_enabled
@@ -916,6 +920,7 @@ class StudentController < ApplicationController
     @dependency = @student.former_dependency
     if request.post?
       @student.archive_student(params[:remove][:status_description],params[:leaving_date])
+      dec_student_count_subscription
       render :update do |page|
         page.replace_html 'remove-student', :partial => 'student_tc_generate'
       end
@@ -958,6 +963,7 @@ class StudentController < ApplicationController
 
           guardian.user.destroy if guardian.user.present?
           guardian.destroy
+          
         end
       end
       
@@ -973,6 +979,7 @@ class StudentController < ApplicationController
       session[:student_id]=nil if student.id==session[:student_id]
       student.user.destroy
       student.destroy
+      dec_student_count_subscription
       flash[:notice] = "#{t('flash10')}. #{student.admission_no}."
       redirect_to :controller => 'user', :action => 'dashboard'
     else

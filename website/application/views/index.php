@@ -70,7 +70,7 @@
                                     <div class="col-md-12">
                                         <div class="col-md-2"></div>
                                         <div class="col-md-8" style="text-align: left;">
-                                            <h2 class="f2" style="margin-top:130px;"><i>Managing School was never so easy...</i></h2>
+                                            <h2 class="f2" style="margin-top:130px;"><i>Managing school is easier than ever before...</i></h2>
                                             <p style="margin-top:30px;font-size:16px;">ClassTune is the bridge among Students, Parents and Teachers. It is the easiest and quickest way for School Administrator to connect anyone related to School in a single platform.</p>
 
                                         </div>

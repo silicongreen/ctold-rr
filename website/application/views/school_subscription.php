@@ -1,9 +1,9 @@
 <div id="page" class="page" >
-    <div class="item subscription" id="pricing_table2" style="margin-top:120px;">
+    <div class="item subscription" id="pricing_table2" style="margin-top:-25px;">
 
         <div class="container" >
 
-            <div class="row" style="margin-top:30px;">
+            <!--div class="row" style="margin-top:30px;">
 				<div class="col-md-12">
 					<?php 
 						$i = 1;$letter = "A";
@@ -30,14 +30,14 @@
 					</div>
 					<?php if($i%4==0): ?>
 				</div>				
-            </div><!-- /.row -->
+            </div>
 			<div class="row" style="margin-top:60px;">
 				<div class="col-md-12">
 					<?php endif;?>
 					<?php $i++;$letter++; endforeach ?>
 					
 				</div>				
-            </div><!-- /.row -->
+            </div--><!-- /.row -->
 			
         </div><!-- /.container -->
 

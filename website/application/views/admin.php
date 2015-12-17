@@ -17,9 +17,9 @@
 					</div>
 					<div class="col-sm-12" style="">
 					<div class="col-sm-6"><a href="<?php echo base_url()?>createschool/type?local=basic" class="btn-basic-pack">
-					Basic</a><span class="btn-basic-pack-text">Free</span></div> 
+					Basic</a><!--span class="btn-basic-pack-text">Free</span--></div> 
 					<div class="col-sm-6"><a href="<?php echo base_url()?>createschool/type?local=premium" class="btn-primium-pack">
-					Premium</a><span class="btn-primium-pack-text">$1.99 Per Month/ Student</span></div> 
+					Premium</a><!--span class="btn-primium-pack-text">$1.99 Per Month/ Student</span--></div> 
 					
 					
 					</div>

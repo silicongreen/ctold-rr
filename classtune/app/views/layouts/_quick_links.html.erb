@@ -1,5 +1,5 @@
 <%#*<div id="right-inner-div" class="more-height">%>
-  <% free_link_not_to_show = ['meetings_text','leaves','lessonplan_text','syllabus_text','event_text'] %>
+  <% free_link_not_to_show = ['meetings_text','leaves','lessonplan_text','syllabus_text','event_text','calendar_text','examination','timetable_text','attendance','library_text','tasks_label','club_category','club_creation','create_club','reports_text','finance_text','finance_reports','hostel_text','inventory_text','online_payment','transport_label','custom_reports','data_exports_text','data_management_label','email'] %>
   <% parent_links = menu_links.select{|s| s.higher_link_id.nil?}.sort_by{|a|a.name} %>
   <div id="col_0" class="menu_cols"></div>
   <div id="col_1" class="menu_cols"></div>

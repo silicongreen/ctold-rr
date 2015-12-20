@@ -17,7 +17,7 @@
 #limitations under the License.
 class SchoolDetail < ActiveRecord::Base
   has_attached_file :logo,
-    :styles => { :original=> "150x110#"},
+    :styles => { :original=> "150x110"},
     :url => "/uploads/:class/:attachment/:id/:style/:attachment_fullname?:timestamp",
     :path => "public/uploads/:class/:attachment/:id/:style/:basename.:extension",
     :default_url  => '/images/application/dummy_logo.png',
@@ -32,7 +32,7 @@ class SchoolDetail < ActiveRecord::Base
   
   
   has_attached_file :cover,
-    :styles => { :original=> "800x200#"},
+    :styles => { :original=> "800x200"},
     :url => "/uploads/:class/:attachment/:id/:style/:attachment_fullname?:timestamp",
     :path => "public/uploads/:class/:attachment/:id/:style/:basename.:extension"
   

@@ -930,7 +930,7 @@ class SchoolsController <  MultiSchoolController
       if @validated and @school.save
         
         subscription = SubscriptionInfo.new
-        subscription.user_id = admin_user_session.id
+        subscription.userid = admin_user_session.id
         subscription.school_id = @school.id
         subscription.start_date = now
         subscription.end_date = "2030-12-20"

@@ -932,7 +932,7 @@ class SchoolsController <  MultiSchoolController
         subscription = SubscriptionInfo.new
         subscription.userid = admin_user_session.id
         subscription.school_id = @school.id
-        subscription.start_date = now
+        subscription.start_date = Time.now.to_date
         subscription.end_date = "2030-12-20"
         subscription.no_of_student = false
         subscription.current_count = false

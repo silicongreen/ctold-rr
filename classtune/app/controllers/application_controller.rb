@@ -106,7 +106,9 @@ class ApplicationController < ActionController::Base
       if date_to_check>school_subscription_info.end_date.to_date
         free = true 
       end
-    end
+    else
+      free = true
+    end  
     return free
   end 
   

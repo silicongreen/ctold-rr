@@ -733,7 +733,6 @@ textarea {
 }
 .pricing   .container
 {
-    background: #fff none repeat scroll 0 0;
     margin: 0 auto 100px !important;
     width: 800px;
     -webkit-box-shadow: -1px 1px 5px 3px rgba(0,0,0,0.25);
@@ -745,6 +744,14 @@ textarea {
     padding:10px 50px;
     font-size:20px;
     font-weight:bold;
+}
+.pricing .border_left
+{
+    border-left: 2px solid #CECECE;    
+}
+.pricing .border_right
+{
+    border-right: 2px solid #CECECE;
 }
 i.faq
 {

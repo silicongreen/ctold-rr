@@ -928,6 +928,17 @@ class SchoolsController <  MultiSchoolController
       @school.activation_code = 100000 + rand(900000)
       
       if @validated and @school.save
+        
+        subscription = SubscriptionInfo.new
+        subscription.user_id = admin_user_session.id
+        subscription.school_id = @school.id
+        subscription.start_date = now
+        subscription.end_date = "2030-12-20"
+        subscription.no_of_student = false
+        subscription.current_count = false
+        subscription.is_unlimited = true
+        subscription.save
+        
         url = 'http://cp-api.champs21.com/cp3.php?subdomain='+params[:school][:code]
         resp = Net::HTTP.get_response(URI.parse(url))
 

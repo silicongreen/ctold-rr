@@ -1,0 +1,116 @@
+
+<% if @current_user.admin? %>
+  <div class="partial_homework" style="padding: 20px;">
+
+    <h2 class="f2 routine">ClASS ROUTINE</h2>
+    <%= link_to "<div class='button-link button-link-report'>See Full Routine</div>", :controller => "timetable", :action => "teachers_timetable" %>
+
+    <div class="box-text">Running Classes</div>
+    
+    <% unless homework['current_class'].nil? or homework['current_class'].empty?  %>
+      <% homework['current_class'].each do |h| %>
+
+        <div class="portlet-subcontent">     
+          <div class="timetable_left"><img width="30" src="/images/icons/subjects/<%= h['subject_icon_name'] %>" /></div>
+          <div class="timetable_right" style="margin-top:10px;">
+            <div class="subcontent-header themed_text"><%=  h['subject_name'] %> - <%= h['batch_name'] %> <%= h['course_name'] %> (<%= h['teacher_full_name'] %>)</div>
+            <div class="subcontent-info weekday_text"><%= h['weekday_text'] %></div>
+            <div class="subcontent-info"><%= h['class_start_time'] %> - <%= h['class_end_time'] %></div>  
+
+          </div>       
+        </div>
+         <div style="border-bottom: 1px solid #ccc; float: left; margin: 15px; width: 90%;"></div> 
+
+        <% end %>
+      <% else %>
+        <div class="portlet-subcontent">    
+          <div class="subcontent-header themed_text">No Class is currently running</div>
+        </div>  
+    <% end  %>
+
+    
+
+    <div class="box-text">Next Classes</div>
+    <% unless homework['next_class'].nil? and homework['next_class'].empty?  %>
+      <% homework['next_class'].each do |h| %>
+      
+          <div class="portlet-subcontent">     
+              <div class="timetable_left"><img width="30" src="/images/icons/subjects/<%= h['subject_icon_name'] %>" /></div>
+              <div class="timetable_right" style="margin-top:10px;">
+                  <div class="subcontent-header themed_text"><%=  h['subject_name'] %> - <%= h['batch_name'] %> <%= h['course_name'] %>
+                   (<%= h['teacher_full_name'] %>)
+                  </div>
+                  <div class="subcontent-info weekday_text"><%= h['weekday_text'] %></div>
+                  <div class="subcontent-info"><%= h['class_start_time'] %> - <%= h['class_end_time'] %></div>  
+      
+              </div>       
+          </div>
+          <div style="border-bottom: 1px solid #ccc; float: left; margin: 15px; width: 90%;"></div> 
+      
+        <% end %>
+      <% else %>
+        <div class="portlet-subcontent">    
+             <div class="subcontent-header themed_text">No class found</div>
+        </div>  
+      <% end  %>
+  </div>
+<% else %>
+<div class="partial_homework" style="padding: 20px;">
+
+  <h2 class="f2 routine">ClASS ROUTINE</h2>
+  <%= link_to "<div class='button-link button-link-report'>See Full Routine</div>", :controller => "timetable", :action => "teachers_timetable" %>
+
+  <div class="box-text">Next Class</div>
+
+  <div class="portlet-subcontent">
+    <% unless homework['next_class'].nil? and homework['next_class'].empty? %>
+      <div class="timetable_left"><img width="30" src="/images/icons/subjects/<%= homework['next_class']['subject_icon_name'] %>" /></div>
+      <div class="timetable_right" style="margin-top:10px;">
+        <div class="subcontent-header themed_text"><%=  homework['next_class']['subject_name'] %> - <%= homework['next_class']['batch_name'] %> <%= homework['next_class']['course_name'] %>
+        </div>
+        <div class="subcontent-info weekday_text"><%= homework['next_class']['weekday_text'] %></div>
+        <div class="subcontent-info"><%= homework['next_class']['class_start_time'] %> - <%= homework['next_class']['class_end_time'] %></div>
+      </div>
+    <% else %>
+      <div class="timetable_right">No class found</div>
+    <% end %>
+  </div>
+
+  <div class="box-text">Today's Routine</div>
+  <% unless homework['today_class'].nil? or homework['today_class'].empty? %>
+    <%= render :partial=>@view_layout + "_routine_list", :locals=>{:routines => homework['today_class']} %>
+  <% else %>
+    <div class="timetable_right">No class found</div>
+  <% end %>
+</div>
+<% end %>
+
+
+<style>
+  .weekday_text
+  {
+    text-transform: capitalize;
+  }
+  div h2.routine
+  {
+    color:#A05A8E;
+    width: 60%;
+  }
+  div.button-link-report
+  {
+
+    background: #A05A8E;
+    color:white;
+
+  }
+  .box-text
+  {
+    float: left; 
+    clear:both; 
+    background: #F5F5F5; 
+    padding:10px 20px; 
+    margin:15px 0px;
+    width: 96%;
+    color:#B9B9B9;
+  }
+</style>  

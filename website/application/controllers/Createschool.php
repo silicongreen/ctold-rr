@@ -326,7 +326,11 @@ class Createschool extends CI_Controller {
                     $this->load->library('school');
                     $this->school->init($i_tmp_school_creation_data_id, $ar_tmp_free_user_data);
                     $data = $this->school->create();
-
+                    
+                    echo '<pre>';
+                    var_dump($data);
+                    exit;
+                    
                     if (isset($data['success']) && $data['success'] === TRUE) {
                         $i_tmp_school_created_data_id = $this->tmp->create(array(
                             'key' => 'school_created_data',

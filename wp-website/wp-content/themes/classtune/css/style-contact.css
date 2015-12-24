@@ -1,0 +1,321 @@
+b.chead {
+	color: #8C9899;
+}
+
+b.chead span {
+	color: #34495E;
+	font-size: 14px;
+	margin-right: 10px;
+}
+
+p.text-light {
+	color: #7F8C8D;
+}
+
+.wrapper.grey {
+	background: #ECF0F1;
+	border-top: 1px solid #d3d9dd;
+	border-bottom: 1px solid #d3d9dd;
+	padding: 80px 0px;
+}
+.wrapper.white {
+	background: #FFF;
+	border-top: 1px solid #d3d9dd;
+	border-bottom: 1px solid #d3d9dd;
+	padding: 40px 0px;
+}
+#contact14 .btn-14
+{
+	background: #FDC00F;
+	color: #fff;
+}
+#contact14 .lead
+{
+	font-weight:bold;
+}
+/* contact 3 */
+#contact3 .conatct-bg-1
+{
+        min-height:30px;
+        padding: 10px 0px;
+	background-color: #2987C5;
+        border-radius:0px;
+        margin: 0px;
+}
+
+#contact3 .conatct-bg-2
+{
+	background-color: #2E96DB;
+        border-radius:0px;
+        margin: 0px;
+        padding: 30px 0px;
+}
+#contact3 .lead
+{
+    font-weight:bold;
+    padding:0px;
+    margin: 0px;
+    color: #fff;
+}
+#contact3 .icon-bg-3
+{
+    background-color: #184F74;
+    color:#fff;
+    height:60px;
+    padding: 10px;
+    text-align: center;
+}
+#contact3 .icon-bg-3 span.fa
+{
+    width: 100%;
+    font-size:40px;
+}
+#contact3 .text-bg-3
+{
+    background-color: #2987C5;
+    color:#fff;
+    height:60px;
+    padding-top: 5px;
+}
+#contact3 .text-bg-3 p
+{
+    margin: 0px;
+    font-size: 13px;
+    line-height: 16px;
+}
+/* end contact 3 */
+/* start contact 4 */
+
+#contact4
+{
+    background-color: #3B3E4F;
+    color:#fff;
+}
+#contact4 a
+{
+    color:#0F85E9;
+}
+#contact4 p
+{
+    font-size: 13px;
+    margin: 0px;
+    line-height:18px;
+}
+#contact4 p a span
+{
+    font-size: 40px;color:#7C848F;
+}
+/* end contact 4 */
+/* start contact 5 */
+
+#contact5
+{
+    background-color: #3B3E4F;
+    color:#fff;
+}
+#contact5 a
+{
+    color:#0F85E9;
+}
+#contact5 p
+{
+    font-size: 13px;
+    margin: 0px;
+    line-height:18px;
+}
+#contact5 p a span
+{
+    font-size: 40px;color:#7C848F;
+}
+/* end contact 5*/
+
+/* contact 6 */
+#contact6 .conatct-bg-1
+{
+        min-height:30px;
+        padding: 10px 0px;
+	background-color: #4B4B4B;
+        border-radius:0px;
+        margin: 0px;
+}
+
+#contact6 .conatct-bg-2
+{
+	background-color: #545454;
+        border-radius:0px;
+        margin: 0px;
+        padding: 30px 0px;
+}
+#contact6 .lead
+{
+    font-weight:bold;
+    padding:0px;
+    margin: 0px;
+    color: #fff;
+}
+#contact6 .icon-bg-3
+{
+    background-color: #3C3C3C;
+    color:#fff;
+    height:80px;
+    padding: 20px;
+    text-align: center;
+}
+#contact6 .icon-bg-3 span.fa
+{
+    width: 100%;
+    font-size:40px;
+}
+#contact6 .text-bg-3
+{
+    background-color: #4B4B4B;
+    color:#fff;
+    height:80px;
+    padding-top: 15px;
+}
+#contact6 .form-group
+{
+    margin-bottom:5px;
+}
+#contact6 .input-lg {
+  border-radius: 6px;
+  font-size: 14px;
+  height: 35px;
+  line-height: 1.235;
+  padding: 5px 10px;
+}
+#contact6 .text-bg-3 p
+{
+    margin: 0px;
+    font-size: 13px;
+    line-height: 16px;
+}
+/* end contact 6 */
+/* contact 7 */
+#contact7 .conatct-bg-1
+{
+        min-height:30px;
+        padding: 10px 0px;
+	background-color: #f4f4f4;
+        border-radius:0px;
+        margin: 0px;
+}
+
+#contact7 .conatct-bg-2
+{
+	background-color: #f1f1f1;
+        border-radius:0px;
+        margin: 0px;
+        padding: 30px 0px;
+}
+#contact7 .lead
+{
+    font-weight:bold;
+    padding:0px;
+    margin: 0px;
+    color: #000;
+}
+#contact7 .icon-bg-3
+{
+    background-color: #fff;
+    color:#6351B4;
+    height:60px;
+    padding: 10px;
+    text-align: center;
+}
+#contact7 .icon-bg-3 span.fa
+{
+    width: 100%;
+    font-size:40px;
+}
+#contact7 .text-bg-3
+{
+    background-color: #fff;
+    color:#000;
+    height:60px;
+    padding-top: 5px;
+}
+#contact7 .text-bg-3 p
+{
+    margin: 0px;
+    font-size: 13px;
+    line-height: 16px;
+}
+/* end contact 7 */
+/* start contact 8 */
+#contact8 .wrapper.grey {
+	background: #CA232A;
+	border-top: 1px solid #CA232A;
+	border-bottom: 1px solid #CA232A;
+	padding: 80px 0px;
+}
+#contact8  p {
+	color: #fff;
+	font-size:14px;
+	line-height:1.3;
+}
+#contact8 h2.lead
+{
+	color:#fff;
+}
+#contact8 h5
+{
+	color:#fff;
+}
+#contact8 b.chead
+{
+	color:#fff;
+}
+#contact8 span
+{
+	color:#fff;
+}
+#contact8 a
+{
+	color:#fff;
+}
+#contact8 .btn-lg
+{
+	border-radius:0px;
+}
+#contact8 .btn-primary {
+  background-color: #fff;
+  color: red;
+}
+#contact8 .input-lg {
+  border-radius: 0px;
+  font-size: 15px;
+  height: 35px;
+  line-height: 1;
+  padding: 0px;
+}
+#contact8 .form-control {
+  border: 1px solid #fff;
+  border-radius: 0px;
+  box-shadow: none;
+  color: #fff;
+  font-family: "Lato",Helvetica,Arial,sans-serif;
+  font-size: 15px;
+  background-color:#CA232A;
+  line-height: 1;
+  padding: 7px 10px;
+  transition: border 0.25s linear 0s, color 0.25s linear 0s, background-color 0.25s linear 0s;
+}
+#contact8 .form-control::-moz-placeholder {
+  color: #fff;
+  opacity: 1;
+}
+#contact8 .form-control::-moz-placeholder {
+  color: #fff;
+  opacity: 1;
+}
+#contact8 .form-control:-ms-input-placeholder {
+  color: #fff;
+}
+#contact8 .form-control::-webkit-input-placeholder {
+  color: #fff;
+}
+#contact8 .form-control.placeholder {
+  color: #fff;
+}
+/* end contact 8 */

@@ -73,7 +73,7 @@ class NewsController < ApplicationController
   def delete
     @news = News.find(params[:id]).destroy
     flash[:notice] = "#{t('flash2')}"
-    redirect_to :controller => 'news', :action => 'index'
+    redirect_to :controller => 'news', :action => 'all'
   end
 
   def delete_comment

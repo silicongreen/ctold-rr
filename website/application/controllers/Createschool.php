@@ -343,6 +343,10 @@ class Createschool extends CI_Controller {
                     }
                 }
             }
+        } else {
+            echo '<pre>';
+            var_dump( validation_errors());
+            exit;
         }
 
         $data['country_call_code'] = $country_call_code;

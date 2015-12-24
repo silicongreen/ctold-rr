@@ -85,6 +85,9 @@
             this.$input               = this.$('#customer-chat-message-input');
             this.$contactName         = this.$('#customer-chat-contact-name');
             this.$contactMail         = this.$('#customer-chat-contact-mail');
+            this.$contactSchool       = this.$('#customer-chat-contact-school-name');
+            this.$contactStartTime    = this.$('#customer-chat-contact-preferred-time-start');
+            this.$contactEndTime      = this.$('#customer-chat-contact-preferred-time-end');
             this.$contactMessage      = this.$('#customer-chat-contact-message');
             this.$loginName           = this.$('#customer-chat-login-name');
             this.$loginMail           = this.$('#customer-chat-login-mail');
@@ -717,10 +720,13 @@
 
             var input = {
 
-                name     : this.$contactName.val(),
-                mail     : this.$contactMail.val(),
-                question : this.$contactMessage.val(),
-                userInfo : JSON.stringify(config.info)
+                name        : this.$contactName.val(),
+                mail        : this.$contactMail.val(),
+                question    : this.$contactMessage.val(),
+                school      : this.$contactSchool.val(),
+                start_time  : this.$contactStartTime.val(),
+                end_time    : this.$contactEndTime.val(),
+                userInfo    : JSON.stringify(config.info)
             };
 
             // Return if form is not valid

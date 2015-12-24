@@ -13,11 +13,14 @@ class ContactController extends Controller
         $name     = $request->postVar('name');
         $mail     = $request->postVar('mail');
         $question = $request->postVar('question');
+        $school = $request->postVar('school');
+        $start_time = $request->postVar('start_time');
+        $end_time = $request->postVar('end_time');
         $userInfo = $request->postVar('userInfo', false);
 
         // Validate the input
 
-        $errors = $validators->validateContactData(compact('name', 'mail', 'question'));
+        $errors = $validators->validateContactData(compact('name', 'mail', 'question','school','start_time','end_time'));
 
         if(count($errors) === 0)
         {
@@ -26,7 +29,7 @@ class ContactController extends Controller
             $question = nl2br($question);
             $userInfo = json_decode($userInfo);
 
-            $message = $template->renderView('email/contact.html.php', compact('mail', 'name', 'userInfo', 'question'), true);
+            $message = $template->renderView('email/contact.html.php', compact('mail', 'name', 'userInfo', 'question','school','start_time','end_time'), true);
 
             // Send the e-mail
 

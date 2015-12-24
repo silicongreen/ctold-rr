@@ -32,6 +32,13 @@ class MailValidator implements Validator
         return preg_match('/^[-+\\.0-9=a-z_]+@([-0-9a-z]+\\.)+([0-9a-z]){2,}$/i', $value) === 1;
     }
 }
+class TimeValidator implements Validator
+{
+    public function validate($value)
+    {
+        return preg_match('/([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])/i', $value) === 1;
+    }
+}
 
 class LengthValidator implements Validator
 {

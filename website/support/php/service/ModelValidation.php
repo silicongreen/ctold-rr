@@ -140,6 +140,20 @@ class ModelValidation extends Service
             
                 'Value is blank'     => new NotBlankValidator(),
                 'Value is too short' => new LengthValidator(6)
+            )),
+            'school' => $this->validation->validate($data['school'], array(
+            
+                'Value is blank' => new NotBlankValidator()
+            )),
+            'start_time' => $this->validation->validate($data['start_time'], array(
+            
+                'Value is blank' => new NotBlankValidator(),
+                'Value is not a valid Time' => new TimeValidator()
+            )),
+            'end_time' => $this->validation->validate($data['end_time'], array(
+            
+                'Value is blank' => new NotBlankValidator(),
+                'Value is not a valid Time' => new TimeValidator()
             ))
         ));
     }

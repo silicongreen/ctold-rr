@@ -17,6 +17,7 @@
         <link rel="stylesheet" href="<?php echo $app->asset('css/widget-mobile.css') ?>" />
         <link rel="stylesheet" href="<?php echo $app->asset('css/jquery.mCustomScrollbar.css') ?>" />
         <link rel="stylesheet" href="<?php echo $app->asset('css/bootstrap.css') ?>" />
+        <link rel="stylesheet" href="<?php echo $app->asset('css/jquery.timepicker.css') ?>" />
         <link rel="stylesheet" href="<?php echo $app->path('Widget:themeStyle') ?>" />
         <link rel="stylesheet" href="<?php echo $app->path('Widget:customStyle') ?>" />
     </head>
@@ -132,7 +133,7 @@
             </div>
             
             <div id="customer-chat-content-contact-form" class="customer-chat-content">
-                <div class="customer-chat-content-info">
+                <div class="customer-chat-content-info" style="height:40px;">
                     <?php echo $vars['ui']['contactInfo'] ?>
                 </div>
                 <div class="customer-chat-content-message-input">
@@ -140,6 +141,15 @@
                 </div>
                 <div class="customer-chat-content-message-input">
                     <input id="customer-chat-contact-mail" type="text" class="customer-chat-content-message-input-field" placeholder="<?php echo $vars['ui']['contactMailLabel'] ?>" />
+                </div>
+                <div class="customer-chat-content-message-input">
+                    <input id="customer-chat-contact-school-name" type="text" class="customer-chat-content-message-input-field" placeholder="<?php echo $vars['ui']['contactSchoolLabel'] ?>" />
+                </div>
+                <div class="customer-chat-content-message-input">
+                    <input id="customer-chat-contact-preferred-time-start" type="text" class="customer-chat-content-message-input-field" placeholder="<?php echo $vars['ui']['contactTimeStartLabel'] ?>" />
+                </div>
+                <div class="customer-chat-content-message-input">
+                    <input id="customer-chat-contact-preferred-time-end" type="text" class="customer-chat-content-message-input-field" placeholder="<?php echo $vars['ui']['contactTimeEndLabel'] ?>" />
                 </div>
                 <div class="customer-chat-content-message-input">
                     <textarea id="customer-chat-contact-message" class="customer-chat-content-message-input-field" placeholder="<?php echo $vars['ui']['contactQuestionLabel'] ?>"></textarea>
@@ -166,8 +176,9 @@
         <!-- Scripts -->
         
         <?php echo $app->renderView('blocks/debugScripts.html'); ?>
-        
+               
         <?php if($app->env == 'prod') { ?>
+    
             <script src="<?php echo $app->asset('js/customer-chat-widget-libs.min.js') ?>" type="text/javascript"></script>
             <script type="text/javascript">window.chatConfig={serverTimeDifference:(new Date('<?php echo date("Y-m-d H:i:s") ?>'.replace(/-/g,"/")).getTime() / 1000) - (new Date().getTime() / 1000),rootPath:'<?php echo $app->asset("") ?>',templatesPath:'<?php echo $app->asset("views/widget-templates.html") ?>',isOperatorOnlinePath:'<?php echo $app->path("Operator:isOnline") ?>',isLoggedInPath:'<?php echo $app->path("Authentication:isGuestLoggedIn") ?>',loginPath:'<?php echo $app->path("Authentication:loginGuest") ?>',logoutPath:'<?php echo $app->path("Authentication:logoutGuest") ?>',keepAlivePath:'<?php echo $app->path("Guest:stayAlive") ?>',getTypingStatusPath:'<?php echo $app->path("Guest:getTypingStatus") ?>',updateTypingStatusPath:'<?php echo $app->path("Guest:updateTypingStatus") ?>',newMessagesPath:'<?php echo $app->path("Message:getNew") ?>',markMessagesReadPath:'<?php echo $app->path("Message:markMessagesRead") ?>',lastMessagesPath:'<?php echo $app->path("Message:getLast") ?>',sendMessagePath:'<?php echo $app->path("Message:broadcast") ?>',getOperatorPath:'<?php echo $app->path("Operator:get") ?>',contactPath:'<?php echo $app->path("Contact:contact") ?>',ui:JSON.parse('<?php echo $vars["uiJson"] ?>'),defaultAvatars:JSON.parse('<?php echo $vars["defaultAvatars"] ?>'),info:JSON.parse('<?php echo $vars["info"] ?>'),mobile:<?php echo !empty($vars['mobile']) ? 'true' : 'false' ?>,remoteDomain:'<?php echo $vars['remoteDomain']; ?>'};</script>
             <script src="<?php echo $app->asset('js/customer-chat-widget.min.js') ?>" type="text/javascript"></script>
@@ -245,7 +256,17 @@
             <script src="<?php echo $app->asset('js/app/adapter/PostMessageApiAdapter.js') ?>"></script>
 
             <script src="<?php echo $app->asset('js/widget.js') ?>"></script>
+             
+            
         <?php } ?>
+            <script src="<?php echo $app->asset('js/lib/jquery.timepicker.min.js') ?>"></script>
+            <script type="text/javascript">
+                    // Basic configuration
+                $(document).ready(function() {
+                    $('#customer-chat-contact-preferred-time-start').timepicker({ 'step': 60,'timeFormat': 'H:i:s'  });
+                    $('#customer-chat-contact-preferred-time-end').timepicker({'step': 60,'timeFormat': 'H:i:s'  });
+                });
+            </script>
         
     </body>
 </html>

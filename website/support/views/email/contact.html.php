@@ -20,6 +20,8 @@
                         <b>Sent from page:</b> <a href="<?php echo $vars['userInfo']->referer ?>" target="_blank"><?php echo $vars['userInfo']->referer ?></a><br>
                         <b>Author's name:</b> <?php echo $vars['name'] ?><br>
                         <b>Author's email:</b> <?php echo $vars['mail'] ?><br>
+                        <b>School's name:</b> <?php echo $vars['school'] ?><br>
+                        <b>Preferred Time:</b> <?php echo $vars['start_time'] ?>-<?php echo $vars['end_time'] ?><br>
                         <b>Author's IP:</b> <?php echo $vars['userInfo']->ip ?><br>
                         <b>Message:</b>
                     </td>
@@ -27,6 +29,7 @@
             	<tr>
                 	<td align="left" valign="top" style="padding-top: 30px; line-height: 1.3em;"><?php echo $vars['question'] ?></td>
                 </tr>
+                
             	<tr>
                 	<td align="center" valign="top" style="padding-top: 30px;"><i>You can reply directly to this email to answer the question.</i></td>
                 </tr>

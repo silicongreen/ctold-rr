@@ -93,18 +93,18 @@ class Createschool extends CI_Controller {
 
             $response = array();
             $model_name = array_keys($_POST);
-            
+
             if ($model_name[0] == 'course') {
-                
+
                 $model_name[1] = 'course';
                 $_POST[$model_name[1]] = $_POST[$model_name[0]];
-                
+
                 $model_name[0] = 'shift';
                 $_POST[$model_name[0]][] = 'General';
             }
-            
+
             if (count($model_name) > 1) {
-               
+
                 $this->load->model($model_name[1], 'model');
                 $this->model->init($school_id);
 
@@ -122,7 +122,6 @@ class Createschool extends CI_Controller {
                 $this->model->init($school_id);
 
                 $data = $this->model->create($_POST[$model_name[0]]);
-
             }
 
             if (!isset($data['error']) && ($data != FALSE)) {
@@ -138,11 +137,11 @@ class Createschool extends CI_Controller {
     }
 
     public function userregister($school_type) {
-        
+
         if ($school_type != "paid" && $school_type != "free") {
             redirect("createschool/type");
         }
-        
+
         if (!empty($_POST)) {
 
             if (isset($_POST['school_type']) && !empty($_POST['school_type'])) {
@@ -203,8 +202,7 @@ class Createschool extends CI_Controller {
         }
     }
 
-    public function success($school_type = 'free', $i_tmp_school_created_data_id = 0, $i_free_user_id = 0) 
-    {
+    public function success($school_type = 'free', $i_tmp_school_created_data_id = 0, $i_free_user_id = 0) {
         $data = $this->tmp->getData($i_tmp_school_created_data_id);
         if ($data !== FALSE) {
 
@@ -213,17 +211,16 @@ class Createschool extends CI_Controller {
             $data['i_tmp_school_created_data_id'] = $i_tmp_school_created_data_id;
             $data['i_free_user_id'] = $i_free_user_id;
             $data['ar_free_user_data'] = $this->school->getFreeUserDataById($i_free_user_id);
-            
         } else {
-            
+
             $_ar_errors['message'] = 'Temp school created data not found';
             $_ar_errors['code'] = 404;
             $_ar_errors['type'] = 'TempSchoolCreatedData';
-            
+
             $this->error_logs->record($_ar_errors);
             $data['error'] = 'School not created';
         }
-        
+
         $this->load_view('success', $data);
     }
 
@@ -232,18 +229,18 @@ class Createschool extends CI_Controller {
         if (!$this->input->is_ajax_request()) {
             exit('No direct script access allowed');
         }
-        
+
         $this->load->config('create_school');
         $config = $this->config->config['create_school'];
 
         $notify = $this->input->post('notify');
         $i_free_user_id = $this->input->post('i_free_user_id');
         $i_tmp_school_created_data_id = $this->input->post('i_tmp_school_created_data_id');
-        
-        if($config['mode'] == 'live') {
+
+        if ($config['mode'] == 'live') {
             $this->sendMail($i_tmp_school_created_data_id, $i_free_user_id);
         }
-        
+
         $response['success'] = 'done';
 
         echo json_encode($response);
@@ -251,7 +248,7 @@ class Createschool extends CI_Controller {
     }
 
     public function newschool($school_type = 'free', $i_tmp_free_user_data_id = 0) {
-        
+
         if ($i_tmp_free_user_data_id <= 0 && empty($_POST)) {
             redirect("/createschool/userregister/" . $school_type);
         }
@@ -270,7 +267,6 @@ class Createschool extends CI_Controller {
             if (isset($_POST['i_tmp_free_user_data_id']) && !empty($_POST['i_tmp_free_user_data_id'])) {
                 $i_tmp_free_user_data_id = $this->input->post('i_tmp_free_user_data_id');
             }
-            $country_call_code = $this->input->post('country_call_code');
             
             $this->form_validation->set_rules('name', 'School Name', 'required|min_length[5]');
             if ($school_type == "paid") {
@@ -281,7 +277,7 @@ class Createschool extends CI_Controller {
             $this->form_validation->set_rules('institution_phone_no', 'Institution Phone Number', 'required|min_length[5]');
             $this->form_validation->set_rules('code', 'Sub domain', 'required|alpha_numeric|min_length[3]|max_length[8]');
             $this->form_validation->set_rules('country_call_code', 'Country Code', 'required');
-            
+
             if ($this->form_validation->run() !== FALSE) {
 
                 if (isset($_POST['i_tmp_free_user_data_id']) && !empty($_POST['i_tmp_free_user_data_id'])) {
@@ -311,7 +307,7 @@ class Createschool extends CI_Controller {
                 $ar_data['free_feed']['free_feed_for_student'] = 1;
                 $ar_data['palette_setting'] = 1;
                 $ar_data['package'] = [2];
-                
+
                 $i_tmp_school_creation_data_id = $this->tmp->create(array(
                     'key' => 'school_creation_data',
                     'value' => json_encode($ar_data)
@@ -326,11 +322,7 @@ class Createschool extends CI_Controller {
                     $this->load->library('school');
                     $this->school->init($i_tmp_school_creation_data_id, $ar_tmp_free_user_data);
                     $data = $this->school->create();
-                    
-                    echo '<pre>';
-                    var_dump($data);
-                    exit;
-                    
+
                     if (isset($data['success']) && $data['success'] === TRUE) {
                         $i_tmp_school_created_data_id = $this->tmp->create(array(
                             'key' => 'school_created_data',
@@ -342,13 +334,9 @@ class Createschool extends CI_Controller {
                         redirect('/createschool/success/' . $school_type . '/' . $i_tmp_school_created_data_id . '/' . $i_free_user_id);
                     }
                 }
-            }else {
-            echo '<pre>';
-            var_dump( validation_errors());
-            exit;
+            }
         }
-        } 
-
+        
         $data['country_call_code'] = $country_call_code;
         $data['countries'] = $this->country->getAll();
         $data['school_type'] = $school_type;
@@ -362,7 +350,7 @@ class Createschool extends CI_Controller {
         if (!$this->input->is_ajax_request()) {
             exit('No direct script access allowed');
         }
-        
+
         $this->load->config('create_school');
         $config = $this->config->config['create_school'];
 
@@ -371,9 +359,9 @@ class Createschool extends CI_Controller {
 
         $this->load->library('school');
         $this->school->setCode($code);
-        
+
         $b_subdomain_created = ($config['mode'] == 'live') ? $this->school->createSubdomains($type) : TRUE;
-        
+
         if ($b_subdomain_created) {
             $response['success'] = 'done';
         } else {
@@ -387,10 +375,11 @@ class Createschool extends CI_Controller {
     public function type() {
         $this->load_view('school_type');
     }
+
     public function subscription() {
-        $this->load->config('payment');        
+        $this->load->config('payment');
         $PaymentPackages = $this->config->config['PaymentPackages'];
-        
+
         $data['subscription'] = $PaymentPackages;
         $this->load_view('school_subscription', $data);
     }
@@ -411,7 +400,7 @@ class Createschool extends CI_Controller {
     }
 
     private function sendMail($i_tmp_school_created_data_id = 0, $i_free_user_id = 0) {
-        
+
         $this->load->config('create_school');
         $this->load->library('school');
 

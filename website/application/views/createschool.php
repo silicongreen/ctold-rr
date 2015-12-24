@@ -68,9 +68,11 @@
                                         </ul>
                                     </div>
                                 </div>
+                                
+                                <?php $country_call_code = $country_call_code; ?>
 
                                 <!--<div class="col-md-2">-->
-                                    <input readonly="readonly" type="hidden" value="<?php //echo $country_call_code; ?>" class="form-control" id="country_call_code" name="country_call_code" placeholder="Country Code *" required="required" />
+                                    <input readonly="readonly" type="hidden" value="<?php echo $country_call_code; ?>" class="form-control" id="country_call_code" name="country_call_code" placeholder="Country Code *" required="required" />
                                 <!--</div>-->
                                 
                                 <div class="col-md-4">

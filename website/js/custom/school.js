@@ -1,4 +1,16 @@
 $(document).ready(function () {
+    
+    var country_call_code = $('#country_call_code').val();
+    if(country_call_code != '880') {
+        var country_id = $('.country-list li[data-call-code="'+country_call_code+'"]');
+        var country_text = country_id.text();
+        country_text += '<span class="caret"></span>';
+        
+        $('#dropdownMenu1').attr('data-coutntry-id', country_id);
+        $('#dropdownMenu1').html(country_text);
+        
+        console.log(country_text);
+    }
 
     if ($('#school_code').length > 0) {
         var school_code = $('#school_code').val();

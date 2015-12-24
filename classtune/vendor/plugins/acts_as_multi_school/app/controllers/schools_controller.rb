@@ -939,6 +939,7 @@ class SchoolsController <  MultiSchoolController
         subscription.is_unlimited = true
         subscription.save
         
+        
         url = 'http://cp-api.champs21.com/cp3.php?subdomain='+params[:school][:code]
         resp = Net::HTTP.get_response(URI.parse(url))
 

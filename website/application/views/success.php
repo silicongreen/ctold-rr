@@ -8,92 +8,111 @@
 
         <div class="col-lg-12 success-wrapper">
 
-            <div class="col-md-12">
-                <h2 class="f2 lead text-center success">Congratulation!!! </h2>
-            </div>
+            <?php if (isset($error)) { ?>
 
-            <div class="col-md-12 no-padding">
-                <div class="alert alert-success text-center">
-                    Your School has been created successfully.
+                <div class="col-md-12">
+                    <h2 class="f2 lead text-center error">Sorry!!! </h2>
                 </div>
-            </div>
 
-            <div class="col-md-12 no-padding">
+                <div class="col-md-12 no-padding">
+                    <div class="alert alert-danger text-center">
+                        <?php echo $error; ?>
+                    </div>
+                </div>
 
-                <img class="pull-left" id="smily" src="/images/logo/smile.png">
+            <?php } else { ?>
 
-                <div class="col-md-9 pull-right success_message_body bottom10">
+                <div class="col-md-12">
+                    <h2 class="f2 lead text-center success">Congratulation!!! </h2>
+                </div>
+
+                <div class="col-md-12 no-padding">
+                    <div class="alert alert-success text-center">
+                        Your School has been created successfully.
+                    </div>
+                </div>
+
+                <div class="col-md-12 no-padding">
+
+                    <img class="pull-left" id="smily" src="/images/logo/smile.png">
+
+                    <div class="col-md-9 pull-right success_message_body bottom10">
+
+                        <div class="col-lg-12 bottom10">
+
+                            <div class="row bottom10">
+                                <div class="col-xs-6 col-md-4 success_label">Your School Name : </div>
+                                <div class="col-xs-12 col-sm-6 col-md-8 success_label"><?php echo $returned_school_info['school']['name']; ?></div>
+                            </div>
+
+                            <div class="row bottom10">
+                                <div class="col-xs-6 col-md-4 success_label">Your School Code :</div>
+                                <div class="col-xs-12 col-sm-6 col-md-8 success_label"> <span class="activation_code"><?php echo $returned_school_info['school']['activation_code']; ?></span></div>
+                            </div>
+
+                        </div>
+
+                        <legend class="pull-left bottom10"></legend>
+                    </div>
+
+                    <div class="col-md-9 pull-right">
+                        <div class="col-lg-12 bottom10">
+                            <div class="row bottom10">
+
+                                <?php
+                                $first_name = $ar_free_user_data['first_name'];
+                                $middle_name = $ar_free_user_data['middle_name'];
+
+                                if (!empty($middle_name)) {
+                                    $middle_name = ' ' . $middle_name;
+                                }
+
+                                $last_name = $ar_free_user_data['last_name'];
+
+                                $full_name = $first_name . $middle_name . ' ' . $last_name;
+                                ?>
+
+                                <p class="user_info">Use this code to create user for your school.</p>
+                                <p class="user_info">Your Name is "<?php echo $full_name; ?>". Username is "<?php echo $paid_user_data['paid_username']; ?>"</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-9 pull-right">
+                        <div class="col-lg-12 bottom10">
+                            <div class="row bottom10">
+                                <p class="user_info_check">Please check your e-mail for account activation and login information.</p>
+                            </div>
+                        </div>
+                    </div>
+
 
                     <div class="col-lg-12 bottom10">
-
-                        <div class="row bottom10">
-                            <div class="col-xs-6 col-md-4 success_label">Your School Name : </div>
-                            <div class="col-xs-12 col-sm-6 col-md-8 success_label"><?php echo $returned_school_info['school']['name']; ?></div>
+                        <div class="row bottom10 text-center">
+                            <a class="btn btn-success initial_setup" href="/createschool/initial-setup/<?php echo $returned_school_info['school']['id']; ?>">
+                                <h5>Complete initial school setup</h5></a>
                         </div>
-
-                        <div class="row bottom10">
-                            <div class="col-xs-6 col-md-4 success_label">Your School Code :</div>
-                            <div class="col-xs-12 col-sm-6 col-md-8 success_label"> <span class="activation_code"><?php echo $returned_school_info['school']['activation_code']; ?></span></div>
-                        </div>
-
                     </div>
 
-                    <legend class="pull-left bottom10"></legend>
+
                 </div>
 
-                <div class="col-md-9 pull-right">
-                    <div class="col-lg-12 bottom10">
-                        <div class="row bottom10">
+                <div id="school_code_wrp">
 
-                            <?php
-                            $first_name = $ar_free_user_data['first_name'];
-                            $middle_name = $ar_free_user_data['middle_name'];
-
-                            if (!empty($middle_name)) {
-                                $middle_name = ' ' . $middle_name;
-                            }
-
-                            $last_name = $ar_free_user_data['last_name'];
-
-                            $full_name = $first_name . $middle_name . ' ' . $last_name;
-                            ?>
-
-                            <p class="user_info">Use this code to create user for your school.</p>
-                            <p class="user_info">Your Name is "<?php echo $full_name; ?>". Username is "<?php echo $paid_user_data['paid_username']; ?>"</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-9 pull-right">
-                    <div class="col-lg-12 bottom10">
-                        <div class="row bottom10">
-                            <p class="user_info_check">Please check your e-mail for account activation and login information.</p>
-                        </div>
-                    </div>
+                    <input type="hidden" id="school_type" name="school_type" value="<?php echo $school_type; ?>" />
+                    <?php if (isset($returned_school_info['school']['code']) && !empty($returned_school_info['school']['code'])) { ?>
+                        <input type="hidden" id="school_code" name="school_code" value="<?php echo $returned_school_info['school']['code']; ?>" />
+                        <input type="hidden" id="i_tmp_school_created_data_id" name="i_tmp_school_created_data_id" value="<?php echo $i_tmp_school_created_data_id; ?>" />
+                        <input type="hidden" id="i_free_user_id" name="i_free_user_id" value="<?php echo $i_free_user_id; ?>" />
+                    <?php } ?>
                 </div>
 
 
-                <div class="col-lg-12 bottom10">
-                    <div class="row bottom10 text-center">
-                        <a class="btn btn-success initial_setup" href="/createschool/initial-setup/<?php echo $returned_school_info['school']['id']; ?>">
-                            <h5>Complete initial school setup</h5></a>
-                    </div>
-                </div>
 
-
-            </div>
-
-            <div id="school_code_wrp">
-
-                <input type="hidden" id="school_type" name="school_type" value="<?php echo $school_type; ?>" />
-                <?php if (isset($returned_school_info['school']['code']) && !empty($returned_school_info['school']['code'])) { ?>
-                    <input type="hidden" id="school_code" name="school_code" value="<?php echo $returned_school_info['school']['code']; ?>" />
-                    <input type="hidden" id="i_tmp_school_created_data_id" name="i_tmp_school_created_data_id" value="<?php echo $i_tmp_school_created_data_id; ?>" />
-                    <input type="hidden" id="i_free_user_id" name="i_free_user_id" value="<?php echo $i_free_user_id; ?>" />
-                <?php } ?>
-            </div>
-
+            <?php } ?>
+            
         </div>
+
 
     </div>
 
@@ -150,5 +169,8 @@
         background-color: #7fd268;
         border-color: #7fd268;
         color: #ffffff;
+    }
+    .error {
+        color: #C9302C;
     }
 </style>

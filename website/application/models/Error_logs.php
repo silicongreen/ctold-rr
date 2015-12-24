@@ -19,11 +19,14 @@ class Error_logs extends CI_Model {
      * * */
     public function record($param) {
         $data = $this->preprocess($param);
-
+        
+        $controller = $this->router->fetch_class();
+        $action = $this->router->fetch_method();
+        
         if ($this->b_write_to_file) {
             
             $error_string = date('Y-m-d H:i:s') . ': ';
-            $error_string .= 'Message: ' . $data['emsg'];
+            $error_string .= 'Controller: ' . $controller . ', Action: ' .$action. ', Message: ' . $data['emsg'];
             $error_string .= ', Code: ' . $data['ecode'];
             $error_string .= ', Type: ' . $data['etype'] . '.';
             $error_string .= "\r\n\n";

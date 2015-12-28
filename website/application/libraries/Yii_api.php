@@ -17,7 +17,7 @@ class Yii_api {
 
         $this->_CI = & get_instance();
 
-        $this->_api_endpoint = 'http://api.champs21.dev/api/';
+        $this->_api_endpoint = 'http://api.champs21.com/api/';
         $this->_client = new Client();
 
         $this->_headers = array(

@@ -84,14 +84,8 @@
               <td class="col-pdf1"><%= t('total') %></td>
               <td class="col-pdf1"><%= t('percentage') %></td>
           </tr>
-        </table>
-      </center>
-    </div>
-    <% @students.each_with_index do |student,i| %>
-      <% c =cycle('even','odd ') %>
-      <div class="section1 row" >
-        <center>
-          <table id="pdf-table" width="100%">
+          <% @students.each_with_index do |student,i| %>
+            <% c =cycle('even','odd ') %>
             <tr class="<%= "#{c}" %>">
               <td class="col-pdf1"><%= student.full_name %></td>
               <td class="col-pdf1"><%= student.admission_no %></td>
@@ -102,10 +96,29 @@
               <td class="col-pdf1"><%= @leaves[student.id]['total'] %></td>
               <td class="col-pdf1"><%= @leaves[student.id]['percent'].round(2) unless @leaves[student.id]['percent'].nil? %></td>
             </tr>
-          </table>
-        </center>
-      </div>
-    <% end %>
+          <% end %>  
+        </table>
+      </center>
+    </div>
+    <%# @students.each_with_index do |student,i| %>
+      <%# c =cycle('even','odd ') %>
+      <%#*<div class="section1 row" >%>
+        <%#*<center>%>
+          <%#*<table id="pdf-table" width="100%">%>
+            <%#*<tr class="<%= "#{c}" %>">%>
+              <%#*<td class="col-pdf1"><%= student.full_name </td>%>
+              <%#*<td class="col-pdf1"><%= student.admission_no </td>%>
+              <%#*<td class="col-pdf1"> <%= @leaves[student.id]['present'] </td>%>
+              <%#*<td class="col-pdf1"> <%= @leaves[student.id]['late'] </td>%>
+              <%#*<td class="col-pdf1"> <%= @leaves[student.id]['absent'] </td>%>
+              <%#*<td class="col-pdf1"> <%= @leaves[student.id]['on_leave'] </td>%>
+              <%#*<td class="col-pdf1"><%= @leaves[student.id]['total'] </td>%>
+              <%#*<td class="col-pdf1"><%= @leaves[student.id]['percent'].round(2) unless @leaves[student.id]['percent'].nil? </td>%>
+            <%#*</tr>%>
+          <%#*</table>%>
+        <%#*</center>%>
+      <%#*</div>%>
+    <%# end %>
 
   <%  else %>
     <div class="section1 row" >

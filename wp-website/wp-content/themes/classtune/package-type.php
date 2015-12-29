@@ -178,7 +178,7 @@ $act = $_GET['local'];
                                 <div class="col-md-4 border_right" style="width:26%;height: 90px;">
                                 </div>
                                 <div class="col-md-4 pack_log" id="basic_log" style="width:32%;height: 90px;background:#E9E7E8;text-align: center;padding:20px;cursor:pointer;">
-                                        <a href="<?php echo get_site_url(); ?>/user-register" class="btn btn-info btn-basic">
+                                        <a href="<?php echo get_site_url(); ?>/singup" class="btn btn-info btn-basic">
 					Get Started Now</a>
                                 </div>
                                 <div class="col-md-4 pack_log border_left" id="premium_log" style="width:42%;height: 90px;background:#E9E7E8;text-align: center;padding:20px;cursor:pointer;">

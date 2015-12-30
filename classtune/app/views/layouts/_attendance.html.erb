@@ -51,7 +51,7 @@
             <%  if !check_free_school? %>
               <%= link_to profile_text, :controller => "student", :action => "profile", :id => student_id %>
             <% else  %>
-              <%= profile_text %>
+              <%= link_to profile_text, :controller => "student", :action => "profile", :id => student_id %>
             <% end %>
 
             <p><%= student.full_name%></p>
@@ -68,7 +68,7 @@
         <%  if !check_free_school? %>
           <%= link_to profile_text, :controller => "student", :action => "profile", :id => student_id %>
         <% else  %>
-          <%= profile_text %>
+          <%= link_to profile_text, :controller => "student", :action => "profile", :id => student_id %>
         <% end %>
         <p><%= @main_user_data.full_name %></p>
       <% elsif @current_user.employee? || @current_user.admin? %> 
@@ -84,7 +84,7 @@
         <%  if !check_free_school? %>
           <%= link_to profile_text, :controller => "employee", :action => "profile", :id => employee_id %>
         <% else  %>
-          <%= profile_text %>
+          <%= link_to profile_text, :controller => "employee", :action => "profile", :id => employee_id %>
         <% end %>
         <p><%= @main_user_data.full_name %></p> 
       <% else %> 

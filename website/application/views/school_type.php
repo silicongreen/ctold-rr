@@ -32,10 +32,10 @@ $act = (isset($_GET['locale']) && !empty($_GET['locale'])) ? $_GET['locale'] : '
                         <div class="col-md-4" id="basic_log" style="width:32%;padding: 20px;height: 232px;">
                             <div class="col-md-6" >
                                 <ul>
-                                    <li><i class="fa fa-check-square"></i><span>Fees</span></li>
-                                    <li><i class="fa fa-check-square"></i><span>Lesson Plan</span></li>
-                                    <li><i class="fa fa-check-square"></i><span>Syllabus</span></li>
-                                    <li><i class="fa fa-check-square"></i><span>Exam Routine</span></li>
+                                    <li><i class="fa fa-check-square"></i><span>Homeworks</span></li>
+                                    <li><i class="fa fa-check-square"></i><span>Notice</span></li>
+                                    <li><i class="fa fa-check-square"></i><span>Student Profile</span></li>
+                                    <li><i class="fa fa-check-square"></i><span>Teacher Profile</span></li>
                                 </ul>
                             </div>
                         </div>
@@ -79,11 +79,18 @@ $act = (isset($_GET['locale']) && !empty($_GET['locale'])) ? $_GET['locale'] : '
                             <img src="<?php echo base_url(); ?>images/package-3.png" style="left: 50%;margin-left: -100px;margin-top: -60px;position: absolute;top: 50%;">
                         </div>
                         <div class="col-md-4" id="basic_log" style="width:32%;padding: 20px;height: 150px;">
-                            <img src="<?php echo base_url(); ?>images/close.png" style="left: 50%;margin-left: -60px;margin-top: -50px;position: absolute;top: 50%;">
+                            <!--img src="<?php echo base_url(); ?>images/close.png" style="left: 50%;margin-left: -60px;margin-top: -50px;position: absolute;top: 50%;"-->
+							<ul>
+								<li><i class="fa fa-check-square"></i><span>Unlimited User Registration</span></li>
+								<li><i class="fa fa-check-square"></i><span>Profile Management</span></li>
+								<li><i class="fa fa-check-square"></i><span>Manage Homework</span></li>                                                
+								<li><i class="fa fa-check-square"></i><span>Manage Notice</span></li>                                               
+							</ul>
                         </div>
                         <div class="col-md-4 border_left"  style="width:42%;padding: 20px;height: 150px;">
                             <div class="col-md-6" >
                                 <ul>
+                                    <li><i class="fa fa-check-square"></i><span>Unlimited Teacher and Admin</span></li>
                                     <li><i class="fa fa-check-square"></i><span>Manage Employee</span></li>
                                     <li><i class="fa fa-check-square"></i><span>Manage Student</span></li>                                                
                                     <li><i class="fa fa-check-square"></i><span>Manage Task</span></li>
@@ -180,10 +187,10 @@ $act = (isset($_GET['locale']) && !empty($_GET['locale'])) ? $_GET['locale'] : '
                         <div class="col-md-4" id="basic_log" style="width:32%;padding: 20px;height: 232px;">
                             <div class="col-md-6" >
                                 <ul>
-                                    <li><i class="fa fa-check-square"></i><span>Fees</span></li>
-                                    <li><i class="fa fa-check-square"></i><span>Lesson Plan</span></li>
-                                    <li><i class="fa fa-check-square"></i><span>Syllabus</span></li>
-                                    <li><i class="fa fa-check-square"></i><span>Exam Routine</span></li>
+                                    <li><i class="fa fa-check-square"></i><span>Homeworks</span></li>
+                                    <li><i class="fa fa-check-square"></i><span>Notice</span></li>
+                                    <li><i class="fa fa-check-square"></i><span>Student Profile</span></li>
+                                    <li><i class="fa fa-check-square"></i><span>Teacher Profile</span></li>
                                 </ul>
                             </div>
                         </div>
@@ -227,11 +234,17 @@ $act = (isset($_GET['locale']) && !empty($_GET['locale'])) ? $_GET['locale'] : '
                             <img src="<?php echo base_url(); ?>images/package-3.png" style="left: 50%;margin-left: -100px;margin-top: -60px;position: absolute;top: 50%;">
                         </div>
                         <div class="col-md-4" id="basic_log" style="width:32%;padding: 20px;height: 150px;">
-                            <img src="<?php echo base_url(); ?>images/close.png" style="left: 50%;margin-left: -60px;margin-top: -50px;position: absolute;top: 50%;">
+                            <ul>
+								<li><i class="fa fa-check-square"></i><span>Unlimited User Registration</span></li>
+								<li><i class="fa fa-check-square"></i><span>Profile Management</span></li>
+								<li><i class="fa fa-check-square"></i><span>Manage Homework</span></li>                                                
+								<li><i class="fa fa-check-square"></i><span>Manage Notice</span></li>                                               
+							</ul>
                         </div>
                         <div class="col-md-4 border_left"  style="width:42%;padding: 20px;height: 150px;">
                             <div class="col-md-6" >
                                 <ul>
+                                    <li><i class="fa fa-check-square"></i><span>Unlimited Teacher and Admin</span></li>
                                     <li><i class="fa fa-check-square"></i><span>Manage Employee</span></li>
                                     <li><i class="fa fa-check-square"></i><span>Manage Student</span></li>                                                
                                     <li><i class="fa fa-check-square"></i><span>Manage Task</span></li>

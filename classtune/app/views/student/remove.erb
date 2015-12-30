@@ -56,7 +56,7 @@
           <%= link_to "#{t('fees_text')}", {:controller => 'student', :action => 'fees', :id => @student.id}, {:class => 'f2'} %>
         </li>
       <% end %>
-      <% !check_free_school? %>
+      <% if !check_free_school? %>
         <% Champs21Plugin::ADDITIONAL_LINKS[:student_profile_more_menu].each do |mod| %>
           <% if can_access_request? "#{mod[:destination][:action]}".to_sym,"#{mod[:destination][:controller]}".to_sym %>
             <li>

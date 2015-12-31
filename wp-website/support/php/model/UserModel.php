@@ -34,7 +34,7 @@ class UserModel extends Model
     
     public function getColumns()
     {
-        return array('name', 'mail', 'password', 'image', 'roles', 'last_activity', 'info');
+        return array('name', 'mail', 'password', 'image', 'roles','op_type', 'last_activity', 'info');
     }
     
     public function getData($raw = false)
@@ -131,12 +131,13 @@ class UserModel extends Model
         );
     }
     
-    public function generateGuest($name, $mail)
+    public function generateGuest($name, $mail, $op_type=1)
     {
         return new UserModel(array(
         
             'name'          => $name . '-' . time(),
             'mail'          => $mail,
+            'op_type'       => $op_type,
             'password'      => 'x',
             'roles'         => array('GUEST'),
             'last_activity' => date('Y-m-d H:i:s')
@@ -172,8 +173,13 @@ class UserModel extends Model
         return false;
     }
     
-    public function getAllOnline()
+    public function getAllOnline($op_id)
     {
+        
+        
+        $op_data = UserModel::repo()->find($op_id);
+        
+        
         $users  = UserModel::repo()->findAll();
         $result = array();
         
@@ -181,14 +187,20 @@ class UserModel extends Model
         {
             foreach($users as $user)
             {
-                $lastActivityTime = strtotime($user->last_activity);
+              
                 
-                if(time() - $lastActivityTime <= self::ONLINE_TIME) // Operator considered on-line
-                {
-                    // Hide the password field
-                    
-                    $result[] = $user->getData();
-                }
+                    $lastActivityTime = strtotime($user->last_activity);
+
+                    if(time() - $lastActivityTime <= self::ONLINE_TIME) // Operator considered on-line
+                    {
+                        // Hide the password field
+                        $user_data = $user->getData();
+                     
+                        if($user_data['roles'][0]!="GUEST" || $op_data->op_type == $user_data['op_type'])
+                        {
+                            $result[] = $user_data;
+                        }
+                    }
             }
         }
         
@@ -221,6 +233,24 @@ class UserModel extends Model
     public function countGuestsOnline()
     {
         $users = UserModel::repo()->findBy(array('roles' => array('LIKE', '%GUEST%')));
+        $count = 0;
+        
+        if($users)
+        {
+            foreach($users as $user)
+            {
+                $lastActivityTime = strtotime($user->last_activity);
+                
+                if(time() - $lastActivityTime <= self::ONLINE_TIME) $count++;
+            }
+        }
+        
+        return $count;
+    }
+    
+    public function countOperatorsOnline()
+    {
+        $users = UserModel::repo()->findBy(array('roles' => array('LIKE', '%OPERATOR%')));
         $count = 0;
         
         if($users)

@@ -71,7 +71,10 @@ class OperatorController extends Controller
         $name     = $request->postVar('name');
         $mail     = $request->postVar('mail');
         $roles    = $request->postVar('roles');
+        $op_type  = $request->postVar('op_type');
         $image    = $request->postVar('image');
+
+        
         $password = null;
         
         if($currentUser->getId() === $id || $currentUser->hasRole('ADMIN'))
@@ -103,7 +106,7 @@ class OperatorController extends Controller
             {
                 // Set new properties
 
-                $user->setRawData(compact('name', 'mail', 'password', 'roles', 'image'));
+                $user->setRawData(compact('name', 'mail', 'password', 'roles','op_type', 'image'));
                 
                 // Validate the input
 
@@ -232,12 +235,13 @@ class OperatorController extends Controller
         $name     = $request->postVar('name');
         $mail     = $request->postVar('mail');
         $password = $request->postVar('password');
+        $op_type  = $request->postVar('op_type');
         
         $roles = array('OPERATOR');
         
         // Validate the input
         
-        $user = new UserModel(compact('name', 'mail', 'password', 'roles'));
+        $user = new UserModel(compact('name', 'mail', 'password', 'roles','op_type'));
         
         $errors = $this->get('model_validation')->validateUser($user->getData(true));
         
@@ -334,14 +338,16 @@ class OperatorController extends Controller
         {
             $config       = $this->get('config');
             $guestsOnline = UserModel::repo()->countGuestsOnline();
+            $operatorsOnline = UserModel::repo()->countOperatorsOnline();
+            $maxConnection = $operatorsOnline*$config->data['appSettings']['maxConnections'];
             
-            if($guestsOnline >= $config->data['appSettings']['maxConnections'])
+            if($guestsOnline >= $maxConnection && $operatorsOnline>0)
             {
-                return $this->json(array('success' => false));
+                return $this->json(array('success' => false,'maxconnection'=>true));
             }
         }
         
-        return $this->json(array('success' => UserModel::repo()->isOperatorOnline()), array(), 'json', array(
+        return $this->json(array('success' => UserModel::repo()->isOperatorOnline(),'maxconnection'=>false), array(), 'json', array(
             
             array('Cache-Control', 'no-cache, no-store, must-revalidate'),
             array('Pragma', 'no-cache'),
@@ -353,7 +359,9 @@ class OperatorController extends Controller
     
     public function getOnlineUsersAction()
     {
-        return $this->json(array('success' => true, 'users' => UserModel::repo()->getAllOnline()));
+        $uid = $this->get('user')->getId();
+      
+        return $this->json(array('success' => true, 'users' => UserModel::repo()->getAllOnline($uid)));
     }
 }
 

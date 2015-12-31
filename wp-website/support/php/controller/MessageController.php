@@ -9,10 +9,12 @@ class MessageController extends Controller
         $userId = $this->get('guest')->getId();
         
         $messages = null;
+       
         
         if($userId)
         {
             $db = $this->get('db');
+            
             
             $messages = MessageModel::repo()->findBy(array(
             
@@ -87,11 +89,19 @@ class MessageController extends Controller
     public function operatorGetNewAction()
     {
         $user     = $this->get('user');
+        
+        $uid = $this->get('user')->getId();
+        
+        $user_data = UserModel::repo()->find($uid);
+        
         $messages = MessageModel::repo()->findBy(array(
             
             'is_new'   => 'y',
             'datetime' => array('>=', date('Y-m-d H:i:s', time() - MessageModel::NEW_TALK_TIME_DELAY))
         ));
+        
+        
+        
         
         // Filter messages from guests
         
@@ -99,13 +109,21 @@ class MessageController extends Controller
         
         if(!empty($messages))
         {
-            foreach($messages as $message)
-            {
-                if($message->to_user_info == MessageModel::USER_INFO_ALL || $message->to_id == $user->getId())
+            
+            
+                foreach($messages as $message)
                 {
-                    $result[] = $message;
+                   
+                    $guest_data = UserModel::repo()->find($message->from_id);
+                    if($guest_data->op_type == $user_data->op_type)
+                    {
+                        if($message->to_user_info == MessageModel::USER_INFO_ALL || $message->to_id == $user->getId())
+                        {
+                            $result[] = $message;
+                        }
+                    }
                 }
-            }
+            
         }
         
         // Mark any outdated messages as read

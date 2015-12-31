@@ -6,6 +6,8 @@ class AdminController extends Controller
     const WIDGET_THEMES_DIR = 'widget-themes';
 
     // Show admin/operator's main page
+    
+    public $operators_type = array("1"=>"Markating Operator","2"=>"Sales Operator","3"=>"Technical Operator");
 
     public function indexAction()
     {
@@ -25,6 +27,7 @@ class AdminController extends Controller
         return $this->render('admin/index.html', array(
 
             'userData'         => json_encode($userData),
+            'operators_type'   => $this->operators_type,
             'installed'        => $appSettings['installed'],
             'installStatus'    => json_encode($this->getInstallStatus()),
             'messageSound'     => $appSettings['messageSound'],

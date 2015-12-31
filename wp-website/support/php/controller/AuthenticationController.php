@@ -70,6 +70,7 @@ class AuthenticationController extends Controller
         
         $name  = $request->postVar('name');
         $mail  = $request->postVar('mail');
+        $op_type  = $request->postVar('op_type');
         $image = $request->postVar('image');
         $info  = $request->postVar('info', false);
         
@@ -81,7 +82,7 @@ class AuthenticationController extends Controller
         {
             //Generate the temporary user
 
-            $user = UserModel::repo()->generateGuest($name, $mail);
+            $user = UserModel::repo()->generateGuest($name, $mail,$op_type);
             
             $user->image = $image;
             $user->info  = json_decode($info);

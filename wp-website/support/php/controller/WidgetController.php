@@ -2,6 +2,7 @@
 
 class WidgetController extends Controller
 {
+    public $operators_type = array("1"=>"Markating Operator","2"=>"Sales Operator","3"=>"Technical Operator");
     public function initAction()
     {
         $config = $this->get('config');
@@ -22,6 +23,7 @@ class WidgetController extends Controller
         return $this->render('widget/iframe-content.html.php', array(
         
             'ui'             => $config->data['appSettings'],
+            'operators_type'   => $this->operators_type,
             'uiJson'         => str_replace("'", '&apos;', json_encode($config->data['appSettings'])),
             'defaultAvatars' => json_encode($this->getDefaultAvatars()),
             'info'           => str_replace("'", '&apos;', json_encode($this->get('request')->getUserInfo())),
@@ -40,6 +42,7 @@ class WidgetController extends Controller
         
             'mobile'         => true,
             'ui'             => $config->data['appSettings'],
+            'operators_type' => $this->operators_type,
             'uiJson'         => str_replace("'", '&apos;', json_encode($config->data['appSettings'])),
             'defaultAvatars' => json_encode($this->getDefaultAvatars()),
             'info'           => str_replace("'", '&apos;', json_encode($userInfo)),

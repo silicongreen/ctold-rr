@@ -14,7 +14,7 @@ $username = $_POST['username'];
 $password = $_POST['password'];
 if($username && $password)
 {
-    $url = check_login_paid($user_name, $password);
+    $url = check_login_paid($username, $password);
     if($url)
     {
         echo "0";

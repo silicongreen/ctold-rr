@@ -52,7 +52,7 @@ class ContactController extends Controller
 
             // Return the response
 
-            return $this->json(array('success' => $success));
+            return $this->json(array('success' => $success,'message'=>$message));
         }
 
         // Return an error response

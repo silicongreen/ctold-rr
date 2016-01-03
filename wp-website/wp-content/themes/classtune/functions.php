@@ -415,7 +415,7 @@ function check_login_paid($user_name,$password)
                      $mydb->insert("tds_user_auth", $insert);
                      $params = "?username=" . $user_name . "&password=" . $password . "&auth_id=" . $random . "&user_id=" . $users->id;
                      $url = "http://" . $domain->domain . $params;
-                     echo $url;
+                  
                      return $url;
                 }
             }

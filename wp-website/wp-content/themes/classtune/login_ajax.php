@@ -17,7 +17,7 @@ if($username && $password)
     $url = check_login_paid($username, $password);
     if($url)
     {
-        echo "0";
+        echo $url;
     }
     else
     {

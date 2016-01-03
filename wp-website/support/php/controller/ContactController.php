@@ -46,13 +46,13 @@ class ContactController extends Controller
             // Send the e-mail
 
             $to      = $this->get('config')->data['appSettings']['contactMail'];
-            $subject = 'Support customar contac, question and chat preffered time from ' . $name;
+            $subject = 'Support customar contact question and chat preffered time from ' . $name;
 
             $success = $this->get('mailer')->sendMessage($mail, $to, $subject, $message);
 
             // Return the response
 
-            return $this->json(array('success' => $success,'message'=>$message));
+            return $this->json(array('success' => true));
         }
 
         // Return an error response

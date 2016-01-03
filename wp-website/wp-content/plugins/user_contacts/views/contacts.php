@@ -49,7 +49,7 @@
             } else {
                 ?>
                 <tr>
-                    <td>No Record Found!</td>
+                    <td colspan="5">No Record Found!</td>
                 <tr>  
                 <?php } ?>
         </tbody>

@@ -389,3 +389,31 @@ function twentysixteen_post_thumbnail_sizes_attr( $attr, $attachment, $size ) {
 	return $attr;
 }
 add_filter( 'wp_get_attachment_image_attributes', 'twentysixteen_post_thumbnail_sizes_attr', 10 , 3 );
+
+if ( ! function_exists( 'check_login_paid' ) ) :
+function check_login_paid($user_name,$password) 
+{
+	$mydb = new wpdb('champs21_champ','1_84T~vADp2$','champs21_school','localhost');
+        $users = $mydb->get_row($mydb->prepare("select * from users where (username=? AND is_approved=1) AND (is_deleted=0 OR parent=1)",$user_name));
+        if($users)
+        {
+            $hashed_password = sha1($users->salt . $password);
+            if ($hashed_password == $users->hashed_password) 
+            {
+                $domain = $mydb->get_row("select * from school_domains where linkable_id='".$users->school_id."'");
+                if($domain)
+                {
+                     $random = md5(rand());
+                     $insert['auth_id'] = $random;
+                     $insert['user_id'] = $users->id;
+                     $insert['expire'] = date("Y-m-d H:i:s", strtotime("+1 Day"));
+                     $mydb->insert("tds_user_auth", $insert);
+                     $params = "?username=" . $username . "&password=" . $password . "&auth_id=" . $random . "&user_id=" . $users->id;
+                     $url = "http://" . $domain->domain . $params;
+                     return $url;
+                }
+            }
+        }
+        return false;
+}
+endif;

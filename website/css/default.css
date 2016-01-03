@@ -823,6 +823,7 @@ i.faq:hover
     display:none;
     position:absolute;
     top:59px;
+    margin-left:-10px;
     background:#ffffff;
     -webkit-box-shadow: 2px 2px 5px 0px rgba(170,170,171,1);
     -moz-box-shadow: 2px 2px 5px 0px rgba(170,170,171,1);

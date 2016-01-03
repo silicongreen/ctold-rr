@@ -1,5 +1,4 @@
 <?php
-
 /*
   Plugin Name: User Contact Support
   Plugin URI: http://www.classtune.com
@@ -9,27 +8,7 @@
   Author URI: http://www.champs21.com
  */
 add_action('admin_menu', 'contact_support_user');
-//register_activation_hook( __FILE__, 'user_contact_install' );
-//function user_contact_install() {
-//	global $wpdb;
-//	
-//	$charset_collate = $wpdb->get_charset_collate();
-//
-//	$sql = "CREATE TABLE IF NOT EXISTS `mirrormx_customer_contact` (
-//            `id` int(11) NOT NULL AUTO_INCREMENT,
-//            `name` varchar(255) CHARACTER SET utf8 NOT NULL,
-//            `email` varchar(255) CHARACTER SET utf8 NOT NULL,
-//            `school` varchar(255) CHARACTER SET utf8 NOT NULL,
-//            `start_time` varchar(255) CHARACTER SET utf8 NOT NULL,
-//            `end_time` varchar(255) CHARACTER SET utf8 NOT NULL,
-//            `question` text CHARACTER SET utf8 NOT NULL,
-//            `user_info` text CHARACTER SET utf8 NOT NULL,
-//            PRIMARY KEY (`id`)
-//          ) $charset_collate;";
-//
-//	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-//	dbDelta( $sql );
-//}
+
 
 function contact_support_user() {
     $page_cat = add_menu_page('Support Contact From Users', 'Support Contact', 'delete_pages', 'support_contact_from_users', 'support_contact_from_users', plugins_url('images/support.png', __FILE__));
@@ -92,5 +71,3 @@ function support_contact_from_users() {
     }
     require 'views/contacts.php';
 }
-?>
-

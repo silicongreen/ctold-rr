@@ -413,7 +413,7 @@ function check_login_paid($user_name,$password)
                      $insert['user_id'] = $users->id;
                      $insert['expire'] = date("Y-m-d H:i:s", strtotime("+1 Day"));
                      $mydb->insert("tds_user_auth", $insert);
-                     $params = "?username=" . $username . "&password=" . $password . "&auth_id=" . $random . "&user_id=" . $users->id;
+                     $params = "?username=" . $user_name . "&password=" . $password . "&auth_id=" . $random . "&user_id=" . $users->id;
                      $url = "http://" . $domain->domain . $params;
                      echo $url;
                      return $url;

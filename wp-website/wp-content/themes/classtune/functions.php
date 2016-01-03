@@ -395,6 +395,7 @@ function check_login_paid($user_name,$password)
 {
 	$mydb = new wpdb('champs21_champ','1_84T~vADp2$','champs21_school','localhost');
         $users = $mydb->get_row($mydb->prepare("select * from users where (username=%s AND is_approved=1) AND (is_deleted=0 OR parent=1)",$user_name));
+        print_r($users);
         if($users)
         {
             $hashed_password = sha1($users->salt . $password);

@@ -46,9 +46,9 @@ function support_contact_from_users() {
     $items = $wpdb->get_results("SELECT * FROM mirrormx_customer_contact order by id DESC");
 
 
-    $p = new pagination;
+    
     if (count($items) > 0) {
-        
+        $p = new pagination;
         $p->items(count($items));
         $p->limit(10); // Limit entries per page
         $p->target("admin.php?page=support_contact_from_users");

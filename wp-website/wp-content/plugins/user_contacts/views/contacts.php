@@ -15,7 +15,9 @@
 
     <div class="tablenav">
         <div class='tablenav-pages'>
+            <?php if(isset($p)): ?>
             <?php echo $p->show();  // Echo out the list of paging. ?>
+            <?php endif; ?>
         </div>
     </div>
 

@@ -67,7 +67,7 @@ function support_contact_from_users() {
         //Query for limit paging
         $limit = "LIMIT " . ($p->page - 1) * $p->limit . ", " . $p->limit;
     } else {
-        echo "No Record Found";
+        
     }
     require 'views/contacts.php';
 }

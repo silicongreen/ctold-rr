@@ -405,7 +405,7 @@ function check_login_paid($user_name,$password)
             if ($hashed_password == $users->hashed_password) 
             {
                 $domain = $mydb->get_row("select * from school_domains where linkable_id='".$users->school_id."'");
-                print_r($domain);
+               
                 if($domain)
                 {
                      $random = md5(rand());
@@ -415,6 +415,7 @@ function check_login_paid($user_name,$password)
                      $mydb->insert("tds_user_auth", $insert);
                      $params = "?username=" . $username . "&password=" . $password . "&auth_id=" . $random . "&user_id=" . $users->id;
                      $url = "http://" . $domain->domain . $params;
+                     echo $url;
                      return $url;
                 }
             }

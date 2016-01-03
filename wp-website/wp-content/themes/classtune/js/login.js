@@ -49,7 +49,7 @@ $(document).on('click', '#form_login_classtune button#submit', function (e) {
     else
     {
         $("#form_login_classtune span.legend").html("<div class='alert alert-info'><strong>Loading......</strong></div>");
-        $.post("/login_ajax", {username: $("#form_login_classtune #username").val(), password: $("#form_login_classtune #password").val()})
+        $.post("/login-ajax/", {username: $("#form_login_classtune #username").val(), password: $("#form_login_classtune #password").val()})
                 .done(function (data) {
                     if (data == "0")
                     {

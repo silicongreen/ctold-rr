@@ -1,25 +1,28 @@
 development:
       host: localhost
       adapter: mysql
-      database: champs21_school
+      database: champs21_school_demo
       port: 3306
-      username: root
-      password: 079366
+      username: champs21_champ
+      password: 1_84T~vADp2$
+      encoding: utf8
 
 test: &test
       host: localhost
       adapter: mysql
-      database: champs21_school
+      database: champs21_school_demo
       port: 3306
-      username: root
-      password: 079366
+      username: champs21_champ
+      password: 1_84T~vADp2$
+      encoding: utf8
 
 production:
       host: localhost
       adapter: mysql
-      database: champs21_school
+      database: champs21_school_demo
       port: 3306
-      username: root
-      password: 079366
+      username: champs21_champ
+      password: 1_84T~vADp2$
+      encoding: utf8
 cucumber:
   <<: *test

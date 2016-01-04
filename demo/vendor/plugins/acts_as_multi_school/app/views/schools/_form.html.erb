@@ -1,0 +1,224 @@
+<% package_modules = [] %>
+<% menus = [] %>
+<% modules = [] %>
+<% @packages.each do |package| %>
+  <% menus = [] %>
+  <% modules = [] %>
+  <% package.package_menus.select{|pm| pm.menu_id > 0}.each do |package_menu|   %>
+      <% menus << package_menu.menu_id %>
+  <% end %>
+  <% package.package_menus.select{|pm| pm.menu_id == 0}.each do |package_menu|   %>
+      <% modules << package_menu.plugins_name %>
+  <% end %>
+  <% package_modules << {"name" => package.name, "id" => package.id, "modules" => modules.join(','), "menu" => menus.join(',')} %>
+<% end %>
+
+
+<% form_for @school,:html=>{:class=>"form", :multipart=>true} do |f| %>
+  <fieldset>
+    <%= error_string_for(f) %>
+    <%= f.error_message_on :base %>
+  </fieldset>
+
+  <fieldset>
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </fieldset>
+
+  <fieldset>
+    <%= label :"institution","institution_address" %>
+    <%= text_field :"institution","institution_address", :value=>@institution_address %>
+  </fieldset>
+
+  <fieldset>
+    <%= label :"institution","institution_phone_no" %>
+    <%= text_field :"institution","institution_phone_no", :value=>@institution_phone_no %>
+ 
+  </fieldset>
+  
+ 
+  <% unless action_name == 'edit' or action_name == 'update' %>
+    <fieldset>
+      <%= f.label :code, "Required Subdomain" %>
+      <%= f.text_field :code %>
+    </fieldset>
+  <% end %>
+
+  <fieldset>
+    <%= label :"institution","Free Feed" %>
+    <div class="plugin-cell main-bg-color" style="width: 30%; clear: both;">
+      <% @selected = @free_feed_for_admin == "1" ? true : false %>    
+      <%= check_box_tag "free_feed[]","free_feed_for_admin", @selected, :id=>"free_feed", :style => "margin: 8px 9px;" %> <label for="free_feed" style="width: 70%;">Show Free Feed to Admin</label>
+    </div>
+    <div class="plugin-cell main-bg-color" style="width: 30%;">
+      <% @selected = @free_feed_for_teacher == "1" ? true : false %>    
+      <%= check_box_tag "free_feed[]","free_feed_for_teacher", @selected, :id=>"free_feed", :style => "margin: 8px 9px;" %> <label for="free_feed" style="width: 70%;">Show Free Feed to Teacher</label>
+    </div>
+    <div class="plugin-cell main-bg-color" style="width: 30%;">
+      <% @selected = @free_feed_for_student == "1" ? true : false %>    
+      <%= check_box_tag "free_feed[]","free_feed_for_student", @selected, :id=>"free_feed", :style => "margin: 8px 9px;" %> <label for="free_feed" style="width: 70%;">Show Free Feed to Student</label>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <%= label :"institution","Palette Setting" %>    
+    <div class="plugin-cell main-bg-color" style="width: 30%; clear: both;">
+      <% @selected = (@palette_setting == "0" or @palette_setting.nil?) ? true : false %>    
+      <%= radio_button_tag "palette_setting","0", @selected, :id=>"free_feed", :style => "margin: 8px 9px;" %> <label for="free_feed" style="width: 70%;">Default Palette</label>
+    </div>
+    <div class="plugin-cell main-bg-color" style="width: 30%;">
+      <% @selected = @palette_setting == "1" ? true : false %>    
+      <%= radio_button_tag "palette_setting","1", @selected, :id=>"free_feed", :style => "margin: 8px 9px;" %> <label for="free_feed" style="width: 70%;">Champs21 Palette</label>
+    </div>
+    <div class="plugin-cell" style="width: 30%;">
+    </div>
+  </fieldset>
+
+  <% unless action_name == 'edit' or action_name == 'update' %>
+
+  <fieldset>
+    <th>Available Imports</th>
+    <div class="float-right margin-right-30 link-box-red"><a href="javascript:;" id="select_all_import">All</a><p class="vertical-line">|</p><a href="javascript:;" id="select_no_import">None</a></div>
+  </fieldset>
+  <fieldset>
+      <% @selected = false %>
+      <% if @import.include?('default_class_seeds') %>
+        <% @selected = true %>
+      <% end %>
+      <%= f.label :code, "Import Class" %>
+      <%= check_box_tag "school[import][]","default_class_seeds", @selected, :id=>"default_class", :style => "margin: 8px 9px;", :class => "all_imports" %> <label for="default_class" style="width: 20%;">Import Default Class</label>
+      <%= f.file_field :"class_file", :size=>12, :disabled => true  %>
+  </fieldset>
+
+  <fieldset>
+      <% @selected = false %>
+      <% if @import.include?('default_emp_category_seeds') %>
+        <% @selected = true %>
+      <% end %>
+      <%= f.label :code, "Import Employee Category" %>
+      <%= check_box_tag "school[import][]","default_emp_category_seeds", @selected, :id=>"default_employee_category", :style => "margin: 8px 9px;", :class => "all_imports" %> <label for="employee_category" style="width: 20%;">Import Default Employee Category</label>
+      <%= f.file_field :"emp_cat_file", :size=>12, :disabled => true  %>
+  </fieldset>
+
+  <fieldset>
+      <% @selected = false %>
+      <% if @import.include?('default_emp_dept_seeds') %>
+        <% @selected = true %>
+      <% end %>
+      <%= f.label :code, "Import Employee Department" %>
+      <%= check_box_tag "school[import][]","default_emp_dept_seeds", @selected, :id=>"default_employee_department", :style => "margin: 8px 9px;", :class => "all_imports" %> <label for="employee_department" style=ategory"width: 20%;">Import Default Employee Department</label>
+      <%= f.file_field :"emp_dept_file", :size=>12, :disabled => true  %>
+  </fieldset>
+
+  <fieldset>
+      <% @selected = false %>
+      <% if @import.include?('default_emp_grade_seeds') %>
+        <% @selected = true %>
+      <% end %>
+      <%= f.label :code, "Import Employee Grade" %>
+      <%= check_box_tag "school[import][]","default_emp_grade_seeds", @selected, :id=>"default_employee_grade", :style => "margin: 8px 9px;", :class => "all_imports" %> <label for="employee_grade" style="width: 20%;">Import Default Employee Grade</label>
+      <%= f.file_field :"emp_grade_file", :size=>12, :disabled => true  %>
+  </fieldset>
+
+  <fieldset>
+      <% @selected = false %>
+      <% if @import.include?('default_exam_grade_seeds') %>
+        <% @selected = true %>
+      <% end %>
+      <%= f.label :code, "Import Exam Grading System" %>
+      <%= check_box_tag "school[import][]","default_exam_grade_seeds", @selected, :id=>"default_exam_grade", :style => "margin: 8px 9px;", :class => "all_imports" %> <label for="exam_grade" style="width: 20%;">Import Default Exam Grade</label>
+      <%= f.file_field :"exam_grade_file", :size=>12, :disabled => true  %>
+  </fieldset>
+  <% end %>
+<fieldset style="display: none;">
+    <label></label>
+    <div class="check-box-cell">
+      <%= f.check_box :inherit_sms_settings %>
+      <%= f.label :inherit_sms_settings, "Inherit sms settings" %>
+    </div>
+    <div class="check-box-cell">
+      <%= f.check_box :inherit_smtp_settings %>
+      <%= f.label :inherit_smtp_settings, "Inherit email settings" %>
+    </div>
+  </fieldset>
+  <fieldset>
+    <th>Assigned Domains</th>
+  </fieldset>
+  <% f.fields_for :school_domains do |ff|  %>
+    <fieldset>
+      <% dom = ff.object.domain.present? ? ff.object.domain : @school_group.whitelabel_setting && @school_group.whitelabel_setting.settings_to_sym[:company_url].present? ? @school_group.whitelabel_setting.settings_to_sym[:company_url].delete(" ").gsub(/http:\/\//,"") : ".#{set_domain(@school_group,request.host)}" %>
+      <% dom = dom.gsub("plusdemo.","") %>  
+      <label>Domain name</label>
+      <%= ff.text_field :domain,:value=>dom %>
+    </fieldset>
+  <% end %>
+
+  <fieldset>
+    <th>Assign Packages</th>
+  </fieldset>
+  <% if package_modules.length == 0 %>
+    you don't have any package <%= link_to "Create Package", {:controller=>'package',:action=>'new_package'}, :class=>"button-grey-small float-right-with-margin" %>
+    <div style="clear: both; height: 10px;"></div>
+  <% else %>
+    <% package_modules.each do |modules|  %>
+      <% @selected = false %>
+      <% @b_found = false %>
+      <% @class_name = "" %>
+      <% unless @package_id.empty? or @package_id.nil? or @package_id.blank? %>
+        <% @package_id.each do |pid| %>
+          <%  if pid.to_i == modules["id"].to_i and @b_found == false %>
+            <% @selected = true %>
+            <% @class_name = "red-border" %>
+            <% @b_found = true %>
+            <% break %>
+          <% end %>
+        <% end %>
+      <% end %>
+      <div class="plugin-cell main-bg-color <%= @class_name  %> ">
+          <%= check_box_tag "package[]",modules["id"], @selected, :id=>"school_"+modules["id"].to_s, :class=>"select_package" %> <label for="school_<%= modules["name"] %>"><%= modules["name"].titleize %></label>
+          <input type="hidden" name="<%= modules["id"]  %>_menu" id="<%= modules["id"].to_s  %>_menu" value="<%= modules["menu"] %> " />
+          <input type="hidden" name="<%= modules["id"]  %>_modules" id="<%= modules["id"].to_s  %>_modules" value="<%= modules["modules"] %> " />
+      </div>
+    <% end %>
+  <% end %>
+  <input type="hidden" name="menu_data[]" id="menus" value="<%= @menu_datas  %> " />
+  
+  <div style="display: none;">
+    <fieldset>
+      <th>Assign Plugins</th>
+      <div class="float-right margin-right-30 link-box-red"><a href="#" id="select_all_plugin">All</a><p class="vertical-line">|</p><a href="#" id="select_no_plugin">None</a></div>
+    </fieldset>
+
+    <%= (hidden_field_tag "school[available_plugin_attributes][id]", @school.available_plugin.id) unless @school.available_plugin.new_record?%>
+    <% @school_group.allowed_plugins.each do |plugin| %>
+      <div class="plugin-cell main-bg-color">
+        <%= check_box_tag "school[available_plugin_attributes][plugins][]",plugin, @school.available_plugin.plugins.include?(plugin), :id=>"school_"+plugin, :class=>"school_modules" %> <label for="school_<%= plugin %>"><%= plugin.sub(/^champs21_/,'').titleize.titleize %></label>
+      </div>
+
+    <% end %>
+  </div>
+  
+  <% unless action_name == 'edit' or action_name == 'update' %>
+  <fieldset>
+    <%= label :"institution","Assign to free school" %>
+    <div class="plugin-cell main-bg-color" style="width: 45%; clear: both;">
+      <% @selected = false %>
+      <% if @assign.include?('create_new_n_assign') %>
+        <% @selected = true %>
+      <% end %>
+      <%= check_box_tag "assign_free_school[]","create_new_n_assign", @selected, :id=>"create_new_n_assign", :style => "margin: 8px 9px;", :class => "create_n_assign" %> <label for="create_new_n_assign" style="width: 90%;">Create New Free School and Assign</label>
+    </div>
+    <div class="plugin-cell main-bg-color" style="width: 45%;">
+      <% @selected = false %>
+      <% if @assign.include?('manual_assign') %>
+        <% @selected = true %>
+      <% end %>
+      <%= check_box_tag "assign_free_school[]","manual_assign", @selected, :id=>"manual_assign", :style => "margin: 8px 9px;", :class => "create_n_assign" %> <label for="manual_assign" style="width: 90%;">Manual Assign</label>
+    </div>
+  </fieldset> 
+  <% end %>
+  
+  <fieldset>
+    <%= f.submit 'Save', :class  => 'button-red float-right-with-margin',:disable_with => "Please wait..." %>
+  </fieldset>
+<% end %>

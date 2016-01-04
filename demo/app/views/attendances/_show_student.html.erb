@@ -1,0 +1,71 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+<div class="loader-image">
+      <%= image_tag("loader2.gif",
+        :align => "absmiddle",
+        :border => 0,
+        :id => "loader5",
+        :style =>"display: none;" ) %>
+  </div>
+<div class="clearfix"></div>
+ <% unless @all_students.nil? || @all_students.empty? %>
+  
+  <div class="CSSTableGenerator" id="table_update" style="width: 35%; float:left;margin-top: 20px;">
+        
+     
+      <table id="listing table-design">
+        
+        <% @all_students.each do |student| %>
+                  
+            <tr class="tr-<%= cycle('odd', 'even') %>">
+              <td class="col-2"><%= student.class_roll_no %></td>
+              <td class="col-2"><%= student.full_name %>
+               
+             
+                <%= link_to_remote "View",
+          :before => "Element.show('loader5')",
+          :success => "Element.hide('loader5')",
+          :url=>{:controller=>"attendances", :action=>"show_report_student"},
+          :with => "'batch_id=#{params[:batch_id]}&student_id=#{student.id}&start_date='+$('start_date').value+'&end_date='+$('end_date').value" %>
+                
+                
+                
+              </td>
+              
+            </tr>          
+        <% end %>
+           
+      </table>
+   
+    
+    <div class="clearfix"></div>
+    <%= will_paginate @all_students,:params => { :batch_id => params[:batch_id] }, :renderer => 'RemoteLinkRenderer', :remote=>{:update=>'register'}, :page_links => false %>
+    
+    
+  </div>
+  
+  
+  
+  <div id="report-year"  style="width: 59.6%; float:left;margin:20px;">
+    
+  </div>  
+  
+<% end %> 
+<%= stylesheet_link_tag 'list_table' %>
+<%= stylesheet_link_tag 'pagination_and_table' %>

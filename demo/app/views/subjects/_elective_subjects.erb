@@ -1,0 +1,105 @@
+<ul id="category-list">
+  <% @electives.each do |subject| %>
+    <% s_message_subject = ""  %>
+    <% if !@show_batch_subject %>  
+      <%  s_message_subject = subject.other_batches(@elective_active_batch_ids) %>
+    <% end %>
+    <li id="subject-<%= subject.id %>" class="list<%= cycle('even','odd')%> listelective" style="min-height: 45px;">
+      <div class="category-name">
+        <% unless subject.icon_number.nil? or subject.icon_number.empty? %>
+          <%= image_tag "/images/icons/subjects/#{subject.icon_number}", :class => 'custom_icon' %>
+        <% end %>
+        <span style="display: inline-table; vertical-align: top; margin-left: 10px; margin-top: 15px;">
+          <%= truncate(subject.name, :length => 30) %>
+          <% a_message = s_message_subject.split("|||")  %>  
+          <% if a_message.length > 1 %>  
+            <br /><%= a_message[0] %><Br />
+            <% if @batch_only %>
+              <%= link_to_remote a_message[1].gsub("sections","group"), :url => { :controller=>"subjects",:action => 'assign', :id => subject.id, :show_batch_subject => "0", :from => "elective_groups", :batch_only => "1", :batch_name => @batch_name} %>
+            <% else %>
+              <%= link_to_remote a_message[1].gsub("sections","group"), :url => { :controller=>"subjects",:action => 'assign', :id => subject.id, :show_batch_subject => "0", :from => "elective_groups"} %>
+            <% end %>
+          <% end %>    
+        </span>
+      </div>
+      <div class="category-code" style="margin-top: 15px;"><%= truncate(subject.code, :length => 13) %></div>
+      <div class="category-edit" style="margin-top: 15px;">
+          <% if @show_batch_subject %> 
+          <%= link_to_remote("#{t('edit_text')} ",
+          :url => { :controller=>"elective_groups",:action => 'edit_elective_subject', :id=>@elective_group, :id2 =>subject, :batch_id => @batch.id,:from_action => @from_action},
+          :method => 'get' ) %> 
+          <% else %>
+            <% if @batch_only %>
+              <%= link_to_remote("#{t('edit_text')} ",
+              :url => { :controller=>"elective_groups",:action => 'edit_elective_subject', :id=>@elective_group, :id2 =>subject, :batch_id => @batch.id, :show_batch_subject => "0", :from_action => @from_action, :batch_only => "1", :batch_name => @batch_name},
+              :method => 'get' ) %> 
+            <% else %>
+              <%= link_to_remote("#{t('edit_text')} ",
+              :url => { :controller=>"elective_groups",:action => 'edit_elective_subject', :id=>@elective_group, :id2 =>subject, :batch_id => @batch.id, :show_batch_subject => "0", :from_action => @from_action},
+              :method => 'get' ) %> 
+            <% end %>
+          <% end %>
+      </div>
+      <div class="category-delete" style="margin-top: 15px;">
+        <% 
+          @allow_delete = true
+          if @show_batch_subject
+            @subject_exams= Exam.find_by_subject_id(subject.id)
+            @subject_timetable = TimetableEntry.find_all_by_subject_id(subject.id)
+            unless @subject_exams.blank? and @subject_timetable.blank?
+              @allow_delete = false
+            end  
+          else  
+            @batches.each do |b|
+              tmp_subject = Subject.find_by_name_and_code_and_batch_id(subject.name, subject.code, b)
+              unless tmp_subject.nil?
+                @subject_exams= Exam.find_by_subject_id(tmp_subject.id)
+                @subject_timetable = TimetableEntry.find_all_by_subject_id(tmp_subject.id)
+                unless @subject_exams.blank? and @subject_timetable.blank?
+                  @allow_delete = false
+                  break
+                end  
+              end  
+            end 
+          end
+        %>   
+        <% if @allow_delete  %>
+          <% if @show_batch_subject %> 
+            <%= link_to_remote("#{t('delete_text')}",
+              :url => subject_path(subject, :from_action => @from_action),
+              :method => 'delete',
+              :confirm => t('delete_confirm_msg'),
+              :update => "subject-#{subject.id}") %>
+          <% else %>
+            <% if @batch_only %>
+                <%= link_to_remote("#{t('delete_text')}",
+                :url => subject_path(subject, :from_action => @from_action, :show_batch_subject => "0", :batch_only => "1", :batch_name => @batch_name),
+                :method => 'delete',
+                :confirm => t('delete_confirm_msg'),
+                :update => "subject-#{subject.id}") %>
+            <% else %>
+                <%= link_to_remote("#{t('delete_text')}",
+                :url => subject_path(subject, :from_action => @from_action, :show_batch_subject => "0"),
+                :method => 'delete',
+                :confirm => t('delete_confirm_msg'),
+                :update => "subject-#{subject.id}") %>
+            <% end %>
+          <% end %>
+        <% else %>
+          <s> <%= t('delete_text') %> </s>
+        <% end %>
+      </div>
+      <% if @show_batch_subject %>
+        <div class="category-assign" style="margin-top: 15px;"><%= link_to " #{t('assign_student')}", :controller=>"student", :action=>"electives",:id=>@batch,:id2=>subject.id, :from_action => @from_action %>
+      <% else %>
+            <% if @batch_only %>  
+              <div class="category-assign" style="margin-top: 15px;"><%= link_to " #{t('assign_student')}", :controller=>"student", :action=>"electives",:id=>@batch,:id2=>subject.id, :from_action => @from_action, :show_batch_subject => "0", :batch_only => "1", :batch_name => @batch_name %>
+            <% else %>
+              <div class="category-assign" style="margin-top: 15px;"><%= link_to " #{t('assign_student')}", :controller=>"student", :action=>"electives",:id=>@batch,:id2=>subject.id, :from_action => @from_action, :show_batch_subject => "0" %>
+            <% end %>
+      <% end %>    
+      </div>
+      <div style="clear: both;"></div>      
+    </li>
+  <% end %>
+</ul>

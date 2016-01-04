@@ -1,0 +1,89 @@
+<div class="header-wrapper">
+
+  <div class="header-title">
+    <div class="header-icon">
+      <%= image_tag '/images/icons/profile-icon.png', :html => {:alt => 'Student Profile'} %>
+    </div>
+    <div class="header-title-text-wrapper">
+      <div class="header-title-main-text f2">
+        <%= link_to "Delete Student", :controller => 'student', :action => 'remove', :id => @student.id %>
+      </div>
+      <div class="clearfix"></div>
+      <div class="header-title-sub-text">
+        <%= I18n.l(@local_tzone_time.to_date, :format=>'%d/%m/%Y') %>
+      </div>
+    </div>
+  </div>
+
+  <div class="clearfix"></div>
+
+  <div class="tabbed-header-wrapper">
+    <ul class="header-tabs">
+      <% if permitted_to? :profile,:student %>
+        <li>
+          <%= link_to "#{t('student_profile')}", {:controller => 'student', :action => 'profile', :id => @student.id}, {:class => 'f2'} %>
+        </li>
+      <%end%>
+
+      <% if permitted_to? :reports,:student %>
+        <li>
+          <%= link_to "#{t('reports_text')}", {:controller => 'student', :action => 'reports', :id => @student}, {:class => 'f2'} %>
+        </li>
+      <%end%>
+
+      <% if permitted_to? :guardians,:student %>
+        <li>
+          <%= link_to "#{t('guardians_text')}", {:controller => "student", :action => "guardians", :id => @student.id}, {:class => 'f2'} %>
+        </li>
+      <% end %>
+
+      <% if permitted_to? :email,:student %>
+        <% if @student.is_email_enabled %>
+          <li>
+            <%= link_to "#{t('send_email')}", {:controller => "student", :action => "email", :id => @student.id}, {:class => 'f2'} %>
+          </li>
+        <%  end %>
+      <%  end %>
+
+      <% if permitted_to? :remove, :student or permitted_to? :admission1, :student %>
+        <li class="active">
+          <%= link_to "#{t('delete_text')}", {:controller => 'student', :action => 'remove', :id => @student.id}, {:class => 'f2'} %>
+        </li>
+      <% end %>
+
+      <% if @sms_module.include?('Finance') and permitted_to? :fees, :student%>
+        <li>
+          <%= link_to "#{t('fees_text')}", {:controller => 'student', :action => 'fees', :id => @student.id}, {:class => 'f2'} %>
+        </li>
+      <% end %>
+
+      <% Champs21Plugin::ADDITIONAL_LINKS[:student_profile_more_menu].each do |mod| %>
+        <% if can_access_request? "#{mod[:destination][:action]}".to_sym,"#{mod[:destination][:controller]}".to_sym %>
+          <li>
+            <%= link_to "#{t(mod[:title])}", mod[:destination].merge(:id=>@student.id), {:class => 'f2'} %>
+          </li>
+        <% end %>
+      <% end %>
+    </ul>
+  </div>
+
+</div>
+
+<div id="page-yield" class="bg-disable">
+  <div class="wrapper">
+
+    <div id="delete-student">
+      <h4><%= t('delete_student') %></h4>
+      <p><%= t('description1') %></p>
+
+      <p class="warning">(<%= t('description2') %>)</p>
+      <%= link_to "► #{t('delete_text')}",
+        { :action => 'destroy', :id => @student.id }, :class => 'user_button', :confirm => "#{t('are_you_completely_sure')}" %>
+    </div>
+  </div>
+</div>
+
+<%= stylesheet_link_tag 'tadded-header' %>
+<% content_for :head do %>
+  <%= javascript_include_tag "custom/tabbed-header" %>
+<% end %>

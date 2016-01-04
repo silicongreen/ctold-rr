@@ -1,0 +1,117 @@
+<div id="page-yield" class="bg-disable">
+
+  <div class="header-wrapper">
+    <div class="header-title">
+      <div class="header-icon">
+        <%= image_tag '/images/icons/meeting-request-icon.png', :html => {:alt => 'Meeting Request'} %>
+      </div>
+      <div class="header-title-text-wrapper">
+        <div class="header-title-main-text f2">
+          Meetings
+        </div>
+        <div class="header-title-sub-text">
+          <%= @local_tzone_time.to_date %>
+        </div>
+      </div>
+    </div>
+    
+    <%= link_to "<div class='button-link button-link-report'>#{t('create_meeting')}</div>", :controller => "meetings", :action => "new" %>
+
+    <div class="clearfix"></div>
+
+    <div class="tabbed-header-wrapper">
+      <ul class="header-tabs">
+        <li class="active">
+          <%= link_to_remote "Incoming",
+            :before => "Element.show('loader2');",
+            :success => "Element.hide('loader2');",
+            :update => 'data_div',
+            :url=>{:controller=>"meetings", :action=>"inbox"},
+            :html => {:class => 'f2'}
+        %>
+        </li>
+
+        <li>
+          <%= link_to_remote "Outgoing",
+            :before => "Element.show('loader2');",
+            :success => "Element.hide('loader2');",
+            :update => 'data_div',
+            :url=>{:controller=>"meetings", :action=>"outbox"},
+            :html => {:class => 'f2'}
+        %>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="loader-image">
+    <%= image_tag("loader2.gif",
+      :align => "absmiddle",
+      :border => 0,
+      :id => "loader2",
+      :style =>"display: none;" ) %>
+  </div>
+
+  <div class="clearfix"></div>
+
+  <div id="data_div">
+    <%= render :partial => "list" %>
+    
+  </div>
+  
+    
+</div>
+
+<%= stylesheet_link_tag 'tadded-header' %>
+<%= stylesheet_link_tag 'list_table' %>
+<%= stylesheet_link_tag 'syllabus/single_syllabus' %>
+<%= stylesheet_link_tag 'pagination_and_table' %>
+
+<% content_for :head do %>
+  <%= javascript_include_tag "custom/tabbed-header" %>
+<% end %>
+
+<style type="text/css">
+  .header-wrapper .header-title-sub-text {
+    letter-spacing: unset;
+  }
+    .timetable_last a
+  {
+      -moz-border-radius: 3px;
+      -webkit-border-radius: 3px;
+      background: #CB1119 none repeat scroll 0 0;
+      color: #FFFFFF !important;
+      font-size: 14px;
+      font-weight: bold;
+      margin-top: 20px;
+      padding: 7px 10px;
+      border: none;
+      text-align: center;
+      width: auto;
+      cursor: pointer;
+      float: left;
+      margin-left:8px;
+      text-decoration: none;
+      display: block;
+  }
+  .subcontent-date p
+  {
+       line-height: 1.8;
+      margin: 0px;
+      padding: 0;
+  }
+   div.button-link-report
+  {
+    
+    background: #C91018;
+    color:white;
+    
+  }
+  div.button-link-report:hover
+  {
+    background: #383838;
+  }
+</style>
+
+
+

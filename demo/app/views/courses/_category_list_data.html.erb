@@ -1,0 +1,23 @@
+<% @courses_data.each do |course| %>
+    <li class="list<%=cycle('odd', 'even')%>">
+      <div class="category-name" style="width: 70%;"><%=  course.section_name %></div>
+      <div class="category-edit" style="width: 10%;">
+          <% if permitted_to? :edit, :courses %>
+         <%= link_to_remote(t('edit_text'),
+              :url => { :controller=>"courses",:action => 'edit_section', :id =>course, :main_course_id => @course_id},
+              :method => 'get', :before => "$('loading_" + course.id.to_s + "').show();", 
+              :complete => "$('loading_" + course.id.to_s + "').hide();" ) %>
+              <% end %>&nbsp;<span>|</span>&nbsp;
+      </div>
+      <div class="category-delete" style="width: 10%;">  
+        <% if permitted_to? :destroy, :courses %> 
+               <%= link_to_remote(t('delete_text'),
+              :url => { :controller=>"courses",:action => 'delete_section', :id =>course, :main_course_id => @course_id},
+              :method => 'get', :before => "$('loading_" + course.id.to_s + "').show();", 
+              :confirm => "#{t('delete_confirm_msg')}",
+              :complete => "$('loading_" + course.id.to_s + "').hide();" ) %>
+        <% end %>
+      </div>
+      <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_" + course.id.to_s, :style =>"display: none;  float: left;" ) %>
+    </li>
+<% end %>

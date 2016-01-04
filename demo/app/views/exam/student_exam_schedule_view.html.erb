@@ -1,0 +1,190 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+<script type="text/javascript">
+  Ajax.Responders.register({
+    onCreate: function() {
+      Ajax.activeRequestCount++;
+    },
+    onComplete: function(responce) {
+      var url=responce.url;
+      var a=url.split('/');
+      var c=a.splice(0,a.length-1);
+      var request_url=c.join('/');
+      if ("/exam_groups/set_exam_maximum_marks"==request_url){
+        if($('flash_msg').select('p')[0]!=undefined)
+          {
+            $('flash_msg').select('p')[0].remove();
+          }
+        var b='<%= "#{t('update_student_score')}"%>'
+        var flash=new Element('p',{'class':'flash-msg'});
+        flash.innerHTML = b
+        $('flash_msg').appendChild(flash);
+      }
+      Ajax.activeRequestCount--;
+    }
+  });
+</script>
+
+<div class="header-wrapper">
+    <div class="header-title">
+      <div class="header-icon">
+        <%= image_tag '/images/icons/exam-routine-icon.png', :html => {:alt => 'Routine'} %>
+      </div>
+      <div class="header-title-text-wrapper">
+        <div class="header-title-main-text f2">
+          <%= link_to "EXAM ROUTINE" , {:controller => "exam", :action => "student_exam_schedule"} %>
+          <span style="float: left;clear:both;font-size: 15px;"><%= Time.now.strftime("%Y-%m-%d") %></span>
+        </div>
+        <div class="header-title-sub-text">
+        </div>
+      </div>
+    </div>
+    <%= link_to "<div class='button-link button-link-report'>Exam Pdf</div>", {:controller => "exam", :action => "exam_schedule_pdf",:id => @exam_group.id, :batch_id => @batch.id},:target => '_blank'  %>
+      
+
+    <div class="clearfix"></div>
+    
+    <div style="float:left; clear: both; margin:5px 30px 5px;">
+    
+        <%  if permitted_to? :publish,:exam %>
+          <% if @exam_group.is_published %>
+            <%= link_to_remote("#{t('publish_exam_result')}",:url=>{:controller=>'exam',:action=>'publish',:id=>@exam_group.id,:status=>"result"},
+                :before => "Element.show('loader')",
+                :success => "Element.hide('loader')") %> | 
+          <% end  %>
+        <% end %>
+        <% if permitted_to? :new,:exams %>
+           <%= link_to "#{t('new_text')}", new_exam_group_exam_path(@exam_group) %>
+        <% end %>
+   
+    </div>
+    
+  </div>
+  <div class="clearfix"></div>
+<div id="page-yield" class="bg-disable">
+
+  <div class="select_all f2">
+   <%= @exam_group.name %> | <%= @batch.name  %> <%=@course.course_name %> 
+      <% unless @is_class_exam %>
+      <%=@course.section_name %>
+      <% end %>
+  </div>
+  <div class="clearfix"></div>
+  <div class="CSSTableGenerator">
+        
+    <% unless @exam_group.exam_type == 'Grades' %>
+      <table id="listing table-design">
+        <thead>
+          <tr class="tr-head">
+            <th>&nbsp;</th>
+            <th><%= t('subject') %></th>
+            <th><%= "Date" %></th>
+            <th><%= "Time" %></th>            
+            <% if permitted_to? :edit, :exams %>
+              <th><%= t('manage') %></th>
+            <% end %>
+          </tr>
+        </thead>
+        <% @exam_group.exams.each do |exam| %>
+          <% @exam = exam %>          
+            <tr class="tr-<%= cycle('odd', 'even') %>">
+              <% @exam = exam %>
+              <td class="col-2"><center><img src="/images/icons/subjects/<%= exam.subject.icon_number %>" width="60" alt="<%= exam.subject.name %>" /></center></td>
+              <td class="col-2"><%= exam.subject.name %></td>
+              <td class="col-2"><%= I18n.l(exam.end_time.to_date,:format =>:long) %></td>
+              <td class="col-1"><%= I18n.l(exam.start_time,:format=>"%I:%M %p") %> - <%= I18n.l(exam.end_time,:format=>"%I:%M %p") %></td>              
+                      
+            </tr>          
+        <% end %>
+      </table>
+    <% else %>
+      <table id="listing" width="100%">
+        <tr class="tr-head">
+          <td><%= t('subject') %></td>          
+        </tr>
+        <% @exam_group.exams.each do |exam| %>          
+            <tr class="tr-<%= cycle('odd', 'even') %>">
+              <% @exam = exam %>
+              <td class="col-3"><%= exam.subject.name %></td>              
+            </tr>         
+        <% end %>
+      </table>
+    <% end %>
+
+  </div>
+
+</div>
+
+<%= stylesheet_link_tag 'tadded-header' %>
+<%= stylesheet_link_tag 'list_table' %>
+<%= stylesheet_link_tag 'syllabus/single_syllabus' %>
+
+<% content_for :head do %>
+  <%= javascript_include_tag "custom/tabbed-header" %>
+<% end %>
+
+<style type="text/css">
+  .header-wrapper .header-title-sub-text {
+    letter-spacing: unset;
+  }
+   div.button-link-report:hover
+  {
+    background: #383838;
+  }
+  div.button-link-report
+  {
+    
+    background: #C91018;
+    color:white;
+    
+  }
+  .CSSTableGenerator table tr td 
+  {
+     font-weight: bold;
+  }
+ .select_all {
+  background: none repeat scroll 0 0 #ffffff;
+  float: left;
+  margin-bottom: 20px;
+  padding: 15px 30px;
+  width: 94%;
+}
+
+.button-filter {
+  background-color: #eeeeee;
+  border: 1px solid #b3b3b3;
+  border-radius: 6px;
+  color: #434343;
+  cursor: pointer;
+  display: block;
+  float: left;
+  font-size: 13px;
+  font-weight: normal;
+  padding: 10px 17px;
+  margin-right: 10px;
+  text-decoration: none;
+  transition: all 0.25s ease-in 0s;
+}
+
+.button-filter:hover, .button-filter:active {
+  background-color: #cb1119;
+  color: #ffffff;
+  transition: all 0.25s linear 0s;
+}
+</style>

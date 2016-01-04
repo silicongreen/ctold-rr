@@ -1,0 +1,126 @@
+<div class="header-wrapper">
+  <div class="header-title">
+    <div class="header-icon">
+      <%= image_tag '/images/icons/event.png', :html => {:alt => 'Calendar'} %>
+    </div>
+    <div class="header-title-text-wrapper">
+      <div class="header-title-main-text f2">
+        <a href="/calendar/list_events/" style="float: left;">Event List</a><br />
+       <span style="float: left;clear:both;font-size: 15px;"><%= Time.now.strftime("%Y-%m-%d") %></span>
+      </div>
+      <div class="header-title-sub-text f5">
+
+        </div>
+      </div>
+    </div>    
+<div class="clearfix"></div>
+
+    <div class="tabbed-header-wrapper">
+        
+      <ul class="header-tabs">
+        <li>
+          <a href="/calendar/index/" class="f2">Academic Calendar</a>
+        </li>
+        <li>
+          <a href="/calendar/academic_calendar/" class="f2">Calendar</a>
+        </li>        
+        <li class="active">
+          <a href="/calendar/list_events/" class="f2"> Event List</a>          
+        </li>
+      </ul>
+      <div class="loader-image">
+          <%= image_tag("loader2.gif",
+            :align => "absmiddle",
+            :border => 0,
+            :id => "loader2",
+            :style =>"display: none;" ) %>
+        </div>
+    </div>
+</div>
+<div id="page-yield" class="bg-disable">
+<div class="partial_homework">
+  <% unless @events.empty? %>
+    <% @events.each do |event| %>      
+      
+    <div class="portlet-subcontent">     
+    <% link_value = truncate(event.title, :length => 50) %>
+    <% event_category = EventCategory.find(event.event_category_id) %>
+          <div class="timetable_left">
+            <img width="30" src="/images/icons/event.png" ALT="<%= link_value %>" />
+          </div>
+          <div class="timetable_right">
+            <div class="subcontent-header themed_text"><%=  link_to link_value, :controller => 'event', :action => 'event_details', :id => event.id%></div>            
+            <div class="subcontent-info">
+              <% unless event_category.blank?  %>
+                <%= event_category.name %>
+              <% end %>
+            </div>               
+          </div>
+          <div class="timetable_right"  style="float:left;height: 70px;width: 35%;padding: 10px 0;border-left:1px dotted #cccccc">                                             
+            <!--<div class="subcontent-info">
+              <%#= truncate(event.description, :length => 150) %>              
+            </div>             -->
+            <div class="subcontent-date"><b style="color:#000;">Start date : </b><%= event.start_date.strftime("%d-%m-%Y") %></div>  
+            <div class="subcontent-date"><b style="color:#000;">End date : </b><%= event.end_date.strftime("%d-%m-%Y") %></div>
+        
+          </div>
+          <div class='timetable_last'>
+            <%
+             extra_class = "top_margin"
+             if(@user.admin? or @privilege.include?("EventManagement"))
+               extra_class = ""
+             end 
+            %>
+            <%=  link_to "View", {:controller => 'event', :action => 'event_details', :id => event.id},{:class=>"user_button first_child "+extra_class} %>
+            <% if(@user.admin? or @privilege.include?("EventManagement")) %>
+            <div class="category-edit">
+              <%= link_to t('edit_text'), {:controller => "event", :action=> "edit_event", :id=> event.id},{:class=>"user_button"}  %>
+            </div>
+            <div class="category-delete">
+              <%= link_to_remote(t('delete_text'),
+                :url => { :controller=>"event",:action => 'cancel_event', :id =>event.id},
+                :method => 'get',:html=>{:class=>"user_button"} )
+            %>
+            </div>
+          <% end %>
+          </div>
+        </div>
+        <div style="float: left; margin: 7px; width: 95%;"></div> 
+      <% end %>
+  <% end %>
+  
+  
+
+<div class="extender"></div>
+
+<%# posted_params = params %>
+<%# posted_params.delete(:page) %>
+<%# posted_params.delete(:authenticity_token) %>
+<%# posted_params.delete(:controller) %>
+<%# posted_params.delete(:action) %>
+<%#  @url_params = "" %>
+<%# posted_params.each{|k,v| @url_params = @url_params.to_s+k.to_s+"="+v.to_s+"&"}  %>
+<%= will_paginate @events %>
+
+<%= stylesheet_link_tag 'tadded-header' %>
+<%= stylesheet_link_tag 'pagination_and_table' %>
+</div>
+</div>
+<style>
+    
+  a.user_button
+  {
+      margin-top: 5px;
+      padding: 3px 10px;
+      margin-left: 10px;
+  }
+  .timetable_last a.top_margin
+  .timetable_last a.first_child
+  {
+      margin-top: 0px;
+  }
+  .timetable_last a.top_margin
+  {
+       margin-top: 23px;
+  }
+</style>    

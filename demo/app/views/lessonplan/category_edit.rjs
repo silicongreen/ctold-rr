@@ -1,0 +1,4 @@
+
+page.replace_html 'lessonplan-category-form', :partial => 'lessonplan_category_edit_form'
+page.replace_html 'lessonplan-category-list',""
+page.replace_html 'flash_box', :text => ""

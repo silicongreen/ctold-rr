@@ -1,0 +1,116 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<div class="linker">
+  <% if @show_batch_subject %>    
+    <%= link_to_remote "#{t('assign_all')}",:url=>{:controller=>"student",:action=>"assign_all_students",:id=>@batch.id,:id2=>@elective_subject.id,:from_action => @from_action}%>
+    <%= link_to_remote "#{t('remove_all')}",:url=>{:controller=>"student",:action=>"unassign_all_students",:id=>@batch.id,:id2=>@elective_subject.id,:from_action => @from_action} %></div>
+  <% else %>
+    <% if @batch_only %>
+      <%= link_to_remote "#{t('assign_all')}",:url=>{:controller=>"student",:action=>"assign_all_students",:id=>@batch.id,:id2=>@elective_subject.id, :show_batch_subject => "0", :from_action => @from_action, :batch_only => "1", :batch_name => @batch_name}%>
+      <%= link_to_remote "#{t('remove_all')}",:url=>{:controller=>"student",:action=>"unassign_all_students",:id=>@batch.id,:id2=>@elective_subject.id, :show_batch_subject => "0", :from_action => @from_action, :batch_only => "1", :batch_name => @batch_name} %></div>
+    <% else %>
+      <%= link_to_remote "#{t('assign_all')}",:url=>{:controller=>"student",:action=>"assign_all_students",:id=>@batch.id,:id2=>@elective_subject.id, :show_batch_subject => "0", :from_action => @from_action}%>
+      <%= link_to_remote "#{t('remove_all')}",:url=>{:controller=>"student",:action=>"unassign_all_students",:id=>@batch.id,:id2=>@elective_subject.id, :show_batch_subject => "0", :from_action => @from_action} %></div>
+    <% end %>
+  <% end %>  
+</div>
+<% if @show_batch_subject %>
+<% @students.each do |s| %>
+  <li id="stud_<%=s.id%>" class="list<%=cycle('odd', 'even')%>">
+    <% b = s.batch_id %>
+    <% @subjects_name = @elective_subject.name %>  
+    <% @tmp_subject_to_test = Subject.find_by_name_and_batch_id(@subjects_name, b) %>  
+    <%
+      appropriate_elective_subject_id = 0
+      unless @tmp_subject_to_test.nil?
+        appropriate_elective_subject_id = @tmp_subject_to_test.id
+      end
+    %>  
+    <% stud_assigned = StudentsSubject.new() %>
+    <% assigned = stud_assigned.student_assigned(s.id,appropriate_elective_subject_id) %>  
+   <div class="category-name"> <%= s.full_name %></div>
+    <% unless assigned.nil? %>
+   <div class="category-edit"><%= link_to_remote "#{t('remove')}",:url=>{:controller=>"student",:action=>"unassign_students",:id=>s.id,:id2=>@elective_subject.id}, :before=>"this.style.display='none'" %></div>
+      <% else %>
+   <div class="category-edit"><%= link_to_remote "#{t('assign')}", :url=>{:controller=>"student",:action=>"assign_students",:id=>s.id,:id2=>@elective_subject.id}, :before=>"this.style.display='none'" %></div>
+        <% end %>
+  </li>
+  <% end %>
+<% else %>
+  <% i = 0 %>
+  <% @students.each do |key, s_data| %>
+    <% if i > 0 %>
+      <div style="clear: both; height: 20px;"></div>
+      <hr class="label-underline-2" style=""></hr>
+      <div style="clear: both; height: 20px;"></div>
+    <% end %>
+    <span class="span-sub-heading"><%= t('batches_text') %>: <%= key %></span>
+    <hr class="sub-heading">
+    <% s_data.each do |data| %>
+      <% @students_data_found =  "(No Student found...)"%>
+      <% unless data['students'].nil? %>
+        <% if data['students'].length > 0 %>
+          <%  @students_data_found  = "" %>
+        <% end %>
+      <% end %>
+      <span class="span-sub-heading-course">Section: <%= data["section"] %></span>
+      <hr class="label-underline" style=""></hr>
+      <% if @students_data_found.length > 0 %>
+        <div style="font-size: 13px; text-align: center; padding-bottom: 20px;"> <%= @students_data_found  %>   </div>
+      <% end %>
+      <% unless data['students'].nil? %>
+        <% if data['students'].length > 0 %>
+          <% data['students'].each do |s| %>
+          <li id="stud_<%=s.id%>" class="list<%=cycle('odd', 'even')%>" style="width: 86%">
+            <% b = s.batch_id %>
+            <% @subjects_name = @elective_subject.name %>  
+            <% @tmp_subject_to_test = Subject.find_by_name_and_batch_id(@subjects_name, b) %>  
+            <%
+              appropriate_elective_subject_id = 0
+              unless @tmp_subject_to_test.nil?
+                appropriate_elective_subject_id = @tmp_subject_to_test.id
+              end
+            %>  
+            <% stud_assigned = StudentsSubject.new() %>
+            <% assigned = stud_assigned.student_assigned(s.id,appropriate_elective_subject_id) %>
+            <div class="category-name"> <%= s.full_name %></div>
+            <% unless assigned.nil? %>
+              <% if @batch_only %>
+                <div class="category-edit"><%= link_to_remote "#{t('remove')}",:url=>{:controller=>"student",:action=>"unassign_students",:id=>s.id,:id2=>@elective_subject.id, :batch_only => "1", :batch_name => @batch_name}, :before=>"this.style.display='none'" %></div>
+              <% else %>
+                <div class="category-edit"><%= link_to_remote "#{t('remove')}",:url=>{:controller=>"student",:action=>"unassign_students",:id=>s.id,:id2=>@elective_subject.id}, :before=>"this.style.display='none'" %></div>
+              <% end %>
+            <% else %>
+              <% if @batch_only %>
+                <div class="category-edit"><%= link_to_remote "#{t('assign')}", :url=>{:controller=>"student",:action=>"assign_students",:id=>s.id,:id2=>@elective_subject.id, :batch_only => "1", :batch_name => @batch_name}, :before=>"this.style.display='none'" %></div>
+              <% else %>
+                <div class="category-edit"><%= link_to_remote "#{t('assign')}",:url=>{:controller=>"student",:action=>"assign_students",:id=>s.id,:id2=>@elective_subject.id}, :before=>"this.style.display='none'" %></div>
+              <% end %>
+            <% end %>
+          </li>
+          <% end %>
+          <div style="clear: both; height: 20px;"></div>
+        <% end %>
+
+      <% end %>
+    <% end %>
+    <% i += 1 %>  
+  <% end %>  
+<% end %>

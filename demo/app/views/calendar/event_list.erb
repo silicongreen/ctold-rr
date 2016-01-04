@@ -1,0 +1,26 @@
+<% if @refresh_calendar %>
+  <div id="page-yield">
+
+    <div id="tooltip_box">
+      <div class="image_loading">
+        <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader",:style =>"display: none; float:left;" ) %>
+      </div>
+    <% end %>
+    <div id="tooltip_header">
+      <%= render :partial=>"new_list_events" %>
+    </div>
+    <% if @refresh_calendar %>
+    </div>
+  <% end %>
+
+  <% if @refresh_calendar %>
+    <div id="calendar">
+      <%= render :partial=>"new_event_list" %>
+    </div>
+  <% end %>
+
+</div>
+
+<% content_for :head do %>
+  <%= stylesheet_link_tag "calendar/academic_calendar" %>
+<% end %>

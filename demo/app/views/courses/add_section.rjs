@@ -1,0 +1,2 @@
+page.replace_html 'modal-box', :partial => 'add_section'
+page << "Modalbox.show($('modal-box'), {title: '#{t('add_section')}', width: 600});"

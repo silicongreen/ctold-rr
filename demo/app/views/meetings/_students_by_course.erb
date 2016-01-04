@@ -1,0 +1,46 @@
+<div class="left-col col-3">
+  <label>
+    Student List:
+    <span class="necessary-field">*</span>
+  </label>
+</div>
+
+<div id="students_list_view" class="right-col col-9">
+  <table class="table table-bordered table-striped">
+    <% if !@students.empty? %>
+      <thead>
+        <tr class="tr-head">
+          <th><input id="select_all" type="checkbox" /></th>
+          <th><%= t('name') %></th>
+          <th><%= t('roll_number') %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @students.each_with_index do |r, i| %>
+          <tr class="tr-<%= cycle('odd', 'even') %>">
+            <td class="col-1">
+              <%= check_box_tag "meeting_request[parent_id][]", r.id, false, {:class => 'students'} %>
+            </td>
+
+            <td class="col-2">
+              <%= link_to r.full_name, {:controller => "student", :action => "profile", :id => r.id}, :target => "_blank" %>
+            </td>
+
+            <td class="col-1">
+              <%= r.class_roll_no %>
+            </td>
+
+          </tr>
+        <% end %>
+
+      <% else %>
+        <tr class="tr-<%= cycle('odd', 'even') %>">
+          <td class="col-2"><%= t('no_students_found') %></td>
+        </tr>
+      </tbody>
+    <% end %>
+
+  </table>
+
+</div>
+

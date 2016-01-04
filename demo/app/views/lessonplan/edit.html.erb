@@ -1,0 +1,109 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<!--<div id="content-header">
+  <%#= show_header_icon %>
+  <h1><%#= t('edit') + ' ' %><%#= link_to "#{t('lessonplan_text')}", :controller => 'lessonplan', :action => 'index' %></h1>
+</div>-->
+  <div class="header-wrapper">
+    <div class="header-title">
+      <div class="header-icon">
+        <%= image_tag '/images/icons/lessonplan_icon.png', :html => {:alt => 'Lessonplan'} %>
+      </div>
+      <div class="header-title-text-wrapper">
+        <div class="header-title-main-text f2">
+          <a href="/lessonplan/index/" style="float: left;"><%= "Lesson Plan" %></a>&nbsp;|&nbsp<%= t('edit') %>
+          <span style="float: left;clear:both;font-size: 15px;"><%= Time.now.strftime("%Y-%m-%d") %></span>
+        </div>
+        <div class="header-title-sub-text f5">  </div>
+      </div>
+    </div>
+
+    <div class="clearfix"></div>
+  </div> 
+<div id="page-yield" style="margin-top: 0px;">
+
+  <% unless flash[:notice].nil? %><p class="flash-msg"> <%= flash[:notice] %> </p><% end %>
+
+  <% form_for :lessonplan do |f| %>
+
+    <%= error_messages_for :lessonplan %>
+
+    <div id="add_news_form">
+      <div class="news_label_field">
+        <label for="news_title"><%= t('title') %></label>
+        <div id="news_title_text_field_bg"><%= f.text_field :title, :value => @lessonplan.title %></div>
+      </div>
+      <div class="news_label_field">
+          <label for="lessonplan_category"><%= t('category') %></label>
+          <div id="text-select-bg"><%= f.select :lessonplan_category_id, @lessonplan_categories.map {|c| [c.name, c.id]} %></div>
+      </div>
+      <div class="news_label_field">
+          <label for="lessonplan_category"><%= t('category') %></label>
+          <div id="text-select-bg"><%= f.select :is_show, options_for_select({ "Inactive" => "0","Active" => "1" }, "#{@lessonplan.is_show}") %></div>
+      </div>
+      <div class="news_label_field" style="margin-top:20px;width: 500px;">
+        <label for="title"><%= "#{t('subject')}"%></label>
+        <div class="">
+          <% unless @lessonplan.subject_ids.nil? %>  
+            <% @sdata = [] %>
+            <% data = @lessonplan.subject_ids.split(/,/) %>                    
+                <%  data.each do |w|%>                           
+                  <% @sdata << w %>
+                <% end %>
+          <% end %>
+
+          <% unless @subjects.nil? %>
+            <ul class="active_subject_list">
+              <% @subjects.each do |role| %>
+              <li style="list-style: none;">
+                    <% unless @lessonplan.subject_ids.nil? %>                    
+                      <%= check_box_tag "lessonplan[subject_ids][]", role.id, (@sdata.include? role.id.to_s) ? true:false  -%>
+                    <% else %>
+                      <%= check_box_tag "lessonplan[subject_ids][]", role.id  -%>
+                    <% end %>
+
+                    <%= h "#{role.name}  - #{role.batch.full_name}" -%>
+                  </li>
+              <% end %>
+            </ul>
+          </div>          
+        <% end %>
+      </div>
+      
+      <div class="news_label_field">
+        <label for="publish_date"><%= t('lessonplan_publish_date') %>:</label>
+        <div class="news_label_field">
+         <div class="text-input-bg3"><%= f.calendar_date_select :publish_date , :readonly=>true,:popup=>"force"%></div>
+        </div>
+      </div>
+      </br>
+      <div class="news_label_field">
+        <label for="news_content"><%= t('content') %></label>
+        <div id="news_content_text_field_bg">
+          <%= f.redactor :content, :value => @lessonplan.content %>
+        </div>
+      </div>
+    </div>
+
+    <%= submit_tag "", :value => "► #{t('update')}", :class => "news_publish_button" %>
+  <% end %>
+  <%= load_redactor_script %>
+</div>
+<%= stylesheet_link_tag 'tadded-header' %>

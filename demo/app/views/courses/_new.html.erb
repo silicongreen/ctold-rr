@@ -1,0 +1,109 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+<div class="box">
+  <% form_remote_for setup_course(@course) do |f| %>
+
+    <%= error_messages_for :course %>
+    <div id="flash-box-popup">
+      <% unless flash[:notice].nil? %>
+        <p class="flash-msg"> <%= flash[:notice] %> </p>
+      <% end %>
+    </div>  
+    <div id="form-errors"></div>
+
+    <div class="label-field-pair">
+      <div class="label-container"><%= f.label "#{t('course_name')}" %></div>
+      <div class="input-container"><%= f.text_field :course_name %></div>
+    </div>
+
+    <div class="label-field-pair">
+      <div class="label-container"><%= f.label "#{t('section_name')}" %></div>
+      <div class="input-container"><%= f.text_field :section_name %></div>
+    </div>
+
+    <div class="label-field-pair">
+      <div class="label-container1"><%= f.label "#{t('code')}" %></div>
+      <div class="input-container"><%= f.text_field :code %></div>
+    </div>
+
+    <div id="grading">
+      <% unless @grade_types.blank? %>
+
+        <div class="label-field-pair">
+          <div class="label-container"><%= f.label "Grading System type" %></div>
+          <div class="text-input-bg"><%= f.select :grading_type,@grade_types %></div>
+        </div>
+      <% end %>
+    </div>
+    
+    <div id="ebatch">
+      <% @batches = Batch.active.find(:all, :group => "name") %>
+      <% if @batches.length > 1  or (@batches.length == 1 and @batches[0].name.downcase != 'general') %>
+      <h4><%= t('batch_selection') %></h4>
+      <% end %>
+      <% @batches.each do |b| %>
+        <div class="plugin-cell main-bg-color" style="float: left; <%= @batches.length > 1 or (@batches.length == 1 and @batches[0].name.downcase != 'general') ? "" : "display: none;"  %>">
+          <% if b.name.downcase != 'general' %>
+            <%= check_box_tag "batches_selection[]",b.name, true, :id=>"batches", :style => "margin: 8px 9px;", :class => "batches_data" %> <label for="free_feed" style="width: 70%;"><%= b.name  %> </label>
+          <% end %>
+        </div>
+      <% end %>
+      <%= link_to t('create_new_batch'), "javascript:;", :onclick=>"create_new_batch()",:class => "user_button", :style => "float:right; margin-top: 5px;"%>
+      <div style="clear: both;"></div>
+    </div>
+    
+    <div id="batch" style="display: none">
+      <h4><%= t('initial_batch') %></h4>
+      <% f.fields_for :batches do |batch_form| %>
+        <%= hidden_field :new_batches_selection,"",:value => "0" %>
+        <div id="batch_data_1" class="batches_data_div">
+          <div class="label-field-pair">
+            <div class="label-container"><%= batch_form.label "#{t('name')}" %></div>
+            <div class="input-container" id="name_1">
+              <%= text_field 'course[batches_attributes][0]', :name, :style=>"width: 180px !important;" %>
+              <a class="remove_batch" id="remove_batch_1" href="javascript:;" onclick="remove_element(this);" title="Close window" style="display: none;" href="#"><span>×</span></a>
+            </div>
+          </div>
+
+
+          <div class="label-field-pair" id="start_date_1" style="display: none;">
+            <div class="label-container"><%= batch_form.label "#{t('start_date')}" %></div>
+            <div class="input-container"><%= calendar_date_select_tag 'course[batches_attributes][0][start_date]', I18n.l(Date.today,:format=>:default),  :popup=>"force" %></div>
+          </div>
+
+          <div class="label-field-pair" id="end_date_1" style="display: none;">
+            <div class="label-container"><%= batch_form.label "#{t('end_date')}" %></div>
+            <div class="input-container"><%= calendar_date_select_tag 'course[batches_attributes][0][end_date]', I18n.l(Date.today + 5.year,:format=>:default), :popup=>"force" %></div>
+          </div>
+        </div>
+        <%= link_to t('add_more_batch'), "javascript:;", :onclick=>"add_more_batch()",:class => "user_button", :style => "float:right; margin-top: 5px;"%>
+        <% if @batches.length > 1 %>
+          <%= link_to t('batch_selection'), "javascript:;", :onclick=>"hide_new_batch()",:class => "user_button", :style => "float:right; margin-top: 5px;"%>
+        <% else %>
+          <%= link_to t('cancel'), "javascript:;", :onclick=>"hide_new_batch()",:class => "user_button", :style => "float:right; margin-top: 5px;"%>
+        <% end %>
+        <div style="clear: both;"></div>
+      <% end %>
+    </div>
+    <%= submit_tag "", :value => "► #{t('save')}", :class => "submit_button", :disable_with => "► #{t('please_wait')}" %>
+
+  <% end %>
+
+  <div class="extender"></div>
+</div>

@@ -1,0 +1,57 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<div id="content-header">
+  <%= show_header_icon %>
+  <h1><%= t('add') + ' ' + t('syllabus_text') %></h1>
+
+</div>
+<div id="page-yield">
+  
+  <div id="flash-box">   
+    <% unless flash[:notice].nil? %>
+      <p class="flash-msg"> <%= flash[:notice] %> </p>
+    <% end %>
+  </div>
+    
+  <div class="box">
+    <% if @batches.length > 1 %>
+      <h4 align="center"><%= t('batches_available_text') %></h4>  
+      <ul id="category-list">
+          <% @batches.each do |batch| %>
+          <li class="list<%=cycle('odd', 'even')%>" style="width: 100%;">
+                <div id="save_batches_<%= batch.id %>" class="category-name" style="text-align: center; width: 88%;">
+                  <%= link_to_remote(batch.name,
+                    :url => { :controller=>"courses",:action => 'get_batches_classes', :id =>batch.id,:from => "syllabus"},
+                    :method => 'get', :before => "$('loading_" + batch.id.to_s + "').show();", 
+                    :complete => "$('loading_" + batch.id.to_s + "').hide();" ) %>  
+                </div>
+                <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_" + batch.id.to_s, :style =>"display: none;  float: left;" ) %>
+            </li>
+          <% end %>
+      </ul>
+    <% end %>
+    <div id="class_info" ></div>
+    
+    <div id="modal-box" style="display:none;"></div>
+    <div id="update_batch" ><%= render :partial=>'courses/class_info' %></div>
+    <div class="extender"></div>
+  </div></div>
+<%= stylesheet_link_tag("/stylesheets/courses/manage_batches.css")   %>
+

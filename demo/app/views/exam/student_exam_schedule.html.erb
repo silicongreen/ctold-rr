@@ -1,0 +1,132 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+<div class="header-wrapper">
+    <div class="header-title">
+      <div class="header-icon">
+        <%= image_tag '/images/icons/exam-routine-icon.png', :html => {:alt => 'Routine'} %>
+      </div>
+      <div class="header-title-text-wrapper">
+        <div class="header-title-main-text f2">
+          <%= link_to "EXAM ROUTINE", :controller => "exam", :action => "student_exam_schedule" %>
+          <span style="float: left;clear:both;font-size: 15px;"><%= Time.now.strftime("%Y-%m-%d") %></span>
+        </div>
+        <div class="header-title-sub-text">
+          
+        </div>
+      </div>
+    </div>
+
+    <div class="clearfix"></div>
+    <% if @current_user.parent?
+        student_id = @current_user.guardian_entry.current_ward_id  
+      elsif @current_user.student?
+        student_id = @current_user.student_record.id  
+      end
+    %>
+   
+    <div class="tabbed-header-wrapper">        
+      <ul class="header-tabs">
+        <li class="active">
+          <%= link_to "#{t('exam_schedule')}", {:controller => "exam", :action => "student_exam_schedule"}, :class => "f2" %>
+        </li>        
+        <li>
+          <%= link_to "Class Routine", {:controller => "timetable", :action => "student_view",  :id => student_id}, :class => "f2" %>
+        </li>
+      </ul>
+
+    </div>
+
+    
+  </div>
+<div id="page-yield" class="bg-disable">
+
+  <div class="clearfix"></div>
+
+  <div id="data_div">
+    <div class="CSSTableGenerator" >
+        <% unless @exam_groups.nil? or @exam_groups.empty?  %>
+          <table class="table-design">
+            <thead>
+              <tr>
+                <th>
+                  Date
+                </th> 
+                <th>
+                  Type
+                </th>
+                <th>
+                  Exam Name
+                </th>
+              </tr>
+            </thead>
+
+            <tbody>
+               <% @exam_groups.each do |exam_group| %>
+                <tr>
+                  <td>
+                    <%= I18n.l(exam_group.exam_date.to_time, :format=>:normal) unless exam_group.exam_date.nil? %>
+                  </td>
+                  <td>
+                      <%  if exam_group.exam_category==1 %>
+                          Class Test
+                      <%  end %>
+                      <%  if  exam_group.exam_category==2 %>
+                          Project
+                      <%  end %>
+                      <%  if exam_group.exam_category==3 %> 
+                          Term Exam
+                      <%  end %>
+ 
+                  </td>
+                  <td>
+                    <div class="left-dev"><%= exam_group.name %></div>
+                    <div class="right-dev">
+                      <%= link_to "View",:controller=>"exam", :action=>"student_exam_schedule_view", :id => exam_group.id %>
+                    </div>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        <% else %>
+        <div style="background-color: #ffffff; width: 100%; height: 100px; color: #333333; padding: 25px;">
+            No Exam Routine Publish
+          </div>
+        <% end %>
+    </div> 
+   
+  </div>
+
+</div>
+
+<%= stylesheet_link_tag 'tadded-header' %>
+<%= stylesheet_link_tag 'list_table' %>
+<%= stylesheet_link_tag 'syllabus/single_syllabus' %>
+
+<% content_for :head do %>
+  <%= javascript_include_tag "custom/tabbed-header" %>
+<% end %>
+
+<style type="text/css">
+  .header-wrapper .header-title-sub-text {
+    letter-spacing: unset;
+  }
+ 
+</style>
+

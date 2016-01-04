@@ -1,0 +1,274 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+<div class="clearfix"></div>
+<div class="CSSTableGenerator" style="width: 97%;margin-top: 10px;">
+
+    <table id="listing table-design">
+        <thead>
+            <tr class="tr-head">
+
+                <th>Roll</th>
+                <th>Student Name</th>
+                <th>Status</th>
+                <th></th>
+                <th></th>
+                <th></th>
+
+            </tr>
+        </thead>
+        
+        <% @students.each do |student| %>
+
+          <tr class="tr-<%= cycle('odd', 'even') %>">
+              <td class="col-2"><%= student['roll_no'] %></td>
+              <td class="col-2"><%= student['student_name'] %></td>
+              <td class="col-2">
+                  <% if student['status']==1 %>
+                    <span class="checkmark">
+                        <div class="checkmark_circle"></div>
+                        <div class="checkmark_stem"></div>
+                        <div class="checkmark_kick"></div>
+                    </span>
+                  <% else %>
+                    <span class="checkmark">
+                        <div class="checkmark_circle absent"></div>
+                        <div class="checkmark_stem"></div>
+                        <div class="checkmark_kick"></div>
+                    </span>
+                  <% end %>
+
+              </td>  
+              <td class="col-2 status-class" id="status-absent-<%=student['student_id']%>" style="text-align: center;<% if student['main_status']== 0 %>background-color:#D92313; color:white;<% end %>">
+                  <div class="image_loading">
+                      <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader_absent_#{student['student_id']}",:style =>"display: none; float:left;" ) %>
+                  </div>
+                  <% if student['status']!=3 and student['status']!=0  %>
+                    <%= link_to_remote "Absent",
+                      :before => "Element.show('loader_absent_#{student['student_id']}')",
+                      :success => "Element.hide('loader_absent_#{student['student_id']}')",
+                      :url=>{:controller=>"attendances", :action=>"show"},
+                      :with => "'batch_id=#{params[:batch_id]}'+'&student_id=#{student['student_id']}'+'&status_change=0&attandence_date='+$('attandence_date').value"%>
+
+
+                  <% elsif student['status'] !=3 %>
+                    <%= link_to_remote "Absent",
+                      :before => "Element.show('loader_absent_#{student['student_id']}')",
+                      :success => "Element.hide('loader_absent_#{student['student_id']}')",
+                      :url=>{:controller=>"attendances", :action=>"show"},
+                      :with => "'batch_id=#{params[:batch_id]}'+'&student_id=#{student['student_id']}'+'&status_change=1&attandence_date='+$('attandence_date').value"%>
+                  <% end %>
+              </td>
+              <td class="col-2 status-class" id="status-late-<%=student['student_id']%>" style="text-align: center;<% if student['status']!=3 %>cursor:pointer;<% end %><% if student['main_status']==2 %>background-color:#FFB800; color:white;<% end %>">
+                  <div class="image_loading">
+                      <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader_late_#{student['student_id']}",:style =>"display: none; float:left;" ) %>
+                  </div>
+                  <% if student['status']!=3 and student['status']!=2  %>
+                    <%= link_to_remote "Late",
+                      :before => "Element.show('loader_late_#{student['student_id']}')",
+                      :success => "Element.hide('loader_late_#{student['student_id']}')",
+                      :url=>{:controller=>"attendances", :action=>"show"},
+                      :with => "'batch_id=#{params[:batch_id]}'+'&student_id=#{student['student_id']}'+'&status_change=2&attandence_date='+$('attandence_date').value"%>
+
+                  <% elsif student['status'] !=3 %>
+                    <%= link_to_remote "Late",
+                      :before => "Element.show('loader_late_#{student['student_id']}')",
+                      :success => "Element.hide('loader_late_#{student['student_id']}')",
+                      :url=>{:controller=>"attendances", :action=>"show"},
+                      :with => "'batch_id=#{params[:batch_id]}'+'&student_id=#{student['student_id']}'+'&status_change=1&attandence_date='+$('attandence_date').value"%>
+                  <% end %>
+              </td>
+              <%
+              str_class = ''
+              if student['status'] == 3
+              #str_class = 'approved'
+                elsif student['status'] == 4
+              #str_class = 'declined'
+                end
+            %>
+              <td class="col-2 status-class <%= str_class %>" id="status-leave-<%=student['student_id']%>">
+                  
+                  <div class="image_loading">
+                      <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader_leave_#{student['student_id']}",:style =>"display: none; float:left;" ) %>
+                  </div>
+                  
+                  <% if student['leave_id'].to_i == 0 %>
+                    <%= link_to_remote "<div class=\"leave_sts\">On Leave</div>",
+                      :before => "Element.show('loader_leave_#{student['student_id']}')",
+                      :success => "Element.hide('loader_leave_#{student['student_id']}')",
+                      :url=>{:controller=>"attendances", :action=>"immediate_leave"},
+                      :with => "'batch_id=#{params[:batch_id]}'+'&student_id=#{student['student_id']}'+'&status_change=3&attandence_date='+$('attandence_date').value" %>
+                  <% else %>
+                    <div class="leave_sts">On Leave</div>
+                  <% end %>
+
+                  <% if (student['status'] == 4) and (student['viewed_by_teacher'].to_i == 0) %>
+                    <div class="leave_sts_appr">
+                        <%= link_to_remote "Approve",
+                          :before => "Element.show('loader_leave_#{student['student_id']}')",
+                          :success => "Element.hide('loader_leave_#{student['student_id']}')",
+                          :url=>{:controller=>"attendances", :action=>"show"},
+                          :with => "'batch_id=#{params[:batch_id]}'+'&student_id=#{student['student_id']}'+'&leave_id=#{student['leave_id']}'+'&status_change=3&attandence_date='+$('attandence_date').value" %>
+                    </div>
+                    <div class="leave_sts_deny">
+                        <%= link_to_remote "Deny",
+                          :before => "Element.show('loader_leave_#{student['student_id']}')",
+                          :success => "Element.hide('loader_leave_#{student['student_id']}')",
+                          :url=>{:controller=>"attendances", :action=>"show"},
+                          :with => "'batch_id=#{params[:batch_id]}'+'&student_id=#{student['student_id']}'+'&leave_id=#{student['leave_id']}'+'&status_change=4&attandence_date='+$('attandence_date').value" %>
+                    </div>
+                  <% end %>
+
+                  <% if student['status'] == 4 and student['viewed_by_teacher'].to_i == 1 %>
+                    <div class="leave_sts_appr">
+                        <%= link_to_remote "Approve",
+                          :before => "Element.show('loader_leave_#{student['student_id']}')",
+                          :success => "Element.hide('loader_leave_#{student['student_id']}')",
+                          :url=>{:controller=>"attendances", :action=>"show"},
+                          :with => "'batch_id=#{params[:batch_id]}'+'&student_id=#{student['student_id']}'+'&leave_id=#{student['leave_id']}'+'&status_change=3&attandence_date='+$('attandence_date').value" %>
+                    </div>
+                  <% end %>
+
+                  <% if student['status'] == 3 %>
+                    <div class="leave_sts_deny">
+                        <%= link_to_remote "Deny",
+                          :before => "Element.show('loader_leave_#{student['student_id']}')",
+                          :success => "Element.hide('loader_leave_#{student['student_id']}')",
+                          :url=>{:controller=>"attendances", :action=>"show"},
+                          :with => "'batch_id=#{params[:batch_id]}'+'&student_id=#{student['student_id']}'+'&leave_id=#{student['leave_id']}'+'&status_change=4&attandence_date='+$('attandence_date').value" %>
+                    </div>
+                  <% end %>
+
+              </td>
+          </tr>          
+        <% end %>
+    </table>
+
+
+</div>
+<%= stylesheet_link_tag 'list_table' %>
+<style>
+    .CSSTableGenerator td a
+    {
+        color: inherit;
+        padding : 0;
+        background-color: inherit;
+        float: none;  
+        display: block;
+        margin: -20px;
+        padding: 20px;
+    }
+    .CSSTableGenerator td a:hover
+    {
+        color: inherit;
+        padding : 0;
+        background-color: inherit;
+        float: none;
+        display: block;
+        margin: -20px;
+        padding: 20px;
+    }
+    .CSSTableGenerator table tr td 
+    {
+        font-weight: bold;
+        overflow: hidden;
+    }
+    .CSSTableGenerator table tr td:last-child
+    {
+        padding: 0;
+        width: 15%;
+    }
+    .checkmark {
+        display:inline-block;
+        width: 22px;
+        height:22px;
+        -ms-transform: rotate(45deg); /* IE 9 */
+        -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
+        transform: rotate(45deg);
+    }
+
+    span div.absent {
+        position: absolute;
+        width:22px;
+        height:22px;
+        background-color: #B3B9BB;
+        border-radius:11px;
+        left:0;
+        top:0;
+    }
+
+    .checkmark_circle {
+        position: absolute;
+        width:22px;
+        height:22px;
+        background-color: #0691D5;
+        border-radius:11px;
+        left:0;
+        top:0;
+    }
+
+    .checkmark_stem {
+        position: absolute;
+        width:3px;
+        height:9px;
+        background-color:#fff;
+        left:11px;
+        top:6px;
+    }
+
+    .checkmark_kick {
+        position: absolute;
+        width:3px;
+        height:3px;
+        background-color:#fff;
+        left:8px;
+        top:12px;
+    }
+    .status-class {
+        text-align: center !important;
+    }
+    .approved {
+        /*background-color: #9F38E7;*/
+        color: #ffffff !important;
+    }
+    .declined {
+        /*background-color: #CB232A;*/
+        color: #ffffff !important;
+    }
+    .leave_sts {
+        clear: both;
+        float: left;
+        margin-bottom: 7px;
+        width: 100%;
+    }
+    .leave_sts_appr, .leave_sts_deny {
+        background-color: #cb232a;
+        float: left;
+        margin-left: 5px;
+        padding: 6px 5px;
+    }
+    .leave_sts_deny {
+        float: left !important;
+    }
+    .leave_sts_appr a, .leave_sts_deny a {
+        color: #ffffff !important;
+        float: left !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+</style>  

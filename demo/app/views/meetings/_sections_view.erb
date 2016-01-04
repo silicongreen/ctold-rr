@@ -1,0 +1,36 @@
+<% if @classes.length == 1  %>
+<script type="text/javascript">
+  j("#students").show();
+  j("#section_div").hide();
+  j.ajax({
+    type: "POST",
+    url: "/meetings/list_students_by_course",
+    data: j('#new_student').serialize() + "&course_id=" + <%= @classes[0].id %>,
+    success: function(response) {
+      j('#section_view').html('');
+      j('#section_view').html(response);
+    },
+  })
+  .done(function( msg ) {
+    j("#students").show();
+    j("#section_div").hide();
+  });
+</script>  
+<% else %>
+<script type="text/javascript">
+  j("#new_student").children().last().show();
+  j("#students").hide();
+</script>  
+<% if @selected_section.to_i > 0 %>
+<%= select :student, :section, options_for_select(@classes.map { |c| [c.section_name.strip.length > 0 ? c.section_name.strip : "no-section", c.id] }, @selected_section.to_i),
+    {:prompt => "#{t('select')}"},
+    {:onChange => "#{remote_function(:url => {:controller => "meetings", :action => "list_students_by_course"}, :with => "'course_id='+value+'&'+$('new_student').serialize()" ,:before => "$('loading_1').show();",
+    :success => "$('loading_1').hide(); $('students').show();")}"} %>  
+<% else %>    
+<%= select :student, :section, options_for_select(@classes.map { |c| [c.section_name.strip.length > 0 ? c.section_name.strip : "no-section", c.id] }, @selected_section.to_i),
+    {:prompt => "#{t('select')}"},
+    {:onChange => "#{remote_function(:url => {:controller => "meetings", :action => "list_students_by_course"}, :with => "'course_id='+value+'&'+$('new_student').serialize()" ,:before => "$('loading_1').show();",
+    :success => "$('loading_1').hide(); $('students').show();")}"} %>  
+<% end %>
+<%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_1", :style =>"display: none;" ) %>
+<% end %>

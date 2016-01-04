@@ -1,0 +1,20 @@
+<div id="content-header">
+    <div id="page-yield">
+        <h2>Country List</h2>
+        <div class="box">
+          <% @countries = Country.all %>
+          <% unless @countries.blank? %>
+            <ul id="category-list">
+              <% @countries.each do |c| %>
+                <li class="list<%=cycle('odd', 'even')%>">
+                  <label>
+                      <div class="category-name" style="width: 80px;"><%= "#{c.id}" %></div>
+                      <div class="opt"><%= "#{c.name}" %></div>
+                  </label>
+                </li>
+              <% end %>
+            </ul>
+          <% end %>
+        </div>
+    </div>
+</div>

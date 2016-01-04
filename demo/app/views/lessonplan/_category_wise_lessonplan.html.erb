@@ -1,0 +1,72 @@
+<% @assigned_lessonplan ||= [] %>
+  <% unless @lessonplan.nil? %>  
+    <% form_remote_for :lessonplan,  :url=>{:action => 'assign_to_class', :user=>params[:lessonplan_ids] } do |f| %>
+      <div class="select_all">
+        <%= link_to_function "#{t('all')}", "$$('input.right').each(function(checkbox) { checkbox.checked = true; });" ,:class=>"button-filter"%>
+        <%= link_to_function "#{t('none')}", "$$('input.right').each(function(checkbox) { checkbox.checked = false; });" ,:class=>"button-filter" %>
+
+        <%= submit_tag "", :value => "► Assign to Class", :class => "button-filter", :disable_with => "► #{t('please_wait')}" %>
+      </div>
+
+
+
+        <% @lessonplan.each_with_index do |r,i| %>        
+          <% link_value = r.title %>
+
+          <% unless r.subject_ids.nil? %>  
+            <% @sdata = [] %>
+            <% data = r.subject_ids.split(/,/) %>                    
+                <%  data.each do |w|%>                           
+                  <% @sdata << w %>
+                <% end %>
+          <% end %>
+
+          <div class="portlet-subcontent" style="width:100%">     
+            <div class="timetable_left">
+               <%#= i+1 %><%= check_box_tag "lessonplan_ids[]", r.id,@assigned_lessonplan.include?(r),:class=>"right" %>
+
+            </div>
+            <div class="timetable_right"  style="float:left;height: 80px;width: 40%;padding:5px 0;">
+              <div class="subcontent-header themed_text">
+                  <%=  link_to link_value, :controller => 'lessonplan', :action => 'view', :id => r.id%>
+              </div>                           
+              <div class="subcontent-info"><%= if r.lessonplan_category_id !=0 then r.lessonplan_category.name else "-" end %> </div>              
+              <div class="subcontent-info">
+                  Post on &nbsp;<%= r.publish_date %>(<%= time_ago_in_words(r.created_at) %>)<br />
+                  <%= if r.is_show.to_i == 1 then "Active" else "Inactive" end %>
+
+              </div>              
+            </div>
+            <div class="timetable_right"  style="float:left;height: 80px;width: 30%;padding: 5px 0;border-left:1px dotted #cccccc">                            
+              <div class="subcontent-date">
+                <% unless @sdata.nil? %>
+                    <%  @sdata.each do |z|%>                           
+                      <div class="subject_tag"><% sub =  Subject.find_by_id(z) %>
+                      <%= h "#{sub.name}  - #{sub.batch.full_name}" -%></div>
+                    <% end %>
+                  <% end %>
+              </div>
+            </div>
+            <div class="answer">              
+                <%=  link_to "View", :controller => 'lessonplan', :action => 'view', :id => r.id%>
+                <% if @current_user.id == r.author.id %>
+                <%= " | " %>
+                <%=  link_to "Edit", :controller => 'lessonplan', :action => 'edit', :id => r.id%>
+                <%= " | " %>                  
+                <%= link_to "#{t('delete_text')}",{:controller => "lessonplan", :action => "delete", :id => r.id },:confirm => "#{t('delete_confirm_msg')}" %>
+                <%= " | " %>
+                <%= link_to_remote(t('assign_to_class'),
+                  :url => { :controller=>"lessonplan",:action => 'assign_to_class', :id => r.id },
+                  :method => 'get' ) %>
+                <% end %>               
+            </div>
+          </div>
+          <div style="float: left; margin: 7px; width: 95%;"></div> 
+        <% end %>
+
+      <%= will_paginate @lessonplan %>
+    <% end %>
+  <% else %>
+        <h2>No Lesson plan Found</h2>
+  <% end %>
+

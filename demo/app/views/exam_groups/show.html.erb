@@ -1,0 +1,340 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+<script type="text/javascript">
+  Ajax.Responders.register({
+    onCreate: function() {
+      Ajax.activeRequestCount++;
+    },
+    onComplete: function(responce) {
+      var url=responce.url;
+      var a=url.split('/');
+      var c=a.splice(0,a.length-1);
+      var request_url=c.join('/');
+      if ("/exam_groups/set_exam_maximum_marks"==request_url){
+        if($('flash_msg').select('p')[0]!=undefined)
+          {
+            $('flash_msg').select('p')[0].remove();
+          }
+        var b='<%= "#{t('update_student_score')}"%>'
+        var flash=new Element('p',{'class':'flash-msg'});
+        flash.innerHTML = b
+        $('flash_msg').appendChild(flash);
+      }
+      Ajax.activeRequestCount--;
+    }
+  });
+</script>
+<div id="content-header">
+<%= show_header_icon %>
+  <h1><%= t('exams_text') %></h1>
+<div class='header-sep'>|</div>
+<div class='sub-header'><%= t('view_exam_groups') %></div>
+<div id="inner-tab-menu">
+  <ul>
+    <%  if permitted_to? :publish,:exam %>
+      <% if @exam_group.is_published %>
+        <% if @enabled_subject_link %>
+        <% unless @is_class_exam    %>
+        <li class='themed_bg themed-dark-hover-background'><%= link_to_remote("#{t('publish_exam_result')}",:url=>{:controller=>'exam',:action=>'publish',:id=>@exam_group.id,:status=>"result"},
+            :before => "Element.show('loader')",
+            :success => "Element.hide('loader')") %></li>
+        <% end %>
+        <% end %>
+      <% end  %>
+    <% end %>
+    <% if permitted_to? :new,:exams %>
+      <li class='themed_bg themed-dark-hover-background'>
+        <% if @is_class_exam %>  
+          <% if @is_batch_exam %>
+            <%= link_to "#{t('add_subject')}", new_exam_group_exam_path(@exam_group,:class_exam=>true, :batch_exam=>true) %>
+          <% else %>
+            <%= link_to "#{t('add_subject')}", new_exam_group_exam_path(@exam_group,:class_exam=>true) %>
+          <% end %>
+        <% else %>
+        <%= link_to "#{t('add_subject')}", new_exam_group_exam_path(@exam_group) %>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+</div>
+</div>
+<div id="page-yield">
+  <div class="bread_crumb">
+    <% if @from == "shift" %> 
+      <% ARGV[0] = 'shift' %>
+      <%= link_to t('manage_batch'), :controller => "courses", :action => "manage_batches" %>  <div class = "bread-crumb-separator"> > </div> 
+    <% else %>
+      <%= link_to "#{t('exam_management')}", :controller => "exam", :action => "create_exam" %> <div class = "bread-crumb-separator"> > </div>
+    <% end %>
+    
+    <% if @is_class_exam %>  
+      <% if @is_batch_exam %>
+        <%= link_to "#{t('exam_groups_text')}", batch_exam_groups_path(@batch, :class_exam => true, :batch_exam => true) %> <div class = "bread-crumb-separator"> > </div>
+      <% else %>
+        <%= link_to "#{t('exam_groups_text')}", batch_exam_groups_path(@batch, :class_exam => true) %> <div class = "bread-crumb-separator"> > </div>
+      <% end %>
+    <% else %>
+      <%= link_to "#{t('exam_groups_text')}", batch_exam_groups_path(@batch) %> <div class = "bread-crumb-separator"> > </div>
+    <% end %>
+    
+    <%= @exam_group.name %>
+  </div>
+    
+  <% if @from == "shift" %> 
+    <% ARGV[0] = 'shift' %>
+  <% else %>
+    <% ARGV[0] = 'exam' %>
+  <% end %>  
+
+  <div id="flash_msg"></div>
+  <% unless flash[:notice].nil? %>
+    <p class="flash-msg" id="flash_msg"> <%= flash[:notice] %> </p>
+  <% end %>
+  <div class="box">
+    <div style="width:100%;float: left;">
+      <div class="f2" style="float: left;">
+          <%="Shift" %> : <%= @batch.name  %><br />
+          <%="Class" %> : <%=@course.course_name %><br />
+          <% unless @is_class_exam %>
+          <%="Section" %> : <%=@course.section_name %>
+          <% end %>
+      </div>
+      <div class="f2" style="float: right;">          
+        <%#= link_to " ► #{t('pdf_report')}",
+          {:controller => "student", :action => "profile_pdf", :id => @student.id},:target => '_blank', :class=> 'user_button' %>
+     
+        <div id="inner-tab-menu">
+          <ul>   
+            <li class='themed_bg themed-dark-hover-background'><%= link_to "Exam PDF", {:controller => "exam", :action => "exam_schedule_pdf",:id => @exam_group.id, :batch_id => @batch.id},:target => '_blank'  %></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="update_msg">
+      <% if permitted_to? :edit, :exams %>
+        <h4>
+          <div id =<%="exam_group_name_#{@exam_group.id}_edit"%>>
+            <%= in_place_editor_field :exam_group, :name %>
+          </div>
+        </h4>
+      <% else %>
+        <h4><span><%= @exam_group.name %></span></h4>
+      <% end %>
+      <h4><span class="flash_color" id="publish-notice-<%=@exam_group.id%>"><%= image_tag("loader.gif",:align => "absmiddle",
+            :border => 0,
+            :id => "loader",
+            :style =>"display: none;" ) %></span></h4></div>
+    <% @employee_subjects=[] %>
+    <% @employee_subjects= @current_user.employee_record.subjects.map { |n| n.id} if @current_user.employee?  %>
+    <% privilege = Privilege.find_by_name("EnterResults") %>
+    <% unless @exam_group.exam_type == 'Grades' %>
+      <table id="listing">
+        <tr class="tr-head">
+          <td><%= t('subject') %></td>
+          <td><%= "Date" %></td>
+          <td><%= "Start" %></td>
+          <td><%= "End" %></td>
+          <td><%= t('max_mark') %></td>
+          <td><%= t('min_mark') %></td>
+          <% if permitted_to? :edit, :exams %>
+            <td><%= t('manage') %></td>
+          <% end %>
+        </tr>
+        <%# @exam_group.exams.each do |exam| %>
+        <% @exams.each do |exam| %>
+        <% @exam = exam %>
+          <% if @employee_subjects.include?(exam.subject.id) or @current_user.admin? or @user_privileges.map{|p| p.name}.include?('ExaminationControl') or @user_privileges.map{|p| p.name}.include?('EnterResults') %>
+            <tr class="tr-<%= cycle('odd', 'even') %>">
+              <% @exam = exam %>
+              <td class="col-2">
+                <% s_message = "" %>
+                <% if @is_class_exam %>
+                  <% s_message = exam.subject.other_batches( @batches, false ) %>
+                <% end %>  
+                <% if @enabled_subject_link %>  
+                  <%= link_to exam.subject.name, [@exam_group, exam] %>
+                <% else %>  
+                  <%= exam.subject.name %><br />
+                  <%= s_message %>
+                <% end %>  
+              </td>
+              <td class="col-2"><%= I18n.l(exam.end_time.to_date,:format =>:long) %></td>
+              <td class="col-1"><%= I18n.l(exam.start_time,:format=>"%I:%M %p") %></td>
+              <td class="col-1"><%= I18n.l(exam.end_time,:format=>"%I:%M %p") %></td>
+
+              <% if permitted_to? :edit, :exams %>
+                <td class="col-1">
+                  <div id="<%= "exam_maximum_marks_#{@exam.id}_edit" %>" class="mark">
+                    <% if @is_class_exam %> 
+                      <% if @is_batch_exam %>
+                        <%= in_place_editor_field :exam, :maximum_marks,{},{:cols=>1, :url => '/exam_groups/set_exam_maximum_marks/' + exam.id.to_s + '?class_exam=1&batch_exam=1' } %>
+                      <% else %>
+                        <%= in_place_editor_field :exam, :maximum_marks,{},{:cols=>1, :url => '/exam_groups/set_exam_maximum_marks/' + exam.id.to_s + '?class_exam=1' } %>
+                      <% end %>
+                    <% else %>
+                      <%= in_place_editor_field :exam, :maximum_marks,{},{:cols=>1 } %>
+                    <% end %>  
+                  </div>
+                </td>
+                <td class="col-1">
+                  <div id=<%= "exam_minimum_marks_#{@exam.id}_edit" %>>
+                    <% if @is_class_exam %>   
+                      <% if @is_batch_exam %>
+                      <%= in_place_editor_field :exam, :minimum_marks,{},{:cols=>1, :url => '/exam_groups/set_exam_minimum_marks/' + exam.id.to_s + '?class_exam=1&batch_exam=1' } %>
+                      <% else %>
+                      <%= in_place_editor_field :exam, :minimum_marks,{},{:cols=>1, :url => '/exam_groups/set_exam_minimum_marks/' + exam.id.to_s + '?class_exam=1' } %>
+                      <% end %>
+                    <% else %>  
+                      <%= in_place_editor_field :exam, :minimum_marks,{},{:cols=>1} %>
+                    <% end %>    
+                  </div>
+                </td>
+                <td class="col-1">
+                  <% if @exam_group.result_published %>
+                    <small><s><%= t('edit_text') %></s></small>
+                  <% else %>
+                    <small>
+                      <% if @is_class_exam %>
+                        <% if @is_batch_exam %>
+                        <%= link_to t('edit_text'), edit_exam_group_exam_path(@exam_group, exam, :class_exam => true, :batch_exam => true) %>
+                        <% else %>
+                        <%= link_to t('edit_text'), edit_exam_group_exam_path(@exam_group, exam, :class_exam => true) %>
+                        <% end %>
+                      <% else %>  
+                        <%= link_to t('edit_text'), edit_exam_group_exam_path(@exam_group, exam) %>
+                      <% end %>  
+                    </small>
+                  <% end %>
+                  <%
+                    is_removable = true
+                    exam_id = @exam.id
+                    @exam_groups_data = ExamGroup.find(:all, :conditions => ["name LIKE ? and batch_id IN (?) and exam_type = ? and exam_category = ? and exam_date = ?", @exam_group.name, @batches, @exam_group.exam_type, @exam_group.exam_category, @exam_group.exam_date]).map{|eg| eg.id}
+                    @subjects_data = Subject.find(:all, :conditions => ["name LIKE ? and batch_id IN (?)", exam.subject.name, @batches]).map{|s| s.id}
+                    @exam_groups_data.each do |exam_group_id|
+                      @subjects_data.each do |subject_id|
+                        tmp_exam = Exam.find_by_exam_group_id_and_subject_id_and_start_time_and_end_time_and_maximum_marks_and_minimum_marks(exam_group_id, subject_id, @exam.start_time, @exam.end_time, @exam.maximum_marks, @exam.minimum_marks)
+                        unless tmp_exam.nil?
+                          unless tmp_exam.removable?
+                            is_removable = false
+                            break
+                          end
+                        end
+                      end
+                    end  
+                  %>  
+                  <% if is_removable %>
+                    <% if @is_class_exam %>
+                      <% if @is_batch_exam %>
+                      <small><%= link_to t('delete_text'), '/exam_groups/' + @exam_group.id.to_s + '/exams/' + exam.id.to_s + '?class_exam=true&batch_exam=true', :method => 'delete', :confirm => t('delete_confirm_msg') %></small>
+                      <% else %>
+                      <small><%= link_to t('delete_text'), '/exam_groups/' + @exam_group.id.to_s + '/exams/' + exam.id.to_s + '?class_exam=true', :method => 'delete', :confirm => t('delete_confirm_msg') %></small>
+                      <% end %>
+                    <% else %>
+                      <small><%= link_to t('delete_text'), [@exam_group, exam], :method => 'delete', :confirm => t('delete_confirm_msg') %></small>
+                    <% end %>
+                  <% else %>
+                    <small><s><%= t('delete_text') %></s></small>
+                  <% end %>
+                </td>
+              <% else %>
+                <td class="col-1"><span><%= exam.maximum_marks %></span></td>
+                <td class="col-1"><span><%= exam.minimum_marks %></span></td>
+              <% end %>
+            </tr>
+          <% end %>
+        <% end %>
+      </table>
+    <% else %>
+      <table id="listing" width="100%">
+        <tr class="tr-head">
+          <td><%= t('subject') %></td>
+          <% if permitted_to? :edit, :exams %>
+            <td><%= t('manage') %></td>
+          <% end %>
+        </tr>
+        <% @exam_group.exams.each do |exam| %>
+          <% if @employee_subjects.include?("#{exam.subject.id}") or @current_user.admin?  or @current_user.privileges.map{|p| p.name}.include?("ExaminationControl") or @current_user.privileges.map{|p| p.name}.include?("EnterResults") %>
+            <tr class="tr-<%= cycle('odd', 'even') %>">
+              <% @exam = exam %>
+              <td class="col-3">
+                <% s_message = "" %>
+                <% if @is_class_exam %>
+                  <% s_message = exam.subject.other_batches( @batches, false ) %>
+                <% end %>   
+                <% if @enabled_subject_link %>  
+                  <%= link_to exam.subject.name, [@exam_group, exam] %>
+                <% else %>
+                  <%= exam.subject.name  %><br />
+                  <%= s_message %>
+                <% end %>
+              </td>
+              <% if permitted_to? :edit, :exams %>
+                <td class="col-1">
+                  <small>
+                    <% if @is_class_exam %>
+                      <% if @is_batch_exam %>
+                      <%= link_to t('edit_text'), edit_exam_group_exam_path(@exam_group, exam, :class_exam => true, :batch_exam => true) %>
+                      <% else %>
+                      <%= link_to t('edit_text'), edit_exam_group_exam_path(@exam_group, exam, :class_exam => true) %>
+                      <% end %>
+                    <% else %>  
+                      <%= link_to t('edit_text'), edit_exam_group_exam_path(@exam_group, exam) %>
+                    <% end %>  
+                  </small>
+                  <%
+                    is_removable = false
+                    exam_id = @exam.id
+                    @exam_groups_data = ExamGroup.find(:all, :conditions => ["name LIKE ? and batch_id IN (?) and exam_type = ? and exam_category = ? and exam_date = ?", @exam_group.name, @batches, @exam_group.exam_type, @exam_group.exam_category, @exam_group.exam_date]).map{|eg| eg.id}
+                    @subjects_data = Subject.find(:all, :conditions => ["name LIKE ? and batch_id IN (?)", exam.subject.name, @batches]).map{|s| s.id}
+                    @exam_groups_data.each do |exam_group_id|
+                      @subjects_data.each do |subject_id|
+                        tmp_exam = Exam.find_by_exam_group_id_and_subject_id_and_start_time_and_end_time_and_maximum_marks_and_minimum_marks(exam_group_id, subject_id, @exam.start_time, @exam.end_time, @exam.maximum_marks, @exam.minimum_marks)
+                        unless tmp_exam.nil?
+                          if tmp_exam.removable?
+                            is_removable = true
+                            break
+                          end
+                        end
+                      end
+                    end  
+                  %>  
+                  <% if is_removable %>
+                    <% if @is_class_exam %>
+                      <% if @is_batch_exam %>
+                      <small><%= link_to t('delete_text'), '/exam_groups/' + @exam_group.id.to_s + '/exams/' + exam.id.to_s + '?class_exam=true&batch_exam=true', :method => 'delete', :confirm => t('delete_confirm_msg') %></small>
+                      <% else %>
+                      <small><%= link_to t('delete_text'), '/exam_groups/' + @exam_group.id.to_s + '/exams/' + exam.id.to_s + '?class_exam=true', :method => 'delete', :confirm => t('delete_confirm_msg') %></small>
+                      <% end %>
+                    <% else %>
+                      <small><%= link_to t('delete_text'), [@exam_group, exam], :method => 'delete', :confirm => t('delete_confirm_msg') %></small>
+                    <% end %>
+                  <% else %>
+                    <small><s><%= t('delete_text') %></s></small>
+                  <% end %>
+                </td>
+              <% end %>
+            </tr>
+          <% end %>
+        <% end %>
+      </table>
+    <% end %>
+
+    <div class="extender"></div>
+  </div>
+</div>

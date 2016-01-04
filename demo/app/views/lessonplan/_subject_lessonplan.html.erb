@@ -1,0 +1,49 @@
+
+        <% unless @lessonplan.nil? %>                        
+            <% @lessonplan.each_with_index do |r,i| %>        
+              <% link_value = r.title %>
+              <% unless r.subject_ids.nil? %>  
+                <% @sdata = [] %>
+                <% data = r.subject_ids.split(/,/) %>                    
+                    <%  data.each do |w|%>                           
+                      <% @sdata << w %>
+                    <% end %>
+              <% end %>
+              <div class="portlet-subcontent" style="width:100%">     
+                <div class="timetable_left">
+                  <span class="f2" style="font-size:20px;margin-left:40px;"><%= i+1 %></span>
+                </div>
+                <div class="timetable_right"  style="float:left;height: 80px;width: 40%;padding:5px 0;">
+                  <div class="subcontent-header themed_text">
+                      <%=  link_to link_value, :controller => 'lessonplan', :action => 'view', :id => r.id%>
+                  </div>                                           
+                  <div class="subcontent-info">
+                      <% unless r.author.blank?  %>
+                        <%= r.author.first_name+" "+r.author.last_name %> <%= '- admin' if r.author.admin==true%>
+                      <% else %>
+                       <%= t('user_deleted') %>
+                      <% end %>  
+                  </div>              
+                </div>
+                <div class="timetable_right"  style="float:left;height: 80px;width: 30%;padding: 5px 0;border-left:1px dotted #cccccc">                            
+                  <div class="subcontent-date">
+                    <% unless @subjects.nil? %>
+                      <% @subjects.each_with_index do |s,x| %>  
+                        <% if s.batch_id == @batch.id %>
+                          <%= (@sdata.include? s.id.to_s) ? "<div class='subject_tag'>#{s.name}</div>" :"" %>
+                        <% end %>
+                      <% end %>
+                    <% end %>
+                  </div>
+                </div>
+                <div class="answer">              
+                    <div class='header-right-button'><%=  link_to "View", :controller => 'lessonplan', :action => 'view', :id => r.id%></div>              
+                </div>
+              </div>
+              <div style="float: left; margin: 7px; width: 95%;"></div> 
+            <% end %>
+          
+          <%= will_paginate @lessonplan %>
+        <% else %>
+              <h2>No Lesson plan Found</h2>
+        <% end %>

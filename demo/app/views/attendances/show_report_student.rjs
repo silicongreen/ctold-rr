@@ -1,0 +1,1 @@
+page.replace_html 'report-year', :partial => 'show_report_student'

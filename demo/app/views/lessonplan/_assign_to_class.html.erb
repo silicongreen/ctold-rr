@@ -1,0 +1,119 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<% if @is_group %>
+        <div>
+      <% form_remote_for :lessonplan do |f| %>
+        <% if @is_group %>
+          <input type="hidden" name="is_group" value="<%= true %>" >     
+        <% end %>
+        <div id="form-errors"></div>
+        <div class="">
+          <div class="label-container"><%= f.label "#{t('title')} :" %></div>
+          <% @lessonplan_ids.each do |lessonplan_id| %>
+            <%= hidden_field :lessonplan_ids,"",:value => lessonplan_id %>
+            <div class="input-container"><%= Lessonplan.find_by_id(lessonplan_id).title %></div>
+          <% end %>
+        </div>
+        <div style="margin-top:20px;">
+          <label for="assignment_subject"><%= "#{t('subject')}"%></label>
+          <div class="">
+            <% unless @subjects.nil? %>
+              <ul class="active_subject_list">
+                <% @subjects.each do |role| %>
+                    <li>                      
+                      <%= check_box_tag "subject_ids[]", role.id  -%>
+                      <%= h "#{role.name}  - #{role.batch.full_name}" -%>
+                    </li>
+                <% end %>
+              </ul>
+            </div>            
+          <% end %>
+        </div>
+
+        <%= submit_tag "", :value => "► #{t('save')}", :class => "submit_button", :disable_with => "► #{t('please_wait')}" %>
+
+      <% end %>
+
+      <div class="extender"></div>
+    </div>
+<% else %>
+    <div>
+      <% form_remote_for :lessonplan do |f| %>
+
+        <div id="form-errors"></div>
+        <div class="">
+          <div class="label-container"><%= f.label "#{t('title')} :" %></div>
+          <div class="input-container"><%= @lessonplan.title %></div>
+        </div>
+        <div style="margin-top:20px;">
+          <label for="assignment_subject"><%= "#{t('subject')}"%></label>
+          <div class="">
+            <% unless @lessonplan.subject_ids.nil? %>  
+              <% @sdata = [] %>
+              <% data = @lessonplan.subject_ids.split(/,/) %>                    
+                  <%  data.each do |w|%>                           
+                    <% @sdata << w %>
+                  <% end %>
+            <% end %>
+
+            <% unless @subjects.nil? %>
+              <ul class="active_subject_list">
+                <% @subjects.each do |role| %>
+                    <li>
+                      <% unless @lessonplan.subject_ids.nil? %>                    
+                        <%= check_box_tag "subject_ids[]", role.id, (@sdata.include? role.id.to_s) ? true:false  -%>
+                      <% else %>
+                        <%= check_box_tag "subject_ids[]", role.id  -%>
+                      <% end %>
+
+                      <%= h "#{role.name}  - #{role.batch.full_name}" -%>
+                    </li>
+                <% end %>
+              </ul>
+
+            </div>
+            <%#= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader", :style =>"display: none;" ) %>
+          <% end %>
+        </div>
+
+
+
+
+
+
+
+        <%= submit_tag "", :value => "► #{t('save')}", :class => "submit_button", :disable_with => "► #{t('please_wait')}" %>
+
+      <% end %>
+
+      <div class="extender"></div>
+    </div>
+<% end %>
+
+
+
+<%#= select :assignment, :subject,
+            @subjects.map {|s| ["#{s.name}  - #{s.batch.full_name}",s.id]},
+            {:prompt => "#{t('select_a_subject')}"},
+            {:onChange => "#{remote_function(:url => {:action => "subject_assignments"},
+            :with => "'subject_id='+ value",
+            :before => "Element.show('loader')",
+            :success => "Element.hide('loader')"
+            )}"} %>

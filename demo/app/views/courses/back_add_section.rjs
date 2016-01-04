@@ -1,0 +1,3 @@
+page.replace_html 'form-errors', :text => ''
+page.replace_html 'add_section', :partial => 'add_section_data'
+page.replace_html 'flash-box-popup', :text=>"<p class='flash-msg'>#{flash[:notice]}</p>" unless flash[:notice].nil?

@@ -1,0 +1,86 @@
+body{
+    width: 850px;
+    text-rendering: optimize-speed;    
+}
+.bnla{
+}
+#pdf-header{
+    width:800px;
+    padding-top: 30px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.logo{
+    height: 120px;
+    width:120px;
+    float: left;
+}
+.logo img{
+    width: 100%;
+    margin-top: 10px;
+}
+
+.header-content2{
+    color: #000;
+    font-weight: bold;
+    font-size: 20px;
+    float: left;
+    width: 535px;
+    height: 130px;        
+    text-align: center;
+    word-wrap:break-word;
+    margin-left:30px;
+}
+
+.header-content2 p{
+    margin-top: 3px;
+    margin-bottom: 2px;
+    margin-right: 10px;
+    line-height: 15px !important;
+    letter-spacing:normal !important;
+}
+.header-content2 p.institution_address{
+    font-weight: normal !important;
+    color: #000 !important;
+    margin-top: 15px !important;
+    line-height: 15px !important;
+    font-size: 13px;
+     
+}
+#pdf-footer{
+    text-align: right;
+    width: 700px;
+    padding-right: 100px;
+    padding: 50px;
+    margin: 0 auto;
+    color: #999999;
+    font-size: 18px;
+}
+
+#page-yield {
+    margin-top: 30px !important;
+}
+
+.page {
+    page-break-after: auto;
+    page-break-inside: avoid;
+    overflow: hidden;
+
+}
+.section{
+    margin-top:20px;
+}
+.row-break{
+    /*       display: table-row; */
+    /*       clear:both; */
+    page-break-before:always;
+}
+.top-padding-20{
+    padding-top:20px;
+    background-color:#ccf;
+}
+
+#main_info{
+    text-align: left !important;
+}

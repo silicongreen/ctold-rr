@@ -1,0 +1,4 @@
+<%= link_to_remote(@batch_name,
+    :url => { :controller=>"courses",:action => 'get_batches_classes', :id =>batch.id, :name => batch.name},
+    :method => 'get' ) 
+%>  

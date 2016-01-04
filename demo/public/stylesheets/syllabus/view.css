@@ -1,0 +1,136 @@
+.partial_homework
+{
+    clear: both;
+}
+.partial_homework h2 {
+  color: #2dc99a;
+  float: left;
+  font-size: 38px;
+  font-weight: normal;
+  margin: 0;
+}
+.partial_homework .date_title
+{
+    height:25px;
+    color: #2DC99A;
+    text-align: right;
+    clear: both;
+    font-size: 11px;
+    font-weight: bold;
+}
+.partial_homework .portlet-subcontent {
+  background-color: #ffffff;
+  float: left;
+  width: 80%;
+  border: 1px solid #ccc;
+}
+.partial_homework .timetable_left {
+  border-right: 1px dotted #cccccc;
+  float: left;
+  height: 60px;
+  padding: 15px 0px;
+  width: 12%;
+}
+.partial_homework .timetable_right
+{
+    float:right;
+    width:78%;
+}
+
+.partial_homework .subcontent-header {
+  color: #000000;
+  float: left;
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 10px;
+  padding: 2px 12px;
+  width: 93%;
+}
+
+.partial_homework .subcontent-info {
+  color: #999999;
+  float: left;
+  font-size: 15px;
+  margin-top: 5px;
+  padding: 2px 12px;
+  width: 93%;
+}
+
+.partial_homework .subcontent-date {
+  color: #999;
+  float: left;
+  font-size: 14px;
+  margin-top: 10px;
+  padding: 2px 15px;
+  width: 93%;
+}
+
+.answer_mark
+{
+    background: none repeat scroll 0 0 #F0F2F3;
+    float: right;
+    height: 70px;
+    padding: 10px;
+    width: 7%;
+}
+.timetable_right div a
+{
+    font-size: 16px;
+    font-weight: bold;
+    color: #000;
+    text-decoration: none;
+}
+.timetable_right div a:hover
+{
+    color: #ED1C24;
+}
+.attachment_clip
+{
+    height: 45px;
+margin-left: 22px;
+width: 70px;
+}
+.atachment_div a
+{
+    text-decoration: none;
+    color:red;
+}
+.delete_lessonplan
+{
+    background: url('/images/lessonplan/delete_red.png') no-repeat;
+    height:50px;
+    background-position:50%;
+    border: 0px;
+}
+.delete_lessonplan:hover
+{
+    background: url('/images/lessonplan/delete.png') no-repeat;
+    background-position:50%;
+    border: 0px;
+}
+.edit_lessonplan
+{
+    background: url('/images/lessonplan/edit.png') no-repeat;
+    height:60px;
+    background-position:48% 100%;
+    border: 0px;
+}
+.edit_lessonplan:hover
+{
+    background: url('/images/lessonplan/edit_red.png') no-repeat;
+    background-position:48% 100%;
+    border: 0px;
+}
+.subject_tag {
+  background: none repeat scroll 0 0 #f1f4e3;
+  border-radius: 4px;
+  color: #999999;
+  font-size:11px;  
+  float: left;
+  margin-bottom: 3px;
+  margin-right: 3px;
+  padding: 3px 5px;
+}
+.subject_tag:hover {
+  background: none repeat scroll 0 0 #e0e6c0;
+}

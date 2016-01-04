@@ -1,0 +1,77 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<div id="content-header">
+<%= show_header_icon %>
+  <h1><%= t('exams_text') %></h1>
+<div class='header-sep'>|</div>
+<div class='sub-header'><%= t('view_transcripts') %></div>
+</div>
+<div id="page-yield">
+  <div class="bread_crumb">
+    <%= link_to t('exam_text'), :controller => "exam", :action=>"index" %> <div class = "bread-crumb-separator"> > </div>
+    <%= link_to t('report_center'), :controller => "exam", :action => "report_center" %> <div class = "bread-crumb-separator"> > </div>
+    <%= t('view_transcripts') %>
+  </div>
+  <% unless flash[:notice].nil? %>
+    <p class="flash-msg"> <%= flash[:notice] %> </p>
+  <% end %>
+  <div class="box">
+
+    <% form_for :transcript, :url=>{:action=>'student_transcript'}, :html=> {:id=>'new_student'} do |x| %>      
+      <% if Batch.active.find(:all, :group => "name").length > 1  %> 
+      <div class="label-field-pair">
+        <label for="student_grade"><%= t('shift_label') %></label>
+        <div class="text-input-bg"><%= select :student, :batch_name, options_for_select(Batch.active.find(:all, :group => "name").map {|b| [b.name, b.id]}, @batch_no.to_i),
+        {:prompt => "#{t('select')}"},
+        {:onChange => "#{remote_function(:url => {:controller => "student", :action => "get_classes"}, :with => "'batch_id='+value+'&'+$('new_student').serialize()+'&section_page=section&section_partial=student/sections&page=course_data&partial_view=student/courses_data&page_batch=batches&partial_view_batch=student/batches'" ,:before => "$('loading_2').show();",
+        :success => "$('loading_2').hide();")}"} %>
+        <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_2", :style =>"display: none;" ) %></div>
+        </div>
+      
+      <% end %>
+          
+      <div class="label-field-pair">
+        <label for="student_grade"><%= t('class_label') %></label>
+        <div class="text-input-bg"><div id="course_data"> <%= render :partial => 'student/courses_data', :object => @courses %></div></div>
+      </div>
+      
+          
+      <div class="label-field-pair">
+        <label for="student_grade"><%= t('section_label') %></label>
+        <div class="text-input-bg"><div id="section"> <%= render :partial => 'student/sections', :object => @classes %></div></div>
+      </div>
+      
+
+      <div class="label-field-pair" style="display: none;">
+        <label for="student_grade"><%= t('course_and_batch') %></label>
+        <div class="text-input-bg"><div id="batches"> <%= render :partial => 'student/batches', :object => @batch_id %></div></div>
+      </div>
+      
+      <div class="label-field-pair" style="display: none;">
+        <label for="student_course"><%= t('select_a_batch') %> :</label>
+        <div  class="text-input-bg">
+          <%= select :transcript, :batch_id,
+            @batches.map{|b| [b.full_name, b.id]},
+            {:prompt => "#{t('select_a_batch')}"}%></div></div>
+      
+      <%= submit_tag "", :value => "► #{t('view')}", :class => "submit_button" %>
+    <% end %>
+    <div class="extender"></div>
+  </div></div>

@@ -1,0 +1,2 @@
+page.replace_html 'category-list', :partial => 'elective_groups'
+page.replace_html 'flash-box', :text=>"<p class='flash-msg'>#{flash[:notice]}</p>" unless flash[:notice].nil?

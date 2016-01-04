@@ -1,0 +1,215 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<% current_username = @current_user.username %>
+<% profile_employee_no = @employee.employee_number %>
+
+<div class="header-wrapper">
+
+  <div class="header-title">
+    <div class="header-icon">
+      <%= image_tag '/images/icons/profile-icon.png', :html => {:alt => 'Employee Profile'} %>
+    </div>
+    <div class="header-title-text-wrapper">
+      <div class="header-title-main-text f2">
+        <%= link_to "#{t('employee_profile')}", :controller => 'employee', :action => 'profile', :id => @employee.id %>
+      </div>
+      <div class="clearfix"></div>
+      <div class="header-title-sub-text">
+        <%= I18n.l(@local_tzone_time.to_date, :format=>'%d/%m/%Y') %>
+      </div>
+    </div>
+  </div>
+
+  <% if @current_user.admin? or permitted_to? :edit, :student%>
+    <div class="header-form-wrapper">
+      <div class="icon-wrapper">
+        <%= link_to '<div class="edit-icon"></div>', :controller => 'student', :action => 'edit', :id => @employee.id %>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="clearfix"></div>
+
+  <div class="tabbed-header-wrapper">
+    <ul class="header-tabs">
+
+      <li class="active">
+        <a href="#" class="f2"><%= t('profile_text')%></a>
+        <ul class="submenu">
+          <li>
+            <%= link_to_remote "#{t('general')}", {:url => {:action => "profile_general", :id => @employee.id}, :update => "profile-infos"}, {:class => 'f2'} %>
+          </li>
+          <li>
+            <%= link_to_remote "#{t('personal')}", {:url => {:action => "profile_personal", :id => @employee.id}, :update => "profile-infos"}, {:class => 'f2'} %>
+          </li>
+          <li>
+            <%= link_to_remote "#{t('address')}", {:url => {:action => "profile_address", :id => @employee.id}, :update => "profile-infos"}, {:class => 'f2'} %>
+          </li>
+
+          <li>
+            <%= link_to_remote "#{t('contact')}", {:url => {:action => "profile_contact", :id => @employee.id}, :update => "profile-infos"}, {:class => 'f2'} %>
+          </li>
+
+          <li>
+            <%= link_to_remote "#{t('bank_info')}", {:url => {:action => "profile_bank_details", :id => @employee.id}, :update => "profile-infos"}, {:class => 'f2'} %>
+          </li>
+
+          <li>
+            <%= link_to_remote "#{t('additional_info')}", {:url => {:action => "profile_additional_details", :id => @employee.id}, :update => "profile-infos"}, {:class => 'f2'} %>
+          </li>
+        </ul>
+      </li>
+
+      <% if current_username == profile_employee_no %>
+        <li>
+          <a href="#" class="f2"><%= t('salary') %></a>
+          <ul class="submenu">
+            <li>
+              <%= link_to_remote "#{t('payroll_text')}", {:url => {:action => "profile_payroll_details", :id => @employee.id}, :update => "profile-infos"}, {:class => 'f2'} %>
+            </li>
+            <li>
+              <%= link_to_remote "#{t('payslip_text')}", {:url => {:action => "view_payslip", :id => @employee.id}, :update => "profile-infos"}, {:class => 'f2'} %>
+            </li>
+          </ul>
+        </li>
+      <%else%>
+        <% if permitted_to? :payslip, :employee %>
+          <li>
+            <a href="#" class="f2"><%= t('salary') %></a>
+            <ul class="submenu">
+              <li>
+                <%= link_to_remote "#{t('payroll_text')}", {:url => {:action => "profile_payroll_details", :id => @employee.id}, :update => "profile-infos"}, {:class => 'f2'} %>
+              </li>
+              <li>
+                <%= link_to_remote "#{t('payslip_text')}", {:url => {:action => "view_payslip", :id => @employee.id}, :update => "profile-infos"}, {:class => 'f2'} %>
+              </li>
+            </ul>
+          </li>
+        <%end%>
+      <%end%>
+
+      <% if current_username == profile_employee_no %>
+        <li>
+          <a href="#" class="f2"><%= t('leaves') %></a>
+          <ul class="submenu">
+            <li>
+              <%= link_to_remote "#{t('attendance')}", {:url => {:action => "view_attendance", :id => @employee.id}, :update => "profile-infos"}, {:class => 'f2'} %>
+            </li>
+            <li>
+              <%= link_to "#{t('leaves')}", {:controller=>"employee_attendance", :action=>"leaves", :id=>@employee.id}, {:class => 'f2'} %>
+            </li>
+          </ul>
+        </li>
+      <% else %>
+        <% if permitted_to? :employee_attendance, :employee %>
+          <li>
+            <a href="#" class="f2"><%= t('leaves') %></a>
+            <ul class="submenu">
+              <li>
+                <%= link_to_remote "#{t('attendance')}", {:url => {:action => "view_attendance", :id => @employee.id}, :update => "profile-infos"}, {:class => 'f2'} %>
+              </li>
+            </ul>
+          </li>
+        <%end%>
+      <%end%>
+
+      <% if permitted_to? :employee_timetable, :timetable %>
+        <% unless @employee.subjects.empty? %>
+          <li><%= link_to "#{t('timetable_text')}", {:controller=>"timetable", :action=>"employee_timetable", :id=>@employee.id}, {:class => 'f2'} %></li>
+        <% end %>
+      <%end%>
+
+      <% if current_username == profile_employee_no %>
+        <% if @new_reminder_count.size == 0 %>
+          <li>
+            <%= link_to "#{t('reminder_text')}", {:controller=>"reminder", :action=>"index"}, {:class => 'f2'} %>
+          </li>
+        <% else %>
+          <li>
+            <%= link_to "#{t('reminder_text')}(#{@new_reminder_count.size})", {:controller=>"reminder", :action=>"index"}, {:class => 'f2'} %>
+          </li>
+        <% end %>
+      <% end %>
+
+      <% if ((@current_user.admin? or permitted_to? :remove, :employee) and @current_user != @employee.user) %>
+        <li>
+          <%= link_to "#{t('delete_text')}", {:action=>'remove',:id=>@employee.id}, {:class => 'f2'} %>
+        </li>
+      <% end %>
+
+      <li>
+        <a href="#" class="f2"><%= t('more') %></a>
+        <ul class="submenu">
+          <% Champs21Plugin::ADDITIONAL_LINKS[:employee_profile_more_menu].each do |mod| %>
+            <% if can_access_request? "#{mod[:destination][:action]}".to_sym,"#{mod[:destination][:controller]}".to_sym  %>
+              <li>
+                <%= link_to "#{t(mod[:title])}",mod[:destination].merge(:id=>@employee.id), {:class => 'f2'} %>
+              </li>
+            <% end %>
+          <% end %>
+        </ul>
+      </li>
+
+    </ul>
+  </div>
+
+</div>
+
+
+<div id="page-yield" class="bg-disable">
+
+  <div class="wrapper">
+
+    <% unless flash[:notice].nil? %>
+      <p class="flash-msg"> <%= flash[:notice] %> </p>
+    <% end %>
+
+    <div id="employee_profile_heading">
+
+      <div id="profile_picture_display">
+        <% if @employee.photo.file? %>
+          <%= image_tag @employee.photo.url %>
+        <% else %>
+          <%= image_tag "HR/default_employee.png" %>
+        <% end %>      
+      </div>
+
+      <div id ="employee_main_info">
+        <h3> <%= @employee.full_name %>  </h3>
+        <h4> <%= t('employee_id') %> : <%= @employee.employee_number %> </h4>
+      </div>
+
+      <div id="profile-general-info"></div>
+      <div class="clearfix"></div>
+    </div>
+
+    <div id="profile-infos">
+      <%= render :partial => "general" %>
+    </div>
+    
+  </div>
+  
+</div>
+
+
+<%= stylesheet_link_tag 'tadded-header' %>
+<% content_for :head do %>
+  <%= javascript_include_tag "custom/tabbed-header" %>
+<% end %>

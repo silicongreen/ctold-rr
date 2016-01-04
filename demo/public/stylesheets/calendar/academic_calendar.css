@@ -1,0 +1,366 @@
+#calendar{
+    width:560px;
+    float:left;
+    margin-top:30px;
+}
+#head-month{
+    background: #FFF;
+    -moz-border-radius:8px;
+    -webkit-border-radius:8px;
+}
+.header{
+    width:560px;
+    margin:0px auto;    
+    padding:1px 0px;
+}
+.next a{
+    float:left;
+    -moz-border-radius:40px;
+    -webkit-border-radius:40px;
+    width:25px;
+    height:25px;
+    padding:5px;
+    background: #B0B8BA;
+    text-align:right;
+    color:#fff;
+    font-size:22px;
+    text-decoration:none;
+    outline:none;
+    display:block;
+}
+.prev a{
+    float:left;
+    -moz-border-radius:40px;
+    -webkit-border-radius:40px;
+    width:25px;
+    height:25px;
+    padding:5px;
+    background: #B0B8BA;
+    text-align:left;
+    color:#fff;
+    font-size:22px;
+    text-decoration:none;
+    outline:none;
+    display:block;
+}
+.next a:hover, .prev a:hover{
+    color: #fff;
+    background: #DC3434;
+}
+.month{
+    -moz-border-radius:8px;
+    -webkit-border-radius:8px;
+    width:450px;
+    background: #E7E7E7;
+    padding:5px 0 5px 0;
+    text-align:center;
+    float:left;
+    font-size:20px;
+    color:#121212;
+    font-weight:bold;
+    margin:0 20px 0 20px;
+}
+
+
+
+
+
+
+table {
+  border-collapse: collapse;
+}
+table td, table th {
+  border: 0;
+}
+table tr:first-child th {
+  border-top: 0;
+  border-bottom: 2px solid #D1D1D1; 
+  border-left: 0;
+  border-right: 0;
+}
+table tr:first-child td {
+    border-top: 2px solid #D1D1D1;
+}
+
+table tr td:first-child {
+  border-left: 2px solid #D1D1D1;  
+}
+table tr td:last-child {
+  border-right: 2px solid #D1D1D1;    
+}
+table tr:last-child td {
+  border-bottom: 2px solid #D1D1D1;    
+}
+
+
+
+table#calendar-table{
+    background: #E7E7E7;
+    -moz-border-radius:8px;
+    -webkit-border-radius:8px;
+    padding:0px;
+}
+tr.week th span{
+    background: #fff;
+    -moz-border-radius:6px;
+    -webkit-border-radius:6px;
+    color:#B0B8BA;
+    margin:10px;
+    padding:4px 6px 4px 6px;
+    font-size:14px;
+    text-align:center;
+    font-weight:bold;
+}
+tr.week th{
+    min-width:60px;
+    height:60px;
+    background: #fff;
+}
+
+tr.day td.today{
+    background: #FEFFAF !important;
+}
+tr.day td{
+    background: #fff;
+    height:60px;
+    min-width:60px;
+}
+tr.day td:hover{
+    background: green;
+}
+tr.day td span{
+    text-decoration: none;
+    font-size:15px;
+    color:#5f5f5f;
+    float:right;
+    margin-right:35px;
+    margin-top: 23px;
+    font-weight:bold;
+}
+table#calendar-table .POPO-odd
+{
+    background: #fff;
+}
+table#calendar-table .POPO-odd:hover
+{
+    background: #3399FF;    
+}
+
+table#calendar-table .POPO-even
+{
+    background: #E7E7E7;
+}
+table#calendar-table .POPO-even:hover
+{
+    background: #3399FF;    
+}
+
+td .link{    
+    float:right;
+    width:20px;
+}
+
+td .link a{
+    display:none;  
+    position:absolute;
+    float:right;
+    margin-left:-5px;
+    font-size:11px;
+    color:#5f5f5f;
+}
+td .link:hover a{
+    display:block;    
+    float:right;
+    padding-left:5px;
+    font-size:11px;
+    color:#5f5f5f;
+    position:absolute;
+}
+td .link:hover span{
+    color:green;
+}
+td a.event{
+    float:left;
+
+}
+.blank{
+    height:20px;
+}
+.link-group{
+    float: left;
+    width:25px;
+    height: 65px;
+}
+#tooltip_box{
+    margin-top:100px;
+    width:320px;
+    float:right;
+}
+.title{
+    color:#000;
+    font-weight: 400;
+    float:left;
+    padding:12px;
+    padding-bottom: 5px;
+}
+.event_title
+{
+    color:#FFCF27;
+    font-weight: 400;
+    float:left;
+    padding:12px;
+    padding-bottom: 5px;
+}
+.exam_title
+{
+    color:#00BFF3;
+    font-weight: 400;
+    float:left;
+    padding:12px;
+    padding-bottom: 5px;
+}
+.holiday_title
+{
+    color:#01B169;
+    font-weight: 400;
+    float:left;
+    padding:12px;
+    padding-bottom: 5px;
+}
+.due_title
+{
+    color:#D91404;
+    font-weight: 400;
+    float:left;
+    padding:12px;
+    padding-bottom: 5px;
+}
+.desc{
+    color:#6d6b6b;
+    text-align: justify;
+    float:left;
+    padding:10px;
+    padding-top:0px;
+    font-size:12px;
+    margin-left:5px;
+}
+.events{
+    border-bottom:1px solid #e4e4e4;
+}
+.current-date{
+    padding:5px;
+    font-size:20px;
+    font-weight: bold;
+    border-bottom:1px solid #e4e4e4;
+    color:#B0B8BA;
+}
+#calendar-legend {
+  float: left;
+  margin: 30px 0px;
+}
+#legend-text{
+    font-size: 15px;
+}
+#legend-symbol{
+    padding : 3px;
+}
+#legend-entry {
+  float: left;
+  font-weight: 400;
+  width: 100%;
+}
+.delete{
+    font-size:13px;
+    text-decoration: none;
+}
+.delete:hover{
+    color:#BB0000;
+    text-decoration: none;
+}
+.legend-icon{
+    width:16px;
+    height:16px;
+    -moz-border-radius:2px;
+    -webkit-border-radius:2px;
+    margin:4px 5px 3px 3px;
+    float:left;
+}
+.calendar-legend{
+    width:12px;
+    height:12px;
+    -moz-border-radius:2px;
+    -webkit-border-radius:2px;
+    margin:2px;
+}
+.image_loading{
+    width: 100%;
+    float: left;
+    height: 20px;
+}
+.link{
+    float:right;
+    margin-top:0px
+}
+.link a{
+    color:#444;
+}
+
+/******************************list**********************************************/
+
+.list
+{
+    
+}
+.list .header{
+    width:100%;
+    margin:0px auto;    
+    padding:1px 0px;
+}
+.list .next a{
+    float:left;
+    -moz-border-radius:40px;
+    -webkit-border-radius:40px;
+    width:25px;
+    height:25px;
+    padding:5px;
+    background: #B0B8BA;
+    text-align:right;
+    color:#fff;
+    font-size:22px;
+    text-decoration:none;
+    outline:none;
+    display:block;
+}
+.list .prev a{
+    float:left;
+    -moz-border-radius:40px;
+    -webkit-border-radius:40px;
+    width:25px;
+    height:25px;
+    padding:5px;
+    background: #B0B8BA;
+    text-align:left;
+    color:#fff;
+    font-size:22px;
+    text-decoration:none;
+    outline:none;
+    display:block;
+}
+.list .next a:hover, .prev a:hover{
+    color: #fff;
+    background: #DC3434;
+}
+.list .month{
+    -moz-border-radius:8px;
+    -webkit-border-radius:8px;
+    width:450px;
+    background: #E7E7E7;
+    padding:5px 0 5px 0;
+    text-align:center;
+    float:left;
+    font-size:20px;
+    color:#121212;
+    font-weight:bold;
+    margin:0 20px 0 20px;
+}
+

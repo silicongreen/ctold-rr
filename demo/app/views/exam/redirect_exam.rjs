@@ -1,0 +1,1 @@
+page.replace_html 'batch_and_exam', :partial => 'batch_exam'

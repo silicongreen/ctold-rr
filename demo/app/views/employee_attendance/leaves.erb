@@ -1,0 +1,288 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+
+
+<!--<div id="content-header">
+<%#= show_header_icon %>
+  <h1><%#= t('leave_management') %></h1>
+<div class='header-sep'>|</div>
+<div class='sub-header'><%#= t('apply_or_check_status') %></div>
+
+<div id="inner-tab-menu">
+  <ul>
+    <li class='themed_bg themed-dark-hover-background'><%#= link_to "#{t('employee_profile')}", :controller=>"employee", :action=>"profile", :id=> @employee.id %></li>
+    <li class='themed_bg themed-dark-hover-background'><%#= link_to "#{t('apply')}", :controller=>"employee_attendance", :action=>"leaves", :id=> @employee.id %></li>
+    <li class='themed_bg themed-dark-hover-background'><%#= link_to "#{t('leave_history')}", :controller=>"employee_attendance", :action=>"leave_history", :id=> @employee.id %></li>
+    <li class='themed_bg themed-dark-hover-background'><%#= link_to_remote "#{t('my_leaves')}",
+:update => "application-list",
+:url => {:action => "individual_leave_applications", :id=>@employee.id} %></li>
+<%# unless @total_leave_count == 0 %>
+        <li class='themed_bg themed-dark-hover-background'><b><%#= link_to_remote "#{t('new_leaves')} (#{@total_leave_count})",
+:update => "application-list-2",
+:url => {:action => "new_leave_applications", :id=>@employee.id} %></b></li>
+<%# end %>
+<%# unless @reporting_employees == [] %>
+      
+      <li class='themed_bg themed-dark-hover-background'><%#= link_to_remote "#{t('all_leaves')}",
+:update => "application-list",
+:url => {:action => "all_leave_applications", :id=>@employee.id} %></li>
+<%# end %>
+  </ul>
+</div>
+
+
+
+
+
+</div>-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="header-wrapper">
+  <div class="header-title">
+    <div class="header-icon">
+      <%= image_tag '/images/icons/leave-management.png', :html => {:alt => 'leave_management'} %>
+    </div>
+    <div class="header-title-text-wrapper">
+      <div class="header-title-main-text f2">
+        <%=t('leave')%>
+      </div>
+      <div class="clearfix"></div>
+      <div class="header-title-sub-text">
+        <%= I18n.l(@local_tzone_time.to_date, :format=>'%d/%m/%Y') %>
+      </div>
+    </div>
+  </div>
+
+  <div class="clearfix"></div>
+
+  <div class="tabbed-header-wrapper">
+    <ul class="header-tabs">
+      <li class="active">          
+        <%= link_to "#{t('apply')}", {:controller=>"employee_attendance", :action=>"leaves", :id=> @employee.id},{:class => 'f2'} %>
+      </li>
+
+      <li>
+        <%= link_to_remote "#{t('my_leaves')}",
+          :before => "Element.show('loader2');",
+          :success => "Element.hide('loader2');",
+          :update => 'data_div',
+          :url=>{:action => "individual_leave_applications", :id=>@employee.id},
+          :html => {:class => 'f2'}
+      %>
+      </li>
+      <li>
+        <%= link_to_remote "#{t('leave_history')}",
+          :before => "Element.show('loader2');",
+          :success => "Element.hide('loader2');",
+          :update => 'data_div',
+          :url=>{:action=>"leave_history", :id=> @employee.id},
+          :html => {:class => 'f2'}
+      %>
+      </li>
+      <% unless @total_leave_count == 0 %>
+        <li>
+          <%= link_to_remote "#{t('new_leaves')} (#{@total_leave_count})",
+            :update => "data_div",
+            :url => {:action => "new_leave_applications", :id=>@employee.id},
+            :html => {:class => 'f2'}%>
+        </li>
+      <% end %>
+
+      <% unless @reporting_employees == [] %>
+        <li>
+          <%= link_to_remote "#{t('all_leaves')}",
+            :update => "data_div",
+            :url => {:action => "all_leave_applications", :id=>@employee.id},
+            :html => {:class => 'f2'}%>
+        </li>
+      <% end %>
+
+    </ul>
+  </div>
+</div>
+
+<div class="loader-image">
+  <%= image_tag("loader2.gif",
+    :align => "absmiddle",
+    :border => 0,
+    :id => "loader2",
+    :style =>"display: none;" ) %>
+</div>
+
+<div class="clearfix"></div>
+
+<div id="page-yield" class="bg-disable">
+
+  <div id="data_div">
+
+    <div class="wrapper">
+      <% unless flash[:notice].nil? %>
+        <p class="flash-msg"> <%= flash[:notice] %> </p>
+      <% end %>
+      <% reporting_manager = @employee.reporting_manager_id %>
+
+      <div id="application-list-2">
+        <% unless @current_user.admin? %>
+          <% if reporting_manager.nil?  %>
+            <p class="flash-msg"><%= t('warn_notice') %> </p>
+          <% end %>
+        <% end %>
+      </div>
+
+      <% unless reporting_manager.nil? and not @current_user.admin? %>
+        <div id="application-list">
+
+          <% form_for :leave_apply, :html => {:id => 'new_student'} do |l| %>
+
+            <%= error_messages_for :leave_apply %>
+            <%= l.hidden_field :employee_id, :value=>@employee.id %>
+
+            <div class="row">
+              <div class="row_label">
+                <div>
+                  <%= t('leave_type') %>
+                </div>
+              </div>
+              <div class="row_data">
+                <div>
+                  <div class="custom_drop_wrapper">
+                    <%= select :leave_apply, :employee_leave_types_id, @leave_types.map {|s| [s.name, s.id]},:prompt => "Select" %>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="row_label">
+                <div>
+                  <%= t('is_half_day') %>
+                </div>
+              </div>
+              <div class="row_data">
+                <div>
+                  <%= l.check_box :is_half_day, :checked => false %>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="row_label">
+                <div>
+                  <%= t('start_date') %>
+                </div>
+              </div>
+              <div class="row_data">
+                <div>
+                  <% start_date = params[:leave_apply][:start_date] if params[:leave_apply].present? %>
+                  <%= calendar_date_select_tag 'leave_apply[start_date]' ,I18n.l( start_date.present? ? start_date.to_date : Date.today, :format=>:default),:popup=>:force, :placeholder => 'Start Date', :image => '/images/icons/calendar/calendar-icon.png' %>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="row_label">
+                <div>
+                  <%= t('end_date') %>
+                </div>
+              </div>
+              <div class="row_data">
+                <div>
+                  <% end_date = params[:leave_apply][:end_date] if params[:leave_apply].present? %>
+                  <%= calendar_date_select_tag 'leave_apply[end_date]' ,I18n.l( end_date.present? ? end_date.to_date : Date.today, :format=>:default),:popup=>:force, :placeholder => 'Start Date', :image => '/images/icons/calendar/calendar-icon.png' %>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="row_label">
+                <div>
+                  <%= t('reason') %>
+                </div>
+              </div>
+              <div class="row_data">
+                <div>
+                  <%= l.text_field :reason, :placeholder => t('reason') %>
+                </div>
+              </div>
+            </div>
+
+            <div id="submit-button">
+              <%=  submit_tag("#{t('apply')}") %>
+            </div>
+
+          <% end %>
+
+        </div>
+
+      <% end %>
+    </div>
+
+  </div>
+
+</div>
+
+<%= stylesheet_link_tag 'tadded-header' %>
+<%= stylesheet_link_tag 'list_table' %>
+<%= stylesheet_link_tag 'syllabus/single_syllabus' %>
+<%= stylesheet_link_tag 'pagination_and_table' %>
+<%= stylesheet_link_tag 'online_exam/new_online_exam' %>
+
+<% content_for :head do %>
+  <%= javascript_include_tag "custom/tabbed-header" %>
+  <%= javascript_include_tag "custom/dropdown" %>
+  <%= javascript_include_tag "custom/new_leave" %>
+<% end %>
+
+<style type="text/css">
+  .full_width {
+    width: 100%;
+  }
+  .redactor_wrapper {
+    padding: 0 !important;
+    width: 100% !important;
+  }
+  .pagination {
+    margin-bottom: 30px;
+    margin-right: 20px;
+  }
+  #leave_apply_is_half_day {
+    margin: 18px 0 0;
+  }
+</style>

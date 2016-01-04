@@ -1,0 +1,247 @@
+<% form_for(@student, :url => {:action=> 'show'}, :html=> {:id=>'new_student'}) do |s| %>
+  <div id="page-yield"  style="margin-top:0px;">  
+      <div class="row">  
+        <div class="row_label">
+          <div>
+            <%= t('shift_label') %>
+          </div>
+        </div>
+        <div class="row_data">
+          <div>
+            <div class="custom_drop_wrapper">
+             <%= select :student, :batch_name, options_for_select(Batch.active.find(:all, :group => "name").map {|b| [b.name, b.id]}, @batch_no.to_i), 
+              {:prompt => "#{t('select')}"},
+              {:onChange => "#{remote_function(:url => {:controller => "student", :action => "get_classes"}, :with => "'batch_id='+value+'&'+$('new_student').serialize()+'&page=courses_attendances_batch&partial_view=student/courses_attendances_report_batch_view&section_page=sections_attendances_batch&section_partial=student/sections_attendances_report_batch_view'" ,:before => "$('loading_2').show();",
+              :success => "$('loading_2').hide();")}"} %>
+              <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_2", :style =>"display: none;" ) %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="row_label">
+          <div>
+            <%= t('class_label') %>
+          </div>
+        </div>
+        <div class="row_data">
+          <div>
+            <div id="courses_attendances_batch" class="custom_drop_wrapper">
+              <%= render :partial => 'student/courses_attendances_report_batch_view', :object => @courses %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row"  id="sections_div">
+        <div class="row_label">
+          <div>
+            <%= t('section_label') %>
+          </div>
+        </div>
+        <div class="row_data">
+          <div>
+            <div id="sections_attendances_batch" class="custom_drop_wrapper">
+              <%= render :partial => 'student/sections_attendances_report_batch_view', :object => @classes %>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loader", :style =>"display: none;" ) %>
+
+
+  <% end %>
+  <%= hidden_field_tag 'time_zone_date',@date_today, :id=>'time_zone' %>
+  <div class="label-field-pair" style="float:left; clear:both; width:100%; margin-top:5px;">
+       <label for="duedate">Start Date</label>
+       <div  class="text-input-bg">
+         <%= calendar_date_select_tag "start_date","",
+           :class=>"text-input-bg",:readonly=>true,:popup=>:force%>
+       </div>
+       <div class="text-input-bg" style="cursor:pointer;  font-size: 13px;
+  font-weight: bold;color: #db3434;text-decoration: underline; margin-top: 11px;" onClick="j('#start_date').val('');">Clear</div>
+  </div>
+  <div class="label-field-pair" style="float:left; clear:both; width:100%; margin-top:3px;">
+         <label for="duedate">End Date</label>
+         <div  class="text-input-bg">
+           <%= calendar_date_select_tag "end_date","",
+             :class=>"text-input-bg",:readonly=>true,:popup=>:force%>
+         </div>
+         <div class="text-input-bg" style="cursor:pointer;color: #db3434;  font-size: 13px;
+  font-weight: bold;text-decoration: underline; margin-top: 11px;" onClick="j('#end_date').val('');">Clear</div>
+   </div>
+  <div id="subjects"></div>
+  <div id="register"></div>
+  <div id="modal-box" style="display:none;"></div>
+</div>
+<style>
+
+.legend-row {
+    float: left;
+    width: 100%;
+}
+.legend-wrapper {
+    float: left;
+    width: 24.3%;
+    margin-left: 5px;
+}
+.legend-wrapper:first-child {
+    margin-left: 0;
+}
+.legend {
+    float: left;
+    height: 12px;
+    margin-top: 2px;
+    padding: 0;
+    width: 12px;
+}
+.legend-text {
+    float: left;
+    font-size: 14px;
+    margin: 0;
+    padding: 0 0 0 3px;
+}
+.legend-today {
+    background-color: #333333;
+}
+.legend-today-text {
+    color: #333333
+}
+.legend-holiday {
+    background-color: #8DC63F;
+}
+.legend-holiday-text {
+    color: #8DC63F;
+}
+.legend-late {
+    background-color: #FFB800;
+}
+.legend-late-text {
+    color: #FFB800;
+}
+.legend-absent {
+    background-color: #EC1300;
+}
+.legend-absent-text {
+    color: #EC1300;
+}
+.legend-leave {
+    background-color: #922CB0;
+}
+.legend-leave-text {
+    color: #922CB0;
+}
+/***Legend***/
+
+    .label-field-pair label
+    {
+        width:70px;
+    }
+.text-input-bg img {
+  padding-top: 10px;
+  padding-left: 2px;
+}
+  .CSSTableGenerator td a
+  {
+     padding: 3px 10px;
+  }
+  
+   .CSSTableGenerator table tr td 
+  {
+     font-weight: bold;
+     overflow: hidden;
+     padding: 10px;
+  }
+  .checkmark {
+    display:inline-block;
+    width: 22px;
+    height:22px;
+    -ms-transform: rotate(45deg); /* IE 9 */
+    -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
+    transform: rotate(45deg);
+}
+
+span div.absent {
+    position: absolute;
+    width:22px;
+    height:22px;
+    background-color: #B3B9BB;
+    border-radius:11px;
+    left:0;
+    top:0;
+}
+
+.checkmark_circle {
+    position: absolute;
+    width:22px;
+    height:22px;
+    background-color: #0691D5;
+    border-radius:11px;
+    left:0;
+    top:0;
+}
+
+.checkmark_stem {
+    position: absolute;
+    width:3px;
+    height:9px;
+    background-color:#fff;
+    left:11px;
+    top:6px;
+}
+
+.checkmark_kick {
+    position: absolute;
+    width:3px;
+    height:3px;
+    background-color:#fff;
+    left:8px;
+    top:12px;
+}
+  .row {
+  background-color: #f8f8fa;
+  border: 1px solid #DFE1E2;
+  float: left;
+  width: 30%;
+  margin-right: 28px;
+  border-right: 1px solid #DFE1E2;
+}
+.row_label {
+  background-color: #ffffff;
+  border-right: 1px solid #DFE1E2;
+  float: left;
+  width: 48.2%;
+  padding: 0px 0px;
+}
+.row_label div {
+  color: #868A8B;
+  float: left;
+  padding: 8px 10px;
+  width: 80%;
+}
+.row_data {
+  float: left;
+  width: 48.6%;
+}
+.custom_drop_wrapper select::-ms-expand {
+    display: none;
+}
+.custom_drop_wrapper select {
+  background-color: transparent;
+  background-image: url("/images/icons/drop_down_normal.png");
+  background-position: 98% 0;
+  background-repeat: no-repeat;
+  background-size: 37px 36px;
+  border: medium none;
+  cursor: pointer;
+  display: block;
+  height: 35px;
+  width: 100%;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  /* border-right: 1px solid black; */
+}
+
+</style>  

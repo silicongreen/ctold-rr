@@ -1,0 +1,160 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+<% if params[:authenticity_token].nil? %>
+<div class="header-wrapper">
+  <div class="header-title">
+    <div class="header-icon">
+      <%= image_tag '/images/icons/notice.png', :html => {:alt => 'Notice'} %>
+    </div>
+    <div class="header-title-text-wrapper">
+      <div class="header-title-main-text f2">
+        <a href="/news/all"> Notice</a>
+        <span style="float: left;clear:both;font-size: 15px;"><%= Time.now.strftime("%Y-%m-%d") %></span>
+      </div>
+      <div class="header-title-sub-text f5">
+
+      </div>
+    </div>
+  </div>    
+
+  <div class="header-form-wrapper">
+
+    <div class="header-right-button button-filter" id="filter-btn">
+      Search
+    </div>
+
+    <div id="filter-div" style="display: none;">
+      <div class="row-div clearfix">
+        <div class="data-div">
+          <%= text_field 'query','',
+            :class=>"text-input-bg",
+            :name => 'query',
+            :onchange => "#{remote_function(:url => {:controller => 'news', :action => "search_news_ajax"},
+          :with => "'query='+$('query_').value",
+          :update => "data-div",
+          :before => "Element.show('loader-circle')",
+          :success => "Element.hide('loader-circle')"
+          )}"
+        %>
+          <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader-circle", :style =>"display: none;" ) %>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  <div class="clearfix"></div>
+  <div class="tabbed-header-wrapper">        
+      <ul class="header-tabs">
+        <li class="active">
+          <%= link_to "All Notice", {:controller => "news", :action => "all"}, :class => "f2" %>    
+        </li>        
+        <% if permitted_to? :add,:news %>
+        <li>
+          <%= link_to "New Notice", {:controller => "news", :action => "add"}, :class => "f2" %>
+        </li>
+        <% end %>
+      </ul>
+
+    </div>
+</div>
+<% end %>
+
+<div class="select_all f2">
+  <%= t('latest_announcement') %>  
+</div>
+<div id="data-div">
+  <%= render :partial => 'news_list' %>
+</div>
+
+<%= stylesheet_link_tag 'tadded-header' %>
+
+<%= stylesheet_link_tag 'pagination_and_table' %>
+
+<%= stylesheet_link_tag 'bootstrap_form' %>
+<% content_for :head do %>
+  <%= javascript_include_tag "custom/dashboard-filter" %>
+<% end %>
+
+<style type="text/css">
+  .pagination {
+    background-color: #fff;
+    float: left;
+    margin-top: 10px;
+    padding: 20px 0 20px 15px;
+    width: 98.5%;
+  }
+  .timetable_last a
+  {
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    background: #CB1119 none repeat scroll 0 0;
+    color: #FFFFFF !important;
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: 20px;
+    padding: 7px 10px;
+    border: none;
+    text-align: center;
+    width: auto;
+    cursor: pointer;
+    float: left;
+    margin-left:8px;
+    text-decoration: none;
+    display: block;
+  }
+  .button-filter {
+    background-color: #eeeeee;
+    border: 1px solid #b3b3b3;
+    border-radius: 6px;
+    color: #434343;
+    cursor: pointer;
+    display: block;
+    float: right;
+    font-size: 13px;
+    font-weight: normal;
+    margin-bottom: 0;
+    margin-top: 13px;
+    padding: 10px 17px;
+    text-decoration: none;
+  }
+  .button-filter:hover, .button-filter:active {
+    -webkit-transition: all 0.25s linear;
+    -moz-transition: all 0.25s linear;
+    -o-transition: all 0.25s linear;
+    -ms-transition: all 0.25s linear;
+    transition: all 0.25s linear;
+    background-color: #CB1119;
+    color: #ffffff;
+  }
+  #filter-div {
+    float: left;
+    margin-top: 15px;
+    width: 60%;
+  }
+  .data-div {
+    float: left;
+    width: 50%;
+  }
+  .data-div input[type="text"] {
+    width: 180px;
+  }
+  .pagination {
+    margin-right: 10px;
+  }
+</style>  

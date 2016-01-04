@@ -1,0 +1,11 @@
+@font-face {
+	font-family: 'Siyam Rupali';
+	src: url('SiyamRupali.eot');
+	src: local('Agency FB'), url('SiyamRupali.woff') format('woff'), url('SiyamRupali.ttf') format('truetype');
+}
+/* use this class to attach this font to any element i.e. <p class="fontsforweb_fontid_11296">Text with this font applied</p> */
+body {
+	font-family: 'Siyam Rupali' !important;
+}
+
+/* Font downloaded from FontsForWeb.com */

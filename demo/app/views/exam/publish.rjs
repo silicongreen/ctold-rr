@@ -1,0 +1,10 @@
+# TODO Operate on the page object
+if @no_exam_notice != ""
+  page.replace_html "publish-notice-#{@exam_group.id}", :text=>@no_exam_notice
+elsif @sms_setting_notice != ""
+  page.replace_html "publish-notice-#{@exam_group.id}", :text=>@sms_setting_notice
+else
+  page.replace_html "publish-notice-#{@exam_group.id}", :text=>@message
+end
+page.replace_html "exam_schedule_#{@exam_group.id}", :text=>""
+page.visual_effect(:highlight, "publish-notice-#{@exam_group.id}")

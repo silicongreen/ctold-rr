@@ -1,0 +1,69 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<div class="add_grade">
+  <%= link_to_remote "#{t('add_grades')}", :url => { :action => 'new', :id => @course }%>
+
+</div>
+<% if @course.present? %>
+  <% if @course.batches[0].present? %>
+    <% @credit = @course.batches[0].gpa_enabled? || @course.batches[0].cce_enabled? %>
+  <% else %>  
+    <% @credit = Configuration.cce_enabled? || Configuration.get_config_value('CWA')=='1' || Configuration.get_config_value('GPA')=='1' %>
+  <% end %>
+<% else %>
+  <% @credit = Configuration.cce_enabled? || Configuration.get_config_value('CWA')=='1' || Configuration.get_config_value('GPA')=='1' %>
+<% end %>
+
+<%  unless @grading_levels.empty? %>
+  <table id="listing" align="center" width="100%" cellpadding="1" cellspacing="1">
+    <tr class="tr-head">
+      <td><%= t('name') %></td>
+      <td><%= t('number') %></td>
+      <td><%= t('grade_point') %></td>
+      <td>Description</td>
+      <td></td> 
+    </tr>
+    <% @grading_levels.each do |grade| %>
+      <tr id="grading-level-<%= grade.id %>" class="tr-<%= cycle('odd', 'even') %>">
+        <td class="col-2"><%= grade.name %></td>
+        <td class="col-2">
+          <% if grade.max_score.nil? %>  
+          <%= '%i%' % grade.min_score %>
+          <% else %>  
+          <%= grade.min_score.to_s + " - " + grade.max_score.to_s %>  
+          <% end %>  
+        </td>
+        <td class="col-2"><% unless grade.credit_points.nil? %><%= '%.2f' % grade.credit_points %><% end %></td>
+        <td class="col-2"><%= grade.description.present? ? grade.description : "-" %></td>
+        <td class="col-1"><small><%= link_to_remote(t('edit_text'),
+              :url => edit_grading_level_path(grade), :method => 'get' ) %>
+            | <%= link_to_remote(t('delete_text'),
+              :url => grading_level_path(grade),
+              :method => 'delete',
+              :confirm => t('delete_confirm_msg'),
+              :update => "grading-level-#{grade.id}") %></small></td>
+      </tr>
+    <% end %>
+  </table>
+<% else %>
+
+  <h4><%= t('set_in_common') %></h4>
+
+<% end %>

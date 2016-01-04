@@ -1,0 +1,57 @@
+/* 
+    Document   : single_page
+    Created on : Apr 16, 2015, 7:51:02 PM
+    Author     : N!K
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+.syllabus-wrapper {
+    background-color: #ffffff;
+    float: left;
+    width: 100%;
+}
+.syllabus-header {
+    border-bottom: 1px solid #cccccc;
+    float: left;
+    width: 100%;
+}
+.syllabus-icon {
+    border-right: 1px solid #ccc;
+    float: left;
+    padding: 20px 0 14px 20px;
+    width: 33%;
+}
+.syllabus-icon img {
+    float: left;
+    width: 25%;
+}
+.syllabus-icon span {
+    color: #4d5a74;
+    float: left;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 20px 10px;
+    text-transform: uppercase;
+}
+.syllabus-title {
+    color: #4d5a74;
+    float: left;
+    font-size: 16px;
+    padding: 42px 0 0 35px;
+}
+.syllabus-details {
+
+}
+.syllabus-content {
+    color: #4d5a74;
+    padding: 20px;
+}
+.syllabus-create_date {
+
+}

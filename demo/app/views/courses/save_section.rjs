@@ -1,0 +1,10 @@
+if @error.nil?
+	page.replace_html 'form-errors', :text => ''
+  page.replace_html 'add_section', :partial => 'add_section_data'
+  page.replace_html 'category-list', :partial => 'category_list_data'
+  page.replace_html 'cate_sections_' + @course_id, :partial => 'sections_data'
+  page.replace_html 'flash-box-popup', :text=>"<p class='flash-msg'>#{flash[:notice]}</p>" unless flash[:notice].nil?
+else
+	page.replace_html 'form-errors', :partial => 'errors', :object => @course_new
+  page.visual_effect(:highlight, 'form-errors')
+end

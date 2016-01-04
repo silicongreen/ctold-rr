@@ -1,0 +1,129 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<div id="content-header">
+<%= show_header_icon %>
+  <h1><%= t('reminder_text') %></h1>
+<div class='header-sep'>|</div>
+<div class='sub-header'><%= t('view') %></div>
+
+<div id="inner-tab-menu">
+  <ul>
+     <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('back_to_inbox')}", :controller=>"reminder", :action=>"index"%></li>
+    <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('mark_as_unread')}" ,:controller=> "reminder", :action=>"mark_unread", :id2=>@new_reminder.id%></li>
+    <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('delete_text')}", {:controller=>"reminder", :action=>"delete_reminder_by_recipient", :id2=>@new_reminder.id}, :confirm=>"#{t('delete_confirm_msg')}" %></li>
+  </ul>
+</div>
+
+</div>
+<div id="page-yield">
+
+  <% unless flash[:notice].nil? %>
+    <p class="flash-msg"> <%= flash[:notice] %> </p>
+  <% end %>
+
+  <div id="reminder-body">
+    <div id="reminder-from"><%= t('from') %>: <%= @sender.nil? ? "#{t('user_unavailable')}" : @sender.full_name %></div>
+    <div id="reminder-date"><%= t('sent_on') %>: <%= I18n.l(@new_reminder.created_at,:format=>"%A, %d %B, %Y") %></div>
+    <div id="reminder-subject" class="themed_text"><%= t('subject_messages') %>: <%= @new_reminder.subject %></div>
+    <div id="reminder-message">
+      <strong><%= t('message') %>:</strong><br /><br /><%=h @new_reminder.body %>
+      <br />
+      <br />
+      <% unless @new_reminder.rid.nil? %>
+        <% if @new_reminder.rid>0 %>
+      
+          <% if @new_reminder.rtype==2 %>
+                <%= link_to "#{t('view_exam_schedule_reminder')}", :controller=>"exam", :action=>"student_exam_schedule_view",:id=>@new_reminder.rid %>
+
+          <% end %>
+          <% if @new_reminder.rtype==4 %>
+                <%= link_to "View Homework", :controller=>"assignments", :action=>"show",:id=>@new_reminder.rid %>
+          <% end %>
+          <% if @new_reminder.rtype==3 %>
+             <% if @current_user.parent? %>
+                <%= link_to "#{t('view_exam_report_reminder')}", :controller=>"exam", :action=>"generated_report",:exam_group=>@new_reminder.rid,:student=>session[:student_id] %>
+             <% else %>
+                <% @student = @current_user.student_record %>
+                <%= link_to "#{t('view_exam_report_reminder')}", :controller=>"exam", :action=>"generated_report",:exam_group=>@new_reminder.rid,:student=>@student.id %>
+             <% end %>
+          <% end %>
+          <% if @new_reminder.rtype==1 %>
+              <%= link_to "#{t('view_event_reminder')}", :controller=>"event", :action=>"event_details",:id=>@new_reminder.rid %>
+          <% end %>
+          <% if @new_reminder.rtype==5 %>
+              <%= link_to "#{t('view_notice_reminder')}", :controller=>"news", :action=>"view",:id=>@new_reminder.rid %>
+          <% end %>
+          <% if @new_reminder.rtype==7 %>
+              <%= link_to "#{t('view_leave_application_reminder')}", :controller=>"employee_attendance", :action=>"leave_application",:id=>@new_reminder.rid,:target=>"employee" %>
+          <% end %>
+          <% if @new_reminder.rtype==8 %>
+              <%= link_to "#{t('view_leave_application_reminder')}", :controller=>"employee_attendance", :action=>"own_leave_application",:id=>@new_reminder.rid %>
+          <% end %>
+          <% if @new_reminder.rtype==9 %>
+              <%= link_to "#{t('view_leave_application_reminder')}", :controller=>"employee_attendance", :action=>"leave_application",:id=>@new_reminder.rid,:target=>"student" %>
+          <% end %>
+          <% if @new_reminder.rtype==10 %>
+              <%= link_to "#{t('view_leave_application_reminder')}", :controller=>"student_attendance", :action=>"own_leave_application",:id=>@new_reminder.rid,:target=>"student" %>
+          <% end %>
+
+          <% if @new_reminder.rtype==11 || @new_reminder.rtype==12 || @new_reminder.rtype==13 || @new_reminder.rtype==14 %>
+              <%= link_to "View", :controller=>"meetings", :action=>"show",:id=>@new_reminder.rid %>
+          <% end %>
+      
+          <% if @new_reminder.rtype==15 %>
+              <%= link_to "Online Exam", :controller=>"online_student_exam" %>
+          <% end %>
+        
+        <% end %>
+      
+      <% end %>
+      
+     
+      
+    </div>
+    <div id="reminder-reply">
+
+      <%= link_to_function "►#{t('reply')}", :class=>'button user_button' do |page|
+        page.visual_effect :toggle_blind, "reply-form"
+      end  unless @sender.nil? %>
+      
+    </div>
+    <div id="reply-form" style="display:none;">
+      <% form_for :reminder, :url=>{:id2 =>@new_reminder.id}  do |l| %>
+        <%= error_messages_for :reminder %>
+        <div class="message">
+          <div class="label-field-pair">
+            <label for="subject"><%= t('subject_messages') %></label>
+            <div class="text-input-bg"><%= l.text_field :subject %></div>
+          </div>
+          <div class="label-field-pair">
+            <label for="start_date"><%= t('message') %></label>
+            <div class="text-area-bg"><%= l.text_area :body, :cols=>25, :rows=>10 %></div>
+          </div>
+          <div class="extender"></div>
+          <div id="submit-button">
+          <%=submit_tag "► #{t('send')}", :class=> 'button', :disable_with => "► #{t('please_wait')}" %>
+        </div>
+        </div>
+        
+      <% end %>
+    </div>
+  </div>
+</div>

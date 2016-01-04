@@ -1,0 +1,267 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<div id="content-header">
+<%= show_header_icon %> 
+  <h1><%= t('exams_text') %></h1>
+<div class='header-sep'>|</div>
+<div class='sub-header'><%= t('exam_groups_text') %></div>
+<div id="inner-tab-menu">
+  <ul>
+    <% if @current_user.admin? or @user_privileges.map{|p| p.name}.include?('ExaminationControl') or @user_privileges.map{|p| p.name}.include?('EnterResults') %>
+      <%  if permitted_to? :new,:exam_groups %>
+        <% if @is_class_exam %>  
+          <% if @is_batch_exam %>
+            <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('new_text')}", new_batch_exam_group_path(@batch,:class_exam=>true, :batch_exam=>true) %></li>
+          <% else %>
+            <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('new_text')}", new_batch_exam_group_path(@batch,:class_exam=>true) %></li>
+          <% end %>
+        <% else %>
+        <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('new_text')}", new_batch_exam_group_path(@batch) %></li>
+        <% end %>
+      <% end %>
+    <% end %>
+    <%  if permitted_to? :grouping,:exam %>
+      <% unless @is_class_exam %>   
+      <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('connect_exams')}", :controller=>'exam', :action=>'grouping', :id=>@batch %></li>
+      <% end %>
+    <% end %>
+  </ul>
+</div>
+</div>
+<div id="page-yield">
+
+  <div class="bread_crumb">
+    <% if @from == "shift" %> 
+      <% ARGV[0] = 'shift' %>
+      <%= link_to t('manage_batch'), :controller => "courses", :action => "manage_batches" %>  <div class = "bread-crumb-separator"> > </div> 
+    <% else %>
+      <%= link_to "#{t('exam_management')}", :controller => "exam", :action => "create_exam" %> <div class = "bread-crumb-separator"> > </div>
+    <% end %>  
+      
+    <%= t('exam_groups_text') %>
+  </div>
+    
+  <% if @from == "shift" %> 
+    <% ARGV[0] = 'shift' %>
+  <% else %>
+    <% ARGV[0] = 'exam' %>
+  <% end %>    
+  
+  <% if @is_class_exam %>
+  <h4><%= @course.course_name %></h4>  
+  <% else %>  
+  <h4><%= @course.course_name + ", section: " + @course.section_name %></h4>  
+  <% end %>
+  
+  <% unless flash[:notice].nil? %>
+    <p class="flash-msg"> <%= flash[:notice] %> </p>
+  <% end %>
+  <div class="box">
+
+
+    <table id="listing" width="100%">
+      <tr class="tr-head">
+        <td><%= t('exam_name') %></td>
+        <td>Exam Category</td>
+        <% if @current_user.admin? or @user_privileges.map{|p| p.name}.include?('ExaminationControl') or @user_privileges.map{|p| p.name}.include?('EnterResults') %>
+          <td> <%= t('actions') %> <%= image_tag("loader.gif",
+              :align => "absmiddle",
+              :border => 0,
+              :id => "loader",
+              :style =>"display: none;" ) %></td>
+        <% end %>
+      </tr>
+      
+      <% @config = Configuration.available_modules %>
+      <% @slno = 0 %>
+      <% @exam_groups.each do |exam_group| %>
+        <% @slno= @slno + 1 %>
+        <tr class="tr-<%= cycle('odd', 'even') %>">
+          <td class="col-2">
+            <div style="display: inline-table; ">
+            <% s_message = "" %>
+            <% if @is_class_exam %>
+              <% s_message = exam_group.other_batches(@batches) %>  
+              <% if @is_batch_exam %>
+                <%= link_to exam_group.name, '/batches/' + @batch.id.to_s + '/exam_groups/' + exam_group.id.to_s + '?class_exam=true&batch_exam=true' %>
+              <% else %>
+                <%= link_to exam_group.name, '/batches/' + @batch.id.to_s + '/exam_groups/' + exam_group.id.to_s + '?class_exam=true' %>
+              <% end %>
+              <% a_message = s_message.split("|||")  %>  
+              <% if a_message.length > 1 %>  
+              <br /><%= a_message[0] %>
+              <% if @is_batch_exam %>
+                <%= link_to a_message[1], '/exam_groups/assign_exam/' + exam_group.id.to_s + '?class_exam=true&batch_exam=true' %>
+              <% else %>
+                <%= link_to a_message[1], '/exam_groups/assign_exam/' + exam_group.id.to_s + '?class_exam=true' %>
+              <% end %>
+              <% end %>
+            <% else %>
+              <%= link_to exam_group.name, [@batch, exam_group] %>
+            <% end %>  
+            </div>  
+            <div style="display: inline-table; float: right ">
+            <% if @current_user.admin? or @user_privileges.map{|p| p.name}.include?('ExaminationControl') or @user_privileges.map{|p| p.name}.include?('EnterResults') %>
+              <span><small>
+                  <% if @is_class_exam %>  
+                    <%
+                      is_removable = true
+                      exam_id = exam_group.id
+                      @exam_groups_data = ExamGroup.find(:all, :conditions => ["name LIKE ? and batch_id IN (?) and exam_type = ? and exam_category = ? and exam_date = ?", exam_group.name, @batches, exam_group.exam_type, exam_group.exam_category, exam_group.exam_date]).map{|eg| eg.id}
+                      @exam_groups_data.each do |exam_group_id|
+                        tmp_exam_group = ExamGroup.find exam_group_id
+                        unless tmp_exam_group.nil?
+                          unless tmp_exam_group.removable?
+                            is_removable = false
+                            break
+                          end
+                        end
+                      end  
+                    %>  
+                    <% if is_removable %>    
+                      <% if @is_batch_exam %>
+                        <%= link_to("#{t('delete_text')}", '/batches/' + @batch.id.to_s + '/exam_groups/' + exam_group.id.to_s + '?class_exam=true&batch_exam=true', :method => 'delete', :confirm => "#{t('delete_confirm_msg')}") %>
+                      <% else %>
+                        <%= link_to("#{t('delete_text')}", '/batches/' + @batch.id.to_s + '/exam_groups/' + exam_group.id.to_s + '?class_exam=true', :method => 'delete', :confirm => "#{t('delete_confirm_msg')}") %>
+                      <% end %>
+                    <% else %>
+                      <s><%= "#{t('delete_text')}" %></s>
+                    <% end %>
+                  <% else %>    
+                    <% if exam_group.removable? %>    
+                      <%= link_to("#{t('delete_text')}", [@batch, exam_group], :method => 'delete', :confirm => "#{t('delete_confirm_msg')}")  %>
+                    <% else %>
+                      <s><%= "#{t('delete_text')}" %></s>
+                    <% end %>  
+                  <% end %>        
+                </small></span>
+            <% end %>
+            </div>      
+          </td>
+          <td class="col-2" style="vertical-align: top; padding-top: 10px;">
+            <%  if exam_group.exam_category==1 %>
+                Class Test
+            <%  end %>
+            <%  if  exam_group.exam_category==2 %>
+                Project
+            <%  end %>
+            <%  if exam_group.exam_category==3 %> 
+                Term Exam
+            <%  end %>
+          </td>
+          <% if @current_user.admin? or @user_privileges.map{|p| p.name}.include?('ExaminationControl') or @user_privileges.map{|p| p.name}.include?('EnterResults') %>
+            <td class="col-2" class="col-2" style="vertical-align: top; padding-top: 10px;"><small>
+                <% if @is_class_exam %>  
+                    <%
+                      is_published = false
+                      exam_id = exam_group.id
+                      @exam_groups_data = ExamGroup.find(:all, :conditions => ["name LIKE ? and batch_id IN (?) and exam_type = ? and exam_category = ? and exam_date = ?", exam_group.name, @batches, exam_group.exam_type, exam_group.exam_category, exam_group.exam_date]).map{|eg| eg.id}
+                      a_data = []
+                      @exam_groups_data.each do |exam_group_id|
+                        tmp_exam_group = ExamGroup.find exam_group_id
+                        unless tmp_exam_group.nil?
+                          if tmp_exam_group.is_published
+                            a_data << exam_group_id
+                          end
+                        end
+                      end  
+                      if a_data.length == @exam_groups_data.length
+                          is_published = true
+                      end
+                    %>
+                <% else %>    
+                <% is_published = exam_group.is_published %>
+                <% end %>    
+                
+                <% unless is_published %>
+                  <% if @is_class_exam %>
+                    <% if @is_batch_exam %>  
+                      <%= link_to_remote("#{t('publish_exam_schedule')}",:url=>{:controller=>'exam',:action=>'publish',:id=>exam_group.id,:status=>"schedule", "class_exam" => true, "batch_exam" => true},
+                        :before => "Element.show('loader')", :html => {:id => "exam_schedule_" + exam_group.id.to_s},
+                        :success => "Element.hide('loader')")  %>
+                    <% else %>  
+                      <%= link_to_remote("#{t('publish_exam_schedule')}",:url=>{:controller=>'exam',:action=>'publish',:id=>exam_group.id,:status=>"schedule", "class_exam" => true},
+                        :before => "Element.show('loader')", :html => {:id => "exam_schedule_" + exam_group.id.to_s},
+                        :success => "Element.hide('loader')")  %>
+                    <% end  %>
+                  <% else %>  
+                    <%= link_to_remote("#{t('publish_exam_schedule')}",:url=>{:controller=>'exam',:action=>'publish',:id=>exam_group.id,:status=>"schedule"},
+                    :before => "Element.show('loader')", :html => {:id => "exam_schedule_" + exam_group.id.to_s},
+                    :success => "Element.hide('loader')")  %>
+                  <% end %>    
+                <% else  %>
+                  <%  unless  exam_group.result_published  %>
+                    <%= t('schedule_published') %>
+                    <% if @sms_setting.application_sms_active and @sms_setting.exam_result_schedule_sms_active %>
+                      <% if @is_class_exam %>
+                        <% if @is_batch_exam %>  
+                          <%= link_to_remote "#{t('resend_sms_notification')}",:url=>{:controller=>'exam',:action=>'publish',:id=>exam_group.id,:status=>"schedule", "class_exam" => true, "batch_exam" => true},
+                            :before => "Element.show('loader')", :html => {:id => "exam_schedule_" + exam_group.id.to_s},
+                            :success => "Element.hide('loader')"  %><br />
+                        <% else %>
+                            <%= link_to_remote "#{t('resend_sms_notification')}",:url=>{:controller=>'exam',:action=>'publish',:id=>exam_group.id,:status=>"schedule", "class_exam" => true},
+                            :before => "Element.show('loader')", :html => {:id => "exam_schedule_" + exam_group.id.to_s},
+                            :success => "Element.hide('loader')"  %><br />
+                        <% end %>
+                      <% else %>  
+                        <%= link_to_remote "#{t('resend_sms_notification')}",:url=>{:controller=>'exam',:action=>'publish',:id=>exam_group.id,:status=>"schedule"},
+                        :before => "Element.show('loader')", :html => {:id => "exam_schedule_" + exam_group.id.to_s},
+                        :success => "Element.hide('loader')"  %><br />
+                      <% end %>  
+                    <% end %>
+                    <% unless @is_class_exam %>    
+                    <%= link_to_remote("#{t('publish_exam_result')}",:url=>{:controller=>'exam',:action=>'publish',:id=>exam_group.id,:status=>"result"},:confirm=>"#{t('delete_confirm_msg')}",
+                      :before => "Element.show('loader')", :html => {:id => "exam_schedule_" + exam_group.id.to_s},
+                      :success => "Element.hide('loader')")  %>
+                    <% end %>    
+                  <% else %>
+                    <% unless @is_class_exam %>        
+                    <%= t('result_published') %>. <% if @sms_setting.application_sms_active and @sms_setting.exam_result_schedule_sms_active %>
+                      <%= link_to_remote "#{t('resend_sms_notification')}",:url=>{:controller=>'exam',:action=>'publish',:id=>exam_group.id,:status=>"result"},
+                        :before => "Element.show('loader')", :html => {:id => "exam_schedule_" + exam_group.id.to_s},
+                        :success => "Element.hide('loader')"  %>
+                       
+                    <% end  %>
+                    <% end %>
+                  <% end  %>
+                <% end  %>
+
+                <span id="publish-notice-<%=exam_group.id%>"></span>
+
+              </small> </td>
+          <% end %>
+        </tr>
+      <% end %>
+      <% if @slno == 0 %>  
+        <tr class="tr-<%= cycle('odd', 'even')%>">
+            <td colspan="3" style="padding: 20px;"><b>No Exam Found</b></td>
+        </tr>
+      <% end %>    
+      <% if @batch.cce_enabled? %>
+        <% if permitted_to? :observation_groups,  :assessment_scores %>
+          <tr class="tr-<%= cycle('odd', 'even') %>">
+            <td colspan="2" class="col-1"><%= link_to "Co-Scholastic result entry", observation_groups_assessment_scores_path(:batch_id=>@batch.id) %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    </table>
+    <div class="extender"></div>
+  </div>
+</div>

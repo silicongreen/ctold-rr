@@ -1,0 +1,665 @@
+<div class="header-wrapper">
+    
+
+    <div class="header-title">
+        <div class="header-icon">
+            <%= image_tag '/images/icons/profile-icon.png', :html => {:alt => 'Student Profile'} %>
+        </div>
+        <div class="header-title-text-wrapper">
+            <div class="header-title-main-text f2">
+                <%= link_to "#{t('student_profile')}", :controller => 'student', :action => 'profile', :id => @student.id %>
+            </div>
+            <div class="clearfix"></div>
+            <div class="header-title-sub-text">
+                <%= I18n.l(@local_tzone_time.to_date, :format=>'%d/%m/%Y') %>
+            </div>
+        </div>
+    </div>
+
+    <% if @current_user.admin? or permitted_to? :edit, :student%>
+      <div class="header-form-wrapper">
+          <div class="icon-wrapper">
+              <%= link_to '<div class="edit-icon"></div>', :controller => 'student', :action => 'edit', :id => @student.id %>
+          </div>
+      </div>
+    <% end %>
+
+    <div class="clearfix"></div>
+
+    <div class="tabbed-header-wrapper">
+        <ul class="header-tabs">
+            <% if permitted_to? :profile,:student %>
+              <li class="active">
+                  <%= link_to "#{t('student_profile')}", {:controller => 'student', :action => 'profile', :id => @student.id}, {:class => 'f2'} %>
+              </li>
+            <%end%>
+
+            <% if permitted_to? :reports,:student and !check_free_school? %>
+              <li>
+                  <%= link_to "#{t('reports_text')}", {:controller => 'student', :action => 'reports', :id => @student}, {:class => 'f2'} %>
+              </li>
+            <%  end %>
+
+            <% if permitted_to? :guardians,:student %>
+              <li>
+                  <%= link_to "#{t('guardians_text')}", {:controller => "student", :action => "guardians", :id => @student.id}, {:class => 'f2'} %>
+              </li>
+            <% end %>
+
+            <% if permitted_to? :email,:student and !check_free_school?  %>
+              <% if @student.is_email_enabled %>
+            
+              <%  end %>
+            <%  end %>
+
+            <% if permitted_to? :remove, :student or permitted_to? :admission1, :student %>
+              <li>
+                  <%= link_to "#{t('delete_text')}", {:controller => 'student', :action => 'remove', :id => @student.id}, {:class => 'f2'} %>
+              </li>
+            <% end %>
+
+            <% if @sms_module.include?('Finance') and permitted_to? :fees, :student and !check_free_school? %>
+              <li>
+                  <%= link_to "#{t('fees_text')}", {:controller => 'student', :action => 'fees', :id => @student.id}, {:class => 'f2'} %>
+              </li>
+            <% end %>
+              
+            <% if !check_free_school? %>
+              <% Champs21Plugin::ADDITIONAL_LINKS[:student_profile_more_menu].each do |mod| %>
+                <% if can_access_request? "#{mod[:destination][:action]}".to_sym,"#{mod[:destination][:controller]}".to_sym %>
+                  <li>
+                      <%= link_to "#{t(mod[:title])}", mod[:destination].merge(:id=>@student.id), {:class => 'f2'} %>
+                  </li>
+                <% end %>
+              <% end %>
+            <% end %>    
+        </ul>
+    </div>
+
+</div>
+
+<div id="page-yield" class="bg-disable">
+    <% if @from.length > 0 %>  
+      <% if @from == "shift" %>
+        <div class="bread_crumb">
+            <%= link_to t('manage_batch'), :controller => "courses", :action => "manage_batches" %>  <div class = "bread-crumb-separator"> > </div> 
+            <%= link_to @student.batch.course.course_name + ", Section: " + @student.batch.course.section_name, [Course.find(@course_id), Batch.find(@batch_id)] %>  <div class = "bread-crumb-separator"> > </div> 
+            <%= t('student_profile') %> of <%= @student.full_name %>
+        </div>    
+      <% end %>
+    <% end %>  
+    <% unless flash[:notice].nil? %> <p class="flash-msg"> <%= flash[:notice] %> </p> <% end %>
+
+    <div id="personal_detail">
+
+        <div id="student_profile_heading">
+            <div id="profile_picture_display">
+
+                <% unless @att_image.empty? %>
+                  <% @profile_image = @att_image %>
+                <% else %>
+                  <% if @student.photo.file? %>
+                    <% @profile_image = @student.photo.url %>
+                  <% else %>
+                    <% @profile_image = "master_student/profile/default_student.png" %>
+                  <% end %>
+                <% end %>
+
+                <%= image_tag "#{@profile_image}" %>
+
+            </div>
+
+            <div id ="student_main_info">
+                <div id="student_name" class="f2"><%= @student.full_name %></div>
+                <div id="student_class"><%= @student.batch.course.course_name %></div>
+            </div>
+        </div>
+
+        <div id="personal_info_wrapper">
+            <div id="class_info">
+                <% if Batch.active.find(:all, :group => "name").length > 1  %>
+                  <div class="infos">
+                      <div><%= @student.batch.name %></div>
+                      <div><%= t('batch_text') %></div>
+                  </div>
+                <% end %>
+                <div class="infos">
+                    <div><%= @student.admission_no %></div>
+                    <div><%= t('adm_no') %></div>
+                </div>
+                <div class="infos last">
+                    <% unless  @student.batch.course.section_name.empty? %>
+                    <div><%= @student.batch.course.section_name %></div>
+                    <div><%= t('profile_section_label') %></div>
+                    <% else %>
+                    <div> No Section</div>
+                    <div></div>
+                    <% end %>
+                    
+                </div>
+            </div>
+
+            <div id="personal_info" class="row_wrapper">
+
+                <div class="row">
+                    <div class="row_label">
+                        <div><%= t('roll_number') %></div>
+                    </div>
+                    <div class="row_data">
+                        <div><%= @student.class_roll_no %></div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+
+                <div class="row">
+                    <div class="row_label">
+                        <div><%= t('admission_date') %></div>
+                    </div>
+                    <div class="row_data">
+                        <div><%= I18n.l(@student.admission_date,:format=>:normal) unless @student.admission_date.nil? %></div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+
+                <div class="row">
+                    <div class="row_label">
+                        <div><%= t('date_of_birth') %></div>
+                    </div>
+                    <div class="row_data">
+                        <div><%= I18n.l(@student.date_of_birth,:format=>:normal) unless @student.date_of_birth.nil? %></div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+
+                <% unless @student.blood_group.nil? or @student.blood_group.blank?%>
+                  <div class="row">
+                      <div class="row_label">
+                          <div><%= t('blood_group') %></div>
+                      </div>
+                      <div class="row_data">
+                          <div><%= @student.blood_group %></div>
+                      </div>
+                  </div>
+                  <div class="clearfix"></div>
+                <% end %>
+
+                <% unless @student.gender.nil? or @student.gender.blank?%>
+                  <div class="row">
+                      <div class="row_label">
+                          <div><%= t('gender') %></div>
+                      </div>
+                      <div class="row_data">
+                          <div><%= t("#{@student.gender_as_text.downcase}") %></div>
+                      </div>
+                  </div>
+                  <div class="clearfix"></div>
+                <% end %>
+
+                <% unless @student.language.nil? or @student.language.blank? %>
+                  <div class="row">
+                      <div class="row_label">
+                          <div><%= t('language') %></div>
+                      </div>
+                      <div class="row_data">
+                          <div><%= @student.language %></div>
+                      </div>
+                  </div>
+                  <div class="clearfix"></div>
+                <% end %>
+
+                <% unless @student.student_category.nil? %>
+                  <div class="row">
+                      <div class="row_label">
+                          <div><%= t('category') %></div>
+                      </div>
+                      <div class="row_data">
+                          <div><%= @student.student_category.name %></div>
+                      </div>
+                  </div>
+                  <div class="clearfix"></div>
+                <% end %>
+
+                <% unless @student.nationality_id.nil? %>
+                  <div class="row">
+                      <div class="row_label">
+                          <div><%= t('nationality') %></div>
+                      </div>
+                      <div class="row_data">
+                          <div><%= @student.nationality.name %></div>
+                      </div>
+                  </div>
+                  <div class="clearfix"></div>
+                <% end %>
+
+                <% unless @student.religion.nil? or @student.religion.blank? %>
+                  <div class="row">
+                      <div class="row_label">
+                          <div><%= t('religion') %></div>
+                      </div>
+                      <div class="row_data">
+                          <div><%= @student.religion.titlecase %></div>
+                      </div>
+                  </div>
+                  <div class="clearfix"></div>
+                <% end %>
+
+                <% unless @student.address_line1.nil? or @student.address_line1.blank? %>
+                  <div class="row">
+                      <div class="row_label">
+                          <div><%= t('address') %></div>
+                      </div>
+                      <div class="row_data">
+                          <div><%= @student.address_line1%><%= ', ' unless @student.address_line1.blank? %><%=  @student.address_line2 %></div>
+                      </div>
+                  </div>
+                  <div class="clearfix"></div>
+                <% end %>
+
+                <% unless @student.city.nil? or @student.city.blank? %>
+                  <div class="row">
+                      <div class="row_label">
+                          <div><%= t('city') %></div>
+                      </div>
+                      <div class="row_data">
+                          <div><%= @student.city.titlecase %></div>
+                      </div>
+                  </div>
+                  <div class="clearfix"></div>
+                <% end %>
+
+                <% unless @student.state.nil? or @student.state.blank? %>
+                  <div class="row">
+                      <div class="row_label">
+                          <div><%= t('state') %></div>
+                      </div>
+                      <div class="row_data">
+                          <div><%= @student.state.titlecase %></div>
+                      </div>
+                  </div>
+                  <div class="clearfix"></div>
+                <% end %>
+
+                <% unless @student.pin_code.nil? or @student.pin_code.blank? %>
+                  <div class="row">
+                      <div class="row_label">
+                          <div>Post Code</div>
+                      </div>
+                      <div class="row_data">
+                          <div><%= @student.pin_code.titlecase %></div>
+                      </div>
+                  </div>
+                  <div class="clearfix"></div>
+                <% end %>
+
+                <% unless @student.country.nil? or @student.country.blank? %>
+                  <div class="row">
+                      <div class="row_label">
+                          <div><%= t('country') %></div>
+                      </div>
+                      <div class="row_data">
+                          <div><%= @student.country.name %></div>
+                      </div>
+                  </div>
+                  <div class="clearfix"></div>
+                <% end %>
+
+                <% unless @student.birth_place.nil? or @student.birth_place.blank? %>
+                  <div class="row">
+                      <div class="row_label">
+                          <div><%= t('birth_place') %></div>
+                      </div>
+                      <div class="row_data">
+                          <div><%= @student.birth_place %></div>
+                      </div>
+                  </div>
+                  <div class="clearfix"></div>
+                <% end %>
+
+                <% unless @student.phone1.nil? or @student.phone1.blank? %>
+                  <div class="row">
+                      <div class="row_label">
+                          <div><%= t('phone') %></div>
+                      </div>
+                      <div class="row_data">
+                          <div><%= @student.phone1.to_s %></div>
+                      </div>
+                  </div>
+                  <div class="clearfix"></div>
+                <% end %>
+
+                <% unless @student.phone2.nil? or @student.phone2.blank? %>
+                  <div class="row">
+                      <div class="row_label">
+                          <div><%= t('mobile') %></div>
+                      </div>
+                      <div class="row_data">
+                          <div><%= @student.phone2 %></div>
+                      </div>
+                  </div>
+                  <div class="clearfix"></div>
+                <% end %>
+
+                <% unless @student.email.nil? or @student.email.blank? %>
+                  
+                <% end %>
+
+                <% unless @assigned_employees.empty? %>
+                  <div class="row">
+                      <div class="row_label">
+                          <div><%= t('group_tutor') %>(s)</div>
+                      </div>
+                      <div class="row_data">
+                          <div>
+                              <% @tutors = @assigned_employees.map{|e| e.full_name} %>
+                              <% @tutor_ids = @assigned_employees.map{|e| e.user_id} %>
+                              <%= link_to @tutors.join(", "), :controller=>'reminder', :action=>'create_reminder', :send_to=>@tutor_ids.join(",") %>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="clearfix"></div>
+                <% end %>
+
+                <% unless Champs21Plugin.deliver_registered_hook(:student_profile).empty? %>
+                  <% Champs21Plugin.deliver_registered_hook(:student_profile).each do |mod| %>
+                    <%= render :partial=>mod.camelize.constantize.send("student_profile_hook"),:locals=>{:student=>@student} %>
+                  <% end %>
+                <% end %>
+
+                <% if @sms_setting.application_sms_active %>
+                  <div class="row">
+                      <div class="row_label">
+                          <div><%= t('sms_alerts') %></div>
+                      </div>
+                      <div class="row_data">
+                          <div>
+                              <%= @student.is_sms_enabled?? "Enabled":"Disabled" %>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="clearfix"></div>
+                <% end %>
+
+                <div class="row">
+                    <div class="row_label">
+                        <div><%= t('email_alerts') %></div>
+                    </div>
+                    <div class="row_data">
+                        <div>
+                            <%= @student.is_email_enabled?? "Enabled":"Disabled" %>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+
+                <% unless @biometric_id.nil? or @biometric_id.blank? %>
+                  <div class="row">
+                      <div class="row_label">
+                          <div><%= t('biometric_id') %></div>
+                      </div>
+                      <div class="row_data">
+                          <div>
+                              <%= @biometric_id %>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="clearfix"></div>
+                <% end %>
+
+                <% unless  @additional_details.empty? %>
+                  <% @additional_details.each do |detail| %>
+                    <div class="row">
+                        <div class="row_label">
+                            <div><%= detail.student_additional_field.name.titlecase %></div>
+                        </div>
+                        <div class="row_data">
+                            <div>
+                                <%= detail.additional_info.gsub(/\n/, '<br />') unless detail.nil? %>
+                                <% if permitted_to? :edit_admission4,:student %>
+                                  <% unless @additional_details.blank? %>
+                                    <span> (<%= link_to "#{t('change')}", :controller => 'student', :action => 'admission4', :id => @student.id %>)</span>
+                                  <% end %>
+                                <% end %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                  <% end %>
+                <% else %>
+                  <% unless @additional_fields_count == 0 %>
+                    <% if permitted_to? :admission4,:student %>
+
+                      <div class="row">
+                          <div class="row_label">
+                              <div>&nbsp;</div>
+                          </div>
+                          <div class="row_data">
+                              <div>
+                                  <%= link_to "#{t('add_additional_details')}", :controller => 'student', :action => 'admission4', :id => @student.id %>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="clearfix"></div>
+                    <% end %>
+                  <% end %>
+                <% end %>
+
+                <% unless @previous_data.nil? %>
+                  <div class="row">
+                      <div class="row_label">
+                          <div><%= t('previous_institution') %></div>
+                      </div>
+                      <div class="row_data">
+                          <div>
+                              <%= link_to @previous_data.institution, :action=>'show_previous_details', :id => @student.id %>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="clearfix"></div>
+                <%else%>
+                  <% if permitted_to? :previous_data,:student %>
+                    <div class="row">
+                        <div class="row_label">
+                            <div>&nbsp;</div>
+                        </div>
+                        <div class="row_data">
+                            <div>
+                                <%= t('no_previous_data') %>
+                                <span>(<%= link_to "#{t('add_previous_data')}", :controller => 'student', :action => 'previous_data_from_profile', :id => @student.id %>)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                  <% else %>
+                    <div class="row">
+                        <div class="row_label">
+                            <div>&nbsp;</div>
+                        </div>
+                        <div class="row_data">
+                            <div>
+                                <%= t('no_previous_data') %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+
+                  <% end %>
+                <% end %>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="clearfix"></div>
+
+
+    <div id="guardian_detail" class="row_wrapper">
+
+        <div class="row">
+            <div class="guardian_header_txt">Emergency Contact Person</div>
+        </div>
+        <div class="clearfix"></div>
+
+        <% unless @immediate_contact.nil? %>
+
+          <div class="row">
+              <div class="row_label">
+                  <div><%= t('name') %></div>
+              </div>
+              <div class="row_data">
+                  <div>
+                      <%= link_to @immediate_contact.full_name, :controller => "student", :action => "guardians", :id => @student.id %>
+                      <% if permitted_to? :add_guardian,:student %>
+                        &nbsp;&nbsp;&nbsp;<span><%= link_to "#{t('add_guardian')}",:controller => 'student',:action => 'add_guardian', :id => @student.id %></span>
+                      <%end %>
+                      
+                      <%if permitted_to? :admission3_1,:student %>
+                        &nbsp;<span>(<%= link_to "#{t('change')}", :controller => 'student', :action => 'admission3_1', :id => @student.id %>)</span>
+                        
+                      <%end %>
+                     
+                  </div>
+              </div>
+          </div>
+          <div class="clearfix"></div>
+
+          <% unless @immediate_contact.relation.empty? %>
+            <div class="row">
+                <div class="row_label">
+                    <div><%= t('relation') %></div>
+                </div>
+                <div class="row_data">
+                    <div>
+                        <%= @immediate_contact.relation.titlecase %>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+          <% end %>
+
+          <% if !@immediate_contact.nil? and !@immediate_contact.mobile_phone.nil? and !@immediate_contact.mobile_phone.empty? %>
+            <div class="row">
+                <div class="row_label">
+                    <div><%= t('contact') %> No.</div>
+                </div>
+                <div class="row_data">
+                    <div>
+                        <%= @immediate_contact.mobile_phone.to_s %>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+          <% elsif !@immediate_contact.nil? and !@immediate_contact.office_phone1.nil? and !@immediate_contact.office_phone1.empty? %>
+            <div class="row">
+                <div class="row_label">
+                    <div><%= t('contact') %> No.</div>
+                </div>
+                <div class="row_data">
+                    <div>
+                        <%= @immediate_contact.office_phone1.to_s %>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div> 
+          <% elsif !@immediate_contact.nil?  and !@immediate_contact.office_phone2.nil?  and !@immediate_contact.office_phone2.empty? %>
+            <div class="row">
+                <div class="row_label">
+                    <div><%= t('contact') %> No.</div>
+                </div>
+                <div class="row_data">
+                    <div>
+                        <%= @immediate_contact.office_phone2.to_s %>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div> 
+          <% end %>
+
+          
+        <% else %>
+
+          <div class="row">
+              <div class="row_label">
+                  <div>&nbsp;</div>
+              </div>
+              <div class="row_data">
+                  <div>
+                      <% if permitted_to? :add_guardian,:student %>
+                        <%= link_to "#{t('add_guardian')}",:controller => 'student',:action => 'add_guardian', :id => @student.id %>
+                        <%if @student.guardians.present?%>
+                          <%= link_to "#{t('choose_from_existing')}", {:controller => 'student',:action => 'admission3_1', :id => @student.id}, {:class => 'margin-left-20'} %>
+                        <%end%>
+                      <%else%>
+                        <%= t('no_guardian') %>
+                      <%end%>
+                  </div>
+              </div>
+          </div>
+          <div class="clearfix"></div>
+
+        <% end %>
+
+    </div>
+
+
+    <div id="new_profile_info_top">    
+        <% if @current_user.admin? %>
+          <div class="buttons">
+              <%= link_to "#{t('pdf_report')}",
+                {:controller => "student", :action => "profile_pdf", :id => @student.id},:target => '_blank', :class=> 'user_button' %>
+          </div>
+        <% elsif permitted_to? :edit, :student %>
+          <div class="buttons">
+              <%= link_to "#{t('pdf_report')}",
+                {:controller => "student", :action => "profile_pdf", :id => @student.id},:target => '_blank', :class=> 'user_button' %>
+          </div>
+        <% else %>
+          <div class="buttons">
+              <%= link_to "#{t('pdf_report')}",
+                {:controller => "student", :action => "profile_pdf", :id => @student.id},:target => '_blank', :class=> 'user_button' %>
+          </div>
+        <% end %>
+    </div>
+
+</div>
+
+<%= stylesheet_link_tag 'tadded-header' %>
+<% content_for :head do %>
+  <%= javascript_include_tag "custom/tabbed-header" %>
+<% end %>
+
+<style type="text/css">
+
+    #student_profile_heading {
+        background: url("/images/backgrounds/top_profile.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+    }
+    #student_name, #student_class {
+        color: #fff;
+    }
+    #student_main_info {
+        padding: 17px 0 0 30px;
+    }
+    #student_name {
+        text-transform: uppercase;
+    }
+    .header-wrapper {
+        padding: 0;
+    }
+    .header-wrapper .header-form-wrapper {
+        width: 8%;
+    }
+    .header-wrapper .header-form-wrapper .icon-wrapper {
+        border-left: 1px solid #dfe1e2;
+    }
+    .header-wrapper  .header-form-wrapper .icon-wrapper a {
+        display: block;
+        padding: 25px 0 28px 21px;
+    }
+    .header-wrapper  .header-form-wrapper .icon-wrapper a .edit-icon {
+        background: url("/images/icons/edit.png") no-repeat scroll 0 0 / 35px 35px rgba(0, 0, 0, 0);
+        height: 35px;
+        width: 35px;
+    }
+    .header-wrapper  .header-form-wrapper .icon-wrapper a:hover > .edit-icon {
+        background: url("/images/icons/edit_hover.png") no-repeat scroll 0 0 / 35px 35px rgba(0, 0, 0, 0);
+    }
+</style>

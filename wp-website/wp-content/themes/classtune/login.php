@@ -28,7 +28,7 @@
 						<a href="javascript:void(0);" style="color:black;" id="register_show">Sign Up</a> 
 						</div>
 						<div class="col-md-7">
-						<a href="<?php echo get_site_url(); ?>/forget-password" style="color:black;">Forgot Password</a> 
+						<a href="<?php echo get_site_url(); ?>/forget-password" style="color:#000 !important;">Forgot Password</a> 
 						</div>
                     </div>     
                     <div class="form-group" id="register_from_login_div">

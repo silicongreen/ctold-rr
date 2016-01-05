@@ -23,9 +23,14 @@
 
                     </div>
                     <legend></legend>
-                    <div class="col-md-12" style="text-align: left;padding-left:0px; margin-bottom:10px;">
-                        <a href="javascript:void(0);" style="color:black;" id="register_show">New user sign up</a> 
-                    </div>    
+                    <div class="row" style="text-align: left;padding-left:0px; margin-bottom:10px;">
+                        <div class="col-md-5">
+						<a href="javascript:void(0);" style="color:black;" id="register_show">Sign Up</a> 
+						</div>
+						<div class="col-md-7">
+						<a href="<?php echo get_site_url(); ?>/forget-password" style="color:black;" id="register_show">Forgot Password</a> 
+						</div>
+                    </div>     
                     <div class="form-group" id="register_from_login_div">
                         <div class="row">
                             

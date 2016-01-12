@@ -6,7 +6,7 @@
 
     <div class="wrapper col-lg-8 center">
 
-        <div class="col-lg-12 success-wrapper">
+        <div class="col-lg-12 success-wrapper" style="padding-bottom:30px;">
 
             <?php if (isset($error)) { ?>
 
@@ -33,9 +33,9 @@
                 </div>
 
             <?php } ?>
-            
+           
         </div>
-        <div class="col-md-12 no-padding"></div>
+        
 
     </div>
 

@@ -451,7 +451,7 @@ class Createschool extends CI_Controller {
             $data['school_data'] = $school_data['school_data'];
             
             $mail_html = $this->load->view('email/premium_school_creation_request', $data, true);
-            $subject = "School created successfully";
+            $subject = "School creation in Queue";
         }
         
 

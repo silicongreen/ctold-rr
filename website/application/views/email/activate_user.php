@@ -142,7 +142,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td align="left" valign="middle" style="font-family:Helvetica,arial,sans-serif;font-size:10px;color:#666666;border-collapse:collapse">
-                                                        House 54, Road 10, Block E, Banani,Dhaka 1213,Bangladesh © <?php echo data("Y");?> Classtune
+                                                        House 54, Road 10, Block E, Banani,Dhaka 1213,Bangladesh © <?php echo date("Y");?> Classtune
                                                     </td>
                                                 </tr>
                                                 <tr>

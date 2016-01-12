@@ -35,7 +35,7 @@
             <?php } ?>
             
         </div>
-
+        <div class="col-md-12 no-padding"></div>
 
     </div>
 

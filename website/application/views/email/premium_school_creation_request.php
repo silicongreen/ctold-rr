@@ -79,7 +79,7 @@
                                                                                                 <tr>                                                                                    
                                                                                                     <td valign="top" style="vertical-align:top;font-family:Helvetica,arial,sans-serif;font-size:15px;color:#666666;text-align:left;line-height:20px;border-collapse:collapse" align="left">
                                                                                                                                                                                                                 
-                                                                                                        <p><span>Within 24 hours our related person will communicate with for your <b>Premium Package</b> and School creation </span></p>                                                                                                           
+                                                                                                        <p><span>Within 24 hours our related person will communicate with you for your <b>Premium Package</b> and School creation </span></p>                                                                                                           
 
                                                                                                     </td>
                                                                                                 </tr>

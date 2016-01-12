@@ -326,7 +326,7 @@ class Createschool extends CI_Controller {
                 $ar_tmp_free_user_data = $this->tmp->getData($i_tmp_free_user_data_id);               
                 
                 if ($school_type == 'paid') {
-                    $admin_data = $ar_tmp_free_user_data['paid_school_data']['admin_data'];
+                    $admin_data = $ar_tmp_free_user_data['admin_data'];
                     
                     $this->tmp->update($i_tmp_free_user_data_id, array(
                         'key' => 'paid_school_data',

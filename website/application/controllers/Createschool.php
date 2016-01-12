@@ -323,8 +323,7 @@ class Createschool extends CI_Controller {
                 $ar_data['palette_setting'] = 1;
                 $ar_data['package'] = ($school_type == 'paid') ? [1] :[2] ;
 
-                $ar_tmp_free_user_data = $this->tmp->getData($i_tmp_free_user_data_id);
-                $i_free_user_id = $ar_tmp_free_user_data['free_user_id'];
+                $ar_tmp_free_user_data = $this->tmp->getData($i_tmp_free_user_data_id);               
                 
                 if ($school_type == 'paid') {
                     $admin_data = $ar_tmp_free_user_data['paid_school_data']['admin_data'];
@@ -339,6 +338,7 @@ class Createschool extends CI_Controller {
                     $this->load_view('success_tmp');
                     //redirect("checkout/payment/" . $i_tmp_school_creation_data_id . '/' . $i_tmp_free_user_data_id);
                 } else {
+                    $i_free_user_id = $ar_tmp_free_user_data['free_user_id'];
                     $i_tmp_school_creation_data_id = $this->tmp->create(array(
                         'key' => 'school_creation_data',
                         'value' => json_encode($ar_data)

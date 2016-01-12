@@ -171,7 +171,7 @@ $act = (isset($_GET['locale']) && !empty($_GET['locale'])) ? $_GET['locale'] : '
                     </div>
                     <div class="col-md-4 pack_log border_left" id="premium_log" style="width:42%;height: 90px;background:#E9E7E8;text-align: center;padding:20px;cursor:pointer;">
                         <!--a href="<?php echo base_url() ?>createschool/subscription?locale=premium" class="btn btn-danger btn-basic"-->
-                        <a href="<?php echo base_url() ?>createschool/userregister/free" class="btn btn-danger btn-basic">
+                        <a href="<?php echo base_url() ?>createschool/userregister/paid" class="btn btn-danger btn-basic">
                             Get Started Now</a>	
                     </div>
                 </div>
@@ -325,7 +325,7 @@ $act = (isset($_GET['locale']) && !empty($_GET['locale'])) ? $_GET['locale'] : '
                             Get Started Now</a>
                     </div>
                     <div class="col-md-4 pack_log border_left" id="premium_log" style="width:42%;height: 90px;background:#E9E7E8;text-align: center;padding:20px;cursor:pointer;">
-                        <a href="<?php echo base_url() ?>createschool/subscription?locale=premium" class="btn btn-danger btn-basic">
+                        <a href="<?php echo base_url() ?>createschool/userregister/paid" class="btn btn-danger btn-basic">
                             Get Started Now</a>	
                     </div>
                 </div>

@@ -168,22 +168,37 @@ class Createschool extends CI_Controller {
                 $user_data['first_name'] = $this->input->post('first_name');
                 $user_data['last_name'] = $this->input->post('last_name');
                 $user_data['user_type'] = 3;
-
-                $this->db->insert("free_users", $user_data);
-
-                $user_data['user_id'] = $user_id = $this->db->insert_id();
-                $user_data['rp'] = $rp;
-
-                $i_tmp_free_user_data_id = $this->tmp->create(array(
-                    'key' => 'free_user_data',
-                    'value' => json_encode(array('free_user_id' => $user_id, 'rp' => $rp))
-                ));
-
-                if ($user_id) {
+                
+                if($school_type == "paid")
+                { //***** This condition is set by rlikhon********//
+                    
+                    $i_tmp_free_user_data_id = $this->tmp->create(array(
+                        'key' => 'paid_school_data',
+                        'value' => json_encode(array('admin_data' => $user_data))
+                    ));
+                    
                     redirect("createschool/newschool/" . $school_type . '/' . $i_tmp_free_user_data_id);
-                } else {
-                    $data['error'] = "Something went wrong please try again later or contact with classtune";
+                    
                 }
+                else
+                {
+                    $this->db->insert("free_users", $user_data);
+
+                    $user_data['user_id'] = $user_id = $this->db->insert_id();
+                    $user_data['rp'] = $rp;
+
+                    $i_tmp_free_user_data_id = $this->tmp->create(array(
+                        'key' => 'free_user_data',
+                        'value' => json_encode(array('free_user_id' => $user_id, 'rp' => $rp))
+                    ));
+
+                    if ($user_id) {
+                        redirect("createschool/newschool/" . $school_type . '/' . $i_tmp_free_user_data_id);
+                    } else {
+                        $data['error'] = "Something went wrong please try again later or contact with classtune";
+                    }
+                }
+                
             }
         }
 
@@ -306,19 +321,26 @@ class Createschool extends CI_Controller {
                 $ar_data['assign_free_school']['create_new_n_assign'] = 0;
                 $ar_data['free_feed']['free_feed_for_student'] = 1;
                 $ar_data['palette_setting'] = 1;
-                $ar_data['package'] = [2];
-
-                $i_tmp_school_creation_data_id = $this->tmp->create(array(
-                    'key' => 'school_creation_data',
-                    'value' => json_encode($ar_data)
-                ));
+                $ar_data['package'] = ($school_type == 'paid') ? [1] :[2] ;
 
                 $ar_tmp_free_user_data = $this->tmp->getData($i_tmp_free_user_data_id);
                 $i_free_user_id = $ar_tmp_free_user_data['free_user_id'];
-
+                
                 if ($school_type == 'paid') {
+                    $admin_data = $ar_tmp_free_user_data['paid_school_data']['admin_data'];
+                    
+                    $i_tmp_school_creation_data_id = $this->tmp->update(array(
+                        'key' => 'school_creation_data',
+                        'value' => json_encode($ar_data)
+                    ));
+                    
                     redirect("checkout/payment/" . $i_tmp_school_creation_data_id . '/' . $i_tmp_free_user_data_id);
                 } else {
+                    $i_tmp_school_creation_data_id = $this->tmp->create(array(
+                        'key' => 'school_creation_data',
+                        'value' => json_encode($ar_data)
+                    ));                    
+                    
                     $this->load->library('school');
                     $this->school->init($i_tmp_school_creation_data_id, $ar_tmp_free_user_data);
                     $data = $this->school->create();

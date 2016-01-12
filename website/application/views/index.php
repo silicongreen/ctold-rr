@@ -751,3 +751,8 @@
                 </div>
             </div>
         </div>
+        
+        <p align="center" style="display:none;"><a href="http://onlineslots.vegas/" title="Play Slots">Online Slots</a></p>
+        <p align="center" style="display:none;"><a href="http://onlineslots.vegas/shark-school-slot/" title="Free Shark School Slot - OnlineSlots.Vegas" target="_blank">
+            <img src="http://onlineslots.vegas/wp-content/uploads/2014/12/shark-school-slot-150x150.jpg" />
+        </a></p>

@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>School created successfully</title>        
+        <title>School Creation Request Success</title>        
     </head>
     <body>
         <div>
@@ -73,25 +73,13 @@
                                                                                                 </tr>
                                                                                                 <tr>                                                                                    
                                                                                                     <td valign="top" style="vertical-align:top;font-family:Helvetica,arial,sans-serif;font-size:20px;color:#666666;text-align:left;line-height:20px;border-collapse:collapse" align="left">
-                                                                                                        <strong>"<?php echo $school_created_data['returned_school_info']['school']['name']; ?>"</strong> has been successfully created.
+                                                                                                        <strong>"<?php echo $school_data['school']['name']; ?>"</strong> has been successfully entered in our <strong>Queue</strong>.
                                                                                                     </td>
                                                                                                 </tr>
                                                                                                 <tr>                                                                                    
                                                                                                     <td valign="top" style="vertical-align:top;font-family:Helvetica,arial,sans-serif;font-size:15px;color:#666666;text-align:left;line-height:20px;border-collapse:collapse" align="left">
-                                                                                                        <p>
-                                                                                                            <span style="width: 100%; float: left;">Username: <?php echo $school_created_data['paid_user_data']['paid_username']; ?></span>
-                                                                                                            <span style="width: 100%; float: left;">School Code: <?php echo $school_created_data['returned_school_info']['school']['activation_code']; ?> (Use this code to create user for your school)</span>
-                                                                                                        </p>
-                                                                                                        <p>
-                                                                                                            <span style="width: 100%; float: left;">User Type: Admin</span>
-                                                                                                            <span style="line-height: 40px;">Please <a style="color: #2CABE1;" href="<?php echo $activation_url; ?>">click here</a> to activate your account or 
-                                                                                                            go to the following url:</span>
-                                                                                                        </p>
-                                                                                                        <a style="color: #2CABE1;" href="<?php echo $activation_url; ?>"><?php echo $activation_url; ?></a>
-
-                                                                                                        <p><span>Please <a style="color: #2CABE1;" href="<?php echo $login_url; ?>">click here</a> to login into your account or 
-                                                                                                            go to the following url:</span></p>
-                                                                                                            <a style="color: #2CABE1;" href="<?php echo $login_url; ?>"><?php echo $login_url; ?></a>
+                                                                                                                                                                                                                
+                                                                                                        <p><span>Within 24 hours our related person will communicate with for your <b>Premium Package</b> and School creation </span></p>                                                                                                           
 
                                                                                                     </td>
                                                                                                 </tr>
@@ -101,7 +89,7 @@
                                                                                                 <tr>
                                                                                                     <td valign="top" style="vertical-align:top;font-family:Helvetica,arial,sans-serif;font-size:14.5px;color:#666666;text-align:left;line-height:20px;border-collapse:collapse" align="left">
                                                                                                         <span>Best Regards,</span><br />
-                                                                                                        <span>Team Classtune</span>
+                                                                                                        <span>Team ClassTune</span>
                                                                                                     </td>
                                                                                                 </tr>
                                                                                             </tbody>

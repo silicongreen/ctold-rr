@@ -329,12 +329,15 @@ class Createschool extends CI_Controller {
                 if ($school_type == 'paid') {
                     $admin_data = $ar_tmp_free_user_data['paid_school_data']['admin_data'];
                     
-                    $i_tmp_school_creation_data_id = $this->tmp->update(array(
-                        'key' => 'school_creation_data',
-                        'value' => json_encode($ar_data)
+                    $this->tmp->update($i_tmp_free_user_data_id, array(
+                        'key' => 'paid_school_data',
+                        'value' => json_encode(array('admin_data' => $admin_data, 'school_data' => $ar_data))
                     ));
                     
-                    redirect("checkout/payment/" . $i_tmp_school_creation_data_id . '/' . $i_tmp_free_user_data_id);
+                    $this->sendMail($i_tmp_free_user_data_id);
+                    
+                    $this->load_view('success_tmp');
+                    //redirect("checkout/payment/" . $i_tmp_school_creation_data_id . '/' . $i_tmp_free_user_data_id);
                 } else {
                     $i_tmp_school_creation_data_id = $this->tmp->create(array(
                         'key' => 'school_creation_data',
@@ -426,14 +429,33 @@ class Createschool extends CI_Controller {
         $this->load->config('create_school');
         $this->load->library('school');
 
-        $data['school_created_data'] = $this->tmp->getData($i_tmp_school_created_data_id);
-//        $this->tmp->delete($i_tmp_school_created_data_id);
-        $user_data = $this->school->getFreeUserDataById($i_free_user_id);
+        if($i_free_user_id > 0)
+        {
+            $data['school_created_data'] = $this->tmp->getData($i_tmp_school_created_data_id);
+            //$this->tmp->delete($i_tmp_school_created_data_id);
+            $user_data = $this->school->getFreeUserDataById($i_free_user_id);
 
-        $custom_urls = $this->config->config['custom_urls'];
-        $data['activation_url'] = $custom_urls['activation'] . '?token=' . $this->school->getToken(64);
-        $data['login_url'] = $custom_urls['login'];
+            $custom_urls = $this->config->config['custom_urls'];
+            $data['activation_url'] = $custom_urls['activation'] . '?token=' . $this->school->getToken(64);
+            $data['login_url'] = $custom_urls['login'];
 
+            $data['user_data'] = $user_data;
+            $mail_html = $this->load->view('email/activate_user', $data, true);
+            $subject = "School created successfully";
+        }
+        else
+        {
+            $school_data = $this->tmp->getData($i_tmp_school_created_data_id);
+            $user_data['user_data'] = $school_data['admin_data'];
+            $data['user_data'] = $school_data['admin_data'];
+            $data['school_data'] = $school_data['school_data'];
+            
+            $mail_html = $this->load->view('email/premium_school_creation_request', $data, true);
+            $subject = "School created successfully";
+        }
+        
+
+        
         $config['protocol'] = 'smtp';
         $config['smtp_host'] = 'host.champs21.com';   //examples: ssl://smtp.googlemail.com, myhost.com
         $config['smtp_user'] = 'info@champs21.com';
@@ -446,13 +468,10 @@ class Createschool extends CI_Controller {
         $this->load->library('email');
 
         $this->email->set_mailtype("html");
-        $this->email->from("info@champs21.com", "Champs21");
-        $this->email->subject('School created successfully');
+        $this->email->from("info@classtune.com", "ClassTune");
+        $this->email->subject($subject);
         $this->email->to($user_data['email'], $user_data['first_name'] . ' ' . $user_data['last_name']);
-
-        $data['user_data'] = $user_data;
-        $mail_html = $this->load->view('email/activate_user', $data, true);
-
+        
         $this->email->message($mail_html);
 
         if ($this->email->send()) {

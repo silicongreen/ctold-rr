@@ -446,7 +446,7 @@ class Createschool extends CI_Controller {
         else
         {
             $school_data = $this->tmp->getData($i_tmp_school_created_data_id);
-            $user_data['user_data'] = $school_data['admin_data'];
+            $user_data = $school_data['admin_data'];
             $data['user_data'] = $school_data['admin_data'];
             $data['school_data'] = $school_data['school_data'];
             

@@ -1090,7 +1090,7 @@ i.faq:hover
   width: 0%;
   max-width: 100%;
   height: 4px;
-  background: #45aed6;
+  background: #64B846;
 }
 #progressBar {
   margin-top: -4px;
@@ -1105,6 +1105,6 @@ i.faq:hover
     position: fixed;
     top: 0px;
     right: 0px;
-	width:10%;
+	width:13%;
 	z-index:999999;
 }

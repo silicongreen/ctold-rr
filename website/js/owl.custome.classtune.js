@@ -21,8 +21,8 @@ jQuery(function($) {'use strict';
 			"<i class='fa fa-angle-left'></i>",
 			"<i class='fa fa-angle-right'></i>"
 			],
-	      //afterInit : progressBar,
-	      //afterMove : moved,
+	      afterInit : progressBar,
+	      afterMove : moved,
 	      startDragging : pauseOnDragging,
 	      //autoHeight : true,
 	      transitionStyle : "fadeUp"

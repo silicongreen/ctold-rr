@@ -84,13 +84,13 @@
     </div>
 </div>
 
-<div id="preloader" style="width: 100%; height: 100%; position: fixed; top: 0px; left: 0px; background: transparent url(<?php echo base_url();?>images/80percentwhite.png) repeat top left; z-index: 999999;">
-    <img src="<?php echo base_url();?>images/preloader.gif" alt="" title="" />
+<!--div id="preloader" style="width: 100%; height: 100%; position: fixed; top: 0px; left: 0px; background: transparent url(<?php echo base_url();?>images/80percentwhite.png) repeat top left; z-index: 999999;">
+    <img src="<?php //echo base_url();?>images/preloader.gif" alt="" title="" />
     <div class="counter"><span id="count">0</span>&nbsp;/&nbsp;150</div>
 
     <div id="startinfotext"><div id="c735" class="csc-default"><div class="csc-text"><p class="bodytext"><b>Loading...</b></p></div></div></div>
 
-</div>
+</div-->
 <div id="ribbon">
     <a style="display:block" target="_blank" href="http://www.bettshow.com/Exhibitor/ClassTune">
 	<img src="<?php echo base_url(); ?>images/bett_ribbon.png" class="ribbon" />

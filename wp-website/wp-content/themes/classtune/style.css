@@ -158,14 +158,14 @@ input.radio { margin:0; }
 #mainnav SPAN { display: block; padding: 4px 12px 0px 12px; letter-spacing: 2px; }
 #mainnav li:HOVER a { color: #444444; }
 
-#mainnav > ul >li > ul
+#mainnav > ul > li > ul
 {
     background-color: #fff;
     box-shadow: 1px 3px 3px -2px gray;
-    margin: 16px -20px 0;
+    margin: 7px -20px 0;
     position: absolute;
 }
-#mainnav > ul >li > ul > li{
+#mainnav > ul > li > ul > li{
     display: none;
     background-color: #EDF5EA;
     padding:12px 25px;
@@ -173,14 +173,15 @@ input.radio { margin:0; }
     border-bottom:1px solid #64B846;
     
 }
-#mainnav > ul >li > ul > li:last-child
+#mainnav > ul > li > ul > li:last-child
 {
     border-bottom: 0px solid #ccc;
 }
-#mainnav > ul >li:hover > ul > li{
-    display: block;float: none;    
+#mainnav > ul > li:hover > ul > li{
+    display: block;
+    float: none;    
 }
-#mainnav > ul >li:nth-child(2):hover::after{
+#mainnav > ul > li:nth-child(2):hover::after{
     content: '';
     position: absolute;
     margin-left: -13px;
@@ -190,7 +191,7 @@ input.radio { margin:0; }
     border-right: 10px solid transparent;
     border-top: 10px solid #64B846;
     clear: both;
-    margin-top:6px;
+    margin-top:0;
    
 }
 #mainnav > ul >li > ul > li:hover

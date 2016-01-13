@@ -185,7 +185,7 @@ $act = $_GET['local'];
                                 </div>
                                 <div class="col-md-4 pack_log border_left" id="premium_log" style="width:42%;height: 90px;background:#E9E7E8;text-align: center;padding:20px;cursor:pointer;">
                                         <!--<a href="<?php echo get_site_url(); ?>/subscription" class="btn btn-danger btn-basic">-->
-                                        <a href="<?php echo get_permalink ( get_page_by_path('admin-signup')); ?>?local=premium" class="btn btn-info btn-basic">
+                                        <a href="<?php echo get_permalink ( get_page_by_path('admin-signup')); ?>?local=premium" class="btn btn-danger btn-basic">
 					Get Started Now</a>	
                                 </div>
                             </div>

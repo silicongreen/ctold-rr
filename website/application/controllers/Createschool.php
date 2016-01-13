@@ -139,11 +139,11 @@ class Createschool extends CI_Controller {
     public function userregister($school_type) {
 
         $headless = $this->input->get('headless');
-        
-        if(isset($_POST['headless']) && !empty($_POST['headless'])) {
+
+        if (isset($_POST['headless']) && !empty($_POST['headless'])) {
             $headless = $this->input->post('headless');
         }
-        
+
         if ($school_type != "paid" && $school_type != "free") {
             if ($headless == 1) {
                 redirect("createschool/type?headless=1");
@@ -234,11 +234,22 @@ class Createschool extends CI_Controller {
         }
     }
 
-    public function success($school_type = 'free', $i_tmp_school_created_data_id = 0, $i_free_user_id = 0) {
+    public function success_tmp($school_type = 'free', $i_tmp_school_created_data_id = 0, $i_free_user_id = 0) {
         
-        $data = $this->tmp->getData($i_tmp_school_created_data_id);
         $headless = $this->input->get('headless');
         
+        if ($headless == 1) {
+            $this->load_view('success_tmp', array(), TRUE);
+        } else {
+            $this->load_view('success_tmp');
+        }
+    }
+
+    public function success($school_type = 'free', $i_tmp_school_created_data_id = 0, $i_free_user_id = 0) {
+
+        $data = $this->tmp->getData($i_tmp_school_created_data_id);
+        $headless = $this->input->get('headless');
+
         if ($data !== FALSE) {
 
             $this->load->library('school');
@@ -255,7 +266,7 @@ class Createschool extends CI_Controller {
             $this->error_logs->record($_ar_errors);
             $data['error'] = 'School not created';
         }
-        
+
         if ($headless == 1) {
             $this->load_view('success', $data, TRUE);
         } else {
@@ -279,7 +290,7 @@ class Createschool extends CI_Controller {
         if ($config['mode'] == 'live') {
             $this->sendMail($i_tmp_school_created_data_id, $i_free_user_id);
         }
-        
+
         $response['success'] = 'done';
 
         echo json_encode($response);
@@ -289,11 +300,11 @@ class Createschool extends CI_Controller {
     public function newschool($school_type = 'free', $i_tmp_free_user_data_id = 0) {
 
         $headless = $this->input->get('headless');
-        
-        if(isset($_POST['headless']) && !empty($_POST['headless'])) {
+
+        if (isset($_POST['headless']) && !empty($_POST['headless'])) {
             $headless = $this->input->post('headless');
         }
-        
+
         if ($i_tmp_free_user_data_id <= 0 && empty($_POST)) {
             if ($headless == 1) {
                 redirect("/createschool/userregister/" . $school_type . '?headless=1');
@@ -301,7 +312,7 @@ class Createschool extends CI_Controller {
                 redirect("/createschool/userregister/" . $school_type);
             }
         }
-        
+
         $this->load->config('create_school');
         $config = $this->config->config['create_school'];
         $this->load->model('country');
@@ -368,11 +379,11 @@ class Createschool extends CI_Controller {
                     ));
 
                     $this->sendMail($i_tmp_free_user_data_id);
-                    
+
                     if ($headless == 1) {
-                        $this->load_view('success_tmp', array(), TRUE);
+                        redirect('/createschool/success_tmp/?headless=1');
                     } else {
-                        $this->load_view('success_tmp');
+                        redirect('/createschool/success_tmp/');
                     }
                     //redirect("checkout/payment/" . $i_tmp_school_creation_data_id . '/' . $i_tmp_free_user_data_id);
                 } else {
@@ -393,7 +404,7 @@ class Createschool extends CI_Controller {
                         ));
 
 //                        $this->tmp->delete($i_tmp_free_user_data_id);
-                        
+
                         if ($headless == 1) {
                             redirect('/createschool/success/' . $school_type . '/' . $i_tmp_school_created_data_id . '/' . $i_free_user_id . '?headless=1');
                         } else {
@@ -414,7 +425,6 @@ class Createschool extends CI_Controller {
         } else {
             $this->load_view('createschool', $data);
         }
-        
     }
 
     public function finalize() {

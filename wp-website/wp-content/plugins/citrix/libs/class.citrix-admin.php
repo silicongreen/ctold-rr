@@ -404,6 +404,7 @@ class Citrix_admin {
                 include_once CITRIX__PLUGIN_DIR . 'views/email/_meeting_start.php';
                 
                 $phpmailer->Body = $str_content;
+                $phpmailer->isHTML(TRUE);
                 $phpmailer->send();
                 
                 wp_send_json(array(

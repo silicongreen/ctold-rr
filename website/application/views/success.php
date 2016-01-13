@@ -1,8 +1,9 @@
-</header>
+<?php if (!$headless) { ?>
+    </header>
+    <div class="clearfix"></div>
 
-<div class="clearfix"></div>
-
-<div class="container">
+    <div class="container">
+    <?php } ?>
 
     <div class="wrapper col-lg-8 center">
 
@@ -110,13 +111,17 @@
 
 
             <?php } ?>
-            
+
         </div>
 
 
     </div>
 
-</div>
+    <?php if (!$headless) { ?>
+    </div>
+    <script src="<?php echo base_url(); ?>js/iframe-resizer/iframeResizer.contentWindow.js"></script>
+<?php } ?>
+
 
 <script type="text/javascript" src="/js/custom/school.js"></script>
 

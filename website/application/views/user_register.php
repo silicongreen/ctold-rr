@@ -2,11 +2,11 @@
     <div class="wrapper grey" >
 
         <div class="container">
-            <div class="col-md-12"  style="padding:0px; margin-top: 120px; margin-bottom:30px;">
-                <div style="margin:30px 100px; float:left; width:80%;background: white; ">
+            <div class="col-md-12" style="padding:0px; <?php echo ($headless) ? '' : 'margin-top: 120px;' ?> margin-bottom:30px;">
+                <div style="<?php echo ($headless) ? '' : 'margin-top:30px; margin-bottom: 30px;' ?> margin-left: 100px; margin-right: 100px; float:left; width:80%;background: white; ">
 
                     <div class="col-md-12"  style="padding:0px; ">
-                        <h2 class="lead text-center editContent"  style="color:#66D56A; font-weight: bold;margin-top: 20px;">
+                        <h2 class="lead text-center editContent" style="color:#66D56A; font-weight: bold;margin-top: 20px;">
                             Registration For school Creation
                         </h2>
                     </div>
@@ -28,6 +28,7 @@
                         <form id="form_newschool"  class="form-horizontal"  method="post" action="<?php echo base_url(); ?>createschool/userregister/<?php echo $school_type; ?>">
                             <legend></legend>
                             <input type="hidden" name="school_type" value="<?php echo $school_type; ?>" />
+                            <input type="hidden" name="headless" value="<?php echo $headless; ?>" />
 
                             <div class="form-group">
                                 <label class="col-md-2 control-label" for="first_name"></label> 
@@ -35,7 +36,7 @@
                                     <input id="first_name" type="text" value="<?php echo $this->input->post("first_name") ?>" class="form-control input-md" name="first_name" placeholder="First Name *" required="required" />
                                 </div>
                             </div>
-                            
+
                             <div class="form-group">
                                 <label class="col-md-2 control-label" for="last_name"></label> 
                                 <div class="col-md-8">
@@ -50,7 +51,7 @@
                                     <span class="help-block"><font color="#ccc" size="1">Your email address is your username.</font></span>
                                 </div>
                             </div>
-                            
+
                             <div class="form-group">
                                 <label class="col-md-2 control-label" for="conf_email"></label> 
                                 <div class="col-md-8">
@@ -65,14 +66,14 @@
                                     <span class="help-block"><font color="#ccc" size="1">Password must be at least 6 characters.</font></span>
                                 </div>
                             </div>
-                            
+
                             <div class="form-group">
                                 <label class="col-md-2 control-label" for="school_code"></label> 
                                 <div class="col-md-8">
                                     <input type="password" class="form-control input-md"  name="confirm_password" placeholder="Confirm Password *" required="required" />
                                 </div>
                             </div>
-                            
+
                             <div class="form-group">
                                 <label class="col-md-2 control-label" for="submit"></label>
                                 <div class="col-md-8">
@@ -81,7 +82,7 @@
                                     </button>
                                 </div>
                             </div>
-                            
+
                         </form>
 
                     </div><!-- /.col-md-5 -->
@@ -105,4 +106,6 @@
 
 </style>
 
-
+<?php if ($headless) { ?>
+    <script src="<?php echo base_url(); ?>js/iframe-resizer/iframeResizer.contentWindow.js"></script>
+<?php } ?>

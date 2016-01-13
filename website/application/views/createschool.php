@@ -2,8 +2,8 @@
     <div class="wrapper grey" >
 
         <div class="container">
-            <div class="col-md-12"  style="padding:0px; margin-top: 120px; margin-bottom:30px;">
-                <div style="margin:30px 100px; float:left; width:80%;background: white; ">
+            <div class="col-md-12" style="padding:0px; <?php echo ($headless) ? '' : 'margin-top: 120px;' ?> margin-bottom:30px;">
+                <div style="<?php echo ($headless) ? '' : 'margin-top:30px; margin-bottom: 30px;' ?> margin-left: 100px; margin-right: 100px; float:left; width:80%;background: white; ">
 
                     <div class="col-md-12"  style="padding:0px; ">
                         <h2 class="lead text-center editContent"  style="color:#66D56A; font-weight: bold;margin-top: 20px;">
@@ -34,6 +34,7 @@
 
                             <input type="hidden" name="i_tmp_free_user_data_id" value="<?php echo $i_tmp_free_user_data_id; ?>" />
                             <input type="hidden" name="school_type" value="<?php echo $school_type; ?>" />
+                            <input type="hidden" name="headless" value="<?php echo $headless; ?>" />
 
                             <div class="form-group">
                                 <label class="col-md-2 control-label" for="school_name"></label> 
@@ -68,13 +69,13 @@
                                         </ul>
                                     </div>
                                 </div>
-                                
+
                                 <?php $country_call_code = $country_call_code; ?>
 
                                 <!--<div class="col-md-2">-->
-                                    <input readonly="readonly" type="hidden" value="<?php echo $country_call_code; ?>" class="form-control" id="country_call_code" name="country_call_code" placeholder="Country Code *" required="required" />
+                                <input readonly="readonly" type="hidden" value="<?php echo $country_call_code; ?>" class="form-control" id="country_call_code" name="country_call_code" placeholder="Country Code *" required="required" />
                                 <!--</div>-->
-                                
+
                                 <div class="col-md-4">
                                     <input type="text" value="<?php echo $this->input->post("institution_phone_no") ?>" class="form-control" id="institution_phone_no" name="institution_phone_no" placeholder="Contact Number *" required="required" />
                                 </div>
@@ -137,3 +138,6 @@
 </style>
 
 <script type="text/javascript" src="/js/custom/school.js"></script>
+<?php if ($headless) { ?>
+    <script src="<?php echo base_url(); ?>js/iframe-resizer/iframeResizer.contentWindow.js"></script>
+<?php } ?>

@@ -138,8 +138,18 @@ class Createschool extends CI_Controller {
 
     public function userregister($school_type) {
 
+        $headless = $this->input->get('headless');
+        
+        if(isset($_POST['headless']) && !empty($_POST['headless'])) {
+            $headless = $this->input->post('headless');
+        }
+        
         if ($school_type != "paid" && $school_type != "free") {
-            redirect("createschool/type");
+            if ($headless == 1) {
+                redirect("createschool/type?headless=1");
+            } else {
+                redirect("createschool/type");
+            }
         }
 
         if (!empty($_POST)) {
@@ -168,20 +178,19 @@ class Createschool extends CI_Controller {
                 $user_data['first_name'] = $this->input->post('first_name');
                 $user_data['last_name'] = $this->input->post('last_name');
                 $user_data['user_type'] = 3;
-                
-                if($school_type == "paid")
-                { //***** This condition is set by rlikhon********//
-                    
+
+                if ($school_type == "paid") { //***** This condition is set by rlikhon********//
                     $i_tmp_free_user_data_id = $this->tmp->create(array(
                         'key' => 'paid_school_data',
                         'value' => json_encode(array('admin_data' => $user_data))
                     ));
-                    
-                    redirect("createschool/newschool/" . $school_type . '/' . $i_tmp_free_user_data_id);
-                    
-                }
-                else
-                {
+
+                    if ($headless == 1) {
+                        redirect("createschool/newschool/" . $school_type . '/' . $i_tmp_free_user_data_id . '?headless=1');
+                    } else {
+                        redirect("createschool/newschool/" . $school_type . '/' . $i_tmp_free_user_data_id);
+                    }
+                } else {
                     $this->db->insert("free_users", $user_data);
 
                     $user_data['user_id'] = $user_id = $this->db->insert_id();
@@ -193,17 +202,25 @@ class Createschool extends CI_Controller {
                     ));
 
                     if ($user_id) {
-                        redirect("createschool/newschool/" . $school_type . '/' . $i_tmp_free_user_data_id);
+                        if ($headless == 1) {
+                            redirect("createschool/newschool/" . $school_type . '/' . $i_tmp_free_user_data_id . '?headless=1');
+                        } else {
+                            redirect("createschool/newschool/" . $school_type . '/' . $i_tmp_free_user_data_id);
+                        }
                     } else {
                         $data['error'] = "Something went wrong please try again later or contact with classtune";
                     }
                 }
-                
             }
         }
 
         $data['school_type'] = $school_type;
-        $this->load_view('user_register', $data);
+
+        if ($headless == 1) {
+            $this->load_view('user_register', $data, TRUE);
+        } else {
+            $this->load_view('user_register', $data);
+        }
     }
 
     public function email_check($str) {
@@ -218,7 +235,10 @@ class Createschool extends CI_Controller {
     }
 
     public function success($school_type = 'free', $i_tmp_school_created_data_id = 0, $i_free_user_id = 0) {
+        
         $data = $this->tmp->getData($i_tmp_school_created_data_id);
+        $headless = $this->input->get('headless');
+        
         if ($data !== FALSE) {
 
             $this->load->library('school');
@@ -235,8 +255,12 @@ class Createschool extends CI_Controller {
             $this->error_logs->record($_ar_errors);
             $data['error'] = 'School not created';
         }
-
-        $this->load_view('success', $data);
+        
+        if ($headless == 1) {
+            $this->load_view('success', $data, TRUE);
+        } else {
+            $this->load_view('success', $data);
+        }
     }
 
     public function notify_user() {
@@ -264,8 +288,18 @@ class Createschool extends CI_Controller {
 
     public function newschool($school_type = 'free', $i_tmp_free_user_data_id = 0) {
 
+        $headless = $this->input->get('headless');
+        
+        if(isset($_POST['headless']) && !empty($_POST['headless'])) {
+            $headless = $this->input->post('headless');
+        }
+        
         if ($i_tmp_free_user_data_id <= 0 && empty($_POST)) {
-            redirect("/createschool/userregister/" . $school_type);
+            if ($headless == 1) {
+                redirect("/createschool/userregister/" . $school_type . '?headless=1');
+            } else {
+                redirect("/createschool/userregister/" . $school_type);
+            }
         }
 
         $this->load->config('create_school');
@@ -282,7 +316,7 @@ class Createschool extends CI_Controller {
             if (isset($_POST['i_tmp_free_user_data_id']) && !empty($_POST['i_tmp_free_user_data_id'])) {
                 $i_tmp_free_user_data_id = $this->input->post('i_tmp_free_user_data_id');
             }
-            
+
             $this->form_validation->set_rules('name', 'School Name', 'required|min_length[5]');
             if ($school_type == "paid") {
                 $this->form_validation->set_rules('number_of_student', 'Number Of student', 'required|is_natural_no_zero');
@@ -321,29 +355,33 @@ class Createschool extends CI_Controller {
                 $ar_data['assign_free_school']['create_new_n_assign'] = 0;
                 $ar_data['free_feed']['free_feed_for_student'] = 1;
                 $ar_data['palette_setting'] = 1;
-                $ar_data['package'] = ($school_type == 'paid') ? [1] :[2] ;
+                $ar_data['package'] = ($school_type == 'paid') ? [1] : [2];
 
-                $ar_tmp_free_user_data = $this->tmp->getData($i_tmp_free_user_data_id);               
-                
+                $ar_tmp_free_user_data = $this->tmp->getData($i_tmp_free_user_data_id);
+
                 if ($school_type == 'paid') {
                     $admin_data = $ar_tmp_free_user_data['admin_data'];
-                    
+
                     $this->tmp->update($i_tmp_free_user_data_id, array(
                         'key' => 'paid_school_data',
                         'value' => json_encode(array('admin_data' => $admin_data, 'school_data' => $ar_data))
                     ));
-                    
+
                     $this->sendMail($i_tmp_free_user_data_id);
                     
-                    $this->load_view('success_tmp');
+                    if ($headless == 1) {
+                        $this->load_view('success_tmp', array(), TRUE);
+                    } else {
+                        $this->load_view('success_tmp');
+                    }
                     //redirect("checkout/payment/" . $i_tmp_school_creation_data_id . '/' . $i_tmp_free_user_data_id);
                 } else {
                     $i_free_user_id = $ar_tmp_free_user_data['free_user_id'];
                     $i_tmp_school_creation_data_id = $this->tmp->create(array(
                         'key' => 'school_creation_data',
                         'value' => json_encode($ar_data)
-                    ));                    
-                    
+                    ));
+
                     $this->load->library('school');
                     $this->school->init($i_tmp_school_creation_data_id, $ar_tmp_free_user_data);
                     $data = $this->school->create();
@@ -355,19 +393,28 @@ class Createschool extends CI_Controller {
                         ));
 
 //                        $this->tmp->delete($i_tmp_free_user_data_id);
-
-                        redirect('/createschool/success/' . $school_type . '/' . $i_tmp_school_created_data_id . '/' . $i_free_user_id);
+                        
+                        if ($headless == 1) {
+                            redirect('/createschool/success/' . $school_type . '/' . $i_tmp_school_created_data_id . '/' . $i_free_user_id . '?headless=1');
+                        } else {
+                            redirect('/createschool/success/' . $school_type . '/' . $i_tmp_school_created_data_id . '/' . $i_free_user_id);
+                        }
                     }
                 }
             }
         }
-        
+
         $data['country_call_code'] = $country_call_code;
         $data['countries'] = $this->country->getAll();
         $data['school_type'] = $school_type;
         $data['i_tmp_free_user_data_id'] = $i_tmp_free_user_data_id;
 
-        $this->load_view('createschool', $data);
+        if ($headless == 1) {
+            $this->load_view('createschool', $data, TRUE);
+        } else {
+            $this->load_view('createschool', $data);
+        }
+        
     }
 
     public function finalize() {
@@ -410,10 +457,19 @@ class Createschool extends CI_Controller {
     }
 
     //PRIVATE FUNCTION
-    private function load_view($view_name, $data = array()) {
-        $this->load->view('layout/header');
+    private function load_view($view_name, $data = array(), $headless = false) {
+        if (!$headless) {
+            $this->load->view('layout/header');
+        } else {
+            $this->load->view('layout/headless/header');
+        }
+        $data['headless'] = $headless;
         $this->load->view($view_name, $data);
-        $this->load->view('layout/footer_other');
+        if (!$headless) {
+            $this->load->view('layout/footer_other');
+        } else {
+            $this->load->view('layout/headless/footer');
+        }
     }
 
     private function generate_passowrd_and_salt($password) {
@@ -429,8 +485,7 @@ class Createschool extends CI_Controller {
         $this->load->config('create_school');
         $this->load->library('school');
 
-        if($i_free_user_id > 0)
-        {
+        if ($i_free_user_id > 0) {
             $data['school_created_data'] = $this->tmp->getData($i_tmp_school_created_data_id);
             //$this->tmp->delete($i_tmp_school_created_data_id);
             $user_data = $this->school->getFreeUserDataById($i_free_user_id);
@@ -442,20 +497,16 @@ class Createschool extends CI_Controller {
             $data['user_data'] = $user_data;
             $mail_html = $this->load->view('email/activate_user', $data, true);
             $subject = "School created successfully";
-        }
-        else
-        {
+        } else {
             $school_data = $this->tmp->getData($i_tmp_school_created_data_id);
             $user_data = $school_data['admin_data'];
             $data['user_data'] = $school_data['admin_data'];
             $data['school_data'] = $school_data['school_data'];
-            
+
             $mail_html = $this->load->view('email/premium_school_creation_request', $data, true);
             $subject = "School creation in Queue";
         }
-        
 
-        
         $config['protocol'] = 'smtp';
         $config['smtp_host'] = 'host.champs21.com';   //examples: ssl://smtp.googlemail.com, myhost.com
         $config['smtp_user'] = 'info@champs21.com';
@@ -471,7 +522,7 @@ class Createschool extends CI_Controller {
         $this->email->from("info@classtune.com", "ClassTune");
         $this->email->subject($subject);
         $this->email->to($user_data['email'], $user_data['first_name'] . ' ' . $user_data['last_name']);
-        
+
         $this->email->message($mail_html);
 
         if ($this->email->send()) {

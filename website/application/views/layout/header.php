@@ -46,7 +46,7 @@
         
         <script type="text/javascript" src="<?php echo base_url(); ?>js/login.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>js/contact.js"></script>
-        <script type="text/javascript" src="<?php echo base_url(); ?>support/php/app.php?widget-init.js"></script>
+<!--        <script type="text/javascript" src="<?php echo base_url(); ?>support/php/app.php?widget-init.js"></script>-->
          
     </head>
     <body>

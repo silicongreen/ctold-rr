@@ -72,12 +72,18 @@
             <img src="<?php echo base_url(); ?>images/logo/classtune.png" alt="" title="" width="200" height="" />
         </a>
     </div>
+		<div id="ribbon">
+		<a style="display:block" target="_blank" href="http://www.bettshow.com/Exhibitor/ClassTune">
+		<img src="<?php echo base_url(); ?>images/bett_ribbon.png" class="ribbon" />
+		</a>
+	</div>
 </div>
 
 <script type="text/javascript" src="<?php echo base_url(); ?>js/jquery_timers.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>js/jquery.stellar.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>js/jquery.mousewheel.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>js/bootstrap.min.js"></script>
+
 
 <script>
  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

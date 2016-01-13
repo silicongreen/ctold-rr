@@ -38,6 +38,8 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" type="text/css" media="all" />
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>css/default.css" />
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>css/flexslider.css" />
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>css/owl.carousel.css" />
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>css/owl.transitions.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css" type="text/css" media="all" />
         
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>

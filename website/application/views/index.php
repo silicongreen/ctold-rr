@@ -61,49 +61,64 @@
         </div>
 
         <div id="beforeWrap">
-            <!--img src="<?php echo base_url(); ?>images/test/CLASSTUNE-COVER.png" alt="" title="" width="100%" /<li style="color:#64B846;">|</li>-->
-            
-			<div class="col-md-12"  style="">					
-                            <div class="col-md-5"></div>
-                            <div class="col-md-7">				
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="col-md-2"></div>
-                                        <div class="col-md-8" style="text-align: left;">
-                                            <h2 class="f2" style="margin-top:130px;"><i>Managing school is easier than ever before...</i></h2>
-                                            <p style="margin-top:30px;font-size:16px;">ClassTune is the bridge among Students, Parents and Teachers. It is the easiest and quickest way for School Administrator to connect anyone related to School in a single platform.</p>
+            <div class="owl-carousel">
+				<div class="item" style="background-image: url(<?php echo base_url(); ?>images/cover/cover-1.png);">
+					<div class="slider-inner">
+						<div class="container" style="width:100%;">
+							<div class="row">
+								<div class="col-sm-12">
+									<div class="carousel-content">
+										<div class="col-md-12"  style="">					
+											<div class="col-md-4"></div>
+											<div class="col-md-8">				
+												<div class="row">
+													<div class="col-md-12">
+														<div class="col-md-2"></div>
+														<div class="col-md-8" style="text-align: left;">
+															<h2 class="f2" style="margin-top:130px;"><i>Managing school is easier than ever before...</i></h2>
+															<p style="margin-top:30px;font-size:16px;">ClassTune is the bridge among Students, Parents and Teachers. It is the easiest and quickest way for School Administrator to connect anyone related to School in a single platform.</p>
 
-                                        </div>
-                                        <div class="col-md-2"></div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="postlist-tab3">
-                                            <ul>
-                                                <li>                                                    
-                                                    <a href="<?php echo base_url(); ?>signup/admin" >I'm School Admin</a>
-                                                    <a href="<?php echo base_url(); ?>signup/student" >I'm Student</a>
-                                                    <a href="<?php echo base_url(); ?>signup/guardian" >I'm Parent</a>
-                                                    <a href="<?php echo base_url(); ?>signup/teacher" >I'm Teacher</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-			</div>
-            <!--div class="postlist-tab3">
-                <ul>
-                    <li>                        
-                        <a href="<?php echo base_url(); ?>signup/admin" >I'm School Admin</a>
-                        <a href="<?php echo base_url(); ?>signup/student" >I'm Student</a>
-                        <a href="<?php echo base_url(); ?>signup/guardian" >I'm Parent</a>
-                        <a href="<?php echo base_url(); ?>signup/teacher" >I'm Teacher</a>
-                    </li>
-                </ul>
-            </div-->
-           
+														</div>
+														<div class="col-md-2"></div>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-md-12">
+														<div class="postlist-tab3">
+															<ul>
+																<li>                                                    
+																	<a href="<?php echo base_url(); ?>signup/admin" >I'm School Admin</a>
+																	<a href="<?php echo base_url(); ?>signup/student" >I'm Student</a>
+																	<a href="<?php echo base_url(); ?>signup/guardian" >I'm Parent</a>
+																	<a href="<?php echo base_url(); ?>signup/teacher" >I'm Teacher</a>
+																</li>
+															</ul>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div><!--/.item-->
+				<a style="display:block" target="_blank" href="http://www.bettshow.com/Exhibitor/ClassTune">
+				<div class="item" style="background-image: url(<?php echo base_url(); ?>images/cover/bett-banner.jpg);">
+					<div class="slider-inner">
+						<div class="container">
+							<div class="row">
+								<div class="col-sm-6">
+									<div class="carousel-content">
+										
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div></a><!--/.item-->				
+			</div><!--/.owl-carousel-->      
             
         </div>
 

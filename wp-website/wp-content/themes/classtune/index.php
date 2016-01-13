@@ -102,7 +102,7 @@ get_header(); ?>
 													<div class="postlist-tab3">
 														<ul>
 															<li>                                                    
-																<a href="<?php echo get_site_url(); ?>/signup/admin" >I'm School Admin</a>
+																<a href="<?php echo get_site_url(); ?>/admin-user" >I'm School Admin</a>
 																<a href="<?php echo get_site_url(); ?>/signup/student" >I'm Student</a>
 																<a href="<?php echo get_site_url(); ?>/signup/guardian" >I'm Parent</a>
 																<a href="<?php echo get_site_url(); ?>/signup/teacher" >I'm Teacher</a>

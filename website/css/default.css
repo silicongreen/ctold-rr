@@ -510,6 +510,45 @@ input.radio { margin:0; }
 }
 .postlist-tab3 ul li a:hover { background: #64B846;color:#fff; }
 
+
+
+.postlist-tab4 {
+  background: transparent url("../images/new-1_03.png") no-repeat scroll left top / 100% auto;
+  border: 0 solid #ccc;
+  box-shadow: 0 4px 2px -2px gray;
+  height: 113px;
+  margin-top: 65px;
+  overflow: hidden;
+  padding-top: 40px;
+  width: 100%;
+  z-index: 10;
+}
+.postlist-tab4 ul { list-style-type: none;  border: 0px solid black; margin: 0; padding: 0px; font-size: 0; }
+.postlist-tab4 ul li { display: inline; *display: inline; zoom: 1; }
+.postlist-tab4 ul li a {
+  background: #fff none repeat scroll 0 0;
+  border-right: 1px solid #ccc;
+  color: #afafaf;
+  display: inline-block;
+  float: left;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 1.75em 2em;
+  text-decoration: none;
+  width:22%;
+}
+.postlist-tab4 ul li a:first-child
+{
+    width:30%
+}
+.postlist-tab4 ul li a:nth-child(4)
+{
+    width:26%
+}
+.postlist-tab4 ul li a:hover { background: #64B846;color:#fff; }
+
+
+
 .poweredby {
     color: #999;
     float: left;

@@ -152,7 +152,7 @@
     }
     .success-wrapper {
         background-color: #ffffff;
-        margin-top: 120px;
+        margin-top: <?php echo (!$headless) ? '120px' : 0; ?> ;
         margin-bottom: 50px;
         padding:0px;
     }

@@ -119,9 +119,9 @@
 
     <?php if (!$headless) { ?>
     </div>
+<?php } else { ?>
     <script src="<?php echo base_url(); ?>js/iframe-resizer/iframeResizer.contentWindow.js"></script>
 <?php } ?>
-
 
 <script type="text/javascript" src="/js/custom/school.js"></script>
 

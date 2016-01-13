@@ -279,7 +279,7 @@ class Createschool extends CI_Controller {
         if ($config['mode'] == 'live') {
             $this->sendMail($i_tmp_school_created_data_id, $i_free_user_id);
         }
-
+        
         $response['success'] = 'done';
 
         echo json_encode($response);
@@ -301,7 +301,7 @@ class Createschool extends CI_Controller {
                 redirect("/createschool/userregister/" . $school_type);
             }
         }
-
+        
         $this->load->config('create_school');
         $config = $this->config->config['create_school'];
         $this->load->model('country');

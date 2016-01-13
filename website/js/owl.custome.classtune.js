@@ -2,6 +2,12 @@ jQuery(function($) {'use strict';
 
 	//Slider
 	$(document).ready(function() {
+		$(".bettlink").click(function() {
+		  
+		  window.open('http://www.bettshow.com/Exhibitor/ClassTune', '_blank');
+		  return false;
+		});
+		
 		var time = 7; // time in seconds
 
 	 	var $progressBar,

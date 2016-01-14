@@ -240,16 +240,17 @@
 }
 .header-wrapper .tabbed-header-wrapper ul.header-tabs li ul.submenu li:hover {
     background-color: #FFFFFF;
-    box-shadow: 3px 0 0 0 #D72329;
-    -webkit-box-shadow: 3px 0 0 0 #D72329;
-    -moz-box-shadow: 3px 0 0 0 #D72329;
-    -ms-box-shadow: 3px 0 0 0 #D72329;
-    -o-box-shadow: 3px 0 0 0 #D72329;
+    box-shadow: 3px 0 0 0 #348834;
+    -webkit-box-shadow: 3px 0 0 0 #348834;
+    -moz-box-shadow: 3px 0 0 0 #348834;
+    -ms-box-shadow: 3px 0 0 0 #348834;
+    -o-box-shadow: 3px 0 0 0 #348834;
     transition: all 0.20s ease-in 0s;
     -moz-transition: all 0.20s ease-in 0s;
     -webkit-transition: all 0.20s ease-in 0s;
     -ms-transition: all 0.20s ease-in 0s;
     -o-transition: all 0.20s ease-in 0s;
+    margin-bottom: 3px;
 }
 .header-wrapper .tabbed-header-wrapper ul.header-tabs li ul.submenu li a {
     

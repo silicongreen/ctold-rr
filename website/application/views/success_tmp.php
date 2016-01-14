@@ -75,7 +75,7 @@
     }
     .success-wrapper {
         background-color: #ffffff;
-        margin-top: 120px;
+        margin-top: <?php echo ($headless) ? '0' : '120px'; ?>;
         margin-bottom: 50px;
         padding:0px;
     }

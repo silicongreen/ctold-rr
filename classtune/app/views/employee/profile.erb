@@ -77,7 +77,7 @@
         </ul>
       </li>
 
-      <% if current_username == profile_employee_no %>
+      <% if current_username == profile_employee_no and !check_free_school?  %>
         <li>
           <a href="#" class="f2"><%= t('salary') %></a>
           <ul class="submenu">
@@ -90,7 +90,7 @@
           </ul>
         </li>
       <%else%>
-        <% if permitted_to? :payslip, :employee %>
+        <% if permitted_to? :payslip, :employee and !check_free_school?  %>
           <li>
             <a href="#" class="f2"><%= t('salary') %></a>
             <ul class="submenu">
@@ -105,7 +105,7 @@
         <%end%>
       <%end%>
 
-      <% if current_username == profile_employee_no %>
+      <% if current_username == profile_employee_no and !check_free_school?  %>
         <li>
           <a href="#" class="f2"><%= t('leaves') %></a>
           <ul class="submenu">
@@ -118,7 +118,7 @@
           </ul>
         </li>
       <% else %>
-        <% if permitted_to? :employee_attendance, :employee %>
+        <% if permitted_to? :employee_attendance, :employee and !check_free_school?  %>
           <li>
             <a href="#" class="f2"><%= t('leaves') %></a>
             <ul class="submenu">
@@ -130,13 +130,13 @@
         <%end%>
       <%end%>
 
-      <% if permitted_to? :employee_timetable, :timetable %>
+      <% if permitted_to? :employee_timetable, :timetable and !check_free_school?  %>
         <% unless @employee.subjects.empty? %>
           <li><%= link_to "#{t('timetable_text')}", {:controller=>"timetable", :action=>"employee_timetable", :id=>@employee.id}, {:class => 'f2'} %></li>
         <% end %>
       <%end%>
 
-      <% if current_username == profile_employee_no %>
+      <% if current_username == profile_employee_no and !check_free_school?  %>
         <% if @new_reminder_count.size == 0 %>
           <li>
             <%= link_to "#{t('reminder_text')}", {:controller=>"reminder", :action=>"index"}, {:class => 'f2'} %>
@@ -154,7 +154,7 @@
         </li>
       <% end %>
 
-      <li>
+      <li style="display:none;">
         <a href="#" class="f2"><%= t('more') %></a>
         <ul class="submenu">
           <% Champs21Plugin::ADDITIONAL_LINKS[:employee_profile_more_menu].each do |mod| %>

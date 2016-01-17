@@ -78,10 +78,10 @@
                     <a href="#" class="next-avatar customer-chat-content-button customer-chat-content-button-inline"><i class="icon-chevron-right icon-white"></i></a>
                 </div>
                 <div class="customer-chat-content-message-input">
-                    <input id="customer-chat-login-name" type="text" class="customer-chat-content-message-input-field" placeholder="<?php echo $vars['ui']['contactNameLabel'] ?>" />
+                    <input id="customer-chat-login-name" type="text" value="<?php echo $vars['name'] ?>" class="customer-chat-content-message-input-field" placeholder="<?php echo $vars['ui']['contactNameLabel'] ?>" />
                 </div>
                 <div class="customer-chat-content-message-input">
-                    <input id="customer-chat-login-mail" type="text" class="customer-chat-content-message-input-field" placeholder="<?php echo $vars['ui']['contactMailLabel'] ?>" />
+                    <input id="customer-chat-login-mail" type="text" value="<?php echo $vars['mail'] ?>" class="customer-chat-content-message-input-field" placeholder="<?php echo $vars['ui']['contactMailLabel'] ?>" />
                 </div>
                 <div class="customer-chat-content-message-input">
                     <select id="customer-chat-login-op-type" name="customer-chat-login-op-type" class="customer-chat-content-message-input-field">
@@ -148,13 +148,13 @@
                     <?php echo $vars['ui']['contactInfo'] ?>
                 </div>
                 <div class="customer-chat-content-message-input">
-                    <input id="customer-chat-contact-name" type="text" class="customer-chat-content-message-input-field" placeholder="<?php echo $vars['ui']['contactNameLabel'] ?>" />
+                    <input id="customer-chat-contact-name" type="text" value="<?php echo $vars['name'] ?>" class="customer-chat-content-message-input-field" placeholder="<?php echo $vars['ui']['contactNameLabel'] ?>" />
                 </div>
                 <div class="customer-chat-content-message-input">
-                    <input id="customer-chat-contact-mail" type="text" class="customer-chat-content-message-input-field" placeholder="<?php echo $vars['ui']['contactMailLabel'] ?>" />
+                    <input id="customer-chat-contact-mail" type="text" value="<?php echo $vars['mail'] ?>" class="customer-chat-content-message-input-field" placeholder="<?php echo $vars['ui']['contactMailLabel'] ?>" />
                 </div>
                 <div class="customer-chat-content-message-input">
-                    <input id="customer-chat-contact-school-name" type="text" class="customer-chat-content-message-input-field" placeholder="<?php echo $vars['ui']['contactSchoolLabel'] ?>" />
+                    <input id="customer-chat-contact-school-name" type="text" value="<?php echo $vars['school_name'] ?>" class="customer-chat-content-message-input-field" placeholder="<?php echo $vars['ui']['contactSchoolLabel'] ?>" />
                 </div>
                 <div class="customer-chat-content-message-input">
                     <input id="customer-chat-contact-preferred-time-start" type="text" class="customer-chat-content-message-input-field" placeholder="<?php echo $vars['ui']['contactTimeStartLabel'] ?>" />

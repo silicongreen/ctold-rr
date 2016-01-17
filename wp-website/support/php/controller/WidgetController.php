@@ -6,10 +6,29 @@ class WidgetController extends Controller
     public function initAction()
     {
         $config = $this->get('config');
+        $request = $this->get('request');
+        $school_name = "";
+        $name = "";
+        $mail = "";
+        if($request->getVar('s'))
+        {
+            $school_name   = $request->getVar('s');
+        }
+        if($request->getVar('n'))
+        {
+            $name          = $request->getVar('n');
+        }
+        if($request->getVar('m'))
+        {
+            $mail          = $request->getVar('m');
+        }
         
         return $this->render('widget/init.js.php', array(
         
             'ui'             => $config->data['appSettings'],
+            'school_name'    => $school_name,
+            'name'           => $name,
+            'mail'           => $mail,
             'uiJson'         => str_replace("'", '&apos;', json_encode($config->data['appSettings'])),
             'defaultAvatars' => json_encode($this->getDefaultAvatars())
         

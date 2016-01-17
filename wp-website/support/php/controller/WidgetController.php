@@ -38,6 +38,22 @@ class WidgetController extends Controller
     public function iframeContentAction()
     {
         $config = $this->get('config');
+        $request = $this->get('request');
+        $school_name = "";
+        $name = "";
+        $mail = "";
+        if($request->getVar('s'))
+        {
+            $school_name   = $request->getVar('s');
+        }
+        if($request->getVar('n'))
+        {
+            $name          = $request->getVar('n');
+        }
+        if($request->getVar('m'))
+        {
+            $mail          = $request->getVar('m');
+        }
         
         return $this->render('widget/iframe-content.html.php', array(
         
@@ -46,7 +62,10 @@ class WidgetController extends Controller
             'uiJson'         => str_replace("'", '&apos;', json_encode($config->data['appSettings'])),
             'defaultAvatars' => json_encode($this->getDefaultAvatars()),
             'info'           => str_replace("'", '&apos;', json_encode($this->get('request')->getUserInfo())),
-            'remoteDomain'   => $this->get('request')->getVar('domain')
+            'remoteDomain'   => $this->get('request')->getVar('domain'),
+            'school_name'    => $school_name,
+            'name'           => $name,
+            'mail'           => $mail
         ));
     }
     

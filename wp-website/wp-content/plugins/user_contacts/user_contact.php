@@ -8,12 +8,66 @@
   Author URI: http://www.champs21.com
  */
 add_action('admin_menu', 'contact_support_user');
+add_action('wp_ajax_nopriv_login_user_classtune', 'login_user_classtune');
 
 
 function contact_support_user() {
     $page_cat = add_menu_page('Support Contact From Users', 'Support Contact', 'delete_pages', 'support_contact_from_users', 'support_contact_from_users', plugins_url('images/support.png', __FILE__));
     $catalogs = add_submenu_page('support_contact_from_users', 'Preffered Time Statistics', 'Preffered Time Statistics', 'delete_pages', 'support_preffered_from_users', 'support_preffered_from_users');
 }
+function login_user_classtune() 
+{
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+    if($username && $password)
+    {
+        $url = check_login_paid($username, $password);
+        if($url)
+        {
+            echo $url;
+        }
+        else
+        {
+            echo "0";
+        }    
+    }
+    else
+    {
+        echo "0";
+    } 
+}
+function check_login_paid($user_name,$password) 
+{
+    $mydb = new wpdb('champs21_champ','1_84T~vADp2$','champs21_school','localhost');
+    $users = $mydb->get_row($mydb->prepare("select * from users where (username=%s AND is_approved=1) AND (is_deleted=0 OR parent=1)",$user_name));
+
+
+
+
+    if($users)
+    {
+        $hashed_password = sha1($users->salt . $password);
+        if ($hashed_password == $users->hashed_password) 
+        {
+            $domain = $mydb->get_row("select * from school_domains where linkable_id='".$users->school_id."'");
+
+            if($domain)
+            {
+                 $random = md5(rand());
+                 $insert['auth_id'] = $random;
+                 $insert['user_id'] = $users->id;
+                 $insert['expire'] = date("Y-m-d H:i:s", strtotime("+1 Day"));
+                 $mydb->insert("tds_user_auth", $insert);
+                 $params = "?username=" . $user_name . "&password=" . $password . "&auth_id=" . $random . "&user_id=" . $users->id;
+                 $url = "http://" . $domain->domain . $params;
+
+                 return $url;
+            }
+        }
+    }
+    return false;
+}
+
 function support_preffered_from_users() {
     global $wpdb;
     

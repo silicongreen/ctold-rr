@@ -49,7 +49,7 @@ $(document).on('click', '#form_login_classtune button#submit', function (e) {
     else
     {
         $("#form_login_classtune span.legend").html("<div class='alert alert-info'><strong>Loading......</strong></div>");
-        $.post("/wp-admin/admin-ajax.php", {action:"login_user_classtune",login_security_field:$("#login_security_field").val(),username: $("#form_login_classtune #username").val(), password: $("#form_login_classtune #password").val()})
+        $.post("/wp-admin/admin-ajax.php", {action:"login_user_classtune",login_security_field:$("#login_security_field").val()+"1",username: $("#form_login_classtune #username").val(), password: $("#form_login_classtune #password").val()})
                 .done(function (data) {
                     if (data == "0")
                     {

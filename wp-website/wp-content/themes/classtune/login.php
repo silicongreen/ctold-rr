@@ -23,7 +23,7 @@
 
                     </div>
                     <legend></legend>
-                    <div class="row" style="text-align: left;padding-left:0px; margin-bottom:10px;">
+                     <div class="col-md-12" style="text-align: left;padding-left:0px; margin-bottom:10px;">
                         <p><a href="<?php echo get_site_url(); ?>/forget-password" style="color:#000 !important;">Forgot Password?</a> </p>
                         <p>Don't have a username?</p>
                         <p><a href="javascript:void(0);" style="color:black;" id="register_show">Sign Up Here</a></p>  

@@ -24,7 +24,7 @@
                     </div>
                     <legend></legend>
                     <div class="col-md-12" style="text-align: left;padding-left:0px; margin-bottom:10px;">
-                        <p>Don't have a username</p>
+                        <p>Don't have a username?</p>
                         <p><a href="javascript:void(0);" style="color:black;" id="register_show">Sign Up Here</a></p>
                     </div>    
                     <div class="form-group" id="register_from_login_div">

@@ -40,7 +40,7 @@ $(document).on('click', '#contact_classtune input#sub', function (e) {
     else
     {
         $("#contact_classtune span.legend").html("<div class='alert alert-info'><strong>Sending......</strong></div>");
-        $.post("/landing/send_mail", {name: $("#contact_classtune #name").val(), email: $("#contact_classtune #email").val(),
+        $.post("/send-mail", {name: $("#contact_classtune #name").val(), email: $("#contact_classtune #email").val(),
         subject: $("#contact_classtune #subject").val(), massage: $("#contact_classtune #massage").val()})
                 .done(function (data) {
                         if(data =="0")

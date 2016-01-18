@@ -1,4 +1,4 @@
-<li id="login_button_classune"><a style="color:#fff;text-decoration:none;" id="classtune_a"  href="javascript:void(0)"><span>Login</span></a>
+<li id="login_button_classune"><a style="color:#fff;text-decoration:none;" id="classtune_a"  href="javascript:void(0)"><span>Log In</span></a>
     <div id="login_form_classune" class="col-md-3" style="overflow: hidden; width:23%;">
         
         <div class="col-md-12">
@@ -24,7 +24,8 @@
                     </div>
                     <legend></legend>
                     <div class="col-md-12" style="text-align: left;padding-left:0px; margin-bottom:10px;">
-                        <a href="javascript:void(0);" style="color:black;" id="register_show">New user sign up</a> 
+                        <p>Don't have a username</p>
+                        <p><a href="javascript:void(0);" style="color:black;" id="register_show">Sign Up Here</a></p>
                     </div>    
                     <div class="form-group" id="register_from_login_div">
                         <div class="row">
@@ -55,7 +56,7 @@
                         
                         <div class="col-md-12">
                         <button name="submit" type="submit" id="submit" style="" class="btn btn-primary col-md-12 btn-success">
-                                <i class="fa fa-thumbs-up"></i> Login
+                                <i class="fa fa-thumbs-up"></i> Proceed
                             </button>
                         </div>
                     </div>

@@ -9,6 +9,7 @@
  */
 add_action('admin_menu', 'contact_support_user');
 add_action('wp_ajax_nopriv_login_user_classtune', 'login_user_classtune');
+add_action('wp_ajax_login_user_classtune', 'login_user_classtune');
 
 
 function contact_support_user() {
@@ -35,6 +36,7 @@ function login_user_classtune()
     {
         echo "0";
     } 
+    die();
 }
 function check_login_paid($user_name,$password) 
 {

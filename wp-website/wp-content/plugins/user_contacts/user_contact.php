@@ -9,6 +9,7 @@
   Author URI: http://www.champs21.com
  */
 add_action('admin_menu', 'contact_support_user');
+
 add_action('wp_ajax_nopriv_login_user_classtune', 'login_user_classtune');
 add_action('wp_ajax_login_user_classtune', 'login_user_classtune');
 
@@ -16,6 +17,7 @@ add_action('wp_ajax_nopriv_send_mail_classtune', 'send_mail_classtune');
 add_action('wp_ajax_send_mail_classtune', 'send_mail_classtune');
 
 function send_mail_classtune() {
+    check_ajax_referer("login_security","login_security_field");
     if (isset($_POST['name']) AND isset($_POST['email']) AND isset($_POST['subject']) AND isset($_POST['massage'])) {
         $to = 'info@champs21.com';
         $name = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
@@ -90,6 +92,7 @@ function contact_support_user() {
 }
 
 function login_user_classtune() {
+    check_ajax_referer("login_security","login_security_field");
     $username = $_POST['username'];
     $password = $_POST['password'];
     if ($username && $password) {

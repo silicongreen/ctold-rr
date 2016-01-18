@@ -51,7 +51,12 @@ $(document).on('click', '#form_login_classtune button#submit', function (e) {
         $("#form_login_classtune span.legend").html("<div class='alert alert-info'><strong>Loading......</strong></div>");
         $.post("/wp-admin/admin-ajax.php", {action:"login_user_classtune",login_security_field:$("#login_security_field").val()+"1",username: $("#form_login_classtune #username").val(), password: $("#form_login_classtune #password").val()})
                 .done(function (data) {
-                    if (data == "0")
+                    if(data == "-1")
+                    {
+                       $("#form_login_classtune span.legend").html("<div class='alert alert-danger'>Invalid Request. Please reload the page and try again</div>");
+                       $("#form_login_classtune span.legend .error").show("slow"); 
+                    }
+                    else if (data == "0")
                     {
                         $("#form_login_classtune span.legend").html("<div class='alert alert-danger'>Wrong <strong>Username</strong> or <strong>Password</strong></div>");
                         $("#form_login_classtune span.legend .error").show("slow");
@@ -59,7 +64,7 @@ $(document).on('click', '#form_login_classtune button#submit', function (e) {
                     else
                     {
                         $("#form_login_classtune span.legend").html("<div class='alert alert-success'><strong>Redirecting to your school...</strong></div>");
-                        //location.href = data;
+                        location.href = data;
                     }
 
                 }

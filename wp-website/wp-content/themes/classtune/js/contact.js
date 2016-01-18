@@ -42,8 +42,14 @@ $(document).on('click', '#contact_classtune input#sub', function (e) {
         $("#contact_classtune span.legend").html("<div class='alert alert-info'><strong>Sending......</strong></div>");
         $.post("/wp-admin/admin-ajax.php", {action:"send_mail_classtune",login_security_field:$("#login_security_field").val(),name: $("#contact_classtune #name").val(), email: $("#contact_classtune #email").val(),
         subject: $("#contact_classtune #subject").val(), massage: $("#contact_classtune #massage").val()})
-                .done(function (data) {
-                        if(data =="0")
+                .done(function (data) 
+                    {
+                        if(data == "-1")
+                        {
+                           $("#contact_classtune span.legend").html("<div class='alert alert-danger'>Invalid Request. Please reload the page and try again</div>");
+                           
+                        }
+                        else if(data =="0")
                         {
                             $("#contact_classtune span.legend").html("<div class='alert alert-danger'><strong>Massage</strong> can't sent at the moment</div>");
                         }

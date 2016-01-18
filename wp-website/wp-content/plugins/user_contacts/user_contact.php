@@ -59,7 +59,7 @@ function send_mail_classtune() {
     } else {
         echo "1";
     }
-    return;
+    die();
 }
 
 function send_email($to, $from_mail, $from_name, $subject, $message) {

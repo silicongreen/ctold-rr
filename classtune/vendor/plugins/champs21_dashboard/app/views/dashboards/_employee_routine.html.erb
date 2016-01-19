@@ -31,7 +31,7 @@
     
 
     <div class="box-text">Next Classes</div>
-    <% unless homework['next_class'].nil? and homework['next_class'].empty?  %>
+    <% unless homework['next_class'].nil? or homework['next_class'].empty?  %>
       <% homework['next_class'].each do |h| %>
       
           <div class="portlet-subcontent">     

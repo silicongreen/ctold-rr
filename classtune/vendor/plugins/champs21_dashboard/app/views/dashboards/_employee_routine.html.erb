@@ -63,7 +63,7 @@
   <div class="box-text">Next Class</div>
 
   <div class="portlet-subcontent">
-    <% unless homework['next_class'].nil? and homework['next_class'].empty? %>
+    <% unless homework['next_class'].nil? or homework['next_class'].empty? %>
       <div class="timetable_left"><img width="30" src="/images/icons/subjects/<%= homework['next_class']['subject_icon_name'] %>" /></div>
       <div class="timetable_right" style="margin-top:10px;">
         <div class="subcontent-header themed_text"><%=  homework['next_class']['subject_name'] %> - <%= homework['next_class']['batch_name'] %> <%= homework['next_class']['course_name'] %>

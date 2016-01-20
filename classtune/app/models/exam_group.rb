@@ -21,7 +21,7 @@ class ExamGroup < ActiveRecord::Base
   belongs_to :batch
   belongs_to :grouped_exam
 
-  has_many :exams, :dependent => :destroy
+  has_many :exams, :dependent => :destroy, :order => 'exams.start_time'
   before_destroy :removable?
   belongs_to :cce_exam_category
 

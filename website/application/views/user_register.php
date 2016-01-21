@@ -7,7 +7,7 @@
 
                     <div class="col-md-12"  style="padding:0px; ">
                         <h2 class="lead text-center editContent" style="color:#66D56A; font-weight: bold;margin-top: 20px;">
-                            Registration For school Creation
+                            Registration For School Creation
                         </h2>
                     </div>
 

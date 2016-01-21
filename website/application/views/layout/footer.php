@@ -21,7 +21,7 @@
                         <div class="postlist-tab" style=" background: none; position: relative;top: -60px;z-index: 1;">
                             <ul>
                                 <li>
-                                    <a href="javascript:void(0);" style="cursor: default;background: #E5ECF2 none repeat scroll 0 0;color:#999!important;">Registration Free! <i class="fa fa-long-arrow-right"></i></a>
+                                    <a href="javascript:void(0);" style="cursor: default;background: #E5ECF2 none repeat scroll 0 0;color:#999!important;">Register Free! <i class="fa fa-long-arrow-right"></i></a>
                                     <a href="<?php echo base_url(); ?>signup/admin" >I'm School Admin</a>
                                     <a href="<?php echo base_url(); ?>signup/student" >I'm Student</a>
                                     <a href="<?php echo base_url(); ?>signup/guardian" >I'm Parent</a>

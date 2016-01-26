@@ -35,14 +35,14 @@
 
   <div class="header-form-wrapper">
 
-    <div class="header-right-button button-filter" id="filter-btn">
-      Search
-    </div>
+    <%#*<div class="header-right-button button-filter" id="filter-btn">%>
+      <%#*Search%>
+    <%#*</div>%>
 
-    <div id="filter-div" style="display: none;">
-      <div class="row-div clearfix">
-        <div class="data-div">
-          <%= text_field 'query','',
+    <%#*<div id="filter-div" style="display: none;">%>
+      <%#*<div class="row-div clearfix">%>
+        <%#*<div class="data-div">%>
+          <%#= text_field 'query','',
             :class=>"text-input-bg",
             :name => 'query',
             :onchange => "#{remote_function(:url => {:controller => 'news', :action => "search_news_ajax"},
@@ -51,17 +51,17 @@
           :before => "Element.show('loader-circle')",
           :success => "Element.hide('loader-circle')"
           )}"
-        %>
-          <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader-circle", :style =>"display: none;" ) %>
-        </div>
-      </div>
+        %>#
+          <%#= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader-circle", :style =>"display: none;" ) %>
+        <%#*</div>%>
+      <%#*</div>%>
       
-    </div>
+    <%#*</div>%>
   </div>
   <div class="clearfix"></div>
   <div class="tabbed-header-wrapper">        
       <ul class="header-tabs">
-        <li class="active">
+        <li>
           <%= link_to "All Notice", {:controller => "news", :action => "all"}, :class => "f2" %>    
         </li>        
         <% if permitted_to? :add,:news %>
@@ -70,7 +70,7 @@
         </li>
         <% end %>
         <% if permitted_to? :all_draft,:news %>
-        <li>
+        <li class="active">
           <%= link_to "All Draft", {:controller => "news", :action => "all_draft"}, :class => "f2" %>    
         </li>
         <% end %>

@@ -1,0 +1,138 @@
+<!--<div id="content-header">
+  <%#= show_header_icon %>
+  <a href="/assignments"><h1><%#= "#{t('assignments_text')}"%></h1></a>
+  <div class='header-sep'>|</div>
+  <div class='sub-header'><%#= "#{t('create_a_new_assignment')}"%></div>
+
+</div>-->
+<div class="header-wrapper">
+  <div class="header-title">
+    <div class="header-icon">
+      <%= image_tag '/images/icons/lessonplan_icon.png', :html => {:alt => 'Lessonplan'} %>
+    </div>
+    <div class="header-title-text-wrapper">
+      <div class="header-title-main-text f2">
+       <%= link_to "Homework", :controller => 'assignments', :action => 'index' %>   
+       <span style="float: left;clear:both;font-size: 15px;"><%= Time.now.strftime("%Y-%m-%d") %></span>
+      </div>
+      <div class="header-title-sub-text f5">
+        
+        </div>
+      </div>
+    </div>    
+<div class="clearfix"></div>
+
+  <% if @current_user.admin? %>
+  
+  <% else %>
+    <% if  permitted_to? :new,:assignments %>
+      <div class="tabbed-header-wrapper">    
+        <ul class="header-tabs">
+          <li class="active">          
+            <%= link_to t('create_new_assignment'), {:controller => "assignments", :action => "new"}, :class => 'f2' %>
+          </li>      
+        </ul>
+      </div>
+    <% end %>
+  <% end %>
+</div>
+<div id="page-yield" class="ch_homework_answers_wrapper"  style="margin-top: 0px;">
+  <% unless flash[:notice].nil? %>
+    <p class="flash-msg"> <%= flash[:notice] %> </p>
+  <% end %>
+  <% form_for @assignment , :html => { :multipart => true } do |f| %>
+    <%= error_messages_for :assignment %>
+    <div class="assignment_container">
+      <div class="assignment_form">
+
+
+
+        <div class="label-field-pair">
+          <label  for="assignment_title"><%= "#{t('title')}"%></label>
+          <div class="text-input-bg"><%= f.text_field :title %></div>
+        </div>
+        <% if @current_user.admin? %>
+        <div class="label-field-pair">
+          <label  for="assignment_subject"><%= "#{t('subject')}"%></label>   
+          <div class="text-input-bg" >   
+            <span style="font-size: 15px;margin-left:10px;"><%= "#{@subject.name}  - #{@subject.batch.full_name}"%></span>
+            <%= hidden_field :assignment,"subject_id", :value => @subject.id %>
+          </div>
+        </div>
+        <% end %>
+        <% if @current_user.employee?  %>
+        <div class="label-field-pair">
+          <label  for="assignment_subject"><%= "#{t('subject_and_class')}"%></label>    <div class="text-input-bg" >    <%= select :assignment, :subject_id,
+              @subjects.map {|s| ["#{s.name}  - #{s.batch.full_name}",s.id]},
+              {:prompt=>"#{t('select_subject_and_class')}"},
+              {:onChange => "#{remote_function(:url => {:action => "subjects_students_list"},
+              :with => "'subject_id='+ value",
+              :before => "Element.show('loader')",
+              :success => "Element.hide('loader')"
+              )}"} %></div>
+          <% if params[:id].present? %>
+            <%= link_to "#{t('change_subject')}" , :action=>:new %>
+          <% end %>
+          <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader", :style =>"display: none;" ) %>
+        </div>
+        <% end %>
+        <div class="label-field-pair">
+          <label >Homework Type</label>
+          <div  class="text-input-bg" id="exam-group-select">
+            <%= f.select :assignment_type, [['Regular',1],['Project',2]] %>
+          </div>
+        </div>
+        <div class="homework_content" >
+          <label class="homework_content_label" style="" ><%= "#{t('content')}"%></label>
+          <div  class="homework_content_div">
+                <%= f.redactor :content %>
+          </div>
+        </div>
+
+        <div class="label-field-pair" style="float:left; clear:both;">
+          <label ><%= t('attach_a_file')%> (<%= t('max_size') %>)</label>
+          <div  class="text-input-bg" id="assignment-attachment">
+          <%  if check_free_school? %>
+              &nbsp;&nbsp;<b style="color: red; float:left; margin-top:9px;">Subscribed feature</b>
+          <% else %>
+            <%= f.file_field  :attachment %>   
+          <% end %>    
+          </div>
+        </div>
+        <div class="label-field-pair"  style="float:left; clear:both;">
+          <label for="duedate"><%= "#{t('due_date')}"%></label>
+          <div  class="text-input-bg">
+            <%= calendar_date_select_tag "assignment[duedate]",
+              I18n.l(1.week.since,:format=>"%Y-%m-%d") ,:class=>"text-input-bg",:readonly=>true,:popup=>:force%>
+          </div>
+        </div>
+        <%= hidden_field :assignment,"is_published", :value =>1 %>
+        <div id ="assignment-submit" >
+          <%= f.submit "#{t('publish_new_assignment')}" ,:class=>"submit_button", :disable_with => "#{t('please_wait')}"%>
+         <input style="margin-left: 10px;
+    padding: 7px 10px;
+    color: #fff;
+    background: #db3434;
+    font-weight: bold;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;background:#49BB4B !important" id="assignment_submit" name="commit" 
+                onclick="j('#assignment_is_published').val('0');if (window.hiddenCommit) { window.hiddenCommit.setAttribute('value', this.value); }else { hiddenCommit = document.createElement('input');hiddenCommit.type = 'hidden';hiddenCommit.value = this.value;hiddenCommit.name = this.name;this.form.appendChild(hiddenCommit); }this.setAttribute('originalValue', this.value);this.disabled = true;this.value='Please Wait';result = (this.form.onsubmit ? (this.form.onsubmit() ? this.form.submit() : false) : this.form.submit());if (result == false) { this.value = this.getAttribute('originalValue');this.disabled = false; }return result;" type="submit" value="Save As Draft">
+        </div>
+     
+      </div>
+      <div id="subjects_student_list">
+        <% if @current_user.employee?  %>
+          <%= render :partial=> "subjects_student_list" %>
+        <% end %>
+        <% if @current_user.admin? %>
+          <%= render :partial=> "subjects_student_list" ,:object=>@assignment.subject%>
+        <% end %>
+        
+      </div>
+
+    </div>
+  <% end %>
+  <%= load_redactor_script %>
+</div>
+<%= stylesheet_link_tag 'tadded-header' %>

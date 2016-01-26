@@ -20,23 +20,26 @@ class NewsController < ApplicationController
   before_filter :login_required
   before_filter :check_permission, :only => [:index]
   filter_access_to :all
+  before_filter :default_time_zone_present_time
 
   def add
     @news = News.new(params[:news])
     @news.author = current_user
     if request.post? and @news.save
-      sms_setting = SmsSetting.new()
-      if sms_setting.application_sms_active
-        students = Student.find(:all,:select=>'phone2',:conditions=>'is_sms_enabled = true')
-      end
-      users = User.find(:all)
-      available_user_ids = users.collect(&:id).compact
-      Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => current_user.id,
-          :recipient_ids => available_user_ids,
-          :subject=>"#{t('reminder_notice')}",
-          :rtype=>5,
-          :rid=>@news.id,
-          :body=>"#{t('reminder_notice')} : "+params[:news][:title] ))
+      if @news.is_published == 1
+        sms_setting = SmsSetting.new()
+        if sms_setting.application_sms_active
+          students = Student.find(:all,:select=>'phone2',:conditions=>'is_sms_enabled = true')
+        end
+        users = User.find(:all)
+        available_user_ids = users.collect(&:id).compact
+        Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => current_user.id,
+            :recipient_ids => available_user_ids,
+            :subject=>"#{t('reminder_notice')}",
+            :rtype=>5,
+            :rid=>@news.id,
+            :body=>"#{t('reminder_notice')} : "+params[:news][:title] ))
+      end  
       flash[:notice] = "#{t('flash1')}"
       redirect_to :controller => 'news', :action => 'view', :id => @news.id
     end
@@ -65,9 +68,35 @@ class NewsController < ApplicationController
     @cmnt.save
     show_comments_associate(@cmnt.news.id)
   end
+  
+  def all_draft
+    @news = News.paginate(:conditions=>{:is_published=>0}, :page => params[:page], :per_page => 10)
+  end
+  
+  def published_news
+    now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
+    @news = News.find_by_id(params[:id])
+    @news.is_published = 1
+    @news.created_at = now
+    
+    if @news.save
+        users = User.find(:all)
+        available_user_ids = users.collect(&:id).compact
+        Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => current_user.id,
+            :recipient_ids => available_user_ids,
+            :subject=>"#{t('reminder_notice')}",
+            :rtype=>5,
+            :rid=>@news.id,
+            :body=>"#{t('reminder_notice')} : "+@news.title ))
+     
+     end
+     flash[:notice] = "Notice successfully published"
+     redirect_to :controller => 'news', :action => 'all'
+    
+  end
 
   def all
-    @news = News.paginate( :page => params[:page], :per_page => 10)
+    @news = News.paginate(:conditions=>{:is_published=>1}, :page => params[:page], :per_page => 10)
   end
 
   def delete
@@ -103,9 +132,10 @@ class NewsController < ApplicationController
     @news = nil
     
     unless params[:query].nil? and params[:query] == ''
-      conditions = ["title LIKE ?", "%#{params[:query]}%"]
+      conditions = ["title LIKE ? and is_published=1", "%#{params[:query]}%"]
       @news = News.paginate(:conditions => conditions, :page => params[:page], :per_page => 10)
     else
+      conditions = ["is_published = ?", "1"]
       @news = News.paginate(:page => params[:page], :per_page => 10)
     end
     render :partial=>"news_list"

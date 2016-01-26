@@ -55,6 +55,13 @@
     <% if @is_moderator %>
       <div class='header-right-button'><%= link_to "#{t('edit_text')}",{:controller => "news",  :action => "edit", :id => @news.id } %>      </div>
       <div class='header-right-button'><%= link_to "#{t('delete_text')}",{:controller => "news", :action => "delete", :id => @news.id },:confirm => "#{t('delete_confirm_msg')}" %>      </div>
+      
+        <% if @news.is_published==0 %>
+         <div class='header-right-button' style="float:right; clear:both; margin-bottom:5px;"> <%= link_to "Published Notice", { :action => 'published_news', :id =>@news.id},
+              :confirm => "Do You realy want to publish this notice?" %></div>
+          <% end %>  
+      
+      <d
 
 
     <% end %>

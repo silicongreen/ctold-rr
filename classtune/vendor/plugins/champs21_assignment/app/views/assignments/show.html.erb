@@ -1,0 +1,274 @@
+<div class="box_content" style="float:left;">
+<div class="partial_homework" style="padding: 0px 0px;">
+
+  <!--<a href="/assignments"><h2 class="f2 routine">HOMEWORK | <%#= @assignment.subject.name.to_s %></h2></a>-->
+  <div class="header-wrapper">
+    <div class="header-title">
+      <div class="header-icon">
+        <%= image_tag '/images/icons/homework.png', :html => {:alt => 'Homework'} %>
+      </div>
+      <div class="header-title-text-wrapper">
+        <div class="header-title-main-text f2">
+          <%= link_to "Homework", :controller => 'assignments', :action => 'index' %>
+          <span style="float: left;clear:both;font-size: 15px;"><%= Time.now.strftime("%Y-%m-%d") %></span>
+        </div>
+        <div class="header-title-sub-text f5">  </div>
+      </div>
+    </div>
+
+    <div class="clearfix"></div>
+    
+    <!--<div class="tabbed-header-wrapper">
+      <ul class="header-tabs">
+        <li><a href="#" class="f2">Monthly Attendance Report</a></li>
+        <li><a href="#" class="f2">Yearly Attendance Report</a></li>
+      </ul>
+    </div>-->
+
+  </div>  
+<%#= debug @assignment %>
+  <%
+        unless @assignment.employee.nil?
+          emp_name = @assignment.employee.first_name
+          unless @assignment.employee.middle_name.nil?
+            emp_name += ' ' + @assignment.employee.middle_name
+          end
+          unless @assignment.employee.last_name.nil?
+            emp_name += ' ' + @assignment.employee.last_name
+          end
+        end
+      %>
+<div class="portlet-subcontent" style="width:100%">     
+  <div class="timetable_left">
+     <% if @assignment.subject.icon_number %>
+          <%= image_tag("icons/subjects/"+@assignment.subject.icon_number , :size=> "83x60", :alt=> @assignment.subject.name) %>
+        <% else %>
+          <%= image_tag("icons/subjects/8.png" , :size=> "83x60", :alt=> @assignment.subject.name) %>
+    <% end %>
+
+  </div>
+  <div class="timetable_right"  style="float:left;height: 70px;width: 40%;padding: 10px 0;">
+    <div class="subcontent-header themed_text">
+        <%=  link_to @assignment.subject.name.to_s+' - '+@assignment.title, @assignment%>
+    </div>                           
+    <div class="subcontent-info"><%= emp_name %> </div>              
+  </div>
+  <div class="timetable_right"  style="float:left;height: 70px;width: 35%;padding: 10px 0;border-left:1px dotted #cccccc">                            
+    <div class="subcontent-date" style="color:#000;"><b>Assigned On &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</b> <%="<small>#{@assignment.created_at.strftime("%A, %d %B, %Y")}</small>"%></div>  
+    <div class="subcontent-date" style="color:#000;"><b><%= @assignment.duedate.past??  "#{t('assignment_already_due')}"  : "#{t('due_in')} #{distance_of_time_in_words( Time.now ,@assignment.duedate)}   "%>&nbsp;&nbsp;&nbsp; : </b><%="<small>#{@assignment.duedate.strftime("%A, %d %B, %Y")}</small>"%></div>                                    
+  </div>
+  
+  <% if @current_user.student? %>
+  <%  @assignment_answers = AssignmentAnswer.find_all_by_student_id_and_assignment_id(@current_user.student_record.id,@assignment.id) if @current_user.student? %>
+
+	<% if Date.today <= Date.parse(@assignment.duedate.to_s) %>
+
+	<% if @assignment_answers.empty? %>
+	  <div class="answer_mark" id="done_<%= @assignment.id %>">
+		<%= link_to_remote "#{t('done_this_assignment')}" , :url => {:controller => 'assignment_answers', :action => "done", :assignment_id => @assignment.id } , :update=> 'done_'+@assignment.id.to_s, :html => { :class  => "user_button",:style=>"margin-left:0px" }%>
+	  </div>
+	<%  else %>
+	  <div class="answer_mark">
+		  <% unless @assignment_answers.empty? %>
+			<% @assignment_answers.each do |answer| %>
+			<% if answer.status == "REJECTED" %>
+			  <a class="user_button" style="background:#cccccc !important; margin-left:0px;" href="javascript:void(0)">REJECTED </a>
+			  <% elsif answer.status=="ACCEPTED" %>
+			   <a class="user_button" style="background:#cccccc !important; margin-left:0px;" href="javascript:void(0)"> ACCEPTED</a>
+			  <% else  %>
+			   <a class="user_button" style="background:#cccccc !important; margin-left:0px;" href="javascript:void(0)"> PENDING</a>
+			  <% end %>
+			  <% break %>
+			<% end %>
+		  <% else %>
+			 <a class="user_button" style="background:#cccccc !important; margin-left:0px;" href="javascript:void(0)">NOT DONE</a> 
+		  <% end %>
+	  </div>
+	<% end %>
+  <% else %>
+	  <div class="answer_mark">
+		  <% unless @assignment_answers.empty? %>
+			<% @assignment_answers.each do |answer| %>
+			<% if answer.status == "REJECTED" %>
+			  <a class="user_button" style="background:#cccccc !important; margin-left:0px;" href="javascript:void(0)">REJECTED </a>
+			  <% elsif answer.status=="ACCEPTED" %>
+			   <a class="user_button" style="background:#cccccc !important; margin-left:0px;" href="javascript:void(0)"> ACCEPTED</a>
+			  <% else  %>
+			   <a class="user_button" style="background:#cccccc !important; margin-left:0px;" href="javascript:void(0)"> PENDING</a>
+			  <% end %>
+			  <% break %>
+			<% end %>
+		  <% else %>
+			 <a class="user_button" style="background:#cccccc !important; margin-left:0px;" href="javascript:void(0)">NOT DONE</a> 
+		  <% end %>
+	  </div>
+    <% end %>
+  <% end %>
+  <% if @current_user.parent? %>
+    <% std_id = @current_user.guardian_entry.current_ward_id %>
+    <%  @assignment_answers = AssignmentAnswer.find_all_by_student_id_and_assignment_id(std_id,@assignment.id) %>
+    <div class="answer_mark">
+      <% unless @assignment_answers.empty? %>
+        <% @assignment_answers.each do |answer| %>
+          <% if answer.status == "REJECTED" %>
+            <a class="user_button" style="background:#cccccc !important; margin-left:0px;" href="javascript:void(0)">REJECTED </a>
+          <% elsif answer.status=="ACCEPTED" %>
+             <a class="user_button" style="background:#cccccc !important; margin-left:0px;" href="javascript:void(0)"> ACCEPTED</a>
+          <% else  %>
+             <a class="user_button" style="background:#cccccc !important; margin-left:0px;" href="javascript:void(0)"> PENDING</a>
+          <% end %>
+          <% break %>
+        <% end %>
+      <% else %>
+        <a class="user_button" style="background:#cccccc !important; margin-left:0px;" href="javascript:void(0)">NOT DONE</a> 
+      <% end %>
+    </div>
+  <% end %>
+</div>
+<% unless @assignment.attachment_file_name.nil? %>
+  <div class="portlet-subcontent atachment_div" style="width:100%">
+    <div style="border-right: 1px dotted #cccccc;float: left;height: 45px;width: 12%;">    
+        <%= image_tag("/images/assignment/attach_clip.png" , :class=> "attachment_clip", :alt=> @assignment.subject.name) %>
+    </div>
+    <div style="float:left;height: 27px;width: 35%;padding: 10px;">                            
+      <%= link_to 'Worksheet', :controller => "assignments", :action => "download_attachment" , :id=>@assignment.id %>
+    </div>
+    <div style=" float: right; height: 27px;  padding: 10px;  width: 7%;border-left: 1px dotted #cccccc;">
+      <%= link_to 'Download', :controller => "assignments", :action => "download_attachment" , :id=>@assignment.id %>
+    </div>
+  </div>  
+<% end %>
+<div id="page-yield" class="ch_homework_wrapper bg-disable">
+
+  <% unless flash[:notice].nil? %> <p class="flash-msg"> <%= flash[:notice] %> </p> <% end %>
+  <div style="background-color: #ffffff; float: left; padding: 30px;width: 94%;">
+      <div id="assignment_content">
+      <p>
+        <%= @assignment.content.to_s%>
+      </p>
+      
+    </div>
+
+
+    <% if @assignment.employee.present? and (@current_user.employee_record == @assignment.employee || @current_user.admin?)%>
+      <div id="employee-options" >
+        <div id="action_buttons">
+          <div>
+            <%= link_to "► #{t('edit_text')}",
+              edit_assignment_path(@assignment), :class => "user_button"%>
+          </div>
+          <div>
+            <%= link_to "► #{t('delete_assignment')}",
+              @assignment, :method => "delete",
+              :confirm => "#{t('delete_this_assignment')}", :class => "user_button" %>
+          </div>
+          <% if @assignment.is_published==0 %>
+          <%= link_to "► Published Homework", { :action => 'published_homework', :id =>params[:id]},
+              :confirm => "Do You realy want to publish this homework?", :class => "user_button" %>
+          <% end %>  
+        </div>
+        <div id="student-list-bg">
+          <div id="loaderbox">     <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader", :style =>"display: none;" ) %> </div>
+          <div id="quickinfo">  <h5><%= link_to_remote  "#{t('assigned')} (#{@students_assigned_count})",:update=>"assigned_students",:url=>{:action=>:assignment_student_list,:id=>@assignment.id,:status=>"assigned"},   :before => "Element.show('loader')", :success => "Element.hide('loader')"%></h5>
+            <h5> <%= link_to_remote  "#{t('answered')} (#{@answered_count})",:update=>"assigned_students",:url=>{:action=>:assignment_student_list,:id=>@assignment.id,:status=>"answered"},   :before => "Element.show('loader')", :success => "Element.hide('loader')"%></h5>
+            <h5> <%= link_to_remote  "#{t('pending')} (#{@pending_count})",:update=>"assigned_students",:url=>{:action=>:assignment_student_list,:id=>@assignment.id,:status=>"pending"},   :before => "Element.show('loader')", :success => "Element.hide('loader')"%></h5>
+
+          </div>
+
+
+          <div id="student_list"></div>
+        </div>
+
+      </div>
+      <div class="extender"></div>
+
+    <% else%>
+      <div class="student-options">
+        <div id="assignment_ajax_msg" style="clear: both;">
+        <%if @assignment.student_list.split(",").include? @current_user.student_record.id.to_s %>
+          <% if @assignment_answers.empty?  and Date.today <= Date.parse(@assignment.duedate.to_s) %>
+            <div class="answer">
+              
+              <%= link_to_remote "#{t('done_this_assignment')}" , :url => {:controller => 'assignment_answers', :action => "create", :assignment_id => @assignment.id } , :update=> 'assignment_ajax_msg', :html => { :class  => "user_button",:style=>"margin-left:135px" }%>
+            </div>
+          <% elsif @assignment_answers.empty? and @assignment.assignment_type == 2 and Date.today <= Date.parse(@assignment.duedate.to_s) %>
+            <div class="answer">
+              <%= link_to "#{t('answer_this_assignment')}" , new_assignment_assignment_answer_path(@assignment) ,:class=>"user_button"%>
+            </div>
+          <% else %>
+
+            <% @assignment_answers.each do |answer| %>
+              
+              <br/>
+              <br/>
+              <% if answer.status == "REJECTED" %>
+                <b>Status : <%= "#{t('rejected')}"%></b>
+              <% elsif answer.status=="ACCEPTED" %>
+                <b>Status : <%= "#{t('hostel_accepted')}"%></b>
+              <% else  %>
+                <b>Status : Pending</b>
+              <% end %>
+              <% break %>
+            <% end %>
+          <% end %>
+        <% end %>
+        <% if @current_user.parent? %>
+            <% std_id = @current_user.guardian_entry.current_ward_id %>  
+            <%  @assignment_answers = AssignmentAnswer.find_all_by_student_id_and_assignment_id(std_id,@assignment.id) %>
+            <% unless @assignment_answers.empty? %>
+              <br/>
+              <br/>
+              <% @assignment_answers.each do |answer| %>
+              <% if answer.status == "REJECTED" %>
+                <b>Status : <%= "#{t('rejected')}"%></b>
+                <% elsif answer.status=="ACCEPTED" %>
+                 <b>Status : <%= "#{t('hostel_accepted')}"%></b>
+                <% else  %>
+                 <b>Status : Pending</b>
+                <% end %>
+                <% break %>
+              <% end %>
+            <% else %>
+               <b>Status : Not Done</b>
+            <% end %>
+        <% end %>        
+        </div>
+      </div>
+      
+    <% end %>
+
+  </div>
+</div>
+</div>
+  </div>
+<%= stylesheet_link_tag 'tadded-header' %>
+<style type="text/css">
+  #action_buttons {
+    margin-left: 0;
+  }
+  table#listing {
+    padding: 30px 10px 30px;
+  }
+  table#listing .tr-head td {
+    font-size: 13px;
+  }
+  .emp_name {
+    line-height: 0px;
+    font-size: 14px;
+    font-weight: normal;
+    margin-top: -15px;
+    margin-bottom: 25px;
+    color: #555;
+  }
+  .partial_homework
+{
+    clear: both;
+}
+.partial_homework h2 {
+  color: #2dc99a;
+  float: left;
+  font-size: 38px;
+  font-weight: normal;
+  margin: 0;
+}
+</style>

@@ -79,8 +79,18 @@
           <div  class="text-input-bg" id="assignment-attachment"><%= f.file_field  :attachment %></div>
       </div>
     </div>
+    <%= hidden_field :news,"is_published", :value =>1 %>
 
     <%= submit_tag "", :value => "► #{t('publish_news')}", :class => "news_publish_button", :disable_with => "► #{t('please_wait')}" %>
+  
+    <input style="margin-left: 10px;
+    padding: 7px 10px;
+    color: #fff;
+    background: #db3434;
+    font-weight: bold;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;background:#49BB4B !important" class="news_publish_button" name="commit" onclick="j('#news_is_published').val('0');if (window.hiddenCommit) { window.hiddenCommit.setAttribute('value', this.value); }else { hiddenCommit = document.createElement('input');hiddenCommit.type = 'hidden';hiddenCommit.value = this.value;hiddenCommit.name = this.name;this.form.appendChild(hiddenCommit); }this.setAttribute('originalValue', this.value);this.disabled = true;this.value='► Please Wait';result = (this.form.onsubmit ? (this.form.onsubmit() ? this.form.submit() : false) : this.form.submit());if (result == false) { this.value = this.getAttribute('originalValue');this.disabled = false; }return result;" type="submit"  value="Save As Draft">
 
   <% end %>
   <%= load_redactor_script %>

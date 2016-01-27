@@ -27,6 +27,11 @@
         <li class="active">
           <a href="/calendar/others/" class="f2">Others</a>
         </li>
+        <% if permitted_to? :edit_event, :event %>
+        <li>
+          <a href="/calendar/draft/" class="f2">draft Event</a>
+        </li>
+        <% end %>
         <!--<li>
           <a href="/calendar/academic_calendar/" class="f2">Calendar</a>
         </li>

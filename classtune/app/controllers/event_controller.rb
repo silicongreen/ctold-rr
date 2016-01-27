@@ -170,6 +170,10 @@ class EventController < ApplicationController
 
   def confirm_event
     event = Event.find(params[:id])
+    if !params[:is_published].blank?
+      event.is_published = params[:is_published];
+      event.save
+    end
     reminder_subject = "#{t('new_event')} : #{event.title}"
     reminder_body = " #{t('event_description')} : #{event.description} <br/> #{t('start_date')} : " + event.start_date.strftime("%d/%m/%Y %I:%M %p") + " <br/> #{t('end_date')} : " + event.end_date.strftime("%d/%m/%Y %I:%M %p")
     reminder_recipient_ids = []

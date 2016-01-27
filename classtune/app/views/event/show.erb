@@ -118,9 +118,16 @@
     <% end %>
 
     <% unless @command == 'edit' %>
-      <%= link_to "► #{t('confirm')}",{ :action=>"confirm_event",:id=>@event.id}, :class=> 'create user_button'%>  <%= link_to "► #{t('cancel')}", { :action=>"cancel_event" , :id=>@event.id },  :class=> 'create user_button' %>
+      <%= link_to "► #{t('confirm')}",{ :action=>"confirm_event",:id=>@event.id}, :class=> 'create user_button'%>  
+      <%#= link_to "► Save As Draft",{ :action=>"confirm_event",:id=>@event.id,:is_published=>0}, :class=> 'create user_button'%>  
+      <%= link_to "► #{t('cancel')}", { :action=>"cancel_event" , :id=>@event.id },  :class=> 'create user_button' %>
     <% else %>
-      <%= link_to "► #{t('confirm')}",{ :action=>"confirm_event",:id=>@event.id}, :class=> 'create user_button'%>  <%= link_to "►  #{t('cancel')}", { :action=>"edit_event" , :id=>@event.id },  :class=> 'create user_button' %>
+      <%= link_to "► #{t('confirm')}",{ :action=>"confirm_event",:id=>@event.id}, :class=> 'create user_button'%> 
+      <% if @event.is_published == 0 %>
+        <%= link_to "► Confirm And Publish",{ :action=>"confirm_event",:id=>@event.id,:is_published=>1}, :class=> 'create user_button'%>  
+      <% end %>
+      
+      <%= link_to "►  #{t('cancel')}", { :action=>"edit_event" , :id=>@event.id },  :class=> 'create user_button' %>
     <% end %>
   </div>
 </div>

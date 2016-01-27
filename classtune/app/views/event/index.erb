@@ -92,8 +92,20 @@
       <label for="end-date"><%= t('common_event') %></label>
       <%= f.check_box :is_common %>
     </div>
+    <%= hidden_field :events,"is_published", :value =>1 %>
 
     <%= f.submit "► #{t('create_event')}", :disable_with => "► #{t('please_wait')}" %>
+    
+    <input style="margin: 0px 0px 0px 10px;
+    padding:10px;
+    color: #fff;
+    background: #db3434;
+    font-weight: bold;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;background:#49BB4B !important; height:auto;" name="commit" 
+    onclick="j('#events_is_published').val('0');if (window.hiddenCommit) { window.hiddenCommit.setAttribute('value', this.value); }else { hiddenCommit = document.createElement('input');hiddenCommit.type = 'hidden';hiddenCommit.value = this.value;hiddenCommit.name = this.name;this.form.appendChild(hiddenCommit); }this.setAttribute('originalValue', this.value);this.disabled = true;this.value='► Please Wait';result = (this.form.onsubmit ? (this.form.onsubmit() ? this.form.submit() : false) : this.form.submit());if (result == false) { this.value = this.getAttribute('originalValue');this.disabled = false; }return result;" 
+    type="submit" value="► Save As Draft">
 
   <% end %>
   <%= load_redactor_script %>

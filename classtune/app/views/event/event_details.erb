@@ -74,9 +74,7 @@
       
     </div>
 
-            <div class="answer_mark">
-
-            </div>
+            
 
   </div>
   <div id="page-yield" style="margin-top: 0px;">
@@ -89,6 +87,12 @@
         <%= @event.description %>
       
     </div>
+    <% if permitted_to? :edit_event, :event %>
+                    <%= link_to "#{t('edit_text')}",{:controller=>'event',:action=>'edit_event',:id=>@event.id},:class=>"viewmore" %>
+    <% end %>
+    <% if permitted_to? :event_delete, :calendar %>
+      <%= link_to "#{t('delete_text')}",{:controller=>'calendar',:action=>'event_delete',:id=>@event.id},:confirm=>"#{t('delete_confirm_msg')}",:class=>"viewmore" %>
+    <% end %>
     
 
     <div class="extender"></div>

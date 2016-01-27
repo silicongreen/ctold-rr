@@ -18,17 +18,17 @@
     <div class="tabbed-header-wrapper">
         
       <ul class="header-tabs">        
-        <li class="active">
+        <li>
           <a href="/calendar/index/" class="f2">Event</a>
         </li>
-        <li>
+        <li >
           <a href="/calendar/holiday/" class="f2">Holiday</a>
         </li>
         <li>
           <a href="/calendar/others/" class="f2">Others</a>
         </li>
         <% if permitted_to? :edit_event, :event %>
-        <li>
+        <li class="active">
           <a href="/calendar/draft/" class="f2">draft Event</a>
         </li>
         <% end %>
@@ -59,7 +59,7 @@
         <%= link_to_remote "<div></div>",
           :before => "Element.show('loader')",
           :success => "Element.hide('loader')",
-          :url=>{:controller=>"calendar", :action=>"new_academic_calendar"},
+          :url=>{:controller=>"calendar", :action=>"new_holiday"},
           :with => "'new_month=#{@show_month.month-1}'+ '&passed_date=#{@show_month}'"%>
       </div>
       <div class="month f5">
@@ -73,7 +73,7 @@
         <%= link_to_remote "<div></div>",
           :before => "Element.show('loader')",
           :success => "Element.hide('loader')",
-          :url=>{:controller=>"calendar", :action=>"new_academic_calendar"},
+          :url=>{:controller=>"calendar", :action=>"new_holiday"},
           :with => "'new_month=#{@show_month.month+1}'+ '&passed_date=#{@show_month}'"%>
       </div>
       <div class="extender"></div>
@@ -101,39 +101,29 @@
                 <% unless @obj_events.empty? %>
                   
                   <% @obj_events.each do |h| %>
-                    <% if dt == h.start_date.strftime('%d').to_i and @show_month.month.to_i == h.start_date.strftime('%m').to_i and @show_month.year.to_i == h.start_date.strftime('%Y').to_i %>                
-                        <%  if h.pointing_color.nil? or h.pointing_color == ""
-                              if h.is_holiday
-                                color = "#01B169"
-                              elsif h.is_due
-                                color = "#D91404"
-                              else                              
-                                color = "#FFCF27"            
-                              end
+                    <% if dt == h.start_date.strftime('%d').to_i and @show_month.month.to_i == h.start_date.strftime('%m').to_i and @show_month.year.to_i == h.start_date.strftime('%Y').to_i and h.is_holiday %>                
+                        <%  if h.pointing_color.nil? or h.pointing_color == ""                                                          
+                              color = "#01B169"           
                             else
                               color = h.pointing_color
                             end
                         %>
-                        <% if h.is_holiday or h.is_exam or h.is_due  %>
-                        
-                        <% else %>
-                          <tr>
-                            <td class=""><span> <%= h.start_date.strftime('%Y-%m-%d') %><%#= dt  %></span></td>
-                            <td class="">
-                              <a class="event_title" href="/event/event_details/<%=  h.id%>" style="font-size:16px;color: <%= color %> ;"><%= h.title %></a>
-                              <% if h.is_holiday  %>
-                              <br /><span style="font-size: 12px;color: #999;">Holiday</span>
-                              <% end %>
-                              <%#= h.description %>
-                              <%#= t('start_time') %> <%#= I18n.l(h.start_date,:format=>"%I:%M %p") %><%#= t('end_time') %> <%#= I18n.l(h.end_date,:format=>"%I:%M %p") %>
-                             </td>
-                             <td class=" total">
-                               <div class="viewmore"><a href="/event/event_details/<%=  h.id%>">View</a></div>
-                             </td>
-                          </tr>
-                        
+      
+                        <tr>
+                          <td class=""><span> <%= h.start_date.strftime('%Y-%m-%d') %><%#= dt  %></span></td>
+                          <td class="">
+                            <a class="event_title" href="/event/event_details/<%=  h.id%>" style="font-size:16px;color: <%= color %> ;"><%= h.title %></a>
+                            <% if h.is_holiday  %>
+                            <br /><span style="font-size: 12px;color: #999;">Holiday</span>
+                            <% end %>
+                            <%#= h.description %>
+                            <%#= t('start_time') %> <%#= I18n.l(h.start_date,:format=>"%I:%M %p") %><%#= t('end_time') %> <%#= I18n.l(h.end_date,:format=>"%I:%M %p") %>
+                           </td>
+                           <td class=" total">
+                             <div class="viewmore"><a href="/event/event_details/<%=  h.id%>">View</a></div>
+                           </td>
+                        </tr>
                         <% i += 1 %>
-                        <% end %>
                       <% end %>                       
                     <% end %>                      
                 
@@ -146,7 +136,7 @@
     <% end %>  
     <% if i == 0 %>
         <tr>
-          <td colspan="4"><span style="">No event in this month</span></td>                      
+          <td colspan="4"><span>No holiday in this month</span></td>                      
         </tr>
     <% end %>
     </tbody>

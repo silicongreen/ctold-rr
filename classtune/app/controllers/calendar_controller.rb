@@ -49,19 +49,19 @@ class CalendarController < ApplicationController
     
     
     if (categories.nil? or categories.empty?) and (@user.admin? or privilege.include?("EventManagement"))
-      @events = Event.find(:all,:conditions => ["((start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?)) ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day],:include=>[:origin])
+      @events = Event.find(:all,:conditions => ["((start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?)) and is_published = 1 ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day],:include=>[:origin])
     elsif @user.admin? or privilege.include?("EventManagement")
-      @events = Event.find(:all,:conditions => ["((start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?))  and (event_category_id NOT IN (?) or event_category_id is null) ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day,categories],:include=>[:origin])
+      @events = Event.find(:all,:conditions => ["((start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?)) and is_published = 1  and (event_category_id NOT IN (?) or event_category_id is null) ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day,categories],:include=>[:origin])
     end
     if (categories.nil? or categories.empty?) and (@user.employee? and !privilege.include?("EventManagement"))
-      @events = Event.find(:all,:conditions => ["((start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?)) ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day],:include=>[:origin,:employee_department_events]) 
+      @events = Event.find(:all,:conditions => ["((start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?)) and is_published = 1 ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day],:include=>[:origin,:employee_department_events]) 
     elsif @user.employee? and !privilege.include?("EventManagement")
-      @events = Event.find(:all,:conditions => ["((start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?))  and (event_category_id NOT IN (?) or event_category_id is null) ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day,categories],:include=>[:origin,:employee_department_events]) 
+      @events = Event.find(:all,:conditions => ["((start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?)) and is_published = 1  and (event_category_id NOT IN (?) or event_category_id is null) ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day,categories],:include=>[:origin,:employee_department_events]) 
     end
     if (categories.nil? or categories.empty?) and (@user.student? or @user.parent?)
-      @events = Event.find(:all,:conditions => ["((start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?)) ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day],:include=>[:origin,:batch_events])  
+      @events = Event.find(:all,:conditions => ["((start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?)) and is_published = 1 ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day],:include=>[:origin,:batch_events])  
     elsif @user.student? or @user.parent?
-       @events = Event.find(:all,:conditions => ["((start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?))  and (event_category_id NOT IN (?) or event_category_id is null) ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day,categories],:include=>[:origin,:batch_events])   
+       @events = Event.find(:all,:conditions => ["((start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?)) and is_published = 1  and (event_category_id NOT IN (?) or event_category_id is null) ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day,categories],:include=>[:origin,:batch_events])   
     end
     
     load_notifications
@@ -88,9 +88,9 @@ class CalendarController < ApplicationController
       categories << event_category.id
     end 
     if (categories.nil? or categories.empty?)
-      @events = Event.find(:all,:conditions => ["((start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?)) ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day])
+      @events = Event.find(:all,:conditions => ["((start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?)) and is_published = 1 ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day])
     else
-      @events = Event.find(:all,:conditions => ["((start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?)) and (event_category_id NOT IN (?) or event_category_id is null) ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day,categories])
+      @events = Event.find(:all,:conditions => ["((start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?)) and is_published = 1 and (event_category_id NOT IN (?) or event_category_id is null) ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day,categories])
     end
     
     load_notifications
@@ -139,7 +139,7 @@ class CalendarController < ApplicationController
         @events = Event.find(
           :all,
           :conditions => [
-            "((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))",
+            "((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1",
             first_day, last_day, first_day, last_day, first_day, last_day, first_day, last_day
           ],
           :order=>"start_date DESC"
@@ -148,7 +148,7 @@ class CalendarController < ApplicationController
         @events = Event.find(
           :all,
           :conditions => [
-            "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))",
+            "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1",
             categories, first_day, last_day, first_day, last_day, first_day, last_day, first_day, last_day
           ],
           :order=>"start_date DESC"
@@ -159,7 +159,7 @@ class CalendarController < ApplicationController
         @events = Event.find(
           :all,
           :conditions => [
-            "((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))",
+            "((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1",
             first_day, last_day, first_day, last_day, first_day, last_day, first_day, last_day
           ],
           :order=>"start_date DESC",
@@ -169,7 +169,7 @@ class CalendarController < ApplicationController
         @events = Event.find(
           :all,
           :conditions => [
-            "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))",
+            "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1",
             categories,
             first_day, last_day, first_day, last_day, first_day, last_day, first_day, last_day
           ],
@@ -182,7 +182,7 @@ class CalendarController < ApplicationController
         @events = Event.find(
           :all,
           :conditions => [
-            "((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))",
+            "((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1",
             first_day, last_day, first_day, last_day, first_day, last_day, first_day, last_day
           ],
           :order=>"start_date DESC",
@@ -192,7 +192,7 @@ class CalendarController < ApplicationController
          @events = Event.find(
            :all,
            :conditions => [
-             "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))",
+             "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1",
              categories,
              first_day, last_day, first_day, last_day, first_day, last_day, first_day, last_day
            ],
@@ -248,7 +248,7 @@ class CalendarController < ApplicationController
         @events = Event.find(
           :all,
           :conditions => [
-            "((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))",
+            "((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1",
             first_day, last_day, first_day, last_day, first_day, last_day, first_day, last_day
           ],
           :order=>"start_date DESC"
@@ -257,7 +257,7 @@ class CalendarController < ApplicationController
         @events = Event.find(
           :all,
           :conditions => [
-            "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))",
+            "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1",
             categories, first_day, last_day, first_day, last_day, first_day, last_day, first_day, last_day
           ],
           :order=>"start_date DESC"
@@ -268,7 +268,7 @@ class CalendarController < ApplicationController
         @events = Event.find(
           :all,
           :conditions => [
-            "((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))",
+            "((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1",
             first_day, last_day, first_day, last_day, first_day, last_day, first_day, last_day
           ],
           :order=>"start_date DESC",
@@ -278,7 +278,7 @@ class CalendarController < ApplicationController
         @events = Event.find(
           :all,
           :conditions => [
-            "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))",
+            "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1",
             categories,
             first_day, last_day, first_day, last_day, first_day, last_day, first_day, last_day
           ],
@@ -291,7 +291,7 @@ class CalendarController < ApplicationController
         @events = Event.find(
           :all,
           :conditions => [
-            "((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))",
+            "((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1",
             first_day, last_day, first_day, last_day, first_day, last_day, first_day, last_day
           ],
           :order=>"start_date DESC",
@@ -301,7 +301,7 @@ class CalendarController < ApplicationController
          @events = Event.find(
            :all,
            :conditions => [
-             "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))",
+             "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1",
              categories,
              first_day, last_day, first_day, last_day, first_day, last_day, first_day, last_day
            ],
@@ -322,6 +322,93 @@ class CalendarController < ApplicationController
     render :update do |page|
       page.replace_html 'monthreport', :partial => 'new_academic_calendar'
     end
+  end
+  
+  def draft
+    @privilege = current_user.privileges.map{|p| p.name}
+    @user = current_user
+    
+    event_categories = EventCategory.find(:all,:conditions=>{:is_club=>1})
+    categories = []
+    event_categories.each do |event_category|
+      categories << event_category.id
+    end 
+    
+    if params[:new_month].nil?
+      @show_month = @local_tzone_time.to_date
+    else
+      passed_date = (params[:passed_date]).to_date
+      if params[:new_month].to_i > passed_date.month
+        @show_month  = passed_date+1.month
+      else
+        @show_month = passed_date-1.month
+      end
+    end
+    
+    @refresh_calendar = true
+    @paginated = false
+    if !params[:page].nil?
+      @refresh_calendar = false
+      @paginated = true
+    end
+    
+    @start_date = @show_month.beginning_of_month
+    @start_date_day = @start_date.wday
+    @last_day = @show_month.end_of_month
+    @notifications = Hash.new{|h,k| h[k]=Array.new}
+    first_day = @show_month.beginning_of_month
+    last_day =  @show_month.end_of_month
+    
+    if (categories.nil? or categories.empty?) and (@user.admin? or @privilege.include?("EventManagement"))
+        @events = Event.find(
+          :all,
+          :conditions => [
+            "((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND is_published = 0",
+            first_day, last_day, first_day, last_day, first_day, last_day, first_day, last_day
+          ],
+          :order=>"start_date DESC"
+        )
+      elsif @user.admin? or @privilege.include?("EventManagement")
+        @events = Event.find(
+          :all,
+          :conditions => [
+            "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?))  AND is_published = 0",
+            categories, first_day, last_day, first_day, last_day, first_day, last_day, first_day, last_day
+          ],
+          :order=>"start_date DESC"
+        )
+      end
+
+      if (categories.nil? or categories.empty?) and (@user.employee? and !@privilege.include?("EventManagement"))
+        @events = Event.find(
+          :all,
+          :conditions => [
+            "((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?))  AND is_published = 0",
+            first_day, last_day, first_day, last_day, first_day, last_day, first_day, last_day
+          ],
+          :order=>"start_date DESC",
+          :include=>[:employee_department_events]
+        )
+      elsif @user.employee? and !@privilege.include?("EventManagement")
+        @events = Event.find(
+          :all,
+          :conditions => [
+            "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND is_published = 0",            categories,
+            first_day, last_day, first_day, last_day, first_day, last_day, first_day, last_day
+          ],
+          :order=>"start_date DESC",
+          :include=>[:employee_department_events]
+        )
+      end
+    
+    @obj_events = @events
+    @dates = []
+    
+    @events.each do |h|
+        @dates.push h.start_date.strftime('%Y-%m-%d')
+    end
+    
+    load_notifications
   end
   
   def holiday
@@ -363,7 +450,7 @@ class CalendarController < ApplicationController
         @events = Event.find(
           :all,
           :conditions => [
-            "((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))",
+            "((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1",
             first_day, last_day, first_day, last_day, first_day, last_day, first_day, last_day
           ],
           :order=>"start_date DESC"
@@ -372,7 +459,7 @@ class CalendarController < ApplicationController
         @events = Event.find(
           :all,
           :conditions => [
-            "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))",
+            "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1",
             categories, first_day, last_day, first_day, last_day, first_day, last_day, first_day, last_day
           ],
           :order=>"start_date DESC"
@@ -383,7 +470,7 @@ class CalendarController < ApplicationController
         @events = Event.find(
           :all,
           :conditions => [
-            "((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))",
+            "((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1",
             first_day, last_day, first_day, last_day, first_day, last_day, first_day, last_day
           ],
           :order=>"start_date DESC",
@@ -393,7 +480,7 @@ class CalendarController < ApplicationController
         @events = Event.find(
           :all,
           :conditions => [
-            "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))",
+            "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1",
             categories,
             first_day, last_day, first_day, last_day, first_day, last_day, first_day, last_day
           ],
@@ -406,7 +493,7 @@ class CalendarController < ApplicationController
         @events = Event.find(
           :all,
           :conditions => [
-            "((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))",
+            "((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1",
             first_day, last_day, first_day, last_day, first_day, last_day, first_day, last_day
           ],
           :order=>"start_date DESC",
@@ -416,7 +503,7 @@ class CalendarController < ApplicationController
          @events = Event.find(
            :all,
            :conditions => [
-             "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))",
+             "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1",
              categories,
              first_day, last_day, first_day, last_day, first_day, last_day, first_day, last_day
            ],
@@ -472,7 +559,7 @@ class CalendarController < ApplicationController
         @events = Event.find(
           :all,
           :conditions => [
-            "((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))",
+            "((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1",
             first_day, last_day, first_day, last_day, first_day, last_day, first_day, last_day
           ],
           :order=>"start_date DESC"
@@ -481,7 +568,7 @@ class CalendarController < ApplicationController
         @events = Event.find(
           :all,
           :conditions => [
-            "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))",
+            "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1",
             categories, first_day, last_day, first_day, last_day, first_day, last_day, first_day, last_day
           ],
           :order=>"start_date DESC"
@@ -492,7 +579,7 @@ class CalendarController < ApplicationController
         @events = Event.find(
           :all,
           :conditions => [
-            "((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))",
+            "((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1",
             first_day, last_day, first_day, last_day, first_day, last_day, first_day, last_day
           ],
           :order=>"start_date DESC",
@@ -502,7 +589,7 @@ class CalendarController < ApplicationController
         @events = Event.find(
           :all,
           :conditions => [
-            "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))",
+            "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1",
             categories,
             first_day, last_day, first_day, last_day, first_day, last_day, first_day, last_day
           ],
@@ -515,7 +602,7 @@ class CalendarController < ApplicationController
         @events = Event.find(
           :all,
           :conditions => [
-            "((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))",
+            "((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1",
             first_day, last_day, first_day, last_day, first_day, last_day, first_day, last_day
           ],
           :order=>"start_date DESC",
@@ -525,7 +612,7 @@ class CalendarController < ApplicationController
          @events = Event.find(
            :all,
            :conditions => [
-             "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))",
+             "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1",
              categories,
              first_day, last_day, first_day, last_day, first_day, last_day, first_day, last_day
            ],
@@ -576,19 +663,19 @@ class CalendarController < ApplicationController
     
     
     if (categories.nil? or categories.empty?) and (@user.admin? or privilege.include?("EventManagement"))
-      @events = Event.find(:all,:conditions => ["((start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?)) ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day],:include=>[:origin])
+      @events = Event.find(:all,:conditions => ["((start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?)) and is_published = 1", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day],:include=>[:origin])
     elsif @user.admin? or privilege.include?("EventManagement")
-      @events = Event.find(:all,:conditions => ["((start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?))  and (event_category_id NOT IN (?) or event_category_id is null) ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day,categories],:include=>[:origin])
+      @events = Event.find(:all,:conditions => ["((start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?)) and is_published = 1  and (event_category_id NOT IN (?) or event_category_id is null) ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day,categories],:include=>[:origin])
     end
     if (categories.nil? or categories.empty?) and (@user.employee? and !privilege.include?("EventManagement"))
-      @events = Event.find(:all,:conditions => ["((start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?)) ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day],:include=>[:origin,:employee_department_events]) 
+      @events = Event.find(:all,:conditions => ["((start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?)) and is_published = 1", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day],:include=>[:origin,:employee_department_events]) 
     elsif @user.employee? and !privilege.include?("EventManagement")
-      @events = Event.find(:all,:conditions => ["((start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?))  and (event_category_id NOT IN (?) or event_category_id is null) ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day,categories],:include=>[:origin,:employee_department_events]) 
+      @events = Event.find(:all,:conditions => ["((start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?)) and is_published = 1  and (event_category_id NOT IN (?) or event_category_id is null) ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day,categories],:include=>[:origin,:employee_department_events]) 
     end
     if (categories.nil? or categories.empty?) and (@user.student? or @user.parent?)
-      @events = Event.find(:all,:conditions => ["((start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?)) ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day],:include=>[:origin,:batch_events])  
+      @events = Event.find(:all,:conditions => ["((start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?)) and is_published = 1 ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day],:include=>[:origin,:batch_events])  
     elsif @user.student? or @user.parent?
-       @events = Event.find(:all,:conditions => ["((start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?))  and (event_category_id NOT IN (?) or event_category_id is null) ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day,categories],:include=>[:origin,:batch_events])   
+       @events = Event.find(:all,:conditions => ["((start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?)) and is_published = 1  and (event_category_id NOT IN (?) or event_category_id is null) ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day,categories],:include=>[:origin,:batch_events])   
     end
     
     @obj_events = @events
@@ -629,19 +716,19 @@ class CalendarController < ApplicationController
     
     
     if (categories.nil? or categories.empty?) and (@user.admin? or privilege.include?("EventManagement"))
-      @events = Event.find(:all,:conditions => ["((start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?)) ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day],:include=>[:origin])
+      @events = Event.find(:all,:conditions => ["((start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?)) and is_published = 1 ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day],:include=>[:origin])
     elsif @user.admin? or privilege.include?("EventManagement")
-      @events = Event.find(:all,:conditions => ["((start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?))  and (event_category_id NOT IN (?) or event_category_id is null) ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day,categories],:include=>[:origin])
+      @events = Event.find(:all,:conditions => ["((start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?)) and is_published = 1  and (event_category_id NOT IN (?) or event_category_id is null) ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day,categories],:include=>[:origin])
     end
     if (categories.nil? or categories.empty?) and (@user.employee? and !privilege.include?("EventManagement"))
-      @events = Event.find(:all,:conditions => ["((start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?)) ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day],:include=>[:origin,:employee_department_events]) 
+      @events = Event.find(:all,:conditions => ["((start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?)) and is_published = 1 ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day],:include=>[:origin,:employee_department_events]) 
     elsif @user.employee? and !privilege.include?("EventManagement")
-      @events = Event.find(:all,:conditions => ["((start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?))  and (event_category_id NOT IN (?) or event_category_id is null) ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day,categories],:include=>[:origin,:employee_department_events]) 
+      @events = Event.find(:all,:conditions => ["((start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?)) and is_published = 1  and (event_category_id NOT IN (?) or event_category_id is null) ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day,categories],:include=>[:origin,:employee_department_events]) 
     end
     if (categories.nil? or categories.empty?) and (@user.student? or @user.parent?)
-      @events = Event.find(:all,:conditions => ["((start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?)) ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day],:include=>[:origin,:batch_events])  
+      @events = Event.find(:all,:conditions => ["((start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?)) and is_published = 1 ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day],:include=>[:origin,:batch_events])  
     elsif @user.student? or @user.parent?
-       @events = Event.find(:all,:conditions => ["((start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?))  and (event_category_id NOT IN (?) or event_category_id is null) ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day,categories],:include=>[:origin,:batch_events])   
+       @events = Event.find(:all,:conditions => ["((start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?)) and is_published = 1  and (event_category_id NOT IN (?) or event_category_id is null) ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day,categories],:include=>[:origin,:batch_events])   
     end
     
     @obj_events = @events
@@ -947,7 +1034,7 @@ class CalendarController < ApplicationController
         @events = Event.find(
           :all,
           :conditions => [
-            "((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))",
+            "((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1",
             first_day, last_day, first_day, last_day, first_day, last_day, first_day, last_day
           ],
           :order=>"start_date DESC"
@@ -955,7 +1042,7 @@ class CalendarController < ApplicationController
         @events_paginate = Event.find(
           :all,
           :conditions => [
-            "((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))",
+            "((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1",
             first_day, last_day, first_day, last_day
           ],
           :order=>"start_date ASC"
@@ -964,7 +1051,7 @@ class CalendarController < ApplicationController
         @events = Event.find(
           :all,
           :conditions => [
-            "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))",
+            "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1",
             categories, first_day, last_day, first_day, last_day, first_day, last_day, first_day, last_day
           ],
           :order=>"start_date DESC"
@@ -972,7 +1059,7 @@ class CalendarController < ApplicationController
         @events_paginate = Event.find(
           :all,
           :conditions => [
-            "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))",
+            "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1",
             categories,first_day, last_day, first_day, last_day
           ],
           :order=>"start_date ASC"
@@ -983,7 +1070,7 @@ class CalendarController < ApplicationController
         @events = Event.find(
           :all,
           :conditions => [
-            "((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))",
+            "((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1",
             first_day, last_day, first_day, last_day, first_day, last_day, first_day, last_day
           ],
           :order=>"start_date DESC",
@@ -1002,7 +1089,7 @@ class CalendarController < ApplicationController
         @events = Event.find(
           :all,
           :conditions => [
-            "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))",
+            "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1",
             categories,
             first_day, last_day, first_day, last_day, first_day, last_day, first_day, last_day
           ],
@@ -1012,7 +1099,7 @@ class CalendarController < ApplicationController
         @events_paginate = Event.find(
           :all,
           :conditions => [
-            "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))",
+            "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1",
             categories,first_day, last_day, first_day, last_day
           ],
           :order=>"start_date ASC",
@@ -1024,7 +1111,7 @@ class CalendarController < ApplicationController
         @events = Event.find(
           :all,
           :conditions => [
-            "((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))",
+            "((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1",
             first_day, last_day, first_day, last_day, first_day, last_day, first_day, last_day
           ],
           :order=>"start_date DESC",
@@ -1033,7 +1120,7 @@ class CalendarController < ApplicationController
         @events_paginate = Event.find(
           :all,
           :conditions => [
-            "((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))",
+            "((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1",
             first_day, last_day, first_day, last_day
           ],
           :order=>"start_date ASC",
@@ -1043,7 +1130,7 @@ class CalendarController < ApplicationController
          @events = Event.find(
            :all,
            :conditions => [
-             "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))",
+             "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1",
              categories,
              first_day, last_day, first_day, last_day, first_day, last_day, first_day, last_day
            ],
@@ -1053,7 +1140,7 @@ class CalendarController < ApplicationController
          @events_paginate = Event.find(
           :all,
           :conditions => [
-            "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))",
+            "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1",
             categories,first_day, last_day, first_day, last_day
           ],
           :order=>"start_date ASC",
@@ -1112,7 +1199,7 @@ class CalendarController < ApplicationController
         @events = Event.find(
           :all,
           :conditions => [
-            "((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))",
+            "((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1",
             first_day, last_day, first_day, last_day, first_day, last_day, first_day, last_day
           ],
           :order=>"start_date DESC"
@@ -1120,7 +1207,7 @@ class CalendarController < ApplicationController
         @events_paginate = Event.find(
           :all,
           :conditions => [
-            "((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))",
+            "((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1",
             first_day, last_day, first_day, last_day
           ],
           :order=>"start_date ASC"
@@ -1129,7 +1216,7 @@ class CalendarController < ApplicationController
         @events = Event.find(
           :all,
           :conditions => [
-            "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))",
+            "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1",
             categories, first_day, last_day, first_day, last_day, first_day, last_day, first_day, last_day
           ],
           :order=>"start_date DESC"
@@ -1137,7 +1224,7 @@ class CalendarController < ApplicationController
         @events_paginate = Event.find(
           :all,
           :conditions => [
-            "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))",
+            "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1",
             categories,first_day, last_day, first_day, last_day
           ],
           :order=>"start_date ASC"
@@ -1148,7 +1235,7 @@ class CalendarController < ApplicationController
         @events = Event.find(
           :all,
           :conditions => [
-            "((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))",
+            "((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1",
             first_day, last_day, first_day, last_day, first_day, last_day, first_day, last_day
           ],
           :order=>"start_date DESC",
@@ -1157,7 +1244,7 @@ class CalendarController < ApplicationController
         @events_paginate = Event.find(
           :all,
           :conditions => [
-            "((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))",
+            "((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1",
             first_day, last_day, first_day, last_day
           ],
           :order=>"start_date ASC",
@@ -1167,7 +1254,7 @@ class CalendarController < ApplicationController
         @events = Event.find(
           :all,
           :conditions => [
-            "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))",
+            "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1",
             categories,
             first_day, last_day, first_day, last_day, first_day, last_day, first_day, last_day
           ],
@@ -1177,7 +1264,7 @@ class CalendarController < ApplicationController
         @events_paginate = Event.find(
           :all,
           :conditions => [
-            "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))",
+            "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1",
             categories,first_day, last_day, first_day, last_day
           ],
           :order=>"start_date ASC",
@@ -1189,7 +1276,7 @@ class CalendarController < ApplicationController
         @events = Event.find(
           :all,
           :conditions => [
-            "((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))",
+            "((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1",
             first_day, last_day, first_day, last_day, first_day, last_day, first_day, last_day
           ],
           :order=>"start_date DESC",
@@ -1198,7 +1285,7 @@ class CalendarController < ApplicationController
         @events_paginate = Event.find(
           :all,
           :conditions => [
-            "((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))",
+            "((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1",
             first_day, last_day, first_day, last_day
           ],
           :order=>"start_date ASC",
@@ -1208,7 +1295,7 @@ class CalendarController < ApplicationController
          @events = Event.find(
            :all,
            :conditions => [
-             "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))",
+             "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1",
              categories,
              first_day, last_day, first_day, last_day, first_day, last_day, first_day, last_day
            ],
@@ -1218,7 +1305,7 @@ class CalendarController < ApplicationController
          @events_paginate = Event.find(
           :all,
           :conditions => [
-            "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))",
+            "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?)) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1",
             categories,first_day, last_day, first_day, last_day
           ],
           :order=>"start_date ASC",
@@ -1261,62 +1348,62 @@ class CalendarController < ApplicationController
     # Clubs
     if (params[:event_cateory_id].present?) and (params[:event_cateory_id] == 'club_news')
       if (categories.nil? or categories.empty?) and (@user.admin? or @privilege.include?("EventManagement"))
-        @events = Event.paginate(:conditions => ["(origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')", categories], :order=>"id DESC", :page => params[:page], :per_page => 10)
+        @events = Event.paginate(:conditions => ["(origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '') and is_published = 1", categories], :order=>"id DESC", :page => params[:page], :per_page => 10)
       elsif @user.admin? or @privilege.include?("EventManagement")
-        @events = Event.paginate(:conditions => ["event_category_id IN (?) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))", categories], :order=>"id DESC", :page => params[:page], :per_page => 10)
+        @events = Event.paginate(:conditions => ["event_category_id IN (?) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1", categories], :order=>"id DESC", :page => params[:page], :per_page => 10)
       end
 
       if (categories.nil? or categories.empty?) and (@user.employee? and !@privilege.include?("EventManagement"))
-        @events = Event.paginate(:conditions => ["(origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')", categories], :order=>"id DESC", :page => params[:page], :per_page => 10, :include=>[:employee_department_events])
+        @events = Event.paginate(:conditions => ["(origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '') and is_published = 1", categories], :order=>"id DESC", :page => params[:page], :per_page => 10, :include=>[:employee_department_events])
       elsif @user.employee? and !@privilege.include?("EventManagement")
-        @events = Event.paginate(:conditions => ["event_category_id IN (?) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))", categories], :order=>"id DESC", :page => params[:page], :per_page => 10, :include=>[:employee_department_events])
+        @events = Event.paginate(:conditions => ["event_category_id IN (?) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1", categories], :order=>"id DESC", :page => params[:page], :per_page => 10, :include=>[:employee_department_events])
       end
 
       if (categories.nil? or categories.empty?) and (@user.student? or @user.parent?)
-        @events = Event.paginate(:conditions => ["(origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')", categories], :order=>"id DESC", :page => params[:page], :per_page => 10, :include=>[:batch_events])
+        @events = Event.paginate(:conditions => ["(origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '') and is_published = 1", categories], :order=>"id DESC", :page => params[:page], :per_page => 10, :include=>[:batch_events])
       elsif @user.student? or @user.parent?
-         @events = Event.paginate(:conditions => ["event_category_id IN (?) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))", categories], :order=>"id DESC", :page => params[:page], :per_page => 10, :include=>[:batch_events])
+         @events = Event.paginate(:conditions => ["event_category_id IN (?) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1", categories], :order=>"id DESC", :page => params[:page], :per_page => 10, :include=>[:batch_events])
       end
     # Clubs
     
     # Archive
     elsif (params[:event_cateory_id].present?) and (params[:event_cateory_id] == 'event_archive_page')
       if (categories.nil? or categories.empty?) and (@user.admin? or @privilege.include?("EventManagement"))
-        @events = Event.paginate(:conditions => ["DATE(end_date) < (?) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))", Date.today], :order=>"start_date ASC", :page => params[:page], :per_page => 10)
+        @events = Event.paginate(:conditions => ["DATE(end_date) < (?) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1", Date.today], :order=>"start_date ASC", :page => params[:page], :per_page => 10)
       elsif @user.admin? or @privilege.include?("EventManagement")
-        @events = Event.paginate(:conditions => ["event_category_id NOT IN (?) AND DATE(end_date) < (?) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))", categories, Date.today], :order=>"id DESC", :page => params[:page], :per_page => 10)
+        @events = Event.paginate(:conditions => ["event_category_id NOT IN (?) AND DATE(end_date) < (?) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1", categories, Date.today], :order=>"id DESC", :page => params[:page], :per_page => 10)
       end
 
       if (categories.nil? or categories.empty?) and (@user.employee? and !@privilege.include?("EventManagement"))
-        @events = Event.paginate(:conditions => ["DATE(end_date) < (?) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))", Date.today], :order=>"start_date ASC", :page => params[:page], :per_page => 10, :include=>[:employee_department_events])
+        @events = Event.paginate(:conditions => ["DATE(end_date) < (?) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1", Date.today], :order=>"start_date ASC", :page => params[:page], :per_page => 10, :include=>[:employee_department_events])
       elsif @user.employee? and !@privilege.include?("EventManagement")
-        @events = Event.paginate(:conditions => ["event_category_id NOT IN (?) AND DATE(end_date) < (?) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))", categories, Date.today], :order=>"id DESC", :page => params[:page], :per_page => 10, :include=>[:employee_department_events])
+        @events = Event.paginate(:conditions => ["event_category_id NOT IN (?) AND DATE(end_date) < (?) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1", categories, Date.today], :order=>"id DESC", :page => params[:page], :per_page => 10, :include=>[:employee_department_events])
       end
 
       if (categories.nil? or categories.empty?) and (@user.student? or @user.parent?)
-        @events = Event.paginate(:conditions => ["DATE(end_date) < (?) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))", Date.today], :order=>"start_date ASC", :page => params[:page], :per_page => 10, :include=>[:batch_events])
+        @events = Event.paginate(:conditions => ["DATE(end_date) < (?) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1", Date.today], :order=>"start_date ASC", :page => params[:page], :per_page => 10, :include=>[:batch_events])
       elsif @user.student? or @user.parent?
-         @events = Event.paginate(:conditions => ["event_category_id NOT IN (?) AND DATE(end_date) < (?) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))", categories, Date.today], :order=>"id DESC", :page => params[:page], :per_page => 10, :include=>[:batch_events])
+         @events = Event.paginate(:conditions => ["event_category_id NOT IN (?) AND DATE(end_date) < (?) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1", categories, Date.today], :order=>"id DESC", :page => params[:page], :per_page => 10, :include=>[:batch_events])
       end
       # Archive
       
     else
       if (categories.nil? or categories.empty?) and (@user.admin? or @privilege.include?("EventManagement"))
-        @events = Event.paginate(:conditions => ["DATE(end_date) >= (?) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))", Date.today], :order=>"start_date ASC", :page => params[:page], :per_page => 10)
+        @events = Event.paginate(:conditions => ["DATE(end_date) >= (?) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1", Date.today], :order=>"start_date ASC", :page => params[:page], :per_page => 10)
       elsif @user.admin? or @privilege.include?("EventManagement")
-        @events = Event.paginate(:conditions => ["event_category_id NOT IN (?) AND DATE(end_date) >= (?) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))", categories, Date.today], :order=>"id DESC", :page => params[:page], :per_page => 10)
+        @events = Event.paginate(:conditions => ["event_category_id NOT IN (?) AND DATE(end_date) >= (?) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1", categories, Date.today], :order=>"id DESC", :page => params[:page], :per_page => 10)
       end
 
       if (categories.nil? or categories.empty?) and (@user.employee? and !@privilege.include?("EventManagement"))
-        @events = Event.paginate(:conditions => ["DATE(end_date) >= (?) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))", Date.today], :order=>"start_date ASC", :page => params[:page], :per_page => 10, :include=>[:employee_department_events])
+        @events = Event.paginate(:conditions => ["DATE(end_date) >= (?) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1", Date.today], :order=>"start_date ASC", :page => params[:page], :per_page => 10, :include=>[:employee_department_events])
       elsif @user.employee? and !@privilege.include?("EventManagement")
-        @events = Event.paginate(:conditions => ["event_category_id NOT IN (?) AND DATE(end_date) >= (?) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))", categories, Date.today], :order=>"id DESC", :page => params[:page], :per_page => 10, :include=>[:employee_department_events])
+        @events = Event.paginate(:conditions => ["event_category_id NOT IN (?) AND DATE(end_date) >= (?) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1", categories, Date.today], :order=>"id DESC", :page => params[:page], :per_page => 10, :include=>[:employee_department_events])
       end
 
       if (categories.nil? or categories.empty?) and (@user.student? or @user.parent?)
-        @events = Event.paginate(:conditions => ["DATE(end_date) >= (?) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))", Date.today], :order=>"start_date ASC", :page => params[:page], :per_page => 10, :include=>[:batch_events])
+        @events = Event.paginate(:conditions => ["DATE(end_date) >= (?) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1", Date.today], :order=>"start_date ASC", :page => params[:page], :per_page => 10, :include=>[:batch_events])
       elsif @user.student? or @user.parent?
-         @events = Event.paginate(:conditions => ["event_category_id NOT IN (?) AND DATE(end_date) >= (?) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = ''))", categories, Date.today], :order=>"id DESC", :page => params[:page], :per_page => 10, :include=>[:batch_events])
+         @events = Event.paginate(:conditions => ["event_category_id NOT IN (?) AND DATE(end_date) >= (?) AND ((origin_id IS NULL OR origin_id = '') AND (origin_type IS NULL OR origin_type = '')) and is_published = 1", categories, Date.today], :order=>"id DESC", :page => params[:page], :per_page => 10, :include=>[:batch_events])
       end
     end
     #render :partial => "list_event"

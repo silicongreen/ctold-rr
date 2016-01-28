@@ -1,4 +1,4 @@
-<li id="login_button_classune"><a style="color:#fff;text-decoration:none;" id="classtune_a"  href="javascript:void(0)"><span>Log In</span></a>
+<li id="login_button_classune" data-toggle="modal" data-target="#myModal"><a style="color:#fff;text-decoration:none;" id="classtune_a"  href="javascript:void(0)"><span>Log In</span></a>
     <div id="login_form_classune" class="col-md-3" style="overflow: hidden; width:23%;">
         
         <div class="col-md-12">

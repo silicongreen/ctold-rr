@@ -51,21 +51,21 @@
     </head>
     <body>
 	<!-- Modal -->
-<div id="myModal" class="modal fade" role="dialog">
+<!--div id="myModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
-    <!-- Modal content-->
+   
     <div class="modal-content">
       <div class="modal-body">
-        <p><img src="<?php echo base_url('/images/Under_construction_green.png')?>" width="100%"></p>
+        <p><img src="<?php //echo base_url('/images/Under_construction_green.png')?>" width="100%"></p>
       </div>      
     </div>
   </div>
-</div>
+</div-->
 <style>
-.modal-dialog
+/*.modal-dialog
 {
 	margin:80px auto;
 	width:800px;
-}
+}*/
 
 </style>

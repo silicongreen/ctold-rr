@@ -10,7 +10,7 @@ $(document).on('click', '#register_show', function () {
     
 });
 
-$(document).on('click', '#login_button_classune1 a#classtune_a', function () {
+$(document).on('click', '#login_button_classune a#classtune_a', function () {
     if ($("#login_form_classune").is(":hidden")) {
         $("#login_form_classune").slideDown("slow");
         $("#login_button_classune").addClass('act_login');

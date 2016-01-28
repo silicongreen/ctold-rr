@@ -64,7 +64,9 @@ get_header(); ?>
 								<button type="button" class="btn btn-default fa-a btn-lg"><i style="color:#000;" class="fa fa-headphones"></i><br>Hotline</button>
 							</div>
 							<div class="col-md-4 col-sm-offset-0"  style="">
-								<button type="button" class="btn btn-default fa-a btn-lg"><i style="color:#000;" class="fa fa-paper-plane-o"></i><br>Contact Us</button>
+								<a href="<?php echo get_site_url()."?locale=contact"; ?>" >
+									<button type="button" class="btn btn-default fa-a btn-lg"><i style="color:#000;" class="fa fa-paper-plane-o"></i><br>Contact Us</button>
+								</a>
 							</div>
 						</div>
 						

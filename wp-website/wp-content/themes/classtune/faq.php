@@ -14,7 +14,7 @@
 Template Name: faq
 */
 get_header(); ?>
-
+<input type="hidden" value="<?php echo get_site_url(); ?>" id="base_url">
 <div id="primary" class="content-area">
 	<main id="main" class="site-main" role="main">		
 		<div class="container-fluid" style="background:#fff;padding:0px;">
@@ -55,10 +55,10 @@ get_header(); ?>
 								</ul>
 							 
 								<div class="tab-content">
-									<div class="tab-pane active" faq-index="3" id="admin"></div>
-									<div class="tab-pane" faq-index="4" id="student"></div>
-									<div class="tab-pane" faq-index="5" id="parent"></div>
-									<div class="tab-pane" faq-index="6" id="teacher"></div>
+									<div class="tab-pane active" faq-index="2" id="admin"></div>
+									<div class="tab-pane" faq-index="3" id="student"></div>
+									<div class="tab-pane" faq-index="4" id="parent"></div>
+									<div class="tab-pane" faq-index="5" id="teacher"></div>
 								</div>
 							</div>
 						</div>						
@@ -106,9 +106,9 @@ jQuery(document).ready( function($) {
 </script>
 <script>
     $(function() {
-        var baseURL = 'http://www.ctune.dev/';
+        var baseURL = $("#base_url").val();
         //load content for first tab and initialize faq cat_id="3"
-        $('#admin').load(baseURL+'?shortcode=faq&cat_id=3', function() {
+        $('#admin').load(baseURL+'?shortcode=faq&cat_id=2', function() {
             $('#myTabs').tab(); //initialize tabs
         });    
         $('#myTabs').on('show.bs.tab', function (e) {    

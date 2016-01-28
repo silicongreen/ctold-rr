@@ -14,7 +14,7 @@
 Template Name: manual
 */
 get_header(); ?>
-
+<input type="hidden" value="<?php echo get_site_url(); ?>" id="base_url">
 <div id="primary" class="content-area">
 	<main id="main" class="site-main" role="main">		
 		<div class="container-fluid" style="background:#fff;padding:0px;">
@@ -43,7 +43,7 @@ get_header(); ?>
 						</div>
 						<div class="col-md-8 col-sm-offset-2" id="faq-data" style="margin-top: 40px;">					
 							<?php 
-								$var = do_shortcode( '[faq cat_id="9"] ' );
+								$var = do_shortcode( '[faq cat_id="8"] ' );
 								echo $var;
 							?>
 							

@@ -53,32 +53,6 @@
   <div class="academic_calendar" id="monthreport">
         <div id="calendar">
 
-  <div id="head-month">
-    <div class="header">
-      <div class="prev">
-        <%= link_to_remote "<div></div>",
-          :before => "Element.show('loader')",
-          :success => "Element.hide('loader')",
-          :url=>{:controller=>"calendar", :action=>"new_holiday"},
-          :with => "'new_month=#{@show_month.month-1}'+ '&passed_date=#{@show_month}'"%>
-      </div>
-      <div class="month f5">
-        <%= I18n.l(@show_month,:format=>:month_year) %>
-
-        <div class="image_loading">
-          <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader",:style =>"display: none; float:left;" ) %>
-        </div>
-      </div>
-      <div class="next">
-        <%= link_to_remote "<div></div>",
-          :before => "Element.show('loader')",
-          :success => "Element.hide('loader')",
-          :url=>{:controller=>"calendar", :action=>"new_holiday"},
-          :with => "'new_month=#{@show_month.month+1}'+ '&passed_date=#{@show_month}'"%>
-      </div>
-      <div class="extender"></div>
-    </div>
-  </div>
 </div>
 
 <div class="attendance-status">
@@ -89,19 +63,12 @@
         <td class="f2 head">Title</td>
         <td class="f5 head"></td>
       </tr>
-    <% i = 0 %>
-    <% (1..6).each do |r|%>
-      <% (1..7).each do |c|%>
-        <% dt = c - @start_date_day + (r-1)*7 %>
-        <% day_style = (dt==@show_month.day && @local_tzone_time.to_date==@show_month)? "today" : nil %>
-        
-        <% unless (r == 1 and c <= @start_date_day) %>
-          <% unless dt > @last_day.day %>    
-      
+    
+                <% i = 0 %>
                 <% unless @obj_events.empty? %>
                   
                   <% @obj_events.each do |h| %>
-                    <% if dt == h.start_date.strftime('%d').to_i and @show_month.month.to_i == h.start_date.strftime('%m').to_i and @show_month.year.to_i == h.start_date.strftime('%Y').to_i and h.is_holiday %>                
+                    
                         <%  if h.pointing_color.nil? or h.pointing_color == ""                                                          
                               color = "#01B169"           
                             else
@@ -124,24 +91,23 @@
                            </td>
                         </tr>
                         <% i += 1 %>
-                      <% end %>                       
-                    <% end %>                      
-                
-                <% end %>
-            
-          <% end %>
-        <% end %>
-            
-      <% end %>
-    <% end %>  
+                      <% end %>    
+                <% end %>          
+     
     <% if i == 0 %>
         <tr>
-          <td colspan="4"><span>No holiday in this month</span></td>                      
+          <td colspan="4"><span>No Draft Found</span></td>                      
         </tr>
     <% end %>
     </tbody>
   </table>
 </div>
+<% posted_params = params %>
+<% posted_params.delete(:page) %>
+<% posted_params.delete(:authenticity_token) %>
+<% posted_params.delete(:controller) %>
+<% posted_params.delete(:action) %>    
+<%= will_paginate @obj_events, :renderer => 'RemoteLinkRenderer', :remote=>{:update=>'tooltip_header'}, :page_links => false %>
     
     
   </div>

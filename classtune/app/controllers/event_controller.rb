@@ -32,6 +32,7 @@ class EventController < ApplicationController
       @date = date.to_time
     end
     if request.post?
+      @events.created_by = current_user.id;
       if @events.save
         #Event.update(@events.id,:start_date=>params[:start_date], :end_date=>params[:end_date])
         #      if params[:events][:is_common] == "0" and @events.save

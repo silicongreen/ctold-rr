@@ -359,47 +359,8 @@ class CalendarController < ApplicationController
     first_day = @show_month.beginning_of_month
     last_day =  @show_month.end_of_month
     
-    if (categories.nil? or categories.empty?) and (@user.admin? or @privilege.include?("EventManagement"))
-        @events = Event.find(
-          :all,
-          :conditions => [
-            "((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND is_published = 0",
-            first_day, last_day, first_day, last_day, first_day, last_day, first_day, last_day
-          ],
-          :order=>"start_date DESC"
-        )
-      elsif @user.admin? or @privilege.include?("EventManagement")
-        @events = Event.find(
-          :all,
-          :conditions => [
-            "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?))  AND is_published = 0",
-            categories, first_day, last_day, first_day, last_day, first_day, last_day, first_day, last_day
-          ],
-          :order=>"start_date DESC"
-        )
-      end
-
-      if (categories.nil? or categories.empty?) and (@user.employee? and !@privilege.include?("EventManagement"))
-        @events = Event.find(
-          :all,
-          :conditions => [
-            "((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?))  AND is_published = 0",
-            first_day, last_day, first_day, last_day, first_day, last_day, first_day, last_day
-          ],
-          :order=>"start_date DESC",
-          :include=>[:employee_department_events]
-        )
-      elsif @user.employee? and !@privilege.include?("EventManagement")
-        @events = Event.find(
-          :all,
-          :conditions => [
-            "event_category_id NOT IN (?) AND ((start_date >= ? AND start_date <= ?) OR (end_date >= ? AND end_date <= ?) OR (start_date >= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)) AND is_published = 0",            categories,
-            first_day, last_day, first_day, last_day, first_day, last_day, first_day, last_day
-          ],
-          :order=>"start_date DESC",
-          :include=>[:employee_department_events]
-        )
-      end
+    @events = Event.paginate(:conditions=>{:is_published=>0,:created_by=>@user.id},  :page => params[:page], :per_page => 10,:order=>"created_at DESC")
+   
     
     @obj_events = @events
     @dates = []

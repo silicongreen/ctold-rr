@@ -763,7 +763,7 @@ i.faq
     cursor:pointer;
     -moz-border-radius: 100px;
     -webkit-border-radius: 100px;
-    border-radius: 100px;
+    
     -moz-box-shadow: 0px 0px 2px #888;
     -webkit-box-shadow: 0px 0px 2px #888;
     box-shadow: 0px 0px 2px #888;
@@ -1031,3 +1031,76 @@ i.faq:hover
 .borderBG6{background: #B482D6;}
 .borderBG7{background: #7CD6B2;}
 .borderBG8{background: #82BBD6;}
+
+
+/***************SUPPORT PAGE***********************/
+#supportWrap { width: 100%; height: 410px; text-align: center; background: transparent url(../images/cover/support_page.png) no-repeat top left;background-size:contain;}
+
+#custom-search-input{
+    padding: 3px;
+    border: solid 1px #E4E4E4;
+    border-radius: 6px;
+    background-color: #fff;
+	margin-top:180px;
+}
+
+#custom-search-input input{
+    border: 0;
+    box-shadow: none;
+	padding-top:0px;
+}
+
+#custom-search-input button{
+    margin: 2px 0 0 0;
+    background: none;
+    box-shadow: none;
+    border: 0;
+    color: #000;
+    padding: 0 8px 0 10px;
+    border-left: solid 1px #000;
+}
+
+#custom-search-input button:hover{
+    border: 0;
+    box-shadow: none;
+    border-left: solid 1px #ccc;
+}
+
+#custom-search-input .glyphicon-search{
+    font-size: 23px;
+}
+#supportItems { width: 100%; height: 480px; text-align: center;padding-top:10px; }
+
+#supportItems .btn
+{
+	border-radius:0px;
+	width:280px;
+	margin-right:20px;
+	margin-bottom:20px;
+	font-size:20px;
+}
+#supportItems i.fa
+{
+    color:#fff;
+    font-size:30px;
+    padding: 10px;
+    display: inline-block;   
+}
+#supportMore { width: 100%; height: 480px; text-align: center;padding-top:10px;background-color:#EFF2F4; }
+#supportMore button.fa-a
+{
+    width:170px;
+	height:170px;
+	color:#000;
+    font-size:25px;
+    padding: 10px;
+    display: inline-block;
+    -moz-border-radius: 100px;
+    -webkit-border-radius: 100px;
+    border-radius: 100px;
+    -moz-box-shadow: 0px 0px 2px #888;
+    -webkit-box-shadow: 0px 0px 2px #888;
+    box-shadow: 0px 0px 2px #888;
+}
+
+#supportFaq { width: 100%; min-height: 480px; text-align: center;padding-top:10px; }

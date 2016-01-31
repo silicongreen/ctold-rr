@@ -175,10 +175,7 @@
 
               <hr class="label-underline"></hr>
 
-              <div class="label-field-pair">
-                  <label for="master_student_nationality"><%= t('nationality') %></label>
-                  <div class="text-input-bg"><%= select :student, :nationality_id, Country.all.map {|c| [c.name, c.id]}, :selected => @student.nationality.id %></div>
-              </div>
+             
 
               <hr class="label-underline"></hr>
 
@@ -188,6 +185,10 @@
               </div>
 
               <hr class="label-underline"></hr>
+          </div>
+           <div class="label-field-pair">
+                  <label for="master_student_nationality"><%= t('nationality') %></label>
+                  <div class="text-input-bg"><%= select :student, :nationality_id, Country.all.map {|c| [c.name, c.id]}, :selected => @student.nationality.id %></div>
           </div>
           <div class="label-field-pair">
               <label for="master_student_religion"><%= t('religion') %></label>

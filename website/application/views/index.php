@@ -218,10 +218,10 @@
                     <div class="hitem slide" id="hitem_2" style="top: 440px; left: 180px; width: 261px; height: 125px;" data-stellar-ratio="0.70" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
                         <img src="<?php echo base_url(); ?>slider/Slide-1/Layer-1/tree.png" alt="" title="" width="240" />					
                     </div>
-                    <div class="hitem slide" id="hitem_3" style="top:415px; left: 400px; width: 100px; height: 100px;" data-stellar-ratio="0.70" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
+                    <!--div class="hitem slide" id="hitem_3" style="top:415px; left: 400px; width: 100px; height: 100px;" data-stellar-ratio="0.70" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
 
-                        <img src="<?php echo base_url(); ?>slider/Slide-1/Layer-2/top-tree1.png" alt="" title="" width="65" />
-                    </div>
+                        <img src="<?php //echo base_url(); ?>slider/Slide-1/Layer-2/top-tree1.png" alt="" title="" width="65" />
+                    </div-->
 
 
                     <div class="hitem" id="hitem_6" style="top: 340px; left: 50px; width: 195px; height: 40px;">
@@ -398,8 +398,8 @@
                         <img width="145" src="<?php echo base_url(); ?>slider/Slide-1/Layer-4/routine_text.png" alt="" title="">
                     </div>
 
-                    <div style="top: 420px; left: 775px; width: 215px; height: 200;" id="hitem_9" class="hitem">
-                        <img width="115" title="" alt="" src="<?php echo base_url(); ?>slider/Slide-1/Layer-3/robote_.png">
+                    <!--div style="top: 420px; left: 775px; width: 215px; height: 200;" id="hitem_9" class="hitem">
+                        <img width="115" title="" alt="" src="<?php //echo base_url(); ?>slider/Slide-1/Layer-3/robote_.png">
                         <div class="texticon" style="top: -40px; left: 0px; background-position: 0px 11px;">
                             <div style="display: none; background-position: 0px 11px;" class="text_l text_layer" data-value="routine_layer">
                                 <div class="cb_top">&nbsp;</div>
@@ -412,9 +412,7 @@
                                 <div class="cb_bottom">&nbsp;</div>
                             </div>
                         </div>
-
-
-                    </div>
+                    </div-->
                     <div class="hitem" id="hitem_9" style="top: 375px; left: 800px; width: 215px; height: 200;">
                         <img src="<?php echo base_url(); ?>slider/Slide-1/Layer-3/routine.png" alt="" title="" width="225" />
 
@@ -620,12 +618,9 @@
 
                     </div>
 
-                    <div class="hitem slide" id="hitem_46" style="top: 355px; left: 6600px; width: 407px; height: 352px;" data-stellar-ratio="1.10" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-                        <img src="<?php echo base_url(); ?>slider/Slide-4/Layer-3/diary_.png" alt="" title="" />
-
-
-
-                    </div>
+                    <!--div class="hitem slide" id="hitem_46" style="top: 355px; left: 6600px; width: 407px; height: 352px;" data-stellar-ratio="1.10" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
+                        <img src="<?php //echo base_url(); ?>slider/Slide-4/Layer-3/diary_.png" alt="" title="" />
+                    </div-->
 
                     <div class="hitem" id="hitem_47" style="top: 280px; left: 6050px; width: 300px; height: 100px;">
                         <img src="<?php echo base_url(); ?>slider/Slide-4/Layer-4/syllabus_text.png" alt="" title="" width="180" />
@@ -697,10 +692,10 @@
                     </div>
 
 
-                    <div class="hitem slide" id="hitem_55" style="top: 520px; left: 6825px; width: 270px; height: 215px;" data-stellar-ratio="0.95" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-                        <img src="<?php echo base_url(); ?>slider/Slide-4/Layer-1/object_.png" alt="" title="" width="150" />					
+                    <!--div class="hitem slide" id="hitem_55" style="top: 520px; left: 6825px; width: 270px; height: 215px;" data-stellar-ratio="0.95" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
+                        <img src="<?php //echo base_url(); ?>slider/Slide-4/Layer-1/object_.png" alt="" title="" width="150" />					
 
-                    </div>
+                    </div-->
 
                     <div class="hitem slide" id="hitem_51" style="top: 180px; left: 7800px; width: 100px; height: 100px;" data-stellar-ratio="1.3" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
                         <img src="<?php echo base_url(); ?>slider/Slide-4/Layer-2/sessor.png" alt="" title="" width="100" />
@@ -716,9 +711,9 @@
 
                     </div>
 
-                    <div class="hitem" id="hitem_54" style="top: 271px; left: 7500px; width: 300px; height: 250px;">
-                        <img src="<?php echo base_url(); ?>slider/Slide-4/Layer-3/school_.png" alt="" title="" width="250" />
-                    </div>
+                    <!--div class="hitem" id="hitem_54" style="top: 271px; left: 7500px; width: 300px; height: 250px;">
+                        <img src="<?php //echo base_url(); ?>slider/Slide-4/Layer-3/school_.png" alt="" title="" width="250" />
+                    </div-->
 					<div data-stellar-horiz="1" data-stellar-vertical-offset="0" data-stellar-horizontal-offset="0" data-stellar-ratio="1.10" style="top: 185px; left: 7832.45px; width: 440px; height: 150px;" id="hitem_44" class="hitem">
                         <img title="" alt="" src="http://www.classtune.dev/slider/Slide-3/Layer-1/cloud.png">
                     </div>

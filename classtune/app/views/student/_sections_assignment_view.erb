@@ -1,16 +1,4 @@
-<% if @classes.length == 1 %>
-<script type="text/javascript">
-  j("#sections_div").hide();
-  j.ajax({
-    type: "POST",
-    url: "/assignments/showsubjects/0",
-    data: j('#new_student').serialize() + "&course_id=" + <%= @classes[0].id  %>
-  })
-  .done(function( msg ) {
-    j("#sections_div").hide();
-  });
-</script>  
-<% else %>
+
 <script type="text/javascript">
   j("#sections_div").show();
 </script>  
@@ -26,4 +14,3 @@
     :success => "$('loading_1').hide();")}"} %>  
 <% end %>
 <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_1", :style =>"display: none;" ) %>
-<% end %>

@@ -272,7 +272,7 @@
               
           <% elsif @current_user.admin? %>
             <% form_for(@student, :url => {:action=> 'view_all'}, :html=> {:id=>'new_student'}) do |s| %>    
-              <% if Batch.active.find(:all, :group => "name").length > 1  %> 
+              <%# if Batch.active.find(:all, :group => "name").length > 1  %> 
                 <div class="label-field-pair" style="margin: 0px auto;">
                   <label for="student_grade"><%= t('shift_label') %></label>
                   <div class="text-input-bg">
@@ -282,7 +282,7 @@
                       :success => "$('loading_2').hide();")}"} %>
                     <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_2", :style =>"display: none;" ) %></div>
                 </div>
-              <% end %>
+              <%# end %>
               <div class="label-field-pair" style="margin: 0px auto;">
                 <label for="student_grade"><%= t('class_label') %></label>
                 <div class="text-input-bg"><div id="course_assingment"> <%= render :partial => 'student/courses_assingment', :object => @courses %></div></div>

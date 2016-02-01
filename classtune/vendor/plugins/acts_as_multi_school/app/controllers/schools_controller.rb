@@ -502,7 +502,7 @@ class SchoolsController <  MultiSchoolController
           end
         
           @conn = ActiveRecord::Base.connection 
-          sql = "SELECT g.`first_name`,g.`last_name`,g.office_phone1,
+          sql = "SELECT g.`first_name`,g.`last_name`,g.office_phone1,g.mobile_phone,
                     g.relation,fu.paid_username,fu.paid_password FROM 
                     guardians as g left join tds_free_users as fu on g.user_id=fu.paid_id where g.ward_id=#{@student.id} and fu.paid_school_id=#{@school.id}"
         
@@ -542,6 +542,17 @@ class SchoolsController <  MultiSchoolController
             guardian_data.each_with_index do |glist,i|
             
               j = i+1
+              gPhone = ""
+              if glist['office_phone1'] != ""
+                gPhone = gPhone + glist['office_phone1']
+              end
+              if glist['mobile_phone'] != ""
+                if glist['office_phone1'] != ""
+                  gPhone = gPhone + " | " + glist['mobile_phone']
+                else  
+                  gPhone = gPhone + glist['mobile_phone']
+                end
+              end
             
               rows = []
               rows << "Guardian" + j.to_s
@@ -560,12 +571,24 @@ class SchoolsController <  MultiSchoolController
             
               rows = []
               rows << "Guardian"+j.to_s+" Phone"
-              rows << "#{glist['office_phone1']}"
+              rows << "#{gPhone}"
               csv << rows
             
             end
           else
             guardian_data.each_with_index do |glist,i|
+              gPhone = ""
+              if glist['office_phone1'] != ""
+                gPhone = gPhone + glist['office_phone1']
+              end
+              if glist['mobile_phone'] != ""
+                if glist['office_phone1'] != ""
+                  gPhone = gPhone + " | " + glist['mobile_phone']
+                else  
+                  gPhone = gPhone + glist['mobile_phone']
+                end
+              end
+              
               rows = []
               rows << "Guardian"
               rows << "#{glist['first_name']} #{glist['last_name']}"
@@ -583,7 +606,7 @@ class SchoolsController <  MultiSchoolController
 
               rows = []
               rows << "Guardian Phone"
-              rows << "#{glist['office_phone1']}"
+              rows << "#{gPhone}"
               csv << rows
             end
           end

@@ -1,0 +1,108 @@
+<h1 style="">Student List <%= @school.name %></h1>
+<% unless @student_data.empty? %>
+<h1 style="">Total Student <%= @total_student.count %></h1>
+<div class='well' style="overflow-x:scroll;    width: 100%;   
+    ">
+  
+    <label><%= link_to "Download Students List", {:controller=>"schools", :action=>"download_student_list", :id=>@school.id} %></label>
+    <br/><br/>
+    <table style="width:100%;overflow: hidden;" class="table table-bordered table-striped">
+      <thead>
+      <th>No.</th>
+      <th>Admission No.</th>
+      <th>Batch</th>
+      <th>Student</th>
+      <th>Student Username</th>
+      <th>Student Password</th>    
+      <th>Guardian</th>
+      <th>Guardian Username</th>
+      <th>Guardian Password</th>    
+      <th>Guardian Phone</th>
+      </thead>
+      <%#= debug(@student_data) %>
+      <% j=0 %>
+      <% @student_data.each_with_index do |list,i| %>
+       
+    <%
+        sch = School.find(list['school_id'])
+        MultiSchool.current_school = sch
+        @student = Student.find(list['student_id'])  
+        style = "" %>    
+        
+        <%
+        unless @student.nil?
+          @batch = Batch.find_by_id(@student.batch_id)
+          @course = Course.find_by_id(@batch.course_id)
+        else
+          @batch = nil
+          style = style+"style='background-color:red;color:#fff;'"
+        end
+      
+        @conn = ActiveRecord::Base.connection 
+        sql = "SELECT g.`first_name`,g.`last_name`,g.office_phone1,g.mobile_phone,
+                    g.relation,fu.paid_username,fu.paid_password FROM 
+                    guardians as g left join tds_free_users as fu on g.user_id=fu.paid_id where g.ward_id=#{@student.id} and fu.paid_school_id=#{@school.id}"
+
+        guardian_data = @conn.execute(sql).all_hashes
+      
+        
+
+      %>
+      <% if @batch and @student.is_active %>
+    <%#= debug student[0].batch_id %>
+        <tr <%= style %>>
+          <td><%= j+1 %><br/></td>
+          <td><%= list['admission_no'] %><br/></td>
+          <td>
+            <% unless @batch.nil? %>
+              <% if @batch.name != "" and @batch.name != "General" %>
+                Shift:<%=  @batch.name%><br/>
+              <% end %>
+              <% if @course.course_name != "" %>
+                Class:<%=  @course.course_name%><br/>
+              <% end %>
+              <% if @course.section_name != ""  %>
+                Section:<%=  @course.section_name%><br/>
+              <% end %>
+            <% end %>
+          </td>
+          <td>
+            <%= list['first_name'] %>&nbsp;<%= list['last_name'] %><br/>
+          </td>
+          
+            <td><%= list['paid_username'] %><br/></td>
+            <td><%= list['paid_password'] %><br/></td> 
+            <% if guardian_data.count>1 %>
+            <td colspan="4" style="padding:0px; ">
+                <table style="width:100%;overflow: hidden; "  class="table table-striped">
+                  <% guardian_data.each_with_index do |glist,i| %>
+                    <tr>
+                        <td width="27.7%" style="border-radius:0px 0px 0px 0px;" ><%= glist['first_name'] %>&nbsp;<%= glist['last_name'] %><br/></td>
+                        <td width="25.8%"  style="border-radius:0px 0px 0px 0px;"><%= glist['paid_username'] %><br/></td>
+                        <td width="25.4%"  style="border-radius:0px 0px 0px 0px;"><%= glist['paid_password'] %><br/></td>        
+                        <td  style="border-radius:0px 0px 0px 0px;"><%= glist['office_phone1'] %>|<%= glist['mobile_phone'] %><br/></td>
+                    </tr>
+                  <% end %>
+                </table>    
+             </td>
+            <% else %>
+              <% guardian_data.each_with_index do |glist,i| %>
+                <td><%= glist['first_name'] %>&nbsp;<%= glist['last_name'] %><br/></td>
+                <td><%= glist['paid_username'] %><br/></td>
+                <td><%= glist['paid_password'] %><br/></td>        
+                <td><%= glist['office_phone1'] %>|<%= glist['mobile_phone'] %><br/></td>
+              <% end %>
+            <% end %>
+          </tr>
+          <% j += 1 %>
+          <% end %>
+        <% end %>
+      </table>   
+   
+    <%= will_paginate @student_data %>
+    <%#= paginate @student_data, :params => {:controller => 'schools', :action => 'show_students_list'} %>
+    </br>
+    </br>
+
+  </div>
+ <% end %>

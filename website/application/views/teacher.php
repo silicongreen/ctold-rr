@@ -4,7 +4,7 @@
 			
 		</div>
 
-		<div id="beforeWrap" style="background: transparent url(<?php echo base_url();?>images/cover/teacher-page.png) no-repeat top left;background-size:cover;">
+		<div id="beforeWrap" style="background: transparent url(<?php echo base_url();?>images/cover/teacher-page.png) no-repeat bottom left;background-size:contain;">
 			<!--img src="<?php echo base_url(); ?>images/test/CLASSTUNE-COVER.png" alt="" title="" width="100%" /<li style="color:#64B846;">|</li>-->
 			<h2 class="f2" style="float: left;margin-left: 100px;margin-top: 220px;text-align: right;width: 600px;clear:both;"><i>Make your each contribution, more significant!</i></h2>
 			<div class="postlist-tab2">

@@ -1,0 +1,105 @@
+<div class="partial_homework" style="padding: 20px;">
+     <%= link_to "<h2 class='f2 etitle'>ONLINE QUIZ</h2>", :controller => "online_student_exam", :action => "index" %>
+  
+  <div style="float: left; margin:15px; width: 98%;"></div> 
+  <% unless quizes.nil? or quizes.empty? %>
+    <% quizes.each do |h| %>
+      <% unless h['subject_name'].empty? %>
+        <% @is_new = "" %>
+          <% if  h['is_new'] == 1 %>
+            <% @is_new = "<span style='color:red;'>( New )</span>" %>
+          <% end %>
+        <div class="portlet-subcontent">     
+          <div class="timetable_left"><img width="30" src="/images/icons/subjects/<%= h['subject_icon'] %>" /></div>
+          <div class="timetable_right" style="margin-top:5px;">
+            <div class="subcontent-header themed_text"><%= h['subject_name'] %> - <%= h['name'] %>&nbsp;<%= @is_new %></div>
+            <div class="subcontent-date">Start date : <%= I18n.l(h['start_date'].to_time,:format=>:normal) unless h['start_date'].empty? %></div>  
+            <div class="subcontent-date">End date : <%= I18n.l(h['end_date'].to_time,:format=>:normal) unless h['end_date'].empty? %></div>
+            <div class="subcontent-info">Maximum Time : <%= h['maximum_time']%> Min </div>              
+          </div>
+          <div class='timetable_last'>
+            <% if h['examGiven']==1 %>
+              <%= link_to_remote '<div class="box-text">Result</div>',
+                :before => "Element.show('loader');",
+                :success => "Element.hide('loader');",
+                :url => {:controller=>"dashboards", :action => "quiz_result_data_student", :id => h['id']} %>
+            <% elsif h['timeover']==1 %>
+              <div class="box-text-time-out">Time Over</div>
+            <% elsif h['not_started']==0 %>
+              <%= link_to "<div class='box-text-start'>Start</div>", :controller => "online_student_exam", :action => "start_exam", :id => h['id'] %>
+            <% else %>
+              <div class="box-text-time-out">Not Started</div>
+            <% end %>  
+          </div> 
+        </div>
+        <div style="border-bottom: 1px solid #ccc; float: left; margin: 15px; width: 90%;"></div>
+      <% end %>
+    <% end %>
+  <% else %>
+    <div class="portlet-subcontent">    
+      No Quiz Published
+    </div>  
+  <% end  %>
+</div>
+
+<div id="modal-box" style="display:none;"></div>
+
+<style>
+  .timetable_last a
+  {
+     float:left;
+     margin-left:30px;
+  }
+  .partial_homework div.timetable_right
+  {
+    width: 50%;
+    float:left;
+    margin-left:5px;
+  }
+  div h2.etitle
+  {
+    color:#C7555D;
+  }
+  .timetable_last
+  {
+    width: 20%;
+    float:left;
+    margin-left:5px;
+  }
+  .box-text-time-out
+  {
+    float: left; 
+    clear:both; 
+    background: #B9B9B9; 
+    padding:10px 10px 10px 25px; 
+    margin:30px 30px;
+    width: 70%;
+    color:#ffffff;
+  }
+  .box-text-start
+  {
+    float: left; 
+    clear:both; 
+    background: #C8575D; 
+    padding:10px 15px 10px 42px; 
+    margin:30px 30px;
+    width: 50%;
+    color:#ffffff;
+  }
+  .box-text
+  {
+    float: left; 
+    clear:both; 
+    background: #B9B9B9; 
+    padding:10px 15px 10px 38px; 
+    margin:30px 30px;
+    width: 50%;
+    color:#ffffff;
+  }
+</style>  
+
+<%= stylesheet_link_tag 'dashboards/popup' %>
+
+<% content_for :head do %>
+  <%= javascript_include_tag "custom/dashboard-popup" %>
+<% end %>

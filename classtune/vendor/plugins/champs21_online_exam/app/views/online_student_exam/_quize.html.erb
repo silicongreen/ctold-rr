@@ -1,0 +1,63 @@
+<div class="partial_homework">
+
+
+  <% unless quizes['data'].nil? %>
+    <% quizes['data'].each do |h| %>
+      <% unless h['subject_name'].empty? %>
+        <div class="portlet-subcontent">     
+          <div class="timetable_left"><img width="30" src="/images/icons/subjects/<%= h['subject_icon'] %>" /></div>
+          <div class="timetable_right">
+            <div class="subcontent-header themed_text"><%= h['subject_name'] %> - <%= h['name'] %></div>            
+            <div class="subcontent-info">Maximum Time : <%= h['maximum_time']%> Min </div>              
+          </div>
+          <div class="timetable_right"  style="float:left;height: 70px;width: 35%;padding: 10px 0;border-left:1px dotted #cccccc">                            
+            <div class="subcontent-date"><b style="color:#000;">Start date : </b><%= I18n.l(h['start_date'].to_time,:format=>:normal) unless h['start_date'].empty? %></div>  
+            <div class="subcontent-date"><b style="color:#000;">End date : </b><%= I18n.l(h['end_date'].to_time,:format=>:normal) unless h['end_date'].empty? %></div>
+          </div>
+          <div class='timetable_last'>
+            <% if h['examGiven']==1 %>
+              <%= link_to_remote '<div class="box-text-time-out">Result</div>',
+                :before => "Element.show('loader');",
+                :success => "Element.hide('loader');",
+                :url => {:controller=>"dashboards", :action => "quiz_result_data_student", :id => h['id']} %>
+            <% elsif h['timeover']==1 %>
+              <div class="box-text-time-out">Time Over</div>
+            <% elsif h['not_started']==0 %>
+              <% if @current_user.student? %>
+                <%= link_to "<div class='box-text-time-out'>Start</div>", :controller => "online_student_exam", :action => "start_exam", :id => h['id'] %>
+              <% else %>
+                <div class="box-text-time-out">On Going</div>
+              <% end %>
+            <% else %>
+                 <div class="box-text-time-out">Not Started</div>
+            <% end %>  
+          </div> 
+        </div>
+        <div style="float: left; margin: 7px; width: 95%;"></div> 
+      <% end %>
+    <% end %>
+  <% else %>
+    <div class="portlet-subcontent">    
+      No Quiz Published
+    </div>  
+  <% end %>
+
+  <% unless quizes['total'].to_i < 5 %>
+    <div class="pagination" style="display: none;">
+      <span class="disabled prev_page">« Previous</span>
+      <span class="current">1</span>
+      <a href="/meetings?page=2" rel="next">2</a>
+      <a href="/meetings?page=2" class="next_page" rel="next">Next »</a>
+    </div>
+  <% end %>
+
+</div>
+
+<div id="modal-box" style="display:none;"></div>
+
+<%= stylesheet_link_tag 'dashboards/popup' %>
+<%= stylesheet_link_tag 'pagination_and_table' %>
+
+<% content_for :head do %>
+  <%= javascript_include_tag "custom/dashboard-popup" %>
+<% end %>

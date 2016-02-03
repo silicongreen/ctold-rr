@@ -902,9 +902,7 @@ class EmployeeController < ApplicationController
     @employee = Employee.find(params[:id])
     @new_reminder_count = Reminder.find_all_by_recipient(@current_user.id, :conditions=>"is_read = false")
     @gender = "Male"
-    if !@employee.gender? and @employee.gender.downcase == "f"
-      @gender = "Female" 
-    end
+    @gender = "Female" if @employee.gender.downcase == "f"
     @status = "Active"
     @status = "Inactive" if @employee.status == false
     @reporting_manager = @employee.reporting_manager

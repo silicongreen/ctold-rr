@@ -71,6 +71,15 @@
             :html => {:class => 'f2'}
         %>
         </li>
+        <li>
+          <%= link_to_remote "Yearly",
+            :before => "Element.show('loader2');",
+            :success => "Element.hide('loader2');",
+            :update => 'data_div',
+            :url=>{:controller=>"syllabus", :action=>"syllabus_by_term", :term_id => 0},
+            :html => {:class => 'f2'}
+        %>
+        </li>
       </ul>
     </div>
   </div>

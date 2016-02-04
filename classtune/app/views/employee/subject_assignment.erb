@@ -41,7 +41,7 @@
       </div>
     </div>-->
   <% form_for(@student, :url => {:action=> 'view_all'}, :html=> {:id=>'new_student'}) do |s| %>  
-    <% if Batch.active.find(:all, :group => "name").length > 1  %> 
+    <% #if Batch.active.find(:all, :group => "name").length > 1  %> 
       <div class="label-field-pair">    
         <label> <%= t('shift_label') %>: </label>
         <div class="text-input-bg">
@@ -53,7 +53,7 @@
         </div>
         <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loader", :style =>"display: none;" ) %><div class="extender"></div>
       </div>
-    <% end %>
+    <% #end %>
     <div class="label-field-pair">
       <label for="student_grade"><%= t('class_label') %></label>
       <div class="text-input-bg"><div id="courses_employee_subject_assignment"> <%= render :partial => 'student/courses_employee_subject_assignment_view', :object => @courses %></div></div>

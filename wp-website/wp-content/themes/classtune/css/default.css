@@ -1104,3 +1104,79 @@ i.faq:hover
 }
 
 #supportFaq { width: 100%; min-height: 480px; text-align: center;padding-top:10px; }
+/**********************HOME OWE SLIDER*********************/
+#beforeWrap .item {
+  height: 500px;
+  background-repeat: no-repeat;
+  
+  background-size: cover;
+}
+#beforeWrap .slider-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;  
+}
+#beforeWrap .slider-inner h2 {
+  
+  line-height: 1;
+}
+#beforeWrap .slider-inner h2 > span {
+  
+}
+#beforeWrap .slider-inner .btn {
+  
+}
+#beforeWrap .owl-prev,
+#beforeWrap .owl-next {
+  position: absolute;
+  top: 50%;
+  background-color: rgba(0, 0, 0, 0.2);
+  color: #fff;
+  font-size: 30px;
+  display: inline-block;
+  margin-top: -35px;
+  height: 70px;
+  width: 70px;
+  line-height: 70px;
+  text-align: center;
+  border-radius: 100px;
+  z-index: 5;
+  -webkit-transition: background-color 400ms;
+  transition: background-color 400ms;
+}
+#beforeWrap .owl-prev:hover,
+#beforeWrap .owl-next:hover {
+  background-color: #B1ED6D;
+}
+#beforeWrap .owl-prev {
+  left: -35px;
+  text-indent: 14px;
+}
+#beforeWrap .owl-next {
+  right: -35px;
+  text-indent: -14px;
+}
+#bar {
+  width: 0%;
+  max-width: 100%;
+  height: 4px;
+  background: #64B846;
+}
+#progressBar {
+  margin-top: -4px;
+  position: relative;
+  z-index: 999;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.1);
+}
+/**********************HOME OWE SLIDER*********************/
+
+#ribbon img {
+    position: fixed;
+    top: 0px;
+    right: 0px;
+	width:13%;
+	z-index:999999;
+}

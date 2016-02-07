@@ -26,8 +26,7 @@ get_header(); ?>
 			
 		</div>
 
-		<div id="beforeWrap" style="background: transparent url(<?php bloginfo('template_url'); ?>/images/cover/admin-page.png) no-repeat top left;">
-			<!--img src="http://www.classtune.dev/images/test/CLASSTUNE-COVER.png" alt="" title="" width="100%" /<li style="color:#64B846;">|</li>-->
+		<div id="beforeWrap" style="background: transparent url(<?php bloginfo('template_url'); ?>/images/cover/admin-page.png) no-repeat bottom left;background-size:contain ;">			
 			<h2 class="f2" style="margin-top:100px;"><i>Manage your School like never before!</i></h2>
 			<div class="postlist-tab2">
 				<div style=" background-color: #fff;height: 220px;margin-left: 100px;position: relative;top: -120px;width: 500px;z-index: 1;box-shadow: 2px 4px 2px -3px gray;border:1px solid #ccc;">
@@ -37,11 +36,10 @@ get_header(); ?>
 						<div class="col-sm-3" style="border:1px solid;margin-top:12px;"><span style=""></span></div>
 					</div>
 					<div class="col-sm-12" style="">
-					<div class="col-sm-6"><a href="<?php echo get_site_url(); ?>/package-type?local=basic" class="btn-basic-pack">
+					<div class="col-sm-6"><a href="<?php echo get_site_url().'/'.$lang; ?>/package-type<?php echo "-".$lang;?>?local=basic" class="btn-basic-pack">
 					Basic</a><!--span class="btn-basic-pack-text">Free</span--></div> 
-					<div class="col-sm-6"><a href="<?php echo get_site_url(); ?>/package-type?local=premium" class="btn-primium-pack">
-					Premium</a><!--span class="btn-primium-pack-text">$1.99 Per Month/ Student</span--></div> 
-					
+					<div class="col-sm-6"><a href="<?php echo get_site_url().'/'.$lang; ?>/package-type<?php echo "-".$lang;?>?local=premium" class="btn-primium-pack">
+					Premium</a><!--span class="btn-primium-pack-text">$1.99 Per Month/ Student</span--></div> 					
 					
 					</div>
 				</div>
@@ -51,7 +49,7 @@ get_header(); ?>
 		<div id="cronWrap" style="background-color:#F4FAFA;background-image:none;top:500px;height:800px;">
 			<div style="border: 0 solid #ccc;left: 50%;margin: 0 0 0 -499px;position: absolute;width: 1000px;padding:55px 10px 0;">
 				<h2 class="f2" style="text-align:center;"><i>School Admins, enjoy the easy record keepings, and hassle free school works!</i></h2><br>
-				<p style="font-size:16px;"><b>classtune</b> makes institutional monitoring and management of school activity easy and effective. Rich, align, and engage teachers, students, and parents from all your schools in one platform. It accelerates parental engagement and advocates corrective measures to improve learning outcomes.</p><br>
+				<p style="font-size:16px;"><b>ClassTune</b> makes institutional monitoring and management of school activity easy and effective. Rich, align, and engage teachers, students, and parents from all your schools in one platform. It accelerates parental engagement and advocates corrective measures to improve learning outcomes.</p><br>
 				<div id="slider"  class="flexslider" style="margin-top:30px;width:1000px;">
 					<ul class="slides">
 						<li>

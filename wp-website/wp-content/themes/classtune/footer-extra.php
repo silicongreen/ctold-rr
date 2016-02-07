@@ -17,11 +17,11 @@
 
                     <div class="footerlink f5">
                         <ul>									
-                            <li><a href="<?php echo get_site_url(); ?>/terms" style="color:#999;">Terms</a></li>
+                            <li><a href="<?php echo get_site_url().'/'.$lang; ?>/terms<?php echo "-".$lang;?>" style="color:#999;">Terms</a></li>
                             <li style="color:#64B846;">|</li>
-                            <li><a href="<?php echo get_site_url(); ?>/privacypolicy" style="color:#999;">Privacy Policy</a></li>
+                            <li><a href="<?php echo get_site_url().'/'.$lang; ?>/privacypolicy<?php echo "-".$lang;?>" style="color:#999;">Privacy Policy</a></li>
                             <li style="color:#64B846;">|</li>
-                            <li><a href="<?php echo get_site_url(); ?>/copyright" style="color:#999;">Copyright</a></li>									
+                            <li><a href="<?php echo get_site_url().'/'.$lang; ?>/copyright<?php echo "-".$lang;?>" style="color:#999;">Copyright</a></li>									
                         </ul>
                     </div>
 
@@ -36,9 +36,9 @@
 
 <div id="mainnav">
     <ul>
-        <li><span onclick="window.location = '<?php echo get_site_url(); ?>'">Home</span></li>
+        <li><span onclick="window.location = '<?php echo get_site_url().'/'.$lang; ?>'">Home</span></li>
         <!--li><span onclick="window.location ='<?php echo get_site_url(); ?>?locale=about'">About us</span></li-->
-        <li><span onclick="window.location = '<?php echo get_site_url(); ?>?locale=feature'">Features</span>
+        <li><span onclick="window.location = '<?php echo get_site_url().'/'.$lang; ?>?locale=feature'">Features</span>
             <ul>
                 <li><a href="<?php echo get_site_url().'/'.$lang; ?>/admin-page<?php echo "-".$lang;?>" >School Admin</a></li>
                 <li><a href="<?php echo get_site_url().'/'.$lang; ?>/student-page<?php echo "-".$lang;?>" >Student</a></li>
@@ -47,7 +47,7 @@
             </ul>
         </li>
 		<li><a href="<?php echo get_site_url().'/'.$lang; ?>/supports<?php echo "-".$lang;?>"><span>Support</span></a>
-        <li><span onclick="window.location = '<?php echo get_site_url(); ?>?locale=contact'">Contact</span></li>
+        <li><span onclick="window.location = '<?php echo get_site_url().'/'.$lang; ?>?locale=contact'">Contact</span></li>
          <?php get_template_part( 'login' ); ?>	
 		 <?php pll_the_languages(array('dropdown'=>1));?>
     </ul>

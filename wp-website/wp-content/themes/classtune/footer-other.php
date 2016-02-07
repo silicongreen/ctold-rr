@@ -35,11 +35,11 @@
 
                     <div class="footerlink f5">
                         <ul>									
-                            <li><a href="<?php echo get_site_url(); ?>/terms" style="color:#999;">Terms</a></li>
+                            <li><a href="<?php echo get_site_url(); ?>/terms<?php echo "-".$lang;?>" style="color:#999;">Terms</a></li>
                             <li style="color:#64B846;">|</li>
-                            <li><a href="<?php echo get_site_url(); ?>/privacypolicy" style="color:#999;">Privacy Policy</a></li>
+                            <li><a href="<?php echo get_site_url(); ?>/privacypolicy<?php echo "-".$lang;?>" style="color:#999;">Privacy Policy</a></li>
                             <li style="color:#64B846;">|</li>
-                            <li><a href="<?php echo get_site_url(); ?>/copyright" style="color:#999;">Copyright</a></li>									
+                            <li><a href="<?php echo get_site_url(); ?>/copyright<?php echo "-".$lang;?>" style="color:#999;">Copyright</a></li>									
                         </ul>
                     </div>
 
@@ -58,15 +58,16 @@
         <!--li><span onclick="window.location ='<?php echo get_site_url(); ?>?locale=about'">About us</span></li-->
         <li><span onclick="window.location = '<?php echo get_site_url(); ?>?locale=feature'">Features</span>
             <ul>
-                <li><a href="<?php echo get_site_url(); ?>/admin-user" >School Admin</a></li>
-                <li><a href="<?php echo get_site_url(); ?>/student-user" >Student</a></li>
-                <li><a href="<?php echo get_site_url(); ?>/guardian-user" >Parent</a></li>
-                <li><a href="<?php echo get_site_url(); ?>/teacher-user" >Teacher</a></li>
+                <li><a href="<?php echo get_site_url().'/'.$lang; ?>/admin-user<?php echo "-".$lang;?>" >School Admin</a></li>
+                <li><a href="<?php echo get_site_url().'/'.$lang; ?>/student-user<?php echo "-".$lang;?>" >Student</a></li>
+                <li><a href="<?php echo get_site_url().'/'.$lang; ?>/guardian-user<?php echo "-".$lang;?>" >Parent</a></li>
+                <li><a href="<?php echo get_site_url().'/'.$lang; ?>/teacher-user<?php echo "-".$lang;?>" >Teacher</a></li>
             </ul>
         </li>
-        <li><span onclick="window.location = '<?php echo get_site_url(); ?>?locale=contact'">Contact</span></li>
+		<li><a href="<?php echo get_site_url().'/'.$lang; ?>/supports<?php echo "-".$lang;?>"><span>Support</span></a>
+        <li><span onclick="window.location = '<?php echo get_site_url().'/'.$lang; ?>?locale=contact'">Contact</span></li>
         <?php get_template_part( 'login' ); ?>
-		<?php //pll_the_languages(array('dropdown'=>1));?>
+		<?php pll_the_languages(array('dropdown'=>1));?>
     </ul>
     <div id="homelink">
         <a href="<?php echo get_site_url(); ?>" title="" >

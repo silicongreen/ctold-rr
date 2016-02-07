@@ -66,6 +66,7 @@
         </li>
         <li><span onclick="window.location = '<?php echo get_site_url(); ?>?locale=contact'">Contact</span></li>
         <?php get_template_part( 'login' ); ?>
+		<?php //pll_the_languages(array('dropdown'=>1));?>
     </ul>
     <div id="homelink">
         <a href="<?php echo get_site_url(); ?>" title="" >

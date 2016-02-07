@@ -40,15 +40,18 @@
         <!--li><span onclick="window.location ='<?php echo get_site_url(); ?>?locale=about'">About us</span></li-->
         <li><span onclick="window.location = '<?php echo get_site_url(); ?>?locale=feature'">Features</span>
             <ul>
-                <li><a href="<?php echo get_site_url(); ?>/admin-user" >School Admin</a></li>
-                <li><a href="<?php echo get_site_url(); ?>/student-user" >Student</a></li>
-                <li><a href="<?php echo get_site_url(); ?>/guardian-user" >Parent</a></li>
-                <li><a href="<?php echo get_site_url(); ?>/teacher-user" >Teacher</a></li>
+                <li><a href="<?php echo get_site_url().'/'.$lang; ?>/admin-page<?php echo "-".$lang;?>" >School Admin</a></li>
+                <li><a href="<?php echo get_site_url().'/'.$lang; ?>/student-page<?php echo "-".$lang;?>" >Student</a></li>
+                <li><a href="<?php echo get_site_url().'/'.$lang; ?>/guardian-page<?php echo "-".$lang;?>" >Parent</a></li>
+                <li><a href="<?php echo get_site_url().'/'.$lang; ?>/teacher-page<?php echo "-".$lang;?>" >Teacher</a></li>
             </ul>
         </li>
+		<li><a href="<?php echo get_site_url().'/'.$lang; ?>/supports<?php echo "-".$lang;?>"><span>Support</span></a>
         <li><span onclick="window.location = '<?php echo get_site_url(); ?>?locale=contact'">Contact</span></li>
-         <?php get_template_part( 'login' ); ?>
+         <?php get_template_part( 'login' ); ?>	
+		 <?php pll_the_languages(array('dropdown'=>1));?>
     </ul>
+
     <div id="homelink">
         <a href="<?php echo get_site_url(); ?>/" title="" >
             <img src="<?php bloginfo('template_url'); ?>/images/logo/classtune.png" alt="" title="" width="200" height="" />

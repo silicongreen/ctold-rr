@@ -631,7 +631,7 @@ class SchoolsController <  MultiSchoolController
     @conn = ActiveRecord::Base.connection 
     sql = "SELECT e.`employee_number`,e.`first_name`,e.`middle_name`,e.`last_name`,e.gender,
                     fu.paid_username,fu.paid_password FROM 
-                    employees as e left join tds_free_users as fu on e.user_id=fu.paid_id   left join users as u on e.user_id=u.id where fu.paid_school_id=#{@school.id} and u.admin = 0 order by e.id"
+                    employees as e left join tds_free_users as fu on e.user_id=fu.paid_id   left join users as u on e.user_id=u.id where fu.paid_school_id=#{@school.id} and u.employee = 1 order by e.id"
         
     @teacher_data = @conn.execute(sql).all_hashes
     
@@ -645,7 +645,7 @@ class SchoolsController <  MultiSchoolController
     @conn = ActiveRecord::Base.connection 
     sql = "SELECT e.`employee_number`,e.`first_name`,e.`middle_name`,e.`last_name`,e.gender,
           fu.paid_username,fu.paid_password FROM 
-          employees as e left join tds_free_users as fu on e.user_id=fu.paid_id   left join users as u on e.user_id=u.id  where fu.paid_school_id=#{@school.id} and u.admin = 0 order by e.id"
+          employees as e left join tds_free_users as fu on e.user_id=fu.paid_id   left join users as u on e.user_id=u.id  where fu.paid_school_id=#{@school.id} and u.employee = 1 order by e.id"
         
     @teacher_data = @conn.execute(sql).all_hashes
     

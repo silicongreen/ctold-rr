@@ -101,7 +101,7 @@
                                                                                                 <tr>
                                                                                                     <td valign="top" style="vertical-align:top;font-family:Helvetica,arial,sans-serif;font-size:14.5px;color:#666666;text-align:left;line-height:20px;border-collapse:collapse" align="left">
                                                                                                         <span>Best Regards,</span><br />
-                                                                                                        <span>Team Classtune</span>
+                                                                                                        <span>ClassTune Team</span>
                                                                                                     </td>
                                                                                                 </tr>
                                                                                             </tbody>
@@ -142,7 +142,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td align="left" valign="middle" style="font-family:Helvetica,arial,sans-serif;font-size:10px;color:#666666;border-collapse:collapse">
-                                                        House 54, Road 10, Block E, Banani,Dhaka 1213,Bangladesh © <?php echo date("Y");?> Classtune
+                                                        House 54, Road 10, Block E, Banani,Dhaka 1213,Bangladesh © 2015 Classtune
                                                     </td>
                                                 </tr>
                                                 <tr>

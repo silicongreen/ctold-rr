@@ -650,7 +650,7 @@ class SchoolsController <  MultiSchoolController
     @teacher_data = @conn.execute(sql).all_hashes
     
     csv_string=FasterCSV.generate do |csv|
-      cols=["Employee No.","Gender","First Name","Middle Name","Last Name","Password"]
+      cols=["Employee No.","Gender","First Name","Middle Name","Last Name","User Name","Password"]
       csv << cols
       @teacher_data.each_with_index do |b,i|
         col=[]
@@ -659,6 +659,7 @@ class SchoolsController <  MultiSchoolController
         col<< "#{b['first_name']}"
         col<< "#{b['middle_name']}"
         col<< "#{b['last_name']}"
+        col<< "#{b['paid_username']}"
         col<< "#{b['paid_password']}"
         
         csv<< col

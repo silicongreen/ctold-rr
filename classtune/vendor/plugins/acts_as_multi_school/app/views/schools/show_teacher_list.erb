@@ -1,0 +1,38 @@
+<h1>Employee List <%= @school.name %></h1>
+<div class='well'>
+<% unless @teacher_data.empty? %>
+   <label><%= link_to "Download Employee List", {:controller=>"schools", :action=>"download_teacher_list", :id=>@school.id} %></label>
+   <br/><br/>
+  <table class="table table-bordered table-striped">
+    <thead>
+    <th>No.</th>
+    <th>Employee No.</th>
+    <th>Gender</th>
+    <th>Name</th>
+    <th>Username</th>  
+    <th>Password</th>    
+    </thead>
+   
+   
+    <% @teacher_data.each_with_index do |list,i| %>
+      <%#= debug(list) %>
+      <% if (list['employee_number'] != @school.code+'-champs21' and list['employee_number'] != @school.code+'-admin' and list['employee_number'] != 'admin' and list['employee_number'] != 'champs21') %>
+        <tr>
+          <td><%= i+1 %><br/></td>
+          <td><%= list['employee_number'] %><br/></td>
+          <td><%= list['gender'] %><br/></td>
+          <td><%= list['first_name'] %>&nbsp;<%= if list['middle_name'] !="" then list['middle_name'] end %>&nbsp;<%= if list['last_name'] !="" then list['last_name'] end %><br/></td>        
+          <td><%= list['paid_username'] %><br/></td>  
+          <td><%= list['paid_password'] %><br/></td>        
+        </tr>
+      <% end %>
+    <% end %>
+  </table>
+<% else %>
+   <h2>No Data Found</h2>
+<% end %>
+<%#= will_paginate @teacher_data %>
+  </br>
+  </br>
+
+</div>

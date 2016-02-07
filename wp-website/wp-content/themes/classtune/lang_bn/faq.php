@@ -49,9 +49,9 @@ get_header(); ?>
 							<div class="tabbable">
 								<ul class="nav nav-tabs" id="myTabs">    
 									<li class="active"><a href="#admin" data-toggle="tab">অ্যাডমিন</a></li>
-									<li><a href="#student" data-toggle="tab">ছাত্র</a></li>
-									<li><a href="#parent" data-toggle="tab">পিতা মাতা</a></li>
-									<li><a href="#teacher" data-toggle="tab">ত্তস্তাদ</a></li>
+									<li><a href="#student" data-toggle="tab">শিক্ষার্থী</a></li>
+									<li><a href="#parent" data-toggle="tab">অভিভাবক</a></li>
+									<li><a href="#teacher" data-toggle="tab">শিক্ষক</a></li>
 								</ul>
 							 
 								<div class="tab-content">

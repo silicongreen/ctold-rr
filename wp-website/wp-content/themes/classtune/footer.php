@@ -9,12 +9,25 @@
  * @since Twenty Sixteen 1.0
  */
 ?>
+<?php $lang = reset(explode('_', get_locale()));?>
+<?php
 
+switch ($lang) {
+    case "en":
+        $reg_free = "Registration Free!";$free_acc = "Create Your FREE Account";$accessible = "Accessible from anywhere...";$contact = "Contact";$support = "Support";$teacher = "Teacher";$parent = "Parent";$student = "Student";$sAdmin = "School Admin";$feature = "Features";$home = "Home";$term = "Terms";$pp = "Privacy Policy";$cr = "Copyright";
+        break;
+    case "bn":
+        $reg_free = "ফ্রি রেজিস্ট্রেশন !";$free_acc = "বিনামূল্যে তোমার একাউন্ট কর";$accessible = "যে কোন জায়গা থেকে প্রবেশযোগ্য...";$contact = "যোগাযোগ";$support = "সহায়তা";$teacher = "শিক্ষক";$parent = "অভিভাবক";$student = "শিক্ষার্থী";$sAdmin = "স্কুল অ্যাডমিন";$feature = "বিস্তারিত";$home = "হোম";$term = "শর্তাবলী";$pp = "গোপনীয়তা নীতি";$cr = "কপিরাইট";
+        break;
+    default:
+        $reg_free = "Registration Free!";$free_acc = "Create Your FREE Account";$accessible = "Accessible from anywhere...";$contact = "Contact";$support = "Support";$teacher = "Teacher";$parent = "Parent";$student = "Student";$sAdmin = "School Admin";$feature = "Features";$home = "Home";$term = "Terms";$pp = "Privacy Policy";$cr = "Copyright";
+}
+?>
 <div id="imagesWrap">
     <div id="images">
         <div id="worldmap">
             <h2 class="f2" style="left: 35%;position: absolute;text-align: center;top: 40px;">
-                <i>Accessible from anywhere...</i>
+                <i><?php echo $accessible;?></i>
             </h2>
             <img src="<?php bloginfo('template_url'); ?>/images/cover/web-device.png" alt="" title="" width="100%" />
         </div>
@@ -33,15 +46,15 @@
                         <div class="postlist-tab" style=" background: none; position: relative;top: -60px;z-index: 1;">
                             <ul>
                                 <li>
-                                    <a href="javascript:void(0);" style="cursor: default;background: #E5ECF2 none repeat scroll 0 0;color:#999!important;">Registration Free! <i class="fa fa-long-arrow-right"></i></a>
-                                    <a href="<?php echo get_site_url(); ?>/admin-user" >I'm School Admin</a>
-                                    <a href="<?php echo get_site_url(); ?>/student-user" >I'm Student</a>
-                                    <a href="<?php echo get_site_url(); ?>/guardian-user" >I'm Parent</a>
-                                    <a href="<?php echo get_site_url(); ?>/teacher-user" >I'm Teacher</a>
+                                    <a href="javascript:void(0);" style="cursor: default;background: #E5ECF2 none repeat scroll 0 0;color:#999!important;"><?php echo $reg_free;?> <i class="fa fa-long-arrow-right"></i></a>
+                                    <a href="<?php echo get_site_url().'/'.$lang; ?>/admin-page<?php echo "-".$lang;?>" ><?php echo $sAdmin;?></a>
+                                    <a href="<?php echo get_site_url().'/'.$lang; ?>/student-page<?php echo "-".$lang;?>" ><?php echo $student;?></a>
+                                    <a href="<?php echo get_site_url().'/'.$lang; ?>/guardian-page<?php echo "-".$lang;?>" ><?php echo $parent;?></a>
+                                    <a href="<?php echo get_site_url().'/'.$lang; ?>/teacher-page<?php echo "-".$lang;?>" ><?php echo $teacher;?></a>
                                 </li>
                             </ul>
                         </div>
-                        <?php get_template_part( 'contact' ); ?> <?php //$this->load->view("layout/contact"); ?>								
+                        <?php get_template_part( 'lang_'.$lang.'/contact' ); ?> 										
                     </div>
 
                     <div class="ym-wbox footer noPrint" style=" position: relative; bottom: 0px; display: block;">
@@ -57,12 +70,12 @@
 
                         <div class="footerlink f5">
                             <ul>									
-                                <li><a href="<?php echo get_site_url(); ?>/terms" style="color:#999;">Terms</a></li>
-                                <li style="color:#64B846;">|</li>
-                                <li><a href="<?php echo get_site_url(); ?>/privacypolicy" style="color:#999;">Privacy Policy</a></li>
-                                <li style="color:#64B846;">|</li>
-                                <li><a href="<?php echo get_site_url(); ?>/copyright" style="color:#999;">Copyright</a></li>									
-                            </ul>
+								<li><a href="<?php echo get_site_url().'/'.$lang; ?>/terms<?php echo "-".$lang;?>" style="color:#999;"><?php echo $term;?></a></li>
+								<li style="color:#64B846;">|</li>
+								<li><a href="<?php echo get_site_url().'/'.$lang; ?>/privacypolicy<?php echo "-".$lang;?>" style="color:#999;"><?php echo $pp;?></a></li>
+								<li style="color:#64B846;">|</li>
+								<li><a href="<?php echo get_site_url().'/'.$lang; ?>/copyright<?php echo "-".$lang;?>" style="color:#999;"><?php echo $cr;?></a></li>									
+							</ul>
                         </div>
 
                     </div>
@@ -73,23 +86,23 @@
 
 
 </div>
-<?php echo $lang = reset(explode('_', get_locale()));?>
+
 <div id="mainnav">
     <ul>
-        <li class="before"><span>Home</span></li>
+        <li class="before"><span><?php echo $home;?></span></li>
         <!--li class="start act"><span>About us</span></li-->
-        <li class="cron"><span>Features</span>
+        <li class="cron"><span><?php echo $feature;?></span>
             <ul>
-                <li><a href="<?php echo get_site_url().'/'.$lang; ?>/admin-page<?php echo "-".$lang;?>" >School Admin</a></li>
-                <li><a href="<?php echo get_site_url().'/'.$lang; ?>/student-page<?php echo "-".$lang;?>" >Student</a></li>
-                <li><a href="<?php echo get_site_url().'/'.$lang; ?>/guardian-page<?php echo "-".$lang;?>" >Parent</a></li>
-                <li><a href="<?php echo get_site_url().'/'.$lang; ?>/teacher-page<?php echo "-".$lang;?>" >Teacher</a></li>
+                <li><a href="<?php echo get_site_url().'/'.$lang; ?>/admin-user<?php echo "-".$lang;?>" ><?php echo $sAdmin;?></a></li>
+                <li><a href="<?php echo get_site_url().'/'.$lang; ?>/student-user<?php echo "-".$lang;?>" ><?php echo $student;?></a></li>
+                <li><a href="<?php echo get_site_url().'/'.$lang; ?>/guardian-user<?php echo "-".$lang;?>" ><?php echo $parent;?></a></li>
+                <li><a href="<?php echo get_site_url().'/'.$lang; ?>/teacher-user<?php echo "-".$lang;?>" ><?php echo $teacher;?></a></li>
             </ul>
         </li>
-		<li><a href="<?php echo get_site_url().'/'.$lang; ?>/supports<?php echo "-".$lang;?>"><span>Support</span></a>
-        <li class="images"><span>Contact</span></li>
-        <?php get_template_part( 'login' ); ?> <?php //$this->load->view("layout/login"); ?>
-		<?php pll_the_languages(array('dropdown'=>1));  ?>
+		<li><a href="<?php echo get_site_url().'/'.$lang; ?>/supports<?php echo "-".$lang;?>"><span><?php echo $support;?></span></a>
+        <li class="images"><span><?php echo $contact;?></span></li>
+        <?php get_template_part( 'lang_'.$lang.'/login' ); ?>	
+		<li><?php pll_the_languages(array('dropdown'=>1));  ?></li>
     </ul>
     <div id="homelink">
         <a href="<?php echo get_site_url(); ?>" title="" >

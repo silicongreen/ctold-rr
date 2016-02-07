@@ -1,8 +1,22 @@
+<?php $lang = reset(explode('_', get_locale()));?>
+<?php
+
+switch ($lang) {
+    case "en":
+        $free_acc = "Create Your FREE Account";$accessible = "Accessible from anywhere...";$contact = "Contact";$support = "Support";$teacher = "Teacher";$parent = "Parent";$student = "Student";$sAdmin = "School Admin";$feature = "Features";$home = "Home";$term = "Terms";$pp = "Privacy Policy";$cr = "Copyright";
+        break;
+    case "bn":
+        $free_acc = "বিনামূল্যে তোমার একাউন্ট কর";$accessible = "যে কোন জায়গা থেকে প্রবেশযোগ্য...";$contact = "যোগাযোগ";$support = "সহায়তা";$teacher = "শিক্ষক";$parent = "অভিভাবক";$student = "শিক্ষার্থী";$sAdmin = "স্কুল অ্যাডমিন";$feature = "বিস্তারিত";$home = "হোম";$term = "শর্তাবলী";$pp = "গোপনীয়তা নীতি";$cr = "কপিরাইট";
+        break;
+    default:
+        $free_acc = "Create Your FREE Account";$accessible = "Accessible from anywhere...";$contact = "Contact";$support = "Support";$teacher = "Teacher";$parent = "Parent";$student = "Student";$sAdmin = "School Admin";$feature = "Features";$home = "Home";$term = "Terms";$pp = "Privacy Policy";$cr = "Copyright";
+}
+?>
 <div id="imagesWrap">
     <div id="images">
         <div id="worldmap">
             <h2 class="f2" style="left: 35%;position: absolute;text-align: center;top: 40px;">
-                <i>Accessible from anywhere...</i>
+                <i><?php echo $accessible;?></i>
             </h2>
             <img src="<?php bloginfo('template_url'); ?>/images/cover/web-device.png" alt="" title="" width="100%" />
         </div>
@@ -17,9 +31,9 @@
                     <img src="<?php bloginfo('template_url'); ?>/images/logo/happy-face.png" alt="" title="" width="25%" style="position:absolute;left:0px;z-index: 0;margin-top:-25px;" />
                     <div style=" position: relative;top: -15px;z-index: 1;">
                         <a href="" style="background-color: #fff;color: #64B846;font-size: 20px;padding: 20px 40px;text-decoration: none;border-radius:5px;	-moz-border-radius:5px;	-webkit-border-radius:5px;border:1px solid #fff;box-shadow: 0 4px 2px -2px gray;">
-                            Create Your FREE Account</a>
+                            <?php echo $free_acc;?></a>
                     </div>
-                    <?php get_template_part( 'contact' ); ?> 									
+                    <?php get_template_part( 'lang_'.$lang.'/contact' ); ?> 									
                 </div>
 
                 <div class="ym-wbox footer noPrint" style=" position: relative; bottom: 0px; display: block;">
@@ -35,14 +49,13 @@
 
                     <div class="footerlink f5">
                         <ul>									
-                            <li><a href="<?php echo get_site_url(); ?>/terms<?php echo "-".$lang;?>" style="color:#999;">Terms</a></li>
+                            <li><a href="<?php echo get_site_url().'/'.$lang; ?>/terms<?php echo "-".$lang;?>" style="color:#999;"><?php echo $term;?></a></li>
                             <li style="color:#64B846;">|</li>
-                            <li><a href="<?php echo get_site_url(); ?>/privacypolicy<?php echo "-".$lang;?>" style="color:#999;">Privacy Policy</a></li>
+                            <li><a href="<?php echo get_site_url().'/'.$lang; ?>/privacypolicy<?php echo "-".$lang;?>" style="color:#999;"><?php echo $pp;?></a></li>
                             <li style="color:#64B846;">|</li>
-                            <li><a href="<?php echo get_site_url(); ?>/copyright<?php echo "-".$lang;?>" style="color:#999;">Copyright</a></li>									
+                            <li><a href="<?php echo get_site_url().'/'.$lang; ?>/copyright<?php echo "-".$lang;?>" style="color:#999;"><?php echo $cr;?></a></li>									
                         </ul>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -54,20 +67,20 @@
 
 <div id="mainnav">
     <ul>
-        <li><span onclick="window.location = '<?php echo get_site_url(); ?>'">Home</span></li>
+        <li><span onclick="window.location = '<?php echo get_site_url(); ?>'"><?php echo $home;?></span></li>
         <!--li><span onclick="window.location ='<?php echo get_site_url(); ?>?locale=about'">About us</span></li-->
-        <li><span onclick="window.location = '<?php echo get_site_url(); ?>?locale=feature'">Features</span>
+        <li><span onclick="window.location = '<?php echo get_site_url(); ?>?locale=feature'"><?php echo $feature;?></span>
             <ul>
-                <li><a href="<?php echo get_site_url().'/'.$lang; ?>/admin-user<?php echo "-".$lang;?>" >School Admin</a></li>
-                <li><a href="<?php echo get_site_url().'/'.$lang; ?>/student-user<?php echo "-".$lang;?>" >Student</a></li>
-                <li><a href="<?php echo get_site_url().'/'.$lang; ?>/guardian-user<?php echo "-".$lang;?>" >Parent</a></li>
-                <li><a href="<?php echo get_site_url().'/'.$lang; ?>/teacher-user<?php echo "-".$lang;?>" >Teacher</a></li>
+                <li><a href="<?php echo get_site_url().'/'.$lang; ?>/admin-user<?php echo "-".$lang;?>" ><?php echo $sAdmin;?></a></li>
+                <li><a href="<?php echo get_site_url().'/'.$lang; ?>/student-user<?php echo "-".$lang;?>" ><?php echo $student;?></a></li>
+                <li><a href="<?php echo get_site_url().'/'.$lang; ?>/guardian-user<?php echo "-".$lang;?>" ><?php echo $parent;?></a></li>
+                <li><a href="<?php echo get_site_url().'/'.$lang; ?>/teacher-user<?php echo "-".$lang;?>" ><?php echo $teacher;?></a></li>
             </ul>
         </li>
-		<li><a href="<?php echo get_site_url().'/'.$lang; ?>/supports<?php echo "-".$lang;?>"><span>Support</span></a>
-        <li><span onclick="window.location = '<?php echo get_site_url().'/'.$lang; ?>?locale=contact'">Contact</span></li>
-        <?php get_template_part( 'login' ); ?>
-		<?php pll_the_languages(array('dropdown'=>1));?>
+		<li><a href="<?php echo get_site_url().'/'.$lang; ?>/supports<?php echo "-".$lang;?>"><span><?php echo $support;?></span></a>
+        <li><span onclick="window.location = '<?php echo get_site_url().'/'.$lang; ?>?locale=contact'"><?php echo $contact;?></span></li>
+        <?php get_template_part( 'lang_'.$lang.'/login' ); ?>
+		<li><?php pll_the_languages(array('dropdown'=>1));?></li>
     </ul>
     <div id="homelink">
         <a href="<?php echo get_site_url(); ?>" title="" >

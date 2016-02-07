@@ -43,7 +43,7 @@ get_header(); ?>
 						</div>
 						<div class="col-md-8 col-sm-offset-2" id="faq-data" style="margin-top: 40px;">					
 							<?php 
-								$var = do_shortcode( '[faq cat_id="36"] ' );
+								$var = do_shortcode( '[faq cat_id="8"] ' );
 								echo $var;
 							?>
 							

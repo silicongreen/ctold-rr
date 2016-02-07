@@ -1,7 +1,7 @@
 <?php
   wp_nonce_field("login_security","login_security_field");
 ?>
-<li id="login_button_classune"><a style="color:#fff;text-decoration:none;" id="classtune_a"  href="javascript:void(0)"><span>Log In</span></a>
+<li id="login_button_classune"><a style="color:#fff;text-decoration:none;" id="classtune_a"  href="javascript:void(0)"><span><?php echo "Log in";?></span></a>
     <div id="login_form_classune" class="col-md-3" style="overflow: hidden; width:23%;">
         
         <div class="col-md-12">
@@ -34,22 +34,22 @@
                     <div class="form-group" id="register_from_login_div">
                         <div class="row">
                             
-                            <button name="admin" onclick="location.href='<?php echo get_site_url(); ?>/signup/admin'" type="button" id="admin_register" class="btn-primary btn-xs btn btn-default">
+                            <button name="admin" onclick="location.href='<?php echo get_site_url().'/'.$lang; ?>/admin-page<?php echo "-".$lang;?>'" type="button" id="admin_register" class="btn-primary btn-xs btn btn-default">
                                 <i class="fa"></i> Admin
                             </button>
 
 
-                            <button name="student" onclick="location.href='<?php echo get_site_url(); ?>/signup/student'" type="button" id="student_register" class="btn-info btn-xs btn btn-default">
+                            <button name="student" onclick="location.href='<?php echo get_site_url().'/'.$lang; ?>/student-page<?php echo "-".$lang;?>'" type="button" id="student_register" class="btn-info btn-xs btn btn-default">
                                 <i class="fa"></i> Student
                             </button>
 
 
-                            <button name="parent" onclick="location.href='<?php echo get_site_url(); ?>/signup/guardian'" type="button" id="parent_register" class="btn-warning btn-xs btn btn-default">
+                            <button name="parent" onclick="location.href='<?php echo get_site_url().'/'.$lang; ?>/guardian-page<?php echo "-".$lang;?>'" type="button" id="parent_register" class="btn-warning btn-xs btn btn-default">
                                 <i class="fa"></i> Parent
                             </button>
 
 
-                            <button name="student" onclick="location.href='<?php echo get_site_url(); ?>/signup/teacher'" type="button" id="student_register" class="btn-danger btn-xs btn btn-default">
+                            <button name="student" onclick="location.href='<?php echo get_site_url().'/'.$lang; ?>/teacher-page<?php echo "-".$lang;?>'" type="button" id="student_register" class="btn-danger btn-xs btn btn-default">
                                 <i class="fa"></i> Teacher
                             </button>
                            

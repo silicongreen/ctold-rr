@@ -1,3 +1,17 @@
+<?php $lang = reset(explode('_', get_locale()));?>
+<?php
+
+switch ($lang) {
+    case "en":
+        $login = "Log in";$contact = "Contact";$support = "Support";$teacher = "Teacher";$parent = "Parent";$student = "Student";$sAdmin = "School Admin";$feature = "Features";$home = "Home";$term = "Terms";$pp = "Privacy Policy";$cr = "Copyright";
+        break;
+    case "bn":
+        $login = "লগইন";$contact = "যোগাযোগ";$support = "সহায়তা";$teacher = "শিক্ষক";$parent = "অভিভাবক";$student = "শিক্ষার্থী";$sAdmin = "স্কুল অ্যাডমিন";$feature = "বিস্তারিত";$home = "হোম";$term = "শর্তাবলী";$pp = "গোপনীয়তা নীতি";$cr = "কপিরাইট";
+        break;
+    default:
+        echo "Your favorite color is neither red, blue, nor green!";
+}
+?>
 <div id="imagesWrap">    
 
     <div id="thanks_endWrap" class="slide" style="height:115px;">
@@ -17,11 +31,11 @@
 
                     <div class="footerlink f5">
                         <ul>									
-                            <li><a href="<?php echo get_site_url().'/'.$lang; ?>/terms<?php echo "-".$lang;?>" style="color:#999;">Terms</a></li>
+                            <li><a href="<?php echo get_site_url().'/'.$lang; ?>/terms<?php echo "-".$lang;?>" style="color:#999;"><?php echo $term;?></a></li>
                             <li style="color:#64B846;">|</li>
-                            <li><a href="<?php echo get_site_url().'/'.$lang; ?>/privacypolicy<?php echo "-".$lang;?>" style="color:#999;">Privacy Policy</a></li>
+                            <li><a href="<?php echo get_site_url().'/'.$lang; ?>/privacypolicy<?php echo "-".$lang;?>" style="color:#999;"><?php echo $pp;?></a></li>
                             <li style="color:#64B846;">|</li>
-                            <li><a href="<?php echo get_site_url().'/'.$lang; ?>/copyright<?php echo "-".$lang;?>" style="color:#999;">Copyright</a></li>									
+                            <li><a href="<?php echo get_site_url().'/'.$lang; ?>/copyright<?php echo "-".$lang;?>" style="color:#999;"><?php echo $cr;?></a></li>									
                         </ul>
                     </div>
 
@@ -36,20 +50,20 @@
 
 <div id="mainnav">
     <ul>
-        <li><span onclick="window.location = '<?php echo get_site_url().'/'.$lang; ?>'">Home</span></li>
+        <li><span onclick="window.location = '<?php echo get_site_url().'/'.$lang; ?>'"><?php echo $home;?></span></li>
         <!--li><span onclick="window.location ='<?php echo get_site_url(); ?>?locale=about'">About us</span></li-->
-        <li><span onclick="window.location = '<?php echo get_site_url().'/'.$lang; ?>?locale=feature'">Features</span>
+        <li><span onclick="window.location = '<?php echo get_site_url().'/'.$lang; ?>?locale=feature'"><?php echo $feature;?></span>
             <ul>
-                <li><a href="<?php echo get_site_url().'/'.$lang; ?>/admin-page<?php echo "-".$lang;?>" >School Admin</a></li>
-                <li><a href="<?php echo get_site_url().'/'.$lang; ?>/student-page<?php echo "-".$lang;?>" >Student</a></li>
-                <li><a href="<?php echo get_site_url().'/'.$lang; ?>/guardian-page<?php echo "-".$lang;?>" >Parent</a></li>
-                <li><a href="<?php echo get_site_url().'/'.$lang; ?>/teacher-page<?php echo "-".$lang;?>" >Teacher</a></li>
+                <li><a href="<?php echo get_site_url().'/'.$lang; ?>/admin-page<?php echo "-".$lang;?>" ><?php echo $sAdmin;?></a></li>
+                <li><a href="<?php echo get_site_url().'/'.$lang; ?>/student-page<?php echo "-".$lang;?>" ><?php echo $student;?></a></li>
+                <li><a href="<?php echo get_site_url().'/'.$lang; ?>/guardian-page<?php echo "-".$lang;?>" ><?php echo $parent;?></a></li>
+                <li><a href="<?php echo get_site_url().'/'.$lang; ?>/teacher-page<?php echo "-".$lang;?>" ><?php echo $teacher;?></a></li>
             </ul>
         </li>
-		<li><a href="<?php echo get_site_url().'/'.$lang; ?>/supports<?php echo "-".$lang;?>"><span>Support</span></a>
-        <li><span onclick="window.location = '<?php echo get_site_url().'/'.$lang; ?>?locale=contact'">Contact</span></li>
-         <?php get_template_part( 'login' ); ?>	
-		 <?php pll_the_languages(array('dropdown'=>1));?>
+		<li><a href="<?php echo get_site_url().'/'.$lang; ?>/supports<?php echo "-".$lang;?>"><span><?php echo $support;?></span></a>
+        <li><span onclick="window.location = '<?php echo get_site_url().'/'.$lang; ?>?locale=contact'"><?php echo $contact;?></span></li>
+         <?php get_template_part( 'lang_'.$lang.'/login' ); ?>	
+		 <li><?php pll_the_languages(array('dropdown'=>1));?></li>
     </ul>
 
     <div id="homelink">

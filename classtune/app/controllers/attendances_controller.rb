@@ -226,14 +226,19 @@ class AttendancesController < ApplicationController
   end
   
   def show_report   
-    unless params[:batch_id].nil? or  params[:date_report].nil?
+    if !params[:batch_id].nil? and  !params[:date_report].nil? and !params[:batch_id].blank?
       get_report(params[:batch_id], params[:date_report])
       @report_data = []
       if @student_response['status']['code'].to_i == 200
         @report_data = @student_response['data']
       end
+    elsif !params[:date_report].nil?
+      get_report_full(params[:date_report])
+      @report_data = []
+      if @student_response['status']['code'].to_i == 200
+        @report_data = @student_response['data']
+      end
     end
-    
     respond_to do |format|
       format.js { render :action => 'report_data' }
     end
@@ -951,6 +956,27 @@ class AttendancesController < ApplicationController
     end
     
     @attendence_data
+  end
+  
+  def get_report_full(date)
+    require 'net/http'
+    require 'uri'
+    require "yaml"
+ 
+    champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
+    api_endpoint = champs21_api_config['api_url']
+
+    if current_user.employee? or current_user.admin?
+      api_uri = URI(api_endpoint + "api/calender/studentattendencereportfull")
+      http = Net::HTTP.new(api_uri.host, api_uri.port)
+      request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })
+      request.set_form_data({"date" =>date ,"call_from_web"=>1,"user_secret" =>session[:api_info][0]['user_secret']})
+
+      response = http.request(request)
+      @student_response = JSON::parse(response.body)
+    end
+    
+    @student_response
   end
   
   def get_report(batch_id,date)

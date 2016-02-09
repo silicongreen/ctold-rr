@@ -29,22 +29,17 @@ get_header(); ?>
 			<div class="postlist-tab2">
 				<div style=" position: relative;top: 48px;z-index: 1;">
 					<a href="<?php echo get_site_url(); ?>/signup?user_type=3" style="background-color: #64b846;color: #fff;font-size: 20px;padding: 20px 40px;text-decoration: none;border-radius:5px;	-moz-border-radius:5px;	-webkit-border-radius:5px;border:1px solid #fff;box-shadow: 0 4px 2px -2px gray;">
-					Create Your FREE Account</a>
+					বিনামূল্যে আপনার অ্যাকাউন্ট খুলুন</a>
 				</div>
 			</div>
 		</div>
 
 		<div id="cronWrap" style="background-color:#F4FAFA;background-image:none;top:500px;height:800px;">
 			<div style="border: 0 solid #ccc;left: 50%;margin: 0 0 0 -499px;position: absolute;width: 1000px;padding:55px 10px 0;">
-				<h2 class="f2" style="text-align:center;"><i>Teachers, now you can focus more on your academic plans!</i></h2><br>
-				<p style="font-size:16px;"><b>ClassTune</b> is designed in such a way that gives you the complete control over your digital
-
-classroom. ClassTune empowers you to build relationships with your students in an 
-
-environment they know and love. ClassTune  is free for teachers and always will be. </p>
-                               <p style="font-size:16px;"> With everything on one platform, ClassTune reinforces and enhances what you're
-
-already doing in the classroom.</p>
+				<h2 class="f2" style="text-align:center;"><i>শিক্ষক, এখন আপনি আপনার একাডেমিক পরিকল্পনায় আরও মনোযোগ দিতে পারবেন!</i></h2><br>
+				<p style="font-size:16px;"><b>ClassTune</b>  এমনভাবে নকশা করা হয়েছে যার মাধ্যমে আপনি আপনার ডিজিটাল শেণীকক্ষের উপর পূর্ণ নিয়ন্ত্রন প্রতিষ্ঠা করতে পারবেন। <b>ClassTune</b> শিক্ষার্থীদের পরিচিত এবং পছন্দের পরিবেশের মাধ্যমে আপনার সঙ্গে সুসর্ম্পক গড়ে তুলতে সহায়তা করে। ক্লাসটিউন শিক্ষকদের জন্য বিনামূল্যে সেবা, যা সর্বদা বহাল থাকবে। 
+ </p>
+                               <p style="font-size:16px;">সবকিছুর সমন্বয়ে ক্লাসটিউন একমাত্র প্লাটফরম যা শ্রেণীকক্ষে ইতোমধ্যে সম্পন্ন আপনার কাজের সম্ভাবনাকে ক্রমাগত বৃদ্ধি করতে থাকে। </p>
 				<div id="slider"  class="flexslider" style="margin-top:30px;width:1000px;">
 					<ul class="slides">
 						<li>

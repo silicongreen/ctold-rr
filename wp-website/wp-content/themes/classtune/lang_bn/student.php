@@ -27,16 +27,16 @@ get_header(); ?>
 			<div class="postlist-tab2">
 				<div style=" position: relative;top: 48px;z-index: 1;">
 					<a href="<?php echo get_site_url(); ?>/signup?user_type=2" style="background-color: #64b846;color: #fff;font-size: 20px;padding: 20px 40px;text-decoration: none;border-radius:5px;	-moz-border-radius:5px;	-webkit-border-radius:5px;border:1px solid #fff;box-shadow: 0 4px 2px -2px gray;">
-					Create Your FREE Account</a>
+					 তোমার ফ্রি অ্যাকাউন্ট তৈরি কর</a>
 				</div>
 			</div>
 		</div>
 
 		<div id="cronWrap" style="background-color:#F4FAFA;background-image:none;top:500px;height:800px;">
 			<div style="border: 0 solid #ccc;left: 50%;margin: 0 0 0 -499px;position: absolute;width: 1000px;padding:55px 10px 0;">
-				<h2 class="f2" style="text-align:center;"><i>Students, maintaining your academic concerns are so easy now!</i></h2><br>
-				<p style="font-size:16px;"><b>ClassTune</b> is giving you everything that you need to maintain your good result, also enjoy all the school activities.</p>
-				<p style="font-size:16px;"><b>ClassTune</b> is designed in such a way that you get to connect, interact with your Teachers even when you are out of school and make your performance visible for your parents. Managing education and extracurricular activities is much simpler and presented in a way that you like. </p><br>
+				<h2 class="f2" style="text-align:center;"><i>শিক্ষার্থীদের একাডেমিক জটিলতার সহজ সমাধান</i></h2><br>
+				<p style="font-size:16px;">তোমার ভাল ফলাফল ও স্কুলের কাজকে আনন্দময় করে তোলার সমস্ত উপকরণ আছে <b>ClassTune</b> এ।</p>
+				<p style="font-size:16px;"><b>ClassTune</b> সাজানো হয়েছে এমন উপায়ে যাতে তুমি সর্বক্ষণ যোগাযোগ রাখতে পার তোমার শিক্ষকের সঙ্গে, এমনকি যখন তুমি স্কুলে নেই। তোমার কর্মক্ষমতার তথ্যও অভিভাবকের কাছে পৌঁছে দেবে ক্লাসটিউন। শিক্ষা ও পাঠ্যক্রম বহির্ভূত কাযক্রম পরিচালনার সহজতম উপায় এটি, ঠিক যেমনটি তুমি চাইছিলে এতদিন।</p><br>
 				<div id="slider"  class="flexslider" style="margin-top:30px;width:1000px;">
 					<ul class="slides">
 						<li>

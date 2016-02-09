@@ -29,15 +29,15 @@ get_header(); ?>
 			<div class="postlist-tab2">
 				<div style=" position: relative;top: 48px;z-index: 1;">
 					<a href="<?php echo get_site_url(); ?>/signup?user_type=4" style="background-color: #64b846;color: #fff;font-size: 20px;padding: 20px 40px;text-decoration: none;border-radius:5px;	-moz-border-radius:5px;	-webkit-border-radius:5px;border:1px solid #fff;box-shadow: 0 4px 2px -2px gray;">
-					Create Your FREE Account</a>
+					আপনার ফ্রি অ্যাকাউন্ট তৈরি করুন</a>
 				</div>
 			</div>
 		</div>
 
 		<div id="cronWrap" style="background-color:#F4FAFA;background-image:none;top:500px;height:800px;">
 			<div style="border: 0 solid #ccc;left: 50%;margin: 0 0 0 -499px;position: absolute;width: 1000px;padding:55px 10px 0;">
-				<h2 class="f2" style="text-align:center;"><i>Parents, Be on your child’s side when they achieve their goals!</i></h2><br>
-				<p style="font-size:16px;"><b>ClassTune</b> not only provides more visibility and actionable insight into your child’s learning trajectory, but also gives you something you can access on the go and on your schedule. By broadening the reach to you, ClassTune has enliven the world of learning even more for your child so they can achieve their full potential.</p><br>
+				<h2 class="f2" style="text-align:center;"><i>সন্তানের লক্ষ্য অর্জণের সময় অভিভাবক হিসেবে তার পাশেই থাকুন!</i></h2><br>
+				<p style="font-size:16px;"><b>ClassTune</b> শুধু আপনার সন্তানের শেখার পথপরিক্রমার কার্যকরী পূর্ণচিত্রই তুলে ধরে না, উপরন্তু এমন কিছু দেয় যার মাধ্যমে আপনি সঠিক সময়ে সঠিক পরিকল্পনা গ্রহণ করতে পারেন। আলোকিত বিশ্বকে আপনার নাগালে নিয়ে এসে সন্তানের পূর্ণদক্ষতা অর্জণের বিষয়টি সুনিশ্চিত করে ক্লাসটিউন।</p><br>
 				<div id="slider"  class="flexslider" style="margin-top:30px;width:1000px;">
 					<ul class="slides">
 						<li>

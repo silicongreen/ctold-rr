@@ -38,7 +38,7 @@ get_header(); ?>
 					</div>
 					<div class="col-sm-12" style="">
 					<div class="col-sm-6"><a href="<?php echo get_site_url(); ?>/package-type?local=basic" class="btn-basic-pack">
-					মৌলিক</a><!--span class="btn-basic-pack-text">Free</span--></div> 
+					বেসিক</a><!--span class="btn-basic-pack-text">Free</span--></div> 
 					<div class="col-sm-6"><a href="<?php echo get_site_url(); ?>/package-type?local=premium" class="btn-primium-pack">
 					প্রিমিয়াম</a><!--span class="btn-primium-pack-text">$1.99 Per Month/ Student</span--></div> 
 					
@@ -50,7 +50,7 @@ get_header(); ?>
 
 		<div id="cronWrap" style="background-color:#F4FAFA;background-image:none;top:500px;height:800px;">
 			<div style="border: 0 solid #ccc;left: 50%;margin: 0 0 0 -499px;position: absolute;width: 1000px;padding:55px 10px 0;">
-				<h2 class="f2" style="text-align:center;"><i>School Admins, enjoy the easy record keepings, and hassle free school works!</i></h2><br>
+				<h2 class="f2" style="text-align:center;"><i>এখন মনে রাখা সহজ আর কাজ হবে ঝামেলাবিহীন।</i></h2><br>
 				<p style="font-size:16px;"><b>ClassTune</b> স্কুল বিষয়ক প্রাতিষ্ঠানিক পর্যবেক্ষন এবং ব্যবস্থাপনাকে সহজ ও কার্যকর করে তোলে। শিক্ষক, শিক্ষার্থী এবং অভিভাবকদের একই প্লাটফর্মে এনে আপনার স্কুল সংশ্লিষ্ট সকল কার্যক্রমকে উন্নত, সারিবদ্ধ ও সুশৃংঙ্খল করে তোলে। ক্লাসটিউন অভিভাবকদের পরামর্শ এবং অংশগ্রহণ বৃদ্ধির মাধ্যমে শিক্ষা ব্যবস্থার উন্নতি নিশ্চিত করে। </p><br>
 				<div id="slider"  class="flexslider" style="margin-top:30px;width:1000px;">
 					<ul class="slides">
@@ -69,14 +69,14 @@ get_header(); ?>
 								<div class="col-sm-7">
 									<div class="col-sm-12">
 										<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/attandance.png) no-repeat center;"></div>
-										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>Attendance</i></p></div>
+										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>উপস্থিতি</i></p></div>
 									</div>
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-                                                                            See attendance of your entire school at one platform. More specifically every class, every section. Take help to keep track of entire school easily. Refer attendance record when needed. At-a-glance class and student views let you quickly get counts of total classes missed by student. 
+										পুরো স্কুলের সব ক্লাস এবং শাখার শিক্ষার্থীদের উপস্থিতির রেকর্ড দেখুন এক জায়গাতেই। শিক্ষার্থীদের উপস্থিতির খোঁজ এখন এক ক্লিকেই! একজন শিক্ষার্থী কতগুলো ক্লাস মিস করেছে তাও জানা যাবে এক নিমিষেই। 
 									</p>
-                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">See attendance of your entire school at one platform.</h3>
+									<h3 class="f2" style="font-size:20px;padding: 16px 5px;">পুরো স্কুলের সব শিক্ষার্থীদের উপস্থিতির রেকর্ড দেখুন এক স্থানে।</h3>
 									</div>									
 								</div>								
 							</div>	
@@ -85,25 +85,25 @@ get_header(); ?>
 							<div class="col-sm-12" style="height:300px;width:1000px;">
 								<div class="col-sm-1" style="text-align:-moz-center;"></div>
 								<div class="col-sm-3" style="text-align:-moz-center;">								
-                                                                    <div class="thumbnail-item">
-                                                                        <a href="#"><img class="img-responsive" src="<?php bloginfo('template_url'); ?>/images/dashpallete/view/academic_calender.png" style="width:170px;" /></a>
-                                                                        <div class="tooltip">
-                                                                            <img src="<?php bloginfo('template_url'); ?>/images/dashpallete/view/academic_calender.png" alt="" style="width:100%;" />
-                                                                        </div> 
-                                                                    </div>
+									<div class="thumbnail-item">
+										<a href="#"><img class="img-responsive" src="<?php bloginfo('template_url'); ?>/images/dashpallete/view/academic_calender.png" style="width:170px;" /></a>
+										<div class="tooltip">
+											<img src="<?php bloginfo('template_url'); ?>/images/dashpallete/view/academic_calender.png" alt="" style="width:100%;" />
+										</div> 
+									</div>
 								</div>
 								<div class="col-sm-1" style="text-align:-moz-center;"></div>
 								<div class="col-sm-7">
 									<div class="col-sm-12">
 										<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/academic_calender.png) no-repeat center;"></div>
-										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>Academic Calendar</i></p></div>
+										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>একাডেমিক ক্যালেন্ডার</i></p></div>
 									</div>
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										Upload your academic calendar and make it visible to everyone related. Help everyone to plan for future. Post academic calendar at the beginning of the year with flexibility of modification as and when required.
+										আপনার একাডেমিক ক্যালেন্ডার আপলোড করুন এবং সবাইকে সেই অনুযায়ী পরবর্তী পরিকল্পনা তৈরি করতে সাহায্য করুন। সারা বছরের ক্যালেন্ডার একসাথেই পাওয়া যাবে ক্লাসটিউনে। 
 									</p>
-                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">All important dates are at your finger tips.</h3>
+                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">বছরের সব গুরুত্বপূর্ণ তারিখগুলো এখন আঙুলের ছোঁয়ায় </h3>
 									</div>									
 								</div>								
 							</div>	
@@ -112,26 +112,26 @@ get_header(); ?>
 							<div class="col-sm-12" style="height:300px;width:1000px;">
 								<div class="col-sm-1" style="text-align:-moz-center;"></div>
 								<div class="col-sm-3" style="text-align:-moz-center;">									
-                                                                        <div class="thumbnail-item">
-                                                                                <a href="#"><img class="img-responsive" src="<?php bloginfo('template_url'); ?>/images/dashpallete/view/lesson_plan.png" style="width:170px;" /></a>
-                                                                                <div class="tooltip">
-                                                                                        <img src="<?php bloginfo('template_url'); ?>/images/dashpallete/view/lesson_plan.png" alt="" style="width:100%;" />
-                                                                                        
-                                                                                </div> 
-                                                                        </div>
+									<div class="thumbnail-item">
+											<a href="#"><img class="img-responsive" src="<?php bloginfo('template_url'); ?>/images/dashpallete/view/lesson_plan.png" style="width:170px;" /></a>
+											<div class="tooltip">
+													<img src="<?php bloginfo('template_url'); ?>/images/dashpallete/view/lesson_plan.png" alt="" style="width:100%;" />
+													
+											</div> 
+									</div>
 								</div>
 								<div class="col-sm-1" style="text-align:-moz-center;"></div>
 								<div class="col-sm-7">
 									<div class="col-sm-12">
 										<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/lesson_paln-white.png) no-repeat center;"></div>
-										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>Lesson Plan</i></p></div>
+										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>পাঠ্ পরিকল্পনা</i></p></div>
 									</div>
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										Lesson plan will be available online and modify when required. Facilitate to trace lesson plan against academic calendar.    
+										পাঠ পরিকল্পনা এখন অনলাইনেই পাওয়া যাবে। এমনকি প্রয়োজনমত সংশোধনও করা যাবে। ক্যালেন্ডার অনুযায়ী পড়াশোনার পরিকল্পনা করা এখন আরও সহজ।
 									</p>
-                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Updated lesson plan for school’s convenience.</h3>
+									<h3 class="f2" style="font-size:20px;padding: 16px 5px;">পাঠ্ পরিকল্পনা থাকবে আপডেটেট </h3>
 									</div>									
 								</div>								
 							</div>		
@@ -140,25 +140,25 @@ get_header(); ?>
 							<div class="col-sm-12" style="height:300px;width:1000px;">
 								<div class="col-sm-1" style="text-align:-moz-center;"></div>
 								<div class="col-sm-3" style="text-align:-moz-center;">
-                                                                    <div class="thumbnail-item">
-                                                                        <a href="#"><img class="img-responsive" src="<?php bloginfo('template_url'); ?>/images/dashpallete/view/Routine.png" style="width:170px;" /></a>
-                                                                        <div class="tooltip">
-                                                                            <img src="<?php bloginfo('template_url'); ?>/images/dashpallete/view/Routine.png" alt="" style="width:100%;" />
-                                                                        </div> 
-                                                                    </div>
+									<div class="thumbnail-item">
+										<a href="#"><img class="img-responsive" src="<?php bloginfo('template_url'); ?>/images/dashpallete/view/Routine.png" style="width:170px;" /></a>
+										<div class="tooltip">
+											<img src="<?php bloginfo('template_url'); ?>/images/dashpallete/view/Routine.png" alt="" style="width:100%;" />
+										</div> 
+									</div>
 								</div>
 								<div class="col-sm-1" style="text-align:-moz-center;"></div>
 								<div class="col-sm-7">
 									<div class="col-sm-12">
 										<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/trachers_routine.png) no-repeat center;"></div>
-										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>Teacher’s Routine</i></p></div>
+										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>শিক্ষকদের রুটিন</i></p></div>
 									</div>
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										Upload Teacher’s routine for their convenience and better productivity. Keep an eye on daily and weekly routine of an individual teacher. 
+										শিক্ষকদের সুবিধার জন্য রয়েছে রুটিন আপলোডের ব্যবস্থা। প্রত্যেক শিক্ষকের আলাদা আলাদা রুটিন জানতে চোখ রাখুন ক্লাসটিউনে। 
 									</p>
-                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Uploaded Teacher’s routine for their convenience. </h3>
+                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">শিক্ষকদের সুবিধামতো রুটিন আপলোড করুন </h3>
 									</div>									
 								</div>								
 							</div>		
@@ -167,25 +167,25 @@ get_header(); ?>
 							<div class="col-sm-12" style="height:300px;width:1000px;">
 								<div class="col-sm-1" style="text-align:-moz-center;"></div>
 								<div class="col-sm-3" style="text-align:-moz-center;">                                                                    
-                                                                    <div class="thumbnail-item">
-                                                                        <a href="#"><img class="img-responsive" src="<?php bloginfo('template_url'); ?>/images/dashpallete/view/Homework.png" style="width:170px;" /></a>
-                                                                        <div class="tooltip">
-                                                                            <img src="<?php bloginfo('template_url'); ?>/images/dashpallete/view/Homework.png" alt="" style="width:100%;" />
-                                                                        </div> 
-                                                                    </div>
+									<div class="thumbnail-item">
+										<a href="#"><img class="img-responsive" src="<?php bloginfo('template_url'); ?>/images/dashpallete/view/Homework.png" style="width:170px;" /></a>
+										<div class="tooltip">
+											<img src="<?php bloginfo('template_url'); ?>/images/dashpallete/view/Homework.png" alt="" style="width:100%;" />
+										</div> 
+									</div>
 								</div>
 								<div class="col-sm-1" style="text-align:-moz-center;"></div>
 								<div class="col-sm-7">
 									<div class="col-sm-12">
 										<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/homework.png) no-repeat center;"></div>
-										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>Homework</i></p></div>
+										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>হোমওয়ার্ক</i></p></div>
 									</div>
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										Check out homework of a student, a particular class section or whole school at one platform. 
+										একজন শিক্ষার্থী বা একটি ক্লাসের বা পুরো স্কুলের হোমওয়ার্ক খোঁজ জানা যাবে এক জায়গাতেই।
 									</p>
-                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Flexibility to check every class’s homework.</h3>
+									<h3 class="f2" style="font-size:20px;padding: 16px 5px;">সবার হোমওয়ার্ক জানার সুবিধা</h3>
 									</div>									
 								</div>								
 							</div>	
@@ -194,22 +194,22 @@ get_header(); ?>
 							<div class="col-sm-12" style="height:300px;width:1000px;">
 								<div class="col-sm-1" style="text-align:-moz-center;"></div>
 								<div class="col-sm-3" style="text-align:-moz-center;">									
-                                                                    <div class="thumbnail-item">
-                                                                        <a href="#"><img class="img-responsive" src="<?php bloginfo('template_url'); ?>/images/dashpallete/view/fees.png" style="width:170px;" /></a>                                                                        
-                                                                    </div>
+									<div class="thumbnail-item">
+										<a href="#"><img class="img-responsive" src="<?php bloginfo('template_url'); ?>/images/dashpallete/view/fees.png" style="width:170px;" /></a>                                                                        
+									</div>
 								</div>
 								<div class="col-sm-1" style="text-align:-moz-center;"></div>
 								<div class="col-sm-7">
 									<div class="col-sm-12">
 										<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/fees.png) no-repeat center;"></div>
-										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>Fees</i></p></div>
+										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>বেতন</i></p></div>
 									</div>
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-                                                                            Schedule fees and prompt automated fee reminder for pending payments. Never worry about managing fee collection and generating/maintaining receipts. Great tool for monitoring payment and keeping school’s accounts. 
+										নির্ধারিত সময়ের মধ্যে ফি জমা দেয়া এবং বকেয়া বেতন প্রদানের জন্য নিয়মিত মনে করিয়ে দিবে ক্লাসটিউন। 
 									</p>
-                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Hassle free fees collection.</h3>
+                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">ঝামেলাবিহীন বেতন প্রদান</h3>
 									</div>									
 								</div>								
 							</div>
@@ -218,22 +218,22 @@ get_header(); ?>
 							<div class="col-sm-12" style="height:300px;width:1000px;">
 								<div class="col-sm-1" style="text-align:-moz-center;"></div>
 								<div class="col-sm-3" style="text-align:-moz-center;">									
-                                                                    <div class="thumbnail-item">
-                                                                        <a href="#"><img class="img-responsive" src="<?php bloginfo('template_url'); ?>/images/dashpallete/view/Forms.png" style="width:170px;" /></a>                                                                        
-                                                                    </div>
+									<div class="thumbnail-item">
+										<a href="#"><img class="img-responsive" src="<?php bloginfo('template_url'); ?>/images/dashpallete/view/Forms.png" style="width:170px;" /></a>                                                                        
+									</div>
 								</div>
 								<div class="col-sm-1" style="text-align:-moz-center;"></div>
 								<div class="col-sm-7">
 									<div class="col-sm-12">
 										<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/defult.png) no-repeat center;"></div>
-										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>Forms</i></p></div>
+										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>স্কুলের যাবতীয় ফর্ম</i></p></div>
 									</div>
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										Upload all the necessary forms of your school so that whoever needs it, can download and use. Lessen the queues in the office room and attain higher efficiency in administration.
+										স্কুলের সব ফর্ম আপলোড করুন যেন সবাই প্রয়োজনমত ব্যবহার করতে পারে। অফিসের কাজে বাড়বে কর্মদক্ষতা। 
 									</p>
-                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">All necessary forms available online.</h3>
+                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">সব প্রয়োজনীয় ফর্ম পাওয়া যাচ্ছে অনলাইনেই</h3>
 									</div>									
 								</div>								
 							</div>	
@@ -242,22 +242,22 @@ get_header(); ?>
 							<div class="col-sm-12" style="height:300px;width:1000px;">
 								<div class="col-sm-1" style="text-align:-moz-center;"></div>
 								<div class="col-sm-3" style="text-align:-moz-center;">                                                                    
-                                                                    <div class="thumbnail-item">
-                                                                        <a href="#"><img class="img-responsive" src="<?php bloginfo('template_url'); ?>/images/dashpallete/view/meeting_request.png" style="width:170px;" /></a>                                                                        
-                                                                    </div>
+									<div class="thumbnail-item">
+										<a href="#"><img class="img-responsive" src="<?php bloginfo('template_url'); ?>/images/dashpallete/view/meeting_request.png" style="width:170px;" /></a>                                                                        
+									</div>
 								</div>
 								<div class="col-sm-1" style="text-align:-moz-center;"></div>
 								<div class="col-sm-7">
 									<div class="col-sm-12">
 										<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/meeting_request.png) no-repeat center;"></div>
-										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>Meeting Request</i></p></div>
+										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>সভা অনুরোধ</i></p></div>
 									</div>
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										How important it is to meet with all teachers and parents! Set meetings easily now and even modify for any sudden changes. Organize Parents’ Meet and notify them quickly. 
+										শিক্ষক এবং অভিভাবকদের সাথে দেখা করা হবে অনেক সহজে এবং প্রয়োজনে তা পরিবর্তনও করা যাবে। অভিভাবকদের সাক্ষাতের জন্য অনুরোধ করা যাবে কম সময়ে এবং কোন ঝামেলা ছাড়াই। 
 									</p>
-                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Call for a meeting is so easy now! </h3>
+                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">সাক্ষাৎ-এর আয়োজন করা এখন সহজ। </h3>
 									</div>									
 								</div>								
 							</div>	
@@ -266,22 +266,22 @@ get_header(); ?>
 							<div class="col-sm-12" style="height:300px;width:1000px;">
 								<div class="col-sm-1" style="text-align:-moz-center;"></div>
 								<div class="col-sm-3" style="text-align:-moz-center;">									
-                                                                    <div class="thumbnail-item">
-                                                                        <a href="#"><img class="img-responsive" src="<?php bloginfo('template_url'); ?>/images/dashpallete/view/report_card.png" style="width:170px;" /></a>                                                                        
-                                                                    </div>
+									<div class="thumbnail-item">
+										<a href="#"><img class="img-responsive" src="<?php bloginfo('template_url'); ?>/images/dashpallete/view/report_card.png" style="width:170px;" /></a>                                                                        
+									</div>
 								</div>
 								<div class="col-sm-1" style="text-align:-moz-center;"></div>
 								<div class="col-sm-7">
 									<div class="col-sm-12">
 										<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/report_card.png) no-repeat center;"></div>
-										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>Report Card</i></p></div>
+										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>রিপোর্ট কার্ড</i></p></div>
 									</div>
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										Class Tests, Exam Reports and Project Reports are now available absolutely in digital format. It will also serve as your archive. Create, customize, develop, and distribute report cards like never before.
+										ক্লাস টেস্ট, পরীক্ষার নম্বর আর প্রোজেক্ট রিপোর্ট এখন অনলাইনেই জমা থাকবে। 
 									</p>
-                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Online Archive of Report Cards </h3>
+                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">রিপোর্ট কার্ডের অনলাইন আর্কাইভ </h3>
 									</div>									
 								</div>								
 							</div>	
@@ -298,14 +298,14 @@ get_header(); ?>
                                                             <div class="col-sm-7">
                                                                     <div class="col-sm-12">
                                                                             <div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/event.png) no-repeat center;"></div>
-                                                                            <div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>Events</i></p></div>
+                                                                            <div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>ইভেন্ট</i></p></div>
                                                                     </div>
 
                                                                     <div class="col-sm-12"  style="margin-top:30px;">
                                                                     <p>
-                                                                            Reach Students, Parents and Teachers instantly with event updates. Create and modify events anytime. Know how many students, teachers or parents are joining your event.  
+                                                                            শিক্ষার্থী, শিক্ষক আর অভিভাবকদের স্কুলের ইভেন্ট সম্পর্কে অবহিত করুন। যেকোন প্রয়োজনে ইভেন্ট তৈরি ও পরিবর্তন  করুন। দেখুন কতজন শিক্ষক, শিক্ষার্থী এবং অভিভাবক আপনার ইভেন্টে অংশগ্রহণ করছে। 
                                                                     </p>
-                                                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">One platform for all event updates!</h3>
+                                                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">সব ইভেন্টের খবরাখবর পাওয়া যাবে এক জায়গাতেই</h3>
                                                                     </div>									
                                                             </div>								
                                                     </div>	
@@ -322,14 +322,14 @@ get_header(); ?>
                                                             <div class="col-sm-7">
                                                                     <div class="col-sm-12">
                                                                             <div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/transport.png) no-repeat center;"></div>
-                                                                            <div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>Transport</i></p></div>
+                                                                            <div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>পরিবহন</i></p></div>
                                                                     </div>
 
                                                                     <div class="col-sm-12"  style="margin-top:30px;">
                                                                     <p>
-                                                                            Make all the transport plans and upload here. Changes in transport schedules can now reach parents in minutes. 
+																		আপনার যাতায়াত ও পরিবহনের পরিকল্পনা আপলোড করুন। কোন কারণে এতে পরিবর্তন ঘটলে সেটা সাথে সাথেই জানিয়ে দেন অভিভাবকদের।
                                                                     </p>
-                                                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">See transport schedule</h3>
+                                                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">পরিবহনের সময়সূচী দেখুন</h3>
                                                                     </div>									
                                                             </div>								
                                                     </div>	
@@ -346,14 +346,14 @@ get_header(); ?>
                                                             <div class="col-sm-7">
                                                                     <div class="col-sm-12">
                                                                             <div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/class_routine.png) no-repeat center;"></div>
-                                                                            <div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>Routine</i></p></div>
+                                                                            <div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>রুটিন</i></p></div>
                                                                     </div>
 
                                                                     <div class="col-sm-12"  style="margin-top:30px;">
                                                                     <p>
-                                                                            Make the routine of any class, any section here and publish it for everyone’s view. Enjoy the flexibility to make changes when necessary and send instant notification. 
+																		যেকোনো ক্লাস বা সেকশনের রুটিন তৈরি করুন এখানে এবং সবার দেখার সুবিধার্থে ক্লাস টিউনে প্রকাশ করুন। রুটিনে কোন পরিবর্তন আসলে সাথে সাথে নোটিফিকেশনের মাধ্যমে জানিয়ে দেন সবাইকে।
                                                                     </p>
-                                                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Upload routine with the flexibility of modification</h3>
+                                                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">রুটিন আপলোড করুন আর প্রয়োজনে সেটা পরিবর্তন করুন</h3>
                                                                     </div>									
                                                             </div>								
                                                     </div>	
@@ -370,14 +370,14 @@ get_header(); ?>
                                                             <div class="col-sm-7">
                                                                     <div class="col-sm-12">
                                                                             <div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/sylabus.png) no-repeat center;"></div>
-                                                                            <div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>Syllabus</i></p></div>
+                                                                            <div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>পাঠক্রম</i></p></div>
                                                                     </div>
 
                                                                     <div class="col-sm-12"  style="margin-top:30px;">
                                                                     <p>
-                                                                            Enable schools to upload yearly syllabus in the system. Let you to generate class-wise or exam-wise syllabus and keep a track on the syllabus status of each class.  
+																		বার্ষিক পাঠক্রম পাওয়া যাবে অনলাইনেই। ক্লাস অনুযায়ী এবং পরীক্ষা অনুযায়ী সিলেবাস তৈরি করুন এবং খোঁজ রাখুন প্রতিটি ক্লাসের সিলেবাসের খবরাখবর।
                                                                     </p>
-                                                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Upload your school’s yearly syllabus</h3>
+                                                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">স্কুলের বার্ষিক সিলেবাস আপলোড করুন</h3>
                                                                     </div>									
                                                             </div>								
                                                     </div>	
@@ -394,14 +394,14 @@ get_header(); ?>
                                                             <div class="col-sm-7">
                                                                     <div class="col-sm-12">
                                                                             <div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/notice.png) no-repeat center;"></div>
-                                                                            <div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>Notice</i></p></div>
+                                                                            <div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>বিজ্ঞপ্তি</i></p></div>
                                                                     </div>
 
                                                                     <div class="col-sm-12"  style="margin-top:30px;">
                                                                     <p>
-                                                                            Any urgent notice to circulate? No worries! Notices are now real time, interactive and no more limitation of SMS of 160 characters. Send notice to a single student or a single class or the whole school.  
+																		কোন জরুরী বিজ্ঞপ্তি প্রকাশ করতে হবে? চিন্তার কিছু নেই। একজন শিক্ষার্থী বা একটি ক্লাস বা পুরো স্কুলকে কোন বিজ্ঞপ্তি পাঠানো যাবে এখান থেকে খুব সহজেই।
                                                                     </p>
-                                                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Circulate your notices instantly</h3>
+                                                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">আপনার বিজ্ঞপ্তি প্রকাশ করুন। </h3>
                                                                     </div>									
                                                             </div>								
                                                     </div>	
@@ -418,14 +418,14 @@ get_header(); ?>
                                                             <div class="col-sm-7">
                                                                     <div class="col-sm-12">
                                                                             <div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/leave_application.png) no-repeat center;"></div>
-                                                                            <div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>Leave</i></p></div>
+                                                                            <div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>ছুটি</i></p></div>
                                                                     </div>
 
                                                                     <div class="col-sm-12"  style="margin-top:30px;">
                                                                     <p>
-                                                                            Facilitates online leave application, and approval with notifications. Stay away from maintaining leave approvals letter for year long. Leave application approval closely integrated with attendance. 
+																		এখন ছুটির আবেদন করা যাবে অনলাইনেই আর সেটা মঞ্জুর হয়েছে কিনা তা জানা যাবে নোটিফিকেশনের মাধ্যমে। উপস্থিতির সাথে ছুটির দিনগুলোকে সহজেই সাজিয়ে নেন আজকেই। 
                                                                     </p>
-                                                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Easy to make and approve leave applications</h3>
+                                                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">ছুটির আবেদন তৈরি করুন </h3>
                                                                     </div>									
                                                             </div>								
                                                     </div>	

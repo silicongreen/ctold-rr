@@ -42,7 +42,7 @@ class Landing extends CI_Controller {
     public function send_mail() {
         if (isset($_SERVER['HTTP_X_REQUESTED_WITH'])) {
             if (isset($_POST['name']) AND isset($_POST['email']) AND isset($_POST['subject']) AND isset($_POST['massage'])) {
-                $to = 'info@champs21.com';
+                $to = 'info@classtune.com';
                 $name = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
                 $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
                 $subject = filter_var($_POST['subject'], FILTER_SANITIZE_STRING);

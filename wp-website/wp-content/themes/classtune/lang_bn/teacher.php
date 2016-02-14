@@ -54,14 +54,14 @@ get_header(); ?>
 								<div class="col-sm-7">
 									<div class="col-sm-12">
 										<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/attandance.png) no-repeat center;"></div>
-										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>Attendance</i></p></div>
+										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>উপস্থিতি</i></p></div>
 									</div>
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										Taking attendance is now hassle and paper free. Complete attendance taking of whole class in 2 minutes digitally with just few clicks and send real time notification to respective parents. Concentrate more in class activities.  
+										কাগজ-কলম ছাড়াই এখন নিশ্চিন্তে উপস্থিতি নিন। পুরো ক্লাসের উপস্থিতি নিয়ে নিন ডিজিটাল উপায়ে মাত্র ২ মিনিটে এবং নোটিফিকেশন পাঠিয়ে দিন অভিভাবকদের। ক্লাসের কাজকর্মে আরও বেশি মনোযোগ দিন।
 									</p>
-                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Taking Attendance is now just a tap away!</h3>
+                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">উপস্থিতি নিয়ে নিন এক ক্লিকেই</h3>
 									</div>									
 								</div>								
 							</div>	
@@ -78,14 +78,14 @@ get_header(); ?>
 								<div class="col-sm-7">
 									<div class="col-sm-12">
 										<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/academic_calender.png) no-repeat center;"></div>
-										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>Academic Calendar</i></p></div>
+										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>একাডেমিক ক্যালেন্ডার </i></p></div>
 									</div>
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										Check academic calendar from your ClassTune account and plan your holidays or any important events accordingly.
+										আপনার ক্লাসটিউন একাউন্ট থেকে একাডেমিক ক্যালেন্ডার দেখে নিন এবং সে অনুযায়ী আপনার ছুটির এবং অন্যান্য কাজের পরিকল্পনা করুন
 									</p>
-                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Look up every important date</h3>
+                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">প্রতিটি গুরুত্বপূর্ণ তারিখের উপর খেয়াল রাখুন</h3>
 									</div>									
 								</div>								
 							</div>	
@@ -102,14 +102,14 @@ get_header(); ?>
 								<div class="col-sm-7">
 									<div class="col-sm-12">
 										<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/lesson_paln-white.png) no-repeat center;"></div>
-										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>Lesson Plan</i></p></div>
+										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>পাঠ পরিকল্পনা</i></p></div>
 									</div>
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										Upload weekly, monthly and yearly lesson plans digitally and map it against school calendar. Share your lesson plans with your students. 
+										ডিজিটাল পদ্ধতিতে সাপ্তাহিক, মাসিক এবং সারা বছরের পাঠ পরিকল্পনা আপলোড করুন এবং স্কুলের ক্যালেন্ডার অনুযায়ী সেটি সাজিয়ে নিন। আপনার পাঠ পরিকল্পনা বিনিময় করুন শিক্ষার্থীদের সাথে।
 									</p>
-                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Upload and share your Lesson Plan  </h3>
+                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">আপনার পাঠ পরিকল্পনা আপলোড এবং শেয়ার করুন শিক্ষার্থীদের সাথে</h3>
 									</div>									
 								</div>								
 							</div>		
@@ -126,14 +126,14 @@ get_header(); ?>
 								<div class="col-sm-7">
 									<div class="col-sm-12">
 										<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/trachers_routine.png) no-repeat center;"></div>
-										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>Teacher’s Routine</i></p></div>
+										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>শিক্ষকদের রুটিন</i></p></div>
 									</div>
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										Have a look of daily and weekly class routine and check scheduled meetings to attend.  View classes to take and avoid any conflict of schedules.
+										দৈনিক এবং সাপ্তাহিক ক্লাসরুটিন দেখে নিন এবং কখন কোন মিটিং আছে জেনে নিন। কি কি ক্লাস নিতে হবে ভালোভাবে খেয়াল রাখুন যেন ভুল না হয়।
 									</p>
-                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Manage Schedule smoothly</h3>
+                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">সময়সূচী ঠিক করুন আরও সহজে</h3>
 									</div>									
 								</div>								
 							</div>		
@@ -150,14 +150,14 @@ get_header(); ?>
 								<div class="col-sm-7">
 									<div class="col-sm-12">
 										<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/homework.png) no-repeat center;"></div>
-										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>Homework</i></p></div>
+										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>হোমওয়ার্ক</i></p></div>
 									</div>
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										No more writing in the diary! Write your daily homework here, set the deadline and send instant notification to whole class or an individual student. 
+										আর লিখতে হবে না ডায়রি! প্রতিদিনের হোমওয়ার্ক লিখে রাখুন ক্লাসটিউনে, সাবমিট করার মুহূর্তে সময় নির্ধারণ করে রাখুন এবং পুরো ক্লাস বা একজন ছাত্রকে নোটিফিকেশন পাঠিয়ে দিন সাথে সাথে।
 									</p>
-                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Assign Homework digitally</h3>
+                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">এবার হোমওয়ার্ক দেয়া হবে ডিজিটাল উপায়ে  </h3>
 									</div>									
 								</div>								
 							</div>	
@@ -176,14 +176,14 @@ get_header(); ?>
 								<div class="col-sm-7">
 									<div class="col-sm-12">
 										<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/meeting_request.png) no-repeat center;"></div>
-										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>Meeting Request</i></p></div>
+										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>সভা আহ্বান</i></p></div>
 									</div>
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										Communicate with parents in single platform. Request an individual parent to a meeting or receive instantaneous notifications from parents for a meeting.
+										একটি প্ল্যাটফর্মেই অভিভাবকদের সাথে যোগাযোগ রাখুন। কোন অভিভাবকের সাথে আলাদাভাবে মিটিং করুন অথবা কোন অভিভাবকের মিটিং-এর নোটিফিকেশন পান ক্লাসটিউনে।
 									</p>
-                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Call for a Meeting is so easy now! </h3>
+                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">সভার জন্য আহ্বান এখন আরও সহজ</h3>
 									</div>									
 								</div>								
 							</div>	
@@ -200,14 +200,14 @@ get_header(); ?>
 								<div class="col-sm-7">
 									<div class="col-sm-12">
 										<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/report_card.png) no-repeat center;"></div>
-										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>Report Card</i></p></div>
+										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>রিপোর্ট কার্ড</i></p></div>
 									</div>
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										Lets you create, customize, develop, and distribute report cards like never before. Upload student report card here and retrieve it in the future. 
+										এমনভাবে শিক্ষার্থীদের রিপোর্ট কার্ড তৈরি, সম্পাদনা এবং বিতরণ করুন যা আগে কখনো করেননি। এখানেই সবার রিপোর্ট কার্ড আপলোড করুন এবং ভবিষ্যতে তা খুঁজে পান সহজেই।
 									</p>
-                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Generate Report Card more efficiently </h3>
+                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">আরও কার্যকরীভাবে রিপোর্ট কার্ড তৈরি করুন</h3>
 									</div>									
 								</div>								
 							</div>	
@@ -224,14 +224,14 @@ get_header(); ?>
                                                         <div class="col-sm-7">
                                                                         <div class="col-sm-12">
                                                                                         <div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/event.png) no-repeat center;"></div>
-                                                                                        <div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>Events</i></p></div>
+                                                                                        <div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>ঘটনাবলী</i></p></div>
                                                                         </div>
 
                                                                         <div class="col-sm-12"  style="margin-top:30px;">
                                                                         <p>
-                                                                            Keep a list of all the extra-curricular activities happening in the school. Keep a track of the upcoming activities and create events when you are the organizer.    
+                                                                            পড়াশোনার বাইরের অন্যান্য ঘটনাবলীর একটি তালিকা তৈরি করুন। সামনের কার্যক্রমের খবর রাখুন এবং নিজের ইভেন্ট তৈরি করুন
                                                                         </p>
-                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Be updated with all school Events! </h3>
+                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">স্কুলের সকল ঘটনাবলীর সাথে আপডেটেড থাকুন</h3>
                                                                         </div>									
                                                         </div>								
                                                     </div>	
@@ -249,14 +249,14 @@ get_header(); ?>
                                                             <div class="col-sm-7">
                                                                     <div class="col-sm-12">
                                                                             <div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/sylabus.png) no-repeat center;"></div>
-                                                                            <div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>Syllabus</i></p></div>
+                                                                            <div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>পাঠ্যক্রম</i></p></div>
                                                                     </div>
 
                                                                     <div class="col-sm-12"  style="margin-top:30px;">
                                                                     <p>
-                                                                            Upload subject-wise or exam-wise syllabus and keep students and parents updated. Edit and modify as and when required.  
+                                                                            বিষয়ভিত্তিক এবং পরীক্ষাভিত্তিক পাঠ্যক্রম আপলোড করে দিন এবং অভিভাবকদের সেটা জানিয়ে দিন। প্রয়োজনে সেটা সম্পাদনা ও সংশোধন করুন।
                                                                     </p>
-                                                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Upload Syllabus online </h3>
+                                                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">সিলেবাস আপলোড করুন অনলাইনেই  </h3>
                                                                     </div>									
                                                             </div>								
                                                     </div>	
@@ -273,14 +273,14 @@ get_header(); ?>
                                                             <div class="col-sm-7">
                                                                     <div class="col-sm-12">
                                                                             <div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/notice.png) no-repeat center;"></div>
-                                                                            <div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>Notice</i></p></div>
+                                                                            <div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>বিজ্ঞপ্তি</i></p></div>
                                                                     </div>
 
                                                                     <div class="col-sm-12"  style="margin-top:30px;">
                                                                     <p>
-                                                                           Miss any important school notice! No worries; your school notice board is reflected in ClassTune.
+                                                                           স্কুলের কোন গুরুত্বপূর্ণ বিজ্ঞপ্তি জানতে পারেননি! চিন্তার কিছু নেই। আপনার স্কুলের নোটিশ বোর্ড এখন দেখতে পারবেন ক্লাসটিউনেই।
                                                                     </p>
-                                                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Watch out your school notice board!</h3>
+                                                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">দেখে নিন আপনার স্কুলের নোটিশ বোর্ড</h3>
                                                                     </div>									
                                                             </div>								
                                                     </div>	
@@ -297,14 +297,14 @@ get_header(); ?>
                                                             <div class="col-sm-7">
                                                                     <div class="col-sm-12">
                                                                             <div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/leave_application.png) no-repeat center;"></div>
-                                                                            <div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>Leave</i></p></div>
+                                                                            <div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>ছুটি</i></p></div>
                                                                     </div>
 
                                                                     <div class="col-sm-12"  style="margin-top:30px;">
                                                                     <p>
-                                                                            Fill up the online leave form from phone or computer and submit it. Get notified once granted. Grant approval to student’s leave also. 
+																			মোবাইল বা কম্পিউটার থেকেই অনলাইনে ছুটির ফর্ম পূরণ করুন এবং সেটা মঞ্জুর হলে নোটিফিকেশন পান। শিক্ষার্থীদের ছুটির আবেদনও মঞ্জুর করুন ক্লাসটিউনে।
                                                                     </p>
-                                                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Applying for leave is hassle free! </h3>
+                                                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">ছুটির আবেদন করতে এখন আর কোন ঝামেলা নেই। </h3>
                                                                     </div>									
                                                             </div>								
                                                     </div>	

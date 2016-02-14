@@ -20,11 +20,16 @@
     font-weight: 400;
     src: local('Open Sans'), local('OpenSans'), url(http://themes.googleusercontent.com/static/fonts/opensans/v8/cJZKeOuBrn4kERxqtaUH3T8E0i7KZn-EPnyo3HZu7kw.woff) format('woff');
 }
-
+@font-face {
+    font-family: 'SolaimanLipi';
+    font-style: normal;
+    font-weight: 400;
+    src: local('SolaimanLipi'), local('SolaimanLipi'), url(fonts/SolaimanLipi_20-04-07.ttf) format('ttf');
+}
 
 * { padding: 0px; margin: 0px; }
 html { font-family:arial,helvetica,verdana; font-size:12px; }
-body {  font-family:arial,helvetica,verdana; font-size:12px; background: #f1f1f1;}
+body {  font-family:arial,helvetica,verdana,SolaimanLipi; font-size:12px; background: #f1f1f1;}
 table { border-collapse:collapse; margin:0; padding:0; border:0; font-family:arial,helvetica,verdana; font-size:12px; }
 table caption { margin:0; padding:0 0 10px 0; text-align:left; }
 table tr th { padding:0; margin:0; border:0; }

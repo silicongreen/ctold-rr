@@ -190,8 +190,8 @@ get_header(); ?>
 											<div class="cb_top">&nbsp;</div>
 											<div class="cb_middle">
 												<div class="cb_middlePad">
-													<h5>Transport</h5>
-													<p class="bodytext">Pick up and drop off time of your child’s school transport now can be checked online. Any changes in the transport schedule can reach parents in minutes.
+													<h5>পরিবহনঃ</h5>
+													<p class="bodytext">স্কুল যানবাহনে আপনার সন্তানের উঠানামার সময় সর্ম্পকিত সকল তথ্য এখন অনলাইন থেকেই জানা সম্ভব। পরিবহনের সময়সূচীর যে কোন পরিবর্তন মিনিটের মধ্যেই জেনে যাবেন অভিভাবকরা।</p>
 			</p>
 												</div>
 											</div>
@@ -213,8 +213,8 @@ get_header(); ?>
 											<div class="cb_top">&nbsp;</div>
 											<div class="cb_middle">
 												<div class="cb_middlePad">
-													<h5>Leave</h5>
-													<p class="bodytext">Applying for leave is now hassle free! Parents can apply for Student’s leave and get notification once granted. Teachers can approve Students leave and can apply for their own leaves also.</p>
+													<h5>ছুটিঃ</h5>
+													<p class="bodytext">ছুটির আবেদন এখন ঝামেলাহীন! অভিভাবকরা শিক্ষার্থীদের ছুটির আবেদন করতে পারনে এবং তা মঞ্জুর হলে নোটিফিকেশনের মাধ্যমে জানতে পারেন। শিক্ষক শিক্ষার্থীদের ছুটি অনুমোদন করতে পারেন এবং তার নিজস্ব ছুটির জন্যও আবেদন করতে পারেন।</p>
 												</div>
 											</div>
 											<div class="cb_bottom">&nbsp;</div>
@@ -256,8 +256,8 @@ get_header(); ?>
 											<div class="cb_top">&nbsp;</div>
 											<div class="cb_middle">
 												<div class="cb_middlePad">
-													<h5>Homework</h5>
-													<p class="bodytext">This feature is convenient for everyone! Teachers can assign homework to whole class or individual student. Students now can find homework easily. Set reminder and mark done once completed and parents can keep track of homework assigned to child.</p>
+													<h5>হোমওয়ার্কঃ</h5>
+													<p class="bodytext">সকলের জন্যই সুবিধাজনক একটি ফিচার! শিক্ষক পুরো ক্লাসকে একসঙ্গে বা পৃথক শিক্ষার্থীকে হোমওয়ার্ক দিতে পারেন। শিক্ষার্থীরা এখন সহজেই বাড়ির কাজ সর্ম্পকে জানতে পারবে। রিমাইন্ডার সেট করুন এবং কাজ শেষে সম্পন্ন হিসাবে চিহ্নিত করুন। অভিভাবকরাও সন্তানের নির্ধারিত হোমওয়ার্ক ট্র্যাক রাখতে পারবেন।</p>
 													
 												</div>
 											</div>
@@ -284,8 +284,8 @@ get_header(); ?>
 											<div class="cb_top">&nbsp;</div>
 											<div class="cb_middle">
 												<div class="cb_middlePad">
-													<h5>Teacher’s Routine</h5>
-													<p class="bodytext">Now teachers can see their day to day schedule and make plans accordingly. Surely accelerate better outputs.</p>
+													<h5>শিক্ষকের রুটিনঃ</h5>
+													<p class="bodytext">এখন শিক্ষকরা তাদের প্রতিদিনের করণীয় কর্মতালিকা দেখতে পারেন এবং সে অনুযায়ী পরিকল্পনা করতে পারেন। এর মাধ্যমে তাদের অগ্রগতি সুনিশ্চত।</p>
 												</div>
 											</div>
 											<div class="cb_bottom">&nbsp;</div>
@@ -303,8 +303,8 @@ get_header(); ?>
 											<div class="cb_top">&nbsp;</div>
 											<div class="cb_middle">
 												<div class="cb_middlePad">
-													<h5>Academic Calendar</h5>
-													<p class="bodytext">School can share the academic calendar in the beginning of the year with the authority of modification when required. It helps parents to plan family holidays.</p>
+													<h5>অ্যাকাডেমিক ক্যালেন্ডারঃ</h5>
+													<p class="bodytext">স্কুল কর্তৃপক্ষ বছরের শুরুতেই অ্যাকাডেমিক ক্যালেন্ডার শেয়ার করতে পারেন। প্রয়োজন অনুযায়ী পরিবর্তন-পরিবর্ধনও করতে পারেন। এর ফলে খুব সহজেই পারিবারিক ছুটি কাটানোর অাগাম পরিকল্পনা করা সম্ভব। </p>
 												</div>
 											</div>
 											<div class="cb_bottom">&nbsp;</div>
@@ -348,8 +348,9 @@ get_header(); ?>
 											<div class="cb_top">&nbsp;</div>
 											<div class="cb_middle">
 												<div class="cb_middlePad">
-													<h5>Fees</h5>
-													<p class="bodytext">Parents can pay fees online using credit card or mobile money. Great tool for monitoring payment and keeping school’s accounts.</p>
+													<h5>বেতনঃ</h5>
+													<p class="bodytext">
+													অভিভাবকরা ক্রেডিট কার্ড বা মোবাইল টাকার মাধ্যমে অনলাইনেই প্রয়োজনীয়  বেতন পরিশোধ করতে পারেন। স্কুলের টাকা জমাদান ও হিসাবরক্ষণের জন্য অত্যন্ত কার্যকরী একটি টুল।</p>
 												</div>
 											</div>
 											<div class="cb_bottom">&nbsp;</div>
@@ -371,8 +372,9 @@ get_header(); ?>
 											<div class="cb_top">&nbsp;</div>
 											<div class="cb_middle">
 												<div class="cb_middlePad">
-													<h5>Forms</h5>
-													<p class="bodytext">All school forms are now available from mobile and web. Fill it up and submit online. Zero crowd in office room thus higher productivity.</p>
+													<h5>ফরমঃ</h5>
+													<p class="bodytext">সকল স্কুল ফরম মোবাইল এবং ওয়েব থেকে এখন সংগ্রহ করা যায়.
+ফরম পূরণ ও জমাদানও অনলাইনে। অফিস রুমে কোনরকম ভীড় বা ঝামেলা ছাড়াই সর্বােচ্চ সেবা প্রদান।</p>
 												</div>
 											</div>
 											<div class="cb_bottom">&nbsp;</div>
@@ -417,6 +419,18 @@ get_header(); ?>
 
 								<div class="hitem" id="hitem_9" style="top: 350px; left: 700px; width: 215px; height: 200;">
 									<img width="145" src="<?php bloginfo('template_url'); ?>/slider/Slide-1/Layer-4/routine_text.png" alt="" title="">
+									<div class="texticon" style="top: -40px; left: 0px; background-position: 0px 11px;">
+										<div style="display: none; background-position: 0px 11px;" class="text_l text_layer" data-value="routine_layer">
+											<div class="cb_top">&nbsp;</div>
+											<div class="cb_middle">
+												<div class="cb_middlePad">
+													<h5>রুটিন</h5>
+													<p class="bodytext">শিক্ষক ও ব্যবস্থাপনা কর্তৃপক্ষ প্রয়োজন অনুযায়ী রুটিন পরিবর্তন করতে পারেন এবং এ তথ্য তাৎক্ষনিক সকলকে জানিয়েও দিতে পারেন।</p>
+												</div>
+											</div>
+											<div class="cb_bottom">&nbsp;</div>
+										</div>
+									</div>
 								</div>
 
 								<!--div style="top: 420px; left: 775px; width: 215px; height: 200;" id="hitem_9" class="hitem">
@@ -450,9 +464,9 @@ get_header(); ?>
 											<div class="cb_top">&nbsp;</div>
 											<div class="cb_middle">
 												<div class="cb_middlePad">
-													<h5>Attendance</h5>
-													<p class="bodytext">Taking class attendance is now easier than ever!</p>
-													<p class="bodytext">Teachers can take attendance in few clicks, and parents get real time notification. Also, it helps school to keep records.</p>
+													<h5>উপস্থিতিঃ</h5>
+													<p class="bodytext">ক্লাসে উপস্থিতি গণনা এখন আগের চেয়ে অনেক সহজ! শিক্ষক মাত্র কয়েকটি ক্লিকের সাহায্যে উপস্থিতি গ্রহণ করতে পারেন এবং একইসময়ে তথ্য পৌঁছে যাবে অভিভাবকের কাছে। এছাড়া এ তথ্য সংরক্ষিত খাকবে স্কুল রেকর্ডে।</p>
+													
 												</div>
 											</div>
 											<div class="cb_bottom">&nbsp;</div>
@@ -462,7 +476,7 @@ get_header(); ?>
 
 
 								</div>
-								<div class="hitem slide" id="hitem_5" style="top:440px; left: 685px; width: 100px; height: 178px;" data-stellar-ratio="1.20" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
+								<div class="hitem slide" id="hitem_5" style="top:440px; left: 685px; width: 100px; height: 178px;" data-stellar-ratio=".95" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
 									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-1/Layer-2/top-tree.png" alt="" title="" width="75"/>
 								</div>
 
@@ -495,8 +509,8 @@ get_header(); ?>
 											<div class="cb_top">&nbsp;</div>
 											<div class="cb_middle">
 												<div class="cb_middlePad">
-													<h5>Report Card</h5>
-													<p class="bodytext">Teacher can upload the report card of class tests, exams, projects and students can see it online. Students can place it for parents view and after reviewing parents can send acknowledgement to school.</p>
+													<h5>রিপোর্ট কার্ডঃ</h5>
+													<p class="bodytext">শিক্ষক ক্লাস টেস্ট, অন্যান্য পরীক্ষা ও প্রজেক্টের রিপোর্ট কার্ড শিক্ষার্থীদের সুবিধার্থে অনলাইনে আপলোড করতে পারেন। শিক্ষার্থীরা তাদের রিপোর্ট কার্ড অভিভাবকদের প্রদর্শনের জন্য অনলাইনে জমা রাখবে এবং অভিভাবকরা পর্যালোচনা শেষে স্কুল কর্তৃপক্ষের অবগতির জন্য তা পাঠাবে।</p>
 												</div>
 											</div>
 											<div class="cb_bottom">&nbsp;</div>
@@ -519,8 +533,9 @@ get_header(); ?>
 											<div class="cb_top">&nbsp;</div>
 											<div class="cb_middle">
 												<div class="cb_middlePad">
-													<h5>Lesson Plan</h5>
-													<p class="bodytext">Teachers can upload weekly, monthly and yearly lesson plans. It allows students and parents to plan ahead of time.</p>
+													<h5>পাঠ পরিকল্পনাঃ</h5>
+													<p class="bodytext">শিক্ষক সাপ্তাহিক, মাসিক ও বার্ষিক পাঠ পরিকল্পনা আপলোড করতে পারেন।
+এটা শিক্ষার্থী এবং অভিভাবকদের পাঠ্যসময়সূচি প্রস্তুতে সহায়তা করবে।</p>
 												</div>
 											</div>
 											<div class="cb_bottom">&nbsp;</div>
@@ -536,8 +551,8 @@ get_header(); ?>
 											<div class="cb_top">&nbsp;</div>
 											<div class="cb_middle">
 												<div class="cb_middlePad">
-													<h5>Notice</h5>
-													<p class="bodytext">Any notice without any word limitation can be sent. Its real time and interactive. Instant notification to parents.</p>
+													<h5>নোটিশ/বিজ্ঞপ্তিঃ</h5>
+													<p class="bodytext">কোন শব্দ সীমাবদ্ধতা ছাড়াই বিজ্ঞপ্তি পাঠানো সম্ভব। তাৎক্ষনিকভাবে একই সময়ে অভিভাবকদের নিকট বিজ্ঞপ্তি পৌঁছানাের কার্যকরী ও সহজতম উপায়।</p>
 												</div>
 											</div>
 											<div class="cb_bottom">&nbsp;</div>
@@ -614,8 +629,8 @@ get_header(); ?>
 											<div class="cb_top">&nbsp;</div>
 											<div class="cb_middle">
 												<div class="cb_middlePad" style="padding-bottom: 2px;">
-													<h5>Events</h5>
-													<p class="bodytext">Events page keeps everyone updated about date, timing and venue of any event coming up in the school. It also sends necessary reminders. 
+													<h5>ইভেন্টঃ</h5>
+													<p class="bodytext">স্কুল আয়োজিত যে কোন ইভেন্টের তারিখ, সময় এবং স্থান সর্ম্পকিত হালনাগাদ তথ্য জানা যায় এ পেইজের মাধ্যমে। অনুষ্ঠান সর্ম্পকিত প্রয়োজনীয় রিমাইন্ডারও পাঠানো হয় এখান থেকে। 
 													</p>
 													<p class="bodytext">&nbsp;</p>
 												</div>
@@ -668,8 +683,9 @@ get_header(); ?>
 											<div class="cb_top">&nbsp;</div>
 											<div class="cb_middle">
 												<div class="cb_middlePad">
-													<h5>Meeting Request</h5>
-													<p class="bodytext">School admin can organize parents meets and notify parents quickly. Parents can request to meet teachers. Even teachers can request an individual parent for meeting.</p>
+													<h5>সাক্ষাতের আমন্ত্রণঃ</h5>
+													<p class="bodytext">
+স্কুল কর্তৃপক্ষ অভিভাবকদের সঙ্গে সাক্ষাৎ আয়োজন এবং নোটিশ পাঠানোর কাজটি করতে পারেন সহজেই। অভিভাবকরাও শিক্ষকদের সঙ্গে সাক্ষাতের অনুমতি চাইতে পারেন। এমনকি শিক্ষকরাও পৃথক পৃথক অভিভাবকদের বৈঠকের জন্য আমন্ত্রণ জানাতে পারেন।</p>
 												</div>
 											</div>
 											<div class="cb_bottom">&nbsp;</div>
@@ -698,8 +714,8 @@ get_header(); ?>
 											<div class="cb_top">&nbsp;</div>
 											<div class="cb_middle">
 												<div class="cb_middlePad">
-													<h5>Syllabus</h5>
-													<p class="bodytext">Schools are enabled to upload yearly syllabus. Students, Parents and Teachers can refer to syllabus on the go.
+													<h5>পাঠ্যক্রমঃ</h5>
+													<p class="bodytext">স্কুল কর্তৃপক্ষ পুরো বছরের সিলেবাস আপলোড করতে পারেন। শিক্ষক, শিক্ষার্থী এবং অভিভাবকরা চলমান সিলবাস সর্ম্পকিত তথ‌্য যে কোন সময় ব্যবহার করতে পারেন।
 													</p>
 													<p class="bodytext">&nbsp;</p>
 												</div>
@@ -746,63 +762,63 @@ get_header(); ?>
 									<ul>
 
 										<li class="cronnavitem act" id="cni_75" data-value="homework">
-											<span>Homework</span>
+											<span>হোমওয়ার্ক</span>
 										</li>
 
 										<li class="cronnavitem" id="cni_75" data-value="attendance">
-											<span>Attendance</span>
+											<span>উপস্থিতি</span>
 										</li>
 
 										<li class="cronnavitem" id="cni_650" data-value="routine">
-											<span>Routine</span>
+											<span>রুটিন</span>
 										</li>
 
 										<li class="cronnavitem" id="cni_1100" data-value="troutine">
-											<span>Teacher's Routine</span>
+											<span>শিক্ষকের রুটিন</span>
 										</li>
 
 										<li class="cronnavitem" id="cni_1600" data-value="acalendar">
-											<span>Academic Calendar</span>
+											<span>অ্যাকাডেমিক ক্যালেন্ডার</span>
 										</li>
 
 										<li class="cronnavitem" id="cni_2400" data-value="reportcard">
-											<span>Report Card</span>
+											<span>রিপোর্ট কার্ড</span>
 										</li>
 
 										<li class="cronnavitem" id="cni_3000" data-value="leave">
-											<span>Leave</span>
+											<span>ছুটি</span>
 										</li>
 
 										<li class="cronnavitem" id="cni_3500" data-value="lessonplan">
-											<span>Lesson Plan</span>
+											<span>পাঠ পরিকল্পনা</span>
 										</li>
 
 										<li class="cronnavitem" id="cni_4000" data-value="notice">
-											<span>Notice</span>
+											<span>নোটিশ/বিজ্ঞপ্তি</span>
 										</li>
 
 										<li class="cronnavitem" id="cni_4500" data-value="meetingrequest">
-											<span>Meeting Request</span>
+											<span>সাক্ষাতের আমন্ত্রণ</span>
 										</li>
 
 										<li class="cronnavitem" id="cni_5000" data-value="transport">
-											<span>Transport</span>
+											<span>পরিবহন</span>
 										</li>
 
 										<li class="cronnavitem" id="cni_5500" data-value="event">
-											<span>Event</span>
+											<span>ইভেন্ট</span>
 										</li>
 
 										<li class="cronnavitem" id="cni_6000" data-value="syllabus">
-											<span>Syllabus</span>
+											<span>পাঠ্যক্রম</span>
 										</li>
 
 										<li class="cronnavitem" id="cni_6500" data-value="forms">
-											<span>Forms</span>
+											<span>ফরম</span>
 										</li>
 
 										<li class="cronnavitem" id="cni_7000" data-value="fees">
-											<span>Fees</span>
+											<span>বেতন</span>
 										</li>
 										<li class="cronnavitem" id="cni_up">
 											<i class="faq fa fa-arrow-up"></i>

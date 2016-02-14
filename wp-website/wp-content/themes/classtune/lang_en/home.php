@@ -417,6 +417,18 @@ get_header(); ?>
 
 								<div class="hitem" id="hitem_9" style="top: 350px; left: 700px; width: 215px; height: 200;">
 									<img width="145" src="<?php bloginfo('template_url'); ?>/slider/Slide-1/Layer-4/routine_text.png" alt="" title="">
+									<div class="texticon" style="top: -40px; left: 0px; background-position: 0px 11px;">
+										<div style="display: none; background-position: 0px 11px;" class="text_l text_layer" data-value="routine_layer">
+											<div class="cb_top">&nbsp;</div>
+											<div class="cb_middle">
+												<div class="cb_middlePad">
+													<h5>Routine</h5>
+													<p class="bodytext">Teachers and Management can modify routine when necessary and send instant notification.</p>
+												</div>
+											</div>
+											<div class="cb_bottom">&nbsp;</div>
+										</div>
+									</div>
 								</div>
 
 								<!--div style="top: 420px; left: 775px; width: 215px; height: 200;" id="hitem_9" class="hitem">

@@ -52,14 +52,14 @@ get_header(); ?>
 								<div class="col-sm-7">
 									<div class="col-sm-12">
 										<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/attandance.png) no-repeat center;"></div>
-										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>Attendance</i></p></div>
+										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>উপস্থিতি</i></p></div>
 									</div>
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										Get real time notification of your child’s class attendance. Remain informed via various types of reports related to attendance.
+										আপনার বাচ্চার ক্লাসে উপস্থিতির নোটিফিকেশন পান। উপস্থিতি নিয়ে যেকোনো ধরণের তথ্য পান ক্লাসটিউন থেকে।
 									</p>
-                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Have your child’s attendance report!</h3>
+                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">আপনার বাচ্চার উপস্থিতির বিবরণী হাতের নাগালেই</h3>
 									</div>									
 								</div>								
 							</div>	
@@ -76,14 +76,14 @@ get_header(); ?>
 								<div class="col-sm-7">
 									<div class="col-sm-12">
 										<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/academic_calender.png) no-repeat center;"></div>
-										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>Academic Calendar</i></p></div>
+										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>একাডেমিক ক্যালেন্ডার</i></p></div>
 									</div>
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										Allow you to plan family holidays or other important events. Don’t miss out any important updates from now on!
+										একাডেমিক ক্যালেন্ডার অনুযায়ী আপনার পরিবারের ছুটি কাটানোর পরিকল্পনা করুন। আর কোন গুরুত্বপূর্ণ খবরই এখন অজানা থাকবে না।
 									</p>
-                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Holiday planning is now simpler!</h3>
+                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">ছুটির পরিকল্পনা করা এখন আরও সহজ।</h3>
 									</div>									
 								</div>								
 							</div>	
@@ -100,14 +100,14 @@ get_header(); ?>
 								<div class="col-sm-7">
 									<div class="col-sm-12">
 										<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/lesson_paln-white.png) no-repeat center;"></div>
-										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>Lesson Plan</i></p></div>
+										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>পাঠ পরিকল্পনা</i></p></div>
 									</div>
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-									 Review your child’s weekly or monthly or yearly lesson plans. Prepare your child for the exam and be ahead of time.
+									 আপনার বাচ্চার সাপ্তাহিক, মাসিক অথবা সারা বছরের পাঠ পরিকল্পনা দেখে নিন আর তাকে পরীক্ষার জন্য প্রস্তুত করুন।
 									</p>
-                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Prepare your child for better result</h3>
+                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">ভালো ফলাফলের জন্য তৈরি করুন আপনার সন্তানকে</h3>
 									</div>									
 								</div>								
 							</div>		
@@ -125,14 +125,14 @@ get_header(); ?>
 								<div class="col-sm-7">
 									<div class="col-sm-12">
 										<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/homework.png) no-repeat center;"></div>
-										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>Homework</i></p></div>
+										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>হোমওয়ার্ক</i></p></div>
 									</div>
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										Check your child’s homework online and set reminder for the deadline. Child’s homework is no more a source of tension and get notified once completed.
+										অনলাইনে আপনার সন্তানের হোমওয়ার্ক কি তা দেখে নিন আর কবে তা করতে হবে তাও জেনে নিন। বাচ্চার হোমওয়ার্ক নিয়ে এখন আর কোন দুশ্চিন্তা করতে হবে না।
 									</p>
-                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Now, don’t forget to follow up on your child’s homework! </h3>
+                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">এখন আর বাচ্চার হোমওয়ার্কের উপর খেয়াল রাখতে ভুল হবে না</h3>
 									</div>									
 								</div>								
 							</div>	
@@ -149,14 +149,14 @@ get_header(); ?>
 								<div class="col-sm-7">
 									<div class="col-sm-12">
 										<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/fees.png) no-repeat center;"></div>
-										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>Fees</i></p></div>
+										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>বেতন</i></p></div>
 									</div>
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										No more worry about paying school fees! Avoid bank line now and pay your child’s school fees using credit card and mobile money.
+										স্কুলের বেতন দেয়া নিয়ে আর কোন চিন্তা নেই। ব্যাংকে লাইন না ধরে ক্রেডিট কার্ড বা মোবাইলের মাধ্যমে অনলাইনেই জমা দিয়ে দিন স্কুলের বেতন।
 									</p>
-                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Check school fee due dates and set reminders! </h3>
+                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">কবে স্কুলের বেতন দিতে হবে তা জেন নিন এবং প্রয়োজনে রিমাইন্ডার দিয়ে রাখুন। </h3>
 									</div>									
 								</div>								
 							</div>
@@ -173,14 +173,14 @@ get_header(); ?>
 								<div class="col-sm-7">
 									<div class="col-sm-12">
 										<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/defult.png) no-repeat center;"></div>
-										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>Forms</i></p></div>
+										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>ফর্ম</i></p></div>
 									</div>
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										All sort of school forms are now available online and easy to access. Get them when needed despite of attending the long queue at school. 
+										সব ধরণের স্কুল ফর্ম এখন অনলাইনে পাওয়া যাবে সহজেই। স্কুলের লম্বা লাইনে না দাঁড়িয়ে এখন সবকিছু পেয়ে যান অনলাইনেই।
 									</p>
-                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">No need to visit school, download school forms when necessary</h3>
+                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">স্কুলে যাওয়ার আর প্রয়োজন নেই। এখন যেকোনো ফর্ম নিয়ে নিন অনলাইন থেকেই।</h3>
 									</div>									
 								</div>								
 							</div>	
@@ -197,14 +197,14 @@ get_header(); ?>
 								<div class="col-sm-7">
 									<div class="col-sm-12">
 										<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/meeting_request.png) no-repeat center;"></div>
-										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>Meeting Request</i></p></div>
+										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>সাক্ষাৎ আহবান</i></p></div>
 									</div>
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										Ask for a meeting with respective teacher. Set meetings easily now from your mobile or computer and get notified once approved. 
+										শিক্ষকদের সাথে সাক্ষাৎ ঠিক করুন। সহজেই আপনার মোবাইল বা কম্পিউটার থেকে সাক্ষাৎ আহবান করুন এবং চূড়ান্ত হলে নোটিফিকেশন পাবেন নিমিষেই
 									</p>
-                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Setting a meeting with a teacher is just a click away!</h3>
+                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">শিক্ষকদের সাথে সাক্ষাৎ এখন একটি ক্লিকের ব্যাপার মাত্র</h3>
 									</div>									
 								</div>								
 							</div>	
@@ -221,14 +221,14 @@ get_header(); ?>
 								<div class="col-sm-7">
 									<div class="col-sm-12">
 										<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/report_card.png) no-repeat center;"></div>
-										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>Report Card</i></p></div>
+										<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>রিপোর্ট কার্ড</i></p></div>
 									</div>
 									
 									<div class="col-sm-12"  style="margin-top:30px;">
 									<p>
-										Watch out your child’s report card online and study the progress graph of your child. Send online acknowledgement instantly to school. 
+										আপনার বাচ্চার রিপোর্ট কার্ডের উপর সবসময় নজর রাখুন এবং তার উন্নতির গ্রাফ দেখুন। অনলাইনে স্কুলে জানিয়ে দেন আপনার মতামত।
 									</p>
-                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Check your child’s progress  </h3>
+                                                                        <h3 class="f2" style="font-size:20px;padding: 16px 5px;">বাচ্চার উন্নতির দিকে খেয়াল রাখুন</h3>
 									</div>									
 								</div>								
 							</div>	
@@ -245,14 +245,14 @@ get_header(); ?>
                                                             <div class="col-sm-7">
                                                                     <div class="col-sm-12">
                                                                             <div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/event.png) no-repeat center;"></div>
-                                                                            <div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>Events</i></p></div>
+                                                                            <div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>ঘটনাবলী</i></p></div>
                                                                     </div>
 
                                                                     <div class="col-sm-12"  style="margin-top:30px;">
                                                                     <p>
-                                                                            Be it sports day, school event or yearly picnic; be updated about date, timing and venue. Get necessary reminders about any events.
+																			খেলার দিন, পিকনিক বা স্কুলের যেকোনো ঘটনার দিন, সময় এবং স্থান জানুন এখন ক্লাসটিউন থেকেই।  
                                                                     </p>
-                                                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Check out all the event details</h3>
+                                                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">ঘটনাবলীর বিস্তারিত জানুন এখানে</h3>
                                                                     </div>									
                                                             </div>								
                                                     </div>	
@@ -269,14 +269,14 @@ get_header(); ?>
                                                             <div class="col-sm-7">
                                                                     <div class="col-sm-12">
                                                                             <div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/transport.png) no-repeat center;"></div>
-                                                                            <div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>Transport</i></p></div>
+                                                                            <div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>পরিবহন</i></p></div>
                                                                     </div>
 
                                                                     <div class="col-sm-12"  style="margin-top:30px;">
                                                                     <p>
-                                                                           Check pick up and drop off time of your child by school transport. No worry about the transport if it is on time or not. Get the notification beforehand.
+                                                                           স্কুলের পরিবহন কখন আপনার বাচ্চাকে নিয়ে যাবে এবং দিয়ে যাবে তা জেনে নিন। পরিবহন আসতে দেরি হলেও চিন্তার কিছু নেই। নোটিফিকেশনের মাধ্যমে তা জানিয়ে দেয়া হবে আগেভাগেই।
                                                                     </p>
-                                                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">No more tension about transport!</h3>
+                                                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">পরিবহন নিয়ে নেই আর কোন চিন্তা</h3>
                                                                     </div>									
                                                             </div>								
                                                     </div>	
@@ -293,14 +293,14 @@ get_header(); ?>
                                                             <div class="col-sm-7">
                                                                     <div class="col-sm-12">
                                                                             <div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/class_routine.png) no-repeat center;"></div>
-                                                                            <div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>Routine</i></p></div>
+                                                                            <div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>রুটিন</i></p></div>
                                                                     </div>
 
                                                                     <div class="col-sm-12"  style="margin-top:30px;">
                                                                     <p>
-                                                                            Check out your child’s daily routine, enjoy easy access and get instant updates if there is any change. 
+                                                                            আপনার বাচ্চার প্রতিদিনকার রুটিন জেনে নিন। কোন পরিবর্তন আসলে সেটার আপডেটও পেয়ে যাবেন সাথে সাথেই।
                                                                     </p>
-                                                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Change in routine- gets notified! </h3>
+                                                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">রুটিনে পরিবর্তন হলে তৎক্ষণাৎ জেনে নিন </h3>
                                                                     </div>									
                                                             </div>								
                                                     </div>	
@@ -317,14 +317,14 @@ get_header(); ?>
                                                             <div class="col-sm-7">
                                                                     <div class="col-sm-12">
                                                                             <div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/sylabus.png) no-repeat center;"></div>
-                                                                            <div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>Syllabus</i></p></div>
+                                                                            <div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>পাঠক্রম</i></p></div>
                                                                     </div>
 
                                                                     <div class="col-sm-12"  style="margin-top:30px;">
                                                                     <p>
-                                                                            Know your child’s subject-wise and exam-wise syllabus in a single click. Prepare your child accordingly for exam with confidence.
+                                                                            এক ক্লিকেই জেনে নিন আপনার সন্তানের বিষয়ভিত্তিক এবং পরীক্ষাভিত্তিক পাঠক্রম। পরীক্ষার জন্য তাই সন্তানকে প্রস্তুত করুন আগে থেকেই।
                                                                     </p>
-                                                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Watch exam syllabus online</h3>
+                                                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">পরীক্ষার পাঠক্রম দেখুন অনলাইনে</h3>
                                                                     </div>									
                                                             </div>								
                                                     </div>	
@@ -341,14 +341,14 @@ get_header(); ?>
                                                             <div class="col-sm-7">
                                                                     <div class="col-sm-12">
                                                                             <div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/notice.png) no-repeat center;"></div>
-                                                                            <div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>Notice</i></p></div>
+                                                                            <div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>বিজ্ঞপ্তি</i></p></div>
                                                                     </div>
 
                                                                     <div class="col-sm-12"  style="margin-top:30px;">
                                                                     <p>
-                                                                            Notices are now real time and interactive. Get all important school notice in your ClassTune account. 
+                                                                            স্কুলের সব ধরণের বিজ্ঞপ্তি আপনি পেয়ে যাবেন আপনার ক্লাসটিউন একাউন্ট থেকেই।
                                                                     </p>
-                                                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Any school notice will not be missed now!</h3>
+                                                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">কোন স্কুল বিজ্ঞপ্তিই এখন আর অজানা থাকবে না</h3>
                                                                     </div>									
                                                             </div>								
                                                     </div>	
@@ -365,14 +365,14 @@ get_header(); ?>
                                                             <div class="col-sm-7">
                                                                     <div class="col-sm-12">
                                                                             <div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/leave_application.png) no-repeat center;"></div>
-                                                                            <div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>Leave</i></p></div>
+                                                                            <div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;"><i>ছুটি</i></p></div>
                                                                     </div>
 
                                                                     <div class="col-sm-12"  style="margin-top:30px;">
                                                                     <p>
-                                                                           Apply for your child’s leave easily from your account and check the leave approval status. Get notified once granted.  
+                                                                           আপনার বাচ্চার ছুটির জন্য আবেদন করুন অনলাইনে। আর সেটা মঞ্জুর হলে তা জেনে যাবেন নোটিফিকেশনের মাধ্যমে।
                                                                     </p>
-                                                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">Applying for leave is so easy now! </h3>
+                                                                    <h3 class="f2" style="font-size:20px;padding: 16px 5px;">ছুটির আবেদন করা এখন আরও সহজ। </h3>
                                                                     </div>									
                                                             </div>								
                                                     </div>	

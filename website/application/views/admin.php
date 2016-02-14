@@ -5,7 +5,7 @@
 			
 		</div>
 
-		<div id="beforeWrap" style="background: transparent url(<?php echo base_url();?>images/cover/admin-page.png) no-repeat bottom left;background-size:contain ;">
+		<div id="beforeWrap" style="background: transparent url(<?php echo base_url();?>images/cover/admin-page.png) no-repeat bottom left;background-size:cover ;">
 			<!--img src="http://www.classtune.dev/images/test/CLASSTUNE-COVER.png" alt="" title="" width="100%" /<li style="color:#64B846;">|</li>-->
 			<h2 class="f2" style="margin-top:100px;"><i>Manage your School like never before!</i></h2>
 			<div class="postlist-tab2">

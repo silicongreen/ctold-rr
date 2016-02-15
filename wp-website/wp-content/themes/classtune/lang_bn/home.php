@@ -126,48 +126,19 @@ get_header(); ?>
 								</div>
 							</div><!--/.item-->
 							
-							<div class="item bettlink" style="background-image: url(<?php bloginfo('template_url'); ?>/images/cover/bett-banner.jpg);cursor:pointer;">
+							<!--div class="item bettlink" style="background-image: url(<?php bloginfo('template_url'); ?>/images/cover/bett-banner.jpg);cursor:pointer;">
 								<div class="slider-inner">
 									<div class="container" style="width:100%;">
 										<div class="row">
 											<div class="col-sm-12">
 												<div class="carousel-content">
-													<!--div class="col-md-12"  style="">					
-														<div class="col-md-4"></div>
-														<div class="col-md-8">				
-															<div class="row">
-																<div class="col-md-12">
-																	<div class="col-md-2"></div>
-																	<div class="col-md-8" style="text-align: left;">
-																		<h2 class="f2" style="margin-top:130px;"><i>Managing school is easier than ever before...</i></h2>
-																		<p style="margin-top:30px;font-size:16px;">ClassTune is the bridge among Students, Parents and Teachers. It is the easiest and quickest way for School Administrator to connect anyone related to School in a single platform.</p>
-
-																	</div>
-																	<div class="col-md-2"></div>
-																</div>
-															</div>
-															<div class="row">
-																<div class="col-md-12">
-																	<div class="postlist-tab4">
-																		<ul>
-																			<li>                                                    
-																				<a href="<?php echo get_site_url().'/'.$lang; ?>/admin-page<?php echo "-".$lang;?>">I'm School Admin</a>
-																				<a href="<?php echo get_site_url().'/'.$lang; ?>/student-page<?php echo "-".$lang;?>">I'm Student</a>
-																				<a href="<?php echo get_site_url().'/'.$lang; ?>/guardian-page<?php echo "-".$lang;?>" >I'm Parent</a>
-																				<a href="<?php echo get_site_url().'/'.$lang; ?>/teacher-page<?php echo "-".$lang;?>" >I'm Teacher</a>
-																			</li>
-																		</ul>
-																	</div>
-																</div>
-															</div>
-														</div>
-													</div-->
+													
 												</div>
 											</div>
 										</div>
 									</div>
 								</div>
-							</div><!--/.item-->				
+							</div--><!--/.item-->				
 						</div><!--/.owl-carousel-->      
 						
 					</div>

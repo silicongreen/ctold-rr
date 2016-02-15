@@ -107,7 +107,7 @@ $(document).ready(function () {
 	startscrolltop = mywindow.scrollTop();
 	//console.log('windowheight: ' + windowheight + ' / maxscrolltop: ' + maxscrolltop);
 
-	var scrollspeed = 300;
+	var scrollspeed = 350;
 	htmlbody.bind('mousewheel', function(event, delta) {
 		event.preventDefault();
 	});
@@ -1307,7 +1307,7 @@ $(document).ready(function () {
 	var newscrollpostop = 900;
 	var startscrollanitime = 1200;
 } else {*/
-	var scrollspeed = 250;
+	var scrollspeed = 350;
 	var newscrollpostop = 900;
 	var startscrollanitime = 1000;
 //}

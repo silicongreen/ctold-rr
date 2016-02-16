@@ -1,0 +1,89 @@
+<% content_for :head do %>
+  <link rel="icon" href="#" type="ico" />
+  <link rel="shortcut icon" href="#" type="ico" />
+<% end %>
+<div class="container-fluid">
+  <div class="container">
+    <div class="content-div">
+      <div class="content">
+        <div class="min-height-50 padding-hor-20">
+          <% if @linkable and @linkable.class.to_s == 'MultiSchoolGroup' %>
+            <div class="min-height-50 container-width-355 vertical-align-img">
+              <div class="margin-bottom-10 margin-top-15 ">
+                <h3 class="form-title"><%= @linkable.name %></h3>
+              </div>
+            </div>
+          <% else %>
+            <div class="min-height-50 padding-hor-20">
+              <div class="height-50 container-width-355 vertical-align-img">
+                <div class="width-100 margin-auto">
+                  <img src="/images/champs21-logo-red.png" alt="LOGO" />
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+        <div class="min-height-155">
+          <% form_for :user do |form| %>
+            <% unless flash[:notice].blank? %>
+              <span class="login-validation-error"><%= flash[:notice] %></span>
+            <% end %>
+            <div class="padding-top-20 container-width-355">
+              <div class="height-24 container-width-292 margin-auto margin-bottom-20">
+                <div class="padding-top-2 width-80 float-left">
+                  <%= form.label :username %>
+                </div>
+                <div class="width-210 float-left">
+                  <%= form.text_field :username ,:class  => 'textfield grey-border-dark'%>
+                </div>
+              </div>
+              <div class="height-24 container-width-292 margin-auto margin-bottom-20">
+                <div class="padding-top-2 width-80 float-left">
+                  <%= form.label :password %>
+                </div>
+                <div class="width-210 float-left">
+                  <%= form.password_field :password,:class  => 'textfield grey-border-dark' %>
+                </div>
+              </div>
+              <div class="height-24 container-width-292 margin-auto margin-top-2">
+                <div class="width-210 float-right margin-right-2">
+                  <div class="float-right">
+                    <%#= form.submit 'Login', :class => "button-red", :id=>"login_submit" %>
+                    <button type="submit" class="btn blue pull-right" id="login_submit">
+                    Login <i class="m-icon-swapright m-icon-white"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="height-24 container-width-292 margin-auto forget-password">
+                <h4>Forgot your password ?</h4>
+                <p>
+                         no worries, click <%= link_to "HERE", forgot_password_admin_users_path %>
+                        to reset your password.
+                </p>
+              </div>
+            </div>
+          <% end %>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+  
+<script>
+jQuery(document).ready(function() {  
+  // init background slide images
+      $.backstretch([       
+        "images/plus_admin/bg/1.jpg",
+        "images/plus_admin/bg/2.jpg",
+        "images/plus_admin/bg/3.jpg",
+        "images/plus_admin/bg/4.jpg"
+       ], {
+         fade: 1000,
+         duration: 8000
+   }
+   );
+});
+</script>

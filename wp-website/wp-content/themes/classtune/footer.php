@@ -47,10 +47,10 @@ switch ($lang) {
                             <ul>
                                 <li>
                                     <a href="javascript:void(0);" style="cursor: default;background: #E5ECF2 none repeat scroll 0 0;color:#999!important;"><?php echo $reg_free;?> <i class="fa fa-long-arrow-right"></i></a>
-                                    <a href="<?php echo get_site_url().'/'.$lang; ?>/admin-page<?php echo "-".$lang;?>" ><?php echo $sAdmin;?></a>
-                                    <a href="<?php echo get_site_url().'/'.$lang; ?>/student-page<?php echo "-".$lang;?>" ><?php echo $student;?></a>
-                                    <a href="<?php echo get_site_url().'/'.$lang; ?>/guardian-page<?php echo "-".$lang;?>" ><?php echo $parent;?></a>
-                                    <a href="<?php echo get_site_url().'/'.$lang; ?>/teacher-page<?php echo "-".$lang;?>" ><?php echo $teacher;?></a>
+                                    <a href="<?php echo get_site_url().'/'.$lang; ?>/admin-user<?php echo "-".$lang;?>" ><?php echo $sAdmin;?></a>
+                                    <a href="<?php echo get_site_url().'/'.$lang; ?>/student-user<?php echo "-".$lang;?>" ><?php echo $student;?></a>
+                                    <a href="<?php echo get_site_url().'/'.$lang; ?>/guardian-user<?php echo "-".$lang;?>" ><?php echo $parent;?></a>
+                                    <a href="<?php echo get_site_url().'/'.$lang; ?>/teacher-user<?php echo "-".$lang;?>" ><?php echo $teacher;?></a>
                                 </li>
                             </ul>
                         </div>

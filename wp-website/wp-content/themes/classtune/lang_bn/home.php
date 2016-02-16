@@ -32,13 +32,13 @@ get_header(); ?>
 										<div style="height:120px;backgound:#EFF2F3;">
 
 
-											<a href="<?php echo get_site_url().'/'.$lang; ?>/admin-page<?php echo "-".$lang;?>" style="color:gray;text-decoration:none;"><h3>অ্যাডমিন জন্য</h3></a>
+											<a href="<?php echo get_site_url().'/'.$lang; ?>/admin-user<?php echo "-".$lang;?>" style="color:gray;text-decoration:none;"><h3>অ্যাডমিন জন্য</h3></a>
 
 											<p style="color: gray;font-size: 14px;padding: 20px; text-align: left;">
 												<b>ClassTune</b> এ সংযুক্ত সকল সরঞ্জাম শিক্ষকের পাঠদান দক্ষতা ও সক্ষমতা বৃদ্ধিতে সহয়তা করবে। <br>
 											</p>
 											<p style="background: #DFE4E7 none repeat scroll 0 0;border-radius: 0px;bottom: 10px;padding: 8px 0;position: relative;width: 80px;left:10px;font-weight: bold;">
-												<a href="<?php echo get_site_url().'/'.$lang; ?>/admin-page<?php echo "-".$lang;?>" style="color:#000;text-decoration:none;">বিস্তারিত জানুন</a>
+												<a href="<?php echo get_site_url().'/'.$lang; ?>/admin-user<?php echo "-".$lang;?>" style="color:#000;text-decoration:none;">বিস্তারিত জানুন</a>
 											</p>
 
 										</div>
@@ -48,13 +48,13 @@ get_header(); ?>
 										<div style="height:120px;backgound:#EFF2F3;">
 
 
-											<a href="<?php echo get_site_url().'/'.$lang; ?>/guardian-page<?php echo "-".$lang;?>" style="color:gray;text-decoration:none;"><h3>অভিভাবকদের জন্য</h3></a>
+											<a href="<?php echo get_site_url().'/'.$lang; ?>/guardian-user<?php echo "-".$lang;?>" style="color:gray;text-decoration:none;"><h3>অভিভাবকদের জন্য</h3></a>
 
 											<p style="color: gray;font-size: 14px;padding: 20px; text-align: left;">
 												<b>ClassTune</b> এমনভাবে ডিজাইন করা হয়েছে, যে আপনি আপনার সন্তানের শেখার কর্মকান্ডে থাকার একটি সহজ এবং স্বজ্ঞাত উপায় পেতে পারেন।<br>
 											</p>
 											<p style="background: #DFE4E7 none repeat scroll 0 0;border-radius: 0px;bottom: 10px;padding: 8px 0;position: relative;width: 80px;left:10px;font-weight: bold;">
-												<a href="<?php echo get_site_url().'/'.$lang; ?>/guardian-page<?php echo "-".$lang;?>" style="color:#000;text-decoration:none;">বিস্তারিত জানুন</a>
+												<a href="<?php echo get_site_url().'/'.$lang; ?>/guardian-user<?php echo "-".$lang;?>" style="color:#000;text-decoration:none;">বিস্তারিত জানুন</a>
 											</p>
 
 										</div>
@@ -65,13 +65,13 @@ get_header(); ?>
 										<div style="height:120px;backgound:#EFF2F3;">
 
 
-											<a href="<?php echo get_site_url().'/'.$lang; ?>/teacher-page<?php echo "-".$lang;?>" style="color:gray;text-decoration:none;"><h3>শিক্ষকদের জন্য</h3></a>
+											<a href="<?php echo get_site_url().'/'.$lang; ?>/teacher-user<?php echo "-".$lang;?>" style="color:gray;text-decoration:none;"><h3>শিক্ষকদের জন্য</h3></a>
 
 											<p style="color: gray;font-size: 14px;padding: 20px; text-align: left;">
 												সন্তানের শিক্ষা সর্ম্পকিত সকল কার্যক্রমে আপনার সহজ ও কার্যকরী অংশগ্রহণ সুনিশ্চিত করার লক্ষ্যেই  <b>ClassTune</b> তৈরি করা হয়েছে।
 											</p>
 											<p style="background: #DFE4E7 none repeat scroll 0 0;border-radius: 0px;bottom: 10px;padding: 8px 0;position: relative;width: 80px;left:10px;font-weight: bold;">
-												<a href="<?php echo get_site_url().'/'.$lang; ?>/teacher-page<?php echo "-".$lang;?>" style="color:#000;text-decoration:none;">বিস্তারিত জানুন</a>
+												<a href="<?php echo get_site_url().'/'.$lang; ?>/teacher-user<?php echo "-".$lang;?>" style="color:#000;text-decoration:none;">বিস্তারিত জানুন</a>
 											</p>
 
 										</div>
@@ -108,10 +108,10 @@ get_header(); ?>
 																	<div class="postlist-tab3">
 																		<ul>
 																			<li>                                                    
-																				<a href="<?php echo get_site_url().'/'.$lang; ?>/admin-page<?php echo "-".$lang;?>">আমি স্কুল অ্যাডমিন</a>
-																				<a href="<?php echo get_site_url().'/'.$lang; ?>/student-page<?php echo "-".$lang;?>">আমি শিক্ষার্থী</a>
-																				<a href="<?php echo get_site_url().'/'.$lang; ?>/guardian-page<?php echo "-".$lang;?>" >আমি অভিভাবক</a>
-																				<a href="<?php echo get_site_url().'/'.$lang; ?>/teacher-page<?php echo "-".$lang;?>" >আমি শিক্ষক</a>
+																				<a href="<?php echo get_site_url().'/'.$lang; ?>/admin-user<?php echo "-".$lang;?>">আমি স্কুল অ্যাডমিন</a>
+																				<a href="<?php echo get_site_url().'/'.$lang; ?>/student-user<?php echo "-".$lang;?>">আমি শিক্ষার্থী</a>
+																				<a href="<?php echo get_site_url().'/'.$lang; ?>/guardian-user<?php echo "-".$lang;?>" >আমি অভিভাবক</a>
+																				<a href="<?php echo get_site_url().'/'.$lang; ?>/teacher-user<?php echo "-".$lang;?>" >আমি শিক্ষক</a>
 																			</li>
 																		</ul>
 																	</div>

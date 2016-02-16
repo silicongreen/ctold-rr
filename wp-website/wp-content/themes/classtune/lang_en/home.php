@@ -32,13 +32,13 @@ get_header(); ?>
 										<div style="height:120px;backgound:#EFF2F3;">
 
 
-											<a href="<?php echo get_site_url().'/'.$lang; ?>/admin-page<?php echo "-".$lang;?>" style="color:gray;text-decoration:none;"><h3>For Admin</h3></a>
+											<a href="<?php echo get_site_url().'/'.$lang; ?>/admin-user<?php echo "-".$lang;?>" style="color:gray;text-decoration:none;"><h3>For Admin</h3></a>
 
 											<p style="color: gray;font-size: 14px;padding: 20px; text-align: left;">
 												All the collaboration tools you need to improve learning outcomes, productivity, and building teacher’s capacity.<br>
 											</p>
 											<p style="background: #DFE4E7 none repeat scroll 0 0;border-radius: 0px;bottom: 10px;padding: 8px 0;position: relative;width: 80px;left:10px;font-weight: bold;">
-												<a href="<?php echo get_site_url().'/'.$lang; ?>/admin-page<?php echo "-".$lang;?>" style="color:#000;text-decoration:none;">Learn More</a>
+												<a href="<?php echo get_site_url().'/'.$lang; ?>/admin-user<?php echo "-".$lang;?>" style="color:#000;text-decoration:none;">Learn More</a>
 											</p>
 
 										</div>
@@ -48,13 +48,13 @@ get_header(); ?>
 										<div style="height:120px;backgound:#EFF2F3;">
 
 
-											<a href="<?php echo get_site_url().'/'.$lang; ?>/guardian-page<?php echo "-".$lang;?>" style="color:gray;text-decoration:none;"><h3>For Parent</h3></a>
+											<a href="<?php echo get_site_url().'/'.$lang; ?>/guardian-user<?php echo "-".$lang;?>" style="color:gray;text-decoration:none;"><h3>For Parent</h3></a>
 
 											<p style="color: gray;font-size: 14px;padding: 20px; text-align: left;">
 												<b>ClassTune</b> is designed in such a way, that you get a simple and intuitive way to stay in your child’s learning activities.<br>
 											</p>
 											<p style="background: #DFE4E7 none repeat scroll 0 0;border-radius: 0px;bottom: 10px;padding: 8px 0;position: relative;width: 80px;left:10px;font-weight: bold;">
-												<a href="<?php echo get_site_url().'/'.$lang; ?>/guardian-page<?php echo "-".$lang;?>" style="color:#000;text-decoration:none;">Learn More</a>
+												<a href="<?php echo get_site_url().'/'.$lang; ?>/guardian-user<?php echo "-".$lang;?>" style="color:#000;text-decoration:none;">Learn More</a>
 											</p>
 
 										</div>
@@ -65,13 +65,13 @@ get_header(); ?>
 										<div style="height:120px;backgound:#EFF2F3;">
 
 
-											<a href="<?php echo get_site_url().'/'.$lang; ?>/teacher-page<?php echo "-".$lang;?>" style="color:gray;text-decoration:none;"><h3>For Teacher</h3></a>
+											<a href="<?php echo get_site_url().'/'.$lang; ?>/teacher-user<?php echo "-".$lang;?>" style="color:gray;text-decoration:none;"><h3>For Teacher</h3></a>
 
 											<p style="color: gray;font-size: 14px;padding: 20px; text-align: left;">
 												<b>ClassTune</b> is designed in such a way that gives you the complete control over your digital classroom. 
 											</p>
 											<p style="background: #DFE4E7 none repeat scroll 0 0;border-radius: 0px;bottom: 10px;padding: 8px 0;position: relative;width: 80px;left:10px;font-weight: bold;">
-												<a href="<?php echo get_site_url().'/'.$lang; ?>/teacher-page<?php echo "-".$lang;?>" style="color:#000;text-decoration:none;">Learn More</a>
+												<a href="<?php echo get_site_url().'/'.$lang; ?>/teacher-user<?php echo "-".$lang;?>" style="color:#000;text-decoration:none;">Learn More</a>
 											</p>
 
 										</div>
@@ -108,10 +108,10 @@ get_header(); ?>
 																	<div class="postlist-tab3">
 																		<ul>
 																			<li>                                                    
-																				<a href="<?php echo get_site_url().'/'.$lang; ?>/admin-page<?php echo "-".$lang;?>">I'm School Admin</a>
-																				<a href="<?php echo get_site_url().'/'.$lang; ?>/student-page<?php echo "-".$lang;?>">I'm Student</a>
-																				<a href="<?php echo get_site_url().'/'.$lang; ?>/guardian-page<?php echo "-".$lang;?>" >I'm Parent</a>
-																				<a href="<?php echo get_site_url().'/'.$lang; ?>/teacher-page<?php echo "-".$lang;?>" >I'm Teacher</a>
+																				<a href="<?php echo get_site_url().'/'.$lang; ?>/admin-user<?php echo "-".$lang;?>">I'm School Admin</a>
+																				<a href="<?php echo get_site_url().'/'.$lang; ?>/student-user<?php echo "-".$lang;?>">I'm Student</a>
+																				<a href="<?php echo get_site_url().'/'.$lang; ?>/guardian-user<?php echo "-".$lang;?>" >I'm Parent</a>
+																				<a href="<?php echo get_site_url().'/'.$lang; ?>/teacher-user<?php echo "-".$lang;?>" >I'm Teacher</a>
 																			</li>
 																		</ul>
 																	</div>

@@ -32,13 +32,13 @@ get_header(); ?>
 										<div style="height:120px;backgound:#EFF2F3;">
 
 
-											<a href="<?php echo get_site_url().'/'.$lang; ?>/admin-page<?php echo "-".$lang;?>" style="color:gray;text-decoration:none;"><h3>สำหรับผู้ดูแลระบบ</h3></a>
+											<a href="<?php echo get_site_url().'/'.$lang; ?>/admin-user<?php echo "-".$lang;?>" style="color:gray;text-decoration:none;"><h3>สำหรับผู้ดูแลระบบ</h3></a>
 
 											<p style="color: gray;font-size: 14px;padding: 20px; text-align: left;">
 												เป็นระบบกลางที่ตอบโจทย์ความต้องการพัฒนาด้านการศึกษา ในด้านต่างๆ และทำให้คุณครูมีเวลาเพิ่มขึ้นไม่ต้องจัดการงานเอกสารมากจนเกินไป.<br>
 											</p>
 											<p style="background: #DFE4E7 none repeat scroll 0 0;border-radius: 0px;bottom: 10px;padding: 8px 0;position: relative;width: 80px;left:10px;font-weight: bold;">
-												<a href="<?php echo get_site_url().'/'.$lang; ?>/admin-page<?php echo "-".$lang;?>" style="color:#000;text-decoration:none;">เรียนรู้เพิ่มเติม</a>
+												<a href="<?php echo get_site_url().'/'.$lang; ?>/admin-user<?php echo "-".$lang;?>" style="color:#000;text-decoration:none;">เรียนรู้เพิ่มเติม</a>
 											</p>
 
 										</div>
@@ -48,13 +48,13 @@ get_header(); ?>
 										<div style="height:120px;backgound:#EFF2F3;">
 
 
-											<a href="<?php echo get_site_url().'/'.$lang; ?>/guardian-page<?php echo "-".$lang;?>" style="color:gray;text-decoration:none;"><h3>สำหรับผู้ปกครอง</h3></a>
+											<a href="<?php echo get_site_url().'/'.$lang; ?>/guardian-user<?php echo "-".$lang;?>" style="color:gray;text-decoration:none;"><h3>สำหรับผู้ปกครอง</h3></a>
 
 											<p style="color: gray;font-size: 14px;padding: 20px; text-align: left;">
 												<b>ClassTune</b> ถูกออกแบบมาให้ใช้งานง่ายและสะดวกในการมีส่วนร่วมในกิจกรรมการเรียนของลูกๆคุณ.<br>
 											</p>
 											<p style="background: #DFE4E7 none repeat scroll 0 0;border-radius: 0px;bottom: 10px;padding: 8px 0;position: relative;width: 80px;left:10px;font-weight: bold;">
-												<a href="<?php echo get_site_url().'/'.$lang; ?>/guardian-page<?php echo "-".$lang;?>" style="color:#000;text-decoration:none;">เรียนรู้เพิ่มเติม</a>
+												<a href="<?php echo get_site_url().'/'.$lang; ?>/guardian-user<?php echo "-".$lang;?>" style="color:#000;text-decoration:none;">เรียนรู้เพิ่มเติม</a>
 											</p>
 
 										</div>
@@ -65,13 +65,13 @@ get_header(); ?>
 										<div style="height:120px;backgound:#EFF2F3;">
 
 
-											<a href="<?php echo get_site_url().'/'.$lang; ?>/teacher-page<?php echo "-".$lang;?>" style="color:gray;text-decoration:none;"><h3>สำหรับครู</h3></a>
+											<a href="<?php echo get_site_url().'/'.$lang; ?>/teacher-user<?php echo "-".$lang;?>" style="color:gray;text-decoration:none;"><h3>สำหรับครู</h3></a>
 
 											<p style="color: gray;font-size: 14px;padding: 20px; text-align: left;">
 												<b>ClassTune</b> ถูกออกแบบมาสำหรับเพิ่มประสิทธิภาพการเรียนการสอนในห้องเรียนของคุณในรูปแบบดิจิตอล. 
 											</p>
 											<p style="background: #DFE4E7 none repeat scroll 0 0;border-radius: 0px;bottom: 10px;padding: 8px 0;position: relative;width: 80px;left:10px;font-weight: bold;">
-												<a href="<?php echo get_site_url().'/'.$lang; ?>/teacher-page<?php echo "-".$lang;?>" style="color:#000;text-decoration:none;">เรียนรู้เพิ่มเติม</a>
+												<a href="<?php echo get_site_url().'/'.$lang; ?>/teacher-user<?php echo "-".$lang;?>" style="color:#000;text-decoration:none;">เรียนรู้เพิ่มเติม</a>
 											</p>
 
 										</div>

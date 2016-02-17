@@ -3,13 +3,16 @@
 
 switch ($lang) {
     case "en":
-        $login = "Log in";$contact = "Contact";$support = "Support";$teacher = "Teacher";$parent = "Parent";$student = "Student";$sAdmin = "School Admin";$feature = "Features";$home = "Home";$term = "Terms";$pp = "Privacy Policy";$cr = "Copyright";
+        $login = "Log in";$reg_free = "Registration Free!";$free_acc = "Create Your FREE Account";$accessible = "Accessible from anywhere...";$contact = "Contact";$support = "Support";$teacher = "Teacher";$parent = "Parent";$student = "Student";$sAdmin = "School Admin";$feature = "Features";$home = "Home";$term = "Terms";$pp = "Privacy Policy";$cr = "Copyright";
         break;
     case "bn":
-        $login = "লগইন";$contact = "যোগাযোগ";$support = "সহায়তা";$teacher = "শিক্ষক";$parent = "অভিভাবক";$student = "শিক্ষার্থী";$sAdmin = "স্কুল অ্যাডমিন";$feature = "বিস্তারিত";$home = "হোম";$term = "শর্তাবলী";$pp = "গোপনীয়তা নীতি";$cr = "কপিরাইট";
+        $login = "লগইন";$reg_free = "ফ্রি রেজিস্ট্রেশন !";$free_acc = "বিনামূল্যে তোমার একাউন্ট কর";$accessible = "যে কোন জায়গা থেকে প্রবেশযোগ্য...";$contact = "যোগাযোগ";$support = "সহায়তা";$teacher = "শিক্ষক";$parent = "অভিভাবক";$student = "শিক্ষার্থী";$sAdmin = "স্কুল অ্যাডমিন";$feature = "বিস্তারিত";$home = "হোম";$term = "শর্তাবলী";$pp = "গোপনীয়তা নীতি";$cr = "কপিরাইট";
+        break;
+	case "th":
+        $login = "เข้าสู่ระบบ";$reg_free = "สมัครฟรี";$free_acc = "ลงทะเบียนฟรี";$accessible = "เข้าถึงได้จากทุกที่...";$contact = "ติดต่อ";$support = "สนับสนุน";$teacher = "ฉันเป็นครู";$parent = "ฉันเป็นผู้ปกครอง";$student = "ฉันเป็นนักเรียน";$sAdmin = "ฉันเป็นผู้ดูแลระบบ";$feature = "ฟีเจอร์";$home = "หน้าหลัก";$term = "ข้อตกลงและเงื่อนไข";$pp = "นโยบายความเป็นส่วนตัว";$cr = "ลิขสิทธิ์";
         break;
     default:
-        echo "Your favorite color is neither red, blue, nor green!";
+        $login = "Log in";$reg_free = "Registration Free!";$free_acc = "Create Your FREE Account";$accessible = "Accessible from anywhere...";$contact = "Contact";$support = "Support";$teacher = "Teacher";$parent = "Parent";$student = "Student";$sAdmin = "School Admin";$feature = "Features";$home = "Home";$term = "Terms";$pp = "Privacy Policy";$cr = "Copyright";
 }
 ?>
 <div id="imagesWrap">    

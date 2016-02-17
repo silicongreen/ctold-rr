@@ -108,10 +108,10 @@ get_header(); ?>
 																	<div class="postlist-tab3">
 																		<ul>
 																			<li>                                                    
-																				<a href="<?php echo get_site_url().'/'.$lang; ?>/admin-page<?php echo "-".$lang;?>">ผู้ดูแลระบบ</a>
-																				<a href="<?php echo get_site_url().'/'.$lang; ?>/student-page<?php echo "-".$lang;?>">นักเรียน</a>
-																				<a href="<?php echo get_site_url().'/'.$lang; ?>/guardian-page<?php echo "-".$lang;?>" >ผู้ปกครอง</a>
-																				<a href="<?php echo get_site_url().'/'.$lang; ?>/teacher-page<?php echo "-".$lang;?>" >ครู</a>
+																				<a href="<?php echo get_site_url().'/'.$lang; ?>/admin-user<?php echo "-".$lang;?>">ผู้ดูแลระบบ</a>
+																				<a href="<?php echo get_site_url().'/'.$lang; ?>/student-user<?php echo "-".$lang;?>">นักเรียน</a>
+																				<a href="<?php echo get_site_url().'/'.$lang; ?>/guardian-user<?php echo "-".$lang;?>" >ผู้ปกครอง</a>
+																				<a href="<?php echo get_site_url().'/'.$lang; ?>/teacher-user<?php echo "-".$lang;?>" >ครู</a>
 																			</li>
 																		</ul>
 																	</div>

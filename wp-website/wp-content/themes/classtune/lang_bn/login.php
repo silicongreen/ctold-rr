@@ -37,7 +37,7 @@
                     <div class="form-group" id="register_from_login_div">
                         <div class="row">
                             
-                            <button name="admin" onclick="location.href='<?php echo get_site_url().'/'.$lang; ?>/admin-page<?php echo "-".$lang;?>'" type="button" id="admin_register" class="btn-primary btn-xs btn btn-default">
+                            <button name="admin" onclick="location.href='<?php echo get_site_url().'/'.$lang; ?>/admin-user<?php echo "-".$lang;?>'" type="button" id="admin_register" class="btn-primary btn-xs btn btn-default">
                                 <i class="fa"></i> <?php echo $sAdmin;?>
                             </button>
 

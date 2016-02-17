@@ -107,7 +107,7 @@ $(document).ready(function () {
 	startscrolltop = mywindow.scrollTop();
 	//console.log('windowheight: ' + windowheight + ' / maxscrolltop: ' + maxscrolltop);
 
-	var scrollspeed = 350;
+	var scrollspeed = 550;
 	htmlbody.bind('mousewheel', function(event, delta) {
 		event.preventDefault();
 	});
@@ -1307,7 +1307,7 @@ $(document).ready(function () {
 	var newscrollpostop = 900;
 	var startscrollanitime = 1200;
 } else {*/
-	var scrollspeed = 350;
+	var scrollspeed = 550;
 	var newscrollpostop = 900;
 	var startscrollanitime = 1000;
 //}
@@ -1341,12 +1341,12 @@ function windowload() {
 	$('#startWrap').stopTime('windowload_backup');
 	$('#preloader').stopTime('counter');
 	$('#count').html('150');
-	$('#preloader').fadeOut(1500);
+	$('#preloader').fadeOut(100);
 
 	// Scrollinfo
-	$('#scrollinfo').oneTime(1000, 'scrollinfoIN', function () {
+	$('#scrollinfo').oneTime(500, 'scrollinfoIN', function () {
 		$('#scrollinfo').fadeIn(scrollinfotime, function () {
-			$('#scrollinfo').oneTime(2000, 'scrollinfoCursorIN', function () {
+			$('#scrollinfo').oneTime(1000, 'scrollinfoCursorIN', function () {
 				$('#cursor').fadeIn(scrollinfotime, function() {
 					var icount = 0;
 					$('#scrollinfo').everyTime(400, 'cursorcbp', function () {
@@ -1366,7 +1366,7 @@ function windowload() {
 					});
 				});
 			});
-			$('#scrollinfo').oneTime(6500, 'scrollinfoOUT', function () {
+			$('#scrollinfo').oneTime(500, 'scrollinfoOUT', function () {
 				$('#scrollinfo').stopTime('checkscrolling');
 				$('#scrollinfo').fadeOut(scrollinfotime);
 				$('#cursor').fadeOut(scrollinfotime);
@@ -1375,7 +1375,7 @@ function windowload() {
 	});
 
 	// Scrollinfo
-	$('#scrollinfo').everyTime(500, 'checkscrolling', function () {
+	$('#scrollinfo').everyTime(100, 'checkscrolling', function () {
 		// Stop scrollinfo on scrolling
 		var actscrolltop = $(window).scrollTop();
 		if (startscrolltop !== actscrolltop) {

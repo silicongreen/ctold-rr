@@ -1405,7 +1405,7 @@ function windowload() {
 
 	htmlbody.unbind('mousewheel');
 	$('#startWrap, #beforeWrap, #cronWrap, #imagesWrap').bind('mousewheel', function(event, delta) {
-		mousewheel(event, delta);
+		//mousewheel(event, delta);
 	});
 
 	$('#imagesWrap, #thanks_endWrap').hide();

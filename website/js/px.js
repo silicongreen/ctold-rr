@@ -1403,7 +1403,7 @@ function windowload() {
 		$(document).stopTime('ipadinfobox2');
 	});
 
-	htmlbody.unbind('mousewheel');
+	//htmlbody.unbind('mousewheel');
 	$('#startWrap, #beforeWrap, #cronWrap, #imagesWrap').bind('mousewheel', function(event, delta) {
 		mousewheel(event, delta);
 	});

@@ -11,7 +11,7 @@
  * @since Classtune
  */
 /*
-  Template Name: school-admin-signup-en
+  Template Name: school-admin-signup-th
  */
 get_header();
 

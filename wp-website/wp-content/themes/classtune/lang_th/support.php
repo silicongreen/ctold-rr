@@ -11,7 +11,7 @@
  * @since Twenty Sixteen 1.0
  */
 /*
-Template Name: supports-en
+Template Name: supports-th
 */
 get_header(); ?>
 

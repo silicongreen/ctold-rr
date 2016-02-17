@@ -11,7 +11,7 @@
  * @since Twenty Sixteen 1.0
  */
 /*
-  Template Name: user-register-en
+  Template Name: user-register-th
  */
 get_header();
 ?>

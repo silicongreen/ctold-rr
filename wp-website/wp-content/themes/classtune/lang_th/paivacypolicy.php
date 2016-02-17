@@ -11,7 +11,7 @@
  * @since Twenty Sixteen 1.0
  */
 /*
-Template Name: privacypolicy-en
+Template Name: privacypolicy-th
 */
 get_header(); ?>
 

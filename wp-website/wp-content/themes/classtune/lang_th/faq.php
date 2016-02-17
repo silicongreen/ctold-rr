@@ -11,7 +11,7 @@
  * @since Twenty Sixteen 1.0
  */
 /*
-Template Name: faq-en
+Template Name: faq-th
 */
 get_header(); ?>
 <input type="hidden" value="<?php echo get_site_url(); ?>" id="base_url">

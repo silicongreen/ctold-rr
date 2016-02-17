@@ -11,7 +11,7 @@
  * @since Twenty Sixteen 1.0
  */
 /*
-Template Name: copyright-en
+Template Name: copyright-th
 */
 get_header(); ?>
 

@@ -11,7 +11,7 @@
  * @since Twenty Sixteen 1.0
  */
 /*
-  Template Name: package-type-en
+  Template Name: package-type-th
  */
 get_header();
 ?>

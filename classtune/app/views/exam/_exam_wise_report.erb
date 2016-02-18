@@ -79,6 +79,16 @@
 <% elsif @batch.gpa_enabled? %>
   <% total_credit_points=0 %>
   <% total_credit_hours=0 %>
+  <% allhide = true  %>
+  <% allcss = "style='display:none'" %>
+  <% exam_score.each do |es| %>
+      <% 
+      if !es.exam.subject.no_exams
+        allhide = false
+        allcss = ""
+      end  
+      %>
+  <% end %>   
   <div id="score-table">
     <% unless @current_user.student? or @current_user.parent? %>
       <div class="custom_header f2">
@@ -91,27 +101,41 @@
           <tr class="tr-head">
 
             <th><%= t('subject_title') %></th>
-            <th><%= t('grade') %></th>
-            <th><%= t('marks') %></td>
-            <th><%= "Highest" %></td>
-            <th><%= "Total" %></td>
+            <th  <%= allcss %>><%= t('grade') %></th>
+            <th  <%= allcss %>><%= t('marks') %></td>
+            <th  <%= allcss %>><%= "Highest" %></td>
+            <th  <%= allcss %>><%= "Total" %></td>
+            
 
 
 
-            <th>%</th>
+            <th  <%= allcss %>>%</th>
+            <td><%= t('remarks') %></td>
 
           </tr>
         </thead>
         <% j = 0; %>
         <% total_mark = 0 %>
         <% cradit_point = 0 %>
+        <% total_mark_with_no_exam = 0 %>
+        <% cradit_point_with_no_exam = 0 %>
         <% exam_score.each do |es| %>
+          <%
+             extra_colspan = ""
+             css = ""
+             add_mark = true
+             if es.exam.subject.no_exams
+               css = "style='display:none'"
+               extra_colspan = "colspan = '10'"
+                add_mark = false
+             end
+          %>
           <tr >
 
 
 
             <td > <%= es.exam.subject.name %></td>
-            <td >
+            <td  <%=css%>>
 
               <%= "#{es.grading_level.present? ? es.grading_level : "-"}"+" ["+"#{es.grading_level.present? ? (es.grading_level.credit_points.present? ? es.grading_level.credit_points : "-") : "-"}"+"]" %></td>
             <% 
@@ -122,20 +146,27 @@
               end
             %>
 
-            <td ><%= es.marks.present? ? mark=es.marks.to_f : '-' %></td>
+            <td  <%=css%>><%= es.marks.present? ? mark=es.marks.to_f : '-' %></td>
             <% 
-              if es.marks.present?  
+              if es.marks.present? and  add_mark
                 total_mark = total_mark.to_f+es.marks.to_f 
               end
+              if es.marks.present? 
+                total_mark_with_no_exam = total_mark_with_no_exam.to_f+es.marks.to_f 
+              end  
             %>
-            <td > <%=  max_mark[j] %></td>
-            <td ><%= es.exam.maximum_marks.to_f %></td>
+            <td  <%=css%>> <%=  max_mark[j] %></td>
+            <td  <%=css%>><%= es.exam.maximum_marks.to_f %></td>
 
-            <td ><%= es.marks.present? ? mark=(es.marks.to_f/es.exam.maximum_marks.to_f)*100 : '-' %> % </td>
+            <td  <%=css%>><%= es.marks.present? ? mark=(es.marks.to_f/es.exam.maximum_marks.to_f)*100 : '-' %> % </td>
+            <% if add_mark %>
             <% total_credit_hours = total_credit_hours + es.exam.subject.credit_hours.to_f %>
             <% points=0 %>
             <% points = (es.grading_level.credit_points.to_f) * (es.exam.subject.credit_hours.to_f) if es.grading_level.present? %>
+            
             <% total_credit_points = total_credit_points + points %>
+            <% end %>
+            <td class="col-1" <%= extra_colspan %>><%= es.remarks %></td>
 
           </tr>
           <% j = j+1; %>  
@@ -145,6 +176,7 @@
       </table>
     </div>    
   </div>
+ <% if allhide==false %>
   <div class="CSSTableGenerator" >
     <table id="listing" class="f5 summary" align="center" width="100%" cellpadding="1" cellspacing="1">
       <thead>
@@ -175,7 +207,7 @@
               position_data.each do |p|
                 check_grade = p['total_points'].to_f
                 check_mark = p['total_score'].to_f
-                if cradit_point == check_grade and total_mark == check_mark
+                if cradit_point == check_grade and total_mark_with_no_exam == check_mark
                 break
                   end
                 position = position+1;
@@ -204,11 +236,22 @@
     <% end %>
     </tr>
     </thead>
-    </table>  
+    </table> 
+  <% end %>    
 
 <% else %>
   <% total_marks_attained = 0 %>
   <% total_max_marks = 0 %>
+  <% allhide = true  %>
+  <% allcss = "style='display:none'" %>
+  <% exam_score.each do |es| %>
+      <% 
+      if !es.exam.subject.no_exams
+        allhide = false
+        allcss = ""
+      end  
+      %>
+  <% end %>   
   <div id="score-table">
     <div class="custom_header f5">
       <span class="student"><%= "#{@student.full_name} - #{@student.admission_no}" %></span>
@@ -217,42 +260,65 @@
       <tr class="tr-head">
         <td><%= t('subject') %></td>
         <% if @exam_group.exam_type == 'Marks' %>
-          <td><%= t('marks_obtained') %></td>
-          <td><%= t('max') %></td>
-          <td><%= t('percentage') %>(%)</td>
+        <td <%= allcss %>><%= t('marks_obtained') %></td>
+          <td <%= allcss %>><%= t('max') %></td>
+          <td><%= t('remarks') %></td>
+          <td <%= allcss %>><%= t('percentage') %>(%)</td>
         <% elsif @exam_group.exam_type == 'Grades' %>
-          <td><%= t('grades') %></td>
+          <td <%= allcss %>><%= t('grades') %></td>
         <% else %>
-          <td><%= t('marks_obtained') %></td>
-          <td><%= t('max') %></td>
-          <td><%= t('grades') %></td>
-          <td><%= t('percentage') %>(%)</td>
+          <td <%= allcss %>><%= t('marks_obtained') %></td>
+          <td <%= allcss %>><%= t('max') %></td>
+          <td <%= allcss %>><%= t('grades') %></td>
+          <td><%= t('remarks') %></td>
+          <td <%= allcss %>><%= t('percentage') %>(%)</td>
         <% end %>
       </tr>
+     
       <% exam_score.each do |es| %>
+         <%
+            extra_colspan = ""
+            css = ""
+            add_mark = true
+            if es.exam.subject.no_exams
+              css = "style='display:none'"
+              extra_colspan = "colspan = '10'"
+              add_mark = false
+            end
+         %>
         <tr class="tr-<%= cycle('odd', 'even') %>">
-          <td class="col-1"> <%= es.exam.subject.name %></td>
+            <td class="col-1" > <%= es.exam.subject.name %></td>
           <% if @exam_group.exam_type == 'Marks' %>
-            <td class="col-1"><%= es.marks || '-' %></td>
+            <td class="col-1" <%=css%>><%= es.marks || '-' %></td>
+            <% if add_mark %>
             <% total_marks_attained = total_marks_attained+(es.marks || 0) %>
-            <td class="col-1"><%= es.exam.maximum_marks %></td>
+            <% end %>
+            <td class="col-1" <%=css%>><%= es.exam.maximum_marks %></td>
+            <% if add_mark %>
             <% total_max_marks = total_max_marks+es.exam.maximum_marks%>
-            <td class="col-1"><%= es.calculate_percentage.round(2) %></td>
+            <% end %>
+            <td class="col-1" <%= extra_colspan %> ><%= es.remarks %></td>
+            <td class="col-1" <%=css%>><%= es.calculate_percentage.round(2) %></td>
           <% elsif @exam_group.exam_type == 'Grades' %>
             <td class="col-1"><%= es.grading_level || "-" %></td>
           <% else %>
-            <td class="col-1"><%= es.marks || "-" %></td>
+            <td class="col-1" <%=css%>><%= es.marks || "-" %></td>
+            <% if add_mark %>
             <% total_marks_attained = total_marks_attained+(es.marks || 0) %>
-            <td class="col-1"><%= es.exam.maximum_marks %></td>
+            <% end %>
+            <td class="col-1" <%=css%>><%= es.exam.maximum_marks %></td>
+            <% if add_mark %>
             <% total_max_marks = total_max_marks+es.exam.maximum_marks%>
-            <td class="col-1"><%= es.grading_level || "-" %></td>
-            <td class="col-1"><%= es.calculate_percentage.round(2) %></td>
+            <% end %>
+            <td class="col-1" <%=css%>><%= es.grading_level || "-" %></td>
+            <td class="col-1" <%= extra_colspan %>><%= es.remarks %></td>
+            <td class="col-1" <%=css%>><%= es.calculate_percentage.round(2) %></td>
           <% end %>
         </tr>
       <% end %>
 
-      <% if @exam_group.exam_type == 'Marks' or @exam_group.exam_type == 'MarksAndGrades' %>
-        <tr class="tr-head">
+      <% if (@exam_group.exam_type == 'Marks' or @exam_group.exam_type == 'MarksAndGrades') and allhide==false  %>
+        <tr class="tr-head" >
           <td><%= t('total_marks') %>:</td>
           <td><%= total_marks_attained %></td><td><%= total_max_marks %></td>
           <%  if @exam_group.exam_type == 'MarksAndGrades' %>
@@ -263,8 +329,8 @@
       <% end %>
     </table>
 
-    <% if @exam_group.exam_type == 'Marks' or @exam_group.exam_type == 'MarksAndGrades' %>
-      <div class="custom_header f2">
+    <% if (@exam_group.exam_type == 'Marks' or @exam_group.exam_type == 'MarksAndGrades') and allhide==false %>
+      <div class="custom_header f2" style="display:none;" >
         <%= t('class_average_marks') %> : <%= "%.2f" %@exam_group.batch_average_marks('marks') unless total_max_marks == 0%> | <%= t('class_average') %> % : <%=  "%.2f" %(@exam_group.batch_average_marks('marks')*100/total_max_marks) unless total_max_marks == 0 %>
       </div>
     <% end %>
@@ -272,7 +338,7 @@
 <% end %>
 
 <% unless @batch.gpa_enabled? %>
-  <% if @exam_group.exam_type == 'Marks' or @exam_group.exam_type == 'MarksAndGrades' %>
+  <% if (@exam_group.exam_type == 'Marks' or @exam_group.exam_type == 'MarksAndGrades') and allhide==false %>
     <script type="text/javascript" src="/javascripts/swfobject.js"></script>
     <%= @graph %>
   <% end %>

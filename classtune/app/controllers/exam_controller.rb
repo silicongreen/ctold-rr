@@ -110,10 +110,10 @@ class ExamController < ApplicationController
         batch_name_tmp = @is_batch_exam ? nil : @batch_name
         @batches = @course.find_batches_data(batch_name_tmp, @course.course_name);
         
-        @normal_subjects = Subject.find(:all, :conditions=> ["no_exams = false AND elective_group_id IS NULL AND is_deleted = false and batch_id IN (?)", @batches], :group => "name")
+        @normal_subjects = Subject.find(:all, :conditions=> ["elective_group_id IS NULL AND is_deleted = false and batch_id IN (?)", @batches], :group => "name")
         @elective_subjects = []
         
-        elective_subjects = Subject.find(:all,:conditions=> ["no_exams = false AND elective_group_id IS NOT NULL AND is_deleted = false and batch_id IN (?)", @batches])
+        elective_subjects = Subject.find(:all,:conditions=> ["elective_group_id IS NOT NULL AND is_deleted = false and batch_id IN (?)", @batches])
         
         elective = []
         elective_subjects.each do |e|
@@ -128,9 +128,9 @@ class ExamController < ApplicationController
         end
         @all_subjects = @normal_subjects+@elective_subjects
       else  
-        @normal_subjects = Subject.find_all_by_batch_id(@batch.id,:conditions=>"no_exams = false AND elective_group_id IS NULL AND is_deleted = false")
+        @normal_subjects = Subject.find_all_by_batch_id(@batch.id,:conditions=>"elective_group_id IS NULL AND is_deleted = false")
         @elective_subjects = []
-        elective_subjects = Subject.find_all_by_batch_id(@batch.id,:conditions=>"no_exams = false AND elective_group_id IS NOT NULL AND is_deleted = false")
+        elective_subjects = Subject.find_all_by_batch_id(@batch.id,:conditions=>"elective_group_id IS NOT NULL AND is_deleted = false")
         elective_subjects.each do |e|
           is_assigned = StudentsSubject.find_all_by_subject_id(e.id)
           unless is_assigned.empty?
@@ -727,7 +727,7 @@ class ExamController < ApplicationController
         @exams.push exam unless exam.nil?
       end
       Reminder.update_all("is_read='1'",  ["rid = ? and rtype = ? and recipient= ?", params[:exam_group], 3,current_user.id])
-      @graph = open_flash_chart_object(770, 350,
+      @graph = open_flash_chart_object(700, 350,
         "/exam/graph_for_generated_report?batch=#{@student.batch.id}&examgroup=#{@exam_group.id}&student=#{@student.id}")
     else
       @exam_group = ExamGroup.find(params[:exam_group])
@@ -746,7 +746,7 @@ class ExamController < ApplicationController
         @exams.push exam unless exam.nil?
       end
       Reminder.update_all("is_read='1'",  ["rid = ? and rtype = ? and recipient= ?", params[:exam_group], 3,current_user.id])
-      @graph = open_flash_chart_object(770, 350,
+      @graph = open_flash_chart_object(700, 350,
         "/exam/graph_for_generated_report?batch=#{@student.batch.id}&examgroup=#{@exam_group.id}&student=#{@student.id}")
       if request.xhr?
         render(:update) do |page|
@@ -1907,7 +1907,7 @@ class ExamController < ApplicationController
   def previous_years_marks_overview
     @student = Student.find(params[:student])
     @all_batches = @student.all_batches
-    @graph = open_flash_chart_object(770, 350,
+    @graph = open_flash_chart_object(700, 350,
       "/exam/graph_for_previous_years_marks_overview?student=#{params[:student]}&graphtype=#{params[:graphtype]}")
     respond_to do |format|
       format.pdf { render :layout => false }
@@ -2132,7 +2132,7 @@ class ExamController < ApplicationController
     student = Student.find(params[:student])
     examgroup = ExamGroup.find(params[:examgroup])
     batch = student.batch
-    general_subjects = Subject.find_all_by_batch_id(batch.id, :conditions=>"elective_group_id IS NULL")
+    general_subjects = Subject.find_all_by_batch_id(batch.id, :conditions=>"elective_group_id IS NULL AND no_exams = 0")
     student_electives = StudentsSubject.find_all_by_student_id(student.id,:conditions=>"batch_id = #{batch.id}")
     elective_subjects = []
     student_electives.each do |elect|
@@ -2151,7 +2151,7 @@ class ExamController < ApplicationController
         maximum_mark= res.exam.maximum_marks
         res_percentage=res.marks.present?? (res.marks/maximum_mark)*100 : 0
         unless res.nil?
-          x_labels << truncate(s.code, :length => 8, :omission => '...')
+          x_labels << truncate(s.name, :length => 8, :omission => '...')
           data << res_percentage
           data2 << exam.class_average_marks
         end

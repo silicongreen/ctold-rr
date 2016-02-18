@@ -91,7 +91,13 @@ class Exam < ActiveRecord::Base
   private
   def update_exam_group_date
     group = self.exam_group
-    group.update_attribute(:exam_date, self.start_time.to_date) if !group.exam_date.nil? and self.start_time.to_date < group.exam_date
+    if group.exam_date_edited==0 and self.start_time.to_date.to_s!="1979-01-01"
+      group.update_attribute(:exam_date, self.start_time.to_date)
+      group.update_attribute(:exam_date_edited, 1)
+      group.update_attribute(:only_comment_base, 0)
+    elsif self.start_time.to_date.to_s!="1979-01-01"
+      group.update_attribute(:exam_date, self.start_time.to_date) if !group.exam_date.nil? and self.start_time.to_date < group.exam_date
+    end
   end
 
   def create_exam_event

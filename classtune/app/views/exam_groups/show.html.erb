@@ -159,10 +159,11 @@
         <%# @exam_group.exams.each do |exam| %>
         <% @exams.each do |exam| %>
         <% @exam = exam %>
+         <% no_exam = @exam.subject.no_exams %>
           <% if @employee_subjects.include?(exam.subject.id) or @current_user.admin? or @user_privileges.map{|p| p.name}.include?('ExaminationControl') or @user_privileges.map{|p| p.name}.include?('EnterResults') %>
             <tr class="tr-<%= cycle('odd', 'even') %>">
               <% @exam = exam %>
-              <td class="col-2">
+              <td class="col-2"  <% if no_exam %> colspan="6" <% end %>>
                 <% s_message = "" %>
                 <% if @is_class_exam %>
                   <% s_message = exam.subject.other_batches( @batches, false ) %>
@@ -174,12 +175,18 @@
                   <%= s_message %>
                 <% end %>  
               </td>
-              <td class="col-2"><%= I18n.l(exam.end_time.to_date,:format =>:long) %></td>
-              <td class="col-1"><%= I18n.l(exam.start_time,:format=>"%I:%M %p") %></td>
-              <td class="col-1"><%= I18n.l(exam.end_time,:format=>"%I:%M %p") %></td>
+               <% 
+                styletext = ""
+                if no_exam  
+                  styletext = "style='display:none;'" 
+                end 
+              %>
+              <td class="col-2" <%= styletext %> ><%= I18n.l(exam.end_time.to_date,:format =>:long) %></td>
+              <td class="col-1" <%= styletext %> ><%= I18n.l(exam.start_time,:format=>"%I:%M %p") %></td>
+              <td class="col-1" <%= styletext %> ><%= I18n.l(exam.end_time,:format=>"%I:%M %p") %></td>
 
               <% if permitted_to? :edit, :exams %>
-                <td class="col-1">
+                <td class="col-1" <%= styletext %> >
                   <div id="<%= "exam_maximum_marks_#{@exam.id}_edit" %>" class="mark">
                     <% if @is_class_exam %> 
                       <% if @is_batch_exam %>
@@ -192,7 +199,7 @@
                     <% end %>  
                   </div>
                 </td>
-                <td class="col-1">
+                <td class="col-1" <%= styletext %> >
                   <div id=<%= "exam_minimum_marks_#{@exam.id}_edit" %>>
                     <% if @is_class_exam %>   
                       <% if @is_batch_exam %>

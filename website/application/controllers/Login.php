@@ -14,7 +14,7 @@ class Login extends CI_Controller {
 
         $data['error'] = "";
         if ($this->form_validation->run() == FALSE) {
-            $this->load_view_headless('login', $data);
+            $this->load_view_headless('loginiframe', $data);
         } else {
             $username = $this->input->post("username");
             $password = $this->input->post("password");
@@ -40,16 +40,16 @@ class Login extends CI_Controller {
                         $this->redirect_parent_url($url);
                     } else {
                         $data['error'] = "Wrong Username or Password";
-                        $this->load_view_headless('login', $data);
+                        $this->load_view_headless('loginiframe', $data);
                     }
                 } else {
                     $data['error'] = "Wrong Username or Password";
-                    $this->load_view_headless('login', $data);
+                    $this->load_view_headless('loginiframe', $data);
                 }
             } else {
 
                 $data['error'] = "Wrong Username or Password";
-                $this->load_view_headless('login', $data);
+                $this->load_view_headless('loginiframe', $data);
             }
 
             $this->db->set_dbprefix('');

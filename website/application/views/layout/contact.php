@@ -6,15 +6,32 @@
          <span class="legend"></span>
         </div>
         <div class="row" style="width:500px;margin:0px auto;">
+            <input type="text" name="name" id="name" placeholder="Name">
+        </div>
+		<div class="row" style="width:500px;margin:0px auto;">
             <div style="float:left;width:47%;">
-                <input type="text" name="name" id="name" placeholder="Name">
+                <input type="text" name="email" id="email" placeholder="Email">
             </div>
             <div style="float:right;width:47%;">
-                <input type="text" name="email" id="email" placeholder="Email">
+                <input type="text" name="phone" id="phone" placeholder="Phone">
             </div>
         </div>
         <div class="row" style="width:500px;margin:0px auto;">
             <input type="text" name="subject" id="subject" placeholder="Subject">
+        </div>
+		<div class="row" style="width:500px;margin:0px auto;">
+            <div style="float:left;width:47%;">
+                <select name="user_type">
+					<option value="Admin">I am Admin<option>
+					<option value="Teacher">I am Teacher<option>
+					<option value="Student">I am Student<option>
+					<option value="Parent">I am Parent<option>
+					<option value="Visiter">I am Visiter<option>
+                </select>
+            </div>
+            <div style="float:right;width:47%;">
+                <input type="text" name="school_name" id="school_name" placeholder="School Name">
+            </div>
         </div>
         <div class="row" style="width:500px;margin:0px auto;">
             <textarea row="5" name="massage" id="massage"></textarea>

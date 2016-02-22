@@ -27,9 +27,19 @@ $(document).on('click', '#contact_classtune input#sub', function (e) {
         $("#contact_classtune span.legend").html("<div class='alert alert-danger'>Invalid <strong>Email</strong> Address</div>");
         $("#contact_classtune span.legend .error").show("slow");
     }
+	else if ($("#contact_classtune #phone").val() == "")
+    {
+        $("#contact_classtune span.legend").html("<div class='alert alert-danger'><strong>Phone Number</strong> can't be empty</div>");
+        $("#contact_classtune span.legend .error").show("slow");
+    }
     else if ($("#contact_classtune #subject").val() == "")
     {
         $("#contact_classtune span.legend").html("<div class='alert alert-danger'><strong>Subject</strong> can't be empty</div>");
+        $("#contact_classtune span.legend .error").show("slow");
+    }
+	else if ($("#contact_classtune #school_name").val() == "")
+    {
+        $("#contact_classtune span.legend").html("<div class='alert alert-danger'><strong>School Name</strong> can't be empty</div>");
         $("#contact_classtune span.legend .error").show("slow");
     }
     else if ($("#contact_classtune #massage").val() == "")

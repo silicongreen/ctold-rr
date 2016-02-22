@@ -45,12 +45,18 @@ class Landing extends CI_Controller {
                 $to = 'info@classtune.com';
                 $name = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
                 $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+                $phone = filter_var($_POST['phone'], FILTER_SANITIZE_EMAIL);
+                $user_type = filter_var($_POST['user_type'], FILTER_SANITIZE_EMAIL);
+                $school_name = filter_var($_POST['school_name'], FILTER_SANITIZE_EMAIL);
                 $subject = filter_var($_POST['subject'], FILTER_SANITIZE_STRING);
                 $message_content = filter_var($_POST['massage'], FILTER_SANITIZE_STRING);
 
                 $subject = $subject. "(Classtune contact)";
 
                 $message = "Name: " . $name . "<br/>";
+                $message .= "User Type: " . $user_type . "<br/>";
+                $message .= "School Name: " . $school_name . "<br/>";
+                $message .= "Phone: " . $phone . "<br/>";
                 $message .= "E-mail: " . $email . "<br/>";
                 $message .= "Comment: " . $message_content . "<br/><br /><br />";
 

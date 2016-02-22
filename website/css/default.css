@@ -653,7 +653,7 @@ label {
     letter-spacing:2px;
 }
 
-input, textarea {
+input, textarea, select {
     width:100%;
     height:27px;
     background:#fff;

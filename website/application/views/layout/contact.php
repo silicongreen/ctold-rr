@@ -21,7 +21,7 @@
         </div>
 		<div class="row" style="width:500px;margin:0px auto;">
             <div style="float:left;width:47%;">
-                <select name="user_type">
+                <select name="user_type" id="user_type">
 					<option value="Admin">I am Admin</option>
 					<option value="Teacher">I am Teacher</option>
 					<option value="Student">I am Student</option>

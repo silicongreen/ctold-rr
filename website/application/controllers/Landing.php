@@ -56,7 +56,7 @@ class Landing extends CI_Controller {
                 $message = "Name: " . $name . "<br/>";
                 $message .= "User Type: " . $user_type . "<br/>";
                 $message .= "School Name: " . $school_name . "<br/>";
-                $message .= "Phone: " . $phone . "<br/>";
+                $message .= "Contact Number: " . $phone . "<br/>";
                 $message .= "E-mail: " . $email . "<br/>";
                 $message .= "Comment: " . $message_content . "<br/><br /><br />";
 
@@ -67,9 +67,12 @@ class Landing extends CI_Controller {
                     $auto_subject = "Greetings from Classtune team";
                     $auto_message = "Dear " . $name . ",<br /><br />";
                     $auto_message .= "Greetings from Classtune team." . "<br /><br />";
-                    $auto_message .= "Thank you very much for contacting with us. Our team will communicate with you within 48 hrs.  <br/><br />";
+                    $auto_message .= "Thank you very much for contacting with us. Our team will communicate with you.  <br/><br />";
                     $auto_message .= "Your Contact Details: <br/><br />";
                     $auto_message .= "Name: " . $name . "<br/>";
+                    $auto_message .= "User Type: " . $user_type . "<br/>";
+                    $auto_message .= "School Name: " . $school_name . "<br/>";
+                    $auto_message .= "Contact Number: " . $phone . "<br/>";
                     $auto_message .= "E-mail: " . $email . "<br/>";
                     $auto_message .= "Comment: " . $message_content . "<br/><br /><br />";
 
@@ -81,7 +84,7 @@ class Landing extends CI_Controller {
                     $sent2 = $this->autoreply_email($email, $to, $auto_name, $auto_subject, $auto_message);
                     if ($sent2)
                     {
-                        echo 'Message sent!Recently you will receive an email.';
+                        echo 'Message sent! Our team will communicate with you.';
                     }
                     else
                     {

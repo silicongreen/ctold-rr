@@ -131,7 +131,7 @@ class MeetingsController < ApplicationController
         reminder_need_admin_approval = Configuration.find_by_sql ["SELECT id, config_value FROM configurations WHERE config_key = ? AND school_id = ?", 'ReminderNeedAdminApproval', @current_user.school_id]
         
         forward = 0
-        if reminder_need_admin_approval[0]['config_value'].to_i == 0
+        if reminder_need_admin_approval.nil? or reminder_need_admin_approval[0]['config_value'].to_i == 0
           forward = 1
         end
         

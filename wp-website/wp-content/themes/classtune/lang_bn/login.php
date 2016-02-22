@@ -2,7 +2,7 @@
   wp_nonce_field("login_security","login_security_field");
 ?>
 <?php
-	$login = "লগইন";$username="ব্যবহারকারীর নাম *";$password="পাসওয়ার্ড *";$forgot_password="পাসওয়ার্ড ভুলে গেছেন ?";$already_signup="একটি ব্যবহারকারীর নাম আছে না?";$signup="রেজিস্ট্রেশন করুন";$teacher = "শিক্ষক";$parent = "অভিভাবক";$student = "শিক্ষার্থী";$sAdmin = "স্কুল অ্যাডমিন";
+	$login = "লগইন";$username="ব্যবহারকারীর নাম *";$password="পাসওয়ার্ড *";$forgot_password="পাসওয়ার্ড ভুলে গেছেন ?";$already_signup="আপনি কি নতুন ব্যবহারকারী?";$signup="রেজিস্ট্রেশন করুন";$teacher = "শিক্ষক";$parent = "অভিভাবক";$student = "শিক্ষার্থী";$sAdmin = "স্কুল অ্যাডমিন";
 ?>
 <li id="login_button_classune"><a style="color:#fff;text-decoration:none;" id="classtune_a"  href="javascript:void(0)"><span><?php echo $login;?></span></a>
     <div id="login_form_classune" class="col-md-3" style="overflow: hidden; width:23%;">

@@ -71,11 +71,11 @@
         </a>
     </div>
 </div>
-	<div id="ribbon">
+	<!--div id="ribbon">
 		<a style="display:block" target="_blank" href="http://www.bettshow.com/Exhibitor/ClassTune">
 		<img src="<?php echo base_url(); ?>images/bett_ribbon.png" class="ribbon" />
 		</a>
-	</div>
+	</div-->
 </div>
 
 

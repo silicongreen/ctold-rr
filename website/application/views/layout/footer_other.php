@@ -72,11 +72,11 @@
             <img src="<?php echo base_url(); ?>images/logo/classtune.png" alt="" title="" width="200" height="" />
         </a>
     </div>
-		<div id="ribbon">
+        <!--div id="ribbon">
 		<a style="display:block" target="_blank" href="http://www.bettshow.com/Exhibitor/ClassTune">
 		<img src="<?php echo base_url(); ?>images/bett_ribbon.png" class="ribbon" />
 		</a>
-	</div>
+	</div-->
 </div>
 
 <script type="text/javascript" src="<?php echo base_url(); ?>js/jquery_timers.js"></script>

@@ -294,8 +294,31 @@ class AssignmentsController < ApplicationController
     @assignment = Assignment.new(params[:assignment])
     @assignment.student_list = student_ids.join(",") unless student_ids.nil?
     @assignment.employee = current_user.employee_record
+    
     students = Student.find_all_by_id(student_ids)
-    available_user_ids = students.collect(&:user_id).compact unless student_ids.nil?
+    available_user_ids = []
+    batch_ids = {}
+    student_ids = {}
+
+    students.each do |st|
+      available_user_ids << st.user_id
+      batch_ids[st.user_id] = st.batch_id
+      student_ids[st.user_id] = st.id
+      @student = Student.find(st.id)
+      unless @student.student_guardian.empty?
+          guardians = @student.student_guardian
+          guardians.each do |guardian|
+#            guardian = Guardian.find(@student.immediate_contact_id)
+
+            unless guardian.user_id.nil?
+              available_user_ids << guardian.user_id
+              batch_ids[guardian.user_id] = @student.batch_id
+              student_ids[guardian.user_id] = @student.id
+            end
+          end  
+      end
+    end
+    #available_user_ids = students.collect(&:user_id).compact unless student_ids.nil?
     unless @subject.nil?
       if @assignment.save
         if @assignment.is_published==1
@@ -305,6 +328,8 @@ class AssignmentsController < ApplicationController
               :subject=>"#{t('new_homework_added')} : "+params[:assignment][:title],
               :rtype=>4,
               :rid=>@assignment.id,
+              :student_id => student_ids,
+              :batch_id => batch_ids,
               :body=>"#{t('homework_added_for')} #{@subject.name}  <br/>#{t('view_reports_homework')}")
           )
         end
@@ -398,13 +423,37 @@ class AssignmentsController < ApplicationController
         @subject = Subject.find_by_id(@assignment.subject_id)
         student_ids = a_student.split(',')
         students = Student.find_all_by_id(student_ids)
-        available_user_ids = students.collect(&:user_id).compact unless student_ids.nil?
+        available_user_ids = []
+        batch_ids = {}
+        student_ids = {}
+
+        students.each do |st|
+          available_user_ids << st.user_id
+          batch_ids[st.user_id] = st.batch_id
+          student_ids[st.user_id] = st.id
+          @student = Student.find(st.id)
+          unless @student.student_guardian.empty?
+              guardians = @student.student_guardian
+              guardians.each do |guardian|
+    #            guardian = Guardian.find(@student.immediate_contact_id)
+
+                unless guardian.user_id.nil?
+                  available_user_ids << guardian.user_id
+                  batch_ids[guardian.user_id] = @student.batch_id
+                  student_ids[guardian.user_id] = @student.id
+                end
+              end  
+          end
+        end
+        #available_user_ids = students.collect(&:user_id).compact unless student_ids.nil?
         Delayed::Job.enqueue(
             DelayedReminderJob.new( :sender_id  => current_user.id,
               :recipient_ids => available_user_ids,
               :subject=>"#{t('new_homework_added')} : "+@assignment.title,
               :rtype=>4,
               :rid=>@assignment.id,
+              :student_id => student_ids,
+              :batch_id => batch_ids,
               :body=>"#{t('homework_added_for')} #{@subject.name}  <br/>#{t('view_reports_homework')}")
           )
       end

@@ -11,6 +11,10 @@ function validateEmail(email) {
 }
 $(document).on('click', '#contact_classtune input#sub', function (e) {
     e.preventDefault();
+	
+	var isSubjectTextDisabled = $("#subject_text").is(':disabled');
+	var isSchoolNameDisabled = $("#school_name").is(':disabled');
+
     if ($("#contact_classtune #name").val() == "")
     {
 
@@ -32,15 +36,21 @@ $(document).on('click', '#contact_classtune input#sub', function (e) {
         $("#contact_classtune span.legend").html("<div class='alert alert-danger'><strong>Phone Number</strong> can't be empty</div>");
         $("#contact_classtune span.legend .error").show("slow");
     }
-    else if ($("#contact_classtune #subject").val() == "")
+	else if($('#contact_classtune #subject_type option:selected').val() == "")
+	{
+		$("#contact_classtune span.legend").html("<div class='alert alert-danger'>Select a <strong>Subject</strong></div>");
+		$("#contact_classtune span.legend .error").show("slow");
+	}
+    else if (isSubjectTextDisabled == false && $("#contact_classtune #subject_text").val() == "")
     {
-        $("#contact_classtune span.legend").html("<div class='alert alert-danger'><strong>Subject</strong> can't be empty</div>");
-        $("#contact_classtune span.legend .error").show("slow");
-    }
-	else if ($("#contact_classtune #school_name").val() == "")
+		$("#contact_classtune span.legend").html("<div class='alert alert-danger'><strong>Subject</strong> can't be empty</div>");
+		$("#contact_classtune span.legend .error").show("slow");
+	}
+	else if(isSchoolNameDisabled == false && $("#contact_classtune #school_name").val() == "")
     {
-        $("#contact_classtune span.legend").html("<div class='alert alert-danger'><strong>School Name</strong> can't be empty</div>");
-        $("#contact_classtune span.legend .error").show("slow");
+		$("#contact_classtune span.legend").html("<div class='alert alert-danger'><strong>School Name</strong> can't be empty</div>");
+		$("#contact_classtune span.legend .error").show("slow");
+	
     }
     else if ($("#contact_classtune #massage").val() == "")
     {
@@ -49,24 +59,47 @@ $(document).on('click', '#contact_classtune input#sub', function (e) {
     }
     else
     {
-        $("#contact_classtune span.legend").html("<div class='alert alert-info'><strong>Sending......</strong></div>");
-        $.post("/landing/send_mail", {name: $("#contact_classtune #name").val(), email: $("#contact_classtune #email").val(),phone: $("#contact_classtune #phone").val(),school_name: $("#contact_classtune #school_name").val(),user_type: $('#contact_classtune #user_type option:selected').val(),
-        subject: $("#contact_classtune #subject").val(), massage: $("#contact_classtune #massage").val()})
-                .done(function (data) {
-                        if(data =="0")
-                        {
-                            $("#contact_classtune span.legend").html("<div class='alert alert-danger'><strong>Massage</strong> can't sent at the moment</div>");
-                        }
-                        else if(data =="1")
-                        {
-                            $("#contact_classtune span.legend").html("<div class='alert alert-danger'><strong>All</strong> the information is required</div>");
-                        } 
-                        else
-                        {
-                            $("#contact_classtune span.legend").html("<div class='alert alert-success'><strong>"+data+"</strong></div>");
-                        }
-                    }
-                );
+        var subject_type = $('#contact_classtune #subject_type option:selected').val();
+		var subject = "";
+		if(subject_type == "A")
+			subject = "New Account";
+		else if(subject_type == "B")
+			subject = "Inquiry";
+		else if(subject_type == "C")
+			subject = "Complaint";
+		else if(subject_type == "D")
+			subject = "Suggestion";
+		else if(subject_type == "E")
+			subject = $("#contact_classtune #subject_text").val();
+			
+		
+		$("#contact_classtune span.legend").html("<div class='alert alert-info'><strong>Sending......</strong></div>");
+        $.post("/landing/send_mail", 
+		{	
+			name: $("#contact_classtune #name").val(), 
+			email: $("#contact_classtune #email").val(),
+			phone: $("#contact_classtune #phone").val(),			
+			subject: subject, 
+			user_type: $('#contact_classtune #user_type option:selected').val(),
+			school_name: $("#contact_classtune #school_name").val(),			
+			massage: $("#contact_classtune #massage").val()
+		})
+		.done(function (data) {
+				if(data =="0")
+				{
+					$("#contact_classtune span.legend").html("<div class='alert alert-danger'><strong>Massage</strong> can't sent at the moment</div>");
+				}
+				else if(data =="1")
+				{
+					$("#contact_classtune span.legend").html("<div class='alert alert-danger'><strong>All</strong> the information is required</div>");
+				} 
+				else
+				{
+					$("#contact_classtune span.legend").html("<div class='alert alert-success'><strong>"+data+"</strong></div>");
+					$("#contact_classtune").find("input[type=text], select, textarea").val("");
+				}
+			}
+		);
     }
 });
 

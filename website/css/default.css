@@ -666,7 +666,10 @@ input, textarea, select {
     font-size:12px;
     color:#3a3a3a;
 }
-
+option
+{
+	padding: 0px 10px;
+}
 input:focus, textarea:focus {
     border:1px solid #97d6eb;
 }

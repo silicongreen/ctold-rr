@@ -53,7 +53,8 @@ class Landing extends CI_Controller {
 
                 $subject = $subject. "(Classtune contact)";
 
-                $message = "Name: " . $name . "<br/>";
+                $message = "<b>Subject: " . $subject . "</b><br/>";
+                $message .= "Name: " . $name . "<br/>";
                 $message .= "User Type: " . $user_type . "<br/>";
                 $message .= "School Name: " . $school_name . "<br/>";
                 $message .= "Contact Number: " . $phone . "<br/>";

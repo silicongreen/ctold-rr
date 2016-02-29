@@ -14,7 +14,11 @@
    
     <tr>
         <td>
-          <%= I18n.l(exam_group.exam_date.to_time,:format=>:normal) unless exam_group.exam_date.nil? %>
+           <%  if exam_group.only_comment_base %>
+              <%= I18n.l(exam_group.exam_date.to_time,:format=>:normal) unless exam_group.exam_date.nil? %>
+           <% else %>
+            N/A
+           <% end %> 
         </td> 
         <td>
           <div class="left-dev"><span><%= exam_group.name %></span></div>

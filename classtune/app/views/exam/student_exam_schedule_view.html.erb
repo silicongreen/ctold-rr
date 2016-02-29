@@ -102,21 +102,21 @@
           </tr>
         </thead>
         <% @exam_group.exams.each do |exam| %>
-        <% no_exams = exam.subject.no_exams.to_i %>
+        <% no_exams = exam.subject.no_exams %>
           <% @exam = exam %>          
             <tr class="tr-<%= cycle('odd', 'even') %>">
               <% @exam = exam %>
               <td class="col-2"><center><img src="/images/icons/subjects/<%= exam.subject.icon_number %>" width="60" alt="<%= exam.subject.name %>" /></center></td>
               <td class="col-2"><%= exam.subject.name %></td>
               <td class="col-2">
-              <% if no_exams==0 %>
+              <% if !no_exams %>
                 <%= I18n.l(exam.end_time.to_date,:format =>:long) %>
               <% else %>
                   N/A
               <% end %>    
               </td>
               <td class="col-1">
-              <% if no_exams==0 %>
+              <% if !no_exams %>
                 <%= I18n.l(exam.start_time,:format=>"%I:%M %p") %> - <%= I18n.l(exam.end_time,:format=>"%I:%M %p") %>
               <% else %>
                   N/A

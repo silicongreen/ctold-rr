@@ -50,6 +50,11 @@ website/swf
 website/system/
 website/d21_session/
 wp-website/wp-config.php
+<<<<<<< HEAD
 classtune/config/database.yml
 classtune/config/app.yml
+=======
+classtune/config/app.yml
+classtune/config/database.yml
+>>>>>>> removing files from version control
 classtune/tmp/delayed_job.pid

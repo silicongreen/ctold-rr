@@ -948,7 +948,7 @@ class StudentController < ApplicationController
 
   def destroy
     student = Student.find(params[:id])
-    unless student.check_dependency
+    #unless student.check_dependency
       unless student.all_siblings.present?
         student.guardians.each do|guardian|
           
@@ -982,10 +982,10 @@ class StudentController < ApplicationController
       dec_student_count_subscription
       flash[:notice] = "#{t('flash10')}. #{student.admission_no}."
       redirect_to :controller => 'user', :action => 'dashboard'
-    else
-      flash[:warn_notice] = "#{t('flash15')}"
-      redirect_to  :action => 'remove', :id=>student.id
-    end
+    #else
+      #flash[:warn_notice] = "#{t('flash15')}"
+      #redirect_to  :action => 'remove', :id=>student.id
+    #end
   end
   
   def edit_inactive_student

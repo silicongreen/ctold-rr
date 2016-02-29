@@ -1,3 +1,0 @@
-champs21:
- from: "remote"
- api_url: "http://api.champs21.com/"

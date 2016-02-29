@@ -102,7 +102,7 @@
           </tr>
         </thead>
         <% @exam_group.exams.each do |exam| %>
-        <% no_exams = exam.subject.no_exams %>
+        <% no_exams = exam.subject.no_exams.to_i %>
           <% @exam = exam %>          
             <tr class="tr-<%= cycle('odd', 'even') %>">
               <% @exam = exam %>

@@ -2426,7 +2426,7 @@ class ExamController < ApplicationController
     
     
     batch = student.batch
-    general_subjects = Subject.find_all_by_batch_id(batch.id, :conditions=>"elective_group_id IS NULL")
+    general_subjects = Subject.find_all_by_batch_id(batch.id, :conditions=>"no_exams = 0 and elective_group_id IS NULL")
     student_electives = StudentsSubject.find_all_by_student_id(student.id,:conditions=>"batch_id = #{batch.id}")
     elective_subjects = []
     student_electives.each do |elect|

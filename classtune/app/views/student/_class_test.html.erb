@@ -23,7 +23,7 @@
                 <% unless class_test_data['subject_exam']['class_test'].nil? or class_test_data['subject_exam']['class_test'].empty?  %>
                   <% class_test_data['subject_exam']['class_test'].each_with_index do |class_result,k| %>
                     <div class="single_exam_result single_exam_result_<%= j %>" <% if k>0 %> style="display:none;" <% end %> id="single_exam_<%= j %>_<%= k %>">
-                        <% if !no_exams %>
+                        <% if no_exams==0 %>
                         <div class="timetable_right_exam_name">
                           <div class="subcontent-info">
 

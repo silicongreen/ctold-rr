@@ -16,11 +16,13 @@
                 <% end %>
 
               </div>
+              <% no_exams = class_test_data['no_exams']  %>
               <div class="all_exam_and_project" >
                 
                 <% unless class_test_data['subject_exam']['class_test'].nil? or class_test_data['subject_exam']['class_test'].empty?  %>
                   <% class_test_data['subject_exam']['class_test'].each_with_index do |class_result,k| %>
                     <div class="single_exam_result single_exam_result_<%= j %>" <% if k>0 %> style="display:none;" <% end %> id="single_exam_<%= j %>_<%= k %>">
+                        <% if !no_exams %>
                         <div class="timetable_right_exam_name">
                           <div class="subcontent-info">
 
@@ -58,7 +60,12 @@
                         </div>
                         <div class="timetable_right"  style="float:left;width:15%; margin-left:20px; padding:10px 15px;">
                             <h2 class="percent-value"><%= class_result['your_percent'] %> %</h2>
-                        </div>  
+                        </div>
+                        <% else %>
+                        <div style="float: left;width: 100%;">
+                            <%= class_result['remark'] %>
+                        </div>    
+                        <% end %>
                      </div>
                   <% end %>
                 <% else %>
@@ -70,6 +77,7 @@
                 <% unless class_test_data['subject_exam']['project'].nil? or class_test_data['subject_exam']['project'].empty?  %>
                   <% class_test_data['subject_exam']['project'].each_with_index do |class_result,k| %>
                     <div class="single_exam_result single_project_result_<%= j %>" style="display:none;" >
+                        <% if !no_exams %>
                         <div class="timetable_right_exam_name">
                           <div class="subcontent-info">
 
@@ -105,6 +113,11 @@
                         <div class="timetable_right"  style="float:left;width:15%; margin-left:20px; padding:10px 15px;">
                             <h2 class="percent-value"><%= class_result['your_percent'] %> %</h2>
                         </div>  
+                        <% else %>
+                        <div style="float: left;width: 100%;">
+                            <%= class_result['remark'] %>
+                        </div>    
+                        <% end %>
                      </div>
                   <% end %>
                 <% else %>

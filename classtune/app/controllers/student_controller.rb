@@ -3027,7 +3027,7 @@ class StudentController < ApplicationController
       homework_uri = URI(api_endpoint + "api/report/classtestreport")
       http = Net::HTTP.new(homework_uri.host, homework_uri.port)
       homework_req = Net::HTTP::Post.new(homework_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })
-      homework_req.set_form_data({"exam_group" =>params[:exam_group],"call_from_web"=>1,"user_secret" => session[:api_info][0]['user_secret']})
+      homework_req.set_form_data({"exam_group" =>params[:exam_group],"call_from_web"=>1,"no_exams"=>1,"user_secret" => session[:api_info][0]['user_secret']})
 
       homework_res = http.request(homework_req)
       @class_test_report_data = JSON::parse(homework_res.body)
@@ -3038,7 +3038,7 @@ class StudentController < ApplicationController
       homework_uri = URI(api_endpoint + "api/report/classtestreport")
       http = Net::HTTP.new(homework_uri.host, homework_uri.port)
       homework_req = Net::HTTP::Post.new(homework_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })
-      homework_req.set_form_data({"exam_group" =>params[:exam_group],"batch_id"=>student.batch_id,"student_id"=>student.id,"call_from_web"=>1,"user_secret" => session[:api_info][0]['user_secret']})
+      homework_req.set_form_data({"exam_group" =>params[:exam_group],"batch_id"=>student.batch_id,"no_exams"=>1,"student_id"=>student.id,"call_from_web"=>1,"user_secret" => session[:api_info][0]['user_secret']})
 
       homework_res = http.request(homework_req)
       @class_test_report_data = JSON::parse(homework_res.body)

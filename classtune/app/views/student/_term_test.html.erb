@@ -14,10 +14,10 @@
    
     <tr>
         <td>
-           <% if !exam_group.only_comment_base %>
+           <% if exam_group.only_comment_base!=1 %>
               <%= I18n.l(exam_group.exam_date.to_time,:format=>:normal) unless exam_group.exam_date.nil? %>
            <% else %>
-            N/A
+              N/A
            <% end %> 
         </td> 
         <td>

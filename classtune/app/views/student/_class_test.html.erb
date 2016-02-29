@@ -17,7 +17,7 @@
 
               </div>
               <% no_exams = class_test_data['no_exams'].to_i  %>
-              <%= no_exams %>
+          
               <div class="all_exam_and_project" >
                 
                 <% unless class_test_data['subject_exam']['class_test'].nil? or class_test_data['subject_exam']['class_test'].empty?  %>
@@ -63,7 +63,7 @@
                             <h2 class="percent-value"><%= class_result['your_percent'] %> %</h2>
                         </div>
                         <% else %>
-                        <div style="float: left;width: 100%;">
+                        <div style="float: left;width: 100%; padding:10px;">
                             <%= class_result['remark'] %>
                         </div>    
                         <% end %>
@@ -78,7 +78,7 @@
                 <% unless class_test_data['subject_exam']['project'].nil? or class_test_data['subject_exam']['project'].empty?  %>
                   <% class_test_data['subject_exam']['project'].each_with_index do |class_result,k| %>
                     <div class="single_exam_result single_project_result_<%= j %>" style="display:none;" >
-                        <% if !no_exams %>
+                         <% if no_exams!=1 %>
                         <div class="timetable_right_exam_name">
                           <div class="subcontent-info">
 
@@ -115,7 +115,7 @@
                             <h2 class="percent-value"><%= class_result['your_percent'] %> %</h2>
                         </div>  
                         <% else %>
-                        <div style="float: left;width: 100%;">
+                        <div style="float: left;width: 100%; padding:10px;">
                             <%= class_result['remark'] %>
                         </div>    
                         <% end %>

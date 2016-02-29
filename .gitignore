@@ -50,6 +50,6 @@ website/swf
 website/system/
 website/d21_session/
 wp-website/wp-config.php
-classtune/config/app.yml
 classtune/config/database.yml
+classtune/config/app.yml
 classtune/tmp/delayed_job.pid

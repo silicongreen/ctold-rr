@@ -83,7 +83,12 @@
               <% unless @exam_group.exam_type == 'Grades' %>
                 <td class="col-1"  <%=styletext%>><div class="label-field-pair">
                     <div class="text-input-bg">
-                      <%= text_field_tag "exam[#{student.id}][marks]", @exam_score.marks,:value=>markexam, :size => '4', :class=>"marks-box" %></div></div></td>
+                        <% if markexam==100 %>
+                          <%= text_field_tag "exam[#{student.id}][marks]", @exam_score.marks,:value=>markexam, :size => '4', :class=>"marks-box" %>
+                        <% else %>
+                          <%= text_field_tag "exam[#{student.id}][marks]", @exam_score.marks, :size => '4', :class=>"marks-box" %>
+                        <% end %>
+                    </div></div></td>
               <% else %>
                 <td class="col-2"  <%=styletext%>><div class="label-field-pair">
                     <div class="text-input-bg"><%= select "exam[#{student.id}]", "grading_level_id", @grades.map {|g| [g.name, g.id] },

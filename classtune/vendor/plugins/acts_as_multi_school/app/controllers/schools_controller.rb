@@ -581,11 +581,11 @@ guardians as g left join tds_free_users as fu on g.user_id=fu.paid_id left join 
           else
             guardian_data.each_with_index do |glist,i|
               gPhone = ""
-              if glist['office_phone1'] != ""
+              if !glist['office_phone1'].blank?
                 gPhone = gPhone + glist['office_phone1']
               end
-              if glist['mobile_phone'] != ""
-                if glist['office_phone1'] != ""
+              if !glist['mobile_phone'].blank?
+                if !glist['office_phone1'].blank?
                   gPhone = gPhone + " | " + glist['mobile_phone']
                 else  
                   gPhone = gPhone + glist['mobile_phone']

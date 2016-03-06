@@ -315,7 +315,27 @@ class SchoolsController <  MultiSchoolController
       format.xml  { render :xml => @schools }
     end
   end
+  
+  def test_schools  
+    
+    @schools = admin_user_session.school_group.schools.active.is_test_school.paginate(:order=>"name ASC",:page => params[:page], :per_page=>10)
 
+    respond_to do |format|
+      format.html # test_schools.erb
+      format.xml  { render :xml => @schools }
+    end
+  end
+  
+  def running_schools  
+   
+    @schools = admin_user_session.school_group.schools.active.is_running_school.paginate(:order=>"name ASC",:page => params[:page], :per_page=>10)
+
+    respond_to do |format|
+      format.html # running_schools.erb
+      format.xml  { render :xml => @schools }
+    end
+  end
+  
   def search
     schools =  School.find(:all,:conditions=>["((schools.name LIKE ? OR schools.code LIKE ?) AND schools.school_group_id = ? AND schools.is_deleted = ?)","#{params[:query]}%","#{params[:query]}%",admin_user_session.school_group.id,false])
 
@@ -358,7 +378,7 @@ class SchoolsController <  MultiSchoolController
     @student_code = StudentActivationCode.paginate(:conditions=>{:school_id=>@school.id}, :order=>"id DESC", :page => params[:page], :per_page => 10)
    
   end
-  
+
   def show_students_list
     @school = School.find(params[:id], :conditions=>{:is_deleted=>false})
     #sql = "SELECT sg.*

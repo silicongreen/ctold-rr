@@ -45,6 +45,8 @@
 
                         <div class="footerlink f5">
                             <ul>									
+                                <li><a href="mailto:info@classtune.com" style="color:#999;">Email : info@classtune.com</a></li>
+								<li style="color:#64B846;">|</li>
                                 <li><a href="<?php echo base_url(); ?>landing/terms" style="color:#999;">Terms</a></li>
                                 <li style="color:#64B846;">|</li>
                                 <li><a href="<?php echo base_url(); ?>landing/privacypolicy" style="color:#999;">Privacy Policy</a></li>

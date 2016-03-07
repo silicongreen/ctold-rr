@@ -52,7 +52,9 @@ switch ($lang) {
 
                     <div class="footerlink f5">
                         <ul>									
-                            <li><a href="<?php echo get_site_url().'/'.$lang; ?>/terms<?php echo "-".$lang;?>" style="color:#999;"><?php echo $term;?></a></li>
+                            <li><a href="mailto:info@classtune.com" style="color:#999;">Email : info@classtune.com</a></li>
+							<li style="color:#64B846;">|</li>
+							<li><a href="<?php echo get_site_url().'/'.$lang; ?>/terms<?php echo "-".$lang;?>" style="color:#999;"><?php echo $term;?></a></li>
                             <li style="color:#64B846;">|</li>
                             <li><a href="<?php echo get_site_url().'/'.$lang; ?>/privacypolicy<?php echo "-".$lang;?>" style="color:#999;"><?php echo $pp;?></a></li>
                             <li style="color:#64B846;">|</li>

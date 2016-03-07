@@ -254,7 +254,7 @@ $(document).ready(function () {
 	scrollpoints["cronend"]["pos"] = 8200;
 	scrollpoints["cronend"]["dir"] = 'left';
 	scrollpoints["images"] = [];
-	scrollpoints["images"]["pos"] = cronheight;
+	scrollpoints["images"]["pos"] = cronheight+500;
 	scrollpoints["images"]["dir"] = 'top';
 
 	function switchelements(dir) {

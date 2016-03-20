@@ -661,6 +661,7 @@ en: # locale
   monthly_payslip: "Monthly payslip"
   personal_details: "Personal Details"
   attendance_register: "Attendance Register"
+  attendance_intelligence: "Attendance Intelligence"
   attendance_report: "Attendance Report"
   approve_payslip: "Approve Payslip"
   view_all: "View all"

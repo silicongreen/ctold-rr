@@ -44,10 +44,14 @@ class StudentController < ApplicationController
   end
 
   def get_section_data
+    @batch_name = ""
+    @class_name = ""
     batch_id = 0
     unless params[:student].nil?
       unless params[:student][:batch_name].nil?
+        
         batch_id = params[:student][:batch_name]
+        
       end
     end
     
@@ -62,6 +66,8 @@ class StudentController < ApplicationController
       if batch_id.to_i > 0
         batch = Batch.find batch_id
         batch_name = batch.name
+        @batch_name = batch_name
+        
         
         batches = Batch.find(:all, :conditions => ["name = ? and is_active = 1 and is_deleted = 0", batch_name]).map{|b| b.course_id}
         tmp_class_data = Course.find(:all, :conditions => ["course_name LIKE ? and is_deleted = 0 and id IN (?)",params[:class_name], batches])
@@ -75,6 +81,12 @@ class StudentController < ApplicationController
     
     @batch_id = 0
     @courses = []
+    
+    @class_name = params[:class_name]
+    if batch_id.to_i > 0
+        batch = Batch.find batch_id
+        @batch_name = batch.name
+    end
     
     render :update do |page|
       
@@ -110,10 +122,12 @@ class StudentController < ApplicationController
   
   def get_classes
     school_id = MultiSchool.current_school.id
+    @batch_name = false
     @courses = Rails.cache.fetch("classes_data_#{params[:batch_id]}_#{school_id}"){
       unless params[:batch_id].empty?
         batch_data = Batch.find params[:batch_id]
         batch_name = batch_data.name
+        @batch_name = batch_name;
         batches = Batch.find(:all, :conditions => ["name = ? and is_deleted = 0", batch_name]).map{|b| b.course_id}
         tmp_classes = Course.find(:all, :conditions => ["id IN (?) and is_deleted = 0", batches], :group => "course_name", :select => "course_name", :order => "cast(replace(course_name, 'Class ', '') as SIGNED INTEGER) asc")
       else  
@@ -122,6 +136,7 @@ class StudentController < ApplicationController
       class_data = tmp_classes
       class_data
     }
+    
     @classes = []
     @batch_id = ''
     @course_name = ""

@@ -1,0 +1,169 @@
+
+
+<% form_for(@student, :url => {:action=> 'show'}, :html=> {:id=>'new_student'}) do |s| %>
+  <%= hidden_field_tag 'time_zone_date',@date_today, :id=>'time_zone' %>
+  <div id="page-yield"  style="margin-top:0px;">  
+      
+
+      <div class="row">
+        <div class="row_label">
+          <div>
+            <%= t('class_label') %>
+          </div>
+        </div>
+        <div class="row_data">
+          <div>
+            <div id="courses_attendances_batch" class="custom_drop_wrapper">
+              <%= select :student, :class_name, options_for_select(@courses.map {|c| [c.course_name]}, @course_name),
+{:prompt => "#{t('select')}"},
+{:onChange => "#{remote_function(:url => {:controller => "intelligence",:action => "get_att_report_class"}, :with => "$('new_student').serialize()" ,:before => "$('loader').show();",
+:success => "$('loader').hide();")}"} %>  
+                <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loader", :style =>"display: none;" ) %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" style="width:50%">
+          <div class="row_label" >
+            <div>
+              Select date
+            </div>
+          </div>
+          <div class="row_data">
+            <div>
+              <%= calendar_date_select_tag "select_date",@date_today, :readonly=> true,:onChange => "#{remote_function(:url => {:controller => "intelligence", :action => "get_att_report_class"},
+            :with => "$('new_student').serialize()",
+            :before => "$('loading_6').show();",
+            :success => "$('loading_6').hide();"  )}", :popup=>:force, :placeholder => '',:style=>'height:29px; float:left;' %>
+             <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_6", :style =>"display: none;" ) %>
+            </div>
+          </div>
+        </div>
+
+      
+      
+    
+
+
+  
+  <div id="att_report"></div>
+  
+  <div style="float:left; clear:both; margin-top:20px; width:100%;">
+      <div class="row">  
+        <div class="row_label">
+          <div>
+            Graph Type
+          </div>
+        </div>
+        <div class="row_data">
+          <div>
+            <div class="custom_drop_wrapper">
+             <%= select :student,:graph_type, options_for_select(['Day', 'Week', 'Month'], 1), 
+              {:prompt => "#{t('select')}"},
+              {:onChange => "#{remote_function(:url => {:controller => "intelligence", :action => "get_att_report_class"}, :with => "$('new_student').serialize()" ,:before => "$('loading_3').show();",
+              :success => "$('loading_3').hide();")}"} %>
+              <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_3", :style =>"display: none;" ) %>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row">  
+        <div class="row_label">
+          <div>
+            Data Type
+          </div>
+        </div>
+        <div class="row_data">
+          <div>
+            <div class="custom_drop_wrapper">
+             
+             <%= select :student,:data_type,  options_for_select(['Present', 'Absent', 'Late','Leave'], 1),
+              {:prompt => "#{t('select')}"},
+              {:onChange => "#{remote_function(:url => {:controller => "intelligence", :action => "get_att_report_class"}, :with => "$('new_student').serialize()" ,:before => "$('loading_4').show();",
+              :success => "$('loading_4').hide();")}"} %>
+              <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_4", :style =>"display: none;" ) %>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+ <% end %>
+</div>
+
+<script type="text/javascript">
+  $('loader').show();
+  j.ajax({
+    type: "POST",
+    url: "/intelligence/get_att_report_class",
+    data: $('new_student').serialize()
+  })
+  .done(function( msg ) {
+    $('loader').hide();
+  });
+</script>
+<style>
+    .label-field-pair label {
+    width: 80px;
+}
+    .text-input-bg img {
+  padding-top: 10px;
+  padding-left: 2px;
+}
+  .row {
+  background-color: #f8f8fa;
+  border: 1px solid #DFE1E2;
+  float: left;
+  width: 30%;
+  margin-right: 28px;
+  border-right: 1px solid #DFE1E2;
+}
+.row_label {
+  background-color: #ffffff;
+  border-right: 1px solid #DFE1E2;
+  float: left;
+  width: 48.2%;
+  padding: 0px 0px;
+}
+.row_label div {
+  color: #868A8B;
+  float: left;
+  padding: 8px 10px;
+  width: 80%;
+}
+.row_data {
+  float: left;
+  width: 48.6%;
+}
+.custom_drop_wrapper select::-ms-expand {
+    display: none;
+}
+.custom_drop_wrapper select {
+  background-color: transparent;
+  background-image: url("/images/icons/drop_down_normal.png");
+  background-position: 98% 0;
+  background-repeat: no-repeat;
+  background-size: 37px 36px;
+  border: medium none;
+  cursor: pointer;
+  display: block;
+  height: 35px;
+  width: 100%;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  /* border-right: 1px solid black; */
+}
+img.calendar_date_select_popup_icon
+{
+    border: 0px;
+    cursor: pointer;
+    width: 20px;
+    float: left;
+    margin: 7px;
+}
+.cds_header .month
+{
+  padding:0px;
+}
+
+</style> 

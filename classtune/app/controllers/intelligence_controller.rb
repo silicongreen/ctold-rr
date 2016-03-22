@@ -348,6 +348,7 @@ class IntelligenceController < ApplicationController
       max_value = max_value+5
     end
     
+    diff = max_value-min_value
     increament = 1
     
     if diff>0

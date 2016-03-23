@@ -37,6 +37,113 @@ class IntelligenceController < ApplicationController
     render :partial=>"comparisom"
   end
   
+  def cricticalinfo
+    @classes = []
+    @batches = []
+    @batch_no = 0
+    @course_name = ""
+    @courses = []
+    @config = Configuration.find_by_config_key('StudentAttendanceType')
+    @date_today = @local_tzone_time.to_date
+    if current_user.admin?
+      @batches = Batch.active
+    elsif @current_user.privileges.map{|p| p.name}.include?('StudentAttendanceRegister')
+      @batches = Batch.active
+    elsif @current_user.employee?
+      if @config.config_value == 'Daily'
+        @batches = @current_user.employee_record.batches
+      else
+        @batches = @current_user.employee_record.batches
+        @batches += @current_user.employee_record.subjects.collect{|b| b.batch}
+        @batches += TimetableSwap.find_all_by_employee_id(@current_user.employee_record.try(:id)).map(&:subject).flatten.compact.map(&:batch)
+        @batches = @batches.uniq unless @batches.empty?
+      end
+    end 
+    render :partial=>"cricticalinfo"
+  end
+  
+  def get_att_report_crictal 
+    require 'json'
+    
+    if params[:student][:type].blank?
+      @type = 1
+      @limit = 10
+    elsif params[:student][:type]=="3"
+      @type = params[:student][:type]
+      @limit = 5
+    elsif params[:student][:type]=="4"
+      @type = params[:student][:type]
+      @limit = 3
+    else
+      @type = params[:student][:type]
+      @limit = 10
+    end 
+    
+    if !params[:student].blank? and !params[:student][:batch_name].blank?
+      batches_data = Batch.find_by_id(params[:student][:batch_name])
+      params[:batch_name] = batches_data.name
+    end
+    
+    if !params[:student].blank? and !params[:student][:class_name].blank?
+      params[:class_name] = params[:student][:class_name]
+    end
+    
+    if !params[:student].blank? and !params[:student][:section].blank?
+      params[:course_id] = params[:student][:section]
+    end
+    
+
+
+    
+    if !params[:student].blank? and !params[:student][:batch_name].blank? and !params[:course_id].blank?
+      batches_data = Batch.find_by_id(params[:student][:batch_name])
+      batch_name = batches_data.name
+      course_id = params[:course_id]
+      @batch_data = Rails.cache.fetch("course_data_#{course_id}_#{batch_name}_#{current_user.id}"){
+        if batch_name.length == 0
+          batches = Batch.find_by_course_id(course_id)
+        else
+          batches = Batch.find_by_course_id_and_name(course_id, batch_name)
+        end
+        batches
+      }
+      params[:batch_id] = 0
+      unless @batch_data.nil?
+        params[:batch_id] = @batch_data.id 
+      end
+    end
+    if !params[:batch_id].blank?
+      get_report_crictical(params[:batch_id],false,false,@type,@limit)
+      @report_data = []
+      if @student_response['status']['code'].to_i == 200
+        @report_data = @student_response['data']
+      end
+    elsif !params[:batch_name].blank? and !params[:class_name].blank?
+      get_report_crictical(false,params[:batch_name],params[:class_name],@type,@limit)
+      @report_data = []
+      if @student_response['status']['code'].to_i == 200
+        @report_data = @student_response['data']
+      end
+    elsif !params[:batch_name].blank?
+     
+      get_report_crictical(false,params[:batch_name],false,@type,@limit)
+      @report_data = []
+      if @student_response['status']['code'].to_i == 200
+        @report_data = @student_response['data']
+      end
+    else
+      get_report_crictical(false,false,false,@type,@limit)
+      @report_data = []
+      if @student_response['status']['code'].to_i == 200
+        @report_data = @student_response['data']
+      end
+    end  
+    respond_to do |format|
+      format.js { render :action => 'report_data_crictical' }
+    end
+  
+  end
+  
   def get_att_report_class
     require 'json'
     
@@ -428,6 +535,37 @@ class IntelligenceController < ApplicationController
           request.set_form_data({"batch_name"=>batch_name,"date"=>date_used,"type"=>type,"report_type"=>report_type,"call_from_web"=>1,"user_secret" =>session[:api_info][0]['user_secret']})
       else
           request.set_form_data({"call_from_web"=>1,"date"=>date_used,"type"=>type,"report_type"=>report_type,"user_secret" =>session[:api_info][0]['user_secret']})
+      end 
+     
+      response = http.request(request)
+      @student_response = JSON::parse(response.body)
+    end
+    
+    @student_response
+  end
+  
+  def get_report_crictical(batch_id=false,batch_name=false,class_name=false,type=1,limit=10)
+    require 'net/http'
+    require 'uri'
+    require "yaml"
+
+    
+ 
+    champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
+    api_endpoint = champs21_api_config['api_url']
+
+    if current_user.employee? or current_user.admin?
+      api_uri = URI(api_endpoint + "api/calender/attendencecritical")
+      http = Net::HTTP.new(api_uri.host, api_uri.port)
+      request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })
+      if !batch_id.blank?
+          request.set_form_data({"batch_id"=>batch_id,"type"=>type,"limit"=>limit,"call_from_web"=>1,"user_secret" =>session[:api_info][0]['user_secret']})
+      elsif !batch_name.blank? and !class_name.blank?
+          request.set_form_data({"batch_name"=>batch_name,"type"=>type,"limit"=>limit,"class_name"=>class_name,"call_from_web"=>1,"user_secret" =>session[:api_info][0]['user_secret']})
+      elsif !batch_name.blank?
+          request.set_form_data({"batch_name"=>batch_name,"type"=>type,"limit"=>limit,"call_from_web"=>1,"user_secret" =>session[:api_info][0]['user_secret']})
+      else
+          request.set_form_data({"call_from_web"=>1,"type"=>type,"limit"=>limit,"user_secret" =>session[:api_info][0]['user_secret']})
       end 
      
       response = http.request(request)

@@ -43,6 +43,15 @@
             :html => {:class => 'f2'}
         %>
         </li>
+        <li>
+          <%= link_to_remote "Quick Crictical Information",
+            :before => "Element.show('loader2');",
+            :success => "Element.hide('loader2');",
+            :update => 'report-roll-call',
+            :url=>{:controller=>"intelligence", :action=>"cricticalinfo"},
+            :html => {:class => 'f2'}
+        %>
+        </li>
       </ul>
     </div>
   </div>

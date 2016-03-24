@@ -159,6 +159,12 @@ class IntelligenceController < ApplicationController
     end
     
     if params[:student][:data_type].blank?
+      @main_data_type = "Present"
+    else
+      @main_data_type = params[:student][:data_type]
+    end
+    
+    if params[:student][:data_type].blank?
       @data_type = 1
     elsif params[:student][:data_type]=="Present"
       @data_type = 1
@@ -306,10 +312,15 @@ class IntelligenceController < ApplicationController
     if !params[:select_date].blank?
       @date_used = params[:select_date]
     end
-    
+    if params[:student][:data_type].blank?
+      @main_data_type = "Present"
+    else
+      @main_data_type = params[:student][:data_type]
+    end  
     
     if params[:student][:data_type].blank?
       @data_type = 1
+      
     elsif params[:student][:data_type]=="Present"
       @data_type = 1
     elsif   params[:student][:data_type]=="Absent"

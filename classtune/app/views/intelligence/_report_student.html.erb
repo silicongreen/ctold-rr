@@ -39,14 +39,10 @@
             
             <tr>
               <td class="col-2"><b>Present</b></td>
-              <td class="col-2" style="color:#0091D3"><%= @report_data['present'] %></td>
+              <td class="col-2" style="color:#0091D3"><%= @report_data['present'] %> (<%= @report_data['p_parcentize'] %> %)</td>
                
             </tr>
-            <tr>
-              <td class="col-2"><b>Present Percentage</b></td>
-              <td class="col-2" style="color:#0091D3"><%= @report_data['p_parcentize'] %></td>
-               
-            </tr>
+            
             
             
             <tr>
@@ -69,6 +65,46 @@
            
       
       </table>
+      <div style="float:left; clear:both; margin-top:20px; width:100%;">
+      <div class="row">  
+        <div class="row_label">
+          <div>
+            Select duration
+          </div>
+        </div>
+        <div class="row_data">
+          <div>
+            <div class="custom_drop_wrapper">
+             <%= select :student,:graph_type, options_for_select(['Day', 'Week', 'Month'], @graph_type), 
+              {:prompt => "#{t('select')}"},
+              {:onChange => "#{remote_function(:url => {:controller => "intelligence", :action => "get_att_report"}, :with => "$('new_student').serialize()" ,:before => "$('loading_3').show();",
+              :success => "$('loading_3').hide();")}"} %>
+              <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_3", :style =>"display: none;" ) %>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row">  
+        <div class="row_label">
+          <div>
+            Data Type
+          </div>
+        </div>
+        <div class="row_data">
+          <div>
+            <div class="custom_drop_wrapper">
+             
+             <%= select :student,:data_type,  options_for_select(['Present', 'Absent', 'Late','Leave'], @main_data_type),
+              {:prompt => "#{t('select')}"},
+              {:onChange => "#{remote_function(:url => {:controller => "intelligence", :action => "get_att_report"}, :with => "$('new_student').serialize()" ,:before => "$('loading_4').show();",
+              :success => "$('loading_4').hide();")}"} %>
+              <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_4", :style =>"display: none;" ) %>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
       <script type="text/javascript" src="javascripts/swfobject.js"></script>
       
       <div style="float:left; clear:both; margin-top:20px;">
@@ -100,12 +136,13 @@
     float: none;  
     display: block;
     margin: -20px;
-    padding: 20px;
+    padding: 10px;
   }
   .CSSTableGenerator td
   {
       font-size: 20px;
       text-align:center;
+       padding: 10px;
   }
   .CSSTableGenerator td a:hover
   {
@@ -115,7 +152,7 @@
     float: none;
     display: block;
     margin: -20px;
-    padding: 20px;
+    padding: 10px;
   }
    .CSSTableGenerator table tr td 
   {

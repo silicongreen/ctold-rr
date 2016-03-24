@@ -51,14 +51,6 @@
           </div>
         </div>
       </div>
-    <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loader", :style =>"display: none;" ) %>
-
-
-  
-  <%= hidden_field_tag 'time_zone_date',@date_today, :id=>'time_zone' %>
-
-  <div id="att_report"></div>
-  
   <div style="float:left; clear:both; margin-top:20px; width:100%;">
       <div class="row" style="width:50%;">  
         <div class="row_label">
@@ -82,6 +74,15 @@
         </div>
       </div>
   </div>
+    <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loader", :style =>"display: none;" ) %>
+
+
+  
+  <%= hidden_field_tag 'time_zone_date',@date_today, :id=>'time_zone' %>
+
+  <div id="att_report"></div>
+  
+ 
   
   
   <% end %>

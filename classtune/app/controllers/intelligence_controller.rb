@@ -248,9 +248,9 @@ class IntelligenceController < ApplicationController
     
     bargraph = BarFilled.new()
     bargraph.width = 1;
-    bargraph.colour = '#bb0000';
+    bargraph.colour = '#64B846';
     bargraph.dot_size = 5;
-    bargraph.text = "Your Mark"
+    bargraph.text = ""
     bargraph.values = data
 
     x_axis = XAxis.new
@@ -264,7 +264,7 @@ class IntelligenceController < ApplicationController
     title = Title.new("Comparisom")
 
     x_legend = XLegend.new("Class/Section")
-    x_legend.set_style('{font-size: 14px; color: #778877}')
+    x_legend.set_style('{font-size: 14px; color: #784016}')
 
     if params[:data_type].to_i == 1
       y_legend = YLegend.new("Present (%)")
@@ -275,7 +275,7 @@ class IntelligenceController < ApplicationController
     else 
       y_legend = YLegend.new("Leave (%)")
     end
-    y_legend.set_style('{font-size: 14px; color: #770077}')
+    y_legend.set_style('{font-size: 14px; color: #784016}')
 
     chart = OpenFlashChart.new
     chart.set_title(title)
@@ -283,6 +283,7 @@ class IntelligenceController < ApplicationController
     chart.x_axis = x_axis
     chart.y_legend = y_legend
     chart.x_legend = x_legend
+    chart.set_bg_colour( '#DAF6DA' );
 
     chart.add_element(bargraph)
 
@@ -386,10 +387,13 @@ class IntelligenceController < ApplicationController
       
       a_data = @report_data['att_graph'].values
       
+      a_data_date = @report_data['att_graph_date'].values
+      
       @att_data_string = a_data.join(",")
+      @att_data_string_date = a_data_date.join(",")
       
       @graph = open_flash_chart_object(895, 450,
-      "/intelligence/graph_for_attandence?att_data=#{@att_data_string}&graph_type=#{@graph_type}&data_type=#{@data_type}")
+      "/intelligence/graph_for_attandence?att_data=#{@att_data_string}&att_data_string_date=#{@att_data_string_date}&graph_type=#{@graph_type}&data_type=#{@data_type}")
 
     end
     respond_to do |format|
@@ -404,8 +408,14 @@ class IntelligenceController < ApplicationController
     x_labels = []
     data_string = params[:att_data]
     data_array = data_string.split(",")
+    
+    
+    data_string_date = params[:att_data_string_date]
+    data_array_date = data_string_date.split(",")
+    
     data = []
     t = 1
+    l = 0
     max_value = 0
     min_value = 100
     a_length = data_array.length
@@ -417,30 +427,32 @@ class IntelligenceController < ApplicationController
       if value.to_i<min_value
         min_value = value.to_i
       end
+      x_labels << data_array_date[l]
       
-      if t==a_length
-        if params[:graph_type]=="Day"
-          x_labels << "Today"
-        elsif params[:graph_type]=="Week"
-          x_labels << "This Week"
-        else
-          x_labels << "This Month"
-        end
-      else
-        if t==1
-          x_labels << t.to_s+" "+params[:graph_type]
-        else
-          x_labels << t.to_s+" "+params[:graph_type]+"s"
-        end
-      end  
+#      if t==a_length
+#        if params[:graph_type]=="Day"
+#          x_labels << "Today"
+#        elsif params[:graph_type]=="Week"
+#          x_labels << "This Week"
+#        else
+#          x_labels << "This Month"
+#        end
+#      else
+#        if t==1
+#          x_labels << t.to_s+" "+params[:graph_type]
+#        else
+#          x_labels << t.to_s+" "+params[:graph_type]+"s"
+#        end
+#      end  
       t = t+1
+      l = l+1
     end
     
     
     line = Line.new
   
 
-    line.width = 4; line.colour = '#5E4725'; line.dot_size = 10; line.values = data
+    line.width = 4; line.colour = '#64B846'; line.dot_size = 10; line.values = data
 
     x_axis = XAxis.new
     x_axis.labels = x_labels
@@ -470,7 +482,7 @@ class IntelligenceController < ApplicationController
     title = Title.new("Attendance")
 
     x_legend = XLegend.new(params[:graph_type]+"s")
-    x_legend.set_style('{font-size: 14px; color: #778877; padding:5px;}')
+    x_legend.set_style('{font-size: 14px; color: #784016; padding:5px;}')
     
     if params[:data_type].to_i == 1
       y_legend = YLegend.new("Present (%)")
@@ -482,7 +494,7 @@ class IntelligenceController < ApplicationController
       y_legend = YLegend.new("Leave (%)")
     end
     
-    y_legend.set_style('{font-size: 14px; color: #770077; padding:5px;}')
+    y_legend.set_style('{font-size: 14px; color: #784016; padding:5px;}')
 
     chart = OpenFlashChart.new
     chart.set_title(title)
@@ -492,6 +504,7 @@ class IntelligenceController < ApplicationController
     chart.x_axis = x_axis
 
     chart.add_element(line)
+    chart.set_bg_colour( '#DAF6DA' );
 
     render :text => chart.to_s
     

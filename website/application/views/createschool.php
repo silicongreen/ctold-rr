@@ -63,7 +63,7 @@
                                         <ul class="dropdown-menu country-list" aria-labelledby="dropdownMenu1">
 
                                             <?php foreach ($countries as $country) { ?>
-                                                <li id="<?php echo $country['id']; ?>" data-call-code="<?php echo $country['phonecode']; ?>"><a href="javascript:void(0);"><?php echo $country['name']; ?> <?php echo (!empty($country['phonecode'])) ? '(' . $country['phonecode'] . ')' : '' ?></a></li>
+                                                <li id="<?php echo $country['id']; ?>" data-call-code="<?php echo $country['phone_code']; ?>"><a href="javascript:void(0);"><?php echo $country['name']; ?> <?php echo (!empty($country['phone_code'])) ? '(' . $country['phone_code'] . ')' : '' ?></a></li>
                                             <?php } ?>
 
                                         </ul>

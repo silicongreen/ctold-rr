@@ -352,6 +352,8 @@ class SchoolsController <  MultiSchoolController
     @institution_address = Configuration.get_config_value("InstitutionAddress")
     @institution_phone_no = Configuration.get_config_value("InstitutionPhoneNo")
     
+    @is_test_school = @school.is_test_school
+    
     @free_feed_for_admin = Configuration.get_config_value("FreeFeedForAdmin")
     @free_feed_for_teacher = Configuration.get_config_value("FreeFeedForTeacher")
     @free_feed_for_student = Configuration.get_config_value("FreeFeedForStudent")
@@ -743,6 +745,7 @@ guardians as g left join tds_free_users as fu on g.user_id=fu.paid_id left join 
     @free_feed_for_admin = "0"
     @free_feed_for_teacher = "0"
     @free_feed_for_student = "1"
+    @is_test_school = 1    
     
     @school_group = admin_user_session.school_group
     @school = @school_group.schools.build
@@ -768,6 +771,8 @@ guardians as g left join tds_free_users as fu on g.user_id=fu.paid_id left join 
     @free_feed_for_teacher = Configuration.get_config_value("FreeFeedForTeacher")
     @free_feed_for_student = Configuration.get_config_value("FreeFeedForStudent")
     @palette_setting = Configuration.get_config_value("PaletteSetting")
+    
+    @is_test_school = @school.is_test_school
     
     @package_id = SchoolPackage.find(:all,:conditions => ["school_id = ?",@school.id],:select => "package_id").map{|sp| sp.package_id}
     @menu_datas = SchoolMenuLink.find(:all,:conditions => ["school_id = ?",@school.id],:select => "menu_link_id").map{|sml| sml.menu_link_id}.join(',')

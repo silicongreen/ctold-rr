@@ -20,8 +20,8 @@ class School < ActiveRecord::Base
   before_destroy :remove_sms_settings
 
   named_scope :active,{:conditions => { :is_deleted => false}}
-  named_scope :is_test_school,{:conditions => { :is_test_school => false}}
-  named_scope :is_running_school,{:conditions => { :is_test_school => true}}
+  named_scope :is_test_school,{:conditions => { :is_test_school => true}}
+  named_scope :is_running_school,{:conditions => { :is_test_school => false}}
 
   def validate
     if school_group.type == "MultiSchoolGroup" && school_group.parent_group.nil?

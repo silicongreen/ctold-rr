@@ -1,0 +1,78 @@
+
+<div id="page-yield" class="bg-disable">
+
+  <div class="header-wrapper">
+    <div class="header-title" style="width:68%;">
+      <div class="header-icon"  style="width:12%;">
+        <%= image_tag '/images/icons/homework.png', :html => {:alt => 'Homework'} %>
+      </div>
+      <div class="header-title-text-wrapper">
+        <div class="header-title-main-text f2">
+          <%= t('homework_intelligence') %>
+        </div>
+        <div class="header-title-sub-text">
+          <%= Time.now.strftime("%d/%m/%Y") %>
+        </div>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="tabbed-header-wrapper">
+      <ul class="header-tabs">
+        <li class="active">
+          <%= link_to "Homework Overall",
+            {:controller=>"intelligence", :action=>"homework"},
+            {:class => 'f2'}
+        %>
+        </li>
+      
+        <li>
+          <%= link_to_remote "***",
+            :before => "Element.show('loader2');",
+            :success => "Element.hide('loader2');",
+            :update => 'report-roll-call',
+            :url=>{:controller=>"attendances", :action=>"student_report"},
+            :html => {:class => 'f2'}
+        %>
+        </li>
+        <li>
+          <%= link_to_remote "**",
+            :before => "Element.show('loader2');",
+            :success => "Element.hide('loader2');",
+            :update => 'report-roll-call',
+            :url=>{:controller=>"intelligence", :action=>"comparisom"},
+            :html => {:class => 'f2'}
+        %>
+        </li>
+        <li>
+          <%= link_to_remote "**",
+            :before => "Element.show('loader2');",
+            :success => "Element.hide('loader2');",
+            :update => 'report-roll-call',
+            :url=>{:controller=>"intelligence", :action=>"cricticalinfo"},
+            :html => {:class => 'f2'}
+        %>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="loader-image">
+    <%= image_tag("loader2.gif",
+      :align => "absmiddle",
+      :border => 0,
+      :id => "loader2",
+      :style =>"display: none;" ) %>
+  </div>
+
+  <div id="report-roll-call">
+    <%= render :partial => "attendence_class_homework" %>
+  </div>
+
+</div>
+<% content_for :head do %>
+  <%= javascript_include_tag "swfobject" %>
+  <%= javascript_include_tag "custom/tabbed-header" %>
+<% end %>
+
+<%= stylesheet_link_tag 'tadded-header' %>
+<%= stylesheet_link_tag 'inline-calendar' %>

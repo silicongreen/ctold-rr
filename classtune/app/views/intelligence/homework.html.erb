@@ -15,6 +15,12 @@
         </div>
       </div>
     </div>
+    <div id="inner-tab-menu" style="width: 31%;float: left;">
+        <ul>
+          <li class='themed_bg themed-dark-hover-background'><%= link_to "Attendance", {:controller => "intelligence", :action => "index"} %></li>
+          <li class='themed_bg themed-dark-hover-background'><%= link_to "Exam Report", {:controller => "intelligence", :action => "report"} %></li>
+        </ul>
+    </div>
     <div class="clearfix"></div>
     <div class="tabbed-header-wrapper">
       <ul class="header-tabs">
@@ -26,32 +32,15 @@
         </li>
       
         <li>
-          <%= link_to_remote "***",
+          <%= link_to_remote "Teacher Homework",
             :before => "Element.show('loader2');",
             :success => "Element.hide('loader2');",
             :update => 'report-roll-call',
-            :url=>{:controller=>"attendances", :action=>"student_report"},
+            :url=>{:controller=>"intelligence", :action=>"teacher_homework"},
             :html => {:class => 'f2'}
         %>
         </li>
-        <li>
-          <%= link_to_remote "**",
-            :before => "Element.show('loader2');",
-            :success => "Element.hide('loader2');",
-            :update => 'report-roll-call',
-            :url=>{:controller=>"intelligence", :action=>"comparisom"},
-            :html => {:class => 'f2'}
-        %>
-        </li>
-        <li>
-          <%= link_to_remote "**",
-            :before => "Element.show('loader2');",
-            :success => "Element.hide('loader2');",
-            :update => 'report-roll-call',
-            :url=>{:controller=>"intelligence", :action=>"cricticalinfo"},
-            :html => {:class => 'f2'}
-        %>
-        </li>
+        
       </ul>
     </div>
   </div>

@@ -32,7 +32,50 @@ class IntelligenceController < ApplicationController
 #    end
     
   end
-   def homework
+  def teacher_homework
+    @date_today = @local_tzone_time.to_date
+    @departments = EmployeeDepartment.find(:all,:order => "name asc",:conditions=>'status = 1')
+    render :partial=>"teacher_homework"
+  end
+  
+  def get_teacher_homeworks 
+    require 'json'
+    
+    @department_id = 0
+    @sort_by = "homework_given";
+    @sort_type = 1;
+    @time_range = "day";
+    @date = @local_tzone_time.to_date
+    
+    if !params[:student][:department].blank?
+      @department_id = params[:student][:department]
+    end
+    if !params[:student][:sort_by].blank?
+      @sort_by = params[:student][:sort_by]
+    end 
+    if !params[:student][:sort_type].blank?
+      @sort_type = params[:student][:sort_type]
+    end
+    if !params[:student][:timerange].blank?
+      @time_range = params[:student][:timerange]
+    end
+    if !params[:select_date].blank?
+      @date = params[:select_date]
+    end
+    
+    get_homework_report_full_teacher(@department_id,@sort_by,@sort_type,@time_range,@date)
+    @report_data = []
+    if @student_response['status']['code'].to_i == 200
+      @report_data = @student_response['data']
+    end
+    
+    respond_to do |format|
+      format.js { render :action => 'report_data_teacher_homework' }
+    end
+  
+  end
+  
+  def homework
     @classes = []
     @batches = []
     @batch_no = 0
@@ -774,6 +817,25 @@ class IntelligenceController < ApplicationController
           request.set_form_data({"call_from_web"=>1,"date"=>date_used,"type"=>type,"user_secret" =>session[:api_info][0]['user_secret']})
       end 
      
+      response = http.request(request)
+      @student_response = JSON::parse(response.body)
+    end
+    
+    @student_response
+  end
+  
+  def get_homework_report_full_teacher(department_id,sort_by,sort_type,time_range,date)
+    require 'net/http'
+    require 'uri'
+    require "yaml"
+    champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
+    api_endpoint = champs21_api_config['api_url']
+
+    if current_user.employee? or current_user.admin?
+      api_uri = URI(api_endpoint + "api/homework/teacherintelligence")
+      http = Net::HTTP.new(api_uri.host, api_uri.port)
+      request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })    
+      request.set_form_data({"department_id"=>department_id,"sort_by"=>sort_by,"sort_type"=>sort_type,"time_range"=>time_range,"date"=>date,"call_from_web"=>1,"user_secret" =>session[:api_info][0]['user_secret']})
       response = http.request(request)
       @student_response = JSON::parse(response.body)
     end

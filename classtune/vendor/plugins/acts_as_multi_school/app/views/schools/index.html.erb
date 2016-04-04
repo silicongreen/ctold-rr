@@ -1,6 +1,8 @@
 <fieldset class="margin-bottom-20">
   <h1 class="content-head" style="width:50%;">All Schools</h1>
-  <%= link_to '+ New School', new_school_path, :class  => 'button-red float-right' if permitted_to? :new, :schools%>  
+  <% if admin_user_session.permission_type == 1 %>  
+    <%= link_to '+ New School', new_school_path, :class  => 'button-red float-right' if permitted_to? :new, :schools%>  
+  <% end %>
   <%= link_to 'Test Schools', {:controller => "schools", :action => "test_schools", :id => 1},:style=>'margin-right:10px;', :class  => 'button-red float-right' %>  
   <%= link_to 'Paid Schools', {:controller => "schools", :action => "running_schools", :id => 1},:style=>'margin-right:10px;', :class  => 'button-red float-right' %>
   <%= link_to 'All Schools', {:controller => "schools", :action => "index"},:style=>'margin-right:10px;', :class  => 'button-red float-right'%>  
@@ -14,12 +16,14 @@
           <label><%=h school.code %></label>
           <% if permitted_to? :edit, @school, :context=>:schools %>
           <p class="seperator">|</p>
-          <label><%= link_to 'Edit', edit_school_path(school) %></label>
-          <p class="seperator">|</p>
-          <label><%= link_to "Assign School", {:controller=>"schools", :action=>"assign_school", :id=>school.id} %></li></label>
-          <p class="seperator">|</p>
-          <label><%= link_to "Add Student", {:controller=>"schools", :action=>"add_student", :id=>school.id} %></li></label>
-          <p class="seperator">|</p>
+          <% if admin_user_session.permission_type == 1 %>  
+            <label><%= link_to 'Edit', edit_school_path(school) %></label>
+            <p class="seperator">|</p>
+            <label><%= link_to "Assign School", {:controller=>"schools", :action=>"assign_school", :id=>school.id} %></li></label>
+            <p class="seperator">|</p>          
+            <label><%= link_to "Add Student", {:controller=>"schools", :action=>"add_student", :id=>school.id} %></li></label>
+            <p class="seperator">|</p>
+          <% end %>
           <label><%= link_to "Show Student Code", {:controller=>"schools", :action=>"show_student_code", :id=>school.id} %></label>
           <p class="seperator">|</p>
           <label><%= link_to "Show Students List", {:controller=>"schools", :action=>"show_students_list", :id=>school.id} %></label>

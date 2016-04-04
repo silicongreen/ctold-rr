@@ -1,6 +1,8 @@
 <fieldset class="margin-bottom-20">
   <h1 class="content-head"><%= @school.name %>  <%= (@is_test_school == 0 or @is_test_school.nil?) ? "(Paid School)" : "(Test School)" %></h1>
-  <%= link_to 'Delete School', @school, :confirm => 'Are you sure?', :method => :delete ,:class => 'button-red float-right' if permitted_to? :destroy,@school,:context=>:schools%>
+  <% if admin_user_session.permission_type == 1 %> 
+    <%= link_to 'Delete School', @school, :confirm => 'Are you sure?', :method => :delete ,:class => 'button-red float-right' if permitted_to? :destroy,@school,:context=>:schools%>
+  <% end %>
 </fieldset>
 <div class="content-div">
   <div class="nav-vertical width-15-pc">

@@ -1,0 +1,51 @@
+<fieldset class="margin-bottom-20">
+  <h1 class="content-head">Package</h1>
+  <% if admin_user_session.permission_type == 1 %>
+    <%= link_to("New Package",{:controller=>'package',:action=>'new_package'}, :class  => 'button-red float-right')  %>
+  <% end %>
+</fieldset>
+
+<div class="content-div container-width"> 
+  <br/>
+  <div class='content-list'>
+     
+    <table class="table table-bordered table-striped">
+      <tr class="tr-head">
+        <td>Name</td>
+        <td>Action</td>
+       
+      </tr>
+      
+      <% @packages.each do |package| %>
+        <tr class="tr-<%= cycle('odd', 'even') %>">
+          <td class="col-2">
+            <%=  package.name %>
+          </td>
+          
+          <td class="col-2">
+              <small>
+                <% if admin_user_session.permission_type == 1 %>  
+                  <%= link_to "Edit", {:controller=>'package',:action=>'edit_package',:id=>package.id}  %> &nbsp;|&nbsp;
+                  <%= link_to "Delete", {:controller=>'package',:action=>'delete_package',:id=>package.id},:confirm=>"#{t('delete_confirm_msg')}",:class=>"delete"  %>&nbsp;|&nbsp;
+                <% end %>
+                <%= link_to "Package Modules", {:controller=>'package',:action=>'package_modules',:id=>package.id}  %>
+              </small> 
+          </td>
+          
+        </tr>
+      <% end %>
+      
+    </table>
+    
+    <%= will_paginate @packages %>
+    </br>
+    </br>
+  </div>
+</div>
+<style>
+  fieldset a.button-red
+    {
+      padding: 1px 10px 5px !important;
+    }
+</style>  
+

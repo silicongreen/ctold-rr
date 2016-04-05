@@ -186,7 +186,7 @@
       <div class="student-options">
         <div id="assignment_ajax_msg" style="clear: both;">
         <%if @assignment.student_list.split(",").include? @current_user.student_record.id.to_s %>
-          <% if @assignment_answers.empty?  and Date.today <= Date.parse(@assignment.duedate.to_s) %>
+          <% if @assignment_answers.empty?  and Date.today <= Date.parse(@assignment.duedate.to_s) and @assignment.assignment_type == 1 %>
             <div class="answer">
               
               <%= link_to_remote "#{t('done_this_assignment')}" , :url => {:controller => 'assignment_answers', :action => "create", :assignment_id => @assignment.id } , :update=> 'assignment_ajax_msg', :html => { :class  => "user_button",:style=>"margin-left:135px" }%>

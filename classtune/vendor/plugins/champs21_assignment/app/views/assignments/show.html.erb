@@ -64,9 +64,9 @@
 	<% if Date.today <= Date.parse(@assignment.duedate.to_s) %>
 
 	<% if @assignment_answers.empty? %>
-	  <div class="answer_mark" id="done_<%= @assignment.id %>">
-		<%= link_to_remote "#{t('done_this_assignment')}" , :url => {:controller => 'assignment_answers', :action => "done", :assignment_id => @assignment.id } , :update=> 'done_'+@assignment.id.to_s, :html => { :class  => "user_button",:style=>"margin-left:0px" }%>
-	  </div>
+	  <%#*<div class="answer_mark" id="done_<%= @assignment.id %>">%>
+		<%#= link_to_remote "#{t('done_this_assignment')}" , :url => {:controller => 'assignment_answers', :action => "done", :assignment_id => @assignment.id } , :update=> 'done_'+@assignment.id.to_s, :html => { :class  => "user_button",:style=>"margin-left:0px" }%>
+	  <%#*</div>%>
 	<%  else %>
 	  <div class="answer_mark">
 		  <% unless @assignment_answers.empty? %>

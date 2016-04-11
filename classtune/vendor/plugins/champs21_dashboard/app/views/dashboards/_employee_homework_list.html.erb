@@ -1,0 +1,64 @@
+<div class="suhheader-div">
+  <div>
+    Recent Homework
+  </div>
+</div>
+
+<% unless homeworks.nil? %>
+  <ul class="horizontal-list">
+    <% homeworks.each do |h| %>
+      <%#= debug(h) %>
+      <li>
+        <div class="timetable_left">
+          <% @subject_icon = h['subjects_icon'] %>
+          <% @subject_title = h['subjects'] %>
+          <%= link_to "<img width='30' src='/images/icons/subjects/#{@subject_icon}' alt='#{@subject_title}' />", :controller => "assignments", :action => "show", :id => h['id'] %>
+          <!--<img width="30" src="/images/icons/subjects/<%= h['subjects_icon'] %>" />-->
+        </div>
+        <div class="timetable_right"  style="margin-top:5px;">
+          <div class="subcontent-header themed_text">
+            <%= link_to h['subjects'], :controller => "assignments", :action => "show", :id => h['id'] %>
+          </div>
+          <div class="subcontent-date">
+             <%= link_to h['name'], :controller => "assignments", :action => "show", :id => h['id'] %>
+          </div>
+          <div class="subcontent-date"><%= h['batch'] + ' ' + h['course'] %></div>
+          <div class="subcontent-date">Due Date <%= h['duedate'] %></div>
+          <div class="subcontent-date">Submission Date: <%= h['assign_date'] %></div>
+          <div class="subcontent-date">Done By: <%= h['done'] %></div>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <div class="portlet-subcontent">    
+    No homework found.
+  </div>  
+<% end  %>
+
+<style type="text/css">
+  .suhheader-div {
+    clear: both;
+    background-color: #f5f5f5;
+    margin: 10px auto;
+    padding: 10px;
+    width: 90%;
+  }
+  .suhheader-div div {
+    color: #bebebe;
+    font-size: 13px;
+    text-align: left;
+    width: 100%;
+  }
+  .horizontal-list {
+    list-style: outside none none;
+    padding: 0;
+    width: 100%;
+  }
+  .horizontal-list li {
+    float: left;
+    width: 32%;
+    margin-bottom: 15px;
+  }
+  
+</style>

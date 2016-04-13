@@ -1393,7 +1393,7 @@ class StudentController < ApplicationController
   end
   
   def reports
-    if current_user.parent? or current_user.student?
+    if (current_user.parent? or current_user.student?) and params[:p].blank?
       redirect_to :controller => "student", :action => 'class_test_report'
     end
     @sms_module = Configuration.available_modules

@@ -1,0 +1,154 @@
+ <% form_for :exam_report, :url=>{:action=>'generated_report'}, :html=> {:id=>'new_student'} do |x| %>
+  <div id="page-yield" style="margin-top:0px;">  
+      
+      <div class="row">  
+        <div class="row_label">
+          <div>
+            <%= t('shift_label') %>
+          </div>
+        </div>
+        <div class="row_data">
+          <div>
+            <div class="custom_drop_wrapper">
+             <%= select :student, :batch_name, options_for_select(Batch.active.find(:all, :group => "name").map {|b| [b.name, b.id]}, @batch_no.to_i), 
+            {:prompt => "#{t('select')}"},
+            {:onChange => "#{remote_function(:url => {:controller => "student", :action => "get_classes"}, :with => "'batch_id='+value+'&'+$('new_student').serialize()+'&section_page=section_view&section_partial=exam/sections_view&page=course_new&partial_view=exam/courses_new'" ,:before => "$('loading_2').show();",
+            :success => "$('loading_2').hide();")}"} %>
+            <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_2", :style =>"display: none;" ) %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="row_label">
+          <div>
+            <%= t('class_label') %>
+          </div>
+        </div>
+        <div class="row_data">
+          <div>
+            <div id="course_new" class="custom_drop_wrapper">
+              <%= render :partial => 'exam/courses_new', :object => @courses %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row"  id="sections_div">
+        <div class="row_label">
+          <div>
+            <%= t('section_label') %>
+          </div>
+        </div>
+        <div class="row_data">
+          <div>
+            <div id="section_view" class="custom_drop_wrapper">
+              <%= render :partial => 'exam/sections_view', :object => @classes %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="width:50%;float:left; cleqar:both; margin-top:10px;" class="text-input-bg label-field-pair" id="exam-group-select">
+        <label for="exam_group_id" style="width:30%"><%= t('select_exam_group') %></label>
+        <%= select :exam_report, :exam_group_id, @exam_groups.map{|exam| [exam.name,exam.id]},:prompt=> "#{t('select_exam_group')}" %>
+      </div>
+      <div id="inner-tab-menu" style="width: 45%;float: left;">
+        <ul style="float:left; margin-top:20px;">
+          <li class='themed_bg themed-dark-hover-background'>
+          <%= link_to_remote "View",
+               :before => "Element.show('loader');",
+               :success => "Element.hide('loader');",
+               :update => 'att_report',
+               :url=>{:controller=>"intelligence", :action=>"report_overall"},
+               :with => "'exam_id='+$('exam_report_exam_group_id').value",
+               :html => {:class => 'f2'}
+         %></li>
+        </ul>
+    </div>
+     
+       
+       
+
+     
+      
+    <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loader", :style =>"display: none;" ) %>
+    
+
+
+  
+  <%= hidden_field_tag 'time_zone_date',@date_today, :id=>'time_zone' %>
+
+  <div id="att_report"><%= render :partial => "exam_report_student.html" %></div>
+  
+  
+  
+  
+  <% end %>
+  
+</div>
+<style>
+    .label-field-pair label {
+    width: 80px;
+}
+    .text-input-bg img {
+  padding-top: 10px;
+  padding-left: 2px;
+}
+  .row {
+  background-color: #f8f8fa;
+  border: 1px solid #DFE1E2;
+  float: left;
+  width: 30%;
+  margin-right: 28px;
+  border-right: 1px solid #DFE1E2;
+}
+.row_label {
+  background-color: #ffffff;
+  border-right: 1px solid #DFE1E2;
+  float: left;
+  width: 48.2%;
+  padding: 0px 0px;
+}
+.row_label div {
+  color: #868A8B;
+  float: left;
+  padding: 8px 10px;
+  width: 80%;
+}
+.row_data {
+  float: left;
+  width: 48.6%;
+}
+.custom_drop_wrapper select::-ms-expand {
+    display: none;
+}
+.custom_drop_wrapper select {
+  background-color: transparent;
+  background-image: url("/images/icons/drop_down_normal.png");
+  background-position: 98% 0;
+  background-repeat: no-repeat;
+  background-size: 37px 36px;
+  border: medium none;
+  cursor: pointer;
+  display: block;
+  height: 35px;
+  width: 100%;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  /* border-right: 1px solid black; */
+}
+img.calendar_date_select_popup_icon
+{
+    border: 0px;
+    cursor: pointer;
+    width: 20px;
+    float: left;
+    margin: 7px;
+}
+.cds_header .month
+{
+  padding:0px;
+}
+
+</style>  

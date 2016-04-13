@@ -100,6 +100,148 @@ class IntelligenceController < ApplicationController
     @report_data = []
     
   end
+  
+  def subject_wise_report
+    @classes = []
+    @batches = []
+    @batch_no = 0
+    @course_name = ""
+    @courses = []
+    if Batch.active.find(:all, :group => "name").length == 1
+      batches = Batch.active
+      batch_name = batches[0].name
+      batches = Batch.find(:all, :conditions => ["name = ?", batch_name]).map{|b| b.course_id}
+      @courses = Course.find(:all, :conditions => ["id IN (?)", batches], :group => "course_name", :select => "course_name", :order => "cast(replace(course_name, 'Class ', '') as SIGNED INTEGER) asc")
+    end
+    @batches = Batch.active
+    @subjects = []
+    render :partial=>"subject_wise_report"
+  end
+  
+  def individual_report
+    @classes = []
+    @batches = []
+    @batch_no = 0
+    @course_name = ""
+    @courses = []
+    if Batch.active.find(:all, :group => "name").length == 1
+      batches = Batch.active
+      batch_name = batches[0].name
+      batches = Batch.find(:all, :conditions => ["name = ?", batch_name]).map{|b| b.course_id}
+      @courses = Course.find(:all, :conditions => ["id IN (?)", batches], :group => "course_name", :select => "course_name", :order => "cast(replace(course_name, 'Class ', '') as SIGNED INTEGER) asc")
+    end
+    @batches = Batch.active
+    @exam_groups = []
+    @report_data = []
+    render :partial=>"individual_report"
+  end
+  
+  def report_overall_subject 
+    @subject_id = 0
+    if !params[:subject_id].blank?
+      @subject_id = params[:subject_id]
+      @subject = Subject.find(params[:subject_id])
+      @batch = @subject.batch
+      @students = @batch.students
+      @exam_groups = ExamGroup.find(:all,:conditions=>{:batch_id=>@batch.id})
+    end
+    render :partial=>"report_overall_subject"
+  end
+  
+  def report_overall_individual
+    @exam_id = 0;
+    if !params[:exam_id].blank?
+      @exam_id = params[:exam_id]
+      if params[:student].nil?
+         @exam_group = ExamGroup.find(@exam_id)
+         @batch = @exam_group.batch
+         @students=@batch.students.by_first_name
+         @student = @students.first  unless @students.empty?
+         if @student.nil?
+           flash[:notice] = "#{t('flash_student_notice')}"
+           redirect_to :action => 'exam_wise_report' and return
+         end
+         general_subjects = Subject.find_all_by_batch_id(@batch.id, :conditions=>"elective_group_id IS NULL")
+         student_electives = StudentsSubject.find_all_by_student_id(@student.id,:conditions=>"batch_id = #{@batch.id}")
+         elective_subjects = []
+         student_electives.each do |elect|
+           elective_subjects.push Subject.find(elect.subject_id)
+         end
+         @subjects = general_subjects + elective_subjects
+         @exams = []
+         @subjects.each do |sub|
+           exam = Exam.find_by_exam_group_id_and_subject_id(@exam_group.id,sub.id)
+           @exams.push exam unless exam.nil?
+         end
+         
+         @graph = open_flash_chart_object(650, 350,
+           "/exam/graph_for_generated_report?batch=#{@student.batch.id}&examgroup=#{@exam_group.id}&student=#{@student.id}")
+         
+        render :partial=>"exam_report_student_single"
+      else
+        @exam_group = ExamGroup.find(params[:exam_id])
+        @student = Student.find_by_id(params[:student])
+        @batch = @student.batch
+        general_subjects = Subject.find_all_by_batch_id(@student.batch.id, :conditions=>"elective_group_id IS NULL")
+        student_electives = StudentsSubject.find_all_by_student_id(@student.id,:conditions=>"batch_id = #{@student.batch.id}")
+        elective_subjects = []
+        student_electives.each do |elect|
+          elective_subjects.push Subject.find(elect.subject_id)
+        end
+        @subjects = general_subjects + elective_subjects
+        @exams = []
+        @subjects.each do |sub|
+          exam = Exam.find_by_exam_group_id_and_subject_id(@exam_group.id,sub.id)
+          @exams.push exam unless exam.nil?
+        end
+        
+        @graph = open_flash_chart_object(650, 350,
+          "/exam/graph_for_generated_report?batch=#{@student.batch.id}&examgroup=#{@exam_group.id}&student=#{@student.id}")
+        
+        if request.xhr?
+          render(:update) do |page|
+            page.replace_html   'exam_wise_report', :partial=>"exam_wise_report"
+          end
+          else
+            @students = Student.find_all_by_id(params[:student])
+            render :partial=>"exam_report_student_single"
+       end
+        
+      end
+    end
+  end
+  
+  def report_overall
+    @exam_id = 0;
+    if !params[:exam_id].blank?
+      @exam_id = params[:exam_id]
+      get_exam_report(@exam_id)
+      @report_data = []
+      if @student_response['status']['code'].to_i == 200
+        @report_data = @student_response['data']
+      end
+    end
+    render :partial=>"exam_report_student"
+  end
+  def report
+    @classes = []
+    @batches = []
+    @batch_no = 0
+    @course_name = ""
+    @courses = []
+    if Batch.active.find(:all, :group => "name").length == 1
+      batches = Batch.active
+      batch_name = batches[0].name
+      batches = Batch.find(:all, :conditions => ["name = ?", batch_name]).map{|b| b.course_id}
+      @courses = Course.find(:all, :conditions => ["id IN (?)", batches], :group => "course_name", :select => "course_name", :order => "cast(replace(course_name, 'Class ', '') as SIGNED INTEGER) asc")
+    end
+    @batches = Batch.active
+    @exam_groups = []
+    @report_data = []
+    
+  end
+  
+  
   def comparisom
     @courses = Course.find(:all, :conditions => ["is_deleted = 0"], :group => "course_name", :select => "course_name", :order => "cast(replace(course_name, 'Class ', '') as SIGNED INTEGER) asc")
     render :partial=>"comparisom"
@@ -947,6 +1089,33 @@ class IntelligenceController < ApplicationController
       else
           request.set_form_data({"call_from_web"=>1,"date"=>date_used,"type"=>type,"report_type"=>report_type,"user_secret" =>session[:api_info][0]['user_secret']})
       end 
+     
+      response = http.request(request)
+      @student_response = JSON::parse(response.body)
+    end
+    
+    @student_response
+  end
+  
+  def get_exam_report(exam_id)
+    require 'net/http'
+    require 'uri'
+    require "yaml"
+    
+
+    
+ 
+    champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
+    api_endpoint = champs21_api_config['api_url']
+
+    if current_user.employee? or current_user.admin?
+      api_uri = URI(api_endpoint + "api/report/gettermreportall")
+      http = Net::HTTP.new(api_uri.host, api_uri.port)
+      request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })
+     
+     
+          request.set_form_data({"id"=>exam_id,"call_from_web"=>1,"user_secret" =>session[:api_info][0]['user_secret']})
+    
      
       response = http.request(request)
       @student_response = JSON::parse(response.body)

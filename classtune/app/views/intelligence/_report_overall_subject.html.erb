@@ -1,0 +1,199 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+<div id="page-yield" class="bg-disable">
+
+ 
+<% if !@subject_id.blank? %>
+<div >
+    <h4><%= @batch.name %> - <%= @batch.course.full_name %> | <%= @subject.name %></h4>
+    <div id="score-table">
+      <table id="listing" width="100%" cellpadding="1" cellspacing="1">
+        <tr class="tr-head">
+          <td><%= t('name') %></td>
+          <% @exam_groups.each do |exam_group| %>
+            <td><%= exam_group.name %></td>
+          <% end %>
+        </tr>
+        <% @students.each do |student| %>
+          <% is_valid_subject=1 %>
+          <% unless @subject.elective_group_id.nil? %>
+            <% is_student_elective = StudentsSubject.find_by_student_id_and_subject_id(student.id,@subject.id) %>
+            <% is_valid_subject = 0 if is_student_elective.nil? %>
+          <% end %>
+          <% unless is_valid_subject == 0 %>
+            <tr class="tr-<%= cycle('odd', 'even') %>">
+              <td class="col-2"><%= student.full_name %></td>
+              <% @exam_groups.each do |exam_group| %>
+                <td class="col-3">
+                  <% exam = Exam.find_by_subject_id(@subject.id,:conditions=>{:exam_group_id=>exam_group.id}) %>
+                  <% exam_score = ExamScore.find_by_student_id(student.id,:conditions=>{:exam_id=>exam.id}) unless exam.nil? %>
+                  <% unless exam.nil? %>
+                    <% if exam_group.exam_type == 'Marks' %>
+                      <%= exam_score.nil? ? '-' : "#{exam_score.marks || "-"}/"+exam.maximum_marks.to_s %>
+                    <% elsif exam_group.exam_type == 'Grades'%>
+                      <%= exam_score.nil? ? '-' : (exam_score.grading_level || '-') %>
+                    <% else %>
+                      <%= exam_score.nil? ? '-' : "#{(exam_score.marks || "-")}" +"/"+exam.maximum_marks.to_s+"[#{(exam_score.grading_level || "-")}]" %>
+                    <% end %>
+                  <% else %>
+                    <%= "#{t('n_a')}" %>
+                  <% end %>
+                </td>
+              <% end %>
+            </tr>
+          <% end %>
+        <% end %>
+        <tr class="tr-head">
+          <td>
+            <%= t('class_average') %>
+          </td>
+          <% @exam_groups.each do |exam_group| %>
+            <% if exam_group.exam_type == 'Marks' or exam_group.exam_type == 'MarksAndGrades' %>
+              <% exam = Exam.find_by_subject_id(@subject.id,:conditions=>{:exam_group_id=>exam_group.id}) %>
+              <td>
+                <%="%.2f"%exam_group.subject_wise_batch_average_marks(@subject.id) unless exam.nil?%>
+              </td>
+            <% else %>
+              <td>-</td>
+            <% end %>
+          <% end %>
+        </tr>
+      </table>
+    </div>
+    <div class="extender"></div>
+  </div>
+ <% end %>   
+
+  
+    
+</div>
+
+<%= stylesheet_link_tag 'tadded-header' %>
+<%= stylesheet_link_tag 'list_table' %>
+<%= stylesheet_link_tag 'syllabus/single_syllabus' %>
+<%= stylesheet_link_tag 'pagination_and_table' %>
+
+<% content_for :head do %>
+  <%= javascript_include_tag "custom/tabbed-header" %>
+<% end %>
+<%= load_redactor_script %>
+<style type="text/css">
+  .CSSTableGenerator table.summary thead tr th
+  {
+     color: #000;
+     padding : 30px;
+     background-color:#F2F5F6;
+  }
+  .CSSTableGenerator table.summary thead tr th:last-child
+  {
+     border:none;
+  }
+  .CSSTableGenerator table thead tr th span
+  {
+    color: #000;
+    float:left;
+    margin-left: 10px;
+    font-size: 20px;
+    margin-top: 10px;
+    
+  }
+  .CSSTableGenerator table#listing  td {
+  vertical-align: middle;
+  border: 1px solid #D7DBDD;
+  text-align: left;
+  padding: 15px;
+  font-size: 12px;
+  font-weight: normal;
+  color: #333333;
+}
+  .CSSTableGenerator table thead tr th span:last-child
+  {
+      color: #C00;
+      font-size: 35px;
+      float:left;
+      margin-left: 10px;
+      margin-top: 0px;
+     
+  }
+  .header-wrapper .header-title-sub-text {
+    letter-spacing: unset;
+  }
+    .timetable_last a
+  {
+      -moz-border-radius: 3px;
+      -webkit-border-radius: 3px;
+      background: #CB1119 none repeat scroll 0 0;
+      color: #FFFFFF !important;
+      font-size: 14px;
+      font-weight: bold;
+      margin-top: 20px;
+      padding: 7px 10px;
+      border: none;
+      text-align: center;
+      width: auto;
+      cursor: pointer;
+      float: left;
+      margin-left:8px;
+      text-decoration: none;
+      display: block;
+  }
+  .subcontent-date p
+  {
+       line-height: 1.8;
+      margin: 0px;
+      padding: 0;
+  }
+   div.button-link-report
+  {
+    
+    background: #C91018;
+    color:white;
+    
+  }
+  div.button-link-report:hover
+  {
+    background: #383838;
+  }
+  .CSSTableGenerator td
+  {
+     padding: 10px;
+  }
+</style>
+
+
+
+<script type="text/javascript">
+  function set_active(){
+    $$('.active-link').each(function(e){
+      e.removeClassName('active-link');
+    });
+    this.addClassName('active-link')
+  }
+  function draw_report(){
+    Element.show('loader')
+    new Ajax.Request('/exam/generated_report',
+    {asynchronous:true, evalScripts:true,
+      parameters:'student='+this.id+'&exam_group=<%= @exam_group.id %>',onSuccess:function(request){Element.hide('loader')}
+    })
+  }
+  document.observe("dom:loaded", function() {
+    $$('.student-link').invoke('observe','click',draw_report);
+    $$('.student-link').invoke('observe','click',set_active);
+  });
+</script>

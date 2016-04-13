@@ -31,7 +31,7 @@ class AssignmentAnswersController < ApplicationController
       @assignment_answer.student_id = current_user.student_record.id
       if @assignment.assignment_type != 2
         @assignment_answer.title = "Done"
-        @assignment_answer.status = 1
+        @assignment_answer.status = "ACCEPTED"
         @assignment_answer.content = "Homework Submitted"
       end
       if @assignment_answer.save

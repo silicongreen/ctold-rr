@@ -22,7 +22,7 @@ class StudentController < ApplicationController
   before_filter :login_required
   before_filter :check_permission, :only=>[:index,:admission1,:profile,:reports,:categories,:add_additional_details]
   before_filter  :set_precision
-  before_filter :protect_other_student_data, :except =>[:insert_into_new_parent_student_table,:show,:class_test_report,:progress_report,:class_test_report_single,:term_test_report]
+  before_filter :protect_other_student_data, :except =>[:insert_into_new_parent_student_table,:show,:class_test_report,:combined_exam,:progress_report,:class_test_report_single,:term_test_report]
   before_filter :default_time_zone_present_time
   
   before_filter :find_student, :only => [
@@ -1345,6 +1345,19 @@ class StudentController < ApplicationController
         @class_test = @class_test_report_data['data']['class_test_report']
       end
     end
+  end
+  
+   def combined_exam
+    if current_user.student
+      @student = Student.find(current_user.student_record.id)
+    end
+    if current_user.parent
+      target = current_user.guardian_entry.current_ward_id      
+      @student = Student.find_by_id(target) 
+    end
+    @batch = @student.batch
+    @all_connect_exam = ExamConnect.find_all_by_batch_id(@batch.id);
+    render :partial=>"combined_exam"
   end
   
   def progress_report

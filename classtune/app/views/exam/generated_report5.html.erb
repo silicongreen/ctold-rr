@@ -47,24 +47,18 @@
     <p class="flash-msg"> <%= flash[:notice] %> </p>
   <% end %>
   <h4 align="center"><%= @batch.name %> - <%= @batch.course.full_name %></h4>
-  <% unless @previous_batch == 1 %>
+  <% unless @current_user.student? or @current_user.parent? %>
   <div id="student_list">
     <%= render  :partial=>"student_list_new" %>
   </div>
   <% end %>
-  <% unless @previous_batch == 1 %>
-  <div class ="current_batch" style="margin-top:-10px;">
+  
+  <div class ="current_batch" style="margin-top:-10px;<% if @current_user.student? or @current_user.parent? %> margin-left:0px; <% end %>">
   <div id="grouped_exam_report">
     <%= render :partial=>'grouped_exam_report_new' %>
   </div>
   </div>
-  <% else %>
-  <div class ="previous_batch">
-  <div id="grouped_exam_report">
-    <%= render :partial=>'grouped_exam_report_new' %>
-  </div>
-  </div>
-  <% end %>
+  
 <%#*<div class="box">%>
 <%#*</div>%>
 

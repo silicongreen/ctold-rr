@@ -41,6 +41,13 @@
                       :success => "Element.hide('loader');j('.header-tabs li').removeClass('active');j('.header-tabs li.progress_report').addClass('active');",
                       :url => {:controller=>"student",:action => "progress_report"} %>
                 </li>
+                <li  class='<% if @extra == "groupexam"  %>active <% end %> groupexam_report f2'>
+                    <%= link_to_remote "Combined Exam",
+                      :update => "report-data-all",
+                      :before => "Element.show('loader')",
+                      :success => "Element.hide('loader');j('.header-tabs li').removeClass('active');j('.header-tabs li.groupexam_report').addClass('active');",
+                      :url => {:controller=>"student",:action => "combined_exam"} %>
+                </li>
 
             </ul>
         </div>

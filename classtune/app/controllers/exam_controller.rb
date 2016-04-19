@@ -1842,6 +1842,7 @@ class ExamController < ApplicationController
       @connect_exam = params[:student][:connect_exam]
     end 
     
+    
     @connect_exam_obj = ExamConnect.find(@connect_exam)
     
     @previous_batch = 0
@@ -2774,20 +2775,17 @@ class ExamController < ApplicationController
     champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
     api_endpoint = champs21_api_config['api_url']
 
-    if current_user.employee? or current_user.admin?
-      api_uri = URI(api_endpoint + "api/report/groupedexamreport")
-      http = Net::HTTP.new(api_uri.host, api_uri.port)
-      request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })
-     
-     
-          request.set_form_data({"connect_exam_id"=>connect_exam_id,"student_id"=>student_id,"batch_id"=>batch_id,"call_from_web"=>1,"user_secret" =>session[:api_info][0]['user_secret']})
-    
-     
-      response = http.request(request)
-      @student_response = JSON::parse(response.body)
-    end
-    
-    @student_response
+    api_uri = URI(api_endpoint + "api/report/groupedexamreport")
+    http = Net::HTTP.new(api_uri.host, api_uri.port)
+    request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })
+
+
+        request.set_form_data({"connect_exam_id"=>connect_exam_id,"student_id"=>student_id,"batch_id"=>batch_id,"call_from_web"=>1,"user_secret" =>session[:api_info][0]['user_secret']})
+
+
+    response = http.request(request)
+    @student_response = JSON::parse(response.body)
+
   end
 
 end

@@ -17,7 +17,12 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 <% unless @report_data.blank? %>
-
+      <div class="section1 row" >
+        <center>
+          <div class="hor_line"></div>
+          <h3>Summative Assessment Report</h3>
+        </center>
+      </div>
       <div class="CSSTableGenerator" style="width: 97%;margin-top: 20px;">
           <p><%= "#{@student.full_name}" %></p>
           <table id="listing table-design">
@@ -152,6 +157,12 @@
           
           
           <% unless @report_data['report']['no_exam_subject_resutl'].blank? %>
+           <div class="section1 row" >
+            <center>
+              <div class="hor_line"></div>
+              <h3>Cumulative Assessment Record</h3>
+            </center>
+          </div>
             <table id="listing table-design" style="margin-top:20px;">
                 <% 
                   iloop = 1

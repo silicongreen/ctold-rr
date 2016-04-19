@@ -1,0 +1,35 @@
+<div class="CSSTableGenerator" >
+<% unless @all_connect_exam.blank?  %>
+<table class="table-design">
+    <tr>
+        <td>
+          Date
+        </td> 
+        <td>
+          Name
+        </td>
+    </tr>
+<% @all_connect_exam.each do |s| %>
+   
+    <tr>
+        <td>
+           
+              <%= I18n.l(s.created_at.to_time,:format=>:normal) unless s.created_at.nil? %>
+           
+        </td> 
+        <td>
+          <div class="left-dev"><span><%= s.name %></span></div>
+          <div class="right-dev">
+           <%= link_to "View",{:controller=>'exam', :action=>'generated_report5',:student=>@student.id,:type=>'grouped',:connect_exam=>s.id} %>
+          </div>
+        </td>
+    </tr>
+
+
+<% end %>
+</table>
+
+<% end %>
+</div> 
+
+

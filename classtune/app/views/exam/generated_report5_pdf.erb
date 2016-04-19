@@ -52,7 +52,7 @@
                           <h3>Summative Assessment Report</h3>
                       </center>
                   </div>
-                  <div class="CSSTableGenerator" style="width: 97%;margin-top: 20px;">
+                  <div class="CSSTableGenerator" width="100%" style="width: 97%;margin-top: 20px;">
                       <p><%= "#{@student.full_name}" %></p>
                       <table id="listing table-design">
                           <thead>
@@ -66,8 +66,8 @@
                                       <td colspan="2"><%= report['exam_name'] %></td>
                                   </tr>
                                   <tr>
-                                      <td style="width:50%;">Full Marks</td>
-                                      <td style="width:50%;">Your Marks</td>
+                                      <td width="50%" style="width:50%;">Full Marks</td>
+                                      <td  width="50%"  style="width:50%;">Your Marks</td>
                                   </tr>
 
                               </table>
@@ -96,10 +96,10 @@
                                     <% @report_data['report']['exams'].each do |report| %>
                                       <td  style="padding:0px;">
 
-                                          <table>
+                                          <table  width="100%" >
 
                                               <tr>
-                                                  <td style="width:50%;">
+                                                  <td  width="50%" >
                                                       <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
                                                         <%= report['result'][report['exam_id']][subjects['id']]['full_mark'] %>
                                                         <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
@@ -107,7 +107,7 @@
                                                         N/A
                                                       <% end %>  
                                                   </td>
-                                                  <td style="width:50%;">
+                                                  <td  width="50%" >
                                                       <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                                                         <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %>
                                                         <% total_mark = total_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
@@ -166,7 +166,7 @@
 
 
                       <% avgparcent = total_parcent.to_f/total_subject.to_f %>
-                      <table id="listing table-design" style="margin-top:10px;">
+                      <table id="listing table-design"  width="100%"  style="margin-top:10px;">
                           <tr>
                               <td>Total Number Of Days : <%= @report_data['total'] %> </td>
                               <td>Days Present : <%= @report_data['present'] %></td>
@@ -192,7 +192,7 @@
                                 <h3>Cumulative Assessment Record</h3>
                             </center>
                         </div>
-                        <table id="listing table-design" style="margin-top:20px;">
+                        <table   width="100%"  id="listing table-design" style="margin-top:20px;">
                             <% 
                             iloop = 1
                             cloop = 1
@@ -238,61 +238,3 @@
 
 
 </div>
-<% if params[:page_height] %>
-<script type="text/javascript">
-  var body = document.body,
-          html = document.documentElement;
-  var pg_height = parseInt(<%= params[:page_height] %>);
-  var header = $("table-headers")
-  var page = new Element('div', {'class': 'page1'});
-  var pageBreak = new Element('div', {'class': 'page-break1'});
-  var insertPageBreak = function () {
-    body.appendChild(pageBreak.cloneNode(true))
-  };
-  var insertPage = function () {
-    body.appendChild(page.cloneNode(true));
-  };
-  var currPage = function () {
-    return $$('.page1').last()
-  };
-  var insertHeader = function () {
-      header1 = header.cloneNode(true);
-      header1.style.marginTop = "50px";
-      currPage().appendChild(header1.cloneNode(true));
-  };
-  var current_page_height = 0;
-  var i = 0
-  $$('.available_sections1 .section1').each(function (el) {
-      a = parseInt(el.getHeight());
-      //el.innerHTML = a + el.innerHTML;
-      try {
-          var height_element = el.children[0].children[0]
-          if (height_element.id == "pdf-table")
-          {
-              height_element.style.height = a + "px";
-          }
-      }
-      catch (e) {
-
-      }
-      c = current_page_height + a;
-      current_page_height = c;
-      if (c > pg_height) {
-          current_page_height = a
-          body.appendChild(new Element('div', {'id': 'page-blank_' + i, 'class': 'page-blank'}))
-          document.getElementById('page-blank_' + i).style.height = (c - pg_height) + 'px';
-          document.getElementById('page-blank_' + i).innerHTML = "&nbsp;"/* if a div doesnt have any content it may not display.. set height will not work */
-          i += 1
-
-          //el.style.marginTop="50px"; /* for this border-top is coming, top section of each page */
-          insertPageBreak();
-          /* insertHeader(); */
-          insertPage();
-          insertHeader();
-          current_page_height = (current_page_height + header.getHeight() + 50)
-
-      }
-      currPage().appendChild(el);
-  });
-</script>
-<% end %>

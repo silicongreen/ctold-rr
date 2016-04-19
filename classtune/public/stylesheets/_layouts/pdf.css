@@ -16,6 +16,10 @@ body{
     width:120px;
     float: left;
 }
+h4 img{
+    width: 100%;
+    margin-top: 10px;
+}    
 .logo img{
     width: 100%;
     margin-top: 10px;

@@ -77,3 +77,8 @@
     {
         padding: 10px;
     }
+    #page-yield {
+            width:1250px;
+            margin: 0 auto;
+            overflow: hidden;
+        }

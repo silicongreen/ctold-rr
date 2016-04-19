@@ -18,9 +18,9 @@
 #under the License. -%>
 
 <div id="pdf-header">
-  <div class="logo">
+  <h4 align="center">
     <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")) %>
-</div>
+  </h4>
   <div class="header-content2">       
     <p><b><%=Configuration.get_config_value('InstitutionName'); %></b></p>
     <p class="institution_address"><%=Configuration.get_config_value('InstitutionAddress'); %></p>

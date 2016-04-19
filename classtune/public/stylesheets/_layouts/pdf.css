@@ -10,9 +10,9 @@ body{
     margin: 0 auto;
     overflow: hidden;
 }
-.header_font
+.header_font p b
 {
-    font-size:15px;
+    font-size:20px;
 }
 .logo{
     height: 120px;
@@ -67,7 +67,7 @@ body{
 }
 
 #page-yield {
-    margin-top: 30px !important;
+    margin-top: 10px !important;
 }
 
 .page {

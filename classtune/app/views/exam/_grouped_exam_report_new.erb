@@ -19,7 +19,7 @@
 <% unless @report_data.blank? %>
 
       <div class="CSSTableGenerator" style="width: 97%;margin-top: 20px;">
-          <p><%= "#{@student.full_name} - #{@student.admission_no}" %></p>
+          <p><%= "#{@student.full_name}" %></p>
           <table id="listing table-design">
               <thead>
                   <tr>
@@ -169,7 +169,11 @@
                     <%  end %> 
                         <td   width="6%"><%= iloop %></td>
                         <td   width="23%"><%= report['subject_name'] %></td>
-                        <td   width="23%"><%= report['subject_comment'] %></td>
+                        <% if report['subject_comment'].blank? %>
+                          <td   width="23%">Not Tested Yet</td>
+                        <% else %>
+                          <td   width="23%"><%= report['subject_comment'] %></td>
+                        <% end %>
                     <% iloop = iloop+1 %> 
                     <% cloop = cloop+1 %>
                 <% end %>

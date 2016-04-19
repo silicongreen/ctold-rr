@@ -17,14 +17,12 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 
-
-
 <div id="page-yield" class="available_sections1">
   <div class="page1"></div>
   <div class="section1 row" >
     <center>
       <div class="hor_line"></div>
-      <h3><%= "Grouped Exam Report for Batch : "+@batch.full_name %></h3>
+      <h3><%= @connect_exam_obj.name+" Report : "+@batch.full_name %></h3>
     </center>
   </div>
   <div class="section1 row">
@@ -42,33 +40,33 @@
   <% unless @report_data.blank? %>
 
       <div class="CSSTableGenerator" style="width: 97%;margin-top: 20px;">
-          <p><%= "#{@student.full_name} - #{@student.admission_no}" %></p>
-          <table id="listing table-design">
+          
+          <table id="pdf-table" width="100%">
               <thead>
-                  <tr>
-                      <th>Subject Name</b></th>
+                  <tr class="table-header">
+                      <td class="col-pdf1">Subject Name</td>
                       <% unless @report_data['report']['exams'].blank? %>  
                         <% @report_data['report']['exams'].each do |report| %>
-                          <th style="padding:0px;">
-                            <table>
-                                <tr>
-                                    <td colspan="2"><%= report['exam_name'] %></td>
+                          <td class="col-pdf1">
+                            <table id="pdf-table">
+                                <tr class="table-header">
+                                    <td class="col-pdf1" colspan="2"><%= report['exam_name'] %></td>
                                 </tr>
-                                <tr>
-                                    <td style="width:50%;">Full Marks</td>
-                                    <td style="width:50%;">Your Marks</td>
+                                <tr class="table-header">
+                                    <td class="col-pdf1" style="width:50%;">Full Marks</td>
+                                    <td class="col-pdf1" style="width:50%;">Your Marks</td>
                                 </tr>
                                 
                              </table>
-                          </th> 
+                          </td> 
                         <% end %>
                       <% end %>
 
-                      <th>Total</th>
-                      <th>Marks Obtained (%)</th>
-                      <th>Highest Marks (%)</th>
-                      <th>Letter Grade</th>
-                      <th>GPA</th>
+                      <td class="col-pdf1">Total</th>
+                      <td class="col-pdf1">Marks Obtained (%)</td>
+                      <td class="col-pdf1">Highest Marks (%)</td>
+                      <td class="col-pdf1">Letter Grade</td>
+                      <td class="col-pdf1">GPA</td>
                   </tr>
               </thead>
               <% total_parcent = 0 %>
@@ -80,15 +78,15 @@
                       <% total_mark = 0 %>
                       <% full_mark = 0 %>
                       
-                      <td class="col-2"><b><%= subjects['name'] %></b></td>
+                      <td  class="col-pdf1" class="col-pdf1"><b><%= subjects['name'] %></b></td>
                       <% unless @report_data['report']['exams'].blank? %>  
                         <% @report_data['report']['exams'].each do |report| %>
                           <td  style="padding:0px;">
                                
-                            <table>
+                              <table id="pdf-table" >
                                 
-                                <tr>
-                                    <td style="width:50%;">
+                               <tr class="table-header">
+                                    <td  class="col-pdf1" style="width:50%;">
                                       <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
                                         <%= report['result'][report['exam_id']][subjects['id']]['full_mark'] %>
                                         <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
@@ -96,7 +94,7 @@
                                         N/A
                                       <% end %>  
                                     </td>
-                                    <td style="width:50%;">
+                                    <td  class="col-pdf1" style="width:50%;">
                                       <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                                         <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %>
                                         <% total_mark = total_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
@@ -131,17 +129,17 @@
                       %>
                       <% main_mark = (total_mark.to_f/full_mark.to_f)*100 %>
                           
-                      <td class="col-2"><b><%= total_mark %></b></td>
-                      <td class="col-2"><b><%= sprintf( "%0.02f", main_mark) %> %</b></td>
-                      <td class="col-2"><b><%= sprintf( "%0.02f", heighst_mark)   %> %</b></td>
+                      <td class="col-pdf1"><b><%= total_mark %></b></td>
+                      <td class="col-pdf1"><b><%= sprintf( "%0.02f", main_mark) %> %</b></td>
+                      <td class="col-pdf1"><b><%= sprintf( "%0.02f", heighst_mark)   %> %</b></td>
                       <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                       
                       <% if !grade.blank? and !grade.name.blank? and !grade.credit_points.blank? %>
-                      <td class="col-2"><b><%= grade.name %></b></td>
-                      <td class="col-2"><b><%= grade.credit_points %></b></td>
+                      <td class="col-pdf1"><b><%= grade.name %></b></td>
+                      <td class="col-pdf1"><b><%= grade.credit_points %></b></td>
                       <% else %>
-                      <td class="col-2"><b>-</b></td>
-                      <td class="col-2"><b>-</b></td>
+                      <td class="col-pdf1"><b>-</b></td>
+                      <td class="col-pdf1"><b>-</b></td>
                       <% end %>
                       
                       <% total_parcent= total_parcent+main_mark %>
@@ -155,17 +153,17 @@
           
           
           <% avgparcent = total_parcent.to_f/total_subject.to_f %>
-          <table id="listing table-design" style="margin-top:10px;">
-              <tr>
-                  <td>Total Number Of Days : <%= @report_data['total'] %> </td>
-                  <td>Days Present : <%= @report_data['present'] %></td>
-                  <td>Average Marks : <%= sprintf( "%0.02f",avgparcent) %> % </td>
+           <table id="pdf-table"  width="100%"  style="margin-top:10px;">
+              <tr class="table-header">
+                  <td  class="col-pdf1">Total Number Of Days : <%= @report_data['total'] %> </td>
+                  <td  class="col-pdf1">Days Present : <%= @report_data['present'] %></td>
+                  <td  class="col-pdf1">Average Marks : <%= sprintf( "%0.02f",avgparcent) %> % </td>
                   <%  grade = GradingLevel.percentage_to_grade(avgparcent, @batch.id) %>
                   
                   <% if !grade.blank?  and !grade.credit_points.blank? %>
-                  <td>CGPA : <%= grade.credit_points %> </td>
+                  <td  class="col-pdf1">CGPA : <%= grade.credit_points %> </td>
                   <% else %>
-                  <td >-</td>
+                  <td  class="col-pdf1" >-</td>
                   <% end %>    
                   
                 
@@ -175,7 +173,7 @@
           
           
           <% unless @report_data['report']['no_exam_subject_resutl'].blank? %>
-            <table id="listing table-design" style="margin-top:20px;">
+            <table id="pdf-table"  width="100%" style="margin-top:20px;">
                 <% 
                   iloop = 1
                   cloop = 1
@@ -190,9 +188,9 @@
                         <tr>
                     <% cloop = 1 %>        
                     <%  end %> 
-                        <td   width="6%"><%= iloop %></td>
-                        <td   width="23%"><%= report['subject_name'] %></td>
-                        <td   width="23%"><%= report['subject_comment'] %></td>
+                        <td   class="col-pdf1"   width="6%"><%= iloop %></td>
+                        <td   class="col-pdf1"   width="23%"><%= report['subject_name'] %></td>
+                        <td   class="col-pdf1"   width="23%"><%= report['subject_comment'] %></td>
                     <% iloop = iloop+1 %> 
                     <% cloop = cloop+1 %>
                 <% end %>

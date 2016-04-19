@@ -1840,7 +1840,9 @@ class ExamController < ApplicationController
       end  
     else
       @connect_exam = params[:student][:connect_exam]
-    end  
+    end 
+    
+    @connect_exam_obj = ExamConnect.find(@connect_exam)
     
     @previous_batch = 0
     if params[:student].nil? or !params[:student][:class_name].nil?
@@ -1977,6 +1979,8 @@ class ExamController < ApplicationController
     else
       @connect_exam = params[:student][:connect_exam]
     end 
+    
+    @connect_exam_obj = ExamConnect.find(@connect_exam)
     
     if params[:student].nil?
       @type = params[:type]

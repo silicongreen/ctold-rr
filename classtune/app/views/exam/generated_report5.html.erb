@@ -17,25 +17,26 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 
-<div id="content-header">
-<%= show_header_icon %>
-  <h1><%= t('exams_text') %></h1>
-<div class='header-sep'>|</div>
-<div class='sub-header'><%= t('grouped_exam_reports') %></div>
-<div id="inner-tab-menu">
-  <ul>
-    <% unless @previous_batch == 1 %>
-      <%  if permitted_to? :combined_grouped_exam_report_pdf,:exam %>
-        <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('pdf_report')}",
-            {:controller => "exam", :action => "combined_grouped_exam_report_pdf", :type => @type, :batch => @batch.id},:target => '_blank' %></li>
-      <% end %>
-    <% end %>
-  </ul>
-</div>
-</div>
-<div id="page-yield">
+<div class="header-wrapper">
+    <div class="header-title" style="width:68%;">
+      <div class="header-icon"  style="width:12%;">
+        <%= image_tag '/images/icons/report-card.png', :html => {:alt => 'Report'} %>
+      </div>
+      <div class="header-title-text-wrapper">
+        <div class="header-title-main-text f2">
+          <%= @connect_exam_obj.name  %> Report
+        </div>
+        <div class="header-title-sub-text">
+          <%= Time.now.strftime("%B, %Y") %>
+        </div>
+      </div>
+    </div>
+   </div>
+  
+<div id="page-yield" style="margin:10px 0">
+       
   <% unless @current_user.student? or @current_user.parent? %>
-          <div class="bread_crumb">
+          <div class="bread_crumb" style="margin-bottom:10px;">
             <%= link_to t('exam_text'), :controller => "exam", :action=>"index" %> <div class = "bread-crumb-separator"> > </div>
             <%= link_to t('report_center'), :controller => "exam", :action => "report_center" %> <div class = "bread-crumb-separator"> > </div>
             <%= link_to t('grouped_exam_reports'), :controller => "exam", :action => "grouped_exam_report_new" %> <div class = "bread-crumb-separator"> > </div>
@@ -52,7 +53,7 @@
   </div>
   <% end %>
   <% unless @previous_batch == 1 %>
-  <div class ="current_batch">
+  <div class ="current_batch" style="margin-top:-10px;">
   <div id="grouped_exam_report">
     <%= render :partial=>'grouped_exam_report_new' %>
   </div>
@@ -68,7 +69,13 @@
 <%#*</div>%>
 
 </div>
+<% content_for :head do %>
+  <%= javascript_include_tag "swfobject" %>
+  <%= javascript_include_tag "custom/tabbed-header" %>
+<% end %>
 
+<%= stylesheet_link_tag 'tadded-header' %>
+<%= stylesheet_link_tag 'inline-calendar' %>
 <script type="text/javascript">
   function set_active(){
     $$('.active-link').each(function(e){

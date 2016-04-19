@@ -17,17 +17,18 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 
-<div id="page-yield">
 
-    <h4 align="center"><%= @connect_exam_obj.name+" Report : " %><%= Time.now.strftime("%B, %Y") %></h4>
-    <h4 align="center"><%= @student.full_name %> (<%= @batch.name %> - <%= @batch.course.full_name %>)</h4>
+<% unless @report_data.blank? %>
+  <div id="page-yield">
+
+      <h4 align="center"><%= @connect_exam_obj.name+" Report : " %><%= Time.now.strftime("%B, %Y") %></h4>
+      <h4 align="center"><%= @student.full_name %> (<%= @batch.name %> - <%= @batch.course.full_name %>)</h4>
 
 
-    <div class ="current_batch" style="margin-left:0px;">
-        <div id="grouped_exam_report">
-            <% unless @report_data.blank? %>
+      <div class ="current_batch" style="margin-left:0px;">
+          <div id="grouped_exam_report">
               <h4 align="center">Summative Assessment Report</h4>
-                 
+
               <div class="CSSTableGenerator">
 
                   <table id="listing table-design"  width="100%">
@@ -164,6 +165,7 @@
 
 
                   <% unless @report_data['report']['no_exam_subject_resutl'].blank? %>
+                  <div id="page-yield">
                     <div class="section2 row" >
                         <center>
                             <div class="hor_line"></div>
@@ -197,17 +199,18 @@
                             <% end %>
 
                     </table>
+                  </div>
                   <% end %>
 
               </div>
 
-
-
-            <% end %>
-            <%= stylesheet_link_tag 'list_table' %>
-        </div>
-    </div>
+          </div>
+      </div>
 
 
 
-</div>
+  </div>
+
+<% end %>
+<%= stylesheet_link_tag 'list_table' %>
+

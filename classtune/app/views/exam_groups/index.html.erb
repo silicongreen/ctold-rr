@@ -40,6 +40,7 @@
     <%  if permitted_to? :grouping,:exam %>
       <% unless @is_class_exam %>   
       <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('connect_exams')}", :controller=>'exam', :action=>'grouping', :id=>@batch %></li>
+      <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('connect_exams')}", :controller=>'exam', :action=>'exam_connect_list', :id=>@batch %></li>
       <% end %>
     <% end %>
   </ul>

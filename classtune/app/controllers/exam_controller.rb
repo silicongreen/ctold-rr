@@ -481,6 +481,96 @@ class ExamController < ApplicationController
     
     render :pdf => 'exam_schedule_pdf'
   end
+  def exam_connect_list
+    @batch = Batch.find(params[:id])
+    @exam_connect_data = ExamConnect.find_all_by_batch_id(@batch.id)
+  end
+  def new_exam_connect
+    @batch = Batch.find(params[:id])
+    @exam_groups = ExamGroup.find_all_by_batch_id(@batch.id)
+    @exam_groups.reject!{|e| e.exam_type=="Grades"}
+    
+    if request.post?
+      #abort params.inspect
+      unless params[:exam_grouping].nil?
+        unless params[:exam_grouping][:exam_group_ids].nil?
+          weightages = params[:weightage]
+          total = 0
+          weightages.map{|w| total+=w.to_f}          
+          unless total=="100".to_f
+            flash[:notice]="#{t('flash9')}"
+            return
+          else
+            if params[:exam_grouping][:name].nil?
+              flash[:notice]="#{t('flash25')}"
+              return
+            else
+              @exam_connect  = ExamConnect.create(:name => params[:exam_grouping][:name], :batch_id => params[:id], :school_id => 12345)
+              @exam_connect_id = @exam_connect.id
+                            
+              exam_group_ids = params[:exam_grouping][:exam_group_ids]
+              exam_group_ids.each_with_index do |e,i|
+                GroupedExam.create(:exam_group_id=>e,:batch_id=>@batch.id, :exam_connect_id => @exam_connect_id,:weightage=>weightages[i])
+              end
+            end            
+          end
+        end      
+      end
+      flash[:notice]="#{t('flash1')}"
+      redirect_to :controller=>"exam", :action=>"exam_connect_list", :id=>@batch.id
+    end
+  end
+  
+  def edit_exam_connect
+    @exam_connect = ExamConnect.find_by_id(params[:id])        
+    @batch = Batch.find(@exam_connect.batch_id)
+    @exam_groups = ExamGroup.find_all_by_batch_id(@exam_connect.batch_id)
+    @exam_groups.reject!{|e| e.exam_type=="Grades"}
+    
+    if request.post? 
+      #abort params.inspect
+      unless params[:exam_grouping].nil?
+        unless params[:exam_grouping][:exam_group_ids].nil?
+          weightages = params[:weightage]
+          total = 0
+          weightages.map{|w| total+=w.to_f}          
+          unless total=="100".to_f
+            flash[:notice]="#{t('flash9')}"
+            return
+          else
+            if params[:exam_grouping][:name].nil?
+              flash[:notice]="#{t('flash25')}"
+              return
+            else              
+              @exam_connect.update_attributes(:name=> params[:exam_grouping][:name])
+                     
+              @exam_connect_id = @exam_connect.id
+              
+              GroupedExam.delete_all(:exam_connect_id=>@exam_connect_id)              
+              exam_group_ids = params[:exam_grouping][:exam_group_ids]
+              exam_group_ids.each_with_index do |e,i|
+                GroupedExam.create(:exam_group_id=>e,:batch_id=>@batch.id, :exam_connect_id => @exam_connect_id,:weightage=>weightages[i])
+              end
+            end            
+          end
+        end
+      else
+        GroupedExam.delete_all(:exam_connect_id=>@exam_connect_id)
+      end
+      flash[:notice]="#{t('flash1')}"
+      redirect_to :controller=>"exam", :action=>"exam_connect_list", :id=>@batch.id
+    end
+    
+  end
+  
+  def remove_exam_connect    
+    @exam_connect = ExamConnect.find_by_id(params[:id])    
+    #abort @exam_connect.inspect
+    @batch_id = @exam_connect.batch_id
+    @exam_connect.delete
+    flash[:notice] = "#{t('flash26')}"
+    redirect_to :controller=>"exam", :action=>"exam_connect_list", :id=>@batch_id
+  end
   
   def grouping
     @batch = Batch.find(params[:id])

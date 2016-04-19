@@ -661,8 +661,6 @@ en: # locale
   monthly_payslip: "Monthly payslip"
   personal_details: "Personal Details"
   attendance_register: "Attendance Register"
-  attendance_intelligence: "Attendance Intelligence"
-  homework_intelligence: "Homework Intelligence"
   attendance_report: "Attendance Report"
   approve_payslip: "Approve Payslip"
   view_all: "View all"
@@ -804,6 +802,8 @@ en: # locale
   class_average: "Class Average"
   grouped_exam_reports: "Grouped exam Reports"
   connect_exams: "Connect Exams"
+  connect_exams_new: "New Connect Exams"
+  connect_exams_edit: "Edit Connect Exams"
   additional_exams_text: "Additional Exams"
   edit_exam_group: "Edit Exam Group"
   edit_exam: "Edit Exam"
@@ -1854,6 +1854,9 @@ en: # locale
   exam_results_entry: "Exam results entry"
   exam_wise_report: "Exam Wise Report"
   grouping: "Grouping"
+  new_grouping: "New Exam Connect Group"
+  edit_grouping: "Edit Exam Connect Group"
+  new_grouping_name: "Connect Group Name"
   exam_scheduled: "Exam Scheduled"
   reminder_notice: "New Notice"
   create_a_new_exam_and_enter_result: "Create new exams, enter results."
@@ -2636,6 +2639,8 @@ en: # locale
     flash22: "Select a Batch and atleast one option to continue."
     flash23: "Invalid Marks. Please generate this report after adding valid Marks for the Ranking Level."
     flash24: "Invalid GPA. Please generate this report after adding valid GPA Level for the Ranking Level"
+    flash25: "Connect Exam Group Name Needed."
+    flash26: "Connect Exam Group is deleted."
 
 # exams controller
   exams:

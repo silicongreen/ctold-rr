@@ -24,6 +24,7 @@ class Exam < ActiveRecord::Base
   belongs_to :subject, :conditions => { :is_deleted => false }
   before_destroy :removable?
   before_save :update_exam_group_date
+  
 
   has_one :event ,:as=>:origin
 

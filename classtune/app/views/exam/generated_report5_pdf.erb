@@ -43,17 +43,17 @@
                                   <% unless @report_data['report']['exams'].blank? %>  
                                     <% @report_data['report']['exams'].each do |report| %>
                                       <th style="padding:0px;">
-                              <table>
-                                  <tr>
-                                      <td colspan="2"><%= report['exam_name'] %></td>
-                                  </tr>
-                                  <tr>
-                                      <td width="50%" style="width:50%;">Full Marks</td>
-                                      <td  width="50%"  style="width:50%;">Your Marks</td>
-                                  </tr>
+                                            <table>
+                                                <tr>
+                                                    <td colspan="2"><%= report['exam_name'] %></td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="50%" style="width:50%;">Full Marks</td>
+                                                    <td  width="50%"  style="width:50%;">Your Marks</td>
+                                                </tr>
 
-                              </table>
-                              </th> 
+                                            </table>
+                                      </th> 
                             <% end %>
                           <% end %>
 
@@ -149,20 +149,22 @@
 
                       <% avgparcent = total_parcent.to_f/total_subject.to_f %>
                       <table id="listing table-design"  width="100%"  style="margin-top:10px;">
-                          <tr>
-                              <td>Total Number Of Days : <%= @report_data['total'] %> </td>
-                              <td>Days Present : <%= @report_data['present'] %></td>
-                              <td>Average Marks : <%= sprintf( "%0.02f",avgparcent) %> % </td>
-                              <%  grade = GradingLevel.percentage_to_grade(avgparcent, @batch.id) %>
+                          <thead>
+                            <tr>
+                                <th>Total Number Of Days : <%= @report_data['total'] %> </th>
+                                <th>Days Present : <%= @report_data['present'] %></th>
+                                <th>Average Marks : <%= sprintf( "%0.02f",avgparcent) %> % </th>
+                                <%  grade = GradingLevel.percentage_to_grade(avgparcent, @batch.id) %>
 
-                              <% if !grade.blank?  and !grade.credit_points.blank? %>
-                                <td>CGPA : <%= grade.credit_points %> </td>
-                              <% else %>
-                                <td >-</td>
-                              <% end %>    
+                                <% if !grade.blank?  and !grade.credit_points.blank? %>
+                                  <th>CGPA : <%= grade.credit_points %> </th>
+                                <% else %>
+                                  <th >-</th>
+                                <% end %>    
 
 
-                          </tr>  
+                            </tr> 
+                          </thead>  
 
                       </table>
 

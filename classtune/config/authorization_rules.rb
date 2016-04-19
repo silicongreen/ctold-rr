@@ -87,8 +87,12 @@ authorization do
       :generated_report2,
       :generated_report2_pdf,
       :grouped_exam_report,
+      :grouped_exam_report_new,
       :final_report_type,
+      :final_report_type_new,
       :generated_report4,
+      :generated_report5,
+      :generated_report5_pdf,
       :generated_report4_pdf,
       :combined_grouped_exam_report_pdf
     ]
@@ -389,8 +393,12 @@ authorization do
       :generated_report2,
       :generated_report2_pdf,
       :grouped_exam_report,
+      :grouped_exam_report_new,
       :final_report_type,
+      :final_report_type_new,
       :generated_report4,
+      :generated_report5,
+      :generated_report5_pdf,
       :generated_report4_pdf,
       :combined_grouped_exam_report_pdf
     ]
@@ -510,8 +518,12 @@ authorization do
       :generated_report2,
       :generated_report2_pdf,
       :grouped_exam_report,
+      :grouped_exam_report_new,
       :final_report_type,
+      :final_report_type_new,
       :generated_report4,
+      :generated_report5,
+      :generated_report5_pdf,
       :generated_report4_pdf,
       :combined_grouped_exam_report_pdf
     ]
@@ -672,6 +684,8 @@ authorization do
       :generated_report_all_subject,
       :generated_report3_pdf,
       :generated_report4,
+      :generated_report5,
+      :generated_report5_pdf,
       :generated_report4_pdf,
       :combined_grouped_exam_report_pdf,
       :graph_for_generated_report,
@@ -772,6 +786,8 @@ authorization do
       :generated_report_all_subject,
       :generated_report3_pdf,
       :generated_report4,
+      :generated_report5,
+      :generated_report5_pdf,
       :generated_report4_pdf,
       :combined_grouped_exam_report_pdf,
       :graph_for_generated_report,
@@ -1835,7 +1851,10 @@ authorization do
       :generated_report3,
       :generated_report_all_subject,
       :final_report_type,
+      :final_report_type_new,
       :generated_report4,
+      :generated_report5,
+      :generated_report5_pdf,
       :generated_report4_pdf,
       :combined_grouped_exam_report_pdf,
       :previous_years_marks_overview,
@@ -1856,6 +1875,7 @@ authorization do
       :graph_for_generated_report_all_subject,
       :graph_for_previous_years_marks_overview,
       :grouped_exam_report,
+      :grouped_exam_report_new,
       :student_wise_generated_report,
       :exam_schedule_pdf
     ]
@@ -2670,7 +2690,7 @@ authorization do
   role :student do
     includes :open
     has_permission_on [:course], :to => [:view]
-    has_permission_on [:exam], :to => [:student_wise_generated_report,:generated_report, :generated_report4_pdf, :graph_for_generated_report, :academic_report, :previous_years_marks_overview,:previous_years_marks_overview_pdf, :graph_for_previous_years_marks_overview, :generated_report3,:generated_report_all_subject, :graph_for_generated_report3 ,:graph_for_generated_report_all_subject,:generated_report4,:student_transcript,:student_transcript_pdf,:student_exam_schedule,:student_exam_schedule_view, :exam_schedule_pdf]
+    has_permission_on [:exam], :to => [:student_wise_generated_report,:generated_report, :generated_report4_pdf, :generated_report5_pdf, :generated_report5, :graph_for_generated_report, :academic_report, :previous_years_marks_overview,:previous_years_marks_overview_pdf, :graph_for_previous_years_marks_overview, :generated_report3,:generated_report_all_subject, :graph_for_generated_report3 ,:graph_for_generated_report_all_subject,:generated_report4,:student_transcript,:student_transcript_pdf,:student_exam_schedule,:student_exam_schedule_view, :exam_schedule_pdf]
     has_permission_on [:student],
       :to => [
       :exam_report,
@@ -2744,7 +2764,7 @@ authorization do
     includes :open
     has_permission_on [:course], :to => [:view]
     has_permission_on [:meetings], :to => [:index,:inbox,:outbox, :new, :create, :edit, :update, :show, :destroy, :employees_list]
-    has_permission_on [:exam], :to => [:student_wise_generated_report,:generated_report, :generated_report4_pdf , :graph_for_generated_report, :academic_report, :previous_years_marks_overview,:previous_years_marks_overview_pdf, :graph_for_previous_years_marks_overview, :generated_report3,:generated_report_all_subject, :graph_for_generated_report3 ,:graph_for_generated_report_all_subject,:generated_report4,:student_transcript,:student_transcript_pdf,:student_exam_schedule,:student_exam_schedule_view,:exam_schedule_pdf]
+    has_permission_on [:exam], :to => [:student_wise_generated_report,:generated_report, :generated_report4_pdf, :generated_report5_pdf, :generated_report5 , :graph_for_generated_report, :academic_report, :previous_years_marks_overview,:previous_years_marks_overview_pdf, :graph_for_previous_years_marks_overview, :generated_report3,:generated_report_all_subject, :graph_for_generated_report3 ,:graph_for_generated_report_all_subject,:generated_report4,:student_transcript,:student_transcript_pdf,:student_exam_schedule,:student_exam_schedule_view,:exam_schedule_pdf]
     has_permission_on [:timetable], :to => [:student_view, :update_student_tt, :student_timetable_pdf]
     has_permission_on [:student],
       :to => [
@@ -2980,9 +3000,13 @@ authorization do
       :generated_report2,
       :generated_report2_pdf,
       :grouped_exam_report,
+      :grouped_exam_report_new,
       :final_report_type,
+      :final_report_type_new,
       :generated_report4,
+      :generated_report5,
       :generated_report4_pdf,
+      :generated_report5_pdf,
       :combined_grouped_exam_report_pdf,
       :exam_schedule_pdf
     ] do
@@ -3118,8 +3142,12 @@ authorization do
       :generated_report2,
       :generated_report2_pdf,
       :grouped_exam_report,
+      :grouped_exam_report_new,
       :final_report_type,
+      :final_report_type_new,
       :generated_report4,
+      :generated_report5,
+      :generated_report5_pdf,
       :generated_report4_pdf,
       :combined_grouped_exam_report_pdf
     ] do
@@ -3211,8 +3239,12 @@ authorization do
       :generated_report2,
       :generated_report2_pdf,
       :grouped_exam_report,
+      :grouped_exam_report_new,
       :final_report_type,
+      :final_report_type_new,
       :generated_report4,
+      :generated_report5,
+      :generated_report5_pdf,
       :generated_report4_pdf,
       :combined_grouped_exam_report_pdf
     ]

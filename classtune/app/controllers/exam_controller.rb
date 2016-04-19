@@ -1657,7 +1657,62 @@ class ExamController < ApplicationController
       "/exam/graph_for_generated_report_all_subject?student=#{@student.id}&exam_type=#{@exam_type}")
   end
   
-  
+  def final_report_type_new
+    if params[:batch_id].nil?
+      batch_name = ""
+      if Batch.active.find(:all, :group => "name").length > 1
+        unless params[:student].nil?
+          unless params[:student][:batch_name].nil?
+            batch_id = params[:student][:batch_name]
+            batches_data = Batch.find_by_id(batch_id)
+            batch_name = batches_data.name
+          end
+        end
+      else
+        batches = Batch.active
+        batch_name = batches[0].name
+      end
+      course_id = 0
+      unless params[:course_id].nil?
+        course_id = params[:course_id]
+      end
+      if course_id == 0
+        unless params[:student].nil?
+          unless params[:student][:section].nil?
+            course_id = params[:student][:section]
+          end
+        end
+      end
+
+      @batch_data = Rails.cache.fetch("course_data_#{course_id}_#{batch_name}_#{current_user.id}"){
+        if batch_name.length == 0
+          batches = Batch.find_by_course_id(course_id)
+        else
+          batches = Batch.find_by_course_id_and_name(course_id, batch_name)
+        end
+        batches
+      }
+      @batch_id = 0
+      unless @batch_data.nil?
+        @batch_id = @batch_data.id 
+      end
+    else
+      batch = Batch.find(params[:batch_id])
+      @batch_id = batch.id
+    end
+    batch = Batch.find(@batch_id)
+    if params[:for_batch_rank].nil?
+      @grouped_exams = GroupedExam.find_all_by_batch_id(batch.id)
+    else
+      @for_batch_rank = params[:for_batch_rank]
+    end 
+    
+    @all_connect_exam = ExamConnect.find_all_by_batch_id(batch.id);
+    
+    render(:update) do |page|
+      page.replace_html 'report_type',:partial=>'report_type_new'
+    end
+  end
   
   
 
@@ -1746,6 +1801,89 @@ class ExamController < ApplicationController
     @batches = Batch.active
     @exam_groups = []
   end
+  
+  def grouped_exam_report_new
+    @classes = []
+    @batches = []
+    @batch_no = 0
+    @course_name = ""
+    @courses = []
+    if Batch.active.find(:all, :group => "name").length == 1
+      batches = Batch.active
+      batch_name = batches[0].name
+      batches = Batch.find(:all, :conditions => ["name = ?", batch_name]).map{|b| b.course_id}
+      @courses = Course.find(:all, :conditions => ["id IN (?)", batches], :group => "course_name", :select => "course_name", :order => "cast(replace(course_name, 'Class ', '') as SIGNED INTEGER) asc")
+    end
+    @batches = Batch.active
+    @exam_groups = []
+  end
+  
+  def generated_report5
+    if params[:student].nil? or !params[:student][:class_name].nil?
+      if params[:exam_report].nil? or params[:exam_report][:batch_id].empty?
+        flash[:notice] = "#{t('select_a_batch_to_continue')}"
+        redirect_to :action=>'grouped_exam_report_new' and return
+      end
+    else
+      if params[:type].nil?
+        flash[:notice] = "#{t('invalid_parameters')}"
+        redirect_to :action=>'grouped_exam_report_new' and return
+      end
+    end
+    
+    if params[:student].nil?  or params[:student][:connect_exam].blank? 
+      if params[:connect_exam].blank? 
+       flash[:notice] = "Select A Combined Exam Please"
+       redirect_to :action=>'grouped_exam_report_new' and return
+      else
+        @connect_exam = params[:connect_exam]
+      end  
+    else
+      @connect_exam = params[:student][:connect_exam]
+    end  
+    
+    @previous_batch = 0
+    if params[:student].nil? or !params[:student][:class_name].nil?
+      @type = params[:type]
+      @batch = Batch.find(params[:exam_report][:batch_id])
+      @students=@batch.students.by_first_name
+      @student = @students.first  unless @students.empty?
+      if @student.blank?
+        flash[:notice] = "#{t('flash5')}"
+        redirect_to :action=>'grouped_exam_report_new' and return
+      end
+      
+      get_exam_report(@connect_exam,@student.id,@batch.id)
+      @report_data = []
+      if @student_response['status']['code'].to_i == 200
+        @report_data = @student_response['data']
+      end
+      
+    else
+      @student = Student.find(params[:student])
+      if params[:batch].present?
+        @batch = Batch.find(params[:batch])
+        @previous_batch = 1
+      else
+        @batch = @student.batch
+      end
+      @type  = params[:type]
+      
+      get_exam_report(@connect_exam,@student.id,@batch.id)
+      @report_data = []
+      if @student_response['status']['code'].to_i == 200
+        @report_data = @student_response['data']
+      end
+      
+      if request.xhr?
+        render(:update) do |page|
+          page.replace_html   'grouped_exam_report', :partial=>"grouped_exam_report_new"
+        end
+      else
+        @students = Student.find_all_by_id(params[:student])
+      end
+    end
+  end
 
   def generated_report4
     if params[:student].nil? or !params[:student][:class_name].nil?
@@ -1826,6 +1964,56 @@ class ExamController < ApplicationController
 
 
   end
+  
+  def generated_report5_pdf
+    #grouped-exam-report-for-batch
+    if params[:student].nil?  or params[:student][:connect_exam].blank? 
+      if params[:connect_exam].blank? 
+       flash[:notice] = "Select A Combined Exam Please"
+       redirect_to :action=>'grouped_exam_report_new' and return
+      else
+        @connect_exam = params[:connect_exam]
+      end  
+    else
+      @connect_exam = params[:student][:connect_exam]
+    end 
+    
+    if params[:student].nil?
+      @type = params[:type]
+      @batch = Batch.find(params[:exam_report][:batch_id])
+      @student = @batch.students.first
+      if @student.blank?
+        flash[:notice] = "#{t('flash5')}"
+        redirect_to :action=>'grouped_exam_report_new' and return
+      end
+      
+      get_exam_report(@connect_exam,@student.id,@batch.id)
+      @report_data = []
+      if @student_response['status']['code'].to_i == 200
+        @report_data = @student_response['data']
+      end
+    else
+      @student = Student.find(params[:student])
+      @batch = Batch.find_by_id(params[:batch_id])
+      if @student.blank?
+        flash[:notice] = "#{t('flash5')}"
+        redirect_to :action=>'grouped_exam_report_new' and return
+      end
+      
+      get_exam_report(@connect_exam,@student.id,@batch.id)
+      @report_data = []
+      if @student_response['status']['code'].to_i == 200
+        @report_data = @student_response['data']
+      end
+      
+    end
+    render :pdf => 'generated_report5_pdf',
+      :orientation => 'Landscape', :zoom => 0.68
+   
+
+  end
+  
+  
   def generated_report4_pdf
     #grouped-exam-report-for-batch
     if params[:student].nil?
@@ -2567,6 +2755,35 @@ class ExamController < ApplicationController
     chart.add_element(line)
 
     render :text => chart.to_s
+  end
+  
+  private
+  
+  def get_exam_report(connect_exam_id,student_id,batch_id)
+    require 'net/http'
+    require 'uri'
+    require "yaml"
+    
+
+    
+ 
+    champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
+    api_endpoint = champs21_api_config['api_url']
+
+    if current_user.employee? or current_user.admin?
+      api_uri = URI(api_endpoint + "api/report/groupedexamreport")
+      http = Net::HTTP.new(api_uri.host, api_uri.port)
+      request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })
+     
+     
+          request.set_form_data({"connect_exam_id"=>connect_exam_id,"student_id"=>student_id,"batch_id"=>batch_id,"call_from_web"=>1,"user_secret" =>session[:api_info][0]['user_secret']})
+    
+     
+      response = http.request(request)
+      @student_response = JSON::parse(response.body)
+    end
+    
+    @student_response
   end
 
 end

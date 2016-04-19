@@ -25,22 +25,12 @@
             <h3><%= @connect_exam_obj.name+" Report : " %><%= Time.now.strftime("%B, %Y") %></h3>
         </center>
     </div>
-    <div class="section1 row">
-        <center>
-            <div id ="main_info">
-                <div class="info1">
-                    <div class="info-left">
-                        <h4>  <%= @student.full_name %> (<%= @batch.full_name %>) </h4>
-                    </div>
-                </div>
-            </div>
-        </center>
-    </div>
+    
 
     <div id="page-yield" style="margin:10px 0">
 
 
-        <h4 align="center"><%= @batch.name %> - <%= @batch.course.full_name %></h4>
+        <h4 align="center"><%= @student.full_name %> (<%= @batch.name %> - <%= @batch.course.full_name %>)</h4>
 
 
         <div class ="current_batch" style="margin-left:0px;">

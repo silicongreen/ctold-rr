@@ -19,17 +19,9 @@
 
 <div id="page-yield" class="available_sections1">
     <div class="page1"></div>
-    <div class="section1 row" >
-        <center>
-            <div class="hor_line"></div>
-            <h3><%= @connect_exam_obj.name+" Report : " %><%= Time.now.strftime("%B, %Y") %></h3>
-        </center>
-    </div>
-    
-
     <div id="page-yield" style="margin:10px 0">
 
-
+        <h4 align="center"><%= @connect_exam_obj.name+" Report : " %><%= Time.now.strftime("%B, %Y") %></h4>
         <h4 align="center"><%= @student.full_name %> (<%= @batch.name %> - <%= @batch.course.full_name %>)</h4>
 
 

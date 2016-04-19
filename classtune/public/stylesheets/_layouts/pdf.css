@@ -10,7 +10,10 @@ body{
     margin: 0 auto;
     overflow: hidden;
 }
-
+.header_font
+{
+    font-size:15px;
+}
 .logo{
     height: 120px;
     width:120px;

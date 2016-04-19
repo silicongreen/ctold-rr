@@ -22,7 +22,7 @@
   <div class="section1 row" >
     <center>
       <div class="hor_line"></div>
-      <h3><%= @connect_exam_obj.name+" Report : "+@batch.full_name %></h3>
+      <h3><%= @connect_exam_obj.name+" Report : " %><%= Time.now.strftime("%B, %Y") %></h3>
     </center>
   </div>
   <div class="section1 row">
@@ -30,10 +30,17 @@
       <div id ="main_info">
         <div class="info1">
             <div class="info-left">
-              <h4>  <%= @student.full_name %> </h4>
+              <h4>  <%= @student.full_name %> (<%= @batch.full_name %>) </h4>
             </div>
         </div>
       </div>
+    </center>
+  </div>
+  
+  <div class="section1 row" >
+    <center>
+      <div class="hor_line"></div>
+      <h3>Summative Assessment Report</h3>
     </center>
   </div>
   
@@ -173,6 +180,12 @@
           
           
           <% unless @report_data['report']['no_exam_subject_resutl'].blank? %>
+          <div class="section1 row" >
+            <center>
+              <div class="hor_line"></div>
+              <h3>Cumulative Assessment Record</h3>
+            </center>
+          </div>
             <table id="pdf-table"  width="100%" style="margin-top:20px;">
                 <% 
                   iloop = 1

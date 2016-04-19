@@ -13,7 +13,10 @@
         border-right: 1px solid #d7dbdd;
         padding: 3px;
         text-align: center;
-        font-size: 14px;
+        font-size: 12px;
+    }
+    .CSSTableGenerator table  td {
+        font-size: 12px;
     }
 
     .CSSTableGenerator table#listing  td {

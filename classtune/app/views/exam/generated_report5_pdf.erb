@@ -60,8 +60,8 @@
                                     <td class="col-pdf1" colspan="2"><%= report['exam_name'] %></td>
                                 </tr>
                                 <tr>
-                                    <td class="col-pdf1" style="width:50%;">Full Marks</td>
-                                    <td class="col-pdf1" style="width:50%;">Your Marks</td>
+                                    <td class="col-pdf1" width="50%">Full Marks</td>
+                                    <td class="col-pdf1" width="50%">Your Marks</td>
                                 </tr>
                                 
                              </table>
@@ -93,7 +93,7 @@
                               <table id="pdf-table" >
                                 
                                <tr>
-                                    <td  class="col-pdf1" style="width:50%;">
+                                    <td  class="col-pdf1" width="50%">
                                       <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
                                         <%= report['result'][report['exam_id']][subjects['id']]['full_mark'] %>
                                         <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
@@ -101,7 +101,7 @@
                                         N/A
                                       <% end %>  
                                     </td>
-                                    <td  class="col-pdf1" style="width:50%;">
+                                    <td  class="col-pdf1" width="50%">
                                       <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                                         <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %>
                                         <% total_mark = total_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>

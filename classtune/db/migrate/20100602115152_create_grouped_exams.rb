@@ -3,6 +3,7 @@ class CreateGroupedExams < ActiveRecord::Migration
     create_table :grouped_exams do |t|
       t.references :exam_group
       t.references :batch
+      t.references :exam_connect
     end
   end
 

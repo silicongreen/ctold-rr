@@ -50,16 +50,16 @@
           
           <table id="pdf-table" width="100%">
               <thead>
-                  <tr class="table-header">
+                  <tr>
                       <td class="col-pdf1">Subject Name</td>
                       <% unless @report_data['report']['exams'].blank? %>  
                         <% @report_data['report']['exams'].each do |report| %>
                           <td class="col-pdf1">
                             <table id="pdf-table">
-                                <tr class="table-header">
+                                <tr>
                                     <td class="col-pdf1" colspan="2"><%= report['exam_name'] %></td>
                                 </tr>
-                                <tr class="table-header">
+                                <tr>
                                     <td class="col-pdf1" style="width:50%;">Full Marks</td>
                                     <td class="col-pdf1" style="width:50%;">Your Marks</td>
                                 </tr>
@@ -92,7 +92,7 @@
                                
                               <table id="pdf-table" >
                                 
-                               <tr class="table-header">
+                               <tr>
                                     <td  class="col-pdf1" style="width:50%;">
                                       <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
                                         <%= report['result'][report['exam_id']][subjects['id']]['full_mark'] %>
@@ -161,7 +161,7 @@
           
           <% avgparcent = total_parcent.to_f/total_subject.to_f %>
            <table id="pdf-table"  width="100%"  style="margin-top:10px;">
-              <tr class="table-header">
+              <tr>
                   <td  class="col-pdf1">Total Number Of Days : <%= @report_data['total'] %> </td>
                   <td  class="col-pdf1">Days Present : <%= @report_data['present'] %></td>
                   <td  class="col-pdf1">Average Marks : <%= sprintf( "%0.02f",avgparcent) %> % </td>

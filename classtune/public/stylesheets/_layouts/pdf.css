@@ -6,10 +6,9 @@ body{
 }
 #pdf-header{
     width:1250px;
-    padding-top: 30px;
+    padding-top: 20px;
     margin: 0 auto;
     overflow: hidden;
-    padding-bottom: 10px;
 }
 
 .logo{

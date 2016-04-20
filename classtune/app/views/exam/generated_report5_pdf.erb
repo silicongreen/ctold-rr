@@ -161,7 +161,8 @@
                           <tr>
                               <%#*<th>Total Number Of Days : <%= @report_data['total'] %>
                               <%#*<th>Days Present : <%= @report_data['present'] </th>%>
-                              <th>Total Number Of Days : 67</th>
+                              <th>Total Number Of Days :<%= @report_data['total'] %><th>
+                              <%#*<th>Total Number Of Days : 67</th>%>
                               <th>Days Present : <%= @report_data['present'] %> </th>
                               <th>Average Marks : <%= sprintf( "%0.02f",avgparcent) %> % </th>
                               <%  grade = GradingLevel.percentage_to_grade(avgparcent, @batch.id) %>

@@ -25,6 +25,7 @@
       </div>
       <div class="CSSTableGenerator" style="width: 97%;margin-top: 20px;">
           <p><%= "#{@student.full_name}" %></p>
+          <div style="width:100%; overflow:auto;">
           <table id="listing table-design">
               <thead>
                   <tr>
@@ -134,6 +135,7 @@
               <% end %>     
 
           </table>
+          </div>    
           
           
           <% avgparcent = total_parcent.to_f/total_subject.to_f %>

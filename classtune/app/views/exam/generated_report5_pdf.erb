@@ -18,7 +18,7 @@
 #under the License. -%>
 
 
-<% unless @report_data.blank? %>
+<% unless @report_data.blank?  or  @report_data['report'].blank? %>
   <div id="page-yield"  class="available_sections1">
 
       <h4 align="center"><%= @connect_exam_obj.name+" Report : " %><%= Time.now.strftime("%B, %Y") %></h4>

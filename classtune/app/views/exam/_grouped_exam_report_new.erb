@@ -141,8 +141,9 @@
           <% avgparcent = total_parcent.to_f/total_subject.to_f %>
           <table id="listing table-design" style="margin-top:10px;">
               <tr>
-                  <td>Total Number Of Days : <%= @report_data['total'] %> </td>
-                  <td>Days Present : <%= @report_data['present'] %></td>
+                  <%#*<td>Total Number Of Days : 67<%= @report_data['total'] %>
+                  <td>Total Number Of Days : 67</td>
+                  <%#*<td>Days Present : <%= @report_data['present'] %>
                   <td>Average Marks : <%= sprintf( "%0.02f",avgparcent) %> % </td>
                   <%  grade = GradingLevel.percentage_to_grade(avgparcent, @batch.id) %>
                   
@@ -158,7 +159,7 @@
           </table>
           
           
-          <% unless @report_data['report']['no_exam_subject_resutl'].blank? %>
+          <% unless @report_data['report']['no_exam_subject_resutl'].blank? || !@report_data['report']['no_exam_subject_resutl'].blank? %>
            <div class="section1 row" >
             <center>
               <div class="hor_line"></div>

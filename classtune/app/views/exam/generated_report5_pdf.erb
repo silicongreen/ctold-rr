@@ -146,8 +146,9 @@
                   <table id="listing table-design"  width="100%"  style="margin-top:10px;">
                       <thead>
                           <tr>
-                              <th>Total Number Of Days : <%= @report_data['total'] %> </th>
-                              <th>Days Present : <%= @report_data['present'] %></th>
+                              <%#*<th>Total Number Of Days : <%= @report_data['total'] %>
+                              <%#*<th>Days Present : <%= @report_data['present'] </th>%>
+                              <th>Total Number Of Days : 67</th>
                               <th>Average Marks : <%= sprintf( "%0.02f",avgparcent) %> % </th>
                               <%  grade = GradingLevel.percentage_to_grade(avgparcent, @batch.id) %>
 
@@ -165,7 +166,7 @@
 
 
 
-                  <% unless @report_data['report']['no_exam_subject_resutl'].blank? %>
+                  <% unless @report_data['report']['no_exam_subject_resutl'].blank? or !@report_data['report']['no_exam_subject_resutl'].blank? %>
                
                     <h4 align="center">Cumulative Assessment Record</h4>
 

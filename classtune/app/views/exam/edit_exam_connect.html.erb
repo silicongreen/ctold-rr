@@ -138,7 +138,7 @@
           <% total = 0 %>
           <% @exam_groups.each do |e| %>
             <tr class="tr-<%= cycle('odd', 'even') %>">
-              <% already_grouped = GroupedExam.find_by_exam_connect_id_and_exam_group_id(@exam_connect.id,e) %>
+              <% already_grouped = GroupedExam.find_by_connect_exam_id_and_exam_group_id(@exam_connect.id,e) %>
               <%#= debug  already_grouped.inspect  %>
               <% is_already_grouped = already_grouped.present? %>
               <td class="col-1"><%= check_box_tag "exam_grouping[exam_group_ids][]", e.id,is_already_grouped,{:class=>'right',:id=>"check#{i}",:onClick=>"set_weightage(this,#{count})"} %></td>

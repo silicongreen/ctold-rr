@@ -510,7 +510,7 @@ class ExamController < ApplicationController
                             
               exam_group_ids = params[:exam_grouping][:exam_group_ids]
               exam_group_ids.each_with_index do |e,i|
-                GroupedExam.create(:exam_group_id=>e,:batch_id=>@batch.id, :exam_connect_id => @exam_connect_id,:weightage=>weightages[i])
+                GroupedExam.create(:exam_group_id=>e,:batch_id=>@batch.id, :connect_exam_id => @exam_connect_id,:weightage=>weightages[i])
               end
             end            
           end
@@ -546,16 +546,16 @@ class ExamController < ApplicationController
                      
               @exam_connect_id = @exam_connect.id
               
-              GroupedExam.delete_all(:exam_connect_id=>@exam_connect_id)              
+              GroupedExam.delete_all(:connect_exam_id=>@exam_connect_id)              
               exam_group_ids = params[:exam_grouping][:exam_group_ids]
               exam_group_ids.each_with_index do |e,i|
-                GroupedExam.create(:exam_group_id=>e,:batch_id=>@batch.id, :exam_connect_id => @exam_connect_id,:weightage=>weightages[i])
+                GroupedExam.create(:exam_group_id=>e,:batch_id=>@batch.id, :connect_exam_id => @exam_connect_id,:weightage=>weightages[i])
               end
             end            
           end
         end
       else
-        GroupedExam.delete_all(:exam_connect_id=>@exam_connect_id)
+        GroupedExam.delete_all(:connect_exam_id=>@exam_connect_id)
       end
       flash[:notice]="#{t('flash1')}"
       redirect_to :controller=>"exam", :action=>"exam_connect_list", :id=>@batch.id

@@ -145,8 +145,8 @@
                   <td>Total Number Of Days : 67</td>
                   <%#*<td>Days Present : <%= @report_data['present'] %>
                   <td>Average Marks : <%= sprintf( "%0.02f",avgparcent) %> % </td>
-                  <%  grade = GradingLevel.percentage_to_grade(avgparcent, @batch.id) %>
-                  
+                  <%#  grade = GradingLevel.percentage_to_grade(avgparcent, @batch.id) %>
+                  <% grade = [] %>
                   <% if !grade.blank?  and !grade.credit_points.blank? %>
                   <td>CGPA : <%= grade.credit_points %> </td>
                   <% else %>

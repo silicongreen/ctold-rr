@@ -108,16 +108,21 @@
 
 
 
-                              <% main_mark = (total_mark.to_f/full_mark.to_f)*100 %>
+                              
 
                               <% 
-                              heighst_mark = 0
-                              if !@report_data['report']['max_mark'].blank? and !@report_data['report']['max_mark'][subjects['id']].blank?
-                                heighst_mark = (@report_data['report']['max_mark'][subjects['id']].to_f/full_mark.to_f)*100
+                                heighst_mark = 0
+                                if !@report_data['report']['max_mark'].blank? and !@report_data['report']['max_mark'][subjects['id']].blank?
+                                  heighst_mark = (@report_data['report']['max_mark'][subjects['id']].to_f/full_mark.to_f)*100
                                 end  
 
-                            %>
-                              <% main_mark = (total_mark.to_f/full_mark.to_f)*100 %>
+                                if total_mark.to_f>0 and full_mark.to_f>0
+                                  main_mark = (total_mark.to_f/full_mark.to_f)*100 
+                                else
+                                  main_mark = 0
+                                end  
+                             %>
+                             
 
                               <td class="col-2"><b><%= total_mark %></b></td>
                               <td class="col-2"><b><%= sprintf( "%0.02f", main_mark) %> %</b></td>

@@ -6,7 +6,7 @@ body{
 }
 #pdf-header{
     width:1250px;
-    padding-top: 20px;
+    padding-top: 10px;
     margin: 0 auto;
     overflow: hidden;
 }
@@ -15,7 +15,7 @@ body{
     font-size:20px;
 }
 .logo{
-    height: 120px;
+    
     width:120px;
     float: left;
 }
@@ -58,13 +58,18 @@ body{
 }
 #pdf-footer{
     text-align: right;
-    width: 700px;
+    width: 1250px;
     padding-right: 100px;
     padding: 20px;
     margin: 0 auto;
     color: #999999;
     font-size: 14px;
 }
+#pdf-footer table td
+{
+    text-align: center;
+}
+
 
 #page-yield {
     margin-top: 10px !important;

@@ -1,8 +1,8 @@
 WickedPdf.config = {
     :wkhtmltopdf => '/opt/wkhtmltopdf-amd64',
     :layout => "pdf.html",
-    :margin => {    :top=> 60,
-                    :bottom => 20,
+    :margin => {    :top=> 30,
+                    :bottom => 30,
                     :left=> 10,
                     :right => 10},
     :encoding => "utf8",

@@ -1,3 +1,7 @@
+.CSSTableGenerator
+{
+     margin-top: 20px;
+}
 .CSSTableGenerator table.summary thead tr th
     {
         color: #000;
@@ -17,13 +21,14 @@
     }
     .CSSTableGenerator table  td {
         font-size: 13px;
+        padding: 5px;
     }
 
     .CSSTableGenerator table#listing  td {
         vertical-align: middle;
         border: 1px solid #D7DBDD;
         text-align: left;
-        padding: 15px;
+        padding: 5px;
         font-size: 12px;
         font-weight: normal;
         color: #333333;
@@ -95,3 +100,10 @@
     {
         margin-top: 40px;
     }
+    h4{margin: 5px;}
+    .current_batch
+    {
+        margin-top: 20px;
+    }
+    
+    

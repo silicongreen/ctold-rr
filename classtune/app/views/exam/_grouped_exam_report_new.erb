@@ -123,7 +123,7 @@
                       <% if full_mark.to_f > 0 %>
                           <td class="col-2"><b><%= sprintf( "%0.02f", total_mark) %></b></td>
                           
-                          <td class="col-2"><b><%= sprintf( "%0.02f", main_mark) %> % <%= full_mark.to_f %></b></td>
+                          <td class="col-2"><b><%= sprintf( "%0.02f", main_mark) %> %</b></td>
                           <td class="col-2"><b><%= sprintf( "%0.02f", heighst_mark)   %> %</b></td>
                           <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
 

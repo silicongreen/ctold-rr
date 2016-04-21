@@ -4,6 +4,7 @@ class CreateGroupedExams < ActiveRecord::Migration
       t.references :exam_group
       t.references :batch
       t.references :exam_connect
+      t.integer :priority
     end
   end
 

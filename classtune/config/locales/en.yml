@@ -1857,6 +1857,8 @@ en: # locale
   new_grouping: "New Exam Connect Group"
   edit_grouping: "Edit Exam Connect Group"
   new_grouping_name: "Connect Group Name"
+  attandence_start_date: "Attandence Start Date"
+  attandence_end_date: "Attandence End Date"
   exam_scheduled: "Exam Scheduled"
   reminder_notice: "New Notice"
   create_a_new_exam_and_enter_result: "Create new exams, enter results."

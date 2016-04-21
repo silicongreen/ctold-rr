@@ -46,15 +46,19 @@
   {
     c=val.id;
     d=c.replace("check","weightage");
+    p=c.replace("check","priority");
     if(val.checked==true)
     {
       $(d).disabled=false;
+      $(p).disabled=false;
     }
     else
     {
       document.getElementById('chck1').checked = false;
       $(d).value="0";
+      $(p).value="0";
       $(d).disabled=true
+      $(p).disabled=true;
     }
     make_total(cnt);
 
@@ -124,6 +128,26 @@
           <div class="text-input-bg"><%= f.text_field :name %>
           </div>
         </div>
+      <% 
+        styletext = ""
+        start_date = ""
+        end_date = ""
+        
+        %>
+        <div class="label-field-pair"  style="float:left; clear:both;">
+          <label for="duedate"><%= "#{t('attandence_start_date')}"%></label>
+          <div  class="text-input-bg">
+            <%= calendar_date_select_tag "exam_grouping[attandence_start_date]",
+              I18n.l(1.week.since,:format=>"%Y-%m-%d") ,:class=>"text-input-bg",:readonly=>true,:popup=>:force%>
+          </div>
+        </div>
+        <div class="label-field-pair"  style="float:left; clear:both;">
+          <label for="duedate"><%= "#{t('attandence_end_date')}"%></label>
+          <div  class="text-input-bg">
+            <%= calendar_date_select_tag "exam_grouping[attandence_end_date]",
+              I18n.l(1.week.since,:format=>"%Y-%m-%d") ,:class=>"text-input-bg",:readonly=>true,:popup=>:force%>
+          </div>
+        </div>
         <table id="listing" align="center" width="100%" cellpadding="1" cellspacing="1">
           <% count=@exam_groups.count.to_i - 1 %>
           <tr class="tr-head">
@@ -132,8 +156,11 @@
               <%= t('exam_group') %>
             </td>
             <td class="col-3">
-              <%= t('weightage') %>(%)
+              <%= "Priority" %>
             </td>
+            <td class="col-3">
+              <%= t('weightage') %>(%)
+            </td>            
           </tr>
           <tr class="tr-blank"></tr>
           <% i=0 %>
@@ -146,12 +173,13 @@
               <% is_already_grouped = false %>
               <td class="col-1"><%= check_box_tag "exam_grouping[exam_group_ids][]", e.id,is_already_grouped,{:class=>'right',:id=>"check#{i}",:onClick=>"set_weightage(this,#{count})"} %></td>
               <td class="col-2"><%= e.name %></td>
+              <td class="col-2"><input type="number" id="priority<%=i%>" disabled="true" name="priority[]" value="0"></td>
               <% if is_already_grouped==true %>
                 <td class="col-3"><%=text_field_tag 'weightage[]',already_grouped.weightage,:class=>'total-box',:id=>"weightage#{i}",:onchange=>"check_weightage(this,#{count})"%></td>
                 <% total += already_grouped.weightage  if already_grouped.weightage.present? %>
               <% else %>
                 <td class="col-3"><%=text_field_tag 'weightage[]',"0",:class=>'total-box',:disabled=>true,:id=>"weightage#{i}",:onchange=>"check_weightage(this,#{count})"%></td>
-              <% end %>
+              <% end %>                
             </tr>
             <% i=i+1 %>
           <% end %>
@@ -159,6 +187,9 @@
           <tr class="tr-head">
             <td class="col-4" colspan="2">
               <%= t('total_weghtage') %>
+            </td>
+            <td class="col-2" colspan="1">
+              
             </td>
             <td class="col-3">
               <%=label_tag 'total',total,:id=>"tot"%>

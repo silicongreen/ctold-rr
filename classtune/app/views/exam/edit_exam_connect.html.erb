@@ -46,15 +46,19 @@
   {
     c=val.id;
     d=c.replace("check","weightage");
+    p=c.replace("check","priority");
     if(val.checked==true)
     {
       $(d).disabled=false;
+      $(p).disabled=false;
     }
     else
     {
       document.getElementById('chck1').checked = false;
       $(d).value="0";
+      $(p).value="0";
       $(d).disabled=true
+      $(p).disabled=true;
     }
     make_total(cnt);
 
@@ -105,7 +109,7 @@
     <%= link_to t('exam_groups_text'), batch_exam_groups_path(@batch) %> <div class = "bread-crumb-separator"> > </div>
     <%= t('edit_grouping') %>
   </div>
-
+    
   <% unless flash[:notice].nil? %>
     <p class="flash-msg"> <%= flash[:notice] %> </p>
   <% end %>
@@ -122,12 +126,39 @@
           <div class="text-input-bg"><%= f.text_field :name ,:value=> @exam_connect.name%>              
           </div>
         </div>
+        <% 
+          styletext = ""
+          
+          if @exam_connect.attandence_start_date.nil?
+            start_date = ""
+          end 
+          if @exam_connect.attandence_end_date.nil?
+            end_date = ""
+          end 
+        %>
+        <div class="label-field-pair"  style="float:left; clear:both;">
+          <label for="duedate"><%= "#{t('attandence_start_date')}"%></label>
+          <div  class="text-input-bg">           
+            <%= calendar_date_select_tag "exam_grouping[attandence_start_date]",
+              I18n.l(@exam_connect.attandence_start_date,:format=>"%Y-%m-%d"), :class=>"text-input-bg",:readonly=>true,:popup=>:force%>
+          </div>
+        </div>
+        <div class="label-field-pair"  style="float:left; clear:both;">
+          <label for="duedate"><%= "#{t('attandence_end_date')}"%></label>
+          <div  class="text-input-bg">
+            <%= calendar_date_select_tag "exam_grouping[attandence_end_date]",
+              I18n.l(@exam_connect.attandence_end_date,:format=>"%Y-%m-%d"),:class=>"text-input-bg",:readonly=>true,:popup=>:force%>
+          </div>
+        </div>
         <table id="listing" align="center" width="100%" cellpadding="1" cellspacing="1">
           <% count=@exam_groups.count.to_i - 1 %>
           <tr class="tr-head">
             <td class="col-1"><%= check_box_tag 'chck1','yes', false,{:onClick=> "check_all_or_none(#{count})"} %></td>
             <td class="col-2">
               <%= t('exam_group') %>
+            </td>
+            <td class="col-3">
+              <%= "Priority" %>
             </td>
             <td class="col-3">
               <%= t('weightage') %>(%)
@@ -139,10 +170,17 @@
           <% @exam_groups.each do |e| %>
             <tr class="tr-<%= cycle('odd', 'even') %>">
               <% already_grouped = GroupedExam.find_by_connect_exam_id_and_exam_group_id(@exam_connect.id,e) %>
-              <%#= debug  already_grouped.inspect  %>
-              <% is_already_grouped = already_grouped.present? %>
+              
+              <% is_already_grouped = already_grouped.present? %>                
               <td class="col-1"><%= check_box_tag "exam_grouping[exam_group_ids][]", e.id,is_already_grouped,{:class=>'right',:id=>"check#{i}",:onClick=>"set_weightage(this,#{count})"} %></td>
               <td class="col-2"><%= e.name %></td>
+             
+              <% if is_already_grouped==true %>
+                
+                <td class="col-3"><input type="number" id="priority<%= i  %>" name="priority[]" value="<%=already_grouped.priority%>"></td>
+              <% else %>
+                <td class="col-3"><input type="number" id="priority<%= i  %>" name="priority[]" disabled="true" value="0"></td>               
+              <% end %>
               <% if is_already_grouped==true %>
                 <td class="col-3"><%=text_field_tag 'weightage[]',already_grouped.weightage,:class=>'total-box',:id=>"weightage#{i}",:onchange=>"check_weightage(this,#{count})"%></td>
                 <% total += already_grouped.weightage  if already_grouped.weightage.present? %>
@@ -156,6 +194,9 @@
           <tr class="tr-head">
             <td class="col-4" colspan="2">
               <%= t('total_weghtage') %>
+            </td>
+            <td class="col-2" colspan="1">
+              
             </td>
             <td class="col-3">
               <%=label_tag 'total',total,:id=>"tot"%>

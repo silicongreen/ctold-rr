@@ -85,7 +85,7 @@
                                               <td  width="50%" >
                                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                                                     <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %>
-                                                    <% total_mark = total_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
+                                                    <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                                   <% else %>
                                                     N/A
                                                   <% end %>  
@@ -122,7 +122,7 @@
                              %>
                              
                                 <% if full_mark.to_f > 0 %>
-                                    <td class="col-2"><b><%= total_mark %></b></td>
+                                    <td class="col-2"><b><%= sprintf( "%0.02f", total_mark) %></b></td>
                                     <td class="col-2"><b><%= sprintf( "%0.02f", main_mark) %> %</b></td>
                                     <td class="col-2"><b><%= sprintf( "%0.02f", heighst_mark)   %> %</b></td>
                                     <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>

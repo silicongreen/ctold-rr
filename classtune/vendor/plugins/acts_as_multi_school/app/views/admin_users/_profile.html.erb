@@ -3,11 +3,13 @@
   <label class="value">
     <%=h @admin_user.full_name %>
   </label>
-  <% if permitted_to? :destroy, @admin_user, :context=>:admin_users %>
-    <%= link_to 'Delete', admin_user_path(@admin_user),:method=>:delete, :class=>"button-grey-small float-right-with-margin" %>
-  <% end %>
-  <% if permitted_to? :edit, @admin_user, :context=>:admin_users %>
-    <%= link_to 'Edit', edit_admin_user_path(@admin_user), :class=>"button-grey-small float-right-with-margin" %>
+  <% if admin_user_session.permission_type == 1 %>
+    <% if permitted_to? :destroy, @admin_user, :context=>:admin_users %>
+      <%= link_to 'Delete', admin_user_path(@admin_user),:method=>:delete, :class=>"button-grey-small float-right-with-margin" %>
+    <% end %>
+    <% if permitted_to? :edit, @admin_user, :context=>:admin_users %>
+      <%= link_to 'Edit', edit_admin_user_path(@admin_user), :class=>"button-grey-small float-right-with-margin" %>
+    <% end %>
   <% end %>
 </fieldset>
 

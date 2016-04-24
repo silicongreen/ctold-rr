@@ -31,7 +31,7 @@
       <%= f.label :full_name %>
       <%= f.text_field :full_name %>
     </fieldset>
-    
+    <% if admin_user_session.permission_type == 1 %>
     <fieldset>
       <%= f.label "Permission" %>
       <%= f.radio_button :permission_type, 1, :checked => true %> 
@@ -39,7 +39,7 @@
       <%= f.radio_button :permission_type, 2 %>
       <%= f.label 'Only View' %>
     </fieldset>
-    
+    <% end %>
     <fieldset>
       <%= f.label :description %>
       <%= f.text_area :description, :rows=>5 %>

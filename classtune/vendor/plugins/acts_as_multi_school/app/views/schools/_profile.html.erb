@@ -1,0 +1,64 @@
+<fieldset>
+  <label>School Name</label>
+  <label class="value">
+    <%=h @school.name %>
+  </label>
+  <% if admin_user_session.permission_type == 1 %> 
+    <%= link_to "Edit",edit_school_path(@school), :class=>"button-grey-small float-right-with-margin" if permitted_to? :edit, @school, :context=>:schools %>
+  <% end %>
+</fieldset>
+
+<fieldset>
+  <label>Institution Address</label>
+  <label class="value">
+    <%=h @institution_address %>
+  </label>
+</fieldset>
+
+<fieldset>
+  <label>Institution Phone</label>
+  <label class="value">
+    <%=h @institution_phone_no %>
+  </label>
+</fieldset>
+
+<fieldset>
+  <label>Show Feed For Admin</label>
+  <label class="value">
+    <%=h @free_feed_for_admin == "1" ? "true" : "false" %>
+  </label>
+</fieldset>
+
+<fieldset>
+  <label>Show Feed For Teacher</label>
+  <label class="value">
+    <%=h @free_feed_for_teacher == "1" ? "true" : "false" %>
+  </label>
+</fieldset>
+
+<fieldset>
+  <label>Show Feed For Student</label>
+  <label class="value">
+    <%=h @free_feed_for_student == "1" ? "true" : "false" %>
+  </label>
+</fieldset>
+<fieldset>
+  <label>School Code</label>
+  <label class="value">
+    <%=h @school.activation_code %>
+  </label>
+</fieldset>
+
+<fieldset style="display: none;">
+  <label>Inherit Email Settings</label>
+  <label class="value">
+    <%=h @school.inherit_smtp_settings %>
+  </label>
+</fieldset>
+
+<fieldset style="display: none;">
+  <label>Inherit SMS Settings</label>
+  <label class="value">
+    <%=h @school.inherit_sms_settings %>
+  </label>
+</fieldset>

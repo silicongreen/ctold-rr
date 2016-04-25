@@ -20,6 +20,11 @@ h2.heading{
     margin:5px;
 }
 
+#main_info h4.new_heading{
+    text-align: center;
+    margin:10px;
+}
+
 #main_info h4{
     color: #555555;
     margin-top: 18px;

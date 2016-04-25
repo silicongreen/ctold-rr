@@ -9,9 +9,9 @@
     <!--h4> <%#= "#{@student.full_name} - #{@student.admission_no}" %></h4-->
     <h4 class="new_heading"> <%= "#{@student.full_name}" %></h4>
     <% if @batch.name == "General" %>
-      <h4 class="new_heading"> <%= "#{t('batch')}:"+@batch.course.course_name %></h4>
+      <h4 class="new_heading"> <%= @batch.course.course_name %></h4>
     <% else %>
-      <h4 class="new_heading"> <%= "#{t('batch')}:"+@batch.full_name %></h4>
+      <h4 class="new_heading"> <%= @batch.full_name %></h4>
     <% end %>
     <!--h4> <%#= "#{t('exam_text')} : "+@exam_group.name %></h4-->
   </div>

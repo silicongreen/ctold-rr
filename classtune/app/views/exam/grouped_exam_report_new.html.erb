@@ -35,7 +35,7 @@
   <div class="box">
 
     <% form_for :exam_report, :url=>{:action=>'generated_report5'}, :html=> {:id=>'new_student'}  do |x| %>
-      <% if Batch.active.find(:all, :group => "name").length > 1  %> 
+      <%# if Batch.active.find(:all, :group => "name").length > 1  %> 
         <div class="label-field-pair">
           <label for="student_grade"><%= t('shift_label') %></label>
           <div class="text-input-bg">
@@ -45,7 +45,7 @@
               :success => "$('loading_2').hide();")}"} %>
               <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_2", :style =>"display: none;" ) %></div>
         </div>
-        <% end %>
+        <%# end %>
         <div class="label-field-pair">
           <label for="student_grade"><%= t('class_label') %></label>
           <div class="text-input-bg"><div id="course_new"> <%= render :partial => 'grouped_sections_view_new', :object => @courses %></div></div>

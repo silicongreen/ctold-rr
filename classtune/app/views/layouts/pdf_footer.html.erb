@@ -23,9 +23,17 @@
     <table id="listing table-design"  width="100%"  style="margin-top:10px;">
       <thead>
           <tr>
+              <% if MultiSchool.current_school.id == 246 %>
+              <td><%= "Class Teacher : .........................................." %></td>
+              <td>
+                  <%= "<p>Shaleha Kader</p>"  %>
+                  <%= "<p>Chairman and Principal: ..........................................</p>" %>
+              </td>
+              <% else %>
               <td><%= "Class Teacher : .........................................." %></td>
               <td><%= "Coordinator : .........................................." %></td>
               <td><%= "Principal : .........................................." %></td>
+              <% end %>
           </tr> 
       </thead>  
 

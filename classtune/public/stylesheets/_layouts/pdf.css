@@ -67,7 +67,11 @@ body{
 }
 #pdf-footer table td.lefttd
 {
-    text-align: left;
+    width:70%;
+}
+#pdf-footer table td.lefttd2
+{
+    width:30%;
 }
 #pdf-footer table td
 {

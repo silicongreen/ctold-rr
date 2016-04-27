@@ -68,10 +68,12 @@ body{
 #pdf-footer table td.lefttd
 {
     width:70%;
+    text-align: left;
 }
 #pdf-footer table td.lefttd2
 {
     width:30%;
+    text-align: left;
 }
 #pdf-footer table td
 {

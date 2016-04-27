@@ -506,7 +506,7 @@ class ExamController < ApplicationController
               flash[:notice]="#{t('flash25')}"
               return
             else
-              @exam_connect  = ExamConnect.create(:name => params[:exam_grouping][:name], :batch_id => params[:id], :school_id => 12345,:attandence_start_date => params[:exam_grouping][:attandence_start_date],:attandence_end_date => params[:exam_grouping][:attandence_end_date])
+              @exam_connect  = ExamConnect.create(:name => params[:exam_grouping][:name], :batch_id => params[:id], :school_id => MultiSchool.current_school.id,:attandence_start_date => params[:exam_grouping][:attandence_start_date],:attandence_end_date => params[:exam_grouping][:attandence_end_date])
               @exam_connect_id = @exam_connect.id
                             
               exam_group_ids = params[:exam_grouping][:exam_group_ids]

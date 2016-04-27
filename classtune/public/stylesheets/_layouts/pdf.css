@@ -65,6 +65,10 @@ body{
     color: #999999;
     font-size: 14px;
 }
+#pdf-footer table td.lefttd
+{
+    text-align: left;
+}
 #pdf-footer table td
 {
     text-align: center;

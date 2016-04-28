@@ -373,7 +373,7 @@ class ApplicationController < ActionController::Base
     #    require 'uri'
     #    require "yaml"
     
-    @title = 'Classtune'
+    @title = 'ClassTune'
     # @title = Champs21Setting.company_details[:company_name]
     #    champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/champs21.yml")['champs21']
     #    champs21_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']

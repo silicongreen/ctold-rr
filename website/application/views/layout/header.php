@@ -10,7 +10,7 @@
         <link rel="shortcut icon" href="<?php echo base_url();?>images/favicon/ct_favicon_16px.png" type="image/x-icon; charset=binary" />
         <link rel="icon" href="<?php echo base_url();?>images/favicon/ct_favicon_16px.png" type="image/x-icon; charset=binary" />
         
-        <title>Classtune</title>
+        <title>ClassTune</title>
         <meta name="generator" content="CHAMPS21" />
         <meta name="language" content="en" />
         <meta name="description" content="Complete School Management System" />

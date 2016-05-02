@@ -7,8 +7,8 @@
 
         <base href="<?php base_url()?>" />
         
-        <link rel="shortcut icon" href="<?php echo base_url();?>images/favicon/32x32.png" type="image/x-icon; charset=binary" />
-        <link rel="icon" href="<?php echo base_url();?>images/favicon/32x32.png" type="image/x-icon; charset=binary" />
+        <link rel="shortcut icon" href="<?php echo base_url();?>images/favicon/ct_favicon_16px.png" type="image/x-icon; charset=binary" />
+        <link rel="icon" href="<?php echo base_url();?>images/favicon/ct_favicon_16px.png" type="image/x-icon; charset=binary" />
         
         <title>Classtune</title>
         <meta name="generator" content="CHAMPS21" />

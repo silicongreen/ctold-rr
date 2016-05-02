@@ -130,13 +130,13 @@
 
 
     <div class="buttons">
-      <% if(@applied_leave.approved == false or @applied_leave.approved.nil?) %>
+      <% if((@applied_leave.approved == false or @applied_leave.approved.nil?) or (@target == "student" and @applied_leave.viewed_by_teacher == false))  %>
         <div class="approve_button">    <%= link_to_remote "► #{t('approve')}",
             :url => {:action => "approve_remarks", :id=>@applied_leave.id, :target => @target, :request_from => @request_from},:html=> {:class=>'user_button'} %>
         </div>
       <% end %>
       
-      <% if(@applied_leave.approved == true or @applied_leave.approved.nil?) %>
+      <% if((@applied_leave.approved == true or @applied_leave.approved.nil?) or (@target == "student" and @applied_leave.viewed_by_teacher == false)) %>
         <div class="cancel_button"><%= link_to_remote "► #{t('deny')}",
             :url => {:action => "deny_remarks", :id=>@applied_leave.id, :target => @target, :request_from => @request_from},:html=> {:class=>'user_button'}  %>
         </div>

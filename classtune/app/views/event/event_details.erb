@@ -82,11 +82,41 @@
     <% unless flash[:notice].nil? %>
       <p class="flash-msg"> <%= flash[:notice] %> </p>
     <% end %>
-    <div style="background-color: #ffffff; float: left; padding: 30px;width: 94%;">
+    <div style="background-color: #ffffff; float: left; padding: 10px;width: 94%;">
       
         <%= @event.description %>
+        
+        <% if @current_user.admin? and !@data.blank? and !@data['count'].blank? and @data['count']!="0" %>
+        <h3><b><%= @data['count'] %></b> user want to join this event <a href="javascript:void(0)" onclick="j('#join_list').show();" >view all</a></h3> 
+        <% end %>
       
     </div>
+    <% if @current_user.admin? and !@data.blank? and !@data['count'].blank? and @data['count']!="0" %>
+      <div id="join_list" style="background-color: #ffffff; float: left; clear:both; padding: 10px;width: 94%; display:none;">
+      
+          <% if !@data['event']['student'].blank? %>
+            <h3><b>Students</b></h3>
+            <% @data['event']['student'].each do |std| %>
+                    <p><%= std['name'] %> (<%= std['batch_name'] %> <%= std['course_name'] %> <%= std['section_name'] %>)</p>
+            <% end %>
+          <% end %>
+          <% if !@data['event']['guardian'].blank? %>
+                    <h3><b>Guardians</b></h3>
+            <% @data['event']['guardian'].each do |std| %>
+                    <p><%= std['name'] %></p>
+            <% end %>
+          
+          <% end %>
+          <% if !@data['event']['employee'].blank? %>
+                    <h3><b>Employees</b></h3>
+            <% @data['event']['employee'].each do |std| %>
+                    <p><%= std['name'] %> </p>
+            <% end %>
+          
+          <% end %>
+      
+      </div>
+    <% end %>   
     <% if permitted_to? :edit_event, :event %>
                     <%= link_to "#{t('edit_text')}",{:controller=>'event',:action=>'edit_event',:id=>@event.id},:class=>"viewmore" %>
     <% end %>

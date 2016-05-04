@@ -167,6 +167,16 @@ class EventController < ApplicationController
       @batch_events = BatchEvent.find(:all, :conditions=>"event_id = #{@event.id}")
       @department_event = EmployeeDepartmentEvent.find(:all, :conditions=>"event_id = #{@event.id}")
     end
+    
+    if current_user.admin?
+      get_event(params[:id])
+      @data = {}
+      if @event_data['status']['code'].to_i == 200
+        @data['event'] = @event_data['data']['event']
+        @data['count'] = @event_data['data']['count']
+      end
+    end
+    
   end
 
   def confirm_event
@@ -375,6 +385,29 @@ class EventController < ApplicationController
       @event_categories = EventCategory.active_for_event
       @event_category = EventCategory.new
     end
+  end
+  
+  private
+  
+  def get_event(id)
+    require 'net/http'
+    require 'uri'
+    require "yaml"
+ 
+    champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
+    api_endpoint = champs21_api_config['api_url']
+    form_data = {}
+    form_data['user_secret'] = session[:api_info][0]['user_secret']
+    form_data['id'] = id
+    
+    api_uri = URI(api_endpoint + "api/event/eventjoin")
+    http = Net::HTTP.new(api_uri.host, api_uri.port)
+    request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })
+
+    request.set_form_data(form_data)
+
+    response = http.request(request)
+    @event_data = JSON::parse(response.body)
   end
 
 end

@@ -2995,3 +2995,6 @@ en: # locale
   student_leaves: "Student Leaves"
   admin_auto_approval_for_reminder: "Reminder need admin approval?"
   font_face: "Set Font"
+  
+  homework_intelligence: Homework
+  attendance_intelligence: Attandnce

@@ -43,7 +43,11 @@
                     <% @report_data['result']['report'].each do |report| %>
                        <td>
                        <% if !report['score'].blank? and !report['score'][report['subject_id']].blank? and !report['score'][report['subject_id']][students['id']].blank?  and !report['score'][report['subject_id']][students['id']]['grade'].blank? %>
-                        <%= report['score'][report['subject_id']][students['id']]['grade'] %> [<%= report['score'][report['subject_id']][students['id']]['score'] %>]
+                        <% if report['score'][report['subject_id']][students['id']]['grade'] == "-"  %>
+                          <%= report['score'][report['subject_id']][students['id']]['score'] %>
+                        <% else %>
+                          <%= report['score'][report['subject_id']][students['id']]['grade'] %> [<%= report['score'][report['subject_id']][students['id']]['score'] %>]
+                        <% end %>  
                        <% end %>
                        </td>
                        
@@ -71,7 +75,15 @@
                     
                   %>     
                   
-                  <td class="col-2"><b><%= students['gpa'] %>[<%= students['total_number'] %>]</b></td>
+                  <td class="col-2"><b>
+                        <% if students['gpa'] == 0  %>
+                          <%= students['total_number'] %>
+                        <% else %>  
+                          <%= students['gpa'] %>[<%= students['total_number'] %>]
+                        <% end  %>
+                      
+                      
+                  </b></td>
                   <td class="col-2"><b><%= position %><%= extra_string %></b></td>
 
                 </tr> 

@@ -479,7 +479,8 @@ class ExamController < ApplicationController
       @exam_group = ExamGroup.find(params[:id], :include => :exams)
     end    
     
-    render :pdf => 'exam_schedule_pdf'
+    render :pdf => 'exam_schedule_pdf',
+      :orientation => 'Landscape', :zoom => 0.68
   end
   def exam_connect_list
     @batch = Batch.find(params[:id])

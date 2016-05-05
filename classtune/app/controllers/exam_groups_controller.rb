@@ -511,7 +511,7 @@ class ExamGroupsController < ApplicationController
       @exam_group_name = @exam_group.name
       @exam_groups = ExamGroup.find(:all, :conditions => ["name LIKE ? and batch_id IN (?) and exam_type = ? and exam_category = ? and exam_date = ?", @exam_group.name, @batches, @exam_group.exam_type, @exam_group.exam_category, @exam_group.exam_date]).map{|eg| eg.id}
       
-      @exams = Exam.find(:all, :conditions => ["exam_group_id IN (?)", @exam_groups], :joins => "INNER JOIN subjects ON subjects.id = exams.subject_id", :group => "subjects.name, exams.start_time, exams.end_time, exams.maximum_marks, exams.minimum_marks")
+      @exams = Exam.find(:all, :conditions => ["exam_group_id IN (?)", @exam_groups], :joins => "INNER JOIN subjects ON subjects.id = exams.subject_id", :group => "subjects.name, exams.start_time, exams.end_time, exams.maximum_marks, exams.minimum_marks",:order => "exams.start_time asc")
     else
       @exams  = @exam_group.exams
     end    

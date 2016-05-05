@@ -1,16 +1,15 @@
 
-
-#page-yield {
-    width:800px;
+#page-yield 
+{
+    width:1250px;
     margin: 0 auto;
-    float: left;
     overflow: hidden;
 }
 
 
 
 .hor_line{
-    width:800px;
+    width:1250px;
     background: #333333;
     height: 1px;
 }

@@ -1,15 +1,16 @@
 
 #page-yield 
 {
-    width:1350px;
+    width:1250px;
     margin: 0 auto;
     overflow: hidden;
+    font-size:12px;
 }
 
 
 
 .hor_line{
-    width:1350px;
+    width:1250px;
     background: #333333;
     height: 1px;
 }
@@ -55,7 +56,7 @@ tr.odd{
 
 .even td{
 
-    padding: 12px 12px 12px 15px;
+    padding: 10px 10px 10px 13px;
     border: 1px solid #ADACAB;
     border-right: 0px solid #fff;
     border-top: 0px solid #fff;
@@ -63,7 +64,7 @@ tr.odd{
 }
 
 .odd td{
-    padding: 12px 12px 12px 15px;
+    padding: 10px 10px 10px 13px;
     border: 1px solid #ADACAB;
     border-right: 0px solid #fff;
     border-top: 0px solid #fff;
@@ -73,7 +74,7 @@ tr.odd{
 
 
 .table-header td{
-    padding: 12px 12px 12px 15px;
+    padding: 10px 10px 10px 13px;
     border-top: 1px solid #ADACAB;
     border-left: 1px solid #ADACAB;
     border-right: 1px solid #ADACAB;

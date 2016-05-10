@@ -204,7 +204,7 @@ class AssignmentsController < ApplicationController
         if @subject.elective_group_id.nil?
           @students = @subject.batch.students
         else
-          assigned_students = StudentsSubject.find(:all)
+          assigned_students = StudentsSubject.find_all_by_subject_id(@subject)
           @students= []
           @assigned_students = []
           assigned_students.each do |assigned_student|

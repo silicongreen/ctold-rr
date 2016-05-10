@@ -7,9 +7,9 @@
                 <div class="ym-wbox footer noPrint" style=" position: relative; bottom: 0px; display: block;">
 
                     <div class="poweredby f5">    
-                        <p>&copy; Classtune 2015</p>
+                        <p>&copy; ClassTune <?php echo date("Y");?><span style="color:#64B846;"> | </span>(+880)-1740212121 <span style="color:#64B846;"> | </span> <a href="mailto:info@classtune.com" style="color:#999;">Email : info@classtune.com</a> </p>
                     </div>
-                    <div style="float: left;margin-left: 370px;margin-top: 0px;">
+                    <div style="float: left;margin-left: 70px;margin-top: 0px;">
                         <a href="<?php echo base_url(); ?>" title="" target="_blank">
                             <img src="<?php echo base_url(); ?>images/logo/classtune-footer-logo.png" alt="" title="" width="170" height="" />
                         </a>
@@ -17,8 +17,8 @@
 
                     <div class="footerlink f5">
                         <ul>									
-                            <li><a href="mailto:info@classtune.com" style="color:#999;">Email : info@classtune.com</a></li>
-							<li style="color:#64B846;">|</li>
+                            <!--li><a href="mailto:info@classtune.com" style="color:#999;">Email : info@classtune.com</a></li>
+							<li style="color:#64B846;">|</li-->
 							<li><a href="<?php echo base_url(); ?>landing/terms" style="color:#999;">Terms</a></li>
                             <li style="color:#64B846;">|</li>
                             <li><a href="<?php echo base_url(); ?>landing/privacypolicy" style="color:#999;">Privacy Policy</a></li>

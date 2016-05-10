@@ -94,10 +94,11 @@ class AssignmentsController < ApplicationController
       @batch = Batch.find @batch_id
       @normal_subjects = Subject.find_all_by_batch_id(@batch,:conditions=>"elective_group_id IS NULL AND is_deleted = false")
       @student_electives =StudentsSubject.all(:conditions=>{:batch_id=>@batch,:subjects=>{:is_deleted=>false}},:joins=>[:subject])
-      @elective_subjects = []
-      @student_electives.each do |e|
-        @elective_subjects.push Subject.find(e.subject_id)
-      end
+      @elective_subjects = Subject.find_all_by_batch_id(@batch.id,:conditions=>["elective_group_id IS NOT NULL AND is_deleted = false"])
+#      @elective_subjects = []
+#      @student_electives.each do |e|
+#        @elective_subjects.push Subject.find(e.subject_id)
+#      end
       @subjects = @normal_subjects+@elective_subjects
     end
     

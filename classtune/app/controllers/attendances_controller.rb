@@ -702,9 +702,9 @@ class AttendancesController < ApplicationController
             if @absentee.is_full_day
               message = "#{@student.first_name} #{@student.last_name} #{t('flash_msg7')} #{@absentee.month_date}"
             elsif @absentee.forenoon == true and @absentee.afternoon == false
-              message = "#{@student.first_name} #{@student.last_name} #{t('flash_msg7')} (forenoon) #{@absentee.month_date}"
+              message = "#{@student.first_name} #{@student.last_name} #{t('flash_msg7')} Present but Late on #{@absentee.month_date}"
             elsif @absentee.afternoon == true and @absentee.forenoon == false
-              message = "#{@student.first_name} #{@student.last_name} #{t('flash_msg7')} (afternoon) #{@absentee.month_date}"
+              message = "#{@student.first_name} #{@student.last_name} #{t('flash_msg7')} Present but Late on #{@absentee.month_date}"
             end
         else
           message = "#{@student.first_name} #{@student.last_name} #{t('flash_msg7')} #{@absentee.month_date}  #{t('flash_subject')} #{@absentee.subject.name} #{t('flash_period')} #{@absentee.class_timing.try(:name)}"

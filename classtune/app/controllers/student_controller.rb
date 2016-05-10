@@ -2461,7 +2461,7 @@ class StudentController < ApplicationController
     
     @subjects_name = @subject.name
     
-    @tmp_subject_to_test = Subject.find_by_name_and_batch_id(@subjects_name, b)
+    @tmp_subject_to_test = Subject.find_by_name_and_batch_id(@subjects_name, b,:conditions=>"elective_group_id IS NOT NULL AND is_deleted = false")
     unless @tmp_subject_to_test.nil?
       appropriate_elective_subject_id = @tmp_subject_to_test.id
     end

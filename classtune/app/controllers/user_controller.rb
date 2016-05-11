@@ -552,22 +552,21 @@ class UserController < ApplicationController
     
       champs21_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
       api_endpoint = champs21_config['api_url']
-    
+
       uri = URI(api_endpoint + "api/user/auth")
       http = Net::HTTP.new(uri.host, uri.port)
       auth_req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})
       auth_req.set_form_data({"username" => username, "password" => password})
       auth_res = http.request(auth_req)
       auth_response = JSON::parse(auth_res.body)
-    
+
       ar_user_cookie = auth_res.response['set-cookie'].split('; ');
-      
+
       user_info = [ 
-        "user_secret" => auth_response['data']['paid_user']['secret'],
-        "user_cookie" => ar_user_cookie[1].split(",")[1],
-        "user_cookie_exp" => ar_user_cookie[3].split('=')[1].to_time.to_i
+      "user_secret" => auth_response['data']['paid_user']['secret'],
+      "user_cookie" => ar_user_cookie[0],
+      "user_cookie_exp" => ar_user_cookie[2].split('=')[1].to_time.to_i
       ]
-      #"user_cookie_exp" => ar_user_cookie[2].split('=')[1].to_time.to_i
       session[:api_info] = user_info
     
       flash.clear

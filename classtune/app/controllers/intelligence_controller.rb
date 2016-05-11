@@ -118,6 +118,91 @@ class IntelligenceController < ApplicationController
     render :partial=>"subject_wise_report"
   end
   
+  def section_report 
+    @courses = Course.find(:all, :group => "course_name", :select => "course_name", :order => "cast(replace(course_name, 'Class ', '') as SIGNED INTEGER) asc")
+    @exam_groups = []
+    render :partial=>"section_report"
+  end
+  def report_section 
+    class_name = params[:class_name]
+    exam_name = params[:exam_name]
+    @graph = open_flash_chart_object(900, 450,
+           "graph_for_generated_report_section?class_name=#{class_name}&exam_name=#{exam_name}")
+   
+    render :partial=>"report_section"
+  end
+  
+  def graph_for_generated_report_section
+    class_name = params[:class_name]
+    exam_name = params[:exam_name]
+    get_exams_section_report(class_name,exam_name)
+    @exam_data = []
+    if @exam_response['status']['code'].to_i == 200
+      @exam_data = @exam_response['data']
+    end
+    
+
+    x_labels = []
+    chart = OpenFlashChart.new
+    @exam_data['result'].keys.each_with_index do |key,index|
+      data = []
+      colour = "%006x" % (rand * 0xffffff)
+      value = @exam_data['result'][key]
+      
+      value.keys.each_with_index do |kkey,kindex|
+        kalue = value[kkey]
+        if !x_labels.include?(kkey)
+          x_labels << kkey
+        end   
+        data << kalue.to_i
+      end 
+      bargraph = BarFilled.new()
+      bargraph.width = 1;
+      bargraph.colour = colour;
+      bargraph.dot_size = 5;
+      bargraph.text = key 
+      bargraph.values = data
+      chart.add_element(bargraph)
+    end
+
+
+    x_axis = XAxis.new
+    x_axis.labels = x_labels
+    x_axis.set_body_style("max-width: 30px; float: left; text-align: justify;")
+    x_axis.set_title_style("max-width: 30px; float: left; text-align: justify;")
+
+    y_axis = YAxis.new
+    y_axis.set_range(0,100,20)
+
+    title = Title.new("Section Comparisom")
+
+    x_legend = XLegend.new("Marks (%)")
+    x_legend.set_style('{font-size: 14px; color: #778877}')
+
+    y_legend = YLegend.new("Number of students")
+    y_legend.set_style('{font-size: 14px; color: #770077}')
+
+   
+    chart.set_title(title)
+    chart.y_axis = y_axis
+    chart.x_axis = x_axis
+    chart.y_legend = y_legend
+    chart.x_legend = x_legend
+    render :text => chart.render
+  end
+  
+  def get_exam 
+    class_name = params[:class_name]
+    get_exams_class(class_name)
+    @exam_data = []
+    if @exam_response['status']['code'].to_i == 200
+      @exam_data = @exam_response['data']
+    end
+    render(:update) do |page|
+      page.replace_html 'exam-group-select', :partial=>'common_exam'
+    end
+  end
+  
   def individual_report
     @classes = []
     @batches = []
@@ -1095,6 +1180,45 @@ class IntelligenceController < ApplicationController
     end
     
     @student_response
+  end
+  def get_exams_section_report(class_name,exam_name)
+    require 'net/http'
+    require 'uri'
+    require "yaml"
+ 
+    champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
+    api_endpoint = champs21_api_config['api_url']
+
+    if current_user.employee? or current_user.admin?
+      api_uri = URI(api_endpoint + "api/report/getsectionreport")
+      http = Net::HTTP.new(api_uri.host, api_uri.port)
+      request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })
+     request.set_form_data({"class_name"=>class_name,"exam_name"=>exam_name,"call_from_web"=>1,"user_secret" =>session[:api_info][0]['user_secret']})
+    
+     
+      response = http.request(request)
+      @exam_response = JSON::parse(response.body)
+    end
+  end
+  
+  def get_exams_class(class_name)
+    require 'net/http'
+    require 'uri'
+    require "yaml"
+ 
+    champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
+    api_endpoint = champs21_api_config['api_url']
+
+    if current_user.employee? or current_user.admin?
+      api_uri = URI(api_endpoint + "api/report/getexamclass")
+      http = Net::HTTP.new(api_uri.host, api_uri.port)
+      request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })
+     request.set_form_data({"class_name"=>class_name,"call_from_web"=>1,"user_secret" =>session[:api_info][0]['user_secret']})
+    
+     
+      response = http.request(request)
+      @exam_response = JSON::parse(response.body)
+    end
   end
   
   def get_exam_report(exam_id)

@@ -228,14 +228,17 @@
                       <% end %>  
                     </small>
                   <% end %>
+                  
                   <%
                     is_removable = true
                     exam_id = @exam.id
                     @exam_groups_data = ExamGroup.find(:all, :conditions => ["name LIKE ? and batch_id IN (?) and exam_type = ? and exam_category = ? and exam_date = ?", @exam_group.name, @batches, @exam_group.exam_type, @exam_group.exam_category, @exam_group.exam_date]).map{|eg| eg.id}
                     @subjects_data = Subject.find(:all, :conditions => ["name LIKE ? and batch_id IN (?)", exam.subject.name, @batches]).map{|s| s.id}
-                    @exam_groups_data.each do |exam_group_id|
-                      @subjects_data.each do |subject_id|
+                    
+                    @exam_groups_data.each do |exam_group_id|          
+                      @subjects_data.each do |subject_id|                        
                         tmp_exam = Exam.find_by_exam_group_id_and_subject_id_and_start_time_and_end_time_and_maximum_marks_and_minimum_marks(exam_group_id, subject_id, @exam.start_time, @exam.end_time, @exam.maximum_marks, @exam.minimum_marks)
+                        
                         unless tmp_exam.nil?
                           unless tmp_exam.removable?
                             is_removable = false
@@ -244,7 +247,8 @@
                         end
                       end
                     end  
-                  %>  
+                  %> 
+                  
                   <% if is_removable %>
                     <% if @is_class_exam %>
                       <% if @is_batch_exam %>

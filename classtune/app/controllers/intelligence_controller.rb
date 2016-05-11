@@ -174,6 +174,12 @@ class IntelligenceController < ApplicationController
       chart.add_element(bargraph)
     end
     
+    if min_value>5
+      min_value = min_value-5
+    end
+    
+    max_value = max_value+5
+    
     diff = max_value-min_value
     increament = 1
     

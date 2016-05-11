@@ -144,6 +144,8 @@ class IntelligenceController < ApplicationController
 
     x_labels = []
     chart = OpenFlashChart.new
+    max_value = 0
+    min_value = 100
     @exam_data['result'].keys.each_with_index do |key,index|
       data = []
       colour = "%006x" % (rand * 0xffffff)
@@ -155,6 +157,13 @@ class IntelligenceController < ApplicationController
           x_labels << kkey
         end   
         data << kalue.to_i
+        
+        if kalue.to_i > max_value
+          max_value = kalue.to_i
+        end
+        if kalue.to_i < min_value
+          min_value = kalue.to_i
+        end
       end 
       bargraph = BarFilled.new()
       bargraph.width = 1;
@@ -164,7 +173,14 @@ class IntelligenceController < ApplicationController
       bargraph.values = data
       chart.add_element(bargraph)
     end
-
+    
+    diff = max_value-min_value
+    increament = 1
+    
+    if diff>0
+      inc_float = diff/8
+      increament = inc_float.ceil
+    end
 
     x_axis = XAxis.new
     x_axis.labels = x_labels
@@ -172,7 +188,7 @@ class IntelligenceController < ApplicationController
     x_axis.set_title_style("max-width: 30px; float: left; text-align: justify;")
 
     y_axis = YAxis.new
-    y_axis.set_range(0,100,20)
+    y_axis.set_range(min_value,max_value,increament)
 
     title = Title.new("Section Comparisom")
 

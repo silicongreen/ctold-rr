@@ -2267,6 +2267,7 @@ class ExamController < ApplicationController
   end
 
   def previous_exam_marks
+    #abort params.inspect
     unless params[:exam_goup_id]==""
       @exam_group = ExamGroup.find(params[:exam_group_id], :include => :exams)
       render(:update) do|page|
@@ -2285,10 +2286,10 @@ class ExamController < ApplicationController
     @exam = Exam.find params[:exam_id], :include => :exam_group
     @exam_group = @exam.exam_group
     @batch = @exam_group.batch
-    unless @employee_subjects.include?(@exam.subject_id) or @current_user.admin? or @current_user.privileges.map{|p| p.name}.include?('ExaminationControl') or @current_user.privileges.map{|p| p.name}.include?('EnterResults')
-      flash[:notice] = "#{t('flash_msg6')}"
-      redirect_to :controller=>"user", :action=>"dashboard"
-    end
+    #unless @employee_subjects.include?(@exam.subject_id) or @current_user.admin? or @current_user.privileges.map{|p| p.name}.include?('ExaminationControl') or @current_user.privileges.map{|p| p.name}.include?('EnterResults')
+    #  flash[:notice] = "#{t('flash_msg6')}"
+    #  redirect_to :controller=>"user", :action=>"dashboard"
+    #end
     #scores = ExamScore.find_all_by_exam_id(@exam.id)
     exam_subject = Subject.find(@exam.subject_id)
     is_elective = exam_subject.elective_group_id

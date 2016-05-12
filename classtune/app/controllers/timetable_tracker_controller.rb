@@ -47,6 +47,8 @@ class TimetableTrackerController < ApplicationController
   end
 
   def timetable_swap
+    require 'time'
+    require 'date'
     error=true
     if params[:timetable_swap_id].nil?
       @timetable_swap=TimetableSwap.new(:date=>params[:date],:timetable_entry_id=>params[:timetable_entry_id],:employee_id=>params[:timetable][:employee_id],:subject_id=>params[:timetable][:subject_id])
@@ -60,6 +62,45 @@ class TimetableTrackerController < ApplicationController
       end
     end
     unless error
+      
+      
+      subject = Subject.find(params[:timetable][:subject_id])
+      batch_name = subject.batch.full_name
+      
+      formated_date = params[:date].to_time.strftime('%e %b, %Y')
+      
+      timetable = TimetableEntry.find(params[:timetable_entry_id])
+      
+      classtimings = ClassTiming.find(timetable.class_timing_id) 
+      
+      
+      start_time = classtimings.start_time.strftime("%I:%M%P")
+      end_time = classtimings.end_time.strftime("%I:%M%P")
+      
+      reminderrecipients = []
+      employees = Employee.find(params[:timetable][:employee_id])          
+      reminderrecipients.push employees.user_id unless employees.user_id.nil?
+      unless reminderrecipients.nil?
+      Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => current_user.id,
+            :recipient_ids => reminderrecipients,
+            :subject=>"New Class Assigned",
+            :rtype=>20,
+            :rid=>params[:timetable_entry_id],
+            :body=>"You have been assigned #{subject.name} class on #{formated_date} in #{batch_name} from #{start_time} to #{end_time}." ))
+      end  
+      
+      reminderrecipients = []
+      employees2 = Employee.find(timetable.employee_id)          
+      reminderrecipients.push employees2.user_id unless employees2.user_id.nil?
+      unless reminderrecipients.nil?
+      Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => current_user.id,
+            :recipient_ids => reminderrecipients,
+            :subject=>"Your Class Swapped",
+            :rtype=>20,
+            :rid=>params[:timetable_entry_id],
+            :body=>"Your #{subject.name} class of #{batch_name} from #{start_time} to #{end_time} on #{formated_date} has been assigned to #{employees.first_name} #{employees.last_name}." ))
+      end
+      
       render :update do |page|
         page.replace_html "entry_#{params[:timetable_entry_id]}", :partial => "new_timetable_entry"
         page.replace_html "error", :text => ""

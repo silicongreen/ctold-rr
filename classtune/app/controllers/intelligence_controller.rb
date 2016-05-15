@@ -141,17 +141,21 @@ class IntelligenceController < ApplicationController
       @exam_data = @exam_response['data']
     end
     
+    color_array = ['#000000','#FF0000','#0000FF','#4B0082','#00FF00','#FFFF00','#FF7F00','#9400D3']
 
     x_labels = []
     chart = OpenFlashChart.new
     max_value = 0
     min_value = 100
-    @exam_data['result'].keys.each_with_index do |key,index|
+    k = 0
+    @exam_data['result'].keys.sort.each_with_index do |key,index|
       data = []
       colour = "%006x" % (rand * 0xffffff)
+      colour = color_array[k]
       value = @exam_data['result'][key]
+      k = k+1
       
-      value.keys.each_with_index do |kkey,kindex|
+      value.keys.sort.each_with_index do |kkey,kindex|
         kalue = value[kkey]
         if !x_labels.include?(kkey)
           x_labels << kkey
@@ -201,7 +205,7 @@ class IntelligenceController < ApplicationController
     x_legend = XLegend.new("Marks (%)")
     x_legend.set_style('{font-size: 14px; color: #778877}')
 
-    y_legend = YLegend.new("Number of students")
+    y_legend = YLegend.new("Number of students (%)")
     y_legend.set_style('{font-size: 14px; color: #770077}')
 
    

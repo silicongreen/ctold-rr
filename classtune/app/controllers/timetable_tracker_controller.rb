@@ -86,19 +86,22 @@ class TimetableTrackerController < ApplicationController
             :subject=>"New Class Assigned",
             :rtype=>20,
             :rid=>params[:timetable_entry_id],
-            :body=>"You have been assigned #{subject.name} class on #{formated_date} in #{batch_name} from #{start_time} to #{end_time}." ))
+            :body=>"You have been assigned #{subject.name} class at #{classtimings.name} in #{batch_name} from #{start_time} to #{end_time} on #{formated_date}." ))
       end  
+      
+      
+      @employee_on_leave = EmployeeLeave.find_by_employee_id(timetable.employee_id, :conditions=> "start_date <= '#{params[:date]}' and end_date>='#{params[:date]}'")
       
       reminderrecipients = []
       employees2 = Employee.find(timetable.employee_id)          
       reminderrecipients.push employees2.user_id unless employees2.user_id.nil?
-      unless reminderrecipients.nil?
+      unless reminderrecipients.nil? and @employee_on_leave.blank?
       Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => current_user.id,
             :recipient_ids => reminderrecipients,
             :subject=>"Your Class Swapped",
             :rtype=>20,
             :rid=>params[:timetable_entry_id],
-            :body=>"Your #{subject.name} class of #{batch_name} from #{start_time} to #{end_time} on #{formated_date} has been assigned to #{employees.first_name} #{employees.last_name}." ))
+            :body=>"Your #{subject.name} class  at #{classtimings.name} in #{batch_name} from #{start_time} to #{end_time} on #{formated_date} has been assigned to #{employees.first_name} #{employees.last_name}." ))
       end
       
       render :update do |page|

@@ -102,7 +102,7 @@ class TimetableTrackerController < ApplicationController
               :subject=>"Your Class Swapped",
               :rtype=>20,
               :rid=>params[:timetable_entry_id],
-              :body=>"Your #{subject.name} class  at #{classtimings.name} in #{batch_name} from #{start_time} to #{end_time} on #{formated_date} has been assigned to #{employees.first_name} #{employees.last_name}." ))
+              :body=>"Your #{subject.name} class at #{classtimings.name} in #{batch_name} from #{start_time} to #{end_time} on #{formated_date} has been assigned to #{employees.first_name} #{employees.last_name}." ))
         end
       end
       

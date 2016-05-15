@@ -90,7 +90,7 @@ class TimetableTrackerController < ApplicationController
       end  
       
       
-      @employee_on_leave = EmployeeLeave.find_by_employee_id(timetable.employee_id, :conditions=> "start_date <= '#{params[:date]}' and end_date>='#{params[:date]}'")
+      @employee_on_leave = ApplyLeave.find_by_employee_id(timetable.employee_id, :conditions=> "start_date <= '#{params[:date]}' and end_date>='#{params[:date]}' and approved=1")
       
       if @employee_on_leave.blank?
         reminderrecipients = []

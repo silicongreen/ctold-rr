@@ -13,20 +13,18 @@
         border:none;
     }
     .CSSTableGenerator table thead tr th {
-        background-color: #f0f2f3;
-        border-right: 1px solid #d7dbdd;
+        
         padding: 3px;
         text-align: center;
         font-size: 13px;
     }
     .CSSTableGenerator table  td {
         font-size: 13px;
-        padding: 5px;
+        padding: 1px;
     }
 
     .CSSTableGenerator table#listing  td {
-        vertical-align: middle;
-        border: 1px solid #D7DBDD;
+        vertical-align: middle;       
         text-align: left;
         padding: 5px;
         font-size: 12px;
@@ -38,7 +36,7 @@
         color: #C00;
         font-size: 35px;
         float:left;
-        margin-left: 10px;
+        margin-left: 0px;
         margin-top: 0px;
 
     }
@@ -48,8 +46,7 @@
     .timetable_last a
     {
         -moz-border-radius: 3px;
-        -webkit-border-radius: 3px;
-        background: #CB1119 none repeat scroll 0 0;
+        -webkit-border-radius: 3px;        
         color: #FFFFFF !important;
         font-size: 14px;
         font-weight: bold;
@@ -107,3 +104,120 @@
     }
     
     
+    /*ACADEMIA SCHOOL COMBINE REPORT CARD STYLE*/
+    .academia table
+    {
+        border-collapse: collapse;
+    }    
+    .academia table td,th
+    {
+        border: 1px solid black;        
+        width:50%;        
+    }
+    .academia table td.special_top,th.special_top
+    {
+        border-top:0px;
+    }
+    .academia table td.special_left,th.special_left
+    {
+        border-left: 0px;
+    }
+    .academia table td.special_right,th.special_right
+    {
+        border-right:0px;
+    }
+    .academia table td.special_bottom,th.special_bottom
+    {
+        border-bottom:0px;
+    }
+    
+    .acdemia_header
+    {
+        font-size: 80px;
+        font-family: Verdana;
+        text-transform: uppercase;
+        color:#30389D;
+        margin: 0px;
+    }
+    .academia_subhead
+    {
+        margin:0px;
+        color:#30389D;
+        font-size: 26px;
+        font-family: cursive;
+    }
+    .academia_border
+    {
+        border-bottom: 3px solid red;
+    }
+    .academia_exam_title_box
+    {
+        border: 1px solid #000;
+        width:40%;
+        margin: 10px auto;
+        
+    }
+    .academia_exam_details_box
+    {
+        border: 1px solid #000;
+        width:97%;
+        margin: 0px auto;
+    }
+    .academia_box
+    {
+        width:1250px;
+        margin-top: 5px;
+    }
+    .academia_left_box
+    {
+        float:left;
+        width:170px;
+        border: 1px solid #000;
+    }
+    .academia_middle_box
+    {
+        float:left;
+        width:900px;
+        
+    }
+    .academia_right_box
+    {
+        float:right;
+        width:170px;                
+    }
+    .academia_right_box table td
+    {
+        border: 1px solid #000;
+        font-size:12px;
+        padding:3px;
+    }
+    .academia_sign_left
+    {
+        float:left;
+        width:36%;
+        
+    }
+    .academia_sign_middle
+    {
+        float:left;
+        width:36%;        
+        margin: 0px 15px ;
+    }
+    .academia_sign_right
+    {
+        float:left;
+        width:25%;
+        
+    }
+    .teachers_sign
+    {
+        border-collapse: collapse;
+        width:100%;
+    }
+    
+    .teachers_sign td,th
+    {
+        border: 1px solid black;        
+        width:49%;
+        padding:5px;
+    }

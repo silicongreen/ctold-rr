@@ -33,12 +33,12 @@ class ClassTiming < ActiveRecord::Base
     errors.add(:end_time, :should_be_later) \
       if self.start_time > self.end_time \
       unless self.start_time.nil? or self.end_time.nil?
-    start_overlap = class_timing_set.class_timings.find(:all,:conditions=>["start_time < ? and end_time > ? and is_deleted = ?", start_time,start_time,false]).reject{|ct| ct.id == id}.present?
-    end_overlap = class_timing_set.class_timings.find(:all,:conditions=>["start_time < ? and end_time > ? and is_deleted = ?", end_time,end_time,false]).reject{|ct| ct.id == id}.present?
-    between_overlap = class_timing_set.class_timings.find(:all,:conditions=>["start_time < ? and end_time > ? and is_deleted = ? ",end_time, start_time,false]).reject{|ct| ct.id == id}.present?
-    errors.add(:start_time, :overlap_existing_class_timing) if start_overlap
-    errors.add(:end_time, :overlap_existing_class_timing) if end_overlap
-    errors.add_to_base:class_time_overlaps_with_existing if between_overlap
+#    start_overlap = class_timing_set.class_timings.find(:all,:conditions=>["start_time < ? and end_time > ? and is_deleted = ?", start_time,start_time,false]).reject{|ct| ct.id == id}.present?
+#    end_overlap = class_timing_set.class_timings.find(:all,:conditions=>["start_time < ? and end_time > ? and is_deleted = ?", end_time,end_time,false]).reject{|ct| ct.id == id}.present?
+#    between_overlap = class_timing_set.class_timings.find(:all,:conditions=>["start_time < ? and end_time > ? and is_deleted = ? ",end_time, start_time,false]).reject{|ct| ct.id == id}.present?
+#    errors.add(:start_time, :overlap_existing_class_timing) if start_overlap
+#    errors.add(:end_time, :overlap_existing_class_timing) if end_overlap
+#    errors.add_to_base:class_time_overlaps_with_existing if between_overlap
     errors.add(:start_time,:is_same_as_end_time) if self.start_time == self.end_time
   end
 end

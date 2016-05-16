@@ -436,10 +436,18 @@ class TimetableController < ApplicationController
         @all_weekdays = @all_timetable_entries.collect(&:weekday_id).uniq.sort
         #@all_classtimings = @all_timetable_entries.collect(&:class_timing).uniq.sort!{|a,b| a.start_time <=> b.start_time}
         @all_classtimings = []
-        @class_timings.each do |ct|
-          @class_timings_data = ClassTiming.find(:all,:conditions=>["id	= ?",ct])
+        
+#        @classtimings_ids = @class_timings.map(&:class_timing_set_id)
+        @all_classtimings_previous = ClassTiming.find(:all,:conditions=>["id IN (?)",@class_timings],:order=>"start_time ASC")
+        @all_classtimings_previous.each do |ct|
+          @class_timings_data = ClassTiming.find(:all,:conditions=>["id	= ?",ct.id])
           @all_classtimings << @class_timings_data
-        end        
+        end
+        
+#        @class_timings.each do |ct|
+#          @class_timings_data = ClassTiming.find(:all,:conditions=>["id	= ?",ct])
+#          @all_classtimings << @class_timings_data
+#        end        
         
         @all_teachers = @all_timetable_entries.collect(&:employee).uniq
         @all_timetable_entries.each do |tt|

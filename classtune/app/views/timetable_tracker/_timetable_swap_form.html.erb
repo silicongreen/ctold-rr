@@ -33,6 +33,6 @@
     <%= submit_tag "► #{t('ok')}",:class=>'submit_button',:onclick=>"Element.show('loader_#{params[:timetable_entry_id]}')" %>
   </div>
   <div class="submit" style="margin-right:10px;margin-top:13px">
-    <%= link_to_function "#{t('cancel')}",:onclick=>"$('link_#{params[:timetable_entry_id]}').hide();$('entry_#{params[:timetable_entry_id]}').show();",:class=>"submit_button"%>
+    <%= link_to_function "► #{t('cancel')}",:onclick=>"$('link_#{params[:timetable_entry_id]}').hide();$('entry_#{params[:timetable_entry_id]}').show();",:style=>"font-size:11px; color:white; padding:7px 10px;",:class=>"submit_button"%>
   </div>
 <% end %>

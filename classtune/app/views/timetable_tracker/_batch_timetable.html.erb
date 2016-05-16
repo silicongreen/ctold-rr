@@ -38,11 +38,16 @@
               </div>
             <% end %>
           <% else %>
+           <%
+                @teacher_reminder_read = Reminder.find_all_by_recipient(@timetable_swaps[entry.id][0].employee.user_id, :conditions=>"is_read = true and rid='#{entry.id}' and rtype=20")
+              
+           %>
             <div id=<%= "entry_#{entry.id}" %>>
               <div class="change_title"><%= "#{t('changed_to')} "%></div>
               <div class="new_entry">
                 <div class="subject"><%= @timetable_swaps[entry.id][0].subject.name%></div>
-                <div class="teacher"><%= "#{t('teacher')} :"%> <span class="teacher_name"><%= @timetable_swaps[entry.id][0].employee.nil?? "#{t('deleted_user')}" : @timetable_swaps[entry.id][0].employee.full_name %></span></div>
+                <div class="teacher"><%= "#{t('teacher')} :"%><span class="teacher_name"><%= @timetable_swaps[entry.id][0].employee.nil?? "#{t('deleted_user')}" : @timetable_swaps[entry.id][0].employee.full_name %></span></div>
+                <div class="teacher"><% if @teacher_reminder_read.blank? %>Not acknowledge Yet<% else %>Acknowledged<% end %></div>
               </div>
               <div class="edit_link">
                 <%=link_to_remote "#{t('delete_text')}", :url=>{:action=>'timetable_swap_delete',:timetable_entry_id=>entry.id,:batch_id=>entry.batch_id,:date=>params[:batch][:date],:timetable_swap_id=>@timetable_swaps[entry.id][0].id},:html=>{:class=>"themed_text"},:confirm => t('delete_confirm_msg')%>

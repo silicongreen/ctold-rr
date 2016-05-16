@@ -1,4 +1,4 @@
-<% form_remote_for :timetable, :url => {:action => 'timetable_swap',:timetable_entry_id=>params[:timetable_entry_id],:date=>params[:date],:timetable_swap_id=>params[:timetable_swap_id],:batch_id=>params[:batch_id]} ,:loaded=>"$('entry_#{params[:timetable_entry_id]}').show(); $('link_#{params[:timetable_entry_id]}').hide();" do |form| %>
+<% form_remote_for :timetable, :url => {:action => 'timetable_swap',:timetable_entry_id=>params[:timetable_entry_id],:date=>params[:date],:timetable_swap_id=>params[:timetable_swap_id],:batch_id=>params[:batch_id]} ,:loaded=>"$('entry_#{params[:timetable_entry_id]}').show();Element.hide('loader_#{params[:timetable_entry_id]}'); $('link_#{params[:timetable_entry_id]}').hide();" do |form| %>
   <div class="label-field-pair1">
     <div class="text-input-bg1"><%= select :timetable, :department_id,
         @departments.map {|d| [d.name, d.id]},
@@ -29,10 +29,10 @@
       :id => "loader_#{params[:timetable_entry_id]}",
       :style =>"display: none;" ) %>
   </div>
-  <div class="submit">
-    <%= submit_tag "► #{t('ok')}",:class=>'submit_button' %>
+  <div class="submit" style="margin-right:10px; clear:both; ">
+    <%= submit_tag "► #{t('ok')}",:class=>'submit_button',:onclick=>"Element.show('loader_#{params[:timetable_entry_id]}')" %>
   </div>
-  <div class="cancel_link">
-    <%= link_to_function "#{t('cancel')}",:onclick=>"$('link_#{params[:timetable_entry_id]}').hide();$('entry_#{params[:timetable_entry_id]}').show();",:class=>"themed_text"%>
+  <div class="submit" style="margin-right:10px;margin-top:13px">
+    <%= link_to_function "#{t('cancel')}",:onclick=>"$('link_#{params[:timetable_entry_id]}').hide();$('entry_#{params[:timetable_entry_id]}').show();",:class=>"submit_button"%>
   </div>
 <% end %>

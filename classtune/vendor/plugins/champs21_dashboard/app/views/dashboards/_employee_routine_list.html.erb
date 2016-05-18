@@ -7,7 +7,14 @@
     <div class="timetable_right" style="margin-top:10px;">
       <div class="subcontent-header themed_text"><%=  h['subject_name'] %> - <%= h['batch_name'] %> <%= h['course_name'] %></div>
       <div class="subcontent-info weekday_text"><%= h['weekday_text'] %></div>
-      <div class="subcontent-info"><%= h['class_start_time'] %> - <%= h['class_end_time'] %></div>  
+      <div class="subcontent-info">
+          <%  if Configuration.find_by_config_key('RountineViewPeriodNameNoTiming').present? and Configuration.find_by_config_key('RountineViewPeriodNameNoTiming').config_value=="1" %>
+              <%= h['period_name'] %>  
+          <% else %>
+              <%= h['class_start_time'] %> - <%= h['class_end_time'] %>
+          <% end %>
+    
+   </div>  
 
     </div>       
   </div>

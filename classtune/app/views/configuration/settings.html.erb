@@ -191,6 +191,29 @@
                   <% end %>
               </div>
           </div>
+          
+           <div class="label-field-pair">
+              <label for="routine_view_teacher_short_code"><%= t('routine_view_teacher_short_code') %></label>
+              <div class="checkbox-input-bg">
+                  <% if @config[:routine_view_teacher_short_code] == '1' %>
+                    <%= check_box :configuration, :routine_view_teacher_short_code, :checked => true %>
+                  <% else %>
+                    <%= check_box :configuration, :routine_view_teacher_short_code, :checked => false %>
+                  <% end %>
+              </div>
+          </div>
+          
+           <div class="label-field-pair">
+              <label for="rountine_view_period_name_no_timing"><%= t('rountine_view_period_name_no_timing') %></label>
+              <div class="checkbox-input-bg">
+                  <% if @config[:rountine_view_period_name_no_timing] == '1' %>
+                    <%= check_box :configuration, :rountine_view_period_name_no_timing, :checked => true %>
+                  <% else %>
+                    <%= check_box :configuration, :rountine_view_period_name_no_timing, :checked => false %>
+                  <% end %>
+              </div>
+          </div>
+          
           <div class="label-field-pair">
               <label for="enable_news_comment_moderation"><%= t('enable_sibling') %></label>
               <div class="checkbox-input-bg">

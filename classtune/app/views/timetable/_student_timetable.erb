@@ -40,7 +40,13 @@
         <% @all_classtimings.each do |pt| %>
         <td class="td themed_text">
           <div style="background: #E7E7E7;color:#000;height: 40px;padding: 10px 10px 0px;text-align: center"><%= pt[0].name %></div>
-          <div class="top themed_text"><%= pt[0].start_time.strftime("%I:%M%p")  unless pt[0].start_time.nil? %> - <%= pt[0].end_time.strftime("%I:%M%p")  unless pt[0].end_time.nil? %></div></td>
+          
+          <%  if Configuration.find_by_config_key('RountineViewPeriodNameNoTiming').present? and Configuration.find_by_config_key('RountineViewPeriodNameNoTiming').config_value=="1" %>
+              <!-- DO nothing -->
+          <% else %>    
+          <div class="top themed_text"><%= pt[0].start_time.strftime("%I:%M%p")  unless pt[0].start_time.nil? %> - <%= pt[0].end_time.strftime("%I:%M%p")  unless pt[0].end_time.nil? %></div>
+          <% end %>
+        </td>
         <% end %>
       </tr> <!-- timetable_tr -->
       <tr class="blank">
@@ -98,7 +104,21 @@
                           <% @subj_in_elective.each do |s| %>
                             <%= s.try(:name) unless s.nil? %>
                             <% @sub_emp = EmployeesSubject.find_by_subject_id(s.id) %>
-                            <div class="emp-name"><%= @sub_emp.employee.full_name unless @sub_emp.nil? %></div>
+                              
+                            <div class="emp-name">
+                              <%  if Configuration.find_by_config_key('RoutineViewTeacherShortCode').present? and Configuration.find_by_config_key('RoutineViewTeacherShortCode').config_value=="1" %>
+                                <% if !@sub_emp.nil? %>
+                                  <% if !@sub_emp.employee.short_code.blank? %>
+                                    <%= @sub_emp.employee.short_code %>
+                                  <% else %>
+                                  <%= @sub_emp.employee.full_name %>
+                                  <% end %>
+                                <% end %>
+                              <% else %>  
+                              <%= @sub_emp.employee.full_name unless @sub_emp.nil? %>
+                              <% end %>
+                            
+                            </div>
                           <% end %>
                         <% else %>
                           <%= @tte.subject.name unless @tte.subject.nil? %>

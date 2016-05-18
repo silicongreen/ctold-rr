@@ -43,7 +43,11 @@
           <% @all_weekdays.sort.each do |weekday| -%>
             <% @all_classtimings.each do |ct| -%>
               <td class="tte">
-                <%= "#{ct.start_time.strftime("%I:%M%p")} - #{ct.end_time.strftime("%I:%M%p")}" -%>
+                <%  if Configuration.find_by_config_key('RountineViewPeriodNameNoTiming').present? and Configuration.find_by_config_key('RountineViewPeriodNameNoTiming').config_value=="1" %>
+                  <%= ct.name %>  
+                <% else %>
+                  <%= "#{ct.start_time.strftime("%I:%M%p")} - #{ct.end_time.strftime("%I:%M%p")}" -%>
+                <% end %>
               </td>
             <% end -%>
           <% end -%>

@@ -29,17 +29,18 @@
   <div id="general_info">
     <table id="pdf-table" width="100%" cellspacing="0">
       <tr class="odd"><td class="col-pdf"><%= t('employee_number') %></td><td class="col-pdf"><%= @employee.employee_number unless @employee.employee_number.nil? %></td></tr>
-      <tr class="even"><td class="col-pdf"><%= t('joining_date') %></td><td class="col-pdf"><%= I18n.l(@employee.joining_date,:format=>:normal) unless @employee.joining_date.nil? %></td></tr>
-      <tr class="odd"><td class="col-pdf"><%= t('department') %></td><td class="col-pdf"><%= @employee.employee_department.name unless @employee.employee_department.name.nil? %></td></tr>
-      <tr class="even"><td class="col-pdf"><%= t('category') %></td><td class="col-pdf"><%= @employee.employee_category.name unless @employee.employee_category.name.nil? %></td></tr>
-      <tr class="odd"><td class="col-pdf"><%= t('position') %></td><td class="col-pdf"><%= @employee.employee_position.name unless @employee.employee_position.name.nil? %></td></tr>
-      <tr class="even"><td class="col-pdf"><%= t('grade') %></td><td class="col-pdf"><%= @employee.employee_grade.name unless (@employee.employee_grade.nil? or @employee.employee_grade.name.nil?) %></td></tr>
-      <tr class="odd"><td class="col-pdf"><%= t('job_title') %></td><td class="col-pdf"><%= @employee.job_title unless @employee.job_title.nil? %></td></tr>
-      <tr class="even"><td class="col-pdf"><%= t('manager') %></td><td class="col-pdf"><%= @reporting_manager.full_name unless @reporting_manager.nil? %></td></tr>
-      <tr class="odd"><td class="col-pdf"><%= t('gender') %></td><td class="col-pdf"><%= t("#{@gender.downcase}") unless @gender.nil? %></td></tr>
-      <tr class="even"><td class="col-pdf"><%= t('status') %></td><td class="col-pdf"><%= t("#{@status.downcase}") unless @status.nil? %></td></tr>
-      <tr class="odd"><td class="col-pdf"><%= t('qualification') %></td><td class="col-pdf"><%= @employee.qualification unless @employee.qualification.nil? %></td></tr>
-      <tr class="even"><td class="col-pdf"><%= t('total_exp') %></td><td class="col-pdf">
+      <tr class="even"><td class="col-pdf"><%= t('short_code') %></td><td class="col-pdf"><%= @employee.short_code unless @employee.short_code.nil? %></td></tr>
+      <tr class="odd"><td class="col-pdf"><%= t('joining_date') %></td><td class="col-pdf"><%= I18n.l(@employee.joining_date,:format=>:normal) unless @employee.joining_date.nil? %></td></tr>
+      <tr class="even"><td class="col-pdf"><%= t('department') %></td><td class="col-pdf"><%= @employee.employee_department.name unless @employee.employee_department.name.nil? %></td></tr>
+      <tr class="odd"><td class="col-pdf"><%= t('category') %></td><td class="col-pdf"><%= @employee.employee_category.name unless @employee.employee_category.name.nil? %></td></tr>
+      <tr class="even"><td class="col-pdf"><%= t('position') %></td><td class="col-pdf"><%= @employee.employee_position.name unless @employee.employee_position.name.nil? %></td></tr>
+      <tr class="odd"><td class="col-pdf"><%= t('grade') %></td><td class="col-pdf"><%= @employee.employee_grade.name unless (@employee.employee_grade.nil? or @employee.employee_grade.name.nil?) %></td></tr>
+      <tr class="even"><td class="col-pdf"><%= t('job_title') %></td><td class="col-pdf"><%= @employee.job_title unless @employee.job_title.nil? %></td></tr>
+      <tr class="odd"><td class="col-pdf"><%= t('manager') %></td><td class="col-pdf"><%= @reporting_manager.full_name unless @reporting_manager.nil? %></td></tr>
+      <tr class="even"><td class="col-pdf"><%= t('gender') %></td><td class="col-pdf"><%= t("#{@gender.downcase}") unless @gender.nil? %></td></tr>
+      <tr class="odd"><td class="col-pdf"><%= t('status') %></td><td class="col-pdf"><%= t("#{@status.downcase}") unless @status.nil? %></td></tr>
+      <tr class="even"><td class="col-pdf"><%= t('qualification') %></td><td class="col-pdf"><%= @employee.qualification unless @employee.qualification.nil? %></td></tr>
+      <tr class="odd"><td class="col-pdf"><%= t('total_exp') %></td><td class="col-pdf">
                 <% if !@employee.experience_year.nil? && @employee.experience_year.to_i>0 %>
                 <%= @employee.experience_year.to_s+" #{t('years')} " %>
                 <% end %>
@@ -47,8 +48,8 @@
                 <%= @employee.experience_month.to_s+" #{t('months')}" %>
                 <% end %>
           </td></tr>
-      <tr class="odd"><td class="col-pdf"><%= t('exp_info') %></td><td class="col-pdf"><%= @employee.experience_detail unless @employee.experience_detail.nil? %></td></tr>
-      <tr class="even"><td class="col-pdf"><%= t('biometric_id') %></td><td class="col-pdf"><%= @biometric_id %></td></tr>
+      <tr class="even"><td class="col-pdf"><%= t('exp_info') %></td><td class="col-pdf"><%= @employee.experience_detail unless @employee.experience_detail.nil? %></td></tr>
+      <tr class="odd"><td class="col-pdf"><%= t('biometric_id') %></td><td class="col-pdf"><%= @biometric_id %></td></tr>
     </table>
 
   </div>

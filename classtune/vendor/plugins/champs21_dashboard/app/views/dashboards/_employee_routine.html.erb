@@ -13,9 +13,32 @@
         <div class="portlet-subcontent">     
           <div class="timetable_left"><img width="30" src="/images/icons/subjects/<%= h['subject_icon_name'] %>" /></div>
           <div class="timetable_right" style="margin-top:10px;">
-            <div class="subcontent-header themed_text"><%=  h['subject_name'] %> - <%= h['batch_name'] %> <%= h['course_name'] %> (<%= h['teacher_full_name'] %>)</div>
+            <div class="subcontent-header themed_text"><%=  h['subject_name'] %> - <%= h['batch_name'] %> <%= h['course_name'] %> (
+              <%  if Configuration.find_by_config_key('RoutineViewTeacherShortCode').present? and Configuration.find_by_config_key('RoutineViewTeacherShortCode').config_value=="1" %>
+          
+              <% if !h['teacher_short_code'].blank? %>
+                <%= h['teacher_short_code'] %>
+              <% else %>
+              <%= h['teacher_full_name'] %>
+              <% end %>
+          
+            <% else %>
+                <%= h['teacher_full_name'] %>
+            <% end %>
+     
+                
+       )</div>
             <div class="subcontent-info weekday_text"><%= h['weekday_text'] %></div>
-            <div class="subcontent-info"><%= h['class_start_time'] %> - <%= h['class_end_time'] %></div>  
+            <div class="subcontent-info">
+                <%  if Configuration.find_by_config_key('RountineViewPeriodNameNoTiming').present? and Configuration.find_by_config_key('RountineViewPeriodNameNoTiming').config_value=="1" %>
+                  <%= h['period_name'] %>  
+                <% else %>
+                  <%= h['class_start_time'] %> - <%= h['class_end_time'] %>
+                <% end %>
+            
+            
+            
+            </div>  
 
           </div>       
         </div>
@@ -38,10 +61,28 @@
               <div class="timetable_left"><img width="30" src="/images/icons/subjects/<%= h['subject_icon_name'] %>" /></div>
               <div class="timetable_right" style="margin-top:10px;">
                   <div class="subcontent-header themed_text"><%=  h['subject_name'] %> - <%= h['batch_name'] %> <%= h['course_name'] %>
-                   (<%= h['teacher_full_name'] %>)
+                   (
+                    <%  if Configuration.find_by_config_key('RoutineViewTeacherShortCode').present? and Configuration.find_by_config_key('RoutineViewTeacherShortCode').config_value=="1" %>
+
+                      <% if !h['teacher_short_code'].blank? %>
+                        <%= h['teacher_short_code'] %>
+                      <% else %>
+                      <%= h['teacher_full_name'] %>
+                      <% end %>
+
+                    <% else %>
+                        <%= h['teacher_full_name'] %>
+                    <% end %>
+                  )
                   </div>
                   <div class="subcontent-info weekday_text"><%= h['weekday_text'] %></div>
-                  <div class="subcontent-info"><%= h['class_start_time'] %> - <%= h['class_end_time'] %></div>  
+                  <div class="subcontent-info">
+                    <%  if Configuration.find_by_config_key('RountineViewPeriodNameNoTiming').present? and Configuration.find_by_config_key('RountineViewPeriodNameNoTiming').config_value=="1" %>
+                        <%= h['period_name'] %>  
+                    <% else %>
+                        <%= h['class_start_time'] %> - <%= h['class_end_time'] %>
+                    <% end %>
+                 </div>  
       
               </div>       
           </div>
@@ -69,7 +110,13 @@
         <div class="subcontent-header themed_text"><%=  homework['next_class']['subject_name'] %> - <%= homework['next_class']['batch_name'] %> <%= homework['next_class']['course_name'] %>
         </div>
         <div class="subcontent-info weekday_text"><%= homework['next_class']['weekday_text'] %></div>
-        <div class="subcontent-info"><%= homework['next_class']['class_start_time'] %> - <%= homework['next_class']['class_end_time'] %></div>
+        <div class="subcontent-info">
+          <%  if Configuration.find_by_config_key('RountineViewPeriodNameNoTiming').present? and Configuration.find_by_config_key('RountineViewPeriodNameNoTiming').config_value=="1" %>
+              <%= homework['next_class']['period_name'] %>  
+          <% else %>
+              <%=  homework['next_class']['class_start_time'] %> - <%= homework['next_class']['class_end_time'] %>
+          <% end %>
+        </div>
       </div>
     <% else %>
       <div class="timetable_right">No class found</div>

@@ -1,0 +1,62 @@
+ student:
+    overrides:
+      batch_id: "Batch Name"
+      nationality_id: "Nationality ID"
+      student_category_id: "Student Category Name"
+      country_id: "Country ID"
+      immediate_contact_id: "Immediate Contact Name"
+      employee_grade_id: "Employee Grade Name"
+      is_sms_enabled: "SMS Enabled"
+      is_email_enabled: "EMail Enabled"
+      pin_code: "Zip Code"
+      phone2: "Mobile"
+    associations:
+     - :batch
+     - :nationality
+     - :student_category
+     - :country
+     - :immediate_contact
+    associated_columns:
+      nationality: "id"
+      student_category: "name"
+      country: "id"
+    booleans:
+     - :is_sms_enabled
+     - :has_paid_fees
+     - :is_email_enabled
+    filters:
+     - :is_sms_enabled
+     - :has_paid_fees
+     - :is_email_enabled
+     - :photo_updated_at
+     - :class_teacher_id
+     - :status_description
+     - :is_active
+     - :is_deleted
+     - :passport_number
+     - :enrollment_date
+     - :photo_file_name
+     - :photo_content_type
+     - :photo_data
+     - :photo_file_size
+     - :library_card
+     - :user_id
+     - :school_id
+     - :immediate_contact_id
+     - :sibling_id
+    map_combination:
+     batch: "modified_full_name"
+    mandatory_header_associates:
+     - :immediate_contact
+    associates:
+     student_additional_detail: "student_additional_field"
+    associate_columns:
+      student_additional_detail: "additional_info"
+    associate_column_search:
+      student_additional_field: "name"
+    dependent: "user"
+    attr_accessor_list:
+      - :pass
+      - :class_roll_no
+
+# Please refer to employee.yml for basic concept

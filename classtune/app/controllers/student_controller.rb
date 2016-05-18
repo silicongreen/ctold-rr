@@ -22,7 +22,7 @@ class StudentController < ApplicationController
   before_filter :login_required
   before_filter :check_permission, :only=>[:index,:admission1,:profile,:reports,:categories,:add_additional_details]
   before_filter  :set_precision
-  before_filter :protect_other_student_data, :except =>[:insert_into_new_parent_student_table,:show,:class_test_report,:combined_exam,:progress_report,:class_test_report_single,:term_test_report]
+  before_filter :protect_other_student_data, :except =>[:insert_into_new_parent_student_table,:show,:class_test_report,:previous_batch_report,:combined_exam,:progress_report,:class_test_report_single,:term_test_report]
   before_filter :default_time_zone_present_time
   
   before_filter :find_student, :only => [
@@ -1300,29 +1300,25 @@ class StudentController < ApplicationController
   end
 
   def class_test_report
+    if current_user.student
+      @student = Student.find(current_user.student_record.id)
+    end
+    if current_user.parent
+      target = current_user.guardian_entry.current_ward_id      
+      @student = Student.find_by_id(target) 
+    end
+    @previous_batch = @student.batch_students
+    @courses_all = Batch.all(:joins=>[:batch_students],:conditions=>["batch_students.student_id=#{@student.id}"],:include=>:course).uniq
+      
     get_class_test_report
     @extra = "class_test"
     if params[:extra]
       @extra = params[:extra].to_s
-      if @extra == "term"
-        if current_user.student
-          @student = Student.find(current_user.student_record.id)
-        end
-        if current_user.parent
-          target = current_user.guardian_entry.current_ward_id      
-          @student = Student.find_by_id(target) 
-        end
+      if @extra == "term"       
         @batch = @student.batch
         @exam_groups = @batch.exam_groups
         @exam_groups.reject!{|e| e.result_published==false or e.exam_category!=3}
-      elsif @extra == "progress"
-        if current_user.student
-          @student = Student.find(current_user.student_record.id)
-        end
-        if current_user.parent
-          target = current_user.guardian_entry.current_ward_id      
-          @student = Student.find_by_id(target) 
-        end
+      elsif @extra == "progress"        
         @batch = @student.batch
         @grouped_exams = GroupedExam.find_all_by_batch_id(@batch.id)
         @normal_subjects = Subject.find_all_by_batch_id(@batch.id,:conditions=>"no_exams = false AND elective_group_id IS NULL AND is_deleted = false")
@@ -1410,7 +1406,8 @@ class StudentController < ApplicationController
       target = current_user.guardian_entry.current_ward_id      
       @student = Student.find_by_id(target) 
     end
-    @batch = @student.batch
+    #@batch = @student.batch
+    @batch = Batch.find_by_id(1286)
     @exam_groups = @batch.exam_groups
     @exam_groups.reject!{|e| e.result_published==false or e.exam_category!=3}
     
@@ -2594,8 +2591,6 @@ class StudentController < ApplicationController
 
     @paid_fees = @financefee.finance_transactions
   end
-
-
   
   #  # Graphs
   #

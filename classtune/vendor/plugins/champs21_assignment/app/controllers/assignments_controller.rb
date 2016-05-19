@@ -480,7 +480,8 @@ class AssignmentsController < ApplicationController
     @assignment =Assignment.active.find params[:id]
     unless @assignment.nil?
       if @assignment.download_allowed_for(current_user)
-        send_file  @assignment.attachment.path , :type=>@assignment.attachment.content_type
+        filename = @assignment.attachment_file_name
+        send_file  @assignment.attachment.path , :type=>@assignment.attachment.content_type,:filename => filename
       else
         flash[:notice] = "#{t('you_are_not_allowed_to_download_that_file')}"
         redirect_to :controller=>:assignments

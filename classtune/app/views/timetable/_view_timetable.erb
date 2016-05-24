@@ -76,7 +76,18 @@
                             <%= s.name unless s.nil? %>
                             <% @sub_emp.each do |e| %>
                               <div class="emp-name">
-                                <%= e.full_name  %>
+                                <%  if Configuration.find_by_config_key('RoutineViewTeacherShortCode').present? and Configuration.find_by_config_key('RoutineViewTeacherShortCode').config_value=="1" %>
+                                  <% if !e.nil? %>
+                                    <% if !e.short_code.blank? %>
+                                      <%= e.short_code %>
+                                    <% else %>
+                                    <%= e.full_name %>
+                                    <% end %>
+                                  <% end %>
+                                <% else %>  
+                                <%= e.full_name unless e.nil? %>
+                              <% end %>
+                             
                               </div>
                             <% end %>
                           <% end %>
@@ -94,14 +105,26 @@
                       <span class="themed_text">
                         <%= @timetable[weekday][ct.id].subject.name %>
                         <div class="emp-name">
-                          <%= @timetable[weekday][ct.id].employee.full_name unless @timetable[weekday][ct.id].employee.nil? %>
+                          
+                           <%= @timetable[weekday][ct.id].employee.full_name unless @timetable[weekday][ct.id].employee.nil? %>
+                        
+                          
                         </div>
                       </span>
                     </div>
                     <div class="employee">
-                      <% if @timetable[weekday][ct.id].employee.present? %>
-                        <%= @timetable[weekday][ct.id].employee.first_name %>
-                      <% end %>
+                       <%  if Configuration.find_by_config_key('RoutineViewTeacherShortCode').present? and Configuration.find_by_config_key('RoutineViewTeacherShortCode').config_value=="1" %>
+                              <% if !@timetable[weekday][ct.id].employee.nil? %>
+                                <% if !@timetable[weekday][ct.id].employee.short_code.blank? %>
+                                  <%= @timetable[weekday][ct.id].employee.short_code %>
+                                <% else %>
+                                <%= @timetable[weekday][ct.id].employee.first_name %>
+                                <% end %>
+                              <% end %>
+                            <% else %>  
+                            <%= @timetable[weekday][ct.id].employee.first_name unless @timetable[weekday][ct.id].employee.nil? %>
+                          <% end %> 
+                      
                     <% end %>
                   </div>
                 <% else %>

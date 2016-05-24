@@ -456,18 +456,18 @@ class ExamsController < ApplicationController
     exam_subject = Subject.find(@exam.subject_id)
     is_elective = exam_subject.elective_group_id
     if is_elective == nil
-      @students = @batch.students.by_first_name
+      @students = @batch.students.order("class_roll_no ASC, first_name ASC")
     else
       assigned_students = StudentsSubject.find_all_by_subject_id(exam_subject.id)
       @students = []
       assigned_students.each do |s|
         student = Student.find_by_id(s.student_id)
-        @students.push [student.first_name, student.id, student] unless student.nil?
+        @students.push [student.class_roll_no,student.first_name, student.id, student] unless student.nil?
       end
       @ordered_students = @students.sort
       @students=[]
       @ordered_students.each do|s|
-        @students.push s[2]
+        @students.push s[3]
       end
     end
     @config = Configuration.get_config_value('ExamResultType') || 'Marks'

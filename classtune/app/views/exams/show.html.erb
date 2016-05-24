@@ -104,6 +104,7 @@
 
         <table id="listing" width="100%">
           <tr class="tr-head">
+            <td><%= "Roll" %></td>
             <td><%= t('name') %></td>
             <% unless @exam_group.exam_type == 'Grades' %>
               <td  <%=styletext%>><%= t('marks') %></td>
@@ -117,7 +118,9 @@
           </tr>
           <% @students.each do |student| %>
             <tr class="tr-<%= cycle('odd', 'even') %>">
+               <td class="col-2"><%= student.class_roll_no %> </td>
               <td class="col-2"><%= student.full_name %> </td>
+              
               <% @exam_score = @exam.score_for(student) %>
               <% unless @exam_group.exam_type == 'Grades' %>
                 <td class="col-1"  <%=styletext%>><div class="label-field-pair">

@@ -108,11 +108,11 @@
                             <div class="emp-name">
                               <%  if Configuration.find_by_config_key('RoutineViewTeacherShortCode').present? and Configuration.find_by_config_key('RoutineViewTeacherShortCode').config_value=="1" %>
                                 <% if !@sub_emp.nil? %>
-                                  <% if !@sub_emp.employee.short_code.blank? %>
-                                    <%= @sub_emp.employee.short_code %>
-                                  <% else %>
+                                  <%# if !@sub_emp.employee.short_code.blank? %>
+                                    <%#= @sub_emp.employee.short_code %>
+                                  <%# else %>
                                   <%= @sub_emp.employee.full_name %>
-                                  <% end %>
+                                  <%# end %>
                                 <% end %>
                               <% else %>  
                               <%= @sub_emp.employee.full_name unless @sub_emp.nil? %>

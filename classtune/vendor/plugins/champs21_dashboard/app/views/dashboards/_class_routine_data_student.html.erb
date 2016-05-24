@@ -1,0 +1,109 @@
+<div class="partial_homework" style="padding: 20px;">
+  <h2 class="f2 etitle">Class Routine</h2>
+  <%= link_to "<div class='button-link button-link-report'>See Full Routine</div>", :controller => "timetable", :action => "student_view",  :id => student_id %>
+  <div class="box-text">Next Class</div> 
+  <div class="portlet-subcontent">
+    <% unless @nextclass.empty? %>
+      <div class="timetable_left"><img width="30" src="/images/icons/subjects/<%= @nextclass['subject_icon_name'] %>" /></div>
+      <div class="timetable_right" style="margin-top:10px;">
+        <div class="subcontent-header themed_text"><%= @nextclass['subject_name'] %> - 
+        <%  if Configuration.find_by_config_key('RoutineViewTeacherShortCode').present? and Configuration.find_by_config_key('RoutineViewTeacherShortCode').config_value=="1" %>
+          
+            <%# if !@nextclass['teacher_short_code'].blank? %>
+              <%#= @nextclass['teacher_short_code'] %>
+            <%# else %>
+            <%= @nextclass['teacher_full_name'] %>
+            <%# end %>
+          
+        <% else %>
+            <%= @nextclass['teacher_full_name'] %>
+        <% end %>
+        
+        
+        
+        </div>
+        <div class="subcontent-info weekday_text"><%= @nextclass['weekday_text'] %></div>
+        <div class="subcontent-info">
+        <%  if Configuration.find_by_config_key('RountineViewPeriodNameNoTiming').present? and Configuration.find_by_config_key('RountineViewPeriodNameNoTiming').config_value=="1" %>
+              <%= @nextclass['period_name'] %>  
+         <% else %>
+              <%=  @nextclass['class_start_time'] %> - <%= @nextclass['class_end_time'] %>
+        <% end %>
+    </div>
+      </div>
+    <% else %>
+      <div class="timetable_right" style="margin-top:10px;">No Class found</div>
+    <% end %>
+  </div>
+  <div class="box-text">Today's Routine</div>
+
+  <% unless routine.empty? %>
+    <% routine.each do |h| %>
+      <% unless h['subject_name'].empty? %>
+        <div class="portlet-subcontent">     
+          <div class="timetable_left"><img width="30" src="/images/icons/subjects/<%= h['subject_icon_name'] %>" /></div>
+          <div class="timetable_right" style="margin-top:10px;">
+            <div class="subcontent-header themed_text"><%= h['subject_name'] %> - 
+
+            <%  if Configuration.find_by_config_key('RoutineViewTeacherShortCode').present? and Configuration.find_by_config_key('RoutineViewTeacherShortCode').config_value=="1" %>
+          
+              <%# if !h['teacher_short_code'].blank? %>
+                <%#= h['teacher_short_code'] %>
+              <%# else %>
+              <%= h['teacher_full_name'] %>
+              <%# end %>
+          
+            <% else %>
+                <%= h['teacher_full_name'] %>
+            <% end %>
+            </div>
+            <div class="subcontent-info weekday_text"><%= h['weekday_text'] %></div>
+            <div class="subcontent-info">
+                    <%  if Configuration.find_by_config_key('RountineViewPeriodNameNoTiming').present? and Configuration.find_by_config_key('RountineViewPeriodNameNoTiming').config_value=="1" %>
+                        <%= h['period_name'] %>  
+                    <% else %>
+                        <%= h['class_start_time'] %> - <%= h['class_end_time'] %>
+                    <% end %>
+      
+          </div>  
+
+          </div>       
+        </div>
+        <div style="border-bottom: 1px solid #ccc; float: left; margin: 15px; width: 90%;"></div> 
+      <% end %>
+    <% end %>
+  <% else %>
+    <div class="portlet-subcontent">    
+      No Class Today
+    </div>  
+  <% end  %> 
+</div>
+
+<style>
+  .weekday_text
+  {
+    text-transform: capitalize;
+  }
+  div h2.etitle
+  {
+    color:#A05A8E;
+    width: 60%;
+  }
+  div.button-link-report
+  {
+
+    background: #A05A8E;
+    color:white;
+
+  }
+  .box-text
+  {
+    float: left; 
+    clear:both; 
+    background: #F5F5F5; 
+    padding:10px 20px; 
+    margin:15px 0px;
+    width: 96%;
+    color:#B9B9B9;
+  }
+</style>  

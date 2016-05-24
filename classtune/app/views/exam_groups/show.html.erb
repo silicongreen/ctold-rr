@@ -158,6 +158,7 @@
         </tr>
         <%# @exam_group.exams.each do |exam| %>
         <% @exams.each do |exam| %>
+        <% unless @exam.blank? %>
         <% @exam = exam %>
          <% no_exam = @exam.subject.no_exams %>
           <% if @employee_subjects.include?(exam.subject.id) or @current_user.admin? or @user_privileges.map{|p| p.name}.include?('ExaminationControl') or @user_privileges.map{|p| p.name}.include?('EnterResults') %>
@@ -269,6 +270,7 @@
               <% end %>
             </tr>
           <% end %>
+         <% end %>
         <% end %>
       </table>
     <% else %>

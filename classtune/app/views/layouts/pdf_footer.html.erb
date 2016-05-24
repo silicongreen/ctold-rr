@@ -24,10 +24,12 @@
       <thead>
           <tr>
               <% if MultiSchool.current_school.id == 246 %>
-              <td class="lefttd"><%= "Class Teacher : .........................................." %></td>
+              <td class="lefttd"><%= "Teacher's Remarks : ........................................................................" %></td>
               <td  class="lefttd2">
-                  <%= "<p>Shaleha Kader</p>"  %>
-                  <%= "<p>Chairman & Principal: ..........................................</p>" %>
+                  <%= "<p class='left'>Shaleha Kader</p>"  %>                  
+                  <%= "<p>Chairman & Principal:" %>
+                  <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/246/principal_signature.png")) %>
+                  <%= "</p>" %>
               </td>
               <% else %>
               <td><%= "Class Teacher : .........................................." %></td>

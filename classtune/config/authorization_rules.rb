@@ -2692,6 +2692,17 @@ authorization do
 	  :show,
 	  :showall,
       :comment_view]  
+  has_permission_on [:lessonplan],
+      :to => [
+      :index,      
+      :all,
+      :subject_lessonplan,
+      :view,
+      :show,
+      :showall,
+      :comment_view,
+      :lessonplan_by_subject
+    ]
   end
 
   # student- privileges

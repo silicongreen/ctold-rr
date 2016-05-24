@@ -58,6 +58,9 @@ class AssignmentsController < ApplicationController
           batches_data = Batch.find_by_id(batch_id)
           batch_name = batches_data.name
         end
+        unless params[:student][:from].nil?
+          @from = params[:student][:from]
+        end
       end
     else
       batches = Batch.active

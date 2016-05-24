@@ -153,9 +153,17 @@ class LessonplanController < ApplicationController
         
         @lessonplan = Lessonplan.paginate  :conditions=>"FIND_IN_SET(#{@batch.id},batch_ids) AND publish_date is not null AND publish_date <= NOW() AND is_show = 1", :page=>params[:page]        
       end
-    else
+    elsif @current_user.employee?
       @lessonplan_categories = LessonplanCategory.active_for_current_user(current_user.id)    
       @lessonplan = Lessonplan.paginate  :conditions=>"author_id = #{current_user.id}", :page => params[:page]    
+    else
+      @classes = []
+      @batches = []
+      @batch_no = 0
+      @course_name = ""
+      @courses = []
+      @batches = Batch.active
+      @lessonplan = Lessonplan.paginate  :conditions=>"school_id = #{MultiSchool.current_school.id} AND publish_date is not null AND publish_date <= NOW() AND is_show = 1", :page => params[:page]    
     end    
   end
   def subject_lessonplan
@@ -181,6 +189,20 @@ class LessonplanController < ApplicationController
       @lessonplan = Lessonplan.paginate  :conditions=>"FIND_IN_SET(#{@subject.id},subject_ids) AND FIND_IN_SET(#{@batch.id},batch_ids) AND publish_date is not null AND publish_date <= NOW() AND is_show = 1", :page=>params[:page]  
     else
       @lessonplan = Lessonplan.paginate  :conditions=>"FIND_IN_SET(#{@batch.id},batch_ids) AND publish_date is not null AND publish_date <= NOW() AND is_show = 1", :page=>params[:page]
+    end    
+    
+    render(:update) do |page|
+      page.replace_html 'all_news', :partial=>'subject_lessonplan'
+    end
+  end
+  
+  def lessonplan_by_subject
+    
+    @subject =Subject.find_by_id params[:subject_id]    
+    unless @subject.nil?
+      @lessonplan = Lessonplan.paginate  :conditions=>"FIND_IN_SET(#{@subject.id},subject_ids) AND publish_date is not null AND publish_date <= NOW() AND is_show = 1", :page=>params[:page]  
+    else
+      @lessonplan = Lessonplan.paginate  :conditions=>"school_id = #{MultiSchool.current_school.id} AND publish_date is not null AND publish_date <= NOW() AND is_show = 1", :page => params[:page]    
     end    
     
     render(:update) do |page|
@@ -378,6 +400,8 @@ class LessonplanController < ApplicationController
       @lessonplan = Lessonplan.find(:first,:conditions => ["FIND_IN_SET(#{@batch.id},batch_ids) AND publish_date is not null AND publish_date <= NOW() AND id = ? and is_show = 1", news_id], :include=>[:author])      
     elsif @current_user.employee?
       @lessonplan = Lessonplan.find(:first,:conditions => ["id = ? and author_id = ?", news_id, @current_user.id], :include=>[:author])
+    else
+      @lessonplan = Lessonplan.find(:first,:conditions => ["id = ? ", news_id], :include=>[:author])
     end
     if @lessonplan.nil?
       redirect_to :controller => 'lessonplan', :action => 'index'

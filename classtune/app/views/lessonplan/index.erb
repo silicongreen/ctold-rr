@@ -313,7 +313,171 @@
         <% end %>
 
         </div>    
+    <% elsif @current_user.admin %>
+        <% form_for(@student, :url => {:action=> 'view_all'}, :html=> {:id=>'new_student'}) do |s| %>    
+        <%= hidden_field_tag 'student[from]',"lessonplan", :id=>'from' %>
+        <div class="select_all">
+          
+          <div class="row">  
+            <div class="row_label">
+              <div>
+                <%= t('shift_label') %>
+              </div>
+            </div>
+            <div class="row_data">
+              <div>
+                <div class="custom_drop_wrapper">
+                 <%= select :student, :batch_name, options_for_select(Batch.active.find(:all, :group => "name").map {|b| [b.name, b.id]}, @batch_no.to_i), 
+                      {:prompt => "#{t('select')}"},
+                      {:onChange => "#{remote_function(:url => {:controller => "student", :action => "get_classes"}, :with => "'batch_id='+value+'&from=lessonplan'+'&'+$('new_student').serialize()+'&page=course_assingment&partial_view=student/courses_assingment&section_page=section_assingment&section_partial=student/sections_assignment_view'" ,:before => "$('loading_2').show();",
+                      :success => "$('loading_2').hide();")}"} %>
+                    <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_2", :style =>"display: none;" ) %>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="row_label">
+              <div>
+                <%= t('class_label') %>
+              </div>
+            </div>
+            <div class="row_data">
+              <div>
+                <div id="course_assingment" class="custom_drop_wrapper">
+                   <%= render :partial => 'student/courses_assingment', :object => @courses %>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row"  id="sections_div">
+            <div class="row_label">
+              <div>
+                <%= t('section_label') %>
+              </div>
+            </div>
+            <div class="row_data">
+              <div>
+                <div id="section_assingment" class="custom_drop_wrapper">
+                  <%= render :partial => 'student/sections_assignment_view', :object => @classes %>
+                </div>
+              </div>
+            </div>
+          </div>  
+          <div id="syllabus" class="row"></div>
+        </div>
+        <% end %><%# FORM END%>  
+        <div id="all_news">
+        <% unless @lessonplan.nil? %> 
+            <% @lessonplan.each_with_index do |r,i| %>        
+              <% link_value = r.title %>
+              <% unless r.subject_ids.nil? %>  
+                <% @sdata = [] %>
+                <% data = r.subject_ids.split(/,/) %>                    
+                    <%  data.each do |w|%>                           
+                      <% @sdata << w %>
+                    <% end %>
+              <% end %>
+              <div class="portlet-subcontent" style="width:100%">     
+              <div class="timetable_left">
+                 <span class="f2" style="font-size:20px;margin-left:40px;"><%= i+1 %></span>
+              </div>
+              <div class="timetable_right"  style="float:left;height: 80px;width: 40%;padding:5px 0;">
+                <div class="subcontent-header themed_text">
+                    <%=  link_to link_value, :controller => 'lessonplan', :action => 'view', :id => r.id%>
+                </div>                                           
+                <div class="subcontent-info">
+                    <% unless r.author.blank?  %>
+                      <%= r.author.first_name+" "+r.author.last_name %> <%= '- admin' if r.author.admin==true%>
+                    <% else %>
+                     <%= t('user_deleted') %>
+                    <% end %>  
+                </div>   
+                <div class="subcontent-info">
+                    Post on &nbsp;<%= r.publish_date %>(<%= time_ago_in_words(r.created_at) %>)
+                </div>  
+              </div>
+              <div class="timetable_right"  style="float:left;height: 80px;width: 30%;padding: 5px 0;border-left:1px dotted #cccccc">                            
+                <div class="subcontent-date">
+                  <% unless @subjects.nil? %>
+                    <% @subjects.each_with_index do |s,x| %>  
+                      <% if s.batch_id == @batch.id %>
+                        <%= (@sdata.include? s.id.to_s) ? "<div class='subject_tag'>#{s.name}</div>" :"" %>
+                      <% end %>
+                    <% end %>
+                  <% end %>
+                </div>
+              </div>
+              <div class="answer">              
+                  <div class='header-right-button'><%=  link_to "View", :controller => 'lessonplan', :action => 'view', :id => r.id%></div>                
+              </div>
+            </div>
+            <div style="float: left; margin: 7px; width: 95%;"></div> 
+            <% end %>
+          
+          <%= will_paginate @lessonplan %>
+        <% else %>
+              <h2>No Lesson plan Found</h2>
+        <% end %>
+
+        </div>    
     <% end %>
   </div>
 </div>
 <%= stylesheet_link_tag 'tadded-header' %>
+
+<style>
+    .label-field-pair label {
+    width: 80px;
+}
+    .text-input-bg img {
+  padding-top: 10px;
+  padding-left: 2px;
+}
+  .row {
+  background-color: #f8f8fa;
+  border: 1px solid #DFE1E2;
+  float: left;
+  width: 30%;
+  margin-right: 28px;
+  border-right: 1px solid #DFE1E2;
+}
+.row_label {
+  background-color: #ffffff;
+  border-right: 1px solid #DFE1E2;
+  float: left;
+  width: 48.2%;
+  padding: 0px 0px;
+}
+.row_label div {
+  color: #868A8B;
+  float: left;
+  padding: 8px 10px;
+  width: 80%;
+}
+.row_data {
+  float: left;
+  width: 48.6%;
+}
+.custom_drop_wrapper select::-ms-expand {
+    display: none;
+}
+.custom_drop_wrapper select {
+  background-color: transparent;
+  background-image: url("/images/icons/drop_down_normal.png");
+  background-position: 98% 0;
+  background-repeat: no-repeat;
+  background-size: 37px 36px;
+  border: medium none;
+  cursor: pointer;
+  display: block;
+  height: 35px;
+  width: 100%;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  /* border-right: 1px solid black; */
+}
+
+</style>  

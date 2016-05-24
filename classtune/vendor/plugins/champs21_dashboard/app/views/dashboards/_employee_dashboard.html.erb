@@ -140,9 +140,9 @@ employee_id = @current_user.employee_record.id
 
       <%=  link_to "<img src='/images/dashpallete/big_icon/Leave.png' style='width:100%'>", :controller => 'employee_attendance', :action => 'leaves', :id => employee_id %><br/><br/>
       <%=  link_to "<img src='/images/dashpallete/big_icon/meeting.png' style='width:100%'>", :controller => 'meetings', :action => 'index' %><br/><br/>
-      <%  if !@current_user.admin? %>
+      <%  #if !@current_user.admin? %>
       <%=  link_to "<img src='/images/dashpallete/big_icon/lesson_plan.png' style='width:100%'>", :controller => 'lessonplan', :action => 'index' %>
-      <% end %>
+      <% #end %>
     </div>
 
   </div>

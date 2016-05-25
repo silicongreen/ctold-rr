@@ -23,13 +23,20 @@
     <table id="listing table-design"  width="100%"  style="margin-top:10px;">
       <thead>
           <tr>
-              <% if MultiSchool.current_school.id == 246 %>
-              <td class="lefttd"><%= "Teacher's Remarks : ........................................................................" %></td>
+            <td class="lefttd"><font size="4"><%= "No. Of The Working Day :................" %></font></td>
+            <td  class="lefttd2"><font size="4"><%= "Attendance :................." %></font></td>
+          </tr>
+          <tr>
+            <td colspan="2"  height="30" class="lefttd"><font size="4"><%= "Teacher's Remarks :........................................................................................................................................................" %></font></td>            
+          </tr>
+          
+          <tr>
+              <% if MultiSchool.current_school.id == 2 %>
+              <td class="lefttd"><font size="4"><%= "Teacher's Signature : ................................................" %></font></td>
               <td  class="lefttd2">
-                  <%= "<p class='left'>Shaleha Kader</p>"  %>                  
-                  <%= "<p>Chairman & Principal:" %>
-                  <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/246/principal_signature.png")) %>
-                  <%= "</p>" %>
+                  <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/246/principal_signature.png")) %><br />
+                  <%= "<font size='4'>Shaleha Kader</font><br />"  %>                  
+                  <%= "<font size='4'>Chairman & Principal:</font>" %>
               </td>
               <% else %>
               <td><%= "Class Teacher : .........................................." %></td>

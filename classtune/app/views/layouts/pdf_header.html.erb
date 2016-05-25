@@ -18,20 +18,22 @@
 #under the License. -%>
 
 <div id="pdf-header">
-  <% if MultiSchool.current_school.id == 246 %>
+  <% if MultiSchool.current_school.id == 2 %>
       <table id="pdf-table" width="100%" cellspacing="0">
         <tr>
             <td width="25%">
               <h4 align="" class="logonew">
-                <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/246/logo.jpg")) %>
+                 
+                <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/246/logo.jpg")),:width=> '150%' %>
+                <%#= image_tag("/icons/icon.gif", :height=> '32', :width=> '32') %>
               </h4>
             </td>
             <td width="75%">
               <h1 align="" class="header_font">       
-                <%#=Configuration.get_config_value('InstitutionName'); %>Cherry Blossoms International School
+                <font size="6"><%#=Configuration.get_config_value('InstitutionName'); %>Cherry Blossoms International School</font>
               </h1>
-              <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <b>REGISTERED WITH EDEXCEL INT'L(CENTRE NUMBER 96440),UK</b></p>
+              <h3>
+                  <b>REGISTERED WITH EDEXCEL INT'L(CENTRE NUMBER 96440),UK</b></h3>
             </td>
         </tr>
       </table>

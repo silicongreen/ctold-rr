@@ -105,6 +105,10 @@
     
     
     /*ACADEMIA SCHOOL COMBINE REPORT CARD STYLE*/
+    .academia .noborder
+    {
+        border:0px !important;
+    }
     .academia table
     {
         border-collapse: collapse;
@@ -158,10 +162,17 @@
         
     }
     .academia_exam_details_box
-    {
-        border: 1px solid #000;
+    {       
         width:97%;
         margin: 0px auto;
+    }
+    academia_exam_details_box td.left,td.middle
+    {
+        width:30% !important;
+    }
+    academia_exam_details_box td.right
+    {
+        width:40% !important;
     }
     .academia_box
     {
@@ -188,7 +199,7 @@
     .academia_right_box table td
     {
         border: 1px solid #000;
-        font-size:12px;
+        font-size:10px;
         padding:3px;
     }
     .academia_sign_left

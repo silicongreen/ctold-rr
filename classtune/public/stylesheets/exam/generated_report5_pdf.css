@@ -80,7 +80,20 @@
     }
     .CSSTableGenerator td
     {
-        padding: 10px;
+        padding: 5px;
+       
+    }
+    .CSSTableGenerator table.score .totalmark
+    {
+        width:7% !important;
+    }
+    .CSSTableGenerator table.score .subjects
+    {
+        width:19% !important;
+    }
+    .CSSTableGenerator table.score .exams
+    {
+        width:60% !important;
     }
     #page-yield 
     {
@@ -88,7 +101,7 @@
         margin: 0 auto;
         overflow: hidden;
     }
-        
+     
     .section2
     {
         margin-top:120px;
@@ -100,11 +113,12 @@
     h4{margin: 5px;}
     .current_batch
     {
-        margin-top: 20px;
+        margin-top: 10px;
     }
     
     
     /*ACADEMIA SCHOOL COMBINE REPORT CARD STYLE*/
+    
     .academia .noborder
     {
         border:0px !important;
@@ -116,7 +130,7 @@
     .academia table td,th
     {
         border: 1px solid black;        
-        width:50%;        
+        
     }
     .academia table td.special_top,th.special_top
     {
@@ -174,11 +188,16 @@
     {
         width:40% !important;
     }
-    .academia_box
-    {
-        width:1250px;
-        margin-top: 5px;
-    }
+    .academia_box {
+  float: left;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  width: 1250px;
+}
+academia_box p
+{
+    margin:0px;
+}
     .academia_left_box
     {
         float:left;
@@ -227,8 +246,6 @@
     }
     
     .teachers_sign td,th
-    {
-        border: 1px solid black;        
-        width:49%;
+    {  
         padding:5px;
     }

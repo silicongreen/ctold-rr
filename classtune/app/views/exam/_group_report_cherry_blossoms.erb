@@ -27,11 +27,12 @@
                 </tr>
               </table>
             </div>
-          </div>          
+          </div>  
+            <br />
           <div class="academia_right_box">
             <% @grading_levels = GradingLevel.default %>
             <%  unless @grading_levels.empty? %>
-              <table class="noborder">
+              <table class="">
                   <tr>
                     <td>Marks Range</td>
                     <td>Grade</td>
@@ -54,58 +55,61 @@
             <% end %>
           </div>
         </div>
-        <br />
-        <br />
-        <br />
+       
         <div class ="current_batch">
             <div id="grouped_exam_report">
                 <div class="CSSTableGenerator">
-                    <table id="listing table-design"  width="100%">
+                    <table id="listing table-design" class='score' width="100%">
                         <thead>
                           <tr>
-                              <th width="20%">Subject Name</b></th>
+                              <th class='subjects'>Subject Name </th>
                               <% unless @report_data['report']['exams'].blank? %>  
+                              <% count = @report_data['report']['exams'].count %>                        
                                 <% @report_data['report']['exams'].each do |report| %>
-                                  <th width="20%">
-                                    <table width="100%" border="0">
+                                  <% w = 60/count%>
+                              <th width='<%=  ("#{w}%")%>'>
+                                    <table width='100%' border="0">
                                         <tr>
-                                            <td colspan="2" class="special_top special_left special_right"><%= report['exam_name'] %></td>
+                                            <td width="100%" colspan="2" class="special_top special_left special_right"><%= report['exam_name'] %></td>
                                         </tr>
                                         <tr>
                                             <td width="50%" class="special_bottom special_left">Full Marks</td>
-                                            <td  width="50%" class="special_bottom special_right">Marks Obtained</td>
+                                            <td width="50%" class="special_bottom special_right">Marks Obtained</td>
                                         </tr>
 
                                     </table>
                                   </th> 
                                 <% end %>
+                              
                               <% end %>
 
-                              <th width="5%">Total Marks</th>
-                              <th width="5%">Marks Obtained (%)</th>
-                              <th width="5%">Highest Marks (%)</th>
-                              <th width="5%">Letter Grade</th>
-                              <th width="5%">GPA</th>
+                              <th class="totalmark">Total Marks</th>
+                              <!--th width="5%">Marks Obtained (%)</th-->
+                              <th class="totalmark">Highest Marks (%)</th>
+                              <th class="totalmark">Letter Grade</th>
+                              <!--th width="5%">GPA</th-->
                           </tr>
                         </thead>
                         <% total_parcent = 0 %>
                         <% total_subject = 0 %>
                         <% unless @report_data['report']['subjects'].blank? %> 
+                          <% count2 = @report_data['report']['exams'].count %>         
                           <% @report_data['report']['subjects'].each do |subjects| %>
                             <tr>
                                 <% weightage_mark = 0 %>
                                 <% total_mark = 0 %>
                                 <% full_mark = 0 %>
 
-                                <td width="20%"><b><%= subjects['name'] %></b></td>
+                                <td class='subjects'><b><%= subjects['name'] %></b></td>
                                 <% unless @report_data['report']['exams'].blank? %>  
                                   <% @report_data['report']['exams'].each do |report| %>
-                                    <td  width="20%">
+                                    <% w = 60/count2%>
+                                    <th width='<%=  ("#{w}%")%>'>
 
-                                        <table  width="100%" CELLPADDING="3" CELLSPACING="3">
+                                        <table width="100%" CELLPADDING="3" CELLSPACING="3">
 
                                             <tr>
-                                                <td  width="50%" class="special_top special_left special_bottom">
+                                                <td width="50%" class="special_top special_left special_bottom">
                                                     <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
                                                       <%= report['result'][report['exam_id']][subjects['id']]['full_mark'] %>
                                                       <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
@@ -113,7 +117,7 @@
                                                       N/A
                                                     <% end %>  
                                                 </td>
-                                                <td  width="50%" class="special_top special_right special_bottom ">
+                                                <td width="50%" class="special_top special_right special_bottom ">
                                                     <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                                                       <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %>
                                                       <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
@@ -153,28 +157,28 @@
                                %>
 
                                   <% if full_mark.to_f > 0 %>
-                                      <td width="5%"><b><%= sprintf( "%0.02f", total_mark) %></b></td>
-                                      <td width="5%"><b><%= sprintf( "%0.02f", main_mark) %> %</b></td>
-                                      <td width="5%"><b><%= sprintf( "%0.02f", heighst_mark)   %> %</b></td>
+                                      <td class="totalmark"><b><%= sprintf( "%0.02f", total_mark) %></b></td>
+                                      <!--td class="totalmark"><b><%= sprintf( "%0.02f", main_mark) %> %</b></td-->
+                                      <td class="totalmark"><b><%= sprintf( "%0.02f", heighst_mark)   %> %</b></td>
                                       <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
 
                                       <% if !grade.blank? and !grade.name.blank? and !grade.credit_points.blank? %>
-                                        <td width="5%"><b><%= grade.name %></b></td>
-                                        <td width="5%"><b><%= grade.credit_points %></b></td>
+                                        <td class="totalmark"><b><%= grade.name %></b></td>
+                                        <!--td width="5%"><b><%= grade.credit_points %></b></td-->
                                       <% else %>
-                                        <td width="5%"><b>N/A</b></td>
-                                        <td width="5%"><b>N/A</b></td>
+                                        <td class="totalmark"><b>N/A</b></td>
+                                        <!--td width="5%"><b>N/A</b></td-->
                                       <% end %>
 
 
                                       <% total_parcent= total_parcent+main_mark %>
                                       <% total_subject = total_subject+1 %>
                                   <% else  %>
-                                      <td width="5%"><b>N/A</b></td>
-                                      <td width="5%"><b>N/A</b></td>
-                                      <td width="5%"><b>N/A</b></td>
-                                      <td width="5%"><b>N/A</b></td>
-                                      <td width="5%"><b>N/A</b></td>
+                                      <td class="totalmark"><b>N/A</b></td>
+                                      <!--td class="totalmark"><b>N/A</b></td-->
+                                      <td class="totalmark"><b>N/A</b></td>
+                                      <td class="totalmark"><b>N/A</b></td>
+                                      <!--td width="5%"><b>N/A</b></td-->
                                   <% end %>      
 
                             </tr> 
@@ -182,10 +186,10 @@
                         <% end %>     
 
                     </table>
-
+                    
 
                     <% avgparcent = total_parcent.to_f/total_subject.to_f %>
-                    <table id="listing table-design result_main_table"  width="100%" >
+                    <table  width="100%" >
                         <thead>
                             <tr>
 
@@ -196,9 +200,9 @@
                                 <%  grade = GradingLevel.percentage_to_grade(avgparcent, @batch.id) %>
 
                                 <% if !grade.blank?  and !grade.credit_points.blank? %>
-                                  <th><h2>CGPA : <%= grade.credit_points %> </h2></th>
+                                  <!--th><h2>CGPA : <%= grade.credit_points %> </h2></th--->
                                 <% else %>
-                                  <th >-</th>
+                                  <!--th >-</th-->
                                 <% end %>    
 
 
@@ -207,7 +211,7 @@
 
                     </table>
 
-
+                   
 
                     <% unless @report_data['report']['no_exam_subject_resutl'].blank? or !@report_data['report']['no_exam_subject_resutl'].blank? %>
 
@@ -285,26 +289,26 @@
                       </th>                      
                   </tr>
                   <tr>
-                      <td>
+                      <td width="50%">
                           Working Days
                       </td>
-                      <td>
+                      <td width="50%">
                           
                       </td>
                   </tr>
                   <tr>
-                      <td>
+                      <td width="50%">
                           Present
                       </td>
-                      <td>
+                      <td width="50%">
                           
                       </td>
                   </tr>
                   <tr>
-                      <td>
+                      <td width="50%">
                           Absent 
                       </td>
-                      <td>
+                      <td width="50%">
                           
                       </td>
                   </tr>

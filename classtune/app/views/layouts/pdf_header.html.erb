@@ -21,19 +21,21 @@
   <% if MultiSchool.current_school.id == 246 %>
       <table id="pdf-table" width="100%" cellspacing="0">
         <tr>
-            <td width="12%">
+            <td width="23%">
               <h4 align="" class="logonew">
                  
                 <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/246/logo.jpg")),:width=> '150%' %>
                 <%#= image_tag("/icons/icon.gif", :height=> '32', :width=> '32') %>
               </h4>
             </td>
-            <td width="88%">
+            <td width="77%">
               <h1 align="" class="header_font">       
-                <font size="7"><%#=Configuration.get_config_value('InstitutionName'); %>Cherry Blossoms International School</font>
+                <font size="6"><%#=Configuration.get_config_value('InstitutionName'); %>Cherry Blossoms International School</font>
               </h1>
-              <h2> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <b>REGISTERED WITH EDEXCEL INT'L(CENTRE NUMBER 96440),UK</b></h2>
+              <h2> 
+                  <b>(PLAY GROUP-'A', EDEXCEL CENTRE NO. 96440, UK)</b>                  
+              </h2>
+              <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font size='2'>www.cherryblossommsint.com , Contact : +88017130073860, Email : cherryblossomsint@gmail.com</font></p>
             </td>
         </tr>
       </table>

@@ -57,6 +57,8 @@ class Student < ActiveRecord::Base
   named_scope :with_name_admission_no_only, :select=>"id,class_roll_no, CONCAT_WS('',first_name,' ',last_name,' - ',admission_no) AS name,first_name,last_name,admission_no", :order=>:first_name
 
   named_scope :by_first_name, :order=>'first_name',:conditions => { :is_active => true }
+  
+  named_scope :by_roll_number_name, :order=>'class_roll_no ASC, first_name ASC',:conditions => { :is_active => true }
 
   validates_presence_of :admission_no, :admission_date, :batch_id, :date_of_birth,:nationality_id
   validates_presence_of :pass, :unless => Proc.new { |student| student.batch_name.nil? or student.batch_name.empty?}

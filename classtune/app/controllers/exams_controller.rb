@@ -456,7 +456,7 @@ class ExamsController < ApplicationController
     exam_subject = Subject.find(@exam.subject_id)
     is_elective = exam_subject.elective_group_id
     if is_elective == nil
-      @students = @batch.students.all.order("class_roll_no ASC, first_name ASC")
+      @students = @batch.students.by_roll_number_name
     else
       assigned_students = StudentsSubject.find_all_by_subject_id(exam_subject.id)
       @students = []

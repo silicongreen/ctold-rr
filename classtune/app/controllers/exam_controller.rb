@@ -2299,7 +2299,7 @@ class ExamController < ApplicationController
       unless batch_students.empty?
         batch_students.each do|b|
           student = Student.find_by_id(b.student_id)
-          @students.push [student.first_name,student.id,student] unless student.nil?
+          @students.push [student.class_roll_no,student.first_name,student.id,student] unless student.nil?
         end
       end
     else
@@ -2307,13 +2307,13 @@ class ExamController < ApplicationController
       @students = []
       assigned_students.each do |s|
         student = Student.find_by_id(s.student_id)
-        @students.push [student.first_name, student.id, student] unless student.nil?
+        @students.push [student.class_roll_no,student.first_name, student.id, student] unless student.nil?
       end
     end
     @ordered_students = @students.sort
     @students=[]
     @ordered_students.each do|s|
-      @students.push s[2]
+      @students.push s[3]
     end
     @config = Configuration.get_config_value('ExamResultType') || 'Marks'
 

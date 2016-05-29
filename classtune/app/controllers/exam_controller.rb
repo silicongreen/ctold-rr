@@ -2294,14 +2294,15 @@ class ExamController < ApplicationController
     exam_subject = Subject.find(@exam.subject_id)
     is_elective = exam_subject.elective_group_id
     if is_elective == nil
-      @students = []
-      batch_students = BatchStudent.find_all_by_batch_id(@batch.id)
-      unless batch_students.empty?
-        batch_students.each do|b|
-          student = Student.find_by_id(b.student_id)
-          @students.push [student.class_roll_no,student.first_name,student.id,student] unless student.nil?
-        end
-      end
+      @students = @batch.students.order("class_roll_no ASC, first_name ASC")
+#      @students = []
+#      batch_students = BatchStudent.find_all_by_batch_id(@batch.id)
+#      unless batch_students.empty?
+#        batch_students.each do|b|
+#          student = Student.find_by_id(b.student_id)
+#          @students.push [student.class_roll_no,student.first_name,student.id,student] unless student.nil?
+#        end
+#      end
     else
       assigned_students = StudentsSubject.find_all_by_subject_id(exam_subject.id)
       @students = []
@@ -2309,12 +2310,14 @@ class ExamController < ApplicationController
         student = Student.find_by_id(s.student_id)
         @students.push [student.class_roll_no,student.first_name, student.id, student] unless student.nil?
       end
+      
+      @ordered_students = @students.sort
+      @students=[]
+      @ordered_students.each do|s|
+        @students.push s[3]
+      end
     end
-    @ordered_students = @students.sort
-    @students=[]
-    @ordered_students.each do|s|
-      @students.push s[3]
-    end
+    
     @config = Configuration.get_config_value('ExamResultType') || 'Marks'
 
     @grades = @batch.grading_level_list

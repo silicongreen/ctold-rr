@@ -1,0 +1,77 @@
+<% unless search_r.blank? %>
+  <% unless search_r['employees'].blank? %>
+    <div class="display_box" style="float:left; clear:both; width:94%;background-color: #C9364A;
+    color: white;
+    padding: 10px" align="left"><b style="font-size:15px;">Employees</b></div>
+    
+    <% search_r['employees'].each do |h| %>
+      <a href="/employee/profile/<%=h['profile_id']%>" style="float:left; clear:both; width:94%;">
+          <div class="display_box" align="left" style="float:left; clear:both; width:100%;">
+              <span style="font-size:13px; color:black" class="name">
+                  <%= h['full_name'] %>
+              </span>    
+          </div>
+      </a>    
+    <% end %>
+  <% end %>
+  <% unless search_r['students'].blank? %>
+    <div class="display_box" style="float:left; clear:both; width:94%;background-color: #C9364A;
+    color: white;
+    padding: 10px" align="left"><b style="font-size:15px;">Students</b></div>
+    
+    <% search_r['students'].each do |h| %>
+      <a href="/student/profile/<%=h['profile_id']%>" style="float:left; clear:both; width:94%;">
+          <div class="display_box" align="left" style="float:left; clear:both; width:100%;">
+              <span style="font-size:13px; color:black" class="name">
+                  <%= h['full_name'] %>
+              </span>    
+          </div>
+      </a>    
+    <% end %>
+  <% end %>
+  <% unless search_r['homeworks'].blank? %>
+      <div class="display_box" style="float:left; clear:both; width:94%;background-color: #C9364A;
+      color: white;
+      padding: 10px" align="left"><b style="font-size:15px;">Homeworks</b></div>
+
+      <% search_r['homeworks'].each do |h| %>
+        <a href="/assignments/<%=h['id']%>" style="float:left; clear:both; width:94%;">
+            <div class="display_box" align="left" style="float:left; clear:both; width:100%;">
+                <span style="font-size:13px; color:black" class="name">
+                    <%= h['name'] %>
+                </span>    
+            </div>
+        </a>    
+      <% end %>
+    <% end %>
+    <% unless search_r['events'].blank? %>
+        <div class="display_box" style="float:left; clear:both; width:94%;background-color: #C9364A;
+        color: white;
+        padding: 10px" align="left"><b style="font-size:15px;">Events</b></div>
+
+        <% search_r['events'].each do |h| %>
+          <a href="/event/event_details/<%=h['event_id']%>" style="float:left; clear:both; width:94%;">
+              <div class="display_box" align="left" style="float:left; clear:both; width:100%;">
+                  <span style="font-size:13px; color:black" class="name">
+                      <%= h['event_title'] %>
+                  </span>    
+              </div>
+          </a>    
+        <% end %>
+      <% end %>
+     <% unless search_r['notice'].blank? %>
+        <div class="display_box" style="float:left; clear:both; width:94%;background-color: #C9364A;
+        color: white;
+        padding: 10px" align="left"><b style="font-size:15px;">Notice</b></div>
+
+        <% search_r['notice'].each do |h| %>
+          <a href="/news/view/<%=h['notice_id']%>" style="float:left; clear:both; width:94%;">
+              <div class="display_box" align="left" style="float:left; clear:both; width:100%;">
+                  <span style="font-size:13px; color:black" class="name">
+                      <%= h['notice_title'] %>
+                  </span>    
+              </div>
+          </a>    
+        <% end %>
+      <% end %>
+<% end %>

@@ -67,9 +67,87 @@
       select : gotoLink,
       focus: function(event, ui) { return false; }
     });
+    
+    jq('body').click(function (event)
+    {
+      jq("#divResult").html("").hide();
+    });  
+    
+    jq("#s-auto").keyup(function ()
+        {
+            var loading = '<div class="display_box" align="left" style="float:left; clear:both; width:93%;"><span style="font-size:13px; color:black" class="name">Loading...</div></div>';
+            var no_result = '<div class="display_box" align="left" style="float:left; clear:both; width:93%;"><span style="font-size:13px; color:black" class="name">No Result Found</div></div>'
+            var inputSearch = jq(this).val();
+            var dataString = 'term=' + inputSearch;
+            if (inputSearch != '' && inputSearch.length > 2)
+            {
+                jq("#divResult").html(loading).show();
+                jq.ajax({
+                    type: "POST",
+                    url: "/dashboards/getglobalsearch",
+                    data: dataString,
+                    cache: false,
+                    success: function (html)
+                    {
+
+                        if (html)
+                        {
+                            jq("#divResult").html(html).show();
+                        }
+                        else
+                        {
+                            jq("#divResult").html(no_result).show();
+                        }
+                    }
+                });
+            }
+            else
+            {
+                jq("#divResult").html("").hide();
+            }
+            return false;
+        });
+    
+    
   });
 </script>
 
+<input class="field" autocomplete="off" name="s" id="s-auto" class='search' placeholder="Global Search" type="search" style="width: 100%; height:30px;">
+<div id="divResult"></div>
 
-<%= text_field_tag :autosuggest_menu,{} ,:id=>'autosuggest_menu_input' %>
+<style>
+  #divResult
+    {
+        background-color: white;
+        border-color: #dedede;
+        border-style: solid;
+        border-width: 0 1px 1px;
+        clear: both;
+        display: none;
+        margin-top: -1px;
+        max-height: 400px;
+        overflow-y: auto;
+        position: absolute;
+        left : 0px;
+        top : 31px;
+        width: 350px;
+        z-index: 1000;
+    }
+    .display_box
+    {
+        padding:7px; border-top:solid 1px #dedede; 
+        font-size:12px;
+    }
+    .display_box:hover
+    {
+        background:#3bb998;
+        color:#FFFFFF;
+        cursor:pointer;
+    }
+    #toPopup
+    {
+        z-index: 999 !important;
+    }
+    
+</style>
 

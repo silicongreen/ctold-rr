@@ -95,6 +95,16 @@ class DashboardsController < ApplicationController
 #    end
   end
   
+  def getglobalsearch  
+    term = params[:term] 
+    get_global_search(term)
+    @search_r = []
+    if @search_result['status']['code'].to_i == 200
+        @search_r = @search_result['data']
+    end
+    render :partial=>"global_search", :locals=>{:search_r => @search_r }
+  end
+  
   def notice_data
     @notice = News.find(:all, :limit => 10)
     render :partial=>"notice_free", :locals=>{:news => @notice }
@@ -825,7 +835,7 @@ class DashboardsController < ApplicationController
     @employee_quiz_response
   end
   
-  def get_quiz_result_data(id)
+   def get_quiz_result_data(id)
     require 'net/http'
     require 'uri'
     require "yaml"
@@ -851,6 +861,36 @@ class DashboardsController < ApplicationController
 
     response = http.request(request)
     @quize_result_response = JSON::parse(response.body)
+  end
+  
+  def get_global_search(term)
+    require 'net/http'
+    require 'uri'
+    require "yaml"
+ 
+    champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
+    api_endpoint = champs21_api_config['api_url']
+    form_data = {}
+    form_data['user_secret'] = session[:api_info][0]['user_secret']
+    form_data['term'] = term
+    
+    api_uri = URI(api_endpoint + "api/event/globalsearch")
+    http = Net::HTTP.new(api_uri.host, api_uri.port)
+    request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })
+    
+    if current_user.parent
+      target = current_user.guardian_entry.current_ward_id      
+      student = Student.find_by_id(target)
+      form_data['student_id'] = student.id
+      form_data['batch_id'] = student.batch_id
+    end
+    
+    form_data['call_from_web'] = 1
+    
+    request.set_form_data(form_data)
+
+    response = http.request(request)
+    @search_result = JSON::parse(response.body)
   end
   
 end

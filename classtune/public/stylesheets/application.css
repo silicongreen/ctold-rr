@@ -1762,6 +1762,7 @@ tr.tr-blank{
     text-decoration:underline;
 }
 #outer-autosuggest-menu {
+  position: relative;
   float: right;
   margin-top: 12px;
   width: 250px;

@@ -99,7 +99,11 @@
 <div class="partial_homework" style="padding: 20px;">
 
   <h2 class="f2 routine">ClASS ROUTINE</h2>
-  <%= link_to "<div class='button-link button-link-report'>See Full Routine</div>", :controller => "timetable", :action => "view" %>
+    <%
+       employee_id = @current_user.employee_record.id
+    %>
+    <%= link_to "<div class='button-link button-link-report'>See Full Routine</div>", :controller => 'timetable', :action => 'employee_timetable', :id => employee_id %>
+
 
   <div class="box-text">Next Class</div>
 

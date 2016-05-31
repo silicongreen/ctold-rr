@@ -80,13 +80,23 @@ class TimetableTrackerController < ApplicationController
       reminderrecipients = []
       employees = Employee.find(params[:timetable][:employee_id])          
       reminderrecipients.push employees.user_id unless employees.user_id.nil?
+      
+      
+       if Configuration.find_by_config_key('RountineViewPeriodNameNoTiming').present? and Configuration.find_by_config_key('RountineViewPeriodNameNoTiming').config_value=="1" 
+         body =  "You have been assigned #{subject.name} class at #{classtimings.name} in #{batch_name} on #{formated_date}."        
+       else
+         body =  "You have been assigned #{subject.name} class at #{classtimings.name} in #{batch_name} from #{start_time} to #{end_time} on #{formated_date}."        
+       end 
+      
+      
+      
       unless reminderrecipients.nil?
       Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => current_user.id,
             :recipient_ids => reminderrecipients,
             :subject=>"New Class Assigned",
             :rtype=>20,
             :rid=>params[:timetable_entry_id],
-            :body=>"You have been assigned #{subject.name} class at #{classtimings.name} in #{batch_name} from #{start_time} to #{end_time} on #{formated_date}." ))
+            :body=>body ))
       end  
       
       
@@ -96,13 +106,21 @@ class TimetableTrackerController < ApplicationController
         reminderrecipients = []
         employees2 = Employee.find(timetable.employee_id)          
         reminderrecipients.push employees2.user_id unless employees2.user_id.nil?
+        
+        if Configuration.find_by_config_key('RountineViewPeriodNameNoTiming').present? and Configuration.find_by_config_key('RountineViewPeriodNameNoTiming').config_value=="1" 
+          body =  "Your #{subject.name} class at #{classtimings.name} in #{batch_name}  on #{formated_date} has been assigned to #{employees.first_name} #{employees.last_name}."        
+        else
+          body =  "Your #{subject.name} class at #{classtimings.name} in #{batch_name} from #{start_time} to #{end_time} on #{formated_date} has been assigned to #{employees.first_name} #{employees.last_name}."        
+        end 
+        
+        
         unless reminderrecipients.nil?
         Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => current_user.id,
               :recipient_ids => reminderrecipients,
               :subject=>"Your Class Swapped",
               :rtype=>20,
               :rid=>params[:timetable_entry_id],
-              :body=>"Your #{subject.name} class at #{classtimings.name} in #{batch_name} from #{start_time} to #{end_time} on #{formated_date} has been assigned to #{employees.first_name} #{employees.last_name}." ))
+              :body=>body ))
         end
       end
       

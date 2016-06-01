@@ -37,7 +37,8 @@
           <%= t('attendance_register') %>
         </div>
         <div class="header-title-sub-text">
-          <%= Time.now.strftime("%d/%m/%Y") %>
+          <%#= Time.now.strftime("%d/%m/%Y") %>
+          <%= @local_tzone_time.to_time %>
         </div>
       </div>
     </div>

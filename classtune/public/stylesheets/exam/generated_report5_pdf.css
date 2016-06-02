@@ -249,3 +249,33 @@ academia_box p
     {  
         padding:5px;
     }
+    
+    
+    .cherry_blossoms .CSSTableGenerator table thead tr th {
+        
+        padding: 3px;
+        text-align: center;
+        font-size: 18px;
+    }
+    .cherry_blossoms .CSSTableGenerator table  td {
+        font-size: 18px;
+        padding: 1px;
+    }
+
+    .cherry_blossoms .CSSTableGenerator table#listing  td {
+        vertical-align: middle;       
+        text-align: left;
+        padding: 5px;
+        font-size: 17px;
+        font-weight: normal;
+        color: #333333;
+    }
+   .cherry_blossoms .CSSTableGenerator table thead tr th span:last-child
+    {
+        color: #C00;
+        font-size: 35px;
+        float:left;
+        margin-left: 0px;
+        margin-top: 0px;
+
+    }

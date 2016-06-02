@@ -279,3 +279,10 @@ academia_box p
         margin-top: 0px;
 
     }
+    
+    .cherry_blossoms  .academia_right_box table td
+    {
+        border: 1px solid #000;
+        font-size:15px;
+        padding:2px;
+    }

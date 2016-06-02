@@ -15,7 +15,10 @@
 #"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
-#under the License. -%>
+#under the License.
+#http://wp.classtune.com/support/php/app.php?widget-init.js&s=<%=MultiSchool.current_school.name&n=<%@current_user.full_name&m=<%=@current_user.email
+
+-%>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -31,7 +34,7 @@
     <%= stylesheet_link_tag(*get_stylesheets) %>
     <link rel="stylesheet" href="/stylesheets/jquery-ui-1.9.2.custom.css">
     <%= javascript_include_tag 'jquery/jquery-1.9.1.min.js' %>
-        <script type="text/javascript" src="http://wp.classtune.com/support/php/app.php?widget-init.js&s=<%=MultiSchool.current_school.name%>&n=<%=@current_user.full_name%>&m=<%=@current_user.email%>"></script>
+        <script type="text/javascript" src=""></script>
     <script type="text/javascript">
       var s = jQuery.noConflict();
       <%#*s(document).ready(function() {%>

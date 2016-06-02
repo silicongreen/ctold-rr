@@ -2107,7 +2107,7 @@ class ExamController < ApplicationController
       
     end
     render :pdf => 'generated_report5_pdf',
-      :orientation => 'Landscape', :zoom => 1.00
+      :orientation => 'Portrait', :zoom => 1.00
    
 
   end

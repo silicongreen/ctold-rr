@@ -19,6 +19,8 @@
 class News < ActiveRecord::Base
   belongs_to :author, :class_name => 'User'
   has_many :comments, :class_name => 'NewsComment'
+  has_many :batch_news, :dependent => :destroy
+  has_many :department_news, :dependent => :destroy
   after_save :reload_news_bar
   before_destroy :delete_redactors
   after_destroy :reload_news_bar

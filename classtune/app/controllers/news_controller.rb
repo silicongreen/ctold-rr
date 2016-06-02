@@ -24,20 +24,163 @@ class NewsController < ApplicationController
 
   def add
     @news = News.new(params[:news])
+    @employee_department = EmployeeDepartment.find(:all, :conditions=>"status = true",:order=>"name ASC")
+    @batches = Batch.active
     @news.author = current_user
     if request.post? and @news.save
+      if @news.is_common == 0
+        batch_id_list = params[:select_options][:batch_id] unless params[:select_options].nil?
+        BatchNews.delete_all("news_id ="+@news.id.to_s)
+        unless batch_id_list.nil?
+          batch_id_list.each do |c|
+              BatchNews.create(:news_id => @news.id,:batch_id=>c)
+          end
+        end
+        
+        department_id_list = params[:select_options][:department] unless params[:select_options].nil?
+        unless department_id_list.nil?
+          DepartmentNews.delete_all("news_id ="+@news.id.to_s)
+          department_id_list.each do |d|
+              DepartmentNews.create(:news_id => @news.id,:department_id=>d)
+          end
+        end
+      else
+        BatchNews.delete_all("news_id ="+@news.id.to_s)
+        DepartmentNews.delete_all("news_id ="+@news.id.to_s)
+      end   
+      
       if @news.is_published == 1
         sms_setting = SmsSetting.new()
-        if sms_setting.application_sms_active
-          students = Student.find(:all,:select=>'phone2',:conditions=>'is_sms_enabled = true')
+#        sms_setting = SmsSetting.new()
+#        if sms_setting.application_sms_active
+#          students = Student.find(:all,:select=>'phone2',:conditions=>'is_sms_enabled = true')
+#        end
+        reminder_recipient_ids = []
+        batch_ids = {}
+        student_ids = {}
+        recipients = []
+        if @news.is_common?
+          @users = User.active.find(:all)
+          reminder_recipient_ids << @users.map(&:id)
+          @users.each do |u|
+
+            if u.student == true
+              student = u.student_record
+              batch_ids[u.id] = student.batch_id
+              student_ids[u.id] = student.id
+            elsif u.parent == true
+              guardian = Guardian.find_by_user_id(u.id)
+              unless guardian.nil?
+                student = Student.find_by_id(guardian.ward_id)
+                if !student.blank?
+                  batch_ids[u.id] = student.batch_id
+                  student_ids[u.id] = student.id
+                else
+                  batch_ids[u.id] = 0
+                  student_ids[u.id] =  0
+                end
+              else
+                batch_ids[u.id] = 0
+                student_ids[u.id] =  0
+              end  
+
+            else
+              batch_ids[u.id] = 0
+              student_ids[u.id] = 0
+            end 
+            
+            if u.student == true
+              student = u.student_record
+              unless student.nil?
+                guardian = student.immediate_contact unless student.immediate_contact.nil?
+                if student.is_sms_enabled
+                  if sms_setting.student_sms_active
+                    recipients.push student.phone2 unless student.phone2.nil?
+                  end
+                  if sms_setting.parent_sms_active
+                    unless guardian.nil?
+                      recipients.push guardian.mobile_phone unless guardian.mobile_phone.nil?
+                    end
+                  end
+                end
+              else
+                employee = u.employee_record
+                if sms_setting.employee_sms_active
+                  unless employee.nil?
+                    recipients.push employee.mobile_phone unless employee.mobile_phone.nil?
+                  end
+                end
+              end
+            end
+            
+          end
+          
+        else
+          @batchnews = BatchNews.find_all_by_news_id(@news.id)
+          unless @batchnews.empty?
+            @batchnews.each do |b|
+              @batch_students = Student.find(:all, :conditions=>"batch_id = #{b.batch_id}")
+              @batch_students.each do |s|
+                reminder_recipient_ids << s.user_id
+                batch_ids[s.user_id] = s.batch_id
+                student_ids[s.user_id] = s.id
+                unless s.immediate_contact.nil? 
+                  reminder_recipient_ids << s.immediate_contact.user_id
+                  batch_ids[s.immediate_contact.user_id] = s.batch_id
+                  student_ids[s.immediate_contact.user_id] = s.id
+                end
+
+
+                if sms_setting.application_sms_active and sms_setting.event_news_sms_active
+                  guardian = s.immediate_contact unless s.immediate_contact.nil?
+                  if s.is_sms_enabled
+                    if sms_setting.student_sms_active
+                      recipients.push s.phone2 unless s.phone2.nil?
+                    end
+                    if sms_setting.parent_sms_active
+                      unless guardian.nil?
+                        recipients.push guardian.mobile_phone unless guardian.mobile_phone.nil?
+                      end
+                    end
+                  end
+                end
+              end
+              
+            end
+          end
+          
+          @departmentnews = DepartmentNews.find_all_by_news_id(@news.id)
+          unless @departmentnews.empty?
+              @departmentnews.each do |d|
+                @dept_emp = Employee.find(:all, :conditions=>"employee_department_id = #{d.department_id}")
+                @dept_emp.each do |e|
+                  reminder_recipient_ids << e.user_id
+                  batch_ids[e.user_id] = 0
+                  student_ids[e.user_id] = 0
+
+                  if sms_setting.application_sms_active and sms_setting.event_news_sms_active
+                    if sms_setting.employee_sms_active
+                      recipients.push e.mobile_phone unless e.mobile_phone.nil?
+                    end
+                  end
+                end
+          
+              end
+          end    
+        end 
+        
+        unless recipients.empty?
+          message = "#{t('reminder_notice')} : "+params[:news][:title]
+          Delayed::Job.enqueue(SmsManager.new(message,recipients))
         end
-        users = User.find(:all)
-        available_user_ids = users.collect(&:id).compact
+      
         Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => current_user.id,
-            :recipient_ids => available_user_ids,
+            :recipient_ids => reminder_recipient_ids,
             :subject=>"#{t('reminder_notice')}",
             :rtype=>5,
             :rid=>@news.id,
+            :student_id => student_ids,
+            :batch_id => batch_ids,
             :body=>"#{t('reminder_notice')} : "+params[:news][:title] ))
       end  
       flash[:notice] = "#{t('flash1')}"
@@ -70,7 +213,11 @@ class NewsController < ApplicationController
   end
   
   def all_draft
-    @news = News.paginate(:conditions=>{:is_published=>0}, :page => params[:page], :per_page => 10)
+    if current_user.admin?
+      @news = News.paginate(:conditions=>{:is_published=>0}, :page => params[:page], :per_page => 10)
+    else
+      @news = News.paginate(:conditions=>{:is_published=>0,:author_id=>current_user.id}, :page => params[:page], :per_page => 10)
+    end  
   end
   
   def published_news
@@ -80,14 +227,135 @@ class NewsController < ApplicationController
     @news.created_at = now
     
     if @news.save
-        users = User.find(:all)
-        available_user_ids = users.collect(&:id).compact
+        sms_setting = SmsSetting.new()
+        reminder_recipient_ids = []
+        batch_ids = {}
+        student_ids = {}
+        recipients = []
+        if @news.is_common?
+          @users = User.active.find(:all)
+          reminder_recipient_ids << @users.map(&:id)
+          @users.each do |u|
+
+            if u.student == true
+              student = u.student_record
+              batch_ids[u.id] = student.batch_id
+              student_ids[u.id] = student.id
+            elsif u.parent == true
+              guardian = Guardian.find_by_user_id(u.id)
+              unless guardian.nil?
+                student = Student.find_by_id(guardian.ward_id)
+                if !student.blank?
+                  batch_ids[u.id] = student.batch_id
+                  student_ids[u.id] = student.id
+                else
+                  batch_ids[u.id] = 0
+                  student_ids[u.id] =  0
+                end
+              else
+                batch_ids[u.id] = 0
+                student_ids[u.id] =  0
+              end  
+
+            else
+              batch_ids[u.id] = 0
+              student_ids[u.id] = 0
+            end 
+            
+            if u.student == true
+              student = u.student_record
+              unless student.nil?
+                guardian = student.immediate_contact unless student.immediate_contact.nil?
+                if student.is_sms_enabled
+                  if sms_setting.student_sms_active
+                    recipients.push student.phone2 unless student.phone2.nil?
+                  end
+                  if sms_setting.parent_sms_active
+                    unless guardian.nil?
+                      recipients.push guardian.mobile_phone unless guardian.mobile_phone.nil?
+                    end
+                  end
+                end
+              else
+                employee = u.employee_record
+                if sms_setting.employee_sms_active
+                  unless employee.nil?
+                    recipients.push employee.mobile_phone unless employee.mobile_phone.nil?
+                  end
+                end
+              end
+            end
+            
+          end
+          
+        else
+          @batchnews = BatchNews.find_all_by_news_id(@news.id)
+          unless @batchnews.empty?
+            @batchnews.each do |b|
+              @batch_students = Student.find(:all, :conditions=>"batch_id = #{b.batch_id}")
+              @batch_students.each do |s|
+                reminder_recipient_ids << s.user_id
+                batch_ids[s.user_id] = s.batch_id
+                student_ids[s.user_id] = s.id
+                unless s.immediate_contact.nil? 
+                  reminder_recipient_ids << s.immediate_contact.user_id
+                  batch_ids[s.immediate_contact.user_id] = s.batch_id
+                  student_ids[s.immediate_contact.user_id] = s.id
+                end
+
+
+                if sms_setting.application_sms_active and sms_setting.event_news_sms_active
+                  guardian = s.immediate_contact unless s.immediate_contact.nil?
+                  if s.is_sms_enabled
+                    if sms_setting.student_sms_active
+                      recipients.push s.phone2 unless s.phone2.nil?
+                    end
+                    if sms_setting.parent_sms_active
+                      unless guardian.nil?
+                        recipients.push guardian.mobile_phone unless guardian.mobile_phone.nil?
+                      end
+                    end
+                  end
+                end
+              end
+              
+            end
+          end
+          
+          @departmentnews = DepartmentNews.find_all_by_news_id(@news.id)
+          unless @departmentnews.empty?
+              @departmentnews.each do |d|
+                @dept_emp = Employee.find(:all, :conditions=>"employee_department_id = #{d.department_id}")
+                @dept_emp.each do |e|
+                  reminder_recipient_ids << e.user_id
+                  batch_ids[e.user_id] = 0
+                  student_ids[e.user_id] = 0
+
+                  if sms_setting.application_sms_active and sms_setting.event_news_sms_active
+                    if sms_setting.employee_sms_active
+                      recipients.push e.mobile_phone unless e.mobile_phone.nil?
+                    end
+                  end
+                end
+          
+              end
+          end    
+        end 
+        
+        unless recipients.empty?
+          message = "#{t('reminder_notice')} : "+params[:news][:title]
+          Delayed::Job.enqueue(SmsManager.new(message,recipients))
+        end
+      
         Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => current_user.id,
-            :recipient_ids => available_user_ids,
+            :recipient_ids => reminder_recipient_ids,
             :subject=>"#{t('reminder_notice')}",
             :rtype=>5,
             :rid=>@news.id,
+            :student_id => student_ids,
+            :batch_id => batch_ids,
             :body=>"#{t('reminder_notice')} : "+@news.title ))
+       
      
      end
      flash[:notice] = "Notice successfully published"
@@ -96,7 +364,20 @@ class NewsController < ApplicationController
   end
 
   def all
-    @news = News.paginate(:conditions=>{:is_published=>1}, :page => params[:page], :per_page => 10)
+    if current_user.admin? 
+      @news = News.paginate(:conditions=>{:is_published=>1}, :page => params[:page], :per_page => 10)
+    end
+    if current_user.employee?
+      @news = News.paginate(:conditions=>["is_published = 1 AND (department_news.department_id = ? or news.is_common = 1 or author_id=?)", current_user.employee_record.employee_department_id,current_user.id], :page => params[:page], :per_page => 10,:include=>[:department_news])
+    end
+    if current_user.student?
+      @news = News.paginate(:conditions=>["is_published = 1 AND (batch_news.batch_id = ? or news.is_common = 1)", current_user.student_record.batch_id], :page => params[:page], :per_page => 10,:include=>[:batch_news]) 
+    end
+    if current_user.parent?
+      student_id = @current_user.guardian_entry.current_ward_id 
+      @std_record = Student.find(student_id)
+      @news = News.paginate(:conditions=>["is_published = 1 AND (batch_news.batch_id = ? or news.is_common = 1)", @std_record.batch_id], :page => params[:page], :per_page => 10,:include=>[:batch_news]) 
+    end  
   end
 
   def delete
@@ -114,7 +395,42 @@ class NewsController < ApplicationController
 
   def edit
     @news = News.find(params[:id])
+    @employee_department = EmployeeDepartment.find(:all, :conditions=>"status = true",:order=>"name ASC")
+    @batches = Batch.active
+    @batchnews = BatchNews.find_all_by_news_id(@news.id)
+    @departmentnews = DepartmentNews.find_all_by_news_id(@news.id)
+    @batches_ids = []
+    @department_ids = []
+    
+    if !@batchnews.blank?
+      @batches_ids = @batchnews.map{|c| c.batch_id} 
+    end
+    
+    if !@departmentnews.blank?
+      @department_ids = @departmentnews.map{|d| d.department_id} 
+    end
+    
     if request.post? and @news.update_attributes(params[:news])
+      if @news.is_common == 0
+        batch_id_list = params[:select_options][:batch_id] unless params[:select_options].nil?
+        BatchNews.delete_all("news_id ="+@news.id.to_s)
+        unless batch_id_list.nil?
+          batch_id_list.each do |c|
+              BatchNews.create(:news_id => @news.id,:batch_id=>c)
+          end
+        end
+        
+        department_id_list = params[:select_options][:department] unless params[:select_options].nil?
+        unless department_id_list.nil?
+          DepartmentNews.delete_all("news_id ="+@news.id.to_s)
+          department_id_list.each do |d|
+              DepartmentNews.create(:news_id => @news.id,:department_id=>d)
+          end
+        end
+      else
+        BatchNews.delete_all("news_id ="+@news.id.to_s)
+        DepartmentNews.delete_all("news_id ="+@news.id.to_s)
+      end 
       flash[:notice] = "#{t('flash3')}"
       redirect_to :controller => 'news', :action => 'view', :id => @news.id
     end
@@ -130,13 +446,36 @@ class NewsController < ApplicationController
 
   def search_news_ajax
     @news = nil
-    
     unless params[:query].nil? and params[:query] == ''
-      conditions = ["title LIKE ? and is_published=1", "%#{params[:query]}%"]
-      @news = News.paginate(:conditions => conditions, :page => params[:page], :per_page => 10)
+      if current_user.admin? 
+        @news = News.paginate(:conditions=>["title LIKE ? and is_published=1", "%#{params[:query]}%"], :page => params[:page], :per_page => 10)
+      end
+      if current_user.employee?
+        @news = News.paginate(:conditions=>["is_published = 1 AND (department_news.department_id = ? or news.is_common = 1) AND title LIKE ?", current_user.employee_record.employee_department_id,"%#{params[:query]}%"], :page => params[:page], :per_page => 10,:include=>[:department_news])
+      end
+      if current_user.student?
+        @news = News.paginate(:conditions=>["is_published = 1 AND (batch_news.batch_id = ? or news.is_common = 1) AND title LIKE ?", current_user.student_record.batch_id,"%#{params[:query]}%"], :page => params[:page], :per_page => 10,:include=>[:batch_news]) 
+      end
+      if current_user.parent?
+        student_id = @current_user.guardian_entry.current_ward_id 
+        @std_record = Student.find(student_id)
+        @news = News.paginate(:conditions=>["is_published = 1 AND (batch_news.batch_id = ? or news.is_common = 1) AND title LIKE ?", @std_record.batch_id,"%#{params[:query]}%"], :page => params[:page], :per_page => 10,:include=>[:batch_news]) 
+      end  
     else
-      conditions = ["is_published = ?", "1"]
-      @news = News.paginate(:page => params[:page], :per_page => 10)
+      if current_user.admin? 
+          @news = News.paginate(:conditions=>{:is_published=>1}, :page => params[:page], :per_page => 10)
+      end
+      if current_user.employee?
+        @news = News.paginate(:conditions=>["is_published = 1 AND (department_news.department_id = ? or news.is_common = 1)", current_user.employee_record.employee_department_id], :page => params[:page], :per_page => 10,:include=>[:department_news])
+      end
+      if current_user.student?
+        @news = News.paginate(:conditions=>["is_published = 1 AND (batch_news.batch_id = ? or news.is_common = 1)", current_user.student_record.batch_id], :page => params[:page], :per_page => 10,:include=>[:batch_news]) 
+      end
+      if current_user.parent?
+        student_id = @current_user.guardian_entry.current_ward_id 
+        @std_record = Students.find(student_id)
+        @news = News.paginate(:conditions=>["is_published = 1 AND (batch_news.batch_id = ? or news.is_common = 1)", @std_record.batch_id], :page => params[:page], :per_page => 10,:include=>[:batch_news]) 
+      end 
     end
     render :partial=>"news_list"
   end

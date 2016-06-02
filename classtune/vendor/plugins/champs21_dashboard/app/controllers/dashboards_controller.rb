@@ -13,6 +13,7 @@ class DashboardsController < ApplicationController
     
       if current_user.employee?
         @view_layout = 'employee'
+        @news = News.find(:all,:conditions=>["is_published = 1 AND (department_news.department_id = ? or news.is_common = 1 or author_id=?)", current_user.employee_record.employee_department_id,current_user.id], :limit =>4,:include=>[:department_news])
         
         if check_free_school?
           get_employee_homework
@@ -33,6 +34,7 @@ class DashboardsController < ApplicationController
       end
       
       if current_user.admin?
+        @news = News.find(:all,:conditions=>{:is_published=>1}, :limit =>4)
         @view_layout = 'employee'
         
         if check_free_school?
@@ -77,11 +79,13 @@ class DashboardsController < ApplicationController
           @elective_subjects.push Subject.find(e.subject_id)
         end
         @subjects = @normal_subjects+@elective_subjects
+        
+        @news = News.find(:all,:conditions=>["is_published = 1 AND (batch_news.batch_id = ? or news.is_common = 1)", student.batch_id], :limit=>4,:include=>[:batch_news]) 
       
       
       end
     
-      @news = News.find(:all, :limit => 4)
+      
       @event = Event.find(:last, :conditions=>" is_common = 1 AND is_exam = 0 AND is_due = 0 AND is_club = 0 AND end_date >= '" + I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')+ "'")
     
       @att_text = ''

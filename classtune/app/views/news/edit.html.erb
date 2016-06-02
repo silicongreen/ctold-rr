@@ -60,7 +60,7 @@
         <label for="news_title"><%= t('category') %></label>
         <div class="text-input-bg">
           
-          <%= select :news, :category_id, [["Academic",1],["Extra-Academic",2]], :selected => @news.category_id %>
+          <%= select :news, :category_id, [["Academic",1],["Extra-Academic",2]], :selected => @news.category_id,:class=>"no_margin" %>
         </div>
       </div>
       </br></br>
@@ -74,6 +74,46 @@
           <label >Attach a File</label>
           <div  class="text-input-bg" id="assignment-attachment"><%= f.file_field  :attachment %></div>
       </div>
+       <div class="news_label_field" >
+           <label>Common</label>
+           <div class="text-input-bg">
+              <select name="news[is_common]" style="margin:0px;" onchange="hide_show_hidden(this.value)">
+                <option value="1" <% if @news.is_common==1 %> selected="selected"<% end %>>Yes</option>
+                <option value="0"  <% if @news.is_common==0 %> selected="selected"<% end %>>No</option>
+              </select>
+          </div>
+          
+      </div>
+      <div class="news_label_field hidden_field_class_department" style="float: left;<% if @news.is_common==1 %> display:none;<% end %>clear: both;width: 100%;margin: 10px 0px;" >
+          <label >Select Class</label>
+          <% @batches.each do |batch| %>
+            <div style="float:left; width:33%;">
+                <%
+                selected = false
+                if @batches_ids.include?(batch.id.to_i) 
+                  selected = true
+                end
+                %> 
+                  
+                <%= check_box_tag "select_options[batch_id][]",batch.id,selected %>&nbsp;&nbsp;<%= batch.full_name %> 
+            </div>    
+          <% end %>
+      </div>
+      <div class="news_label_field hidden_field_class_department" style="float: left;clear: both;width: 100%;<% if @news.is_common==1 %> display:none;<% end %>margin: 10px 0px;" >
+          <label >Select Employee Department</label>
+          <% @employee_department.each do |department| %>
+            <div style="float:left; width:25%;">
+                 <%
+                selected = false
+                if @department_ids.include?(department.id.to_i) 
+                  selected = true
+                end
+                %> 
+                <%= check_box_tag "select_options[department][]",department.id,selected %>&nbsp;&nbsp;<%= department.name %> 
+            </div>    
+          <% end %>
+      </div>
+    </div>
     </div>
 
     <%= submit_tag "", :value => "► #{t('update')}", :class => "news_publish_button" %>
@@ -81,3 +121,25 @@
   <%= load_redactor_script %>
 </div>
 <%= stylesheet_link_tag 'tadded-header' %>
+
+<style>
+    select.no_margin
+    {
+        margin:0px;
+    }
+    
+</style>    
+
+<script>
+  function hide_show_hidden(value)
+  {
+    if(value==1)
+    {
+      j(".hidden_field_class_department").hide();
+    }
+    else
+    {
+      j(".hidden_field_class_department").show();
+    }  
+  }
+</script>  

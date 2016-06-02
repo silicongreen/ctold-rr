@@ -61,7 +61,7 @@
       <div class="news_label_field">
         <label for="title"><%= t('category') %></label>
         <div class="text-input-bg">
-          <select name="news[category_id]">
+          <select name="news[category_id]"  style="margin:0px;">
             <option value="1">Academic</option>
             <option value="2">Extra-Academic</option>
           </select>
@@ -77,6 +77,31 @@
       <div class="news_label_field" >
           <label >Attach a File</label>
           <div  class="text-input-bg" id="assignment-attachment"><%= f.file_field  :attachment %></div>
+      </div>
+      <div class="news_label_field" >
+          <label>Common</label>
+          <div class="text-input-bg">
+              <select name="news[is_common]" style="margin:0px;" onchange="hide_show_hidden(this.value)">
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+              </select>
+          </div>
+      </div>
+      <div class="news_label_field hidden_field_class_department" style="float: left; display:none;clear: both;width: 100%;margin: 10px 0px;" >
+          <label >Select Class</label>
+          <% @batches.each do |batch| %>
+            <div style="float:left; width:33%;">
+                <%= check_box_tag "select_options[batch_id][]",batch.id %>&nbsp;&nbsp;<%= batch.full_name %> 
+            </div>    
+          <% end %>
+      </div>
+      <div class="news_label_field hidden_field_class_department" style="float: left;clear: both;width: 100%;display:none;margin: 10px 0px;" >
+          <label >Select Employee Department</label>
+          <% @employee_department.each do |department| %>
+            <div style="float:left; width:25%;">
+                <%= check_box_tag "select_options[department][]",department.id %>&nbsp;&nbsp;<%= department.name %> 
+            </div>    
+          <% end %>
       </div>
     </div>
     <%= hidden_field :news,"is_published", :value =>1 %>
@@ -96,3 +121,16 @@
   <%= load_redactor_script %>
 </div>
 <%= stylesheet_link_tag 'tadded-header' %>
+<script>
+  function hide_show_hidden(value)
+  {
+    if(value==1)
+    {
+      j(".hidden_field_class_department").hide();
+    }
+    else
+    {
+      j(".hidden_field_class_department").show();
+    }  
+  }
+</script>  

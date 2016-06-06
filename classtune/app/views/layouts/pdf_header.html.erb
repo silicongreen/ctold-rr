@@ -19,6 +19,7 @@
 
 <div id="pdf-header">
   <% if MultiSchool.current_school.id == 246 %>
+      <%#Cherry Blossoms International School%>
       <table id="pdf-table" width="100%" cellspacing="0">
         <tr>
             <td width="23%">
@@ -33,13 +34,14 @@
                 <font size="6"><%#=Configuration.get_config_value('InstitutionName'); %>Cherry Blossoms International School</font>
               </h1>
               <h2> 
-                  <b>(PLAY GROUP-'A' LEVEL, EDEXCEL CENTRE NO. 96440, UK)</b>                  
+                  <b>(PLAY GROUP-'A', EDEXCEL CENTRE NO. 96440, UK)</b>                  
               </h2>
               <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font size='2'>www.cherryblossommsint.com , Contact : +88017130073860, Email : cherryblossomsint@gmail.com</font></p>
             </td>
         </tr>
       </table>
   <% elsif MultiSchool.current_school.id == 283 %>
+      <%#academia%>
       <table id="" width="100%" cellspacing="0">
         <tr>
             <td width="32%">
@@ -58,6 +60,28 @@
             <td colspan="2" class="academia_border"></td>
         </tr>
       </table>
+  <% elsif MultiSchool.current_school.id == 2 %>
+    <%#GATEWAY%>
+    <table id="pdf-table" width="100%" cellspacing="0">
+      <tr>
+          <td width="25%">
+            <h4 align="" class="logonew">
+
+              <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/275/logo.jpg")),:width=> '100%' %>
+              <%#= image_tag("/icons/icon.gif", :height=> '32', :width=> '32') %>
+            </h4>
+          </td>
+          <td width="75%">
+            <h1 align="" class="header_font">       
+              <font size="6">&nbsp;&nbsp;&nbsp;&nbsp;<%#=Configuration.get_config_value('InstitutionName'); %>Gateway International School</font>
+            </h1>
+            <h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <b>Progress Report</b>                  
+            </h2>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font size='2'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Campus : 62/A, Siddeshwari, Dhaka, Phone : +8801711-560285,8356552</font></p>
+          </td>
+      </tr>
+    </table>
   <% else %>
     <h4 align="center" class="logonew">
       <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")) %>

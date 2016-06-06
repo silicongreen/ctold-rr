@@ -24,7 +24,7 @@
       <thead>          
           
           <tr>
-              <% if MultiSchool.current_school.id == 246 %>
+            <% if MultiSchool.current_school.id == 246 %>
               <!--tr>
                 <td class="lefttd"><font size="4"><%= "No. Of The Working Day :................" %></font></td>
                 <td  class="lefttd2"><font size="4"><%= "Attendance :................." %></font></td>
@@ -39,11 +39,18 @@
                   <%= "<font size='3'>Shaleha Kader</font><br />"  %>                  
                   <%= "<font size='3'>Chairman & Principal</font>" %>
               </td>
-              <% else %>
+            <% elsif MultiSchool.current_school.id == 2 %>
+              <td><%= ".........................................." %><br /><%= "Parent's Signature" %></td>
+              <td><%= ".........................................." %><br /><%= "Class Teacher" %></td>
+              <td>
+                  <%= ".........................................." %><br />
+                  <%= "<font size='3'>Manzoor Alam, Principal</font><br />"  %>
+              </td>
+            <% else %>
               <td><%= "Class Teacher : .........................................." %></td>
               <td><%= "Coordinator : .........................................." %></td>
               <td><%= "Principal : .........................................." %></td>
-              <% end %>
+            <% end %>
           </tr> 
       </thead>  
 

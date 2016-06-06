@@ -173,15 +173,16 @@ class NewsController < ApplicationController
           message = "#{t('reminder_notice')} : "+params[:news][:title]
           Delayed::Job.enqueue(SmsManager.new(message,recipients))
         end
-      
-        Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => current_user.id,
-            :recipient_ids => reminder_recipient_ids,
-            :subject=>"#{t('reminder_notice')}",
-            :rtype=>5,
-            :rid=>@news.id,
-            :student_id => student_ids,
-            :batch_id => batch_ids,
-            :body=>"#{t('reminder_notice')} : "+params[:news][:title] ))
+        unless reminder_recipient_ids.empty?
+          Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => current_user.id,
+              :recipient_ids => reminder_recipient_ids,
+              :subject=>"#{t('reminder_notice')}",
+              :rtype=>5,
+              :rid=>@news.id,
+              :student_id => student_ids,
+              :batch_id => batch_ids,
+              :body=>"#{t('reminder_notice')} : "+params[:news][:title] ))
+        end
       end  
       flash[:notice] = "#{t('flash1')}"
       redirect_to :controller => 'news', :action => 'view', :id => @news.id
@@ -346,15 +347,16 @@ class NewsController < ApplicationController
           message = "#{t('reminder_notice')} : "+params[:news][:title]
           Delayed::Job.enqueue(SmsManager.new(message,recipients))
         end
-      
-        Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => current_user.id,
-            :recipient_ids => reminder_recipient_ids,
-            :subject=>"#{t('reminder_notice')}",
-            :rtype=>5,
-            :rid=>@news.id,
-            :student_id => student_ids,
-            :batch_id => batch_ids,
-            :body=>"#{t('reminder_notice')} : "+@news.title ))
+       unless reminder_recipient_ids.empty?
+          Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => current_user.id,
+              :recipient_ids => reminder_recipient_ids,
+              :subject=>"#{t('reminder_notice')}",
+              :rtype=>5,
+              :rid=>@news.id,
+              :student_id => student_ids,
+              :batch_id => batch_ids,
+              :body=>"#{t('reminder_notice')} : "+@news.title ))
+       end
        
      
      end

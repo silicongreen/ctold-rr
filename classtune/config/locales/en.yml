@@ -1861,6 +1861,7 @@ en: # locale
   attandence_end_date: "Attandence End Date"
   exam_scheduled: "Exam Scheduled"
   reminder_notice: "New Notice"
+  reminder_batch_transfer_subject: "Promoted to new class"
   create_a_new_exam_and_enter_result: "Create new exams, enter results."
   create_additional_exams_and_edit_results: "Create additional exams,Edit results"
   set_grading_levels: "Set grading levels"

@@ -120,28 +120,29 @@ module OnlinePayment
                 :x_method_available => params[:x_method_available],
               }
             elsif @active_gateway == "ssl.commerce"
-                val_id = "val_"+params[:id1].to_s+params[:id2].to_s
-                requested_url="https://securepay.sslcommerz.com/validator/api/validationserverAPI.php?val_id="+val_id+"&store_id="+@store_id+"&store_passwd="+@store_password  
-                api_uri = URI(requested_url)
-                http = Net::HTTP.new(api_uri.host, api_uri.port)
-                request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded' })
-                response = http.request(request)
-                @ssl_data = JSON::parse(response.body) 
+#                val_id = "val_"+params[:id1].to_s+params[:id2].to_s
+#                requested_url="https://securepay.sslcommerz.com/validator/api/validationserverAPI.php?val_id="+val_id+"&store_id="+@store_id+"&store_passwd="+@store_password  
+#                api_uri = URI(requested_url)
+#                http = Net::HTTP.new(api_uri.host, api_uri.port)
+#                request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded' })
+#                response = http.request(request)
+#                @ssl_data = JSON::parse(response.body) 
                 gateway_response = {
-                  :amount => @ssl_data.amount,
-                  :status => @ssl_data.status,
-                  :transaction_id => @ssl_data.bank_tran_id,
-                  :tran_date=>@ssl_data.tran_date,
-                  :card_type=>@ssl_data.card_type,
-                  :card_no=>@ssl_data.card_no,
+                  :amount => params[:amount],
+                  :status => params[:status],
+                  :transaction_id => params[:bank_tran_id],
+                  :tran_date=>params[:tran_date],
+                  :card_type=>params[:card_type],
+                  :card_no=>params[:card_no],
 
-                  :card_issuer=>@ssl_data.card_issuer,
+                  :card_issuer=>params[:card_issuer],
 
-                  :card_brand=>@ssl_data.card_brand,
+                  :card_brand=>params[:card_brand],
 
-                  :card_issuer_country=>@ssl_data.card_issuer_country,
+                  :card_issuer_country=>params[:card_issuer_country],
 
-                  :card_issuer_country_code=>@ssl_data.card_issuer_country_code
+                  :card_issuer_country_code=>params[:card_issuer_country_code],
+                  :val_id => params[:val_id]
                 }
               
              
@@ -159,7 +160,7 @@ module OnlinePayment
                   amount_from_gateway = params[:x_amount]
                 elsif @active_gateway == "ssl.commerce"
                    
-                    amount_from_gateway=@ssl_data.amount;
+                    amount_from_gateway=params[:amount]
                 end
                 
                 unless amount_from_gateway.to_f < 0
@@ -184,9 +185,9 @@ module OnlinePayment
                       tid=transaction.id
                     end
                     is_paid = (sprintf("%0.2f",total_fees.to_f+@fine.to_f + @fine_amount.to_f).to_f == amount_from_gateway.to_f) ? true : false
-                    @financefee.update_attributes(:transaction_id=>tid, :is_paid=>is_paid)
+#                    @financefee.update_attributes(:transaction_id=>tid, :is_paid=>is_paid)
 
-                    @paid_fees = FinanceTransaction.find(:all,:conditions=>"FIND_IN_SET(id,\"#{tid}\")")
+                    
                     gateway_status = false
                     if @active_gateway == "Paypal"
                       gateway_status = true if params[:st] == "Completed"
@@ -196,6 +197,8 @@ module OnlinePayment
                       gateway_status = true if payment.gateway_response[:status] == "valid"
                     end
                     if gateway_status == true
+                      @financefee.update_attributes(:transaction_id=>tid, :is_paid=>is_paid)
+                      @paid_fees = FinanceTransaction.find(:all,:conditions=>"FIND_IN_SET(id,\"#{tid}\")")
                       online_transaction_id = payment.gateway_response[:transaction_id]
                       online_transaction_id ||= payment.gateway_response[:x_trans_id]
                       

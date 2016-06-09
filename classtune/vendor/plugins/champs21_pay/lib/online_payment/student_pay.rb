@@ -1,6 +1,7 @@
 module OnlinePayment
   class << self; attr_accessor_with_default :return_url,String.new; end
   module StudentPay
+    protect_from_forgery :except => :fee_details_with_gateway
     def self.included(base)
       base.alias_method_chain :fee_details,:gateway
     end

@@ -75,7 +75,7 @@ module OnlinePayment
             elsif @active_gateway == "Authorize.net"
               gateway_status = true if params[:x_response_reason_code] == "1"
             elsif @active_gateway == "ssl.commerce"
-              gateway_status = true if params[:status] == "valid"
+              gateway_status = true if params[:status] == "VALID"
               
               if gateway_status == true
                 if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/online_payment_url.yml")
@@ -92,30 +92,12 @@ module OnlinePayment
                 request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded' })
                 response = http.request(request)
                 @ssl_data = JSON::parse(response.body)
-                unless @ssl_data.ststus == "valid"
+                unless @ssl_data.ststus == "VALID"
                   gateway_status = false
                 end
               end
             end
-            gateway_response = {
-                  :amount => params[:amount],
-                  :status => params[:status],
-                  :transaction_id => params[:bank_tran_id],
-                  :tran_date=>params[:tran_date],
-                  :card_type=>params[:card_type],
-                  :card_no=>params[:card_no],
 
-                  :card_issuer=>params[:card_issuer],
-
-                  :card_brand=>params[:card_brand],
-
-                  :card_issuer_country=>params[:card_issuer_country],
-
-                  :card_issuer_country_code=>params[:card_issuer_country_code],
-                  :val_id => params[:val_id]
-                }
-                
-            abort(gateway_response.inspect)
             amount_from_gateway = 0
             if @active_gateway == "Paypal"
               amount_from_gateway = params[:amt]
@@ -125,20 +107,7 @@ module OnlinePayment
               amount_from_gateway=params[:amount]
             end
             
-            
-            trans_id=@financefee.fee_transactions.collect(&:finance_transaction_id).join(",")
-            
-            payment_ok = false
-            unless amount_from_gateway.to_f < 0
-              unless amount_from_gateway.to_f > (FinanceTransaction.total(trans_id,total_fees).to_f)+@fine_amount
-                if gateway_status == true 
-                  payment_ok = true
-                end
-              end
-            end       
-            
-            
-            if payment_ok == true
+            if gateway_status == true
               gateway_response = Hash.new
               if @active_gateway == "Paypal"
                 gateway_response = {
@@ -217,42 +186,56 @@ module OnlinePayment
 
 
               end
+             
               payment = Payment.new(:payee => @student,:payment => @financefee,:gateway_response => gateway_response)
+              
+             
+              
 
               if payment.save
-              
-                unless @financefee.is_paid?
-                  transaction = FinanceTransaction.new
-                  transaction.title = "#{t('receipt_no')}. F#{@financefee.id}"
-                  transaction.category = FinanceTransactionCategory.find_by_name("Fee")
-                  transaction.payee = @student
-                  transaction.finance = @financefee
-                  transaction.amount = @financefee.balance.to_f + @fine.to_f + @fine_amount.to_f #amount_from_gateway.to_f
-                  transaction.fine_included = (@fine.to_f + @fine_amount.to_f).zero? ? false : true
-                  transaction.fine_amount = @fine.to_f + @fine_amount.to_f
-                  transaction.transaction_date = Date.today
-                  transaction.payment_mode = "Online Payment"
-                  transaction.save
-                  payment.update_attributes(:finance_transaction_id => transaction.id)
-                  unless @financefee.transaction_id.nil?
-                    tid =   @financefee.transaction_id.to_s + ",#{transaction.id}"
-                  else
-                    tid=transaction.id
-                  end
-                  is_paid = (sprintf("%0.2f",total_fees.to_f+@fine.to_f + @fine_amount.to_f).to_f == amount_from_gateway.to_f) ? true : false
-                  #                    @financefee.update_attributes(:transaction_id=>tid, :is_paid=>is_paid)
-
-                    
+                trans_id=@financefee.fee_transactions.collect(&:finance_transaction_id).join(",")
                 
-                    @financefee.update_attributes(:transaction_id=>tid, :is_paid=>is_paid)
-                    @paid_fees = FinanceTransaction.find(:all,:conditions=>"FIND_IN_SET(id,\"#{tid}\")")
-                    online_transaction_id = payment.gateway_response[:transaction_id]
-                    online_transaction_id ||= payment.gateway_response[:x_trans_id]
-                      
-                    flash[:notice] = "#{t('payment_success')} #{online_transaction_id}"
-                 else
+                    unless @financefee.is_paid?
+                      unless amount_from_gateway.to_f < 0
+                   
+                        unless amount_from_gateway.to_f > (FinanceTransaction.total(trans_id,total_fees).to_f)+@fine_amount
+                            transaction = FinanceTransaction.new
+                            transaction.title = "#{t('receipt_no')}. F#{@financefee.id}"
+                            transaction.category = FinanceTransactionCategory.find_by_name("Fee")
+                            transaction.payee = @student
+                            transaction.finance = @financefee
+                            transaction.amount = @financefee.balance.to_f + @fine.to_f + @fine_amount.to_f #amount_from_gateway.to_f
+                            transaction.fine_included = (@fine.to_f + @fine_amount.to_f).zero? ? false : true
+                            transaction.fine_amount = @fine.to_f + @fine_amount.to_f
+                            transaction.transaction_date = Date.today
+                            transaction.payment_mode = "Online Payment"
+                            transaction.save
+                            payment.update_attributes(:finance_transaction_id => transaction.id)
+                            unless @financefee.transaction_id.nil?
+                              tid =   @financefee.transaction_id.to_s + ",#{transaction.id}"
+                            else
+                              tid=transaction.id
+                            end
+                            is_paid = (sprintf("%0.2f",total_fees.to_f+@fine.to_f + @fine_amount.to_f).to_f == amount_from_gateway.to_f) ? true : false
+                            #                    @financefee.update_attributes(:transaction_id=>tid, :is_paid=>is_paid)
+
+
+
+                              @financefee.update_attributes(:transaction_id=>tid, :is_paid=>is_paid)
+                              @paid_fees = FinanceTransaction.find(:all,:conditions=>"FIND_IN_SET(id,\"#{tid}\")")
+                              online_transaction_id = payment.gateway_response[:transaction_id]
+                              online_transaction_id ||= payment.gateway_response[:x_trans_id]
+
+                              flash[:notice] = "#{t('payment_success')} #{online_transaction_id}"
+                        else
+                          flash[:notice] = "#{t('payment_failed')}"
+                        end
+                  else
+                    flash[:notice] = "#{t('payment_failed')}"
+                  end
+                else
                   flash[:notice] = "#{t('flash_payed')}"
-                 end
+                end
               else
                 flash[:notice] = "#{t('flash23')}"
               end

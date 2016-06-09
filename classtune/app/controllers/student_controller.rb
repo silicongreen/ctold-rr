@@ -24,6 +24,7 @@ class StudentController < ApplicationController
   before_filter  :set_precision
   before_filter :protect_other_student_data, :except =>[:update_is_promoted,:insert_into_new_parent_student_table,:show,:class_test_report,:previous_batch_report,:combined_exam,:progress_report,:class_test_report_single,:term_test_report]
   before_filter :default_time_zone_present_time
+  protect_from_forgery :except => [:fee_details]
   
   before_filter :find_student, :only => [
     :academic_report, :academic_report_all, :admission3, :change_to_former,

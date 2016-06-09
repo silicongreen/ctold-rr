@@ -116,7 +116,7 @@ class BatchTransfersController < ApplicationController
               :subject=>"#{t('reminder_notice')}",
               :rtype=>25,
               :rid=>0,
-              :body=>"Congratulation. You have been promoted to "+@batch.full_name+". Wish you all the best." ))
+              :body=>"Congratulation. You have been promoted to new Class. Wish you all the best." ))
           end
           
         end

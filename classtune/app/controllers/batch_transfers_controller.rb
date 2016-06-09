@@ -154,7 +154,7 @@ class BatchTransfersController < ApplicationController
       @ids = params[:ids]
       @id_lists = @ids.map { |st_id| ArchivedStudent.find_by_admission_no(st_id) }
     end
-    if request.post?
+    if request.post?      
       student_id_list = params[:graduate][:students]
       @student_list = student_id_list.map { |st_id| Student.find(st_id) }
       @admission_list = []
@@ -164,10 +164,51 @@ class BatchTransfersController < ApplicationController
       @student_list.each { |s| s.archive_student(params[:graduate][:status_description],params[:leaving_date]) }
       @stu = Student.find_all_by_batch_id(@batch.id)
       if @stu.empty?
-        @batch.update_attribute :is_active, false
-        @batch.employees_subjects.destroy_all
+        #@batch.update_attribute :is_active, false
+        #@batch.employees_subjects.destroy_all
         #          flash[:notice]="Graduated selected students successfully."
         #          redirect_to :controller=>'batch_transfers' and return
+        reminder_recipient_ids = []
+        @batch.elective_groups.all(:conditions => {:is_deleted => false})
+        @exam_groups = @batch.exam_groups.all(:conditions => {:is_current => true})
+        #abort @exam_groups.inspect
+
+        @exam_groups.each do |eg|
+          if eg.result_published == true
+            @exam_group_data  = ExamGroup.create(:name => eg.name, :batch_id => eg.batch_id, :school_id => eg.school_id,:exam_type => eg.exam_type,:exam_category => eg.exam_category, :is_published => true, :is_current=> false, :result_published=> true, :exam_date=> eg.exam_date, :exam_date_edited=> eg.exam_date_edited, :is_final_exam=> eg.is_final_exam)
+            @exam_group_id = @exam_group_data.id
+            unless @exam_group_id.nil?
+              eg.update_attribute(:is_published,0)
+              eg.update_attribute(:result_published,0)
+            end
+            @exams  = eg.exams
+
+            @exams.each do |e|
+                #@exam_data = Exam.create(:exam_group_id => e.exam_group_id, :subject_id => e.subject_id, :maximum_marks => e.maximum_marks, :minimum_marks => e.minimum_marks, :weightage => e.weightage, :school_id => e.school_id)                        
+
+              start_date = (e.start_time + 365.days).to_s(:db)
+              end_date = (e.end_time + 365.days).to_s(:db)
+              inserts = []
+              inserts.push "(#{e.exam_group_id}, '#{e.subject_id}','#{start_date}','#{end_date}', '#{e.maximum_marks}', #{e.minimum_marks}, #{e.weightage}, #{e.school_id})"
+              sql = "insert into exams (`exam_group_id`,`subject_id`,`start_time`,`end_time`,`maximum_marks`,`minimum_marks`,`weightage`,`school_id`) VALUES #{inserts.join(", ")}"
+              ActiveRecord::Base.connection.execute(sql) 
+
+              e.update_attribute(:exam_group_id,@exam_group_id)            
+            end
+          end
+        end
+        
+        @reminderdata = Reminder.destroy_all(:batch_id => params[:id])
+        @online_exam_group = OnlineExamGroup.destroy_all(:batch_id => params[:id])          
+        @subjects = Subject.find_all_by_batch_id(params[:id])      
+        @subjects.each do |sub|      
+          @assignment = Assignment.find_all_by_subject_id(sub.id)            
+          @assignment.each do |a|              
+            a.update_attribute(:student_list, "")
+            a.update_attribute(:is_published,0)
+          end            
+        end
+            
       end
       flash[:notice]= "#{t('flash2')}"
       redirect_to :action=>"graduation", :id=>params[:id], :ids => @admission_list

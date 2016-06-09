@@ -33,9 +33,9 @@
     <div class="graduate-header">  <h4><%= t('garduating_batch') %>: <%= @batch.course_name + ", Section: " + @batch.section_name + " - " + @batch.name %></h4>
       <div class="graduate-button">
         <% unless @id_lists.blank?  %>
-    <%= link_to "#{t('generate_tc_for_all')}",
-      {:controller => "student", :action => "generate_all_tc_pdf", :stud => @id_lists},:target => '_blank',:class=>'user_button' %>
-  <% end %>
+          <%= link_to "#{t('generate_tc_for_all')}",
+            {:controller => "student", :action => "generate_all_tc_pdf", :stud => @id_lists},:target => '_blank',:class=>'user_button',:style=>"height:25px;" %>
+        <% end %>
       </div>
     </div>
   <% form_for :graduate, :html => { :id=>"form" } do |f| %>

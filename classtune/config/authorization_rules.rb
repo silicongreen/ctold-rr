@@ -2737,7 +2737,8 @@ authorization do
       :graph_for_academic_report,
       :show_previous_details,
       :fees,
-      :fee_details
+      :fee_details,
+      :update_is_promoted
     ]
     has_permission_on [:news],
       :to => [

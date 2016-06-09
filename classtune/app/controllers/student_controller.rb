@@ -22,7 +22,7 @@ class StudentController < ApplicationController
   before_filter :login_required
   before_filter :check_permission, :only=>[:index,:admission1,:profile,:reports,:categories,:add_additional_details]
   before_filter  :set_precision
-  before_filter :protect_other_student_data, :except =>[:insert_into_new_parent_student_table,:show,:class_test_report,:previous_batch_report,:combined_exam,:progress_report,:class_test_report_single,:term_test_report]
+  before_filter :protect_other_student_data, :except =>[:update_is_promoted,:insert_into_new_parent_student_table,:show,:class_test_report,:previous_batch_report,:combined_exam,:progress_report,:class_test_report_single,:term_test_report]
   before_filter :default_time_zone_present_time
   
   before_filter :find_student, :only => [
@@ -2923,7 +2923,12 @@ class StudentController < ApplicationController
   #    render :text => chart.render
   #
   #  end
-
+  def update_is_promoted
+    student_id = @current_user.student_entry.id
+    @student = Student.find_by_id(student_id)
+    @student.update_attribute(:is_promoted,0)
+    render :nothing => true
+  end
 
   private
   

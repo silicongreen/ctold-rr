@@ -97,6 +97,25 @@ module OnlinePayment
                 end
               end
             end
+            gateway_response = {
+                  :amount => params[:amount],
+                  :status => params[:status],
+                  :transaction_id => params[:bank_tran_id],
+                  :tran_date=>params[:tran_date],
+                  :card_type=>params[:card_type],
+                  :card_no=>params[:card_no],
+
+                  :card_issuer=>params[:card_issuer],
+
+                  :card_brand=>params[:card_brand],
+
+                  :card_issuer_country=>params[:card_issuer_country],
+
+                  :card_issuer_country_code=>params[:card_issuer_country_code],
+                  :val_id => params[:val_id]
+                }
+                
+            abort(gateway_response.inspect)
             amount_from_gateway = 0
             if @active_gateway == "Paypal"
               amount_from_gateway = params[:amt]

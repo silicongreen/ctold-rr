@@ -68,5 +68,6 @@ en:
   fee_not_paid: "Fee not paid yet"
   payment_success: "Payment Successfull.Your online Transaction Id is "
   payment_failed: "Payment Failed."
+  payment_canceled: "Payment Cancelled."
   store_id: "Store Id"
   store_password: "Store Password"

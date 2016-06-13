@@ -200,7 +200,7 @@
                 <%= authorize_net_pay_button(@merchant_id,@certificate,total_fees,"Fee (#{@student.full_name}-#{@student.admission_no}-#{@fee_collection.name})","http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=1&only_path=false",@paid_fees,"float: right;margin: 18px 0 0;") %>
               <% elsif @active_gateway == "ssl.commerce" %>
                 
-                <%= ssl_commerce_pay_button(@store_id,@store_password,total_fees,"Fee (#{@student.full_name}-#{@student.admission_no}-#{@fee_collection.name})","http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=1&only_path=false","http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_cancel_transaction=1&only_path=false","http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_fail_transaction=3&only_path=false",@trans_id_ssl_commerce,@paid_fees,"float: right;margin: 18px 0 0;") %>
+                <%= ssl_commerce_pay_button(@store_id,@store_password,total_fees,"Fee (#{@student.full_name}-#{@student.admission_no}-#{@fee_collection.name})","http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=1","http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_cancel_transaction=1","http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_fail_transaction=3",@trans_id_ssl_commerce,@paid_fees,"float: right;margin: 18px 0 0;") %>
               <% end %>
             </td>
           </tr>

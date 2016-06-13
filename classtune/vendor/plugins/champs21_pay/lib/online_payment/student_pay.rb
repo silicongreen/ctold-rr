@@ -37,8 +37,11 @@ module OnlinePayment
           
           @trans_id_ssl_commerce = "tran"+params[:id].to_s+params[:id2].to_s
 
+         
           @fee_category = FinanceFeeCategory.find(@fee_collection.fee_category_id,:conditions => ["is_deleted IS NOT NULL"])
           @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"batch_id=#{@financefee.batch_id}").select{|par| (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@financefee.batch) }
+         
+          
           @discounts=@date.fee_discounts.all(:conditions=>"batch_id=#{@financefee.batch_id}").select{|par| (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@financefee.batch)}
           @total_discount = 0
           @total_payable=@fee_particulars.map{|s| s.amount}.sum.to_f
@@ -50,6 +53,7 @@ module OnlinePayment
           bal=(@total_payable-@total_discount).to_f
           days=(Date.today-@date.due_date.to_date).to_i
           auto_fine=@date.fine
+          @fine_amount=0
           if days > 0 and auto_fine
             @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
             @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
@@ -78,21 +82,32 @@ module OnlinePayment
               gateway_status = true if params[:status] == "VALID"
               
               if gateway_status == true
+                payment_urls = Hash.new
                 if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/online_payment_url.yml")
                     payment_urls = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","online_payment_url.yml"))
                 end
 
                 validation_url = payment_urls["ssl_commerce_requested_url"]
                 validation_url ||= "https://securepay.sslcommerz.com/validator/api/testbox/validationserverAPI.php"
+                
+                
+
 
                 val_id = params[:val_id]
                 requested_url=validation_url+"?val_id="+val_id+"&store_id="+@store_id+"&store_passwd="+@store_password  
-                api_uri = URI(requested_url)
-                http = Net::HTTP.new(api_uri.host, api_uri.port)
-                request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded' })
+                uri = URI.parse(requested_url)
+
+
+                http = Net::HTTP.new(uri.host, uri.port)
+                http.use_ssl = true
+
+                request = Net::HTTP::Post.new(uri.request_uri)
                 response = http.request(request)
+                
+                
                 @ssl_data = JSON::parse(response.body)
-                unless @ssl_data.ststus == "VALID"
+                
+                unless @ssl_data['status'] == "VALID"
                   gateway_status = false
                 end
               end
@@ -188,10 +203,6 @@ module OnlinePayment
               end
              
               payment = Payment.new(:payee => @student,:payment => @financefee,:gateway_response => gateway_response)
-              
-             
-              
-
               if payment.save
                 trans_id=@financefee.fee_transactions.collect(&:finance_transaction_id).join(",")
                 
@@ -237,7 +248,7 @@ module OnlinePayment
                   flash[:notice] = "#{t('flash_payed')}"
                 end
               else
-                flash[:notice] = "#{t('flash23')}"
+                flash[:notice] = "#{t('payment_failed')}"
               end
             else
               flash[:notice] = "#{t('payment_failed')}"

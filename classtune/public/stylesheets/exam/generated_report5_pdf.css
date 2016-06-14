@@ -191,7 +191,7 @@
     .academia_box {
   float: left;
   margin-bottom: 5px;
-  margin-top: 3px;
+  margin-top: 5px;
   width: 1250px;
 }
 academia_box p
@@ -219,7 +219,7 @@ academia_box p
     {
         border: 1px solid #000;
         font-size:10px;
-        padding:2px;
+        padding:3px;
     }
     .academia_sign_left
     {
@@ -249,44 +249,23 @@ academia_box p
     {  
         padding:5px;
     }
-    
-    
-    .cherry_blossoms .CSSTableGenerator table thead tr th {
-        
-        padding: 3px;
-        text-align: center;
-        font-size: 18px;
-    }
-    .cherry_blossoms .CSSTableGenerator table  td {
-        font-size: 18px;
-        padding: 1px;
-    }
-
-    .cherry_blossoms .CSSTableGenerator table#listing  td {
-        vertical-align: middle;       
-        text-align: left;
-        padding: 5px;
-        font-size: 17px;
-        font-weight: normal;
-        color: #333333;
-    }
-   .cherry_blossoms .CSSTableGenerator table thead tr th span:last-child
+    /*St. Joseph SCHOOL COMBINE REPORT CARD STYLE*/
+    #pdf-footer
     {
-        color: #C00;
-        font-size: 35px;
-        float:left;
-        margin-left: 0px;
-        margin-top: 0px;
-
+        color:#000;
     }
-    
-    .cherry_blossoms  .academia_right_box table td
+    .st_joseph table td
     {
         border: 1px solid #000;
-        font-size:15px;
-        padding:2px;
+        font-size:10px;
+        padding:0px 2px;
     }
-   .cherry_blossoms .academia_box
-   {
-       font-size:18px;
-   }
+    .left_box
+    {
+        float:left;
+    }
+    .right_box
+    {
+        float:right;
+    }
+    

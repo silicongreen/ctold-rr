@@ -25,14 +25,6 @@
           
           <tr>
             <% if MultiSchool.current_school.id == 246 %>
-              <!--tr>
-                <td class="lefttd"><font size="4"><%= "No. Of The Working Day :................" %></font></td>
-                <td  class="lefttd2"><font size="4"><%= "Attendance :................." %></font></td>
-              </tr>
-              <tr>
-                <td height="30" class="lefttd"><font size="4"><%= "Teacher's Remarks :..................................................................................................................." %></font></td>            
-                <td  class="lefttd2"><font size="4"><%= "Promoted To :................." %></font></td>
-              </tr-->
               <td class="lefttd"><font size="3"><%= "Teacher's Signature : ................................................" %></font></td>
               <td  class="lefttd2">
                   <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/246/principal_signature.png")) %><br />
@@ -45,6 +37,16 @@
               <td>
                   <%= ".........................................." %><br />
                   <%= "<font size='3'>Manzoor Alam, Principal</font><br />"  %>
+              </td>
+            <% elsif MultiSchool.current_school.id == 2 %>
+              <td class="">
+                  <%= "------------------------------------------" %><br />
+                  <font size='3'><%= "Principal's Signature" %></font>
+              </td>
+              
+              <td class=""><center>
+                  <%= "------------------------------------------" %><br />
+                  <font size='3'><%= "Signature" %></font></center>
               </td>
             <% else %>
               <td><%= "Class Teacher : .........................................." %></td>

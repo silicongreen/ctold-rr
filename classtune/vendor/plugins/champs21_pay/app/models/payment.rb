@@ -7,11 +7,11 @@ class Payment < ActiveRecord::Base
 
   def before_create
     if payment_type == "FinanceFee"
-      if Payment.find_by_payee_id_and_payment_id_and_payment_type(payee_id,payment_id,'FinanceFee').present?
-        false
-      else
+#      if Payment.find_by_payee_id_and_payment_id_and_payment_type(payee_id,payment_id,'FinanceFee').present?
+#        false
+#      else
         true
-      end
+#      end
     elsif payment_type == "Application"
       if Payment.find_by_payee_id(payee_id).present?
         false

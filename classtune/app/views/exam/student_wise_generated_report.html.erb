@@ -2,9 +2,10 @@
 <div id="page-yield">
   
   <!--h2><%#= "#{t('student_wise_report_for')} "+@exam_group.name+", #{t('batch')}:"+@batch.full_name %></h2-->
-  <h4><%= @exam_group.name+" Report " %><%= Time.now.strftime("%B, %Y") %></h4>  
-
+   
+<h4 align="center"><%= @exam_group.name+" Report " %><%= Time.now.strftime("%B, %Y") %></h4> 
   <div>
+    
     <!--h4> <%#= "#{@student.full_name} - #{@student.admission_no}" %></h4-->
     <h4 align="center" > <%= "#{@student.full_name}" %></h4>
     <% if @batch.name == "General" %>

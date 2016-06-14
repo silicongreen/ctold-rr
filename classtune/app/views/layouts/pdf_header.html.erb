@@ -86,62 +86,63 @@
     <%#GATEWAY%>
     <table id="pdf-table" width="100%" cellspacing="0">
       <tr>
-          <td width="21%">
-            <h4 align="" class="logonew">
+          <td width="10">
+            <h4 align="" class="">
 
               <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/280/logo.png")),:width=> '100%' %>
               <%#= image_tag("/icons/icon.gif", :height=> '32', :width=> '32') %>
             </h4>
           </td>
-          <td width="60%">
-            <h1 align="" class="header_font">&nbsp;&nbsp;&nbsp;&nbsp;       
-              <font size="6"><%#=Configuration.get_config_value('InstitutionName'); %>St.Joseph Higher Secondary School</font>
+          <td width="68%">
+            <h1 align="" class="st_header_font">&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;     
+              <%#=Configuration.get_config_value('InstitutionName'); %>St. Joseph Higher Secondary School
             </h1>
             <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 CONDUCTED BY BROTHERS OF HOLY CROSS                  
             </p>
           </td>
-          <td width="18%">
+          <td width="23%" class="st_grade">
             <div class="st_joseph">
             <% @grading_levels = GradingLevel.default %>
             <%  unless @grading_levels.empty? %>
               <div class="left_box">
               <table class="">
                   <tr>
-                    <td>Marks Range</td>
-                    <td>Grade</td>
+                    <td><font size='2'>Marks Range</font></td>
+                    <td><font size='2'>Grade</font></td>
                   </tr>
                   <% @grading_levels.each_with_index do |grade,index| %>
                     <% if index < 6 %>
                       <tr>
                         <td>
                           <% if grade.max_score.nil? %>  
-                          <%= '%i%' % grade.min_score %>
+                          <font size='2'><%= '%i%' % grade.min_score %></font>
                           <% else %>  
-                          <%= grade.min_score.to_s + " - " + grade.max_score.to_s %>  
+                          <font size='2'><%= grade.min_score.to_s + " - " + grade.max_score.to_s %>  </font>
                           <% end %>                      
                         </td>
-                        <td><%= grade.name %></td>
+                        <td><font size='2'><%= grade.name %></font></td>
                       </tr> 
                     <% end %>
                     <% if index == 5 %>
                       </table>  </div><div class="right_box">
                       <table class="">
                         <tr>
-                          <td>Marks Range</td>
-                          <td>Grade</td>
+                          <td><font size='2'>Marks Range</font></td>
+                          <td><font size='2'>Grade</font></td>
                         </tr>
                     <% end %>
                     <% if index > 5 %>
                       <tr>
                         <td>
                           <% if grade.max_score.nil? %>  
-                          <%= '%i%' % grade.min_score %>
+                          <font size='2'><%= '%i%' % grade.min_score %></font>
                           <% else %>  
-                          <%= grade.min_score.to_s + " - " + grade.max_score.to_s %>  
+                          <font size='2'><%= grade.min_score.to_s + " - " + grade.max_score.to_s %>  </font>
                           <% end %>                      
                         </td>
-                        <td><%= grade.name %></td>
+                        <td><font size='2'><%= grade.name %></font></td>
                       </tr>  
                     <% end %>
                   <% end %>

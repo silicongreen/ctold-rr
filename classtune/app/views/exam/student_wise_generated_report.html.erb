@@ -1,20 +1,22 @@
 </div>
 <div id="page-yield">
-  <div class="hor_line"></div>
+  
   <!--h2><%#= "#{t('student_wise_report_for')} "+@exam_group.name+", #{t('batch')}:"+@batch.full_name %></h2-->
-  <h2><%= @exam_group.name+" Report " %></h2>
-  <div class="hor_line"></div>
+  <h2><%= @exam_group.name+" Report " %><%= Time.now.strftime("%B, %Y") %></h2>  
 
-  <div id ="main_info">
+  <div>
     <!--h4> <%#= "#{@student.full_name} - #{@student.admission_no}" %></h4-->
-    <h4 class="new_heading"> <%= "#{@student.full_name}" %></h4>
+    <h4 align="center" > <%= "#{@student.full_name}" %></h4>
     <% if @batch.name == "General" %>
-      <h4 class="new_heading"> <%= @batch.course.course_name %></h4>
+      
+      <h4 align="center"> <%= @batch.course.full_name %></h4>
     <% else %>
-      <h4 class="new_heading"> <%= @batch.full_name %></h4>
+      <h4 align="center"> <%= @batch.name %> - <%= @batch.course.full_name %></h4>
     <% end %>
     <!--h4> <%#= "#{t('exam_text')} : "+@exam_group.name %></h4-->
   </div>
+  
+  
 
   <% exam_score = [] %>
   <% max_mark = [] %>
@@ -82,11 +84,12 @@
           <td class="col-pdf"><%= t('marks') %></td>
           <td class="col-pdf"><%= "Highest" %></td>
           <td class="col-pdf"><%= "Total" %></td>
-          <td class="col-pdf"><%= "%" %></td>
+          <td class="col-pdf"><%= "Percentange(%)" %></td>
         </tr>
         <tr class="tr-blank"></tr>
         <% j = 0; %>
         <% total_mark = 0 %>
+        <% max_total_mark = 0 %>
         <% cradit_point = 0 %>
         
         <% exam_score.each do |es| %>
@@ -111,7 +114,11 @@
 
               <td class="col-pdf"> <%=  max_mark[j] %></td>
               <td class="col-pdf"><%= es.exam.maximum_marks.to_f %></td>
-              
+              <% 
+                if es.exam.maximum_marks.present?  
+                  max_total_mark = max_total_mark.to_f+es.exam.maximum_marks.to_f 
+                end
+              %>
               <td class="col-pdf"><%= es.marks.present? ? mark=(es.marks.to_f/es.exam.maximum_marks.to_f)*100 : '-' %> % </td>
               <% total_credit_hours = total_credit_hours + es.exam.subject.credit_hours.to_f %>
               <% points=0 %>
@@ -121,7 +128,14 @@
           </tr>
         <% j = j+1; %>    
         <% end %>
-        
+          <tr>
+              <td class="col-pdf"></td>
+              <td class="col-pdf"></td>
+              <td class="col-pdf"><b>GT: <%=total_mark%></b></td>
+              <td class="col-pdf"></td>
+              <td class="col-pdf"><b>GT: <%=max_total_mark%></b></td>
+              <td class="col-pdf"><b>AVG: <% avp =(total_mark.to_f/max_total_mark.to_f)*100 %> <%= "%.2f" %(avp) %>%</td>
+          </tr>
       </table>
 
       <h5>
@@ -130,7 +144,10 @@
               <%= t('grade_point_average_gpa') %> =
               <% grade_point_sum = total_credit_points.to_f/total_credit_hours.to_f %>
               <% sum_grade = GradingLevel.grade_point_to_grade(grade_point_sum, @student.batch_id) %>
-              <%= sum_grade  %> [<%= "%.2f" %(total_credit_points.to_f/total_credit_hours.to_f) %>]
+              <% gpoint =  (total_credit_points.to_f/total_credit_hours.to_f) %>
+              <% if gpoint > 0 %>
+                <%= sum_grade  %> [<%= "%.2f" %(total_credit_points.to_f/total_credit_hours.to_f) %>]
+              <% end %>
 
               <% @conn = ActiveRecord::Base.connection %>
               <%
@@ -175,6 +192,10 @@
         <% else %>
             <%= t('grade_point_average_gpa') %> = -
         <% end %> </h5>
+        
+        <h5>
+          Remarks :
+        </h5>
 
     <% else %>
       <% total_marks_attained = 0 %>

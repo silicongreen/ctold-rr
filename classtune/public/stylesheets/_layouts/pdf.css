@@ -112,3 +112,27 @@ body{
 #main_info{
     text-align: left !important;
 }
+
+/*St. Joseph SCHOOL COMBINE REPORT CARD STYLE*/
+    #pdf-footer
+    {
+        color:#000;
+    }
+    .st_joseph table td
+    {
+        border: 1px solid #000;
+        font-size:10px;
+        padding:0px 2px;
+    }
+    .left_box
+    {
+        float:left;
+    }
+    .right_box
+    {
+        float:right;
+    }
+    .academia_border
+    {
+        border-bottom: 3px solid red;
+    }

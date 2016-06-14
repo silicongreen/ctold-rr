@@ -134,5 +134,14 @@ body{
     }
     .academia_border
     {
+        height:20px;
         border-bottom: 3px solid red;
     }
+    .st_grade
+    {
+        font-size: 25px !important;
+    }
+.st_header_font
+{
+    font-size:35px;
+}

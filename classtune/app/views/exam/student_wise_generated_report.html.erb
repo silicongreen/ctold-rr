@@ -130,12 +130,12 @@
         <% j = j+1; %>    
         <% end %>
           <tr>
+              <td class="col-pdf"><b>Grand Total</b></td>
               <td class="col-pdf"></td>
+              <td class="col-pdf"><b><%=total_mark%></b></td>
               <td class="col-pdf"></td>
-              <td class="col-pdf"><b>GT: <%=total_mark%></b></td>
-              <td class="col-pdf"></td>
-              <td class="col-pdf"><b>GT: <%=max_total_mark%></b></td>
-              <td class="col-pdf"><b>AVG: <% avp =(total_mark.to_f/max_total_mark.to_f)*100 %> <%= "%.2f" %(avp) %>%</td>
+              <td class="col-pdf"><b><%=max_total_mark%></b></td>
+              <td class="col-pdf"><b><% avp =(total_mark.to_f/max_total_mark.to_f)*100 %> <%= "%.2f" %(avp)%>%</b></td>
           </tr>
       </table>
 

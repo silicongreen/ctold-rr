@@ -115,12 +115,11 @@ module OnlinePayment
                 form_data['first_name'] = current_user.parent_record.first_name
                 form_data['last_name'] = current_user.parent_record.last_name
                 
-                abort(form_data.inspect)
-
-
                 api_uri = URI(api_endpoint + "api/user/paymentmail")
+             
+                
                 http = Net::HTTP.new(api_uri.host, api_uri.port)
-                request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded' })
+                request = Net::HTTP::Post.new(api_uri.path)
                 request.set_form_data(form_data)
                 http.request(request)
               end 

@@ -103,6 +103,28 @@ module OnlinePayment
               payment = Payment.new(:payee => @student,:payment => @financefee,:gateway_response => gateway_response)
               payment.save
               
+              if !current_user.parent_record.email.blank?
+                header_txt = "#{t('payment_success')} #{online_transaction_id}"
+                body_txt = render_to_string(:template => 'gateway_payments/paypal/student_fee_receipt_pdf', :layout => false)
+                champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
+                api_endpoint = champs21_api_config['api_url']
+                form_data = {}
+                form_data['body'] = body_txt
+                form_data['header'] = header_txt
+                form_data['email'] = current_user.parent_record.email
+                form_data['first_name'] = current_user.parent_record.first_name
+                form_data['last_name'] = current_user.parent_record.last_name
+                
+                abort(form_data.inspect)
+
+
+                api_uri = URI(api_endpoint + "api/user/paymentmail")
+                http = Net::HTTP.new(api_uri.host, api_uri.port)
+                request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded' })
+                request.set_form_data(form_data)
+                http.request(request)
+              end 
+              
             flash[:notice] = "#{t('payment_failed')} : #{params[:error]}"   
           elsif params[:create_transaction].present?
             gateway_response = Hash.new
@@ -277,6 +299,7 @@ module OnlinePayment
                         form_data['email'] = current_user.parent_record.email
                         form_data['first_name'] = current_user.parent_record.first_name
                         form_data['last_name'] = current_user.parent_record.last_name
+                        
 
                         api_uri = URI(api_endpoint + "api/user/paymentmail")
                         http = Net::HTTP.new(api_uri.host, api_uri.port)

@@ -270,7 +270,7 @@ module OnlinePayment
                       
                       if !current_user.parent_record.email.blank?
                         header_txt = "#{t('payment_success')} #{online_transaction_id}"
-                        body_txt = render_to_string(:template => 'gateway_payments/paypal/student_fee_receipt_pdf', :layout => false)
+                        body_txt = render_to_string(:template => 'gateway_payments/paypal/student_fee_receipt', :layout => false)
                         champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
                         api_endpoint = champs21_api_config['api_url']
                         form_data = {}

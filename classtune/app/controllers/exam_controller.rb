@@ -2107,7 +2107,10 @@ class ExamController < ApplicationController
       
     end
     if MultiSchool.current_school.id == 246
-    render :pdf => 'generated_report5_pdf',
+      render :pdf => 'generated_report5_pdf',
+      :orientation => 'Portrait', :zoom => 1.00
+    elsif MultiSchool.current_school.id == 2
+      render :pdf => 'generated_report5_pdf',
       :orientation => 'Portrait', :zoom => 1.00
     else
       render :pdf => 'generated_report5_pdf',

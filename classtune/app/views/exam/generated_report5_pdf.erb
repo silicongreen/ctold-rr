@@ -24,6 +24,8 @@
   <%= render  :partial=>"group_report_st_joseph" %>
 <% elsif MultiSchool.current_school.id == 275 %>
   <%= render  :partial=>"group_report_gateway_international" %>
+<% elsif MultiSchool.current_school.id == 2 %>
+  <%= render  :partial=>"group_report_mpsc" %>
 <% else %>
   <% unless @report_data.blank?  or  @report_data['report'].blank? %>
     <div id="page-yield"  class="available_sections1">

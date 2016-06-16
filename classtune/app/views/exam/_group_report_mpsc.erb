@@ -1,0 +1,320 @@
+<% unless @report_data.blank?  or  @report_data['report'].blank? %>
+    <div id="page-yield"  class="available_sections1 academia">
+        <div class="academia_box">
+          
+          
+            <div class="mpsc_student_details_box">              
+              <table width="100%" border="0">
+                <tr>
+                    <td class="left">
+                      Name of Student : <%= @student.full_name %><br />
+                      
+                    </td>
+                    <td class="middle">                      
+                      Roll No. : <%= @student.class_roll_no %><br />
+                    </td>
+                    <td width="18%">
+                       ID : <%= @student.admission_no %>  <br />    
+                       
+                    </td>
+                </tr>
+                <tr><td colspan="3" class="mpsc_border"></td></tr>
+                
+              </table>
+              <table width="100%" border="0">  
+                <tr>
+                    <td  width="40%">
+                      <table width="100%" border="0">
+                        <tr>
+                            <td class="left" width="25%">Class</td>
+                            <td class="">: <%= @batch.course.full_name %></td>
+                        </tr> 
+                        <tr>
+                            <td class="left">Session</td>
+                            <td class="">: <%= Time.now.year %></td>
+                        </tr> 
+                        <tr>
+                            <td class="left">Shift</td>
+                            <td class="">: <%= @batch.name %></td>
+                        </tr> 
+                      </table>                        
+                    </td>
+                    <td  width="35%">
+                      <table width="100%" border="0">
+                        <tr>
+                            <td class="left" width="50%">Highest Total in Class</td>
+                            <td class="">: </td>
+                        </tr> 
+                        <tr>
+                            <td class="left">Total Obtained Marks</td>
+                            <td class="">: </td>
+                        </tr> 
+                        <tr>
+                            <td class="left">Final CGPA</td>
+                            <td class="">: </td>
+                        </tr> 
+                      </table> 
+                      
+                    </td>
+                    <td width="25">
+                      <table width="100%" border="0">
+                        <tr>
+                            <td class="left" width="50%">Obtained Grade</td>
+                            <td class="">: </td>
+                        </tr> 
+                        <tr>
+                            <td class="left">Merit List</td>
+                            <td class="">: </td>
+                        </tr> 
+                        <tr>
+                            <td class="left">Academic Year</td>
+                            <td class="">:  <%= Time.now.strftime("%B, %Y") %></td>
+                        </tr> 
+                      </table>  
+                       
+                    </td>
+                </tr>
+                <tr><td colspan="3" class="">&nbsp;</td></tr>
+              </table>
+            </div>
+                
+        </div>
+       
+        <div class ="current_batch">
+            <div id="grouped_exam_report">
+                <div class="CSSTableGenerator">
+                    <table id="listing table-design" class='score' width="100%">
+                        <thead>
+                          <tr>
+                              <th class='subjects'>Subject Name </th>
+                              <% unless @report_data['report']['exams'].blank? %>  
+                              <% count = @report_data['report']['exams'].count %>                        
+                                <% @report_data['report']['exams'].each do |report| %>
+                                  <% w = 60/count%>
+                              <th width='<%=  ("#{w}%")%>'>
+                                    <table width='100%' border="0">
+                                        <tr>
+                                            <td width="100%" colspan="2" class="special_top special_left special_right"><%= report['exam_name'] %></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="50%" class="special_bottom special_left">Full Marks</td>
+                                            <td width="50%" class="special_bottom special_right">Marks Obtained</td>
+                                        </tr>
+
+                                    </table>
+                                  </th> 
+                                <% end %>
+                              
+                              <% end %>
+
+                              <th class="totalmark">Total Marks</th>
+                              <!--th width="5%">Marks Obtained (%)</th-->
+                              <th class="totalmark">Highest Marks (%)</th>
+                              <th class="totalmark">Grade</th>
+                              <!--th width="5%">GPA</th-->
+                          </tr>
+                        </thead>
+                        <% total_parcent = 0 %>
+                        <% total_subject = 0 %>
+                        <% unless @report_data['report']['subjects'].blank? %> 
+                          <% count2 = @report_data['report']['exams'].count %>         
+                          <% @report_data['report']['subjects'].each do |subjects| %>
+                            <tr>
+                                <% weightage_mark = 0 %>
+                                <% total_mark = 0 %>
+                                <% full_mark = 0 %>
+
+                                <td class='subjects'><b><%= subjects['name'] %></b></td>
+                                <% unless @report_data['report']['exams'].blank? %>  
+                                  <% @report_data['report']['exams'].each do |report| %>
+                                    <% w = 60/count2%>
+                                    <th width='<%=  ("#{w}%")%>'>
+
+                                        <table width="100%" CELLPADDING="3" CELLSPACING="3">
+
+                                            <tr>
+                                                <td width="50%" class="special_top special_left special_bottom">
+                                                    <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
+                                                      <%= report['result'][report['exam_id']][subjects['id']]['full_mark'] %>
+                                                      <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                                    <% else %>
+                                                      N/A
+                                                    <% end %>  
+                                                </td>
+                                                <td width="50%" class="special_top special_right special_bottom ">
+                                                    <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
+                                                      <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %>
+                                                      <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                                    <% else %>
+                                                      N/A
+                                                    <% end %>  
+                                                </td>
+                                            </tr>
+
+                                        </table>   
+
+
+                                    </td>
+
+                                    <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['weightage_mark'].blank? %>
+                                      <% weightage_mark = weightage_mark+report['result'][report['exam_id']][subjects['id']]['weightage_mark'] %>
+                                    <% end %>
+
+                                  <% end %>
+                                <% end %>
+
+
+
+
+
+                                <% 
+                                  heighst_mark = 0
+                                  if !@report_data['report']['max_mark'].blank? and !@report_data['report']['max_mark'][subjects['id']].blank?
+                                    heighst_mark = (@report_data['report']['max_mark'][subjects['id']].to_f/full_mark.to_f)*100
+                                  end  
+
+                                  if total_mark.to_f>0 and full_mark.to_f>0
+                                    main_mark = (total_mark.to_f/full_mark.to_f)*100 
+                                  else
+                                    main_mark = 0
+                                  end  
+                               %>
+
+                                  <% if full_mark.to_f > 0 %>
+                                      <td class="totalmark"><b><%= sprintf( "%0.02f", total_mark) %></b></td>
+                                      <!--td class="totalmark"><b><%= sprintf( "%0.02f", main_mark) %> %</b></td-->
+                                      <td class="totalmark"><b><%= sprintf( "%0.02f", heighst_mark)   %> %</b></td>
+                                      <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
+
+                                      <% if !grade.blank? and !grade.name.blank? and !grade.credit_points.blank? %>
+                                        <td class="totalmark" align="center"><b><%= grade.name %></b></td>
+                                        <!--td width="5%"><b><%= grade.credit_points %></b></td-->
+                                      <% else %>
+                                        <td class="totalmark"><b>N/A</b></td>
+                                        <!--td width="5%"><b>N/A</b></td-->
+                                      <% end %>
+
+
+                                      <% total_parcent= total_parcent+main_mark %>
+                                      <% total_subject = total_subject+1 %>
+                                  <% else  %>
+                                      <td class="totalmark"><b>N/A</b></td>
+                                      <!--td class="totalmark"><b>N/A</b></td-->
+                                      <td class="totalmark"><b>N/A</b></td>
+                                      <td class="totalmark"><b>N/A</b></td>
+                                      <!--td width="5%"><b>N/A</b></td-->
+                                  <% end %>      
+
+                            </tr> 
+                          <% end %>  
+                        <% end %>     
+
+                    </table>
+                    <br />
+                    
+                    <% avgparcent = total_parcent.to_f/total_subject.to_f %>
+                    <table  width="100%" >
+                        <thead>
+                            <tr>
+                                <th><h2>Grand Total : <%= total_parcent.to_f %> </h2></th>
+                                <!--th>Total Number of Working Days : <%= @report_data['total'] %></th>
+
+                                <th>Days Present : <%= @report_data['present'] %> </th-->
+                                <th><h2>Overall : <%= sprintf( "%0.02f",avgparcent) %> % </h2></th>
+                                <%  grade = GradingLevel.percentage_to_grade(avgparcent, @batch.id) %>
+
+                                <% if !grade.blank?  and !grade.credit_points.blank? %>
+                                  <th><h2>CGPA : <%= grade.credit_points %> </h2></th>
+                                <% else %>
+                                  <th >-</th>
+                                <% end %>    
+
+
+                            </tr> 
+                        </thead>  
+
+                    </table>
+
+                   
+
+                    <% unless @report_data['report']['no_exam_subject_resutl'].blank? or !@report_data['report']['no_exam_subject_resutl'].blank? %>
+
+                      <h4 align="center">Cumulative Assessment Record</h4>
+
+
+                      <table  width="100%"  id="listing table-design" style="margin-top:20px;">
+                          <% 
+                          iloop = 1
+                          cloop = 1
+                        %>
+                          <% @report_data['report']['no_exam_subject_resutl'].each do |report| %>
+
+                            <% if iloop == 1 %>
+                              <tr>
+                                <% end %>
+                                <% if cloop == 3 %>
+                              </tr>
+                              <tr>
+                                  <% cloop = 1 %>        
+                                <%  end %> 
+                                <td   width="6%"><%= iloop %></td>
+                                <td   width="23%"><%= report['subject_name'] %></td>
+                                <% if report['subject_comment'].blank? %>
+                                  <td   width="23%">Not Tested Yet</td>
+                                <% else %>
+                                  <td   width="23%"><%= report['subject_comment'] %></td>
+                                <% end %>
+                                <% iloop = iloop+1 %> 
+                                <% cloop = cloop+1 %>
+                              <% end %>
+
+                      </table>
+
+                    <% end %>
+
+                </div>
+
+            </div>
+        </div>
+        
+    </div>
+
+  <% end %>
+  <%= stylesheet_link_tag 'list_table' %>
+
+  <% if params[:page_height] %>
+    <script type="text/javascript">
+      var body = document.body,
+              html = document.documentElement;
+      var pg_height = parseInt(<%= params[:page_height] %>)
+      var page = new Element('div', {'class': 'page1'});
+      var pageBreak = new Element('div', {'class': 'page-break1'});
+      var insertPageBreak = function () {
+          body.appendChild(pageBreak.cloneNode(true))
+      };
+      var insertPage = function () {
+          body.appendChild(page.cloneNode(true));
+      };
+      var currPage = function () {
+          return $$('.page1').last()
+      };
+      var current_page_height = 0
+      var i = 0
+      $$('.available_sections1 .section1').each(function (el) {
+          a = parseInt(el.getHeight());
+          c = current_page_height + a;
+          current_page_height = c;
+          if (c > pg_height) {
+              current_page_height = a
+              body.appendChild(new Element('div', {'id': 'page-blank_' + i, 'class': 'page-blank'}))
+              document.getElementById('page-blank_' + i).style.height = (c - pg_height) + 'px';
+              document.getElementById('page-blank_' + i).innerHTML = "&nbsp;"/* if a div doesnt have any content it may not display.. set height will not work */
+              i += 1
+              el.style.marginTop = "50px"; /* for this border-top is coming, top section of each page */
+              insertPageBreak();
+              insertPage();
+          }
+          currPage().appendChild(el);
+      });
+    </script>
+  <% end %>

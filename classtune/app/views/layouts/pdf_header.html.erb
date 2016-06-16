@@ -154,6 +154,25 @@
           </td>
       </tr>
     </table>
+  <% elsif MultiSchool.current_school.id == 2 %>
+    <table id="pdf-table" width="100%" cellspacing="0">
+      <tr>
+          <td width="15%">
+            <h4 align="" class="logonew">
+
+              <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/2/logo.jpg")),:width=> '100%' %>
+              <%#= image_tag("/icons/icon.gif", :height=> '32', :width=> '32') %>
+            </h4>
+          </td>
+          <td width="85%">
+            <h1 align="" class="header_font">       
+              <font size="6"><%#=Configuration.get_config_value('InstitutionName'); %>MOHAMMADPUR PREPARATORY SCHOOL & COLLEGE</font>
+            </h1>            
+            <h4 class="header_address">15/1, IQBAL ROAD, MOHAMMADPUR, DHAKA-1207</h4>
+            <h4 class="header_address">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= " Progress Report of "+@connect_exam_obj.name %> <%= Time.now.strftime("%B, %Y") %></h4>
+          </td>
+      </tr>
+    </table>
   <% else %>
     <h4 align="center" class="logonew">
       <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")) %>

@@ -23,8 +23,8 @@
             <div style="width:45%;float:left;">
                 <h4  style="color: #555555;margin-top: 18px;font-weight: bold;" style="width:505px;"> <%= "#{t('name')}: #{@student.full_name}" %></h4>
                 <h4  style="color: #555555;margin-top: 18px;font-weight: bold;" style="width:505px;"> <%= "#{t('admission_no')} : #{@student.admission_no}" %></h4>
-                <h4  style="color: #555555;margin-top: 18px;font-weight: bold;" style="width:505px;"> <%= "#{t('course_text')} : #{@student.batch.course.course_name}" %></h4>
-                <h4  style="color: #555555;margin-top: 18px;font-weight: bold;" style="width:505px;"> <%= "#{t('batch')} : #{@student.batch.full_name}" %></h4>
+                <h4  style="color: #555555;margin-top: 18px;font-weight: bold;" style="width:505px;"> <%= "#{t('course_text')} : #{@student.batch.course.course_name} #{@student.batch.course.section_name}" %></h4>
+                <h4  style="color: #555555;margin-top: 18px;font-weight: bold;" style="width:505px;"> <%= "#{t('batch')} : #{@student.batch.name}" %></h4>
             </div>
             <div style="float:right;" >
                 <h4  style="color: #555555;margin-top: 18px;font-weight: bold;" > <%= "#{t('fees_collection_date_name')}: #{@date.name.capitalize}" %> </h4>
@@ -34,19 +34,19 @@
     <div style="margin: 0 auto;" >
         <table style="border: 1px solid #ADACAB;border-collapse:collapse;" width="100%" cellspacing="0">
             <tr style="border: 1px solid #ADACAB;" class="table-header">
-                <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 0px solid #fff;border-top: 0px solid #fff;" class="mark-td"><%= t('sl_no') %></td>
-                <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 0px solid #fff;border-top: 0px solid #fff;" class="name-td"><%= t('particulars') %></td>
-                <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 0px solid #fff;border-top: 0px solid #fff;" class="mark-td"> <%= "#{t('amount')}(#{@currency_type.to_s})" %></td>
+                <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 1px solid #fff;border-top: 1px solid #fff;" class="mark-td"><%= t('sl_no') %></td>
+                <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 1px solid #fff;border-top: 1px solid #fff;" class="name-td"><%= t('particulars') %></td>
+                <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 1px solid #fff;border-top: 1px solid #fff;" class="mark-td"> <%= "#{t('amount')}(#{@currency_type.to_s})" %></td>
             </tr>
             <%k=7%>
             <% i = 0  %>
             <% c= 'even' %>
             <% @fee_particulars.each do |fee| %>
               <tr style="border: 1px solid #ADACAB;" class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                  <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 0px solid #fff;border-top: 0px solid #fff;" class="mark-td"><%= i+=1 %></td>
+                  <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 1px solid #fff;border-top: 0px solid #fff;" class="mark-td"><%= i+=1 %></td>
                   <%k+=1%>
-                  <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 0px solid #fff;border-top: 0px solid #fff;" class="name-td"><%= fee.name %></td>
-                  <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 0px solid #fff;border-top: 0px solid #fff;" class="mark-td">&nbsp;<%= "#{precision_label(fee.amount.to_s)}" %></td>
+                  <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 1px solid #fff;border-top: 0px solid #fff;" class="name-td"><%= fee.name %></td>
+                  <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 1px solid #fff;border-top: 0px solid #fff;" class="mark-td">&nbsp;<%= "#{precision_label(fee.amount.to_s)}" %></td>
               </tr>
               <% total_fees += fee.amount %>
             <% end %>
@@ -56,16 +56,16 @@
               <tr style="border: 1px solid #ADACAB;" class="tr-blank"></tr>
               <tr style="border: 1px solid #ADACAB;" class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                   <%k+=1%>
-                  <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 0px solid #fff;border-top: 0px solid #fff;" class="col-1" colspan="3"><span class="space"><%= t('discount') %></span></td>
+                  <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 1px solid #fff;border-top: 0px solid #fff;" class="col-1" colspan="3"><span class="space"><%= t('discount') %></span></td>
               </tr>
 
               <% @discounts.each do |d| %>
                 <%k+=1%>
                 <tr style="border: 1px solid #ADACAB;" class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                    <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 0px solid #fff;border-top: 0px solid #fff;" class="mark-td"><%= i+=1 %></td>
+                    <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 1px solid #fff;border-top: 0px solid #fff;" class="mark-td"><%= i+=1 %></td>
                     <% discount_text = d.is_amount == true ? "#{d.name}" : "#{d.name}(#{d.discount})%" %>
-                    <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 0px solid #fff;border-top: 0px solid #fff;" class="name-td"><%= discount_text %></td>
-                    <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 0px solid #fff;border-top: 0px solid #fff;" class="mark-td"><%= precision_label(@total_payable * d.discount.to_f/ (d.is_amount?? @total_payable : 100)) %></td>
+                    <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 1px solid #fff;border-top: 0px solid #fff;" class="name-td"><%= discount_text %></td>
+                    <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 1px solid #fff;border-top: 0px solid #fff;" class="mark-td"><%= precision_label(@total_payable * d.discount.to_f/ (d.is_amount?? @total_payable : 100)) %></td>
                 </tr>
               <% end %>
 
@@ -74,8 +74,8 @@
 
               <tr style="border: 1px solid #ADACAB;" class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                   <%k+=1%>
-                  <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 0px solid #fff;border-top: 0px solid #fff;" class="mark-td" colspan="2" ><%= t('total_discount') %></td>
-                  <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 0px solid #fff;border-top: 0px solid #fff;" class="mark-td" ><%= "#{precision_label(@total_discount)}" %></td>
+                  <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 1px solid #fff;border-top: 0px solid #fff;" class="mark-td" colspan="2" ><%= t('total_discount') %></td>
+                  <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 1px solid #fff;border-top: 0px solid #fff;" class="mark-td" ><%= "#{precision_label(@total_discount)}" %></td>
               </tr>
 
               <tr style="border: 1px solid #ADACAB;" class="tr-blank"></tr>
@@ -83,8 +83,8 @@
               <% total_fees = (@total_payable-@total_discount) %>
               <tr style="border: 1px solid #ADACAB;" class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                   <%k+=1%>
-                  <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 0px solid #fff;border-top: 0px solid #fff;" class="mark-td" colspan="2" ><%= t('total_fees') %></td>
-                  <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 0px solid #fff;border-top: 0px solid #fff;" class="mark-td" ><%=  precision_label(total_fees) %></td>
+                  <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 1px solid #fff;border-top: 0px solid #fff;" class="mark-td" colspan="2" ><%= t('total_fees') %></td>
+                  <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 1px solid #fff;border-top: 0px solid #fff;" class="mark-td" ><%=  precision_label(total_fees) %></td>
               </tr>
 
               <tr style="border: 1px solid #ADACAB;" class="tr-blank"></tr>
@@ -101,10 +101,10 @@
                   <% if trans.fine_included %>
                     <tr style="border: 1px solid #ADACAB;" class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                         <%k+=1%>
-                        <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 0px solid #fff;border-top: 0px solid #fff;" class="col-1"><%= i+=1 %></td>
-                        <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 0px solid #fff;border-top: 0px solid #fff;" class="col-2"><span><%= t('fine_on') %> <%= trans.transaction_date %></span></td>
+                        <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 1px solid #fff;border-top: 0px solid #fff;" class="col-1"><%= i+=1 %></td>
+                        <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 1px solid #fff;border-top: 0px solid #fff;" class="col-2"><span><%= t('fine_on') %> <%= trans.transaction_date %></span></td>
 
-                        <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 0px solid #fff;border-top: 0px solid #fff;" class="col-4"><%="#{precision_label(trans.fine_amount.to_f)}" %></td>
+                        <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 1px solid #fff;border-top: 0px solid #fff;" class="col-4"><%="#{precision_label(trans.fine_amount.to_f)}" %></td>
                     </tr>
                     <% total_fees += trans.fine_amount.to_f %>
                   <% end %>
@@ -120,21 +120,21 @@
               <%if (@fine_amount.present?) and (@financefee.balance > 0)%>
                 <tr style="border: 1px solid #ADACAB;" class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                     <%k+=1%>
-                    <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 0px solid #fff;border-top: 0px solid #fff;" class="col-8" colspan="2" ><%= t('fine_on') %> <%= Date.today %></td>
-                    <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 0px solid #fff;border-top: 0px solid #fff;" class="col-6" ><%=precision_label(@fine_amount.to_f) %></td>
+                    <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 1px solid #fff;border-top: 0px solid #fff;" class="col-8" colspan="2" ><%= t('fine_on') %> <%= Date.today %></td>
+                    <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 1px solid #fff;border-top: 0px solid #fff;" class="col-6" ><%=precision_label(@fine_amount.to_f) %></td>
                 </tr>
               <%end%>
               <tr style="border: 1px solid #ADACAB;" class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                   <%k+=1%>
-                  <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 0px solid #fff;border-top: 0px solid #fff;" class="col-8" colspan="2" ><%= t('payment_done') %></td>
-                  <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 0px solid #fff;border-top: 0px solid #fff;" class="col-6" ><%=precision_label(paid) %></td>
+                  <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 1px solid #fff;border-top: 0px solid #fff;" class="col-8" colspan="2" ><%= t('payment_done') %></td>
+                  <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 1px solid #fff;border-top: 0px solid #fff;" class="col-6" ><%=precision_label(paid) %></td>
               </tr>
             <% end %>
             <%balance=@financefee.balance.to_f+@fine.to_f+@fine_amount.to_f%>
             <tr style="border: 1px solid #ADACAB;" class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                 <%k+=1%>
-                <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 0px solid #fff;border-top: 0px solid #fff;" colspan="2" class="col-8"><%= t('amount_to_pay') %></td>
-                <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 0px solid #fff;border-top: 0px solid #fff;" class="col-pdf"><%=precision_label(balance) %></td>
+                <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 1px solid #fff;border-top: 0px solid #fff;" colspan="2" class="col-8"><%= t('amount_to_pay') %></td>
+                <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 1px solid #fff;border-top: 0px solid #fff;" class="col-pdf"><%=precision_label(balance) %></td>
             </tr>
             <% if ((k+1)%1)==0 %>
           </table>
@@ -162,27 +162,27 @@
                   <% c= 'even' %>
 
                   <tr style="border: 1px solid #ADACAB;" class="table-header">
-                      <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 0px solid #fff;border-top: 0px solid #fff;width:10%;
+                      <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 1px solid #fff;border-top: 1px solid #fff;width:10%;
                           min-width:10%;
                           max-width:10%;
                           word-break:break-all;" class="sl-td" ><%= t('sl_no') %></td>
-                      <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 0px solid #fff;border-top: 0px solid #fff; width:14%;
+                      <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 1px solid #fff;border-top: 1px solid #fff; width:14%;
                           min-width:14%;
                           max-width:14%;
                           word-break:break-all;" class="date-td"> <%= t('payment_date') %></td>
-                      <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 0px solid #fff;border-top: 0px solid #fff; width:16%;
+                      <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 1px solid #fff;border-top: 1px solid #fff; width:16%;
                           min-width:16%;
                           max-width:16%;
                           word-break:break-all;" class="rec-td"> <%= t('receipt_no') %></td>
-                      <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 0px solid #fff;border-top: 0px solid #fff;width:15%;
+                      <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 1px solid #fff;border-top: 1px solid #fff;width:15%;
                           min-width:15%;
                           max-width:15%;
                           word-break:break-all;" class="mode-td" > <%= t('payment_mode') %></td>
-                      <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 0px solid #fff;border-top: 0px solid #fff;width:25%;
+                      <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 1px solid #fff;border-top: 1px solid #fff;width:25%;
                           min-width:25%;
                           max-width:25%;
                           word-break:break-all;" class="note-td" > <%= t('payment_notes') %></td>
-                      <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 0px solid #fff;border-top: 0px solid #fff;width:20%;
+                      <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 1px solid #fff;border-top: 1px solid #fff;width:20%;
                           min-width:20%;
                           max-width:20%;
                           word-break:break-all;" class="amount-td" > <%= t('amount') %>  (<%= currency %>  )</td>
@@ -190,27 +190,27 @@
                   <% @paid_fees.each_with_index do|p,indx| %>
 
                     <tr style="border: 1px solid #ADACAB;" class="<%= cycle(c,(["odd","even"]-[c]).first) %> <%= "paid" if @paid_fees.last.id.to_i == p.id.to_i and @financefee.is_paid == false%>">
-                        <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 0px solid #fff;border-top: 0px solid #fff; width:10%;
+                        <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 1px solid #fff;border-top: 0px solid #fff; width:10%;
                             min-width:10%;
                             max-width:10%;
                             word-break:break-all;" class="sl-td" ><%= i+=1 %></td>
-                        <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 0px solid #fff;border-top: 0px solid #fff;width:14%;
+                        <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 1px solid #fff;border-top: 0px solid #fff;width:14%;
                             min-width:14%;
                             max-width:14%;
                             word-break:break-all;" class="date-td" ><%= p.transaction_date.to_s %></td>
-                        <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 0px solid #fff;border-top: 0px solid #fff;width:16%;
+                        <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 1px solid #fff;border-top: 0px solid #fff;width:16%;
                             min-width:16%;
                             max-width:16%;
                             word-break:break-all;" class="rec-td"> <%= p.receipt_no %></td>
-                        <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 0px solid #fff;border-top: 0px solid #fff;width:15%;
+                        <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 1px solid #fff;border-top: 0px solid #fff;width:15%;
                             min-width:15%;
                             max-width:15%;
                             word-break:break-all;" class="mode-td" > <%= p.payment_mode %></td>
-                        <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 0px solid #fff;border-top: 0px solid #fff;width:25%;
+                        <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 1px solid #fff;border-top: 0px solid #fff;width:25%;
                             min-width:25%;
                             max-width:25%;
                             word-break:break-all;" class="note-td" > <%= p.payment_note %></td>
-                        <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 0px solid #fff;border-top: 0px solid #fff;width:20%;
+                        <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 1px solid #fff;border-top: 0px solid #fff;width:20%;
                             min-width:20%;
                             max-width:20%;
                             word-break:break-all;" class="amount-td" ><%= precision_label p.amount.to_f %></td>

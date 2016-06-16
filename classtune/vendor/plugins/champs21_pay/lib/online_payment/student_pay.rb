@@ -268,7 +268,8 @@ module OnlinePayment
                       online_transaction_id = payment.gateway_response[:transaction_id]
                       online_transaction_id ||= payment.gateway_response[:x_trans_id]
                       
-                      if !current_user.parent_record.email.blank?
+                      g_data = Guardian.find_by_user_id(current_user.id);
+                      if !g_data.blank? && !g_data.email.blank?
                         header_txt = "#{t('payment_success')} #{online_transaction_id}"
                         body_txt = render_to_string(:template => 'gateway_payments/paypal/student_fee_receipt', :layout => false)
                         champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
@@ -276,9 +277,9 @@ module OnlinePayment
                         form_data = {}
                         form_data['body'] = body_txt
                         form_data['header'] = header_txt
-                        form_data['email'] = current_user.parent_record.email
-                        form_data['first_name'] = current_user.parent_record.first_name
-                        form_data['last_name'] = current_user.parent_record.last_name
+                        form_data['email'] = g_data.email
+                        form_data['first_name'] = g_data.first_name
+                        form_data['last_name'] = g_data.last_name
 
                         api_uri = URI(api_endpoint + "api/user/paymentmail")
 

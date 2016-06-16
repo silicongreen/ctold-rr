@@ -1,23 +1,13 @@
 <div id="page-yield" class="available_sections">
     <div style="margin: 0 auto;">
-        <center>
-            <div style="width:800px;
-                 background: #333333;
-                 height: 1px;
-                 margin-top:-10px;
-                 float:left;"></div>
-                 <% if @financefee.is_paid %>
-                    <h2 style="margin-bottom: 2px;font-weight: normal; float:left; clear:both;"><%= t('fee_reciept') %></h2>
-                  <% else %>
-                    <h2 style="margin-bottom: 2px;font-weight: normal;float:left; clear:both;"><%= t('partial_payment_receipt') %></h2>
-                  <% end %>
-              <div style="width:800px;
-                 background: #333333;
-                 height: 1px;
-                 margin-top:-10px;
-                 float:left;"></div>
+     
+            
+        <% if @financefee.is_paid %>
+           <h2 style="margin-bottom: 2px;font-weight: normal; float:left; clear:both;"><%= t('fee_reciept') %></h2>
+        <% else %>
+           <h2 style="margin-bottom: 2px;font-weight: normal;float:left; clear:both;"><%= t('partial_payment_receipt') %></h2>
+        <% end %>
            
-        </center>
         <% total_fees = 0 %>
         <div style="text-align: left !important;">
             <div style="width:100%;float:left;">
@@ -143,7 +133,7 @@
     <% end %>
 
 
-    <div id="pdf-info" style="float:left; width:800px;">
+    <div id="pdf-info" style="float:left;clear:both;">
 
         <%page_val=24%>
         <%k=19%>

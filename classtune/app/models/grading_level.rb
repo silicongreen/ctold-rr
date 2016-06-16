@@ -69,6 +69,9 @@ class GradingLevel < ActiveRecord::Base
   
   class << self
     def percentage_to_grade(percent_score, batch_id)
+      if percent_score=="NaN"
+          percent_score = 0
+      end
       batch_grades = GradingLevel.for_batch(batch_id)
       if batch_grades.empty?
         grade = GradingLevel.default.find :first,

@@ -268,4 +268,21 @@ academia_box p
     {
         float:right;
     }
-    
+    /*MPSC COMBINE REPORT CARD STYLE*/
+    .header_address
+    {
+        margin-left: 220px;
+    }
+    .mpsc_student_details_box
+    {
+        font-weight: bold;
+    }
+    .mpsc_student_details_box table td
+    {
+        border:0px;
+        border-collapse: collapse;
+    }
+    .mpsc_student_details_box .mpsc_border
+    {
+        border-bottom: 3px solid red;
+    }

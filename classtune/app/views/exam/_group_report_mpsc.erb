@@ -200,15 +200,17 @@
                                         <% 
                                         if sba_full_mark.to_i > 0
                                           mark_80 = (total_mark/100)*80
+                                          full_mark_80 = (full_mark.to_f/100)*80
                                          else 
                                           mark_80 = total_mark
+                                          full_mark_80 = full_mark.to_f
                                          end  
                                         %>  
                                         <th class="totalmark"><%= mark_80 %></th>
                                         <th class="totalmark"><%= sba_mark %></th>
                                         <% total_mark_before = mark_80.to_f+sba_mark.to_f %>
-                                        <% full_mark_80 = (full_mark/100)*80 %>
-                                        <% full_mark = full_mark_80+sba_full_mark %>
+                                   
+                                        <% full_mark = full_mark_80.to_f+sba_full_mark.to_f %>
                                         <% main_mark = (total_mark_before.to_f/full_mark.to_f)*100  %>
                                         <td class="totalmark"><b><%= sprintf( "%0.02f", main_mark) %></b></td>
                                         <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>

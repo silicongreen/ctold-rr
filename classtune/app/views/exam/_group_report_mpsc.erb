@@ -37,7 +37,10 @@
         
         <% end %>
       <% end %>
-      <% if full_mark.to_i > 0 or sba_full_mark.to_i > 0  %>
+      <% if full_mark.to_f > 0 or sba_full_mark.to_f > 0  %>
+            <% if subjects['name'] == "History" %>
+            here : <%= full_mark  %>
+            <% end %>
             <% 
             if sba_full_mark.to_i > 0
               mark_80 = (total_mark/100)*80

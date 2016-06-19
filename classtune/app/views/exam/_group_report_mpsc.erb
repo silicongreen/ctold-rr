@@ -53,14 +53,13 @@
             <% full_mark = full_mark_80.to_f+sba_full_mark.to_f %>
             <% main_mark = (total_mark_before.to_f/full_mark.to_f)*100  %>
             <% total_parcent= total_parcent+main_mark %>
-            <% total_subject = total_subject+1 %>
-            <% i = i+1 %>
+            <% total_subject = total_subject+1 %> 
       
         <% else %>
-       
-        <%  @report_data['report']['subjects'].delete_at(i) %>
-        <% i = i+1 %>
+            <%  @report_data['report']['subjects'].delete_at(i) %>
+        
       <% end %>
+      <% i = i+1 %>
     <% end %> 
   <% end %> 
   <% avgparcent = total_parcent.to_f/total_subject.to_f %>

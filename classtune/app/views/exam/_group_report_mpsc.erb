@@ -54,7 +54,7 @@
             <% total_subject = total_subject+1 %>
 
       <% else %>
-        <%  @report_data['report']['subjects'][key] = nil %>
+        <%  @report_data['report']['subjects'].delete(key) %>
       <% end %>
     <% end %> 
   <% end %> 

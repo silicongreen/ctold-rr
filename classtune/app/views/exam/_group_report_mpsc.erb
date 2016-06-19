@@ -1,7 +1,7 @@
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
   <% total_parcent = 0 %>
   <% total_subject = 0 %>
-  <% subjects_new = {} %>
+  <% subjects_new = [] %>
   <% i = 0 %>
   <% unless @report_data['report']['subjects'].blank? %> 
     <% @report_data['report']['subjects'].each do |subjects| %>

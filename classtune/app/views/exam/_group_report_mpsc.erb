@@ -1,6 +1,7 @@
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
   <% total_parcent = 0 %>
   <% total_subject = 0 %>
+  <% subjects_new = {} %>
   <% i = 0 %>
   <% unless @report_data['report']['subjects'].blank? %> 
     <% @report_data['report']['subjects'].each do |subjects| %>
@@ -54,9 +55,10 @@
             <% main_mark = (total_mark_before.to_f/full_mark.to_f)*100  %>
             <% total_parcent= total_parcent+main_mark %>
             <% total_subject = total_subject+1 %> 
+            <% subjects_new << subjects %>
       
-        <% else %>
-            <%  @report_data['report']['subjects'].delete_at(i) %>
+      <% else %>
+            <%#  @report_data['report']['subjects'].delete_at(i) %>
         
       <% end %>
       <% i = i+1 %>
@@ -64,6 +66,7 @@
   <% end %> 
   <% avgparcent = total_parcent.to_f/total_subject.to_f %>
   <%  grade = GradingLevel.percentage_to_grade(avgparcent, @batch.id) %>
+  <% @report_data['report']['subjects'] = subjects_new %>
       
     
     <div id="page-yield"  class="available_sections1 academia">

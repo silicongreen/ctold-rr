@@ -88,30 +88,34 @@
                           <tr>
                               <th class='subjects'>Subject Name </th>
                               <% unless @report_data['report']['exams'].blank? %>  
-                              <% count = @report_data['report']['exams'].count %>                        
+                              <% count = @report_data['report']['exams'].count %> 
+                              <% sba = false %>
+                              <% sba_exam_name = "" %>
                                 <% @report_data['report']['exams'].each do |report| %>
-                                  <% w = 60/count%>
-                              <th width='<%=  ("#{w}%")%>'>
-                                    <table width='100%' border="0">
-                                        <tr>
-                                            <td width="100%" colspan="2" class="special_top special_left special_right"><%= report['exam_name'] %></td>
-                                        </tr>
-                                        <tr>
-                                            <td width="50%" class="special_bottom special_left">Full Marks</td>
-                                            <td width="50%" class="special_bottom special_right">Marks Obtained</td>
-                                        </tr>
-
-                                    </table>
-                                  </th> 
+                                  
+                                  <% if report['sba']!="1" %>
+                                    <% w = 60/count%>
+                                    <th width='<%=  ("#{w}%")%>'>
+                                          <%= report['exam_name'] %>
+                                    </th> 
+                                  <% else %>
+                                    <% sba = true %>
+                                    <% sba_exam_name = report['exam_name'] %>
+                                  <% end %>
                                 <% end %>
                               
                               <% end %>
 
                               <th class="totalmark">Total Marks</th>
-                              <!--th width="5%">Marks Obtained (%)</th-->
+                              <% if sba == true %>
+                                <th class="totalmark">80%</th>
+                                <th class="totalmark"><%= sba_exam_name %></th>
+                                <th class="totalmark">Total (%)</th>
+                                <th class="totalmark">CGPA</th>
+                              <% else %>
                               <th class="totalmark">Highest Marks (%)</th>
+                              <% end %>
                               <th class="totalmark">Grade</th>
-                              <!--th width="5%">GPA</th-->
                           </tr>
                         </thead>
                         <% total_parcent = 0 %>
@@ -123,42 +127,50 @@
                                 <% weightage_mark = 0 %>
                                 <% total_mark = 0 %>
                                 <% full_mark = 0 %>
-
+                                <% sba_full_mark = 0 %>
+                                <% sba_mark = 0 %>
+                                <% mark_80 = 0 %>
                                 <td class='subjects'><b><%= subjects['name'] %></b></td>
+                                
                                 <% unless @report_data['report']['exams'].blank? %>  
                                   <% @report_data['report']['exams'].each do |report| %>
-                                    <% w = 60/count2%>
-                                    <th width='<%=  ("#{w}%")%>'>
+                                    <% sba_full_mark = 0 %>
+                                    <% sba_mark = 0 %>
+                                   
+                                    <% if report['sba']!="1" %>
+                                      <% w = 60/count2%>
+                                      <td width='<%=  ("#{w}%")%>'>
 
-                                        <table width="100%" CELLPADDING="3" CELLSPACING="3">
+                                              <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
 
-                                            <tr>
-                                                <td width="50%" class="special_top special_left special_bottom">
-                                                    <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
-                                                      <%= report['result'][report['exam_id']][subjects['id']]['full_mark'] %>
-                                                      <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
-                                                    <% else %>
-                                                      N/A
-                                                    <% end %>  
-                                                </td>
-                                                <td width="50%" class="special_top special_right special_bottom ">
-                                                    <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
-                                                      <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %>
-                                                      <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
-                                                    <% else %>
-                                                      N/A
-                                                    <% end %>  
-                                                </td>
-                                            </tr>
+                                                <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                              <% end %>  
 
-                                        </table>   
+                                              <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
+                                                <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %>
+                                                <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                              <% else %>
+                                                N/A
+                                              <% end %>  
 
 
-                                    </td>
 
-                                    <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['weightage_mark'].blank? %>
-                                      <% weightage_mark = weightage_mark+report['result'][report['exam_id']][subjects['id']]['weightage_mark'] %>
-                                    <% end %>
+                                      </td>
+
+                                      <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['weightage_mark'].blank? %>
+                                        <% weightage_mark = weightage_mark+report['result'][report['exam_id']][subjects['id']]['weightage_mark'] %>
+                                      <% end %>
+                                    <% else %>
+                                              <% 
+                                              if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? 
+                                                 sba_full_mark = sba_full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
+                                              end
+
+                                              if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? 
+                                                 sba_mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'] 
+                                              end
+                                           %>  
+                                    <% end %>  
 
                                   <% end %>
                                 <% end %>
@@ -180,11 +192,40 @@
                                   end  
                                %>
 
-                                  <% if full_mark.to_f > 0 %>
+                                  <% if full_mark.to_f > 0 or sba_full_mark.to_f > 0  %>
                                       <td class="totalmark"><b><%= sprintf( "%0.02f", total_mark) %></b></td>
                                       <!--td class="totalmark"><b><%= sprintf( "%0.02f", main_mark) %> %</b></td-->
-                                      <td class="totalmark"><b><%= sprintf( "%0.02f", heighst_mark)   %> %</b></td>
-                                      <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
+                                      
+                                      <% if sba == true %>
+                                        <% 
+                                        if sba_full_mark.to_i > 0
+                                          mark_80 = (total_mark/100)*80
+                                         else 
+                                          mark_80 = total_mark
+                                         end  
+                                        %>  
+                                        <th class="totalmark"><%= mark_80 %></th>
+                                        <th class="totalmark"><%= sba_mark %></th>
+                                        <% total_mark_before = mark_80.to_f+sba_mark.to_f %>
+                                        <% full_mark = full_mark+sba_full_mark %>
+                                        <% main_mark = (total_mark_before.to_f/full_mark.to_f)*100  %>
+                                        <td class="totalmark"><b><%= sprintf( "%0.02f", main_mark) %></b></td>
+                                        <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
+                                        <% if !grade.blank? and !grade.name.blank? and !grade.credit_points.blank? %>
+                                        <td class="totalmark"><b><%= grade.credit_points %></b></td>
+                                        <% else %>
+                                        <td class="totalmark"><b>N/A</b></td>
+                                        <% end %>
+                                      <% else %>
+                                         <td class="totalmark"><b><%= sprintf( "%0.02f", heighst_mark)   %> %</b></td>
+                                         <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
+                                      <% end %>
+                                      
+                                      
+                                      
+                                      
+                                      
+                                      
 
                                       <% if !grade.blank? and !grade.name.blank? and !grade.credit_points.blank? %>
                                         <td class="totalmark" align="center"><b><%= grade.name %></b></td>
@@ -202,6 +243,11 @@
                                       <!--td class="totalmark"><b>N/A</b></td-->
                                       <td class="totalmark"><b>N/A</b></td>
                                       <td class="totalmark"><b>N/A</b></td>
+                                      <% if sba == true %>
+                                      <td class="totalmark"><b>N/A</b></td>
+                                      <td class="totalmark"><b>N/A</b></td>
+                                      <td class="totalmark"><b>N/A</b></td>
+                                      <% end %>
                                       <!--td width="5%"><b>N/A</b></td-->
                                   <% end %>      
 
@@ -216,7 +262,7 @@
                     <table  width="100%" >
                         <thead>
                             <tr>
-                                <th><h2>Grand Total : <%= total_parcent.to_f %> </h2></th>
+                                <th><h2>Grand Total : <%= sprintf( "%0.02f", total_parcent.to_f) %> </h2></th>
                                 <!--th>Total Number of Working Days : <%= @report_data['total'] %></th>
 
                                 <th>Days Present : <%= @report_data['present'] %> </th-->

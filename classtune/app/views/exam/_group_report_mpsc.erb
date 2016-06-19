@@ -2,7 +2,7 @@
   <% total_parcent = 0 %>
   <% total_subject = 0 %>
   <% unless @report_data['report']['subjects'].blank? %> 
-    <% @report_data['report']['subjects'].each do |subjects| %>
+    <% @report_data['report']['subjects'].each do |key,subjects| %>
     <% weightage_mark = 0 %>
     <% total_mark = 0 %>
     <% full_mark = 0 %>
@@ -53,6 +53,8 @@
             <% total_parcent= total_parcent+main_mark %>
             <% total_subject = total_subject+1 %>
 
+      <% else %>
+        <%  @report_data['report']['subjects'][key] = nil %>
       <% end %>
     <% end %> 
   <% end %> 
@@ -129,10 +131,10 @@
                               <td class="">: N/A </td>
                             <% end %>  
                         </tr> 
-                        <tr>
-                            <td class="left">Merit List</td>
-                            <td class="">: </td>
-                        </tr> 
+                        <%#*<tr>%>
+                            <%#*<td class="left">Merit List</td>%>
+                            <%#*<td class="">: </td>%>
+                        <%#*</tr>%> 
                         <tr>
                             <td class="left">Academic Year</td>
                             <td class="">:  <%= Time.now.strftime("%B, %Y") %></td>
@@ -329,27 +331,7 @@
                     <br />
                     
                     <% avgparcent = total_parcent.to_f/total_subject.to_f %>
-                    <table  width="100%" >
-                        <thead>
-                            <tr>
-                                <th><h2>Grand Total : <%= sprintf( "%0.02f", total_parcent.to_f) %> </h2></th>
-                                <!--th>Total Number of Working Days : <%= @report_data['total'] %></th>
-
-                                <th>Days Present : <%= @report_data['present'] %> </th-->
-                                <th><h2>Overall : <%= sprintf( "%0.02f",avgparcent) %> % </h2></th>
-                                <%  grade = GradingLevel.percentage_to_grade(avgparcent, @batch.id) %>
-
-                                <% if !grade.blank?  and !grade.credit_points.blank? %>
-                                  <th><h2>CGPA : <%= grade.credit_points %> </h2></th>
-                                <% else %>
-                                  <th >-</th>
-                                <% end %>    
-
-
-                            </tr> 
-                        </thead>  
-
-                    </table>
+                 
 
                    
 

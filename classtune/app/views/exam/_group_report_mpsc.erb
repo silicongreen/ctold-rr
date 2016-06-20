@@ -164,7 +164,7 @@
                         <thead>
                           <tr>
                               <th class='subjects'>Subject Name </th>
-                              <th class='subjects'>Total </th>
+                              <th width='5%'>Total </th>
                               <% unless @report_data['report']['exams'].blank? %>  
                               <% count = @report_data['report']['exams'].count %> 
                               <% sba = false %>
@@ -209,13 +209,15 @@
                                 <% sba_mark = 0 %>
                                 <% mark_80 = 0 %>
                                 <td class='subjects'><b><%= subjects['name'] %></b></td>
-                                <td width="10%" ><b>
+                                <td width="5%" ><b>
                                   <% unless @report_data['report']['exams'].blank? %>  
                                     <% @report_data['report']['exams'].each do |report| %>
-                                      <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
+                                      <% if report['sba']!="1" %>
+                                        <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
 
-                                      <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
-                                    <% end %>                                                              
+                                          <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                        <% end %>                                                              
+                                      <% end %>                                                              
                                     <% end %>                                                              
                                   <% end %>  
                                   <%=full_mark%>

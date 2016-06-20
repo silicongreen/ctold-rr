@@ -1,5 +1,5 @@
 champs21:
- api_url: "http://api.champs21.com/" 
+ api_url: "http://api.champs21.dev/index.php"  
  username: "nbs-ST0001"
  password: "123456"
  notification_url: "http://www.champs21.com/front/ajax/send_paid_notification/"

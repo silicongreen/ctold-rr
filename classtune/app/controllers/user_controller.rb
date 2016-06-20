@@ -565,7 +565,7 @@ class UserController < ApplicationController
       user_info = [ 
         "user_secret" => auth_response['data']['paid_user']['secret'],
         "user_cookie" => ar_user_cookie[1].split(",")[1],
-        "user_cookie_exp" => ar_user_cookie[3].split('=')[1].to_time.to_i
+        "user_cookie_exp" => ar_user_cookie[2].split('=')[1].to_time.to_i
       ]
       #"user_cookie_exp" => ar_user_cookie[2].split('=')[1].to_time.to_i  
       session[:api_info] = user_info

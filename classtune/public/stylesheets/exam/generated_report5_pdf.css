@@ -286,3 +286,7 @@ academia_box p
     {
         border-bottom: 3px solid red;
     }
+    .mpsc table td,th
+    {
+        font-size: 18px !important;
+    }

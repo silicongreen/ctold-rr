@@ -114,7 +114,7 @@
                       <table width="100%" border="0">
                        
                         <tr>
-                            <td class="left">Total Obtained Marks</td>
+                            <td class="left" width="50%">Total Obtained Marks</td>
                             <td class="">: <%= sprintf( "%0.02f", total_parcent.to_f) %></td>
                         </tr> 
                         <tr>
@@ -159,12 +159,12 @@
        
         <div class ="current_batch">
             <div id="grouped_exam_report">
-                <div class="CSSTableGenerator">
+                <div class="CSSTableGenerator mpsc">
                     <table id="listing table-design" class='score' width="100%">
                         <thead>
                           <tr>
-                              <th class='subjects'>Subject Name </th>
-                              <th width='5%'>Total </th>
+                              <th class='subjects'><font size="3">Subject Name</font> </th>
+                              <th width='5%' align="center">Total </th>
                               <% unless @report_data['report']['exams'].blank? %>  
                               <% count = @report_data['report']['exams'].count %> 
                               <% sba = false %>
@@ -209,7 +209,7 @@
                                 <% sba_mark = 0 %>
                                 <% mark_80 = 0 %>
                                 <td class='subjects'><b><%= subjects['name'] %></b></td>
-                                <td width="5%" ><b>
+                                <td width="5%"  align="center"><b>
                                   <% unless @report_data['report']['exams'].blank? %>  
                                     <% @report_data['report']['exams'].each do |report| %>
                                       <% if report['sba']!="1" %>
@@ -229,7 +229,7 @@
                                    
                                     <% if report['sba']!="1" %>
                                       <% w = 60/count2%>
-                                      <td width='<%=  ("#{w}%")%>'>
+                                      <td width='<%=  ("#{w}%")%>' align="center">
 
                                               <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
 

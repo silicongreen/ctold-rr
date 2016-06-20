@@ -1,18 +1,17 @@
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
   <% total_parcent = 0 %>
   <% total_subject = 0 %>
-  <% subjects_new = [] %>
-  <% subjects_full_marks = [] %>
+  <% subjects_new = [] %>  
   <% i = 0 %>
   <% unless @report_data['report']['subjects'].blank? %> 
     <% @report_data['report']['subjects'].each do |subjects| %>
     <% weightage_mark = 0 %>
-    <% total_mark = 0 %>
+    <% total_mark = 0 %>    
     <% full_mark = 0 %>
     <% sba_full_mark = 0 %>
     <% sba_mark = 0 %>
     <% mark_80 = 0 %>
-      <%#= debug @report_data['report']['exams'] %>
+      
       <% unless @report_data['report']['exams'].blank? %>  
         <% @report_data['report']['exams'].each do |report| %>
          <% sba_full_mark = 0 %>
@@ -163,7 +162,7 @@
                     <table id="listing table-design" class='score' width="100%">
                         <thead>
                           <tr>
-                              <th class='subjects'><font size="3">Subject Name</font> </th>
+                              <th class='subjects'>Subject Name</th>
                               <th width='5%' align="center">Total </th>
                               <% unless @report_data['report']['exams'].blank? %>  
                               <% count = @report_data['report']['exams'].count %> 
@@ -205,6 +204,7 @@
                                 <% weightage_mark = 0 %>
                                 <% total_mark = 0 %>
                                 <% full_mark = 0 %>
+                                <% subject_full_mark = 0 %>
                                 <% sba_full_mark = 0 %>
                                 <% sba_mark = 0 %>
                                 <% mark_80 = 0 %>
@@ -215,12 +215,12 @@
                                       <% if report['sba']!="1" %>
                                         <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
 
-                                          <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                          <% subject_full_mark = subject_full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                         <% end %>                                                              
                                       <% end %>                                                              
                                     <% end %>                                                              
                                   <% end %>  
-                                  <%=full_mark%>
+                                  <%=subject_full_mark%>
                                 </b></td>
                                 <% unless @report_data['report']['exams'].blank? %>  
                                   <% @report_data['report']['exams'].each do |report| %>

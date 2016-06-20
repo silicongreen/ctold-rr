@@ -2,6 +2,7 @@
   <% total_parcent = 0 %>
   <% total_subject = 0 %>
   <% subjects_new = [] %>
+  <% subjects_full_marks = [] %>
   <% i = 0 %>
   <% unless @report_data['report']['subjects'].blank? %> 
     <% @report_data['report']['subjects'].each do |subjects| %>
@@ -11,7 +12,7 @@
     <% sba_full_mark = 0 %>
     <% sba_mark = 0 %>
     <% mark_80 = 0 %>
-
+      <%#= debug @report_data['report']['exams'] %>
       <% unless @report_data['report']['exams'].blank? %>  
         <% @report_data['report']['exams'].each do |report| %>
          <% sba_full_mark = 0 %>
@@ -67,7 +68,7 @@
   <% avgparcent = total_parcent.to_f/total_subject.to_f %>
   <%  grade = GradingLevel.percentage_to_grade(avgparcent, @batch.id) %>
   <% @report_data['report']['subjects'] = subjects_new %>
-      
+    
     
     <div id="page-yield"  class="available_sections1 academia">
         <div class="academia_box">
@@ -163,6 +164,7 @@
                         <thead>
                           <tr>
                               <th class='subjects'>Subject Name </th>
+                              <th class='subjects'>Total </th>
                               <% unless @report_data['report']['exams'].blank? %>  
                               <% count = @report_data['report']['exams'].count %> 
                               <% sba = false %>
@@ -207,7 +209,17 @@
                                 <% sba_mark = 0 %>
                                 <% mark_80 = 0 %>
                                 <td class='subjects'><b><%= subjects['name'] %></b></td>
-                                
+                                <td width="10%" ><b>
+                                  <% unless @report_data['report']['exams'].blank? %>  
+                                    <% @report_data['report']['exams'].each do |report| %>
+                                      <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
+
+                                      <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                    <% end %>                                                              
+                                    <% end %>                                                              
+                                  <% end %>  
+                                  <%=full_mark%>
+                                </b></td>
                                 <% unless @report_data['report']['exams'].blank? %>  
                                   <% @report_data['report']['exams'].each do |report| %>
                                     <% sba_full_mark = 0 %>
@@ -383,7 +395,7 @@
         </div>
         
     </div>
-
+    
   <% end %>
   <%= stylesheet_link_tag 'list_table' %>
 

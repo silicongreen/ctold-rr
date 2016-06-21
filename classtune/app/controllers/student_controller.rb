@@ -1407,8 +1407,8 @@ class StudentController < ApplicationController
       target = current_user.guardian_entry.current_ward_id      
       @student = Student.find_by_id(target) 
     end
-    #@batch = @student.batch
-    @batch = Batch.find_by_id(1286)
+    @batch = @student.batch
+    #@batch = Batch.find_by_id(1286)
     @exam_groups = @batch.exam_groups
     @exam_groups.reject!{|e| e.result_published==false or e.exam_category!=3}
     

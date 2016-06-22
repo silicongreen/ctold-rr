@@ -24,18 +24,18 @@ class SyllabusController < ApplicationController
 
   def classes_view
     @batches = Batch.active.find(:all, :group => "name")
-#    if @batches.length == 1
-#      @for_exam = true
-#      @batch = @batches[0]
-#      batch_name = @batch.name
-#      school_id = MultiSchool.current_school.id
-#      @courses = Rails.cache.fetch("user_cat_links_#{batch_name}_#{current_user.id}_#{school_id}"){
-#        @batches_data = Batch.find(:all, :conditions => ["name = ? AND school_id = ?", batch_name,school_id], :select => "course_id")
-#        @batch_ids = @batches_data.map{|b| b.course_id}
-#        @tmp_courses = Course.find(:all, :conditions => ["courses.id IN (?) and batches.name = ?", @batch_ids, batch_name], :select => "courses.*,  GROUP_CONCAT(courses.section_name,'-',courses.id,'-',batches.id) as courses_batches", :joins=> "INNER JOIN `batches` ON batches.course_id = courses.id", :group => 'course_name', :order => "cast(replace(course_name, 'Class ', '') as SIGNED INTEGER) asc")
-#        @tmp_courses
-#      }
-#    end
+    if @batches.length == 1
+      @for_exam = true
+      @batch = @batches[0]
+      batch_name = @batch.name
+      school_id = MultiSchool.current_school.id
+      @courses = Rails.cache.fetch("user_cat_links_courses_batches_#{batch_name}_#{current_user.id}_#{school_id}"){
+        @batches_data = Batch.find(:all, :conditions => ["name = ? and school_id = ?", batch_name,school_id], :select => "course_id")
+        @batch_ids = @batches_data.map{|b| b.course_id}
+        @tmp_courses = Course.find(:all, :conditions => ["courses.id IN (?) and batches.name = ? and school_id = ?", @batch_ids, batch_name,school_id], :select => "courses.*,  GROUP_CONCAT(courses.section_name,'-',courses.id,'-',batches.id) as courses_batches", :joins=> "INNER JOIN `batches` ON batches.course_id = courses.id", :group => 'course_name', :order => "cast(replace(course_name, 'Class ', '') as SIGNED INTEGER) asc")
+        @tmp_courses
+      }
+    end
   end
   
   def syllabus_view

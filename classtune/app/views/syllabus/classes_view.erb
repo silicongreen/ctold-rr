@@ -50,7 +50,7 @@
   </div>
     
   <div class="box">
-    <% if @batches.length > 1 %>
+    <%# if @batches.length > 1 %>
       <h4 align="center"><%= t('batches_available_text') %></h4>  
       <ul id="category-list">
           <% @batches.each do |batch| %>
@@ -65,7 +65,7 @@
             </li>
           <% end %>
       </ul>
-    <% end %>
+    <%# end %>
     <div id="class_info" ></div>
     
     <div id="modal-box" style="display:none;"></div>

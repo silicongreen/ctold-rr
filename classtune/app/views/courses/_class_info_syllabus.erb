@@ -1,38 +1,31 @@
-<% unless @courses.nil? %>  
-  <h4 align="center"><%= t('course_text') %></h4>
-  <ul id="category-list">
-    <% if Batch.active.find(:all, :group => "name").length > 1 %>
-      <h4 style="margin-left: 10px;"><%= @batch.name %>  <%= t('batch_text') %></h4>
-    <% end %>  
+<% unless @courses.nil? %>    
+  <% unless @batches.nil? %>
+  <ul id="category-list" style="float: left; width: 650px; padding: 10px 1px 0 10px; ">
+  <% else %>    
+  <ul id="category-list">    
+  <% end %>        
     <% @courses.each do |course| %>
       <li class="list<%=cycle('odd', 'even')%>">
         <% courses_batches = course.courses_batches.split(',') %>
         <%#*<div class="category-name"><%= link_to course.course_name, course_path(course) </div>%>
-        <div class="category-name" style="width: 100px; padding: 4px 2px 8px 8px;"><%=  course.course_name %></div>
+        <div id="cate_name_<%= course.id %>" class="category-name" style="width: 100px; padding: 4px 2px 8px 8px;"><%=  course.course_name %></div>
         <div id="cate_sections_<%= course.id %>" class="category-sections" style=" padding: 4px 2px 12px 8px;">
           <% courses_batches.each do |cb| %>
             <% a_course_batch_info = cb.split('-') %>
-            <% unless @for_exam %>
-            <%= link_to a_course_batch_info[0].strip.length > 0 ?  a_course_batch_info[0].strip : "no-section", [Course.find(a_course_batch_info[1]), Batch.find(a_course_batch_info[2])], :class=> "sections" %>
-            <% else %>
-            <%= link_to a_course_batch_info[0].strip.length > 0 ?  a_course_batch_info[0].strip : "no-section", batch_exam_groups_path(Batch.find(a_course_batch_info[2])), :class=> "sections" %>
-            <% end %>
-          <% end %>  
+            <% @batch_data =   Batch.find(a_course_batch_info[2]) %>
+            <%= link_to a_course_batch_info[0], {:controller => "syllabus", :action => 'show_syllabus', :batch_id => @batch_data.id, :batch_name => @batch_data.name, :course_name => course.course_name,:class=>false},:target => "_blank", :class => "user_button", :style => "margin-top: 0px;"  %>            
+          <% end %>   
         </div>
         <% a_course_batch_info = courses_batches[0].split('-')   %>
         <% batch_id = a_course_batch_info[2]   %>
         <div class="category-name" style="padding: 0 2px 8px 8px; float: right; width: 80px; ">
             <%#*new_batch_exam_group_path(Batch.find(batch_id),:class_exam=>true)%>
-            <% unless @for_exam %>
-            <% ARGV[0] = 'shift' %>
-            <% else %>
-            <% ARGV[0] = 'exam' %>
+            <% unless @batch_data.nil? %>
+            <%= link_to t('syllabus_text'), {:controller => "syllabus", :action => 'show_syllabus', :batch_id => @batch_data.id, :batch_name => @batch_data.name, :course_name => course.course_name,:class=>true},:target => "_blank", :class => "user_button", :style => "margin-top: 0px;"  %>            
             <% end %>
-            <% $ggg = @for_exam %>
-            <%= link_to "#{t('exams_text')}", batch_exam_groups_path(Batch.find(batch_id),:class_exam=>true), :class => "user_button", :style => "margin-top: 0px;" %>
         </div>
       </li>
     <% end %>
- 
+
   </ul>
 <% end %>

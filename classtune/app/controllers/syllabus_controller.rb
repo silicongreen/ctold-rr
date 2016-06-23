@@ -25,7 +25,6 @@ class SyllabusController < ApplicationController
   def classes_view
     @batches = Batch.active.find(:all, :group => "name")
     if @batches.length == 1
-        @for_exam = true
         @batch = @batches[0]
         batch_name = @batch.name
         school_id = MultiSchool.current_school.id

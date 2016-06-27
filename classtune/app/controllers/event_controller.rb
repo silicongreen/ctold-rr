@@ -251,7 +251,7 @@ class EventController < ApplicationController
             end
           end
         end
-        unless recipients.empty?
+        unless recipients.empty? and !send_sms("event")
           message = "#{t('event_notification')}: #{event.title}.#{t('from')} : #{event.start_date} #{t('to')} #{event.end_date}"
           Delayed::Job.enqueue(SmsManager.new(message,recipients))
         end
@@ -315,7 +315,7 @@ class EventController < ApplicationController
           end
         end
       end
-      unless recipients.empty?
+      unless recipients.empty? and !send_sms("event")
         message = "#{t('event_notification')}: #{event.title}.#{t('from')} : #{event.start_date} #{t('to')} #{event.end_date}"
         Delayed::Job.enqueue(SmsManager.new(message,recipients))
       end

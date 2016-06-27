@@ -760,7 +760,7 @@ class AttendancesController < ApplicationController
 #            end
           end
           
-          unless recipients.empty?
+          unless recipients.empty?  and send_sms("attandence")
             Delayed::Job.enqueue(SmsManager.new(message,recipients))
           end
         end

@@ -68,14 +68,15 @@ class SmsController < ApplicationController
         student_ids = params[:send_sms][:student_ids]
         sms_setting = SmsSetting.new()
         @recipients=[]
+        send_to = params[:send_sms][:send_to]
         student_ids.each do |s_id|
           student = Student.find(s_id)
           guardian = student.immediate_contact
           if student.is_sms_enabled
-            if sms_setting.student_sms_active           
+            if sms_setting.student_sms_active and (send_to==1 or send_to == 2)          
               @recipients.push student.phone2 unless (student.phone2.nil? or student.phone2 == "")
             end
-            if sms_setting.parent_sms_active
+            if sms_setting.parent_sms_active and (send_to==1 or send_to == 3)
               unless guardian.nil?
                 @recipients.push guardian.mobile_phone unless (guardian.mobile_phone.nil? or guardian.mobile_phone == "")
               end
@@ -107,7 +108,7 @@ class SmsController < ApplicationController
   
   def list_students
     batch = Batch.find(params[:batch_id])
-    @students = Student.find_all_by_batch_id(batch.id,:conditions=>'is_sms_enabled=true')
+    @students = Student.find_all_by_batch_id(batch.id,:conditions=>"is_sms_enabled=true")
   end
 
   def batches
@@ -116,16 +117,17 @@ class SmsController < ApplicationController
       unless params[:send_sms][:batch_ids].nil?
         batch_ids = params[:send_sms][:batch_ids]
         sms_setting = SmsSetting.new()
+        send_to = params[:send_sms][:send_to]
         @recipients = []
         batch_ids.each do |b_id|
           batch = Batch.find(b_id)
           batch_students = batch.students
           batch_students.each do |student|
             if student.is_sms_enabled
-              if sms_setting.student_sms_active
+              if sms_setting.student_sms_active and (send_to==1 or send_to == 2) 
                 @recipients.push student.phone2 unless (student.phone2.nil? or student.phone2 == "")
               end
-              if sms_setting.parent_sms_active
+              if sms_setting.parent_sms_active and (send_to==1 or send_to == 3) 
                 guardian = student.immediate_contact
                 unless guardian.nil?
                   @recipients.push guardian.mobile_phone unless (guardian.mobile_phone.nil? or guardian.mobile_phone == "")

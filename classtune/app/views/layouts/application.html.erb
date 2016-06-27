@@ -101,6 +101,17 @@
     <script type="text/javascript">
       var j = jQuery.noConflict();
       j(function() {
+         var sms_text_max = 155;
+          j('#textarea_sms_feedback').html(sms_text_max + ' characters remaining');
+
+          
+          j(document).on("keyup",'#send_sms_message',function() {
+              var text_length = j('#send_sms_message').val().length;
+              var text_remaining = sms_text_max - text_length;
+
+              j('#textarea_sms_feedback').html(text_remaining + ' characters remaining');
+          });
+        
           j( "#dialog-message-subscribed" ).dialog({
             modal: true,
             autoOpen: false,

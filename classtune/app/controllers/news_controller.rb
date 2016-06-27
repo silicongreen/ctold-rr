@@ -169,7 +169,8 @@ class NewsController < ApplicationController
           end    
         end 
         
-        unless recipients.empty?
+     
+        unless recipients.empty? and !send_sms("notice")
           message = "#{t('reminder_notice')} : "+params[:news][:title]
           Delayed::Job.enqueue(SmsManager.new(message,recipients))
         end
@@ -342,8 +343,8 @@ class NewsController < ApplicationController
               end
           end    
         end 
-        
-        unless recipients.empty?
+       
+        unless recipients.empty? and !send_sms("notice")
           message = "#{t('reminder_notice')} : "+params[:news][:title]
           Delayed::Job.enqueue(SmsManager.new(message,recipients))
         end

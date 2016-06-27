@@ -545,7 +545,7 @@ class StudentController < ApplicationController
             if sms_setting.student_admission_sms_active
               recipients.push @student.phone2 unless @student.phone2.blank?
             end
-            unless recipients.empty?
+            unless recipients.empty? and !send_sms("studentregister")
               Delayed::Job.enqueue(SmsManager.new(message,recipients))
             end
           end
@@ -661,7 +661,7 @@ class StudentController < ApplicationController
           guardian = Guardian.find(@student.immediate_contact_id)
           recipients.push guardian.mobile_phone unless guardian.mobile_phone.nil?
         end
-        unless recipients.empty?
+        unless recipients.empty? and !send_sms("studentregister")
           Delayed::Job.enqueue(SmsManager.new(message,recipients))
         end
       end
@@ -710,7 +710,7 @@ class StudentController < ApplicationController
           #          guardian = Guardian.find(@student.immediate_contact_id)
           #          recipients.push guardian.mobile_phone unless guardian.mobile_phone.nil?
         end
-        unless recipients.empty?
+        unless recipients.empty? and !send_sms("studentregister")
           Delayed::Job.enqueue(SmsManager.new(message,recipients))
         end
       end

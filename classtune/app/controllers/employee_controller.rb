@@ -466,7 +466,7 @@ class EmployeeController < ApplicationController
     @selected_value = Configuration.default_country
     if request.post? and @employee.update_attributes(params[:employee])
       sms_setting = SmsSetting.new()
-      if sms_setting.application_sms_active and sms_setting.employee_sms_active
+      if sms_setting.application_sms_active and sms_setting.employee_sms_active and send_sms("emploeeregister")
         recipient = ["#{@employee.mobile_phone}"]
         message = "#{t('joining_info')} #{@employee.first_name}. #{t('username')}: #{@employee.employee_number}, #{t('password')}: 123456. #{t('change_password_after_login')}"
         Delayed::Job.enqueue(SmsManager.new(message,recipient))

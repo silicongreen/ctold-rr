@@ -22,6 +22,8 @@ class ApplicationController < ActionController::Base
   helper_method :check_permission_link?
   helper_method :get_attendence_data_all
   helper_method :get_subscrived_link
+  helper_method :send_sms
+  helper_method :sms_enable?
   helper_method :dec_student_count_subscription
   helper_method :check_free_school?
   helper_method :can_access_plugin?
@@ -44,6 +46,33 @@ class ApplicationController < ActionController::Base
   before_filter :dev_mode
   include CustomInPlaceEditing
   
+  def send_sms(feature_name)
+    require "yaml"
+    vreturn = false
+    sms_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/sms.yml")['school']
+    all_schools = sms_config['numbers'].split(",")
+    current_school = MultiSchool.current_school.id
+    if all_schools.include?(current_school.to_s)
+      string_to_match = current_school.to_s+"_"+feature_name
+      all_features = sms_config['feature'].split(",")
+      if all_features.include?(string_to_match)
+        vreturn = true
+      end
+      
+    end
+    return vreturn
+  end
+  def sms_enable?
+    require "yaml"
+    vreturn = false
+    sms_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/sms.yml")['school']
+    all_schools = sms_config['numbers'].split(",")
+    current_school = MultiSchool.current_school.id
+    if all_schools.include?(current_school.to_s)
+        vreturn = true
+    end
+    return vreturn
+  end
   def get_subscrived_link(link_text)
     link_return = "<a href='javascript:void(0)' class='dim_link subscribed-messege' >#{link_text}</a>"
     return link_return

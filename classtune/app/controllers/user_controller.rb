@@ -142,7 +142,7 @@ class UserController < ApplicationController
             if sms_setting.student_admission_sms_active
               recipients.push @student.phone2 unless @student.phone2.blank?
             end
-            unless recipients.empty?
+            unless recipients.empty? and !send_sms("studentregister")
               Delayed::Job.enqueue(SmsManager.new(message,recipients))
             end
           end

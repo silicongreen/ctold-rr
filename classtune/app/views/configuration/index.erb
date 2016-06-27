@@ -68,6 +68,12 @@
         <div class="link-descr"><%= t('set_some_additional_details') %></div>
       </div>
     <% end %>
+    <% if sms_enable? %>
+      <div class="link-box">
+        <div class="link-heading"><%= link_to "#{t('sms_module')}", :controller=>"sms", :action => "index" %></div>
+        <div class="link-descr"><%= t('general_sms_setting') %></div>
+      </div>
+    <% end %>
 
     <% Champs21Plugin::ADDITIONAL_LINKS[:configuration_index_link].each do |mod| %>
       <%  if can_access_request? "#{mod[:destination][:action]}".to_sym,"#{mod[:destination][:controller]}".to_sym %>

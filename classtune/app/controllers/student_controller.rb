@@ -545,7 +545,7 @@ class StudentController < ApplicationController
             if sms_setting.student_admission_sms_active
               recipients.push @student.phone2 unless @student.phone2.blank?
             end
-            unless recipients.empty? and !send_sms("studentregister")
+            unless recipients.empty? or !send_sms("studentregister")
               Delayed::Job.enqueue(SmsManager.new(message,recipients))
             end
           end
@@ -661,7 +661,7 @@ class StudentController < ApplicationController
           guardian = Guardian.find(@student.immediate_contact_id)
           recipients.push guardian.mobile_phone unless guardian.mobile_phone.nil?
         end
-        unless recipients.empty? and !send_sms("studentregister")
+        unless recipients.empty? or !send_sms("studentregister")
           Delayed::Job.enqueue(SmsManager.new(message,recipients))
         end
       end
@@ -682,20 +682,20 @@ class StudentController < ApplicationController
       sms_setting = SmsSetting.new()
       #abort(params[:immediate_contact][:contact])
       @student.update_attributes(:immediate_contact_id=>params[:immediate_contact][:contact])
-      
-      @guardian = Guardian.find(params[:immediate_contact][:contact])      
-      usernamep = @guardian.user.username
-      champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/champs21.yml")['champs21']
-      api_endpoint = champs21_api_config['api_url']
-      uri = URI(api_endpoint + "api/user/createuser")
-      http = Net::HTTP.new(uri.host, uri.port)
-      auth_req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})
-      auth_req.set_form_data({"paid_id" => @guardian.user.id, "paid_username" => usernamep, "paid_password" => "123456","password" => "123456", "paid_school_id" => MultiSchool.current_school.id, "paid_school_code" => MultiSchool.current_school.code.to_s, "first_name" => @guardian.first_name, "last_name" => @guardian.last_name, "country" => @guardian.country_id, "email" => usernamep, "user_type" => "4" })
-      auth_res = http.request(auth_req)
-      @auth_response = JSON::parse(auth_res.body) 
-      
-      sql = "update students_guardians set `g_first_name`='#{@guardian.first_name}',`g_last_name`='#{@guardian.last_name}',`g_username`='#{usernamep}',`g_password`='123456',`guardian_id`= #{@guardian.user.id},`g_phone`='#{@guardian.mobile_phone}' where `student_id`= #{@student.user.id} and`school_id` = #{MultiSchool.current_school.id}"      
-      CONN.execute sql         
+#      
+#      @guardian = Guardian.find(params[:immediate_contact][:contact])      
+#      usernamep = @guardian.user.username
+#      champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/champs21.yml")['champs21']
+#      api_endpoint = champs21_api_config['api_url']
+#      uri = URI(api_endpoint + "api/user/createuser")
+#      http = Net::HTTP.new(uri.host, uri.port)
+#      auth_req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})
+#      auth_req.set_form_data({"paid_id" => @guardian.user.id, "paid_username" => usernamep, "paid_password" => "123456","password" => "123456", "paid_school_id" => MultiSchool.current_school.id, "paid_school_code" => MultiSchool.current_school.code.to_s, "first_name" => @guardian.first_name, "last_name" => @guardian.last_name, "country" => @guardian.country_id, "email" => usernamep, "user_type" => "4" })
+#      auth_res = http.request(auth_req)
+#      @auth_response = JSON::parse(auth_res.body) 
+#      
+#      sql = "update students_guardians set `g_first_name`='#{@guardian.first_name}',`g_last_name`='#{@guardian.last_name}',`g_username`='#{usernamep}',`g_password`='123456',`guardian_id`= #{@guardian.user.id},`g_phone`='#{@guardian.mobile_phone}' where `student_id`= #{@student.user.id} and`school_id` = #{MultiSchool.current_school.id}"      
+#      CONN.execute sql         
       
       if sms_setting.application_sms_active and sms_setting.student_admission_sms_active and @student.is_sms_enabled
         recipients = []
@@ -710,7 +710,7 @@ class StudentController < ApplicationController
           #          guardian = Guardian.find(@student.immediate_contact_id)
           #          recipients.push guardian.mobile_phone unless guardian.mobile_phone.nil?
         end
-        unless recipients.empty? and !send_sms("studentregister")
+        unless recipients.empty? or !send_sms("studentregister")
           Delayed::Job.enqueue(SmsManager.new(message,recipients))
         end
       end

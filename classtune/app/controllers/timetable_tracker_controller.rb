@@ -105,7 +105,7 @@ class TimetableTrackerController < ApplicationController
             :body=>body ))
       end 
       
-      unless recipients.empty? and !send_sms("timetable_swap")
+      unless recipients.empty? or !send_sms("timetable_swap")
         Delayed::Job.enqueue(SmsManager.new(body,recipients))
       end
       
@@ -137,7 +137,7 @@ class TimetableTrackerController < ApplicationController
               :body=>body ))
         end
         
-        unless recipients.empty? and !send_sms("timetable_swap")
+        unless recipients.empty? or !send_sms("timetable_swap")
           Delayed::Job.enqueue(SmsManager.new(body,recipients))
         end
       end

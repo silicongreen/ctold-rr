@@ -335,7 +335,7 @@ class ExamController < ApplicationController
             end
             @message = "#{@exam_group.name} #{t('exam_timetable_published')}" if params[:status] == "schedule"
             @message = "#{@exam_group.name} #{t('exam_result_published')}" if params[:status] == "result"
-            unless recipients.empty? and !send_sms("exam")
+            unless recipients.empty? or !send_sms("exam")
               sms = Delayed::Job.enqueue(SmsManager.new(@message,recipients))
             end
           end
@@ -359,7 +359,7 @@ class ExamController < ApplicationController
                     end
                   end
                   @message = "#{@tmp_exam_group.name} #{t('exam_timetable_published')}" if params[:status] == "schedule"
-                  unless recipients.empty? and !send_sms("exam")
+                  unless recipients.empty? or !send_sms("exam")
                     sms = Delayed::Job.enqueue(SmsManager.new(@message,recipients))
                   end
                 end

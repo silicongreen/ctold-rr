@@ -2212,6 +2212,13 @@ authorization do
     ]
 
     has_permission_on [:holiday], :to => [:index,:edit,:delete]
+    has_permission_on [:detention],
+      :to => [
+      :index,
+      :done,
+      :show_detention
+      ]
+    
     has_permission_on [:news],
       :to => [
       :index,
@@ -2740,6 +2747,9 @@ authorization do
       :fee_details,
       :update_is_promoted
     ]
+    has_permission_on [:detention],
+      :to => [
+      :index]
     has_permission_on [:news],
       :to => [
       :index,
@@ -2815,6 +2825,11 @@ authorization do
       :fees,
       :fee_details
     ]
+    has_permission_on [:detention],
+      :to => [
+      :index,
+      :ackhnowledged
+      ]
     has_permission_on [:news],
       :to => [
       :index,
@@ -2895,6 +2910,12 @@ authorization do
     has_permission_on [:meetings], :to => [:index,:inbox,:outbox, :new, :create, :edit, :update, :show, :destroy, :get_classes, :get_batches, :get_section_data, :list_students_by_course]
     has_permission_on [:timetable],:to => [:employee_timetable,:update_employee_tt]
     has_permission_on [:event], :to => [:event_details]
+    has_permission_on [:detention],
+      :to => [
+      :index,
+      :done,
+      :show_detention
+      ]
     has_permission_on [:news],
       :to => [
       :index,

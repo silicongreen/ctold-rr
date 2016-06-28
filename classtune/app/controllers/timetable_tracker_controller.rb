@@ -50,6 +50,7 @@ class TimetableTrackerController < ApplicationController
     require 'time'
     require 'date'
     error=true
+    
     if params[:timetable_swap_id].nil?
       @timetable_swap=TimetableSwap.new(:date=>params[:date],:timetable_entry_id=>params[:timetable_entry_id],:employee_id=>params[:timetable][:employee_id],:subject_id=>params[:timetable][:subject_id])
       if @timetable_swap.save
@@ -63,7 +64,7 @@ class TimetableTrackerController < ApplicationController
     end
     unless error
       
-      
+      sms_setting = SmsSetting.new()
       subject = Subject.find(params[:timetable][:subject_id])
       batch_name = subject.batch.full_name
       
@@ -77,9 +78,14 @@ class TimetableTrackerController < ApplicationController
       start_time = classtimings.start_time.strftime("%I:%M%P")
       end_time = classtimings.end_time.strftime("%I:%M%P")
       
+      recipients = []
       reminderrecipients = []
       employees = Employee.find(params[:timetable][:employee_id])          
       reminderrecipients.push employees.user_id unless employees.user_id.nil?
+      
+      if sms_setting.employee_sms_active
+        recipients.push employees.mobile_phone unless employees.mobile_phone.nil?
+      end
       
       
        if Configuration.find_by_config_key('RountineViewPeriodNameNoTiming').present? and Configuration.find_by_config_key('RountineViewPeriodNameNoTiming').config_value=="1" 
@@ -97,15 +103,23 @@ class TimetableTrackerController < ApplicationController
             :rtype=>20,
             :rid=>params[:timetable_entry_id],
             :body=>body ))
-      end  
+      end 
+      
+      unless recipients.empty? and !send_sms("timetable_swap")
+        Delayed::Job.enqueue(SmsManager.new(body,recipients))
+      end
       
       
       @employee_on_leave = ApplyLeave.find_by_employee_id(timetable.employee_id, :conditions=> "start_date <= '#{params[:date]}' and end_date>='#{params[:date]}' and approved=1")
       
       if @employee_on_leave.blank?
         reminderrecipients = []
+        recipients = []
         employees2 = Employee.find(timetable.employee_id)          
         reminderrecipients.push employees2.user_id unless employees2.user_id.nil?
+        if sms_setting.employee_sms_active
+            recipients.push employees2.mobile_phone unless employees2.mobile_phone.nil?
+        end
         
         if Configuration.find_by_config_key('RountineViewPeriodNameNoTiming').present? and Configuration.find_by_config_key('RountineViewPeriodNameNoTiming').config_value=="1" 
           body =  "Your #{subject.name} class at #{classtimings.name} in #{batch_name}  on #{formated_date} has been assigned to #{employees.first_name} #{employees.last_name}."        
@@ -121,6 +135,10 @@ class TimetableTrackerController < ApplicationController
               :rtype=>20,
               :rid=>params[:timetable_entry_id],
               :body=>body ))
+        end
+        
+        unless recipients.empty? and !send_sms("timetable_swap")
+          Delayed::Job.enqueue(SmsManager.new(body,recipients))
         end
       end
       

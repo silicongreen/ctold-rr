@@ -681,7 +681,7 @@ class StudentController < ApplicationController
     if request.post?
       sms_setting = SmsSetting.new()
       #abort(params[:immediate_contact][:contact])
-      @student.update_attributes(:immediate_contact_id=>params[:immediate_contact][:contact])
+      @student.update_attribute(:immediate_contact_id,params[:immediate_contact][:contact])
 #      
 #      @guardian = Guardian.find(params[:immediate_contact][:contact])      
 #      usernamep = @guardian.user.username

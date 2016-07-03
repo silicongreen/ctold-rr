@@ -10,7 +10,7 @@ class SchoolsController <  MultiSchoolController
   protect_from_forgery :except => [:create_school]
   before_filter :require_admin_session, :except => [:create_school]
   
-  filter_access_to [:index, :new,:create]
+  filter_access_to [:index, :new,:create,:send_notification_all]
   filter_access_to [:show,:edit,:update, :destroy,:add_domain,:delete_domain,:sms_settings,:smtp_settings,:check_smtp_settings,
     :generate_settings,:remove_settings,:remove_smtp_settings,:whitelabel_settings,:remove_whitelabel_settings,:show_sms_logs,:show_sms_messages,:profile,:domain], :attribute_check=>true
 
@@ -306,8 +306,9 @@ class SchoolsController <  MultiSchoolController
     return
   end
   
-  def index   
-    
+
+  
+  def index 
     @schools = admin_user_session.school_group.schools.active.paginate(:order=>"name ASC",:page => params[:page], :per_page=>10)
 
     respond_to do |format|

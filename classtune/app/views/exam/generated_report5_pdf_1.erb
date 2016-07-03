@@ -1,0 +1,271 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<div id="page-yield" class="available_sections1">
+  <div class="page1"></div>
+  <div class="section1 row" >
+    <center>
+      <div class="hor_line"></div>
+      <h3><%= @connect_exam_obj.name+" Report : " %><%= Time.now.strftime("%B, %Y") %></h3>
+    </center>
+  </div>
+  <div class="section1 row">
+    <center>
+      <div id ="main_info">
+        <div class="info1">
+            <div class="info-left">
+              <h4>  <%= @student.full_name %> (<%= @batch.full_name %>) </h4>
+            </div>
+        </div>
+      </div>
+    </center>
+  </div>
+  
+  <div class="section1 row" >
+    <center>
+      <div class="hor_line"></div>
+      <h3>Summative Assessment Report</h3>
+    </center>
+  </div>
+  
+  <% unless @report_data.blank? %>
+
+      <div class="CSSTableGenerator" style="width: 97%;margin-top: 20px;">
+          
+          <table id="pdf-table" width="100%">
+              <thead>
+                  <tr>
+                      <td class="col-pdf1">Subject Name</td>
+                      <% unless @report_data['report']['exams'].blank? %>  
+                        <% @report_data['report']['exams'].each do |report| %>
+                          <td class="col-pdf1">
+                            <table id="pdf-table">
+                                <tr>
+                                    <td class="col-pdf1" colspan="2"><%= report['exam_name'] %></td>
+                                </tr>
+                                <tr>
+                                    <td class="col-pdf1" width="50%">Full Marks</td>
+                                    <td class="col-pdf1" width="50%">Your Marks</td>
+                                </tr>
+                                
+                             </table>
+                          </td> 
+                        <% end %>
+                      <% end %>
+
+                      <td class="col-pdf1">Total</th>
+                      <td class="col-pdf1">Marks Obtained (%)</td>
+                      <td class="col-pdf1">Highest Marks (%)</td>
+                      <td class="col-pdf1">Letter Grade</td>
+                      <td class="col-pdf1">GPA</td>
+                  </tr>
+              </thead>
+              <% total_parcent = 0 %>
+              <% total_subject = 0 %>
+              <% unless @report_data['report']['subjects'].blank? %> 
+                <% @report_data['report']['subjects'].each do |subjects| %>
+                  <tr>
+                      <% weightage_mark = 0 %>
+                      <% total_mark = 0 %>
+                      <% full_mark = 0 %>
+                      
+                      <td  class="col-pdf1" class="col-pdf1"><b><%= subjects['name'] %></b></td>
+                      <% unless @report_data['report']['exams'].blank? %>  
+                        <% @report_data['report']['exams'].each do |report| %>
+                          <td  style="padding:0px;">
+                               
+                              <table id="pdf-table" >
+                                
+                               <tr>
+                                    <td  class="col-pdf1" width="50%">
+                                      <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
+                                        <%= report['result'][report['exam_id']][subjects['id']]['full_mark'] %>
+                                        <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                      <% else %>
+                                        N/A
+                                      <% end %>  
+                                    </td>
+                                    <td  class="col-pdf1" width="50%">
+                                      <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
+                                        <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %>
+                                        <% total_mark = total_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
+                                      <% else %>
+                                        N/A
+                                      <% end %>  
+                                    </td>
+                                </tr>
+                                
+                             </table>   
+                          
+                              
+                          </td>
+                          
+                          <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['weightage_mark'].blank? %>
+                                <% weightage_mark = weightage_mark+report['result'][report['exam_id']][subjects['id']]['weightage_mark'] %>
+                          <% end %>
+
+                        <% end %>
+                      <% end %>
+
+
+                       
+                      <% main_mark = (total_mark.to_f/full_mark.to_f)*100 %>
+                        
+                      <% 
+                      heighst_mark = 0
+                      if !@report_data['report']['max_mark'].blank? and !@report_data['report']['max_mark'][subjects['id']].blank?
+                        heighst_mark = (@report_data['report']['max_mark'][subjects['id']].to_f/full_mark.to_f)*100
+                      end  
+                      
+                      %>
+                      <% main_mark = (total_mark.to_f/full_mark.to_f)*100 %>
+                          
+                      <td class="col-pdf1"><b><%= total_mark %></b></td>
+                      <td class="col-pdf1"><b><%= sprintf( "%0.02f", main_mark) %> %</b></td>
+                      <td class="col-pdf1"><b><%= sprintf( "%0.02f", heighst_mark)   %> %</b></td>
+                      <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
+                      
+                      <% if !grade.blank? and !grade.name.blank? and !grade.credit_points.blank? %>
+                      <td class="col-pdf1"><b><%= grade.name %></b></td>
+                      <td class="col-pdf1"><b><%= grade.credit_points %></b></td>
+                      <% else %>
+                      <td class="col-pdf1"><b>-</b></td>
+                      <td class="col-pdf1"><b>-</b></td>
+                      <% end %>
+                      
+                      <% total_parcent= total_parcent+main_mark %>
+                      <% total_subject = total_subject+1 %>
+
+                  </tr> 
+                <% end %>  
+              <% end %>     
+
+          </table>
+          
+          
+          <% avgparcent = total_parcent.to_f/total_subject.to_f %>
+           <table id="pdf-table"  width="100%"  style="margin-top:10px;">
+              <tr>
+                  <td  class="col-pdf1">Total Number Of Days : <%= @report_data['total'] %> </td>
+                  <td  class="col-pdf1">Days Present : <%= @report_data['present'] %></td>
+                  <td  class="col-pdf1">Average Marks : <%= sprintf( "%0.02f",avgparcent) %> % </td>
+                  <%  grade = GradingLevel.percentage_to_grade(avgparcent, @batch.id) %>
+                  
+                  <% if !grade.blank?  and !grade.credit_points.blank? %>
+                  <td  class="col-pdf1">CGPA : <%= grade.credit_points %> </td>
+                  <% else %>
+                  <td  class="col-pdf1" >-</td>
+                  <% end %>    
+                  
+                
+              </tr>  
+                  
+          </table>
+          
+          
+          <% unless @report_data['report']['no_exam_subject_resutl'].blank? %>
+          <div class="section1 row" >
+            <center>
+              <div class="hor_line"></div>
+              <h3>Cumulative Assessment Record</h3>
+            </center>
+          </div>
+            <table id="pdf-table"  width="100%" style="margin-top:20px;">
+                <% 
+                  iloop = 1
+                  cloop = 1
+                %>
+                <% @report_data['report']['no_exam_subject_resutl'].each do |report| %>
+                   
+                    <% if iloop == 1 %>
+                        <tr>
+                    <% end %>
+                    <% if cloop == 3 %>
+                        </tr>
+                        <tr>
+                    <% cloop = 1 %>        
+                    <%  end %> 
+                        <td   class="col-pdf1"   width="6%"><%= iloop %></td>
+                        <td   class="col-pdf1"   width="23%"><%= report['subject_name'] %></td>
+                        <td   class="col-pdf1"   width="23%"><%= report['subject_comment'] %></td>
+                    <% iloop = iloop+1 %> 
+                    <% cloop = cloop+1 %>
+                <% end %>
+                              
+            </table>
+          <% end %>
+          
+      </div>
+
+     
+
+<% end %>
+
+</div>
+<% if params[:page_height] %>
+  <script type="text/javascript">
+    var body = document.body,
+    html = document.documentElement;
+    var pg_height = parseInt(<%= params[:page_height] %>);
+    var header = $("table-headers")
+    var page = new Element('div',{'class' : 'page1'});
+    var pageBreak = new Element('div',{'class' : 'page-break1'});
+    var insertPageBreak = function(){body.appendChild(pageBreak.cloneNode(true))};
+    var insertPage = function(){body.appendChild(page.cloneNode(true));};
+    var currPage = function(){return $$('.page1').last()};
+    var insertHeader = function(){
+      header1 = header.cloneNode(true);
+      header1.style.marginTop="50px";
+      currPage().appendChild(header1.cloneNode(true));};
+    var current_page_height=0;
+    var i=0
+    $$('.available_sections1 .section1').each(function(el){
+      a = parseInt(el.getHeight());
+      //el.innerHTML = a + el.innerHTML;
+      try{
+        var height_element = el.children[0].children[0]
+        if(height_element.id=="pdf-table")
+        {
+          height_element.style.height=a+"px";
+        }
+      }
+      catch(e){
+
+      }
+      c=current_page_height+a;
+      current_page_height=c;
+      if(c>pg_height){
+        current_page_height=a
+        body.appendChild(new Element('div',{'id' : 'page-blank_'+i, 'class' : 'page-blank'}))
+        document.getElementById('page-blank_'+i).style.height= (c-pg_height)+'px';
+        document.getElementById('page-blank_'+i).innerHTML="&nbsp;"/* if a div doesnt have any content it may not display.. set height will not work */
+        i+=1
+
+        //el.style.marginTop="50px"; /* for this border-top is coming, top section of each page */
+        insertPageBreak();
+        /* insertHeader(); */
+        insertPage();
+        insertHeader();
+        current_page_height = (current_page_height + header.getHeight() + 50)
+
+      }
+      currPage().appendChild(el);
+    });
+  </script>
+<% end %>

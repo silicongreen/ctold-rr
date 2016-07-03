@@ -1,0 +1,164 @@
+
+#all_news {
+    padding:0px;
+    height:auto;
+    width:100%;
+    margin:20px auto;
+}
+#news_titles {
+    padding:10px 20px 10px 0;
+    text-decoration:none;
+    width:300px;
+    float:left;
+    background:#fff url(../../images/student_details/ajax_result_underline.jpg) bottom left no-repeat;
+}
+#news_titles a {
+    text-decoration:none;
+    color:#000;
+    font-weight:bold;
+}
+#news_titles a:hover {
+    text-decoration:underline;
+    color:#d00;
+    font-weight:bold;
+}
+.pagination{
+    float:right;
+    position: relative;
+    margin-top:-30px;
+    margin-right:100px;
+}
+table#listing{
+    background: #d7d7d7;
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
+    padding:30px 30px 50px;
+}
+.pagination a.prev_page,.pagination a.next_page{
+    color:#27292b;
+    font-weight:bold;
+    text-transform: lowercase;
+    background: none;
+    text-decoration:underline;
+    border:none;
+}
+.pagination a{
+    background: #fff;
+    color:#27292b;
+    border:1px solid #a6c7ff;
+    font-weight:bold;
+    padding:3px;
+    font-size:14px;
+    text-decoration:none;
+}
+.pagination .disabled{
+    color:#27292b;
+    font-size:14px;
+    font-weight:normal;
+    text-transform: lowercase;
+    background: none;
+    text-decoration:none;
+    border:none;
+}
+.pagination .current{
+    color:#990a10;
+    font-weight:bold;
+    padding:3px;
+    font-size:14px;
+}
+.partial_homework
+{
+    float: left;
+}
+.partial_homework h2.etitle {
+    border-bottom: 1px solid #ccc;
+    color: #c7555d;
+    font-size: 30px;
+    margin: 0 0 20px;
+    padding: 0 0 25px;
+}
+.partial_homework .portlet-subcontent {
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  float: left;
+  width: 100%;
+}
+.partial_homework .portlet-subcontent:last-child {
+    border-bottom: none;
+}
+.partial_homework .timetable_left {
+  border-right: 1px dotted #cccccc;
+  float: left;
+  height: 70px;
+  padding: 10px 0;
+  width: 12%;
+}
+.partial_homework .timetable_left img {
+  height: 55px;
+  margin-left: 22px;
+  margin-top: 8px;
+  width: 70px;
+}
+.partial_homework div.timetable_right {
+  float:left;height: 70px;width: 70%;padding: 10px 0;
+}
+.partial_homework .subcontent-header {
+    color: #000;
+    float: left;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 10px;
+    padding: 1px 15px;
+    width: 93%;
+}
+
+.partial_homework .subcontent-header a{
+ text-decoration: none;
+ color:#000;
+}
+.partial_homework .subcontent-date {
+  color: #999999;
+  float: left;
+  font-size: 14px;
+  margin-top: 10px;
+  padding: 2px 15px;
+  width: 93%;
+}
+.partial_homework .subcontent-info {
+    color: #999999;
+    float: left;
+    font-size: 14px;
+    padding: 1px 15px;
+    width: 93%;
+}
+.timetable_last {
+    background: none repeat scroll 0 0 #f0f2f3;
+    float: right;
+    height: 70px;
+    padding: 10px;
+    width: 12%;
+}
+.timetable_last a
+{
+    text-decoration: none; color:#000;
+}
+
+.partial_homework .portlet-subcontent .timetable_last a {
+    /* background: none !important; */
+        background: #49BB4B none repeat scroll 0 0 !important;
+}
+.partial_homework .portlet-subcontent .timetable_last a:hover {
+    background:#CB1119 none repeat scroll 0 0 !important;
+}
+.timetable_last b
+{
+    color: #CB1119;
+    margin-top: 10px;
+    float: left
+}
+.partial_homework .portlet-subcontent .timetable_last a
+{
+    margin-left:3px;
+    float:left;
+    margin-top:15px;
+}

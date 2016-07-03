@@ -1,0 +1,139 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<!--<div id="content-header">
+  <%#= show_header_icon %>
+  <h1><%#= t('add') + ' ' + t('news_text') %></h1>
+  <div class='header-sep'>|</div>
+  <div class='sub-header'><%#= t('publish_t') + ' ' + t('school_news') %></div>
+
+</div>-->
+<div class="header-wrapper">
+  <div class="header-title">
+    <div class="header-icon">
+      <%= image_tag '/images/icons/notice.png', :html => {:alt => 'Notice'} %>
+    </div>
+    <div class="header-title-text-wrapper">
+      <div class="header-title-main-text f2">
+       <a href="/detention/">Detention | New</a>
+      </div>
+      <div class="header-title-sub-text f5">
+
+        </div>
+      </div>
+    </div>    
+
+  <div class="header-form-wrapper">
+      
+  </div>
+</div>
+
+<div id="page-yield" class="ch_news_wrapper" style="margin-top: 0px;">
+
+  <% unless flash[:notice].nil? %> <p class="flash-msg"> <%= flash[:notice] %> </p> <% end %>
+
+  <% form_for :detention , :html => { :multipart => true } do |f| %>
+
+    <%= error_messages_for :detention %>
+
+    <div id="add_news_form">
+      <div class="news_label_field">
+        <label for="title"><%= t('select_a_batch') %></label>
+        <div class="text-input-bg">
+        <%= select :detention, :batch_id,
+                  @batches.map {|b| [b.full_name, b.id] },
+                  {:prompt => "Select a Class"},
+                  {:onchange => "#{remote_function(
+                  :url => { :action => 'student_list' },
+                  :update => 'student-select-div',
+                  :with => "'batch_id='+value",
+                  :before => "Element.show('loader')",
+                  :success => "Element.hide('loader')"  )}"} 
+       %>
+         <%= image_tag("loader.gif",
+          :align => "absmiddle",
+          :border => 0,
+          :id => "loader",
+          :style =>"display: none;" ) %>
+        </div>
+      </div>
+      <div>
+          
+      </div>
+      
+      <div class="news_label_field" id="student-select-div">
+        <label for="title">Student</label>
+        <div class="text-input-bg">
+          <select name="detention['studdent_id']" >
+              <option value="">Select a Student</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="news_label_field">
+        <label for="title">Reason</label>
+        <div class="text-input-bg">
+          <select name="detention[reason]">
+            <option value="Equipment Missing">Equipment Missing</option>
+            <option value="Damaging Property">Damaging Property</option>
+            <option value="Disturbance in Class">Disturbance in Class</option>
+            <option value="Absent Notice">Absent Notice</option>
+            <option value="Detention Skipped">Detention Skipped</option>
+            <option value="Others">Others</option>
+          </select>
+        </div>
+      </div>
+      <div class="news_label_field">
+        <label for="title">Other reason</label>
+        <div id="news_title_text_field_bg">
+            <input type="text" name="reason_others" />
+            
+        </div>
+      </div>
+     
+      
+    </div>
+    
+<div class="news_label_field">
+    <%= submit_tag "", :value => "► #{t('save')}", :class => "news_publish_button", :disable_with => "► #{t('please_wait')}" %>
+</div>    
+  
+    
+
+  <% end %>
+  <%= load_redactor_script %>
+</div>
+<%= stylesheet_link_tag 'tadded-header' %>
+<style>
+  .text-input-bg select
+  {
+     margin:0px;
+  }
+  .news_label_field {
+    margin-top: 18px;
+    float: left;
+    clear: both;
+  }
+  .news_publish_button
+  {
+    margin-left: 49px;
+    margin-top: 0px;
+  }
+</style>
+  

@@ -2216,7 +2216,11 @@ authorization do
       :to => [
       :index,
       :done,
-      :show_detention
+      :show_detention,
+      :add,
+      :student_list,
+      :students,
+      :ajax_students
       ]
     
     has_permission_on [:news],
@@ -2749,7 +2753,9 @@ authorization do
     ]
     has_permission_on [:detention],
       :to => [
-      :index]
+      :index,
+      :show_detention
+      ]
     has_permission_on [:news],
       :to => [
       :index,
@@ -2828,7 +2834,8 @@ authorization do
     has_permission_on [:detention],
       :to => [
       :index,
-      :ackhnowledged
+      :ackhnowledged,
+      :show_detention
       ]
     has_permission_on [:news],
       :to => [
@@ -2914,7 +2921,11 @@ authorization do
       :to => [
       :index,
       :done,
-      :show_detention
+      :show_detention,
+      :add,
+      :student_list,
+      :ajax_students,
+      :students
       ]
     has_permission_on [:news],
       :to => [

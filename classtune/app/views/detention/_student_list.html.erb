@@ -1,0 +1,4 @@
+<label for="title">Student</label>
+<div class="text-input-bg">
+    <%= select :detention, :student_id,@students.map {|b| [b.full_name+" ( "+b.number_of_detention.to_s+" ) ", b.id] } %>
+</div>

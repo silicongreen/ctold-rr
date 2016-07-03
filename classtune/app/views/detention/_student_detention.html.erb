@@ -1,0 +1,72 @@
+
+<div class="clearfix"></div>
+<%= image_tag("loader.gif",
+          :align => "absmiddle",
+          :border => 0,
+          :id => "loader",
+          :style =>"display: none;" ) %>
+ <% unless @all_students.nil? || @all_students.empty? %>
+  
+  <div class="CSSTableGenerator" id="table_update">
+        
+     
+      <table id="listing table-design">
+          
+        <tr class="tr-head">
+          <td>
+            Roll No
+          </td>
+          <td>
+            Name
+          </td>
+          <td>
+           Class
+          </td>
+          <td>
+            Number of Detention
+          </td>
+        </tr>
+        
+        <% @all_students.each do |student| %>
+                  
+            <tr class="tr-<%= cycle('odd', 'even') %>">
+              <td class="col-2"><%= student.class_roll_no %></td>
+              <td class="col-2"><%= student.full_name %></td>
+              <td class="col-2"><%= student.batch.full_name %></td>
+              <td class="col-2"><b><%= student.number_of_detention %></b></td>
+              
+            </tr>          
+        <% end %>
+           
+      </table>
+   
+    
+    <div class="clearfix"></div>
+    <% posted_params = params %>
+    <% posted_params.delete(:page) %>
+    <% posted_params.delete(:authenticity_token) %>
+    <% posted_params.delete(:controller) %>
+    <% posted_params.delete(:action) %>
+    <% @url_params = "" %>
+    <% posted_params.each{|k,v| @url_params = @url_params.to_s+k.to_s+"="+v.to_s+"&"}  %>
+    <%= will_paginate @all_students, :renderer => 'RemoteLinkRenderer', :remote=>{:update=>'data-div'}%>
+    
+    
+  </div>
+
+  
+<% else %>
+ <div class="CSSTableGenerator" id="table_update">
+        
+     
+      <table id="listing table-design">
+          
+          <tr class="tr-head">
+              <td> No student found with detention </td>
+          </tr>    
+              
+      </table>
+ </div>   
+<% end %>
+<%= stylesheet_link_tag 'list_table' %>
+<%= stylesheet_link_tag 'pagination_and_table' %>

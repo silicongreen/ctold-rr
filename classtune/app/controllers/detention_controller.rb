@@ -115,6 +115,7 @@ class DetentionController < ApplicationController
     @batch_id = params[:batch_id]
     @status_id = params[:status_id]
     @achnowladge = params[:achnowladge_id]
+    @student_id = params[:student_id]
     @detention_id = params[:id]
     
     extra_condition = ""
@@ -125,6 +126,7 @@ class DetentionController < ApplicationController
       extra_condition = extra_condition+" and batch_id=#{@batch_id}"
     elsif !@batch_id.blank? and @batch_id!=""
       extra_condition = "batch_id = #{@batch_id}"
+      @student_list = Student.find_all_by_batch_id(@batch_id,:order=>"number_of_detention DESC")
     end
     
     
@@ -133,6 +135,12 @@ class DetentionController < ApplicationController
       extra_condition = extra_condition+" and ackhnowledged=#{@achnowladge}"
     elsif !@achnowladge.blank? and @achnowladge!=""
       extra_condition = "ackhnowledged = #{@achnowladge}"
+    end
+    
+    if !extra_condition.blank? and !@student_id.blank? and @student_id!=""
+      extra_condition = extra_condition+" and student_id=#{@student_id}"
+    elsif !@student_id.blank? and @student_id!=""
+      extra_condition = "student_id = #{@student_id}"
     end
     
     if !@detention_id.blank?

@@ -195,7 +195,7 @@ class Import < ActiveRecord::Base
             unless value_hash[:pass].nil?
               unless value_hash[:pass].blank?
                 if value_hash[:pass] == "1"
-                  value_hash[:pass] = (('0'..'9').to_a + ('a'..'z').to_a + ('A'..'Z').to_a).shuffle.first(6).join
+                  value_hash[:pass] = (('2'..'9').to_a + ('a'..'h').to_a + ('p'..'z').to_a + ('A'..'H').to_a + ('P'..'Z').to_a).shuffle.first(6).join
                 elsif value_hash[:pass] == "0"
                   value_hash[:pass] = "123456"
                 end

@@ -145,6 +145,12 @@
         <label for="employee_grade"><%= t('grade') %></label>
         <div class="text-input-bg"><%= select :employee, :employee_grade_id, @grades.map {|s| [s.name, s.id]},:prompt => "#{t('select')}" %></div>
       </div>
+      <% if school_detention_allowed? %>
+      <div class="label-field-pair">
+        <label for="employee_martial_status">POD</label>
+        <div class="text-input-bg"><%= select :employee, :is_pod, [["No","0"], ["Yes","1"]] %></div>
+      </div>
+      <% end %>
       <hr class="label-underline"></hr>
       <div class="label-field-pair">
         <label for="employee_job_title"><%= t('job_title') %></label>

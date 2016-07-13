@@ -3,7 +3,7 @@
                         <% if @detention.ackhnowledged==1 %>
                           <font color="green">Acknowledged</font></br>
                         <% else %>
-                          <%= link_to_remote "delete" , :url => {:controller => 'detention', :action => "show_detention", :id =>@detention.id},:confirm => "Are you sure?",:with => "'achnowladge_id='+$('Detention_ackhnowledged').value+'&batch_id='+$('Detention_batch_id').value+'&status_id='+$('Detention_status').value",:loading => "$('loader').show();", :loaded => "$('loader').hide();" , :update=> "data-div" %>
+                          <%= link_to_remote "delete" , :url => {:controller => 'detention', :action => "show_detention", :id =>@detention.id},:confirm => "Are you sure?",:with => "'achnowladge_id='+$('Detention_ackhnowledged').value+'&batch_id='+$('Detention_batch_id').value+'&status_id='+$('Detention_status').value+'&student_id='+$('Warning_student_id').value",:loading => "$('loader').show();", :loaded => "$('loader').hide();" , :update=> "data-div" %>
                         <% end %>
                         <%= link_to_remote "Done" , :url => {:controller => 'detention', :action => "done", :id =>@detention.id },:confirm => "Are you sure?",:loading => "$('loader').show();", :loaded => "$('loader').hide();" , :update=> 'status_'+@detention.id.to_s %>
 
@@ -12,7 +12,7 @@
                           <% if @detention.ackhnowledged==1 %>
                             <font color="green">Acknowledged</font></br>
                           <% else %>
-                            <%= link_to_remote "delete" , :url => {:controller => 'detention', :action => "show_detention", :id =>@detention.id},:confirm => "Are you sure?",:with => "'achnowladge_id='+$('Detention_ackhnowledged').value+'&batch_id='+$('Detention_batch_id').value+'&status_id='+$('Detention_status').value",:loading => "$('loader').show();", :loaded => "$('loader').hide();" , :update=> "data-div" %>
+                            <%= link_to_remote "delete" , :url => {:controller => 'detention', :action => "show_detention", :id =>@detention.id},:confirm => "Are you sure?",:with => "'achnowladge_id='+$('Detention_ackhnowledged').value+'&batch_id='+$('Detention_batch_id').value+'&status_id='+$('Detention_status').value+'&student_id='+$('Warning_student_id').value",:loading => "$('loader').show();", :loaded => "$('loader').hide();" , :update=> "data-div" %>
                           <% end %>
                           <%= link_to_remote "Done" , :url => {:controller => 'detention', :action => "done", :id =>@detention.id },:confirm => "Are you sure?",:loading => "$('loader').show();", :loaded => "$('loader').hide();" , :update=> 'status_'+@detention.id.to_s %>
 
@@ -21,7 +21,7 @@
                               <% if @detention.ackhnowledged==1 %>
                                 <font color="green">Acknowledged</font></br>
                               <% elsif @detention.employee_id== @employee.id %>
-                                <%= link_to_remote "delete" , :url => {:controller => 'detention', :action => "show_detention", :id =>@detention.id},:confirm => "Are you sure?",:with => "'achnowladge_id='+$('Detention_ackhnowledged').value+'&batch_id='+$('Detention_batch_id').value+'&status_id='+$('Detention_status').value",:loading => "$('loader').show();", :loaded => "$('loader').hide();" , :update=> "data-div" %>
+                                <%= link_to_remote "delete" , :url => {:controller => 'detention', :action => "show_detention", :id =>@detention.id},:confirm => "Are you sure?",:with => "'achnowladge_id='+$('Detention_ackhnowledged').value+'&batch_id='+$('Detention_batch_id').value+'&status_id='+$('Detention_status').value+'&student_id='+$('Warning_student_id').value",:loading => "$('loader').show();", :loaded => "$('loader').hide();" , :update=> "data-div" %>
                               <% end %>
                               
                         <% end %>

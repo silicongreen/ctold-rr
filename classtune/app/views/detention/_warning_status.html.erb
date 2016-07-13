@@ -1,0 +1,27 @@
+<% if @current_user.admin %>
+  <% if @warning.ackhnowledged==1 %>
+    <font color="green">Acknowledged</font></br>
+  <% else %>
+    <%= link_to_remote "delete" , :url => {:controller => 'detention', :action => "show_warning", :id =>@warning.id},:confirm => "Are you sure?",:with => "'achnowladge_id='+$('Warning_ackhnowledged').value+'&batch_id='+$('Warning_batch_id').value+'&student_id='+$('Warning_student_id').value",:loading => "$('loader').show();", :loaded => "$('loader').hide();" , :update=> "data-div" %>
+  <% end %>
+
+
+<% elsif @current_user.employee %>
+  <% if @employee.is_pod.to_i == 1 %>
+    <% if @warning.ackhnowledged==1 %>
+      <font color="green">Acknowledged</font></br>
+    <% else %>
+      <%= link_to_remote "delete" , :url => {:controller => 'detention', :action => "show_warning", :id =>@warning.id},:confirm => "Are you sure?",:with => "'achnowladge_id='+$('Warning_ackhnowledged').value+'&batch_id='+$('Warning_batch_id').value+'&student_id='+$('Warning_student_id').value",:loading => "$('loader').show();", :loaded => "$('loader').hide();" , :update=> "data-div" %>
+    <% end %>       
+  <% end %>
+
+<% elsif @current_user.parent? and @warning.ackhnowledged==0  %>
+  <%= link_to_remote "acknowledge" , :url => {:controller => 'detention', :action => "ackhnowledged_warning", :id =>@warning.id },:loading => "$('loader').show();", :loaded => "$('loader').hide();" , :update=> 'status_'+@warning.id.to_s %>
+<% else %>
+  <b>
+      <% if @warning.ackhnowledged==1 %>
+        <font color="green">Acknowledged</font></br>
+      <% end %>
+  </b>
+
+<% end %>

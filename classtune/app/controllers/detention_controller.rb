@@ -4,12 +4,192 @@ class DetentionController < ApplicationController
   before_filter :login_required
   before_filter :default_time_zone_present_time  
   before_filter :only_privileged_school_allowed
-  before_filter :only_pod_allowed , :only=>[:done,:add_warning]
+  before_filter :only_pod_allowed , :only=>[:done,:add_warning,:add_suspension]
+  
+  def suspension
+    @batches = Batch.active
+    if @current_user.admin?
+      @suspension = Suspension.paginate  :order=>"created_at desc", :page=>params[:page], :per_page => 10
+    elsif @current_user.employee?
+      @employee= @current_user.employee_record
+      if @employee.is_pod.to_i == 1
+        @suspension = Suspension.paginate  :order=>"created_at desc", :page=>params[:page], :per_page => 10
+      end
+    else
+      if  @current_user.parent?
+        target = @current_user.guardian_entry.current_ward_id      
+        student = Student.find_by_id(target)
+      else
+        student=current_user.student_record
+      end
+      @suspension = Suspension.paginate  :conditions=>"student_id = #{student.id}",:order=>"created_at desc", :page=>params[:page], :per_page => 10 
+    end 
+  end
+  
+  
+  def add_suspension
+    @batches = Batch.active
+    @employee= @current_user.employee_record
+    @suspension = Suspension.new(params[:suspension])
+    @suspension.employee_id = @employee.id
+  
+    
+    if request.post? and @suspension.save
+      reminder_recipient_ids = []
+      batch_ids = {}
+      student_ids = {}
+      recipients = []
+      sms_setting = SmsSetting.new()
+      @student = Student.find(@suspension.student_id)
+      
+      
+      reminder_recipient_ids << @student.user_id
+      batch_ids[@student.user_id] = @student.batch_id
+      student_ids[@student.user_id] = @student.id
+      unless @student.immediate_contact.nil? 
+        reminder_recipient_ids << @student.immediate_contact.user_id
+        batch_ids[@student.immediate_contact.user_id] = @student.batch_id
+        student_ids[@student.immediate_contact.user_id] = @student.id
+      end
+      
+      if sms_setting.application_sms_active
+        guardian = @student.immediate_contact unless @student.immediate_contact.nil?
+        if @student.is_sms_enabled
+          if sms_setting.student_sms_active
+            recipients.push @student.phone2 unless @student.phone2.nil?
+          end
+          if sms_setting.parent_sms_active
+            unless guardian.nil?
+              recipients.push guardian.mobile_phone unless guardian.mobile_phone.nil?
+            end
+          end
+        end
+      end
+      
+      messege = @suspension.student.full_name+", "+@suspension.batch.full_name+", roll :"+ @suspension.student.class_roll_no+"  has received a letter of suspension  by "+@suspension.employee.first_name+" "+@suspension.employee.last_name+" on "+I18n.l(@suspension.created_at.to_date, :format=>'%d/%m/%Y')
+  
+      unless recipients.empty? or !send_sms("suspension")
+        Delayed::Job.enqueue(SmsManager.new(message,recipients))
+      end
+      unless reminder_recipient_ids.empty?
+        Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => current_user.id,
+            :recipient_ids => reminder_recipient_ids,
+            :subject=>"Later of Suspension",
+            :rtype=>32,
+            :rid=>@detention.id,
+            :student_id => student_ids,
+            :batch_id => batch_ids,
+            :body=>messege ))
+      end
+      
+      flash[:notice] = "Succesfully Saved"
+      redirect_to :controller => 'detention', :action => 'suspension'
+    end
+   
+  end
+  
+  
+  def show_suspension
+    @batch_id = params[:batch_id]
+    @achnowladge = params[:achnowladge_id]
+    @student_id = params[:student_id]
+    @suspension_id = params[:id]
+    
+    extra_condition = ""
+    if !@batch_id.blank? and @batch_id!=""
+      extra_condition = "batch_id = #{@batch_id}"
+      @student_list = Student.find_all_by_batch_id(@batch_id,:order=>"number_of_detention DESC")
+    end
+    
+    if !extra_condition.blank? and !@achnowladge.blank? and @achnowladge!=""
+      extra_condition = extra_condition+" and ackhnowledged=#{@achnowladge}"
+    elsif !@achnowladge.blank? and @achnowladge!=""
+      extra_condition = "ackhnowledged = #{@achnowladge}"
+    end
+    
+    if !extra_condition.blank? and !@student_id.blank? and @student_id!=""
+      extra_condition = extra_condition+" and student_id=#{@student_id}"
+    elsif !@student_id.blank? and @student_id!=""
+      extra_condition = "student_id = #{@student_id}"
+    end
+    
+    if !@suspension_id.blank?
+      @suspension_obj = Suspension.find(@suspension_id)
+      if @suspension_obj.ackhnowledged == 0
+        if @current_user.admin?
+          @suspension_obj.delete
+        elsif @current_user.employee?
+          @employee= @current_user.employee_record
+          if @employee.is_pod.to_i == 1 
+            @suspension_obj.delete
+          end  
+        end 
+      end
+    end
+    
+    if extra_condition==""
+      if @current_user.employee?
+        @employee= @current_user.employee_record
+        if @employee.is_pod.to_i == 1
+          @suspension = Suspension.paginate  :order=>"created_at desc", :page=>params[:page], :per_page => 10
+        else
+          @suspension = Suspension.paginate  :conditions=>"employee_id = #{@employee.id}",:order=>"created_at desc", :page=>params[:page], :per_page => 10
+        end  
+      elsif @current_user.admin?
+        @suspension = Suspension.paginate  :order=>"created_at desc", :page=>params[:page], :per_page => 10
+      else
+        if  @current_user.parent?
+          target = @current_user.guardian_entry.current_ward_id      
+          student = Student.find_by_id(target)
+        else
+          student=current_user.student_record
+        end
+        @suspension = Suspension.paginate  :conditions=>"student_id = #{student.id}",:order=>"created_at desc", :page=>params[:page], :per_page => 10
+      
+      end
+    else     
+      if @current_user.employee?
+        @employee= @current_user.employee_record
+        if @employee.is_pod.to_i == 1
+          @suspension = Suspension.paginate :conditions=>extra_condition,  :order=>"created_at desc", :page=>params[:page], :per_page => 10
+        else
+          @suspension = Suspension.paginate  :conditions=>extra_condition+" and employee_id = #{@employee.id}",:order=>"created_at desc", :page=>params[:page], :per_page => 10
+        end  
+      elsif @current_user.admin?
+        @suspension = Suspension.paginate :conditions=>extra_condition,  :order=>"created_at desc", :page=>params[:page], :per_page => 10
+      else
+        if  @current_user.parent?
+          target = @current_user.guardian_entry.current_ward_id      
+          student = Student.find_by_id(target)
+        else
+          student=current_user.student_record
+        end
+        @suspension = Suspension.paginate  :conditions=>extra_condition+" and student_id = #{student.id}",:order=>"created_at desc", :page=>params[:page], :per_page => 10
+      
+      end
+    end 
+    render :partial => 'suspension_list'
+  end
+  
+  def ackhnowledged_suspension
+    @suspension = Suspension.find params[:id]
+    @suspension.update_attributes(:ackhnowledged=>1)
+    render :partial => 'suspension_status'
+  end
+  
+  
+  
   
   def warning
     @batches = Batch.active
-    if (@current_user.employee? and @employee.is_pod.to_i == 1) or @current_user.admin?
+    if @current_user.admin?
+      
       @warning = Warning.paginate  :order=>"created_at desc", :page=>params[:page], :per_page => 10
+    elsif @current_user.employee?
+      @employee= @current_user.employee_record
+      if @employee.is_pod.to_i == 1
+        @warning = Warning.paginate  :order=>"created_at desc", :page=>params[:page], :per_page => 10
+      end
     else
       if  @current_user.parent?
         target = @current_user.guardian_entry.current_ward_id      
@@ -37,8 +217,6 @@ class DetentionController < ApplicationController
       sms_setting = SmsSetting.new()
       @student = Student.find(@warning.student_id)
       
-      @student.number_of_detention = @student.number_of_detention+1;
-      @student.save
       
       reminder_recipient_ids << @student.user_id
       batch_ids[@student.user_id] = @student.batch_id
@@ -63,7 +241,7 @@ class DetentionController < ApplicationController
         end
       end
       
-      messege @warning.student.full_name+", "+@warning.batch.full_name+", roll :"+ @warning.student.class_roll_no+"  has received a letter of warning  by "+@warning.employee.first_name+" "+@warning.employee.last_name+" on "+I18n.l(@warning.created_at.to_date, :format=>'%d/%m/%Y')
+      messege = @warning.student.full_name+", "+@warning.batch.full_name+", roll :"+ @warning.student.class_roll_no+"  has received a letter of warning  by "+@warning.employee.first_name+" "+@warning.employee.last_name+" on "+I18n.l(@warning.created_at.to_date, :format=>'%d/%m/%Y')
   
       unless recipients.empty? or !send_sms("warning")
         Delayed::Job.enqueue(SmsManager.new(message,recipients))
@@ -72,7 +250,7 @@ class DetentionController < ApplicationController
         Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => current_user.id,
             :recipient_ids => reminder_recipient_ids,
             :subject=>"Later of Warning",
-            :rtype=>31,
+            :rtype=>32,
             :rid=>@detention.id,
             :student_id => student_ids,
             :batch_id => batch_ids,
@@ -114,20 +292,10 @@ class DetentionController < ApplicationController
       @warning_obj = Warning.find(@warning_id)
       if @warning_obj.ackhnowledged == 0
         if @current_user.admin?
-          @student = Student.find(@warning_obj.student_id)
-          if @student.number_of_detention>0
-            @student.number_of_detention = @student.number_of_detention-1;
-            @student.save
-          end
           @warning_obj.delete
         elsif @current_user.employee?
           @employee= @current_user.employee_record
-          if @employee.is_pod.to_i == 1
-            @student = Student.find(@warning_obj.student_id)
-            if @student.number_of_detention>0
-              @student.number_of_detention = @student.number_of_detention-1;
-              @student.save
-            end
+          if @employee.is_pod.to_i == 1 
             @warning_obj.delete
           end  
         end 
@@ -197,7 +365,7 @@ class DetentionController < ApplicationController
     elsif @current_user.admin?
       @detention = Detention.paginate  :order=>"created_at desc", :page=>params[:page], :per_page => 10
     else
-      if  @current_user.parent?
+      if @current_user.parent?
         target = @current_user.guardian_entry.current_ward_id      
         student = Student.find_by_id(target)
       else
@@ -207,6 +375,11 @@ class DetentionController < ApplicationController
       
     end
     
+  end
+  def suspension_student_list
+    @batch_id = params[:batch_id]
+    @students = Student.find_all_by_batch_id(@batch_id,:order=>"number_of_detention DESC")
+    render :partial => 'suspension_student_list'
   end
   def warning_student_list
     @batch_id = params[:batch_id]

@@ -46,20 +46,27 @@
                         <%= r.student.first_name %> <%= r.student.last_name %>,<%= r.batch.full_name   %>, roll : <%= r.student.class_roll_no %>  has received <%=  r.total_detention %> detention and according to the rules of the school this latter is being send as a warning. if he receives another three detentions, He will be suspended from the school.
                         <% if !r.reason.blank? %>
                         <br/>
+                        </br>
+
                         Other Reasons for Warnings : </br>
                         <%=  r.reason %> 
                         <% end %>
                         </br>
+                        </br>
                         <% if @current_user.parent? %>
                         Guardians may consult with the Prefect of Discipline on the school days between <%= r.start_time.strftime("%I:%M %p") unless r.start_time.nil? %> to <%= r.end_time.strftime("%I:%M %p") unless r.end_time.nil? %>                        
                         </br>
+                        </br>
                         We request your co-operation in the formation of your son/ward. Please talk to him about the seriousness of his behaviour  and moral development.
+                        </br>
                         </br>
                         this letter is to returned to the Prefect of Discipline on the following school day.
 
 
-                          <% if r.ackhnowledged==0 %>
-                            . please click the acknowledged button to acknowledge the detention
+                          <% if r.ackhnowledged==0 and @current_user.parent? %>
+                            </br>
+                            </br>
+                            please click the acknowledged button to acknowledge the detention
                           <% end %>
                         <% end %>   
                     </div>            

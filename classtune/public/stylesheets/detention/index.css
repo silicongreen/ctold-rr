@@ -162,3 +162,7 @@ table#listing{
     float:left;
     margin-top:15px;
 }
+#content .header-wrapper .header-title
+{
+    width : 52%;
+}

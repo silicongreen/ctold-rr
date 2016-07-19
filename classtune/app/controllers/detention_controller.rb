@@ -626,7 +626,7 @@ class DetentionController < ApplicationController
         end
       end
       
-      messege =@detention.student.full_name+", "+@detention.batch.full_name+", roll :"+ @detention.student.class_roll_no.to_s+"  has received a detention for"+ @detention.reason+" by "+@detention.employee.first_name+" "+@detention.employee.last_name+" on "+I18n.l(@detention.created_at.to_date, :format=>'%d/%m/%Y')
+      messege =@detention.student.full_name+", "+@detention.batch.full_name+", roll :"+ @detention.student.class_roll_no.to_s+"  has received a detention for "+ @detention.reason+" by "+@detention.employee.first_name+" "+@detention.employee.last_name+" on "+I18n.l(@detention.created_at.to_date, :format=>'%d/%m/%Y')
   
       unless recipients.empty? or !send_sms("detention")
         Delayed::Job.enqueue(SmsManager.new(message,recipients))

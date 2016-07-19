@@ -49,9 +49,10 @@
                         <% if !r.reason.blank? %>
                           <br/>
                           </br>
-
+                          <font color="black" >
                           Reasons for Suspensions is are as follows: </br>
                           <%=  r.reason %> 
+                          </font>
                         <% end %>
                           
                         <% if r.ackhnowledged==0 and @current_user.parent? %>

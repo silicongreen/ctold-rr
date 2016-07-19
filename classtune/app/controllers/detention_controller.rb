@@ -67,7 +67,7 @@ class DetentionController < ApplicationController
         end
       end
       
-      messege = @notification.student.full_name+", "+@notification.batch.full_name+", roll :"+ @notification.student.class_roll_no+"  has received a letter of notification  by "+@notification.employee.first_name+" "+@notification.employee.last_name+" on "+I18n.l(@notification.created_at.to_date, :format=>'%d/%m/%Y')
+      messege = @notification.student.full_name+", "+@notification.batch.full_name+", roll :"+ @notification.student.class_roll_no.to_s+"  has received a letter of notification  by "+@notification.employee.first_name+" "+@notification.employee.last_name+" on "+I18n.l(@notification.created_at.to_date, :format=>'%d/%m/%Y')
   
       unless recipients.empty? or !send_sms("suspension")
         Delayed::Job.enqueue(SmsManager.new(message,recipients))
@@ -239,7 +239,7 @@ class DetentionController < ApplicationController
         end
       end
       
-      messege = @suspension.student.full_name+", "+@suspension.batch.full_name+", roll :"+ @suspension.student.class_roll_no+"  has received a letter of suspension  by "+@suspension.employee.first_name+" "+@suspension.employee.last_name+" on "+I18n.l(@suspension.created_at.to_date, :format=>'%d/%m/%Y')
+      messege = @suspension.student.full_name+", "+@suspension.batch.full_name+", roll :"+ @suspension.student.class_roll_no.to_s+"  has received a letter of suspension  by "+@suspension.employee.first_name+" "+@suspension.employee.last_name+" on "+I18n.l(@suspension.created_at.to_date, :format=>'%d/%m/%Y')
   
       unless recipients.empty? or !send_sms("suspension")
         Delayed::Job.enqueue(SmsManager.new(message,recipients))
@@ -414,7 +414,7 @@ class DetentionController < ApplicationController
         end
       end
       
-      messege = @warning.student.full_name+", "+@warning.batch.full_name+", roll :"+ @warning.student.class_roll_no+"  has received a letter of warning  by "+@warning.employee.first_name+" "+@warning.employee.last_name+" on "+I18n.l(@warning.created_at.to_date, :format=>'%d/%m/%Y')
+      messege = @warning.student.full_name+", "+@warning.batch.full_name+", roll :"+ @warning.student.class_roll_no.to_s+"  has received a letter of warning  by "+@warning.employee.first_name+" "+@warning.employee.last_name+" on "+I18n.l(@warning.created_at.to_date, :format=>'%d/%m/%Y')
   
       unless recipients.empty? or !send_sms("warning")
         Delayed::Job.enqueue(SmsManager.new(message,recipients))
@@ -626,7 +626,7 @@ class DetentionController < ApplicationController
         end
       end
       
-      messege =@detention.student.full_name+", "+@detention.batch.full_name+", roll :"+ @detention.student.class_roll_no+"  has received a detention for"+ @detention.reason+" by "+@detention.employee.first_name+" "+@detention.employee.last_name+" on "+I18n.l(@detention.created_at.to_date, :format=>'%d/%m/%Y')
+      messege =@detention.student.full_name+", "+@detention.batch.full_name+", roll :"+ @detention.student.class_roll_no.to_s+"  has received a detention for"+ @detention.reason+" by "+@detention.employee.first_name+" "+@detention.employee.last_name+" on "+I18n.l(@detention.created_at.to_date, :format=>'%d/%m/%Y')
   
       unless recipients.empty? or !send_sms("detention")
         Delayed::Job.enqueue(SmsManager.new(message,recipients))

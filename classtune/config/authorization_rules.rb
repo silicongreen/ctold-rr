@@ -2228,7 +2228,11 @@ authorization do
       :suspension,
       :show_suspension,
       :add_suspension,
-      :suspension_student_list
+      :suspension_student_list,
+      :notification,
+      :show_notification,
+      :add_notification,
+      :notification_student_list
       
       ]
     
@@ -2767,7 +2771,9 @@ authorization do
       :warning,
       :show_warning,
       :suspension,
-      :show_suspension
+      :show_suspension,
+      :notification,
+      :show_notification
       ]
     has_permission_on [:news],
       :to => [
@@ -2854,7 +2860,10 @@ authorization do
       :show_warning,
       :suspension,
       :show_suspension,
-      :ackhnowledged_suspension
+      :ackhnowledged_suspension,
+      :notification,
+      :show_notification,
+      :opnion_notification
     ]
     has_permission_on [:news],
       :to => [
@@ -2952,7 +2961,12 @@ authorization do
       :suspension,
       :show_suspension,
       :add_suspension,
-      :suspension_student_list
+      :suspension_student_list,
+      :notification,
+      :show_notification,
+      :add_notification,
+      :notification_student_list
+      
       
       ]
     has_permission_on [:news],

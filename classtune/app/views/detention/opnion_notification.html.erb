@@ -31,7 +31,7 @@
     </div>
     <div class="header-title-text-wrapper">
       <div class="header-title-main-text f2">
-       <a href="/detention/">Detention</a> >> New
+       <a href="/detention/notification">Notification</a> | Opinion
       </div>
       <div class="header-title-sub-text f5">
 
@@ -48,65 +48,20 @@
 
   <% unless flash[:notice].nil? %> <p class="flash-msg"> <%= flash[:notice] %> </p> <% end %>
 
-  <% form_for :detention , :html => { :multipart => true } do |f| %>
+  <% form_for :lnotification , :html => { :multipart => true } do |f| %>
 
-    <%= error_messages_for :detention %>
+    <%= error_messages_for :lnotification %>
 
     <div id="add_news_form">
-      <div class="news_label_field">
-        <label for="title"><%= t('select_a_batch') %></label>
-        <div class="text-input-bg">
-        <%= select :detention, :batch_id,
-                  @batches.map {|b| [b.full_name, b.id] },
-                  {:prompt => "Select a Class"},
-                  {:onchange => "#{remote_function(
-                  :url => { :action => 'student_list' },
-                  :update => 'student-select-div',
-                  :with => "'batch_id='+value",
-                  :before => "Element.show('loader')",
-                  :success => "Element.hide('loader')"  )}"} 
-       %>
-         <%= image_tag("loader.gif",
-          :align => "absmiddle",
-          :border => 0,
-          :id => "loader",
-          :style =>"display: none;" ) %>
-        </div>
-      </div>
-      <div>
-          
-      </div>
       
-      <div class="news_label_field" id="student-select-div">
-        <label for="title">Student</label>
-        <div class="text-input-bg">
-          <select name="detention['studdent_id']" >
-              <option value="">Select a Student</option>
-          </select>
-        </div>
-      </div>
       
       <div class="news_label_field">
-        <label for="title">Reason</label>
-        <div class="text-input-bg">
-          <select name="detention[reason]">
-            <option value="Equipment Missing">Equipment Missing</option>
-            <option value="Damaging Property">Damaging Property</option>
-            <option value="Disturbance in Class">Disturbance in Class</option>
-            <option value="Absent Notice">Absent Notice</option>
-            <option value="Detention Skipped">Detention Skipped</option>
-            <option value="Others">Others</option>
-          </select>
-        </div>
-      </div>
-      <div class="news_label_field">
-        <label for="title">Other reason</label>
-        <div id="news_title_text_field_bg">
-            <input type="text" name="reason_others" />
+        <label for="title">Opinion of the Guardian</label>
+        <div id="textarea_field_bg" style="float:left;clear:both; margin:5px 0px;">
+            <textarea type="text" cols="70" rows="6" name="lnotification[opinion]" id="lnotification_opinion" /><%= @notification.opinion %></textarea>
             
         </div>
       </div>
-     
       
     </div>
     

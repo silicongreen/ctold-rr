@@ -31,7 +31,7 @@
     </div>
     <div class="header-title-text-wrapper">
       <div class="header-title-main-text f2">
-       <a href="/detention/">Detention</a> >> New
+          <a href="/detention/notification">Notification</a> | New
       </div>
       <div class="header-title-sub-text f5">
 
@@ -48,19 +48,19 @@
 
   <% unless flash[:notice].nil? %> <p class="flash-msg"> <%= flash[:notice] %> </p> <% end %>
 
-  <% form_for :detention , :html => { :multipart => true } do |f| %>
+  <% form_for :lnotification , :html => { :multipart => true } do |f| %>
 
-    <%= error_messages_for :detention %>
+    <%= error_messages_for :lnotification %>
 
     <div id="add_news_form">
       <div class="news_label_field">
         <label for="title"><%= t('select_a_batch') %></label>
         <div class="text-input-bg">
-        <%= select :detention, :batch_id,
+        <%= select :lnotification, :batch_id,
                   @batches.map {|b| [b.full_name, b.id] },
                   {:prompt => "Select a Class"},
                   {:onchange => "#{remote_function(
-                  :url => { :action => 'student_list' },
+                  :url => { :action => 'notification_student_list' },
                   :update => 'student-select-div',
                   :with => "'batch_id='+value",
                   :before => "Element.show('loader')",
@@ -80,33 +80,39 @@
       <div class="news_label_field" id="student-select-div">
         <label for="title">Student</label>
         <div class="text-input-bg">
-          <select name="detention['studdent_id']" >
+          <select name="lnotification['studdent_id']" >
               <option value="">Select a Student</option>
           </select>
         </div>
       </div>
       
-      <div class="news_label_field">
+      
+      <div class="news_label_field" style="width:100%;">
         <label for="title">Reason</label>
-        <div class="text-input-bg">
-          <select name="detention[reason]">
-            <option value="Equipment Missing">Equipment Missing</option>
-            <option value="Damaging Property">Damaging Property</option>
-            <option value="Disturbance in Class">Disturbance in Class</option>
-            <option value="Absent Notice">Absent Notice</option>
-            <option value="Detention Skipped">Detention Skipped</option>
-            <option value="Others">Others</option>
-          </select>
-        </div>
-      </div>
-      <div class="news_label_field">
-        <label for="title">Other reason</label>
-        <div id="news_title_text_field_bg">
-            <input type="text" name="reason_others" />
+        <div style="float:left;clear:both; margin:5px 0px; width:100%;">
+            <a href="javascript:void(0);" class="button_link" onClick="add_reason_text('Inattentiveness during the class')" >Inattentiveness during the class</a>
+            &nbsp;|&nbsp;
+            <a href="javascript:void(0);" class="button_link" onClick="add_reason_text('Disturbance in class')" >Disturbance in class</a>
+            &nbsp;|&nbsp;
+            <a href="javascript:void(0);" class="button_link" onClick="add_reason_text('Tardy in class')" >Tardy in class</a>
+            &nbsp;|&nbsp;
+            <a href="javascript:void(0);" class="button_link" onClick="add_reason_text('Disturbance in the assembly')" >Disturbance in the assembly</a>
+            &nbsp;|&nbsp;
+            <a href="javascript:void(0);" class="button_link" onClick="add_reason_text('Detention skip')" >Detention skip</a>
+            &nbsp;|&nbsp;
+            <a href="javascript:void(0);" class="button_link" onClick="add_reason_text('Tempering in the copies')" >Tempering in the copies</a>
+            &nbsp;|&nbsp;
+            <a href="javascript:void(0);" class="button_link" onClick="add_reason_text('Misbehavior with Student ')" >Misbehavior with Student ------</a>
+            &nbsp;|&nbsp;
+            <a href="javascript:void(0);" class="button_link" onClick="add_reason_text('Mischief was addressed by ')" >Mischief was addressed by ------</a>
+            &nbsp;|&nbsp;
+            <a href="javascript:void(0);" class="button_link" onClick="add_reason_text('Class bunk')" >Class bunk</a>
+        </div>    
+        <div id="textarea_field_bg" style="float:left;clear:both; margin:5px 0px;">
+            <textarea type="text" cols="70" rows="6" name="lnotification[reason]" id="lnotification_reason" /></textarea>
             
         </div>
       </div>
-     
       
     </div>
     
@@ -136,4 +142,23 @@
     margin-top: 0px;
   }
 </style>
+<script type ="text/javascript">
+  function add_reason_text(text)
+  {
+     var reason_now =  j("#lnotification_reason").val();
+     if(reason_now)
+     {
+        var n = reason_now.indexOf(text);
+        if(n == -1)
+        {
+           var reason_new = reason_now+ ", "+text;
+           j("#lnotification_reason").val(reason_new);
+        }
+     }
+     else
+     {
+         j("#lnotification_reason").val(text);
+     }  
+  }
+</script>  
   

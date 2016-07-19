@@ -31,7 +31,7 @@
     </div>
     <div class="header-title-text-wrapper">
       <div class="header-title-main-text f2">
-       <a href="/detention/warning">Warning | New</a>
+          <a href="/detention/warning">Warning</a> | New
       </div>
       <div class="header-title-sub-text f5">
 
@@ -92,13 +92,25 @@
           <input type="text" name="warning[total_detention]" />
         </div>
       </div>
-      <div class="news_label_field">
+      <div class="news_label_field"  style="width:100%;">
         <label for="title">Other Reason</label>
-        <div id="news_title_text_field_bg">
-            <input type="text" name="warning[reason]" />
+         <div style="float:left;clear:both; margin:5px 0px; width:100%;">
+            <a href="javascript:void(0);" class="button_link" onClick="add_reason_text('Equipment Missing')" >Equipment Missing</a>
+            &nbsp;|&nbsp;
+            <a href="javascript:void(0);" class="button_link" onClick="add_reason_text('Disturbance in Class')" >Disturbance in Class</a>
+            &nbsp;|&nbsp;
+            <a href="javascript:void(0);" class="button_link" onClick="add_reason_text('Tardy in Class')" >Tardy in Class</a>
+            &nbsp;|&nbsp;
+            <a href="javascript:void(0);" class="button_link" onClick="add_reason_text('Disturbance in the assembly')" >Disturbance in the assembly</a>
+            &nbsp;|&nbsp;
+            <a href="javascript:void(0);" class="button_link" onClick="add_reason_text('Detention skip')" >Detention skip</a>
+        </div>    
+        <div id="textarea_field_bg" style="float:left;clear:both; margin:5px 0px;">
+            <textarea type="text" cols="70" rows="6" name="warning[reason]" id="warning_reason" /></textarea>
             
         </div>
       </div>
+      
         
       <div class="news_label_field">
         <label for="name"> Consulting Start Time </label>
@@ -139,4 +151,23 @@
     margin-top: 0px;
   }
 </style>
+<script type ="text/javascript">
+  function add_reason_text(text)
+  {
+     var reason_now =  j("#warning_reason").val();
+     if(reason_now)
+     {
+        var n = reason_now.indexOf(text);
+        if(n == -1)
+        {
+           var reason_new = reason_now+ ", "+text;
+           j("#warning_reason").val(reason_new);
+        }
+     }
+     else
+     {
+         j("#warning_reason").val(text);
+     }  
+  }
+</script> 
   

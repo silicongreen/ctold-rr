@@ -39,15 +39,15 @@
             <div class="portlet-subcontent">
 
                 <div class="timetable_right">
-                    <div class="subcontent-header themed_text">
+                    <div class="subcontent-header">
                         <% if @current_user.parent? %>
-                            Your Son/ward 
+                            Your son/ward 
                         <% end %>   
-                        <%= r.student.first_name %> <%= r.student.last_name %>,<%= r.batch.full_name   %>, roll : <%= r.student.class_roll_no %>  has received <%=  r.total_detention %> detention and according to the rules of the school this latter is being send as a warning. if he receives another three detentions, He will be suspended from the school.
+                        <%= r.student.first_name %> <%= r.student.last_name %>,<%= r.batch.full_name   %>, roll : <%= r.student.class_roll_no %>  has received <%=  r.total_detention %> detention and according to the rules of the school this letter is being send as a warning. if he receives another three detentions, He will be suspended from the school.
                         <% if !r.reason.blank? %>
                         <br/>
                         </br>
-                        <font color="black" >
+                        <font color="red" >
                         Other Reasons for Warnings : </br>
                         <%=  r.reason %> 
                         </font>
@@ -128,7 +128,7 @@
         <% else %>
           <div class="portlet-subcontent">
               <div class="timetable_right">
-                  <div class="subcontent-header themed_text">No warning found</div>
+                  <div class="subcontent-header">No warning found</div>
               </div>
           </div>
         <% end %>

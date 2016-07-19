@@ -39,7 +39,7 @@
             <div class="portlet-subcontent">
 
                 <div class="timetable_right">
-                    <div class="subcontent-header themed_text">
+                    <div class="subcontent-header">
                         Guardians of  
                         <%= r.student.first_name %> <%= r.student.last_name %>,<%= r.batch.full_name   %>, roll : <%= r.student.class_roll_no %> are cordially requested to visit the Prefect of discipline to notify the following matter :
 
@@ -48,7 +48,7 @@
                         <% if !r.opinion.blank? %>
                         <br/>
                         </br>
-                        <font color="black" >
+                        <font color="red" >
                         Guardian Opinion : <br/>
                         <%= r.opinion %>
                         </font>
@@ -101,7 +101,7 @@
         <% else %>
           <div class="portlet-subcontent">
               <div class="timetable_right">
-                  <div class="subcontent-header themed_text">No Notification found</div>
+                  <div class="subcontent-header">No Notification found</div>
               </div>
           </div>
         <% end %>

@@ -39,7 +39,7 @@
             <div class="portlet-subcontent">
 
                 <div class="timetable_right">
-                    <div class="subcontent-header themed_text">
+                    <div class="subcontent-header">
                         <%= r.student.first_name %> <%= r.student.last_name %>,<%= r.batch.full_name   %>, roll : <%= r.student.class_roll_no %>  has received a detention for
                         <%=  r.reason %> by  <%= r.employee.first_name %> <%= r.employee.last_name %> on <%= I18n.l(r.created_at.to_date, :format=>'%d/%m/%Y') %>
                         <% if @current_user.parent? and r.ackhnowledged==0 %>
@@ -120,7 +120,7 @@
         <% else %>
           <div class="portlet-subcontent">
               <div class="timetable_right">
-                  <div class="subcontent-header themed_text">No detention found</div>
+                  <div class="subcontent-header">No detention found</div>
               </div>
           </div>
         <% end %>

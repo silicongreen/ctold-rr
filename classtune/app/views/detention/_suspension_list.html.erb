@@ -39,7 +39,7 @@
             <div class="portlet-subcontent">
 
                 <div class="timetable_right">
-                    <div class="subcontent-header themed_text">
+                    <div class="subcontent-header">
                         <% if @current_user.parent? %>
                           Your Son/ward 
                         <% end %>   
@@ -49,7 +49,7 @@
                         <% if !r.reason.blank? %>
                           <br/>
                           </br>
-                          <font color="black" >
+                          <font color="red" >
                           Reasons for Suspensions is are as follows: </br>
                           <%=  r.reason %> 
                           </font>
@@ -118,7 +118,7 @@
       <% else %>
         <div class="portlet-subcontent">
             <div class="timetable_right">
-                <div class="subcontent-header themed_text">No Suspension found</div>
+                <div class="subcontent-header">No Suspension found</div>
             </div>
         </div>
       <% end %>

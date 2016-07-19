@@ -46,21 +46,7 @@
   <div class="clearfix"></div>
   <div class="tabbed-header-wrapper">        
       <ul class="header-tabs">
-        <li class="active">
-          <%= link_to "Detentions", {:controller => "detention", :action => "index"}, :class => "f2" %>    
-        </li> 
-        <% if !@current_user.employee? or (@current_user.employee? and @employee.is_pod.to_i == 1) %>
-        <li >
-          <%= link_to "Warnings", {:controller => "detention", :action => "warning"}, :class => "f2" %>    
-        </li> 
-        <li>
-          <%= link_to "Suspensions", {:controller => "detention", :action => "suspension"}, :class => "f2" %>    
-        </li> 
-        <li>
-          <%= link_to "Notification", {:controller => "detention", :action => "notification"}, :class => "f2" %>    
-        </li> 
-        <% end %>
-      
+          <%= render :partial => 'menu_link' %>
       </ul>
 
     </div>

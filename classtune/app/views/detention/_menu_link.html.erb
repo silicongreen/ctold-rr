@@ -1,0 +1,14 @@
+<li <% if params[:action].to_s=="index" %>class="active" <% end %>>
+  <%= link_to "Detentions", {:controller => "detention", :action => "index"}, :class => "f2" %>    
+</li> 
+<% if !@current_user.employee? or (@current_user.employee? and @employee.is_pod.to_i == 1) %>
+<li <% if params[:action].to_s=="warning" %>class="active" <% end %>>
+  <%= link_to "Warnings", {:controller => "detention", :action => "warning"}, :class => "f2" %>    
+</li> 
+<li <% if params[:action].to_s=="suspension" %>class="active" <% end %>>
+  <%= link_to "Suspensions", {:controller => "detention", :action => "suspension"}, :class => "f2" %>    
+</li> 
+<li <% if params[:action].to_s=="notification" %>class="active" <% end %>>
+  <%= link_to "Notification", {:controller => "detention", :action => "notification"}, :class => "f2" %>    
+</li> 
+<% end %>

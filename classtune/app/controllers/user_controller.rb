@@ -19,7 +19,7 @@
 class UserController < ApplicationController
   layout :choose_layout
   before_filter :login_required, :except => [:new_student_registration,:logout,:get_section_data,:get_batches,:new_guardian, :forgot_password, :login, :set_new_password, :reset_password]
-  before_filter :only_admin_allowed, :only => [:edit, :create, :index, :edit_privilege, :user_change_password,:delete,:list_user,:all]
+  before_filter :only_admin_allowed, :only => [:edit,:make_sibligns, :create, :index, :edit_privilege, :user_change_password,:delete,:list_user,:all]
   before_filter :protect_user_data, :only => [:profile, :user_change_password]
   before_filter :check_if_loggedin, :only => [:login]
   before_filter :check_permission,:only=>[:index]
@@ -32,6 +32,104 @@ class UserController < ApplicationController
     return 'forgotpw' if action_name == 'forgot_password' 
     return 'dashboard' if action_name == 'dashboard'
     'application'
+  end
+  
+  def make_sibligns
+    
+    if request.post?
+      @username1 = params[:user][:username1]
+      @username2 = params[:user][:username2]
+      @username3 = params[:user][:username3]
+      @username4 = params[:user][:username4]
+      @username5 = params[:user][:username5]
+      
+      @user_info1 = User.find_by_username(@username1)
+       
+      if !@user_info1.blank? && @user_info1.student
+        @student_info1 = @user_info1.student_record
+        @main_std_id = @student_info1.id
+        @main_std_immediate_contact_id = @student_info1.immediate_contact_id
+        @all_guardian = GuardianStudents.find_all_by_student_id(@main_std_id)
+         
+        if @username2
+          @user_info2 = User.find_by_username(@username2)
+          if !@user_info2.blank? && @user_info2.student
+            @student_info2 = @user_info2.student_record
+            @std_obj = Student.find @student_info2.id
+            @std_obj.update_attributes(:immediate_contact_id => @main_std_immediate_contact_id)
+            GuardianStudents.destroy_all(:student_id=>@std_obj.id)
+            if !@all_guardian.blank?
+              @all_guardian.each do |gu|
+                stdgu = GuardianStudents.new
+                stdgu.student_id = @std_obj.id
+                stdgu.guardian_id = gu.guardian_id
+                stdgu.relation = gu.relation
+                stdgu.save
+              end
+            end
+          end
+        end
+         
+        if @username3
+          @user_info3 = User.find_by_username(@username3)
+          if !@user_info3.blank? && @user_info3.student
+            @student_info3 = @user_info3.student_record
+            @std_obj = Student.find @student_info3.id
+            @std_obj.update_attributes(:immediate_contact_id => @main_std_immediate_contact_id)
+            GuardianStudents.destroy_all(:student_id=>@std_obj.id)
+            if !@all_guardian.blank?
+              @all_guardian.each do |gu|
+                stdgu = GuardianStudents.new
+                stdgu.student_id = @std_obj.id
+                stdgu.guardian_id = gu.guardian_id
+                stdgu.relation = gu.relation
+                stdgu.save
+              end
+            end
+          end
+        end
+         
+        if @username4
+          @user_info3 = User.find_by_username(@username4)
+          if !@user_info4.blank? && @user_info4.student
+            @student_info4 = @user_info4.student_record
+            @std_obj = Student.find @student_info4.id
+            @std_obj.update_attributes(:immediate_contact_id => @main_std_immediate_contact_id)
+            GuardianStudents.destroy_all(:student_id=>@std_obj.id)
+            if !@all_guardian.blank?
+              @all_guardian.each do |gu|
+                stdgu = GuardianStudents.new
+                stdgu.student_id = @std_obj.id
+                stdgu.guardian_id = gu.guardian_id
+                stdgu.relation = gu.relation
+                stdgu.save
+              end
+            end
+          end
+        end
+         
+        if @username5
+          @user_info3 = User.find_by_username(@username5)
+          if !@user_info5.blank? && @user_info5.student
+            @student_info5 = @user_info5.student_record
+            @std_obj = Student.find @student_info5.id
+            @std_obj.update_attributes(:immediate_contact_id => @main_std_immediate_contact_id)
+            GuardianStudents.destroy_all(:student_id=>@std_obj.id)
+            if !@all_guardian.blank?
+              @all_guardian.each do |gu|
+                stdgu = GuardianStudents.new
+                stdgu.student_id = @std_obj.id
+                stdgu.guardian_id = gu.guardian_id
+                stdgu.relation = gu.relation
+                stdgu.save
+              end
+            end
+          end
+        end
+         
+         
+      end
+    end
   end
 
   def all
@@ -610,15 +708,15 @@ class UserController < ApplicationController
       
       @sesstion_time = 0
       @last_session_log = ActivityLog.find(:first,:conditions=>{:user_id=>current_user.id,:session_end=>1},:order=>"created_at DESC",:limit=>1)
+      if !@last_session_log.nil?
+        @session_start_log = ActivityLog.find(:first,:conditions=>["user_id =#{current_user.id} and created_at >'#{@last_session_log.created_at}'"],:order=>"created_at ASC",:limit=>1)
+        @sesstion_time =  now.to_time-@session_start_log.created_at.to_time
+      else
+        @last_session_log = ActivityLog.find(:first,:conditions=>{:user_id=>current_user.id},:order=>"created_at ASC",:limit=>1)
         if !@last_session_log.nil?
-          @session_start_log = ActivityLog.find(:first,:conditions=>["user_id =#{current_user.id} and created_at >'#{@last_session_log.created_at}'"],:order=>"created_at ASC",:limit=>1)
-          @sesstion_time =  now.to_time-@session_start_log.created_at.to_time
-        else
-          @last_session_log = ActivityLog.find(:first,:conditions=>{:user_id=>current_user.id},:order=>"created_at ASC",:limit=>1)
-          if !@last_session_log.nil?
-            @sesstion_time =  now.to_time-@last_session_log.created_at.to_time
+          @sesstion_time =  now.to_time-@last_session_log.created_at.to_time
         end
-     end  
+      end  
   
       
       
@@ -661,11 +759,11 @@ class UserController < ApplicationController
         redirect_to :controller => 'user', :action => 'login' and return
       end
     else
-        champs21_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
-        if champs21_config['from'] == "remote"
-          redirect_to "http://www.classtune.com" and return
-        end
-        redirect_to :controller => 'user', :action => 'login' and return
+      champs21_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
+      if champs21_config['from'] == "remote"
+        redirect_to "http://www.classtune.com" and return
+      end
+      redirect_to :controller => 'user', :action => 'login' and return
     end
   end
 
@@ -900,19 +998,19 @@ class UserController < ApplicationController
   def successful_user_login(user)
     cookies.delete("_champs21_session")
     session[:user_id_main] = user.id
-#    if user.is_deleted?
-#    
-#      guardian_data = Guardian.find_by_user_id(user.id)
-#      unless guardian_data.nil?
-#        students = Student.find_by_id(guardian_data.ward_id)
-#        if students.immediate_contact_id
-#          st_guardian = Guardian.find_by_id(students.immediate_contact_id)
-#          session[:user_id] = st_guardian.user_id
-#        end  
-#      end
-#    else
-      session[:user_id] = user.id
-#    end
+    #    if user.is_deleted?
+    #    
+    #      guardian_data = Guardian.find_by_user_id(user.id)
+    #      unless guardian_data.nil?
+    #        students = Student.find_by_id(guardian_data.ward_id)
+    #        if students.immediate_contact_id
+    #          st_guardian = Guardian.find_by_id(students.immediate_contact_id)
+    #          session[:user_id] = st_guardian.user_id
+    #        end  
+    #      end
+    #    else
+    session[:user_id] = user.id
+    #    end
     #    flash[:notice] = "#{t('welcome')}, #{user.first_name} #{user.last_name}!"
     redirect_to ((session[:back_url] unless (session[:back_url]) =~ /user\/logout$/) || {:controller => 'user', :action => 'dashboard'})
   end

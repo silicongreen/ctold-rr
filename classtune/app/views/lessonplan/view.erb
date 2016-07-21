@@ -116,6 +116,13 @@
     <div id="news_content">
       <%= sanitize @lessonplan.content , :tags => %w[b i a h1 h2 h3 u li ol strike p img font span sup sub tr td table th tbody thead strong em iframe], :attributes => %w[href src style border cellspacing cellpadding height width align]%>
     </div>
+     <% unless @lessonplan.attachment_file_name.nil? %>
+      <div class="portlet-subcontent atachment_div" style="width:100%; border:none;">
+        <div style=" float: left; clear:both;  margin: 10px 0px;">
+          <%= link_to 'Download Attachment', :controller => "lessonplan", :action => "download_attachment" , :id=>@lessonplan.id %>
+        </div>
+      </div>  
+      <% end %>
   </div>
 </div>
 <%= stylesheet_link_tag 'tadded-header' %>

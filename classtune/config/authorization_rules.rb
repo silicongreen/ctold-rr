@@ -2725,7 +2725,8 @@ authorization do
       :show,
       :showall,
       :comment_view,
-      :lessonplan_by_subject
+      :lessonplan_by_subject,
+      :download_attachment
     ]
   end
 
@@ -2805,7 +2806,8 @@ authorization do
       :view,
       :show,
       :showall,
-      :comment_view
+      :comment_view,
+      :download_attachment
     ]
     has_permission_on [:subject], :to => [:index,:list_subjects]
     has_permission_on [:timetable], :to => [:student_view, :update_student_tt,:student_timetable_pdf]
@@ -2895,7 +2897,8 @@ authorization do
       :view,
       :show,
       :showall,
-      :comment_view
+      :comment_view,
+      :download_attachment
     ]
     has_permission_on [:subject], :to => [:index,:list_subjects]
     has_permission_on [:timetable], :to => [:student_view,:update_timetable_view, :student_timetable_pdf]
@@ -3170,7 +3173,8 @@ authorization do
       :category_edit,
       :category_update,
       :category_wise_lessonplan,
-      :assign_to_class
+      :assign_to_class,
+      :download_attachment
     ] do
       if_attribute :has_assigned_subjects? => is {true}
     end

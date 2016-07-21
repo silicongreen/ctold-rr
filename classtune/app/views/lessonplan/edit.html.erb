@@ -41,7 +41,7 @@
 
   <% unless flash[:notice].nil? %><p class="flash-msg"> <%= flash[:notice] %> </p><% end %>
 
-  <% form_for :lessonplan do |f| %>
+  <% form_for :lessonplan, :html => { :multipart => true } do |f| %>
 
     <%= error_messages_for :lessonplan %>
 
@@ -99,6 +99,10 @@
         <div id="news_content_text_field_bg">
           <%= f.redactor :content, :value => @lessonplan.content %>
         </div>
+      </div>
+      <div class="news_label_field" >
+          <label >Attach a File</label>
+          <div  class="text-input-bg" id="assignment-attachment"><%= f.file_field  :attachment %></div>
       </div>
     </div>
 

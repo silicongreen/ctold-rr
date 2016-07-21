@@ -30,13 +30,23 @@ class Lessonplan < ActiveRecord::Base
   attr_accessor :redactor_to_update, :redactor_to_delete
 
   validates_presence_of :title, :content
+  
+   has_attached_file :attachment ,
+    :url => "/uploads/:class/:attachment/:id/:style/:attachment_fullname?:timestamp"
 
   default_scope :order => 'created_at DESC'
 
   cattr_reader :per_page
   xss_terminate :except => [:content]
   @@per_page = 12
-
+  
+  def download_allowed_for user
+    return true if user.admin?
+    return true if user.employee?
+    return true if user.student?
+    false
+  end
+  
   def self.get_latest
     Lessonplan.find(:all, :limit => 3)
   end

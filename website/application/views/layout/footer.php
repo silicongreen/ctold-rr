@@ -1,4 +1,4 @@
-<div id="imagesWrap">
+<div id="imagesWrap" style="top:1850px;">
     <div id="images">
         <div id="worldmap">
             <h2 class="f2" style="left: 35%;position: absolute;text-align: center;top: 40px;">
@@ -37,7 +37,7 @@
                         <div class="poweredby f5">    
                             <p>&copy; ClassTune <?php echo date("Y");?><span style="color:#64B846;"> | </span>(+880)-1740212121 <span style="color:#64B846;"> | </span> <a href="mailto:info@classtune.com" style="color:#999;">Email : info@classtune.com</a> </p>
                         </div>
-                        <div style="float: left;margin-left: 70px;margin-top: 0px;">
+                        <div class="footer_logo">
                             <a href="<?php echo base_url(); ?>" title="">
                                 <img src="<?php echo base_url(); ?>images/logo/classtune-footer-logo.png" alt="" title="" width="170" height="" />
                             </a>
@@ -63,12 +63,18 @@
 
 
 </div>
-
+<div class="arrow_box" style="border-radius: 5px;
+position: fixed;
+right: 11px;
+top: 300px;
+width: 128px;z-index:2;">
+ <a href="#thanks_endWrap"><img src="<?php echo base_url(); ?>images/sticky.png" style="width:120px;" /></a>
+</div>
 <div id="mainnav">
     <ul>
         <li class="before"><span>Home</span></li>
         <!--li class="start act"><span>About us</span></li-->
-        <li class="cron"><span>Features</span>
+        <li class="cron"><a href="#cronWrap"><span>Features</span></a>
             <ul>
                 <li><a href="<?php echo base_url(); ?>signup/admin" >School Admin</a></li>
                 <li><a href="<?php echo base_url(); ?>signup/student" >Student</a></li>
@@ -76,7 +82,7 @@
                 <li><a href="<?php echo base_url(); ?>signup/teacher" >Teacher</a></li>
             </ul>
         </li>
-        <li class="images"><span>Contact</span></li>
+        <li class="images"><a href="#thanks_endWrap"><span>Contact</span></a></li>
         <?php $this->load->view("layout/login"); ?>
     </ul>
     <div id="homelink">
@@ -107,10 +113,89 @@
 <script type="text/javascript" src="<?php echo base_url(); ?>js/jquery.stellar.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>js/jquery.mousewheel.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url();?>js/bootstrap.min.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>js/px.js"></script>
+<!--script type="text/javascript" src="<?php echo base_url(); ?>js/px.js"></script-->
+<script type="text/javascript" src="<?php echo base_url(); ?>js/jquery.flexslider.js"></script>	
 <script type="text/javascript" src="<?php echo base_url(); ?>js/owl.carousel.min.js"></script>	
 <script type="text/javascript" src="<?php echo base_url(); ?>js/owl.custome.classtune.js"></script>	
 
+<script type="text/javascript">
+
+            $(window).load(function () {
+                $('#carousel').flexslider({
+                    animation: "slide",
+                    controlNav: false,
+                    animationLoop: false,
+                    slideshow: true,
+                    slideshowSpeed:10000,
+                    pauseOnHover:true,
+                    itemWidth: 140,
+                    itemMargin: 0,
+                    asNavFor: '#slider'
+                });
+
+                $('#slider').flexslider({
+                    animation: "slide",
+                    controlNav: false,
+                    animationLoop: true,
+                    slideshow: true,
+                    slideshowSpeed:10000,
+                    pauseOnHover:true,
+                    sync: "#carousel",
+                    start: function (slider) {
+                        $('body').removeClass('loading');
+                    }
+                });
+                
+
+           
+            });
+// Load this script once the document is ready
+$(document).ready(function () {
+  var n = 0; 
+ // Get all the thumbnail
+ $('div.thumbnail-item').mouseenter(function(e) {
+ 
+    // Calculate the position of the image tooltip
+    x = e.pageX - $(this).offset().left;
+    y = e.pageY - $(this).offset().top;
+ 
+    //$(this).css('z-index','1500');
+    
+    if(n === 0)
+    {
+        var  img = $(this).find('img').attr("src");
+  
+        var html = '<div class="tooltip"><img src="'+img+'" alt="" style="width:100%;" /></div>'
+        console.log(html);
+        $(html).insertAfter("#slider .flex-viewport").css({'top': y - 130,'left': x + 150,'display':'block','opacity':1,'z-index':'15000000'});
+        n = 1;
+    }
+    
+       
+ }).mousemove(function(e) {
+    
+  // Calculate the position of the image tooltip  
+  x = e.pageX - $(this).offset().left;
+  y = e.pageY - $(this).offset().top;
+    
+  // This line causes the tooltip will follow the mouse pointer
+  //$(this).children("div.tooltip").css({'top': y + 10,'left': x + 20});
+  $(".flex-viewport").next( "div.tooltip" ).css({'top': y - 130,'left': x + 150});
+    
+ }).mouseleave(function() {
+    if(n = 1)
+    {
+        $( "div.tooltip" ).css('display','none;'); 
+        $(".flex-viewport").next( "div.tooltip" ).remove();     
+        $( "div.tooltip" ).animate({"opacity": "hide"}, "fast");
+        n = 0;
+    }    
+
+ });
+ 
+});
+
+</script>
 
 <script>
  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

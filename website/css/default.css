@@ -416,11 +416,14 @@ input.radio { margin:0; }
 }
 
 .footerlink {
-    float: right;
-    margin-top: 5px;
-    font-family: arial;
-    font-size: 12px;
-    padding:70px 35px 2px 15px; position: relative;
+  float: right;
+  font-family: arial;
+  font-size: 12px;
+  margin-top: 5px;
+  padding: 70px 35px 2px 15px;
+  position: relative;
+  text-align: right;
+  width: 25%;
 }
 .footerlink ul li {
     display: inline;
@@ -548,13 +551,21 @@ input.radio { margin:0; }
 .postlist-tab4 ul li a:hover { background: #64B846;color:#fff; }
 
 
+.footer_logo
+{
+	float: left;
+	margin-top: 0;
+	text-align: center;
+	width: 50%;
+}
 
 .poweredby {
-    color: #999;
-    float: left;
-    font-size: 12px;
-    margin-left: 35px;
-    padding:75px 35px 2px 15px; position: relative;
+  color: #999;
+  float: left;
+  font-size: 12px;
+  padding: 75px 35px 2px 15px;
+  position: relative;
+  width: 25%;
 }
 /**
  * Ipdas info
@@ -1149,4 +1160,41 @@ i.faq:hover
     right: 0px;
 	width:13%;
 	z-index:999999;
+}
+/**********************HOME STICKY ICON*********************/
+.sticky_icon
+{
+	border-radius: 5px;
+	position: fixed;
+	right: 11px;
+	top: 300px;
+	width: 128px;z-index:2;
+}
+.arrow_box {
+	position: relative;
+	background: #64B846;
+	border: 4px solid #64B846;
+}
+.arrow_box:after, .arrow_box:before {
+	left: 100%;
+	top: 50%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.arrow_box:after {
+	border-color: rgba(100, 184, 70, 0);
+	border-left-color: #64B846;
+	border-width: 10px;
+	margin-top: -30px;
+}
+.arrow_box:before {
+	border-color: rgba(100, 184, 70, 0);
+	border-left-color: #64B846;
+	border-width: 16px;
+	margin-top: -36px;
 }

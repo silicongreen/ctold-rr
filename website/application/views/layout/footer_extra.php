@@ -9,7 +9,7 @@
                     <div class="poweredby f5">    
                         <p>&copy; ClassTune <?php echo date("Y");?><span style="color:#64B846;"> | </span>(+880)-1740212121 <span style="color:#64B846;"> | </span> <a href="mailto:info@classtune.com" style="color:#999;">Email : info@classtune.com</a> </p>
                     </div>
-                    <div style="float: left;margin-left: 70px;margin-top: 0px;">
+                    <div class="footer_logo">
                         <a href="<?php echo base_url(); ?>" title="" target="_blank">
                             <img src="<?php echo base_url(); ?>images/logo/classtune-footer-logo.png" alt="" title="" width="170" height="" />
                         </a>
@@ -35,7 +35,13 @@
 
 
 </div>
-
+<div class="arrow_box" style="border-radius: 5px;
+position: fixed;
+right: 11px;
+top: 300px;
+width: 128px;z-index:2;">
+ <a href="#thanks_endWrap"><img src="<?php echo base_url(); ?>images/sticky.png" style="width:120px;" /></a>
+</div>
 <div id="mainnav">
     <ul>
         <li><span onclick="window.location = '<?php echo base_url(); ?>'">Home</span></li>

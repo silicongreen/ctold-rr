@@ -58,5 +58,6 @@
     attr_accessor_list:
       - :pass
       - :class_roll_no
+      - :card_number
 
 # Please refer to employee.yml for basic concept

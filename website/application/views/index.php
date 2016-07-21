@@ -133,7 +133,7 @@
         </div-->
         <div id="cronWrap" style="background-color:#F4FAFA;background-image:none;height:800px;">
 			<div style="border: 0 solid #ccc;left: 50%;margin: 0 0 0 -499px;position: absolute;width: 1000px;padding:55px 10px 0;">
-				<h2 class="f2" style="text-align:center;"><i>School Admins, enjoy the easy record keepings, and hassle free school works!</i></h2><br>
+				<h2 class="f2" style="text-align:center;"><i>School Users, enjoy the easy record keepings, and hassle free school works!</i></h2><br>
 				<p style="font-size:16px;"><b>ClassTune</b> makes institutional monitoring and management of school activity easy and effective. Rich, align, and engage teachers, students, and parents from all your schools in one platform. It accelerates parental engagement and advocates corrective measures to improve learning outcomes.</p><br>
 				<div id="slider"  class="flexslider" style="margin-top:30px;width:1000px;">
 					<ul class="slides">

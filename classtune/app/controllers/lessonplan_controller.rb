@@ -20,7 +20,22 @@ class LessonplanController < ApplicationController
   before_filter :login_required
   before_filter :check_permission, :only=>[:index,:categories]
   filter_access_to :all
-
+  def download_attachment
+    #download the  attached file
+    @lessonplan = Lessonplan.find params[:id]
+    filename = @lessonplan.attachment_file_name
+    unless @lessonplan.nil?
+      if @lessonplan.download_allowed_for(current_user)
+        send_file  @lessonplan.attachment.path , :type=>@lessonplan.attachment.content_type, :filename => filename
+      else
+        flash[:notice] = "#{t('you_are_not_allowed_to_download_that_file')}"
+        redirect_to :controller=>:news
+      end
+    else
+      flash[:notice]=t('flash_msg4')
+      redirect_to :controller=>:user ,:action=>:dashboard
+    end
+  end
   def add    
     @lessonplan = Lessonplan.new(params[:lessonplan])
     @lessonplan_categories = LessonplanCategory.active_for_current_user(current_user.id)

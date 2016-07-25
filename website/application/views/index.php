@@ -168,7 +168,7 @@
 							<div class="col-sm-12" style="height:300px;width:1000px;">
 								
 								<div class="col-sm-4" style="text-align:-moz-center;">								
-                                                                    <div class="thumbnail-item">
+                                                                    <div class="thumbnail-item" style="background-color: transparent;">
                                                                         <a href="#"><img class="img-responsive" src="<?php echo base_url(); ?>slider/new/academic_calender.png" style="width:300px;" /></a>
                                                                         <div class="tooltip">
                                                                             <img src="<?php echo base_url(); ?>slider/new/academic_calender.png" alt="" style="width:100%;" />
@@ -195,7 +195,7 @@
 							<div class="col-sm-12" style="height:300px;width:1000px;">
 								
 								<div class="col-sm-4" style="text-align:-moz-center;">									
-                                                                        <div class="thumbnail-item">
+                                                                        <div class="thumbnail-item" style="background-color: transparent;">
                                                                                 <a href="#"><img class="img-responsive" src="<?php echo base_url(); ?>slider/new/lesson_plan.png" style="width:300px;" /></a>
                                                                                 <div class="tooltip">
                                                                                         <img src="<?php echo base_url(); ?>slider/new/lesson_plan.png" alt="" style="width:100%;" />
@@ -223,7 +223,7 @@
 							<div class="col-sm-12" style="height:300px;width:1000px;">
 								
 								<div class="col-sm-4" style="text-align:-moz-center;">
-                                                                    <div class="thumbnail-item">
+                                                                    <div class="thumbnail-item" style="background-color: transparent;">
                                                                         <a href="#"><img class="img-responsive" src="<?php echo base_url(); ?>slider/new/Routine.png" style="width:300px;" /></a>
                                                                         <div class="tooltip">
                                                                             <img src="<?php echo base_url(); ?>slider/new/Routine.png" alt="" style="width:100%;" />
@@ -250,7 +250,7 @@
 							<div class="col-sm-12" style="height:300px;width:1000px;">
 								
 								<div class="col-sm-4" style="text-align:-moz-center;">                                                                    
-                                                                    <div class="thumbnail-item">
+                                                                    <div class="thumbnail-item" style="background-color: transparent;">
                                                                         <a href="#"><img class="img-responsive" src="<?php echo base_url(); ?>slider/new/Homework.png" style="width:300px;" /></a>
                                                                         <div class="tooltip">
                                                                             <img src="<?php echo base_url(); ?>slider/new/Homework.png" alt="" style="width:100%;" />
@@ -277,7 +277,7 @@
 							<div class="col-sm-12" style="height:300px;width:1000px;">
 								
 								<div class="col-sm-4" style="text-align:-moz-center;">									
-                                                                    <div class="thumbnail-item">
+                                                                    <div class="thumbnail-item" style="background-color: transparent;">
                                                                         <a href="#"><img class="img-responsive" src="<?php echo base_url(); ?>slider/new/fees.png" style="width:300px;" /></a>                                                                        
                                                                     </div>
 								</div>
@@ -301,7 +301,7 @@
 							<div class="col-sm-12" style="height:300px;width:1000px;">
 								
 								<div class="col-sm-4" style="text-align:-moz-center;">									
-                                                                    <div class="thumbnail-item">
+                                                                    <div class="thumbnail-item" style="background-color: transparent;">
                                                                         <a href="#"><img class="img-responsive" src="<?php echo base_url(); ?>images/dashpallete/view/Forms.png" style="width:300px;" /></a>                                                                        
                                                                     </div>
 								</div>
@@ -325,7 +325,7 @@
 							<div class="col-sm-12" style="height:300px;width:1000px;">
 								
 								<div class="col-sm-4" style="text-align:-moz-center;">                                                                    
-                                                                    <div class="thumbnail-item">
+                                                                    <div class="thumbnail-item" style="background-color: transparent;">
                                                                         <a href="#"><img class="img-responsive" src="<?php echo base_url(); ?>slider/new/meeting_request.png" style="width:300px;" /></a>                                                                        
                                                                     </div>
 								</div>
@@ -349,7 +349,7 @@
 							<div class="col-sm-12" style="height:300px;width:1000px;">
 								
 								<div class="col-sm-4" style="text-align:-moz-center;">									
-                                                                    <div class="thumbnail-item">
+                                                                    <div class="thumbnail-item" style="background-color: transparent;">
                                                                         <a href="#"><img class="img-responsive" src="<?php echo base_url(); ?>slider/new/report_card.png" style="width:300px;" /></a>                                                                        
                                                                     </div>
 								</div>
@@ -373,7 +373,7 @@
                                                     <div class="col-sm-12" style="height:300px;width:1000px;">
                                                             
                                                             <div class="col-sm-4" style="text-align:-moz-center;">                                                                
-                                                                <div class="thumbnail-item">
+                                                                <div class="thumbnail-item" style="background-color: transparent;">
                                                                     <a href="#"><img class="img-responsive" src="<?php echo base_url(); ?>slider/new/events.png" style="width:300px;" /></a>                                                                        
                                                                 </div>
                                                             </div>
@@ -397,7 +397,7 @@
                                                     <div class="col-sm-12" style="height:300px;width:1000px;">
                                                             
                                                             <div class="col-sm-4" style="text-align:-moz-center;">
-                                                                <div class="thumbnail-item">
+                                                                <div class="thumbnail-item" style="background-color: transparent;">
                                                                     <a href="#"><img class="img-responsive" src="<?php echo base_url(); ?>slider/new/transport.png" style="width:300px;" /></a>                                                                        
                                                                 </div>
                                                             </div>
@@ -421,7 +421,7 @@
                                                     <div class="col-sm-12" style="height:300px;width:1000px;">
                                                             
                                                             <div class="col-sm-4" style="text-align:-moz-center;">
-                                                                <div class="thumbnail-item">
+                                                                <div class="thumbnail-item" style="background-color: transparent;">
                                                                     <a href="#"><img class="img-responsive" src="<?php echo base_url(); ?>slider/new/sRoutine.png" style="width:300px;" /></a>                                                                        
                                                                 </div>
                                                             </div>
@@ -445,7 +445,7 @@
                                                     <div class="col-sm-12" style="height:300px;width:1000px;">
                                                            
                                                             <div class="col-sm-4" style="text-align:-moz-center;">
-                                                                <div class="thumbnail-item">
+                                                                <div class="thumbnail-item" style="background-color: transparent;">
                                                                     <a href="#"><img class="img-responsive" src="<?php echo base_url(); ?>slider/new/syllabus.png" style="width:300px;" /></a>                                                                        
                                                                 </div>
                                                             </div>
@@ -469,7 +469,7 @@
                                                     <div class="col-sm-12" style="height:300px;width:1000px;">
                                                            
                                                             <div class="col-sm-4" style="text-align:-moz-center;">                                                                
-                                                                <div class="thumbnail-item">
+                                                                <div class="thumbnail-item" style="background-color: transparent;">
                                                                     <a href="#"><img class="img-responsive" src="<?php echo base_url(); ?>slider/new/notice.png" style="width:300px;" /></a>                                                                        
                                                                 </div>
                                                             </div>
@@ -493,7 +493,7 @@
                                                     <div class="col-sm-12" style="height:300px;width:1000px;">
                                                             
                                                             <div class="col-sm-4" style="text-align:-moz-center;">                                                                
-                                                                <div class="thumbnail-item">
+                                                                <div class="thumbnail-item" style="background-color: transparent;">
                                                                     <a href="#"><img class="img-responsive" src="<?php echo base_url(); ?>slider/new/leave.png" style="width:300px;" /></a>                                                                        
                                                                 </div>
                                                             </div>

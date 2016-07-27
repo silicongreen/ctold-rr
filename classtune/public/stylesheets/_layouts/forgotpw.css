@@ -6,9 +6,23 @@ html, body {
     height:auto !important;
 }
 body {
+    background:#fff url(../../images/login/classtune_bg.jpg) no-repeat;
     margin: 0;
     background-color:#eeeeee;
     height:auto !important;
+}
+.pattern {
+  background-attachment: scroll;
+  background-image: url("../../images/login/pattern.png");
+  background-repeat: repeat;
+  background-size: 0.1%;
+  height: 100%;
+  left: 0;
+  opacity: 0.5;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 1;
 }
 #content_wrapper {
     height:auto !important;
@@ -118,10 +132,10 @@ body {
     padding-top:10px;
 }
 #powered_by_div{
-    color: #666666;
+    color: #fff;
     float: left;
-    font-size: 11px;
-    height: 20px;
+    font-size: 20px;
+    height: 40px;
     margin: 10px auto 0;
     text-align: center;
     width: 100%;
@@ -204,10 +218,28 @@ input[type="text"], input[type="password"], textarea, select {outline: none;}
     font-size:13px;
     text-decoration:underline;
 }
-#wrapper {
+#wrapper {    
     min-height: 100%;
     margin-bottom:-55px;
     position:relative;
+    z-index: 3;
+}
+.site_logo
+{
+    background:url(../../images/login/classtune_logo.png) no-repeat center;
+    height: 120px;
+    margin: 30px auto 0;
+    position:relative;
+    z-index: 3;
+}
+.stp_banner
+{
+    background:url(../../images/login/stp.png) no-repeat center;
+    height: 59px;
+    margin: 40px auto 0;
+    position:relative;
+    z-index: 3;
+
 }
 .clearfooter {
     height: 25px;

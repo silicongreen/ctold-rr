@@ -244,6 +244,9 @@ AND exam_groups.result_published = 1"
         </div>
 
         <div class="school_feed_box" style="height: 300px;">
+            <% if !@allow_detention.blank? %>
+            <%=  link_to "<img src='/images/dashpallete/big_icon/detention.png' style='width:100%'>", :controller => 'detention', :action => 'index' %>
+            <% end %>
             <% if @current_user.parent? %>
               <% 
               student_id = @current_user.guardian_entry.current_ward_id                 

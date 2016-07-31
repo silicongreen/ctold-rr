@@ -8,9 +8,19 @@ class DashboardsController < ApplicationController
 #    if current_user.admin?
 #      redirect_to :controller => "data_palettes"
 #    else
+      require "yaml"
+      detention_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/detention.yml")['school']
+      all_schools = detention_config['numbers'].split(",")
+      current_school = MultiSchool.current_school.id
+      
       @data = {}
       @view_layout = 'student'
-    
+      
+      @allow_detention = false
+      if all_schools.include?(current_school.to_s)
+        @allow_detention = true      
+      end
+      
       if current_user.employee?
         @view_layout = 'employee'
         @news = News.find(:all,:conditions=>["is_published = 1 AND (department_news.department_id = ? or news.is_common = 1 or author_id=?)", current_user.employee_record.employee_department_id,current_user.id], :limit =>4,:include=>[:department_news])

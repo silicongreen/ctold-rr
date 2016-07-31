@@ -143,6 +143,9 @@ employee_id = @current_user.employee_record.id
       <%  #if !@current_user.admin? %>
       <%=  link_to "<img src='/images/dashpallete/big_icon/lesson_plan.png' style='width:100%'>", :controller => 'lessonplan', :action => 'index' %>
       <% #end %>
+      <% if !@allow_detention.blank? %>
+        <%=  link_to "<img src='/images/dashpallete/big_icon/detention.png' style='width:100%'>", :controller => 'detention', :action => 'index' %>
+      <% end %>
     </div>
 
   </div>

@@ -30,17 +30,91 @@
           :border => 0,
           :id => "loader",
           :style =>"display: none;" ) %>
-        <% debug(@detention) %>
-        <% unless @detention.emply? or @detention.blank? %>
 
-          
-          <h2>LIKHOn</h2>
+        <% unless @detention.blank? %>
 
 
+          <% @detention.each_with_index do |r,i| %>
 
-         
+            <div class="portlet-subcontent">
 
-        <%#= will_paginate @news %>
+                <div class="timetable_right">
+                    <div class="subcontent-header themed_text">
+                        <%= r.student.first_name %> <%= r.student.last_name %>,<%= r.batch.full_name   %>, roll : <%= r.student.class_roll_no %>  has received a detention for
+                        <%=  r.reason %> by  <%= r.employee.first_name %> <%= r.employee.last_name %> on <%= I18n.l(r.created_at.to_date, :format=>'%d/%m/%Y') %>
+                        <% if @current_user.parent? and r.ackhnowledged==0 %>
+                          . please click the acknowledged button to acknowledge the detention
+                        <% end %>
+                    </div>            
+
+                </div>
+
+
+                <div class='timetable_last' id="status_<%=  r.id %>">
+                    <% if r.status==0  %>
+                      <% if @current_user.admin %>
+                        <% if r.ackhnowledged==1 %>
+                          <font color="green">Acknowledged</font></br>
+                        <% else %>
+                          <%= link_to_remote "delete" , :url => {:controller => 'detention', :action => "show_detention", :id =>r.id},:confirm => "Are you sure?",:with => "'achnowladge_id='+$('Detention_ackhnowledged').value+'&batch_id='+$('Detention_batch_id').value+'&status_id='+$('Detention_status').value+'&student_id='+$('Detention_student_id').value",:loading => "$('loader').show();", :loaded => "$('loader').hide();" , :update=> "data-div" %>
+                        <% end %>
+                        <%= link_to_remote "Done" , :url => {:controller => 'detention', :action => "done", :id =>r.id },:confirm => "Are you sure?",:loading => "$('loader').show();", :loaded => "$('loader').hide();" , :update=> 'status_'+r.id.to_s %>
+
+                      <% elsif @current_user.employee %>
+                        <% if @employee.is_pod.to_i == 1 %>
+                          <% if r.ackhnowledged==1 %>
+                            <font color="green">Acknowledged</font></br>
+                          <% else %>
+                            <%= link_to_remote "delete" , :url => {:controller => 'detention', :action => "show_detention", :id =>r.id},:confirm => "Are you sure?",:with => "'achnowladge_id='+$('Detention_ackhnowledged').value+'&batch_id='+$('Detention_batch_id').value+'&status_id='+$('Detention_status').value+'&student_id='+$('Detention_student_id').value",:loading => "$('loader').show();", :loaded => "$('loader').hide();" , :update=> "data-div" %>
+                          <% end %>
+                          <%= link_to_remote "Done" , :url => {:controller => 'detention', :action => "done", :id =>r.id },:confirm => "Are you sure?",:loading => "$('loader').show();", :loaded => "$('loader').hide();" , :update=> 'status_'+r.id.to_s %>
+
+                        <% else %>
+                          <b>Not Done Yet</b>
+                              <% if r.ackhnowledged==1 %>
+                                <font color="green">Acknowledged</font></br>
+                              <% elsif r.employee_id== @employee.id %>
+                                <%= link_to_remote "delete" , :url => {:controller => 'detention', :action => "show_detention", :id =>r.id},:confirm => "Are you sure?",:with => "'achnowladge_id='+$('Detention_ackhnowledged').value+'&batch_id='+$('Detention_batch_id').value+'&status_id='+$('Detention_status').value+'&student_id='+$('Detention_student_id').value",:loading => "$('loader').show();", :loaded => "$('loader').hide();" , :update=> "data-div" %>
+                              <% end %>
+                              
+                        <% end %>
+
+                      <% elsif @current_user.parent? and r.ackhnowledged==0  %>
+                        <%= link_to_remote "acknowledge" , :url => {:controller => 'detention', :action => "ackhnowledged", :id =>r.id },:loading => "$('loader').show();", :loaded => "$('loader').hide();" , :update=> 'status_'+r.id.to_s %>
+                      <% else %>
+                        <b>
+                            <% if r.ackhnowledged==1 %>
+                              <font color="green">Acknowledged</font></br>
+                            <% end %>
+                              Not Done Yet</b>
+                            
+                      <% end %>
+                    <% else %>
+                      <b>
+                          <% if r.ackhnowledged==1 %>
+                            <font color="green">Acknowledged</font></br>
+                          <% end %>    
+                          <font color="green"> Completed </font> 
+                      </b>
+                    <% end %>
+
+                </div>
+            </div>
+            <div style="float: left; margin: 7px; width: 95%;"></div> 
+          <% end %>
+
+
+
+          <% posted_params = params %>
+          <% posted_params.delete(:page) %>
+          <% posted_params.delete(:authenticity_token) %>
+          <% posted_params.delete(:controller) %>
+          <% posted_params.delete(:action) %>
+          <% @url_params = "" %>
+          <% posted_params.each{|k,v| @url_params = @url_params.to_s+k.to_s+"="+v.to_s+"&"}  %>
+          <%= will_paginate @detention, :renderer => 'RemoteLinkRenderer', :remote=>{:update=>'data-div'}%>
+
+  <%#= will_paginate @news %>
 
 
         <% else %>

@@ -32,10 +32,10 @@
           :style =>"display: none;" ) %>
 
         <% unless @notification.nil? or @notification.blank? %>
-
+          
 
           <% @notification.each_with_index do |r,i| %>
-
+          <% unless r.student.nil? %>
             <div class="portlet-subcontent">
 
                 <div class="timetable_right">
@@ -82,6 +82,7 @@
                 </div>
             </div>
             <div style="float: left; margin: 7px; width: 95%;"></div> 
+          <% end %>
           <% end %>
 
 

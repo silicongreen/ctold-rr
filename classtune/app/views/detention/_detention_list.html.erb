@@ -31,7 +31,7 @@
           :id => "loader",
           :style =>"display: none;" ) %>
         <% debug(@detention) %>
-        <% unless @detention.nil? or @detention.blank? %>
+        <% unless @detention.emply? or @detention.blank? %>
 
           
           <h2>LIKHOn</h2>

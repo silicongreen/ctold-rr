@@ -35,7 +35,7 @@
 
 
           <% @suspension.each_with_index do |r,i| %>
-
+            <% unless r.student.first_name.nil? %>
             <div class="portlet-subcontent">
 
                 <div class="timetable_right">
@@ -98,6 +98,7 @@
               </div>
           </div>
           <div style="float: left; margin: 7px; width: 95%;"></div> 
+          <% end %>
         <% end %>
 
 

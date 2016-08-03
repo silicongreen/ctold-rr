@@ -1,0 +1,107 @@
+.post:hover .assessment-seen-div {
+    display:block;
+    visibility:visible;
+    opacity:1;
+    transition-delay:0s;
+} 
+.assessment-seen-div
+{
+    visibility:hidden; 
+    opacity:0;
+    transition:visibility 0s linear 0.5s,opacity 0.5s linear;
+    z-index:10;
+    position:absolute;
+    min-height: 39px;
+    background: black;
+    background: rgba(25, 25, 25, .5);
+}
+
+.assessment-div > .assessment-span {
+    color:#ffffff;
+    font-size:12px;
+    margin: 7px;
+    float: left;
+}
+
+.post:hover .flexslider .flex-prev {
+    opacity: .7;
+    left: 10px;
+}
+.post:hover .flexslider .flex-next {
+    opacity: .7;
+    right: 10px;
+}
+ul {
+    list-style: disc outside none;
+}
+ul, ol {    
+    padding: 0;
+}
+ul, ol {    
+    margin-top: 0;
+}
+ul li {list-style:none;}
+
+.footer{ 
+    background: none repeat scroll 0 0 #ffffff;
+    border-top: 6px solid #aab2b5;
+    width: 100%;
+    padding: 30px 35px 20px 15px;
+    z-index:1000;
+    position:absolute;
+}
+.footerlink{float:left;margin-top:5px;font-family: arial;font-size:14px;}
+.footerlink ul li {display:inline;padding: 10px 5px;margin-bottom:10px;}
+.footerlink ul li a{color: #999999;}
+.active .footerlink a,
+.footerlink a:hover,
+.footerlink a:focus {
+    color: #3498db;
+}
+.poweredby{ 
+    color: #999999;
+    float: right;
+    font-size: 16px;
+}
+
+.poweredby p{ color: #999999;}
+
+#grid li.post .assessment-seen-div .seen-image {
+    margin-left: 5px;
+    padding: 3px 0;
+    width: 25%;
+}
+#grid li.post .assessment-seen-div .seen {
+    width: 64%;
+}
+#grid li.post .assessment-seen-div .seen span {
+    width: 100%;
+}
+
+@media all and (min-width: 600px) and (max-width: 799px) {
+    .footerlink{width: 100%;text-align: center;margin-top:5px;font-family: arial;font-size:11px;}
+    .poweredby
+    {
+        clear: both;
+        float: none !important;
+        text-align:center;
+    }
+}
+@media all and (max-width: 449px) {    
+    .footerlink{width: 100%;text-align: center;margin-top:5px;font-family: arial;font-size:11px;}
+    .poweredby
+    {
+        clear: both;
+        float: none !important;
+        text-align:center;
+    }
+}
+@media all and (min-width: 450px) and (max-width: 599px) {
+    .footerlink{width: 100%;text-align: center;margin-top:5px;font-family: arial;font-size:11px;}
+    .poweredby
+    {
+        clear: both;
+        float: none !important;
+        text-align:center;
+    }
+}

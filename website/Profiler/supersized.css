@@ -1,0 +1,274 @@
+/*
+
+	Supersized - Fullscreen Slideshow jQuery Plugin
+	Version : 3.2.7
+	Site	: www.buildinternet.com/project/supersized
+	
+	Author	: Sam Dunn
+	Company : One Mighty Roar (www.onemightyroar.com)
+	License : MIT License / GPL License
+	
+*/
+
+#supersized-loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 0;
+    width: 60px;
+    height: 60px;
+    margin: -30px 0 0 -30px;
+    text-indent: -999em;
+    background: url(../images/progress.gif) no-repeat center center;
+}
+
+#supersized {
+    display: block;
+    position: fixed;
+    left: 0;
+    top: 0;
+    overflow: hidden;
+    z-index: -999;
+    height: 100%;
+    width: 100%;
+    margin:0;
+}
+
+#supersized img {
+    width: auto;
+    height: auto;
+    position: relative;
+    display: none;
+    outline: none;
+    border: none;
+}
+
+#supersized.speed img {
+    -ms-interpolation-mode: nearest-neighbor;
+    image-rendering: -moz-crisp-edges;
+}
+
+/*Speed*/
+#supersized.quality img {
+    -ms-interpolation-mode: bicubic;
+    image-rendering: optimizeQuality;
+}
+
+/*Quality*/
+
+#supersized li {
+    display: block;
+    list-style: none;
+    z-index: -30;
+    position: fixed;
+    overflow: hidden;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #111;
+}
+
+#supersized a {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+#supersized li.prevslide {
+    z-index: -20;
+}
+
+#supersized li.activeslide {
+    z-index: -10;
+}
+
+#supersized li.image-loading {
+    background: #111 url(../images/progress.gif) no-repeat center center;
+    width: 100%;
+    height: 100%;
+}
+
+#supersized li.image-loading img {
+    visibility: hidden;
+}
+
+#supersized li.prevslide img, #supersized li.activeslide img {
+    display: inline;
+}
+/*-----------------Slideshow-----------------*/
+
+#ourner-sitebar #thumb-tray{
+    height: 160px;
+    box-shadow: none;
+    background: rgba(255,255,255,0.2);
+}
+#thumb-tray ul#thumb-list{
+    margin:4px 0;
+}
+#thumb-tray ul#thumb-list li{
+    height:152px;
+    background: none;
+    width:auto;
+    overflow: hidden;
+}
+#thumb-tray ul#thumb-list li img{
+    width:225px;
+    min-height:152px;
+    opacity: 0.85;
+    filter:alpha(opacity=85);
+    height:auto;
+}
+.slider-control{
+    position: fixed;
+    top:16px;
+    right:58px;
+    height:41px;
+    width: 220px;
+}
+.slider-control #prevslide,
+.slider-control #nextslide,
+.slider-control span.music_icon,
+.slider-control span.music,
+.slider-control span.close-music,
+.slider-control span.music,
+.slider-control span.slide-description,
+.slider-control span.slide-hidden,
+.slider-control span.slide-fullscreen,
+.slider-control span.slide-screen
+{
+    height:41px;
+    width:41px;
+    background-image: url(../images/control-slider.png);
+    background-color: rgba(255,255,255,0.7);
+    bottom: auto;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    position: relative;
+    float:left;
+    margin: 0 0 0 3px;
+    left: auto;
+    top: auto;
+    right: auto;
+}
+.slider-control #prevslide{
+    background-position: 11px 11px;
+}
+.slider-control #nextslide{
+    background-position: -162px 11px;
+}
+.slider-control #prevslide:hover,
+.slider-control #nextslide:hover,
+.slider-control span.music_icon,
+.slider-control span.music,
+.slider-control span.close-music,
+.slider-control span.music,
+.slider-control span.slide-description,
+.slider-control span.slide-fullscreen:hover
+{
+    border:none;
+    background-color: #fff;
+}
+.slider-control #prevslide:hover,
+.slider-control #nextslide:hover,
+.slider-control span.music_icon,
+.slider-control span.music,
+.slider-control span.slide-fullscreen:hover
+{
+    -moz-transition: all 200ms linear 0s;
+    -webkit-transition: all 200ms linear 0s;
+    -o-transition: all 200ms linear 0s;
+}
+.slider-control span.music_icon,
+.slider-control span.close-music,
+.slider-control span.music{
+    background-position: -33px 11px;
+}
+.slider-control span.slide-description,
+.slider-control span.slide-hidden{
+    background-position: -76px 11px;
+}
+.slider-control span.slide-fullscreen,
+.slider-control span.slide-screen{
+    background-position: -119px 11px;
+}
+#tz_fullslide .slide-des{
+    position: fixed;
+    right: 60px;
+    bottom:240px;
+    width:35%;
+
+}
+.slider-control span.close-music, .slider-control span.slide-hidden,
+.slider-control span.slide-screen{
+    display: none;
+    background-color: rgba(255, 255, 255, 0.7);
+}
+#tz_fullslide #slidecaption,
+#tz_fullslide #slidecaption1{
+    text-shadow: none;
+    margin: 0;
+    display: block;
+    float: none;
+}
+#tz_fullslide #slidecaption1{
+    padding:15px 30px;
+    font-size: 11px;
+    color: #000;
+    background: rgba(255,255,255,0.7);
+    margin-top: 12px;
+}
+#tz_fullslide #slidecaption h2{
+    color:#fff;
+    font-size: 32px;
+    background: rgba(255,91,10,0.7);
+    padding:6px 30px 10px;
+    display: inline-block;
+    font-weight: normal;
+    margin:0;
+}
+
+#ja-footer{
+    position: fixed;
+    bottom:0;
+    height: 30px;
+    border-top: 1px solid #000000;
+    background: #fff;
+    width: 100%;
+    z-index: 100;
+    border-left: 5px solid #000
+}
+#ourner-sitebar #thumb-tray{
+    /*bottom: 30px !important;*/
+    bottom:-100px;
+}
+#thumb-tray #thumb-back, #thumb-tray #thumb-forward {
+    bottom: 50px;
+    height: 41px;
+    position: absolute;
+    width: 41px;
+    z-index: 5;
+}
+
+.ja-sidebar-1{
+    position: fixed;
+    left:0;
+    top:0;
+    background:rgba(255,255,255,1);
+    margin:0;
+    width: 17px;
+    border-left: 5px solid #000;
+    z-index: 99;
+    bottom: 0;
+    padding:  15px 13px;
+    border-right: 1px solid #cfcfcf;
+    opacity: 0.3;
+    filter:alpha(opacity=0.3);
+}
+.ja-sidebar-1 .sidebar-background{
+    /*background: url(../images/bg-logo.png)  center top no-repeat ;*/
+    width: 17px;
+    height: 142px;
+    position: absolute;
+    top:15px;
+}

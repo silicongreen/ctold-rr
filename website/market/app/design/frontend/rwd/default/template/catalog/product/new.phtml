@@ -1,0 +1,212 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     rwd_default
+ * @copyright   Copyright (c) 2014 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+
+
+<!--<h1>Incredibly Basic Slider</h1>
+<div id="slider">
+  <a href="#" class="control_next">>></a>
+  <a href="#" class="control_prev"><</a>
+  <ul>
+    <li>SLIDE 1</li>
+    <li style="background: #aaa;">SLIDE 2</li>
+    <li>SLIDE 3</li>
+    <li style="background: #aaa;">SLIDE 4</li>
+  </ul>  
+</div>
+
+<div class="slider_option">
+  <input type="checkbox" id="checkbox">
+  <label for="checkbox">Autoplay Slider</label>
+</div> 
+<style>
+    @import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300,600);	
+#slider {
+    border-radius: 4px;
+    margin: 20px auto 0;
+    overflow: hidden;
+    position: relative;
+}
+    #slider ul {
+    height: 200px;
+    list-style: none outside none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+#slider ul li {
+    background: none repeat scroll 0 0 #ccc;
+    display: block;
+    float: left;
+    height: 300px;
+    line-height: 300px;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    text-align: center;
+    width: 500px;
+
+html {
+  border-top: 5px solid #fff;
+  background: #58DDAF;
+  color: #2a2a2a;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Open Sans';
+}
+</style>-->
+<?php if (($_products = $this->getProductCollection()) && $_products->getSize()): ?>
+<!--<h2 class="subtitle"><?php echo $this->__('New Products') ?></h2>-->
+<?php $_columnCount = $this->getColumnCount(); ?>
+<div class="slideshow-container">
+    <ul class="slideshow" style=" border: 15px solid #ffffff;">
+            <?php $i=0; foreach ($_products->getItems() as $_product): ?>
+        
+            <li>
+                <div style="float:left;height:260px;">
+                <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->escapeHtml($_product->getName()) ?>" class="product-image">
+                    <?php $_imgSize = 260; ?>
+                    <img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize($_imgSize); ?>" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" />
+                </a>
+                </div>
+                <div style="float:right;width:550px;margin: 20px;">
+        <?php
+            $catIds = $_product->getCategoryIds();            
+            $parentId=Mage::getModel('catalog/category')->load($catIds[0])->getParentId();            
+            $cat = Mage::getModel('catalog/category');
+            $cat->load($parentId);
+            $name = $cat->getName();
+            $entity_id = $cat->getId();
+            $url_key = $cat->getUrlKey();
+            $url_path = $cat->getUrlPath();
+
+        ?>
+                    <div style="float:left;">
+                        <img width="80" alt="New" src="<?php echo $this->getSkinUrl('images/newitem.png');?>">
+                    </div>
+                    <div style="float:left;">
+                        <h3 class="product-name" style="line-height: 40px;margin-left:10px;">                        
+                            <a style="color:#FD3D2E;font-size: 25px;;  font-family: 'Bree Serif'; text-transform: none;" href="<?php echo $url_path ?>" title="<?php echo $name ?>"><?php echo $name;?></a>                            
+                            <span style="font-size:36px;color:#E0E1E3;">|</span>
+                        <a style="color:#000;font-size: 25px;  font-family:'Bree Serif';text-transform: none; " href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->escapeHtml($_product->getName()) ?>"><?php echo $this->escapeHtml($_product->getName()) ?></a></h3>
+                    
+                    </div>
+                    <div style="clear:both;"></div>
+                    <div style="width:100%;margin-top:20px;">
+                        <div style="float:left;width: 60%"><?php #echo $this->getReviewsSummaryHtml($_product, 'short') ?><?php echo $_product->getShortDescription(); ?></div>
+                        <div style="float:right;width: 30%;">
+                            <div style="line-height: 60px;height:70px;border: 2px solid #CCC;text-align:center; vertical-align:middle;">
+                                <?php echo $this->getPriceHtml($_product, true, '-new') ?>
+                            </div>
+                            <div style="display: block;height:70px;isplay: table-cell;
+    vertical-align: middle ;
+border-top:0px;border-left: 2px solid #CCC;border-bottom: 2px solid #CCC;border-right: 2px solid #CCC;">
+                            <?php if($_product->isSaleable()): ?>
+                                <img style="cursor: pointer;margin: 0px auto;padding-top:10px;" align="center" width="50" alt="<?php echo $this->__('Add to Cart') ?>" src="<?php echo $this->getSkinUrl('images/cartsign.png');?>" onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')">
+    <!--                            <button type="button" title="<?php echo $this->__('Add to Cart') ?>" class="button btn-cart" onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')"><span><span><?php echo $this->__('Add to Cart') ?></span></span></button>-->
+                            <?php else: ?>
+                                <p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
+                            <?php endif; ?>         
+                            </div>
+                        </div>
+                    </div>
+                      
+                    <!--<div class="actions">                        
+                        <ul class="add-to-links">
+                            <?php if ($this->helper('wishlist')->isAllow()) : ?>
+                                <li><a href="<?php echo $this->getAddToWishlistUrl($_product) ?>" class="link-wishlist"><?php echo $this->__('Add to Wishlist') ?></a></li>
+                            <?php endif; ?>
+                            <?php if ($_compareUrl = $this->getAddToCompareUrl($_product)): ?>
+                                <li><span class="separator">|</span> <a href="<?php echo $_compareUrl ?>" class="link-compare"><?php echo $this->__('Add to Compare') ?></a></li>
+                            <?php endif; ?>
+                        </ul>
+                    </div>-->
+                </div>
+            </li>
+<!--            <li><a href=""><img src="http://market.champs21freefornt.dev/media/wysiwyg/slide-2.jpg" alt="Style solutions - covet-worthy styles in travel-friendly fabrics - Click to Shop Woman" /></a></li>
+            <li><a href=""><img src="http://market.champs21freefornt.dev/media/wysiwyg/slide-3.jpg" alt="Wing man - hit the runway in stylish separates and casuals - Click to Shop Man" /></a></li>-->
+            <?php endforeach; ?>
+        </ul>
+        <div class="slideshow-pager">&nbsp;</div>
+        <span class="slideshow-prev">&nbsp;</span> 
+        <span class="slideshow-next">&nbsp;</span>
+</div>
+<?php endif; ?>
+
+
+
+
+ <!--<script type='text/javascript'>  
+jQuery(document).ready(function ($) {
+
+  $('#checkbox').change(function(){
+    setInterval(function () {
+        moveRight();
+    }, 3000);
+  });
+  
+	var slideCount = $('#slider ul li').length;
+	var slideWidth = $('#slider ul li').width();
+	var slideHeight = $('#slider ul li').height();
+	var sliderUlWidth = slideCount * slideWidth;
+	
+	$('#slider').css({ width: slideWidth, height: slideHeight });
+	
+	$('#slider ul').css({ width: sliderUlWidth, marginLeft: - slideWidth });
+	
+    $('#slider ul li:last-child').prependTo('#slider ul');
+
+    function moveLeft() {
+        $('#slider ul').animate({
+            left: + slideWidth
+        }, 200, function () {
+            $('#slider ul li:last-child').prependTo('#slider ul');
+            $('#slider ul').css('left', '');
+        });
+    };
+
+    function moveRight() {
+        $('#slider ul').animate({
+            left: - slideWidth
+        }, 200, function () {
+            $('#slider ul li:first-child').appendTo('#slider ul');
+            $('#slider ul').css('left', '');
+        });
+    };
+
+    $('a.control_prev').click(function () {
+        moveLeft();
+    });
+
+    $('a.control_next').click(function () {
+        moveRight();
+    });
+
+});
+  </script>-->

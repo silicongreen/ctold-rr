@@ -1,0 +1,113 @@
+/* 
+    Document   : droppify
+    Created on : May 14, 2015, 12:48:30 PM
+    Author     : N!K
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+
+.droppify_wrapper {
+    background-color: #adb2b5;
+    background-image: url("/styles/layouts/tdsfront/image/drop_down.png");
+    background-position: 207px 11px;
+    background-repeat: no-repeat;
+    background-size: 30px 30px;
+    cursor: pointer;
+    padding-bottom: 50px;
+    position: relative;
+    width: 98.15%;
+}
+.droppify_wrapper_active_bg {
+    background-image: url("/styles/layouts/tdsfront/image/drop_down.png");
+}
+.droppify_wrapper:hover {
+    background-image: url("/styles/layouts/tdsfront/image/drop_down.png");
+}
+.droppify_wrapper_active > ul.droppify_dropdown {
+    max-height: 250px !important; 
+    opacity: 1 !important;
+    visibility: visible !important;
+    transition: all 0.2s ease-out 0s;
+    -moz-transition: all 0.2s ease-out 0s;
+    -ms-transition: all 0.2s ease-out 0s;
+    -webkit-transition: all 0.2s ease-out 0s;
+    -o-transition: all 0.2s ease-out 0s;
+}
+.droppify_wrapper span {
+    color: #000000;
+    font-family: tahoma, georgia, arial, serif;
+    font-size: 15px;
+    left: 5px;
+    padding-left: 6px;
+    position: absolute;
+    top: 15px;
+}
+.droppify_wrapper ul.droppify_dropdown {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 7px #ccc;
+    left: 0;
+    list-style: outside none none;
+    margin: 0;
+    max-height: 0;
+    overflow-y: scroll;
+    opacity: 0;
+    padding: 0;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    visibility: hidden;
+    width: 100%;
+    z-index: 1;
+    transition: all 0.2s ease-out 0s;
+    -moz-transition: all 0.2s ease-out 0s;
+    -ms-transition: all 0.2s ease-out 0s;
+    -webkit-transition: all 0.2s ease-out 0s;
+    -o-transition: all 0.2s ease-out 0s;
+}
+.droppify_wrapper ul.droppify_dropdown::after {
+    border-color: #fff transparent;
+    border-style: solid;
+    border-width: 0 10px 10px;
+    bottom: 100%;
+    content: "";
+    height: 0;
+    left: 30px;
+    position: absolute;
+    width: 0;
+}
+.droppify_wrapper ul.droppify_dropdown li {
+    border-bottom: 1px solid #eaeaea;
+    padding: 10px 0 10px 15px;
+    color: #333333;
+    cursor: pointer;
+    float: none;
+    font-family: tahoma, georgia, arial, serif;
+    font-size: 15px;
+    margin: 0;
+    transition: all 0.25s ease-in 0s;
+    -moz-transition: all 0.25s ease-in 0s;
+    -ms-transition: all 0.25s ease-in 0s;
+    -webkit-transition: all 0.25s ease-in 0s;
+    -o-transition: all 0.25s ease-in 0s;
+}
+.droppify_wrapper ul.droppify_dropdown li:first-child {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    padding-left: 15px;
+}
+.droppify_wrapper ul.droppify_dropdown li:last-child {
+    border-bottom: none;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+.droppify_wrapper ul.droppify_dropdown li:hover {
+    background-color: #f8f8fa;
+    box-shadow: 0 2px 0 0 #d72341;
+}

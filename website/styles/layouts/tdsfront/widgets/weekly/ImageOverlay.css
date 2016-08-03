@@ -1,0 +1,33 @@
+#weekly
+{
+    text-align: center;
+}
+.tech
+{
+    position:relative;
+}
+.tech img
+{
+    position:relative;
+}
+.tech .caption
+{
+   position: absolute;
+   height:auto;
+   width:100%;
+   top:34px;
+   display: none;
+   background-color: #000;
+   color: #FFF;
+   left:0; 
+   cursor: pointer;
+	/* The way to change overlay opacity is the follow properties. Opacity is a tricky issue due to
+		longtime IE abuse of it, so opacity is not offically supported - use at your own risk. 
+		To play it safe, disable overlay opacity in IE. */
+    /* For Firefox/Opera/Safari/Chrome */
+	opacity: .8;
+    /* For IE 5-7 */
+    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80);
+    /* For IE 8 */
+    -MS-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+}

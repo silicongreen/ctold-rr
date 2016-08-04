@@ -11,4 +11,16 @@
 <li <% if params[:action].to_s=="notification" %>class="active" <% end %>>
   <%= link_to "Notification", {:controller => "detention", :action => "notification"}, :class => "f2" %>    
 </li> 
+<li <% if params[:action].to_s=="awarning" %>class="active" <% end %>>
+  <%= link_to "A Warnings", {:controller => "detention", :action => "awarning"}, :class => "f2" %>    
+</li> 
+<li <% if params[:action].to_s=="counseling" %>class="active" <% end %>>
+  <%= link_to "Counseling", {:controller => "detention", :action => "counseling"}, :class => "f2" %>    
+</li>
+<li <% if params[:action].to_s=="leave" %>class="active" <% end %>>
+  <%= link_to "Leave", {:controller => "detention", :action => "leave"}, :class => "f2" %>    
+</li> 
+<li <% if params[:action].to_s=="task" %>class="active" <% end %>>
+  <%= link_to "Task", {:controller => "detention", :action => "task"}, :class => "f2" %>    
+</li> 
 <% end %>

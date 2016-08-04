@@ -1,0 +1,189 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<!--<div id="content-header">
+  <%#= show_header_icon %>
+  <h1><%#= t('add') + ' ' + t('news_text') %></h1>
+  <div class='header-sep'>|</div>
+  <div class='sub-header'><%#= t('publish_t') + ' ' + t('school_news') %></div>
+
+</div>-->
+<div class="header-wrapper">
+  <div class="header-title">
+    <div class="header-icon">
+      <%= image_tag '/images/icons/notice.png', :html => {:alt => 'Notice'} %>
+    </div>
+    <div class="header-title-text-wrapper">
+      <div class="header-title-main-text f2">
+          <a href="/detention/leave">Leave Record</a> | New
+      </div>
+      <div class="header-title-sub-text f5">
+
+        </div>
+      </div>
+    </div>    
+
+  <div class="header-form-wrapper">
+      
+  </div>
+</div>
+
+<div id="page-yield" class="ch_news_wrapper" style="margin-top: 0px;">
+
+  <% unless flash[:notice].nil? %> <p class="flash-msg"> <%= flash[:notice] %> </p> <% end %>
+
+  <% form_for :infoleave , :html => { :multipart => true } do |f| %>
+
+    <%= error_messages_for :infoleave %>
+
+    <div id="add_news_form">
+      <div class="news_label_field">
+        <label for="title"><%= t('select_a_batch') %></label>
+        <div class="text-input-bg">
+        <%= select :infoleave, :batch_id,
+                  @batches.map {|b| [b.full_name, b.id] },
+                  {:prompt => "Select a Class"},
+                  {:onchange => "#{remote_function(
+                  :url => { :action => 'leave_student_list' },
+                  :update => 'student-select-div',
+                  :with => "'batch_id='+value",
+                  :before => "Element.show('loader')",
+                  :success => "Element.hide('loader')"  )}"} 
+       %>
+         <%= image_tag("loader.gif",
+          :align => "absmiddle",
+          :border => 0,
+          :id => "loader",
+          :style =>"display: none;" ) %>
+        </div>
+      </div>
+      <div>
+          
+      </div>
+      
+      <div class="news_label_field" id="student-select-div">
+        <label for="title">Student</label>
+        <div class="text-input-bg">
+          <select name="infoleave['studdent_id']" >
+              <option value="">Select a Student</option>
+          </select>
+        </div>
+      </div>
+      
+       <div class="news_label_field">
+        <label for="name">Date</label>
+        <div class="time-select-field"><%= calendar_date_select_tag "infoleave[date]","", :class=>"text-input-bg" ,:readonly=>true,:popup=>:force %></div>
+      </div>
+       <div class="news_label_field" style="width:100%;">
+        <label for="title">After Period</label> 
+         <div style="float:left;clear:both; margin:5px 0px; width:100%;">
+            <a href="javascript:void(0);" class="button_link" onClick="add_period_text('1st Period')" >1st Period</a>
+            &nbsp;|&nbsp;
+            <a href="javascript:void(0);" class="button_link" onClick="add_period_text('2nd Period')" >2nd Period</a>
+            &nbsp;|&nbsp;
+            <a href="javascript:void(0);" class="button_link" onClick="add_period_text('3rd Period')" >3rd Period</a>
+            &nbsp;|&nbsp;
+            <a href="javascript:void(0);" class="button_link" onClick="add_period_text('4th Period')" >4th Period</a>
+            &nbsp;|&nbsp;
+            <a href="javascript:void(0);" class="button_link" onClick="add_period_text('5th Period')" >5th Period</a>
+            &nbsp;|&nbsp;
+            <a href="javascript:void(0);" class="button_link" onClick="add_period_text('6th Period')" >6th Period</a>
+            &nbsp;|&nbsp;
+            <a href="javascript:void(0);" class="button_link" onClick="add_period_text('7th Period')" >7th Period</a>
+            &nbsp;|&nbsp;
+            <a href="javascript:void(0);" class="button_link" onClick="add_period_text('8th Period')" >8th Period</a>
+            &nbsp;|&nbsp;
+            <a href="javascript:void(0);" class="button_link" onClick="add_period_text('9th Period')" >9th Period</a>
+        </div> 
+        <div id="textarea_field_bg" style="float:left;clear:both; margin:5px 0px;">
+            <textarea type="text" cols="70" rows="3" name="infoleave[after_period]" id="infoleave_after_period" /></textarea>
+            
+        </div>
+      </div>
+      
+      
+      <div class="news_label_field" style="width:100%;">
+        <label for="title">Reason</label>
+        <div style="float:left;clear:both; margin:5px 0px; width:100%;">
+            <a href="javascript:void(0);" class="button_link" onClick="add_reason_text('Sick')" >Sick</a>
+            &nbsp;|&nbsp;
+            <a href="javascript:void(0);" class="button_link" onClick="add_reason_text('Family Program')" >Family Program</a>
+            &nbsp;|&nbsp;
+            <a href="javascript:void(0);" class="button_link" onClick="add_reason_text('Family Problem')" >Family Problem</a>
+        </div>    
+        <div id="textarea_field_bg" style="float:left;clear:both; margin:5px 0px;">
+            <textarea type="text" cols="70" rows="6" name="infoleave[reason]" id="infoleave_reason" /></textarea>
+            
+        </div>
+      </div>
+      
+    </div>
+    
+<div class="news_label_field">
+    <%= submit_tag "", :value => "► #{t('save')}", :class => "news_publish_button", :disable_with => "► #{t('please_wait')}" %>
+</div>    
+  
+    
+
+  <% end %>
+  <%= load_redactor_script %>
+</div>
+<%= stylesheet_link_tag 'tadded-header' %>
+<style>
+  .text-input-bg select
+  {
+     margin:0px;
+  }
+  .news_label_field {
+    margin-top: 18px;
+    float: left;
+    clear: both;
+  }
+  .news_publish_button
+  {
+    margin-left: 49px;
+    margin-top: 0px;
+  }
+</style>
+<script type ="text/javascript">
+  function add_period_text(text)
+  {
+     
+         j("#infoleave_after_period").val(text);
+     
+  }
+  function add_reason_text(text)
+  {
+     var reason_now =  j("#infoleave_reason").val();
+     if(reason_now)
+     {
+        var n = reason_now.indexOf(text);
+        if(n == -1)
+        {
+           var reason_new = reason_now+ ", "+text;
+           j("#infoleave_reason").val(reason_new);
+        }
+     }
+     else
+     {
+         j("#infoleave_reason").val(text);
+     }  
+  }
+</script>  
+  

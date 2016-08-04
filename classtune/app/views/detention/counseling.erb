@@ -1,0 +1,152 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+<% if params[:authenticity_token].nil? %>
+<div class="header-wrapper">
+  <div class="header-title">
+    <div class="header-icon">
+      <%= image_tag '/images/icons/notice.png', :html => {:alt => 'Notice'} %>
+    </div>
+    <div class="header-title-text-wrapper">
+      <div class="header-title-main-text f2">
+        <a href="/detention/counseling">Counseling Record</a>
+        <span style="float: left;clear:both;font-size: 15px;"><%= Time.now.strftime("%Y-%m-%d") %></span>
+      </div>
+      <div class="header-title-sub-text f5">
+
+      </div>
+    </div>
+      
+       
+  </div>    
+
+  <div class="header-form-wrapper">
+        <% if permitted_to? :add_counseling,:detention %>
+          <div class='header-right-button'><%= link_to "#{t('add')}", :controller => 'detention', :action => 'add_counseling' %></div>
+        <% end %>
+  </div>
+  <div class="clearfix"></div>
+  <div class="tabbed-header-wrapper">        
+      <ul class="header-tabs">
+         <%= render :partial => 'menu_link' %>
+      
+      </ul>
+
+    </div>
+</div>
+<% end %>
+
+  <div>
+     <% if @current_user.admin or @current_user.employee %>
+      <%= select :Counseling, :batch_id,
+                  @batches.map {|b| [b.full_name, b.id] },
+                  {:prompt => "Select a Class"},
+                  {:onchange => "#{remote_function(
+                  :url => { :action => 'show_counseling' },
+                  :update => 'data-div',
+                  :with => "'batch_id='+value+'&student_id='+$('Counseling_student_id').value",
+                  :before => "Element.show('loader')",
+                  :success => "Element.hide('loader')"  )}"} 
+       %>
+      <% else %>
+      <input type="hidden" id="Counseling_batch_id" value="" />
+      <% end %>
+
+  </div>
+
+
+<div id="data-div">
+  <%= render :partial => 'counseling_list' %>
+</div>
+
+<%= stylesheet_link_tag 'tadded-header' %>
+
+<%= stylesheet_link_tag 'pagination_and_table' %>
+
+<%= stylesheet_link_tag 'bootstrap_form' %>
+<% content_for :head do %>
+  <%= javascript_include_tag "custom/dashboard-filter" %>
+<% end %>
+
+<style type="text/css">
+  .pagination {
+    background-color: #fff;
+    float: left;
+    margin-top: 10px;
+    padding: 20px 0 20px 15px;
+    width: 98.5%;
+  }
+  .timetable_last a
+  {
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    background: #CB1119 none repeat scroll 0 0;
+    color: #FFFFFF !important;
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: 20px;
+    padding: 7px 10px;
+    border: none;
+    text-align: center;
+    width: auto;
+    cursor: pointer;
+    float: left;
+    margin-left:8px;
+    text-decoration: none;
+    display: block;
+  }
+  .button-filter {
+    background-color: #eeeeee;
+    border: 1px solid #b3b3b3;
+    border-radius: 6px;
+    color: #434343;
+    cursor: pointer;
+    display: block;
+    float: right;
+    font-size: 13px;
+    font-weight: normal;
+    margin-bottom: 0;
+    margin-top: 13px;
+    padding: 10px 17px;
+    text-decoration: none;
+  }
+  .button-filter:hover, .button-filter:active {
+    -webkit-transition: all 0.25s linear;
+    -moz-transition: all 0.25s linear;
+    -o-transition: all 0.25s linear;
+    -ms-transition: all 0.25s linear;
+    transition: all 0.25s linear;
+    background-color: #CB1119;
+    color: #ffffff;
+  }
+  #filter-div {
+    float: left;
+    margin-top: 15px;
+    width: 60%;
+  }
+  .data-div {
+    float: left;
+    width: 50%;
+  }
+  .data-div input[type="text"] {
+    width: 180px;
+  }
+  .pagination {
+    margin-right: 10px;
+  }
+</style>  

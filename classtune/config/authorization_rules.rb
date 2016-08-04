@@ -2232,7 +2232,26 @@ authorization do
       :notification,
       :show_notification,
       :add_notification,
-      :notification_student_list
+      :notification_student_list,
+      :awarning,
+      :show_awarning,
+      :add_awarning,
+      :awarning_student_list,
+      :counseling,
+      :show_counseling,
+      :add_counseling,
+      :counseling_student_list,
+      :opnion_counseling,
+      :leave,
+      :show_leave,
+      :add_leave,
+      :leave_student_list,
+      :task,
+      :show_task,
+      :add_task,
+      :task_student_list,
+      :done_task,
+      :opnion_task
       
       ]
     
@@ -2774,7 +2793,15 @@ authorization do
       :suspension,
       :show_suspension,
       :notification,
-      :show_notification
+      :show_notification,
+      :awarning,
+      :show_awarning,
+      :counseling,
+      :show_counseling,
+      :leave,
+      :show_leave,
+      :task,
+      :show_task
       ]
     has_permission_on [:news],
       :to => [
@@ -2865,7 +2892,16 @@ authorization do
       :ackhnowledged_suspension,
       :notification,
       :show_notification,
-      :opnion_notification
+      :opnion_notification,
+      :awarning,
+      :show_awarning,
+      :ackhnowledged_awarning,
+      :counseling,
+      :show_counseling,
+      :leave,
+      :show_leave,
+      :task,
+      :show_task
     ]
     has_permission_on [:news],
       :to => [
@@ -2968,9 +3004,26 @@ authorization do
       :notification,
       :show_notification,
       :add_notification,
-      :notification_student_list
-      
-      
+      :notification_student_list,
+      :awarning,
+      :show_awarning,
+      :add_awarning,
+      :awarning_student_list,
+      :counseling,
+      :show_counseling,
+      :add_counseling,
+      :counseling_student_list,
+      :opnion_counseling,
+      :leave,
+      :show_leave,
+      :add_leave,
+      :leave_student_list,
+      :task,
+      :show_task,
+      :add_task,
+      :task_student_list,
+      :done_task,
+      :opnion_task
       ]
     has_permission_on [:news],
       :to => [

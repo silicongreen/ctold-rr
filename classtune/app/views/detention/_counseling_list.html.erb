@@ -1,0 +1,112 @@
+<% if (@current_user.admin or @current_user.employee) and !@student_list.blank? %> 
+  <div>
+
+      <%= select :Counseling, :student_id,
+        options_for_select(@student_list.map {|b| [b.full_name, b.id] },@student_id.to_i),
+        {:prompt => "Select a Student"},
+        {:onchange => "#{remote_function(
+        :url => { :action => 'show_counseling' },
+        :update => 'data-div',
+        :with => "'student_id='+value+'&batch_id='+$('Counseling_batch_id').value",
+        :before => "Element.show('loader')",
+        :success => "Element.hide('loader')"  )}"} 
+    %>
+
+  </div>    
+<% else %>
+  <input type="hidden" id="Counseling_student_id" value="" />
+<% end %>
+
+
+<div id="page-yield" class="bg-disable" style="margin-top: 0px;">
+
+    <% unless flash[:notice].nil? %>
+      <p class="flash-msg"> <%= flash[:notice] %> </p>
+    <% end %>
+
+    <div id="all_news" class="partial_homework" style="margin-top:0px;">
+        <%= image_tag("loader.gif",
+          :align => "absmiddle",
+          :border => 0,
+          :id => "loader",
+          :style =>"display: none;" ) %>
+
+        <% unless @counseling.nil? or @counseling.blank? %>
+          
+
+          <% @counseling.each_with_index do |r,i| %>
+          <% unless r.student.nil? %>
+            <div class="portlet-subcontent">
+
+                <div class="timetable_right">
+                    <div class="subcontent-header">
+                         
+                        <%= r.student.first_name %> <%= r.student.last_name %>,<%= r.batch.full_name   %>, roll : <%= r.student.class_roll_no %> is send for counseling  on <%= I18n.l(r.date.to_date, :format=>'%d/%m/%Y') %>
+                        <br/>
+                        Reason for counseling are as follows :
+                        <br/>
+                        <%=  r.reason %>
+                        <br/>
+                        <% if !r.comment.blank? %>
+                        <br/>
+                        </br>
+                        <font color="red" >
+                        Counselor Opinion : <br/>
+                        <%= r.comment %>
+                        </font>
+                        <% end %>
+
+                    </div>            
+
+                </div>
+
+
+                <div class='timetable_last' id="status_<%=  r.id %>">
+
+                    <% if @current_user.admin %>
+
+                      <%= link_to_remote "delete" , :url => {:controller => 'detention', :action => "show_counseling", :id =>r.id},:confirm => "Are you sure?",:with => "'batch_id='+$('Counseling_batch_id').value+'&student_id='+$('Counseling_student_id').value",:loading => "$('loader').show();", :loaded => "$('loader').hide();" , :update=> "data-div" %>
+                      <%= link_to "Counselor Comment" ,:controller => 'detention', :action => "opnion_counseling", :id =>r.id %>
+
+
+                    <% elsif @current_user.employee %>
+                      <% if @employee.is_pod.to_i == 1 %>
+                        
+                          <%= link_to_remote "delete" , :url => {:controller => 'detention', :action => "show_counseling", :id =>r.id},:confirm => "Are you sure?",:with => "'batch_id='+$('Counseling_batch_id').value+'&student_id='+$('Counseling_student_id').value",:loading => "$('loader').show();", :loaded => "$('loader').hide();" , :update=> "data-div" %>
+                          <%= link_to "Counselor Comment" ,:controller => 'detention', :action => "opnion_counseling", :id =>r.id %>  
+                      <% end %>
+                      
+                    <% end %>
+
+
+                </div>
+            </div>
+            <div style="float: left; margin: 7px; width: 95%;"></div> 
+          <% end %>
+          <% end %>
+
+
+
+          <% posted_params = params %>
+          <% posted_params.delete(:page) %>
+          <% posted_params.delete(:authenticity_token) %>
+          <% posted_params.delete(:controller) %>
+          <% posted_params.delete(:action) %>
+          <% @url_params = "" %>
+          <% posted_params.each{|k,v| @url_params = @url_params.to_s+k.to_s+"="+v.to_s+"&"}  %>
+          <%= will_paginate @counseling, :renderer => 'RemoteLinkRenderer', :remote=>{:update=>'data-div'}%>
+
+  <%#= will_paginate @news %>
+
+
+        <% else %>
+          <div class="portlet-subcontent">
+              <div class="timetable_right">
+                  <div class="subcontent-header">No Counseling found</div>
+              </div>
+          </div>
+        <% end %>
+
+    </div>
+
+</div>

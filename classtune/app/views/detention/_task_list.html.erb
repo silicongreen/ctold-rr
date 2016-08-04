@@ -1,0 +1,124 @@
+<% if (@current_user.admin or @current_user.employee) and !@student_list.blank? %> 
+<div>
+      
+      <%= select :Dwork, :student_id,
+                  options_for_select(@student_list.map {|b| [b.full_name, b.id] },@student_id.to_i),
+                  {:prompt => "Select a Student"},
+                  {:onchange => "#{remote_function(
+                  :url => { :action => 'show_task' },
+                  :update => 'data-div',
+                  :with => "'student_id='+value+'&status_id='+$('Dwork_status').value+'&batch_id='+$('Dwork_batch_id').value",
+                  :before => "Element.show('loader')",
+                  :success => "Element.hide('loader')"  )}"} 
+       %>
+    
+ </div>    
+<% else %>
+ <input type="hidden" id="Dwork_student_id" value="" />
+<% end %>
+     
+
+<div id="page-yield" class="bg-disable" style="margin-top: 0px;">
+
+    <% unless flash[:notice].nil? %>
+      <p class="flash-msg"> <%= flash[:notice] %> </p>
+    <% end %>
+
+    <div id="all_news" class="partial_homework" style="margin-top:0px;">
+        <%= image_tag("loader.gif",
+          :align => "absmiddle",
+          :border => 0,
+          :id => "loader",
+          :style =>"display: none;" ) %>
+
+        <% unless @task.blank? %>
+
+
+          <% @task.each_with_index do |r,i| %>
+
+            <div class="portlet-subcontent">
+
+                <div class="timetable_right">
+                    <div class="subcontent-header themed_text">
+                        Name :  <%= r.student.first_name %> <%= r.student.last_name %> <br/> 
+                        Class : <%= r.batch.full_name   %><br/> 
+                        roll : <%= r.student.class_roll_no %><br/> 
+                        Task : <%= r.task %><br/>
+                        date : <%= I18n.l(r.date.to_date, :format=>'%d/%m/%Y') %><br/>
+                        <% if !r.comment.blank? %>
+                        Comment : <%= r.comment %>
+                        <% end %>
+                       
+                    </div>            
+
+                </div>
+
+
+                <div class='timetable_last' id="status_<%=  r.id %>">
+                    <% if r.status==0  %>
+                      <% if @current_user.admin %>
+                       
+                        <%= link_to_remote "delete" , :url => {:controller => 'detention', :action => "show_task", :id =>r.id},:confirm => "Are you sure?",:with => "'batch_id='+$('Dwork_batch_id').value+'&status_id='+$('Dwork_status').value+'&student_id='+$('Dwork_student_id').value",:loading => "$('loader').show();", :loaded => "$('loader').hide();" , :update=> "data-div" %>
+                       
+                        <%= link_to_remote "Done" , :url => {:controller => 'detention', :action => "done_task", :id =>r.id },:confirm => "Are you sure?",:loading => "$('loader').show();", :loaded => "$('loader').hide();" , :update=> 'status_'+r.id.to_s %>
+                        
+                      <% elsif @current_user.employee %>
+                        <% if @employee.is_pod.to_i == 1 %>
+                          <%= link_to_remote "delete" , :url => {:controller => 'detention', :action => "show_task", :id =>r.id},:confirm => "Are you sure?",:with => "'batch_id='+$('Dwork_batch_id').value+'&status_id='+$('Dwork_status').value+'&student_id='+$('Dwork_student_id').value",:loading => "$('loader').show();", :loaded => "$('loader').hide();" , :update=> "data-div" %>
+                       
+                          <%= link_to_remote "Done" , :url => {:controller => 'detention', :action => "done_task", :id =>r.id },:confirm => "Are you sure?",:loading => "$('loader').show();", :loaded => "$('loader').hide();" , :update=> 'status_'+r.id.to_s %>
+                          
+
+                        <% else %>
+                          <b>Not Done Yet</b>        
+                        <% end %>
+
+                     
+                      <% else %>
+                        <b>Not Done Yet</b>     
+                      <% end %>
+                    <% else %>
+                      <b>
+                         <font color="green"> Completed </font> 
+                      </b>
+                      <% if @current_user.admin %>
+                          <%= link_to "Comment" ,:controller => 'detention', :action => "opnion_task", :id =>r.id %>
+                      <% end %>
+                      <% if @current_user.employee %>
+                        <% if @employee.is_pod.to_i == 1 %> 
+                          <%= link_to "Comment" ,:controller => 'detention', :action => "opnion_task", :id =>r.id %>
+                        <% end %> 
+                      <% end %>  
+                        
+                    <% end %>
+
+                </div>
+            </div>
+            <div style="float: left; margin: 7px; width: 95%;"></div> 
+          <% end %>
+
+
+
+          <% posted_params = params %>
+          <% posted_params.delete(:page) %>
+          <% posted_params.delete(:authenticity_token) %>
+          <% posted_params.delete(:controller) %>
+          <% posted_params.delete(:action) %>
+          <% @url_params = "" %>
+          <% posted_params.each{|k,v| @url_params = @url_params.to_s+k.to_s+"="+v.to_s+"&"}  %>
+          <%= will_paginate @task, :renderer => 'RemoteLinkRenderer', :remote=>{:update=>'data-div'}%>
+
+  <%#= will_paginate @news %>
+
+
+        <% else %>
+          <div class="portlet-subcontent">
+              <div class="timetable_right">
+                  <div class="subcontent-header themed_text">No detention found</div>
+              </div>
+          </div>
+        <% end %>
+
+    </div>
+
+</div>

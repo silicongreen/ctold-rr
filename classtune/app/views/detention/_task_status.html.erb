@@ -1,0 +1,36 @@
+<% if @dwork.status==0  %>
+  <% if @current_user.admin %>
+
+    <%= link_to_remote "delete" , :url => {:controller => 'detention', :action => "show_task", :id =>@dwork.id},:confirm => "Are you sure?",:with => "'batch_id='+$('Dwork_batch_id').value+'&status_id='+$('Dwork_status').value+'&student_id='+$('Dwork_student_id').value",:loading => "$('loader').show();", :loaded => "$('loader').hide();" , :update=> "data-div" %>
+
+    <%= link_to_remote "Done" , :url => {:controller => 'detention', :action => "done_task", :id =>@dwork.id },:confirm => "Are you sure?",:loading => "$('loader').show();", :loaded => "$('loader').hide();" , :update=> 'status_'+@dwork.id.to_s %>
+
+  <% elsif @current_user.employee %>
+    <% if @employee.is_pod.to_i == 1 %>
+      <%= link_to_remote "delete" , :url => {:controller => 'detention', :action => "show_task", :id =>@dwork.id},:confirm => "Are you sure?",:with => "'batch_id='+$('Dwork_batch_id').value+'&status_id='+$('Dwork_status').value+'&student_id='+$('Dwork_student_id').value",:loading => "$('loader').show();", :loaded => "$('loader').hide();" , :update=> "data-div" %>
+
+      <%= link_to_remote "Done" , :url => {:controller => 'detention', :action => "done_task", :id =>@dwork.id },:confirm => "Are you sure?",:loading => "$('loader').show();", :loaded => "$('loader').hide();" , :update=> 'status_'+@dwork.id.to_s %>
+
+
+    <% else %>
+      <b>Not Done Yet</b>        
+    <% end %>
+
+
+  <% else %>
+    <b>Not Done Yet</b>     
+  <% end %>
+<% else %>
+  <b>
+      <font color="green"> Completed </font> 
+  </b>
+  <% if @current_user.admin %>
+    <%= link_to "Comment" ,:controller => 'detention', :action => "opnion_task", :id =>@dwork.id %>
+  <% end %>
+  <% if @current_user.employee %>
+    <% if @employee.is_pod.to_i == 1 %> 
+      <%= link_to "Comment" ,:controller => 'detention', :action => "opnion_task", :id =>@dwork.id %>
+    <% end %> 
+  <% end %>  
+
+<% end %>

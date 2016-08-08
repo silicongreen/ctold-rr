@@ -450,6 +450,7 @@ class ExamGroups extends CActiveRecord
         {
             $result['exam_name'] = $all_exams->name;
             $result['sba'] = $all_exams->sba;
+            
             $result['exam_category'] = $all_exams->exam_category;
             $result['exam_id'] = $all_exams->id;
             foreach($all_exams['Exams'] as $value)
@@ -466,6 +467,7 @@ class ExamGroups extends CActiveRecord
             $result['exam_name'] = $examresult->name;
             $result['exam_id'] = $examresult->id;
             $result['sba'] = $examresult->sba;
+            
             $result['exam_category'] = $examresult->exam_category;
             foreach($examresult['Exams'] as $value)
             {

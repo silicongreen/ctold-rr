@@ -391,7 +391,7 @@ class ExamGroups extends CActiveRecord
     public function getExamGroupResultSubject($exam_group_id,$student_id,$weightage)
     {
         $criteria = new CDbCriteria();
-        $criteria->select = 't.name,t.id,t.sba'; 
+        $criteria->select = 't.name,t.id,t.sba,t.exam_category'; 
         $criteria->compare('t.id', $exam_group_id);
         //$criteria->compare('t.result_published', 1);
         $criteria->compare('Subjects.no_exams', false);
@@ -423,7 +423,7 @@ class ExamGroups extends CActiveRecord
         
         
         $criteria = new CDbCriteria();
-        $criteria->select = 't.name,t.id'; 
+        $criteria->select = 't.name,t.id,t.sba,t.exam_category'; 
         $criteria->compare('t.id', $exam_group_id);
         //$criteria->compare('t.result_published', 1);
         $criteria->compare('Subjects.no_exams', false);
@@ -450,6 +450,7 @@ class ExamGroups extends CActiveRecord
         {
             $result['exam_name'] = $all_exams->name;
             $result['sba'] = $all_exams->sba;
+            $result['exam_category'] = $all_exams->exam_category;
             $result['exam_id'] = $all_exams->id;
             foreach($all_exams['Exams'] as $value)
             {
@@ -465,6 +466,7 @@ class ExamGroups extends CActiveRecord
             $result['exam_name'] = $examresult->name;
             $result['exam_id'] = $examresult->id;
             $result['sba'] = $examresult->sba;
+            $result['exam_category'] = $examresult->exam_category;
             foreach($examresult['Exams'] as $value)
             {
                $result['result'][$examresult->id][$value['Subjects']->id]['marks_obtained'] = "AB";

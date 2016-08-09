@@ -110,7 +110,7 @@ class TdsDailydose extends CActiveRecord
         public function getdailydosesingle($id)
         {
             $criteria=new CDbCriteria;
-            $criteria->select = 't.id, t.title, t.summary, t.content, t.date';
+            $criteria->select = 't.id, t.title,t.share_content, t.image_link, t.summary, t.content, t.date';
             $criteria->compare('id',$id);
             $data = $this->find($criteria);
             
@@ -140,7 +140,7 @@ class TdsDailydose extends CActiveRecord
         public function getdailydose()
         {
             $criteria=new CDbCriteria;
-            $criteria->select = 't.id, t.title, t.summary, t.content, t.date';
+            $criteria->select = 't.id, t.title,t.share_content, t.image_link, t.summary, t.content, t.date';
             $criteria->compare('date',date("Y-m-d"));
             $data = $this->find($criteria);
             

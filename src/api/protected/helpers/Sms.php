@@ -15,9 +15,9 @@ class Sms {
     
    
   
-    public static $param_ssd = array("msisdn","text");
-    public static $host_ssd = "http://103.239.252.108/api/send.php?username=robi&password=robi018&sender=ClassTune";
-    public static $host_return_ssd = "Successfully inserted to smsoutbox";
+    public static $param_ssd = array("msisdn","sms");
+    public static $host_ssd = "http://sms.sslwireless.com/pushapi/dynamic/server.php?user=classtune&pass=ssl@123&sid=ClassTune";
+    public static $host_return_ssd = "Success";
     public static function send_sms($sms_data,$school_id,$msg_id)
     {
         if(in_array($school_id,self::$sms_attendence_school)) 
@@ -47,24 +47,80 @@ class Sms {
             $sms_log = new SmsLogs();
             $sms_log->mobile = $sms_data[0];
             $sms_log->sms_message_id = $msg_id;
-            $sms_log->gateway_response = $result;
+            $sms_log->gateway_response = $sms_response;
             $sms_log->created_at = date("Y-m-d H:i:s");
             $sms_log->updated_at = date("Y-m-d H:i:s");
             $sms_log->school_id = $school_id;
             $sms_log->save();
             
-            if($result == $sms_response)
+          
+            $configobj = new Configurations();
+            $config_id = $configobj->getConfigId("TotalSmsCount",$school_id);
+
+            if($config_id)
             {
-                $configobj = new Configurations();
-                $config_id = $configobj->getConfigId("TotalSmsCount",$school_id);
-                
-                if($config_id)
-                {
-                    $configmain = $configobj->findByPk($config_id);
-                    $configmain->config_value = $configmain->config_value+1;
-                }
+                $configmain = $configobj->findByPk($config_id);
+                $configmain->config_value = $configmain->config_value+1;
             }
             
+            
+        }
+    } 
+    public static function send_sms_ssl($sms_numbers,$sms_msg_array,$school_id)
+    {
+        
+        $sms_params = array();
+        if($sms_numbers && in_array($school_id,self::$sms_attendence_school))
+        {
+            $configobj = new Configurations();
+            $config_id = $configobj->getConfigId("TotalSmsCount",$school_id);
+
+            if($config_id)
+            {
+                $configmain = $configobj->findByPk($config_id);
+                $configmain->config_value = $configmain->config_value+count($sms_numbers);
+            }
+            foreach($sms_numbers as $key=>$value)
+            {
+                $sms_msg = new SmsMessages();
+                $sms_msg->body = str_replace(" ","+", $sms_msg_array[$key]);
+                $sms_msg->created_at = date("Y-m-d H:i:s");
+                $sms_msg->updated_at = date("Y-m-d H:i:s");
+                $sms_msg->school_id = $school_id;
+                $sms_msg->save();
+                if($sms_msg)
+                {
+                    $sms_log = new SmsLogs();
+                    $sms_log->mobile = $value;
+                    $sms_log->sms_message_id = $sms_msg->id;
+                    $sms_log->gateway_response = "Success";
+                    $sms_log->created_at = date("Y-m-d H:i:s");
+                    $sms_log->updated_at = date("Y-m-d H:i:s");
+                    $sms_log->school_id = $school_id;
+                    $sms_log->save(); 
+                }
+                $sms_params[] = "sms[".$key."][0]= ".$value."&sms[".$key."][1]=".urlencode($sms_msg_array[$key])."&sms[".$key."][2]=123456789"; 
+            }
+            if($sms_params)
+            {
+                $user = "classtune";
+                $pass = "ssl@123";
+                $sid = "ClassTune";
+                $url="http://sms.sslwireless.com/pushapi/dynamic/server.php";
+                $param="user=$user&pass=$pass";
+                $param = $param."&".implode("&",$sms_numbers_params)."&sid=".$sid;
+                $crl = curl_init();
+                curl_setopt($crl,CURLOPT_SSL_VERIFYPEER,FALSE);
+                curl_setopt($crl,CURLOPT_SSL_VERIFYHOST,2);
+                curl_setopt($crl,CURLOPT_URL,$url);
+                curl_setopt($crl,CURLOPT_HEADER,0);
+                curl_setopt($crl,CURLOPT_RETURNTRANSFER,1);
+                curl_setopt($crl,CURLOPT_POST,1);
+                curl_setopt($crl,CURLOPT_POSTFIELDS,$param);
+                $response = curl_exec($crl);
+                curl_close($crl);
+            }
+
         }
     }        
     

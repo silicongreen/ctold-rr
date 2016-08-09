@@ -44,21 +44,19 @@ class CardattController extends Controller
         $studentobj = new Students();
         
         $sms_numbers = array();
+        $sms_msg = array();
         
         $studentdata = $studentobj->findByPk($student_id);
         $reminderrecipients[] = $studentdata->user_id;
         $batch_ids[$studentdata->user_id] = $studentdata->batch_id;
         $student_ids[$studentdata->user_id] = $studentdata->id;
         
+        $message = $studentdata->first_name . " " . $studentdata->last_name . " is absent on " . $newattendence->month_date;
         if($studentdata->phone2)
         {
             $sms_numbers[] = $studentdata->phone2;
-        }    
-
-        if ($late == 1)
-            $message = $studentdata->first_name . " " . $studentdata->last_name . " is Present but Late on " . $newattendence->month_date;
-        else
-            $message = $studentdata->first_name . " " . $studentdata->last_name . " is absent on " . $newattendence->month_date;
+            $sms_msg[] = $message;
+        }
         
         $gstudent = new GuardianStudent(); 
         
@@ -78,27 +76,15 @@ class CardattController extends Controller
                     if($grdata->mobile_phone && $grdata->id == $studentdata->immediate_contact_id)
                     {
                         $sms_numbers[] = $grdata->mobile_phone;
+                        $sms_msg[] = $message;
                     }
                 }
             }    
             
         }
         
-        
-//        if($sms_numbers && in_array($studentdata->school_id,Sms::$sms_attendence_school))
-//        {
-//            $sms_msg = new SmsMessages();
-//            $sms_msg->body = str_replace(" ","+", $message);
-//            $sms_msg->created_at = date("Y-m-d H:i:s");
-//            $sms_msg->updated_at = date("Y-m-d H:i:s");
-//            $sms_msg->school_id = $studentdata->school_id;
-//            $sms_msg->save();
-//            foreach ($sms_numbers as $value)
-//            {
-//                $sms_data = array($value,str_replace(" ","+", $message));
-//                Sms::send_sms($sms_data, $studentdata->school_id,$sms_msg->id);
-//            } 
-//        }        
+        Sms::send_sms_ssl($sms_numbers, $sms_msg, $studentdata->school_id);
+       
 
 
         if ($reminderrecipients)
@@ -127,6 +113,7 @@ class CardattController extends Controller
             Settings::sendCurlNotification($user_id, $notification_id);
         }
     }
+       
     public function actionAddAttendance()
     {
         
@@ -153,38 +140,23 @@ class CardattController extends Controller
             $attendence->deleteAttendanceStudent($school_id, $date);
             $leaveStudent = new ApplyLeaveStudents();
             $leave_today = $leaveStudent->getallleaveStudentsDate($date,$school_id);
-
+            $notification_send = new NotificationSend();
+            $students_ids_array = $notification_send->getNotificationSend($date, $school_id);
+            $students_ids = array();
+            $notification_send_id = 0;
+            if($students_ids_array)
+            {
+                $students_ids = $students_ids_array['students_ids'];
+                $notification_send_id = $students_ids_array['id'];
+            }
+            
             if($absent_studnets)
             {
+               
                foreach ($absent_studnets as $student)
                {
 
-                    $student_id = $student->id;
-                   
-                    
-//                    $attendence_batch = $attendence->getAttendenceStudent($student_id, $date);
-//
-//                    if ($attendence_batch)
-//                    {
-//                        $previous_attendence = $attendence->findbypk($attendence_batch->id);
-//                        if ($previous_attendence)
-//                        {
-//                            $reminder = new Reminders();
-//
-//                            $reminderdata = $reminder->getReminder($attendence_batch->id);
-//
-//                            if ($reminderdata)
-//                            {
-//                                foreach ($reminderdata as $rvalue)
-//                                {
-//                                    $rfordelete = $reminder->findByPk($rvalue->id);
-//                                    $rfordelete->delete();
-//                                }
-//                            }
-//
-//                            $previous_attendence->delete();
-//                        }
-//                    }
+                   $student_id = $student->id;
                    
                    
                    $newattendence = new Attendances();
@@ -208,11 +180,26 @@ class CardattController extends Controller
 
                    $newattendence->save();
 
-                   if(!isset($newattendence->is_leave) || $newattendence->is_leave!=1)
+                   if((!isset($newattendence->is_leave) || $newattendence->is_leave!=1) && !in_array($student_id, $students_ids))
                    {
                        $this->sendnotificationAttendence($student_id, $newattendence, 0);
+                       $students_ids[] = $student_id;
                    }
                }
+               
+                if($notification_send_id)
+                {
+                    $notification_sendobj = $notification_send->findByPk($notification_send_id);
+                    $notification_sendobj->students_ids = json_encode($students_ids);
+                    $notification_sendobj->save();
+                }
+                else if($students_ids)
+                {
+                    $notification_send->school_id = $school_id;
+                    $notification_send->students_ids = json_encode($students_ids);
+                    $notification_send->save();
+                }
+               
                
             }
             $response['success'] = true;

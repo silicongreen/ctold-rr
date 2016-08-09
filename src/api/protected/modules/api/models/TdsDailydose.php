@@ -153,6 +153,29 @@ class TdsDailydose extends CActiveRecord
             
         }
         
+        public function getdailydoseSearch($term)
+        {
+            $criteria=new CDbCriteria;
+            $criteria->select = 't.id, t.title,t.share_content, t.image_link, t.summary, t.content, t.date';
+            $criteria->order = 't.date DESC';
+            $criteria->addCondition("t.content like '%".$term."%'");
+            $criteria->limit = 5;
+            $data = $this->findAll($criteria);
+            $dailydose = array();
+            foreach($data as $value)
+            {
+                if(!$value->share_content)
+                {
+                   $value->share_content = $value->content;
+                }
+                $value->image_link = Settings::content_single_images($value->share_content);
+                $dailydose[] = $value;
+                
+            }    
+            
+            return $data;
+        }
+        
         
         public function getdailydoseAll($page = 1, $page_size = 10)
         {

@@ -26,7 +26,7 @@ class SciencerocksController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'getlevel', 'getscoreboard','gethighscore', 'getepisode', 'getquestion', 'download', 'sharedaildose', 'savescore', 'getdailydose', 'getdailydosehistory', 'getanchorquestion', 'ask'),
+                'actions' => array('index', 'getlevel','search', 'getscoreboard','gethighscore', 'getepisode', 'getquestion', 'download', 'sharedaildose', 'savescore', 'getdailydose', 'getdailydosehistory', 'getanchorquestion', 'ask'),
                 'users' => array('*'),
             ),
             array('deny', // deny all users
@@ -34,7 +34,22 @@ class SciencerocksController extends Controller {
             ),
         );
     }
-
+    public function actionSearch() {
+        $term = Yii::app()->request->getPost('term');
+        if ($term) {
+            $category = new TdsScienceRocksCategory();
+            $dailydose = new TdsDailydose();
+            $response['data']['dailydose'] = $dailydose->getdailydoseSearch($term);
+            $response['data']['topics'] = $category->getCategorySearch($term);
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "Success";
+        } else {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    }
     public function actionGetHighScore() {
         $level_id = Yii::app()->request->getPost('level_id');
         if ($level_id) {

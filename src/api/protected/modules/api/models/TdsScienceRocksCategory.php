@@ -105,6 +105,32 @@ class TdsScienceRocksCategory extends CActiveRecord
 		return parent::model($className);
 	}
         
+        public function getCategorySearch($term)
+        {
+            $criteria = new CDbCriteria;
+            $criteria->select = 't.id, t.name,t.en_name, t.details';
+            $criteria->compare('status',1);
+            $criteria->addCondition("t.name like '".$term."%'");
+            $criteria->order = 't.priority ASC';
+            $criteria->limit = 5;
+            $data = $this->findAll($criteria);
+            
+            $sc_category = array();
+            if($data)
+            {
+                foreach ($data as $value)
+                {
+                   if(!$value->en_name)
+                   {
+                     $value->en_name =   $value->name;
+                   }
+                   $sc_category[] = $value;
+                }    
+            }
+            
+            return $sc_category;
+        } 
+        
         public function getCategory()
         {
             $criteria = new CDbCriteria;

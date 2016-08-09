@@ -110,7 +110,7 @@ class TdsScienceRocksCategory extends CActiveRecord
             $criteria = new CDbCriteria;
             $criteria->select = 't.id, t.name,t.en_name, t.details';
             $criteria->compare('status',1);
-            $criteria->addCondition("t.name like '".$term."%'");
+            $criteria->addCondition("t.name like '".$term."%' or t.en_name like '".$term."%'");
             $criteria->order = 't.priority ASC';
             $criteria->limit = 5;
             $data = $this->findAll($criteria);

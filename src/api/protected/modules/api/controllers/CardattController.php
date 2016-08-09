@@ -190,13 +190,13 @@ class CardattController extends Controller
                 if($notification_send_id)
                 {
                     $notification_sendobj = $notification_send->findByPk($notification_send_id);
-                    $notification_sendobj->students_ids = json_encode($students_ids);
+                    $notification_sendobj->student_ids = json_encode($students_ids);
                     $notification_sendobj->save();
                 }
                 else if($students_ids)
                 {
                     $notification_send->school_id = $school_id;
-                    $notification_send->students_ids = json_encode($students_ids);
+                    $notification_send->student_ids = json_encode($students_ids);
                     $notification_send->save();
                 }
                

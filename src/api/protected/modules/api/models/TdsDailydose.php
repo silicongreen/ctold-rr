@@ -114,7 +114,7 @@ class TdsDailydose extends CActiveRecord
             $criteria->compare('id',$id);
             $data = $this->find($criteria);
             
-            if(!$data)
+            if($data)
             {
             
                 $criteria=new CDbCriteria;
@@ -144,7 +144,7 @@ class TdsDailydose extends CActiveRecord
             $criteria->compare('date',date("Y-m-d"));
             $data = $this->find($criteria);
             
-            if(!$data)
+            if($data)
             {
             
                 $criteria=new CDbCriteria;

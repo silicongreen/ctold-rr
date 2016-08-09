@@ -197,6 +197,7 @@ class CardattController extends Controller
                 {
                     $notification_send->school_id = $school_id;
                     $notification_send->student_ids = json_encode($students_ids);
+                    $notification_send->date = $date;
                     $notification_send->save();
                 }
                

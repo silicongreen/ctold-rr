@@ -108,7 +108,7 @@ class Sms {
                 $sid = "ClassTune";
                 $url="http://sms.sslwireless.com/pushapi/dynamic/server.php";
                 $param="user=$user&pass=$pass";
-                $param = $param."&".implode("&",$sms_numbers_params)."&sid=".$sid;
+                $param = $param."&".implode("&",$sms_params)."&sid=".$sid;
                 $crl = curl_init();
                 curl_setopt($crl,CURLOPT_SSL_VERIFYPEER,FALSE);
                 curl_setopt($crl,CURLOPT_SSL_VERIFYHOST,2);

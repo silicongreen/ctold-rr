@@ -262,6 +262,8 @@ class topicandquestion extends MX_Controller {
                 $obj_assesment_que->topic_id = $topic_id;
                 $obj_assesment_que->question = $this->input->post('question');
                 $obj_assesment_que->explanation = $this->input->post('explanation');
+                $obj_assesment_que->en_question = $this->input->post('en_question');
+                $obj_assesment_que->en_explanation = $this->input->post('en_explanation');
                 $obj_assesment_que->mark = $this->input->post('mark');
                 $obj_assesment_que->time = $this->input->post('time');
 
@@ -333,6 +335,8 @@ class topicandquestion extends MX_Controller {
                 $obj_assesment_que->topic_id = $topic_id;
                 $obj_assesment_que->question = $this->input->post('question');
                 $obj_assesment_que->explanation = $this->input->post('explanation');
+                $obj_assesment_que->en_question = $this->input->post('en_question');
+                $obj_assesment_que->en_explanation = $this->input->post('en_explanation');
                 $obj_assesment_que->mark = $this->input->post('mark');
                 $obj_assesment_que->time = $this->input->post('time');
                 

@@ -26,7 +26,7 @@ class SciencerocksController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'getlevel','search', 'getscoreboard','gethighscore', 'getepisode', 'getquestion', 'download', 'sharedaildose', 'savescore', 'getdailydose', 'getdailydosehistory', 'getanchorquestion', 'ask'),
+                'actions' => array('index', 'getlevel','search','getdailydosesingle', 'getscoreboard','gethighscore', 'getepisode', 'getquestion', 'download', 'sharedaildose', 'savescore', 'getdailydose', 'getdailydosehistory', 'getanchorquestion', 'ask'),
                 'users' => array('*'),
             ),
             array('deny', // deny all users
@@ -205,6 +205,15 @@ class SciencerocksController extends Controller {
     public function actiongetDailyDose() {
         $dailydose = new TdsDailydose();
         $response['data']['dailydose'] = $dailydose->getdailydose();
+        $response['status']['code'] = 200;
+        $response['status']['msg'] = "Success";
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    }
+    public function actiongetDailyDoseSingle() {
+        $id = Yii::app()->request->getPost('id');
+        $dailydose = new TdsDailydose();
+        $response['data']['dailydose'] = $dailydose->getdailydosesingle($id);
         $response['status']['code'] = 200;
         $response['status']['msg'] = "Success";
         echo CJSON::encode($response);

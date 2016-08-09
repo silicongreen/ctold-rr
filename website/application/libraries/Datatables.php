@@ -459,7 +459,7 @@
             else if(isset($_POST['sType_' . $i]) && $this->ci->input->post('sType_' . $i) == 'eq')
             {
                $val = str_replace(',', '\,', $val);
-               $this->ci->db->where($this->select[$mColArray[$i]],$val);
+               $this->ci->db->where($this->select[$mColArray[$i]]."1",$val);
             }
             else if(isset($_POST['sType_' . $i]) && $this->ci->input->post('sType_' . $i) == 'group_concate')
             {

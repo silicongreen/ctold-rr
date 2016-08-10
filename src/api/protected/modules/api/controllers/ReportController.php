@@ -70,11 +70,17 @@ class ReportController extends Controller
                    && Yii::app()->request->getPost('batch_id') && Yii::app()->request->getPost('student_id') )
                     || ( (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin )  && Yii::app()->request->getPost('batch_id')  && Yii::app()->request->getPost('student_id'))))
             {
+                $batch_id_student_send = Yii::app()->request->getPost('batch_id');
                 if(Yii::app()->user->isParent || Yii::app()->user->isTeacher || Yii::app()->user->isAdmin)
                 {
                     $batch_id   = Yii::app()->request->getPost('batch_id');
                     $student_id = Yii::app()->request->getPost('student_id');
                 }
+                else if($batch_id_student_send)
+                {
+                    $batch_id   = $batch_id_student_send;
+                    $student_id = Yii::app()->user->profileId;
+                } 
                 else
                 {
                     $batch_id   = Yii::app()->user->batchId;
@@ -380,10 +386,16 @@ class ReportController extends Controller
                    && Yii::app()->request->getPost('batch_id') && Yii::app()->request->getPost('student_id') )
                     || (Yii::app()->user->isTeacher  && Yii::app()->request->getPost('batch_id')  && Yii::app()->request->getPost('student_id'))))
             {
+                $batch_id_student_send = Yii::app()->request->getPost('batch_id');
                 if(Yii::app()->user->isParent || Yii::app()->user->isTeacher)
                 {
                     $batch_id   = Yii::app()->request->getPost('batch_id');
                     $student_id = Yii::app()->request->getPost('student_id');
+                }
+                else if($batch_id_student_send)
+                {
+                    $batch_id   = $batch_id_student_send;
+                    $student_id = Yii::app()->user->profileId;
                 }
                 else
                 {
@@ -437,10 +449,16 @@ class ReportController extends Controller
                    && Yii::app()->request->getPost('batch_id') && Yii::app()->request->getPost('student_id') )
                     || (Yii::app()->user->isTeacher  && Yii::app()->request->getPost('batch_id')  && Yii::app()->request->getPost('student_id'))))
             {
+                $batch_id_student_send = Yii::app()->request->getPost('batch_id');
                 if(Yii::app()->user->isParent || Yii::app()->user->isTeacher)
                 {
                     $batch_id   = Yii::app()->request->getPost('batch_id');
                     $student_id = Yii::app()->request->getPost('student_id');
+                }
+                else if($batch_id_student_send)
+                {
+                    $batch_id   = $batch_id_student_send;
+                    $student_id = Yii::app()->user->profileId;
                 }
                 else
                 {
@@ -492,10 +510,16 @@ class ReportController extends Controller
                    && Yii::app()->request->getPost('batch_id') && Yii::app()->request->getPost('student_id') )
                     || (Yii::app()->user->isTeacher  && Yii::app()->request->getPost('batch_id')  && Yii::app()->request->getPost('student_id'))))
             {
+                $batch_id_student_send = Yii::app()->request->getPost('batch_id');
                 if(Yii::app()->user->isParent || Yii::app()->user->isTeacher)
                 {
                     $batch_id   = Yii::app()->request->getPost('batch_id');
                     $student_id = Yii::app()->request->getPost('student_id');
+                }
+                else if($batch_id_student_send)
+                {
+                    $batch_id   = $batch_id_student_send;
+                    $student_id = Yii::app()->user->profileId;
                 }
                 else
                 {
@@ -545,10 +569,16 @@ class ReportController extends Controller
                    && Yii::app()->request->getPost('batch_id') && Yii::app()->request->getPost('student_id') )
                     || (Yii::app()->user->isTeacher  && Yii::app()->request->getPost('batch_id')  && Yii::app()->request->getPost('student_id'))))
             {
+                $batch_id_student_send = Yii::app()->request->getPost('batch_id');
                 if(Yii::app()->user->isParent || Yii::app()->user->isTeacher)
                 {
                     $batch_id   = Yii::app()->request->getPost('batch_id');
                     $student_id = Yii::app()->request->getPost('student_id');
+                }
+                else if($batch_id_student_send)
+                {
+                    $batch_id   = $batch_id_student_send;
+                    $student_id = Yii::app()->user->profileId;
                 }
                 else
                 {
@@ -600,10 +630,16 @@ class ReportController extends Controller
                    && Yii::app()->request->getPost('batch_id') && Yii::app()->request->getPost('student_id') )
                     || (Yii::app()->user->isTeacher  && Yii::app()->request->getPost('batch_id')  && Yii::app()->request->getPost('student_id'))))
             {
+                $batch_id_student_send = Yii::app()->request->getPost('batch_id');
                 if(Yii::app()->user->isParent || Yii::app()->user->isTeacher)
                 {
                     $batch_id   = Yii::app()->request->getPost('batch_id');
                     $student_id = Yii::app()->request->getPost('student_id');
+                }
+                else if($batch_id_student_send)
+                {
+                    $batch_id   = $batch_id_student_send;
+                    $student_id = Yii::app()->user->profileId;
                 }
                 else
                 {
@@ -754,11 +790,17 @@ class ReportController extends Controller
                    && Yii::app()->request->getPost('batch_id') && Yii::app()->request->getPost('student_id') )
                     || (Yii::app()->user->isTeacher  && Yii::app()->request->getPost('batch_id')  && Yii::app()->request->getPost('student_id'))))
             {
+                $batch_id_student_send = Yii::app()->request->getPost('batch_id');
                 if(Yii::app()->user->isParent || Yii::app()->user->isTeacher)
                 {
                     $batch_id   = Yii::app()->request->getPost('batch_id');
                     $student_id = Yii::app()->request->getPost('student_id');
                 }
+                else if($batch_id_student_send)
+                {
+                    $batch_id   = $batch_id_student_send;
+                    $student_id = Yii::app()->user->profileId;
+                } 
                 else
                 {
                     $batch_id   = Yii::app()->user->batchId;

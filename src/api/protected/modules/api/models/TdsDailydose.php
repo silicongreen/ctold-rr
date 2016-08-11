@@ -116,12 +116,6 @@ class TdsDailydose extends CActiveRecord
             
             if($data)
             {
-            
-                $criteria=new CDbCriteria;
-                $criteria->select = 't.id, t.title,t.share_content, t.image_link, t.summary, t.content, t.date';
-                $criteria->order = 't.date DESC';
-                $criteria->limit = 1;
-                $data = $this->find($criteria);
                 if(!$data->share_content)
                 {
                    $data->share_content = $data->content;

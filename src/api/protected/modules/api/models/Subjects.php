@@ -365,6 +365,7 @@ class Subjects extends CActiveRecord
                 foreach($value['Exams'] as $examvalue)
                 {
                   $all_report[$i]['subject_name'] =  $examvalue['Subjects']->name;
+                  $all_report[$i]['subject_code'] =  $examvalue['Subjects']->code;
                   $all_report[$i]['subject_id'] =  $examvalue->subject_id;
                   $all_report[$i]['maximum_marks'] =  $examvalue->maximum_marks;
                   

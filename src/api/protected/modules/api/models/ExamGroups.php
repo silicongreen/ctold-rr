@@ -523,7 +523,7 @@ class ExamGroups extends CActiveRecord
                              )
                         ),
                         'Subjects' => array(
-                            'select' => 'Subjects.name',
+                            'select' => 'Subjects.name,Subjects.code',
                         )
 
                     )

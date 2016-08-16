@@ -518,7 +518,7 @@ class ExamGroups extends CActiveRecord
                                         'select' => 'Examgrade.name,Examgrade.credit_points',
                                     ),
                                     'Students' => array(
-                                        'select' => 'Students.first_name,Students.middle_name,Students.last_name',
+                                        'select' => 'Students.first_name,Students.middle_name,Students.last_name,Students.class_roll_no',
                                     ),
                              )
                         ),

@@ -366,6 +366,7 @@ class Subjects extends CActiveRecord
                 {
                   $all_report[$i]['subject_name'] =  $examvalue['Subjects']->name;
                   $all_report[$i]['subject_id'] =  $examvalue->subject_id;
+                  $all_report[$i]['maximum_marks'] =  $examvalue->maximum_marks;
                   
                   if($examvalue['Scores'])
                   {
@@ -419,6 +420,7 @@ class Subjects extends CActiveRecord
                               }
                               $std_name = $std_name." ".$examscore['Students']->last_name;
                               $exam_students[$k]['name'] =  $std_name;
+                              $exam_students[$k]['class_roll_no'] =  $examscore['Students']->class_roll_no;
                               $exam_students_for_sorting[$k] =  $examscore->student_id;
                               $exam_students[$k]['position'] =  0;
                               $exam_students[$k]['total'] =  0;

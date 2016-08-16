@@ -467,7 +467,7 @@ class Subjects extends CActiveRecord
         if($exam_students)
         {
             usort($exam_students, function($a, $b) {
-                        return $a['position'] - $b['position'];
+                        return $a['class_roll_no'] - $b['class_roll_no'];
             });
         }
         

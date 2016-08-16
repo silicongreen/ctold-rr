@@ -439,7 +439,7 @@ class Subjects extends CActiveRecord
         $all_grade =  $grading_level->getAllGrade(Yii::app()->user->schoolId);
         if($total_point_number && $exam_students)      
         {
-            arsort($total_point_number);
+            arsort($total_point_number,SORT_NUMERIC);
             $i=1;
             foreach($total_point_number as $key=>$value)
             {

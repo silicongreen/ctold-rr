@@ -342,7 +342,7 @@ class Subjects extends CActiveRecord
         return $percent_student;
     }        
     
-    public function getTermReportAll($id)
+    public function getTermReportAll($id,$mark_sheet="")
     {
         $examGroup = new ExamGroups();
         $exams = $examGroup->getAllExamByID($id); 
@@ -466,9 +466,18 @@ class Subjects extends CActiveRecord
         } 
         if($exam_students)
         {
-            usort($exam_students, function($a, $b) {
-                        return $a['class_roll_no'] - $b['class_roll_no'];
-            });
+            if($mark_sheet)
+            {
+                usort($exam_students, function($a, $b) {
+                            return $a['class_roll_no'] - $b['class_roll_no'];
+                });
+            }
+            else
+            {
+                usort($exam_students, function($a, $b) {
+                            return $a['position'] - $b['position'];
+                });  
+            }    
         }
         
         return array('report'=>$all_report,"students"=>$exam_students);

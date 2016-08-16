@@ -191,10 +191,12 @@ class ReportController extends Controller
     {
         $user_secret = Yii::app()->request->getPost('user_secret');
         $id = Yii::app()->request->getPost('id');
+        $mark_sheet = Yii::app()->request->getPost('mark_sheet');
+        
         if(Yii::app()->user->user_secret === $user_secret && (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin))
         {
            $subjects = new Subjects();
-           $result = $subjects->getTermReportAll($id);
+           $result = $subjects->getTermReportAll($id,$mark_sheet);
            $response['data']['result']       = $result;
            $response['status']['code']       = 200;
            $response['status']['msg']        = "Data Found"; 

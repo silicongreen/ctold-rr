@@ -348,8 +348,7 @@ class Subjects extends CActiveRecord
         $exams = $examGroup->getAllExamByID($id); 
         
         
-       print_r($exams);
-       exit;
+       
         $all_report = array();
         $exam_students = array();
         $exam_students_for_sorting = array();

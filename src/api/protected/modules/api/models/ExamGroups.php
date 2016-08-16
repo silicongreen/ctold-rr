@@ -504,7 +504,7 @@ class ExamGroups extends CActiveRecord
         $criteria = new CDbCriteria();
         $criteria->select = 't.name'; 
         $criteria->compare('t.id', $id);
-        $criteria->compare('t.result_published', 1);
+        //$criteria->compare('t.result_published', 1);
         $criteria->compare('Subjects.no_exams', false);
         $criteria->compare('Subjects.is_deleted', false);
         $criteria->with = array(

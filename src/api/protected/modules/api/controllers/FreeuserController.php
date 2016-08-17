@@ -413,7 +413,7 @@ class FreeuserController extends Controller
             $assignmentobj = $assignment->findByPk($id);
             if ($assignmentobj->attachment_file_name)
             {
-                $attachment_datetime_chunk = explode(" ", $assignmentobj->attachment_updated_at);
+                $attachment_datetime_chunk = explode(" ", $assignmentobj->updated_at);
 
                 $attachment_date_chunk = explode("-", $attachment_datetime_chunk[0]);
                 $attachment_time_chunk = explode(":", $attachment_datetime_chunk[1]);

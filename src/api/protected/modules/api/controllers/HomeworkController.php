@@ -975,7 +975,7 @@ class HomeworkController extends Controller
     {
         $homework->attachment_updated_at = date("Y-m-d H:i:s");
                     
-        $attachment_datetime_chunk = explode(" ", $homework->attachment_updated_at);
+        $attachment_datetime_chunk = explode(" ", $homework->updated_at);
 
         $attachment_date_chunk = explode("-", $attachment_datetime_chunk[0]);
         $attachment_time_chunk = explode(":", $attachment_datetime_chunk[1]);

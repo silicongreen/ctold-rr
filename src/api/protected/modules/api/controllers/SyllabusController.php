@@ -678,7 +678,7 @@ class SyllabusController extends Controller {
     {
         $lessonplan->attachment_updated_at = date("Y-m-d H:i:s");
                     
-        $attachment_datetime_chunk = explode(" ", $lessonplan->attachment_updated_at);
+        $attachment_datetime_chunk = explode(" ", $lessonplan->updated_at);
 
         $attachment_date_chunk = explode("-", $attachment_datetime_chunk[0]);
         $attachment_time_chunk = explode(":", $attachment_datetime_chunk[1]);

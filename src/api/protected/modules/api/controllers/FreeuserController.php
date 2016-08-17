@@ -423,6 +423,8 @@ class FreeuserController extends Controller
 
                 $url = Settings::$paid_image_path ."uploads/assignments/attachments/" . $id . "/original/" . str_replace(" ", "+", $assignmentobj->attachment_file_name) . "?" . $attachment_extra;
 
+                echo $assignmentobj->attachment_file_name;
+                exit;
                 header("Content-Disposition: attachment; filename=" . $assignmentobj->attachment_file_name);
                 header("Content-Type: {$assignmentobj->attachment_content_type}");
                 header("Content-Length: " . $assignmentobj->attachment_file_size);

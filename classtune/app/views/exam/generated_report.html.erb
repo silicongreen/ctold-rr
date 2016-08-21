@@ -54,7 +54,12 @@
         <% unless flash[:notice].nil? %>
           <p class="flash-msg"> <%= flash[:notice] %> </p>
         <% end %>
-        <h3 align="center"><%= @student.batch.full_name %> - <%= @exam_group.name %></h3>
+        <% if @student.batch.id == @exam_group.batch_id %>
+          <h3 align="center"><%= @student.batch.full_name %> - <%= @exam_group.name %></h3>
+        <% else %>
+          <h3 align="center">Result Of : <%= @batch.full_name %> - <%= @exam_group.name %></h3>
+          <h3 align="center">Current Student Class : <%= @student.batch.full_name %></h3>
+        <% end %>
         <div id="student_list">
           <%= render  :partial=>"exam_wise_student_list" %>
         </div>
@@ -90,8 +95,8 @@
           <!--<h3 align="center"><%#= @student.batch.full_name %> - <%#= @exam_group.name %></h3>-->
 
                 <th><%= render  :partial=>"exam_wise_student_name" %></th>
-                <th><span  style="margin-top:0px;">Class :</span> <span style="font-size:22px;"><%= @student.batch.course.full_name %>
-                <%= @student.batch.name %></span></th>
+                <th><span  style="margin-top:0px;">Class :</span> <span style="font-size:22px;"><%= @batch.course.full_name %>
+                <%= @batch.name %></span></th>
                </tr>
               </thead>
           </table>    
@@ -214,7 +219,7 @@
     Element.show('loader')
     new Ajax.Request('/exam/generated_report',
     {asynchronous:true, evalScripts:true,
-      parameters:'student='+this.id+'&exam_group=<%= @exam_group.id %>',onSuccess:function(request){Element.hide('loader')}
+      parameters:'student='+this.id+'&exam_group=<%= @exam_group.id %>&batch_id=<%= @exam_group.batch_id %>',onSuccess:function(request){Element.hide('loader')}
     })
   }
   document.observe("dom:loaded", function() {

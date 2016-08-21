@@ -1,5 +1,5 @@
 <div id="page-yield" class="bg-disable">
-
+    <input type="hidden" value="<%= @student.batch.id %>" name="current_batch_id" id="current_batch_id">
     <div class="header-wrapper">
         <div class="header-title">
             <div class="header-icon">
@@ -14,8 +14,12 @@
                 </div>
             </div>
         </div>
-        <%= link_to "<div class='button-link button-link-report'>Attendence Report</div>", :controller => "student_attendance", :action => "month_report" %>
-
+        <div style="float:right;width:19%;">
+          <%= link_to "<div class='button-link button-link-report'>Attendence Report</div>", :controller => "student_attendance", :action => "month_report" %>
+          <%= render :partial => "previous_batches", :locals=>{:batches=>@previous_batch} %>
+        </div>
+        
+        
         <div class="clearfix"></div>
 
         <div class="tabbed-header-wrapper">
@@ -25,14 +29,17 @@
                       :update => "report-data-all",
                       :before => "Element.show('loader')",
                       :success => "Element.hide('loader');j('.header-tabs li').removeClass('active');j('.header-tabs li.class_test').addClass('active');",
-                      :url => {:controller=>"student",:action => "class_test_report_single",:exam_group=>params[:exam_group]} %>
+                      :url => {:controller=>"student",:action => "class_test_report_single",:exam_group=>params[:exam_group]},
+                      :with => "'batch_id ='+ j( '#course_course_id option:selected' ).val()"
+                  %>
                 </li>
                 <li  class='<% if @extra == "term"  %>active <% end %> term_test_report f2'>
                     <%= link_to_remote "Term Report",
                       :update => "report-data-all",
                       :before => "Element.show('loader')",
                       :success => "Element.hide('loader');j('.header-tabs li').removeClass('active');j('.header-tabs li.term_test_report').addClass('active');",
-                      :url => {:controller=>"student",:action => "term_test_report"} %>
+                      :url => {:controller=>"student",:action => "term_test_report"},
+                      :with => "'batch_id='+ j( '#course_course_id option:selected' ).val()"%>
                 </li>
                 <li  class='<% if @extra == "progress"  %>active <% end %> progress_report f2'>
                     <%= link_to_remote "Progress Graph",
@@ -46,7 +53,8 @@
                       :update => "report-data-all",
                       :before => "Element.show('loader')",
                       :success => "Element.hide('loader');j('.header-tabs li').removeClass('active');j('.header-tabs li.groupexam_report').addClass('active');",
-                      :url => {:controller=>"student",:action => "combined_exam"} %>
+                      :url => {:controller=>"student",:action => "combined_exam"} ,
+                      :with => "'batch_id='+ j( '#course_course_id option:selected' ).val()"%>
                 </li>
 
             </ul>

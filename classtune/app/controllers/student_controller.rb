@@ -1309,19 +1309,21 @@ class StudentController < ApplicationController
       target = current_user.guardian_entry.current_ward_id      
       @student = Student.find_by_id(target) 
     end
-    @previous_batch = @student.batch_students
+    
+    @batch = @student.batch
+    
+    #@previous_batch = @student.batch_students
+    @previous_batch = Batch.all(:joins=>[:batch_students],:conditions=>["batch_students.student_id=#{@student.id}"]).uniq
     @courses_all = Batch.all(:joins=>[:batch_students],:conditions=>["batch_students.student_id=#{@student.id}"],:include=>:course).uniq
-      
+    #abort @previous_batch.inspect
     get_class_test_report
     @extra = "class_test"
     if params[:extra]
       @extra = params[:extra].to_s
-      if @extra == "term"       
-        @batch = @student.batch
+      if @extra == "term"  
         @exam_groups = @batch.exam_groups
         @exam_groups.reject!{|e| e.result_published==false or e.exam_category!=3}
-      elsif @extra == "progress"        
-        @batch = @student.batch
+      elsif @extra == "progress"  
         @grouped_exams = GroupedExam.find_all_by_batch_id(@batch.id)
         @normal_subjects = Subject.find_all_by_batch_id(@batch.id,:conditions=>"no_exams = false AND elective_group_id IS NULL AND is_deleted = false")
         @student_electives =StudentsSubject.all(:conditions=>{:student_id=>@student.id,:batch_id=>@batch.id,:subjects=>{:is_deleted=>false}},:joins=>[:subject])
@@ -1345,6 +1347,9 @@ class StudentController < ApplicationController
     end
   end
   
+  #def class_test_report
+    
+  #end
    def combined_exam
     if current_user.student
       @student = Student.find(current_user.student_record.id)
@@ -1408,8 +1413,9 @@ class StudentController < ApplicationController
       target = current_user.guardian_entry.current_ward_id      
       @student = Student.find_by_id(target) 
     end
-    @batch = @student.batch
-    #@batch = Batch.find_by_id(1286)
+    #@batch = @student.batch
+    #abort params[:batch_id].inspect
+    @batch = Batch.find_by_id(params[:batch_id])
     @exam_groups = @batch.exam_groups
     @exam_groups.reject!{|e| e.result_published==false or e.exam_category!=3}
     
@@ -3064,11 +3070,11 @@ class StudentController < ApplicationController
     
   end
   
-  def get_class_test_report()
+  def get_class_test_report(batch_id = 0)
     require 'net/http'
     require 'uri'
     require "yaml"
- 
+    
     champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
     api_endpoint = champs21_api_config['api_url']
 
@@ -3078,7 +3084,7 @@ class StudentController < ApplicationController
       homework_uri = URI(api_endpoint + "api/report/classtestreport")
       http = Net::HTTP.new(homework_uri.host, homework_uri.port)
       homework_req = Net::HTTP::Post.new(homework_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })
-      homework_req.set_form_data({"exam_group" =>params[:exam_group],"call_from_web"=>1,"no_exams"=>1,"user_secret" => session[:api_info][0]['user_secret']})
+      homework_req.set_form_data({"batch_id" => params[:batch_id] ,"exam_group" =>params[:exam_group],"call_from_web"=>1,"no_exams"=>1,"user_secret" => session[:api_info][0]['user_secret']})
 
       homework_res = http.request(homework_req)
       @class_test_report_data = JSON::parse(homework_res.body)
@@ -3089,7 +3095,7 @@ class StudentController < ApplicationController
       homework_uri = URI(api_endpoint + "api/report/classtestreport")
       http = Net::HTTP.new(homework_uri.host, homework_uri.port)
       homework_req = Net::HTTP::Post.new(homework_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })
-      homework_req.set_form_data({"exam_group" =>params[:exam_group],"batch_id"=>student.batch_id,"no_exams"=>1,"student_id"=>student.id,"call_from_web"=>1,"user_secret" => session[:api_info][0]['user_secret']})
+      homework_req.set_form_data({"batch_id" => params[:batch_id] ,"exam_group" =>params[:exam_group],"batch_id"=>student.batch_id,"no_exams"=>1,"student_id"=>student.id,"call_from_web"=>1,"user_secret" => session[:api_info][0]['user_secret']})
 
       homework_res = http.request(homework_req)
       @class_test_report_data = JSON::parse(homework_res.body)

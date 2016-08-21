@@ -23,7 +23,11 @@
         <td>
           <div class="left-dev"><span><%= exam_group.name %></span></div>
           <div class="right-dev">
-          <%= link_to "View" ,{:controller => 'exam', :action => 'generated_report',:exam_group=>exam_group.id, :student=>@student.id} %>
+          <% if @student.batch.id == @batch.id %>    
+            <%= link_to "View" ,{:controller => 'exam', :action => 'generated_report',:exam_group=>exam_group.id, :student=>@student.id} %>
+          <% else %>    
+              <%= link_to "View" ,{:controller => 'exam', :action => 'generated_report',:exam_group=>exam_group.id, :student=>@student.id, :batch_id=> @batch.id} %>
+          <% end %>
           </div>
         </td>
     </tr>

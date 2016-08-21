@@ -33,7 +33,8 @@ class Exam < ActiveRecord::Base
   has_many :previous_exam_scores
   has_many :assessment_scores
   #  has_and_belongs_to_many :cce_reports
-
+  delegate :name,:is_current, :to => :exam_group
+  
   accepts_nested_attributes_for :exam_scores
 
   def validation_should_present?
@@ -84,7 +85,19 @@ class Exam < ActiveRecord::Base
     return (scores.sum / scores.size) unless scores.size == 0
     return 0
   end
-
+  
+  def full_name
+    "#{name}"
+  end
+  
+  def modified_full_name
+    #group = self.exam_group
+    
+    #if group.is_current==1
+      "#{name} (Current)"
+    #end
+  end
+  
   def fa_groups
     subject.fa_groups.select{|fg| fg.cce_exam_category_id == exam_group.cce_exam_category_id}
   end

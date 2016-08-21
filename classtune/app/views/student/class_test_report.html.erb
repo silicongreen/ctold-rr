@@ -14,13 +14,10 @@
                 </div>
             </div>
         </div>
-        <div style="float:right;width:19%;">
+  <div style="float:right;width:19%;">
           <%= link_to "<div class='button-link button-link-report'>Attendence Report</div>", :controller => "student_attendance", :action => "month_report" %>
           <%= render :partial => "previous_batches", :locals=>{:batches=>@previous_batch} %>
         </div>
-        
-        
-        <div class="clearfix"></div>
 
         <div class="tabbed-header-wrapper">
             <ul class="header-tabs">

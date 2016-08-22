@@ -1,3 +1,23 @@
+champs21_coursemate.sql
+classtune/config/secrets.yml
+classtune/public/csv_file/
+classtune/tmp/
+coursemate/
+custom_logs/
+theme/
+website/c1/
+website/googleb2552f4e0282d683.html
+website/sitemap/
+website/support/data/log.dat
+website/support/widget-themes/modern/error_log
+website/support/widget-themes/oval/error_log
+wp-website/error_log
+wp-website/support/data/log.dat
+wp-website/wp-admin/error_log
+wp-website/wp-config_.php
+website/application/views/tmp.php
+website/google9436990bfef69f70.html
+classtune/public/uploads/
 src/api/.htaccess
 src/api/assets/
 website/upload/
@@ -50,11 +70,7 @@ website/swf
 website/system/
 website/d21_session/
 wp-website/wp-config.php
-<<<<<<< HEAD
 classtune/config/database.yml
 classtune/config/app.yml
-=======
-classtune/config/app.yml
-classtune/config/database.yml
->>>>>>> removing files from version control
 classtune/tmp/delayed_job.pid
+wp-website/wp-content/uploads

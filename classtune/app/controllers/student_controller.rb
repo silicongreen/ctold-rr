@@ -1299,7 +1299,7 @@ class StudentController < ApplicationController
     @student = Student.find(params[:student])
     @all_courses = @student.all_courses
     @graph = open_flash_chart_object(770, 350, "/student/graph_for_previous_years_marks_overview?student=#{params[:student]}&graphtype=#{params[:graphtype]}")
-  end
+  end 
 
   def class_test_report
     if current_user.student

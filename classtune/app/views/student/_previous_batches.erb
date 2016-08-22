@@ -1,8 +1,8 @@
-<%#= debug @batch.id.to_i %>
+<%#= debug @batch.id.to_i %><%= @batch.id %>
 <%= 
   select :course, :course_id, options_for_select(@previous_batch.map {|b| [b.full_name, b.id]}, @batch.id.to_i),
   {:prompt => "#{t('select_a_batch')}"},
-  { :include_blank => true, :onchange => "alert_me_test()" } 
+  { :include_blank => true, :onchange => "alert_me_test()" }
 %>
 
 <%= image_tag("loader.gif",

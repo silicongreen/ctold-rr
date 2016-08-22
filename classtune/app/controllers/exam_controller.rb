@@ -838,7 +838,7 @@ class ExamController < ApplicationController
         elective_subjects.push Subject.find(elect.subject_id)
       end
       @subjects = general_subjects + elective_subjects
-      @exams = [] 
+      @exams = []
       @subjects.each do |sub|
         exam = Exam.find_by_exam_group_id_and_subject_id(@exam_group.id,sub.id)
         @exams.push exam unless exam.nil?

@@ -1,0 +1,40 @@
+<%#= debug @batch.id.to_i %>
+<%= 
+  select :course, :course_id, options_for_select(@previous_batch.map {|b| [b.full_name, b.id]}, @batch.id.to_i),
+  {:prompt => "#{t('select_a_batch')}"},
+  { :include_blank => true, :onchange => "alert_me_test()" } 
+%>
+
+<%= image_tag("loader.gif",
+      :align => "absmiddle",
+      :border => 0,
+      :id => "loader_2",
+      :style =>"display: none;" ) %>
+
+<script type="text/javascript">
+  j(function() {
+    if(j( '#course_course_id option:selected' ).val() != j('#current_batch_id').val() )
+    {
+      j('.progress_report').hide();
+      j('.groupexam_report').hide();
+    }
+    else
+    {     
+      j('.progress_report').show();
+      j('.groupexam_report').show();
+    }
+  });
+  function alert_me_test(){
+   
+    if(j( '#course_course_id option:selected' ).val() != j('#current_batch_id').val() )
+    {
+      j('.progress_report').hide();
+      j('.groupexam_report').hide();
+    }
+    else
+    {
+      j('.progress_report').show();
+      j('.groupexam_report').show();
+    }
+  }
+</script>

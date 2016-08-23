@@ -1,4 +1,9 @@
-<%#= debug @batch.id.to_i %><%= @batch.id %>
+<%#= debug @batch.id.to_i %> 
+<div style="height: 15px;
+    margin-right: 10px;
+    margin-top: 13px;
+    padding: 50px 45px !important;
+    margin-bottom: 0;">
 <%= 
   select :course, :course_id, options_for_select(@previous_batch.map {|b| [b.full_name, b.id]}, @batch.id.to_i),
   {:prompt => "#{t('select_a_batch')}"},
@@ -10,7 +15,7 @@
       :border => 0,
       :id => "loader_2",
       :style =>"display: none;" ) %>
-
+</div>
 <script type="text/javascript">
   j(function() {
     if(j( '#course_course_id option:selected' ).val() != j('#current_batch_id').val() )
@@ -23,6 +28,7 @@
       j('.progress_report').show();
       j('.groupexam_report').show();
     }
+    
   });
   function alert_me_test(){
    
@@ -36,5 +42,6 @@
       j('.progress_report').show();
       j('.groupexam_report').show();
     }
+    j('#report-data-all').empty();
   }
 </script>

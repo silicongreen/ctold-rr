@@ -24,9 +24,9 @@ switch ($lang) {
                 <div class="ym-wbox footer noPrint" style=" position: relative; bottom: 0px; display: block;">
 
                     <div class="poweredby f5">    
-                        <p>&copy; Classtune 2015</p>
+                        <p>&copy; ClassTune <?php echo date("Y");?><span style="color:#64B846;"> | </span>(+880)-1740212121 <span style="color:#64B846;"> | </span> <a href="mailto:info@classtune.com" style="color:#999;">Email : info@classtune.com</a> </p>
                     </div>
-                    <div style="float: left;margin-left: 370px;margin-top: 0px;">
+                    <div class="footer_logo">
                         <a href="<?php echo get_site_url(); ?>" title="" target="_blank">
                             <img src="<?php bloginfo('template_url'); ?>/images/logo/classtune-footer-logo.png" alt="" title="" width="170" height="" />
                         </a>
@@ -34,8 +34,8 @@ switch ($lang) {
 
                     <div class="footerlink f5">
                         <ul>									
-                            <li><a href="mailto:info@classtune.com" style="color:#999;">Email : info@classtune.com</a></li>
-							<li style="color:#64B846;">|</li>
+                            <!--li><a href="mailto:info@classtune.com" style="color:#999;">Email : info@classtune.com</a></li>
+							<li style="color:#64B846;">|</li-->
 							<li><a href="<?php echo get_site_url().'/'.$lang; ?>/terms<?php echo "-".$lang;?>" style="color:#999;"><?php echo $term;?></a></li>
                             <li style="color:#64B846;">|</li>
                             <li><a href="<?php echo get_site_url().'/'.$lang; ?>/privacypolicy<?php echo "-".$lang;?>" style="color:#999;"><?php echo $pp;?></a></li>
@@ -55,9 +55,9 @@ switch ($lang) {
 
 <div id="mainnav">
     <ul>
-        <li><span onclick="window.location = '<?php echo get_site_url().'/'.$lang; ?>'"><?php echo $home;?></span></li>
+        <li><span onclick="window.location = '<?php echo get_site_url(); ?>'"><?php echo $home;?></span></li>
         <!--li><span onclick="window.location ='<?php echo get_site_url(); ?>?locale=about'">About us</span></li-->
-        <li><span onclick="window.location = '<?php echo get_site_url().'/'.$lang; ?>?locale=feature'"><?php echo $feature;?></span>
+        <li><a href="<?php get_site_url(); ?>/#cronWrap"><span><?php echo $feature;?></span></a>
             <ul>
                 <li><a href="<?php echo get_site_url().'/'.$lang; ?>/admin-user<?php echo "-".$lang;?>" ><?php echo $sAdmin;?></a></li>
                 <li><a href="<?php echo get_site_url().'/'.$lang; ?>/student-user<?php echo "-".$lang;?>" ><?php echo $student;?></a></li>
@@ -66,7 +66,7 @@ switch ($lang) {
             </ul>
         </li>
 		<li><a href="<?php echo get_site_url().'/'.$lang; ?>/supports<?php echo "-".$lang;?>"><span><?php echo $support;?></span></a>
-        <li><span onclick="window.location = '<?php echo get_site_url().'/'.$lang; ?>?locale=contact'"><?php echo $contact;?></span></li>
+        <li class="images"><a href="<?php get_site_url(); ?>/#thanks_endWrap"><span><?php echo $contact;?></span></a></li>
          <?php get_template_part( 'lang_'.$lang.'/login' ); ?>	
 		 <li><?php pll_the_languages(array('dropdown'=>1));?></li>
     </ul>
@@ -93,4 +93,14 @@ switch ($lang) {
         left:0px;
 
     }
-</style>    
+</style> 
+<script>
+ (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+ })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ ga('create', 'UA-72261383-1', 'auto');
+ ga('send', 'pageview');
+
+</script>   

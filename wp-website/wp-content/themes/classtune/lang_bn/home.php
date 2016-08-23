@@ -143,664 +143,440 @@ get_header(); ?>
 						
 					</div>
 
-					<div id="cronWrap">
-						<!--<div id="cronheader" class="slide" data-stellar-ratio="0.7" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-								<h1>150 Jahre GEZE Geschichte</h1>
-								<h6>Vom Handwerksbetrieb<br />zum Technologieunternehmen</h6>
-						</div>-->
-						<div id="wp_dummy">&nbsp;</div>
-						<div id="wp_dummyimg">&nbsp;</div>
-						<div id="cron">
-
-							<div class="tx-pxhistory-pi1">
-
-								<div class="hitem slide" id="hitem_35" style="top: 410px; left: 4650px; width: 263px; height: 180px;" data-stellar-ratio="0.90" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-3/Layer-2/transport.png" alt="" title="" />
-									<div class="texticon" style="top: -5px; left: -40px;">
-										<div class="text_l text_layer" data-value="transport_layer">
-											<div class="cb_top">&nbsp;</div>
-											<div class="cb_middle">
-												<div class="cb_middlePad">
-													<h5>পরিবহনঃ</h5>
-													<p class="bodytext">স্কুল যানবাহনে আপনার সন্তানের উঠানামার সময় সর্ম্পকিত সকল তথ্য এখন অনলাইন থেকেই জানা সম্ভব। পরিবহনের সময়সূচীর যে কোন পরিবর্তন মিনিটের মধ্যেই জেনে যাবেন অভিভাবকরা।</p>
-			</p>
-												</div>
+					<div id="cronWrap" style="background-color:#F4FAFA;background-image:none;height:800px;">
+						<div style="border: 0 solid #ccc;left: 50%;margin: 0 0 0 -499px;position: absolute;width: 1000px;padding:55px 10px 0;">
+							<h2 class="f2" style="text-align:center;"><i>এখন মনে রাখা সহজ আর কাজ হবে ঝামেলাবিহীন।</i></h2><br>
+							<p style="font-size:16px;"><b>ClassTune</b>  স্কুল বিষয়ক প্রাতিষ্ঠানিক পর্যবেক্ষন এবং ব্যবস্থাপনাকে সহজ ও কার্যকর করে তোলে। শিক্ষক, শিক্ষার্থী এবং অভিভাবকদের একই প্লাটফর্মে এনে আপনার স্কুল সংশ্লিষ্ট সকল কার্যক্রমকে উন্নত, সারিবদ্ধ ও সুশৃংঙ্খল করে তোলে। ক্লাসটিউন অভিভাবকদের পরামর্শ এবং অংশগ্রহণ বৃদ্ধির মাধ্যমে শিক্ষা ব্যবস্থার উন্নতি নিশ্চিত করে।</p><br>
+							<div id="slider"  class="flexslider" style="margin-top:30px;width:1000px;">
+								<ul class="slides">
+									<li>
+										<div class="col-sm-12" style="height:300px;width:1000px;">								
+											
+																			<div class="col-sm-4" style="text-align:-moz-center;">
+																				<div class="thumbnail-item" style="background-color: transparent;">
+																					<a href="#"><img class="img-responsive" src="<?php bloginfo('template_url'); ?>/slider/new/attendance.png" style="width:300px;" /></a>
+																					<div class="tooltip">
+																						<img src="<?php bloginfo('template_url'); ?>/slider/new/attendance.png" alt="" style="width:100%;" />
+																					</div> 
+																				</div>
 											</div>
-											<div class="cb_bottom">&nbsp;</div>
-										</div>
-									</div>
-
-
-								</div>
-
-								<div class="hitem slide" id="hitem_7" style="top: 165px; left: 0px; width: 144px; height: 159px;" data-stellar-ratio="0.70" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-1/Layer-1/cloud_1.png" alt="classtuneslide1" title="" />
-
-								</div>
-								<div data-stellar-horiz="1" data-stellar-vertical-offset="0" data-stellar-horizontal-offset="83" data-stellar-ratio="0.95" style="top: 325px; left: 2900.43px; width: 400px; height: 175px;" id="hitem_28" class="hitem slide">
-									<img title="" alt="" src="<?php bloginfo('template_url'); ?>/slider/Slide-2/Layer-4/leave.png" width="400">
-									<div class="texticon" style="top: 10px; left: 270px;">
-										<div class="text_l text_layer" data-value="leave_layer">
-											<div class="cb_top">&nbsp;</div>
-											<div class="cb_middle">
-												<div class="cb_middlePad">
-													<h5>ছুটিঃ</h5>
-													<p class="bodytext">ছুটির আবেদন এখন ঝামেলাহীন! অভিভাবকরা শিক্ষার্থীদের ছুটির আবেদন করতে পারনে এবং তা মঞ্জুর হলে নোটিফিকেশনের মাধ্যমে জানতে পারেন। শিক্ষক শিক্ষার্থীদের ছুটি অনুমোদন করতে পারেন এবং তার নিজস্ব ছুটির জন্যও আবেদন করতে পারেন।</p>
+											<div class="col-sm-1" style="text-align:-moz-center;"></div>
+											<div class="col-sm-7">
+												<div class="col-sm-12">
+													<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/attandance.png) no-repeat center;"></div>
+													<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;color:#67B270;"><i>উপস্থিতি</i></p></div>
 												</div>
+												
+												<div class="col-sm-12"  style="margin-top:30px;">
+												<p>
+																						পুরো স্কুলের সব ক্লাস এবং শাখার শিক্ষার্থীদের উপস্থিতির রেকর্ড দেখুন এক জায়গাতেই। শিক্ষার্থীদের উপস্থিতির খোঁজ এখন এক ক্লিকেই! একজন শিক্ষার্থী কতগুলো ক্লাস মিস করেছে তাও জানা যাবে এক নিমিষেই। 
+												</p>
+																					<h3 class="f2" style="font-size:20px;padding: 16px 5px;color:#67B270;">পুরো স্কুলের সব শিক্ষার্থীদের উপস্থিতির রেকর্ড দেখুন এক স্থানে।</h3>
+												</div>									
+											</div>								
+										</div>	
+									</li>
+									<li>
+										<div class="col-sm-12" style="height:300px;width:1000px;">
+											
+											<div class="col-sm-4" style="text-align:-moz-center;">								
+																				<div class="thumbnail-item" style="background-color: transparent;">
+																					<a href="#"><img class="img-responsive" src="<?php bloginfo('template_url'); ?>/slider/new/academic_calender.png" style="width:300px;" /></a>
+																					<div class="tooltip">
+																						<img src="<?php bloginfo('template_url'); ?>/slider/new/academic_calender.png" alt="" style="width:100%;" />
+																					</div> 
+																				</div>
 											</div>
-											<div class="cb_bottom">&nbsp;</div>
-										</div>
-									</div>
-
-								</div>
-								<div class="hitem slide" id="hitem_8" style="top: 160px; left: 1060px; width: 120px; height: 80px;" data-stellar-ratio="0.70" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-1/Layer-1/cloud_2.png" alt="" title=""  width="115" />
-
-								</div>
-								<div data-stellar-horiz="1" data-stellar-vertical-offset="0" data-stellar-horizontal-offset="83" data-stellar-ratio="1.10" style="top: 233px; left: 600px; width: 144px; height: 159px;" id="hitem_7" class="hitem slide">
-									<img title="" alt="classtuneslide2" src="<?php bloginfo('template_url'); ?>/slider/Slide-1/Layer-1/cloud_1.png" width="60">					
-								</div>
-								<div class="hitem slide" id="hitem_5" style="top: 90px; left: 1180px; width: 75px; height: 65px;" data-stellar-ratio="0.85" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-1/Layer-1/sun.png" alt="" title="" width="60" />
-								</div>
-								<div class="hitem slide" id="hitem_2" style="top: 170px; left: 208px; width: 261px; height: 125px;" data-stellar-ratio="0.70" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-1/Layer-1/cloud_2.png" alt="" title="" width="130" />
-								</div>
-								<div class="hitem slide" id="hitem_2" style="top: 440px; left: 180px; width: 261px; height: 125px;" data-stellar-ratio="0.70" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-1/Layer-1/tree.png" alt="" title="" width="240" />					
-								</div>
-								<!--div class="hitem slide" id="hitem_3" style="top:415px; left: 400px; width: 100px; height: 100px;" data-stellar-ratio="0.70" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-
-									<img src="<?php //echo base_url(); ?>slider/Slide-1/Layer-2/top-tree1.png" alt="" title="" width="65" />
-								</div-->
-
-
-								<div class="hitem" id="hitem_6" style="top: 340px; left: 50px; width: 195px; height: 40px;">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-1/Layer-4/homework_text.png" alt="" title="" width="210" />					
-								</div>
-								<div class="hitem" id="hitem_6" style="top: 385px; left: -60px; width: 240px; height: 185px;">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-1/Layer-3/homework.png" alt="" title="" width="230" />
-
-									<div class="texticon" style="top: -5px; left: 120px;">
-										<div class="text_l text_layer" style="display:block;" data-value="homework_layer">
-											<div class="cb_top">&nbsp;</div>
-											<div class="cb_middle">
-												<div class="cb_middlePad">
-													<h5>হোমওয়ার্কঃ</h5>
-													<p class="bodytext">সকলের জন্যই সুবিধাজনক একটি ফিচার! শিক্ষক পুরো ক্লাসকে একসঙ্গে বা পৃথক শিক্ষার্থীকে হোমওয়ার্ক দিতে পারেন। শিক্ষার্থীরা এখন সহজেই বাড়ির কাজ সর্ম্পকে জানতে পারবে। রিমাইন্ডার সেট করুন এবং কাজ শেষে সম্পন্ন হিসাবে চিহ্নিত করুন। অভিভাবকরাও সন্তানের নির্ধারিত হোমওয়ার্ক ট্র্যাক রাখতে পারবেন।</p>
-													
+											<div class="col-sm-1" style="text-align:-moz-center;"></div>
+											<div class="col-sm-7">
+												<div class="col-sm-12">
+													<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/academic_calender.png) no-repeat center;"></div>
+													<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;color:#4ECAF0;"><i>একাডেমিক ক্যালেন্ডার</i></p></div>
 												</div>
+												
+												<div class="col-sm-12"  style="margin-top:30px;">
+												<p>
+													আপনার একাডেমিক ক্যালেন্ডার আপলোড করুন এবং সবাইকে সেই অনুযায়ী পরবর্তী পরিকল্পনা তৈরি করতে সাহায্য করুন। সারা বছরের ক্যালেন্ডার একসাথেই পাওয়া যাবে ক্লাসটিউনে। 
+												</p>
+																					<h3 class="f2" style="font-size:20px;padding: 16px 5px;color:#4ECAF0;">বছরের সব গুরুত্বপূর্ণ তারিখগুলো এখন আঙুলের ছোঁয়ায়</h3>
+												</div>									
+											</div>								
+										</div>	
+									</li>
+									<li>
+										<div class="col-sm-12" style="height:300px;width:1000px;">
+											
+											<div class="col-sm-4" style="text-align:-moz-center;">									
+																					<div class="thumbnail-item" style="background-color: transparent;">
+																							<a href="#"><img class="img-responsive" src="<?php bloginfo('template_url'); ?>/slider/new/lesson_plan.png" style="width:300px;" /></a>
+																							<div class="tooltip">
+																									<img src="<?php bloginfo('template_url'); ?>/slider/new/lesson_plan.png" alt="" style="width:100%;" />
+																									
+																							</div> 
+																					</div>
 											</div>
-											<div class="cb_bottom">&nbsp;</div>
-										</div>
-									</div>
-
-
-
-								</div>
-
-								<div class="hitem slide" id="hitem_15" style="top: 410px; left: 1300px; width: 225px; height: 291px;" data-stellar-ratio="0.75" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-2/Layer-1/apple.png" alt="" title="" width="150" />
-
-								</div>
-								<div class="hitem slide" id="hitem_3" style="top: 260px; left: 980px; width: 180px; height: 85px;" data-stellar-ratio="0.80" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-1/Layer-4/teachers_routine_text.png" alt="" title=""  width="175" />
-								</div>
-
-								<div class="hitem slide" id="hitem_3" style="top: 305px; left: 1070px; width:160px; height: 193px;" data-stellar-ratio="0.80" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-1/Layer-3/teachers_routine.png" alt="" title=""  width="145" />
-									<div class="texticon" style="top: -15px; left: 80px;">
-										<div class="text_l text_layer" data-value="troutine_layer">
-											<div class="cb_top">&nbsp;</div>
-											<div class="cb_middle">
-												<div class="cb_middlePad">
-													<h5>শিক্ষকের রুটিনঃ</h5>
-													<p class="bodytext">এখন শিক্ষকরা তাদের প্রতিদিনের করণীয় কর্মতালিকা দেখতে পারেন এবং সে অনুযায়ী পরিকল্পনা করতে পারেন। এর মাধ্যমে তাদের অগ্রগতি সুনিশ্চত।</p>
+											<div class="col-sm-1" style="text-align:-moz-center;"></div>
+											<div class="col-sm-7">
+												<div class="col-sm-12">
+													<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/lesson_paln-white.png) no-repeat center;"></div>
+													<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;color:#AA7B7B;"><i>পাঠ্ পরিকল্পনা</i></p></div>
 												</div>
+												
+												<div class="col-sm-12"  style="margin-top:30px;">
+												<p>
+													পাঠ পরিকল্পনা এখন অনলাইনেই পাওয়া যাবে। এমনকি প্রয়োজনমত সংশোধনও করা যাবে। ক্যালেন্ডার অনুযায়ী পড়াশোনার পরিকল্পনা করা এখন আরও সহজ।  
+												</p>
+																					<h3 class="f2" style="font-size:20px;padding: 16px 5px;color:#AA7B7B;">পাঠ্ পরিকল্পনা থাকবে আপডেটেট </h3>
+												</div>									
+											</div>								
+										</div>		
+									</li>
+									<li>
+										<div class="col-sm-12" style="height:300px;width:1000px;">
+											
+											<div class="col-sm-4" style="text-align:-moz-center;">
+																				<div class="thumbnail-item" style="background-color: transparent;">
+																					<a href="#"><img class="img-responsive" src="<?php bloginfo('template_url'); ?>/slider/new/Routine.png" style="width:300px;" /></a>
+																					<div class="tooltip">
+																						<img src="<?php bloginfo('template_url'); ?>/slider/new/Routine.png" alt="" style="width:100%;" />
+																					</div> 
+																				</div>
 											</div>
-											<div class="cb_bottom">&nbsp;</div>
-										</div>
-									</div>
-
-
-
-								</div>
-
-								<div class="hitem slide" id="hitem_18" style="top: 360px; left: 1500px; width: 360px; height: 188px;" data-stellar-ratio="0.8" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-2/Layer-4/calendar.png" alt="" title="" width="350" />
-									<div class="texticon" style="top: -20px; left: 70px;">
-										<div class="text_l text_layer" data-value="acalendar_layer">
-											<div class="cb_top">&nbsp;</div>
-											<div class="cb_middle">
-												<div class="cb_middlePad">
-													<h5>অ্যাকাডেমিক ক্যালেন্ডারঃ</h5>
-													<p class="bodytext">স্কুল কর্তৃপক্ষ বছরের শুরুতেই অ্যাকাডেমিক ক্যালেন্ডার শেয়ার করতে পারেন। প্রয়োজন অনুযায়ী পরিবর্তন-পরিবর্ধনও করতে পারেন। এর ফলে খুব সহজেই পারিবারিক ছুটি কাটানোর অাগাম পরিকল্পনা করা সম্ভব। </p>
+											<div class="col-sm-1" style="text-align:-moz-center;"></div>
+											<div class="col-sm-7">
+												<div class="col-sm-12">
+													<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/trachers_routine.png) no-repeat center;"></div>
+													<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;color:#D95FC4;"><i>শিক্ষকদের রুটিন</i></p></div>
 												</div>
+												
+												<div class="col-sm-12"  style="margin-top:30px;">
+												<p>
+													শিক্ষকদের সুবিধার জন্য রয়েছে রুটিন আপলোডের ব্যবস্থা। প্রত্যেক শিক্ষকের আলাদা আলাদা রুটিন জানতে চোখ রাখুন ক্লাসটিউনে। 
+												</p>
+																					<h3 class="f2" style="font-size:20px;padding: 16px 5px;color:#D95FC4;">শিক্ষকদের সুবিধামতো রুটিন আপলোড করুন  </h3>
+												</div>									
+											</div>								
+										</div>		
+									</li>
+									<li>
+										<div class="col-sm-12" style="height:300px;width:1000px;">
+											
+											<div class="col-sm-4" style="text-align:-moz-center;">                                                                    
+																				<div class="thumbnail-item" style="background-color: transparent;">
+																					<a href="#"><img class="img-responsive" src="<?php bloginfo('template_url'); ?>/slider/new/Homework.png" style="width:300px;" /></a>
+																					<div class="tooltip">
+																						<img src="<?php bloginfo('template_url'); ?>/slider/new/Homework.png" alt="" style="width:100%;" />
+																					</div> 
+																				</div>
 											</div>
-											<div class="cb_bottom">&nbsp;</div>
-										</div>
-									</div>
-
-
-
-								</div>
-
-								<div class="hitem slide" id="hitem_19" style="top: 130px; left: 3750px; width: 621px; height: 115px;" data-stellar-ratio="2.30" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-2/Layer-2/pencil_cutter.png" alt="" title="" />
-
-								</div>
-
-								<div class="hitem slide" id="hitem_25" style="top: 410px; left: 2000px; width: 180px; height: 105px;" data-stellar-ratio="0.80" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-2/Layer-3/three_kids.png" alt="" title="" width="160" />
-								</div>
-
-								<div class="hitem slide" id="hitem_26" style="top: 300px; left: 2200px; width: 200px; height: 120px;" data-stellar-ratio="0.85" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-2/Layer-4/report_card_text.png" alt="" title="" width="140" />
-
-
-
-								</div>
-
-								<div class="hitem slide" id="hitem_29" style="top: 300px; left: 3050px; width: 200px; height: 100px;" data-stellar-ratio="0.80" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-2/Layer-4/lesson_plan_text.png" alt="" title="" width="170" />
-
-								</div>
-								<div class="hitem slide" id="hitem_29" style="top: 300px; left: 5800px; width: 200px; height: 100px;" data-stellar-ratio="0.80" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-4/Layer-4/fees_text.png" alt="" title="" width="140" />
-
-								</div>
-
-								<div class="hitem slide" id="hitem_50" style="top: 360px; left: 6600px; width: 235px; height: 400px;" data-stellar-ratio="0.92" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-4/Layer-4/fees.png" alt="" title="" width="200" />
-
-									<div class="texticon" style="top: -45px; left: 155px;">
-										<div class="text_l text_layer" data-value="fees_layer">
-											<div class="cb_top">&nbsp;</div>
-											<div class="cb_middle">
-												<div class="cb_middlePad">
-													<h5>বেতনঃ</h5>
-													<p class="bodytext">
-													অভিভাবকরা ক্রেডিট কার্ড বা মোবাইল টাকার মাধ্যমে অনলাইনেই প্রয়োজনীয়  বেতন পরিশোধ করতে পারেন। স্কুলের টাকা জমাদান ও হিসাবরক্ষণের জন্য অত্যন্ত কার্যকরী একটি টুল।</p>
+											<div class="col-sm-1" style="text-align:-moz-center;"></div>
+											<div class="col-sm-7">
+												<div class="col-sm-12">
+													<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/homework.png) no-repeat center;"></div>
+													<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;color:#D994DB;"><i>হোমওয়ার্ক</i></p></div>
 												</div>
+												
+												<div class="col-sm-12"  style="margin-top:30px;">
+												<p>
+													একজন শিক্ষার্থী বা একটি ক্লাসের বা পুরো স্কুলের হোমওয়ার্ক খোঁজ জানা যাবে এক জায়গাতেই।
+												</p>
+																					<h3 class="f2" style="font-size:20px;padding: 16px 5px;color:#D994DB;">সবার হোমওয়ার্ক জানার সুবিধা</h3>
+												</div>									
+											</div>								
+										</div>	
+									</li>
+									<li>
+										<div class="col-sm-12" style="height:300px;width:1000px;">
+											
+											<div class="col-sm-4" style="text-align:-moz-center;">									
+																				<div class="thumbnail-item" style="background-color: transparent;">
+																					<a href="#"><img class="img-responsive" src="<?php bloginfo('template_url'); ?>/slider/new/fees.png" style="width:300px;" /></a>                                                                        
+																				</div>
 											</div>
-											<div class="cb_bottom">&nbsp;</div>
-										</div>
-									</div>
-
-
-
-								</div>
-								<div class="hitem slide" id="hitem_29" style="top: 250px; left: 6000px; width: 200px; height: 100px;" data-stellar-ratio="0.90" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-4/Layer-4/forms_text.png" alt="" title="" width="150" />
-
-								</div>
-								<div class="hitem slide" id="hitem_48" style="top: 350px; left: 5700px; width: 180; height: 210px;" data-stellar-ratio="0.85" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-4/Layer-3/form_green.png" alt="" title="" width="200" />
-
-									<div class="texticon" style="top: 60px; left: 175px;">
-										<div class="text_l text_layer" data-value="forms_layer">
-											<div class="cb_top">&nbsp;</div>
-											<div class="cb_middle">
-												<div class="cb_middlePad">
-													<h5>ফরমঃ</h5>
-													<p class="bodytext">সকল স্কুল ফরম মোবাইল এবং ওয়েব থেকে এখন সংগ্রহ করা যায়.
-ফরম পূরণ ও জমাদানও অনলাইনে। অফিস রুমে কোনরকম ভীড় বা ঝামেলা ছাড়াই সর্বােচ্চ সেবা প্রদান।</p>
+											<div class="col-sm-1" style="text-align:-moz-center;"></div>
+											<div class="col-sm-7">
+												<div class="col-sm-12">
+													<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/fees.png) no-repeat center;"></div>
+													<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;color:#F0282F;"><i>বেতন</i></p></div>
 												</div>
-											</div>
-											<div class="cb_bottom">&nbsp;</div>
+												
+												<div class="col-sm-12"  style="margin-top:30px;">
+												<p>
+																						নির্ধারিত সময়ের মধ্যে ফি জমা দেয়া এবং বকেয়া বেতন প্রদানের জন্য নিয়মিত মনে করিয়ে দিবে ক্লাসটিউন। 
+												</p>
+																					<h3 class="f2" style="font-size:20px;padding: 16px 5px;color:#F0282F;">ঝামেলাবিহীন বেতন প্রদান</h3>
+												</div>									
+											</div>								
 										</div>
-									</div>
-
-
-
-								</div>
-
-								<div class="hitem slide" id="hitem_53" style="top: 127px; left: 6800px; width: 248px; height: 307px;" data-stellar-ratio="0.85" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-4/Layer-2/jems_clip.png" alt="" title="" />					
-
-								</div>
-
-								<div class="hitem slide" id="hitem_19" style="top: 125px; left: 795px; width: 90px; height: 50px;" data-stellar-ratio="1.80" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-1/Layer-2/planet.png" alt="" title="" width="80" />
-								</div>
-
-								<div class="hitem slide" id="hitem_10" style="top: 120px; left: 320px; width: 95px; height: 80px;" data-stellar-ratio="1.49" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-1/Layer-2/rocket.png" alt="classtuneslide3" title="" width="80" />
-
-
-
-								</div>
-
-								<div class="hitem slide" id="hitem_13" style="top: 150px; left: 860px; width: 50px; height: 30px;" data-stellar-ratio="1.00" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-1/Layer-1/cloud_1.png" alt="" title="" width="40" />
-
-								</div>
-
-								<div class="hitem slide" id="hitem_14" style="top: 120px; left: 2300px; width: 205px; height: 164px;" data-stellar-ratio="1.50" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-1/Layer-1/cloud_2.png" alt="" title="" />
-
-
-								</div>
-
-								<div class="hitem slide" id="hitem_16" style="top: 175px; left: 1950px; width: 245px; height: 84px;" data-stellar-ratio="1.50" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-1/Layer-1/cloud_1.png" alt="" title="" />
-
-								</div>
-
-								<div class="hitem" id="hitem_9" style="top: 350px; left: 700px; width: 215px; height: 200;">
-									<img width="145" src="<?php bloginfo('template_url'); ?>/slider/Slide-1/Layer-4/routine_text.png" alt="" title="">
-									<div class="texticon" style="top: -40px; left: 0px; background-position: 0px 11px;">
-										<div style="display: none; background-position: 0px 11px;" class="text_l text_layer" data-value="routine_layer">
-											<div class="cb_top">&nbsp;</div>
-											<div class="cb_middle">
-												<div class="cb_middlePad">
-													<h5>রুটিন</h5>
-													<p class="bodytext">শিক্ষক ও ব্যবস্থাপনা কর্তৃপক্ষ প্রয়োজন অনুযায়ী রুটিন পরিবর্তন করতে পারেন এবং এ তথ্য তাৎক্ষনিক সকলকে জানিয়েও দিতে পারেন।</p>
+									</li>
+									<li>
+										<div class="col-sm-12" style="height:300px;width:1000px;">
+											
+											<div class="col-sm-4" style="text-align:-moz-center;">									
+																				<div class="thumbnail-item" style="background-color: transparent;">
+																					<a href="#"><img class="img-responsive" src="<?php bloginfo('template_url'); ?>/images/dashpallete/view/Forms.png" style="width:300px;" /></a>                                                                        
+																				</div>
+											</div>
+											<div class="col-sm-1" style="text-align:-moz-center;"></div>
+											<div class="col-sm-7">
+												<div class="col-sm-12">
+													<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/defult.png) no-repeat center;"></div>
+													<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;color:#1E99D5;"><i>স্কুলের যাবতীয় ফর্ম</i></p></div>
 												</div>
+												
+												<div class="col-sm-12"  style="margin-top:30px;">
+												<p>
+													স্কুলের সব ফর্ম আপলোড করুন যেন সবাই প্রয়োজনমত ব্যবহার করতে পারে। অফিসের কাজে বাড়বে কর্মদক্ষতা। 
+												</p>
+																					<h3 class="f2" style="font-size:20px;padding: 16px 5px;color:#1E99D5;">সব প্রয়োজনীয় ফর্ম পাওয়া যাচ্ছে অনলাইনেই</h3>
+												</div>									
+											</div>								
+										</div>	
+									</li>
+									<li>
+										<div class="col-sm-12" style="height:300px;width:1000px;">
+											
+											<div class="col-sm-4" style="text-align:-moz-center;">                                                                    
+																				<div class="thumbnail-item" style="background-color: transparent;">
+																					<a href="#"><img class="img-responsive" src="<?php bloginfo('template_url'); ?>/slider/new/meeting_request.png" style="width:300px;" /></a>                                                                        
+																				</div>
 											</div>
-											<div class="cb_bottom">&nbsp;</div>
-										</div>
-									</div>
-								</div>
-
-								<!--div style="top: 420px; left: 775px; width: 215px; height: 200;" id="hitem_9" class="hitem">
-									<img width="115" title="" alt="" src="<?php //echo base_url(); ?>slider/Slide-1/Layer-3/robote_.png">
-									<div class="texticon" style="top: -40px; left: 0px; background-position: 0px 11px;">
-										<div style="display: none; background-position: 0px 11px;" class="text_l text_layer" data-value="routine_layer">
-											<div class="cb_top">&nbsp;</div>
-											<div class="cb_middle">
-												<div class="cb_middlePad">
-													<h5>Routine</h5>
-													<p class="bodytext">Teachers and Management can modify routine when necessary and send instant notification.</p>
+											<div class="col-sm-1" style="text-align:-moz-center;"></div>
+											<div class="col-sm-7">
+												<div class="col-sm-12">
+													<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/meeting_request.png) no-repeat center;"></div>
+													<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;color:#73D8BA;"><i>সভা অনুরোধ</i></p></div>
 												</div>
+												
+												<div class="col-sm-12"  style="margin-top:30px;">
+												<p>
+													শিক্ষক এবং অভিভাবকদের সাথে দেখা করা হবে অনেক সহজে এবং প্রয়োজনে তা পরিবর্তনও করা যাবে। অভিভাবকদের সাক্ষাতের জন্য অনুরোধ করা যাবে কম সময়ে এবং কোন ঝামেলা ছাড়াই। 
+												</p>
+																					<h3 class="f2" style="font-size:20px;padding: 16px 5px;color:#73D8BA;">সাক্ষাৎ-এর আয়োজন করা এখন সহজ। </h3>
+												</div>									
+											</div>								
+										</div>	
+									</li>
+									<li>
+										<div class="col-sm-12" style="height:300px;width:1000px;">
+											
+											<div class="col-sm-4" style="text-align:-moz-center;">									
+																				<div class="thumbnail-item" style="background-color: transparent;">
+																					<a href="#"><img class="img-responsive" src="<?php bloginfo('template_url'); ?>/slider/new/report_card.png" style="width:300px;" /></a>                                                                        
+																				</div>
 											</div>
-											<div class="cb_bottom">&nbsp;</div>
-										</div>
-									</div>
-								</div-->
-								<div class="hitem" id="hitem_9" style="top: 375px; left: 800px; width: 215px; height: 200;">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-1/Layer-3/routine.png" alt="" title="" width="225" />
-
-								</div>
-								<div data-stellar-horiz="1" data-stellar-vertical-offset="0" data-stellar-horizontal-offset="83" data-stellar-ratio="0.80" style="top: 285px; left: 450.7px; width: 210px; height: 35px;" id="hitem_3" class="hitem slide">
-									<img title="" alt="" src="<?php bloginfo('template_url'); ?>/slider/Slide-1/Layer-4/attendance_text.png" width="210">
-
-								</div>
-								<div data-stellar-horiz="1" data-stellar-vertical-offset="0" data-stellar-horizontal-offset="83" data-stellar-ratio="0.80" style="top: 318px; left: 400.7px; width: 280px; height: 250px;" id="hitem_3" class="hitem slide">
-									<img title="" alt="" src="<?php bloginfo('template_url'); ?>/slider/Slide-1/Layer-2/attendance.png" width="280">
-
-									<div style="top: 20px; left: 160px;" class="texticon">
-										<div class="text_l text_layer" style="display: none;" data-value="attendance_layer">
-											<div class="cb_top">&nbsp;</div>
-											<div class="cb_middle">
-												<div class="cb_middlePad">
-													<h5>উপস্থিতিঃ</h5>
-													<p class="bodytext">ক্লাসে উপস্থিতি গণনা এখন আগের চেয়ে অনেক সহজ! শিক্ষক মাত্র কয়েকটি ক্লিকের সাহায্যে উপস্থিতি গ্রহণ করতে পারেন এবং একইসময়ে তথ্য পৌঁছে যাবে অভিভাবকের কাছে। এছাড়া এ তথ্য সংরক্ষিত খাকবে স্কুল রেকর্ডে।</p>
-													
+											<div class="col-sm-1" style="text-align:-moz-center;"></div>
+											<div class="col-sm-7">
+												<div class="col-sm-12">
+													<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/report_card.png) no-repeat center;"></div>
+													<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;color:#8C93B5;"><i>রিপোর্ট কার্ড</i></p></div>
 												</div>
-											</div>
-											<div class="cb_bottom">&nbsp;</div>
-										</div>
-									</div>
-
-
-
-								</div>
-								<div class="hitem slide" id="hitem_5" style="top:440px; left: 685px; width: 100px; height: 178px;" data-stellar-ratio=".95" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-1/Layer-2/top-tree.png" alt="" title="" width="75"/>
-								</div>
-
-								<div class="hitem slide" id="hitem_20" style="top: 200px; left: 3075px; width: 145px; height: 160px;" data-stellar-ratio="1.51" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-3/Layer-1/cloud_2.png" alt="" title="" />
-
-								</div>
-
-								<div class="hitem slide" id="hitem_21" style="top: 145px; left: 2625px; width: 204px; height: 161px;" data-stellar-ratio="1.49" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-1/Layer-1/cloud_2.png" alt="" title="" />
-
-
-
-								</div>
-
-								<div class="hitem" id="hitem_17" style="top: 213px; left: 1600px; width: 373px; height: 134px;">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-2/Layer-4/academic_calendar_text.png" alt="" title="" width="220" />					
-								</div>
-
-
-								<div class="hitem slide" id="hitem_24" style="top: 140px; left: 3800px; width: 140px; height: 70px;" data-stellar-ratio="1.50" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-2/Layer-2/pencil.png" alt="" title="" width="100" />					
-								</div>
-
-								<div class="hitem" id="hitem_27" style="top: 330px; left: 2460px; width: 180px; height: 135px;" data-stellar-ratio="0.90" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-2/Layer-3/report_card.png" alt="" title="" width="165" />
-
-									<div class="texticon" style="top: 12px; left: 3px;">
-										<div class="text_l text_layer" data-value="reportcard_layer">
-											<div class="cb_top">&nbsp;</div>
-											<div class="cb_middle">
-												<div class="cb_middlePad">
-													<h5>রিপোর্ট কার্ডঃ</h5>
-													<p class="bodytext">শিক্ষক ক্লাস টেস্ট, অন্যান্য পরীক্ষা ও প্রজেক্টের রিপোর্ট কার্ড শিক্ষার্থীদের সুবিধার্থে অনলাইনে আপলোড করতে পারেন। শিক্ষার্থীরা তাদের রিপোর্ট কার্ড অভিভাবকদের প্রদর্শনের জন্য অনলাইনে জমা রাখবে এবং অভিভাবকরা পর্যালোচনা শেষে স্কুল কর্তৃপক্ষের অবগতির জন্য তা পাঠাবে।</p>
-												</div>
-											</div>
-											<div class="cb_bottom">&nbsp;</div>
-										</div>
-									</div>
-
-
-
-								</div>
-
-								<div class="hitem slide" id="hitem_22" style="top: 215px; left: 3700px; width: 204px; height: 162px;" data-stellar-ratio="1.49" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-3/Layer-1/cloud.png" alt="" title="" />
-
-								</div>
-
-								<div class="hitem" id="hitem_30" style="top: 419px; left: 3600px; width: 250px; height: 85px;">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-2/Layer-3/book.png" alt="" title="" />
-									<div class="texticon" style="top: -35px; left: 140px;">
-										<div class="text_l text_layer" data-value="lessonplan_layer">
-											<div class="cb_top">&nbsp;</div>
-											<div class="cb_middle">
-												<div class="cb_middlePad">
-													<h5>পাঠ পরিকল্পনাঃ</h5>
-													<p class="bodytext">শিক্ষক সাপ্তাহিক, মাসিক ও বার্ষিক পাঠ পরিকল্পনা আপলোড করতে পারেন।
-এটা শিক্ষার্থী এবং অভিভাবকদের পাঠ্যসময়সূচি প্রস্তুতে সহায়তা করবে।</p>
-												</div>
-											</div>
-											<div class="cb_bottom">&nbsp;</div>
-										</div>
-									</div>
-								</div>
-
-								<div class="hitem" id="hitem_32" style="top: 350px; left: 4100px; width: 319px; height: 330px;">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-3/Layer-3/notice.png" alt="" title="" width="250" />
-
-									<div class="texticon" style="top: 15px; left: 250px;">
-										<div class="text_l text_layer" data-value="notice_layer">
-											<div class="cb_top">&nbsp;</div>
-											<div class="cb_middle">
-												<div class="cb_middlePad">
-													<h5>নোটিশ/বিজ্ঞপ্তিঃ</h5>
-													<p class="bodytext">কোন শব্দ সীমাবদ্ধতা ছাড়াই বিজ্ঞপ্তি পাঠানো সম্ভব। তাৎক্ষনিকভাবে একই সময়ে অভিভাবকদের নিকট বিজ্ঞপ্তি পৌঁছানাের কার্যকরী ও সহজতম উপায়।</p>
-												</div>
-											</div>
-											<div class="cb_bottom">&nbsp;</div>
-										</div>
-									</div>
-
-
-
-								</div>
-
-								<div class="hitem slide" id="hitem_28" style="top: 300px; left: 3180px; width: 150px; height: 70px;" data-stellar-ratio="0.95" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-2/Layer-4/leave_text.png" alt="" title="" width="130" />
-
-
-
-								</div>
-
-								<div class="hitem slide" id="hitem_31" style="top: 165px; left: 4800px; width: 197px; height: 140px;" data-stellar-ratio="1.48" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-2/Layer-1/colud_3.png" alt="" title="" />					
-
-								</div>
-
-								<div class="hitem slide" id="hitem_34" style="top: 160px; left: 5660px; width: 150px; height: 80px;" data-stellar-ratio="1.50" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-2/Layer-1/colud_4.png" alt="" title="" width="140" />
-
-
-
-								</div>
-
-								<div class="hitem slide" id="hitem_23" style="top: 125px; left: 4900px; width: 80px; height: 85px;" data-stellar-ratio="1.80" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-2/Layer-2/eraser.png" alt="" title="" width="60" />					
-
-								</div>
-
-								<div class="hitem slide" id="hitem_36" style="top: 350px; left: 4900px; width: 170px; height: 80px;" data-stellar-ratio="0.95" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-3/Layer-4/transport_text.png" alt="" title="" width="170" />
-
-
-
-								</div>
-
-								<div class="hitem slide" id="hitem_33" style="top: 300px; left: 5950px; width: 251px; height: 238px;" data-stellar-ratio="1.50" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-3/Layer-4/notice_text.png" alt="" title=""  width="150" />
-
-
-								</div>
-
-								<div class="hitem slide" id="hitem_40" style="top: 162px; left: 5775px; width: 262px; height: 356px;" data-stellar-ratio="1.3" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-3/Layer-1/ballon.png" alt="" title="" width="100" />
-
-
-								</div>
-
-								<div class="hitem" id="hitem_37" style="top: 330px; left: 4600px; width: 200px; height: 100px;">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-3/Layer-4/meeting_request_text.png" alt="" title="" width="170" />
-								</div>
-
-								<div class="hitem slide" id="hitem_39" style="top: 450px; left: 5590px; width: 150px; height: 160px;" data-stellar-ratio="1.30" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-3/Layer-2/clock.png" alt="" title="" width="100"/>
-
-								</div>
-								<div class="hitem slide" id="hitem_39" style="top: 150px; left: 6550px; width: 204px; height: 160px;" data-stellar-ratio="1.50" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-3/Layer-1/cloud.png" alt="" title="" />
-
-								</div>
-								<div class="hitem" id="hitem_42" style="top: 284px; left: 5600px; width: 170px; height: 55px;">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-3/Layer-4/event_text.png" alt="" title="" width="140" />
-								</div>
-
-								<div class="hitem slide" id="hitem_43" style="top: 380px; left: 5875px; width: 300px; height: 258px;" data-stellar-ratio="1.05" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-3/Layer-3/events.png" alt="" title="" width="250" />
-									<div class="texticon" style="top: -30px; left: 50px;">
-										<div class="text_l text_layer" data-value="event_layer">
-											<div class="cb_top">&nbsp;</div>
-											<div class="cb_middle">
-												<div class="cb_middlePad" style="padding-bottom: 2px;">
-													<h5>ইভেন্টঃ</h5>
-													<p class="bodytext">স্কুল আয়োজিত যে কোন ইভেন্টের তারিখ, সময় এবং স্থান সর্ম্পকিত হালনাগাদ তথ্য জানা যায় এ পেইজের মাধ্যমে। অনুষ্ঠান সর্ম্পকিত প্রয়োজনীয় রিমাইন্ডারও পাঠানো হয় এখান থেকে। 
-													</p>
-													<p class="bodytext">&nbsp;</p>
-												</div>
-											</div>
-											<div class="cb_bottom">&nbsp;</div>
-										</div>
-									</div>
-
-
-								</div>
-
-								<div class="hitem slide" id="hitem_41" style="top: 140px; left: 7750px; width: 100px; height: 80px;" data-stellar-ratio="1.55" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-3/Layer-3/pencil_cutter.png" alt="" title="" width="90" />					
-
-								</div>
-
-								<div class="hitem" id="hitem_44" style="top: 185px; left: 5425px; width: 440px; height: 150px;" data-stellar-ratio="1.10" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-3/Layer-1/cloud.png" alt="" title="" />
-
-
-
-								</div>
-
-								<!--div class="hitem slide" id="hitem_46" style="top: 355px; left: 6600px; width: 407px; height: 352px;" data-stellar-ratio="1.10" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php //echo base_url(); ?>slider/Slide-4/Layer-3/diary_.png" alt="" title="" />
-								</div-->
-
-								<div class="hitem" id="hitem_47" style="top: 280px; left: 6050px; width: 300px; height: 100px;">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-4/Layer-4/syllabus_text.png" alt="" title="" width="180" />
-
-								</div>
-								<div class="hitem" id="hitem_47" style="top: 280px; left: 6180px; width: 175px; height: 330px;">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-4/Layer-4/syllabus.png" alt="" title="" width="150"  />
-
-								</div>
-
-								<div class="hitem slide" id="hitem_45" style="top: 140px; left: 6800px; width: 150px; height: 100px;" data-stellar-ratio="1.20" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-4/Layer-1/airplane.png" alt="" title="" width="80" />					
-
-
-								</div>
-
-								<div class="hitem slide" id="hitem_38" style="top: 430px; left: 4800px; width: 250px; height: 180px;" data-stellar-ratio="1.05" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-3/Layer-3/meeting_request.png" alt="" title="" width="250" />
-
-
-									<div class="texticon" style="top: -40px; left: 230px;">
-										<div class="text_l text_layer" data-value="meetingrequest_layer">
-											<div class="cb_top">&nbsp;</div>
-											<div class="cb_middle">
-												<div class="cb_middlePad">
-													<h5>সাক্ষাতের আমন্ত্রণঃ</h5>
-													<p class="bodytext">
-স্কুল কর্তৃপক্ষ অভিভাবকদের সঙ্গে সাক্ষাৎ আয়োজন এবং নোটিশ পাঠানোর কাজটি করতে পারেন সহজেই। অভিভাবকরাও শিক্ষকদের সঙ্গে সাক্ষাতের অনুমতি চাইতে পারেন। এমনকি শিক্ষকরাও পৃথক পৃথক অভিভাবকদের বৈঠকের জন্য আমন্ত্রণ জানাতে পারেন।</p>
-												</div>
-											</div>
-											<div class="cb_bottom">&nbsp;</div>
-										</div>
-									</div>
-
-
-								</div>
-
-								<div class="hitem slide" id="hitem_52" style="top: 360px; left: 7250px; width: 200px; height: 170px;" data-stellar-ratio="0.95" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-4/Layer-4/end-image.png" alt="" title="" width="350" />
-								</div>
-
-								<div class="hitem" id="hitem_49" style="top: 100px; left: 6500px; width: 180px; height: 180px;">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-4/Layer-2/scale_1.png" alt="" title="" width="120" />
-
-
-
-								</div>
-
-								<div class="hitem slide" id="hitem_115" style="top: 420px; left: 6670px; width: 100px; height: 110px;" data-stellar-ratio="1.05" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-4/Layer-3/bird.png" alt="" title="" width="60" />
-
-									<div class="texticon" style="top: -39px; left: 0px;">
-										<div class="text_l text_layer" data-value="syllabus_layer">
-											<div class="cb_top">&nbsp;</div>
-											<div class="cb_middle">
-												<div class="cb_middlePad">
-													<h5>পাঠ্যক্রমঃ</h5>
-													<p class="bodytext">স্কুল কর্তৃপক্ষ পুরো বছরের সিলেবাস আপলোড করতে পারেন। শিক্ষক, শিক্ষার্থী এবং অভিভাবকরা চলমান সিলবাস সর্ম্পকিত তথ‌্য যে কোন সময় ব্যবহার করতে পারেন।
-													</p>
-													<p class="bodytext">&nbsp;</p>
-												</div>
-											</div>
-											<div class="cb_bottom">&nbsp;</div>
-										</div>
-									</div>
-
-
-
-								</div>
-
-
-								<!--div class="hitem slide" id="hitem_55" style="top: 520px; left: 6825px; width: 270px; height: 215px;" data-stellar-ratio="0.95" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php //echo base_url(); ?>slider/Slide-4/Layer-1/object_.png" alt="" title="" width="150" />					
-
-								</div-->
-
-								<div class="hitem slide" id="hitem_51" style="top: 180px; left: 7800px; width: 100px; height: 100px;" data-stellar-ratio="1.3" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-4/Layer-2/sessor.png" alt="" title="" width="100" />
-
-								</div>
-								<div class="hitem slide" id="hitem_51" style="top: 180px; left: 8200px; width: 100px; height: 100px;" data-stellar-ratio="1.1" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-4/Layer-2/sessor.png" alt="" title="" width="100" />
-
-								</div>
-
-								<div class="hitem slide" id="hitem_51" style="top: 148px; left: 10400px; width: 115; height: 60px;" data-stellar-ratio="1.80" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-4/Layer-2/hat.png" alt="" title="" width="100"/>
-
-								</div>
-
-								<!--div class="hitem" id="hitem_54" style="top: 271px; left: 7500px; width: 300px; height: 250px;">
-									<img src="<?php //echo base_url(); ?>slider/Slide-4/Layer-3/school_.png" alt="" title="" width="250" />
-								</div-->
-								<div data-stellar-horiz="1" data-stellar-vertical-offset="0" data-stellar-horizontal-offset="0" data-stellar-ratio="1.10" style="top: 185px; left: 7832.45px; width: 440px; height: 150px;" id="hitem_44" class="hitem">
-									<img title="" alt="" src="http://www.classtune.dev/slider/Slide-3/Layer-1/cloud.png">
-								</div>
-								<div class="hitem" id="hitem_44" style="top: 145px; left: 7539.9px; width: 440px; height: 150px;" data-stellar-ratio="1.10" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="http://www.classtune.dev/slider/Slide-3/Layer-1/cloud.png" alt="" title="">
-								</div>
-
-								<div id="cronnav">
-									<ul>
-
-										<li class="cronnavitem act" id="cni_75" data-value="homework">
-											<span>হোমওয়ার্ক</span>
-										</li>
-
-										<li class="cronnavitem" id="cni_75" data-value="attendance">
-											<span>উপস্থিতি</span>
-										</li>
-
-										<li class="cronnavitem" id="cni_650" data-value="routine">
-											<span>রুটিন</span>
-										</li>
-
-										<li class="cronnavitem" id="cni_1100" data-value="troutine">
-											<span>শিক্ষকের রুটিন</span>
-										</li>
-
-										<li class="cronnavitem" id="cni_1600" data-value="acalendar">
-											<span>অ্যাকাডেমিক ক্যালেন্ডার</span>
-										</li>
-
-										<li class="cronnavitem" id="cni_2400" data-value="reportcard">
-											<span>রিপোর্ট কার্ড</span>
-										</li>
-
-										<li class="cronnavitem" id="cni_3000" data-value="leave">
-											<span>ছুটি</span>
-										</li>
-
-										<li class="cronnavitem" id="cni_3500" data-value="lessonplan">
-											<span>পাঠ পরিকল্পনা</span>
-										</li>
-
-										<li class="cronnavitem" id="cni_4000" data-value="notice">
-											<span>নোটিশ/বিজ্ঞপ্তি</span>
-										</li>
-
-										<li class="cronnavitem" id="cni_4500" data-value="meetingrequest">
-											<span>সাক্ষাতের আমন্ত্রণ</span>
-										</li>
-
-										<li class="cronnavitem" id="cni_5000" data-value="transport">
-											<span>পরিবহন</span>
-										</li>
-
-										<li class="cronnavitem" id="cni_5500" data-value="event">
-											<span>ইভেন্ট</span>
-										</li>
-
-										<li class="cronnavitem" id="cni_6000" data-value="syllabus">
-											<span>পাঠ্যক্রম</span>
-										</li>
-
-										<li class="cronnavitem" id="cni_6500" data-value="forms">
-											<span>ফরম</span>
-										</li>
-
-										<li class="cronnavitem" id="cni_7000" data-value="fees">
-											<span>বেতন</span>
-										</li>
-										<li class="cronnavitem" id="cni_up">
-											<i class="faq fa fa-arrow-up"></i>
-										</li>
-										<li class="cronnavitem" id="cni_down">
-											<i class="faq fa fa-arrow-down"></i>
-										</li>
-
-									</ul>
-								</div>
-
+												
+												<div class="col-sm-12"  style="margin-top:30px;">
+												<p>
+													ক্লাস টেস্ট, পরীক্ষার নম্বর আর প্রোজেক্ট রিপোর্ট এখন অনলাইনেই জমা থাকবে। 
+												</p>
+																					<h3 class="f2" style="font-size:20px;padding: 16px 5px;color:#8C93B5;">রিপোর্ট কার্ডের অনলাইন আর্কাইভ  </h3>
+												</div>									
+											</div>								
+										</div>	
+									</li>
+									<li>
+																<div class="col-sm-12" style="height:300px;width:1000px;">
+																		
+																		<div class="col-sm-4" style="text-align:-moz-center;">                                                                
+																			<div class="thumbnail-item" style="background-color: transparent;">
+																				<a href="#"><img class="img-responsive" src="<?php bloginfo('template_url'); ?>/slider/new/events.png" style="width:300px;" /></a>                                                                        
+																			</div>
+																		</div>
+																		<div class="col-sm-1" style="text-align:-moz-center;"></div>
+																		<div class="col-sm-7">
+																				<div class="col-sm-12">
+																						<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/event.png) no-repeat center;"></div>
+																						<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;color:#BED877;"><i>ইভেন্ট</i></p></div>
+																				</div>
+
+																				<div class="col-sm-12"  style="margin-top:30px;">
+																				<p>
+																						শিক্ষার্থী, শিক্ষক আর অভিভাবকদের স্কুলের ইভেন্ট সম্পর্কে অবহিত করুন। যেকোন প্রয়োজনে ইভেন্ট তৈরি ও পরিবর্তন  করুন। দেখুন কতজন শিক্ষক, শিক্ষার্থী এবং অভিভাবক আপনার ইভেন্টে অংশগ্রহণ করছে। 
+																				</p>
+																				<h3 class="f2" style="font-size:20px;padding: 16px 5px;color:#BED877;">সব ইভেন্টের খবরাখবর পাওয়া যাবে এক জায়গাতেই</h3>
+																				</div>									
+																		</div>								
+																</div>	
+									</li>	
+															<li>
+																<div class="col-sm-12" style="height:300px;width:1000px;">
+																		
+																		<div class="col-sm-4" style="text-align:-moz-center;">
+																			<div class="thumbnail-item" style="background-color: transparent;">
+																				<a href="#"><img class="img-responsive" src="<?php bloginfo('template_url'); ?>/slider/new/transport.png" style="width:300px;" /></a>                                                                        
+																			</div>
+																		</div>
+																		<div class="col-sm-1" style="text-align:-moz-center;"></div>
+																		<div class="col-sm-7">
+																				<div class="col-sm-12">
+																						<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/transport.png) no-repeat center;"></div>
+																						<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;color:#F9B047;"><i>পরিবহন</i></p></div>
+																				</div>
+
+																				<div class="col-sm-12"  style="margin-top:30px;">
+																				<p>
+																						আপনার যাতায়াত ও পরিবহনের পরিকল্পনা আপলোড করুন। কোন কারণে এতে পরিবর্তন ঘটলে সেটা সাথে সাথেই জানিয়ে দেন অভিভাবকদের।
+																				</p>
+																				<h3 class="f2" style="font-size:20px;padding: 16px 5px;color:#F9B047;">পরিবহনের সময়সূচী দেখুন</h3>
+																				</div>									
+																		</div>								
+																</div>	
+									</li>	
+															<li>
+																<div class="col-sm-12" style="height:300px;width:1000px;">
+																		
+																		<div class="col-sm-4" style="text-align:-moz-center;">
+																			<div class="thumbnail-item" style="background-color: transparent;">
+																				<a href="#"><img class="img-responsive" src="<?php bloginfo('template_url'); ?>/slider/new/sRoutine.png" style="width:300px;" /></a>                                                                        
+																			</div>
+																		</div>
+																		<div class="col-sm-1" style="text-align:-moz-center;"></div>
+																		<div class="col-sm-7">
+																				<div class="col-sm-12">
+																						<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/class_routine.png) no-repeat center;"></div>
+																						<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;color:#AF88B4;"><i>রুটিন</i></p></div>
+																				</div>
+
+																				<div class="col-sm-12"  style="margin-top:30px;">
+																				<p>
+																						যেকোনো ক্লাস বা সেকশনের রুটিন তৈরি করুন এখানে এবং সবার দেখার সুবিধার্থে ক্লাস টিউনে প্রকাশ করুন। রুটিনে কোন পরিবর্তন আসলে সাথে সাথে নোটিফিকেশনের মাধ্যমে জানিয়ে দেন সবাইকে।
+																				</p>
+																				<h3 class="f2" style="font-size:20px;padding: 16px 5px;color:#AF88B4;">রুটিন আপলোড করুন আর প্রয়োজনে সেটা পরিবর্তন করুন</h3>
+																				</div>									
+																		</div>								
+																</div>	
+									</li>	
+															<li>
+																<div class="col-sm-12" style="height:300px;width:1000px;">
+																	   
+																		<div class="col-sm-4" style="text-align:-moz-center;">
+																			<div class="thumbnail-item" style="background-color: transparent;">
+																				<a href="#"><img class="img-responsive" src="<?php bloginfo('template_url'); ?>/slider/new/syllabus.png" style="width:300px;" /></a>                                                                        
+																			</div>
+																		</div>
+																		<div class="col-sm-1" style="text-align:-moz-center;"></div>
+																		<div class="col-sm-7">
+																				<div class="col-sm-12">
+																						<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/sylabus.png) no-repeat center;"></div>
+																						<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;color:#D3658A;"><i>পাঠক্রম</i></p></div>
+																				</div>
+
+																				<div class="col-sm-12"  style="margin-top:30px;">
+																				<p>
+																						বার্ষিক পাঠক্রম পাওয়া যাবে অনলাইনেই। ক্লাস অনুযায়ী এবং পরীক্ষা অনুযায়ী সিলেবাস তৈরি করুন এবং খোঁজ রাখুন প্রতিটি ক্লাসের সিলেবাসের খবরাখবর।
+																				</p>
+																				<h3 class="f2" style="font-size:20px;padding: 16px 5px;color:#D3658A;">স্কুলের বার্ষিক সিলেবাস আপলোড করুন</h3>
+																				</div>									
+																		</div>								
+																</div>	
+									</li>	
+															<li>
+																<div class="col-sm-12" style="height:300px;width:1000px;">
+																	   
+																		<div class="col-sm-4" style="text-align:-moz-center;">                                                                
+																			<div class="thumbnail-item" style="background-color: transparent;">
+																				<a href="#"><img class="img-responsive" src="<?php bloginfo('template_url'); ?>/slider/new/notice.png" style="width:300px;" /></a>                                                                        
+																			</div>
+																		</div>
+																		<div class="col-sm-1" style="text-align:-moz-center;"></div>
+																		<div class="col-sm-7">
+																				<div class="col-sm-12">
+																						<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/notice.png) no-repeat center;"></div>
+																						<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;color:#81C2D6;"><i>বিজ্ঞপ্তি</i></p></div>
+																				</div>
+
+																				<div class="col-sm-12"  style="margin-top:30px;">
+																				<p>
+																						কোন জরুরী বিজ্ঞপ্তি প্রকাশ করতে হবে? চিন্তার কিছু নেই। একজন শিক্ষার্থী বা একটি ক্লাস বা পুরো স্কুলকে কোন বিজ্ঞপ্তি পাঠানো যাবে এখান থেকে খুব সহজেই।
+																				</p>
+																				<h3 class="f2" style="font-size:20px;padding: 16px 5px;color:#81C2D6;">আপনার বিজ্ঞপ্তি প্রকাশ করুন। </h3>
+																				</div>									
+																		</div>								
+																</div>	
+									</li>	
+															<li>
+																<div class="col-sm-12" style="height:300px;width:1000px;">
+																		
+																		<div class="col-sm-4" style="text-align:-moz-center;">                                                                
+																			<div class="thumbnail-item" style="background-color: transparent;">
+																				<a href="#"><img class="img-responsive" src="<?php bloginfo('template_url'); ?>/slider/new/leave.png" style="width:300px;" /></a>                                                                        
+																			</div>
+																		</div>
+																		<div class="col-sm-1" style="text-align:-moz-center;"></div>
+																		<div class="col-sm-7">
+																				<div class="col-sm-12">
+																						<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/leave_application.png) no-repeat center;"></div>
+																						<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;color:#9BA280;"><i>ছুটি</i></p></div>
+																				</div>
+
+																				<div class="col-sm-12"  style="margin-top:30px;">
+																				<p>
+																						এখন ছুটির আবেদন করা যাবে অনলাইনেই আর সেটা মঞ্জুর হয়েছে কিনা তা জানা যাবে নোটিফিকেশনের মাধ্যমে। উপস্থিতির সাথে ছুটির দিনগুলোকে সহজেই সাজিয়ে নেন আজকেই। 
+																				</p>
+																				<h3 class="f2" style="font-size:20px;padding: 16px 5px;color:#9BA280;">ছুটির আবেদন তৈরি করুন</h3>
+																				</div>									
+																		</div>								
+																</div>	
+									</li>
+																
+								</ul>
+							</div>
+							<div id="carousel" class="flexslider">
+								<ul class="slides">
+									<li>
+									<img src="<?php bloginfo('template_url'); ?>/slider/thumb/Attendance.png" style="width:140px;padding:5px;" />
+									</li>
+									<li>
+									<img src="<?php bloginfo('template_url'); ?>/slider/thumb/academic_calendar.png" style="width:140px;padding:5px;"  />
+									</li>
+									<li>
+									<img src="<?php bloginfo('template_url'); ?>/slider/thumb/Lesson_Plan.png" style="width:140px;padding:5px;"  />
+									</li>
+									<li>
+									<img src="<?php bloginfo('template_url'); ?>/slider/thumb/Teachers_Routine.png" style="width:140px;padding:5px;"  />
+									</li>
+									<li>
+										<img src="<?php bloginfo('template_url'); ?>/slider/thumb/Homework.png" style="width:140px;padding:5px;"  />
+									</li>
+									<li>
+										<img src="<?php bloginfo('template_url'); ?>/slider/thumb/Fees.png" style="width:140px;padding:5px;"  />
+									</li>						
+									<li>
+										<img src="<?php bloginfo('template_url'); ?>/slider/thumb/Forms.png" style="width:140px;padding:5px;"  />
+									</li>
+									<li>
+										<img src="<?php bloginfo('template_url'); ?>/slider/thumb/Meeting_Request.png" style="width:140px;padding:5px;"  />
+									</li>
+									<li>
+										<img src="<?php bloginfo('template_url'); ?>/slider/thumb/Report_Card.png" style="width:140px;padding:5px;"  />
+									</li>
+									<li>
+										<img src="<?php bloginfo('template_url'); ?>/slider/thumb/Event.png" style="width:140px;padding:5px;"  />
+									</li>
+															<li>
+										<img src="<?php bloginfo('template_url'); ?>/slider/thumb/Transport.png" style="width:140px;padding:5px;"  />
+									</li>
+															<li>
+										<img src="<?php bloginfo('template_url'); ?>/slider/thumb/Routine.png" style="width:140px;padding:5px;"  />
+									</li>
+															<li>
+										<img src="<?php bloginfo('template_url'); ?>/slider/thumb/Syllabus.png" style="width:140px;padding:5px;"  />
+									</li>
+															<li>
+										<img src="<?php bloginfo('template_url'); ?>/slider/thumb/Notice.png" style="width:140px;padding:5px;"  />
+									</li>
+															<li>
+										<img src="<?php bloginfo('template_url'); ?>/slider/thumb/Leave.png" style="width:140px;padding:5px;"  />
+									</li>
+														   
+								</ul>
 							</div>
 						</div>
 					</div>

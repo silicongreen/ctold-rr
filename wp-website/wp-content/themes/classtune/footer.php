@@ -26,7 +26,7 @@ switch ($lang) {
         $login = "Log in";$reg_free = "Registration Free!";$free_acc = "Create Your FREE Account";$accessible = "Accessible from anywhere...";$contact = "Contact";$support = "Support";$teacher = "Teacher";$parent = "Parent";$student = "Student";$sAdmin = "School Admin";$feature = "Features";$home = "Home";$term = "Terms";$pp = "Privacy Policy";$cr = "Copyright";
 }
 ?>
-<div id="imagesWrap">
+<div id="imagesWrap" style="top:1850px;">
     <div id="images">
         <div id="worldmap">
             <h2 class="f2" style="left: 35%;position: absolute;text-align: center;top: 40px;">
@@ -63,18 +63,19 @@ switch ($lang) {
                     <div class="ym-wbox footer noPrint" style=" position: relative; bottom: 0px; display: block;">
 
                         <div class="poweredby f5">    
-                            <p>&copy; Classtune 2015</p>
+                            <p>&copy; ClassTune <?php echo date("Y");?><span style="color:#64B846;"> | </span>(+880)-1740212121 <span style="color:#64B846;"> | </span> <a href="mailto:info@classtune.com" style="color:#999;">Email : info@classtune.com</a> </p>
                         </div>
-                        <div style="float: left;margin-left: 370px;margin-top: 0px;">
+						<div class="footer_logo">
                             <a href="<?php echo get_site_url(); ?>" title="">
                                 <img src="<?php bloginfo('template_url'); ?>/images/logo/classtune-footer-logo.png" alt="" title="" width="170" height="" />
                             </a>
                         </div>
+                        
 
                         <div class="footerlink f5">
                             <ul>									
-								<li><a href="mailto:info@classtune.com" style="color:#999;">Email : info@classtune.com</a></li>
-								<li style="color:#64B846;">|</li>
+								<!--li><a href="mailto:info@classtune.com" style="color:#999;">Email : info@classtune.com</a></li>
+								<li style="color:#64B846;">|</li-->
 								<li><a href="<?php echo get_site_url().'/'.$lang; ?>/terms<?php echo "-".$lang;?>" style="color:#999;"><?php echo $term;?></a></li>
 								<li style="color:#64B846;">|</li>
 								<li><a href="<?php echo get_site_url().'/'.$lang; ?>/privacypolicy<?php echo "-".$lang;?>" style="color:#999;"><?php echo $pp;?></a></li>
@@ -91,12 +92,18 @@ switch ($lang) {
 
 
 </div>
-
+<div class="arrow_box" style="border-radius: 5px;
+position: fixed;
+right: 11px;
+top: 300px;
+width: 128px;z-index:2;">
+ <a href="<?php get_site_url(); ?>/#thanks_endWrap"><img src="<?php bloginfo('template_url'); ?>/images/sticky.png" style="width:120px;" /></a>
+</div>
 <div id="mainnav">
     <ul>
-        <li class="before"><span><?php echo $home;?></span></li>
+        <li class="before"><a href="<?php echo get_site_url(); ?>"><span><?php echo $home;?></span></a></li>
         <!--li class="start act"><span>About us</span></li-->
-        <li class="cron"><span><?php echo $feature;?></span>
+        <li class="cron"><a href="<?php get_site_url(); ?>/#cronWrap"><span><?php echo $feature;?></span></a>
             <ul>
                 <li><a href="<?php echo get_site_url().'/'.$lang; ?>/admin-user<?php echo "-".$lang;?>" ><?php echo $sAdmin;?></a></li>
                 <li><a href="<?php echo get_site_url().'/'.$lang; ?>/student-user<?php echo "-".$lang;?>" ><?php echo $student;?></a></li>
@@ -105,7 +112,7 @@ switch ($lang) {
             </ul>
         </li>
 		<li><a href="<?php echo get_site_url().'/'.$lang; ?>/supports<?php echo "-".$lang;?>"><span><?php echo $support;?></span></a>
-        <li class="images"><span><?php echo $contact;?></span></li>
+        <li class="images"><a href="<?php get_site_url(); ?>/#thanks_endWrap"><span><?php echo $contact;?></span></a></li>
         <?php get_template_part( 'lang_'.$lang.'/login' ); ?>	
 		<li><?php pll_the_languages(array('dropdown'=>1));  ?></li>
     </ul>
@@ -139,12 +146,116 @@ switch ($lang) {
 <script type="text/javascript" src="<?php bloginfo('template_url'); ?>/js/jquery.stellar.js"></script>
 <script type="text/javascript" src="<?php bloginfo('template_url'); ?>/js/jquery.mousewheel.min.js"></script>
 <script type="text/javascript" src="<?php bloginfo('template_url'); ?>/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="<?php bloginfo('template_url'); ?>/js/px.js"></script>
+<!--script type="text/javascript" src="<?php bloginfo('template_url'); ?>/js/px.js"></script-->
+<script type="text/javascript" src="<?php bloginfo('template_url'); ?>/js/jquery.flexslider.js"></script>	
 <script type="text/javascript" src="<?php bloginfo('template_url'); ?>/js/owl.carousel.min.js"></script>	
 <script type="text/javascript" src="<?php bloginfo('template_url'); ?>/js/owl.custome.classtune.js"></script>	
 
 
+<script type="text/javascript">
 
+            $(window).load(function () {
+                $('#carousel').flexslider({
+                    animation: "slide",
+                    controlNav: false,
+                    animationLoop: false,
+                    slideshow: true,
+                    slideshowSpeed:10000,
+                    pauseOnHover:true,
+                    itemWidth: 140,
+                    itemMargin: 0,
+                    asNavFor: '#slider'
+                });
+
+                $('#slider').flexslider({
+                    animation: "slide",
+                    controlNav: false,
+                    animationLoop: true,
+                    slideshow: true,
+                    slideshowSpeed:10000,
+                    pauseOnHover:true,
+                    sync: "#carousel",
+                    start: function (slider) {
+                        $('body').removeClass('loading');
+                    }
+                });
+                
+
+           
+            });
+// Load this script once the document is ready
+$(document).ready(function () {
+  var n = 0; 
+ // Get all the thumbnail
+ $('div.thumbnail-item').mouseenter(function(e) {
+ 
+    // Calculate the position of the image tooltip
+    x = e.pageX - $(this).offset().left;
+    y = e.pageY - $(this).offset().top;
+ 
+    //$(this).css('z-index','1500');
+    
+    if(n === 0)
+    {
+        var  img = $(this).find('img').attr("src");
+  
+        var html = '<div class="tooltip"><img src="'+img+'" alt="" style="width:100%;" /></div>'
+        console.log(html);
+        $(html).insertAfter("#slider .flex-viewport").css({'top': y - 130,'left': x + 150,'display':'block','opacity':1,'z-index':'15000000'});
+        n = 1;
+    }
+    
+       
+ }).mousemove(function(e) {
+    
+  // Calculate the position of the image tooltip  
+  x = e.pageX - $(this).offset().left;
+  y = e.pageY - $(this).offset().top;
+    
+  // This line causes the tooltip will follow the mouse pointer
+  //$(this).children("div.tooltip").css({'top': y + 10,'left': x + 20});
+  $(".flex-viewport").next( "div.tooltip" ).css({'top': y - 130,'left': x + 150});
+    
+ }).mouseleave(function() {
+    if(n = 1)
+    {
+        $( "div.tooltip" ).css('display','none;'); 
+        $(".flex-viewport").next( "div.tooltip" ).remove();     
+        $( "div.tooltip" ).animate({"opacity": "hide"}, "fast");
+        n = 0;
+    }    
+
+ });
+ 
+});
+
+$(function() {
+  $('a[href*="#"]:not([href="#"])').click(function() {
+    if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
+      var target = $(this.hash);
+      target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+      if (target.length) {
+        $('html, body').animate({
+          scrollTop: target.offset().top
+        }, 1000);
+        return false;
+      }
+    }
+  });
+});
+
+</script>
+
+<script>
+ (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+ })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ ga('create', 'UA-72261383-1', 'auto');
+ ga('send', 'pageview');
+
+</script>
 
 
 

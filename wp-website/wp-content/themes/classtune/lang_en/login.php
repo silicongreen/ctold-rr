@@ -49,7 +49,7 @@
                             </button>
 
 
-                            <button name="student" onclick="location.href='<?php echo get_site_url().'/'.$lang; ?>/teacher-page<?php echo "-".$lang;?>'" type="button" id="student_register" class="btn-danger btn-xs btn btn-default">
+                            <button name="student" onclick="location.href='<?php echo get_site_url().'/'.$lang; ?>/teacher-user<?php echo "-".$lang;?>'" type="button" id="student_register" class="btn-danger btn-xs btn btn-default">
                                 <i class="fa"></i> Teacher
                             </button>
                            

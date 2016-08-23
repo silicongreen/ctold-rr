@@ -143,660 +143,440 @@ get_header(); ?>
 						
 					</div>
 
-					<div id="cronWrap">
-						<!--<div id="cronheader" class="slide" data-stellar-ratio="0.7" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-								<h1>150 Jahre GEZE Geschichte</h1>
-								<h6>Vom Handwerksbetrieb<br />zum Technologieunternehmen</h6>
-						</div>-->
-						<div id="wp_dummy">&nbsp;</div>
-						<div id="wp_dummyimg">&nbsp;</div>
-						<div id="cron">
-
-							<div class="tx-pxhistory-pi1">
-
-								<div class="hitem slide" id="hitem_35" style="top: 410px; left: 4650px; width: 263px; height: 180px;" data-stellar-ratio="0.90" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-3/Layer-2/transport.png" alt="" title="" />
-									<div class="texticon" style="top: -5px; left: -40px;">
-										<div class="text_l text_layer" data-value="transport_layer">
-											<div class="cb_top">&nbsp;</div>
-											<div class="cb_middle">
-												<div class="cb_middlePad">
-													<h5>Transport</h5>
-													<p class="bodytext">Pick up and drop off time of your child’s school transport now can be checked online. Any changes in the transport schedule can reach parents in minutes.
-			</p>
-												</div>
+					<div id="cronWrap" style="background-color:#F4FAFA;background-image:none;height:800px;">
+						<div style="border: 0 solid #ccc;left: 50%;margin: 0 0 0 -499px;position: absolute;width: 1000px;padding:55px 10px 0;">
+							<h2 class="f2" style="text-align:center;"><i>School Users, enjoy the easy record keepings, and hassle free school works!</i></h2><br>
+							<p style="font-size:16px;"><b>ClassTune</b> makes institutional monitoring and management of school activity easy and effective. Rich, align, and engage teachers, students, and parents from all your schools in one platform. It accelerates parental engagement and advocates corrective measures to improve learning outcomes.</p><br>
+							<div id="slider"  class="flexslider" style="margin-top:30px;width:1000px;">
+								<ul class="slides">
+									<li>
+										<div class="col-sm-12" style="height:300px;width:1000px;">								
+											
+																			<div class="col-sm-4" style="text-align:-moz-center;">
+																				<div class="thumbnail-item" style="background-color: transparent;">
+																					<a href="#"><img class="img-responsive" src="<?php bloginfo('template_url'); ?>/slider/new/attendance.png" style="width:300px;" /></a>
+																					<div class="tooltip">
+																						<img src="<?php bloginfo('template_url'); ?>/slider/new/attendance.png" alt="" style="width:100%;" />
+																					</div> 
+																				</div>
 											</div>
-											<div class="cb_bottom">&nbsp;</div>
-										</div>
-									</div>
-
-
-								</div>
-
-								<div class="hitem slide" id="hitem_7" style="top: 165px; left: 0px; width: 144px; height: 159px;" data-stellar-ratio="0.70" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-1/Layer-1/cloud_1.png" alt="classtuneslide1" title="" />
-
-								</div>
-								<div data-stellar-horiz="1" data-stellar-vertical-offset="0" data-stellar-horizontal-offset="83" data-stellar-ratio="0.95" style="top: 325px; left: 2900.43px; width: 400px; height: 175px;" id="hitem_28" class="hitem slide">
-									<img title="" alt="" src="<?php bloginfo('template_url'); ?>/slider/Slide-2/Layer-4/leave.png" width="400">
-									<div class="texticon" style="top: 10px; left: 270px;">
-										<div class="text_l text_layer" data-value="leave_layer">
-											<div class="cb_top">&nbsp;</div>
-											<div class="cb_middle">
-												<div class="cb_middlePad">
-													<h5>Leave</h5>
-													<p class="bodytext">Applying for leave is now hassle free! Parents can apply for Student’s leave and get notification once granted. Teachers can approve Students leave and can apply for their own leaves also.</p>
+											<div class="col-sm-1" style="text-align:-moz-center;"></div>
+											<div class="col-sm-7">
+												<div class="col-sm-12">
+													<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/attandance.png) no-repeat center;"></div>
+													<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;color:#67B270;"><i>Attendance</i></p></div>
 												</div>
+												
+												<div class="col-sm-12"  style="margin-top:30px;">
+												<p>
+																						See attendance of your entire school at one platform. More specifically every class, every section. Take help to keep track of entire school easily. Refer attendance record when needed. At-a-glance class and student views let you quickly get counts of total classes missed by student. 
+												</p>
+																					<h3 class="f2" style="font-size:20px;padding: 16px 5px;color:#67B270;">See attendance of your entire school at one platform.</h3>
+												</div>									
+											</div>								
+										</div>	
+									</li>
+									<li>
+										<div class="col-sm-12" style="height:300px;width:1000px;">
+											
+											<div class="col-sm-4" style="text-align:-moz-center;">								
+																				<div class="thumbnail-item" style="background-color: transparent;">
+																					<a href="#"><img class="img-responsive" src="<?php bloginfo('template_url'); ?>/slider/new/academic_calender.png" style="width:300px;" /></a>
+																					<div class="tooltip">
+																						<img src="<?php bloginfo('template_url'); ?>/slider/new/academic_calender.png" alt="" style="width:100%;" />
+																					</div> 
+																				</div>
 											</div>
-											<div class="cb_bottom">&nbsp;</div>
-										</div>
-									</div>
-
-								</div>
-								<div class="hitem slide" id="hitem_8" style="top: 160px; left: 1060px; width: 120px; height: 80px;" data-stellar-ratio="0.70" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-1/Layer-1/cloud_2.png" alt="" title=""  width="115" />
-
-								</div>
-								<div data-stellar-horiz="1" data-stellar-vertical-offset="0" data-stellar-horizontal-offset="83" data-stellar-ratio="1.10" style="top: 233px; left: 600px; width: 144px; height: 159px;" id="hitem_7" class="hitem slide">
-									<img title="" alt="classtuneslide2" src="<?php bloginfo('template_url'); ?>/slider/Slide-1/Layer-1/cloud_1.png" width="60">					
-								</div>
-								<div class="hitem slide" id="hitem_5" style="top: 90px; left: 1180px; width: 75px; height: 65px;" data-stellar-ratio="0.85" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-1/Layer-1/sun.png" alt="" title="" width="60" />
-								</div>
-								<div class="hitem slide" id="hitem_2" style="top: 170px; left: 208px; width: 261px; height: 125px;" data-stellar-ratio="0.70" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-1/Layer-1/cloud_2.png" alt="" title="" width="130" />
-								</div>
-								<div class="hitem slide" id="hitem_2" style="top: 440px; left: 180px; width: 261px; height: 125px;" data-stellar-ratio="0.70" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-1/Layer-1/tree.png" alt="" title="" width="240" />					
-								</div>
-								<!--div class="hitem slide" id="hitem_3" style="top:415px; left: 400px; width: 100px; height: 100px;" data-stellar-ratio="0.70" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-
-									<img src="<?php //echo base_url(); ?>slider/Slide-1/Layer-2/top-tree1.png" alt="" title="" width="65" />
-								</div-->
-
-
-								<div class="hitem" id="hitem_6" style="top: 340px; left: 50px; width: 195px; height: 40px;">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-1/Layer-4/homework_text.png" alt="" title="" width="210" />					
-								</div>
-								<div class="hitem" id="hitem_6" style="top: 385px; left: -60px; width: 240px; height: 185px;">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-1/Layer-3/homework.png" alt="" title="" width="230" />
-
-									<div class="texticon" style="top: -5px; left: 120px;">
-										<div class="text_l text_layer" style="display:block;" data-value="homework_layer">
-											<div class="cb_top">&nbsp;</div>
-											<div class="cb_middle">
-												<div class="cb_middlePad">
-													<h5>Homework</h5>
-													<p class="bodytext">This feature is convenient for everyone! Teachers can assign homework to whole class or individual student. Students now can find homework easily. Set reminder and mark done once completed and parents can keep track of homework assigned to child.</p>
-													
+											<div class="col-sm-1" style="text-align:-moz-center;"></div>
+											<div class="col-sm-7">
+												<div class="col-sm-12">
+													<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/academic_calender.png) no-repeat center;"></div>
+													<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;color:#4ECAF0;"><i>Academic Calendar</i></p></div>
 												</div>
+												
+												<div class="col-sm-12"  style="margin-top:30px;">
+												<p>
+													Upload your academic calendar and make it visible to everyone related. Help everyone to plan for future. Post academic calendar at the beginning of the year with flexibility of modification as and when required.
+												</p>
+																					<h3 class="f2" style="font-size:20px;padding: 16px 5px;color:#4ECAF0;">All important dates are at your finger tips.</h3>
+												</div>									
+											</div>								
+										</div>	
+									</li>
+									<li>
+										<div class="col-sm-12" style="height:300px;width:1000px;">
+											
+											<div class="col-sm-4" style="text-align:-moz-center;">									
+																					<div class="thumbnail-item" style="background-color: transparent;">
+																							<a href="#"><img class="img-responsive" src="<?php bloginfo('template_url'); ?>/slider/new/lesson_plan.png" style="width:300px;" /></a>
+																							<div class="tooltip">
+																									<img src="<?php bloginfo('template_url'); ?>/slider/new/lesson_plan.png" alt="" style="width:100%;" />
+																									
+																							</div> 
+																					</div>
 											</div>
-											<div class="cb_bottom">&nbsp;</div>
-										</div>
-									</div>
-
-
-
-								</div>
-
-								<div class="hitem slide" id="hitem_15" style="top: 410px; left: 1300px; width: 225px; height: 291px;" data-stellar-ratio="0.75" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-2/Layer-1/apple.png" alt="" title="" width="150" />
-
-								</div>
-								<div class="hitem slide" id="hitem_3" style="top: 260px; left: 980px; width: 180px; height: 85px;" data-stellar-ratio="0.80" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-1/Layer-4/teachers_routine_text.png" alt="" title=""  width="175" />
-								</div>
-
-								<div class="hitem slide" id="hitem_3" style="top: 305px; left: 1070px; width:160px; height: 193px;" data-stellar-ratio="0.80" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-1/Layer-3/teachers_routine.png" alt="" title=""  width="145" />
-									<div class="texticon" style="top: -15px; left: 80px;">
-										<div class="text_l text_layer" data-value="troutine_layer">
-											<div class="cb_top">&nbsp;</div>
-											<div class="cb_middle">
-												<div class="cb_middlePad">
-													<h5>Teacher’s Routine</h5>
-													<p class="bodytext">Now teachers can see their day to day schedule and make plans accordingly. Surely accelerate better outputs.</p>
+											<div class="col-sm-1" style="text-align:-moz-center;"></div>
+											<div class="col-sm-7">
+												<div class="col-sm-12">
+													<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/lesson_paln-white.png) no-repeat center;"></div>
+													<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;color:#AA7B7B;"><i>Lesson Plan</i></p></div>
 												</div>
+												
+												<div class="col-sm-12"  style="margin-top:30px;">
+												<p>
+													Lesson plan will be available online and modify when required. Facilitate to trace lesson plan against academic calendar.    
+												</p>
+																					<h3 class="f2" style="font-size:20px;padding: 16px 5px;color:#AA7B7B;">Updated lesson plan for school’s convenience.</h3>
+												</div>									
+											</div>								
+										</div>		
+									</li>
+									<li>
+										<div class="col-sm-12" style="height:300px;width:1000px;">
+											
+											<div class="col-sm-4" style="text-align:-moz-center;">
+																				<div class="thumbnail-item" style="background-color: transparent;">
+																					<a href="#"><img class="img-responsive" src="<?php bloginfo('template_url'); ?>/slider/new/Routine.png" style="width:300px;" /></a>
+																					<div class="tooltip">
+																						<img src="<?php bloginfo('template_url'); ?>/slider/new/Routine.png" alt="" style="width:100%;" />
+																					</div> 
+																				</div>
 											</div>
-											<div class="cb_bottom">&nbsp;</div>
-										</div>
-									</div>
-
-
-
-								</div>
-
-								<div class="hitem slide" id="hitem_18" style="top: 360px; left: 1500px; width: 360px; height: 188px;" data-stellar-ratio="0.8" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-2/Layer-4/calendar.png" alt="" title="" width="350" />
-									<div class="texticon" style="top: -20px; left: 70px;">
-										<div class="text_l text_layer" data-value="acalendar_layer">
-											<div class="cb_top">&nbsp;</div>
-											<div class="cb_middle">
-												<div class="cb_middlePad">
-													<h5>Academic Calendar</h5>
-													<p class="bodytext">School can share the academic calendar in the beginning of the year with the authority of modification when required. It helps parents to plan family holidays.</p>
+											<div class="col-sm-1" style="text-align:-moz-center;"></div>
+											<div class="col-sm-7">
+												<div class="col-sm-12">
+													<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/trachers_routine.png) no-repeat center;"></div>
+													<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;color:#D95FC4;"><i>Teacher’s Routine</i></p></div>
 												</div>
+												
+												<div class="col-sm-12"  style="margin-top:30px;">
+												<p>
+													Upload Teacher’s routine for their convenience and better productivity. Keep an eye on daily and weekly routine of an individual teacher. 
+												</p>
+																					<h3 class="f2" style="font-size:20px;padding: 16px 5px;color:#D95FC4;">Uploaded Teacher’s routine for their convenience. </h3>
+												</div>									
+											</div>								
+										</div>		
+									</li>
+									<li>
+										<div class="col-sm-12" style="height:300px;width:1000px;">
+											
+											<div class="col-sm-4" style="text-align:-moz-center;">                                                                    
+																				<div class="thumbnail-item" style="background-color: transparent;">
+																					<a href="#"><img class="img-responsive" src="<?php bloginfo('template_url'); ?>/slider/new/Homework.png" style="width:300px;" /></a>
+																					<div class="tooltip">
+																						<img src="<?php bloginfo('template_url'); ?>/slider/new/Homework.png" alt="" style="width:100%;" />
+																					</div> 
+																				</div>
 											</div>
-											<div class="cb_bottom">&nbsp;</div>
-										</div>
-									</div>
-
-
-
-								</div>
-
-								<div class="hitem slide" id="hitem_19" style="top: 130px; left: 3750px; width: 621px; height: 115px;" data-stellar-ratio="2.30" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-2/Layer-2/pencil_cutter.png" alt="" title="" />
-
-								</div>
-
-								<div class="hitem slide" id="hitem_25" style="top: 410px; left: 2000px; width: 180px; height: 105px;" data-stellar-ratio="0.80" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-2/Layer-3/three_kids.png" alt="" title="" width="160" />
-								</div>
-
-								<div class="hitem slide" id="hitem_26" style="top: 300px; left: 2200px; width: 200px; height: 120px;" data-stellar-ratio="0.85" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-2/Layer-4/report_card_text.png" alt="" title="" width="140" />
-
-
-
-								</div>
-
-								<div class="hitem slide" id="hitem_29" style="top: 300px; left: 3050px; width: 200px; height: 100px;" data-stellar-ratio="0.80" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-2/Layer-4/lesson_plan_text.png" alt="" title="" width="170" />
-
-								</div>
-								<div class="hitem slide" id="hitem_29" style="top: 300px; left: 5800px; width: 200px; height: 100px;" data-stellar-ratio="0.80" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-4/Layer-4/fees_text.png" alt="" title="" width="140" />
-
-								</div>
-
-								<div class="hitem slide" id="hitem_50" style="top: 360px; left: 6600px; width: 235px; height: 400px;" data-stellar-ratio="0.92" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-4/Layer-4/fees.png" alt="" title="" width="200" />
-
-									<div class="texticon" style="top: -45px; left: 155px;">
-										<div class="text_l text_layer" data-value="fees_layer">
-											<div class="cb_top">&nbsp;</div>
-											<div class="cb_middle">
-												<div class="cb_middlePad">
-													<h5>Fees</h5>
-													<p class="bodytext">Parents can pay fees online using credit card or mobile money. Great tool for monitoring payment and keeping school’s accounts.</p>
+											<div class="col-sm-1" style="text-align:-moz-center;"></div>
+											<div class="col-sm-7">
+												<div class="col-sm-12">
+													<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/homework.png) no-repeat center;"></div>
+													<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;color:#D994DB;"><i>Homework</i></p></div>
 												</div>
+												
+												<div class="col-sm-12"  style="margin-top:30px;">
+												<p>
+													Check out homework of a student, a particular class section or whole school at one platform. 
+												</p>
+																					<h3 class="f2" style="font-size:20px;padding: 16px 5px;color:#D994DB;">Flexibility to check every class’s homework.</h3>
+												</div>									
+											</div>								
+										</div>	
+									</li>
+									<li>
+										<div class="col-sm-12" style="height:300px;width:1000px;">
+											
+											<div class="col-sm-4" style="text-align:-moz-center;">									
+																				<div class="thumbnail-item" style="background-color: transparent;">
+																					<a href="#"><img class="img-responsive" src="<?php bloginfo('template_url'); ?>/slider/new/fees.png" style="width:300px;" /></a>                                                                        
+																				</div>
 											</div>
-											<div class="cb_bottom">&nbsp;</div>
-										</div>
-									</div>
-
-
-
-								</div>
-								<div class="hitem slide" id="hitem_29" style="top: 250px; left: 6000px; width: 200px; height: 100px;" data-stellar-ratio="0.90" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-4/Layer-4/forms_text.png" alt="" title="" width="150" />
-
-								</div>
-								<div class="hitem slide" id="hitem_48" style="top: 350px; left: 5700px; width: 180; height: 210px;" data-stellar-ratio="0.85" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-4/Layer-3/form_green.png" alt="" title="" width="200" />
-
-									<div class="texticon" style="top: 60px; left: 175px;">
-										<div class="text_l text_layer" data-value="forms_layer">
-											<div class="cb_top">&nbsp;</div>
-											<div class="cb_middle">
-												<div class="cb_middlePad">
-													<h5>Forms</h5>
-													<p class="bodytext">All school forms are now available from mobile and web. Fill it up and submit online. Zero crowd in office room thus higher productivity.</p>
+											<div class="col-sm-1" style="text-align:-moz-center;"></div>
+											<div class="col-sm-7">
+												<div class="col-sm-12">
+													<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/fees.png) no-repeat center;"></div>
+													<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;color:#F0282F;"><i>Fees</i></p></div>
 												</div>
-											</div>
-											<div class="cb_bottom">&nbsp;</div>
+												
+												<div class="col-sm-12"  style="margin-top:30px;">
+												<p>
+																						Schedule fees and prompt automated fee reminder for pending payments. Never worry about managing fee collection and generating/maintaining receipts. Great tool for monitoring payment and keeping school’s accounts. 
+												</p>
+																					<h3 class="f2" style="font-size:20px;padding: 16px 5px;color:#F0282F;">Hassle free fees collection.</h3>
+												</div>									
+											</div>								
 										</div>
-									</div>
-
-
-
-								</div>
-
-								<div class="hitem slide" id="hitem_53" style="top: 127px; left: 6800px; width: 248px; height: 307px;" data-stellar-ratio="0.85" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-4/Layer-2/jems_clip.png" alt="" title="" />					
-
-								</div>
-
-								<div class="hitem slide" id="hitem_19" style="top: 125px; left: 795px; width: 90px; height: 50px;" data-stellar-ratio="1.80" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-1/Layer-2/planet.png" alt="" title="" width="80" />
-								</div>
-
-								<div class="hitem slide" id="hitem_10" style="top: 120px; left: 320px; width: 95px; height: 80px;" data-stellar-ratio="1.49" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-1/Layer-2/rocket.png" alt="classtuneslide3" title="" width="80" />
-
-
-
-								</div>
-
-								<div class="hitem slide" id="hitem_13" style="top: 150px; left: 860px; width: 50px; height: 30px;" data-stellar-ratio="1.00" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-1/Layer-1/cloud_1.png" alt="" title="" width="40" />
-
-								</div>
-
-								<div class="hitem slide" id="hitem_14" style="top: 120px; left: 2300px; width: 205px; height: 164px;" data-stellar-ratio="1.50" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-1/Layer-1/cloud_2.png" alt="" title="" />
-
-
-								</div>
-
-								<div class="hitem slide" id="hitem_16" style="top: 175px; left: 1950px; width: 245px; height: 84px;" data-stellar-ratio="1.50" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-1/Layer-1/cloud_1.png" alt="" title="" />
-
-								</div>
-
-								<div class="hitem" id="hitem_9" style="top: 350px; left: 700px; width: 215px; height: 200;">
-									<img width="145" src="<?php bloginfo('template_url'); ?>/slider/Slide-1/Layer-4/routine_text.png" alt="" title="">
-									<div class="texticon" style="top: -40px; left: 0px; background-position: 0px 11px;">
-										<div style="display: none; background-position: 0px 11px;" class="text_l text_layer" data-value="routine_layer">
-											<div class="cb_top">&nbsp;</div>
-											<div class="cb_middle">
-												<div class="cb_middlePad">
-													<h5>Routine</h5>
-													<p class="bodytext">Teachers and Management can modify routine when necessary and send instant notification.</p>
+									</li>
+									<li>
+										<div class="col-sm-12" style="height:300px;width:1000px;">
+											
+											<div class="col-sm-4" style="text-align:-moz-center;">									
+																				<div class="thumbnail-item" style="background-color: transparent;">
+																					<a href="#"><img class="img-responsive" src="<?php bloginfo('template_url'); ?>/images/dashpallete/view/Forms.png" style="width:300px;" /></a>                                                                        
+																				</div>
+											</div>
+											<div class="col-sm-1" style="text-align:-moz-center;"></div>
+											<div class="col-sm-7">
+												<div class="col-sm-12">
+													<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/defult.png) no-repeat center;"></div>
+													<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;color:#1E99D5;"><i>Forms</i></p></div>
 												</div>
+												
+												<div class="col-sm-12"  style="margin-top:30px;">
+												<p>
+													Upload all the necessary forms of your school so that whoever needs it, can download and use. Lessen the queues in the office room and attain higher efficiency in administration.
+												</p>
+																					<h3 class="f2" style="font-size:20px;padding: 16px 5px;color:#1E99D5;">All necessary forms available online.</h3>
+												</div>									
+											</div>								
+										</div>	
+									</li>
+									<li>
+										<div class="col-sm-12" style="height:300px;width:1000px;">
+											
+											<div class="col-sm-4" style="text-align:-moz-center;">                                                                    
+																				<div class="thumbnail-item" style="background-color: transparent;">
+																					<a href="#"><img class="img-responsive" src="<?php bloginfo('template_url'); ?>/slider/new/meeting_request.png" style="width:300px;" /></a>                                                                        
+																				</div>
 											</div>
-											<div class="cb_bottom">&nbsp;</div>
-										</div>
-									</div>
-								</div>
-
-								<!--div style="top: 420px; left: 775px; width: 215px; height: 200;" id="hitem_9" class="hitem">
-									<img width="115" title="" alt="" src="<?php //echo base_url(); ?>slider/Slide-1/Layer-3/robote_.png">
-									<div class="texticon" style="top: -40px; left: 0px; background-position: 0px 11px;">
-										<div style="display: none; background-position: 0px 11px;" class="text_l text_layer" data-value="routine_layer">
-											<div class="cb_top">&nbsp;</div>
-											<div class="cb_middle">
-												<div class="cb_middlePad">
-													<h5>Routine</h5>
-													<p class="bodytext">Teachers and Management can modify routine when necessary and send instant notification.</p>
+											<div class="col-sm-1" style="text-align:-moz-center;"></div>
+											<div class="col-sm-7">
+												<div class="col-sm-12">
+													<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/meeting_request.png) no-repeat center;"></div>
+													<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;color:#73D8BA;"><i>Meeting Request</i></p></div>
 												</div>
+												
+												<div class="col-sm-12"  style="margin-top:30px;">
+												<p>
+													How important it is to meet with all teachers and parents! Set meetings easily now and even modify for any sudden changes. Organize Parents’ Meet and notify them quickly. 
+												</p>
+																					<h3 class="f2" style="font-size:20px;padding: 16px 5px;color:#73D8BA;">Call for a meeting is so easy now! </h3>
+												</div>									
+											</div>								
+										</div>	
+									</li>
+									<li>
+										<div class="col-sm-12" style="height:300px;width:1000px;">
+											
+											<div class="col-sm-4" style="text-align:-moz-center;">									
+																				<div class="thumbnail-item" style="background-color: transparent;">
+																					<a href="#"><img class="img-responsive" src="<?php bloginfo('template_url'); ?>/slider/new/report_card.png" style="width:300px;" /></a>                                                                        
+																				</div>
 											</div>
-											<div class="cb_bottom">&nbsp;</div>
-										</div>
-									</div>
-								</div-->
-								<div class="hitem" id="hitem_9" style="top: 375px; left: 800px; width: 215px; height: 200;">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-1/Layer-3/routine.png" alt="" title="" width="225" />
-
-								</div>
-								<div data-stellar-horiz="1" data-stellar-vertical-offset="0" data-stellar-horizontal-offset="83" data-stellar-ratio="0.80" style="top: 285px; left: 450.7px; width: 210px; height: 35px;" id="hitem_3" class="hitem slide">
-									<img title="" alt="" src="<?php bloginfo('template_url'); ?>/slider/Slide-1/Layer-4/attendance_text.png" width="210">
-
-								</div>
-								<div data-stellar-horiz="1" data-stellar-vertical-offset="0" data-stellar-horizontal-offset="83" data-stellar-ratio="0.80" style="top: 318px; left: 400.7px; width: 280px; height: 250px;" id="hitem_3" class="hitem slide">
-									<img title="" alt="" src="<?php bloginfo('template_url'); ?>/slider/Slide-1/Layer-2/attendance.png" width="280">
-
-									<div style="top: 20px; left: 160px;" class="texticon">
-										<div class="text_l text_layer" style="display: none;" data-value="attendance_layer">
-											<div class="cb_top">&nbsp;</div>
-											<div class="cb_middle">
-												<div class="cb_middlePad">
-													<h5>Attendance</h5>
-													<p class="bodytext">Taking class attendance is now easier than ever!</p>
-													<p class="bodytext">Teachers can take attendance in few clicks, and parents get real time notification. Also, it helps school to keep records.</p>
+											<div class="col-sm-1" style="text-align:-moz-center;"></div>
+											<div class="col-sm-7">
+												<div class="col-sm-12">
+													<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/report_card.png) no-repeat center;"></div>
+													<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;color:#8C93B5;"><i>Report Card</i></p></div>
 												</div>
-											</div>
-											<div class="cb_bottom">&nbsp;</div>
-										</div>
-									</div>
-
-
-
-								</div>
-								<div class="hitem slide" id="hitem_5" style="top:440px; left: 685px; width: 100px; height: 178px;" data-stellar-ratio="1.20" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-1/Layer-2/top-tree.png" alt="" title="" width="75"/>
-								</div>
-
-								<div class="hitem slide" id="hitem_20" style="top: 200px; left: 3075px; width: 145px; height: 160px;" data-stellar-ratio="1.51" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-3/Layer-1/cloud_2.png" alt="" title="" />
-
-								</div>
-
-								<div class="hitem slide" id="hitem_21" style="top: 145px; left: 2625px; width: 204px; height: 161px;" data-stellar-ratio="1.49" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-1/Layer-1/cloud_2.png" alt="" title="" />
-
-
-
-								</div>
-
-								<div class="hitem" id="hitem_17" style="top: 213px; left: 1600px; width: 373px; height: 134px;">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-2/Layer-4/academic_calendar_text.png" alt="" title="" width="220" />					
-								</div>
-
-
-								<div class="hitem slide" id="hitem_24" style="top: 140px; left: 3800px; width: 140px; height: 70px;" data-stellar-ratio="1.50" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-2/Layer-2/pencil.png" alt="" title="" width="100" />					
-								</div>
-
-								<div class="hitem" id="hitem_27" style="top: 330px; left: 2460px; width: 180px; height: 135px;" data-stellar-ratio="0.90" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-2/Layer-3/report_card.png" alt="" title="" width="165" />
-
-									<div class="texticon" style="top: 12px; left: 3px;">
-										<div class="text_l text_layer" data-value="reportcard_layer">
-											<div class="cb_top">&nbsp;</div>
-											<div class="cb_middle">
-												<div class="cb_middlePad">
-													<h5>Report Card</h5>
-													<p class="bodytext">Teacher can upload the report card of class tests, exams, projects and students can see it online. Students can place it for parents view and after reviewing parents can send acknowledgement to school.</p>
-												</div>
-											</div>
-											<div class="cb_bottom">&nbsp;</div>
-										</div>
-									</div>
-
-
-
-								</div>
-
-								<div class="hitem slide" id="hitem_22" style="top: 215px; left: 3700px; width: 204px; height: 162px;" data-stellar-ratio="1.49" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-3/Layer-1/cloud.png" alt="" title="" />
-
-								</div>
-
-								<div class="hitem" id="hitem_30" style="top: 419px; left: 3600px; width: 250px; height: 85px;">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-2/Layer-3/book.png" alt="" title="" />
-									<div class="texticon" style="top: -35px; left: 140px;">
-										<div class="text_l text_layer" data-value="lessonplan_layer">
-											<div class="cb_top">&nbsp;</div>
-											<div class="cb_middle">
-												<div class="cb_middlePad">
-													<h5>Lesson Plan</h5>
-													<p class="bodytext">Teachers can upload weekly, monthly and yearly lesson plans. It allows students and parents to plan ahead of time.</p>
-												</div>
-											</div>
-											<div class="cb_bottom">&nbsp;</div>
-										</div>
-									</div>
-								</div>
-
-								<div class="hitem" id="hitem_32" style="top: 350px; left: 4100px; width: 319px; height: 330px;">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-3/Layer-3/notice.png" alt="" title="" width="250" />
-
-									<div class="texticon" style="top: 15px; left: 250px;">
-										<div class="text_l text_layer" data-value="notice_layer">
-											<div class="cb_top">&nbsp;</div>
-											<div class="cb_middle">
-												<div class="cb_middlePad">
-													<h5>Notice</h5>
-													<p class="bodytext">Any notice without any word limitation can be sent. Its real time and interactive. Instant notification to parents.</p>
-												</div>
-											</div>
-											<div class="cb_bottom">&nbsp;</div>
-										</div>
-									</div>
-
-
-
-								</div>
-
-								<div class="hitem slide" id="hitem_28" style="top: 300px; left: 3180px; width: 150px; height: 70px;" data-stellar-ratio="0.95" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-2/Layer-4/leave_text.png" alt="" title="" width="130" />
-
-
-
-								</div>
-
-								<div class="hitem slide" id="hitem_31" style="top: 165px; left: 4800px; width: 197px; height: 140px;" data-stellar-ratio="1.48" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-2/Layer-1/colud_3.png" alt="" title="" />					
-
-								</div>
-
-								<div class="hitem slide" id="hitem_34" style="top: 160px; left: 5660px; width: 150px; height: 80px;" data-stellar-ratio="1.50" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-2/Layer-1/colud_4.png" alt="" title="" width="140" />
-
-
-
-								</div>
-
-								<div class="hitem slide" id="hitem_23" style="top: 125px; left: 4900px; width: 80px; height: 85px;" data-stellar-ratio="1.80" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-2/Layer-2/eraser.png" alt="" title="" width="60" />					
-
-								</div>
-
-								<div class="hitem slide" id="hitem_36" style="top: 350px; left: 4900px; width: 170px; height: 80px;" data-stellar-ratio="0.95" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-3/Layer-4/transport_text.png" alt="" title="" width="170" />
-
-
-
-								</div>
-
-								<div class="hitem slide" id="hitem_33" style="top: 300px; left: 5950px; width: 251px; height: 238px;" data-stellar-ratio="1.50" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-3/Layer-4/notice_text.png" alt="" title=""  width="150" />
-
-
-								</div>
-
-								<div class="hitem slide" id="hitem_40" style="top: 162px; left: 5775px; width: 262px; height: 356px;" data-stellar-ratio="1.3" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-3/Layer-1/ballon.png" alt="" title="" width="100" />
-
-
-								</div>
-
-								<div class="hitem" id="hitem_37" style="top: 330px; left: 4600px; width: 200px; height: 100px;">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-3/Layer-4/meeting_request_text.png" alt="" title="" width="170" />
-								</div>
-
-								<div class="hitem slide" id="hitem_39" style="top: 450px; left: 5590px; width: 150px; height: 160px;" data-stellar-ratio="1.30" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-3/Layer-2/clock.png" alt="" title="" width="100"/>
-
-								</div>
-								<div class="hitem slide" id="hitem_39" style="top: 150px; left: 6550px; width: 204px; height: 160px;" data-stellar-ratio="1.50" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-3/Layer-1/cloud.png" alt="" title="" />
-
-								</div>
-								<div class="hitem" id="hitem_42" style="top: 284px; left: 5600px; width: 170px; height: 55px;">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-3/Layer-4/event_text.png" alt="" title="" width="140" />
-								</div>
-
-								<div class="hitem slide" id="hitem_43" style="top: 380px; left: 5875px; width: 300px; height: 258px;" data-stellar-ratio="1.05" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-3/Layer-3/events.png" alt="" title="" width="250" />
-									<div class="texticon" style="top: -30px; left: 50px;">
-										<div class="text_l text_layer" data-value="event_layer">
-											<div class="cb_top">&nbsp;</div>
-											<div class="cb_middle">
-												<div class="cb_middlePad" style="padding-bottom: 2px;">
-													<h5>Events</h5>
-													<p class="bodytext">Events page keeps everyone updated about date, timing and venue of any event coming up in the school. It also sends necessary reminders. 
-													</p>
-													<p class="bodytext">&nbsp;</p>
-												</div>
-											</div>
-											<div class="cb_bottom">&nbsp;</div>
-										</div>
-									</div>
-
-
-								</div>
-
-								<div class="hitem slide" id="hitem_41" style="top: 140px; left: 7750px; width: 100px; height: 80px;" data-stellar-ratio="1.55" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-3/Layer-3/pencil_cutter.png" alt="" title="" width="90" />					
-
-								</div>
-
-								<div class="hitem" id="hitem_44" style="top: 185px; left: 5425px; width: 440px; height: 150px;" data-stellar-ratio="1.10" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-3/Layer-1/cloud.png" alt="" title="" />
-
-
-
-								</div>
-
-								<!--div class="hitem slide" id="hitem_46" style="top: 355px; left: 6600px; width: 407px; height: 352px;" data-stellar-ratio="1.10" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php //echo base_url(); ?>slider/Slide-4/Layer-3/diary_.png" alt="" title="" />
-								</div-->
-
-								<div class="hitem" id="hitem_47" style="top: 280px; left: 6050px; width: 300px; height: 100px;">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-4/Layer-4/syllabus_text.png" alt="" title="" width="180" />
-
-								</div>
-								<div class="hitem" id="hitem_47" style="top: 280px; left: 6180px; width: 175px; height: 330px;">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-4/Layer-4/syllabus.png" alt="" title="" width="150"  />
-
-								</div>
-
-								<div class="hitem slide" id="hitem_45" style="top: 140px; left: 6800px; width: 150px; height: 100px;" data-stellar-ratio="1.20" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-4/Layer-1/airplane.png" alt="" title="" width="80" />					
-
-
-								</div>
-
-								<div class="hitem slide" id="hitem_38" style="top: 430px; left: 4800px; width: 250px; height: 180px;" data-stellar-ratio="1.05" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-3/Layer-3/meeting_request.png" alt="" title="" width="250" />
-
-
-									<div class="texticon" style="top: -40px; left: 230px;">
-										<div class="text_l text_layer" data-value="meetingrequest_layer">
-											<div class="cb_top">&nbsp;</div>
-											<div class="cb_middle">
-												<div class="cb_middlePad">
-													<h5>Meeting Request</h5>
-													<p class="bodytext">School admin can organize parents meets and notify parents quickly. Parents can request to meet teachers. Even teachers can request an individual parent for meeting.</p>
-												</div>
-											</div>
-											<div class="cb_bottom">&nbsp;</div>
-										</div>
-									</div>
-
-
-								</div>
-
-								<div class="hitem slide" id="hitem_52" style="top: 360px; left: 7250px; width: 200px; height: 170px;" data-stellar-ratio="0.95" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-4/Layer-4/end-image.png" alt="" title="" width="350" />
-								</div>
-
-								<div class="hitem" id="hitem_49" style="top: 100px; left: 6500px; width: 180px; height: 180px;">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-4/Layer-2/scale_1.png" alt="" title="" width="120" />
-
-
-
-								</div>
-
-								<div class="hitem slide" id="hitem_115" style="top: 420px; left: 6670px; width: 100px; height: 110px;" data-stellar-ratio="1.05" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-4/Layer-3/bird.png" alt="" title="" width="60" />
-
-									<div class="texticon" style="top: -39px; left: 0px;">
-										<div class="text_l text_layer" data-value="syllabus_layer">
-											<div class="cb_top">&nbsp;</div>
-											<div class="cb_middle">
-												<div class="cb_middlePad">
-													<h5>Syllabus</h5>
-													<p class="bodytext">Schools are enabled to upload yearly syllabus. Students, Parents and Teachers can refer to syllabus on the go.
-													</p>
-													<p class="bodytext">&nbsp;</p>
-												</div>
-											</div>
-											<div class="cb_bottom">&nbsp;</div>
-										</div>
-									</div>
-
-
-
-								</div>
-
-
-								<!--div class="hitem slide" id="hitem_55" style="top: 520px; left: 6825px; width: 270px; height: 215px;" data-stellar-ratio="0.95" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php //echo base_url(); ?>slider/Slide-4/Layer-1/object_.png" alt="" title="" width="150" />					
-
-								</div-->
-
-								<div class="hitem slide" id="hitem_51" style="top: 180px; left: 7800px; width: 100px; height: 100px;" data-stellar-ratio="1.3" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-4/Layer-2/sessor.png" alt="" title="" width="100" />
-
-								</div>
-								<div class="hitem slide" id="hitem_51" style="top: 180px; left: 8200px; width: 100px; height: 100px;" data-stellar-ratio="1.1" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-4/Layer-2/sessor.png" alt="" title="" width="100" />
-
-								</div>
-
-								<div class="hitem slide" id="hitem_51" style="top: 148px; left: 10400px; width: 115; height: 60px;" data-stellar-ratio="1.80" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="<?php bloginfo('template_url'); ?>/slider/Slide-4/Layer-2/hat.png" alt="" title="" width="100"/>
-
-								</div>
-
-								<!--div class="hitem" id="hitem_54" style="top: 271px; left: 7500px; width: 300px; height: 250px;">
-									<img src="<?php //echo base_url(); ?>slider/Slide-4/Layer-3/school_.png" alt="" title="" width="250" />
-								</div-->
-								<div data-stellar-horiz="1" data-stellar-vertical-offset="0" data-stellar-horizontal-offset="0" data-stellar-ratio="1.10" style="top: 185px; left: 7832.45px; width: 440px; height: 150px;" id="hitem_44" class="hitem">
-									<img title="" alt="" src="http://www.classtune.dev/slider/Slide-3/Layer-1/cloud.png">
-								</div>
-								<div class="hitem" id="hitem_44" style="top: 145px; left: 7539.9px; width: 440px; height: 150px;" data-stellar-ratio="1.10" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" data-stellar-horiz="1">
-									<img src="http://www.classtune.dev/slider/Slide-3/Layer-1/cloud.png" alt="" title="">
-								</div>
-
-								<div id="cronnav">
-									<ul>
-
-										<li class="cronnavitem act" id="cni_75" data-value="homework">
-											<span>Homework</span>
-										</li>
-
-										<li class="cronnavitem" id="cni_75" data-value="attendance">
-											<span>Attendance</span>
-										</li>
-
-										<li class="cronnavitem" id="cni_650" data-value="routine">
-											<span>Routine</span>
-										</li>
-
-										<li class="cronnavitem" id="cni_1100" data-value="troutine">
-											<span>Teacher's Routine</span>
-										</li>
-
-										<li class="cronnavitem" id="cni_1600" data-value="acalendar">
-											<span>Academic Calendar</span>
-										</li>
-
-										<li class="cronnavitem" id="cni_2400" data-value="reportcard">
-											<span>Report Card</span>
-										</li>
-
-										<li class="cronnavitem" id="cni_3000" data-value="leave">
-											<span>Leave</span>
-										</li>
-
-										<li class="cronnavitem" id="cni_3500" data-value="lessonplan">
-											<span>Lesson Plan</span>
-										</li>
-
-										<li class="cronnavitem" id="cni_4000" data-value="notice">
-											<span>Notice</span>
-										</li>
-
-										<li class="cronnavitem" id="cni_4500" data-value="meetingrequest">
-											<span>Meeting Request</span>
-										</li>
-
-										<li class="cronnavitem" id="cni_5000" data-value="transport">
-											<span>Transport</span>
-										</li>
-
-										<li class="cronnavitem" id="cni_5500" data-value="event">
-											<span>Event</span>
-										</li>
-
-										<li class="cronnavitem" id="cni_6000" data-value="syllabus">
-											<span>Syllabus</span>
-										</li>
-
-										<li class="cronnavitem" id="cni_6500" data-value="forms">
-											<span>Forms</span>
-										</li>
-
-										<li class="cronnavitem" id="cni_7000" data-value="fees">
-											<span>Fees</span>
-										</li>
-										<li class="cronnavitem" id="cni_up">
-											<i class="faq fa fa-arrow-up"></i>
-										</li>
-										<li class="cronnavitem" id="cni_down">
-											<i class="faq fa fa-arrow-down"></i>
-										</li>
-
-									</ul>
-								</div>
-
+												
+												<div class="col-sm-12"  style="margin-top:30px;">
+												<p>
+													Class Tests, Exam Reports and Project Reports are now available absolutely in digital format. It will also serve as your archive. Create, customize, develop, and distribute report cards like never before.
+												</p>
+																					<h3 class="f2" style="font-size:20px;padding: 16px 5px;color:#8C93B5;">Online Archive of Report Cards </h3>
+												</div>									
+											</div>								
+										</div>	
+									</li>
+									<li>
+																<div class="col-sm-12" style="height:300px;width:1000px;">
+																		
+																		<div class="col-sm-4" style="text-align:-moz-center;">                                                                
+																			<div class="thumbnail-item" style="background-color: transparent;">
+																				<a href="#"><img class="img-responsive" src="<?php bloginfo('template_url'); ?>/slider/new/events.png" style="width:300px;" /></a>                                                                        
+																			</div>
+																		</div>
+																		<div class="col-sm-1" style="text-align:-moz-center;"></div>
+																		<div class="col-sm-7">
+																				<div class="col-sm-12">
+																						<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/event.png) no-repeat center;"></div>
+																						<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;color:#BED877;"><i>Events</i></p></div>
+																				</div>
+
+																				<div class="col-sm-12"  style="margin-top:30px;">
+																				<p>
+																						Reach Students, Parents and Teachers instantly with event updates. Create and modify events anytime. Know how many students, teachers or parents are joining your event.  
+																				</p>
+																				<h3 class="f2" style="font-size:20px;padding: 16px 5px;color:#BED877;">One platform for all event updates!</h3>
+																				</div>									
+																		</div>								
+																</div>	
+									</li>	
+															<li>
+																<div class="col-sm-12" style="height:300px;width:1000px;">
+																		
+																		<div class="col-sm-4" style="text-align:-moz-center;">
+																			<div class="thumbnail-item" style="background-color: transparent;">
+																				<a href="#"><img class="img-responsive" src="<?php bloginfo('template_url'); ?>/slider/new/transport.png" style="width:300px;" /></a>                                                                        
+																			</div>
+																		</div>
+																		<div class="col-sm-1" style="text-align:-moz-center;"></div>
+																		<div class="col-sm-7">
+																				<div class="col-sm-12">
+																						<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/transport.png) no-repeat center;"></div>
+																						<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;color:#F9B047;"><i>Transport</i></p></div>
+																				</div>
+
+																				<div class="col-sm-12"  style="margin-top:30px;">
+																				<p>
+																						Make all the transport plans and upload here. Changes in transport schedules can now reach parents in minutes. 
+																				</p>
+																				<h3 class="f2" style="font-size:20px;padding: 16px 5px;color:#F9B047;">See transport schedule</h3>
+																				</div>									
+																		</div>								
+																</div>	
+									</li>	
+															<li>
+																<div class="col-sm-12" style="height:300px;width:1000px;">
+																		
+																		<div class="col-sm-4" style="text-align:-moz-center;">
+																			<div class="thumbnail-item" style="background-color: transparent;">
+																				<a href="#"><img class="img-responsive" src="<?php bloginfo('template_url'); ?>/slider/new/sRoutine.png" style="width:300px;" /></a>                                                                        
+																			</div>
+																		</div>
+																		<div class="col-sm-1" style="text-align:-moz-center;"></div>
+																		<div class="col-sm-7">
+																				<div class="col-sm-12">
+																						<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/class_routine.png) no-repeat center;"></div>
+																						<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;color:#AF88B4;"><i>Routine</i></p></div>
+																				</div>
+
+																				<div class="col-sm-12"  style="margin-top:30px;">
+																				<p>
+																						Make the routine of any class, any section here and publish it for everyone’s view. Enjoy the flexibility to make changes when necessary and send instant notification. 
+																				</p>
+																				<h3 class="f2" style="font-size:20px;padding: 16px 5px;color:#AF88B4;">Upload routine with the flexibility of modification</h3>
+																				</div>									
+																		</div>								
+																</div>	
+									</li>	
+															<li>
+																<div class="col-sm-12" style="height:300px;width:1000px;">
+																	   
+																		<div class="col-sm-4" style="text-align:-moz-center;">
+																			<div class="thumbnail-item" style="background-color: transparent;">
+																				<a href="#"><img class="img-responsive" src="<?php bloginfo('template_url'); ?>/slider/new/syllabus.png" style="width:300px;" /></a>                                                                        
+																			</div>
+																		</div>
+																		<div class="col-sm-1" style="text-align:-moz-center;"></div>
+																		<div class="col-sm-7">
+																				<div class="col-sm-12">
+																						<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/sylabus.png) no-repeat center;"></div>
+																						<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;color:#D3658A;"><i>Syllabus</i></p></div>
+																				</div>
+
+																				<div class="col-sm-12"  style="margin-top:30px;">
+																				<p>
+																						Enable schools to upload yearly syllabus in the system. Let you to generate class-wise or exam-wise syllabus and keep a track on the syllabus status of each class.  
+																				</p>
+																				<h3 class="f2" style="font-size:20px;padding: 16px 5px;color:#D3658A;">Upload your school’s yearly syllabus</h3>
+																				</div>									
+																		</div>								
+																</div>	
+									</li>	
+															<li>
+																<div class="col-sm-12" style="height:300px;width:1000px;">
+																	   
+																		<div class="col-sm-4" style="text-align:-moz-center;">                                                                
+																			<div class="thumbnail-item" style="background-color: transparent;">
+																				<a href="#"><img class="img-responsive" src="<?php bloginfo('template_url'); ?>/slider/new/notice.png" style="width:300px;" /></a>                                                                        
+																			</div>
+																		</div>
+																		<div class="col-sm-1" style="text-align:-moz-center;"></div>
+																		<div class="col-sm-7">
+																				<div class="col-sm-12">
+																						<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/notice.png) no-repeat center;"></div>
+																						<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;color:#81C2D6;"><i>Notice</i></p></div>
+																				</div>
+
+																				<div class="col-sm-12"  style="margin-top:30px;">
+																				<p>
+																						Any urgent notice to circulate? No worries! Notices are now real time, interactive and no more limitation of SMS of 160 characters. Send notice to a single student or a single class or the whole school.  
+																				</p>
+																				<h3 class="f2" style="font-size:20px;padding: 16px 5px;color:#81C2D6;">Circulate your notices instantly</h3>
+																				</div>									
+																		</div>								
+																</div>	
+									</li>	
+															<li>
+																<div class="col-sm-12" style="height:300px;width:1000px;">
+																		
+																		<div class="col-sm-4" style="text-align:-moz-center;">                                                                
+																			<div class="thumbnail-item" style="background-color: transparent;">
+																				<a href="#"><img class="img-responsive" src="<?php bloginfo('template_url'); ?>/slider/new/leave.png" style="width:300px;" /></a>                                                                        
+																			</div>
+																		</div>
+																		<div class="col-sm-1" style="text-align:-moz-center;"></div>
+																		<div class="col-sm-7">
+																				<div class="col-sm-12">
+																						<div class="col-sm-4" style="width: 60px;	height: 60px;	border-radius: 30px;	-webkit-border-radius: 30px;	-moz-border-radius: 30px;	background: #64B846 url(<?php bloginfo('template_url'); ?>/images/dashpallete/leave_application.png) no-repeat center;"></div>
+																						<div class="col-sm-8"><p class="f2" style="font-size:20px;padding: 16px 5px;color:#9BA280;"><i>Leave</i></p></div>
+																				</div>
+
+																				<div class="col-sm-12"  style="margin-top:30px;">
+																				<p>
+																						Facilitates online leave application, and approval with notifications. Stay away from maintaining leave approvals letter for year long. Leave application approval closely integrated with attendance. 
+																				</p>
+																				<h3 class="f2" style="font-size:20px;padding: 16px 5px;color:#9BA280;">Easy to make and approve leave applications</h3>
+																				</div>									
+																		</div>								
+																</div>	
+									</li>
+																
+								</ul>
+							</div>
+							<div id="carousel" class="flexslider">
+								<ul class="slides">
+									<li>
+									<img src="<?php bloginfo('template_url'); ?>/slider/thumb/Attendance.png" style="width:140px;padding:5px;" />
+									</li>
+									<li>
+									<img src="<?php bloginfo('template_url'); ?>/slider/thumb/academic_calendar.png" style="width:140px;padding:5px;"  />
+									</li>
+									<li>
+									<img src="<?php bloginfo('template_url'); ?>/slider/thumb/Lesson_Plan.png" style="width:140px;padding:5px;"  />
+									</li>
+									<li>
+									<img src="<?php bloginfo('template_url'); ?>/slider/thumb/Teachers_Routine.png" style="width:140px;padding:5px;"  />
+									</li>
+									<li>
+										<img src="<?php bloginfo('template_url'); ?>/slider/thumb/Homework.png" style="width:140px;padding:5px;"  />
+									</li>
+									<li>
+										<img src="<?php bloginfo('template_url'); ?>/slider/thumb/Fees.png" style="width:140px;padding:5px;"  />
+									</li>						
+									<li>
+										<img src="<?php bloginfo('template_url'); ?>/slider/thumb/Forms.png" style="width:140px;padding:5px;"  />
+									</li>
+									<li>
+										<img src="<?php bloginfo('template_url'); ?>/slider/thumb/Meeting_Request.png" style="width:140px;padding:5px;"  />
+									</li>
+									<li>
+										<img src="<?php bloginfo('template_url'); ?>/slider/thumb/Report_Card.png" style="width:140px;padding:5px;"  />
+									</li>
+									<li>
+										<img src="<?php bloginfo('template_url'); ?>/slider/thumb/Event.png" style="width:140px;padding:5px;"  />
+									</li>
+															<li>
+										<img src="<?php bloginfo('template_url'); ?>/slider/thumb/Transport.png" style="width:140px;padding:5px;"  />
+									</li>
+															<li>
+										<img src="<?php bloginfo('template_url'); ?>/slider/thumb/Routine.png" style="width:140px;padding:5px;"  />
+									</li>
+															<li>
+										<img src="<?php bloginfo('template_url'); ?>/slider/thumb/Syllabus.png" style="width:140px;padding:5px;"  />
+									</li>
+															<li>
+										<img src="<?php bloginfo('template_url'); ?>/slider/thumb/Notice.png" style="width:140px;padding:5px;"  />
+									</li>
+															<li>
+										<img src="<?php bloginfo('template_url'); ?>/slider/thumb/Leave.png" style="width:140px;padding:5px;"  />
+									</li>
+														   
+								</ul>
 							</div>
 						</div>
 					</div>

@@ -619,7 +619,7 @@ label {
     letter-spacing:2px;
 }
 
-input, textarea {
+input, textarea , select{
     width:100%;
     height:27px;
     background:#fff;
@@ -1184,4 +1184,63 @@ i.faq:hover
     right: 0px;
 	width:13%;
 	z-index:999999;
+}
+
+.footer_logo {
+  float: left;
+  margin-top: 0;
+  text-align: center;
+  width: 50%;
+}
+#lang_choice_1
+{
+	margin-top:0px;
+	height:32px;
+	font-size:15px;
+}
+/**********************HOME OWE SLIDER*********************/
+
+#ribbon img {
+    position: fixed;
+    top: 0px;
+    right: 0px;
+	width:13%;
+	z-index:999999;
+}
+/**********************HOME STICKY ICON*********************/
+.sticky_icon
+{
+	border-radius: 5px;
+	position: fixed;
+	right: 11px;
+	top: 300px;
+	width: 128px;z-index:2;
+}
+.arrow_box {
+	position: relative;
+	background: #64B846;
+	border: 4px solid #64B846;
+}
+.arrow_box:after, .arrow_box:before {
+	left: 100%;
+	top: 50%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.arrow_box:after {
+	border-color: rgba(100, 184, 70, 0);
+	border-left-color: #64B846;
+	border-width: 10px;
+	margin-top: -30px;
+}
+.arrow_box:before {
+	border-color: rgba(100, 184, 70, 0);
+	border-left-color: #64B846;
+	border-width: 16px;
+	margin-top: -36px;
 }

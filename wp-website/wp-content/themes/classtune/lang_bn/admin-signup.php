@@ -21,7 +21,7 @@ $school_type = ($school_type != 'premium') ? 'free' : 'paid';
 
 <div id="primary" class="content-area">
     <main id="main" class="site-main" role="main" style="margin-top: 120px;">
-        <iframe id="iframe_change_height" src="http://www.classtune.com/createschool/userregister/<?php echo $school_type; ?>?headless=1" style="border:0" style="border:0;" width="100%" scrolling="no"></iframe>
+        <iframe id="iframe_change_height" src="http://wp.classtune.com/createschool/userregister/<?php echo $school_type; ?>?headless=1" style="border:0" style="border:0;" width="100%" scrolling="no"></iframe>
         <style>
             .form-horizontal input
             {

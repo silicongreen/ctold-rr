@@ -26,7 +26,7 @@ get_header(); ?>
 			
 		</div>
 
-		<div id="beforeWrap" style="background: transparent url(<?php bloginfo('template_url'); ?>/images/cover/admin-page.png) no-repeat bottom left;background-size:contain ;">			
+		<div id="beforeWrap" style="background: transparent url(<?php bloginfo('template_url'); ?>/images/cover/admin-page.png) no-repeat bottom left;background-size:cover ;">			
 			<h2 class="f2" style="margin-top:100px;"><i>Manage your School like never before!</i></h2>
 			<div class="postlist-tab2">
 				<div style=" background-color: #fff;height: 220px;margin-left: 100px;position: relative;top: -120px;width: 500px;z-index: 1;box-shadow: 2px 4px 2px -3px gray;border:1px solid #ccc;">

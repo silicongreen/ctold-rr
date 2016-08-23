@@ -1315,6 +1315,8 @@ class StudentController < ApplicationController
     #@previous_batch = @student.batch_students
     @previous_batch = Batch.all(:joins=>[:batch_students],:conditions=>["batch_students.student_id=#{@student.id}"]).uniq
     @courses_all = Batch.all(:joins=>[:batch_students],:conditions=>["batch_students.student_id=#{@student.id}"],:include=>:course).uniq
+    
+    @previous_batch.push(@batch)
     #abort @previous_batch.inspect
     get_class_test_report
     @extra = "class_test"

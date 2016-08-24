@@ -23,15 +23,15 @@
                                 </div>
                                 <!-- Slides Container -->
                                 <div u="slides" style="cursor: move; position: absolute; left: 0px; top: 0px; width: 1300px; height: 500px; overflow: hidden;">
-                                    <div>
+                                    <!--div>
                                         <img u="image" src2="<?php echo base_url('styles/layouts/tdsfront/sceincerocks/images/home/p1.png'); ?>" />
-                                    </div>
+                                    </div-->
                                     <div>
                                         <img u="image" src2="<?php echo base_url('styles/layouts/tdsfront/sceincerocks/images/home/p2.png'); ?>" />
                                     </div>
-                                    <div>
+                                    <!--div>
                                         <img u="image" src2="<?php echo base_url('styles/layouts/tdsfront/sceincerocks/images/home/p3.png'); ?>" />
-                                    </div>
+                                    </div-->
                                 </div>
 
                                 <!--#region Bullet Navigator Skin Begin -->
@@ -353,7 +353,7 @@
                         </div>
                 </section>
         <!-- CTA -->
-                <section class="container" style='margin-top: 0;'>
+                <!--section class="container" style='margin-top: 0;'>
                     <div class="row ">
                         <div class="col-md-12">
                             <div class="winners">
@@ -386,7 +386,7 @@
                             </div>
                         </div>
                     </div>    
-                </section>
+                </section-->
                 <section id="cta" class="partners">
 
                         <h2>PARTNERS</h2>

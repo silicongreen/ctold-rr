@@ -83,7 +83,7 @@ class CardattController extends Controller
             
         }
         
-        Sms::send_sms_ssl($sms_numbers, $sms_msg, $studentdata->school_id);
+        //Sms::send_sms_ssl($sms_numbers, $sms_msg, $studentdata->school_id);
        
 
 

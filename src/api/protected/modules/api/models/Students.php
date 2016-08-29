@@ -219,6 +219,19 @@ class Students extends CActiveRecord {
     public static function model($className = __CLASS__) {
         return parent::model($className);
     }
+     public function getStudentphone2($phone2) {
+
+        $criteria = new CDbCriteria();
+        $criteria->select = 'id';
+        $criteria->compare('phone2', $phone2);
+        $std = $this->find($criteria);
+
+        if($std)
+        {
+            return TRUE;
+        }
+        return FALSE;
+    }
 
     public function getStudentByUserId($uid) {
 

@@ -125,6 +125,7 @@ class CardattController extends Controller
          $student_id_array = explode(",", $students_id);
          $std = new Students();
 
+         $school_id = "";
          if($school_id)
          {
             if(count($card_number_array) == count($student_id_array))

@@ -34,6 +34,7 @@ class Settings {
     );
     
     //spelling bee config
+    public static $mobile_operator = array("17", "16", "15", "11", "18");
     public static $method = array("c", "p", "s", "m", "d");
     public static $operator = array("m", "p");
     public static $encoded_left = TRUE;

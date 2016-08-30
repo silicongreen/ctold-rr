@@ -126,6 +126,20 @@
           <div class="text-input-bg"><%= f.text_field :name ,:value=> @exam_connect.name%>              
           </div>
         </div>
+        <div class="label-field-pair">
+          <label for="news_title">Exam Type</label>
+          <div class="text-input-bg">
+
+            <%= select :exam_grouping, :result_type, [["Term Exam",1],["Final Exam",2]], :selected => @exam_connect.result_type %>
+          </div>
+        </div>
+        <div class="label-field-pair"  style="float:left; clear:both;">
+          <label for="duedate">Publish Date</label>
+          <div  class="text-input-bg">
+            <%= calendar_date_select_tag "exam_grouping[published_date]",
+              @exam_connect.published_date.blank?  ? I18n.l(1.week.since,:format=>"%Y-%m-%d") : I18n.l(@exam_connect.published_date,:format=>"%Y-%m-%d") ,:class=>"text-input-bg",:readonly=>true,:popup=>:force%>
+          </div>
+        </div>
         <% 
           styletext = ""
           

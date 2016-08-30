@@ -169,7 +169,7 @@
               <font size="6"><%#=Configuration.get_config_value('InstitutionName'); %>MOHAMMADPUR PREPARATORY SCHOOL & COLLEGE</font>
             </h1>            
             <h4 class="header_address">15/1, IQBAL ROAD, MOHAMMADPUR, DHAKA-1207</h4>
-            <h4 class="header_address">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= " Progress Report of " %> <%= Time.now.strftime("%B, %Y") %></h4><% #+@connect_exam_obj.name %>
+            <h4 class="header_address">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= " Progress Report of " %> <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%B, %Y"):Date.parse(@connect_exam_obj.published_date).strftime("%B, %Y") %></h4><% #+@connect_exam_obj.name %>
           </td>
       </tr>
     </table>

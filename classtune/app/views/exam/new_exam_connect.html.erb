@@ -128,6 +128,22 @@
           <div class="text-input-bg"><%= f.text_field :name %>
           </div>
         </div>
+       <div class="label-field-pair">
+        <label for="title">Exam Type</label>
+        <div class="text-input-bg">
+          <select name="exam_grouping[result_type]"  >
+            <option value="1">Term Exam</option>
+            <option value="2">Final Exam</option>
+          </select>
+        </div>
+      </div>
+      <div class="label-field-pair"  style="float:left; clear:both;">
+          <label for="duedate">Publish Date</label>
+          <div  class="text-input-bg">
+            <%= calendar_date_select_tag "exam_grouping[published_date]",
+              I18n.l(1.week.since,:format=>"%Y-%m-%d") ,:class=>"text-input-bg",:readonly=>true,:popup=>:force%>
+          </div>
+        </div>
       <% 
         styletext = ""
         start_date = ""

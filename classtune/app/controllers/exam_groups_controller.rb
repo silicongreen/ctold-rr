@@ -329,9 +329,9 @@ class ExamGroupsController < ApplicationController
       tmp_subject = Subject.new()
       @exam_attributes = tmp_subject.getExamSubjects(@exam_attrs, @batch.id, @batches)
       
-      @exam_data = {"name" => params[:exam_group][:name],"is_current" => 1, "exam_category" => params[:exam_group][:exam_category], "topic" => params[:exam_group][:topic], "exam_type" => params[:exam_group][:exam_type], "maximum_marks" => params[:exam_group][:maximum_marks], "minimum_marks" => params[:exam_group][:minimum_marks], "exams_attributes" => @exam_attributes}
+      @exam_data = {"name" => params[:exam_group][:name],"is_current" => 1, "exam_category" => params[:exam_group][:exam_category], "attandence_start_date" => params[:exam_group][:attandence_start_date], "attandence_end_date" => params[:exam_group][:attandence_end_date], "topic" => params[:exam_group][:topic], "exam_type" => params[:exam_group][:exam_type], "maximum_marks" => params[:exam_group][:maximum_marks], "minimum_marks" => params[:exam_group][:minimum_marks], "exams_attributes" => @exam_attributes}
     else
-      @exam_data = {"name" => params[:exam_group][:name],"is_current" => 1, "exam_category" => params[:exam_group][:exam_category], "topic" => params[:exam_group][:topic], "exam_type" => params[:exam_group][:exam_type], "maximum_marks" => params[:exam_group][:maximum_marks], "minimum_marks" => params[:exam_group][:minimum_marks], "exams_attributes" => params[:exam_group][:exams_attributes]}
+      @exam_data = {"name" => params[:exam_group][:name],"is_current" => 1, "exam_category" => params[:exam_group][:exam_category], "attandence_start_date" => params[:exam_group][:attandence_start_date], "attandence_end_date" => params[:exam_group][:attandence_end_date], "topic" => params[:exam_group][:topic], "exam_type" => params[:exam_group][:exam_type], "maximum_marks" => params[:exam_group][:maximum_marks], "minimum_marks" => params[:exam_group][:minimum_marks], "exams_attributes" => params[:exam_group][:exams_attributes]}
     end
     
     @exam_group = ExamGroup.new(@exam_data)
@@ -362,9 +362,9 @@ class ExamGroupsController < ApplicationController
             if @is_class_exam
               tmp_subject = Subject.new()
               @exam_attributes = tmp_subject.getExamSubjects(@exam_attrs, batch_id, @batches)
-              @exam_data = {"name" => params[:exam_group][:name],"is_current" => 1, "exam_category" => params[:exam_group][:exam_category], "topic" => params[:exam_group][:topic], "exam_type" => params[:exam_group][:exam_type], "maximum_marks" => params[:exam_group][:maximum_marks], "minimum_marks" => params[:exam_group][:minimum_marks], "exams_attributes" => @exam_attributes}
+              @exam_data = {"name" => params[:exam_group][:name],"is_current" => 1, "exam_category" => params[:exam_group][:exam_category], "attandence_start_date" => params[:exam_group][:attandence_start_date], "attandence_end_date" => params[:exam_group][:attandence_end_date], "topic" => params[:exam_group][:topic], "exam_type" => params[:exam_group][:exam_type], "maximum_marks" => params[:exam_group][:maximum_marks], "minimum_marks" => params[:exam_group][:minimum_marks], "exams_attributes" => @exam_attributes}
             else
-              @exam_data = {"name" => params[:exam_group][:name],"is_current" => 1, "exam_category" => params[:exam_group][:exam_category], "topic" => params[:exam_group][:topic], "exam_type" => params[:exam_group][:exam_type], "maximum_marks" => params[:exam_group][:maximum_marks], "minimum_marks" => params[:exam_group][:minimum_marks], "exams_attributes" => params[:exam_group][:exams_attributes]}
+              @exam_data = {"name" => params[:exam_group][:name],"is_current" => 1, "exam_category" => params[:exam_group][:exam_category], "attandence_start_date" => params[:exam_group][:attandence_start_date], "attandence_end_date" => params[:exam_group][:attandence_end_date], "topic" => params[:exam_group][:topic], "exam_type" => params[:exam_group][:exam_type], "maximum_marks" => params[:exam_group][:maximum_marks], "minimum_marks" => params[:exam_group][:minimum_marks], "exams_attributes" => params[:exam_group][:exams_attributes]}
             end
             
             

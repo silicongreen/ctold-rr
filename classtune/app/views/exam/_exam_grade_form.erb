@@ -39,6 +39,8 @@
     <%= hidden_field :class_exam, "batch_exam", :value=>"0"%>
   <% end %>
   <%= f.hidden_field :exam_category,:value=>@exam_category %> 
+  <%= f.hidden_field :attandence_start_date,:value=>@attandence_start_date %>
+  <%= f.hidden_field :attandence_end_date,:value=>@attandence_end_date %>
   
   <%= f.error_messages %>
   <div class="exam-basic-details">

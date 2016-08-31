@@ -94,6 +94,8 @@ class ExamController < ApplicationController
     end
     @type = params[:exam_option][:exam_type]
     @exam_category = params[:exam_option][:exam_category]
+    @attandence_start_date = params[:exam_option][:attandence_start_date]
+    @attandence_end_date = params[:exam_option][:attandence_end_date]
     @topic = params[:exam_option][:topic]
     name=@batch.exam_groups.collect(&:name)
     if name.include?@name

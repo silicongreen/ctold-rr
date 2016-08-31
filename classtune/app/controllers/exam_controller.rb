@@ -771,6 +771,7 @@ class ExamController < ApplicationController
   end
 
   def student_wise_generated_report
+    
     @exam_group = ExamGroup.find(params[:exam_group])
     @student = Student.find_by_id(params[:student])
     @batch = @student.batch
@@ -780,6 +781,46 @@ class ExamController < ApplicationController
     student_electives.each do |elect|
       elective_subjects.push Subject.find(elect.subject_id)
     end
+    
+    if !@exam_group.attandence_start_date.blank? and !@exam_group.attandence_end_date.blank?
+      
+      @academic_days = @batch.find_working_days(@exam_group.attandence_start_date.to_date,@exam_group.attandence_end_date.to_date).select{|v| v<=@exam_group.attandence_end_date.to_date}.count
+      @student_leaves = Attendance.find(:all,:conditions =>{:batch_id=>@batch.id,:student_id=>@student.id,:month_date => @exam_group.attandence_start_date..@exam_group.attandence_end_date})
+      
+    else
+      @academic_days = @batch.find_working_days(@batch.start_date.to_date,@exam_group.exam_date.to_date).select{|v| v<=@exam_group.exam_date.to_date}.count
+      @student_leaves = Attendance.find(:all,:conditions =>{:batch_id=>@batch.id,:student_id=>@student.id,:month_date => @batch.start_date..@exam_group.exam_date})
+      
+    end
+    
+    on_leaves = 0;
+    leaves_other = 0;
+    leaves_full = 0;
+    unless @student_leaves.empty?
+      @student_leaves.each do |r|
+        if r.student_id == @student.id
+          working_days_count=@batch.find_working_days(r.month_date.to_date,r.month_date.to_date).select{|v| v<=r.month_date.to_date}.count
+
+          if working_days_count==1
+            if r.is_leave == true
+              on_leaves = on_leaves+1;
+            elsif r.forenoon==true && r.afternoon==false
+              leaves_other = leaves_other+1;
+            elsif r.forenoon==false && r.afternoon==true  
+              leaves_other = leaves_other+1;
+            else
+              leaves_full = leaves_full+1;
+            end 
+          end
+        end
+      end
+    end
+#    @late = leaves_other
+#    @absent = leaves_full
+#    @on_leave = on_leaves
+    @present = @academic_days-on_leaves-leaves_full
+    @absent = @academic_days-@present
+          
     @subjects = general_subjects + elective_subjects
     @exams = []
     @subjects.each do |sub|

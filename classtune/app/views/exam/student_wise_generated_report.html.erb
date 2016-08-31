@@ -3,7 +3,7 @@
   
   <!--h2><%#= "#{t('student_wise_report_for')} "+@exam_group.name+", #{t('batch')}:"+@batch.full_name %></h2-->
    
-<h4 align="center"><%= @exam_group.name+" Report " %><%= Time.now.strftime("%B, %Y") %></h4> 
+<h4 align="center"><%= @exam_group.name+" Report " %>,<%= Time.now.strftime("%Y") %></h4> 
   <div>
     
     <!--h4> <%#= "#{@student.full_name} - #{@student.admission_no}" %></h4-->
@@ -129,7 +129,7 @@
           </tr>
         <% j = j+1; %>    
         <% end %>
-          <tr>
+          <tr class="table-header">
               <td class="col-pdf"><b>Grand Total</b></td>
               <td class="col-pdf"></td>
               <td class="col-pdf"><b><%=total_mark%></b></td>
@@ -139,7 +139,7 @@
           </tr>
       </table>
 
-      <h5>
+      <h3>
         <% unless total_credit_hours==0 %>
           <% if MultiSchool.current_school.id != 246 %>
               
@@ -193,11 +193,16 @@
           <% end %>
         <% else %>
             <%= t('grade_point_average_gpa') %> = -
-        <% end %> </h5>
-        
-        <h5>
+        <% end %> </h3>
+        <h3>
+          Working Days : <%= @academic_days %>
+        </h3>
+        <h3>
+          Present : <%= @present %>
+        </h3>
+        <h3>
           Remarks :
-        </h5>
+        </h3>
 
     <% else %>
       <% total_marks_attained = 0 %>

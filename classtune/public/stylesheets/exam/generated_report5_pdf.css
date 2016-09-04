@@ -11,6 +11,20 @@
 
 }
 
+.akmis .CSSTableGenerator tr td:last-child
+{
+    border-right: 1px solid #ADACAB;
+}
+.akmis .CSSTableGenerator tr td table tr td:last-child
+{
+    border-right: 0px solid #fff;
+}
+
+.akmis .CSSTableGenerator tr th table tr td:last-child
+{
+    border-right: 0px solid #fff;
+}
+
  .akmis .CSSTableGenerator th table
 {
     border: 0px solid #fff;
@@ -27,6 +41,7 @@
  .akmis .CSSTableGenerator td table tr td
 {
     border-bottom: 0px solid #fff;
+    border-right: 0px solid #fff;
 }
  .akmis .CSSTableGenerator td table tr td:first-child
 {

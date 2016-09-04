@@ -1,3 +1,7 @@
+<% if MultiSchool.current_school.id == 186 %>
+  <%= render  :partial=>"exam_report_akmis" %>
+<% else %>
+
 </div>
 <div id="page-yield">
   
@@ -270,3 +274,4 @@
     <% end %>
   </div>
 </div>
+<% end %>

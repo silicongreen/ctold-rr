@@ -147,16 +147,16 @@
             <thead>
                 <tr class="table-header">
 
-                    <td class="col-pdf">Total Number of Working Days :</td> <td class="col-pdf"><%= @academic_days %></td>
+                    <td class="col-pdf">Total Number of Working Days</td> <td class="col-pdf"><%= @academic_days %></td>
 
-                    <td class="col-pdf">Days Present : </td> <td class="col-pdf"> <%= @present %> </td>
-                    <td class="col-pdf">Average Marks :</td> <td class="col-pdf"> <%= sprintf( "%0.02f",avgparcent) %> % </td>
+                    <td class="col-pdf">Days Present</td> <td class="col-pdf"> <%= @present %> </td>
+                    <td class="col-pdf">Average Marks</td> <td class="col-pdf"> <%= sprintf( "%0.02f",avgparcent) %> % </td>
                     <%  grade = GradingLevel.percentage_to_grade(avgparcent, @batch.id) %>
 
                     <% if !grade.blank?  and !grade.credit_points.blank? %>
-                      <td class="col-pdf">CGPA :</td> <td class="col-pdf"> <%= grade.credit_points %> </td>
+                      <td class="col-pdf">CGPA</td> <td class="col-pdf"> <%= grade.credit_points %> </td>
                     <% else %>
-                      <td class="col-pdf" >-</td>
+                      <td class="col-pdf">CGPA</td> <td class="col-pdf" >-</td>
                     <% end %>    
 
 

@@ -86,9 +86,10 @@
         <% c = 'even'  %>
         <tr class="table-header">
           <td class="col-pdf"><%= "Subject" %></td>
+          <td class="col-pdf"><%= "Full Marks" %></td>
           <td class="col-pdf"><%= "Marks Obtained" %></td>
           <td class="col-pdf"><%= "Highest Marks Obtained" %></td>
-          <td class="col-pdf"><%= "Full Marks" %></td>
+          
           <td class="col-pdf"><%= "Percentange(%)" %></td>
           <td class="col-pdf"><%= "Latter Grade" %></td>
           <td class="col-pdf"><%= "GPA (6)" %></td>
@@ -106,6 +107,7 @@
         <% exam_score.each do |es| %>
           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
              <td class="col-pdf"> <%= es.exam.subject.name %></td>
+              <td class="col-pdf"><%= es.exam.maximum_marks.to_f %></td>
               <td class="col-pdf"><%= es.marks.present? ? mark=es.marks.to_f : '-' %></td>
               <% 
                 if es.marks.present?  
@@ -114,7 +116,7 @@
               %>
 
               <td class="col-pdf"> <%=  max_mark[j] %></td>
-              <td class="col-pdf"><%= es.exam.maximum_marks.to_f %></td>
+              
               <% 
                 if es.exam.maximum_marks.present?  
                   max_total_mark = max_total_mark.to_f+es.exam.maximum_marks.to_f 

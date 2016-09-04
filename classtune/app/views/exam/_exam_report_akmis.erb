@@ -150,7 +150,7 @@
                     <td class="col-pdf">Total Number of Working Days</td> <td class="col-pdf"><%= @academic_days %></td>
 
                     <td class="col-pdf">Days Present</td> <td class="col-pdf"> <%= @present %> </td>
-                    <td class="col-pdf">Average Marks</td> <td class="col-pdf"> <%= sprintf( "%0.02f",avgparcent) %> % </td>
+                    <td class="col-pdf">Average Marks</td> <td class="col-pdf"> <%= sprintf( "%0.01f",avgparcent) %> % </td>
                     <%  grade = GradingLevel.percentage_to_grade(avgparcent, @batch.id) %>
 
                     <% if !grade.blank?  and !grade.credit_points.blank? %>

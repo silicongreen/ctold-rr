@@ -48,7 +48,7 @@
                   <%= "------------------------------------------" %><br />
                   <font size='5'><%= "Signature" %></font></center>
               </td>
-            <% elsif MultiSchool.current_school.id == 2 %>
+            <% elsif MultiSchool.current_school.id == 25 %>
               <td class="">
                   <%= "------------------------------------------" %><br />
                   <font size='3'><%= "Teacher's Signature" %></font>
@@ -59,9 +59,9 @@
                   <font size='3'><%= "Principal's Signature" %></font></center>
               </td>
             <% else %>
-              <td><%= "Class Teacher : .........................................." %></td>
-              <td><%= "Coordinator : .........................................." %></td>
-              <td><%= "Principal : .........................................." %></td>
+              <td><font size='4'><%= "Class Teacher : ........................................" %><font></td>
+              <td><font size='4'><%= "Coordinator : ........................................" %><font></td>
+              <td><font size='4'><%= "Principal : ........................................" %><font></td>
             <% end %>
           </tr>
           <% if MultiSchool.current_school.id == 280 %>

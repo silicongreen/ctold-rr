@@ -12,11 +12,11 @@ class DetentionController < ApplicationController
   def task
     @batches = Batch.active
     if @current_user.admin?
-      @task = Dwork.paginate  :order=>"created_at desc", :page=>params[:page], :per_page => 10
+      @task = Dwork.paginate  :conditions=>"school_id = #{MultiSchool.current_school.id}", :order=>"created_at desc", :page=>params[:page], :per_page => 10
     elsif @current_user.employee?
       @employee= @current_user.employee_record
       if @employee.is_pod.to_i == 1
-        @task = Dwork.paginate  :order=>"created_at desc", :page=>params[:page], :per_page => 10
+        @task = Dwork.paginate  :conditions=>"school_id = #{MultiSchool.current_school.id}", :order=>"created_at desc", :page=>params[:page], :per_page => 10
       end
     else
       if  @current_user.parent?
@@ -134,12 +134,12 @@ class DetentionController < ApplicationController
       if @current_user.employee?
         @employee= @current_user.employee_record
         if @employee.is_pod.to_i == 1
-          @task = Dwork.paginate  :order=>"created_at desc", :page=>params[:page], :per_page => 10
+          @task = Dwork.paginate :conditions=>"school_id = #{MultiSchool.current_school.id}", :order=>"created_at desc", :page=>params[:page], :per_page => 10
         else
           @task = Dwork.paginate  :conditions=>"employee_id = #{@employee.id}",:order=>"created_at desc", :page=>params[:page], :per_page => 10
         end  
       elsif @current_user.admin?
-        @task = Dwork.paginate  :order=>"created_at desc", :page=>params[:page], :per_page => 10
+        @task = Dwork.paginate :conditions=>"school_id = #{MultiSchool.current_school.id}", :order=>"created_at desc", :page=>params[:page], :per_page => 10
       else
         if  @current_user.parent?
           target = @current_user.guardian_entry.current_ward_id      
@@ -198,11 +198,11 @@ class DetentionController < ApplicationController
   def leave
     @batches = Batch.active
     if @current_user.admin?
-      @leave = Infoleave.paginate  :order=>"created_at desc", :page=>params[:page], :per_page => 10
+      @leave = Infoleave.paginate  :conditions=>"school_id = #{MultiSchool.current_school.id}",  :order=>"created_at desc", :page=>params[:page], :per_page => 10
     elsif @current_user.employee?
       @employee= @current_user.employee_record
       if @employee.is_pod.to_i == 1
-        @leave = Infoleave.paginate  :order=>"created_at desc", :page=>params[:page], :per_page => 10
+        @leave = Infoleave.paginate :conditions=>"school_id = #{MultiSchool.current_school.id}", :order=>"created_at desc", :page=>params[:page], :per_page => 10
       end
     else
       if  @current_user.parent?
@@ -313,12 +313,12 @@ class DetentionController < ApplicationController
       if @current_user.employee?
         @employee= @current_user.employee_record
         if @employee.is_pod.to_i == 1
-          @leave = Infoleave.paginate  :order=>"created_at desc", :page=>params[:page], :per_page => 10
+          @leave = Infoleave.paginate :conditions=>"school_id = #{MultiSchool.current_school.id}", :order=>"created_at desc", :page=>params[:page], :per_page => 10
         else
           @leave = Infoleave.paginate  :conditions=>"employee_id = #{@employee.id}",:order=>"created_at desc", :page=>params[:page], :per_page => 10
         end  
       elsif @current_user.admin?
-        @leave = Infoleave.paginate  :order=>"created_at desc", :page=>params[:page], :per_page => 10
+        @leave = Infoleave.paginate :conditions=>"school_id = #{MultiSchool.current_school.id}", :order=>"created_at desc", :page=>params[:page], :per_page => 10
       else
         if  @current_user.parent?
           target = @current_user.guardian_entry.current_ward_id      
@@ -360,11 +360,11 @@ class DetentionController < ApplicationController
   def counseling
     @batches = Batch.active
     if @current_user.admin?
-      @counseling = Counseling.paginate  :order=>"created_at desc", :page=>params[:page], :per_page => 10
+      @counseling = Counseling.paginate :conditions=>"school_id = #{MultiSchool.current_school.id}", :order=>"created_at desc", :page=>params[:page], :per_page => 10
     elsif @current_user.employee?
       @employee= @current_user.employee_record
       if @employee.is_pod.to_i == 1
-        @counseling = Counseling.paginate  :order=>"created_at desc", :page=>params[:page], :per_page => 10
+        @counseling = Counseling.paginate :conditions=>"school_id = #{MultiSchool.current_school.id}", :order=>"created_at desc", :page=>params[:page], :per_page => 10
       end
     else
       if  @current_user.parent?
@@ -475,12 +475,12 @@ class DetentionController < ApplicationController
       if @current_user.employee?
         @employee= @current_user.employee_record
         if @employee.is_pod.to_i == 1
-          @counseling = Counseling.paginate  :order=>"created_at desc", :page=>params[:page], :per_page => 10
+          @counseling = Counseling.paginate :conditions=>"school_id = #{MultiSchool.current_school.id}", :order=>"created_at desc", :page=>params[:page], :per_page => 10
         else
           @counseling = Counseling.paginate  :conditions=>"employee_id = #{@employee.id}",:order=>"created_at desc", :page=>params[:page], :per_page => 10
         end  
       elsif @current_user.admin?
-        @counseling = Counseling.paginate  :order=>"created_at desc", :page=>params[:page], :per_page => 10
+        @counseling = Counseling.paginate :conditions=>"school_id = #{MultiSchool.current_school.id}", :order=>"created_at desc", :page=>params[:page], :per_page => 10
       else
         if  @current_user.parent?
           target = @current_user.guardian_entry.current_ward_id      
@@ -535,11 +535,11 @@ class DetentionController < ApplicationController
     @batches = Batch.active
     if @current_user.admin?
       
-      @awarning = Awarning.paginate  :order=>"created_at desc", :page=>params[:page], :per_page => 10
+      @awarning = Awarning.paginate :conditions=>"school_id = #{MultiSchool.current_school.id}", :order=>"created_at desc", :page=>params[:page], :per_page => 10
     elsif @current_user.employee?
       @employee= @current_user.employee_record
       if @employee.is_pod.to_i == 1
-        @awarning = Awarning.paginate  :order=>"created_at desc", :page=>params[:page], :per_page => 10
+        @awarning = Awarning.paginate :conditions=>"school_id = #{MultiSchool.current_school.id}", :order=>"created_at desc", :page=>params[:page], :per_page => 10
       end
     else
       if  @current_user.parent?
@@ -657,12 +657,12 @@ class DetentionController < ApplicationController
       if @current_user.employee?
         @employee= @current_user.employee_record
         if @employee.is_pod.to_i == 1
-          @awarning = Awarning.paginate  :order=>"created_at desc", :page=>params[:page], :per_page => 10
+          @awarning = Awarning.paginate :conditions=>"school_id = #{MultiSchool.current_school.id}", :order=>"created_at desc", :page=>params[:page], :per_page => 10
         else
           @awarning = Awarning.paginate  :conditions=>"employee_id = #{@employee.id}",:order=>"created_at desc", :page=>params[:page], :per_page => 10
         end  
       elsif @current_user.admin?
-        @awarning = Awarning.paginate  :order=>"created_at desc", :page=>params[:page], :per_page => 10
+        @awarning = Awarning.paginate :conditions=>"school_id = #{MultiSchool.current_school.id}", :order=>"created_at desc", :page=>params[:page], :per_page => 10
       else
         if  @current_user.parent?
           target = @current_user.guardian_entry.current_ward_id      
@@ -708,11 +708,11 @@ class DetentionController < ApplicationController
   def notification
     @batches = Batch.active
     if @current_user.admin?
-      @notification = Lnotification.paginate  :order=>"created_at desc", :page=>params[:page], :per_page => 10
+      @notification = Lnotification.paginate :conditions=>"school_id = #{MultiSchool.current_school.id}", :order=>"created_at desc", :page=>params[:page], :per_page => 10
     elsif @current_user.employee?
       @employee= @current_user.employee_record
       if @employee.is_pod.to_i == 1
-        @notification = Lnotification.paginate  :order=>"created_at desc", :page=>params[:page], :per_page => 10
+        @notification = Lnotification.paginate :conditions=>"school_id = #{MultiSchool.current_school.id}", :order=>"created_at desc", :page=>params[:page], :per_page => 10
       end
     else
       if  @current_user.parent?
@@ -823,12 +823,12 @@ class DetentionController < ApplicationController
       if @current_user.employee?
         @employee= @current_user.employee_record
         if @employee.is_pod.to_i == 1
-          @notification = Lnotification.paginate  :order=>"created_at desc", :page=>params[:page], :per_page => 10
+          @notification = Lnotification.paginate :conditions=>"school_id = #{MultiSchool.current_school.id}", :order=>"created_at desc", :page=>params[:page], :per_page => 10
         else
           @notification = Lnotification.paginate  :conditions=>"employee_id = #{@employee.id}",:order=>"created_at desc", :page=>params[:page], :per_page => 10
         end  
       elsif @current_user.admin?
-        @notification = Lnotification.paginate  :order=>"created_at desc", :page=>params[:page], :per_page => 10
+        @notification = Lnotification.paginate :conditions=>"school_id = #{MultiSchool.current_school.id}", :order=>"created_at desc", :page=>params[:page], :per_page => 10
       else
         if  @current_user.parent?
           target = @current_user.guardian_entry.current_ward_id      
@@ -880,11 +880,11 @@ class DetentionController < ApplicationController
   def suspension
     @batches = Batch.active
     if @current_user.admin?
-      @suspension = Suspension.paginate  :order=>"created_at desc", :page=>params[:page], :per_page => 10
+      @suspension = Suspension.paginate :conditions=>"school_id = #{MultiSchool.current_school.id}", :order=>"created_at desc", :page=>params[:page], :per_page => 10
     elsif @current_user.employee?
       @employee= @current_user.employee_record
       if @employee.is_pod.to_i == 1
-        @suspension = Suspension.paginate  :order=>"created_at desc", :page=>params[:page], :per_page => 10
+        @suspension = Suspension.paginate :conditions=>"school_id = #{MultiSchool.current_school.id}", :order=>"created_at desc", :page=>params[:page], :per_page => 10
       end
     else
       if  @current_user.parent?
@@ -1002,12 +1002,12 @@ class DetentionController < ApplicationController
       if @current_user.employee?
         @employee= @current_user.employee_record
         if @employee.is_pod.to_i == 1
-          @suspension = Suspension.paginate  :order=>"created_at desc", :page=>params[:page], :per_page => 10
+          @suspension = Suspension.paginate :conditions=>"school_id = #{MultiSchool.current_school.id}", :order=>"created_at desc", :page=>params[:page], :per_page => 10
         else
           @suspension = Suspension.paginate  :conditions=>"employee_id = #{@employee.id}",:order=>"created_at desc", :page=>params[:page], :per_page => 10
         end  
       elsif @current_user.admin?
-        @suspension = Suspension.paginate  :order=>"created_at desc", :page=>params[:page], :per_page => 10
+        @suspension = Suspension.paginate :conditions=>"school_id = #{MultiSchool.current_school.id}", :order=>"created_at desc", :page=>params[:page], :per_page => 10
       else
         if  @current_user.parent?
           target = @current_user.guardian_entry.current_ward_id      
@@ -1055,11 +1055,11 @@ class DetentionController < ApplicationController
     @batches = Batch.active
     if @current_user.admin?
       
-      @warning = Warning.paginate  :order=>"created_at desc", :page=>params[:page], :per_page => 10
+      @warning = Warning.paginate :conditions=>"school_id = #{MultiSchool.current_school.id}", :order=>"created_at desc", :page=>params[:page], :per_page => 10
     elsif @current_user.employee?
       @employee= @current_user.employee_record
       if @employee.is_pod.to_i == 1
-        @warning = Warning.paginate  :order=>"created_at desc", :page=>params[:page], :per_page => 10
+        @warning = Warning.paginate :conditions=>"school_id = #{MultiSchool.current_school.id}", :order=>"created_at desc", :page=>params[:page], :per_page => 10
       end
     else
       if  @current_user.parent?
@@ -1177,12 +1177,12 @@ class DetentionController < ApplicationController
       if @current_user.employee?
         @employee= @current_user.employee_record
         if @employee.is_pod.to_i == 1
-          @warning = Warning.paginate  :order=>"created_at desc", :page=>params[:page], :per_page => 10
+          @warning = Warning.paginate :conditions=>"school_id = #{MultiSchool.current_school.id}", :order=>"created_at desc", :page=>params[:page], :per_page => 10
         else
           @warning = Warning.paginate  :conditions=>"employee_id = #{@employee.id}",:order=>"created_at desc", :page=>params[:page], :per_page => 10
         end  
       elsif @current_user.admin?
-        @warning = Warning.paginate  :order=>"created_at desc", :page=>params[:page], :per_page => 10
+        @warning = Warning.paginate :conditions=>"school_id = #{MultiSchool.current_school.id}", :order=>"created_at desc", :page=>params[:page], :per_page => 10
       else
         if  @current_user.parent?
           target = @current_user.guardian_entry.current_ward_id      
@@ -1229,12 +1229,12 @@ class DetentionController < ApplicationController
     if @current_user.employee?
       @employee= @current_user.employee_record
       if @employee.is_pod.to_i == 1
-        @detention = Detention.paginate  :order=>"created_at desc", :page=>params[:page], :per_page => 10
+        @detention = Detention.paginate :conditions=>"school_id = #{MultiSchool.current_school.id}", :order=>"created_at desc", :page=>params[:page], :per_page => 10
       else
         @detention = Detention.paginate  :conditions=>"employee_id = #{@employee.id}",:order=>"created_at desc", :page=>params[:page], :per_page => 10
       end  
     elsif @current_user.admin?
-      @detention = Detention.paginate  :order=>"created_at desc", :page=>params[:page], :per_page => 10
+      @detention = Detention.paginate :conditions=>"school_id = #{MultiSchool.current_school.id}", :order=>"created_at desc", :page=>params[:page], :per_page => 10
     else
       if @current_user.parent?
         target = @current_user.guardian_entry.current_ward_id      
@@ -1434,12 +1434,12 @@ class DetentionController < ApplicationController
       if @current_user.employee?
         @employee= @current_user.employee_record
         if @employee.is_pod.to_i == 1
-          @detention = Detention.paginate  :order=>"created_at desc", :page=>params[:page], :per_page => 10
+          @detention = Detention.paginate :conditions=>"school_id = #{MultiSchool.current_school.id}", :order=>"created_at desc", :page=>params[:page], :per_page => 10
         else
           @detention = Detention.paginate  :conditions=>"employee_id = #{@employee.id}",:order=>"created_at desc", :page=>params[:page], :per_page => 10
         end  
       elsif @current_user.admin?
-        @detention = Detention.paginate  :order=>"created_at desc", :page=>params[:page], :per_page => 10
+        @detention = Detention.paginate :conditions=>"school_id = #{MultiSchool.current_school.id}", :order=>"created_at desc", :page=>params[:page], :per_page => 10
       else
         if  @current_user.parent?
           target = @current_user.guardian_entry.current_ward_id      

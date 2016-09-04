@@ -7,7 +7,7 @@
   <div>
     
     <!--h4> <%#= "#{@student.full_name} - #{@student.admission_no}" %></h4-->
-    <h4 align="center" > <%= "#{@student.full_name}" %></h4>
+    <h4 align="center" > </h4>
     <% if @batch.name == "General" %>
       
       <h4 align="center"> <%= @batch.course.full_name %></h4>
@@ -17,7 +17,14 @@
     <!--h4> <%#= "#{t('exam_text')} : "+@exam_group.name %></h4-->
   </div>
   
-  
+  <table class="margin-top-bottom-20" width="100%" >
+            <thead>
+                <tr>
+                    <td><b>Name : <%= "#{@student.full_name}" %> </b></td>
+                    <td align="right"><b>Roll : <%= "#{@student.class_roll_no}" %></b></td>
+                </tr>
+            </thead>    
+  </table>          
 
   <% exam_score = [] %>
   <% max_mark = [] %>

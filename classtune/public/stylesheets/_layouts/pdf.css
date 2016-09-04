@@ -12,16 +12,16 @@ body{
 }
 .header_font p b
 {
-    font-size:25px;
+    font-size:30px;
 }
 .logo{
     
-    width:120px;
+    width:105px;
     float: left;
 }
 .logonew img
 {
-    width: 130px;
+    width: 105px;
     margin-top: 15px;
 }
 .academia_logo img

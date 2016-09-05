@@ -217,7 +217,7 @@ class Guardian < ActiveRecord::Base
       Champs21.present_student_id
     else
       batch_students= GuardianStudents.find_all_by_guardian_id(self.id)
-      if !batch_students.nil?
+      if !batch_students.nil? and !batch_students.first.nil?
         batch_students.first.student_id
       end
     end

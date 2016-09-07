@@ -144,3 +144,16 @@ body{
 {
     font-size:35px;
 }
+
+.margin-top-40
+{
+    margin-top:40px;
+}
+.margin-top-bottom-20
+{
+    margin:20px 0px;
+}
+.font-size-20
+{
+    font-size:13px;
+}

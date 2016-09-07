@@ -359,3 +359,59 @@ academia_box p
         font-size:11px;
         padding:0px 2px;
     }
+    
+    
+    .odd{
+    height:auto;
+    background: #EEEEEE;
+
+}
+
+.even{
+
+    height:auto;
+    background: #fff;
+
+
+}
+tr.even{
+    border: 1px solid #ADACAB;
+}
+
+tr.odd{
+    border: 1px solid #ADACAB;
+}
+
+.even td{
+
+    padding: 12px 12px 12px 15px;
+    border: 1px solid #ADACAB;
+    border-right: 0px solid #fff;
+    border-top: 0px solid #fff;
+
+}
+
+.odd td{
+    padding: 12px 12px 12px 15px;
+    border: 1px solid #ADACAB;
+    border-right: 0px solid #fff;
+    border-top: 0px solid #fff;
+
+}
+
+
+
+.table-header td{
+    padding: 12px 12px 12px 15px;
+    border-top: 1px solid #ADACAB;
+    border-left: 1px solid #ADACAB;
+    border-right: 1px solid #ADACAB;
+    border-bottom: 1px solid #ADACAB;
+    color: #97080e;
+    background: #d7d7d7;
+}
+
+table#pdf-table{
+    border-top: 1px solid #ADACAB;
+    border-collapse:collapse
+}

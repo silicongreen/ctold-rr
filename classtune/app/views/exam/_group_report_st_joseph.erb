@@ -22,7 +22,6 @@
                       <% end %>
 
                       <td class="col-pdf">Total Marks</td>
-                      <td class="col-pdf">Marks Obtained</td>
                       <td class="col-pdf">Highest Marks</td>
                   </tr>
 
@@ -70,7 +69,7 @@
                           <% 
                           heighst_mark = 0
                           if !@report_data['report']['max_mark'].blank? and !@report_data['report']['max_mark'][subjects['id']].blank?
-                            heighst_mark = (@report_data['report']['max_mark'][subjects['id']].to_f/full_mark.to_f)*100
+                            heighst_mark = @report_data['report']['max_mark'][subjects['id']].to_f
                             end  
 
                           if total_mark.to_f>0 and full_mark.to_f>0
@@ -82,7 +81,6 @@
 
                           <% if full_mark.to_f > 0 %>
                             <td class="col-pdf"><%= sprintf( "%0.02f", total_mark) %></td>
-                            <td class="col-pdf"><%= sprintf( "%0.02f", main_mark) %> </td>
                             <td class="col-pdf"><%= sprintf( "%0.02f", heighst_mark)%> </td>
 
                             <% total_parcent= total_parcent+main_mark %>

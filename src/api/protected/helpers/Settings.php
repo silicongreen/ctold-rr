@@ -25,6 +25,7 @@ class Settings {
     public static $notification_url = "http://www.champs21.com/front/ajax/send_paid_notification";
     public static $mail_url = "http://www.champs21.com/front/ajax/send_email_to_user_api";
     public static $free_domain_string = array("free");
+    public static $card_attendence_school = [2];
     
     
     public static $version_update = array(

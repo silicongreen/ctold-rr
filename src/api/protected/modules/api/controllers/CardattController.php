@@ -83,7 +83,7 @@ class CardattController extends Controller
             
         }
         
-        //Sms::send_sms_ssl($sms_numbers, $sms_msg, $studentdata->school_id);
+        Sms::send_sms_ssl($sms_numbers, $sms_msg, $studentdata->school_id);
        
 
 
@@ -126,7 +126,7 @@ class CardattController extends Controller
          $std = new Students();
 
 //         $school_id = "";
-         if($school_id && $school_id==2)
+         if($school_id && in_array($school_id,Settings::$card_attendence_school))
          {
             if(count($card_number_array) == count($student_id_array))
             {
@@ -153,10 +153,15 @@ class CardattController extends Controller
             
             if($absent_studnets)
             {
-               
+               $fatt = new ForceAttendences();
+               $stdf = $fatt->getAll($school_id, $date);
                foreach ($absent_studnets as $student)
                {
 
+                   if(in_array($student->id, $stdf))
+                   {
+                       continue;
+                   }
                    $student_id = $student->id;
                    
                    

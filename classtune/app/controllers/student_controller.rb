@@ -2361,6 +2361,7 @@ class StudentController < ApplicationController
     
     @tmp_subject_to_test = Subject.find_by_code_and_batch_id(@subjects_code, b)
     unless @tmp_subject_to_test.nil?
+      abort(@tmp_subject_to_test.id)
       appropriate_elective_subject_id = @tmp_subject_to_test.id
     end
     

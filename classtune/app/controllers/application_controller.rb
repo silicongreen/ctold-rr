@@ -25,6 +25,7 @@ class ApplicationController < ActionController::Base
   helper_method :send_sms
   helper_method :sms_enable?
   helper_method :school_detention_allowed?
+  helper_method :school_smartcard_allowed?
   helper_method :dec_student_count_subscription
   helper_method :check_free_school?
   helper_method :can_access_plugin?
@@ -60,6 +61,17 @@ class ApplicationController < ActionController::Base
         vreturn = true
       end
       
+    end
+    return vreturn
+  end
+  def school_smartcard_allowed?
+    require "yaml"
+    vreturn = false
+    detention_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/smartcard.yml")['school']
+    all_schools = detention_config['numbers'].split(",")
+    current_school = MultiSchool.current_school.id
+    if all_schools.include?(current_school.to_s)
+        vreturn = true
     end
     return vreturn
   end

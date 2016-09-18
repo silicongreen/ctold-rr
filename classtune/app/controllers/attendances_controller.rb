@@ -337,6 +337,7 @@ class AttendancesController < ApplicationController
   end
   
   def show 
+    now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
     if params[:attandence_date].nil? || params[:attandence_date].empty?
       @date_to_use = @local_tzone_time.to_date
     elsif current_user.admin?
@@ -397,6 +398,19 @@ class AttendancesController < ApplicationController
           leave_approve_deny(params[:leave_id], params[:student_id], params[:status_change])
         elsif params[:status_change] == "1"
           add_attendence_student(params[:batch_id],@date_to_use,params[:student_id],0,1)
+        elsif params[:status_change] == "5"
+          fattendence = ForceAttendence.find_by_student_id_and_date(params[:student_id],@date_to_use)
+          if fattendence.nil?
+            fatttendencenew = ForceAttendence.new
+            fatttendencenew.student_id = params[:student_id]
+            fatttendencenew.batch_id = params[:batch_id]
+            fatttendencenew.date = @date_to_use
+            fatttendencenew.created_at = now
+            fatttendencenew.updated_at = now
+            fatttendencenew.save
+          else
+            fattendence.destroy
+          end   
         end
         
       end
@@ -405,6 +419,8 @@ class AttendancesController < ApplicationController
     @students = []
     if @student_response['status']['code'].to_i == 200
       @students = @student_response['data']['batch_attendence']
+      allfattendence = ForceAttendence.find_all_by_batch_id_and_date(params[:batch_id],@date_to_use)
+      @stdids = allfattendence.map(&:student_id)
     end
     
     respond_to do |format|

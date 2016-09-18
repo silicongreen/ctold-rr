@@ -2257,7 +2257,8 @@ class StudentController < ApplicationController
   #      @students = @search.all
   #    end
   #  end
-
+  
+  
   def electives
     flash[:notice] = nil
     @show_batch_subject = true
@@ -2303,7 +2304,7 @@ class StudentController < ApplicationController
       @student = []
       @batch_data = {}
       
-      @subjects_name = @elective_subject.name
+      @subjects_code = @elective_subject.code
       @elective_group = ElectiveGroup.find(@elective_subject.elective_group_id)
       
       @elective_group_name = @elective_group.name
@@ -2328,7 +2329,7 @@ class StudentController < ApplicationController
         end
         
         if elective_group_id > 0
-          @subject_tmp = Subject.find(:all, :conditions => ["batch_id = ? and name LIKE ? and elective_group_id = ?", b, @subjects_name, elective_group_id])
+          @subject_tmp = Subject.find(:all, :conditions => ["batch_id = ? and code = ? and elective_group_id = ?", b, @subjects_code, elective_group_id])
           
           unless @subject_tmp.nil? or @subject_tmp.empty?
             @batch_data[@tmp_batch.name] << {"course_name" => @tmp_course.course_name, "section" => @tmp_course.section_name, "students" => @tmp_batch.students}
@@ -2356,9 +2357,9 @@ class StudentController < ApplicationController
     
     @subject = Subject.find params[:id2]
     
-    @subjects_name = @subject.name
+    @subjects_code = @subject.code
     
-    @tmp_subject_to_test = Subject.find_by_name_and_batch_id(@subjects_name, b)
+    @tmp_subject_to_test = Subject.find_by_code_and_batch_id(@subjects_code, b)
     unless @tmp_subject_to_test.nil?
       appropriate_elective_subject_id = @tmp_subject_to_test.id
     end
@@ -2423,7 +2424,7 @@ class StudentController < ApplicationController
       @student = []
       @batch_data = {}
       
-      @subjects_name = @elective_subject.name
+      @subjects_code = @elective_subject.code
       @batches.each do |b|
         appropriate_elective_subject_id = 0
         @tmp_batch = Batch.find(b)
@@ -2436,7 +2437,7 @@ class StudentController < ApplicationController
         @batch_data[@tmp_batch.name] << {"course_name" => @tmp_course.course_name, "section" => @tmp_course.section_name, "students" => @tmp_students}
         @tmp_students.each do |s|
           if appropriate_elective_subject_id == 0
-            @tmp_subject_to_test = Subject.find_by_name_and_batch_id(@subjects_name, b)
+            @tmp_subject_to_test = Subject.find_by_code_and_batch_id(@subjects_code, b)
             unless @tmp_subject_to_test.nil?
               appropriate_elective_subject_id = @tmp_subject_to_test.id
             end
@@ -2466,9 +2467,9 @@ class StudentController < ApplicationController
     
     @subject = Subject.find params[:id2]
     
-    @subjects_name = @subject.name
+    @subjects_code = @subject.code
     
-    @tmp_subject_to_test = Subject.find_by_name_and_batch_id(@subjects_name, b,:conditions=>"elective_group_id IS NOT NULL AND is_deleted = false")
+    @tmp_subject_to_test = Subject.find_by_code_and_batch_id(@subjects_code, b,:conditions=>"elective_group_id IS NOT NULL AND is_deleted = false")
     unless @tmp_subject_to_test.nil?
       appropriate_elective_subject_id = @tmp_subject_to_test.id
     end
@@ -2532,7 +2533,7 @@ class StudentController < ApplicationController
       @student = []
       @batch_data = {}
       
-      @subjects_name = @elective_subject.name
+      @subjects_code = @elective_subject.code
       
       @batches.each do |b|
         appropriate_elective_subject_id = 0
@@ -2546,7 +2547,7 @@ class StudentController < ApplicationController
         @batch_data[@tmp_batch.name] << {"course_name" => @tmp_course.course_name, "section" => @tmp_course.section_name, "students" => @tmp_students}
         @tmp_students.each do |s|
           if appropriate_elective_subject_id == 0
-            @tmp_subject_to_test = Subject.find_by_name_and_batch_id(@subjects_name, b)
+            @tmp_subject_to_test = Subject.find_by_code_and_batch_id(@subjects_code, b)
             unless @tmp_subject_to_test.nil?
               appropriate_elective_subject_id = @tmp_subject_to_test.id
             end
@@ -2565,6 +2566,8 @@ class StudentController < ApplicationController
       page.replace_html 'flash_box', :text => "<p class='flash-msg'>#{t('flash_msg42')}</p>"
     end
   end
+
+  
 
   def fees
     @dates=FinanceFeeCollection.find(:all,:joins=>"INNER JOIN fee_collection_batches on fee_collection_batches.finance_fee_collection_id=finance_fee_collections.id INNER JOIN finance_fees on finance_fees.fee_collection_id=finance_fee_collections.id",:conditions=>"finance_fees.student_id='#{@student.id}'  and finance_fee_collections.is_deleted=#{false} and ((finance_fees.balance > 0 and finance_fees.batch_id<>#{@student.batch_id}) or (finance_fees.batch_id=#{@student.batch_id}) )").uniq

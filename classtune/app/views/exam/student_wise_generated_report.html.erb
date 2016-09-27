@@ -145,7 +145,7 @@
 
       <h3>
         <% unless total_credit_hours==0 %>
-          <% if MultiSchool.current_school.id != 246 %>
+          <% if MultiSchool.current_school.id != 246  and MultiSchool.current_school.id != 280 %>
               
               <% grade_point_sum = total_credit_points.to_f/total_credit_hours.to_f %>
               <% sum_grade = GradingLevel.grade_point_to_grade(grade_point_sum, @student.batch_id) %>

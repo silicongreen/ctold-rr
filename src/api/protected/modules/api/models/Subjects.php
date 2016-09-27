@@ -182,7 +182,7 @@ class Subjects extends CActiveRecord
         $criteria->compare('t.batch_id', $batch_id);
         $criteria->compare('t.is_deleted', 0);
         $criteria->compare('t.no_exams', 1);
-        $criteria->compare('t.elective_group_id', 0);
+	$criteria->addCondition("t.elective_group_id IS NULL")
         $criteria->order = "t.name asc";
         $data_subject = $this->findAll($criteria);
         $stsub = new StudentsSubjects();
@@ -234,8 +234,9 @@ class Subjects extends CActiveRecord
         $criteria->compare('t.batch_id', $batch_id);
         $criteria->compare('t.is_deleted', 0);
         $criteria->compare('t.no_exams', 0);
-        $criteria->compare('t.elective_group_id', 0);
-        $criteria->order = "t.name asc";
+        $criteria->addCondition("t.elective_group_id IS NULL");
+	$criteria->order = "t.name asc";
+
         $data_subject = $this->findAll($criteria);
         $stsub = new StudentsSubjects();
         $student_subject = $stsub->getStudentSubject($batch_id,$student_id);

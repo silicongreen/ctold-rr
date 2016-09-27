@@ -124,7 +124,24 @@
                   max_total_mark = max_total_mark.to_f+es.exam.maximum_marks.to_f 
                 end
               %>
-              <td class="col-pdf"><%= es.marks.present? ? mark=(es.marks.to_f/es.exam.maximum_marks.to_f)*100 : '-' %> % </td>
+              <td class="col-pdf">
+
+              <% 
+                
+              
+              if (es.marks.present)
+                mark=(es.marks.to_f/es.exam.maximum_marks.to_f)*100 
+              else
+                mark = 0
+              end  
+              
+              
+              %>
+              <% if mark>0 %>
+                  <%= sprintf( "%0.02f", mark) %> %
+              <% end %>    
+      
+              </td>
               <% total_credit_hours = total_credit_hours + es.exam.subject.credit_hours.to_f %>
               <% points=0 %>
               <% points = (es.grading_level.credit_points.to_f) * (es.exam.subject.credit_hours.to_f) if es.grading_level.present? %>

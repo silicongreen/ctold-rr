@@ -129,7 +129,7 @@
               <% 
                 
               
-              if (es.marks.present)
+              if es.marks.present?
                 mark=(es.marks.to_f/es.exam.maximum_marks.to_f)*100 
               else
                 mark = 0

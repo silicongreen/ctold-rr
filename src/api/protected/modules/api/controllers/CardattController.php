@@ -128,14 +128,14 @@ class CardattController extends Controller
 //         $school_id = "";
          if($school_id && in_array($school_id,Settings::$card_attendence_school))
          {
-            if(count($card_number_array) == count($student_id_array))
-            {
-                $absent_studnets = $std->getStudentNotInAdmission($student_id_array,$school_id);
-            }
-            else 
-            {
-                $absent_studnets = $std->getStudentNotInCard($card_number_array,$school_id);
-            }
+//            if(count($card_number_array) == count($student_id_array))
+//            {
+             $absent_studnets = $std->getStudentNotInAdmission($student_id_array,$school_id);
+//            }
+//            else 
+//            {
+//                $absent_studnets = $std->getStudentNotInCard($card_number_array,$school_id);
+//            }
            
             $attendence = new Attendances();
             $attendence->deleteAttendanceStudent($school_id, $date);

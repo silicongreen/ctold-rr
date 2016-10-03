@@ -1983,6 +1983,20 @@ class ExamController < ApplicationController
     @exam_groups = []
   end
   
+  def marksheet
+    @id = params[:id]
+    @subject_id = params[:subject_id]
+    @connect_exam_obj = ExamConnect.find(@id)
+    @batch = Batch.find(@connect_exam_obj.batch_id) 
+    @subject = Subject.find(@subject_id);
+    get_subject_mark_sheet(@id,@subject_id)
+    @report_data = []
+    if @student_response['status']['code'].to_i == 200
+      @report_data = @student_response['data']
+    end
+    render :pdf => 'subject_mark_sheet_pdf'
+  end
+  
   def generated_report5
     if params[:student].nil? or !params[:student][:class_name].nil?
       if params[:exam_report].nil? or params[:exam_report][:batch_id].empty?
@@ -2964,6 +2978,21 @@ class ExamController < ApplicationController
         request.set_form_data({"connect_exam_id"=>connect_exam_id,"student_id"=>student_id,"batch_id"=>batch_id,"call_from_web"=>1,"user_secret" =>session[:api_info][0]['user_secret']})
 
 
+    response = http.request(request)
+    @student_response = JSON::parse(response.body)
+
+  end
+   def get_subject_mark_sheet(connect_exam_id,subject_id)
+    require 'net/http'
+    require 'uri'
+    require "yaml"
+    champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
+    api_endpoint = champs21_api_config['api_url']
+
+    api_uri = URI(api_endpoint + "api/report/groupexamsubject")
+    http = Net::HTTP.new(api_uri.host, api_uri.port)
+    request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })
+    request.set_form_data({"id"=>connect_exam_id,"subject_id"=>subject_id,"call_from_web"=>1,"user_secret" =>session[:api_info][0]['user_secret']})
     response = http.request(request)
     @student_response = JSON::parse(response.body)
 

@@ -1,0 +1,137 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+
+<div id="page-yield" class="available_sections1">
+  <div class="page1"> </div>
+  <div class="section1 row" >
+    <center>
+      <div class="hor_line"></div>
+
+      <div id ="main_info">
+        <h3><%= @subject.name %></h3>
+        <h4>  <%= @batch.name %> - <%= @batch.course.full_name %> </h4>
+      </div>
+      <% unless @report_data.blank?  or  @report_data['result'].blank? %>
+      <% c = 'even' %>
+      <% stcount = @report_data['result']['ST'].size+1  %>
+      <% ctcount = @report_data['result']['CT'].size+1  %>
+      
+      <% max_mark_st = @report_data['result']['max_mark_st']  %>
+      <% max_mark_ct = @report_data['result']['max_mark_ct']  %>
+      <table id="pdf-table" width="100%" cellspacing="0">
+        <tr class="table-header">
+          <td class="name">Roll NO.</td>
+          <td class="name">Name</td>
+          <td colspan="<%= stcount %>">Surprise Test(S.T.)</td>
+          <td colspan="<%= stcount %>">Class Test(C.T.)</td>
+          <td>Total</td>
+          <td>Grade</td>
+        
+        </tr>
+        <tr class="table-header">
+          <td class="name"></td>
+          <td class="name"></td>
+          <% i=1 %>
+          <% @report_data['result']['ST'].each do |st| %>
+          <td><%= i %></td>
+          <% i = i+1 %>
+          <% end %>
+          <td>Average</td>
+          
+          <% i=1 %>
+          <% @report_data['result']['CT'].each do |ct| %>
+          <td><%= i %></td>
+          <% i = i+1 %>
+          <% end %>
+          <td>Average</td>
+          
+          
+          <td></td>
+          <td></td>
+        </tr>
+        <% @report_data['result']['students'].each do |std| %>
+          <% st_marks = [] %>
+          <% ct_marks = [] %>
+          <% total_mark = 0 %>
+          <% avg_mark = 0 %>
+          <td class="name"><%= std['class_roll_no'] %></td>
+          <td class="name"><%= std['name'] %></td>
+          <% @report_data['result']['ST'].each do |st| %>
+            <td><%= st['students'][std['id']] %></td>
+            <% total_mark = total_mark+st['students'][std['id']] %>
+            <% st_marks << st['students'][std['id']] %>
+          <% end %> 
+          <% st_marks.sort! {|x,y| y <=> x } %>
+            
+            
+          <% 
+            if max_mark_st == 10 
+                avg_mark = (st_marks[0]+st_marks[1]+st_marks[0])/3
+            elsif max_mark_st == 5  
+                avg_mark = (st_marks[0]+st_marks[1])/2
+            else  
+                avg_mark = total_mark/@report_data['result']['ST'].size
+            end 
+          %>
+         <td class="name"><%= avg_mark %></td> 
+         
+         <% avg_mark2 = 0; %>
+         <% total_mark = 0 %>
+         <% @report_data['result']['CT'].each do |ct| %>
+            <td><%= ct['students'][std['id']] %></td>
+            <% total_mark = total_mark+ct['students'][std['id']] %>
+            <% ct_marks << ct['students'][std['id']] %>
+          <% end %> 
+          <% ct_marks.sort! {|x,y| y <=> x } %>
+            
+            
+          <% 
+            if max_mark_ct == 20 
+                avg_mark2 = (ct_marks[0]+ct_marks[1])/2
+            elsif max_mark_ct == 10  
+                avg_mark2 = ct_marks[0]
+            else  
+                avg_mark2 = total_mark/@report_data['result']['CT'].size
+            end 
+          %>
+         <td class="name"><%= avg_mark2 %></td> 
+         
+         <% total_mark = avg_mark+avg_mark2 %>
+         <%  full_mark = max_mark_ct+max_mark_st %>
+         
+         main_mark = (total_mark.to_f/full_mark.to_f)*100 
+         
+         <td class="name"><%= total_mark %></td>
+         
+         <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
+         <% if !grade.blank? and !grade.name.blank? %>
+          <td class="col-2"><b><%= grade.name %></b></td>
+        <% else %>
+          <td class="col-2"><b>N/A</b></td>
+        <% end %>
+         
+        <% end %>
+      </table>
+      <% end %>
+    </center>
+  </div>
+  
+  
+</div>

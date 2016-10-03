@@ -14,6 +14,7 @@ authorization do
     has_permission_on [:exam],
       :to => [
       :index,
+      :marksheet,
       :previous_batch_exams,
       :list_inactive_batches,
       :list_inactive_exam_groups,
@@ -343,6 +344,7 @@ authorization do
       :to => [
       :index,
       :previous_batch_exams,
+      :marksheet,
       :list_inactive_batches,
       :list_inactive_exam_groups,
       :previous_exam_marks,
@@ -478,6 +480,7 @@ authorization do
     has_permission_on [:exam], :to => [:index,
       :exam_wise_report,
       :list_exam_types,
+      :marksheet,
       :generated_report,
       :graph_for_generated_report,
       :generated_report_pdf,
@@ -682,6 +685,7 @@ authorization do
       :to =>[
       :generated_report,
       :generated_report_pdf,
+      :marksheet,
       :consolidated_exam_report,
       :consolidated_exam_report_pdf,
       :generated_report3,
@@ -1803,6 +1807,7 @@ authorization do
       :index,
       :update_exam_form,
       :publish,
+      :marksheet,
       :grouping,
       :exam_connect_list,
       :new_exam_connect,
@@ -3103,6 +3108,7 @@ authorization do
       :to => [
       :index,
       :create_exam,
+      :marksheet,
       :redirect_exam,
       :update_batch,
       :exam_wise_report,

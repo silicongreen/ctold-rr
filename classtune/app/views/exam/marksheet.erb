@@ -37,13 +37,14 @@
       
       <% max_mark_st = @report_data['result']['max_mark_st']  %>
       <% max_mark_ct = @report_data['result']['max_mark_ct']  %>
+      <% total_marks = max_mark_st.to_i+max_mark_ct.to_i  %>
       <table id="pdf-table" width="100%" cellspacing="0">
         <tr class="table-header">
           <td class="name">Roll NO.</td>
           <td class="name">Name</td>
-          <td colspan="<%= stcount %>">Surprise Test(S.T.)</td>
-          <td colspan="<%= ctcount %>">Class Test(C.T.)</td>
-          <td>Total</td>
+          <td colspan="<%= stcount %>">Surprise Test (S.T.)</td>
+          <td colspan="<%= ctcount %>">Class Test (C.T.)</td>
+          <td>Total (<%=  total_marks %>)</td>
           <td>Grade</td>
         
         </tr>

@@ -125,11 +125,11 @@ class ExamConnect extends CActiveRecord
                         }
                         foreach($exam['Scores'] as $scores)
                         {
-                            $std_middle_name = ($scores['Scores']['Students']->middle_name)?$scores['Scores']['Students']->middle_name." ":"";
-                            $result['CT'][$i]['students'][$j]['name'] = $scores['Scores']['Students']->first_name." ".$std_middle_name.$scores['Scores']['Students']->last_name;
-                            $result['CT'][$i]['students'][$j]['id'] = $scores['Scores']['Students']->id;
-                            $result['CT'][$i]['students'][$j]['class_roll_no'] = $scores['Scores']['Students']->class_roll_no;
-                            $result['CT'][$i]['students'][$j]['score'] = $scores['Scores']->marks;
+                            $std_middle_name = ($scores['Students']->middle_name)?$scores['Students']->middle_name." ":"";
+                            $result['CT'][$i]['students'][$j]['name'] = $scores['Students']->first_name." ".$std_middle_name.$scores['Students']->last_name;
+                            $result['CT'][$i]['students'][$j]['id'] = $scores['Students']->id;
+                            $result['CT'][$i]['students'][$j]['class_roll_no'] = $scores['Students']->class_roll_no;
+                            $result['CT'][$i]['students'][$j]['score'] = $scores->marks;
                             $j++;
                         } 
                         $i++;
@@ -148,11 +148,11 @@ class ExamConnect extends CActiveRecord
                         }
                         foreach($exam['Scores'] as $scores)
                         {
-                            $std_middle_name = ($scores['Scores']['Students']->middle_name)?$scores['Scores']['Students']->middle_name." ":"";
-                            $result['ST'][$k]['students'][$l]['name'] = $scores['Scores']['Students']->first_name." ".$std_middle_name.$scores['Scores']['Students']->last_name;
-                            $result['ST'][$k]['students'][$l]['id'] = $scores['Scores']['Students']->id;
-                            $result['ST'][$k]['students'][$l]['class_roll_no'] = $scores['Scores']['Students']->class_roll_no;
-                            $result['ST'][$k]['students'][$l]['score'] = $scores['Scores']->marks;
+                            $std_middle_name = ($scores['Students']->middle_name)?$scores['Students']->middle_name." ":"";
+                            $result['ST'][$k]['students'][$l]['name'] = $scores['Students']->first_name." ".$std_middle_name.$scores['Students']->last_name;
+                            $result['ST'][$k]['students'][$l]['id'] = $scores['Students']->id;
+                            $result['ST'][$k]['students'][$l]['class_roll_no'] = $scores['Students']->class_roll_no;
+                            $result['ST'][$k]['students'][$l]['score'] = $scores->marks;
                             $l++;
                         } 
                         $k++;

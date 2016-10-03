@@ -76,19 +76,19 @@ class ExamConnect extends CActiveRecord
                             'Exams' => array(
                                 'select' => 'Exams.id,Exams.maximum_marks',
                                 'joinType' => 'LEFT JOIN',
-                                'with' => array(
-                                    'Scores' => array(
-                                        'select' => 'Scores.marks,Scores.student_id',
-                                        'with' => array(
-                                            'Students' => array(
-                                                'select' => 'Students.first_name,Students.last_name,Students.middle_name,Students.class_roll_no,Students.id',
-                                            ),
-                                        )
-                                    ),
-                                    'Subjects' => array(
-                                        'select' => 'Subjects.id',
-                                    )
-                                )
+//                                'with' => array(
+//                                    'Scores' => array(
+//                                        'select' => 'Scores.marks,Scores.student_id',
+//                                        'with' => array(
+//                                            'Students' => array(
+//                                                'select' => 'Students.first_name,Students.last_name,Students.middle_name,Students.class_roll_no,Students.id',
+//                                            ),
+//                                        )
+//                                    ),
+//                                    'Subjects' => array(
+//                                        'select' => 'Subjects.id',
+//                                    )
+//                                )
                             )
                         )
                     )

@@ -1988,7 +1988,12 @@ class ExamController < ApplicationController
     @subject_id = params[:subject_id]
     @connect_exam_obj = ExamConnect.find(@id)
     @batch = Batch.find(@connect_exam_obj.batch_id) 
-    @subject = Subject.find(@subject_id);
+    @subject = Subject.find(@subject_id)
+    
+    @employee_sub = EmployeesSubject.find_by_subject_id(@subject_id)
+    if !@employee_sub.nil?
+      @employee = Employee.find(@employee_sub.employee_id)
+    end
     get_subject_mark_sheet(@id,@subject_id)
     @report_data = []
     if @student_response['status']['code'].to_i == 200

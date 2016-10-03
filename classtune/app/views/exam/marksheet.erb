@@ -27,8 +27,20 @@
       <h4 align="center">For Subject Teacher</h4>
       
       <div id ="main_info">
-        <h3><%= @subject.name %></h3>
-        <h4>  <%= @batch.name %> - <%= @batch.course.full_name %> </h4>
+          <table>
+              <tr>
+                 <% if !@employee.nil? %> 
+                  <td align='left'>Teacher's Name : <%=  @employee.full_name %></td>
+                  <td align='center'>Subject : <%= @subject.name %></td>
+                 <% else %>
+                  <td align='left'>Subject : <%= @subject.name %></td>
+                 <% end %> 
+                  
+                  <td align='center'>Class : <%= @batch.course.course_name %></td>
+                  <td align='right'>Section : <%= @batch.course.section_name %></td>
+              </tr>    
+          </table>    
+       
       </div>
       <% unless @report_data.blank?  or  @report_data['result'].blank? %>
       <% c = 'even' %>

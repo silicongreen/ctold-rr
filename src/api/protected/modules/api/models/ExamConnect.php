@@ -100,13 +100,12 @@ class ExamConnect extends CActiveRecord
         $examresult = $this->find($criteria);
         
         $result = array();
+        $students = array();
         if($examresult)
         {
          
             $i = 0;
-            $j = 0;
             $k = 0;
-            $l = 0;
             $max_mark_ct = 0;
             $max_mark_st = 0;
             if($examresult['groupedexam'])
@@ -126,11 +125,17 @@ class ExamConnect extends CActiveRecord
                         foreach($exam['Scores'] as $scores)
                         {
                             $std_middle_name = ($scores['Students']->middle_name)?$scores['Students']->middle_name." ":"";
-                            $result['CT'][$i]['students'][$j]['name'] = $scores['Students']->first_name." ".$std_middle_name.$scores['Students']->last_name;
-                            $result['CT'][$i]['students'][$j]['id'] = $scores['Students']->id;
-                            $result['CT'][$i]['students'][$j]['class_roll_no'] = $scores['Students']->class_roll_no;
-                            $result['CT'][$i]['students'][$j]['score'] = $scores->marks;
-                            $j++;
+                            if(!in_array($scores['Students']->id, $students))
+                            {
+                                $students = $scores['Students']->id;
+                                $result['students'][$i]['name'] = $scores['Students']->first_name." ".$std_middle_name.$scores['Students']->last_name;
+                                $result['students'][$i]['id'] = $scores['Students']->id;
+                                $result['students'][$i]['class_roll_no'] = $scores['Students']->class_roll_no;
+                            }
+                            
+                            
+                            $result['CT'][$i]['students'][$scores['Students']->id]['score'] = $scores->marks;
+                            
                         } 
                         $i++;
                          
@@ -149,13 +154,17 @@ class ExamConnect extends CActiveRecord
                         foreach($exam['Scores'] as $scores)
                         {
                             $std_middle_name = ($scores['Students']->middle_name)?$scores['Students']->middle_name." ":"";
-                            $result['ST'][$k]['students'][$l]['name'] = $scores['Students']->first_name." ".$std_middle_name.$scores['Students']->last_name;
-                            $result['ST'][$k]['students'][$l]['id'] = $scores['Students']->id;
-                            $result['ST'][$k]['students'][$l]['class_roll_no'] = $scores['Students']->class_roll_no;
-                            $result['ST'][$k]['students'][$l]['score'] = $scores->marks;
-                            $l++;
+                            if(!in_array($scores['Students']->id, $students))
+                            {
+                                $result['students'][$i]['name'] = $scores['Students']->first_name." ".$std_middle_name.$scores['Students']->last_name;
+                                $result['students'][$i]['id'] = $scores['Students']->id;
+                                $result['students'][$i]['class_roll_no'] = $scores['Students']->class_roll_no;
+                            }
+                            $result['ST'][$k]['students'][$scores['Students']->id]['score'] = $scores->marks;
+                          
                         } 
                         $k++;
+                        $i++;
                     }
                 } 
               $result['max_mark_ct'] = $max_mark_ct;

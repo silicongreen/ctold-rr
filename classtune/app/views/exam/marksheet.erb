@@ -116,7 +116,7 @@
          <% total_mark = avg_mark.to_f+avg_mark2.to_f %>
          <%  full_mark = max_mark_ct.to_f+max_mark_st.to_f %>
          
-         main_mark = (total_mark.to_f/full_mark.to_f)*100 
+         <% main_mark = (total_mark.to_f/full_mark.to_f)*100 %>
          
          <td class="name"><%= total_mark %></td>
          

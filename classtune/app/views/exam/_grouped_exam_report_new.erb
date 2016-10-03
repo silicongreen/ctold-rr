@@ -98,7 +98,7 @@
           <table id="listing table-design">
               <thead>
                   <tr>
-                      <th>Subject Name</b></th>
+                      <th style="white-space:nowrap">Subject Name</b></th>
                       <% unless @report_data['report']['exams'].blank? %>  
                         <% @report_data['report']['exams'].each do |report| %>
                           <th style="padding:0px;">
@@ -132,7 +132,8 @@
                       <% total_mark = 0 %>
                       <% full_mark = 0 %>
                       
-                      <td class="col-2"><b><%= subjects['name'] %></b></td>
+                      <td   style="white-space:nowrap" class="col-2"><b><%= subjects['name'] %></b>&nbsp;|&nbsp;<%= link_to " ► Subject Mark Sheet",
+        {:action => "marksheet", :subject_id => subjects['id'],:id=>@connect_exam_obj.id},:target => '_blank', :class=> 'user_button' %></td>
                       <% unless @report_data['report']['exams'].blank? %>  
                         <% @report_data['report']['exams'].each do |report| %>
                           <td  style="padding:0px;">

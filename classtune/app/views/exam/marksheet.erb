@@ -83,9 +83,9 @@
 
 
             <% 
-              if max_mark_st == 10 
+              if max_mark_st.to_i == 10 
                   avg_mark = (st_marks[0].to_f+st_marks[1].to_f+st_marks[0].to_f)/3
-              elsif max_mark_st == 5  
+              elsif max_mark_st.to_i == 5  
                   avg_mark = (st_marks[0].to_f+st_marks[1].to_f)/2
               else  
                   avg_mark = total_mark.to_f/@report_data['result']['ST'].size
@@ -104,9 +104,9 @@
 
 
             <% 
-              if max_mark_ct == 20 
+              if max_mark_ct.to_i == 20 
                   avg_mark2 = (ct_marks[0].to_f+ct_marks[1].to_f)/2
-              elsif max_mark_ct == 10  
+              elsif max_mark_ct.to_i == 10  
                   avg_mark2 = ct_marks[0].to_f
               else  
                   avg_mark2 = total_mark.to_f/@report_data['result']['CT'].size

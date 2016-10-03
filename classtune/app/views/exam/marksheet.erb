@@ -68,7 +68,7 @@
         </tr>
         <% extender = 0 %>
         <% std_count = 0 %>
-        <% @report_data['result']['students'].sort_by{|e| e["class_roll_no"]} %>
+      
         <% @report_data['result']['students'].each do |std| %>
           <%  std_count = std_count+1; %>
           <% colspan = stcount+ctcount+3 %>

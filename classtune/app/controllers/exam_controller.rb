@@ -1994,7 +1994,8 @@ class ExamController < ApplicationController
     if @student_response['status']['code'].to_i == 200
       @report_data = @student_response['data']
     end
-    render :pdf => 'marksheet'
+    render :pdf => 'marksheet',
+    :orientation => 'Landscape', :zoom => 1.00
   end
   
   def generated_report5

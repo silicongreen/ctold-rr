@@ -36,7 +36,7 @@
                   <td align='left'><h4>Subject : <%= @subject.name %></h4></td>
                  <% end %> 
                   
-                  <td align='center'><h4>Class : <%= @batch.course.course_name %></h4></td>
+                  <td align='center'><h4>Class : <%= (@batch.name=="General")?"":@batch.name+"-" %><%= @batch.course.course_name %></h4></td>
                   <td align='right'><h4>Section : <%= @batch.course.section_name %></h4></td>
               </tr>    
           </table>    

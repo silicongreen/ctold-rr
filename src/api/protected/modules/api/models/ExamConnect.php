@@ -102,6 +102,8 @@ class ExamConnect extends CActiveRecord
         $result = array();
         if($examresult)
         {
+            echo "here";
+            exit;
             $i = 0;
             $j = 0;
             $k = 0;

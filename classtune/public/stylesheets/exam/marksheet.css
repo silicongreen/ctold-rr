@@ -178,6 +178,9 @@ table#pdf-table{
     border: 1px solid #fff;
     border-bottom: 1px solid #ADACAB;
 }
+table, tr, td, th, tbody, thead, tfoot {
+    page-break-inside: avoid !important;
+}
 
 
 

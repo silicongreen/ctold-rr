@@ -1995,7 +1995,13 @@ class ExamController < ApplicationController
       @report_data = @student_response['data']
     end
     render :pdf => 'marksheet',
-    :orientation => 'Landscape', :zoom => 1.00
+    :orientation => 'Landscape', :zoom => 1.00,
+    :margin => {    :top=> 10,
+                    :bottom => 10,
+                    :left=> 10,
+                    :right => 10},
+    :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+    :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
   end
   
   def generated_report5

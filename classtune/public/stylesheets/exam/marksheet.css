@@ -181,9 +181,10 @@ table#pdf-table{
 table, tr, td, th, tbody, thead, tfoot {
     page-break-inside: avoid !important;
 }
-table tr td.name-std
+table tr td
 {
     width:19% !important;
+    white-space: nowrap;
 }
 
 

@@ -20,7 +20,7 @@ class ReportController extends Controller
     {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index','getexamclass','subjectreport','getsectionreport','groupedexamreport','getTermReportAll','progressall','attendence','getsubject','progress','classtestreport','allexam', 'Getfullreport','getexamreport','acknowledge'),
+                'actions' => array('index','groupexamsubject','getexamclass','subjectreport','getsectionreport','groupedexamreport','getTermReportAll','progressall','attendence','getsubject','progress','classtestreport','allexam', 'Getfullreport','getexamreport','acknowledge'),
                 'users' => array('*'),
             ),
             array('deny', // deny all users
@@ -28,6 +28,28 @@ class ReportController extends Controller
             ),
         );
     }
+    public function actionGroupExamSubject()
+    {
+        $user_secret = Yii::app()->request->getPost('user_secret');
+        $subject_id = Yii::app()->request->getPost('subject_id');
+        $id = Yii::app()->request->getPost('id');
+        if($subject_id && Yii::app()->user->user_secret === $user_secret && (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin))
+        {
+            $examcon = new ExamConnect();
+            $result = $examcon->getConnectExamReportAll($id,$subject_id);
+           
+            $response['data']['result']       = $result;
+            $response['status']['code']       = 200;
+            $response['status']['msg']        = "Data Found"; 
+        }
+        else
+        {
+           $response['status']['code'] = 404;
+           $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    }  
     public function actiongetExamClass()
     {
         $user_secret = Yii::app()->request->getPost('user_secret');

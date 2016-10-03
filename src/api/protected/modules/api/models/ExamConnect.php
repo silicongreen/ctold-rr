@@ -127,7 +127,7 @@ class ExamConnect extends CActiveRecord
                             $std_middle_name = ($scores['Students']->middle_name)?$scores['Students']->middle_name." ":"";
                             if(!in_array($scores['Students']->id, $students))
                             {
-                                $students = $scores['Students']->id;
+                                $students[] = $scores['Students']->id;
                                 $result['students'][$i]['name'] = $scores['Students']->first_name." ".$std_middle_name.$scores['Students']->last_name;
                                 $result['students'][$i]['id'] = $scores['Students']->id;
                                 $result['students'][$i]['class_roll_no'] = $scores['Students']->class_roll_no;
@@ -156,6 +156,7 @@ class ExamConnect extends CActiveRecord
                             $std_middle_name = ($scores['Students']->middle_name)?$scores['Students']->middle_name." ":"";
                             if(!in_array($scores['Students']->id, $students))
                             {
+                                $students[] = $scores['Students']->id;
                                 $result['students'][$i]['name'] = $scores['Students']->first_name." ".$std_middle_name.$scores['Students']->last_name;
                                 $result['students'][$i]['id'] = $scores['Students']->id;
                                 $result['students'][$i]['class_roll_no'] = $scores['Students']->class_roll_no;

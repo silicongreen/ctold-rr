@@ -75,19 +75,19 @@
           <td class="name"><%= std['name'] %></td>
           <% @report_data['result']['ST'].each do |st| %>
             <td><%= st['students'][std['id']] %></td>
-            <% total_mark = total_mark+st['students'][std['id']] %>
-            <% st_marks << st['students'][std['id']] %>
+            <% total_mark = total_mark.to_f+st['students'][std['id']].to_f %>
+            <% st_marks << st['students'][std['id']].to_f %>
           <% end %> 
           <% st_marks.sort! {|x,y| y <=> x } %>
             
             
           <% 
             if max_mark_st == 10 
-                avg_mark = (st_marks[0]+st_marks[1]+st_marks[0])/3
+                avg_mark = (st_marks[0].to_f+st_marks[1].to_f+st_marks[0].to_f)/3
             elsif max_mark_st == 5  
-                avg_mark = (st_marks[0]+st_marks[1])/2
+                avg_mark = (st_marks[0].to_f+st_marks[1].to_f)/2
             else  
-                avg_mark = total_mark/@report_data['result']['ST'].size
+                avg_mark = total_mark.to_f/@report_data['result']['ST'].size
             end 
           %>
          <td class="name"><%= avg_mark %></td> 
@@ -96,25 +96,25 @@
          <% total_mark = 0 %>
          <% @report_data['result']['CT'].each do |ct| %>
             <td><%= ct['students'][std['id']] %></td>
-            <% total_mark = total_mark+ct['students'][std['id']] %>
-            <% ct_marks << ct['students'][std['id']] %>
+            <% total_mark = total_mark.to_f+ct['students'][std['id']].to_f %>
+            <% ct_marks << ct['students'][std['id']].to_f %>
           <% end %> 
           <% ct_marks.sort! {|x,y| y <=> x } %>
             
             
           <% 
             if max_mark_ct == 20 
-                avg_mark2 = (ct_marks[0]+ct_marks[1])/2
+                avg_mark2 = (ct_marks[0].to_f+ct_marks[1].to_f)/2
             elsif max_mark_ct == 10  
-                avg_mark2 = ct_marks[0]
+                avg_mark2 = ct_marks[0].to_f
             else  
-                avg_mark2 = total_mark/@report_data['result']['CT'].size
+                avg_mark2 = total_mark.to_f/@report_data['result']['CT'].size
             end 
           %>
          <td class="name"><%= avg_mark2 %></td> 
          
-         <% total_mark = avg_mark+avg_mark2 %>
-         <%  full_mark = max_mark_ct+max_mark_st %>
+         <% total_mark = avg_mark.to_f+avg_mark2.to_f %>
+         <%  full_mark = max_mark_ct.to_f+max_mark_st.to_f %>
          
          main_mark = (total_mark.to_f/full_mark.to_f)*100 
          

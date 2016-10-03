@@ -95,7 +95,7 @@ class ExamConnect extends CActiveRecord
                 )
             )
         );
-        $criteria->compare('Exams.subject_id', $subject_id);
+        //$criteria->compare('Exams.subject_id', $subject_id);
         
         $examresult = $this->find($criteria);
         

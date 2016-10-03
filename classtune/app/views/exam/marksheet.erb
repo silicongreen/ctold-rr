@@ -92,7 +92,7 @@
           <% avg_mark = 0 %>
           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
             <td class="name"><%= std['class_roll_no'] %></td>
-            <td class="name"><%= std['name'] %></td>
+            <td class="name-std"><%= std['name'] %></td>
             <% @report_data['result']['ST'].each do |st| %>
               <td><%= st['students'][std['id']]['score'] %></td>
               <% total_mark = total_mark.to_f+st['students'][std['id']]['score'].to_f %>

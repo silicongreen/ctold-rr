@@ -168,7 +168,7 @@ class ExamConnect extends CActiveRecord
                           
                         } 
                         $k++;
-                        $i++;
+                    
                     }
                 } 
               $result['max_mark_ct'] = $max_mark_ct;

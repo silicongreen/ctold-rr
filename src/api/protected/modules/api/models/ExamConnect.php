@@ -67,6 +67,7 @@ class ExamConnect extends CActiveRecord
         $criteria->with = array(
             'groupedexam' => array(
                 'select' => 'groupedexam.id',
+                'joinType' => 'LEFT JOIN',
                 'with' => array(
                     'examgroup' => array(
                         'select' => 'examgroup.id,examgroup.name,examgroup.exam_category',
@@ -74,6 +75,7 @@ class ExamConnect extends CActiveRecord
                         'with' => array(
                             'Exams' => array(
                                 'select' => 'Exams.id,Exams.maximum_marks',
+                                'joinType' => 'LEFT JOIN',
                                 'with' => array(
                                     'Scores' => array(
                                         'select' => 'Scores.marks,Scores.student_id',

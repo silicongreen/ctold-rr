@@ -33,7 +33,7 @@ class ReportController extends Controller
         $user_secret = Yii::app()->request->getPost('user_secret');
         $subject_id = Yii::app()->request->getPost('subject_id');
         $id = Yii::app()->request->getPost('id');
-        if($subject_id && Yii::app()->user->user_secret === $user_secret && (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin))
+        if($id && $subject_id && Yii::app()->user->user_secret === $user_secret && (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin))
         {
             $examcon = new ExamConnect();
             $result = $examcon->getConnectExamReportAll($id,$subject_id);

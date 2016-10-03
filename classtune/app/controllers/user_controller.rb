@@ -660,10 +660,6 @@ class UserController < ApplicationController
     
       ar_user_cookie = auth_res.response['set-cookie'].split('; ');
       
-      if username == "abc-admin1"
-        abort(api_endpoint + "api/user/auth"+" "+username+" "+password)
-      end
-      
       user_info = [ 
         "user_secret" => auth_response['data']['paid_user']['secret'],
         "user_cookie" => ar_user_cookie[1].split(",")[1],

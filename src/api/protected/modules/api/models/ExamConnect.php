@@ -172,7 +172,11 @@ class ExamConnect extends CActiveRecord
                     }
                 } 
               $result['max_mark_ct'] = $max_mark_ct;
-              $result['max_mark_st'] = $max_mark_st;  
+              $result['max_mark_st'] = $max_mark_st;
+              
+              usort($result['students'], function($a, $b) {
+                    return $a['class_roll_no'] - $b['class_roll_no'];
+              });
                 
             }
             

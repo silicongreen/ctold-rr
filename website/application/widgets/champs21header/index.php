@@ -87,13 +87,12 @@ class champs21header extends widget {
                 $data['user_profile_complete'] = FALSE;
             }
         }
-        print "here";
+        
 
         $this->CI->load->config('user_register');
         $b_need_approval = $this->CI->config->config['join_user_approval'][$user_type];
         $b_mulit_school_join = $this->CI->config->config['multi_school_join'];
-        print "here2";
-        exit;
+       
 
         $user_school = new User_school();
 
@@ -107,7 +106,8 @@ class champs21header extends widget {
 
         $data['can_school_canlde'] = $can_school_canlde;
         // User Data
-
+ print "here2";
+        exit;
         $this->render($data);
     }
 

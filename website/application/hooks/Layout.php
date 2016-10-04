@@ -54,6 +54,8 @@ class Layout extends CI_Hooks
              
             $headerinclude = $this->CI->cache->get('headinclude');
             $headerinclude = false;
+             echo "here";
+        exit;
             if ( $headerinclude )
             {
                 $view_data['headerinclude'] = $headerinclude;
@@ -63,8 +65,7 @@ class Layout extends CI_Hooks
                 $view_data['headerinclude'] = $this->CI->load->view('layout/tdsfront/include/headerinclude', $view_data, TRUE);
                 //$this->CI->cache->write($view_data['headerinclude'], 'headinclude');
             }
-             echo "here";
-        exit;
+            
             $view_data['content'] = ( strlen($output) > 0 ) ? $output : ( isset($ar_params['content']) ) ? $ar_params['content'] : "";
             
             $view_data['exclusive'] = ( strlen($output) > 0 ) ? $output : ( isset($ar_params['exclusive']) ) ? $ar_params['exclusive'] : "";

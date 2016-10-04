@@ -21,6 +21,8 @@ class Layout extends CI_Hooks
         $s_front_layout = $ar_registry[$s_class]->layout_front;
         
         $ar_params = $ar_registry[$s_class]->extra_params;
+          echo "here";
+        exit;
         
         if ( strcasecmp($s_front_layout, "yes") === 0 && $s_current_module != "admin" )
         {
@@ -138,8 +140,7 @@ class Layout extends CI_Hooks
         
         //$buffer = tidy_parse_string($layout, $options, 'utf8');
 	//tidy_clean_repair($buffer);
-        echo "here";
-        exit;
+      
         $OUT->_display($buffer);
         
     }

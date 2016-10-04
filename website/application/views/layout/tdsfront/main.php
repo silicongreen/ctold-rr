@@ -34,6 +34,10 @@
                     
                     <!-- End RIGHT  --> 
         </div>
+            <?php
+    echo "sdajask";
+    exit;
+    ?>
           
                 <div style="clear: both;" class="noPrint"></div>
                 <?php if($full_template) { ?>
@@ -67,10 +71,7 @@
     
     <!-- -->
     
-    <?php
-    echo "sdajask";
-    exit;
-    ?>
+    
     
         <script type='text/javascript'> 
             

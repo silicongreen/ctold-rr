@@ -41,8 +41,7 @@ class champs21header extends widget {
         $can_school_canlde = FALSE;
         $this->CI->load->config("huffas");
         $data = array("ci_key" => $ci_key, "ci_key_for_cover" => $ci_key_for_cover);
-print_r($data);
-        exit;
+
         // User Data
         $user_id = (free_user_logged_in()) ? get_free_user_session('id') : NULL;
 
@@ -88,10 +87,13 @@ print_r($data);
                 $data['user_profile_complete'] = FALSE;
             }
         }
+        print "here";
 
         $this->CI->load->config('user_register');
         $b_need_approval = $this->CI->config->config['join_user_approval'][$user_type];
         $b_mulit_school_join = $this->CI->config->config['multi_school_join'];
+        print "here2";
+        exit;
 
         $user_school = new User_school();
 

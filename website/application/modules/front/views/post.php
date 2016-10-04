@@ -1511,6 +1511,3 @@ echo $s_inner_content;
     });
 
 </script>
-<?php
-exit;
-?>

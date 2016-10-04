@@ -773,6 +773,8 @@ p.description_content{
         <div class="clearfix"></div>
 
         <?php
+        echo "here";
+        exit;
 //        $more_cache_name = 'MORE_OF_' . $parent_category_id . '_FOR_POST_' . $post_id;
 //        $s_more_content = $CI->cache->get($more_cache_name);
 //

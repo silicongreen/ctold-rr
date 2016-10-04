@@ -22,7 +22,8 @@ class Layout extends CI_Hooks
         
         $ar_params = $ar_registry[$s_class]->extra_params;
          
-        
+        ini_set("error_reporting", "E_ALL");
+        ini_set("display_errors", "on");
         if ( strcasecmp($s_front_layout, "yes") === 0 && $s_current_module != "admin" )
         {
             $view_data = $ar_params;
@@ -54,8 +55,7 @@ class Layout extends CI_Hooks
              
             $headerinclude = $this->CI->cache->get('headinclude');
             $headerinclude = false;
-             echo "here";
-        exit;
+           
             if ( $headerinclude )
             {
                 $view_data['headerinclude'] = $headerinclude;

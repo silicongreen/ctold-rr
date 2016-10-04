@@ -93,20 +93,19 @@ class champs21header extends widget {
         $b_need_approval = $this->CI->config->config['join_user_approval'][$user_type];
         $b_mulit_school_join = $this->CI->config->config['multi_school_join'];
        
- print "here2";
+
        
-        $user_school = new User_school();
+//        $user_school = new User_school();
+//
+//        $user_school_data = ($b_mulit_school_join) ? $user_school->get_user_school($user_id, $school_id) : $user_school->get_user_school($user_id);
+//
+//        if ($user_school_data !== FALSE) {
+//            if ($user_school_data['0']->is_approved == 1) {
+//                $can_school_canlde = TRUE;
+//            }
+//        }
 
-        $user_school_data = ($b_mulit_school_join) ? $user_school->get_user_school($user_id, $school_id) : $user_school->get_user_school($user_id);
- print "here2";
-        exit;
-        if ($user_school_data !== FALSE) {
-            if ($user_school_data['0']->is_approved == 1) {
-                $can_school_canlde = TRUE;
-            }
-        }
-
-        $data['can_school_canlde'] = $can_school_canlde;
+        $data['can_school_canlde'] = FALSE;
         // User Data
 
         $this->render($data);

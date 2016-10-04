@@ -16,10 +16,6 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License. -%>
-
-<% if @connect_exam_obj.result_type!=3 %>
-  <%= render  :partial=>"marksheet_main" %>
-<% else %>
 <div id="page-yield" class="available_sections1">
   <div class="page1"> </div>
   <div class="section1 row" >
@@ -46,50 +42,28 @@
       </div>
       <% unless @report_data.blank?  or  @report_data['result'].blank? %>
       <% c = 'even' %>
-      <% stcount = @report_data['result']['ST'].size+1  %>
-      <% ctcount = @report_data['result']['CT'].size+1  %>
-      
-      <% max_mark_st = @report_data['result']['max_mark_st']  %>
-      <% max_mark_ct = @report_data['result']['max_mark_ct']  %>
-      <% total_marks = max_mark_st.to_i+max_mark_ct.to_i  %>
+      <% full_mark = 0 %>
       <table id="pdf-table" width="100%" cellspacing="0">
         <tr class="table-header">
           <td class="name">Roll NO.</td>
           <td class="name">Name</td>
-          <td colspan="<%= stcount %>">Surprise Test (S.T.)</td>
-          <td colspan="<%= ctcount %>">Class Test (C.T.)</td>
-          <td>Total (<%=  total_marks %>)</td>
+          <% @report_data['result']['ALL'].each do |rs| %>
+            <td><%=  rs['name'] %> (<%=  rs['maximum_marks'] %>)</td>
+            <% full_mark = full_mark+rs['maximum_marks'].to_i %>
+          <% end %>  
+          
+          <td>Total ( <%=  total %> )</td>
           <td>Grade</td>
         
         </tr>
-        <tr class="table-header">
-          <td class="name"></td>
-          <td class="name"></td>
-          <% i=1 %>
-          <% @report_data['result']['ST'].each do |st| %>
-          <td><%= i %></td>
-          <% i = i+1 %>
-          <% end %>
-          <td>Average</td>
-          
-          <% i=1 %>
-          <% @report_data['result']['CT'].each do |ct| %>
-          <td><%= i %></td>
-          <% i = i+1 %>
-          <% end %>
-          <td>Average</td>
-          
-          
-          <td></td>
-          <td></td>
-        </tr>
+        
         <% extender = 0 %>
         <% std_count = 0 %>
       
-        <% @report_data['result']['students'].each do |std| %>
+        <% @report_data['result']['al_students'].each do |std| %>
           <%  std_count = std_count+1; %>
           <% colspan = stcount+ctcount+3 %>
-          <% if std_count>11 && extender ==0 %>
+          <% if std_count>12 && extender ==0 %>
               <% std_count = 0 %>
               <% extender = 1 %>
               <tr class="page-break">
@@ -103,59 +77,19 @@
               </tr> 
           <% end %>    
         
-          <% st_marks = [] %>
-          <% ct_marks = [] %>
+        
           <% total_mark = 0 %>
-          <% avg_mark = 0 %>
           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
             <td class="name"><%= std['class_roll_no'] %></td>
             <td class="name-std"><%= std['name'] %></td>
-            <% @report_data['result']['ST'].each do |st| %>
-              <td><%= st['students'][std['id']]['score'] %></td>
-              <% total_mark = total_mark.to_f+st['students'][std['id']]['score'].to_f %>
-              <% st_marks << st['students'][std['id']]['score'].to_f %>
+            <% @report_data['result']['ALL'].each do |rs| %>
+              <td><%= rs['students'][std['id']]['score'] %></td>
+              <% total_mark = total_mark.to_f+rs['students'][std['id']]['score'].to_f %>
             <% end %> 
-            <% st_marks.sort! {|x,y| y <=> x } %>
-
-
-            <% 
-              if max_mark_st.to_i == 10 
-                  avg_mark = (st_marks[0].to_f+st_marks[1].to_f+st_marks[0].to_f)/3
-              elsif max_mark_st.to_i == 5  
-                  avg_mark = (st_marks[0].to_f+st_marks[1].to_f)/2
-              else  
-                  avg_mark = total_mark.to_f/@report_data['result']['ST'].size
-              end 
-            %>
-           <td class="name"><%= sprintf( "%0.02f", avg_mark) %></td> 
-
-           <% avg_mark2 = 0; %>
-           <% total_mark = 0 %>
-           <% @report_data['result']['CT'].each do |ct| %>
-              <td><%= ct['students'][std['id']]['score'] %></td>
-              <% total_mark = total_mark.to_f+ct['students'][std['id']]['score'].to_f %>
-              <% ct_marks << ct['students'][std['id']]['score'].to_f %>
-            <% end %> 
-            <% ct_marks.sort! {|x,y| y <=> x } %>
-
-
-            <% 
-              if max_mark_ct.to_i == 20 
-                  avg_mark2 = (ct_marks[0].to_f+ct_marks[1].to_f)/2
-              elsif max_mark_ct.to_i == 10  
-                  avg_mark2 = ct_marks[0].to_f
-              else  
-                  avg_mark2 = total_mark.to_f/@report_data['result']['CT'].size
-              end 
-            %>
-           <td class="name"><%= sprintf( "%0.02f", avg_mark2) %></td> 
-
-           <% total_mark = avg_mark.to_f+avg_mark2.to_f %>
-           <%  full_mark = max_mark_ct.to_f+max_mark_st.to_f %>
-
+              
            <% main_mark = (total_mark.to_f/full_mark.to_f)*100 %>
 
-           <td class="name"><%= sprintf( "%0.02f", total_mark) %></td>
+           <td class="name"><%= sprintf( "%0.02f", total_mark) %> %</td>
 
            <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
            <% if !grade.blank? and !grade.name.blank? %>

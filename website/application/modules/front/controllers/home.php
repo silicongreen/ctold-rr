@@ -1216,6 +1216,8 @@ class home extends MX_Controller {
 
         $cache_name = "POST" . '_' . $obj_post_data->post_id;
         $s_content = $this->cache->get($cache_name);
+        echo "here";
+        exit;
         
         $s_content = false;
         if ($s_content !== false) {
@@ -1308,7 +1310,7 @@ class home extends MX_Controller {
             if (!$b_layout) {
                 $this->layout_front = false;
             }
-            
+            error_reporting(0);
 
             $meta_description = META_DESCRIPTION;
             $keywords = KEYWORDS;

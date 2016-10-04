@@ -69,6 +69,8 @@ class MX_Controller
         }
         else if (!is_null($file))
         {
+            echo "here2";
+            exit;
             $data['content'] = $this->load->view($file, $viewData, TRUE);
             $data['layout'] = $layoutData;
             $layoutPath = "layout/" . $this->layout . "/main";
@@ -83,6 +85,8 @@ class MX_Controller
         }
         else
         {
+            echo "here1";
+            exit;
             $layoutPath = "layout/" . $this->layout . "/main";
 
             $headerPath = "layout/" . $this->layout . "/include/header";

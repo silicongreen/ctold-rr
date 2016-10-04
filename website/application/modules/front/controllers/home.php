@@ -1859,17 +1859,11 @@ class home extends MX_Controller {
                         } else {
                             $obj_post_data = $a_post['data'][0];
                             $this->process_post_view($obj_post_data->id, $obj_post_data);
-                                         
-                            echo "here1";
-                            exit;
-   
                             return;
                         }
                     } else {
                         $obj_post_data = $a_post['data'][0];
                         $this->process_post_view($obj_post_data->id, $obj_post_data);
-                         echo "here2";
-                            exit;
                         return;
                     }
                 }
@@ -1959,10 +1953,7 @@ class home extends MX_Controller {
                             break;
                         }
                     }
-                    $b_layout = FALSE;
                     $this->process_post_view($obj_post_data->id, $obj_post_data, $b_layout);
-                    echo "here3";
-                          
                 }
             } else {
                 $this->__inner($obj_cate->id, $obj_cate->name);

@@ -90,7 +90,7 @@
                 <%= rs['students'][std['id']]['score'] %>
                 <% total_mark = total_mark.to_f+rs['students'][std['id']]['score'].to_f %>
               <% else %>
-                  N/A
+                  AB
               <% end %>    
               </td>
               
@@ -98,7 +98,7 @@
               
            <% main_mark = (total_mark.to_f/full_mark.to_f)*100 %>
 
-           <td class="name"><%= sprintf( "%0.02f", total_mark) %> %</td>
+           <td class="name"><%= sprintf( "%0.02f", main_mark) %> %</td>
 
            <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
            <% if !grade.blank? and !grade.name.blank? %>

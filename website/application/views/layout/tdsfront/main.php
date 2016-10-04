@@ -1,3 +1,7 @@
+                  <?php
+    echo "sdajask";
+    exit;
+    ?>
 <?php echo $headerinclude; ?>
     
     
@@ -21,10 +25,7 @@
                         echo $header;
                     }
                 ?>
-                      <?php
-    echo "sdajask";
-    exit;
-    ?>
+    
                 <div style="margin-top:80px;"></div>
                 <?php echo $content; ?>
             </div> 

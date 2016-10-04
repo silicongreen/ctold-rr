@@ -21,8 +21,7 @@ class Layout extends CI_Hooks
         $s_front_layout = $ar_registry[$s_class]->layout_front;
         
         $ar_params = $ar_registry[$s_class]->extra_params;
-          echo "here";
-        exit;
+         
         
         if ( strcasecmp($s_front_layout, "yes") === 0 && $s_current_module != "admin" )
         {
@@ -64,7 +63,8 @@ class Layout extends CI_Hooks
                 $view_data['headerinclude'] = $this->CI->load->view('layout/tdsfront/include/headerinclude', $view_data, TRUE);
                 //$this->CI->cache->write($view_data['headerinclude'], 'headinclude');
             }
-            
+             echo "here";
+        exit;
             $view_data['content'] = ( strlen($output) > 0 ) ? $output : ( isset($ar_params['content']) ) ? $ar_params['content'] : "";
             
             $view_data['exclusive'] = ( strlen($output) > 0 ) ? $output : ( isset($ar_params['exclusive']) ) ? $ar_params['exclusive'] : "";

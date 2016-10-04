@@ -281,6 +281,13 @@
                               
             </table>
           <% end %>
+          <p>
+              <b>
+               <% if !@exam_comment.blank? %>
+                <%= @exam_comment.comment %>
+               <% end %>   
+              </b>
+          </p>
           <%= link_to " ► #{t('pdf_report')}",
             { :action => "generated_report5_pdf", :batch_id => @batch.id, :student=>@student.id, :type=> @type,:connect_exam=>@connect_exam, :page_height=>450},:target => '_blank', :class=> 'user_button' %>
 
@@ -293,6 +300,10 @@
 <%= stylesheet_link_tag 'list_table' %>
 
 <style type="text/css">
+    .user_button
+    {
+        margin-left:0px;
+    }
     .CSSTableGenerator table.summary thead tr th
     {
         color: #000;

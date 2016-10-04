@@ -2009,6 +2009,14 @@ class ExamController < ApplicationController
     :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
   end
   
+  def exam_connect_comment_entry
+    @connect_exam = params[:connect_exam]
+    @connect_exam_obj = ExamConnect.find(@connect_exam)
+    @batch = Batch.find(@connect_exam_obj.batch_id)
+    @students=@batch.students.by_first_name
+    @comments = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id)
+  end
+  
   def generated_report5
     if params[:student].nil? or !params[:student][:class_name].nil?
       if params[:exam_report].nil? or params[:exam_report][:batch_id].empty?
@@ -2077,6 +2085,7 @@ class ExamController < ApplicationController
         @students = Student.find_all_by_id(params[:student])
       end
     end
+    @exam_comment = ExamConnectComment.find_by_exam_connect_id_and_student_id(@connect_exam_obj.id,@student.id)
   end
 
   def generated_report4
@@ -2203,6 +2212,7 @@ class ExamController < ApplicationController
       end
       
     end
+    @exam_comment = ExamConnectComment.find_by_exam_connect_id_and_student_id(@connect_exam_obj.id,@student.id)
     if MultiSchool.current_school.id == 246
       render :pdf => 'generated_report5_pdf',
       :orientation => 'Portrait', :zoom => 1.00

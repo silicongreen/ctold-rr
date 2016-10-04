@@ -53,8 +53,17 @@
         <tr class="table-header">
           <td class="name">Roll NO.</td>
           <td class="name">Name</td>
-          <td colspan="<%= stcount %>">Surprise Test (S.T.)</td>
-          <td colspan="<%= ctcount %>">Class Test (C.T.)</td>
+          <td colspan="<%= stcount %>">
+              <p>Surprise Test (S.T.)</p>
+              <p>Best 3 out of 4 for full-unit, Best 2 out of 3 for half-unit</p>
+              <p>10 marks each for full-unit, 5 marks each for half-unit</p>
+          
+          </td>
+          <td colspan="<%= ctcount %>">
+              <p>Class Test (C.T.)</p>
+              <p>Best 2 out of 3 for full-unit, Best 1 out of 2 for half-unit</p>
+              <p>20 marks each for full-unit, 10 marks each for half-unit</p>
+          </td>
           <td>Total (<%=  total_marks %>)</td>
           <td>Grade</td>
         

@@ -1,9 +1,7 @@
 <?php
-
 $CI = &get_instance();
 $cache_name = "POST" . '_' . $post_id;
-
-//ob_start();
+ob_start();
 ?>
 <script type="text/javascript" src="<?php echo base_url('scripts/jquery/jquery.als-1.6.min.js'); ?>"></script>
 
@@ -773,16 +771,15 @@ p.description_content{
         <div class="clearfix"></div>
 
         <?php
-        
-//        $more_cache_name = 'MORE_OF_' . $parent_category_id . '_FOR_POST_' . $post_id;
-//        $s_more_content = $CI->cache->get($more_cache_name);
-//
-//        if ($s_more_content !== false) {
-//            $s_more_content = $s_more_content;
-//        } else {
+        $more_cache_name = 'MORE_OF_' . $parent_category_id . '_FOR_POST_' . $post_id;
+        $s_more_content = $CI->cache->get($more_cache_name);
+
+        if ($s_more_content !== false) {
+            $s_more_content = $s_more_content;
+        } else {
             ?>
             <?php
-//            ob_start();
+            ob_start();
             ?>
 
             <div class="more-news-wrapper">
@@ -808,10 +805,10 @@ p.description_content{
             </div>
 
             <?php
-//            $s_more_content = ob_get_contents();
-//            ob_end_clean();
-//        }
-//        echo $s_more_content;
+            $s_more_content = ob_get_contents();
+            ob_end_clean();
+        }
+        echo $s_more_content;
         ?>
         <!--div id="gif_ad" style="position:fixed;bottom:0px;width:350px;margin: 0px auto;right:-270px;display:none; " >
             <span class="gif_ad_close" style="cursor: pointer;padding: 10px;position: absolute;right: 22px;top: 6px;"></span>
@@ -1467,8 +1464,13 @@ p.description_content{
     }
 </style>
 <?php
-echo "here";
-exit;
+$s_inner_content = ob_get_contents();
+ob_end_clean();
+
+$CI->cache->save($more_cache_name, $s_more_content, 86400);
+$CI->cache->save($cache_name, $s_inner_content, 86400);
+
+echo $s_inner_content;
 ?>
 
 <script type="text/javascript">
@@ -1509,3 +1511,6 @@ exit;
     });
 
 </script>
+<?php
+exit;
+?>

@@ -1,7 +1,7 @@
 <?php
 $CI = &get_instance();
 $cache_name = "POST" . '_' . $post_id;
-ob_start();
+//ob_start();
 ?>
 <script type="text/javascript" src="<?php echo base_url('scripts/jquery/jquery.als-1.6.min.js'); ?>"></script>
 
@@ -1464,14 +1464,14 @@ p.description_content{
     }
 </style>
 <?php
-$s_inner_content = ob_get_contents();
-ob_end_clean();
-
-$CI->cache->save($more_cache_name, $s_more_content, 86400);
-$CI->cache->save($cache_name, $s_inner_content, 86400);
-
-echo $s_inner_content;
-echo "here";
+//$s_inner_content = ob_get_contents();
+//ob_end_clean();
+//
+//$CI->cache->save($more_cache_name, $s_more_content, 86400);
+//$CI->cache->save($cache_name, $s_inner_content, 86400);
+//
+//echo $s_inner_content;
+//echo "here";
 ?>
 
 <script type="text/javascript">

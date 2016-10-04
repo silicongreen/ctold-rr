@@ -1471,6 +1471,7 @@ $CI->cache->save($more_cache_name, $s_more_content, 86400);
 $CI->cache->save($cache_name, $s_inner_content, 86400);
 
 echo $s_inner_content;
+echo "here";
 ?>
 
 <script type="text/javascript">

@@ -2,8 +2,7 @@
 
 $CI = &get_instance();
 $cache_name = "POST" . '_' . $post_id;
-echo "here";
-exit;
+
 //ob_start();
 ?>
 <script type="text/javascript" src="<?php echo base_url('scripts/jquery/jquery.als-1.6.min.js'); ?>"></script>
@@ -782,7 +781,7 @@ p.description_content{
         } else {
             ?>
             <?php
-            ob_start();
+//            ob_start();
             ?>
 
             <div class="more-news-wrapper">
@@ -808,8 +807,8 @@ p.description_content{
             </div>
 
             <?php
-            $s_more_content = ob_get_contents();
-            ob_end_clean();
+//            $s_more_content = ob_get_contents();
+//            ob_end_clean();
         }
         echo $s_more_content;
         ?>

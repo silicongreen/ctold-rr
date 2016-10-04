@@ -26,6 +26,8 @@ class Layout extends CI_Hooks
         ini_set("display_errors", "on");
         if ( strcasecmp($s_front_layout, "yes") === 0 && $s_current_module != "admin" )
         {
+            echo "here";
+            exit;
             $view_data = $ar_params;
             
             //echo "<pre>";

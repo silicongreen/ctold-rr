@@ -1467,15 +1467,8 @@ p.description_content{
     }
 </style>
 <?php
-
-//$s_inner_content = ob_get_contents();
-//ob_end_clean();
-//
-//$CI->cache->save($more_cache_name, $s_more_content, 86400);
-//$CI->cache->save($cache_name, $s_inner_content, 86400);
-//
-//echo $s_inner_content;
-//echo "here";
+echo "here";
+exit;
 ?>
 
 <script type="text/javascript">

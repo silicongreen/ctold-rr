@@ -41,7 +41,8 @@ class champs21header extends widget {
         $can_school_canlde = FALSE;
         $this->CI->load->config("huffas");
         $data = array("ci_key" => $ci_key, "ci_key_for_cover" => $ci_key_for_cover);
-
+print_r($data);
+        exit;
         // User Data
         $user_id = (free_user_logged_in()) ? get_free_user_session('id') : NULL;
 

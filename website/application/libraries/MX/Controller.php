@@ -49,7 +49,6 @@ class MX_Controller
     
     public function __construct()
     {
-        
         $class = str_replace(CI::$APP->config->item('controller_suffix'), '', get_class($this));
         log_message('debug', $class . " MX_Controller Initialized");
         Modules::$registry[strtolower($class)] = $this;
@@ -64,16 +63,12 @@ class MX_Controller
 
     protected function render($file = NULL, &$viewData = array(), $layoutData = array())
     {
-       echo "here00";
-            exit;
         if ($this->disable_layout)
         {
             $this->load->view($file, $viewData);
         }
         else if (!is_null($file))
         {
-            echo "here2";
-            exit;
             $data['content'] = $this->load->view($file, $viewData, TRUE);
             $data['layout'] = $layoutData;
             $layoutPath = "layout/" . $this->layout . "/main";
@@ -88,8 +83,6 @@ class MX_Controller
         }
         else
         {
-            echo "here1";
-            exit;
             $layoutPath = "layout/" . $this->layout . "/main";
 
             $headerPath = "layout/" . $this->layout . "/include/header";

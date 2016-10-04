@@ -138,6 +138,8 @@ class Layout extends CI_Hooks
         
         //$buffer = tidy_parse_string($layout, $options, 'utf8');
 	//tidy_clean_repair($buffer);
+        echo "here";
+        exit;
         $OUT->_display($buffer);
         
     }

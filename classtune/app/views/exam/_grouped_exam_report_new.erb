@@ -132,9 +132,9 @@
                       <% total_mark = 0 %>
                       <% full_mark = 0 %>
                       
-                      <td style="white-space:nowrap" class="col-2"><b><%= subjects['name'] %></b>
-                  &nbsp;|&nbsp;<%= link_to "Mark Sheet",
-        {:action => "marksheet", :subject_id => subjects['id'],:id=>@connect_exam_obj.id},:target => '_blank' %></td>
+                      <td style="white-space:nowrap" class="col-2"><b><%= subjects['name'] %>
+                  &nbsp;|&nbsp;&nbsp;&nbsp;<%= link_to "Mark Sheet",
+        {:action => "marksheet", :subject_id => subjects['id'],:id=>@connect_exam_obj.id},:target => '_blank' %></b></td>
                       <% unless @report_data['report']['exams'].blank? %>  
                         <% @report_data['report']['exams'].each do |report| %>
                           <td  style="padding:0px;">

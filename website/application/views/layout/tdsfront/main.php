@@ -21,6 +21,10 @@
                         echo $header;
                     }
                 ?>
+                      <?php
+    echo "sdajask";
+    exit;
+    ?>
                 <div style="margin-top:80px;"></div>
                 <?php echo $content; ?>
             </div> 
@@ -34,10 +38,7 @@
                     
                     <!-- End RIGHT  --> 
         </div>
-            <?php
-    echo "sdajask";
-    exit;
-    ?>
+      
           
                 <div style="clear: both;" class="noPrint"></div>
                 <?php if($full_template) { ?>

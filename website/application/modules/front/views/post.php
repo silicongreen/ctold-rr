@@ -1,8 +1,9 @@
 <?php
-echo "here";
-exit;
+
 $CI = &get_instance();
 $cache_name = "POST" . '_' . $post_id;
+echo "here";
+exit;
 //ob_start();
 ?>
 <script type="text/javascript" src="<?php echo base_url('scripts/jquery/jquery.als-1.6.min.js'); ?>"></script>

@@ -49,8 +49,7 @@ class MX_Controller
     
     public function __construct()
     {
-        echo "here00";
-            exit;
+        
         $class = str_replace(CI::$APP->config->item('controller_suffix'), '', get_class($this));
         log_message('debug', $class . " MX_Controller Initialized");
         Modules::$registry[strtolower($class)] = $this;
@@ -65,7 +64,7 @@ class MX_Controller
 
     protected function render($file = NULL, &$viewData = array(), $layoutData = array())
     {
-        echo "here0";
+       echo "here00";
             exit;
         if ($this->disable_layout)
         {

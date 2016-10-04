@@ -85,8 +85,15 @@
             <td class="name"><%= std['class_roll_no'] %></td>
             <td class="name-std"><%= std['name'] %></td>
             <% @report_data['result']['ALL'].each do |rs| %>
-              <td><%= rs['students'][std['id']]['score'] %></td>
-              <% total_mark = total_mark.to_f+rs['students'][std['id']]['score'].to_f %>
+              <td>
+              <% if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank? %>
+                <%= rs['students'][std['id']]['score'] %>
+                <% total_mark = total_mark.to_f+rs['students'][std['id']]['score'].to_f %>
+              <% else %>
+                  N/A
+              <% end %>    
+              </td>
+              
             <% end %> 
               
            <% main_mark = (total_mark.to_f/full_mark.to_f)*100 %>

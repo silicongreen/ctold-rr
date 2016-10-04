@@ -1308,7 +1308,7 @@ class home extends MX_Controller {
             if (!$b_layout) {
                 $this->layout_front = false;
             }
-            error_reporting(0);
+            
 
             $meta_description = META_DESCRIPTION;
             $keywords = KEYWORDS;

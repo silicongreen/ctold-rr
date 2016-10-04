@@ -101,12 +101,15 @@ class ExamConnect extends CActiveRecord
         
         $result = array();
         $students = array();
+        $allstudents = array();
         if($examresult)
         {
          
             $i = 0;
             $k = 0;
             $j = 0;
+            $f = 0;
+            $m = 0;
             $max_mark_ct = 0;
             $max_mark_st = 0;
             if($examresult['groupedexam'])
@@ -170,11 +173,38 @@ class ExamConnect extends CActiveRecord
                         $k++;
                     
                     }
+                    
+                    
+                    $exam =$groupedexam['examgroup']['Exams'][0];
+                    $result['ALL'][$f]['name'] = $groupedexam['examgroup']->name;
+                    $result['ALL'][$f]['maximum_marks'] = $exam->maximum_marks;
+                    foreach($exam['Scores'] as $scores)
+                    {
+                        $std_middle_name = ($scores['Students']->middle_name)?$scores['Students']->middle_name." ":"";
+                        if(!in_array($scores['Students']->id, $allstudents))
+                        {
+                            $allstudents[] = $scores['Students']->id;
+                            $result['al_students'][$m]['name'] = $scores['Students']->first_name." ".$std_middle_name.$scores['Students']->last_name;
+                            $result['al_students'][$m]['id'] = $scores['Students']->id;
+                            $result['al_students'][$m]['class_roll_no'] = $scores['Students']->class_roll_no;
+                            $m++;
+                        }
+
+
+                        $result['ALL'][$f]['students'][$scores['Students']->id]['score'] = $scores->marks;
+
+                    } 
+                    $f++;
+                    
                 } 
               $result['max_mark_ct'] = $max_mark_ct;
               $result['max_mark_st'] = $max_mark_st;
               
               usort($result['students'], function($a, $b) {
+                    return $a['class_roll_no'] - $b['class_roll_no'];
+              });
+              
+              usort($result['al_students'], function($a, $b) {
                     return $a['class_roll_no'] - $b['class_roll_no'];
               });
                 

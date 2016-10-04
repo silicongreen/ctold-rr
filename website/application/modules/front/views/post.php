@@ -1467,8 +1467,7 @@ p.description_content{
     }
 </style>
 <?php
-echo "here";
-        exit;
+
 //$s_inner_content = ob_get_contents();
 //ob_end_clean();
 //

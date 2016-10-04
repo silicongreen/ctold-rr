@@ -1220,8 +1220,7 @@ class home extends MX_Controller {
         
         $s_content = false;
         if ($s_content !== false) {
-            echo "here";
-        exit;
+           
             $s_content = $s_content;
         } else {
 
@@ -1650,6 +1649,8 @@ class home extends MX_Controller {
                 "content" => $s_content
             );
             $this->extra_params = $ar_params;
+             echo "here";
+        exit;
         } else {
             print $s_content;
         }

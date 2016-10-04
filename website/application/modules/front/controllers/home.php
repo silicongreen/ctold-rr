@@ -1962,7 +1962,7 @@ class home extends MX_Controller {
                     $b_layout = FALSE;
                     $this->process_post_view($obj_post_data->id, $obj_post_data, $b_layout);
                     echo "here3";
-                            exit;
+                          
                 }
             } else {
                 $this->__inner($obj_cate->id, $obj_cate->name);

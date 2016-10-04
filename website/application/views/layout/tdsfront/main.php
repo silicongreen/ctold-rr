@@ -1,7 +1,4 @@
-                  <?php
-    echo "sdajask";
-    exit;
-    ?>
+  
 <?php echo $headerinclude; ?>
     
     

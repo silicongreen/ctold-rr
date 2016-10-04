@@ -1,4 +1,6 @@
 <?php
+echo "here";
+exit;
 $CI = &get_instance();
 $cache_name = "POST" . '_' . $post_id;
 //ob_start();

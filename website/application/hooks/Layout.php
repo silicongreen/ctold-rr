@@ -26,8 +26,7 @@ class Layout extends CI_Hooks
         ini_set("display_errors", "on");
         if ( strcasecmp($s_front_layout, "yes") === 0 && $s_current_module != "admin" )
         {
-            echo "here";
-            exit;
+            
             $view_data = $ar_params;
             
             //echo "<pre>";
@@ -52,8 +51,12 @@ class Layout extends CI_Hooks
                 $view_data['title'] = (isset($view_data['title'])) ? $view_data['title'] : WEBSITE_TITLE;
                 //$this->CI->cache->write($view_data['title'], 'title-index');
             }
+            echo "here";
+            
             
              $view_data['header'] = $this->CI->load->view('layout/tdsfront/include/header', NULL, TRUE);
+             echo "here";
+             exit;
              
             $headerinclude = $this->CI->cache->get('headinclude');
             $headerinclude = false;

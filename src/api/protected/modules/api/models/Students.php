@@ -451,11 +451,34 @@ class Students extends CActiveRecord {
 
         return $students_array;
     }
-     public function getStudentNotInAdmission($admission_no,$school_id)
+    public function getMechineStd($school_id,$all_std_admission)
+    {
+        $criteria = new CDbCriteria();
+        $criteria->select = 't.id';      
+        $criteria->addInCondition('admission_no',$all_std_admission);          
+        $criteria->compare('school_id', $school_id);
+        $students = $this->findAll($criteria); 
+        
+        $std_ids = array();
+        if($students)
+        {
+            foreach($students as $value)
+            {
+                $std_ids[] = $value->id;
+            }    
+        }
+        return $std_ids;
+        
+    }        
+    public function getStudentNotInAdmission($admission_no,$school_id,$all_std_admission=array())
     { 
         $criteria = new CDbCriteria();
         $criteria->select = 't.*';
         $criteria->addNotInCondition('admission_no',$admission_no);
+        if($all_std_admission)
+        {
+            $criteria->addInCondition('admission_no',$all_std_admission);
+        }    
         $criteria->compare('school_id', $school_id);
 
         $students = $this->findAll($criteria); 

@@ -167,12 +167,16 @@ class Attendances extends CActiveRecord {
         $data = $this->findAll($criteria);
         return $data;
     }
-    public function deleteAttendanceStudent($school_id,$date)
+    public function deleteAttendanceStudent($school_id,$date,$std_id=array())
     {
         $criteria = new CDbCriteria;
         $criteria->select="t.id";
         $criteria->compare('month_date', $date); 
         $criteria->compare('school_id', $school_id);
+        if($std_id)
+        {
+            $criteria->compare('student_id', $std_id);
+        }
         $this->deleteAll($criteria);
     }
     public function getAttendenceStudent($student_id,$date)

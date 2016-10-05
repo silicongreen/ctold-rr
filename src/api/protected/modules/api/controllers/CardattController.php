@@ -166,7 +166,7 @@ class CardattController extends Controller
                {
                    foreach($absent_employee as $value)
                    {
-                      
+                       $em_attendance = new EmployeeAttendances();
                        $em_attendance->employee_id = $value->id;
                        $em_attendance->attendance_date = $date;
                        $em_attendance->created_at = date("Y-m-d H:i:s");

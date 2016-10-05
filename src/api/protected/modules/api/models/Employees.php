@@ -339,5 +339,40 @@ class Employees extends CActiveRecord {
       );
       return $this->find($criteria);
     }
+    
+    public function getMechineEmp($school_id,$all_emp_admission)
+    {
+        $criteria = new CDbCriteria();
+        $criteria->select = 't.id';      
+        $criteria->addInCondition('employee_number',$all_emp_admission);          
+        $criteria->compare('school_id', $school_id);
+        $employees = $this->findAll($criteria); 
+        
+        $emp_ids = array();
+        if($employees)
+        {
+            foreach($employees as $value)
+            {
+                $emp_ids[] = $value->id;
+            }    
+        }
+        return $emp_ids;
+        
+    }        
+    public function getEmployeeNotInEmployeeNumber($employee_no,$school_id,$all_emp_admission=array())
+    { 
+        $criteria = new CDbCriteria();
+        $criteria->select = 't.*';
+        $criteria->addNotInCondition('employee_number',$employee_no);
+        if($all_std_admission)
+        {
+            $criteria->addInCondition('employee_number',$all_emp_admission);
+        }    
+        $criteria->compare('school_id', $school_id);
+
+        $employees = $this->findAll($criteria); 
+        return $employees;
+        
+    }
 
 }

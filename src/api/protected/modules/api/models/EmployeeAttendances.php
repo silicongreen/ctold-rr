@@ -125,4 +125,17 @@ class EmployeeAttendances extends CActiveRecord
                 
                 return $this->find($criteria);
         }
+        
+        public function deleteAttendanceEmployee($school_id,$date,$emp_id=array())
+        {
+            $criteria = new CDbCriteria;
+            $criteria->select="t.id";
+            $criteria->compare('attendance_date', $date); 
+            $criteria->compare('school_id', $school_id);
+            if($std_id)
+            {
+                $criteria->compare('employee_id', $emp_id);
+            }
+            $this->deleteAll($criteria);
+        }
 }

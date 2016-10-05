@@ -125,6 +125,8 @@ class CardattController extends Controller
          $card_number_array = explode(",", $card_numbers);
          $student_id_array = explode(",", $students_id);
          $std = new Students();
+         
+         $emp = new Employees();
 
          if($all_students_id && $school_id && in_array($school_id,Settings::$card_attendence_school))
          {
@@ -144,6 +146,41 @@ class CardattController extends Controller
             {
                 $all_std_id = $std->getMechineStd($school_id,$all_std_admission);
             }
+            
+            
+            //employee attendance
+            $all_emp_id = array();
+            if($all_std_admission)
+            {
+                $all_emp_id = $emp->getMechineEmp($school_id,$all_std_admission);
+            }
+            
+            
+            if($all_emp_id)
+            {
+               $absent_employee = $emp->getEmployeeNotInEmployeeNumber($student_id_array,$school_id,$all_std_admission); 
+               $em_attendance = new EmployeeAttendances();
+               $em_attendance->deleteAttendanceEmployee($school_id,$date,$all_emp_id);
+               
+               if($absent_employee)
+               {
+                   foreach($absent_employee as $value)
+                   {
+                      
+                       $em_attendance->employee_id = $value->id;
+                       $em_attendance->attendance_date = $date;
+                       $em_attendance->created_at = date("Y-m-d H:i:s");
+                       $em_attendance->updated_at = date("Y-m-d H:i:s");
+                       $em_attendance->school_id = $school_id;
+                       $em_attendance->reason = "From Smart Card";
+                       $em_attendance->is_half_day = 0;
+                       $em_attendance->save();
+                   }    
+               }
+               
+            }
+            // employee attendance
+            
             if($all_std_id)
             {
                 $absent_studnets = $std->getStudentNotInAdmission($student_id_array,$school_id,$all_std_admission);

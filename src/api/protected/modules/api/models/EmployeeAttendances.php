@@ -132,7 +132,7 @@ class EmployeeAttendances extends CActiveRecord
             $criteria->select="t.id";
             $criteria->compare('attendance_date', $date); 
             $criteria->compare('school_id', $school_id);
-            if($std_id)
+            if($emp_id)
             {
                 $criteria->compare('employee_id', $emp_id);
             }

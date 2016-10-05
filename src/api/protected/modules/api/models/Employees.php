@@ -364,7 +364,7 @@ class Employees extends CActiveRecord {
         $criteria = new CDbCriteria();
         $criteria->select = 't.*';
         $criteria->addNotInCondition('employee_number',$employee_no);
-        if($all_std_admission)
+        if($all_emp_admission)
         {
             $criteria->addInCondition('employee_number',$all_emp_admission);
         }    

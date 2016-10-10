@@ -97,7 +97,8 @@ tr.odd{
 
 table#pdf-table{
     border-top: 1px solid #ADACAB;
-    border-collapse:collapse
+    border-collapse:collapse;
+    wdth:800px;
 }
 
 

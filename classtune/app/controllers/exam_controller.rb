@@ -2085,7 +2085,7 @@ class ExamController < ApplicationController
         @students = Student.find_all_by_id(params[:student])
       end
     end
-    @exam_comment = ExamConnectComment.find_by_exam_connect_id_and_student_id(@connect_exam_obj.id,@student.id)
+#    @exam_comment = ExamConnectComment.find_by_exam_connect_id_and_student_id(@connect_exam_obj.id,@student.id)
   end
 
   def generated_report4

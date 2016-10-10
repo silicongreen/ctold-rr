@@ -151,61 +151,13 @@ table#pdf-table{
     font-size:13px;
 }
 
-academia_box p
-{
-    margin:0px;
-}
-.academia_left_box
-{
-    float:left;
-    width:170px;
-    border: 1px solid #000;
-}
-.academia_middle_box
-{
-    float:left;
-    width:900px;
-
-}
-.academia_right_box
-{
-    float:right;
-    width:170px;                
-}
-.academia_right_box table td
+.academia_box table td
 {
     border: 1px solid #000;
     font-size:10px;
     padding:3px;
 }
-.academia_sign_left
-{
-    float:left;
-    width:36%;
 
-}
-.academia_sign_middle
-{
-    float:left;
-    width:36%;        
-    margin: 0px 15px ;
-}
-.academia_sign_right
-{
-    float:left;
-    width:25%;
-
-}
-.teachers_sign
-{
-    border-collapse: collapse;
-    width:100%;
-}
-
-.teachers_sign td,th
-{  
-    padding:5px;
-}
 
 
 

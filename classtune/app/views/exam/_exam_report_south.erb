@@ -89,9 +89,9 @@
           <td class="col-pdf"><%= "Full Marks" %></td>
           <td class="col-pdf"><%= "Obtained Mark" %></td>
           <td class="col-pdf"><%= "Highest Marks" %></td>
-          <td class="col-pdf"><%= "Percentange(%)" %></td>
-          <td class="col-pdf"><%= "Letter Grade" %></td>
-          <td class="col-pdf"><%= "GPA (6)" %></td>
+          
+          <td class="col-pdf"><%= "Grade" %></td>
+          
           
           
           
@@ -121,12 +121,11 @@
                   max_total_mark = max_total_mark.to_f+es.exam.maximum_marks.to_f 
                 end
               %>
-              <td class="col-pdf"><%= es.marks.present? ? mark=(es.marks.to_f/es.exam.maximum_marks.to_f)*100 : '-' %> % </td>
+              
               <td class="col-pdf">
                   <%= "#{es.grading_level.present? ? es.grading_level : " "}" %>
               </td>
-               <td class="col-pdf">
-                <%= "#{es.grading_level.present? ? (es.grading_level.credit_points.present? ?  " "+"#{es.grading_level.credit_points }"+""  : " ") : " "}" %></td>
+               
               <% 
                 if es.grading_level.present? 
                   if es.grading_level.credit_points.present?

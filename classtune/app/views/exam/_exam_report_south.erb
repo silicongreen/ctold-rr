@@ -105,7 +105,7 @@
         <% cradit_point = 0 %>
         
         <% exam_score.each do |es| %>
-          <tr >
+          <tr class="<%= cycle(c,(["odd1","even1"]-[c]).first) %>">
              <td class="col-pdf"> <%= es.exam.subject.name %></td>
               <td class="col-pdf"><%= es.exam.maximum_marks.to_f %></td>
               <td class="col-pdf"><%= es.marks.present? ? mark=es.marks.to_f : '-' %></td>

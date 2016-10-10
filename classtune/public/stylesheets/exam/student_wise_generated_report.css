@@ -165,5 +165,44 @@ table#pdf-table{
 }
 
 
+.odd1{
+    height:auto;
+    
+
+}
+
+.even1{
+
+    height:auto;
+  
+
+
+}
+tr.even1{
+    border: 1px solid #ADACAB;
+}
+
+tr.odd1{
+    border: 1px solid #ADACAB;
+}
+
+.even1 td{
+
+    padding: 12px 12px 12px 15px;
+    border: 1px solid #ADACAB;
+    border-right: 0px solid #fff;
+    border-top: 0px solid #fff;
+
+}
+
+.odd1 td{
+    padding: 12px 12px 12px 15px;
+    border: 1px solid #ADACAB;
+    border-right: 0px solid #fff;
+    border-top: 0px solid #fff;
+
+}
+
+
 
 

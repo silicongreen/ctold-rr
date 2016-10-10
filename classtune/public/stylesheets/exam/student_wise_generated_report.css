@@ -91,8 +91,8 @@ tr.odd{
     border-left: 1px solid #ADACAB;
     border-right: 1px solid #ADACAB;
     border-bottom: 1px solid #ADACAB;
-    color: #97080e;
-    background: #d7d7d7;
+    color:black;
+    font-weight: bold;
 }
 
 table#pdf-table{

@@ -73,6 +73,7 @@ class NoticeController extends Controller {
                 
                 $url = Settings::$notice_attachment_path . $id . "/original/" . str_replace(")", "%29", str_replace("(", "%28", str_replace(" ", "+", $newsObj->attachment_file_name))) . "?" . $attachment_extra;
                 
+                $url = str_replace("&", "%26",$url);
                 if (file_exists($url)) {
                     return Yii::app()->getRequest()->sendFile($newsObj->attachment_file_name, @file_get_contents($url));
                 }

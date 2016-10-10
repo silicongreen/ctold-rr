@@ -111,9 +111,43 @@ if ($result->num_rows > 0) {
         }  
         $gender = strtolower($row['sex']);
         
+        ///GETTING EMPLOYEEE POSITION
+        $employee_grade_id = 0;
+        $sql_grade = "SELECT emp_sub FROM  lib_teacher where emp_id='".$row['emp_id']."'";
+        $result_grade = $conn_source->query($sql_grade);
+        if ($result_grade->num_rows > 0) 
+        {
+            $row_grade=$result->fetch_assoc();
+            
+            $sql_grade_destination = "SELECT id FROM  employee_grades where university_id=".$university_id." and name='".$row_grade['emp_sub']."'";
+            $result_grade_destination = $conn_destination->query($sql_grade_destination);
+        }
+        
+        if($result_grade_destination->num_rows > 0)
+        {
+            $row_grade_destination = $result_grade_destination->fetch_assoc();
+            $employee_grade_id = $row_grade_destination['id'];
+        }
+        else
+        {
+            $sql_grade_destination = "SELECT id FROM  employee_grades where university_id=".$university_id." and name='N/A'";
+            $result_grade_destination = $conn_destination->query($sql_grade_destination); 
+            if($result_grade_destination->num_rows > 0)
+            {
+                $row_grade_destination = $result_grade_destination->fetch_assoc();
+                $employee_grade_id = $row_grade_destination['id'];
+            }
+            else
+            {
+                        $sql = "insert into employee_grades (name,priority,status,updated_at,created_at,university_id)"
+                        . " values ('N/A',1,1,'".$insert_date."','".$insert_date."',".$university_id.")";
+        
+                        $conn_destination->query($sql);
+                        $employee_grade_id = $conn_destination->insert_id;
+            }    
+        }    
         
         
-        $employee_position_id = "";
         
         
         $sql = "insert into employees (employee_category_id,employee_number,joining_date,first_name,last_name,gender,job_title)"

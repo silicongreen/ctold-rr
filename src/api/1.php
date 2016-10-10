@@ -111,7 +111,7 @@ if ($result->num_rows > 0) {
         }  
         $gender = strtolower($row['sex']);
         
-        ///GETTING EMPLOYEEE POSITION
+        ///GETTING EMPLOYEEE GRADE
         $employee_grade_id = 0;
         $sql_grade = "SELECT emp_sub FROM  lib_teacher where emp_id='".$row['emp_id']."'";
         $result_grade = $conn_source->query($sql_grade);
@@ -145,7 +145,40 @@ if ($result->num_rows > 0) {
                         $conn_destination->query($sql);
                         $employee_grade_id = $conn_destination->insert_id;
             }    
+        }  
+        
+        
+        ///GETTING EMPLOYEEE POSITION
+        $employee_position_id = 0;
+        $sql_position = "SELECT insert_id FROM  desig_info where desig_id='".$row['desig_id']."'";
+        $result_position = $conn_source->query($sql_position);
+        if ($result_position->num_rows > 0) 
+        {
+            $row_position=$result_position->fetch_assoc();
+            $employee_position_id = $row_position->insert_id;
+        }
+        else
+        {
+            $sql_position_destination = "SELECT id FROM  employee_positions where university_id=".$university_id." and name='N/A'";
+            $result_position_destination = $conn_destination->query($sql_position_destination); 
+            if ($result_position_destination->num_rows > 0) 
+            {
+                $row_position=$result_position_destination->fetch_assoc();
+                $employee_position_id = $row_position->id;
+            }
+            else
+            {
+                $sql = "insert into employee_positions (name,employee_category_id,status,updated_at,created_at,university_id,short,rank)"
+                . " values ('N/A',".$catgeory_id.",1,'".$insert_date."','".$insert_date."',".$university_id.",'n/a','0')";
+                $conn_destination->query($sql);
+                $employee_position_id = $conn_destination->insert_id;
+            }    
+            
+            
+          
         }    
+        
+        
         
         
         

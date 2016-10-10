@@ -128,18 +128,26 @@ class ExamConnect extends CActiveRecord
                         }
                         foreach($exam['Scores'] as $scores)
                         {
-                            $std_middle_name = ($scores['Students']->middle_name)?$scores['Students']->middle_name." ":"";
-                            if(!in_array($scores['Students']->id, $students))
+                            if(isset($scores['Students']))
                             {
-                                $students[] = $scores['Students']->id;
-                                $result['students'][$j]['name'] = $scores['Students']->first_name." ".$std_middle_name.$scores['Students']->last_name;
-                                $result['students'][$j]['id'] = $scores['Students']->id;
-                                $result['students'][$j]['class_roll_no'] = $scores['Students']->class_roll_no;
-                                $j++;
-                            }
+                                $std_middle_name = ($scores['Students']->middle_name)?$scores['Students']->middle_name." ":"";
+                                if(!in_array($scores['Students']->id, $students))
+                                {
+                                    $students[] = $scores['Students']->id;
+                                    $result['students'][$j]['name'] = $scores['Students']->first_name." ".$std_middle_name.$scores['Students']->last_name;
+                                    $result['students'][$j]['id'] = $scores['Students']->id;
+                                    $result['students'][$j]['class_roll_no'] = $scores['Students']->class_roll_no;
+                                    $j++;
+                                }
+                                
                             
                             
                             $result['CT'][$i]['students'][$scores['Students']->id]['score'] = $scores->marks;
+                            }
+                            else
+                            {
+                                continue;
+                            }
                             
                         } 
                         $i++;
@@ -158,16 +166,23 @@ class ExamConnect extends CActiveRecord
                         }
                         foreach($exam['Scores'] as $scores)
                         {
-                            $std_middle_name = ($scores['Students']->middle_name)?$scores['Students']->middle_name." ":"";
-                            if(!in_array($scores['Students']->id, $students))
+                            if(isset($scores['Students']))
                             {
-                                $students[] = $scores['Students']->id;
-                                $result['students'][$j]['name'] = $scores['Students']->first_name." ".$std_middle_name.$scores['Students']->last_name;
-                                $result['students'][$j]['id'] = $scores['Students']->id;
-                                $result['students'][$j]['class_roll_no'] = $scores['Students']->class_roll_no;
-                                $j++;
+                                $std_middle_name = ($scores['Students']->middle_name)?$scores['Students']->middle_name." ":"";
+                                if(!in_array($scores['Students']->id, $students))
+                                {
+                                    $students[] = $scores['Students']->id;
+                                    $result['students'][$j]['name'] = $scores['Students']->first_name." ".$std_middle_name.$scores['Students']->last_name;
+                                    $result['students'][$j]['id'] = $scores['Students']->id;
+                                    $result['students'][$j]['class_roll_no'] = $scores['Students']->class_roll_no;
+                                    $j++;
+                                }
+                                $result['ST'][$k]['students'][$scores['Students']->id]['score'] = $scores->marks;
                             }
-                            $result['ST'][$k]['students'][$scores['Students']->id]['score'] = $scores->marks;
+                            else
+                            {
+                                continue;
+                            }
                           
                         } 
                         $k++;
@@ -180,18 +195,26 @@ class ExamConnect extends CActiveRecord
                     $result['ALL'][$f]['maximum_marks'] = $exam->maximum_marks;
                     foreach($exam['Scores'] as $scores)
                     {
-                        $std_middle_name = ($scores['Students']->middle_name)?$scores['Students']->middle_name." ":"";
-                        if(!in_array($scores['Students']->id, $allstudents))
+                        if(isset($scores['Students']))
                         {
-                            $allstudents[] = $scores['Students']->id;
-                            $result['al_students'][$m]['name'] = $scores['Students']->first_name." ".$std_middle_name.$scores['Students']->last_name;
-                            $result['al_students'][$m]['id'] = $scores['Students']->id;
-                            $result['al_students'][$m]['class_roll_no'] = $scores['Students']->class_roll_no;
-                            $m++;
+                            $std_middle_name = ($scores['Students']->middle_name)?$scores['Students']->middle_name." ":"";
+                            if(!in_array($scores['Students']->id, $allstudents))
+                            {
+                                $allstudents[] = $scores['Students']->id;
+                                $result['al_students'][$m]['name'] = $scores['Students']->first_name." ".$std_middle_name.$scores['Students']->last_name;
+                                $result['al_students'][$m]['id'] = $scores['Students']->id;
+                                $result['al_students'][$m]['class_roll_no'] = $scores['Students']->class_roll_no;
+                                $m++;
+                            }
+
+
+                            $result['ALL'][$f]['students'][$scores['Students']->id]['score'] = $scores->marks;
                         }
-
-
-                        $result['ALL'][$f]['students'][$scores['Students']->id]['score'] = $scores->marks;
+                        else
+                        {
+                                continue;
+                        }
+                        
 
                     } 
                     $f++;

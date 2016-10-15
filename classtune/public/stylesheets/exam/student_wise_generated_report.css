@@ -210,8 +210,10 @@ tr.odd1{
 }
 
 #pdf-header{
-    width:2000px;
+    width:800px;
     margin: 0 auto;
+    float: left;
+    overflow: hidden;
 }
 
 

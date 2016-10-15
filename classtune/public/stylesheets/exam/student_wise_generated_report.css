@@ -209,6 +209,13 @@ tr.odd1{
     white-space: nowrap;
 }
 
+#pdf-header{
+    width:1600px;
+    padding-top: 30px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
 
 
 

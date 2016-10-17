@@ -448,9 +448,9 @@ table#pdf-table{
 }
 .st_and_ct h2
 {
-   font-size:25px;
+   font-size:30px;
    margin-bottom:5px;
-   border-bottom: 1px solid black;
+   border-bottom: 2px solid black;
 }
 
 .margin-top-40

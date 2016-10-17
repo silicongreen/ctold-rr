@@ -123,7 +123,9 @@ class GradingLevelsController < ApplicationController
             @batches.each do |batch|
               if this_id != batch.id
                 @tmp_grading_level = GradingLevel.find_by_batch_id(batch.id)
-                @tmp_grading_level.update_attributes(params[:grading_level])
+                if !@tmp_grading_level.blank?
+                  @tmp_grading_level.update_attributes(params[:grading_level])
+                end
               end
             end  
           end

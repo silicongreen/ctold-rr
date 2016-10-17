@@ -446,6 +446,12 @@ table#pdf-table{
 {
     font-size:22px;
 }
+.st_and_ct h2
+{
+   font-size:25px;
+   margin-bottom:5px;
+   border-bottom: 1px solid black;
+}
 
 .margin-top-40
 {

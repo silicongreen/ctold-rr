@@ -72,8 +72,21 @@
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
   <div id="page-yield"  class="available_sections1 st_and_ct">
 
-      <h4 align="center"><%= @connect_exam_obj.name+" Report : " %><%= Time.now.strftime("%B, %Y") %></h4>
-      <h4 align="center"><%= @student.full_name %> (<%= @batch.name %> - <%= @batch.course.full_name %>)</h4>
+      <h4 align="center">English Medium - Banani Branch</h4>
+      <h4 align="center">Result Sheet - <%= @connect_exam_obj.name %></h4>
+      <% if @batch.name == "General" %>
+          <h4 align="center"> <%= @batch.course.full_name %></h4>
+      <% else %>
+          <h4 align="center"> <%= @batch.name %> ,<%= @batch.course.full_name %></h4>
+      <% end %>
+      <table class="margin-top-bottom-20" width="100%" >
+            <thead>
+                <tr>
+                    <td><b>Name : <%= "#{@student.full_name}" %> </b></td>
+                    <td align="right"><b>Roll : <%= "#{@student.class_roll_no}" %></b></td>
+                </tr>
+            </thead>    
+      </table> 
 
 
       <div class ="current_batch" style="margin-left:0px;">
@@ -186,12 +199,12 @@
                     <table class="teachers_sign">
                         <tr>
                             <th align="left">
-                                Class Teacher's Remark
+                                Class Teacher's Comment : 
                             </th>                      
                         </tr>
                         <tr>
                             <td>
-                                &nbsp;<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+                                &nbsp;<br /><br /><br /><br /><br /><br /><br /><br /><br />
                             </td>                      
                         </tr>
                     </table>

@@ -466,3 +466,8 @@ table#pdf-table{
     width:1000px;
 }
 
+.st_and_ct .table-header td{
+    color: #000;
+    font-weight: bold;
+}
+

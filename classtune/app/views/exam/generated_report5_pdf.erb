@@ -16,7 +16,9 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License. -%>
-<% if MultiSchool.current_school.id == 283 %>
+<% if @connect_exam_obj.result_type==3 %>
+  <%= render  :partial=>"st_and_ct" %>
+<% elsif MultiSchool.current_school.id == 283 %>
   <%= render  :partial=>"group_report_academia" %>
 <% elsif MultiSchool.current_school.id == 246 %>
   <%= render  :partial=>"group_report_cherry_blossoms" %>

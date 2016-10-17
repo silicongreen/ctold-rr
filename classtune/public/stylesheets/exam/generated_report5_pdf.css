@@ -424,3 +424,17 @@ table#pdf-table{
 {
     font-size:20px;
 }
+
+.st_and_ct .academia_box, .st_and_ct table, .st_and_ct table td
+{
+    width:800px;
+    margin-top:10px;
+}
+
+.st_and_ct .academia_box table td
+{
+    border: 1px solid #000;
+    font-size:10px;
+    padding:3px;
+    width:800px;
+}

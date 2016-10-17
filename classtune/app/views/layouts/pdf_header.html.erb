@@ -17,187 +17,198 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 
-<div id="pdf-header">
-  <% if MultiSchool.current_school.id == 246 %>
-      <%#Cherry Blossoms International School%>
+
+<% if MultiSchool.current_school.id == 246 %>
+  <%#Cherry Blossoms International School%>
+  <div id="pdf-header">
       <table id="pdf-table" width="100%" cellspacing="0">
-        <tr>
-            <td width="23%">
-              <h4 align="" class="logonew">
-                 
-                <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/246/logo.jpg")),:width=> '150%' %>
-                <%#= image_tag("/icons/icon.gif", :height=> '32', :width=> '32') %>
-              </h4>
-            </td>
-            <td width="77%">
-              <h1 align="" class="header_font">       
-                <font size="6"><%#=Configuration.get_config_value('InstitutionName'); %>Cherry Blossoms International School</font>
-              </h1>
-              <h2> 
-                  <b>(PLAY GROUP-'A', EDEXCEL CENTRE NO. 96440, UK)</b>                  
-              </h2>
-              <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font size='2'>www.cherryblossommsint.com , Contact : +88017130073860, Email : cherryblossomsint@gmail.com</font></p>
-            </td>
-        </tr>
+          <tr>
+              <td width="23%">
+                  <h4 align="" class="logonew">
+
+                      <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/246/logo.jpg")),:width=> '150%' %>
+  <%#= image_tag("/icons/icon.gif", :height=> '32', :width=> '32') %>
+                  </h4>
+              </td>
+              <td width="77%">
+                  <h1 align="" class="header_font">       
+                      <font size="6"><%#=Configuration.get_config_value('InstitutionName'); %>Cherry Blossoms International School</font>
+                  </h1>
+                  <h2> 
+                      <b>(PLAY GROUP-'A', EDEXCEL CENTRE NO. 96440, UK)</b>                  
+                  </h2>
+                  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font size='2'>www.cherryblossommsint.com , Contact : +88017130073860, Email : cherryblossomsint@gmail.com</font></p>
+              </td>
+          </tr>
       </table>
-  <% elsif MultiSchool.current_school.id == 283 %>
-      <%#academia%>
+  </div>  
+<% elsif MultiSchool.current_school.id == 283 %>
+  <%#academia%>
+  <div id="pdf-header">
       <table id="" width="100%" cellspacing="0">
-        <tr>
-            <td width="32%">
-              <h4 align="" class="academia_logo">
-                <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")) %>
-              </h4>
-            </td>
-            <td width="68%">
-              <h1 align="" class="header_font acdemia_header">       
-                <%=Configuration.get_config_value('InstitutionName'); %>                
-              </h1>
-              <p class="academia_subhead"><i>Outstanding English Medium School</i></p>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2" class="academia_border"></td>
-        </tr>
+          <tr>
+              <td width="32%">
+                  <h4 align="" class="academia_logo">
+                      <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")) %>
+                  </h4>
+              </td>
+              <td width="68%">
+                  <h1 align="" class="header_font acdemia_header">       
+                      <%=Configuration.get_config_value('InstitutionName'); %>                
+                  </h1>
+                  <p class="academia_subhead"><i>Outstanding English Medium School</i></p>
+              </td>
+          </tr>
+          <tr>
+              <td colspan="2" class="academia_border"></td>
+          </tr>
       </table>
-  <% elsif MultiSchool.current_school.id == 275 %>
-    <%#GATEWAY%>
-    <table id="pdf-table" width="100%" cellspacing="0">
-      <tr>
-          <td width="25%">
-            <h4 align="" class="logonew">
+  </div>
+<% elsif MultiSchool.current_school.id == 275 %>
+  <%#GATEWAY%>
+  <div id="pdf-header">s
+      <table id="pdf-table" width="100%" cellspacing="0">
+          <tr>
+              <td width="25%">
+                  <h4 align="" class="logonew">
 
-              <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/275/logo.jpg")),:width=> '100%' %>
-              <%#= image_tag("/icons/icon.gif", :height=> '32', :width=> '32') %>
-            </h4>
-          </td>
-          <td width="75%">
-            <h1 align="" class="header_font">       
-              <font size="6">&nbsp;&nbsp;&nbsp;&nbsp;<%#=Configuration.get_config_value('InstitutionName'); %>Gateway International School</font>
-            </h1>
-            <h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <b>Progress Report</b>                  
-            </h2>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font size='2'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Campus : 62/A, Siddeshwari, Dhaka, Phone : +8801711-560285,8356552</font></p>
-          </td>
-      </tr>
-    </table>
-  <% elsif MultiSchool.current_school.id == 280 %>
-    <%#GATEWAY%>
-    <table id="pdf-table" width="100%" cellspacing="0">
-      <tr>
-          <td width="10">
-            <h4 align="" class="">
+                      <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/275/logo.jpg")),:width=> '100%' %>
+  <%#= image_tag("/icons/icon.gif", :height=> '32', :width=> '32') %>
+                  </h4>
+              </td>
+              <td width="75%">
+                  <h1 align="" class="header_font">       
+                      <font size="6">&nbsp;&nbsp;&nbsp;&nbsp;<%#=Configuration.get_config_value('InstitutionName'); %>Gateway International School</font>
+                  </h1>
+                  <h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <b>Progress Report</b>                  
+                  </h2>
+                  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font size='2'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Campus : 62/A, Siddeshwari, Dhaka, Phone : +8801711-560285,8356552</font></p>
+              </td>
+          </tr>
+      </table>
+  </div>
+<% elsif MultiSchool.current_school.id == 280 %>
+  <%#GATEWAY%>
+  <div id="pdf-header">
+      <table id="pdf-table" width="100%" cellspacing="0">
+          <tr>
+              <td width="10">
+                  <h4 align="" class="">
 
-              <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/280/logo.png")),:width=> '100%' %>
-              <%#= image_tag("/icons/icon.gif", :height=> '32', :width=> '32') %>
-            </h4>
-          </td>
-          <td width="68%">
-            <h1 align="" class="st_header_font">&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;     
-              <%#=Configuration.get_config_value('InstitutionName'); %>St. Joseph Higher Secondary School
-            </h1>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                CONDUCTED BY BROTHERS OF HOLY CROSS                  
-            </p>
-          </td>
-          <td width="23%" class="st_grade">
-            <div class="st_joseph">
-            <% @grading_levels = GradingLevel.default %>
-            <%  unless @grading_levels.empty? %>
-              <div class="left_box">
-              <table class="">
-                  <tr>
-                    <td><font size='2'>Marks Range</font></td>
-                    <td><font size='2'>Grade</font></td>
-                  </tr>
-                  <% @grading_levels.each_with_index do |grade,index| %>
-                    <% if index < 6 %>
-                      <tr>
-                        <td>
-                          <% if grade.max_score.nil? %>  
-                          <font size='2'><%= '%i%' % grade.min_score %></font>
-                          <% else %>  
-                          <font size='2'><%= grade.min_score.to_s + " - " + grade.max_score.to_s %>  </font>
-                          <% end %>                      
-                        </td>
-                        <td><font size='2'><%= grade.name %></font></td>
-                      </tr> 
-                    <% end %>
-                    <% if index == 5 %>
-                      </table>  </div><div class="right_box">
-                      <table class="">
-                        <tr>
-                          <td><font size='2'>Marks Range</font></td>
-                          <td><font size='2'>Grade</font></td>
-                        </tr>
-                    <% end %>
-                    <% if index > 5 %>
-                      <tr>
-                        <td>
-                          <% if grade.max_score.nil? %>  
-                          <font size='2'><%= '%i%' % grade.min_score %></font>
-                          <% else %>  
-                          <font size='2'><%= grade.min_score.to_s + " - " + grade.max_score.to_s %>  </font>
-                          <% end %>                      
-                        </td>
-                        <td><font size='2'><%= grade.name %></font></td>
-                      </tr>  
-                    <% end %>
-                  <% end %>
-              </table>  </div>
-            <% else %>
-              <h4><%= t('set_in_common') %></h4>
-            <% end %>
-          </div>
-          </td>
-      </tr>
-    </table>
-  <% elsif MultiSchool.current_school.id == 25 %>
-    <table id="pdf-table" width="100%" cellspacing="0">
-      <tr>
-          <td width="15%">
-            <h4 align="" class="logonew">
+                      <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/280/logo.png")),:width=> '100%' %>
+  <%#= image_tag("/icons/icon.gif", :height=> '32', :width=> '32') %>
+                  </h4>
+              </td>
+              <td width="68%">
+                  <h1 align="" class="st_header_font">&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;     
+  <%#=Configuration.get_config_value('InstitutionName'); %>St. Joseph Higher Secondary School
+                  </h1>
+                  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      CONDUCTED BY BROTHERS OF HOLY CROSS                  
+                  </p>
+              </td>
+              <td width="23%" class="st_grade">
+                  <div class="st_joseph">
+                      <% @grading_levels = GradingLevel.default %>
+                      <%  unless @grading_levels.empty? %>
+                        <div class="left_box">
+                            <table class="">
+                                <tr>
+                                    <td><font size='2'>Marks Range</font></td>
+                                    <td><font size='2'>Grade</font></td>
+                                </tr>
+                                <% @grading_levels.each_with_index do |grade,index| %>
+                                  <% if index < 6 %>
+                                    <tr>
+                                        <td>
+                                            <% if grade.max_score.nil? %>  
+                                              <font size='2'><%= '%i%' % grade.min_score %></font>
+                                            <% else %>  
+                                              <font size='2'><%= grade.min_score.to_s + " - " + grade.max_score.to_s %>  </font>
+                                            <% end %>                      
+                                        </td>
+                                        <td><font size='2'><%= grade.name %></font></td>
+                                    </tr> 
+                                  <% end %>
+                                  <% if index == 5 %>
+                                </table>  </div><div class="right_box">
+                                <table class="">
+                                    <tr>
+                                        <td><font size='2'>Marks Range</font></td>
+                                        <td><font size='2'>Grade</font></td>
+                                    </tr>
+                                  <% end %>
+                                  <% if index > 5 %>
+                                    <tr>
+                                        <td>
+                                            <% if grade.max_score.nil? %>  
+                                              <font size='2'><%= '%i%' % grade.min_score %></font>
+                                            <% else %>  
+                                              <font size='2'><%= grade.min_score.to_s + " - " + grade.max_score.to_s %>  </font>
+                                            <% end %>                      
+                                        </td>
+                                        <td><font size='2'><%= grade.name %></font></td>
+                                    </tr>  
+                                  <% end %>
+                                <% end %>
+                            </table>  </div>
+                      <% else %>
+                        <h4><%= t('set_in_common') %></h4>
+                      <% end %>
+                  </div>
+              </td>
+          </tr>
+      </table>
+  </div>
+<% elsif MultiSchool.current_school.id == 25 %>
+  <div id="pdf-header">
+      <table id="pdf-table" width="100%" cellspacing="0">
+          <tr>
+              <td width="15%">
+                  <h4 align="" class="logonew">
 
-              <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/2/logo.jpg")),:width=> '100%' %>
-              <%#= image_tag("/icons/icon.gif", :height=> '32', :width=> '32') %>
-            </h4>
-          </td>
-          <td width="85%">
-            <h1 align="" class="header_font">       
-              <font size="6"><%#=Configuration.get_config_value('InstitutionName'); %>MOHAMMADPUR PREPARATORY SCHOOL & COLLEGE</font>
-            </h1>            
-            <h4 class="header_address">15/1, IQBAL ROAD, MOHAMMADPUR, DHAKA-1207</h4>
-            <h4 class="header_address">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= " Progress Report " %></h4><% #+@connect_exam_obj.name %>
-          </td>
-      </tr>
-    </table>
-  <% else %>
-    <table width="100%" cellspacing="0">
-      <tr>
-          <td width="10%">
-            <h4 align="" class="logonew">
+                      <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/2/logo.jpg")),:width=> '100%' %>
+  <%#= image_tag("/icons/icon.gif", :height=> '32', :width=> '32') %>
+                  </h4>
+              </td>
+              <td width="85%">
+                  <h1 align="" class="header_font">       
+                      <font size="6"><%#=Configuration.get_config_value('InstitutionName'); %>MOHAMMADPUR PREPARATORY SCHOOL & COLLEGE</font>
+                  </h1>            
+                  <h4 class="header_address">15/1, IQBAL ROAD, MOHAMMADPUR, DHAKA-1207</h4>
+                  <h4 class="header_address">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= " Progress Report " %></h4><% #+@connect_exam_obj.name %>
+              </td>
+          </tr>
+      </table>
+  </div>
+<% else %>
+  <div id="pdf-header-south">
+      <table width="100%" cellspacing="0">
+          <tr>
+              <td width="10%">
+                  <h4 align="" class="logonew">
 
-              <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/2/logo.jpg")),:width=> '100%' %>
-              <%#= image_tag("/icons/icon.gif", :height=> '32', :width=> '32') %>
-            </h4>
-          </td>
-          <td width="80%">
-            <h1 align="left" class="header_font">       
-              <font size="2">SOUTH POINT SCHOOL AND COLLEGE</font>
-            </h1>
-          </td>
-          <td width="10%"></td>
-      </tr>
-    </table>
-    
-    
-  <% end %>
-    
-  
-  
+                      <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/2/logo.jpg")),:width=> '100%' %>
+  <%#= image_tag("/icons/icon.gif", :height=> '32', :width=> '32') %>
+                  </h4>
+              </td>
+              <td width="80%">
+                  <h1 align="left" class="header_font">       
+                      <font size="2">SOUTH POINT SCHOOL AND COLLEGE</font>
+                  </h1>
+              </td>
+              <td width="10%"></td>
+          </tr>
+      </table>
 
-</div>
+  </div>
+<% end %>
+
+
+
+
+
 
 

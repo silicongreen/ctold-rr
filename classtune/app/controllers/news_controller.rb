@@ -179,7 +179,7 @@ class NewsController < ApplicationController
         unless reminder_recipient_ids.empty?
           Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => current_user.id,
               :recipient_ids => reminder_recipient_ids,
-              :subject=>"#{t('reminder_notice')}",
+              :subject=>@news.title,
               :rtype=>5,
               :rid=>@news.id,
               :student_id => student_ids,

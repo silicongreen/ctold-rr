@@ -974,6 +974,7 @@ class HomeworkController extends Controller
     private function upload_homework($file,$homework)
     {
         $homework->attachment_updated_at = date("Y-m-d H:i:s");
+        $homework->updated_at = date("Y-m-d H:i:s");
                     
         $attachment_datetime_chunk = explode(" ", $homework->updated_at);
 

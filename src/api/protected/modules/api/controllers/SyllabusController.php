@@ -508,7 +508,7 @@ class SyllabusController extends Controller {
                 $lessonplan->school_id = $school_id;
                 $lessonplan->author_id = $author_id;
                 $lessonplan->created_at = $created_at;
-                $lessonplan->updated_at = $updated_at;
+//                $lessonplan->updated_at = $updated_at;
                 $lessonplan->save();
                 if (isset($_FILES['attachment_file_name']['name']) && !empty($_FILES['attachment_file_name']['name']))
                 {
@@ -677,6 +677,8 @@ class SyllabusController extends Controller {
     private function upload_lessonplan($file,$lessonplan)
     {
         $lessonplan->attachment_updated_at = date("Y-m-d H:i:s");
+        $lessonplan->updated_at = date("Y-m-d H:i:s");
+        
                     
         $attachment_datetime_chunk = explode(" ", $lessonplan->updated_at);
 

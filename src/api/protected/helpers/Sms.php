@@ -6,7 +6,7 @@
  * and open the template in the editor.
  */
 class Sms {
-    public static $sms_attendence_school = [2];
+    public static $sms_attendence_school = [2,296];
     //296
     
     public static $sms_school_host = array(2=>"host_ssd", 296=>"host_ssd");

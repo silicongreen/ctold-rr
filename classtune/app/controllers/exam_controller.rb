@@ -777,11 +777,17 @@ class ExamController < ApplicationController
     @exam_group = ExamGroup.find(params[:exam_group])
     @student = Student.find_by_id(params[:student])
     @batch = @student.batch
-    general_subjects = Subject.find_all_by_batch_id(@student.batch.id,:order=>"name", :conditions=>"elective_group_id IS NULL")
-    student_electives = StudentsSubject.find_all_by_student_id(@student.id,:conditions=>"batch_id = #{@student.batch.id}")
+    general_subjects = Subject.find_all_by_batch_id(@batch.id, :conditions=>"elective_group_id IS NULL")
+    student_electives = StudentsSubject.find_all_by_student_id(@student.id,:conditions=>"batch_id = #{@batch.id}")
     elective_subjects = []
     student_electives.each do |elect|
       elective_subjects.push Subject.find(elect.subject_id)
+    end
+    @subjects = general_subjects + elective_subjects
+    @exams = []
+    @subjects.each do |sub|
+      exam = Exam.find_by_exam_group_id_and_subject_id(@exam_group.id,sub.id)
+      @exams.push exam unless exam.nil?
     end
     
     if !@exam_group.attandence_start_date.blank? and !@exam_group.attandence_end_date.blank?
@@ -822,13 +828,6 @@ class ExamController < ApplicationController
 #    @on_leave = on_leaves
     @present = @academic_days-on_leaves-leaves_full
     @absent = @academic_days-@present
-          
-    @subjects = general_subjects + elective_subjects
-    @exams = []
-    @subjects.each do |sub|
-      exam = Exam.find_by_exam_group_id_and_subject_id(@exam_group.id,sub.id)
-      @exams.push exam unless exam.nil?
-    end
     render :pdf => 'student_wise_generated_report'
   end
 

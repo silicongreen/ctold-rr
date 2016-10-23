@@ -32,7 +32,6 @@
   <%   
     exam_score_high = ExamScore.find_by_exam_id(exam.id,:limit=>1, :order => 'marks desc') unless exam.nil?  
   %>
-  <%= debug exam_score.inspect %>
   <% unless exam_score_high.nil? %>
   <% max_mark << exam_score_high.marks %>
   <% end %>

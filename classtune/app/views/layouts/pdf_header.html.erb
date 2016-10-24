@@ -21,7 +21,7 @@
 <% if MultiSchool.current_school.id == 246 %>
   <%#Cherry Blossoms International School%>
 <div id="pdf-header-south">
-  <h3 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")) %></h3>
+  <h3 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '150%' %></h3>
   <h2 align="center">Cherry Blossoms International School</h2>
 
 </div>  

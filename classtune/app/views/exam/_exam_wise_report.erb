@@ -200,14 +200,16 @@
       <thead>
           <tr class="tr-head">
             <% unless total_credit_hours==0 %>
+              <% if MultiSchool.current_school.id != 246 %>
               <th>
-                  <% if MultiSchool.current_school.id != 246 %>
+                  
                     <span><%= t('grade_point_average_gpa') %><%=total_credit_hours%></span> <span>:</span>
                     <% grade_point_sum = total_credit_points.to_f/total_credit_hours.to_f %>
                     <% sum_grade = GradingLevel.grade_point_to_grade(grade_point_sum, @student.batch_id) %>
                     <span> <%= sum_grade  %> [<%= "%.2f" %(total_credit_points.to_f/total_credit_hours.to_f) %>]</span>
-                  <% end %>                    
+                                     
               </th>
+              <% end %> 
           <%
             @conn = ActiveRecord::Base.connection 
             sql = "SELECT SUM( Scores.marks ) AS total_score, SUM( Examgrade.credit_points ) AS total_points
@@ -244,19 +246,19 @@
             extra_string = "rd"
             end 
           %>
-     
+        <% if MultiSchool.current_school.id != 246  and MultiSchool.current_school.id != 280 %>
         <th>
-          <% if MultiSchool.current_school.id != 246  and MultiSchool.current_school.id != 280 %>
+          
             <span>Position</span> <span>:</span> </span> <span> <%= position %><%= extra_string %></span>
-          <% end %>
+          
         </th>
-        <% if @student.batch.id == @exam_group.batch_id %>
+       <% end %> 
           <th>          
             <div class="user_button" style="margin:10px 0px;   margin-left: 27px;">
               <%= link_to "#{t('pdf_report')}", {:controller => "exam", :action => "student_wise_generated_report", :student=>@student.id,:exam_group=>@exam_group.id},:target => '_blank' %>
             </div> 
           </th>
-        <% end %>
+        
 
     <% else %>
      <th> - </th>

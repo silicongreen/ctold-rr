@@ -20,28 +20,11 @@
 
 <% if MultiSchool.current_school.id == 246 %>
   <%#Cherry Blossoms International School%>
-  <div id="pdf-header">
-      <table id="pdf-table" width="100%" cellspacing="0">
-          <tr>
-              <td width="23%">
-                  <h4 align="" class="logonew">
-
-                      <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/246/logo.jpg")),:width=> '150%' %>
-  <%#= image_tag("/icons/icon.gif", :height=> '32', :width=> '32') %>
-                  </h4>
-              </td>
-              <td width="77%">
-                  <h1 align="" class="header_font">       
-                      <font size="6"><%#=Configuration.get_config_value('InstitutionName'); %>Cherry Blossoms International School</font>
-                  </h1>
-                  <h2> 
-                      <b>(PLAY GROUP-'A', EDEXCEL CENTRE NO. 96440, UK)</b>                  
-                  </h2>
-                  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font size='2'>www.cherryblossommsint.com , Contact : +88017130073860, Email : cherryblossomsint@gmail.com</font></p>
-              </td>
-          </tr>
-      </table>
-  </div>  
+<div id="pdf-header-south">
+  <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/246/logo.jpg")) %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")) %></h4>
+  <h2 align="center">Cherry Blossoms International School</h2>
+  <h5 align="center">www.cherryblossommsint.com , Contact : +88017130073860, Email : cherryblossomsint@gmail.com</h5>
+</div>  
 <% elsif MultiSchool.current_school.id == 283 %>
   <%#academia%>
   <div id="pdf-header">

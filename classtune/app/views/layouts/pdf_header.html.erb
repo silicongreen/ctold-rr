@@ -105,7 +105,16 @@
                                     <td><font size='2'>Marks Range</font></td>
                                     <td><font size='2'>Grade</font></td>
                                 </tr>
+                                
                                 <% @grading_levels.each_with_index do |grade,index| %>
+                                    <% if index == 6 %>
+                                   </table>  </div><div class="right_box">
+                                   <table class="">
+                                       <tr>
+                                           <td><font size='2'>Marks Range</font></td>
+                                           <td><font size='2'>Grade</font></td>
+                                       </tr>
+                                     <% end %>
                                   <% if index < 6 %>
                                     <tr>
                                         <td>
@@ -118,14 +127,7 @@
                                         <td><font size='2'><%= grade.name %></font></td>
                                     </tr> 
                                   <% end %>
-                                  <% if index == 5 %>
-                                </table>  </div><div class="right_box">
-                                <table class="">
-                                    <tr>
-                                        <td><font size='2'>Marks Range</font></td>
-                                        <td><font size='2'>Grade</font></td>
-                                    </tr>
-                                  <% end %>
+                                 
                                   <% if index > 5 %>
                                     <tr>
                                         <td>

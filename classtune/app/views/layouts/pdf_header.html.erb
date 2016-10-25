@@ -94,7 +94,10 @@
               </td>
               <td width="23%" class="st_grade">
                   <div class="st_joseph">
+                      <% @grading_levels = GradingLevel.find_all_by_batch_id(@batch.id) %>
+                      <% if @grading_levels.blank? %>
                       <% @grading_levels = GradingLevel.default %>
+                      <% end %>
                       <%  unless @grading_levels.empty? %>
                         <div class="left_box">
                             <table class="">

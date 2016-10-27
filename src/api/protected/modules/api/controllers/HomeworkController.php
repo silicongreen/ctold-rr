@@ -1049,8 +1049,10 @@ class HomeworkController extends Controller
 
 
             $homework->created_at = date("Y-m-d H:i:s");
-
-            $homework->updated_at = date("Y-m-d H:i:s");
+            if(!$id)
+            {
+                $homework->updated_at = date("Y-m-d H:i:s");
+            }
 
 
 
@@ -1073,6 +1075,7 @@ class HomeworkController extends Controller
             
             if (isset($_FILES['attachment_file_name']['name']) && !empty($_FILES['attachment_file_name']['name']))
             {
+                $homework->updated_at = date("Y-m-d H:i:s");
                 $homework->attachment_content_type = Yii::app()->request->getPost('mime_type');
                 $homework->attachment_file_size = Yii::app()->request->getPost('file_size');
                 $this->upload_homework($_FILES, $homework);

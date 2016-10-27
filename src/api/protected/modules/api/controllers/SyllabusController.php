@@ -508,7 +508,11 @@ class SyllabusController extends Controller {
                 $lessonplan->school_id = $school_id;
                 $lessonplan->author_id = $author_id;
                 $lessonplan->created_at = $created_at;
-//                $lessonplan->updated_at = $updated_at;
+                if(!$id)
+                {
+                   $lessonplan->updated_at = $updated_at; 
+                }
+//                
                 $lessonplan->save();
                 if (isset($_FILES['attachment_file_name']['name']) && !empty($_FILES['attachment_file_name']['name']))
                 {

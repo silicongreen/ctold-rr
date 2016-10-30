@@ -198,7 +198,7 @@
                                 <!--th>Total Number of Working Days : <%= @report_data['total'] %></th>
 
                                 <th>Days Present : <%= @report_data['present'] %> </th-->
-                                <th><h2>Average Marks : <%= sprintf( "%0.02f",avgparcent) %> % </h2></th>
+                                <th><h4>Average Marks : <%= sprintf( "%0.02f",avgparcent) %> % </h4></th>
                                 <%  grade = GradingLevel.percentage_to_grade(avgparcent, @batch.id) %>
 
                                 <% if !grade.blank?  and !grade.credit_points.blank? %>
@@ -264,25 +264,12 @@
                   </tr>
                   <tr>
                       <td>
-                          &nbsp;<br /><br /><br /><br />
+                          &nbsp;<br /><br />
                       </td>                      
                   </tr>
               </table>
           </div>
-          <div class="academia_sign_middle">              
-              <table class="teachers_sign">
-                  <tr>
-                      <th>
-                          Promoted To:
-                      </th>
-                  </tr>
-                  <tr>
-                      <td>
-                          &nbsp;<br /><br /><br /><br />
-                      </td>
-                  </tr>
-              </table>
-          </div>
+          
           <div class="academia_sign_right">
               <table class="teachers_sign">
                   <tr>

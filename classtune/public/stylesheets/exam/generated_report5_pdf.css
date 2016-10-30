@@ -500,12 +500,14 @@ table#pdf-table{
 {
     font-size:9px;
     text-align: center;
+    padding:3px;
 }
-.cherry_blossoms .CSSTableGenerator table.listing thead tr th
+.cherry_blossoms .CSSTableGenerator table.listing thead tr td
 {
-    font-size:9px !important;
+    font-size:10px;
     font-weight: bold;
     text-align: center;
+    padding:3px;
 }
 
 .cherry_blossoms  .academia_sign_left

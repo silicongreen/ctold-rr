@@ -519,7 +519,7 @@ table#pdf-table{
 {
     float:left;
     width:900px;
-    margin:0 auto;
+    margin-left:100px;
 
 }
 

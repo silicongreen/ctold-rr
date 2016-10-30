@@ -125,7 +125,7 @@
                             <% @report_data['report']['exams'].each do |report| %>
                               <td class="col-pdf">
                                       <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
-                                        <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %>
+                                        <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].round %>
                                         <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                       <% else %>
                                         N/A

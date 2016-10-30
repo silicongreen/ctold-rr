@@ -501,9 +501,9 @@ table#pdf-table{
     font-size:9px;
     text-align: center;
 }
-.cherry_blossoms .CSSTableGenerator table.listing thead tr th
+.cherry_blossoms  .CSSTableGenerator table thead tr th
 {
-    font-size:9px !important;
+    font-size:9px;
     font-weight: bold;
     text-align: center;
 }
@@ -522,6 +522,4 @@ table#pdf-table{
     width:48%;
 
 }
-
-
 

@@ -3,7 +3,7 @@
 .akmis .CSSTableGenerator td{
 
     padding: 12px 12px 12px 15px;
-    border: 1px solid #000000;
+    border: 2px solid #000000;
     border-right: 0px solid #fff;
     border-top: 0px solid #fff;
 
@@ -13,7 +13,7 @@
 
 .akmis .CSSTableGenerator tr td:last-child
 {
-    border-right: 1px solid #000000;
+    border-right: 2px solid #000000;
 }
 .akmis .CSSTableGenerator tr td table tr td:last-child
 {
@@ -49,7 +49,7 @@
 }
 .akmis .CSSTableGenerator th table tr.border-bottom td
 {
-    border-bottom:  1px solid #000000;
+    border-bottom:  2px solid #000000;
 }
 
 .akmis .CSSTableGenerator table td,th
@@ -375,17 +375,17 @@ academia_box p
 
 }
 tr.even{
-    border: 1px solid #000000;
+    border: 2px solid #000000;
 }
 
 tr.odd{
-    border: 1px solid #000000;
+    border: 2px solid #000000;
 }
 
 .even td{
 
     padding: 12px 12px 12px 15px;
-    border: 1px solid #000000;
+    border: 2px solid #000000;
     border-right: 0px solid #fff;
     border-top: 0px solid #fff;
     text-align: center;
@@ -394,7 +394,7 @@ tr.odd{
 
 .odd td{
     padding: 12px 12px 12px 15px;
-    border: 1px solid #000000;
+    border: 2px solid #000000;
     border-right: 0px solid #fff;
     border-top: 0px solid #fff;
     text-align: center;
@@ -405,16 +405,16 @@ tr.odd{
 
 .table-header td{
     padding: 12px 12px 12px 15px;
-    border-top: 1px solid #000000;
-    border-left: 1px solid #000000;
-    border-right: 1px solid #000000;
-    border-bottom: 1px solid #000000;
+    border-top: 2px solid #000000;
+    border-left: 2px solid #000000;
+    border-right: 2px solid #000000;
+    border-bottom: 2px solid #000000;
     color: #000000;
     background: #ffffff;
 }
 
 table#pdf-table{
-    border-top: 1px solid #000000;
+    border-top: 2px solid #000000;
     border-collapse:collapse
 }
 
@@ -480,6 +480,10 @@ table#pdf-table{
 .sfx  .table-header td{
     color: #000;
     font-weight: bold;
+}
+.sfx table th
+{
+    text-align: center;
 }
 
 .sfx table td

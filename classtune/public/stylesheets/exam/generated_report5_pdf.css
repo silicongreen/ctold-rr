@@ -457,6 +457,10 @@ table#pdf-table{
 {
     margin-top:40px;
 }
+.margin-top-20
+{
+    margin-top:20px;
+}
 .margin-top-bottom-20
 {
     margin:20px 0px;
@@ -471,10 +475,15 @@ table#pdf-table{
     font-weight: bold;
 }
 
+.sfx  .table-header td{
+    color: #000;
+    font-weight: bold;
+}
+
 .sfx table td
 {
 
-    font-size:18px;
+    font-size:20px;
     padding: 12px 12px 12px 15px;
 }
 

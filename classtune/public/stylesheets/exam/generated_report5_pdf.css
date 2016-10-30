@@ -361,9 +361,9 @@ academia_box p
     }
     
     
-    .odd{
+.odd{
     height:auto;
-    background: #EEEEEE;
+    background: #fff;
 
 }
 
@@ -407,8 +407,8 @@ tr.odd{
     border-left: 1px solid #ADACAB;
     border-right: 1px solid #ADACAB;
     border-bottom: 1px solid #ADACAB;
-    color: #97080e;
-    background: #d7d7d7;
+    color: #000000;
+    background: #ffffff;
 }
 
 table#pdf-table{
@@ -469,5 +469,12 @@ table#pdf-table{
 .st_and_ct .table-header td{
     color: #000;
     font-weight: bold;
+}
+
+.sfx table td
+{
+
+    font-size:15px;
+    padding: 12px 12px 12px 15px;
 }
 

@@ -1,12 +1,14 @@
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
     <div id="page-yield"  class="available_sections1 academia cherry_blossoms">
+        <h4 align="center">&nbsp;</h4>
+        <h4 align="center">&nbsp;</h4>
         <div class="academia_box">
           <div class="academia_left_box noborder">&nbsp;
               <%#= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/master_student/profile/default_student.png")) %>
           </div>
           <div class="academia_middle_box">
             <div class="academia_exam_title_box">
-              <h4 align="center"><%= @connect_exam_obj.name+" Report : " %><%= Time.now.strftime("%B, %Y") %></h4>
+              <h4 align="center"><%= @connect_exam_obj.name+" Report : " %><%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%B, %Y"):@connect_exam_obj.published_date.strftime("%B, %Y") %></h4>
             </div>
               <%#= debug @student %>
             <div class="academia_exam_details_box">              

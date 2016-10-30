@@ -481,12 +481,12 @@ table#pdf-table{
     color: #000;
     font-weight: bold;
 }
-.sfx table th
+.sfx table tr.table-header td
 {
     text-align: center;
 }
 
-.sfx table td
+.sfx table  td
 {
 
     font-size:22px;

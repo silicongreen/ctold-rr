@@ -9,7 +9,7 @@
           </div>
           <div class="academia_middle_box">
             <div class="academia_exam_title_box">
-              <h4 align="center"><%= @connect_exam_obj.name+" Report : " %><%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%B, %Y"):@connect_exam_obj.published_date.strftime("%B, %Y") %></h4>
+              <h5 align="center"><%= @connect_exam_obj.name+" Report : " %><%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%B, %Y"):@connect_exam_obj.published_date.strftime("%B, %Y") %></h5>
             </div>
               <%#= debug @student %>
             <div class="academia_exam_details_box">              
@@ -64,12 +64,12 @@
                     <table id="listing table-design" class='score' width="100%">
                         <thead>
                           <tr>
-                              <th class='subjects'>Subject Name </th>
+                              <td class='subjects'>Subject Name </td>
                               <% unless @report_data['report']['exams'].blank? %>  
                               <% count = @report_data['report']['exams'].count %>                        
                                 <% @report_data['report']['exams'].each do |report| %>
                                   <% w = 60/count%>
-                              <th width='<%=  ("#{w}%")%>'>
+                              <td width='<%=  ("#{w}%")%>'>
                                     <table width='100%' border="0">
                                         <tr>
                                             <td width="100%" colspan="2" class="special_top special_left special_right"><%= report['exam_name'] %></td>
@@ -80,15 +80,15 @@
                                         </tr>
 
                                     </table>
-                                  </th> 
+                                  </td> 
                                 <% end %>
                               
                               <% end %>
 
-                              <th class="totalmark">Total Marks</th>
+                              <td class="totalmark">Total Marks</td>
                               <!--th width="5%">Marks Obtained (%)</th-->
-                              <th class="totalmark">Highest Marks (%)</th>
-                              <th class="totalmark">Letter Grade</th>
+                              <td class="totalmark">Highest Marks (%)</td>
+                              <td class="totalmark">Letter Grade</td>
                               <!--th width="5%">GPA</th-->
                           </tr>
                         </thead>

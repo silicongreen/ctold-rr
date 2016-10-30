@@ -130,7 +130,7 @@
                                         N/A
                                       <% end %>
                                       <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
-                                        <% exam_marks = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                        <% exam_marks = exam_marks+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                         <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                       <% else %>
 
@@ -272,7 +272,7 @@
                   
               </table>
               <% end %>
-              <table id="pdf-table" class="margin-top-20  right-table" width="50%" cellspacing="0">
+              <table id="pdf-table" class="margin-top-20  right-table" width="58%" cellspacing="0">
                   <tr class="even">
                       <td width="18%"><b>Section In-Charge</b></td>
                       <td width="32%"><br/><br/>&nbsp;<br/>&nbsp;<br/><br/>&nbsp;<br/></td>

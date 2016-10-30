@@ -166,9 +166,9 @@
                             <td class="col-pdf"><%= sprintf( "%0.02f", heighst_mark)%> </td>
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>
-                            <%#*<td class="col-pdf"><b><%= grade.name %></b></td>%>
+                            
                             <% else %>
-                            <%#*<td class="col-pdf"><b>N/A</b></td>%>
+                            
                             <% end %>
 
                             <% total_parcent= total_parcent+main_mark %>
@@ -177,7 +177,7 @@
                             <td class="col-pdf">N/A</td>
                             <td class="col-pdf">N/A</td>
                             <td class="col-pdf">N/A</td>
-                            <%#*<td class="col-pdf">N/A</td>%>
+                           
                           <% end %>      
 
                       </tr> 

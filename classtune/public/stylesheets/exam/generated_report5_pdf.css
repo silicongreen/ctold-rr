@@ -515,6 +515,14 @@ table#pdf-table{
 
 }
 
+.cherry_blossoms  .academia_middle_box
+{
+    float:left;
+    width:900px;
+    margin:0 auto;
+
+}
+
 .cherry_blossoms   .academia_sign_right
 {
     margin-left:15px ;

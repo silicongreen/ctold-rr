@@ -28,8 +28,10 @@
   <%= render  :partial=>"group_report_gateway_international" %>
 <% elsif MultiSchool.current_school.id == 12 %>
   <%= render  :partial=>"group_report_mpsc" %>
-<% elsif MultiSchool.current_school.id == 186 or MultiSchool.current_school.id == 2 %>
+<% elsif MultiSchool.current_school.id == 186 %>
   <%= render  :partial=>"group_report_akmis" %>
+<% elsif MultiSchool.current_school.id == 2 %>
+  <%= render  :partial=>"group_report_sfx" %>
 <% else %>
   <% unless @report_data.blank?  or  @report_data['report'].blank? %>
     <div id="page-yield"  class="available_sections1">

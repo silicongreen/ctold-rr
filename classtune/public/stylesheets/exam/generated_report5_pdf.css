@@ -496,4 +496,8 @@ table#pdf-table{
     float:left;
     margin-left:21px;
 }
+.cherry_blossoms  table td
+{
+    font-size:11px;
+}
 

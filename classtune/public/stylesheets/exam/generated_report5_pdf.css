@@ -487,3 +487,8 @@ table#pdf-table{
     padding: 12px 12px 12px 15px;
 }
 
+.sfx .left-table
+{
+    float:left;
+}
+

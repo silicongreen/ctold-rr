@@ -109,6 +109,7 @@
 
                   <% total_parcent = 0 %>
                   <% total_subject = 0 %>
+                  <% exam_marks = 0 %>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
@@ -127,7 +128,7 @@
                                         N/A
                                       <% end %>
                                       <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
-                                        
+                                        <% exam_marks = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                         <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                       <% else %>
 
@@ -227,12 +228,39 @@
                       <td width="18%"><b>Conduct</b></td>
                       <td width="32%">&nbsp;<br/></td>
                       <td width="18%"><b>Attendance Percentage</b></td>
-                      <td width="32%"><%= @report_data['present'] %><br/></td>
+                      <td width="32%"><% if @report_data['total'].to_i>0 %><%= attpercentage %><% end %></td>
                   </tr>
                   <tr class="odd">
                       <td width="18%"><b>Comments</b></td>
                       <td width="82%" colspan="3"><br/>&nbsp;<br/>&nbsp;<br/></td>
               </table>
+              
+              <% @grading_levels = GradingLevel.find_all_by_batch_id(@batch.id) %>
+              <% if @grading_levels.blank? %>
+              <% @grading_levels = GradingLevel.default %>
+              <% end %>
+              <%  unless @grading_levels.empty? %>
+              <table id="pdf-table" class="margin-top-20 left-table" width="40%" cellspacing="0">
+                  <tr class="even">
+                      <td>Grade</td>
+                      <td>Marks</td>
+                  </tr>
+                  <% @grading_levels.each_with_index do |grade,index| %>
+                  <tr class="odd">
+                      <td><%= grade.name %></td>
+                      <td>
+                          <% if grade.max_score.nil? %>  
+                            <%= '%i%' % grade.min_score %>
+                          <% else %>  
+                            <%= grade.min_score.to_s + " - " + grade.max_score.to_s %>
+                          <% end %>                      
+                      </td>
+                      
+                  </tr> 
+                  <% end %>
+                  
+              </table>
+              <% end %>
 
 
               <% avgparcent = total_parcent.to_f/total_subject.to_f %>

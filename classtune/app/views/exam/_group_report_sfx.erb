@@ -258,11 +258,11 @@
                             <% min_score = (exam_marks.to_f/100)*grade.min_score.to_f  %>
                             <% max_score = (exam_marks.to_f/100)*grade.max_score.to_f  %>
                             <% if max_score.to_i == exam_marks.to_i  %>
-                            <%= min_score+" and above"  %>
+                            <%= min_score.to_s+" and above"  %>
                             <% elsif min_score.to_i == 0  %>
-                            <%=  "Below "+max_score  %>
+                            <%=  "Below "+max_score.to_s  %>
                             <% else %>
-                                <%= min_score.to_i + " - " + max_score.to_i %>
+                                <%= min_score.to_s + " - " + max_score.to_s %>
                             <% end %>
                           <% end %>                      
                       </td>

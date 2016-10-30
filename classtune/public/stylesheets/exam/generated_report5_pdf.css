@@ -491,4 +491,9 @@ table#pdf-table{
 {
     float:left;
 }
+.sfx .right-table
+{
+    float:left;
+    margin-left:10px;
+}
 

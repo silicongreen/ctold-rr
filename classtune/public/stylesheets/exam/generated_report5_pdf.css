@@ -499,6 +499,13 @@ table#pdf-table{
 .cherry_blossoms  table tr td
 {
     font-size:9px;
+    text-align: center;
+}
+.cherry_blossoms  table th
+{
+    font-size:9px;
+    font-weight: bold;
+    text-align: center;
 }
 
 .cherry_blossoms  .academia_sign_left

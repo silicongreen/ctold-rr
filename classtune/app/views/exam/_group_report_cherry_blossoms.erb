@@ -250,33 +250,16 @@
 
                             </tr> 
                           <% end %>  
-                        <% end %>     
-
-                    </table>
-                    
-
-                    <% avgparcent = total_parcent.to_f/total_subject.to_f %>
-                    <table  width="100%" >
-                        <thead>
+                        <% end %> 
+                            <% avgparcent = total_parcent.to_f/total_subject.to_f %>
                             <tr>
-
-                                <!--th>Total Number of Working Days : <%= @report_data['total'] %></th>
-
-                                <th>Days Present : <%= @report_data['present'] %> </th-->
-                                <td>(Average Marks : <%= sprintf( "%0.02f",avgparcent) %> %)</td>
-                                <%  grade = GradingLevel.percentage_to_grade(avgparcent, @batch.id) %>
-
-                                <% if !grade.blank?  and !grade.credit_points.blank? %>
-                                  <!--th><h2>CGPA : <%= grade.credit_points %> </h2></th--->
-                                <% else %>
-                                  <!--th >-</th-->
-                                <% end %>    
-
-
-                            </tr> 
-                        </thead>  
+                                <td  align="center">
+                                    <b><font size="2">(Average Marks : <%= sprintf( "%0.02f",avgparcent) %> %)</font></b>
+                                </td>
+                            </tr>    
 
                     </table>
+                   
 
                    
 
@@ -324,7 +307,7 @@
               <table class="teachers_sign">
                   <tr>
                       <td>
-                          Teacher's Remark :
+                          <b>Teacher's Remark :</b>
                       </td>                      
                   </tr>
                   <tr>
@@ -339,12 +322,12 @@
               <table class="teachers_sign">
                   <tr>
                       <td colspan="2">
-                          Class Attendance
+                          <b>Class Attendance</b>
                       </td>                      
                   </tr>
                   <tr>
                       <td width="50%">
-                          Working Days
+                          <b>Working Days</b>
                       </td>
                       <td width="50%">
                           <%= @report_data['total'] %>
@@ -352,7 +335,7 @@
                   </tr>
                   <tr>
                       <td width="50%">
-                          Present
+                          <b>Present</b>
                       </td>
                       <td width="50%">
                           <%= @report_data['present'] %>
@@ -360,7 +343,7 @@
                   </tr>
                   <tr>
                       <td width="50%">
-                          Absent 
+                          <b>Absent</b> 
                       </td>
                       <td width="50%">
                           <%= @report_data['total'] - @report_data['present'] %>

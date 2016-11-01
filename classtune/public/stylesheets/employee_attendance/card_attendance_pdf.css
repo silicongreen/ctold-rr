@@ -95,19 +95,10 @@ table#pdf-table{
 }
 
 
-#page-extender{
-    width:100%;
-    height :300px;
 
-}
-#page-extender1{
-    width:100%;
-    height :500px;
-
-}
 
 .report{
-    min-height: 1000px;
+    
     margin: 0 auto;
 }
 

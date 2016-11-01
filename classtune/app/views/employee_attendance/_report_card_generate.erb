@@ -45,8 +45,8 @@
         <td class="col-2">
             <%= e.date.strftime("%d/%m/%Y") %>
         </td>
-        <td class="col-3"><%= e.mintime.to_time.strftime("%I:%M %p") unless e.mintime.nil? %></td>
-        <td class="col-3"><%= e.maxtime.to_time.strftime("%I:%M %p") unless e.maxtime.nil? %></td>
+        <td class="col-3"><%= e.mintime.to_date.strftime("%I:%M %p") unless e.mintime.nil? %></td>
+        <td class="col-3"><%= e.maxtime.to_date.strftime("%I:%M %p") unless e.maxtime.nil? %></td>
         
         
 

@@ -291,7 +291,7 @@ class EmployeeAttendanceController < ApplicationController
       else
         @end_date = @start_date.end_of_month
       end
-      @emp_attendance = CardAttendance.all(:select=>'max(time) as maxtime,min(time) as mintime,date',:conditions=>{:profile_id=>params[:employee_id],:date => @start_date..@end_date,:type=>1},:order=>"date DESC",:group=>:date)
+      @emp_attendance = CardAttendance.all(:select=>'max(time) as maxtime,min(time) as mintime,date',:conditions=>{:profile_id=>params[:employee_id],:date => @start_date..@end_date,:type=>1},:order=>"date ASC",:group=>:date)
     end
     render :pdf => 'card_attendance_pdf'
   end
@@ -308,7 +308,7 @@ class EmployeeAttendanceController < ApplicationController
       else
         @end_date = @start_date.end_of_month
       end
-      @emp_attendance = CardAttendance.all(:select=>'max(time) as maxtime,min(time) as mintime,date',:conditions=>{:profile_id=>params[:employee_id],:date => @start_date..@end_date,:type=>1},:order=>"date DESC",:group=>:date)
+      @emp_attendance = CardAttendance.all(:select=>'max(time) as maxtime,min(time) as mintime,date',:conditions=>{:profile_id=>params[:employee_id],:date => @start_date..@end_date,:type=>1},:order=>"date ASC",:group=>:date)
     end
     render :update do |page|
         page.replace_html 'report_card_generate', :partial => 'report_card_generate'

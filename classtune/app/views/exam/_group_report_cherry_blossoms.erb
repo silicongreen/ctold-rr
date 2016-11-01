@@ -347,7 +347,7 @@
                           Working Days
                       </td>
                       <td width="50%">
-                          
+                          <%= @report_data['total'] %>
                       </td>
                   </tr>
                   <tr>
@@ -355,7 +355,7 @@
                           Present
                       </td>
                       <td width="50%">
-                          
+                          <%= @report_data['present'] %>
                       </td>
                   </tr>
                   <tr>
@@ -363,7 +363,7 @@
                           Absent 
                       </td>
                       <td width="50%">
-                          
+                          <%= @report_data['total'] - @report_data['present'] %>
                       </td>
                   </tr>
               </table>

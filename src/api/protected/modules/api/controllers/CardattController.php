@@ -182,25 +182,27 @@ class CardattController extends Controller
          
          $ids = Yii::app()->request->getPost('ids');
          $entry_date_time = Yii::app()->request->getPost('entry_date_time');
+         
+        ///insert card attendnace intime out time
+        if($school_id && $entry_date_time && $ids && in_array($school_id,Settings::$card_attendence_school))
+        {
+            date_default_timezone_set(Settings::$school_card_time_zone[$school_id]);
+            $ids_array = explode(",", $ids);
+            $entry_date_time_array = explode(",",$entry_date_time); 
+            if(count($ids_array) == count($entry_date_time_array))
+            {
 
-         if($all_students_id && $school_id && in_array($school_id,Settings::$card_attendence_school))
+                $this->insert_employee($emp,$ids_array,$entry_date_time_array,$school_id);
+                $this->insert_student($std,$ids_array,$entry_date_time_array,$school_id);
+
+            }
+        }   
+        ///end card attendance intime out time
+
+         if($all_students_id && $school_id && in_array($school_id,Settings::$card_attendence_school) && !Settings::$sync_off)
          {
              
-            ///insert card attendnace intime out time
-            if($entry_date_time && $ids)
-            {
-                date_default_timezone_set(Settings::$school_card_time_zone[$school_id]);
-                $ids_array = explode(",", $ids);
-                $entry_date_time_array = explode(",",$entry_date_time); 
-                if(count($ids_array) == count($entry_date_time_array))
-                {
-                    
-                    $this->insert_employee($emp,$ids_array,$entry_date_time_array,$school_id);
-                    $this->insert_student($std,$ids_array,$entry_date_time_array,$school_id);
-                    
-                }
-            }   
-            ///end card attendance intime out time
+            
             
             
 

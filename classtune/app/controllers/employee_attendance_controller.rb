@@ -181,7 +181,7 @@ class EmployeeAttendanceController < ApplicationController
     other_conditions += " AND employee_department_id = '#{params[:employee_department_id]}'" unless params[:employee_department_id] == ""
     other_conditions += " AND employee_category_id = '#{params[:employee_category_id]}'" unless params[:employee_category_id] == ""
     other_conditions += " AND employee_position_id = '#{params[:employee_position_id]}'" unless params[:employee_position_id] == ""
-    other_conditions += " AND employee_grade_id = '#{params[:employee_grade_id]}'" unless params[:employee_grade_id] == ""
+    other_conditions += " ANDreport employee_grade_id = '#{params[:employee_grade_id]}'" unless params[:employee_grade_id] == ""
     unless params[:query].length < 3
       @employee = Employee.find(:all,
         :conditions => ["(first_name LIKE ? OR middle_name LIKE ? OR last_name LIKE ?
@@ -277,6 +277,42 @@ class EmployeeAttendanceController < ApplicationController
     render :update do |page|
       page.replace_html 'attendance_form', :partial => 'attendance_form'
     end
+  end
+   def card_attendance_pdf
+    if params[:month].blank? and params[:year].blank? and params[:employee_id].blank?
+      @employee = Employee.find(params[:employee_id])
+      @month = params[:month]
+      @year = params[:year]
+      @date = '01-'+@month+'-'+@year
+      @start_date = @date.to_date
+      if @month == @today.month.to_s
+        @end_date = @local_tzone_time.to_date
+      else
+        @end_date = @start_date.end_of_month
+      end
+      @emp_attendance = CardAttendance.all(:select=>'max(t.time) as maxtime,min(t.time) as mintime,t.date',:conditions=>{:profile_id=>params[:employee_id],:date => @start_date..@end_date,:type=>1},:order=>"date DESC",:group=>:date,)
+    end
+  end
+  def report_card_generate
+    if params[:month].blank? and params[:year].blank? and params[:employee_id].blank?
+      @employee = Employee.find(params[:employee_id])
+      @month = params[:month]
+      @year = params[:year]
+      @date = '01-'+@month+'-'+@year
+      @start_date = @date.to_date
+      if @month == @today.month.to_s
+        @end_date = @local_tzone_time.to_date
+      else
+        @end_date = @start_date.end_of_month
+      end
+      @emp_attendance = CardAttendance.all(:select=>'max(t.time) as maxtime,min(t.time) as mintime,t.date',:conditions=>{:profile_id=>params[:employee_id],:date => @start_date..@end_date,:type=>1},:order=>"date DESC",:group=>:date,)
+    end
+    render :update do |page|
+        page.replace_html 'report_card_generate', :partial => 'report_card_generate'
+    end
+  end
+  def card_report
+    @employee = Employee.all
   end
 
   def report

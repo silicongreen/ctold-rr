@@ -1,0 +1,65 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+
+<%#*<div id="attendance">%>
+<% unless @employee.blank? or @emp_attendance.blank? %>
+<h1></h3>
+  <table id="listing" align="center" width="100%" cellpadding="1" cellspacing="1">
+    <tr class="tr-head">
+      <td>
+        Date
+      </td>
+
+      <td>
+        In Time
+      </td>
+      <td>
+        Out Time
+      </td>
+
+      <!-- attendance_tr -->
+    </tr>
+
+    <tr class="tr-blank">
+    </tr>
+
+    <% @emp_attendance.each do |e| %>
+      <tr class="tr-<%= cycle('odd', 'even') %>">
+        <td class="col-2">
+            <%= e.date.strftime("%d/%m/%Y") %>
+        </td>
+        <td class="col-3"><%= e.mintime.strftime("%I:%M %p") unless e.mintime.nil? %></td>
+        <td class="col-3"><%= e.maxtime.strftime("%I:%M %p") unless e.maxtime.nil? %></td>
+        
+        
+
+      </tr><!-- attendance_tr -->
+    <% end %>
+
+  </table>
+  <div class ="extender"></div>
+  <div class="link">
+    
+      <%= link_to "►#{t('pdf_report')}" , {:action => "card_attendance_pdf", :controller => "employee_attendance", :page_height => 700, :employee_id=>@employee_id, :month=>@month, :year=>@year}, :target => '_blank',:class => 'user_button'  %>
+   
+  </div>
+<% else %>
+  <p class="flash-msg">Select Employee, Year And Month</p>
+<% end %>

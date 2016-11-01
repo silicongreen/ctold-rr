@@ -35,7 +35,7 @@
     <% end %>
     <% form_for :employee do |e| %>
       <div class="label-field-pair">
-          <label for="employee_department_select"><%= t('select_a_employee') %></label>
+          <label for="employee_department_select">Select Employee</label>
           <div class="text-input-bg">
               <%= select :employee, :id, @employee.map {|c| [c.full_name, c.id]},
                 {:prompt => "#{t('select_a_employee')}"},

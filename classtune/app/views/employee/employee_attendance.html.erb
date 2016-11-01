@@ -44,6 +44,11 @@
       <div class="link-heading"><%= link_to "#{t('attendance_report')}", :controller=>"employee_attendance", :action=>"report" %></div>
       <div class="link-descr"><%= t('attendance_report') %>.</div>
     </div>
+      
+    <div class="link-box">
+      <div class="link-heading"><%= link_to "Employee Attendance Time", :controller=>"employee_attendance", :action=>"card_report" %></div>
+      <div class="link-descr"><%= t('attendance_report') %>.</div>
+    </div>
 
     <div class="link-box">
       <div class="link-heading"><%= link_to "#{t('reset_leave')}", :controller=>"employee_attendance", :action=>"manual_reset" %></div>

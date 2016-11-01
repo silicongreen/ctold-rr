@@ -191,7 +191,15 @@ class Exams extends CActiveRecord {
             }
             $i++;
         }
-        return $i;
+        if(Yii::app()->user->schoolId == "280")
+        {
+            return 0;
+        }   
+        else
+        {
+           return $i; 
+        }
+        
     }
     public function getExamSubject($subject_id,$exam_group_id=0, $exam_id=0) {
         $criteria = new CDbCriteria();

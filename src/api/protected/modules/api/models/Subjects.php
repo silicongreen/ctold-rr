@@ -447,7 +447,15 @@ class Subjects extends CActiveRecord
                 $st_key = array_search($key, $exam_students_for_sorting);
                 if($st_key !== false)
                 {
-                    $exam_students[$st_key]['position'] =  $i;
+                    if(Yii::app()->user->schoolId == "280")
+                    {
+                        $exam_students[$st_key]['position'] = 0;
+                    }   
+                    else
+                    {
+                       $exam_students[$st_key]['position'] =  $i; 
+                    }
+                    
                     $exam_students[$st_key]['total'] =  $value;
                     
                     $exploded_value = explode("-", $value);

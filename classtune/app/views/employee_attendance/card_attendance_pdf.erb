@@ -36,7 +36,7 @@
 
             <h4><b>Name : <%= @employee.full_name.upcase %></b></h4>
             <h4><b>Year : <%= @year %></b></h4>
-            <h4><b>Month : <%= Date::MONTHNAMES[@month] %></b></h4>
+            <h4><b>Month : <%= Date::MONTHNAMES[@month.to_i] %></b></h4>
 
         </div>
         <div id="pdf-info">

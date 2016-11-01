@@ -18,61 +18,65 @@
 #under the License. -%>
 
 <div id="content-header">
-<%= show_header_icon %>
-  <h1><%= t('employee_attendance_text') %></h1>
-<div class='header-sep'>|</div>
-<div class='sub-header'><%= t('reports_text') %></div>
+    <%= show_header_icon %>
+    <h1><%= t('employee_attendance_text') %></h1>
+    <div class='header-sep'>|</div>
+    <div class='sub-header'><%= t('reports_text') %></div>
 </div>
 <% @year = @local_tzone_time.to_date.year %>
 <div id="page-yield">
-  <div class="bread_crumb">
-    <%= link_to t('hr'), :controller => "employee", :action=>"hr" %> <div class = "bread-crumb-separator"> > </div>
-    <%= link_to t('employee_leave_management'), :controller => "employee", :action => "employee_attendance" %> <div class = "bread-crumb-separator"> > </div>
-    <%= t('reports_text') %>
-  </div>
-  <% unless flash[:notice].nil? %>
-    <p class="flash-msg"> <%= flash[:notice] %> </p>
-  <% end %>
-  <% form_for :employee do |e| %>
-    <div class="label-field-pair">
-      <label for="employee_department_select"><%= t('select_a_employee') %></label>
-      <div class="text-input-bg">
-      <%= select :employee, :id, @employee.map {|c| [c.full_name, c.id]},
-        {:prompt => "#{t('select_a_employee')}"},
-        {:onchange => "#{remote_function(
-        :url => { :action => 'report_card_generate' },
-        :with => "'employee_id='+value+'&month='+$('month_id').value()+'&year='+$('year_id').value()",
-        :before => "Element.show('loader')",
-        :success => "Element.hide('loader')"  )}"}
-      %>
-      </div>
-      <div class="label-field-pair"><label>
-        <%= t('select_month_and_year') %> :
-      </label>
-      <div class="text-input-bg2">
-      <%= select :month, :id,
-        [["#{t('jan')}",'01'], ["#{t('feb')}",'02'], ["#{t('mar')}",'03'], ["#{t('apr')}",'04'], ["#{t('may')}",'05'], ["#{t('jun')}",'06'], ["#{t('jul')}",'07'], ["#{t('aug')}",'08'], ["#{t('sep')}",'09'], ["#{t('oct')}",'10'], ["#{t('nov')}",'11'], ["#{t('dec')}",'12']],
-        {:prompt => "#{t('select_a_month')}"},
-        {:onchange => "#{remote_function(
-        :url => { :action => 'report_card_generate' },
-        :with => "'month='+value+'&year='+$('year_id').value()+'&employee_id='+$('employee_id').value()",
-        :before => "Element.show('loader')",
-        :success => "Element.hide('loader')"  )}"}
-      %>
-      </div>
-      <div id="year"><div class="text-input-bg3">
-      <%= select :year, :id,
-        [["#{t('year')}",""],[@year-2,@year-2],[@year-1,@year-1],[@year,@year]],
-        {:prompt => "#{t('year')}"},
-        {:onchange => "#{remote_function(
-        :url => { :action => 'report_card_generate' },
-        :with => "'year='+value+'&month='+$('month_id').value()+'&employee_id='+$('employee_id').value()",
-        :before => "Element.show('loader')",
-        :success => "Element.hide('loader')"  )}"} %>
-          </div></div>
-      <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loader", :style =>"display: none; margin-top: 5px;" ) %><div class="extender"></div>
+    <div class="bread_crumb">
+        <%= link_to t('hr'), :controller => "employee", :action=>"hr" %> <div class = "bread-crumb-separator"> > </div>
+        <%= link_to t('employee_leave_management'), :controller => "employee", :action => "employee_attendance" %> <div class = "bread-crumb-separator"> > </div>
+        <%= t('reports_text') %>
     </div>
-  <% end %>
-  <div id="report_card_generate"> </div>
+    <% unless flash[:notice].nil? %>
+      <p class="flash-msg"> <%= flash[:notice] %> </p>
+    <% end %>
+    <% form_for :employee do |e| %>
+      <div class="label-field-pair">
+          <label for="employee_department_select"><%= t('select_a_employee') %></label>
+          <div class="text-input-bg">
+              <%= select :employee, :id, @employee.map {|c| [c.full_name, c.id]},
+                {:prompt => "#{t('select_a_employee')}"},
+                {:onchange => "#{remote_function(
+                :url => { :action => 'report_card_generate' },
+                :with => "'employee_id='+value+'&month='+$('month_id').value+'&year='+$('year_id').value",
+                :before => "Element.show('loader')",
+                :success => "Element.hide('loader')"  )}"}
+            %>
+          </div>
+      </div>  
+      <div class="label-field-pair">
+          <label>
+              <%= t('select_month_and_year') %> :
+          </label>
+          <div class="text-input-bg">
+              <%= select :month, :id,
+                [["#{t('jan')}",'01'], ["#{t('feb')}",'02'], ["#{t('mar')}",'03'], ["#{t('apr')}",'04'], ["#{t('may')}",'05'], ["#{t('jun')}",'06'], ["#{t('jul')}",'07'], ["#{t('aug')}",'08'], ["#{t('sep')}",'09'], ["#{t('oct')}",'10'], ["#{t('nov')}",'11'], ["#{t('dec')}",'12']],
+                {:prompt => "#{t('select_a_month')}"},
+                {:onchange => "#{remote_function(
+                :url => { :action => 'report_card_generate' },
+                :with => "'month='+value+'&year='+$('year_id').value+'&employee_id='+$('employee_id').value()",
+                :before => "Element.show('loader')",
+                :success => "Element.hide('loader')"  )}"}
+            %>
+          </div>
+      </div> 
+      <div class="label-field-pair">
+             <div class="text-input-bg3">
+                  <%= select :year, :id,
+                    [["#{t('year')}",""],[@year-2,@year-2],[@year-1,@year-1],[@year,@year]],
+                    {:prompt => "#{t('year')}"},
+                    {:onchange => "#{remote_function(
+                    :url => { :action => 'report_card_generate' },
+                    :with => "'year='+value+'&month='+$('month_id').value+'&employee_id='+$('employee_id').value",
+                    :before => "Element.show('loader')",
+                    :success => "Element.hide('loader')"  )}"} %>
+              </div>
+          <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loader", :style =>"display: none; margin-top: 5px;" ) %><div class="extender"></div>
+      </div>
+    <% end %>
+    <div id="report_card_generate"> </div>
 
 </div>

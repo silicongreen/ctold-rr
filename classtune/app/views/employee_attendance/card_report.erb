@@ -40,7 +40,7 @@
         {:prompt => "#{t('select_a_employee')}"},
         {:onchange => "#{remote_function(
         :url => { :action => 'report_card_generate' },
-        :with => "'employee_id='+value+'&month='+$('employee_month').value()+'&year='+$('employee_year').value()",
+        :with => "'employee_id='+value+'&month='+$('month').value()+'&year='+$('year_id').value()",
         :before => "Element.show('loader')",
         :success => "Element.hide('loader')"  )}"}
       %>
@@ -49,23 +49,23 @@
         <%= t('select_month_and_year') %> :
       </label>
       <div class="text-input-bg2">
-      <%= select :employee, :month,
+      <%= select :month, :id,
         [["#{t('jan')}",'01'], ["#{t('feb')}",'02'], ["#{t('mar')}",'03'], ["#{t('apr')}",'04'], ["#{t('may')}",'05'], ["#{t('jun')}",'06'], ["#{t('jul')}",'07'], ["#{t('aug')}",'08'], ["#{t('sep')}",'09'], ["#{t('oct')}",'10'], ["#{t('nov')}",'11'], ["#{t('dec')}",'12']],
         {:prompt => "#{t('select_a_month')}"},
         {:onchange => "#{remote_function(
         :url => { :action => 'report_card_generate' },
-        :with => "'month='+value+'&year='+$('employee_year').value()+'&employee_id='+$('employee_id').value()",
+        :with => "'month='+value+'&year='+$('year_id').value()+'&employee_id='+$('employee_id').value()",
         :before => "Element.show('loader')",
         :success => "Element.hide('loader')"  )}"}
       %>
       </div>
       <div id="year"><div class="text-input-bg3">
-      <%= select :employee, :year,
+      <%= select :year, :id,
         [["#{t('year')}",""],[@year-2,@year-2],[@year-1,@year-1],[@year,@year]],
         {:prompt => "#{t('year')}"},
         {:onchange => "#{remote_function(
         :url => { :action => 'report_card_generate' },
-        :with => "'year='+value+'&month='+$('employee_month').value()+'&employee_id='+$('employee_id').value()",
+        :with => "'year='+value+'&month='+$('month_id').value()+'&employee_id='+$('employee_id').value()",
         :before => "Element.show('loader')",
         :success => "Element.hide('loader')"  )}"} %>
           </div></div>

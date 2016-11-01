@@ -25,7 +25,7 @@
     <h2>&nbsp;</h2>
     
     <div class="hor_line"></div>
-    <h2><%= t('employee_attendance_report') %></h2>
+    <h3><%= t('employee_attendance_report') %></h3>
     <div class="hor_line"></div>
 
 
@@ -33,7 +33,7 @@
     <div class="report">
 
         <div id ="main_info">
-            <h4><b>Name : <%= @employee.full_name.upcase %> - <%= Date::MONTHNAMES[@month.to_i] %>,<%= @year %></b></h4>
+            <h4><b>Name : <%= @employee.full_name.upcase %> - <%= Date::MONTHNAMES[@month.to_i] %>, <%= @year %></b></h4>
         </div>
         <div id="pdf-info">
             <% c='even' %>

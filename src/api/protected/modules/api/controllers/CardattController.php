@@ -84,8 +84,6 @@ class CardattController extends Controller
         }
         
         Sms::send_sms_ssl($sms_numbers, $sms_msg, $studentdata->school_id);
-       
-
 
         if ($reminderrecipients)
         {
@@ -113,6 +111,60 @@ class CardattController extends Controller
             Settings::sendCurlNotification($user_id, $notification_id);
         }
     }
+    private function insert_student($std,$ids_array,$entry_date_time_array,$school_id)
+    {
+        $ids_unique = array_unique($ids_array); 
+        $user_mapping = $std->getUserByIdsStudent($ids_unique, $school_id);
+        $insert_array = array();
+        foreach($ids_array as $key=>$value)
+        {
+            $valid_id = $value;
+            if($value && isset($user_mapping[$valid_id]))
+            {
+                $user_id_and_profile_id = explode("|||", $user_mapping[$valid_id]);
+                $timestamp = $entry_date_time_array[$key];
+
+                $date = date("Y-m-d",  $timestamp);
+                $time = date("H:i:s",  $timestamp);
+
+                $insert_array[] = array("school_id"=>$school_id,"user_id"=>$user_id_and_profile_id[0],"profile_id"=>$user_id_and_profile_id[1],"date"=>$date,"time"=>$time,"type"=>2);
+
+            }
+        } 
+        if($insert_array)
+        {
+            $builder=Yii::app()->db->schema->commandBuilder;
+            $command=$builder->createMultipleInsertCommand('card_attendance', $insert_array);
+            $command->execute();
+        }
+    } 
+    private function insert_employee($emp,$ids_array,$entry_date_time_array,$school_id)
+    {
+        $ids_unique = array_unique($ids_array); 
+        $user_mapping = $emp->getUserByIds($ids_unique, $school_id);
+        $insert_array = array();
+        foreach($ids_array as $key=>$value)
+        {
+            $valid_id = $value;
+            if($value && isset($user_mapping[$valid_id]))
+            {
+                $user_id_and_profile_id = explode("|||", $user_mapping[$valid_id]);
+                $timestamp = $entry_date_time_array[$key];
+
+                $date = date("Y-m-d",  $timestamp);
+                $time = date("H:i:s",  $timestamp);
+
+                $insert_array[] = array("school_id"=>$school_id,"user_id"=>$user_id_and_profile_id[0],"profile_id"=>$user_id_and_profile_id[1],"date"=>$date,"time"=>$time,"type"=>1);
+
+            }
+        } 
+        if($insert_array)
+        {
+            $builder=Yii::app()->db->schema->commandBuilder;
+            $command=$builder->createMultipleInsertCommand('card_attendance', $insert_array);
+            $command->execute();
+        }
+    }        
        
     public function actionAddAttendance()
     {
@@ -127,9 +179,30 @@ class CardattController extends Controller
          $std = new Students();
          
          $emp = new Employees();
+         
+         $ids = Yii::app()->request->getPost('ids');
+         $entry_date_time = Yii::app()->request->getPost('entry_date_time');
 
          if($all_students_id && $school_id && in_array($school_id,Settings::$card_attendence_school))
          {
+             
+            ///insert card attendnace intime out time
+            if($entry_date_time && $ids)
+            {
+                date_default_timezone_set(Settings::$school_card_time_zone[$school_id]);
+                $ids_array = explode(",", $ids);
+                $entry_date_time_array = explode(",",$entry_date_time); 
+                if(count($ids_array) == count($entry_date_time_array))
+                {
+                    
+                    $this->insert_employee($emp,$ids_array,$entry_date_time_array,$school_id);
+                    $this->insert_student($std,$ids_array,$entry_date_time_array,$school_id);
+                    
+                }
+            }   
+            ///end card attendance intime out time
+            
+            
 
             $all_std_machine = explode("|", $all_students_id);
             $all_std_admission = array();

@@ -23,7 +23,7 @@ class CalenderController extends Controller
     {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('getAttendence','studentattendenceintelligence','attendencecritical','attcomparisom', 'academic', 'getbatch', 'getbatchstudentattendence', 'approveLeave', 'addattendence','addattendencesingle',
+                'actions' => array('getcampusattendance','getAttendence','studentattendenceintelligence','attendencecritical','attcomparisom', 'academic', 'getbatch', 'getbatchstudentattendence', 'approveLeave', 'addattendence','addattendencesingle',
                     'studentattendencereport', 'getstudentinfo','studentattendencereportfull'),
                 'users' => array('*'),
             ),
@@ -31,6 +31,36 @@ class CalenderController extends Controller
                 'users' => array('*'),
             ),
         );
+    }
+    public function actiongetCampusAttendance()
+    {
+
+        if ((Yii::app()->request->isPostRequest) && !empty($_POST))
+        {
+            $user_id = Yii::app()->request->getPost('user_id');
+            $profile_id = Yii::app()->request->getPost('profile_id');
+            $start_date = Yii::app()->request->getPost('start_date');
+            $end_date = Yii::app()->request->getPost('end_date');
+            if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isAdmin && Yii::app()->user->isTeacher)
+            { 
+                $campusatt = new CardAttendance();
+                $response['data']['attandence'] = $campusatt->getCampusAttendanceDate($user_id,$profile_id,$page_number, $page_size);
+                $response['status']['code'] = 200;
+                $response['status']['msg'] = 'Attendance_FOUND.';
+            } 
+            else
+            {
+                $response['status']['code'] = 403;
+                $response['status']['msg'] = "Access Denied.";
+            }
+        } else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request.";
+        }
+
+        echo CJSON::encode($response);
+        Yii::app()->end();
     }
 
     public function actionGetAttendence()

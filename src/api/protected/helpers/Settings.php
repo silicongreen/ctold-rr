@@ -2,6 +2,7 @@
 
 class Settings {
 
+    public static $school_card_time_zone = array(2=>"UTC",3=>"UTC",246=>"UTC");
     public static $domain_name = 'http://www.champs21.com/';
     public static $classtune_domain_name = 'http://www.classtune.com/';
     public static $image_path = 'http://www.champs21.com/';

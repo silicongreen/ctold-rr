@@ -48,20 +48,24 @@
  * @property string $library_card
  * @property integer $school_id
  */
-class Students extends CActiveRecord {
+class Students extends CActiveRecord
+{
 
     /**
      * @return string the associated database table name
      */
     public $total;
-    public function tableName() {
+
+    public function tableName()
+    {
         return 'students';
     }
 
     /**
      * @return array validation rules for model attributes.
      */
-    public function rules() {
+    public function rules()
+    {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
@@ -77,7 +81,8 @@ class Students extends CActiveRecord {
     /**
      * @return array relational rules.
      */
-    public function relations() {
+    public function relations()
+    {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
@@ -96,7 +101,8 @@ class Students extends CActiveRecord {
     /**
      * @return array customized attribute labels (name=>label)
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return array(
             'id' => 'ID',
             'admission_no' => 'Admission No',
@@ -156,7 +162,8 @@ class Students extends CActiveRecord {
      * @return CActiveDataProvider the data provider that can return the models
      * based on the search/filter conditions.
      */
-    public function search() {
+    public function search()
+    {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
         $criteria = new CDbCriteria;
@@ -216,24 +223,28 @@ class Students extends CActiveRecord {
      * @param string $className active record class name.
      * @return Students the static model class
      */
-    public static function model($className = __CLASS__) {
+    public static function model($className = __CLASS__)
+    {
         return parent::model($className);
     }
-     public function getStudentphone2($phone2) {
+
+    public function getStudentphone2($phone2)
+    {
 
         $criteria = new CDbCriteria();
         $criteria->select = 'id';
         $criteria->compare('phone2', $phone2);
         $std = $this->find($criteria);
 
-        if($std)
+        if ($std)
         {
             return TRUE;
         }
         return FALSE;
     }
 
-    public function getStudentByUserId($uid) {
+    public function getStudentByUserId($uid)
+    {
 
         $criteria = new CDbCriteria();
         $criteria->select = '*';
@@ -241,11 +252,13 @@ class Students extends CActiveRecord {
 
         return $this->find($criteria);
     }
-    public function getStudentById($id) {
-     $criteria = new CDbCriteria();
-     $criteria->select = 't.*';
-     $criteria->compare('t.id', $id);
-     $criteria->with = array(
+
+    public function getStudentById($id)
+    {
+        $criteria = new CDbCriteria();
+        $criteria->select = 't.*';
+        $criteria->compare('t.id', $id);
+        $criteria->with = array(
             'batchDetails' => array(
                 'select' => 'batchDetails.name',
                 'joinType' => "LEFT JOIN",
@@ -257,18 +270,18 @@ class Students extends CActiveRecord {
                 )
             ),
             'guradianDetails' => array(
-                
                 'select' => 'guradianDetails.first_name,guradianDetails.last_name',
                 'joinType' => "LEFT JOIN"
-             )
-      );
-      return $this->find($criteria);
+            )
+        );
+        return $this->find($criteria);
     }
 
-    public function getStudentBySiblings($sibling_id) {
-     $criteria = new CDbCriteria();
-     $criteria->compare('sibling_id', $sibling_id);
-     $criteria->with = array(
+    public function getStudentBySiblings($sibling_id)
+    {
+        $criteria = new CDbCriteria();
+        $criteria->compare('sibling_id', $sibling_id);
+        $criteria->with = array(
             'batchDetails' => array(
                 'select' => 'batchDetails.name',
                 'joinType' => "LEFT JOIN",
@@ -279,30 +292,34 @@ class Students extends CActiveRecord {
                     )
                 )
             )
-      );
-      return $this->findAll($criteria);
+        );
+        return $this->findAll($criteria);
     }
-    public function getStudentByBatchCount($batch_id) {
+
+    public function getStudentByBatchCount($batch_id)
+    {
 
         $criteria = new CDbCriteria();
-        
+
         $criteria->select = 'count(t.id) as total';
-        $criteria->compare('batch_id',$batch_id);
+        $criteria->compare('batch_id', $batch_id);
         $students = $this->find($criteria);
-       
+
         return $students->total;
     }
-    public function getStudentCourse($class_name,$section_name=false) {
+
+    public function getStudentCourse($class_name, $section_name = false)
+    {
         $criteria = new CDbCriteria();
         $criteria->select = 't.id';
         $criteria->compare('t.school_id', Yii::app()->user->schoolId);
         $criteria->compare('courseDetails.course_name', $class_name);
-        if($section_name)
+        if ($section_name)
         {
-            $criteria->compare('courseDetails.section_name', $section_name); 
+            $criteria->compare('courseDetails.section_name', $section_name);
         }
-        
-        
+
+
         $criteria->with = array(
             'batchDetails' => array(
                 'joinType' => "LEFT JOIN",
@@ -314,21 +331,22 @@ class Students extends CActiveRecord {
             )
         );
         $students = $this->findAll($criteria);
-       
+
         return $students;
     }
-    
-    public function getStudentTotalCourse($class_name,$section_name=false) {
+
+    public function getStudentTotalCourse($class_name, $section_name = false)
+    {
         $criteria = new CDbCriteria();
         $criteria->select = 'count(t.id) as total';
         $criteria->compare('t.school_id', Yii::app()->user->schoolId);
         $criteria->compare('courseDetails.course_name', $class_name);
-        if($section_name)
+        if ($section_name)
         {
-            $criteria->compare('courseDetails.section_name', $section_name); 
+            $criteria->compare('courseDetails.section_name', $section_name);
         }
-        
-        
+
+
         $criteria->with = array(
             'batchDetails' => array(
                 'joinType' => "LEFT JOIN",
@@ -340,34 +358,33 @@ class Students extends CActiveRecord {
             )
         );
         $students = $this->find($criteria);
-       
-        if($students)
+
+        if ($students)
         {
             return $students->total;
-        }
-        else
+        } else
         {
             return 0;
-        }    
+        }
     }
-    
-    public function getStudentTotal($batch_name=false,$class_name=false,$batch_id=false) {
+
+    public function getStudentTotal($batch_name = false, $class_name = false, $batch_id = false)
+    {
         $criteria = new CDbCriteria();
         $criteria->select = 'count(t.id) as total';
         $criteria->compare('t.school_id', Yii::app()->user->schoolId);
-        if($batch_id)
+        if ($batch_id)
         {
-           $criteria->compare('t.batch_id', $batch_id); 
-        }
-        else
+            $criteria->compare('t.batch_id', $batch_id);
+        } else
         {
-            if($batch_name)
+            if ($batch_name)
             {
-               $criteria->compare('batchDetails.name', $batch_name);  
+                $criteria->compare('batchDetails.name', $batch_name);
             }
-            if($class_name)
+            if ($class_name)
             {
-                $criteria->compare('courseDetails.course_name', $class_name); 
+                $criteria->compare('courseDetails.course_name', $class_name);
             }
         }
         $criteria->with = array(
@@ -381,28 +398,29 @@ class Students extends CActiveRecord {
             )
         );
         $students = $this->find($criteria);
-       
+
         return $students->total;
     }
-    public function getStudentAll($batch_name=false,$class_name=false,$batch_id=false) {
+
+    public function getStudentAll($batch_name = false, $class_name = false, $batch_id = false)
+    {
 
         $criteria = new CDbCriteria();
         $criteria->select = 't.id,t.first_name,t.middle_name,t.last_name,t.immediate_contact_id,t.class_roll_no';
         $criteria->order = "LENGTH(t.class_roll_no) ASC,t.class_roll_no ASC";
         $criteria->compare('t.school_id', Yii::app()->user->schoolId);
-        if($batch_id)
+        if ($batch_id)
         {
-           $criteria->compare('t.batch_id', $batch_id); 
-        }
-        else
+            $criteria->compare('t.batch_id', $batch_id);
+        } else
         {
-            if($batch_name)
+            if ($batch_name)
             {
-               $criteria->compare('batchDetails.name', $batch_name);  
+                $criteria->compare('batchDetails.name', $batch_name);
             }
-            if($class_name)
+            if ($class_name)
             {
-                $criteria->compare('courseDetails.course_name', $class_name); 
+                $criteria->compare('courseDetails.course_name', $class_name);
             }
         }
         $criteria->with = array(
@@ -418,108 +436,130 @@ class Students extends CActiveRecord {
             )
         );
         $students = $this->findAll($criteria);
-       
+
         return $students;
     }
-    public function getStudentByBatchFull($batch_id) {
+
+    public function getStudentByBatchFull($batch_id)
+    {
 
         $criteria = new CDbCriteria();
-        
+
         $criteria->select = 't.id,t.first_name,t.middle_name,t.last_name,t.immediate_contact_id,t.class_roll_no';
-        $criteria->compare('batch_id',$batch_id);
+        $criteria->compare('batch_id', $batch_id);
         $criteria->order = "LENGTH(t.class_roll_no) ASC,t.class_roll_no ASC";
         $students = $this->findAll($criteria);
-       
+
         return $students;
     }
-    
-    public function getStudentByBatch($batch_id) {
+
+    public function getStudentByBatch($batch_id)
+    {
 
         $criteria = new CDbCriteria();
-        
+
         $criteria->select = 't.id';
-        $criteria->compare('batch_id',$batch_id);
-        
+        $criteria->compare('batch_id', $batch_id);
+
         $students = $this->findAll($criteria);
-        
+
         $students_array = array();
-            
-        foreach($students as $value)
+
+        foreach ($students as $value)
         {
             $students_array[] = $value->id;
-        } 
+        }
 
         return $students_array;
     }
-    public function getMechineStd($school_id,$all_std_admission)
+
+    public function getMechineStd($school_id, $all_std_admission)
     {
         $criteria = new CDbCriteria();
-        $criteria->select = 't.id';      
-        $criteria->addInCondition('admission_no',$all_std_admission);          
+        $criteria->select = 't.id';
+        $criteria->addInCondition('admission_no', $all_std_admission);
         $criteria->compare('school_id', $school_id);
-        $students = $this->findAll($criteria); 
-        
+        $students = $this->findAll($criteria);
+
         $std_ids = array();
-        if($students)
+        if ($students)
         {
-            foreach($students as $value)
+            foreach ($students as $value)
             {
                 $std_ids[] = $value->id;
-            }    
+            }
         }
         return $std_ids;
-        
-    }        
-    public function getStudentNotInAdmission($admission_no,$school_id,$all_std_admission=array())
-    { 
+    }
+
+    public function getStudentNotInAdmission($admission_no, $school_id, $all_std_admission = array())
+    {
         $criteria = new CDbCriteria();
         $criteria->select = 't.*';
-        $criteria->addNotInCondition('admission_no',$admission_no);
-        if($all_std_admission)
+        $criteria->addNotInCondition('admission_no', $admission_no);
+        if ($all_std_admission)
         {
-            $criteria->addInCondition('admission_no',$all_std_admission);
-        }    
+            $criteria->addInCondition('admission_no', $all_std_admission);
+        }
         $criteria->compare('school_id', $school_id);
 
-        $students = $this->findAll($criteria); 
+        $students = $this->findAll($criteria);
         return $students;
-        
-    }  
-    public function getStudentNotInCard($card_number,$school_id)
-    { 
+    }
+
+    public function getStudentNotInCard($card_number, $school_id)
+    {
         $criteria = new CDbCriteria();
         $criteria->select = 't.*';
-        $criteria->addNotInCondition('card_number',$card_number);
+        $criteria->addNotInCondition('card_number', $card_number);
         $criteria->compare('school_id', $school_id);
         $criteria->addCondition("card_number!='' AND card_number IS NOT NULL");
 
-        $students = $this->findAll($criteria); 
+        $students = $this->findAll($criteria);
         return $students;
-        
-    }        
+    }
+
     public function getCardStudentSchool($card_number)
     {
         $criteria = new CDbCriteria();
         $criteria->select = 't.school_id';
-        $criteria->addInCondition('card_number',$card_number);
+        $criteria->addInCondition('card_number', $card_number);
         $criteria->limit = 1;
         $student = $this->find($criteria);
-        if($student)
+        if ($student)
         {
-             return $student->school_id;
+            return $student->school_id;
         }
         return false;
-       
-    }        
+    }
 
-    public function getParentId($student_id) {
+    public function getParentId($student_id)
+    {
 
         $criteria = new CDbCriteria();
-        
+
         $criteria->select = 'immediate_contact_id';
         $criteria->compare('id', Yii::app()->user->profileId);
-        
+
         return $this->find($criteria)->immediate_contact_id;
+    }
+
+    public function getUserByIdsStudent($ids, $school_id)
+    {
+        $criteria = new CDbCriteria();
+        $criteria->select = 't.*';
+        $criteria->addInCondition('admission_no', $ids);
+        $criteria->compare('school_id', $school_id);
+        $users = $this->findAll($criteria);
+        $users_mapping = array();
+        if ($users)
+        {
+            foreach ($users as $value)
+            {
+                $users_mapping[$value->admission_no] = $value->user_id . "|||" . $value->id;
+            }
+        }
+        return $users_mapping;
     }
 
 }

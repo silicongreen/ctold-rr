@@ -511,7 +511,7 @@ table#pdf-table{
 .cherry_blossoms  table tr td.avg_mark
 {
     text-align: right;
-    padding: 3px 5px; 
+    padding: 5px 20px; 
 }
 .cherry_blossoms  .CSSTableGenerator table thead tr th
 {

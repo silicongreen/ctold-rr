@@ -294,7 +294,7 @@ class EmployeeAttendanceController < ApplicationController
     end
   end
   def report_card_generate
-    if params[:month].blank? and params[:year].blank? and params[:employee_id].blank?
+    if !params[:month].blank? and !params[:year].blank? and !params[:employee_id].blank?
       @employee = Employee.find(params[:employee_id])
       @month = params[:month]
       @year = params[:year]

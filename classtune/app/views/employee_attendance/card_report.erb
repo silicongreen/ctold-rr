@@ -23,6 +23,7 @@
 <div class='header-sep'>|</div>
 <div class='sub-header'><%= t('reports_text') %></div>
 </div>
+<% @year = @local_tzone_time.to_date.year %>
 <div id="page-yield">
   <div class="bread_crumb">
     <%= link_to t('hr'), :controller => "employee", :action=>"hr" %> <div class = "bread-crumb-separator"> > </div>
@@ -40,7 +41,7 @@
         {:prompt => "#{t('select_a_employee')}"},
         {:onchange => "#{remote_function(
         :url => { :action => 'report_card_generate' },
-        :with => "'employee_id='+value+'&month='+$('month').value()+'&year='+$('year_id').value()",
+        :with => "'employee_id='+value+'&month='+$('month_id').value()+'&year='+$('year_id').value()",
         :before => "Element.show('loader')",
         :success => "Element.hide('loader')"  )}"}
       %>

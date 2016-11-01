@@ -263,7 +263,7 @@
                                 <!--th>Total Number of Working Days : <%= @report_data['total'] %></th>
 
                                 <th>Days Present : <%= @report_data['present'] %> </th-->
-                                <th><h5>(Average Marks : <%= sprintf( "%0.02f",avgparcent) %> %) </h5></th>
+                                <td>(Average Marks : <%= sprintf( "%0.02f",avgparcent) %> %)</td>
                                 <%  grade = GradingLevel.percentage_to_grade(avgparcent, @batch.id) %>
 
                                 <% if !grade.blank?  and !grade.credit_points.blank? %>

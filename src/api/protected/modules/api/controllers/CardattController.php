@@ -124,8 +124,8 @@ class CardattController extends Controller
                 $user_id_and_profile_id = explode("|||", $user_mapping[$valid_id]);
                 $timestamp = $entry_date_time_array[$key];
 
-                $date = date("Y-m-d",  $timestamp);
-                $time = date("H:i:s",  $timestamp);
+                $date = date("Y-m-d", strtotime($timestamp));
+                $time = date("H:i:s",  strtotime($timestamp));
 
                 $insert_array[] = array("school_id"=>$school_id,"user_id"=>$user_id_and_profile_id[0],"profile_id"=>$user_id_and_profile_id[1],"date"=>$date,"time"=>$time,"type"=>2);
 
@@ -151,8 +151,8 @@ class CardattController extends Controller
                 $user_id_and_profile_id = explode("|||", $user_mapping[$valid_id]);
                 $timestamp = $entry_date_time_array[$key];
 
-                $date = date("Y-m-d",  $timestamp);
-                $time = date("H:i:s",  $timestamp);
+                $date = date("Y-m-d", strtotime($timestamp));
+                $time = date("H:i:s",  strtotime($timestamp));
 
                 $insert_array[] = array("school_id"=>$school_id,"user_id"=>$user_id_and_profile_id[0],"profile_id"=>$user_id_and_profile_id[1],"date"=>$date,"time"=>$time,"type"=>1);
 
@@ -186,7 +186,7 @@ class CardattController extends Controller
         ///insert card attendnace intime out time
         if($school_id && $entry_date_time && $ids && in_array($school_id,Settings::$card_attendence_school))
         {
-            date_default_timezone_set(Settings::$school_card_time_zone[$school_id]);
+            //date_default_timezone_set(Settings::$school_card_time_zone[$school_id]);
             $ids_array = explode(",", $ids);
             $entry_date_time_array = explode(",",$entry_date_time); 
             if(count($ids_array) == count($entry_date_time_array))

@@ -504,12 +504,12 @@ table#pdf-table{
 }
 .cherry_blossoms  table tr td
 {
-    font-size:9px;
+    font-size:10px;
     text-align: center;
 }
 .cherry_blossoms  .CSSTableGenerator table thead tr th
 {
-    font-size:9px;
+    font-size:10px;
     font-weight: bold;
     text-align: center;
 }

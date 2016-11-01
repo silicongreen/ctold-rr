@@ -17,7 +17,7 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 
-<% require 'time' %>
+
 <%#*<div id="attendance">%>
 <% unless @employee.blank? or @emp_attendance.blank? %>
 <h1></h3>
@@ -45,8 +45,8 @@
         <td class="col-2">
             <%= e.date.strftime("%d/%m/%Y") %>
         </td>
-        <%  %>
-        <td class="col-3"><%=  Time.strftime(e.mintime, "%I%P").strftime("%H:%M") %></td>
+        <% mintime = Time.parse(e.mintime) %>
+        <td class="col-3"><%= mintime.strftime("%I:%M %p") unless e.mintime.nil? %></td>
         <td class="col-3"><%= e.maxtime unless e.maxtime.nil? %></td>
         
         

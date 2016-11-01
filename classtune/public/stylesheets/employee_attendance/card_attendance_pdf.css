@@ -83,6 +83,7 @@ tr.odd{
     border-bottom: 2px solid #000000;
     color: #000000;
     background: #ffffff;
+    text-align: center;
 }
 
 table#pdf-table{

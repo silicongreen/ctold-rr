@@ -34,9 +34,8 @@
 
         <div id ="main_info">
 
-            <h4><b>Name : <%= @employee.full_name.upcase %></b></h4>
-            <h4><b>Year : <%= @year %></b></h4>
-            <h4><b>Month : <%= Date::MONTHNAMES[@month.to_i] %></b></h4>
+            <h4><b>Name : <%= @employee.full_name.upcase %> - <%= Date::MONTHNAMES[@month.to_i] %>,<%= @year %></b></h4>
+            
 
         </div>
         <div id="pdf-info">
@@ -46,7 +45,7 @@
                   <tr class="table-header"><td class="col-pdf">Date</td><td class="col-pdf">In Time</td><td class="col-pdf">Out Time</td></tr>
                   <% i = 0 %>
                   <% @emp_attendance.each do |e| %>
-                    
+                   
                     <tr class="<%= cycle('odd', 'even') %>">
                         <td class="col-pdf">
                             <%= e.date.strftime("%d/%m/%Y") %>

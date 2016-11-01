@@ -47,17 +47,17 @@ h2.heading{
 
 }
 tr.even{
-    border: 2px solid #000000;
+    border: 1px solid #000000;
 }
 
 tr.odd{
-    border: 2px solid #000000;
+    border: 1px solid #000000;
 }
 
 .even td{
 
-    padding: 12px 12px 12px 15px;
-    border: 2px solid #000000;
+    padding: 10px 10px 10px 13px;
+    border: 1px solid #000000;
     border-right: 0px solid #fff;
     border-top: 0px solid #fff;
     text-align: center;
@@ -65,8 +65,8 @@ tr.odd{
 }
 
 .odd td{
-    padding: 12px 12px 12px 15px;
-    border: 2px solid #000000;
+    padding: 10px 10px 10px 13px;
+    border: 1px solid #000000;
     border-right: 0px solid #fff;
     border-top: 0px solid #fff;
     text-align: center;
@@ -76,18 +76,21 @@ tr.odd{
 
 
 .table-header td{
-    padding: 12px 12px 12px 15px;
-    border-top: 2px solid #000000;
-    border-left: 2px solid #000000;
-    border-right: 2px solid #000000;
-    border-bottom: 2px solid #000000;
+    padding: 10px 10px 10px 13px;
+    border-top: 1px solid #000000;
+    border-left: 1px solid #000000;
+    border-right: 1px solid #000000;
+    border-bottom: 1px solid #000000;
     color: #000000;
     background: #ffffff;
     text-align: center;
 }
+table#pdf-table tr td{ 
+    font-size : 12px;
+}
 
 table#pdf-table{
-    border-top: 2px solid #000000;
+    border-top: 1px solid #000000;
     border-collapse:collapse
 }
 

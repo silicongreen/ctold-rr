@@ -46,8 +46,8 @@
             <%= e.date.strftime("%d/%m/%Y") %>
         </td>
         <% mintime = Time.parse(e.mintime) %>
-        <td class="col-3"><%= mintime.strftime("%I:%M %p") unless e.mintime.nil? %></td>
-        <td class="col-3"><%= e.maxtime unless e.maxtime.nil? %></td>
+        <td class="col-3"><%= Time.parse(e.mintime).strftime("%I:%M %p") unless e.mintime.nil? %></td>
+        <td class="col-3"><%= Time.parse(e.maxtime).strftime("%I:%M %p") unless e.maxtime.nil? %></td>
         
         
 

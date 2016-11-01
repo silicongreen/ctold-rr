@@ -51,8 +51,8 @@
                         <td class="col-pdf">
                             <%= e.date.strftime("%d/%m/%Y") %>
                         </td>
-                        <td class="col-pdf"><%= e.mintime.strftime("%I:%M %p") unless e.mintime.nil? %></td>
-                        <td class="col-pdf"><%= e.maxtime.strftime("%I:%M %p") unless e.maxtime.nil? %></td>
+                        <td class="col-pdf"><%= Time.parse(e.mintime).strftime("%I:%M %p") unless e.mintime.nil? %></td>
+                        <td class="col-pdf"><%= Time.parse(e.maxtime).strftime("%I:%M %p") unless e.maxtime.nil? %></td>
                     </tr><!-- attendance_tr -->
                   <% end %>
 

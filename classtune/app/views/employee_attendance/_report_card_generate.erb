@@ -46,7 +46,7 @@
             <%= e.date.strftime("%d/%m/%Y") %>
         </td>
         <%  %>
-        <td class="col-3"><%=  Time.strptime(e.mintime, "%I%P").strftime("%H:%M") %></td>
+        <td class="col-3"><%=  Time.strftime(e.mintime, "%I%P").strftime("%H:%M") %></td>
         <td class="col-3"><%= e.maxtime unless e.maxtime.nil? %></td>
         
         

@@ -20,7 +20,6 @@
 
 <%#*<div id="attendance">%>
 <% unless @employee.blank? or @emp_attendance.blank? %>
-<h1></h3>
   <table id="listing" align="center" width="100%" cellpadding="1" cellspacing="1">
     <tr class="tr-head">
       <td>
@@ -58,7 +57,7 @@
   <div class ="extender"></div>
   <div class="link">
     
-      <%= link_to "►#{t('pdf_report')}" , {:action => "card_attendance_pdf", :controller => "employee_attendance", :page_height => 700, :employee_id=>@employee_id, :month=>@month, :year=>@year}, :target => '_blank',:class => 'user_button'  %>
+      <%= link_to "►#{t('pdf_report')}" , {:action => "card_attendance_pdf", :controller => "employee_attendance", :page_height => 700, :employee_id=>@employee.id, :month=>@month, :year=>@year}, :target => '_blank',:class => 'user_button'  %>
    
   </div>
 <% else %>

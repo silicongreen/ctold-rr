@@ -101,6 +101,9 @@ table#pdf-table{
     
     margin: 0 auto;
 }
+#pdf-header-south{
+    width:1000px;
+}
 
 #signature{
     text-align: right;

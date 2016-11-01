@@ -507,6 +507,12 @@ table#pdf-table{
     font-size:10px;
     text-align: center;
 }
+
+.cherry_blossoms  table tr td.avg_mark
+{
+    text-align: right;
+    padding: 3px 5px; 
+}
 .cherry_blossoms  .CSSTableGenerator table thead tr th
 {
     font-size:10px;

@@ -46,7 +46,7 @@
             <%= e.date.strftime("%d/%m/%Y") %>
         </td>
         <%  %>
-        <td class="col-3"><%= I18n.l(e.mintime,:format=>"%I:%M %p") unless e.mintime.nil? %></td>
+        <td class="col-3"><%= I18n.l(e.mintime.to_time,:format=>"%I:%M %p") unless e.mintime.nil? %></td>
         <td class="col-3"><%= e.maxtime.to_date.strftime("%I:%M %p") unless e.maxtime.nil? %></td>
         
         

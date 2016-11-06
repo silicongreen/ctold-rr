@@ -1,10 +1,10 @@
 <% if @selected_section.to_i > 0 %>
-<%= select :student, :section, options_for_select(@classes.map { |c| [c.section_name, c.id] }, @selected_section.to_i),
+<%= select :student, :section, options_for_select(@classes.map { |c| [c.section_name.strip.length > 0 ? c.section_name.strip : "no-section", c.id] }, @selected_section.to_i),
     {:prompt => "#{t('select')}"},
     {:onChange => "#{remote_function(:url => {:controller=>"exam",:action => "list_subjects"}, :with => "'course_id='+value+'&'+$('new_student').serialize()" ,:before => "$('loading_1').show();",
     :success => "$('loading_1').hide();")}"} %>  
 <% else %>    
-<%= select :student, :section, options_for_select(@classes.map { |c| [c.section_name, c.id] }, @selected_section.to_i),
+<%= select :student, :section, options_for_select(@classes.map { |c| [c.section_name.strip.length > 0 ? c.section_name.strip : "no-section", c.id] }, @selected_section.to_i),
     {:prompt => "#{t('select')}"},
     {:onChange => "#{remote_function(:url => {:controller=>"exam",:action => "list_subjects"}, :with => "'course_id='+value+'&'+$('new_student').serialize()" ,:before => "$('loading_1').show();",
     :success => "$('loading_1').hide();")}"} %>  

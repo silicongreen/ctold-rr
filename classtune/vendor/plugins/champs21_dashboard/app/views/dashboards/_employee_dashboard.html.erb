@@ -55,6 +55,7 @@ employee_id = @current_user.employee_record.id
                   :success => "Element.hide('loader');j('#boxes div').removeClass('active');j('#boxes .exam_box_icon').addClass('active');",
                   :url => {:controller=>"dashboards",:action => "employee_exam_routine_data"} %>
               </li>
+            
               <li class="als-item" >
                 <%=  link_to "<div class='syllabus_box_icon'><span class='f2'>SYLLABUS</span></div>", :controller => 'syllabus', :action => 'classes_view' %>
               </li>
@@ -113,6 +114,9 @@ employee_id = @current_user.employee_record.id
     <div class="school_feed_box">
       <%= render :partial => "attendance" %>
       <div style="clear:both;height: 20px;"></div>
+      <%  if @current_user.admin? %>
+        <%=  link_to "<img src='/images/dashpallete/big_icon/ci-red.png' style='width:100%; margin-top:5px;'>", :controller => 'intelligence', :action => 'index' %><br/>
+      <% end %>
 
       <%= render :partial => "notice", :locals=>{:news=>@news, :type => 'all'} %>
 
@@ -131,9 +135,11 @@ employee_id = @current_user.employee_record.id
     <% end %>
 
     <div class="school_feed_box" style="margin-right: 30px;">
+      
       <%=  link_to "<img src='/images/dashpallete/big_icon/sylabus.png' style='width:100%'>", :controller => 'syllabus', :action => 'classes_view' %><br/><br/>      
       <%=  link_to "<img src='/images/dashpallete/big_icon/calender.png' style='width:100%'>", :controller => 'calendar', :action => 'index' %><br/><br/>      
       <%=  link_to "<img src='/images/dashpallete/big_icon/report_card.png' style='width:100%'>", :controller => 'exam', :action => 'exam_wise_report' %>
+      
     </div>
 
     <div class="school_feed_box">     
@@ -144,8 +150,9 @@ employee_id = @current_user.employee_record.id
       <%=  link_to "<img src='/images/dashpallete/big_icon/lesson_plan.png' style='width:100%'>", :controller => 'lessonplan', :action => 'index' %>
       <% #end %>
       <% if !@allow_detention.blank? %>
-        <%=  link_to "<img src='/images/dashpallete/big_icon/displine.png' style='width:100%'>", :controller => 'detention', :action => 'index' %>
+        <br/><br/><%=  link_to "<img src='/images/dashpallete/big_icon/displine.png' style='width:100%'>", :controller => 'detention', :action => 'index' %>
       <% end %>
+      
     </div>
 
   </div>

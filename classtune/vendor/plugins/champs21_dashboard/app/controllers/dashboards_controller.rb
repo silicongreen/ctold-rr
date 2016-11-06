@@ -44,7 +44,7 @@ class DashboardsController < ApplicationController
       end
       
       if current_user.admin?
-        @news = News.find(:all,:conditions=>{:is_published=>1}, :limit =>4)
+        @news = News.find(:all,:conditions=>{:is_published=>1}, :limit =>3)
         @view_layout = 'employee'
         
         if check_free_school?
@@ -171,12 +171,22 @@ class DashboardsController < ApplicationController
   end
 
   def notice_main
-    if params[:category] == "all"
-      @notice = News.find(:all, :limit => 4)
-    elsif params[:category] == "general"
-      @notice = News.find(:all, :conditions=>"category_id = 1", :limit => 4)
-    elsif params[:category] == "others"
-      @notice = News.find(:all, :conditions=>"category_id != 1", :limit => 4)
+    if current_user.admin?
+      if params[:category] == "all"
+        @notice = News.find(:all, :limit => 3)
+      elsif params[:category] == "general"
+        @notice = News.find(:all, :conditions=>"category_id = 1", :limit => 3)
+      elsif params[:category] == "others"
+        @notice = News.find(:all, :conditions=>"category_id != 1", :limit => 3)
+      end 
+    else
+      if params[:category] == "all"
+        @notice = News.find(:all, :limit => 4)
+      elsif params[:category] == "general"
+        @notice = News.find(:all, :conditions=>"category_id = 1", :limit => 4)
+      elsif params[:category] == "others"
+        @notice = News.find(:all, :conditions=>"category_id != 1", :limit => 4)
+      end
     end
     
     render :partial=>"notice", :locals=>{:news => @notice, :type => params[:category] }

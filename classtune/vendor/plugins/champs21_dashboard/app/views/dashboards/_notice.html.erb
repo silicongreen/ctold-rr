@@ -4,7 +4,7 @@
 </div>
 <% else %>
 
-  <div class="partial_notice" id="notice_data_box">
+  <div class="partial_notice" <%  if @current_user.admin? %> style="height:440px;" <% end %> id="notice_data_box">
     <%= link_to "<h2 class='f2'>NOTICE</h2>", :controller => "news", :action => "all" %> 
     <div class="link_bar">
       <ul class="champs21_feed">

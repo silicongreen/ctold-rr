@@ -2260,7 +2260,7 @@ class ExamController < ApplicationController
       end
       
     end
-    #    @exam_comment = ExamConnectComment.find_by_exam_connect_id_and_student_id(@connect_exam_obj.id,@student.id)
+    @exam_comment = ExamConnectComment.find_by_exam_connect_id_and_student_id(@connect_exam_obj.id,@student.id)
     if MultiSchool.current_school.id == 246
       render :pdf => 'generated_report5_pdf',
         :orientation => 'Landscape', :zoom => 1.00

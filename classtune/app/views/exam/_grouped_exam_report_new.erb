@@ -283,11 +283,17 @@
           <% end %>
           <p>
               <b>
-               <%# if !@exam_comment.blank? %>
-                <%#= @exam_comment.comment %>
-               <%# end %>   
+               <% if !@exam_comment.blank? and (@current_user.student? or @current_user.parent? ) %>
+                Teachers Comments : <%= @exam_comment.comments %>
+               <% end %>   
               </b>
           </p>
+          <% unless @current_user.student? or @current_user.parent? %>
+          <p>Teachers Comments : </p>
+          <p><input type="text" value="<% if !@exam_comment.blank? %><%= @exam_comment.comments %><% end %>" size="90" style="height:50px;" id="exam_comments" name="exam_comments"></p>
+          <p><%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader2", :style =>"display: none;" ) %><input type="button" value="save" name="exam_comment_save" id="exam_comment_save" /></p>
+            
+          <% end %>
           <%= link_to " ► #{t('pdf_report')}",
             { :action => "generated_report5_pdf", :batch_id => @batch.id, :student=>@student.id, :type=> @type,:connect_exam=>@connect_exam, :page_height=>450},:target => '_blank', :class=> 'user_button' %>
 
@@ -397,4 +403,16 @@
         padding: 10px;
     }
 </style> 
+<script>
+  var jj = jQuery.noConflict();
+jj(document).ready(function() {
+jj('#exam_comment_save').click(function(){
+    Element.show('loader2')
+    new Ajax.Request('/exam/generated_report5',
+    {asynchronous:true, evalScripts:true,
+      parameters:'comments='+jj('#exam_comments').val()+'&student=<%= @student.id %>&type=<%= @type %>&connect_exam=<%= @connect_exam %>',onSuccess:function(request){Element.hide('loader2')}
+    }); 
+    });   
+});     
+</script>
 

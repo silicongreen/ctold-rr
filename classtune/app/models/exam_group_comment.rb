@@ -16,10 +16,13 @@
 #See the License for the specific language governing permissions and
 #limitations under the License.
 
-class ExamConnectComment < ActiveRecord::Base
-  validates_presence_of :comment
+class ExamGroupComment < ActiveRecord::Base
+  validates_presence_of :comments
   belongs_to :student
   belongs_to :employee
   belongs_to :exam_group  
+  def before_save
+    self.school_id = MultiSchool.current_school.id
+  end 
 end
 

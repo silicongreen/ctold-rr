@@ -16,22 +16,21 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License. -%>
-<% if @connect_exam_obj.result_type==3 %>
-  <%= render  :partial=>"st_and_ct" %>
-<% elsif MultiSchool.current_school.id == 283 %>
-  <%= render  :partial=>"group_report_academia" %>
+<%= render  :partial=>"connect_result_reformate" %>
+<% if MultiSchool.current_school.id == 283 %>
+  <%= render  :partial=>"/connect_exam/academia/group_report" %>
 <% elsif MultiSchool.current_school.id == 246 %>
-  <%= render  :partial=>"group_report_cherry_blossoms" %>
+  <%= render  :partial=>"/connect_exam/cherry_blossoms/group_report" %>
 <% elsif MultiSchool.current_school.id == 280 %>
-  <%= render  :partial=>"group_report_st_joseph" %>
+  <%= render  :partial=>"/connect_exam/st_joseph/group_report" %>
 <% elsif MultiSchool.current_school.id == 275 %>
-  <%= render  :partial=>"group_report_gateway_international" %>
-<% elsif MultiSchool.current_school.id == 12 %>
-  <%= render  :partial=>"group_report_mpsc" %>
+  <%= render  :partial=>"/connect_exam/gateway/group_report" %>
+<% elsif MultiSchool.current_school.id == 12  %>
+  <%= render  :partial=>"/connect_exam/mpsc/group_report" %>
 <% elsif MultiSchool.current_school.id == 186 %>
-  <%= render  :partial=>"group_report_akmis" %>
+  <%= render  :partial=>"/connect_exam/akmis/group_report" %>
 <% elsif MultiSchool.current_school.id == 2 %>
-  <%= render  :partial=>"group_report_sfx" %>
+  <%= render  :partial=>"/connect_exam/sfx/group_report" %>
 <% else %>
   <% unless @report_data.blank?  or  @report_data['report'].blank? %>
     <div id="page-yield"  class="available_sections1">

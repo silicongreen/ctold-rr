@@ -85,6 +85,7 @@
     })
   }
   document.observe("dom:loaded", function() {
+    
     $$('.student-link-new').invoke('observe','click',draw_report);
     $$('.student-link-new').invoke('observe','click',set_active);
   });

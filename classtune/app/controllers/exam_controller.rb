@@ -53,15 +53,15 @@ class ExamController < ApplicationController
       
       menu_links.each do |menu_link|
         if menu_link.link_type=="user_menu" and menu_link.target_controller=="exam"
-            menu_id = menu_link.id
+          menu_id = menu_link.id
 
-            school_menu_links = SchoolMenuLink.find(:all, :conditions => ["school_id = ? and menu_link_id = ?",MultiSchool.current_school.id, menu_id], :select => "menu_link_id")
+          school_menu_links = SchoolMenuLink.find(:all, :conditions => ["school_id = ? and menu_link_id = ?",MultiSchool.current_school.id, menu_id], :select => "menu_link_id")
 
-            if school_menu_links.nil? or school_menu_links.blank?
-               @exam_modules_tmp << {'name' => menu_link.name, "target_controller" => menu_link.target_controller, "target_action" => menu_link.target_action, 'visible' => false}
-            else
-               @exam_modules_tmp << {'name' => menu_link.name, "target_controller" => menu_link.target_controller, "target_action" => menu_link.target_action, 'visible' => true}
-            end
+          if school_menu_links.nil? or school_menu_links.blank?
+            @exam_modules_tmp << {'name' => menu_link.name, "target_controller" => menu_link.target_controller, "target_action" => menu_link.target_action, 'visible' => false}
+          else
+            @exam_modules_tmp << {'name' => menu_link.name, "target_controller" => menu_link.target_controller, "target_action" => menu_link.target_action, 'visible' => true}
+          end
         end
       end
       @exam_modules_tmp
@@ -141,16 +141,16 @@ class ExamController < ApplicationController
         end
         @all_subjects = @normal_subjects+@elective_subjects
       end
-#      @normal_subjects = Subject.find_all_by_batch_id(@batch.id,:conditions=>"no_exams = false AND elective_group_id IS NULL AND is_deleted = false")
-#      @elective_subjects = []
-#      elective_subjects = Subject.find_all_by_batch_id(@batch.id,:conditions=>"no_exams = false AND elective_group_id IS NOT NULL AND is_deleted = false")
-#      elective_subjects.each do |e|
-#        is_assigned = StudentsSubject.find_all_by_subject_id(e.id)
-#        unless is_assigned.empty?
-#          @elective_subjects.push e
-#        end
-#      end
-#      @all_subjects = @normal_subjects+@elective_subjects
+      #      @normal_subjects = Subject.find_all_by_batch_id(@batch.id,:conditions=>"no_exams = false AND elective_group_id IS NULL AND is_deleted = false")
+      #      @elective_subjects = []
+      #      elective_subjects = Subject.find_all_by_batch_id(@batch.id,:conditions=>"no_exams = false AND elective_group_id IS NOT NULL AND is_deleted = false")
+      #      elective_subjects.each do |e|
+      #        is_assigned = StudentsSubject.find_all_by_subject_id(e.id)
+      #        unless is_assigned.empty?
+      #          @elective_subjects.push e
+      #        end
+      #      end
+      #      @all_subjects = @normal_subjects+@elective_subjects
       @all_subjects.each { |subject| @exam_group.exams.build(:subject_id => subject.id) }
       if @type == 'Marks' or @type == 'MarksAndGrades'
         render(:update) do |page|
@@ -210,9 +210,9 @@ class ExamController < ApplicationController
     end
     
     if @is_class_exam
-        @exam_group_id = this_id
-        @exam_groups_all_batches = ExamGroup.find(:all, :conditions => ["name = ? and batch_id IN (?)", @exam_group.name, @batches ])
-        @exam_groups_ids = @exam_groups_all_batches.map{|e| e.id}
+      @exam_group_id = this_id
+      @exam_groups_all_batches = ExamGroup.find(:all, :conditions => ["name = ? and batch_id IN (?)", @exam_group.name, @batches ])
+      @exam_groups_ids = @exam_groups_all_batches.map{|e| e.id}
     end
     
     if params[:status] == "schedule"
@@ -229,24 +229,24 @@ class ExamController < ApplicationController
           batch_ids[st.user_id] = st.batch_id
           student_ids[st.user_id] = st.id
           unless st.immediate_contact.nil? 
-              available_user_ids << st.immediate_contact.user_id
-              batch_ids[st.immediate_contact.user_id] = st.batch_id
-              student_ids[st.immediate_contact.user_id] = st.id
+            available_user_ids << st.immediate_contact.user_id
+            batch_ids[st.immediate_contact.user_id] = st.batch_id
+            student_ids[st.immediate_contact.user_id] = st.id
           end
           
         end
         
-#        guardians = students.map {|x| x.immediate_contact.user_id if x.immediate_contact.present?}.compact
-#        available_user_ids = students.collect(&:user_id).compact
-#        available_user_ids << guardians
-#        
-#        batches_guardian = students.map {|x| x.batch_id if x.immediate_contact.present?}.compact
-#        students_guardian = students.map {|x| x.id if x.immediate_contact.present?}.compact
-#        
-#        batch_ids = students.collect(&:batch_id).compact
-#        batch_ids << batches_guardian
-#        student_ids = students.collect(&:id).compact
-#        student_ids << students_guardian
+        #        guardians = students.map {|x| x.immediate_contact.user_id if x.immediate_contact.present?}.compact
+        #        available_user_ids = students.collect(&:user_id).compact
+        #        available_user_ids << guardians
+        #        
+        #        batches_guardian = students.map {|x| x.batch_id if x.immediate_contact.present?}.compact
+        #        students_guardian = students.map {|x| x.id if x.immediate_contact.present?}.compact
+        #        
+        #        batch_ids = students.collect(&:batch_id).compact
+        #        batch_ids << batches_guardian
+        #        student_ids = students.collect(&:id).compact
+        #        student_ids << students_guardian
         
         Delayed::Job.enqueue(
           DelayedReminderJob.new( :sender_id  => current_user.id,
@@ -276,24 +276,24 @@ class ExamController < ApplicationController
                 batch_ids[st.user_id] = st.batch_id
                 student_ids[st.user_id] = st.id
                 unless st.immediate_contact.nil? 
-                    available_user_ids << st.immediate_contact.user_id
-                    batch_ids[st.immediate_contact.user_id] = st.batch_id
-                    student_ids[st.immediate_contact.user_id] = st.id
+                  available_user_ids << st.immediate_contact.user_id
+                  batch_ids[st.immediate_contact.user_id] = st.batch_id
+                  student_ids[st.immediate_contact.user_id] = st.id
                 end
 
               end
               
-#              guardians = students.map {|x| x.immediate_contact.user_id if x.immediate_contact.present?}.compact
-#              available_user_ids = students.collect(&:user_id).compact
-#              available_user_ids << guardians
-#              
-#              batches_guardian = students.map {|x| x.batch_id if x.immediate_contact.present?}.compact
-#              students_guardian = students.map {|x| x.id if x.immediate_contact.present?}.compact
-#
-#              batch_ids = students.collect(&:batch_id).compact
-#              batch_ids << batches_guardian
-#              student_ids = students.collect(&:id).compact
-#              student_ids << students_guardian
+              #              guardians = students.map {|x| x.immediate_contact.user_id if x.immediate_contact.present?}.compact
+              #              available_user_ids = students.collect(&:user_id).compact
+              #              available_user_ids << guardians
+              #              
+              #              batches_guardian = students.map {|x| x.batch_id if x.immediate_contact.present?}.compact
+              #              students_guardian = students.map {|x| x.id if x.immediate_contact.present?}.compact
+              #
+              #              batch_ids = students.collect(&:batch_id).compact
+              #              batch_ids << batches_guardian
+              #              student_ids = students.collect(&:id).compact
+              #              student_ids << students_guardian
               
               Delayed::Job.enqueue(
                 DelayedReminderJob.new( :sender_id  => current_user.id,
@@ -388,24 +388,24 @@ class ExamController < ApplicationController
           batch_ids[st.user_id] = st.batch_id
           student_ids[st.user_id] = st.id
           unless st.immediate_contact.nil? 
-              available_user_ids << st.immediate_contact.user_id
-              batch_ids[st.immediate_contact.user_id] = st.batch_id
-              student_ids[st.immediate_contact.user_id] = st.id
+            available_user_ids << st.immediate_contact.user_id
+            batch_ids[st.immediate_contact.user_id] = st.batch_id
+            student_ids[st.immediate_contact.user_id] = st.id
           end
 
         end
-#        guardians = students.map {|x| x.immediate_contact.user_id if x.immediate_contact.present?}.compact
-#        available_user_ids = students.collect(&:user_id).compact
-#        available_user_ids << guardians
-#        
-#        
-#        
-#        batches_guardian = students.map {|x| x.batch_id if x.immediate_contact.present?}.compact
-#        students_guardian = students.map {|x| x.id if x.immediate_contact.present?}.compact
-#        batch_ids = students.collect(&:batch_id).compact
-#        batch_ids << batches_guardian
-#        student_ids = students.collect(&:id).compact
-#        student_ids << students_guardian
+        #        guardians = students.map {|x| x.immediate_contact.user_id if x.immediate_contact.present?}.compact
+        #        available_user_ids = students.collect(&:user_id).compact
+        #        available_user_ids << guardians
+        #        
+        #        
+        #        
+        #        batches_guardian = students.map {|x| x.batch_id if x.immediate_contact.present?}.compact
+        #        students_guardian = students.map {|x| x.id if x.immediate_contact.present?}.compact
+        #        batch_ids = students.collect(&:batch_id).compact
+        #        batch_ids << batches_guardian
+        #        student_ids = students.collect(&:id).compact
+        #        student_ids << students_guardian
         
         Delayed::Job.enqueue(
           DelayedReminderJob.new( :sender_id  => current_user.id,
@@ -437,7 +437,7 @@ class ExamController < ApplicationController
       @course = @batch.course unless @batch.nil?
       @exam_groups = @batch.exam_groups
     else
-       abort("@current_user.inspect")
+      abort("@current_user.inspect")
     end      
   end
   def student_exam_schedule_view
@@ -823,9 +823,9 @@ class ExamController < ApplicationController
         end
       end
     end
-#    @late = leaves_other
-#    @absent = leaves_full
-#    @on_leave = on_leaves
+    #    @late = leaves_other
+    #    @absent = leaves_full
+    #    @on_leave = on_leaves
     @present = @academic_days-on_leaves-leaves_full
     @absent = @academic_days-@present
     render :pdf => 'student_wise_generated_report'
@@ -885,6 +885,7 @@ class ExamController < ApplicationController
         exam = Exam.find_by_exam_group_id_and_subject_id(@exam_group.id,sub.id)
         @exams.push exam unless exam.nil?
       end
+      @exam_comment = ExamGroupComment.find_by_exam_group_id_and_student_id(@exam_group.id,@student.id)
       Reminder.update_all("is_read='1'",  ["rid = ? and rtype = ? and recipient= ?", params[:exam_group], 3,current_user.id])
       @graph = open_flash_chart_object(700, 350,
         "/exam/graph_for_generated_report?batch=#{@student.batch.id}&examgroup=#{@exam_group.id}&student=#{@student.id}")
@@ -912,6 +913,27 @@ class ExamController < ApplicationController
       Reminder.update_all("is_read='1'",  ["rid = ? and rtype = ? and recipient= ?", params[:exam_group], 3,current_user.id])
       @graph = open_flash_chart_object(700, 350,
         "/exam/graph_for_generated_report?batch=#{@batch.id}&examgroup=#{@exam_group.id}&student=#{@student.id}")
+      
+      now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
+       if !params[:comments].blank?   
+         @exam_comment = ExamGroupComment.find_by_exam_group_id_and_student_id(@exam_group.id,@student.id)
+         if @exam_comment.blank?
+           exam_comment_new = ExamGroupComment.new
+           exam_comment_new.exam_group_id = @exam_group.id
+           exam_comment_new.comments = params[:comments]
+           exam_comment_new.student_id = @student.id
+           exam_comment_new.employee_id = current_user.employee_record.id
+           exam_comment_new.created_at = now
+           exam_comment_new.updated_at = now
+           exam_comment_new.school_id = MultiSchool.current_school.id
+           exam_comment_new.save 
+         else
+           @exam_comment.update_attribute(:comments,params[:comments])
+         end     
+       end
+      
+      @exam_comment = ExamGroupComment.find_by_exam_group_id_and_student_id(@exam_group.id,@student.id)
+      
       if request.xhr?
         render(:update) do |page|
           page.replace_html   'exam_wise_report', :partial=>"exam_wise_report"
@@ -1999,13 +2021,13 @@ class ExamController < ApplicationController
       @report_data = @student_response['data']
     end
     render :pdf => 'marksheet',
-    :orientation => 'Landscape', :zoom => 1.00,
-    :margin => {    :top=> 10,
-                    :bottom => 10,
-                    :left=> 10,
-                    :right => 10},
-    :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
-    :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+      :orientation => 'Landscape', :zoom => 1.00,
+      :margin => {    :top=> 10,
+      :bottom => 10,
+      :left=> 10,
+      :right => 10},
+      :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+      :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
   end
   
   def exam_connect_comment_entry
@@ -2031,8 +2053,8 @@ class ExamController < ApplicationController
     
     if params[:student].nil?  or params[:student][:connect_exam].blank? 
       if params[:connect_exam].blank? 
-       flash[:notice] = "Select A Combined Exam Please"
-       redirect_to :action=>'grouped_exam_report_new' and return
+        flash[:notice] = "Select A Combined Exam Please"
+        redirect_to :action=>'grouped_exam_report_new' and return
       else
         @connect_exam = params[:connect_exam]
       end  
@@ -2042,6 +2064,9 @@ class ExamController < ApplicationController
     
     
     @connect_exam_obj = ExamConnect.find(@connect_exam)
+    
+    
+    
     
     @previous_batch = 0
     if params[:student].nil? or !params[:student][:class_name].nil?
@@ -2059,6 +2084,7 @@ class ExamController < ApplicationController
       if @student_response['status']['code'].to_i == 200
         @report_data = @student_response['data']
       end
+      @exam_comment = ExamConnectComment.find_by_exam_connect_id_and_student_id(@connect_exam_obj.id,@student.id)
       
     else
       @student = Student.find(params[:student])
@@ -2075,6 +2101,27 @@ class ExamController < ApplicationController
       if @student_response['status']['code'].to_i == 200
         @report_data = @student_response['data']
       end
+      if current_user.admin? or current_user.employee?  
+      
+        now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
+        if !params[:comments].blank?   
+          @exam_comment = ExamConnectComment.find_by_exam_connect_id_and_student_id(@connect_exam_obj.id,@student.id)
+          if @exam_comment.blank?
+            exam_comment_new = ExamConnectComment.new
+            exam_comment_new.exam_connect_id = @connect_exam_obj.id
+            exam_comment_new.comments = params[:comments]
+            exam_comment_new.student_id = @student.id
+            exam_comment_new.employee_id = current_user.employee_record.id
+            exam_comment_new.created_at = now
+            exam_comment_new.updated_at = now
+            exam_comment_new.school_id = MultiSchool.current_school.id
+            exam_comment_new.save 
+          else
+            @exam_comment.update_attribute(:comments,params[:comments])
+          end     
+        end
+      end
+      @exam_comment = ExamConnectComment.find_by_exam_connect_id_and_student_id(@connect_exam_obj.id,@student.id)
       
       if request.xhr?
         render(:update) do |page|
@@ -2084,7 +2131,9 @@ class ExamController < ApplicationController
         @students = Student.find_all_by_id(params[:student])
       end
     end
-#    @exam_comment = ExamConnectComment.find_by_exam_connect_id_and_student_id(@connect_exam_obj.id,@student.id)
+    
+   
+    
   end
 
   def generated_report4
@@ -2171,8 +2220,8 @@ class ExamController < ApplicationController
     #grouped-exam-report-for-batch
     if params[:student].nil?  or params[:student][:connect_exam].blank? 
       if params[:connect_exam].blank? 
-       flash[:notice] = "Select A Combined Exam Please"
-       redirect_to :action=>'grouped_exam_report_new' and return
+        flash[:notice] = "Select A Combined Exam Please"
+        redirect_to :action=>'grouped_exam_report_new' and return
       else
         @connect_exam = params[:connect_exam]
       end  
@@ -2211,16 +2260,16 @@ class ExamController < ApplicationController
       end
       
     end
-#    @exam_comment = ExamConnectComment.find_by_exam_connect_id_and_student_id(@connect_exam_obj.id,@student.id)
+    #    @exam_comment = ExamConnectComment.find_by_exam_connect_id_and_student_id(@connect_exam_obj.id,@student.id)
     if MultiSchool.current_school.id == 246
       render :pdf => 'generated_report5_pdf',
-      :orientation => 'Landscape', :zoom => 1.00
+        :orientation => 'Landscape', :zoom => 1.00
     elsif MultiSchool.current_school.id == 2
       render :pdf => 'generated_report5_pdf',
-      :orientation => 'Portrait', :zoom => 1.00
+        :orientation => 'Portrait', :zoom => 1.00
     else
       render :pdf => 'generated_report5_pdf',
-      :orientation => 'Landscape', :zoom => 1.00
+        :orientation => 'Landscape', :zoom => 1.00
     end
    
 
@@ -2409,14 +2458,14 @@ class ExamController < ApplicationController
     is_elective = exam_subject.elective_group_id
     if is_elective == nil
       @students = @batch.students.by_roll_number_name
-#      @students = []
-#      batch_students = BatchStudent.find_all_by_batch_id(@batch.id)
-#      unless batch_students.empty?
-#        batch_students.each do|b|
-#          student = Student.find_by_id(b.student_id)
-#          @students.push [student.class_roll_no,student.first_name,student.id,student] unless student.nil?
-#        end
-#      end
+      #      @students = []
+      #      batch_students = BatchStudent.find_all_by_batch_id(@batch.id)
+      #      unless batch_students.empty?
+      #        batch_students.each do|b|
+      #          student = Student.find_by_id(b.student_id)
+      #          @students.push [student.class_roll_no,student.first_name,student.id,student] unless student.nil?
+      #        end
+      #      end
     else
       assigned_students = StudentsSubject.find_all_by_subject_id(exam_subject.id)
       @students = []
@@ -2494,16 +2543,16 @@ class ExamController < ApplicationController
     end
     @batches = Batch.active.find(:all, :group => "name")
     if @batches.length == 1
-        @for_exam = true
-        @batch = @batches[0]
-        batch_name = @batch.name
-        school_id = MultiSchool.current_school.id
-        @courses = Rails.cache.fetch("user_cat_links_for_exam_#{batch_name}_#{current_user.id}_#{school_id}"){
-          @batches_data = Batch.find(:all, :conditions => ["name = ?", batch_name], :select => "course_id")
-          @batch_ids = @batches_data.map{|b| b.course_id}
-          @tmp_courses = Course.find(:all, :conditions => ["courses.id IN (?) and batches.name = ?", @batch_ids, batch_name], :select => "courses.*,  GROUP_CONCAT(courses.section_name,'-',courses.id,'-',batches.id) as courses_batches", :joins=> "INNER JOIN `batches` ON batches.course_id = courses.id", :group => 'course_name', :order => "cast(replace(course_name, 'Class ', '') as SIGNED INTEGER) asc")
-          @tmp_courses
-        }
+      @for_exam = true
+      @batch = @batches[0]
+      batch_name = @batch.name
+      school_id = MultiSchool.current_school.id
+      @courses = Rails.cache.fetch("user_cat_links_for_exam_#{batch_name}_#{current_user.id}_#{school_id}"){
+        @batches_data = Batch.find(:all, :conditions => ["name = ?", batch_name], :select => "course_id")
+        @batch_ids = @batches_data.map{|b| b.course_id}
+        @tmp_courses = Course.find(:all, :conditions => ["courses.id IN (?) and batches.name = ?", @batch_ids, batch_name], :select => "courses.*,  GROUP_CONCAT(courses.section_name,'-',courses.id,'-',batches.id) as courses_batches", :joins=> "INNER JOIN `batches` ON batches.course_id = courses.id", :group => 'course_name', :order => "cast(replace(course_name, 'Class ', '') as SIGNED INTEGER) asc")
+        @tmp_courses
+      }
     end
     privilege = current_user.privileges.map{|p| p.name}
     if current_user.admin or privilege.include?("ExaminationControl") or privilege.include?("EnterResults")
@@ -2685,131 +2734,131 @@ class ExamController < ApplicationController
 
     render :text => chart.render
     
-#      bar1 = Bar.new(50, '#0066CC')
-#      bar1.key('Me', 10)
-#
-#      bar2 = Bar.new(50, '#9933CC')
-#      bar2.key('You', 10)
-#
-#      bar3 = Bar.new(50, '#639F45')
-#      bar3.key('Them', 10)
-#
-#      10.times do |t|
-#              bar1.data << rand(7) + 3
-#              bar2.data << rand(7) + 3
-#              bar3.data << rand(7) + 3
-#      end
-#
-#      g = Graph.new
-#      g.title("Bar Graph", "{font-size: 26px;}")
-#
-#      g.data_sets << bar1
-#      g.data_sets << bar2
-#      g.data_sets << bar3
-#
-#      g.set_x_labels(%w(Jan Feb Mar Apr May Jun Jul Aug Sep Oct))
-#      g.set_x_label_style(10, '#9933CC', 0, 2)
-#      g.set_x_axis_steps(2)
-#      g.set_y_max(10)
-#      g.set_y_label_steps(2)
-#      g.set_y_legend("Open Flash Chart", 12, "0x736AFF")
-#      render :text => g.render
-#    student = Student.find params[:student]
-#    subject = Subject.find params[:subject]
-#    exams = Exam.find_all_by_subject_id(subject.id, :order => 'start_time asc')
-#    exams.reject!{|e| e.exam_group.result_published==false}
-#    
-#    bar1 = BarFilled.new
-#    bar1.colour = '#0066CC';
-#    bar1.width = 50;
-#    bar1.text = "Your Mark"
-#    
-#    bar2 = BarFilled.new
-#    bar2.colour = '#9933CC';
-#    bar2.width = 50;
-#    bar2.text = "Highest"
-#    
-#    bar3 = BarFilled.new
-#    bar3.colour = '#639F45';
-#    bar3.width = 50;
-#    bar3.text = "Average"
-#
-#    data = []
-#    x_labels = []
-#
-#    exams.each do |e|
-#      exam_result = ExamScore.find_by_exam_id_and_student_id(e, student.id)
-#      unless exam_result.nil?
-#        exam_score_high = ExamScore.find_by_exam_id(e,:limit=>1, :order => 'marks desc')
-#        exam_avg_high = ExamScore.find_by_exam_id(e,:limit=>1,:select=>'AVG(marks) as marks')
-#        bar1.values << exam_result.marks
-#        bar2.values << exam_score_high.marks
-#        bar3.values << exam_avg_high.marks
-#        x_labels << XAxisLabel.new(exam_result.exam.exam_group.name, '#000000', 10, 0)
-#      end
-#    end
-#    
-#    
-#    
-#
-#    g = Graph.new
-#    g.title(subject.name, "{font-size: 26px;}")
-#
-#    g.data_sets << bar1
-#    g.data_sets << bar2
-#    g.data_sets << bar3
-#    
-#    x_legend = XLegend.new("#{t('examination_Name')}")
-#    x_legend.set_style('{font-size: 14px; color: #778877}')
-#
-#    y_legend = YLegend.new("#{t('marks')}")
-#    y_legend.set_style('{font-size: 14px; color: #770077}')
-#    
-#    g.set_x_legend(x_legend)
-#    g.set_y_legend(y_legend)
-#
-#    g.set_x_labels(x_labels)
-#    g.set_x_label_style(10, '#9933CC', 0, 2)
-#    g.set_x_axis_steps(2)
-#    g.set_y_max(100)
-#    g.set_y_label_steps(2)
-#    g.set_y_legend("Open Flash Chart", 12, "0x736AFF")
-#    render :text => g.render
+    #      bar1 = Bar.new(50, '#0066CC')
+    #      bar1.key('Me', 10)
+    #
+    #      bar2 = Bar.new(50, '#9933CC')
+    #      bar2.key('You', 10)
+    #
+    #      bar3 = Bar.new(50, '#639F45')
+    #      bar3.key('Them', 10)
+    #
+    #      10.times do |t|
+    #              bar1.data << rand(7) + 3
+    #              bar2.data << rand(7) + 3
+    #              bar3.data << rand(7) + 3
+    #      end
+    #
+    #      g = Graph.new
+    #      g.title("Bar Graph", "{font-size: 26px;}")
+    #
+    #      g.data_sets << bar1
+    #      g.data_sets << bar2
+    #      g.data_sets << bar3
+    #
+    #      g.set_x_labels(%w(Jan Feb Mar Apr May Jun Jul Aug Sep Oct))
+    #      g.set_x_label_style(10, '#9933CC', 0, 2)
+    #      g.set_x_axis_steps(2)
+    #      g.set_y_max(10)
+    #      g.set_y_label_steps(2)
+    #      g.set_y_legend("Open Flash Chart", 12, "0x736AFF")
+    #      render :text => g.render
+    #    student = Student.find params[:student]
+    #    subject = Subject.find params[:subject]
+    #    exams = Exam.find_all_by_subject_id(subject.id, :order => 'start_time asc')
+    #    exams.reject!{|e| e.exam_group.result_published==false}
+    #    
+    #    bar1 = BarFilled.new
+    #    bar1.colour = '#0066CC';
+    #    bar1.width = 50;
+    #    bar1.text = "Your Mark"
+    #    
+    #    bar2 = BarFilled.new
+    #    bar2.colour = '#9933CC';
+    #    bar2.width = 50;
+    #    bar2.text = "Highest"
+    #    
+    #    bar3 = BarFilled.new
+    #    bar3.colour = '#639F45';
+    #    bar3.width = 50;
+    #    bar3.text = "Average"
+    #
+    #    data = []
+    #    x_labels = []
+    #
+    #    exams.each do |e|
+    #      exam_result = ExamScore.find_by_exam_id_and_student_id(e, student.id)
+    #      unless exam_result.nil?
+    #        exam_score_high = ExamScore.find_by_exam_id(e,:limit=>1, :order => 'marks desc')
+    #        exam_avg_high = ExamScore.find_by_exam_id(e,:limit=>1,:select=>'AVG(marks) as marks')
+    #        bar1.values << exam_result.marks
+    #        bar2.values << exam_score_high.marks
+    #        bar3.values << exam_avg_high.marks
+    #        x_labels << XAxisLabel.new(exam_result.exam.exam_group.name, '#000000', 10, 0)
+    #      end
+    #    end
+    #    
+    #    
+    #    
+    #
+    #    g = Graph.new
+    #    g.title(subject.name, "{font-size: 26px;}")
+    #
+    #    g.data_sets << bar1
+    #    g.data_sets << bar2
+    #    g.data_sets << bar3
+    #    
+    #    x_legend = XLegend.new("#{t('examination_Name')}")
+    #    x_legend.set_style('{font-size: 14px; color: #778877}')
+    #
+    #    y_legend = YLegend.new("#{t('marks')}")
+    #    y_legend.set_style('{font-size: 14px; color: #770077}')
+    #    
+    #    g.set_x_legend(x_legend)
+    #    g.set_y_legend(y_legend)
+    #
+    #    g.set_x_labels(x_labels)
+    #    g.set_x_label_style(10, '#9933CC', 0, 2)
+    #    g.set_x_axis_steps(2)
+    #    g.set_y_max(100)
+    #    g.set_y_label_steps(2)
+    #    g.set_y_legend("Open Flash Chart", 12, "0x736AFF")
+    #    render :text => g.render
     
     
     
 
-#    x_axis = XAxis.new
-#    x_axis.labels = x_labels
-#
-#    line = BarFilled.new
-#
-#    line.width = 1
-#    line.colour = '#5E4725'
-#    line.dot_size = 5
-#    line.values = data
-#
-#    y = YAxis.new
-#    y.set_range(0,100,20)
-#
-#    title = Title.new(subject.name)
-#
-#    x_legend = XLegend.new("#{t('examination_Name')}")
-#    x_legend.set_style('{font-size: 14px; color: #778877}')
-#
-#    y_legend = YLegend.new("#{t('marks')}")
-#    y_legend.set_style('{font-size: 14px; color: #770077}')
-#
-#    chart = OpenFlashChart.new
-#    chart.set_title(title)
-#    chart.set_x_legend(x_legend)
-#    chart.set_y_legend(y_legend)
-#    chart.y_axis = y
-#    chart.x_axis = x_axis
-#
-#    chart.add_element(line)
+    #    x_axis = XAxis.new
+    #    x_axis.labels = x_labels
+    #
+    #    line = BarFilled.new
+    #
+    #    line.width = 1
+    #    line.colour = '#5E4725'
+    #    line.dot_size = 5
+    #    line.values = data
+    #
+    #    y = YAxis.new
+    #    y.set_range(0,100,20)
+    #
+    #    title = Title.new(subject.name)
+    #
+    #    x_legend = XLegend.new("#{t('examination_Name')}")
+    #    x_legend.set_style('{font-size: 14px; color: #778877}')
+    #
+    #    y_legend = YLegend.new("#{t('marks')}")
+    #    y_legend.set_style('{font-size: 14px; color: #770077}')
+    #
+    #    chart = OpenFlashChart.new
+    #    chart.set_title(title)
+    #    chart.set_x_legend(x_legend)
+    #    chart.set_y_legend(y_legend)
+    #    chart.y_axis = y
+    #    chart.x_axis = x_axis
+    #
+    #    chart.add_element(line)
 
-#    render :text => chart.to_s
+    #    render :text => chart.to_s
   end
   
   def graph_for_generated_report_all_subject
@@ -2865,39 +2914,39 @@ class ExamController < ApplicationController
       c = 1
       p = 1
       exams.each do |exam|
-          res = ExamScore.find_by_exam_id_and_student_id(exam, student)
-          unless res.nil?
-            maximum_mark= res.exam.maximum_marks
-            res_percentage=res.marks.present?? (res.marks/maximum_mark)*100 : 0
-            data << res_percentage
-          else
-            maximum_mark= exam.maximum_marks
-            res_percentage = 0
-            data << res_percentage
-          end
+        res = ExamScore.find_by_exam_id_and_student_id(exam, student)
+        unless res.nil?
+          maximum_mark= res.exam.maximum_marks
+          res_percentage=res.marks.present?? (res.marks/maximum_mark)*100 : 0
+          data << res_percentage
+        else
+          maximum_mark= exam.maximum_marks
+          res_percentage = 0
+          data << res_percentage
+        end
           
-          if exam.exam_group.exam_category==1
-            exam_name = "C"
-            full_exam_name = exam_name+" "+c.to_s
-            c = c+1
-          end
+        if exam.exam_group.exam_category==1
+          exam_name = "C"
+          full_exam_name = exam_name+" "+c.to_s
+          c = c+1
+        end
           
-          if exam.exam_group.exam_category==2
-            exam_name = "P"
-            full_exam_name = exam_name+" "+p.to_s
-            p = p+1
-          end
+        if exam.exam_group.exam_category==2
+          exam_name = "P"
+          full_exam_name = exam_name+" "+p.to_s
+          p = p+1
+        end
 
-          if exam.exam_group.exam_category==3
-            exam_name = "T"
-            full_exam_name = exam_name+" "+t.to_s
-            t = t+1
-          end
+        if exam.exam_group.exam_category==3
+          exam_name = "T"
+          full_exam_name = exam_name+" "+t.to_s
+          t = t+1
+        end
           
           
-          unless x_labels.include? full_exam_name
-            x_labels << full_exam_name
-          end
+        unless x_labels.include? full_exam_name
+          x_labels << full_exam_name
+        end
           
       end
       
@@ -2996,14 +3045,14 @@ class ExamController < ApplicationController
     request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })
 
 
-        request.set_form_data({"connect_exam_id"=>connect_exam_id,"student_id"=>student_id,"batch_id"=>batch_id,"call_from_web"=>1,"user_secret" =>session[:api_info][0]['user_secret']})
+    request.set_form_data({"connect_exam_id"=>connect_exam_id,"student_id"=>student_id,"batch_id"=>batch_id,"call_from_web"=>1,"user_secret" =>session[:api_info][0]['user_secret']})
 
 
     response = http.request(request)
     @student_response = JSON::parse(response.body)
 
   end
-   def get_subject_mark_sheet(connect_exam_id,subject_id)
+  def get_subject_mark_sheet(connect_exam_id,subject_id)
     require 'net/http'
     require 'uri'
     require "yaml"

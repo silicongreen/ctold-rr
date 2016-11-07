@@ -17,9 +17,12 @@
 #limitations under the License.
 
 class ExamConnectComment < ActiveRecord::Base
-  validates_presence_of :comment
+  validates_presence_of :comments
   belongs_to :student
   belongs_to :employee
-  belongs_to :exam_connect  
+  belongs_to :exam_connect
+  def before_save
+    self.school_id = MultiSchool.current_school.id
+  end  
 end
 

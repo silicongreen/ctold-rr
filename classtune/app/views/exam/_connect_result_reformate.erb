@@ -1,0 +1,68 @@
+<% total_parcent = 0 %>
+<% total_subject = 0 %>
+<% subjects_new = [] %>  
+<% i = 0 %>
+<% unless @report_data['report']['subjects'].blank? %> 
+  <% @report_data['report']['subjects'].each do |subjects| %>
+    <% weightage_mark = 0 %>
+    <% total_mark = 0 %>    
+    <% full_mark = 0 %>
+    <% sba_full_mark = 0 %>
+    <% sba_mark = 0 %>
+    <% mark_80 = 0 %>
+
+    <% unless @report_data['report']['exams'].blank? %>  
+      <% @report_data['report']['exams'].each do |report| %>
+        <% sba_full_mark = 0 %>
+        <% sba_mark = 0 %>
+        <% if report['sba']!="1" %>
+          <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
+            <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+          <% end %>  
+
+          <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
+            <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+          <% end  %>
+        <% else %>
+          <% 
+          if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? 
+            sba_full_mark = sba_full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
+            end
+
+          if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? 
+            sba_mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'] 
+            end
+        %>  
+        <% end %> 
+
+      <% end %>
+    <% end %>
+    <% if full_mark.to_f > 0 or sba_full_mark.to_f > 0  %>
+
+      <% 
+      if sba_full_mark.to_i > 0
+        mark_80 = (total_mark/100)*80
+        full_mark_80 = (full_mark.to_f/100)*80
+        else 
+        mark_80 = total_mark
+        full_mark_80 = full_mark.to_f
+        end  
+    %> 
+      <% total_mark_before = mark_80.to_f+sba_mark.to_f %>
+
+      <% full_mark = full_mark_80.to_f+sba_full_mark.to_f %>
+      <% main_mark = (total_mark_before.to_f/full_mark.to_f)*100  %>
+      <% total_parcent= total_parcent+main_mark %>
+      <% total_subject = total_subject+1 %> 
+      <% subjects_new << subjects %>
+
+    <% else %>
+      <%#  @report_data['report']['subjects'].delete_at(i) %>
+
+    <% end %>
+    <% i = i+1 %>
+  <% end %> 
+<% end %> 
+<% avgparcent = total_parcent.to_f/total_subject.to_f %>
+<%  grade = GradingLevel.percentage_to_grade(avgparcent, @batch.id) %>
+<% @report_data['report']['subjects'] = subjects_new %>

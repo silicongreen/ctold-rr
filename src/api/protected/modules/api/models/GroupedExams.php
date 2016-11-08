@@ -152,7 +152,7 @@ class GroupedExams extends CActiveRecord
                        $subject_comment = $examsGroupObj->getComment($evalue['examgroup']->id,$student_id,$value['id']);
                        if($subject_comment)
                         {
-                            $results['comments'][$value->id] = $subject_comment;
+                            $results['comments'][$value['id']] = $subject_comment;
                             break;
                         }
                    } 

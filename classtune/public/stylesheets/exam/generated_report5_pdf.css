@@ -477,31 +477,6 @@ table#pdf-table{
     font-weight: bold;
 }
 
-.sfx  .table-header td{
-    color: #000;
-    font-weight: bold;
-}
-.sfx table tr.table-header td
-{
-    text-align: center;
-}
-
-.sfx table  td
-{
-
-    font-size:22px;
-    padding: 12px 12px 12px 15px;
-}
-
-.sfx .left-table
-{
-    float:left;
-}
-.sfx .right-table
-{
-    float:left;
-    margin-left:21px;
-}
 .cherry_blossoms  table tr td
 {
     font-size:10px;
@@ -549,8 +524,66 @@ table#pdf-table{
     margin: 10px auto;
 
 }
+
+
+
+///SFX
 .sfx
 {
     font-family: serif;
+}
+sfx  .table-header td{
+    color: #000;
+    font-weight: bold;
+}
+.sfx table tr.table-header td
+{
+    text-align: center;
+}
+
+.sfx table  td
+{
+
+    font-size:22px;
+    padding: 12px 12px 12px 15px;
+}
+
+.sfx .left-table
+{
+    float:left;
+}
+.sfx .right-table
+{
+    float:left;
+    margin-left:21px;
+}
+.sfx td.remarks_code_table
+{
+    text-align: left;
+}
+.sfx td.remarks_code_table span
+{
+    float:left;
+}
+.sfx td.remarks_code_table table
+{
+    float:left;
+    clear:both;
+    text-align: left;
+    border:none;
+}
+.sfx td.remarks_code_table table tr
+{
+    border:none;
+}
+.sfx td.remarks_code_table table tr td
+{
+    border:none;
+    padding: 6px 6px 6px 0px;
+    text-align: left;
+}
+.no-warp
+{
+    white-space: nowrap;
 }
 

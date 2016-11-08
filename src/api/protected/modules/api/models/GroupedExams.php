@@ -143,6 +143,22 @@ class GroupedExams extends CActiveRecord
                     }
                     list($subject_result,$max_mark) = $examsGroupObj->getExamGroupResultMaxMark($value['examgroup']->id,$subject_result,$max_mark);
                 }
+                $results['comments'] = array();
+                
+                foreach($all_subject_without_no_exam as $value)
+                {
+                   foreach($examgroups as $evalue)
+                   {
+                       $subject_comment = $examsGroupObj->getComment($evalue['examgroup']->id,$student_id,$value['id']);
+                       if($subject_comment)
+                        {
+                            $results['comments'][$value->id] = $subject_comment;
+                            break;
+                        }
+                   } 
+                }    
+                
+                
                 $results['no_exam_subject_resutl'] = array();
                 
                 $results['max_mark'] = $max_mark;

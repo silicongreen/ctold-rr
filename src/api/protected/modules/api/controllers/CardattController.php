@@ -202,6 +202,11 @@ class CardattController extends Controller
          if($all_students_id && $school_id && in_array($school_id,Settings::$card_attendence_school) && !Settings::$sync_off)
          {
              
+            $card_logs = new CardLog();
+            $card_logs->school_id = $school_id;
+            $card_logs->date = $date;
+            $card_logs->log = json_encode($_POST);
+            $card_logs->save();
             
             
             

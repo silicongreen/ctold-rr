@@ -36,8 +36,5 @@ top: 95px;">
             <img style="margin:50px auto;" width="400" src="http://www.champs21.com/styles/layouts/tdsfront/images/logo-new.png" >
         </div>
 
-        <div  class="main_container container_16 clearfix">
-            <iframe style="display: none;"  frameborder="0" src="http://www.altcv.com/www/champs21.com" width="100%" height="770" />
-        </div>
         
        

@@ -1,0 +1,4 @@
+resulttype:
+ numbers: "2"
+ type: "2_Type 1,2_Type 2,2_Type 3,2_Type 4" 
+ default: "Type 1,Type 2,Type 3,Type 4"

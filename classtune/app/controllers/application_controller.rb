@@ -54,7 +54,7 @@ class ApplicationController < ActionController::Base
   def get_exam_result_type()
     require "yaml"
     vreturn = []
-    type_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['resulttype']
+    type_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/other.yml")['resulttype']
     all_schools = type_config['numbers'].split(",")
     current_school = MultiSchool.current_school.id
     if all_schools.include?(current_school.to_s)

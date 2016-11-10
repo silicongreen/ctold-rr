@@ -28,7 +28,10 @@
             </div>
           </div>          
           <div class="academia_right_box">
+            <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
+            <% if @grading_levels.blank? %>
             <% @grading_levels = GradingLevel.default %>
+            <% end %>
             <%  unless @grading_levels.empty? %>
               <table>
                   <tr>

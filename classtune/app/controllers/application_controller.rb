@@ -24,6 +24,7 @@ class ApplicationController < ActionController::Base
   helper_method :get_subscrived_link
   helper_method :send_sms
   helper_method :sms_enable?
+  helper_method :get_exam_result_type
   helper_method :school_detention_allowed?
   helper_method :school_smartcard_allowed?
   helper_method :dec_student_count_subscription
@@ -49,6 +50,28 @@ class ApplicationController < ActionController::Base
 
   before_filter :dev_mode
   include CustomInPlaceEditing
+  
+  def get_exam_result_type()
+    require "yaml"
+    vreturn = []
+    type_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['resulttype']
+    all_schools = type_config['numbers'].split(",")
+    current_school = MultiSchool.current_school.id
+    if all_schools.include?(current_school.to_s)
+      all_types = type_config['type'].split(",")     
+      all_types.each do |examtype|
+        string_to_match = current_school.to_s+"_"
+        if !examtype.index(string_to_match).blank?
+          type_array = examtype.split("_")
+          vreturn << type_array[1].to_s
+        end
+      end
+      
+    else
+      vreturn = type_config['default'].split(",")     
+    end  
+    return vreturn
+  end
   
   def send_sms(feature_name)
     require "yaml"

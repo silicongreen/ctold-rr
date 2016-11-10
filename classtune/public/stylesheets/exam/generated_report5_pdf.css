@@ -557,9 +557,15 @@ sfx  .table-header td{
     float:left;
     margin-left:21px;
 }
+.sfx td.remarks_code_table2
+{
+    text-align: left;
+    font-size:14px;
+}
 .sfx td.remarks_code_table
 {
     text-align: left;
+    font-size:18px;
 }
 .sfx td.remarks_code_table span
 {
@@ -571,6 +577,7 @@ sfx  .table-header td{
     clear:both;
     text-align: left;
     border:none;
+    
 }
 .sfx td.remarks_code_table table tr
 {
@@ -581,9 +588,18 @@ sfx  .table-header td{
     border:none;
     padding: 6px 6px 6px 0px;
     text-align: left;
+    font-size:17px;
 }
 .no-warp
 {
     white-space: nowrap;
+}
+.sfx table.td-align-left td
+{
+    text-align: left;
+}
+.sfx table.text-size-18 tr td
+{
+   font-size: 18px; 
 }
 

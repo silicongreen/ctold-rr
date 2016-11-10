@@ -259,3 +259,70 @@ table#listing{
     margin-left: 430px;
 }
 /*************************************************************************************/
+
+
+///SFX
+.CSSTableGenerator .odd{
+    height:auto;
+    background: #fff;
+
+}
+
+.CSSTableGenerator .even{
+
+    height:auto;
+    background: #fff;
+
+
+}
+.CSSTableGenerator tr.even{
+    border: 2px solid #000000;
+}
+
+.CSSTableGenerator tr.odd{
+    border: 2px solid #000000;
+}
+
+.CSSTableGenerator .even td{
+
+    padding: 12px 12px 12px 15px;
+    border: 2px solid #000000;
+    border-right: 0px solid #fff;
+    border-top: 0px solid #fff;
+    text-align: center;
+
+}
+
+.CSSTableGenerator .odd td{
+    padding: 12px 12px 12px 15px;
+    border: 2px solid #000000;
+    border-right: 0px solid #fff;
+    border-top: 0px solid #fff;
+    text-align: center;
+
+}
+
+
+
+.CSSTableGenerator .table-header td{
+    padding: 12px 12px 12px 15px;
+    border-top: 2px solid #000000;
+    border-left: 2px solid #000000;
+    border-right: 2px solid #000000;
+    border-bottom: 2px solid #000000;
+    color: #000000;
+    background: #ffffff;
+    text-align: center;
+    font-weight: bold;
+}
+
+.CSSTableGenerator table#pdf-table{
+    border-top: 2px solid #000000;
+    border-collapse:collapse;
+}
+
+.CSSTableGenerator table.margin-top-20
+{
+    margin-top:20px;
+}
+

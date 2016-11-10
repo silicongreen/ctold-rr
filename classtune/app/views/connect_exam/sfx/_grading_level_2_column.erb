@@ -1,0 +1,173 @@
+              <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
+              <% if @grading_levels.blank? %>
+              <% @grading_levels = GradingLevel.default %>
+              <% end %>
+              <%  unless @grading_levels.empty? %>
+              
+              <table id="pdf-table" class="margin-top-20 left-table" width="25%" cellspacing="0">
+                  <tr class="even">
+                      <td><b>Grade</b></td>
+                      <td><b>Marks</b></td>
+                  </tr>
+                
+                  <% i = 0 %>
+                  <% @grading_levels.each_with_index do |grade,index| %>
+                 
+                  <% i = i+1 %>
+                  <% if i<3 %>
+                    <tr class="odd">
+                        <td>Grade <%= grade.name %></td>
+                        <td>
+                            <% if grade.max_score.nil? %>  
+                              <%= '%i%' % grade.min_score %>
+                            <% else %>  
+                              <% min_score = (exam_marks.to_f/100)*grade.min_score.to_f  %>
+                              <% max_score = (exam_marks.to_f/100)*grade.max_score.to_f  %>
+                              <% min_score = min_score.to_i %>
+                              <% max_score = max_score.to_i %>
+                              <% if max_score.to_i == exam_marks.to_i  %>
+                              <%= min_score.to_s+" and above"  %>
+                              <% elsif min_score.to_i == 0  %>
+                              <% below = max_score.to_i+1 %>
+                              <%=  "Below "+below.to_s  %>
+                              <% else %>
+                                  <%= min_score.to_s + " - " + max_score.to_s %>
+                              <% end %>
+                            <% end %>                      
+                        </td>
+
+                    </tr> 
+                  <% end %>
+                  <% end %>
+                  
+              </table>
+              <table id="pdf-table" class="margin-top-20 left-table" width="25%" cellspacing="0">
+                  <tr class="even">
+                      <td><b>Grade</b></td>
+                      <td><b>Marks</b></td>
+                  </tr>
+                
+                  <% i = 0 %>
+                  <% @grading_levels.each_with_index do |grade,index| %>
+                 
+                  <% i = i+1 %>
+                  <% if i==3 or i==4 %>
+                    <tr class="odd">
+                        <td><%= grade.name %></td>
+                        <td>
+                            <% if grade.max_score.nil? %>  
+                              <%= '%i%' % grade.min_score %>
+                            <% else %>  
+                              <% min_score = (exam_marks.to_f/100)*grade.min_score.to_f  %>
+                              <% max_score = (exam_marks.to_f/100)*grade.max_score.to_f  %>
+                              <% min_score = min_score.to_i %>
+                              <% max_score = max_score.to_i %>
+                              <% if max_score.to_i == exam_marks.to_i  %>
+                              <%= min_score.to_s+" and above"  %>
+                              <% elsif min_score.to_i == 0  %>
+                              <% below = max_score.to_i+1 %>
+                              <%=  "Below "+below.to_s  %>
+                              <% else %>
+                                  <%= min_score.to_s + " - " + max_score.to_s %>
+                              <% end %>
+                            <% end %>                      
+                        </td>
+
+                    </tr> 
+                  <% end %>
+                  <% end %>
+                  
+              </table>
+              <% if i>5 %>
+              <table id="pdf-table" class="margin-top-20 left-table" width="25%" cellspacing="0">
+                  <tr class="even">
+                      <td><b>Grade</b></td>
+                      <td><b>Marks</b></td>
+                  </tr>
+                
+                  <% i = 0 %>
+                  <% @grading_levels.each_with_index do |grade,index| %>
+                 
+                  <% i = i+1 %>
+                  <% if i==5 or i==6 %>
+                    <tr class="odd">
+                        <td><%= grade.name %></td>
+                        <td>
+                            <% if grade.max_score.nil? %>  
+                              <%= '%i%' % grade.min_score %>
+                            <% else %>  
+                              <% min_score = (exam_marks.to_f/100)*grade.min_score.to_f  %>
+                              <% max_score = (exam_marks.to_f/100)*grade.max_score.to_f  %>
+                              <% min_score = min_score.to_i %>
+                              <% max_score = max_score.to_i %>
+                              <% if max_score.to_i == exam_marks.to_i  %>
+                              <%= min_score.to_s+" and above"  %>
+                              <% elsif min_score.to_i == 0  %>
+                              <% below = max_score.to_i+1 %>
+                              <%=  "Below "+below.to_s  %>
+                              <% else %>
+                                  <%= min_score.to_s + " - " + max_score.to_s %>
+                              <% end %>
+                            <% end %>                      
+                        </td>
+
+                    </tr> 
+                  <% end %>
+                  <% end %>
+                  
+              </table>
+              <% end %>
+              <% if i>6 %>
+              <table id="pdf-table" class="margin-top-20 left-table" width="25%" cellspacing="0">
+                  <tr class="even">
+                      <td><b>Grade</b></td>
+                      <td><b>Marks</b></td>
+                  </tr>
+                
+                  <% i = 0 %>
+                  <% @grading_levels.each_with_index do |grade,index| %>
+                 
+                  <% i = i+1 %>
+                  <% if i>6 %>
+                    <tr class="odd">
+                        <td><%= grade.name %></td>
+                        <td>
+                            <% if grade.max_score.nil? %>  
+                              <%= '%i%' % grade.min_score %>
+                            <% else %>  
+                              <% min_score = (exam_marks.to_f/100)*grade.min_score.to_f  %>
+                              <% max_score = (exam_marks.to_f/100)*grade.max_score.to_f  %>
+                              <% min_score = min_score.to_i %>
+                              <% max_score = max_score.to_i %>
+                              <% if max_score.to_i == exam_marks.to_i  %>
+                              <%= min_score.to_s+" and above"  %>
+                              <% elsif min_score.to_i == 0  %>
+                              <% below = max_score.to_i+1 %>
+                              <%=  "Below "+below.to_s  %>
+                              <% else %>
+                                  <%= min_score.to_s + " - " + max_score.to_s %>
+                              <% end %>
+                            <% end %>                      
+                        </td>
+
+                    </tr> 
+                  <% end %>
+                  <% end %>
+                  
+              </table>
+              <% end %>
+              <table id="pdf-table" class="margin-top-20 left-table" width="25%" cellspacing="0">
+                  <tr class="even">
+                      <td><b>Grade</b></td>
+                      <td><b>Marks</b></td>
+                  </tr>
+                  <tr class="even">
+                      <td>Grade I</td>
+                      <td>Incomplete</td>
+                  </tr>
+                  <tr class="even">
+                      <td>Grade W</td>
+                      <td>Withdrawn</td>
+                  </tr>
+                  
+              <% end %>

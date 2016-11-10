@@ -13,10 +13,9 @@
                         <% end %>
                       <% end %>
 
-                      <td class="col-pdf">Total Marks (<%= total_mark_of_allexam %>)</td>
+                      <td class="col-pdf">Total(<%= total_mark_of_allexam %>)</td>
+                      <td class="col-pdf">PCT(%)</td>
                       <td class="col-pdf">Grade</td>
-                      <td class="col-pdf">Highest Marks</td>
-                      <%#*<td class="col-pdf">Grade</td>%>
                   </tr>
 
                   <% total_parcent = 0 %>
@@ -90,6 +89,7 @@
 
                           <% if full_mark.to_f > 0 %>
                             <td class="col-pdf"><%= total_mark.to_f.round.to_i %></td>
+                            <td class="col-pdf"><%= sprintf( "%0.02f", main_mark) %></td>
                             <td class="col-pdf">
                             <% if grade_i %>
                               <%= "I" %>
@@ -104,7 +104,7 @@
                               <% end %>
                             <% end %>
                             </td>
-                            <td class="col-pdf"><%= heighst_mark.to_f.round.to_i %> </td>
+                            
                             
 
                             <% total_parcent= total_parcent+main_mark %>
@@ -131,5 +131,6 @@
                   <td class="no-warp" colspan="3"><b>Number of Days Present</b></td>
                   <td class="no-warp" colspan="1"><b><%=  @report_data['present'].to_i %></b></td>
                 </tr>
-              </table>             
+              </table>
+
 <% end %>

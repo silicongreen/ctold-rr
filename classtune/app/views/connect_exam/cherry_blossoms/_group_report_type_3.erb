@@ -1,15 +1,13 @@
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
     <div id="page-yield"  class="available_sections1 academia cherry_blossoms">
        
-        <h2>&nbsp;</h2>
         <div class="academia_box">
          
           <div class="academia_middle_box">
             <h5 align="center">(PLAY GROUP-'A' LEVEL, EDEXCEL CENTRE NO. 96440, UK)</h4>
             <h5 align="center">(www.cherryblossommsint.com, Contact : +88017130073860, Email : cherryblossomsint@gmail.com)</h5>
-            <div class="academia_exam_title_box">
-              <h6 align="center"><%= @connect_exam_obj.name+" Report : " %><%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%B, %Y"):@connect_exam_obj.published_date.strftime("%B, %Y") %></h6>
-            </div>
+            <h5 align="center"><%= @connect_exam_obj.name+" Report : " %><%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%B, %Y"):@connect_exam_obj.published_date.strftime("%B, %Y") %></h5>
+           
               <%#= debug @student %>
             <div class="academia_exam_details_box">              
               <table width="100%">

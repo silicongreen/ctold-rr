@@ -178,12 +178,16 @@
               <table class="teachers_sign">
                   <tr>
                       <th align="left">
-                          Class Teacher's Remark
+                          Teacher's Remark
                       </th>                      
                   </tr>
                   <tr>
                       <td>
+                          <% if !@exam_comment.blank? %>
+                              <%= @exam_comment.comments %>
+                          <% else %>     
                           &nbsp;<br /><br /><br /><br /><br /><br /><br /><br />
+                          <% end %>
                       </td>                      
                   </tr>
               </table>

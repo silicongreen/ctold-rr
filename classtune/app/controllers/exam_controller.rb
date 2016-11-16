@@ -828,6 +828,7 @@ class ExamController < ApplicationController
     #    @on_leave = on_leaves
     @present = @academic_days-on_leaves-leaves_full
     @absent = @academic_days-@present
+    @exam_comment = ExamGroupComment.find_by_exam_group_id_and_student_id(@exam_group.id,@student.id)
     render :pdf => 'student_wise_generated_report'
   end
 

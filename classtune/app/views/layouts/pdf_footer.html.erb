@@ -18,68 +18,111 @@
 #under the License. -%>
 
 
-<div id="pdf-footer">
-    
-    <table id="listing table-design"  width="100%"  style="margin-top:10px;">
-      <thead>          
-          
-          <tr>
-            <% if MultiSchool.current_school.id == 246 %>
-              <td><font size="3"><%= "Teacher's Signature : ................................................" %></font></td>
-              <td>
-                  <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/246/principal_signature.png")) %><br />
-                  <%= "<font size='3'>Shaleha Kader</font><br />"  %>                  
-                  <%= "<font size='3'>Chairman & Principal</font>" %>
-              </td>
-            <% elsif MultiSchool.current_school.id == 275 %>
-              <td><%= ".........................................." %><br /><%= "Parent's Signature" %></td>
-              <td><%= ".........................................." %><br /><%= "Class Teacher" %></td>
-              <td>
-                  <%= ".........................................." %><br />
-                  <%= "<font size='3'>Manzoor Alam, Principal</font><br />"  %>
-              </td>
-            <% elsif MultiSchool.current_school.id == 280 %>
-              <td class="">
-                  <%= "------------------------------------------" %><br />
-                  <font size='3'><%= "Principal's Signature" %></font>
-              </td>
-              
-              <td class=""><center>
-                  <%= "------------------------------------------" %><br />
-                  <font size='3'><%= "Signature" %></font></center>
-              </td>
-            <% elsif MultiSchool.current_school.id == 25 %>
-              <td class="">
-                  <%= "------------------------------------------" %><br />
-                  <font size='3'><%= "Teacher's Signature" %></font>
-              </td>
-              
-              <td class=""><center>
-                  <%= "------------------------------------------" %><br />
-                  <font size='3'><%= "Principal's Signature" %></font></center>
-              </td>
-            <% elsif MultiSchool.current_school.id == 2 %>
-              
-            <% else %>
-              <td><font size='5'><%= "----------------------------------   Class Teacher" %><font></td>
-              <td><font size='5'><%= "----------------------------------   Teacher-In-Charge" %><font></td>
-              <td><font size='5'><%= "---------------------------------   Principal" %><font></td>
-              <td><font size='5'><%= "----------------------------------   F. Principal" %><font></td>
-            <% end %>
-          </tr>
-          <% if MultiSchool.current_school.id == 280 %>
-            <tr>
-              <td colspan="2" class="academia_border"></td>
-            </tr>
-             <tr>
-                 <td colspan="2">
-                   <font size='2'>97, Asad Avenue, Mohammedpur, Dhaka-1207<br />
-                   web: www.sjs.edu.bd</font>
-                 </td>
-            </tr>
-          <% end %>
-      </thead>  
 
-  </table>
-</div>
+<% if MultiSchool.current_school.id == 246 %>
+  <div id="pdf-footer">
+
+      <table id="listing table-design"  width="100%"  style="margin-top:10px;">
+          <thead>          
+
+              <tr>
+                  <td><font size="3"><%= "Teacher's Signature : ................................................" %></font></td>
+                  <td>
+                      <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/246/principal_signature.png")) %><br />
+                      <%= "<font size='3'>Shaleha Kader</font><br />"  %>                  
+                      <%= "<font size='3'>Chairman & Principal</font>" %>
+                  </td>
+              </tr>
+
+      </table>
+  </div>
+<% elsif MultiSchool.current_school.id == 275 %>
+  <div id="pdf-footer">
+
+      <table id="listing table-design"  width="100%"  style="margin-top:10px;">
+          <thead>          
+
+              <tr>
+                  <td><%= ".........................................." %><br /><%= "Parent's Signature" %></td>
+                  <td><%= ".........................................." %><br /><%= "Class Teacher" %></td>
+                  <td>
+                      <%= ".........................................." %><br />
+                      <%= "<font size='3'>Manzoor Alam, Principal</font><br />"  %>
+                  </td>
+              </tr>
+
+      </table>
+  </div>
+<% elsif MultiSchool.current_school.id == 280 %>
+  <div id="pdf-footer" class="st-joshef-footer">
+
+      <table id="listing table-design"  width="100%"  style="margin-top:10px;">
+          <thead>          
+
+              <tr>
+                  <td class="">
+                      <%= "------------------------------------------" %><br />
+                      <font size='3'><%= "Principal's Signature" %></font>
+                  </td>
+
+                  <td class=""><center>
+              <%= "------------------------------------------" %><br />
+              <font size='3'><%= "Signature" %></font></center>
+          </td>
+          </tr>
+        <% elsif MultiSchool.current_school.id == 25 %>
+          <div id="pdf-footer">
+
+              <table id="listing table-design"  width="100%"  style="margin-top:10px;">
+                  <thead>          
+
+                      <tr>
+                          <td class="">
+                              <%= "------------------------------------------" %><br />
+                              <font size='3'><%= "Teacher's Signature" %></font>
+                          </td>
+
+                          <td class=""><center>
+                      <%= "------------------------------------------" %><br />
+                      <font size='3'><%= "Principal's Signature" %></font></center>
+                  </td>
+                  </tr>
+
+              </table>
+          </div>
+        <% elsif MultiSchool.current_school.id == 2 %>
+
+        <% else %>
+          <div id="pdf-footer">
+
+              <table id="listing table-design"  width="100%"  style="margin-top:10px;">
+                  <thead>          
+
+                      <tr>
+                          <td><font size='5'><%= "----------------------------------   Class Teacher" %><font></td>
+                          <td><font size='5'><%= "----------------------------------   Teacher-In-Charge" %><font></td>
+                          <td><font size='5'><%= "---------------------------------   Principal" %><font></td>
+                          <td><font size='5'><%= "----------------------------------   F. Principal" %><font></td>
+                  </thead>  
+                  </tr>
+
+              </table>
+          </div>
+        <% end %>
+        <% if MultiSchool.current_school.id == 280 %>
+          <tr>
+              <td colspan="2" class="academia_border"></td>
+          </tr>
+          <tr>
+              <td colspan="2">
+                  <font size='2'>97, Asad Avenue, Mohammedpur, Dhaka-1207<br />
+                  web: www.sjs.edu.bd</font>
+              </td>
+          </tr>
+          </thead>  
+
+      </table>
+  </div>
+<% end %>
+
 

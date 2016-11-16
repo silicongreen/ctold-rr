@@ -828,12 +828,7 @@ class ExamController < ApplicationController
     #    @on_leave = on_leaves
     @present = @academic_days-on_leaves-leaves_full
     @absent = @academic_days-@present
-    if MultiSchool.current_school.id == 280
-      render :pdf => 'student_wise_generated_report',
-        :orientation => 'Landscape', :zoom => 1.00
-    else  
-      render :pdf => 'student_wise_generated_report'
-    end
+    render :pdf => 'student_wise_generated_report'
   end
 
   def generated_report

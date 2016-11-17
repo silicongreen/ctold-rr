@@ -352,12 +352,11 @@ academia_box p
 {
     font-size: 18px !important;
 }
-
 .st_joseph_bg table td
 {
 
-    font-size:12px;
-    padding: 8px 8px 8px 11px;
+    font-size:10px;
+    padding: 5px 5px 5px 8px;
 }
 
 
@@ -468,6 +467,10 @@ table#pdf-table{
 .margin-top-bottom-20
 {
     margin:20px 0px;
+}
+.margin-top-bottom-10
+{
+    margin:10px 0px;
 }
 
 #pdf-header-south{

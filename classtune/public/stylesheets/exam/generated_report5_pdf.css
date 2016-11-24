@@ -363,6 +363,14 @@ academia_box p
 {
     float:left;
 }
+.st_joseph_bg  table.float-left-10 tr td.odd
+{
+    padding: 8px 8px 8px 11px;
+}
+.st_joseph_bg  table.float-left-10 tr td.even
+{
+    padding: 8px 8px 8px 11px;
+}
 .st_joseph_bg  .float-left-10
 {
     float:left;

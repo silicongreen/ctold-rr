@@ -359,6 +359,15 @@ academia_box p
     padding: 5px 5px 5px 8px;
 }
 
+.st_joseph_bg  .float-left
+{
+    float:left;
+}
+.st_joseph_bg table tr td.t-left
+{
+    text-align: left;
+}
+
 
 .odd{
     height:auto;

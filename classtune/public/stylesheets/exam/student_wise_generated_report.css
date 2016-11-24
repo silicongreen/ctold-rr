@@ -249,7 +249,7 @@ tr.odd1{
 {
     width: 10% !important;
 }
-table.font-size-10 tr.odd td,table.font-size-10 tr.odd td
+table.font-size-10 tr.odd td,table.font-size-10 tr.even td
 {
     font-size:10px;
 }

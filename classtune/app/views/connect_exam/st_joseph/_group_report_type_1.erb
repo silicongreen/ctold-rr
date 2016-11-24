@@ -2,6 +2,7 @@
   <div id="page-yield"  class="available_sections1 st_joseph_bg">
 
       <p>&nbsp;<p>
+      <h4 align="center">CONDUCT BY BROTHERS OF HOLLY CROSS</h4>
       <h4 align="center"><%= @connect_exam_obj.name+" Report : " %><%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%B, %Y"):@connect_exam_obj.published_date.strftime("%B, %Y") %></h4>
 
 
@@ -129,7 +130,7 @@
 
 
               </table>
-              <table id="pdf-table" class="margin-top-bottom-10 font-size-20 float-left" width="30%" >
+              <table id="pdf-table" class="margin-top-bottom-10 font-size-20 float-left" width="38%" >
                       <tr class="table-header">
                           <td class="col-pdf t-left">
                               <b>Teacher's Remark</b>
@@ -150,7 +151,7 @@
                 <% @grading_levels = GradingLevel.default %>
               <% end %>
               <%  unless @grading_levels.empty? %>
-                <table id="pdf-table" class="margin-top-bottom-10  font-size-20 float-left-10" width="69%" cellspacing="0">
+                <table id="pdf-table" class="margin-top-bottom-10  font-size-20 float-left-10" width="61%" cellspacing="0">
                     <tr class="even">
                         <td><b>Grade</b></td>
 

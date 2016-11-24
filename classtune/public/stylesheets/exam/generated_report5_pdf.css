@@ -365,12 +365,12 @@ academia_box p
 }
 .st_joseph_bg  table.float-left-10 tr.odd td
 {
-    padding: 10px 10px 10px 13px;
+    padding: 8px 8px 8px 11px;
     font-size:11px;
 }
-.st_joseph_bg  table.float-left-10 tr.odd td
+.st_joseph_bg  table.float-left-10 tr.even td
 {
-    padding: 10px 10px 10px 13px;
+    padding: 8px 8px 8px 11px;
     font-size:11px;
 }
 .st_joseph_bg  .float-left-10

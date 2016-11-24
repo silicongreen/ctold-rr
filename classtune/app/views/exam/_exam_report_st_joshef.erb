@@ -215,7 +215,7 @@
 
                   <% @grading_levels.each_with_index do |grade,index| %>
 
-                     <td><%= min_score.to_s + " - " + max_score.to_s %></td>
+                     <td><%= grade.min_score.to_s + " - " + grade.max_score.to_s %></td>
 
                   <% end %> 
                   </tr> 

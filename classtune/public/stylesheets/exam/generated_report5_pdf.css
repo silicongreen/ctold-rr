@@ -363,6 +363,11 @@ academia_box p
 {
     float:left;
 }
+.st_joseph_bg  .float-left-10
+{
+    float:left;
+    margin-left:10px;
+}
 .st_joseph_bg table tr td.t-left
 {
     text-align: left;

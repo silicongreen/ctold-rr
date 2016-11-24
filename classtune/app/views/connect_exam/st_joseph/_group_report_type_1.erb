@@ -3,7 +3,7 @@
 
       <p>&nbsp;<p>
       <h4 align="center"><%= @connect_exam_obj.name+" Report : " %><%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%B, %Y"):@connect_exam_obj.published_date.strftime("%B, %Y") %></h4>
-      
+
 
       <table id="pdf-table" class="margin-top-bottom-10" width="100%" cellspacing="0">
           <tr class="even">
@@ -47,19 +47,19 @@
                           <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>
                               <td class="col-pdf no-warp">
-                                      <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
-                                        <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %>
-                                        <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
-                                      <% else %>
-                                        N/A
-                                      <% end %>
-                                      <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
-                                        [<%= report['result'][report['exam_id']][subjects['id']]['full_mark'] %>]
-                                        <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
-                                      <% else %>
+                                  <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
+                                    <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %>
+                                    <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                  <% else %>
+                                    N/A
+                                  <% end %>
+                                  <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
+                                    [<%= report['result'][report['exam_id']][subjects['id']]['full_mark'] %>]
+                                    <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                  <% else %>
 
-                                      <% end %>  
-                                       
+                                  <% end %>  
+
 
 
                               </td>
@@ -93,9 +93,9 @@
                             <td class="col-pdf"><%= sprintf( "%0.02f", heighst_mark)%> </td>
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>
-                            <td class="col-pdf"><b><%= grade.name %></b></td>
+                              <td class="col-pdf"><b><%= grade.name %></b></td>
                             <% else %>
-                            <td class="col-pdf"><b>N/A</b></td>
+                              <td class="col-pdf"><b>N/A</b></td>
                             <% end %>
 
                             <% total_parcent= total_parcent+main_mark %>
@@ -116,20 +116,55 @@
 
               <% avgparcent = total_parcent.to_f/total_subject.to_f %>
               <table id="pdf-table" class="margin-top-bottom-10 font-size-20" width="100%" >
-                 
-                      <tr class="table-header">
 
-                          <td class="col-pdf">Working Days : <%= @report_data['total'] %></td>
+                  <tr class="table-header">
 
-                          <td class="col-pdf">Days Present : <%= @report_data['present'] %> </td>
-                          <td class="col-pdf">Days Absent : <%= @report_data['total']-@report_data['present'] %> </td>
-                          <td class="col-pdf">Average Marks : <%= sprintf( "%0.02f",avgparcent) %> % </td>
-                          <td class="col-pdf">Detention : <%= @student.number_of_detention  %> </td>
-                      </tr> 
-                  
+                      <td class="col-pdf">Working Days : <%= @report_data['total'] %></td>
+
+                      <td class="col-pdf">Days Present : <%= @report_data['present'] %> </td>
+                      <td class="col-pdf">Days Absent : <%= @report_data['total']-@report_data['present'] %> </td>
+                      <td class="col-pdf">Average Marks : <%= sprintf( "%0.02f",avgparcent) %> % </td>
+                      <td class="col-pdf">Detention : <%= @student.number_of_detention  %> </td>
+                  </tr> 
+
 
               </table>
-              
+              <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
+              <% if @grading_levels.blank? %>
+                <% @grading_levels = GradingLevel.default %>
+              <% end %>
+              <%  unless @grading_levels.empty? %>
+                <table id="pdf-table" class="font-size-20" width="100%" cellspacing="0">
+                    <tr class="even">
+                        <td><b>Grade</b></td>
+
+
+                        <% @grading_levels.each_with_index do |grade,index| %>
+
+                          <td><%= grade.name %></td>
+
+                        <% end %> 
+                    </tr> 
+                    <tr class="odd">
+                        <td><b>marks</b></td>
+
+
+                        <% @grading_levels.each_with_index do |grade,index| %>
+
+                          <td>
+                              <% if grade.max_score.nil? %>  
+                                <%= '%i%' % grade.min_score %>
+                              <% else %> 
+                                <%= grade.min_score.to_s + " - " + grade.max_score.to_s %>
+                              <% end %>
+                          </td>
+
+                        <% end %> 
+                    </tr> 
+                </table>
+
+              <% end %> 
+
 
 
               <% unless @report_data['report']['no_exam_subject_resutl'].blank? or !@report_data['report']['no_exam_subject_resutl'].blank? %>

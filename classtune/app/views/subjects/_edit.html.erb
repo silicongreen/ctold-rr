@@ -24,6 +24,7 @@
   <% form_remote_for @subject do |f| %>
 
     <% elective_group_id = (@elective_group.nil? ? nil : @elective_group.id) %>
+  
     <%= f.hidden_field :elective_group_id, :value => elective_group_id %>
     <%= hidden_field :course, :show_batch_subject, :value => @show_batch_subject %>
     <%= f.hidden_field :icon_number %>
@@ -39,7 +40,7 @@
     
     <% @course = @batch.course %>
     <% unless @course.course_name.nil? %>
-      <% if @elective_group.nil? %>
+      <% if @subject.elective_group_id.nil? %>
         <% if @show_batch_subject == "1" %>
           <h4>Subject for <%= @course.course_name %>, Section: <%= @course.section_name %> </h4>
         <% else %>
@@ -66,6 +67,13 @@
       <div class="label-container"><label><%= t('max_weekly_class') %></label></div>
       <div class="input-container"> <%= f.text_field :max_weekly_classes %></div>
     </div>
+          
+    <% if school_mock_test? and !@subject.elective_group_id.nil? %>
+    <div class="label-field-pair">
+      <div class="label-container"><label>Calculation in result</label></div>
+      <div class="input-container"> <%= f.text_field :percentage %></div>
+    </div>
+    <% end %> 
 
     <% if @batch and (@batch.cwa_enabled? or @batch.gpa_enabled?) %>
       <div class="label-field-pair" style="display: none;">

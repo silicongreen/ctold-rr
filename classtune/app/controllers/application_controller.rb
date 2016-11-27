@@ -24,6 +24,7 @@ class ApplicationController < ActionController::Base
   helper_method :get_subscrived_link
   helper_method :send_sms
   helper_method :sms_enable?
+  helper_method :school_mock_test?
   helper_method :get_exam_result_type
   helper_method :school_detention_allowed?
   helper_method :school_smartcard_allowed?
@@ -50,6 +51,18 @@ class ApplicationController < ActionController::Base
 
   before_filter :dev_mode
   include CustomInPlaceEditing
+  
+  def school_mock_test?
+    require "yaml"
+    vreturn = false
+    detention_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/other.yml")['mocktest']
+    all_schools = detention_config['numbers'].split(",")
+    current_school = MultiSchool.current_school.id
+    if all_schools.include?(current_school.to_s)
+        vreturn = true
+    end
+    return vreturn
+  end
   
   def get_exam_result_type()
     require "yaml"

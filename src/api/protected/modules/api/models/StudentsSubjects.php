@@ -119,7 +119,20 @@ class StudentsSubjects extends CActiveRecord
             $criteria->select = 't.*';
             $criteria->compare('t.student_id', $student_id);
             $criteria->compare('MainSubjects.no_exams', 0);
-            $subjects = $this->with('MainSubjects')->findAll($criteria);
+            
+            $criteria->with =array(
+                        "MainSubjects" => array(
+                            "select" => "MainSubjects.*",
+                            'joinType' => "INNER JOIN",
+                            'with' => array(
+                                "electiveGroup" => array(
+                                    "select" => "electiveGroup.*",
+                                    'joinType' => "LEFT JOIN",
+                                )
+                            )
+                     )
+            );
+            $subjects = $this->findAll($criteria);
             
             $subject_array = array();
             

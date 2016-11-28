@@ -1,0 +1,47 @@
+<div class="CSSTableGenerator" >
+    <table id="listing" class="f5" align="center" width="100%" cellpadding="1" cellspacing="1">
+        <thead>
+            <tr class="tr-head">
+                <th class="col-pdf"><%= "Subject" %></th>
+                <th class="col-pdf"><%= "Score" %></th>
+                <th class="col-pdf"><%= "Grade" %></th> 
+
+
+            </tr>
+        </thead>
+        <% j = 0; %>
+        <% elective_group_mark = {} %>
+        <%
+        exam_score.each do |es|
+          if es.marks.present?
+            if elective_group_mark[es.exam.subject.elective_group_id].nil?
+              elective_group_mark[es.exam.subject.elective_group_id] = (((es.marks.to_f*100)/es.exam.maximum_marks.to_f)*es.exam.subject.percentage)/100
+              else
+              elective_group_mark[es.exam.subject.elective_group_id] = elective_group_mark[es.exam.subject.elective_group_id]+(((es.marks.to_f*100)/es.exam.maximum_marks.to_f)*es.exam.subject.percentage)/100
+            end
+          end    
+          end 
+      %>
+        <% elective_group = [] %>
+        <% exam_score.each do |es| %>
+          <% if !elective_group.include?(es.exam.subject.elective_group_id) %>
+            <% elective_group << es.exam.subject.elective_group_id %>
+            <tr >
+
+                <td class="col-pdf"> <%= es.exam.subject.elective_group.name %></td>
+                <td class="col-pdf"><%= elective_group_mark[es.exam.subject.elective_group_id].round() %></td>
+                <%  grade = GradingLevel.percentage_to_grade(elective_group_mark[es.exam.subject.elective_group_id].round(), @batch.id) %>
+                <% if !grade.blank? and !grade.name.blank? %>
+                  <td class="col-pdf"><b><%= grade.name %></b></td>
+                <% else %>
+                  <td class="col-pdf"><b>N/A</b></td>
+                <% end %>
+
+            </tr>
+          <% end %>
+
+        <% end %>
+
+
+    </table>
+</div> 

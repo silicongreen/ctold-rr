@@ -474,7 +474,7 @@ class StudentController < ApplicationController
     #@student.student_activation_code = nil
     @selected_value = Configuration.default_country 
     @application_sms_enabled = SmsSetting.find_by_settings_key("ApplicationEnabled")
-    @last_admitted_student = Student.find(:last)
+    @last_admitted_student = Student.find(:first,:order=>"admission_no desc")
     @config = Configuration.find_by_config_key('AdmissionNumberAutoIncrement')
     @categories = StudentCategory.active
     if request.post?
@@ -509,7 +509,7 @@ class StudentController < ApplicationController
           if @exist.nil?
             @status = @student.save
           else
-            @last_admitted_student = Student.find(:last)
+            @last_admitted_student = Student.find(:first,:order=>"admission_no desc")
             @student.admission_no = @last_admitted_student.admission_no.next
             @status = @student.save
           end

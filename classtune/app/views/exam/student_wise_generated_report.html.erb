@@ -1,4 +1,6 @@
-<% if MultiSchool.current_school.id == 186 %>
+<% if @exam_group.exam_category == 5 %>
+  <%= render  :partial=>"exam_report_mock_test" %>
+<% elsif MultiSchool.current_school.id == 186 %>
   <%= render  :partial=>"exam_report_akmis" %>
 <% elsif MultiSchool.current_school.id == 2 %>
   <%= render  :partial=>"exam_report_south" %>

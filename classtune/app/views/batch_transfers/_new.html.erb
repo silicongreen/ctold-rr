@@ -45,6 +45,12 @@
       <div class="label-container"><%= f.label "#{t('max_weekly_class')}" %></div>
       <div class="input-container"> <%= f.text_field :max_weekly_classes %></div>
     </div>
+    <% if school_mock_test? and !elective_group_id.blank? %>
+    <div class="label-field-pair">
+      <div class="label-container"><label>Calculation in result</label></div>
+      <div class="input-container"> <%= f.text_field :percentage, :value => "100" %></div>
+    </div>
+    <% end %>  
     <% if @batch and (@batch.cwa_enabled? or @batch.gpa_enabled?) %>
     <div class="label-field-pair" style="display: none;">
         <div class="label-container"><label>Credit Hours</label></div>

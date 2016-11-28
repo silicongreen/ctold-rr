@@ -77,6 +77,7 @@
       <% end %>
   </h5>
 <% elsif @batch.gpa_enabled? %>
+
   <% total_credit_points=0 %>
   <% total_credit_hours=0 %>
   <% allhide = true  %>
@@ -95,6 +96,10 @@
             <span class="student"><%= "#{@student.full_name} - #{@student.admission_no}" %></span>
         </div>
       <% end %>
+      <% if @exam_group.exam_category == 5 %>
+          <% allhide=true %>
+          <%= render  :partial=>"exam_wise_report_mock_test", :locals=>{:exam_score=>exam_score} %>
+      <% else %>
       <div class="CSSTableGenerator" >
           <table id="listing" class="f5" align="center" width="100%" cellpadding="1" cellspacing="1">
               <thead>
@@ -192,7 +197,8 @@
 
 
           </table>
-      </div>    
+      </div> 
+      <% end %>
   </div>
   <% if allhide==false %>
     <div class="CSSTableGenerator" >
@@ -266,7 +272,11 @@
         </table> 
 
     </div>
-  <% end %>    
+  <% elsif @exam_group.exam_category == 5 %>  
+      <div class="user_button" style="margin:0px 0px;   margin-left: 0px; clear:both;">
+          <%= link_to "#{t('pdf_report')}", {:controller => "exam", :action => "student_wise_generated_report", :student=>@student.id,:exam_group=>@exam_group.id},:target => '_blank' %>
+      </div> 
+  <% end %>
 
 <% else %>
   <% total_marks_attained = 0 %>
@@ -365,7 +375,7 @@
       <% end %>
   </div>
 <% end %>
-<p>
+<p style="float:left; clear:both;">
     <b>
         <% if !@exam_comment.blank? and (@current_user.student? or @current_user.parent? ) %>
           Teachers Comments : <%= @exam_comment.comments %>
@@ -373,9 +383,9 @@
     </b>
 </p>
 <% unless @current_user.student? or @current_user.parent? %>
-  <p>Teachers Comments : </p>
-  <p><input type="text" value="<% if !@exam_comment.blank? %><%= @exam_comment.comments %><% end %>" size="90" style="height:50px;" id="exam_comments" name="exam_comments"></p>
-  <p><%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader2", :style =>"display: none;" ) %><input type="button" value="save" name="exam_comment_save" id="exam_comment_save" /></p>
+  <div style="float:left; clear:both; margin:5px 0px;">Teachers Comments : </div>
+  <div style="float:left; clear:both; margin:5px 0px;"><input type="text" value="<% if !@exam_comment.blank? %><%= @exam_comment.comments %><% end %>" size="90" style="height:50px;" id="exam_comments" name="exam_comments"></div>
+  <div style="float:left; clear:both; margin:5px 0px;"><%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader2", :style =>"display: none;" ) %><input type="button" value="save" name="exam_comment_save" id="exam_comment_save" /></div>
 <% end %>
   <% unless @batch.gpa_enabled? %>
     <% if (@exam_group.exam_type == 'Marks' or @exam_group.exam_type == 'MarksAndGrades') and allhide==false %>

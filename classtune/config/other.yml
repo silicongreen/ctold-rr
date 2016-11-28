@@ -1,6 +1,6 @@
 resulttype:
  numbers: "2"
- type: "2_Type 1,2_Type 2,2_Type 3,2_Type 4" 
+ type: "2_Mid Term,2_Final Term,2_Mock Test" 
  default: "Type 1,Type 2,Type 3,Type 4"
 mocktest:
  numbers: "2"

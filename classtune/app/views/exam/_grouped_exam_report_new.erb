@@ -30,6 +30,8 @@
           <div style="width:100%; overflow:auto;">
               <% if MultiSchool.current_school.id == 319 %>
                   <%= render  :partial=>"/connect_exam/sfx/group_marks" %>
+              <% elsif MultiSchool.current_school.id == 2 %>
+                  <%= render  :partial=>"/connect_exam/baf_shaheen/group_marks" %>
                <% else %>
                   <%= render  :partial=>"/connect_exam/group_marks" %>
               <% end %>

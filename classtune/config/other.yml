@@ -3,7 +3,7 @@ resulttype:
  type: "2_Mid Term,2_Final Term,2_Class 10 Mid Term,2_Class 10 Final Term" 
  default: "Type 1,Type 2,Type 3,Type 4"
 resulttype2:
- numbers: "2 "
+ numbers: "2"
  type: "2_5_Mock Test,2_3_Term,2_2_Project,2_1_Class Test" 
  default: "4_Surprise Test,3_Term,2_Project,1_Class Test"
 mocktest:

@@ -99,9 +99,10 @@
             <div class="text-input-bg"><%= form.text_field :name, :value=>@ename%></div>
           </div>
           <div class="label-field-pair">
+              <% exam_type = get_exam_result_type2() %>
             <label >Exam Category</label>
             <div  class="text-input-bg" id="exam-category-select">
-              <%= select :exam_option,:exam_category, [['Class Test',1],['Project',2],['Term',3],['Surprise Test',4],['Mock Test',5]] %>
+              <%= select :exam_option,:exam_category,options_from_collection_for_select(exam_type, :first, :last) %>
             </div>
           </div>
           <div class="label-field-pair" id="exam_topic" style="display:none;">

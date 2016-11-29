@@ -632,3 +632,38 @@ sfx  .table-header td{
    font-size: 18px; 
 }
 
+
+
+.baf_shaheen table td
+{
+
+    font-size:11px;
+    padding: 5px 5px 5px 8px;
+}
+
+.baf_shaheen  .float-left
+{
+    float:left;
+}
+.baf_shaheen  table.float-left-10 tr.odd td
+{
+    padding: 9px 9px 9px 13px;
+    font-size:11px;
+}
+.baf_shaheen  table.float-left-10 tr.even td
+{
+    padding: 9px 9px 9px 13px;
+    font-size:11px;
+}
+.baf_shaheen  .float-left-10
+{
+    float:left;
+    margin-left:11px;
+}
+.baf_shaheen table tr td.t-left
+{
+    text-align: left;
+}
+
+
+

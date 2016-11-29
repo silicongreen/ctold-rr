@@ -15,9 +15,9 @@
         exam_score.each do |es|
           if es.marks.present?
             if elective_group_mark[es.exam.subject.elective_group_id].nil?
-              elective_group_mark[es.exam.subject.elective_group_id] = (((es.marks.to_f*100)/es.exam.maximum_marks.to_f)*es.exam.subject.percentage)/100
+              elective_group_mark[es.exam.subject.elective_group_id] = (((es.marks.to_f*100)/es.exam.maximum_marks.to_f)*es.exam.subject.percentage.to_f)/100
               else
-              elective_group_mark[es.exam.subject.elective_group_id] = elective_group_mark[es.exam.subject.elective_group_id]+(((es.marks.to_f*100)/es.exam.maximum_marks.to_f)*es.exam.subject.percentage)/100
+              elective_group_mark[es.exam.subject.elective_group_id] = elective_group_mark[es.exam.subject.elective_group_id]+(((es.marks.to_f*100)/es.exam.maximum_marks.to_f)*es.exam.subject.percentage.to_f)/100
             end
           end    
           end 
@@ -44,4 +44,7 @@
 
 
     </table>
+</div> 
+<div class="user_button" style="margin:0px 0px;   margin-left: 0px; clear:both;">
+    <%= link_to "#{t('pdf_report')}", {:controller => "exam", :action => "student_wise_generated_report", :student=>@student.id,:exam_group=>@exam_group.id},:target => '_blank' %>
 </div> 

@@ -227,7 +227,7 @@ tr.odd1{
     width:1000px;
 }
  #pdf-footer{
-    width:1000px;
+    width:800px;
 }
 
 #pdf-footer.st-joshef-footer
@@ -252,6 +252,15 @@ tr.odd1{
 table.font-size-10 tr.odd td,table.font-size-10 tr.even td
 {
     font-size:10px;
+}
+table.teacher_remarks tr th
+{
+    padding : 8px 0px;
+}
+table.teacher_remarks tr td
+{
+    padding : 7px;
+    font-size: 15px;
 }
 
 

@@ -175,7 +175,7 @@
           </table>
 
           <div class="academia_box">  
-              <table class="teachers_sign">
+              <table class="teachers_sign teacher_remarks">
                   <tr>
                       <th align="left">
                           Teacher's Remark
@@ -186,7 +186,7 @@
                           <% if !@exam_comment.blank? %>
                             <%= @exam_comment.comments %>
                           <% else %>     
-                            &nbsp;<br /><br /><br /><br /><br /><br />
+                            &nbsp;<br /><br /><br />
                           <% end %>
                       </td>                      
                   </tr>

@@ -97,107 +97,12 @@
         </div>
       <% end %>
       <% if @exam_group.exam_category == 5 %>
-          <% allhide=true %>
-          <%= render  :partial=>"exam_wise_report_mock_test", :locals=>{:exam_score=>exam_score} %>
+        <% allhide=true %>
+        <%= render  :partial=>"/group_exam_report/general/exam_wise_report_mock_test", :locals=>{:exam_score=>exam_score} %>
       <% else %>
-      <div class="CSSTableGenerator" >
-          <table id="listing" class="f5" align="center" width="100%" cellpadding="1" cellspacing="1">
-              <thead>
-                  <tr class="tr-head">
 
-                      <th><%= t('subject_title') %></th>
-                      <th  <%= allcss %>><%= t('grade') %></th>
-                      <th  <%= allcss %>><%= t('marks') %></td>
-                      <th  <%= allcss %>><%= "Highest" %></td>
-                      <th  <%= allcss %>><%= "Total" %></td>
+        <%= render  :partial=>"/group_exam_report/general/common", :locals=>{:exam_score=>exam_score,:allcss=>allcss,:max_mark=>max_mark} %>
 
-
-
-
-                      <th  <%= allcss %>>%</th>
-                      <td><%= t('remarks') %></td>
-
-                  </tr>
-              </thead>
-              <% j = 0; %>
-              <% total_mark = 0 %>
-              <% cradit_point = 0 %>
-              <% total_mark_with_no_exam = 0 %>
-              <% cradit_point_with_no_exam = 0 %>
-              <% exam_score.each do |es| %>
-                <%
-                extra_colspan = ""
-                css = ""
-                add_mark = true
-                if es.exam.subject.no_exams
-                  css = "style='display:none'"
-                  extra_colspan = "colspan = '10'"
-                  add_mark = false
-                  end
-              %>
-                <tr >
-
-
-
-                    <td > <%= es.exam.subject.name %></td>
-                    <td  <%=css%>>
-
-                        <%= "#{es.grading_level.present? ? es.grading_level : " "}"+"#{es.grading_level.present? ? (es.grading_level.credit_points.present? ?  " ["+"#{es.grading_level.credit_points }"+"]"  : " ") : " "}" %></td>
-                    <% 
-                    if es.grading_level.present? 
-                      if es.grading_level.credit_points.present?
-                        cradit_point = cradit_point.to_f+es.grading_level.credit_points.to_f 
-                      end
-                      end
-                  %>
-
-                    <td  <%=css%>><%= es.marks.present? ? mark=es.marks.to_f : '-' %></td>
-                    <% 
-                    if es.marks.present? and  add_mark
-                      total_mark = total_mark.to_f+es.marks.to_f 
-                      end
-                    if es.marks.present? 
-                      total_mark_with_no_exam = total_mark_with_no_exam.to_f+es.marks.to_f 
-                      end  
-                  %>
-                    <td  <%=css%>> <%=  max_mark[j] %></td>
-                    <td  <%=css%>><%= es.exam.maximum_marks.to_f %></td>
-
-                    <td  <%=css%>>
-
-                        <%
-                        if es.marks.present?
-                          mark=(es.marks.to_f/es.exam.maximum_marks.to_f)*100 
-                          else
-                          mark = 0
-                          end  
-
-
-                      %>
-                        <% if mark>0 %>
-                          <%= sprintf( "%0.02f", mark) %> %
-                        <% end %>
-
-
-
-
-                    </td>
-                    <% if add_mark %>
-                      <% total_credit_hours = total_credit_hours + es.exam.subject.credit_hours.to_f %>
-                      <% points=0 %>
-                      <% points = (es.grading_level.credit_points.to_f) * (es.exam.subject.credit_hours.to_f) if es.grading_level.present? %>
-
-                      <% total_credit_points = total_credit_points + points %>
-                    <% end %>
-                    <td class="col-1" <%= extra_colspan %>><%= es.remarks %></td>
-
-                </tr>
-                <% j = j+1; %>  
-              <% end %>
-
-
-          </table>
-      </div> 
       <% end %>
   </div>
   <% if allhide==false %>
@@ -256,26 +161,21 @@
                             <span>Position</span> <span>:</span> </span> <span> <%= position %><%= extra_string %></span>
                           <% end %>
                       </th>
-                      <% if @student.batch.id == @exam_group.batch_id %>
-                        <th>          
-                <div class="user_button" style="margin:10px 0px;   margin-left: 27px;">
-                    <%= link_to "#{t('pdf_report')}", {:controller => "exam", :action => "student_wise_generated_report", :student=>@student.id,:exam_group=>@exam_group.id},:target => '_blank' %>
-                </div> 
-                </th>
-              <% end %>
+                      <% end %>
 
-            <% else %>
-              <th> - </th>
-            <% end %>
+                      <th>          
+                        <div class="user_button" style="margin:10px 0px;   margin-left: 27px;">
+                            <%= link_to "#{t('pdf_report')}", {:controller => "exam", :action => "student_wise_generated_report", :student=>@student.id,:exam_group=>@exam_group.id},:target => '_blank' %>
+                        </div> 
+                      </th>
+
+
+                      
             </tr>
             </thead>
         </table> 
 
     </div>
-  <% elsif @exam_group.exam_category == 5 %>  
-      <div class="user_button" style="margin:0px 0px;   margin-left: 0px; clear:both;">
-          <%= link_to "#{t('pdf_report')}", {:controller => "exam", :action => "student_wise_generated_report", :student=>@student.id,:exam_group=>@exam_group.id},:target => '_blank' %>
-      </div> 
   <% end %>
 
 <% else %>
@@ -387,24 +287,24 @@
   <div style="float:left; clear:both; margin:5px 0px;"><input type="text" value="<% if !@exam_comment.blank? %><%= @exam_comment.comments %><% end %>" size="90" style="height:50px;" id="exam_comments" name="exam_comments"></div>
   <div style="float:left; clear:both; margin:5px 0px;"><%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader2", :style =>"display: none;" ) %><input type="button" value="save" name="exam_comment_save" id="exam_comment_save" /></div>
 <% end %>
-  <% unless @batch.gpa_enabled? %>
-    <% if (@exam_group.exam_type == 'Marks' or @exam_group.exam_type == 'MarksAndGrades') and allhide==false %>
-      <script type="text/javascript" src="/javascripts/swfobject.js"></script>
-      <%= @graph %>
-    <% end %>
+<% unless @batch.gpa_enabled? %>
+  <% if (@exam_group.exam_type == 'Marks' or @exam_group.exam_type == 'MarksAndGrades') and allhide==false %>
+    <script type="text/javascript" src="/javascripts/swfobject.js"></script>
+    <%= @graph %>
   <% end %>
-  <div class="extender"></div> 
-  <script>
-    var jj = jQuery.noConflict();
-    jj(document).ready(function () {
-        jj('#exam_comment_save').click(function () {
-            Element.show('loader2')
-            new Ajax.Request('/exam/generated_report',
-                    {asynchronous: true, evalScripts: true,
-                        parameters: 'comments=' + jj('#exam_comments').val() + '&student=<%= @student.id %>&exam_group=<%= @exam_group.id %>&batch_id=<%= @exam_group.batch_id %>', onSuccess: function (request) {
-                    Element.hide('loader2')
-                  }
-                    });
-        });
-    });
-  </script>
+<% end %>
+<div class="extender"></div> 
+<script>
+  var jj = jQuery.noConflict();
+  jj(document).ready(function () {
+      jj('#exam_comment_save').click(function () {
+          Element.show('loader2')
+          new Ajax.Request('/exam/generated_report',
+                  {asynchronous: true, evalScripts: true,
+                      parameters: 'comments=' + jj('#exam_comments').val() + '&student=<%= @student.id %>&exam_group=<%= @exam_group.id %>&batch_id=<%= @exam_group.batch_id %>', onSuccess: function (request) {
+                          Element.hide('loader2')
+                      }
+                  });
+      });
+  });
+</script>

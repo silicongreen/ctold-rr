@@ -26,6 +26,7 @@ class ApplicationController < ActionController::Base
   helper_method :sms_enable?
   helper_method :school_mock_test?
   helper_method :get_exam_result_type
+  helper_method :get_exam_result_type2
   helper_method :school_detention_allowed?
   helper_method :school_smartcard_allowed?
   helper_method :dec_student_count_subscription
@@ -61,6 +62,32 @@ class ApplicationController < ActionController::Base
     if all_schools.include?(current_school.to_s)
         vreturn = true
     end
+    return vreturn
+  end
+  
+  def get_exam_result_type2()
+    require "yaml"
+    vreturn = {}
+    type_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/other.yml")['resulttype2']
+    all_schools = type_config['numbers'].split(",")
+    current_school = MultiSchool.current_school.id
+    if all_schools.include?(current_school.to_s)
+      all_types = type_config['type'].split(",")     
+      all_types.each do |examtype|
+        string_to_match = current_school.to_s+"_"
+        if !examtype.index(string_to_match).blank?
+          type_array = examtype.split("_")
+          vreturn[type_array[1].to_s] = type_array[2].to_s
+        end
+      end
+      
+    else
+      all_types = type_config['default'].split(",") 
+      all_types.each do |examtype|
+          type_array = examtype.split("_")
+          vreturn[type_array[0].to_s] = type_array[1].to_s
+      end
+    end  
     return vreturn
   end
   

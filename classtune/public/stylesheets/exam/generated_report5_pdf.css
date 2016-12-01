@@ -663,6 +663,10 @@ sfx  .table-header td{
  {
      text-align:center !important;
  }
+ .baf_shaheen #pdf-table
+ {
+     margin-left:1px;
+ }
  
  
 

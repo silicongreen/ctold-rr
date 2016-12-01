@@ -126,13 +126,21 @@
           <div class="text-input-bg"><%= f.text_field :name ,:value=> @exam_connect.name%>              
           </div>
         </div>
-        <div class="label-field-pair">
-          <label for="news_title">Exam Type</label>
-          <div class="text-input-bg">
-
-            <%= select :exam_grouping, :result_type, [["Term Exam",1],["Final Exam",2],["CT AND ST",3]], :selected => @exam_connect.result_type %>
-          </div>
+      <% exam_type = get_exam_result_type() %>
+       <div class="label-field-pair">
+        <label for="title">Result Type</label>
+        <div class="text-input-bg">
+            
+          <select name="exam_grouping[result_type]"  >
+            <% i = 1 %>
+            <% exam_type.each do |type| %>
+              <option value="<%= i %>" <% if @exam_connect.result_type.to_i==i %> selected <% end %>><%= type %></option>
+              <% i = i+1 %>
+            <% end %>  
+          </select>
         </div>
+      </div>
+       
         <div class="label-field-pair"  style="float:left; clear:both;">
           <label for="duedate">Publish Date</label>
           <div  class="text-input-bg">

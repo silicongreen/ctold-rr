@@ -1,0 +1,19 @@
+<% if !@exam_comment.blank? and (@current_user.student? or @current_user.parent? ) %>
+  <table id="pdf-table" class="margin-top-20 class-text-align-left" width="100%" cellspacing="0">
+      <tr class="even">
+          <td><b>Teacher's Comments</b></td>
+      </tr>
+      <tr class="odd">
+
+          <td><% if !@exam_comment.blank? %><b><%= @exam_comment.comments %></b><% else %><br/>&nbsp;<br/>&nbsp;<br/><% end %>
+          </td>
+
+  </table>
+<% end %>   
+
+<% unless @current_user.student? or @current_user.parent? %>
+  <p>Teachers Comments : </p>
+  <p><input type="text" value="<% if !@exam_comment.blank? %><%= @exam_comment.comments %><% end %>" size="90" style="height:50px;" id="exam_comments" name="exam_comments"></p>
+  <p><%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader2", :style =>"display: none;" ) %><input type="button" value="save" name="exam_comment_save" id="exam_comment_save" /></p>
+
+<% end %>

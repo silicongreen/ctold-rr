@@ -633,36 +633,141 @@ sfx  .table-header td{
 }
 
 
-
+///baf shaheen
 .baf_shaheen table td
 {
-
-    font-size:11px;
-    padding: 5px 5px 5px 8px;
-}
-
-.baf_shaheen  .float-left
-{
-    float:left;
-}
-.baf_shaheen  table.float-left-10 tr.odd td
-{
-    padding: 9px 9px 9px 13px;
-    font-size:11px;
-}
-.baf_shaheen  table.float-left-10 tr.even td
-{
-    padding: 9px 9px 9px 13px;
-    font-size:11px;
-}
-.baf_shaheen  .float-left-10
-{
-    float:left;
-    margin-left:11px;
+    font-size:22px;
+    padding: 8px 8px 8px 11px;   
 }
 .baf_shaheen table tr td.t-left
 {
     text-align: left;
+}
+.baf_shaheen table td.border-left-none{
+   border-left: none !important; 
+} 
+.baf_shaheen table td.border-right-none{
+   border-right: none !important;  
+}
+ .baf_shaheen table td.no-border
+ {
+    border: none !important;  
+ }
+ .baf_shaheen table.evaluation td
+ {
+     text-align: left;
+     padding: 4px 2px 5px 9px !important; 
+     font-size: 18px;
+ }
+ .baf_shaheen td.align-center
+ {
+     text-align:center !important;
+ }
+ 
+ 
+
+.baf_shaheen .table-header td{
+    border-top: 1px solid #000000;
+    border-left: 1px solid #000000;
+    border-right: 1px solid #000000;
+    border-bottom: 1px solid #000000;
+    color: #000000;
+    background: #ffffff;
+    font-weight: bold;
+    text-align: center;
+}
+
+
+.baf_shaheen tr.odd td
+{
+    padding: 2px 2px 10px 9px;  
+    border: 1px solid #000000;
+}
+.baf_shaheen tr.even td
+{
+    padding: 2px 2px 10px 9px;
+    border: 1px solid #000000;
+}
+
+.baf_shaheen table#pdf-table{
+    border-top: none;
+    border-collapse:collapse
+}
+.baf_shaheen tr.even{
+    border: none;
+}
+
+.baf_shaheen tr.odd{
+    border: none;
+}
+.baf_shaheen h4.h4-evaluation
+{
+   margin: 40px 0px 15px 10px; 
+}
+.baf_shaheen h4
+{
+    border-bottom: 2px solid black;
+    font-size: 25px;
+    padding: 0px;
+    width: auto;
+    float:left;
+    clear:both;
+    margin-bottom: 9px;
+}
+
+.baf_shaheen div.student_information
+{
+    float:left;
+    clear:both;
+    font-size: 23px;
+    width: 75%;
+    margin: 10px 10px;
+    
+    
+}
+.baf_shaheen div.student_information table
+{
+    margin: 20px 0px;
+    float:left;
+    clear:both;
+}
+.baf_shaheen div.student_information table tr td
+{
+    padding: 9px 9px 9px 5px;  
+}
+.baf_shaheen div.student_information table tr td.font-dark
+{
+    font-weight: 500;
+}
+.baf_shaheen div.student_information table tr td.font-light
+{
+   color: #333333; 
+}
+.baf_shaheen div.grade_information
+{
+    margin-left:102px;
+    float:left;
+    width: 13.5%;
+    font-size: 14px;
+   
+}
+.baf_shaheen div.grade_information table tr.odd td
+{
+    padding: 3px 3px 3px 5px;
+}
+.baf_shaheen div.grade_information table tr.even td
+{
+    padding: 3px 3px 3px 5px;
+}
+.baf_shaheen div.grade_information p
+{
+    font-size: 15px;
+    margin-left: 16px;
+    margin-bottom: 3px;
+}
+div.baf_shaheen
+{
+    border: 1px solid #000000;
 }
 
 

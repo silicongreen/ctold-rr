@@ -6,15 +6,15 @@
 
 <table id="pdf-table"  class="margin-top-bottom-20" width="99%" cellspacing="0">
     <tr class="even">
-      <td class="col-pdf" width="30%">Grade &nbsp;&nbsp;</td>
-      <td class="col-pdf" colspan="2">:&nbsp;&nbsp;<%= @batch.course.course_name %></td>
+      <td class="col-pdf" width="30%">Grade</td>
+      <td class="col-pdf" colspan="2"  width="70%"><%= @batch.course.course_name %></td>
     </tr>
     <tr class="odd">
-      <td class="col-pdf" width="30%">Section &nbsp;&nbsp;</td>
-      <td class="col-pdf" colspan="2">:&nbsp;&nbsp;<%= @batch.course.section_name %></td>
+      <td class="col-pdf" width="30%">Section</td>
+      <td class="col-pdf" colspan="2"  width="70%"><%= @batch.course.section_name %></td>
     </tr>
     <tr class="even">
-      <td class="col-pdf" width="30%">Teacher Name&nbsp;&nbsp;</td>
+      <td class="col-pdf" width="30%">Teacher Name</td>
       <% i = 0 %>
       <% @assigned_employee.each do |emp| %>
       <% i = i+1 %>
@@ -23,16 +23,16 @@
           break
        end
       %>
-        <td class="col-pdf">&nbsp;<%= emp.first_name %>&nbsp;<%= emp.last_name %></td>
+        <td class="col-pdf"  width="35%"><%= emp.first_name %>&nbsp;<%= emp.last_name %></td>
       <% end %>
     </tr>
     <tr class="odd">
-      <td class="col-pdf" width="30%">Attendance &nbsp;&nbsp;</td>
-      <td class="col-pdf" colspan="2">:&nbsp;&nbsp;<%= @present %></td>
+      <td class="col-pdf" width="30%">Attendance</td>
+      <td class="col-pdf" colspan="2"  width="70%"><%= @present %></td>
     </tr>
     <tr class="even">
-      <td class="col-pdf" width="30%">School Days &nbsp;&nbsp;</td>
-      <td class="col-pdf" colspan="2">:&nbsp;&nbsp;<%= @academic_days %></td>
+      <td class="col-pdf" width="30%">School Days</td>
+      <td class="col-pdf" colspan="2"  width="70%"><%= @academic_days %></td>
     </tr>
 </table>
           

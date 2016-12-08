@@ -4,17 +4,18 @@
 <h4 align="center"><%= @exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%^B"):@exam_group.exam_date.strftime("%^B") %> UNIT REPORT</h4> 
 <h4 align="center"><%= "#{@student.full_name}" %></h4>
 
-<table id="pdf-table"  class="margin-top-bottom-20" width="99%" cellspacing="0">
+<table id="pdf-table" class="no-exam"   width="99%" cellspacing="0">
     <tr class="even">
-      <td class="col-pdf" width="30%">Grade</td>
+      <td class="col-pdf left-width-20">Grade</td>
       <td class="col-pdf" colspan="2"  width="70%"><%= @batch.course.course_name %></td>
     </tr>
     <tr class="odd">
-      <td class="col-pdf" width="30%">Section</td>
+      <td class="col-pdf left-width-20">Section</td>
       <td class="col-pdf" colspan="2"  width="70%"><%= @batch.course.section_name %></td>
     </tr>
     <tr class="even">
-      <td class="col-pdf" width="30%">Teacher Name</td>
+      <td class="col-pdf left-width-20">Teacher Name</td>
+      <% if !@assigned_employee.blank? %>
       <% i = 0 %>
       <% @assigned_employee.each do |emp| %>
       <% i = i+1 %>
@@ -23,16 +24,17 @@
           break
        end
       %>
-        <td class="col-pdf"  width="35%"><%= emp.first_name %>&nbsp;<%= emp.last_name %></td>
+        <td class="col-pdf"><%= emp.first_name %>&nbsp;<%= emp.last_name %></td>
       <% end %>
+      <% end %>  
     </tr>
     <tr class="odd">
-      <td class="col-pdf" width="30%">Attendance</td>
-      <td class="col-pdf" colspan="2"  width="70%"><%= @present %></td>
+      <td class="col-pdf left-width-20">Attendance</td>
+      <td class="col-pdf" colspan="2"><%= @present %></td>
     </tr>
     <tr class="even">
-      <td class="col-pdf" width="30%">School Days</td>
-      <td class="col-pdf" colspan="2"  width="70%"><%= @academic_days %></td>
+      <td class="col-pdf left-width-20">School Days</td>
+      <td class="col-pdf" colspan="2"><%= @academic_days %></td>
     </tr>
 </table>
           
@@ -42,12 +44,13 @@
   <% @exams.each do |exam| %>
     <% exam_score.push exam.exam_scores.find_by_student_id(@student.id) unless exam.exam_scores.find_by_student_id(@student.id).nil?  %>
   <% end %>
+  <% c= "even" %>
       <h4 align="center">UNIT DETAILS</h4>
       <table id="pdf-table"   class="margin-top-bottom-10" width="100%" cellspacing="0">        
         <% exam_score.each do |es| %>
           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-             <td class="col-pdf"> <%= es.exam.subject.name %>&nbsp;&nbsp;</td>
-             <td class="col-pdf">:&nbsp;&nbsp;<%= es.remarks.present? ? mark=es.remarks.to_s : '-' %></td>
+             <td class="col-pdf"><%= es.exam.subject.name %>&nbsp;&nbsp;</td>
+             <td class="col-pdf"><%= es.remarks.present? ? mark=es.remarks.to_s : '-' %></td>
           </tr>   
         <% end %>
  
@@ -55,11 +58,13 @@
       <h4 align="center">UNIT COMMENTS</h4>
       <table id="pdf-table"   class="margin-top-bottom-10" width="100%" cellspacing="0"> 
           <tr class="even">
+              <td>
               <% if !@exam_comment.blank? %>
                 <br /><%= @exam_comment.comments %><br />
               <% else %>     
                 &nbsp;<br /><br /><br /><br /><br /><br />
               <% end %>
+              </td>  
           </tr>
       </table>    
       

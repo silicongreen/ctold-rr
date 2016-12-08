@@ -263,6 +263,16 @@ table.teacher_remarks tr td
     font-size: 15px;
 }
 
+.left-width-20
+{
+  width:20%;
+  text-align: left;
+}
+.no-exam tr td
+{
+   text-align: left !important; 
+}
+
 
 
 

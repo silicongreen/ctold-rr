@@ -98,3 +98,9 @@
 
           </table>
       </div> 
+
+      <% if MultiSchool.current_school.id == 324 %>
+      <div class="user_button" style="margin:10px 0px;   margin-left: 27px;">
+          <%= link_to "#{t('pdf_report')}", {:controller => "exam", :action => "student_wise_generated_report", :student=>@student.id,:exam_group=>@exam_group.id},:target => '_blank' %>
+      </div>
+      <% end %>

@@ -1,0 +1,67 @@
+</div>
+<div id="page-yield">
+   
+<h4 align="center"><%= @exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%^B"):@exam_group.exam_date.strftime("%^B") %> UNIT REPORT</h4> 
+<h4 align="center"><%= "#{@student.full_name}" %></h4>
+
+<table id="pdf-table"  class="margin-top-bottom-20" width="100%" cellspacing="0">
+    <tr class="even">
+      <td class="col-pdf">Grade &nbsp;&nbsp;</td>
+      <td class="col-pdf" colspan="2">:&nbsp;&nbsp;<%= @batch.course.course_name %></td>
+    </tr>
+    <tr class="odd">
+      <td class="col-pdf">Section &nbsp;&nbsp;</td>
+      <td class="col-pdf" colspan="2">:&nbsp;&nbsp;<%= @batch.course.section_name %></td>
+    </tr>
+    <tr class="even">
+      <td class="col-pdf">Teacher Name&nbsp;&nbsp;</td>
+      <% i = 0 %>
+      <% @assigned_employee.each do |emp| %>
+      <% i = i+1 %>
+      <%
+       if i > 2 then
+          break
+       end
+      %>
+        <td class="col-pdf">&nbsp;<%= emp.first_name %>&nbsp;<%= emp.last_name %></td>
+      <% end %>
+    </tr>
+    <tr class="odd">
+      <td class="col-pdf">Attendance &nbsp;&nbsp;</td>
+      <td class="col-pdf" colspan="2">:&nbsp;&nbsp;<%= @present %></td>
+    </tr>
+    <tr class="even">
+      <td class="col-pdf">School Days &nbsp;&nbsp;</td>
+      <td class="col-pdf" colspan="2">:&nbsp;&nbsp;<%= @academic_days %></td>
+    </tr>
+</table>
+          
+
+  <% exam_score = [] %>
+  <% max_mark = [] %>
+  <% @exams.each do |exam| %>
+    <% exam_score.push exam.exam_scores.find_by_student_id(@student.id) unless exam.exam_scores.find_by_student_id(@student.id).nil?  %>
+  <% end %>
+      <h4 align="center">UNIT DETAILS</h4>
+      <table id="pdf-table"   class="margin-top-bottom-10" width="100%" cellspacing="0">        
+        <% exam_score.each do |es| %>
+          <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+             <td class="col-pdf"> <%= es.exam.subject.name %>&nbsp;&nbsp;</td>
+             <td class="col-pdf">:&nbsp;&nbsp;<%= es.remarks.present? ? mark=es.remarks.to_s : '-' %></td>
+          </tr>   
+        <% end %>
+ 
+      </table>
+      <h4 align="center">UNIT COMMENTS</h4>
+      <table id="pdf-table"   class="margin-top-bottom-10" width="100%" cellspacing="0"> 
+          <tr class="even">
+              <% if !@exam_comment.blank? %>
+                <br /><%= @exam_comment.comments %><br />
+              <% else %>     
+                &nbsp;<br /><br /><br /><br /><br /><br />
+              <% end %>
+          </tr>
+      </table>    
+      
+
+</div>

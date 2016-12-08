@@ -175,97 +175,114 @@ class Subjects extends CActiveRecord
        return $subject;
     }
     
-    public function getSubjectNoExam($batch_id,$student_id)
+    public function getSubjectNoExam($batch_id,$student_id=0,$subjects_ids = false)
     {
         $criteria = new CDbCriteria();
-        $criteria->select = 't.name,t.id,t.icon_number,t.no_exams';
+        $criteria->select = 't.name,t.id,t.icon_number,t.no_exams,t.code';
         $criteria->compare('t.batch_id', $batch_id);
         $criteria->compare('t.is_deleted', 0);
         $criteria->compare('t.no_exams', 1);
         $criteria->order = "t.name asc";
         $data_subject = $this->findAll($criteria);
         $stsub = new StudentsSubjects();
-        $student_subject = $stsub->getStudentSubject($student_id);
+        $student_subject = $stsub->getStudentSubject($batch_id,$student_id,1);
         $subject_array = array();
         $i = 0;
         if($data_subject)
         {
             foreach($data_subject as $value)
             {
-                $subject_array[$i]['name'] = $value->name;
-                $subject_array[$i]['id'] = $value->id;
-                $subject_array[$i]['icon'] = "";
-                if(isset($value->icon_number))
+                if($subjects_ids===false || in_array($value->id, $subjects_ids) )
                 {
-                    $subject_array[$i]['icon'] = $value->icon_number;
+                    $subject_array[$i]['code'] = $value->code;
+                    $subject_array[$i]['name'] = $value->name;
+                    $subject_array[$i]['id'] = $value->id;
+                    $subject_array[$i]['icon'] = "";
+                    if(isset($value->icon_number))
+                    {
+                        $subject_array[$i]['icon'] = $value->icon_number;
+                    }
+                    $i++;
                 }
-                $i++;
             }    
         } 
         if($student_subject)
         {
             foreach($student_subject as $value)
             {
-                $subject_array[$i]['name'] = $value->name;
-                $subject_array[$i]['id'] = $value->id;
-                $subject_array[$i]['icon'] = "";
-                if(isset($value->icon_number))
+                if($subjects_ids===false || in_array($value->id, $subjects_ids) )
                 {
-                    $subject_array[$i]['icon'] = $value->icon_number;
+                    $subject_array[$i]['code'] = $value->code;
+                    $subject_array[$i]['name'] = $value->name;
+                    $subject_array[$i]['id'] = $value->id;
+                    $subject_array[$i]['icon'] = "";
+                    if(isset($value->icon_number))
+                    {
+                        $subject_array[$i]['icon'] = $value->icon_number;
+                    }
+                    $i++;
                 }
-                $i++;
             }    
         } 
         return $subject_array;
     }
-    
-    public function getSubject($batch_id,$student_id)
+    public function getSubject($batch_id,$student_id=0,$subjects_ids = false)
     {
         $criteria = new CDbCriteria();
-        $criteria->select = 't.name,t.id,t.icon_number,t.no_exams';
+        $criteria->select = 't.name,t.id,t.icon_number,t.no_exams,t.code';
         $criteria->compare('t.batch_id', $batch_id);
         $criteria->compare('t.is_deleted', 0);
         $criteria->compare('t.no_exams', 0);
         $criteria->order = "t.name asc";
         $data_subject = $this->findAll($criteria);
         $stsub = new StudentsSubjects();
-        $student_subject = $stsub->getStudentSubject($student_id);
+        $student_subject = $stsub->getStudentSubject($batch_id,$student_id);
         $subject_array = array();
         $i = 0;
         if($data_subject)
         {
             foreach($data_subject as $value)
             {
-                $subject_array[$i]['name'] = $value->name;
-                $subject_array[$i]['id'] = $value->id;
-                $subject_array[$i]['elective_group_id'] = 0;
-                $subject_array[$i]['elective_group_name'] = "";
-                $subject_array[$i]['icon'] = "";
-                if(isset($value->icon_number))
+                if($subjects_ids===false || in_array($value->id, $subjects_ids) )
                 {
-                    $subject_array[$i]['icon'] = $value->icon_number;
+                    $subject_array[$i]['name'] = $value->name;
+                    $subject_array[$i]['code'] = $value->code;
+                    $subject_array[$i]['id'] = $value->id;
+                    $subject_array[$i]['elective_group_id'] = 0;
+                    $subject_array[$i]['elective_group_name'] = "";
+                    $subject_array[$i]['icon'] = "";
+                    if(isset($value->icon_number))
+                    {
+                        $subject_array[$i]['icon'] = $value->icon_number;
+                    }
+                    $i++;
                 }
-                $i++;
             }    
         } 
         if($student_subject)
         {
             foreach($student_subject as $value)
             {
-                $subject_array[$i]['name'] = $value->name;
-                $subject_array[$i]['id'] = $value->id;
-                $subject_array[$i]['icon'] = "";
-                $subject_array[$i]['elective_group_id'] = $value['electiveGroup']->id;
-                $subject_array[$i]['elective_group_name'] = $value['electiveGroup']->name;
-                if(isset($value->icon_number))
+                if($subjects_ids===false || in_array($value->id, $subjects_ids) )
                 {
-                    $subject_array[$i]['icon'] = $value->icon_number;
+                    $subject_array[$i]['name'] = $value->name;
+                    $subject_array[$i]['code'] = $value->code;
+                    $subject_array[$i]['id'] = $value->id;
+                    $subject_array[$i]['icon'] = "";
+                    $subject_array[$i]['elective_group_id'] = $value['electiveGroup']->id;
+                    $subject_array[$i]['elective_group_name'] = $value['electiveGroup']->name;
+                    if(isset($value->icon_number))
+                    {
+                        $subject_array[$i]['icon'] = $value->icon_number;
+                    }
+                    $i++;
                 }
-                $i++;
             }    
         } 
         return $subject_array;
     }
+    
+    
     
     public function getTotalMarkPercent($id)
     {

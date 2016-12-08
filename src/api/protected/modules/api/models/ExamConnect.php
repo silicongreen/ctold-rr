@@ -70,7 +70,7 @@ class ExamConnect extends CActiveRecord
                 'joinType' => 'LEFT JOIN',
                 'with' => array(
                     'examgroup' => array(
-                        'select' => 'examgroup.id,examgroup.name,examgroup.exam_category',
+                        'select' => 'examgroup.id,examgroup.name,examgroup.exam_category,examgroup.quarter',
                         'joinType' => 'LEFT JOIN',
                         'with' => array(
                             'Exams' => array(
@@ -120,6 +120,7 @@ class ExamConnect extends CActiveRecord
                     {
                         $exam =$groupedexam['examgroup']['Exams'][0];
                         $result['CT'][$i]['name'] = $groupedexam['examgroup']->name;
+                        $result['CT'][$i]['quarter'] = $groupedexam['examgroup']->quarter;
                         
                         $result['CT'][$i]['maximum_marks'] = $exam->maximum_marks;
                         if($i == 0)
@@ -158,6 +159,7 @@ class ExamConnect extends CActiveRecord
                     {
                         $exam =$groupedexam['examgroup']['Exams'][0];
                         $result['ST'][$k]['name'] = $groupedexam['examgroup']->name;
+                        $result['ST'][$k]['quarter'] = $groupedexam['examgroup']->quarter;
                         
                         $result['ST'][$k]['maximum_marks'] = $exam->maximum_marks;
                         if($i == 0)
@@ -192,6 +194,8 @@ class ExamConnect extends CActiveRecord
                     
                     $exam =$groupedexam['examgroup']['Exams'][0];
                     $result['ALL'][$f]['name'] = $groupedexam['examgroup']->name;
+                    $result['ALL'][$f]['quarter'] = $groupedexam['examgroup']->quarter;
+                    $result['ALL'][$f]['exam_category'] = $groupedexam['examgroup']->exam_category;
                     $result['ALL'][$f]['maximum_marks'] = $exam->maximum_marks;
                     foreach($exam['Scores'] as $scores)
                     {
@@ -223,13 +227,18 @@ class ExamConnect extends CActiveRecord
               $result['max_mark_ct'] = $max_mark_ct;
               $result['max_mark_st'] = $max_mark_st;
               
-              usort($result['students'], function($a, $b) {
-                    return $a['class_roll_no'] - $b['class_roll_no'];
-              });
-              
-              usort($result['al_students'], function($a, $b) {
-                    return $a['class_roll_no'] - $b['class_roll_no'];
-              });
+              if(isset($result['students']))
+              {
+                usort($result['students'], function($a, $b) {
+                      return $a['class_roll_no'] - $b['class_roll_no'];
+                });
+              }
+              if(isset($result['al_students']))
+              {
+                usort($result['al_students'], function($a, $b) {
+                      return $a['class_roll_no'] - $b['class_roll_no'];
+                });
+              }
                 
             }
             

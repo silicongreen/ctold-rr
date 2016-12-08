@@ -113,12 +113,16 @@ class StudentsSubjects extends CActiveRecord
 		return parent::model($className);
 	}
         
-        public function getStudentSubject($student_id)
+        public function getStudentSubject($batch_id,$student_id,$no_exam =0)
         {
             $criteria = new CDbCriteria();
             $criteria->select = 't.*';
-            $criteria->compare('t.student_id', $student_id);
-            $criteria->compare('MainSubjects.no_exams', 0);
+            $criteria->compare('t.batch_id', $batch_id);
+            if($student_id)
+            {
+                $criteria->compare('t.student_id', $student_id);
+            }
+            $criteria->compare('MainSubjects.no_exams', $no_exam);
             
             $criteria->with =array(
                         "MainSubjects" => array(
@@ -135,10 +139,14 @@ class StudentsSubjects extends CActiveRecord
             $subjects = $this->findAll($criteria);
             
             $subject_array = array();
-            
+            $sub_ids = array();
             foreach($subjects as $value)
             {
-                $subject_array[] = $value['MainSubjects'];
+                if(!in_array($value['MainSubjects']->id, $sub_ids))
+                {
+                    $sub_ids[] = $value['MainSubjects']->id;
+                    $subject_array[] = $value['MainSubjects'];
+                }
             }    
             return $subject_array;
         }

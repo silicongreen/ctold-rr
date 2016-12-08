@@ -94,6 +94,7 @@ class ExamController < ApplicationController
     end
     @type = params[:exam_option][:exam_type]
     @exam_category = params[:exam_option][:exam_category]
+    @quarter = params[:exam_option][:quarter]
     @attandence_start_date = params[:exam_option][:attandence_start_date]
     @attandence_end_date = params[:exam_option][:attandence_end_date]
     @topic = params[:exam_option][:topic]
@@ -486,6 +487,61 @@ class ExamController < ApplicationController
   def exam_connect_list
     @batch = Batch.find(params[:id])
     @exam_connect_data = ExamConnect.find_all_by_batch_id(@batch.id)
+  end
+  def connect_exam_subject
+    @exam_connect = ExamConnect.find_by_id(params[:id])        
+    @batch = Batch.find(@exam_connect.batch_id)
+    @group_exams = GroupedExam.find_all_by_connect_exam_id(@exam_connect.id)    
+    @subjects = []
+    @group_exams.each do |group_exam|
+      exams = Exam.find_all_by_exam_group_id(group_exam.exam_group_id);
+      exams.each do |exam|
+        if !@subjects.include?(exam.subject)
+          @subjects << exam.subject
+        end
+      end
+    end
+  end
+  def connect_exam_subject_comments
+    exam_subject_id = params[:id]
+    exam_subject_id_array = exam_subject_id.split("|")
+    @exam_connect = ExamConnect.find_by_id(exam_subject_id_array[0]) 
+    @batch = Batch.find(@exam_connect.batch_id)
+    @exam_subject = Subject.find_by_id(exam_subject_id_array[1]) 
+    is_elective = @exam_subject.elective_group_id
+    if is_elective == nil
+      @students = @batch.students.by_roll_number_name
+    else
+      assigned_students = StudentsSubject.find_all_by_subject_id(@exam_subject.id)
+      @students = []
+      assigned_students.each do |s|
+        student = Student.find_by_id(s.student_id)
+        @students.push [student.class_roll_no,student.first_name, student.id, student] unless student.nil?
+      end
+      @ordered_students = @students.sort
+      @students=[]
+      @ordered_students.each do|s|
+        @students.push s[3]
+      end
+    end  
+    if request.post?
+      params[:exam].each_pair do |student_id, details|
+        @exam_comments = ExamConnectSubjectComment.find(:first, :conditions => {:exam_connect_id=>@exam_connect.id,:subject_id => @exam_subject.id, :student_id => student_id} )
+        if @exam_comments.nil?
+          ExamConnectSubjectComment.create do |score|
+            score.subject_id       = @exam_subject.id
+            score.student_id       = student_id
+            score.exam_connect_id  = exam_subject_id_array[0]
+            score.employee_id      = current_user.employee_record.id
+            score.comments         = details[:comments]
+          end
+        else
+          @exam_comments.update_attributes(details)
+        end
+      end
+      flash[:notice] = "Successfully Saved"
+    end
+    
   end
   def new_exam_connect
     @batch = Batch.find(params[:id])
@@ -2005,6 +2061,26 @@ class ExamController < ApplicationController
     @exam_groups = []
   end
   
+  def tabulation
+    @id = params[:id]
+    @connect_exam_obj = ExamConnect.find(@id)
+    @batch = Batch.find(@connect_exam_obj.batch_id)
+    get_tabulation(@id,@batch.id)
+    @report_data = []
+    if @student_response['status']['code'].to_i == 200
+      @report_data = @student_response['data']
+    end
+    @exam_comment = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id)
+    render :pdf => 'tabulation',
+      :orientation => 'Landscape', :zoom => 1.00,
+      :margin => {    :top=> 10,
+      :bottom => 10,
+      :left=> 10,
+      :right => 10},
+      :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+      :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+  end
+  
   def marksheet
     @id = params[:id]
     @subject_id = params[:subject_id]
@@ -2265,7 +2341,7 @@ class ExamController < ApplicationController
     if MultiSchool.current_school.id == 246
       render :pdf => 'generated_report5_pdf',
         :orientation => 'Landscape', :zoom => 1.00
-    elsif MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 2
+    elsif MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 323
       render :pdf => 'generated_report5_pdf',
         :orientation => 'Portrait', :zoom => 1.00
     else
@@ -3050,6 +3126,21 @@ class ExamController < ApplicationController
     request.set_form_data({"connect_exam_id"=>connect_exam_id,"student_id"=>student_id,"batch_id"=>batch_id,"call_from_web"=>1,"user_secret" =>session[:api_info][0]['user_secret']})
 
 
+    response = http.request(request)
+    @student_response = JSON::parse(response.body)
+
+  end
+  def get_tabulation(connect_exam_id,batch_id)
+    require 'net/http'
+    require 'uri'
+    require "yaml"
+    champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
+    api_endpoint = champs21_api_config['api_url']
+
+    api_uri = URI(api_endpoint + "api/report/tabulation")
+    http = Net::HTTP.new(api_uri.host, api_uri.port)
+    request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })
+    request.set_form_data({"connect_exam_id"=>connect_exam_id,"batch_id"=>batch_id,"call_from_web"=>1,"user_secret" =>session[:api_info][0]['user_secret']})
     response = http.request(request)
     @student_response = JSON::parse(response.body)
 

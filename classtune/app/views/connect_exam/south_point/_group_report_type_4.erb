@@ -8,7 +8,7 @@
                       <td class="col-pdf">Full Mark</td>
                       <td class="col-pdf">Obtained Mark</td>
                       <td class="col-pdf">Grade</td>
-                      <td class="col-pdf">Highest</td>
+                      
                     
                   </tr>
 
@@ -99,7 +99,7 @@
                           <% else %>
                             <td class="col-pdf">N/A</td>  
                           <% end %> 
-                          <td class="col-pdf"><%= sprintf( "%0.02f", full_mark) %></td>
+                         
                                
 
                       </tr> 
@@ -130,12 +130,11 @@
                             <td class="col-pdf"></td>
                             <td class="col-pdf"></td>
                             <td class="col-pdf"><%= report['subject_comment'] %></td>
-                            <td class="col-pdf"></td>
                             </tr>
                           <% end %>
                         <% end %>
                       <% end %>
                   <% end %>     
 
-              </table>          
+              </table>       
 <% end %>

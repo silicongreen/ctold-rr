@@ -105,6 +105,12 @@
               <%= select :exam_option,:exam_category,options_from_collection_for_select(exam_type, :first, :last) %>
             </div>
           </div>
+          <div class="label-field-pair">
+           <label >Quarter</label>
+            <div  class="text-input-bg">
+              <%= select :exam_option,:quarter,[["N/A",0],["1st Quarter",1],["2nd Quarter",2],["3rd Quarter",3],["4th Quarter",4],["First Term",5],["Final Term",6]] %>
+            </div>
+          </div>
           <div class="label-field-pair" id="exam_topic" style="display:none;">
             <label for="topic">Topic :</label>
           </div>

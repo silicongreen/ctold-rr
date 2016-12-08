@@ -17,7 +17,7 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 
-<div id="page-yield" class="available_sections1">
+<div id="page-yield" class="available_sections1 marksheet4">
   <div class="page1"> </div>
   <div class="section1 row" >
     <center>
@@ -26,7 +26,7 @@
       <h4 align="center">For Subject Teacher</h4>
       
       <div id ="main_info">
-          <table>
+          <table width="100%">
               <tr>
                  <% if !@employee.nil? %> 
                   <td align='left'><h4>Teacher's Name : <%=  @employee.full_name %></h4></td>
@@ -95,13 +95,13 @@
         <% @report_data['result']['students'].each do |std| %>
           <%  std_count = std_count+1; %>
           
-          <% if std_count>14 && extender ==0 %>
+          <% if std_count>15 && extender ==0 %>
               <% std_count = 0 %>
               <% extender = 1 %>
               <tr class="page-break">
                   <td colspan="<%= colspan %>">&nbsp;</td>
               </tr>    
-          <% elsif std_count>20 && extender ==1 %>
+          <% elsif std_count>22 && extender ==1 %>
               <% std_count = 0 %>
               <% extender = 1 %>
               <tr class="page-break">

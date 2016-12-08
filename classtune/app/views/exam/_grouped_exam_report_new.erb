@@ -30,8 +30,10 @@
           <div style="width:100%; overflow:auto;">
               <% if MultiSchool.current_school.id == 319 %>
                   <%= render  :partial=>"/connect_exam/sfx/group_marks" %>
-              <% elsif MultiSchool.current_school.id == 2 %>
+              <% elsif MultiSchool.current_school.id == 323 %>
                   <%= render  :partial=>"/connect_exam/baf_shaheen/group_marks" %>
+              <% elsif MultiSchool.current_school.id == 2 %>
+                  <%= render  :partial=>"/connect_exam/south_point/group_marks" %>
                <% else %>
                   <%= render  :partial=>"/connect_exam/group_marks" %>
               <% end %>
@@ -73,7 +75,7 @@
             </table>
           <% end %>
        
-          <% if MultiSchool.current_school.id == 2 %>
+          <% if MultiSchool.current_school.id == 323 %>
               <%= render  :partial=>"/connect_exam/baf_shaheen/exam_comments" %>  
           <% else %> 
               <%= render  :partial=>"/connect_exam/exam_comments" %>  

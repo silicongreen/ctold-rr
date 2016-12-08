@@ -75,7 +75,7 @@ class ApplicationController < ActionController::Base
       all_types = type_config['type'].split(",")     
       all_types.each do |examtype|
         string_to_match = current_school.to_s+"_"
-        if !examtype.index(string_to_match).blank?
+        if !examtype.index(string_to_match).blank? and examtype.index(string_to_match)==0
           type_array = examtype.split("_")
           vreturn[type_array[1].to_s] = type_array[2].to_s
         end
@@ -101,7 +101,7 @@ class ApplicationController < ActionController::Base
       all_types = type_config['type'].split(",")     
       all_types.each do |examtype|
         string_to_match = current_school.to_s+"_"
-        if !examtype.index(string_to_match).blank?
+        if !examtype.index(string_to_match).blank? and examtype.index(string_to_match)==0
           type_array = examtype.split("_")
           vreturn << type_array[1].to_s
         end

@@ -21,16 +21,14 @@
 <%= show_header_icon %>
   <h1><%= t('exams_text') %></h1>
 <div class='header-sep'>|</div>
-<div class='sub-header'><%= t('create_exam') %></div>
+<div class='sub-header'>Connect Exam Subjects Comments</div>
 <div id="inner-tab-menu">
   <ul>
     <% if permitted_to? :previous_batch_exams, :exam %>
       <li class='themed_bg themed-dark-hover-background' style="display: none;"><%= link_to "#{t('previous_batch_exam')}", {:controller => "exam", :action => "previous_batch_exams"} %></li>
     <% end %>
     <% unless @show_class_exam %>   
-        <li class='themed_bg themed-dark-hover-background'><%= link_to t('exams_text'), :controller => "exam", :action => "create_exam" %></li>
-    <% else %>
-        <li class='themed_bg themed-dark-hover-background'><%= link_to t('single_batch_exam'), :controller => "exam", :action => "create_exam", :show_class => true %></li>
+        <li class='themed_bg themed-dark-hover-background'><%= link_to t('exams_text'), :controller => "exam", :action => "exam_connect_list",:id=>@batch.id %></li>
     <% end %>  
     <%  if permitted_to? :grouping,:exam %>
       <% unless @is_class_exam %>   
@@ -54,43 +52,45 @@
     
   <div class="box">
 
-  <h2>EXAM CONNECT LIST</h2>
+  <h3>EXAM COMMENTS (<%= link_to @exam_connect.name, :controller => "exam", :action => "connect_exam_subject",:id=>@exam_connect.id %> >> <%= @exam_subject.name %>)</h3>
   <%#= debug @exam_connect_data.inspect %>
-  <% unless @exam_connect_data.nil? %>
-      <h4><%= t('connect_exams') %></h4>
-      
-        <table id="listing" align="center" width="100%" cellpadding="1" cellspacing="1">
-          <% count=@exam_connect_data.count.to_i - 1 %>
+  <% unless @students.empty? %>
+      <% form_for :exams do |f| %>
+        <table id="listing" width="100%">
           <tr class="tr-head">
-            
-            <td class="col-2">
-                
-              <%= t('exam_group') %>
-            </td>
-            <td class="col-2">
-              
-            </td>
+            <td><%= "Roll" %></td>
+            <td><%= t('name') %></td>
+            <td><%= t('remarks') %></td>
           </tr>
-          <tr class="tr-blank"></tr>
-          <% i=0 %>
-          <% total = 0 %>
-          <% @exam_connect_data.each do |e| %>
+          <% @students.each do |student| %>
             <tr class="tr-<%= cycle('odd', 'even') %>">
-              
-              
-              <td class="col-2"><%= link_to(e.name, '/exam/' + 'connect_exam_subject/' + e.id.to_s, :method => 'get') %></td>
-              <td class="col-2">
-                 <%= link_to("#{t('edit_text')}", '/exam/' + 'edit_exam_connect/' + e.id.to_s, :method => 'get') %>
-                  <%= link_to("#{t('delete_text')}", '/exam/' + 'remove_exam_connect/' + e.id.to_s, :method => 'delete', :confirm => "#{t('delete_confirm_msg')}") %>
+              <td class="col-2"><%= student.class_roll_no %> </td>
+              <td class="col-2"><%= student.full_name %> </td>
+              <%
+                exam_comment = ""
+                @exam_comments = ExamConnectSubjectComment.find(:first, :conditions => {:exam_connect_id=>@exam_connect.id,:subject_id => @exam_subject.id, :student_id => student.id} )
+                if !@exam_comments.blank?
+                  exam_comment = @exam_comments.comments
+                end
+              %>
+              <td class="col-2"><div class="label-field-pair2">
+                  <div class="text-input-bg2">
+                    <%= text_field_tag "exam[#{student.id}][comments]", exam_comment, :size => '40' %></div>
+                  </div>
               </td>
-            </tr>
-            <% i=i+1 %>
-          <% end %>
-          
-        </table>    
+            <tr>
+          <% end %>      
+        </table>
+        <br/>
+        <div id="sub-button"><%= submit_tag "", :value => "► #{t('save')}", :class => "submit_button" %></div>
+      <% end %> 
         
-     
-    <% else %>
-      <p class="flash-msg">No valid exams connection available.</p>
     <% end %>
-  </div></div>
+  </div>
+     </div>
+<style>
+  #sub-button .submit_button
+  {
+    cursor: pointer;
+  }
+</style>

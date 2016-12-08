@@ -83,7 +83,6 @@ h2.heading{
 
 }
 
-
 .odd{
     height:auto;
     background: #EEEEEE;
@@ -172,9 +171,22 @@ table#pdf-table{
     text-align: center;
 }
 
+.page-break4 td{
+    height: 47px;
+    border: 1px solid #fff;
+    border-top: 1px solid #ADACAB;
+    border-bottom: 1px solid #ADACAB;
+}
+
 
 .page-break td{
-    height: 130px;
+    height: 50px;
+    border: 1px solid #fff;
+    border-top: 1px solid #ADACAB;
+    border-bottom: 1px solid #ADACAB;
+}
+.page-break1 td{
+    height: 100px;
     border: 1px solid #fff;
     border-top: 1px solid #ADACAB;
     border-bottom: 1px solid #ADACAB;
@@ -187,11 +199,30 @@ table#pdf-table{
 table, tr, td, th, tbody, thead, tfoot {
     page-break-inside: avoid !important;
 }
+table.final-term tr td
+{
+    
+   text-align: center;
+   font-size: 10px;
+   white-space: nowrap;
+    
+}
 table tr td
 {
-    width:19% !important;
     white-space: nowrap;
-    
+}
+
+#page-yield 
+{
+    width:1350px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+#page-yield.marksheet4 
+{
+    width:1550px;
+    margin: 0 auto;
+    overflow: hidden;
 }
 
 

@@ -30,7 +30,17 @@
           <%= Time.now.strftime("%B, %Y") %>
         </div>
       </div>
+        
+      
     </div>
+    <% unless @current_user.student? or @current_user.parent? %>
+          <div id="inner-tab-menu">
+            <ul style="margin: 10px 20px 0 0;">
+              <li class="themed_bg themed-dark-hover-background"><%= link_to "Tabulation Sheet",
+                        {:action => "tabulation",:id=>@connect_exam_obj.id},:target => '_blank' %></li>
+            </ul>
+          </div>
+      <% end %>
    </div>
   
 <div id="page-yield" style="margin:10px 0">

@@ -21,16 +21,14 @@
 <%= show_header_icon %>
   <h1><%= t('exams_text') %></h1>
 <div class='header-sep'>|</div>
-<div class='sub-header'><%= t('create_exam') %></div>
+<div class='sub-header'>Connect Exam Subjects</div>
 <div id="inner-tab-menu">
   <ul>
     <% if permitted_to? :previous_batch_exams, :exam %>
       <li class='themed_bg themed-dark-hover-background' style="display: none;"><%= link_to "#{t('previous_batch_exam')}", {:controller => "exam", :action => "previous_batch_exams"} %></li>
     <% end %>
     <% unless @show_class_exam %>   
-        <li class='themed_bg themed-dark-hover-background'><%= link_to t('exams_text'), :controller => "exam", :action => "create_exam" %></li>
-    <% else %>
-        <li class='themed_bg themed-dark-hover-background'><%= link_to t('single_batch_exam'), :controller => "exam", :action => "create_exam", :show_class => true %></li>
+        <li class='themed_bg themed-dark-hover-background'><%= link_to t('exams_text'), :controller => "exam", :action => "exam_connect_list",:id=>@batch.id %></li>
     <% end %>  
     <%  if permitted_to? :grouping,:exam %>
       <% unless @is_class_exam %>   
@@ -54,35 +52,20 @@
     
   <div class="box">
 
-  <h2>EXAM CONNECT LIST</h2>
+  <h2>EXAM SUBJECT LIST (<%= @exam_connect.name %>)</h2>
   <%#= debug @exam_connect_data.inspect %>
-  <% unless @exam_connect_data.nil? %>
-      <h4><%= t('connect_exams') %></h4>
+  <% unless @subjects.nil? %>
+      
       
         <table id="listing" align="center" width="100%" cellpadding="1" cellspacing="1">
-          <% count=@exam_connect_data.count.to_i - 1 %>
-          <tr class="tr-head">
-            
-            <td class="col-2">
-                
-              <%= t('exam_group') %>
-            </td>
-            <td class="col-2">
-              
-            </td>
-          </tr>
-          <tr class="tr-blank"></tr>
-          <% i=0 %>
-          <% total = 0 %>
-          <% @exam_connect_data.each do |e| %>
+          
+          <% i=1 %>
+          <% @subjects.each do |e| %>
             <tr class="tr-<%= cycle('odd', 'even') %>">
               
+              <td class="col-2"><%= i %></td>
+              <td class="col-2"><%= link_to(e.name, '/exam/' + 'connect_exam_subject_comments/' +@exam_connect.id.to_s+"|"+e.id.to_s, :method => 'get') %></td>
               
-              <td class="col-2"><%= link_to(e.name, '/exam/' + 'connect_exam_subject/' + e.id.to_s, :method => 'get') %></td>
-              <td class="col-2">
-                 <%= link_to("#{t('edit_text')}", '/exam/' + 'edit_exam_connect/' + e.id.to_s, :method => 'get') %>
-                  <%= link_to("#{t('delete_text')}", '/exam/' + 'remove_exam_connect/' + e.id.to_s, :method => 'delete', :confirm => "#{t('delete_confirm_msg')}") %>
-              </td>
             </tr>
             <% i=i+1 %>
           <% end %>
@@ -91,6 +74,6 @@
         
      
     <% else %>
-      <p class="flash-msg">No valid exams connection available.</p>
+      <p class="flash-msg">No Exam Subject Found.</p>
     <% end %>
   </div></div>

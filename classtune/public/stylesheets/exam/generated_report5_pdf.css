@@ -348,7 +348,7 @@ academia_box p
 {
     border-bottom: 3px solid red;
 }
-.mpsc table td,th
+.mpsc table td,.mpsc table th
 {
     font-size: 18px !important;
 }
@@ -447,38 +447,7 @@ table#pdf-table{
 
 
 
-.st_and_ct table td
-{
-    font-size:20px;
-}
 
-.st_and_ct .academia_box, .st_and_ct table, .st_and_ct table td
-{
-
-    margin-top:20px;
-}
-.st_and_ct .academia_box table th
-{
-    border: none;
-}
-
-.st_and_ct .academia_box table td
-{
-    border: 1px solid #000;
-    font-size:20px;
-    padding:10px;
-
-}
-.st_and_ct h4
-{
-    font-size:22px;
-}
-.st_and_ct h2
-{
-    font-size:40px;
-    margin-bottom:5px;
-    border-bottom: 2px solid black;
-}
 
 .margin-top-40
 {
@@ -501,10 +470,7 @@ table#pdf-table{
     width:1000px;
 }
 
-.st_and_ct .table-header td{
-    color: #000;
-    font-weight: bold;
-}
+
 
 .cherry_blossoms  table tr td
 {
@@ -772,6 +738,60 @@ sfx  .table-header td{
 div.baf_shaheen
 {
     border: 1px solid #000000;
+}
+
+
+
+//South Point
+
+.south_point table td
+{
+    font-size:12px;
+}
+.south_point .academia_box
+{
+  margin-top:10px;  
+}
+.south_point table, .south_point table td
+{
+
+    margin-top:0px;
+}
+.south_point .current_batch 
+{
+    margin-top:0px;
+}
+.south_point .academia_box table th
+{
+    border: none;
+    font-size:12px !important;
+}
+
+.south_point .academia_box table td
+{
+    border: 1px solid #000;
+    font-size:12px;
+    padding:5px;
+
+}
+.south_point h4
+{
+    font-size:18px;
+}
+.south_point h2
+{
+    font-size:28px;
+    margin-bottom:5px;
+    border-bottom: 2px solid black;
+}
+.south_point .table-header td{
+    color: #000;
+    font-weight: bold;
+}
+.south_point table td
+{
+    font-size:12px;
+    padding: 5px 5px 5px 0px;   
 }
 
 

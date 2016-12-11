@@ -21,6 +21,7 @@ class Attendances extends CActiveRecord {
     /**
      * @return string the associated database table name
      */
+    public $total;
     public function tableName() {
         return 'attendances';
     }
@@ -343,7 +344,56 @@ class Attendances extends CActiveRecord {
         }
         return $r_data;
         
-    }  
+    } 
+    public function getTotalPrsent($batch_id,$connect_exam_id)
+    {
+        //$batchobj = new Batches();
+        //$attandence_start = $batchobj->getBatchStartMax(false, false, $batch_id);
+        
+        $objExamConnect = new ExamConnect();
+        
+        $start_date_end_date = $objExamConnect->findByPk($connect_exam_id);
+        
+        
+        $attandence_start = date("Y-m-d" , strtotime($start_date_end_date->attandence_start_date));
+        $attandence_end =  date("Y-m-d" , strtotime($start_date_end_date->attandence_end_date));
+        $number_of_days = $this->getNumberOfdays($attandence_start, $attandence_end);
+        
+        $criteria = new CDbCriteria;
+        $criteria->select="count(t.student_id) as total,t.student_id";
+        
+        $criteria->addCondition("( t.month_date>='$attandence_start' and t.month_date<='$attandence_end' )");
+
+        $criteria->compare('t.school_id', Yii::app()->user->schoolId);
+
+        $criteria->compare('t.batch_id', $batch_id); 
+        $criteria->compare('t.forenoon', 1); 
+        $criteria->compare('t.afternoon', 1); 
+
+        $criteria->with = array(
+            "batchDetails" => array(
+                "select" => "batchDetails.name",
+                'joinType' => "LEFT JOIN",
+                'with' => array(
+                    "courseDetails" => array(
+                        "select" => "courseDetails.course_name",
+                        'joinType' => "LEFT JOIN",
+                    )
+                )
+            )  
+        );
+       $data = $this->findAll($criteria);
+       
+       $return = array();
+       foreach($data as $value)
+       {
+          $return[$value->student_id] = $number_of_days-$value->total;
+       }
+       
+       
+       return array($number_of_days,$return);
+        
+    }   
     
     public function getStudentTotalPrsent($batch_id,$student_id,$connect_exam_id)
     {
@@ -368,6 +418,8 @@ class Attendances extends CActiveRecord {
 
         $criteria->compare('t.batch_id', $batch_id); 
         $criteria->compare('t.student_id', $student_id);
+        $criteria->compare('t.forenoon', 1); 
+        $criteria->compare('t.afternoon', 1); 
 
         $criteria->with = array(
             "batchDetails" => array(

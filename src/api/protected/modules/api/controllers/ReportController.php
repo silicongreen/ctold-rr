@@ -94,10 +94,15 @@ class ReportController extends Controller
                 
                 $groupexam = new GroupedExams();
                 $exam_report = $groupexam->getContinuesResult($batch_id,$connect_exam_id);
+                $attandence = new Attendances();
+                $adata = $attandence->getTotalPrsent($batch_id, $connect_exam_id);
+              
                 
                 if ($exam_report) {
                     
                     $response['data']['report'] = $exam_report;
+                    $response['data']['total'] = $adata[0];
+                    $response['data']['present_all'] = $adata[1];
                     $response['status']['code'] = 200;
                     $response['status']['msg'] = "EXAM_REPORT_FOUND";
                 } else {

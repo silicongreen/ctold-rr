@@ -113,6 +113,28 @@ class ExamConnectSubjectComments extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        public function getCommentAllSubjects($exam_connect_id,$subject_id,$students)
+        {
+            $criteria = new CDbCriteria();
+            $criteria->select = 't.comments,t.student_id'; 
+            $criteria->compare('t.exam_connect_id', $exam_connect_id);
+            $criteria->addInCondition('t.subject_id', $subject_id);
+            $comments = $this->findAll($criteria);
+            $return_comments = array();
+            foreach($students as $value)
+            {
+                foreach($subject_id as $sub)
+                $return_comments[$value][$sub] = "";
+            }
+            if($comments)
+            {
+                foreach($comments as $value)
+                {
+                    $return_comments[$value->student_id][$value->subject_id] = $value->comments;
+                } 
+            }
+            return  $return_comments;  
+        }
         public function getCommentAll($exam_connect_id,$subject_id,$students)
         {
             $criteria = new CDbCriteria();

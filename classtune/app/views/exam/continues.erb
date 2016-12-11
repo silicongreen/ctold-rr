@@ -31,10 +31,10 @@
       
       @report_data['report']['exams'] = @report_data['report']['all_result'][std['id']]['exams']
       
-      if !@report_data['report']['exam_comments'][std['id']]['comments'].blank?
+      if !@report_data['report']['exam_comments'].blank? and !@report_data['report']['exam_comments'][std['id']]['comments'].blank?
         @report_data['report']['comments'] = @report_data['report']['exam_comments'][std['id']]['comments']
       end
-      if !@report_data['report']['no_exam_comments'][std['id']]['no_exam_subject_resutl'].blank?
+      if !@report_data['report']['no_exam_comments'].blank? and !@report_data['report']['no_exam_comments'][std['id']]['no_exam_subject_resutl'].blank?
         @report_data['report']['no_exam_subject_resutl'] = @report_data['report']['no_exam_comments'][std['id']]['no_exam_subject_resutl']
       end 
       @exam_comment = {}

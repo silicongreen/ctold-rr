@@ -2062,6 +2062,29 @@ class ExamController < ApplicationController
     @exam_groups = []
   end
   
+  def continues
+    @id = params[:id]
+    @connect_exam_obj = ExamConnect.find(@id)
+    @batch = Batch.find(@connect_exam_obj.batch_id)
+    get_continues(@id,@batch.id)
+    @report_data = []
+    if @student_response['status']['code'].to_i == 200
+      @report_data = @student_response['data']
+    end
+    @exam_comment_all = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id)
+    if MultiSchool.current_school.id == 246
+      render :pdf => 'continues',
+        :orientation => 'Landscape', :zoom => 1.00
+    elsif MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 323
+      render :pdf => 'continues',
+        :orientation => 'Portrait', :zoom => 1.00
+    else
+    
+      render :pdf => 'continues',
+        :orientation => 'Landscape', :zoom => 1.00
+    end
+  end
+  
   def tabulation
     @id = params[:id]
     @connect_exam_obj = ExamConnect.find(@id)
@@ -3127,6 +3150,21 @@ class ExamController < ApplicationController
     request.set_form_data({"connect_exam_id"=>connect_exam_id,"student_id"=>student_id,"batch_id"=>batch_id,"call_from_web"=>1,"user_secret" =>session[:api_info][0]['user_secret']})
 
 
+    response = http.request(request)
+    @student_response = JSON::parse(response.body)
+
+  end
+  def get_continues(connect_exam_id,batch_id)
+    require 'net/http'
+    require 'uri'
+    require "yaml"
+    champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
+    api_endpoint = champs21_api_config['api_url']
+
+    api_uri = URI(api_endpoint + "api/report/continues")
+    http = Net::HTTP.new(api_uri.host, api_uri.port)
+    request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })
+    request.set_form_data({"connect_exam_id"=>connect_exam_id,"batch_id"=>batch_id,"call_from_web"=>1,"user_secret" =>session[:api_info][0]['user_secret']})
     response = http.request(request)
     @student_response = JSON::parse(response.body)
 

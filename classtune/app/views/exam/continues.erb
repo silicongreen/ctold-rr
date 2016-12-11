@@ -1,0 +1,68 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+<% if !@report_data.blank? %>
+  <% @report_data['report']['students'].each do |std| %>
+    <%
+    @student = Student.find(std['id'])
+    #@student.id = std['id']
+    #@student.full_name = std['first_name']+" "+std['last_name']
+    #@student.admission_no = std['admission_no']
+    #@student.class_roll_no = std['class_roll_no']
+    @report_data['report']['exams'] = @report_data['report']['all_result'][std['id']]['exams']
+    @report_data['report']['comments'] = @report_data['report']['exam_comments'][std['id']]['comments']
+    @report_data['report']['no_exam_subject_resutl'] = @report_data['report']['no_exam_comments'][std['id']]['no_exam_subject_resutl']
+    @exam_comment = {}
+      @exam_comment_all.each do |ec|
+          if ec.student_id.to_i == std['id'].to_i
+            @exam_comment = ec
+            break
+          end
+      end
+    %>
+    
+    
+   
+    <%= render  :partial=>"connect_result_reformate" %>
+    <% if MultiSchool.current_school.id == 283 %>
+      <%= render  :partial=>"/connect_exam/academia/group_report" %>
+    <% elsif MultiSchool.current_school.id == 246 %>
+      <%= render  :partial=>"/connect_exam/cherry_blossoms/group_report" %>
+    <% elsif MultiSchool.current_school.id == 280 %>
+      <%= render  :partial=>"/connect_exam/st_joseph/group_report" %>
+    <% elsif MultiSchool.current_school.id == 275 %>
+      <%= render  :partial=>"/connect_exam/gateway/group_report" %>
+    <% elsif MultiSchool.current_school.id == 12  %>
+      <%= render  :partial=>"/connect_exam/mpsc/group_report" %>
+    <% elsif MultiSchool.current_school.id == 186 %>
+      <%= render  :partial=>"/connect_exam/akmis/group_report" %>
+    <% elsif MultiSchool.current_school.id == 319 %>
+      <%= render  :partial=>"/connect_exam/sfx/group_report" %>
+    <% elsif MultiSchool.current_school.id == 323  %>
+      <%= render  :partial=>"/connect_exam/baf_shaheen/group_report" %>
+    <% elsif MultiSchool.current_school.id == 2  %>
+      <%= render  :partial=>"/connect_exam/south_point/group_report" %>
+    <% else %>
+      <%= render  :partial=>"/connect_exam/general_pdf" %>
+    <% end %>
+    <% unless std.equal? @report_data['report']['students'].last %>
+    <div class="page-break"></div>
+    <% end %>
+  
+  <% end %>
+<% end %>

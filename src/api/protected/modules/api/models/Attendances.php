@@ -369,6 +369,7 @@ class Attendances extends CActiveRecord {
         $criteria->compare('t.batch_id', $batch_id); 
         $criteria->compare('t.forenoon', 1); 
         $criteria->compare('t.afternoon', 1); 
+        $criteria->group = "t.student_id";
 
         $criteria->with = array(
             "batchDetails" => array(

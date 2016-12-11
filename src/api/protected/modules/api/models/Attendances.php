@@ -345,7 +345,7 @@ class Attendances extends CActiveRecord {
         return $r_data;
         
     } 
-    public function getTotalPrsent($batch_id,$connect_exam_id)
+    public function getTotalPrsent($batch_id,$connect_exam_id,$students)
     {
         //$batchobj = new Batches();
         //$attandence_start = $batchobj->getBatchStartMax(false, false, $batch_id);
@@ -384,8 +384,13 @@ class Attendances extends CActiveRecord {
             )  
         );
        $data = $this->findAll($criteria);
-       
        $return = array();
+       foreach($students as $value)
+       {
+          $return[$value->id] = $number_of_days;
+       }
+       
+      
        foreach($data as $value)
        {
           $return[$value->student_id] = $number_of_days-$value->total;

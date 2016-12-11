@@ -19,11 +19,12 @@
 <% if !@report_data.blank? %>
   <% @report_data['report']['students'].each do |std| %>
     <%
-    @student = Student.find(std['id'])
-    #@student.id = std['id']
-    #@student.full_name = std['first_name']+" "+std['last_name']
-    #@student.admission_no = std['admission_no']
-    #@student.class_roll_no = std['class_roll_no']
+    @student = Student.new
+    @student.id = std['id']
+    @student.first_name = std['first_name']
+    @student.last_name = std['last_name']
+    @student.admission_no = std['admission_no']
+    @student.class_roll_no = std['class_roll_no']
     @report_data['report']['no_exam_subject_resutl'] = []
     @report_data['report']['exams'] = []
     @report_data['report']['comments'] = []

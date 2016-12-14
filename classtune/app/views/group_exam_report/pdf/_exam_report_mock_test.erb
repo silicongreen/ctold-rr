@@ -138,9 +138,9 @@
       <table id="pdf-table" width="99.8%" class="table_99" cellspacing="0">
         <% c = 'even'  %>
         <tr class="table-header">  
-          <td class="col-pdf border-left-none no-warp align-left"><%= "Subject" %></td>
-          <td class="col-pdf"><%= "Score" %></td>
-          <td class="col-pdf border-right-none"><%= "Grade" %></td> 
+          <td class="col-pdf border-left-none no-warp align-left" width="40%"><%= "Subject" %></td>
+          <td class="col-pdf" width="30%"><%= "Score" %></td>
+          <td class="col-pdf border-right-none" width="30%"><%= "Grade" %></td> 
         </tr>
         <tr class="tr-blank"></tr>
         <% j = 0; %>
@@ -154,13 +154,13 @@
           <% elective_group << es.exam.subject.elective_group_id %>
           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
               
-             <td class="col-pdf border-left-none no-warp  align-left"> <%= es.exam.subject.elective_group.name %></td>
-              <td class="col-pdf"><%= elective_group_mark[es.exam.subject.elective_group_id].round() %></td>
+             <td class="col-pdf border-left-none no-warp  align-left" width="40%"> <%= es.exam.subject.elective_group.name %></td>
+              <td class="col-pdf" width="30%"><%= elective_group_mark[es.exam.subject.elective_group_id].round() %></td>
               <%  grade = GradingLevel.percentage_to_grade(elective_group_mark[es.exam.subject.elective_group_id].round(), @batch.id) %>
               <% if !grade.blank? and !grade.name.blank? %>
-                            <td class="col-pdf  border-right-none"><b><%= grade.name %></b></td>
+                            <td class="col-pdf  border-right-none" width="30%"><b><%= grade.name %></b></td>
                             <% else %>
-                            <td class="col-pdf  border-right-none"><b>N/A</b></td>
+                            <td class="col-pdf  border-right-none" width="30%"><b>N/A</b></td>
                             <% end %>
               
    

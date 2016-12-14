@@ -2318,6 +2318,7 @@ class ExamController < ApplicationController
   end
   
   def generated_report5_pdf
+    
     #grouped-exam-report-for-batch
     if params[:student].nil?  or params[:student][:connect_exam].blank? 
       if params[:connect_exam].blank? 
@@ -2335,6 +2336,7 @@ class ExamController < ApplicationController
     if params[:student].nil?
       @type = params[:type]
       @batch = Batch.find(params[:exam_report][:batch_id])
+      @assigned_employee=@batch.employees
       @student = @batch.students.first
       if @student.blank?
         flash[:notice] = "#{t('flash5')}"
@@ -2349,6 +2351,7 @@ class ExamController < ApplicationController
     else
       @student = Student.find(params[:student])
       @batch = Batch.find_by_id(params[:batch_id])
+      @assigned_employee=@batch.employees
       if @student.blank?
         flash[:notice] = "#{t('flash5')}"
         redirect_to :action=>'grouped_exam_report_new' and return
@@ -2365,7 +2368,7 @@ class ExamController < ApplicationController
     if MultiSchool.current_school.id == 246
       render :pdf => 'generated_report5_pdf',
         :orientation => 'Landscape', :zoom => 1.00
-    elsif MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 323
+    elsif MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 323 or MultiSchool.current_school.id == 325
       render :pdf => 'generated_report5_pdf',
         :orientation => 'Portrait', :zoom => 1.00
     else

@@ -1,0 +1,111 @@
+<%
+show = false
+if @connect_exam_obj.result_type.to_i == 3
+  show = true
+end  
+%>
+<% if !@exam_comment.blank? and (@current_user.student? or @current_user.parent? ) %>
+<table id="pdf-table" class="margin-top-20 class-text-align-left" width="100%" cellspacing="0">
+  <% 
+    result = ""
+    promotion_status = ""
+    merit_position = ""
+    new_roll = ""
+    new_section = ""
+    if !@exam_comment.blank?
+      all_comments = @exam_comment.comments
+      if !all_comments.blank?
+        all_comments_array = all_comments.split("|")
+        result = all_comments_array[0]
+        %>
+        <tr class="even">
+            <td>Result</td><td><%= result %></td>
+        </tr>  
+        <%
+        if !all_comments_array[1].nil? and show
+          promotion_status = all_comments_array[1]
+          %>
+            <tr class="even">
+                <td>Working Days</td><td><%= promotion_status %></td>
+            </tr>  
+          <%
+          if !all_comments_array[2].nil? and show
+            merit_position = all_comments_array[2]
+            %>
+              <tr class="even">
+                  <td>Present</td><td><%= merit_position %></td>
+              </tr> 
+              <tr class="even">
+                  <td>Absent</td><td><%= promotion_status.to_i-merit_position.to_i %></td>
+              </tr> 
+            <%
+          end
+
+        end
+      end
+    end
+  %>
+
+  </table>
+<% end %>   
+
+<% unless @current_user.student? or @current_user.parent? %>
+
+  <% 
+    result = ""
+    promotion_status = ""
+    merit_position = ""
+    new_roll = ""
+    new_section = ""
+    if !@exam_comment.blank?
+      all_comments = @exam_comment.comments
+      if !all_comments.blank?
+        all_comments_array = all_comments.split("|")
+        result = all_comments_array[0]
+        
+        if !all_comments_array[1].nil?
+          promotion_status = all_comments_array[1].to_s
+          if !all_comments_array[2].nil?
+            merit_position = all_comments_array[2]
+            if !all_comments_array[3].nil?
+              new_roll = all_comments_array[3]
+              if !all_comments_array[4].nil?
+                new_section = all_comments_array[4]
+              end
+            end
+
+          end
+
+        end
+      end
+    end
+  %>
+   <table id="pdf-table" class="margin-top-20 class-text-align-left" width="100%" cellspacing="0">
+        <tr class="even">
+            <td>Remark</td><td><input type="text" value="<%=  result %>" size="60" style="height:30px;" id="result" name="result"></td>
+        </tr>
+        <% if show == true %>
+        <tr class="even">
+            <td>Working Days</td><td><input type="text" value="<%=  promotion_status %>" size="60" style="height:30px;" id="promotion_status" name="promotion_status"></td>
+        </tr>
+        <tr class="even">
+            <td>Present</td><td><input type="text" value="<%=  merit_position %>" size="60" style="height:30px;" id="merit_position" name="merit_position"></td>
+        </tr>
+        <% end %>
+  </table>
+  <p><%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader2", :style =>"display: none;" ) %><input type="button" value="save" name="exam_comment_save_all" id="exam_comment_save_all" /></p>
+
+<% end %>
+  
+<script>
+  var jj = jQuery.noConflict();
+    jj(document).ready(function() {
+    jj('#exam_comment_save_all').click(function(){
+    Element.show('loader2')
+    new Ajax.Request('/exam/generated_report5',
+    {asynchronous:true, evalScripts:true,
+      parameters:'comments='+jj('#result').val()+"|"+jj('#promotion_status').val()+"|"+jj('#merit_position').val()+'&student=<%= @student.id %>&type=<%= @type %>&connect_exam=<%= @connect_exam %>',onSuccess:function(request){Element.hide('loader2')}
+    }); 
+    });   
+});     
+</script>

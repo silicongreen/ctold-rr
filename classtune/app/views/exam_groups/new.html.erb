@@ -106,9 +106,10 @@
             </div>
           </div>
           <div class="label-field-pair">
+              <% exam_quarter = get_exam_result_quarter() %>
            <label >Quarter</label>
             <div  class="text-input-bg">
-              <%= select :exam_option,:quarter,[["N/A",0],["1st Quarter",1],["2nd Quarter",2],["3rd Quarter",3],["4th Quarter",4],["First Term",5],["Final Term",6]] %>
+              <%= select :exam_option,:quarter,options_from_collection_for_select(exam_quarter, :first, :last) %>
             </div>
           </div>
           <div class="label-field-pair" id="exam_topic" style="display:none;">

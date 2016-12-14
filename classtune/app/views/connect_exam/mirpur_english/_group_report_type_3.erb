@@ -1,0 +1,261 @@
+
+<% unless @report_data.blank?  or  @report_data['report'].blank? %>
+             <table id="pdf-table" width="100%" cellspacing="0">
+                  <% c = 'even'  %>
+                  <% total_mark_of_allexam = 0 %>
+                 
+                  <tr class="table-header">
+                      <td class="col-pdf border-left-none no-warp">SL.</b></td>
+                      <td class="col-pdf no-warp"><%= "Subject" %></b></td>
+                      <% unless @report_data['report']['exams'].blank? %>  
+                        <% @report_data['report']['exams'].each do |report| %>
+                          <% if report['quarter'] == '3' %>
+                            <td class="col-pdf">
+                                <%= report['exam_name'] %>  
+                            </td>
+                          <% end %>
+                        <% end %>
+                      <% end %>
+                      <td class="col-pdf">
+                          Total Marks
+                      </td>
+                      <td class="col-pdf">Highest Marks</td>
+                      <td class="col-pdf">Letter Grade</td>
+                      <td class="col-pdf border-right-none">GPA</td>
+                  </tr>
+
+                  <% total_parcent = 0 %>
+                  <% total_subject = 0 %>
+                  <% total_credit_point = 0 %>
+                  <% total_mark_all_subject = 0 %>
+                  <% i = 0 %>
+                  <% unless @report_data['report']['subjects'].blank? %> 
+                    <% @report_data['report']['subjects'].each do |subjects| %>
+                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                          <% i = i+1 %>
+                          <% weightage_mark = 0 %>
+                          <% total_mark = 0 %>
+                          <% full_mark = 0 %>
+
+                          <td class="col-pdf border-left-none no-warp"><%= i %></td>
+                          <td class="col-pdf no-warp"><%= subjects['name'] %></td>
+                          <% unless @report_data['report']['exams'].blank? %>  
+                            <% @report_data['report']['exams'].each do |report| %>
+                            
+                              <% if report['quarter'] == '3' %>
+                                  <td class="col-pdf no-warp">
+                                      <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
+                                        <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %>
+                                        <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                      <% else %>
+                                        N/A
+                                      <% end %>
+                                      <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
+                                        <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                      <% else %>
+
+                                      <% end %>  
+
+                                  </td>
+                               <% end %>
+                         
+
+                            <% end %>
+                          <% end %>
+
+
+
+
+
+                          <% 
+                              highest_mark = 0
+                              if !@report_data['report']['max_mark'].blank? and !@report_data['report']['max_mark'][subjects['id']].blank?
+                                highest_mark = @report_data['report']['max_mark'][subjects['id']].to_f
+                              end  
+
+                              if total_mark.to_f>0 and full_mark.to_f>0
+                                main_mark = (total_mark.to_f/full_mark.to_f)*100 
+                              else
+                                main_mark = 0
+                              end  
+                          %>
+
+                          <% if full_mark.to_f > 0 %>
+                            <td class="col-pdf"><%= sprintf( "%0.02f", total_mark) %></td>
+                            <td class="col-pdf"><%= sprintf( "%0.02f", highest_mark)%> </td>
+                            <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
+                            <% if !grade.blank? and !grade.name.blank? %>
+                              <td class="col-pdf"><b><%= grade.name %></b></td>
+                            <% else %>
+                              <td class="col-pdf"><b>N/A</b></td>
+                            <% end %>
+                              
+                            <% if !grade.blank? and !grade.credit_points.blank? %>
+                              <% total_credit_point = total_credit_point+grade.credit_points.to_f %>
+                              <td class="col-pdf border-right-none"><b><%= grade.credit_points %></b></td>
+                            <% else %>
+                              <td class="col-pdf border-right-none"><b>N/A</b></td>
+                            <% end %>
+                           
+                            
+
+                            <% total_parcent= total_parcent+main_mark %>
+                            <% total_subject = total_subject+1 %>
+                            <% total_mark_all_subject = total_mark_all_subject+total_mark %>
+                          <% else  %>
+                            <td class="col-pdf">N/A</td>
+                            <td class="col-pdf">N/A</td>
+                            <td class="col-pdf">N/A</td>
+                            <td class="col-pdf border-right-none">N/A</td>
+                          <% end %>      
+
+                      </tr> 
+                    <% end %>  
+                  <% end %>
+                      <tr class="odd">
+                          <% colspan = 2 %>
+                          <% unless @report_data['report']['exams'].blank? %>  
+                            <% @report_data['report']['exams'].each do |report| %>
+                              <% if report['quarter'] == '3' %>
+                                <% colspan = colspan+1 %>
+                              <% end %>  
+                            <% end %>
+                          <% end %>
+                          <td class="col-pdf border-left-none" colspan="<%= colspan %>"><b>Total Mark & Total GPA</b></td>
+                     
+                           
+                         <td class="col-pdf"><b><%= total_mark_all_subject %></b></td>
+                          
+                         <td class="col-pdf"></td>
+                         <td class="col-pdf"></td>
+                         <td class="col-pdf border-right-none"><%= total_credit_point %></td>
+                      </tr>   
+
+              </table>
+              
+              <%
+              final_grade = total_credit_point.to_f/total_subject
+              letter_grade = "N/A"
+              grade = GradingLevel.grade_point_to_grade(final_grade, @batch.id)
+              if !grade.blank? and !grade.name.blank?
+                letter_grade = grade.name
+              end  
+              percentage =  total_parcent/total_subject
+              %>
+              <table id="pdf-table" class="margin-top-20" width="100%" >
+                <tr class="odd">
+                    <td class="col-pdf border-left-none">
+                        Final Grade
+                    </td> 
+                    <td class="col-pdf align-center">
+                        <b> <%= final_grade %> </b>
+                    </td> 
+                    <td class="col-pdf">
+                        Letter Grade
+                    </td> 
+                    <td class="col-pdf align-center">
+                        <b> <%= letter_grade %> </b>
+                    </td>
+                    <td class="col-pdf">
+                        Percentage
+                    </td> 
+                    <td class="col-pdf align-center border-right-none">
+                        <b> <%= percentage %> </b>
+                    </td>
+                    
+                </tr>
+              </table> 
+              
+              <%
+                summer_mark = 0
+                spring_mark = 0
+              %>
+              <% 
+                unless @report_data['report']['subjects'].blank?
+                    @report_data['report']['subjects'].each do |subjects|
+                        unless @report_data['report']['exams'].blank? 
+                            @report_data['report']['exams'].each do |report|
+                              if report['quarter'] == '1'
+                                if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
+                                  summer_mark = summer_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
+                                end                           
+                              end
+                            end 
+                        end
+                    end
+                end 
+                
+                unless @report_data['report']['subjects'].blank?
+                    @report_data['report']['subjects'].each do |subjects|
+                        unless @report_data['report']['exams'].blank? 
+                            @report_data['report']['exams'].each do |report|
+                              if report['quarter'] == '2'
+                                if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
+                                  spring_mark = spring_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
+                                end
+                            
+                              end
+                            end 
+                        end
+                    end
+                end
+              %>
+              
+              <table id="pdf-table" class="margin-top-20" width="100%" >
+                <tr class="odd">
+                    <td class="col-pdf border-left-none">
+                        Summer
+                    </td> 
+                    <td class="col-pdf align-center">
+                        <b> <%= summer_mark %> </b>
+                    </td> 
+                    <td class="col-pdf">
+                        Spring
+                    </td> 
+                    <td class="col-pdf align-center">
+                        <b> <%= spring_mark %> </b>
+                    </td>
+                    <td class="col-pdf">
+                        Total
+                    </td> 
+                    <td class="col-pdf align-center">
+                        <% total_mark_year = summer_mark+spring_mark+total_mark_all_subject %>
+                        <b> <%= total_mark_year %> </b>
+                    </td>
+                    <%  
+                        @conn = ActiveRecord::Base.connection
+                        sql = "SELECT SUM( Scores.marks ) AS total_score
+                        FROM exams
+                        LEFT JOIN exam_scores AS Scores ON Scores.exam_id = exams.id
+                        LEFT JOIN grouped_exams AS grouped_exams ON grouped_exams.exam_group_id = exams.exam_group_id
+                        WHERE grouped_exams.connect_exam_id = '"+@connect_exam_obj.id.to_s+"'
+                        GROUP BY Scores.student_id
+                        ORDER BY total_score DESC";
+                        ip = 1
+                        exam_marks_data = @conn.execute(sql).all_hashes
+                    %>
+                    
+                    <%
+                        
+                        if !exam_marks_data.blank?
+                            exam_marks_data.each do |exscore|
+                              
+                              if exscore['total_score'].to_f == total_mark_year.to_f
+                                break
+                              end
+                              ip = ip+1
+                            end
+                        end   
+                    %>    
+                    <td class="col-pdf">
+                        Position
+                    </td> 
+                    <td class="col-pdf align-center border-right-none">
+                        <b> <%= ip %> </b>
+                    </td>
+                    
+                </tr>
+              </table>
+              
+              
+<% end %>

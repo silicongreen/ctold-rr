@@ -277,6 +277,10 @@ table.teacher_remarks tr td
 
 
 ///baf shaheen
+.baf_shaheen table.table_99
+{
+    width:99.8%;
+}
 .baf_shaheen table td
 {
     font-size:12px;

@@ -57,10 +57,11 @@
             <% unless @config.config_value == '0' or @last_admitted_student.nil? %>
               <%= s.text_field :admission_no , :value=> @last_admitted_student.admission_no.next%>
             <% else %>
-              <%= s.text_field :admission_no, :value=> "ST0001" %>
+              <%= s.text_field :admission_no, :value=> "0001" %>
             <% end %>
           </div>
         </div>
+          
         
        <div class="student_admission_date" >
           <label><b>Username : 
@@ -224,7 +225,7 @@
 
         <hr class="label-underline"  style="display: none;"></hr>
 
-        <div class="label-field-pair" style="display: none;">
+        <div class="label-field-pair" >
           <label for="student_category"><%= t('category') %></label>
           <% category_id = @categories[0].id unless @categories.nil? %>
           <div class="text-input-bg"><%= s.select :student_category_id, options_for_select(@categories.map {|c| [c.name, c.id]},category_id), { :prompt => "#{t('select_a_category')}" } %></div>

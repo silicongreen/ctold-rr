@@ -310,6 +310,10 @@ table.teacher_remarks tr td
  {
      margin-left:1px;
  }
+ .baf_shaheen table tr td.align-left
+ {
+     text-align:left;
+ }
  
  
 

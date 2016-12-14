@@ -1,6 +1,6 @@
 </div>
 <div id="page-yield" class="available_sections1 baf_shaheen">
-
+    <h2>&nbsp;&nbsp;&nbsp;</h2>
 <div class="student_information">
       <h4><b>Student's Information</b></h4>
       
@@ -134,10 +134,10 @@
       end 
       %>
       <h4 class="h4-evaluation"><b>Result in Details</b></h4>
-      <table id="pdf-table" width="99.8%" cellspacing="0">
+      <table id="pdf-table" width="99.6%" cellspacing="0">
         <% c = 'even'  %>
         <tr class="table-header">  
-          <td class="col-pdf border-left-none no-warp"><%= "Subject" %></td>
+          <td class="col-pdf border-left-none no-warp align-left"><%= "Subject" %></td>
           <td class="col-pdf"><%= "Score" %></td>
           <td class="col-pdf border-right-none"><%= "Grade" %></td> 
         </tr>
@@ -153,7 +153,7 @@
           <% elective_group << es.exam.subject.elective_group_id %>
           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
               
-             <td class="col-pdf border-left-none no-warp"> <%= es.exam.subject.elective_group.name %></td>
+             <td class="col-pdf border-left-none no-warp  align-left"> <%= es.exam.subject.elective_group.name %></td>
               <td class="col-pdf"><%= elective_group_mark[es.exam.subject.elective_group_id].round() %></td>
               <%  grade = GradingLevel.percentage_to_grade(elective_group_mark[es.exam.subject.elective_group_id].round(), @batch.id) %>
               <% if !grade.blank? and !grade.name.blank? %>
@@ -175,7 +175,7 @@
       <h4 class="h4-evaluation"><b>Evaluation</b></h4>
       <table id="pdf-table" class="evaluation" width="99.8%" >
 
-              <tr class="odd">
+              <tr class="even">
                   <td class="col-pdf border-left-none" width="33%">
                       Class Teacher's Signature
                   </td> 
@@ -186,7 +186,7 @@
 
                   </td>
               </tr>
-              <tr class="odd">
+              <tr class="even">
                   <td class="col-pdf border-left-none" width="33%">
                       Guardian's Signature
                   </td> 

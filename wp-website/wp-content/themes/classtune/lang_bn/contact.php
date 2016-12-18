@@ -29,7 +29,7 @@
                 </select>
             </div>
             <div style="float:right;width:47%;">
-                <input type="text" name="subject_text" id="subject_text" placeholder="<?php echo "সাবজেক্ট";?>" disabled>
+                <input type="text" name="subject_text" id="subject_text" placeholder="<?php echo "সাবজেক্ট";?>">
             </div>
         </div>
         <!--div class="row" style="width:500px;margin:0px auto;">

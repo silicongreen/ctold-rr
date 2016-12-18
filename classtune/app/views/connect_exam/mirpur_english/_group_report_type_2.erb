@@ -85,7 +85,7 @@
                             ORDER BY total_score DESC";
                             ip = 1
                             exam_marks_max = @conn.execute(sql).all_hashes
-                            if !exam_marks_max.blank?
+                            if !exam_marks_max.blank? and exam_marks_max[0].blank? and exam_marks_max[0]['total_score'].blank?
                               highest_mark = exam_marks_max[0]['total_score']
                             end 
                             if total_mark.to_f>0 and full_mark.to_f>0

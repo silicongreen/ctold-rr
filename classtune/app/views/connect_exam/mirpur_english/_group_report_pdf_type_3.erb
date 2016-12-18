@@ -149,22 +149,29 @@
                             <% end %>
                           <% end %>
 
-
-
-
-
                           <% 
-                              highest_mark = 0
-                              if !@report_data['report']['max_mark'].blank? and !@report_data['report']['max_mark'][subjects['id']].blank?
-                                highest_mark = @report_data['report']['max_mark'][subjects['id']].to_f
-                              end  
+                            highest_mark = 0
+                            @conn = ActiveRecord::Base.connection
+                            sql = "SELECT SUM( Scores.marks ) AS total_score
+                            FROM exams
+                            LEFT JOIN exam_scores AS Scores ON Scores.exam_id = exams.id
+                            LEFT JOIN grouped_exams AS grouped_exams ON grouped_exams.exam_group_id = exams.exam_group_id
+                            WHERE grouped_exams.connect_exam_id = '"+@connect_exam_obj.id.to_s+"' and exams.subject_id = '"+subjects['id'].id.to_s+"'
+                            and grouped_exams.quarter = 3
+                            GROUP BY Scores.student_id
+                            ORDER BY total_score DESC";
+                            ip = 1
+                            exam_marks_max = @conn.execute(sql).all_hashes
+                            if !exam_marks_max.blank?
+                              highest_mark = exam_marks_max[0]['total_score']
+                            end 
+                            if total_mark.to_f>0 and full_mark.to_f>0
+                              main_mark = (total_mark.to_f/full_mark.to_f)*100 
+                            else
+                              main_mark = 0
+                            end 
+                        %>
 
-                              if total_mark.to_f>0 and full_mark.to_f>0
-                                main_mark = (total_mark.to_f/full_mark.to_f)*100 
-                              else
-                                main_mark = 0
-                              end  
-                          %>
 
                           <% if full_mark.to_f > 0 %>
                             <td class="col-pdf"><%= sprintf( "%0.02f", total_mark) %></td>

@@ -79,7 +79,7 @@ $(document).on('click', '#contact_classtune input#sub', function (e) {
 			url : postlove.ajax_url,
 			type : 'post',
 			data : {
-				action :     'send_mail_classtune',
+				action :     'wp_ajax_send_mail_classtune',
 				name:        $("#contact_classtune #name").val(), 
 				email:       $("#contact_classtune #email").val(),
 				phone:       $("#contact_classtune #phone").val(),			

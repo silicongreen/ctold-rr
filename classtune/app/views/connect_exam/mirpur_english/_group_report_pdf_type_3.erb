@@ -40,7 +40,7 @@
             break
          end
         %>
-          <%= emp.first_name %>&nbsp;<%= emp.last_name %><% if i == 1 %> & <% end %>
+          <% if i == 2 %> & <% end %><%= emp.first_name %>&nbsp;<%= emp.last_name %>
         <% end %>
         <% end %>
          </td>

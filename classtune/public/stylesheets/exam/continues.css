@@ -794,7 +794,7 @@ div.baf_shaheen
     padding: 5px 5px 5px 0px;   
 }
 
-.page-break { display:block; clear:both; page-break-after:always; }
+
 
 
 ///baf shaheen
@@ -955,6 +955,9 @@ div.mirpur_english
     float:left;
     clear:both;
 }
+
+
+.page-break { display:block; clear:both; page-break-after:always; }
 
 
 

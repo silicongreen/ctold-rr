@@ -797,4 +797,164 @@ div.baf_shaheen
 .page-break { display:block; clear:both; page-break-after:always; }
 
 
+///baf shaheen
+.mirpur_english table td
+{
+    font-size:22px;
+    padding: 8px 8px 8px 11px;   
+}
+.mirpur_english table tr td.t-left
+{
+    text-align: left;
+}
+.mirpur_english table td.border-left-none{
+   border-left: none !important; 
+} 
+.mirpur_english table td.border-right-none{
+   border-right: none !important;  
+}
+ .mirpur_english table td.no-border
+ {
+    border: none !important;  
+ }
+ .mirpur_english table.evaluation1
+ {
+     margin-top:50px;
+     font-size: 25px;
+ }
+ .mirpur_english table.evaluation
+ {
+     margin-top:50px;
+ }
+ .mirpur_english table.evaluation td
+ {
+     text-align: left;
+     padding: 4px 2px 5px 9px !important; 
+     font-size: 18px;
+ }
+ .mirpur_english td.align-center
+ {
+     text-align:center !important;
+ }
+ .mirpur_english #pdf-table
+ {
+     margin-left:1px;
+ }
+ 
+ 
+
+.mirpur_english .table-header td{
+    border-top: 1px solid #000000;
+    border-left: 1px solid #000000;
+    border-right: 1px solid #000000;
+    border-bottom: 1px solid #000000;
+    color: #000000;
+    background: #ffffff;
+    font-weight: bold;
+    text-align: center;
+}
+
+
+.mirpur_english tr.odd td
+{
+    padding: 2px 2px 10px 9px;  
+    border: 1px solid #000000;
+}
+.mirpur_english tr.even td
+{
+    padding: 2px 2px 10px 9px;
+    border: 1px solid #000000;
+}
+
+.mirpur_english table#pdf-table{
+    border-top: none;
+    border-collapse:collapse;
+    float:left;
+    clear:both;
+}
+.mirpur_english tr.even{
+    border: none;
+}
+
+.mirpur_english tr.odd{
+    border: none;
+}
+.mirpur_english h4.h4-evaluation
+{
+   margin: 40px 0px 15px 10px; 
+}
+.mirpur_english h4
+{
+    border-bottom: 2px solid black;
+    font-size: 25px;
+    padding: 0px;
+    width: auto;
+    float:left;
+    clear:both;
+    margin-bottom: 9px;
+}
+
+.mirpur_english div.student_information
+{
+    float:left;
+    clear:both;
+    font-size: 23px;
+    width: 55%;
+    margin: 10px 10px;
+    
+    
+}
+.mirpur_english div.student_information table
+{
+    margin: 20px 0px;
+    float:left;
+    clear:both;
+}
+.mirpur_english div.student_information table tr td
+{
+    padding: 9px 9px 9px 5px;  
+}
+.mirpur_english div.student_information table tr td.font-dark
+{
+    font-weight: 500;
+}
+.mirpur_english div.student_information table tr td.font-light
+{
+   color: #333333; 
+}
+.mirpur_english div.grade_information
+{
+    margin-left:102px;
+    float:left;
+    width: 33.5%;
+    font-size: 14px;
+    margin-top: 30px;
+   
+}
+.mirpur_english div.grade_information table tr.odd td
+{
+    padding: 3px 3px 3px 5px;
+}
+.mirpur_english div.grade_information table tr.even td
+{
+    padding: 3px 3px 3px 5px;
+}
+.mirpur_english div.grade_information p
+{
+    font-size: 15px;
+    margin-left: 16px;
+    margin-bottom: 3px;
+}
+div.mirpur_english
+{
+    border: 1px solid #000000;
+}
+
+.mirpur_english table.mark-table
+{
+    float:left;
+    clear:both;
+}
+
+
 

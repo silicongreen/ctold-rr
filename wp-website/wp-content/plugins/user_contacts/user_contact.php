@@ -21,8 +21,8 @@ add_action( 'wp_enqueue_scripts', 'contact_lol_enqueue_scripts' );
 
 if (!function_exists('contact_lol_enqueue_scripts')) {
     function contact_lol_enqueue_scripts() {
-            //wp_enqueue_script( 'user_contact', plugins_url( '/user_contact.js', __FILE__ ), array('jquery'), '1.0', true );
-            wp_enqueue_script( 'user_contact', plugin_dir_url(__FILE__) . 'js/user_contact.js');    
+            wp_enqueue_script( 'user_contact', plugins_url( '/js/user_contact.js', __FILE__ ), array('jquery'), '1.0', true );
+            //wp_enqueue_script( 'user_contact', plugin_dir_url(__FILE__) . 'js/user_contact.js');    
     }
 }
 

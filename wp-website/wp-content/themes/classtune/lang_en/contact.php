@@ -28,7 +28,7 @@
                 </select>
             </div>
             <div style="float:right;width:47%;">
-                <input type="text" name="subject_text" id="subject_text" placeholder="Subject" disabled>
+                <input type="text" name="subject_text" id="subject_text" placeholder="Subject">
             </div>
         </div>
         <!--div class="row" style="width:500px;margin:0px auto;">

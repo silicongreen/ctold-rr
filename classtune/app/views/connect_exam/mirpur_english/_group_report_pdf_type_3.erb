@@ -155,9 +155,10 @@
                             sql = "SELECT SUM( Scores.marks ) AS total_score
                             FROM exams
                             LEFT JOIN exam_scores AS Scores ON Scores.exam_id = exams.id
+                            LEFT JOIN exam_groups AS exam_groups ON exam_groups.id = exams.exam_group_id
                             LEFT JOIN grouped_exams AS grouped_exams ON grouped_exams.exam_group_id = exams.exam_group_id
                             WHERE grouped_exams.connect_exam_id = '"+@connect_exam_obj.id.to_s+"' and exams.subject_id = '"+subjects['id'].id.to_s+"'
-                            and grouped_exams.quarter = 3
+                            and exam_groups.quarter = 3
                             GROUP BY Scores.student_id
                             ORDER BY total_score DESC";
                             ip = 1

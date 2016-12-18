@@ -78,9 +78,9 @@
       <% else %>
         <%= render  :partial=>"/connect_exam/general_pdf" %>
       <% end %>
-      
+      <% unless std.equal? @report_data['report']['students'].last %>
       <div class="page-break"></div>
-      
+      <% end %>
     <% end %>
   
   <% end %>

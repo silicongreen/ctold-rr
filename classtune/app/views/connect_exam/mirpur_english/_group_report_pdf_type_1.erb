@@ -110,6 +110,10 @@
                   <% total_subject = 0 %>
                   <% total_credit_point = 0 %>
                   <% total_mark_all_subject = 0 %>
+                  <%
+                    final_grade = 0.0
+                    letter_grade = ""
+                  %>
                   <% i = 0 %>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
@@ -168,6 +172,13 @@
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>
                               <td class="col-pdf"><b><%= grade.name %></b></td>
+                              <% if grade.name == "F" %>
+                              <%
+                                final_grade = 0.0
+                                letter_grade = "F"
+                                
+                              %>
+                              <% end %>
                             <% else %>
                               <td class="col-pdf"><b>N/A</b></td>
                             <% end %>
@@ -216,12 +227,14 @@
               </table>
               
               <%
-              final_grade = total_credit_point.to_f/total_subject
-              letter_grade = "N/A"
-              grade = GradingLevel.grade_point_to_grade(final_grade, @batch.id)
-              if !grade.blank? and !grade.name.blank?
-                letter_grade = grade.name
-              end  
+              if letter_grade.blank?
+                final_grade = total_credit_point.to_f/total_subject
+                letter_grade = "N/A"
+                grade = GradingLevel.grade_point_to_grade(final_grade, @batch.id)
+                if !grade.blank? and !grade.name.blank?
+                  letter_grade = grade.name
+                end  
+              end
               percentage =  total_parcent/total_subject
               %>
               <table id="pdf-table" class="evaluation1" width="99.8%" >

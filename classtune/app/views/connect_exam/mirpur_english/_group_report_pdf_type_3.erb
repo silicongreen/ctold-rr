@@ -19,11 +19,12 @@
             <tr>
                 <td>Roll </td><td colspan="3" class="font-light">:&nbsp;&nbsp;&nbsp;<%= @student.class_roll_no %></td>
             </tr>
+            <% if !@batch.course.section_name.blank? %>
             <tr>
-                <td>Section </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @batch.course.section_name %></td>
-                <td>Shift </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @batch.name %></td>
+                <td>Section </td><td colspan="3" class="font-light">:&nbsp;&nbsp;&nbsp;<%= @batch.course.section_name %></td>
 
             </tr>
+            <% end %>
             <tr>
                 <td>Session </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %></td>
                 <td>Version </td><td class="font-light">:&nbsp;&nbsp;&nbsp;English</td>

@@ -162,7 +162,7 @@ class ExamConnect extends CActiveRecord
                         $result['ST'][$k]['quarter'] = $groupedexam['examgroup']->quarter;
                         
                         $result['ST'][$k]['maximum_marks'] = $exam->maximum_marks;
-                        if($i == 0)
+                        if($k == 0)
                         {
                             $max_mark_st = $exam->maximum_marks;
                         }

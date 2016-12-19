@@ -113,7 +113,7 @@ class StudentsSubjects extends CActiveRecord
 		return parent::model($className);
 	}
         
-        public function getStudentSubject($batch_id,$student_id,$no_exam =0)
+        public function getStudentSubject($batch_id,$student_id=0,$no_exam =0)
         {
             $criteria = new CDbCriteria();
             $criteria->select = 't.*';

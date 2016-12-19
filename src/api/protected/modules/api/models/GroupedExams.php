@@ -309,6 +309,7 @@ class GroupedExams extends CActiveRecord
                 $results['students'] = $batch_student_full;
                 $examsGroupObj = new ExamGroups();
                 $results['subjects'] = $all_subject_without_no_exam;
+              
                 
                 foreach($examgroups as $value)
                 {

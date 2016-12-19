@@ -171,6 +171,35 @@ class Exams extends CActiveRecord {
         $percentile = (100*$j)/$i;
         return $percentile;
     }
+    
+    public function getPositionConnectExam($exam_group_ids, $total_grade_point, $total_mark) {
+        $sql = "SELECT SUM( Scores.marks ) AS total_score
+        FROM exams
+        LEFT JOIN exam_scores AS Scores ON Scores.exam_id = exams.id
+        WHERE exams.exam_group_id IN (".$exam_group_ids.")
+        GROUP BY Scores.student_id
+        ORDER BY total_score DESC";
+
+        $data = $this->findAllBySql($sql);
+
+
+        $i = 1;
+        foreach ($data as $value) {
+            if ($total_grade_point == $value->total_points && $total_mark == $value->total_score) {
+                break;
+            }
+            $i++;
+        }
+        if(Yii::app()->user->schoolId == "280")
+        {
+            return 0;
+        }   
+        else
+        {
+           return $i; 
+        }
+        
+    }
 
     public function getPosition($exam_group_id, $total_grade_point, $total_mark) {
         $sql = "SELECT SUM( Scores.marks ) AS total_score, SUM( Examgrade.credit_points ) AS total_points

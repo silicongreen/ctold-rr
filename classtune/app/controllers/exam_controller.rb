@@ -2062,11 +2062,11 @@ class ExamController < ApplicationController
     @exam_groups = []
   end
   
-  def continues
-    @assigned_employee=@batch.employees
+  def continues   
     @id = params[:id]
     @connect_exam_obj = ExamConnect.find(@id)
     @batch = Batch.find(@connect_exam_obj.batch_id)
+    @assigned_employee=@batch.employees
     get_continues(@id,@batch.id)
     @report_data = []
     if @student_response['status']['code'].to_i == 200

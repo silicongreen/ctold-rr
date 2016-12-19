@@ -17,16 +17,18 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 <% if !@report_data.blank? %>
-  <% @all_subject_exam = @report_data['report']['subjects'] %>
+<% @all_subject_exam = @report_data['report']['subjects'] %>
+<% @all_student_subject = StudentsSubject.find_all_by_batch_id(@batch.id) %>
   <% @report_data['report']['students'].each do |std| %>
     <%
     subjects_new = []
     unless @all_subject_exam.blank? 
        @all_subject_exam.each do |subjects|
          if subjects['elective_group_id'].to_i!=0
-           student_subject = StudentsSubject.find_by_student_id_and_subject_id(std['id'].to_i,subjects['id'].to_i)
-           if !student_subject.blank?
+           @all_student_subject.each do |sub_std|
+             if subjects['id'].to_i == sub_std.subject_id and std['id'].to_i == sub_std.student_id
                subjects_new << subjects
+             end 
            end 
          else
            subjects_new << subjects 

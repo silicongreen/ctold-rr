@@ -2063,6 +2063,7 @@ class ExamController < ApplicationController
   end
   
   def continues
+    @assigned_employee=@batch.employees
     @id = params[:id]
     @connect_exam_obj = ExamConnect.find(@id)
     @batch = Batch.find(@connect_exam_obj.batch_id)

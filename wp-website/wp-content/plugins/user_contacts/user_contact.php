@@ -21,9 +21,7 @@ if (!function_exists('contact_lol_enqueue_scripts')) {
     {
         wp_enqueue_script( 'user_contact', plugins_url( 'js/user_contact.js', __FILE__ ), array('jquery'), '1.0', true );
 
-	wp_localize_script( 'user_contact', 'contact_lol', array(
-		'ajax_url' => admin_url( 'admin-ajax.php' )
-	));
+	
     }
 }
 

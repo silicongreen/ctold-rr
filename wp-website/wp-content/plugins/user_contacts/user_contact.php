@@ -15,7 +15,7 @@ add_action('wp_ajax_login_user_classtune', 'login_user_classtune');
 
 add_action('wp_ajax_nopriv_send_mail_classtune', 'send_mail_classtune');
 add_action('wp_ajax_send_mail_classtune', 'send_mail_classtune');
-
+add_action( 'wp_enqueue_scripts', 'contact_lol_enqueue_scripts' );
 if (!function_exists('contact_lol_enqueue_scripts')) {
     function contact_lol_enqueue_scripts()
     {
@@ -26,7 +26,7 @@ if (!function_exists('contact_lol_enqueue_scripts')) {
 	));
     }
 }
-add_action( 'wp_enqueue_scripts', 'contact_lol_enqueue_scripts' );
+
 
 if (!function_exists('send_mail_classtune')) {
     function send_mail_classtune() {

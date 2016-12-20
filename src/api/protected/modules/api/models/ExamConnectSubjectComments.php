@@ -116,7 +116,7 @@ class ExamConnectSubjectComments extends CActiveRecord
         public function getCommentAllSubjects($exam_connect_id,$subject_id,$students)
         {
             $criteria = new CDbCriteria();
-            $criteria->select = 't.comments,t.student_id'; 
+            $criteria->select = 't.comments,t.student_id,t.subject_id'; 
             $criteria->compare('t.exam_connect_id', $exam_connect_id);
             $criteria->addInCondition('t.subject_id', $subject_id);
             $comments = $this->findAll($criteria);

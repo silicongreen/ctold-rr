@@ -27,6 +27,10 @@ if (!function_exists('contact_lol_enqueue_scripts')) {
 
         // For either a plugin or a theme, you can then enqueue the script:
         wp_enqueue_script( 'custom-script' );
+        
+        wp_localize_script( 'love', 'contact_lol', array(
+		'ajax_url' => admin_url( 'admin-ajax.php' )
+	));
     }
 }
 add_action( 'wp_enqueue_scripts', 'contact_lol_enqueue_scripts' );

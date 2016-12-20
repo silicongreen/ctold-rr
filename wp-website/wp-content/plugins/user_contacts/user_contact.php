@@ -15,16 +15,15 @@ add_action('wp_ajax_login_user_classtune', 'login_user_classtune');
 
 add_action('wp_ajax_nopriv_send_mail_classtune', 'send_mail_classtune');
 add_action('wp_ajax_send_mail_classtune', 'send_mail_classtune');
-add_action( 'wp_enqueue_scripts', 'contact_lol_enqueue_scripts' );
-if (!function_exists('contact_lol_enqueue_scripts')) {
-    function contact_lol_enqueue_scripts()
-    {
-        wp_enqueue_script( 'user_contact', plugins_url( 'js/user_contact.js', __FILE__ ), array('jquery'), '1.0', true );
 
-	
+function my_enqueue() {
+
+        wp_enqueue_script( 'ajax-script', plugins_url() . '/js/user_contact.js', array('jquery') );
+
+        wp_localize_script( 'ajax-script', 'contact_lol',
+                array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
     }
-}
-
+add_action( 'wp_enqueue_scripts', 'my_enqueue' );
 
 if (!function_exists('send_mail_classtune')) {
     function send_mail_classtune() {

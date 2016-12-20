@@ -34,6 +34,14 @@
       </div>
       
     </div>
+    <% unless @current_user.student? or @current_user.parent? %>
+          <div id="inner-tab-menu">
+            <ul style="margin: 10px 20px 0 0;">
+              <li class="themed_bg themed-dark-hover-background"><%= link_to "All result",
+                        {:action => "student_wise_generated_report_all",:exam_group=>@exam_group.id},:target => '_blank' %></li>
+            </ul>
+          </div>
+      <% end %>
   </div>
 
 

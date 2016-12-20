@@ -827,6 +827,91 @@ class ExamController < ApplicationController
       page.replace_html 'exam-group-select', :partial=>'exam_group_select'
     end
   end
+  
+  def student_wise_generated_report_all  
+    @exam_group = ExamGroup.find(params[:exam_group])
+    if @exam_group.is_current == false
+      student_list = []
+      allExam = @exam_group.exams
+      allExam.each do |exams|
+        score_data = exams.exam_scores
+        score_data.each do |sd|
+          student_list.push(sd.student_id) unless student_list.include?(sd.student_id)
+        end          
+      end
+      if student_list.nil?
+        flash[:notice] = "#{t('flash_student_notice')}"
+        redirect_to :action => 'exam_wise_report' and return
+      end
+
+      @batch = @exam_group.batch
+      @students = Student.find_all_by_id(student_list)
+    else
+      @batch = @exam_group.batch
+      @students=@batch.students.by_first_name
+    end
+    
+    @assigned_employee=@batch.employees
+    general_subjects = Subject.find_all_by_batch_id(@batch.id, :conditions=>"elective_group_id IS NULL")
+    student_electives = StudentsSubject.find_all_by_batch_id(@batch.id)
+    elective_subjects = []
+    elective_subjects_id = []
+    student_electives.each do |elect|
+      if !elective_subjects_id.include?(elect.subject_id)
+        elective_subjects_id << elect.subject_id
+        elective_subjects.push Subject.find(elect.subject_id)
+      end     
+    end
+    @subjects = general_subjects + elective_subjects
+    @exams = []
+    @subjects.each do |sub|
+      exam = Exam.find_by_exam_group_id_and_subject_id(@exam_group.id,sub.id)
+      @exams.push exam unless exam.nil?
+    end
+    
+    if !@exam_group.attandence_start_date.blank? and !@exam_group.attandence_end_date.blank?
+      
+      @academic_days = @batch.find_working_days(@exam_group.attandence_start_date.to_date,@exam_group.attandence_end_date.to_date).select{|v| v<=@exam_group.attandence_end_date.to_date}.count
+      @student_leaves = Attendance.find(:all,:conditions =>{:batch_id=>@batch.id,:month_date => @exam_group.attandence_start_date..@exam_group.attandence_end_date})
+      
+    else
+      @academic_days = @batch.find_working_days(@batch.start_date.to_date,@exam_group.exam_date.to_date).select{|v| v<=@exam_group.exam_date.to_date}.count
+      @student_leaves = Attendance.find(:all,:conditions =>{:batch_id=>@batch.id,:month_date => @batch.start_date..@exam_group.exam_date})
+      
+    end
+    
+    
+    @exam_comments = ExamGroupComment.find_all_by_exam_group_id(@exam_group.id)
+#    on_leaves = 0;
+#    leaves_other = 0;
+#    leaves_full = 0;
+#    unless @student_leaves.empty?
+#      @student_leaves.each do |r|
+#        if r.student_id == @student.id
+#          working_days_count=@batch.find_working_days(r.month_date.to_date,r.month_date.to_date).select{|v| v<=r.month_date.to_date}.count
+#
+#          if working_days_count==1
+#            if r.is_leave == true
+#              on_leaves = on_leaves+1;
+#            elsif r.forenoon==true && r.afternoon==false
+#              leaves_other = leaves_other+1;
+#            elsif r.forenoon==false && r.afternoon==true  
+#              leaves_other = leaves_other+1;
+#            else
+#              leaves_full = leaves_full+1;
+#            end 
+#          end
+#        end
+#      end
+#    end
+#    #    @late = leaves_other
+#    #    @absent = leaves_full
+#    #    @on_leave = on_leaves
+#    @present = @academic_days-on_leaves-leaves_full
+#    @absent = @academic_days-@present
+#    @exam_comment = ExamGroupComment.find_by_exam_group_id_and_student_id(@exam_group.id,@student.id)
+    render :pdf => 'student_wise_generated_report_all'
+  end
 
   def student_wise_generated_report
     

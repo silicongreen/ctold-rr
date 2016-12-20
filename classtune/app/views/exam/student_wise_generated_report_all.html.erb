@@ -1,0 +1,90 @@
+<% if !@students.blank? %>
+  <% @all_student_subject = StudentsSubject.find_all_by_batch_id(@batch.id) %>
+  <% @all_subject_exam = @exams %>
+  <% @students.each do |student| %>
+    <% 
+      @student = student
+      student_subject = []
+      exam_new = []
+      unless @subjects.blank? 
+         @subjects.each do |subjects|
+           if subjects['elective_group_id'].to_i!=0
+             @all_student_subject.each do |sub_std|
+               if subjects.id.to_i == sub_std.subject_id and student.id.to_i == sub_std.student_id
+                 student_subject << subjects.id
+               end 
+             end 
+           else
+             student_subject << subjects.id 
+           end 
+         end
+      end 
+    
+      unless @all_subject_exam.blank? 
+         @all_subject_exam.each do |exam|
+           if student_subject.include?(exam.subject_id) 
+            exam_new << exam
+           end 
+         end
+      end
+      @exams = exam_new
+      
+      comments_student = []
+      unless @exam_comments.blank? 
+         @exam_comments.each do |cmt|
+           if cmt.student_id = @student.id
+            comments_student << cmt
+           end 
+         end
+      end
+      @exam_comment = comments_student
+      
+    
+      on_leaves = 0;
+      leaves_other = 0;
+      leaves_full = 0;
+      unless @student_leaves.empty?
+        @student_leaves.each do |r|
+          if r.student_id == @student.id
+            working_days_count=@batch.find_working_days(r.month_date.to_date,r.month_date.to_date).select{|v| v<=r.month_date.to_date}.count
+            if working_days_count==1
+              if r.is_leave == true
+                on_leaves = on_leaves+1;
+              elsif r.forenoon==true && r.afternoon==false
+                leaves_other = leaves_other+1;
+              elsif r.forenoon==false && r.afternoon==true  
+                leaves_other = leaves_other+1;
+              else
+                leaves_full = leaves_full+1;
+              end 
+            end
+          end
+        end
+      end
+      @late = leaves_other
+      @absent = leaves_full
+      @on_leave = on_leaves
+      @present = @academic_days-on_leaves-leaves_full
+      @absent = @academic_days-@present
+    
+    
+    %>
+      <% if @exam_group.exam_category == 5 %>
+        <%= render  :partial=>"/group_exam_report/pdf/exam_report_mock_test" %>
+      <% elsif MultiSchool.current_school.id == 2 %>
+        <%= render  :partial=>"/group_exam_report/pdf/exam_report_akmis" %>
+      <% elsif MultiSchool.current_school.id == 323 %>
+        <%= render  :partial=>"/group_exam_report/pdf/exam_report_south" %>
+      <% elsif MultiSchool.current_school.id == 280 %>
+        <%= render  :partial=>"/group_exam_report/pdf/exam_report_st_joshef" %>
+      <% elsif MultiSchool.current_school.id == 186 %>
+        <%= render  :partial=>"/group_exam_report/pdf/exam_report_akmis_comment" %>
+      <% else %>
+        <%= render  :partial=>"/group_exam_report/pdf/general" %>
+      <% end %>
+      <% unless student.equal? @students.last %>
+        <div class="page-break"></div>
+      <% end %>
+
+<% end %>
+<% end %>

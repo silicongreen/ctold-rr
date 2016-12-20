@@ -1,10 +1,7 @@
-<!-- Language Hack -->
 <?php
 $curlang = "none";
 do_action('show_kcurrent_language');
 ?>
-
-<!-- End of Language Hack -->
 <!DOCTYPE html>
 <html <?php language_attributes(); ?> xmlns="http://www.w3.org/1999/xhtml">
     <head>

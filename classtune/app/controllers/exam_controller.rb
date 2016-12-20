@@ -857,7 +857,7 @@ class ExamController < ApplicationController
     elective_subjects = []
     elective_subjects_id = []
     student_electives.each do |elect|
-      if !elective_subjects_id.include?(elect.subject_id)
+      if !elective_subjects_id.include?(elect.ontinsubject_id)
         elective_subjects_id << elect.subject_id
         elective_subjects.push Subject.find(elect.subject_id)
       end     

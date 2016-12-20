@@ -167,7 +167,7 @@ $(document).on('click', '#contact_classtune input#sub', function (e) {
 		$("#contact_classtune span.legend").html("<div class='alert alert-info'><strong>Sending......</strong></div>");
 		
 		$.ajax({
-			url : contact_lol.ajax_url,
+			url : ajaxurl,
 			type : 'post',
 			data : {
 				action :     'wp_ajax_send_mail_classtune',

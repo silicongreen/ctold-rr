@@ -19,16 +19,9 @@ add_action('wp_ajax_send_mail_classtune', 'send_mail_classtune');
 if (!function_exists('contact_lol_enqueue_scripts')) {
     function contact_lol_enqueue_scripts()
     {
-        // Register the script like this for a plugin:
-        wp_register_script( 'custom-script', plugins_url( '/js/user_contact.js', __FILE__ ), array( 'jquery' ) );
-        // or
-        // Register the script like this for a theme:
-        wp_register_script( 'custom-script', get_template_directory_uri() . '/js/contact_old.js', array( 'jquery' ) );
+        wp_enqueue_script( 'user_contact', plugins_url( 'js/user_contact.js', __FILE__ ), array('jquery'), '1.0', true );
 
-        // For either a plugin or a theme, you can then enqueue the script:
-        wp_enqueue_script( 'custom-script' );
-        
-        wp_localize_script( 'love', 'contact_lol', array(
+	wp_localize_script( 'user_contact', 'contact_lol', array(
 		'ajax_url' => admin_url( 'admin-ajax.php' )
 	));
     }

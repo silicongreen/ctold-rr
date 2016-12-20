@@ -28,7 +28,7 @@ if (!function_exists("rsvp_video_background_frontend_script")) {
 
 }
 
-add_action('wp_enqueue_scripts', 'rsvp_video_background_frontend_script
+add_action('wp_enqueue_scripts', 'rsvp_video_background_frontend_script');
 if (!function_exists('send_mail_classtune')) {
     function send_mail_classtune() {
         check_ajax_referer("login_security","login_security_field");

@@ -20,7 +20,7 @@
               elective_group_mark[es.exam.subject.elective_group_id] = elective_group_mark[es.exam.subject.elective_group_id]+(((es.marks.to_f*100)/es.exam.maximum_marks.to_f)*es.exam.subject.percentage.to_f)/100
             end
           else
-            elective_group_mark[es.exam.subject.elective_group_id] = 0
+            elective_group_mark[es.exam.subject.elective_group_id] = -1
           end   
             
             
@@ -33,7 +33,13 @@
             <tr >
 
                 <td class="col-pdf"> <%= es.exam.subject.elective_group.name %></td>
-                <td class="col-pdf"><%= elective_group_mark[es.exam.subject.elective_group_id].round() %></td>
+                <td class="col-pdf">
+                  <% if elective_group_mark[es.exam.subject.elective_group_id] == -1 %>
+                    AB
+                  <% else %>   
+                    <%= elective_group_mark[es.exam.subject.elective_group_id].round() %>
+                  <% end %>
+                </td>
                 <%  grade = GradingLevel.percentage_to_grade(elective_group_mark[es.exam.subject.elective_group_id].round(), @batch.id) %>
                 <% if !grade.blank? and !grade.name.blank? %>
                   <td class="col-pdf"><b><%= grade.name %></b></td>

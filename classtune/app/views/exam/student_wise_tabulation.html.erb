@@ -38,9 +38,8 @@
   <% j = 0 %>
   <table id="pdf-table" width="100%" cellspacing="0">
         <tr class="table-header">
-          <td class="col-pdf">Sl.</td>
-          <td class="col-pdf">Roll</td>
-          <td class="col-pdf">Students Name</td>
+          
+          <td class="col-pdf">Name</td>
        
           <% @elective_subjects_name.each do |name| %>
             <td><%= name %></td>
@@ -110,8 +109,7 @@
         </tr> 
     <% end %>
     <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-      <td class="col-pdf"><%= j %></td>
-      <td class="name"><%= student.class_roll_no %></td>
+    
       <td class="name-std"><%= student.full_name %></td>
       <% @elective_subjects.each do |esubject| %>
           <td>
@@ -132,11 +130,11 @@
                 <% elsif es.exam.subject.name.index(" 6") %>
                     <% sub_name = "P6" %>
                 <% end %>
-                <%= sub_name %>&nbsp;&nbsp;|&nbsp;&nbsp;<%= es.marks.present? ? mark=es.marks.to_f : '-' %>&nbsp;&nbsp;>&nbsp;&nbsp;<%= es.marks.present? ? sprintf( "%0.02f", sub_marks) : '-' %><hr/>
+                <%= sub_name %>=<%= es.marks.present? ? mark=es.marks.to_f : '-' %>&nbsp;&nbsp;>&nbsp;&nbsp;<%= es.marks.present? ? sprintf( "%0.02f", sub_marks) : '-' %><hr/>
               <% end %>
           <% end %>
           <% if !elective_group_mark[esubject].blank? %>
-            Total&nbsp;&nbsp;|&nbsp;&nbsp;<%= elective_group_mark[esubject].round() %>&nbsp;&nbsp;|&nbsp;&nbsp;
+            Total=<%= elective_group_mark[esubject].round() %>>
             <%  grade = GradingLevel.percentage_to_grade(elective_group_mark[esubject].round(), @batch.id) %>
             <% if !grade.blank? and !grade.name.blank? %>
               <%= grade.name %>

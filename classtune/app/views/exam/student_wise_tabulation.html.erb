@@ -32,17 +32,15 @@
           end
       %>
 <% if !@students.blank? %>
-<% extender = 0 %>
-<% std_count = 0 %>
-<% j = 0 %>
+  <% extender = 0 %>
+  <% std_count = 0 %>
+  <% j = 0 %>
   <table id="pdf-table" width="100%" cellspacing="0">
         <tr class="table-header">
           <td class="col-pdf">Sl.</td>
           <td class="col-pdf">Roll</td>
           <td class="col-pdf">Students Name</td>
-          
-            <td><%=  %></td>
-          <% end %> 
+       
           <% @elective_subjects_name.each do |name| %>
             <td><%= name %></td>
           <% end %>         
@@ -116,8 +114,8 @@
       <% @elective_subjects.each do |esubject| %>
           <td>
           <% exam_score.each do |es| %>
-              <% sub_marks = (((es.marks.to_f*100)/es.exam.maximum_marks.to_f)*es.exam.subject.percentage.to_f)/100 %>
               <% if es.exam.subject.elective_group.id_to_i == esubject.to_i %>
+                <% sub_marks = (((es.marks.to_f*100)/es.exam.maximum_marks.to_f)*es.exam.subject.percentage.to_f)/100 %>
                 <%= es.exam.subject.name %>&nbsp;&nbsp;|&nbsp;&nbsp;<%= es.marks.present? ? mark=es.marks.to_f : '-' %>&nbsp;&nbsp;|&nbsp;&nbsp;<%= es.marks.present? ? sub_marks : '-' %><hr/>
               <% end %>
           <% end %>

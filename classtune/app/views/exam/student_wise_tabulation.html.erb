@@ -130,11 +130,11 @@
                 <% elsif es.exam.subject.name.index(" 6") %>
                     <% sub_name = "P6" %>
                 <% end %>
-                <%= sub_name %>=<%= es.marks.present? ? mark=es.marks.to_f : '-' %>&nbsp;&nbsp;>&nbsp;&nbsp;<%= es.marks.present? ? sprintf( "%0.02f", sub_marks) : '-' %><hr/>
+                <%= sub_name %>&nbsp;|&nbsp;<%= es.marks.present? ? mark=es.marks.to_f : '-' %>&nbsp;|&nbsp;<%= es.marks.present? ? sprintf( "%0.02f", sub_marks) : '-' %><hr/>
               <% end %>
           <% end %>
           <% if !elective_group_mark[esubject].blank? %>
-            Total=<%= elective_group_mark[esubject].round() %>>
+            Total&nbsp;|&nbsp;<%= elective_group_mark[esubject].round() %>&nbsp;|&nbsp;
             <%  grade = GradingLevel.percentage_to_grade(elective_group_mark[esubject].round(), @batch.id) %>
             <% if !grade.blank? and !grade.name.blank? %>
               <%= grade.name %>

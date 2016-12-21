@@ -39,6 +39,10 @@
             <ul style="margin: 10px 20px 0 0;">
               <li class="themed_bg themed-dark-hover-background"><%= link_to "All result",
                         {:action => "student_wise_generated_report_all",:exam_group=>@exam_group.id},:target => '_blank' %></li>
+              <% if @exam_group.exam_category == 5 %>
+              <li class="themed_bg themed-dark-hover-background"><%= link_to "Tabulation Sheet",
+                        {:action => "student_wise_tabulation",:exam_group=>@exam_group.id},:target => '_blank' %></li>
+              <% end %>
             </ul>
           </div>
       <% end %>

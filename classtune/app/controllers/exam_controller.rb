@@ -868,7 +868,14 @@ class ExamController < ApplicationController
       exam = Exam.find_by_exam_group_id_and_subject_id(@exam_group.id,sub.id)
       @exams.push exam unless exam.nil?
     end
-    render :pdf => 'student_wise_tabulation'
+    render :pdf => 'student_wise_tabulation',
+      :orientation => 'Landscape', :zoom => 1.00,
+      :margin => {    :top=> 10,
+      :bottom => 10,
+      :left=> 10,
+      :right => 10},
+      :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+      :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
   end
   
   def student_wise_generated_report_all  

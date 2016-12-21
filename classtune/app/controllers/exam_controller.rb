@@ -828,6 +828,49 @@ class ExamController < ApplicationController
     end
   end
   
+  def student_wise_tabulation  
+    @exam_group = ExamGroup.find(params[:exam_group])
+    if @exam_group.is_current == false
+      student_list = []
+      allExam = @exam_group.exams
+      allExam.each do |exams|
+        score_data = exams.exam_scores
+        score_data.each do |sd|
+          student_list.push(sd.student_id) unless student_list.include?(sd.student_id)
+        end          
+      end
+      if student_list.nil?
+        flash[:notice] = "#{t('flash_student_notice')}"
+        redirect_to :action => 'exam_wise_report' and return
+      end
+
+      @batch = @exam_group.batch
+      @students = Student.find_all_by_id(student_list)
+    else
+      @batch = @exam_group.batch
+      @students=@batch.students.by_first_name
+    end
+    
+    @assigned_employee=@batch.employees
+    general_subjects = Subject.find_all_by_batch_id(@batch.id, :conditions=>"elective_group_id IS NULL")
+    student_electives = StudentsSubject.find_all_by_batch_id(@batch.id)
+    elective_subjects = []
+    elective_subjects_id = []
+    student_electives.each do |elect|
+      if !elective_subjects_id.include?(elect.ontinsubject_id)
+        elective_subjects_id << elect.subject_id
+        elective_subjects.push Subject.find(elect.subject_id)
+      end     
+    end
+    @subjects = general_subjects + elective_subjects
+    @exams = []
+    @subjects.each do |sub|
+      exam = Exam.find_by_exam_group_id_and_subject_id(@exam_group.id,sub.id)
+      @exams.push exam unless exam.nil?
+    end
+    render :pdf => 'student_wise_tabulation'
+  end
+  
   def student_wise_generated_report_all  
     @exam_group = ExamGroup.find(params[:exam_group])
     if @exam_group.is_current == false

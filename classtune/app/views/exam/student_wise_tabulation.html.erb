@@ -121,13 +121,15 @@
                 <%= es.exam.subject.name %>&nbsp;&nbsp;|&nbsp;&nbsp;<%= es.marks.present? ? mark=es.marks.to_f : '-' %>&nbsp;&nbsp;|&nbsp;&nbsp;<%= es.marks.present? ? sub_marks : '-' %><hr/>
               <% end %>
           <% end %>
-          Total&nbsp;&nbsp;|&nbsp;&nbsp;<%= elective_group_mark[esubject].round() %>&nbsp;&nbsp;|&nbsp;&nbsp;
-          <%  grade = GradingLevel.percentage_to_grade(elective_group_mark[esubject].round(), @batch.id) %>
+          <% if !elective_group_mark[esubject].blank? %>
+            Total&nbsp;&nbsp;|&nbsp;&nbsp;<%= elective_group_mark[esubject].round() %>&nbsp;&nbsp;|&nbsp;&nbsp;
+            <%  grade = GradingLevel.percentage_to_grade(elective_group_mark[esubject].round(), @batch.id) %>
             <% if !grade.blank? and !grade.name.blank? %>
               <%= grade.name %>
             <% else %>
               N/A
             <% end %>
+          <% end %>    
           </td>
       <% end %>
  

@@ -117,8 +117,22 @@
           <td>
           <% exam_score.each do |es| %>
               <% if es.exam.subject.elective_group.id.to_i == esubject.to_i %>
-                <% sub_marks = (((es.marks.to_f*100)/es.exam.maximum_marks.to_f)*es.exam.subject.percentage.to_f)/100 %>
-                <%= es.exam.subject.name %>&nbsp;&nbsp;|&nbsp;&nbsp;<%= es.marks.present? ? mark=es.marks.to_f : '-' %>&nbsp;&nbsp;|&nbsp;&nbsp;<%= es.marks.present? ? sub_marks : '-' %><hr/>
+                <% sub_marks = (((es.marks.to_f*100)/es.exam.maximum_marks.to_f)*es.exam.subject.percentage.to_f)/100 %>  
+                <% sub_name = es.exam.subject.name %>
+                <%  if es.exam.subject.name.index(" 1") %>
+                    <% sub_name = "P1" %>
+                <% elsif es.exam.subject.name.index(" 2") %>
+                    <% sub_name = "P2" %>
+                <% elsif es.exam.subject.name.index(" 3") %>
+                    <% sub_name = "P3" %>
+                <% elsif es.exam.subject.name.index(" 4") %>
+                    <% sub_name = "P4" %>
+                <% elsif es.exam.subject.name.index(" 5") %>
+                    <% sub_name = "P5" %>
+                <% elsif es.exam.subject.name.index(" 6") %>
+                    <% sub_name = "P6" %>
+                <% end %>
+                <%= sub_name %>&nbsp;&nbsp;|&nbsp;&nbsp;<%= es.marks.present? ? mark=es.marks.to_f : '-' %>&nbsp;&nbsp;>&nbsp;&nbsp;<%= es.marks.present? ? sub_marks.round() : '-' %><hr/>
               <% end %>
           <% end %>
           <% if !elective_group_mark[esubject].blank? %>

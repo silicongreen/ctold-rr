@@ -35,7 +35,7 @@ h4{margin: 5px;}
 .odd{
     height:auto;
     background: #fff;
-    font-size: 11px;
+    font-size: 9px;
 
 }
 
@@ -43,7 +43,7 @@ h4{margin: 5px;}
 
     height:auto;
     background: #fff;
-    font-size: 11px;
+    font-size: 9px;
 
 
 }
@@ -78,7 +78,7 @@ tr.odd{
     background: #ffffff;
     font-weight: bold;
     text-align: center;
-    font-size: 11px;
+    font-size: 9px;
 }
 
 table#pdf-table{
@@ -132,10 +132,6 @@ table#pdf-table{
     border: 1px solid #fff;
     border-top: 1px solid #ADACAB;
     border-bottom: 1px solid #ADACAB;
-}
-.name-std
-{
-    white-space: nowrap;
 }
 
 

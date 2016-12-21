@@ -74,6 +74,7 @@
        end
     end
     @exams = exam_new
+    exam_score = []
     @exams.each do |exam| 
       exam_score.push exam.exam_scores.find_by_student_id(@student.id) unless exam.exam_scores.find_by_student_id(@student.id).nil?  
     end

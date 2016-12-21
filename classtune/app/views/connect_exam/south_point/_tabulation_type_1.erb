@@ -89,6 +89,11 @@
             <td class="name-std"><%= std['first_name']+" "+std['last_name'] %></td>
             <td class="name-std">TQ<hr/>FQ<hr/>FE<hr/>TTL<hr/>CMB</td>
             <% total_mark = 0 %>
+            <% q3_mark = 0 %>
+            <% q4_mark = 0 %>
+            <% f_mark = 0 %>
+            <% tf_mark = 0 %>
+            <% cmb_mark = 0 %>
             <% grades = [] %>
             <% grade_count = {} %>
             <% @report_data['report']['subjects'].each do |sub| %>
@@ -267,7 +272,7 @@
                                  end
                               end 
 
-                              #Calculation First Term Mark
+                              #Calculation First Term (40/20) Mark
                               if report['quarter'] == '5'
                                 if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].blank?
                                    first_term_full_mark = report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
@@ -375,7 +380,7 @@
                       full_mark4 = ct_full_mark4.to_i+st_full_mark4.to_i
                       main_mark4 = (obtained_mark2.to_f/full_mark2.to_f)*100
 
-                      #Calculation First Term Mark
+                      #Calculation First Term (40/20) Mark
                       full_mark_first_term = full_mark1+full_mark2+first_term_full_mark
                       obtained_mark_first_term = obtained_mark1+obtained_mark2+first_term_mark
                       main_mark_first_term = (obtained_mark_first_term.to_f/full_mark_first_term.to_f)*100
@@ -432,11 +437,19 @@
                             
                   %>
                   <td>
-                      <%= sprintf( "%0.02f", obtained_mark3)+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name3+"<hr/>" %>
-                      <%= sprintf( "%0.02f", obtained_mark4)+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name4+"<hr/>" %>
-                      <%= sprintf( "%0.02f", final_term_mark)+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name3+"<hr/>" %>
-                      <%= sprintf( "%0.02f", obtained_mark_final_term)+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name4+"<hr/>" %> 
-                      <%= sprintf( "%0.02f", main_mark)+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name %>
+                    <%
+                    q3_mark = q3_mark+obtained_mark3.round()
+                    q4_mark = q4_mark+obtained_mark4.round()
+                    f_mark = f_mark+final_term_mark.round()
+                    tf_mark = f_mark+obtained_mark_final_term.round()
+                    cmb_mark = cmb_mark+main_mark.round()
+                    
+                    %>
+                      <%= obtained_mark3.round().to_s+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name3+"<hr/>" %>
+                      <%= obtained_mark4.round().to_s+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name4+"<hr/>" %>
+                      <%= final_term_mark.round().to_s+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name3+"<hr/>" %>
+                      <%= obtained_mark_final_term.round().to_s+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name4+"<hr/>" %> 
+                      <%= main_mark.round().to_s+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name %>
                       
                     </td>  
             <% end %> 
@@ -458,7 +471,11 @@
                     <% end %> 
               <% end %>
               <td>
-                   <%= sprintf( "%0.02f", total_mark) %>    
+                  <%= q3_mark.round().to_s+"<hr/>" %> 
+                  <%= q4_mark.round().to_s+"<hr/>" %> 
+                  <%= f_mark.round().to_s+"<hr/>" %> 
+                  <%= tf_mark.round().to_s+"<hr/>" %> 
+                  <%= cmb_mark.round().to_s %> 
               </td>
               <td>
                   <% i = 1 %>

@@ -53,15 +53,15 @@
         <tr class="table-header">
           <td class="name">Roll NO.</td>
           <td class="name">Name</td>
-          <td class="col-pdf">1<sup>st</sup> Quarter</td>
-          <td class="col-pdf">2<sup>nd</sup> Quarter</td>
-          <td class="col-pdf">First Term</td>
+          <td class="col-pdf">1<sup>st</sup> Quarter (30/15)</td>
+          <td class="col-pdf">2<sup>nd</sup> Quarter (30/15)</td>
+          <td class="col-pdf">First Term (40/20)</td>
           <td class="col-pdf">Full Marks</td>
           <td class="col-pdf">Total</td>
           <td class="col-pdf">Grade</td>
-          <td class="col-pdf">3<sup>rd</sup> Quarter</td>
-          <td class="col-pdf">4<sup>th</sup> Quarter</td>
-          <td class="col-pdf">Final</td>
+          <td class="col-pdf">3<sup>rd</sup> Quarter(30/15)</td>
+          <td class="col-pdf">4<sup>th</sup> Quarter (30/15)</td>
+          <td class="col-pdf">Final(40/20)</td>
           <td class="col-pdf">Full Marks</td>
           <td class="col-pdf">Total</td>
           <td class="col-pdf">Grade</td>
@@ -275,7 +275,7 @@
 
                      end 
 
-                     #Calculation First Term Mark
+                     #Calculation First Term (40/20) Mark
                      if report['quarter'] == '5'
                        if !report['maximum_marks'].blank?
                           first_term_full_mark = report['maximum_marks'].to_i
@@ -376,7 +376,7 @@
                 full_mark4 = ct_full_mark4.to_i+st_full_mark4.to_i
 
                
-                #Calculation First Term Mark
+                #Calculation First Term (40/20) Mark
                 full_mark_first_term = full_mark1+full_mark2+first_term_full_mark
                 obtained_mark_first_term = obtained_mark1+obtained_mark2+first_term_mark
                 main_mark_first_term = (obtained_mark_first_term.to_f/full_mark_first_term.to_f)*100
@@ -390,22 +390,22 @@
                 main_mark = (obtained_mark.to_f/full_mark.to_f)*100
             %> 
               
-            <td class="col-pdf"><%= sprintf( "%0.02f", obtained_mark1) %></td>
-            <td class="col-pdf"><%= sprintf( "%0.02f", obtained_mark2) %></td>
-            <td class="col-pdf"><%= sprintf( "%0.02f", first_term_mark) %></td>
+            <td class="col-pdf"><%= obtained_mark1.round().to_s %></td>
+            <td class="col-pdf"><%= obtained_mark2.round().to_s %></td>
+            <td class="col-pdf"><%= first_term_mark.round().to_s %></td>
             <td class="col-pdf"><%= full_mark_first_term.to_i  %></td>
-            <td class="col-pdf"><%= sprintf( "%0.02f", obtained_mark_first_term) %></td>
+            <td class="col-pdf"><%= obtained_mark_first_term.round().to_s %></td>
             <%  grade = GradingLevel.percentage_to_grade(main_mark_first_term, @batch.id) %>
             <% if !grade.blank? and !grade.name.blank? %>
                 <td class="col-pdf"><b><%= grade.name %></b></td>
             <% else %>
                 <td class="col-pdf"><b>N/A</b></td>
             <% end %>
-            <td class="col-pdf"><%= sprintf( "%0.02f", obtained_mark3) %></td>
-            <td class="col-pdf"><%= sprintf( "%0.02f", obtained_mark4) %></td>
-            <td class="col-pdf"><%= sprintf( "%0.02f", final_term_mark) %></td>
+            <td class="col-pdf"><%= obtained_mark3.round().to_s %></td>
+            <td class="col-pdf"><%= obtained_mark4.round().to_s %></td>
+            <td class="col-pdf"><%= final_term_mark.round().to_s %></td>
             <td class="col-pdf"><%= full_mark_final_term.to_i  %></td>
-            <td class="col-pdf"><%= sprintf( "%0.02f", obtained_mark_final_term) %></td>
+            <td class="col-pdf"><%= obtained_mark_final_term.round().to_s %></td>
             <%  grade = GradingLevel.percentage_to_grade(main_mark_final_term, @batch.id) %>
             <% if !grade.blank? and !grade.name.blank? %>
                 <td class="col-pdf"><b><%= grade.name %></b></td>
@@ -413,7 +413,7 @@
                 <td class="col-pdf"><b>N/A</b></td>
             <% end %>
 
-            <td class="col-pdf"><%= sprintf( "%0.02f", main_mark) %></td>
+            <td class="col-pdf"><%= main_mark.round().to_s %></td>
             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
             <% if !grade.blank? and !grade.name.blank? %>
                 <td class="col-pdf"><b><%= grade.name %></b></td>

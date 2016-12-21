@@ -48,9 +48,9 @@
         <tr class="table-header">
           <td class="name">Roll NO.</td>
           <td class="name">Name</td>
-          <td>1<sup>st</sup> Quarter</td>
-          <td>2<sup>nd</sup> Quarter</td>
-          <td>First Term</td>
+          <td>1<sup>st</sup> Quarter (30/15)</td>
+          <td>2<sup>nd</sup> Quarter (30/15)</td>
+          <td>First Term (40/20)</td>
           <td>Full Mark</td>
           <td>Total Obtain</td>
           <td>Grade</td>
@@ -177,7 +177,7 @@
 
                      end  
 
-                     #Calculation First Term Mark
+                     #Calculation First Term (40/20) Mark
                      if report['quarter'] == '5'
                        if !report['maximum_marks'].blank?
                           first_term_full_mark = report['maximum_marks'].to_i
@@ -229,17 +229,17 @@
                 obtained_mark2 = avg_mark_ct2.to_f+avg_mark_st2.to_f
                 full_mark2 = ct_full_mark2.to_i+st_full_mark2.to_i
 
-                #Calculation First Term Mark
+                #Calculation First Term (40/20) Mark
                 full_mark = full_mark1+full_mark2+first_term_full_mark
                 obtained_mark = obtained_mark1+obtained_mark2+first_term_mark
                 main_mark = (obtained_mark.to_f/full_mark.to_f)*100
             %> 
               
-            <td><%= sprintf( "%0.02f", obtained_mark1) %></td>
-            <td><%= sprintf( "%0.02f", obtained_mark2) %></td>
-            <td><%= sprintf( "%0.02f", first_term_mark) %></td>
+            <td><%= obtained_mark1.round().to_s %></td>
+            <td><%= obtained_mark2.round().to_s %></td>
+            <td><%= first_term_mark.round().to_s %></td>
             <td><%= full_mark.to_i  %></td>
-            <td><%= sprintf( "%0.02f", obtained_mark) %></td>
+            <td><%= obtained_mark %></td>
             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
             <% if !grade.blank? and !grade.name.blank? %>
                 <td><b><%= grade.name %></b></td>

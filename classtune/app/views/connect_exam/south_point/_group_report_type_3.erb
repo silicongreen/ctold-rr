@@ -91,15 +91,15 @@
                             %>
 
 
-                          <td class="col-pdf"><%= sprintf( "%0.02f", full_mark) %></td>
-                          <td class="col-pdf"><%= sprintf( "%0.02f", obtained_mark) %></td>
+                          <td class="col-pdf"><%= full_mark.round().to_s %></td>
+                          <td class="col-pdf"><%= obtained_mark.round().to_s %></td>
                           <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                           <% if !grade.blank? and !grade.name.blank? %>
                             <td class="col-pdf"><%= grade.name %></td>  
                           <% else %>
                             <td class="col-pdf">N/A</td>  
                           <% end %> 
-                          <td class="col-pdf"><%= sprintf( "%0.02f", full_mark) %></td>
+                          <td class="col-pdf"><%= full_mark.round().to_s %></td>
                                
 
                       </tr> 

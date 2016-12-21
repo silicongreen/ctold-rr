@@ -55,6 +55,7 @@
           <% end %> 
           
           <td>Total</td>
+          <td>Position Section</td>
           <td>Grade Count</td>
           <%#*<td>Remark</td>%>
         
@@ -152,7 +153,7 @@
                       %>  
                     <td>
                        <% total_mark = total_mark+obtained_mark.to_f %>
-                       <%= sprintf( "%0.02f", obtained_mark) %><hr/>
+                       <%= obtained_mark.round().to_s %><hr/>
                        <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                        <% if !grade.blank? and !grade.name.blank? %>
                            <%
@@ -187,8 +188,11 @@
                     <% end %> 
               <% end %>
               <td>
-                   <%= sprintf( "%0.02f", total_mark) %>    
+                   <%= total_mark.round().to_s %>    
               </td>
+              <td>
+                  &nbsp;&nbsp;
+              </td>    
               <td>
                   <% i = 1 %>
                   <% total_grade_std = grades.count  %>

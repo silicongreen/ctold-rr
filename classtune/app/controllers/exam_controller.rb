@@ -845,10 +845,10 @@ class ExamController < ApplicationController
       end
 
       @batch = @exam_group.batch
-      @students = Student.find_all_by_id(student_list)
+      @students = Student.find_all_by_id(student_list, :order=>"class_roll_no ASC")
     else
       @batch = @exam_group.batch
-      @students=@batch.students.by_first_name
+      @students=Student.find_all_by_batch_id(@batch.id, :order=>"class_roll_no ASC")
     end
     
     @assigned_employee=@batch.employees

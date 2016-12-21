@@ -38,7 +38,7 @@
   <% j = 0 %>
   <table id="pdf-table" width="100%" cellspacing="0">
         <tr class="table-header">
-          
+          <td class="col-pdf">Roll</td>
           <td class="col-pdf">Name</td>
        
           <% @elective_subjects_name.each do |name| %>
@@ -109,7 +109,7 @@
         </tr> 
     <% end %>
     <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-    
+      <td class="name-std"><%= student.class_roll_no %></td>
       <td class="name-std"><%= student.full_name %></td>
       <% @elective_subjects.each do |esubject| %>
           <td>

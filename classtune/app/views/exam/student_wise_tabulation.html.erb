@@ -96,13 +96,13 @@
   %>
     <% j = j+1 %>
     <%  std_count = std_count+1; %>
-    <% if std_count>4 && extender ==0 %>
+    <% if std_count>5 && extender ==0 %>
         <% std_count = 0 %>
         <% extender = 1 %>
         <tr class="page-break1">
             <td colspan="100">&nbsp;</td>
         </tr>    
-    <% elsif std_count>5 && extender ==1 %>
+    <% elsif std_count>6 && extender ==1 %>
         <% std_count = 0 %>
         <% extender = 1 %>
         <tr class="page-break2">
@@ -132,7 +132,7 @@
                 <% elsif es.exam.subject.name.index(" 6") %>
                     <% sub_name = "P6" %>
                 <% end %>
-                <%= sub_name %>&nbsp;&nbsp;|&nbsp;&nbsp;<%= es.marks.present? ? mark=es.marks.to_f : '-' %>&nbsp;&nbsp;>&nbsp;&nbsp;<%= es.marks.present? ? sub_marks.round() : '-' %><hr/>
+                <%= sub_name %>&nbsp;&nbsp;|&nbsp;&nbsp;<%= es.marks.present? ? mark=es.marks.to_f : '-' %>&nbsp;&nbsp;>&nbsp;&nbsp;<%= es.marks.present? ? sprintf( "%0.02f", sub_marks) : '-' %><hr/>
               <% end %>
           <% end %>
           <% if !elective_group_mark[esubject].blank? %>

@@ -103,7 +103,7 @@
             elective_group_mark[es.exam.subject.elective_group_id] = elective_group_mark[es.exam.subject.elective_group_id]+(((es.marks.to_f*100)/es.exam.maximum_marks.to_f)*es.exam.subject.percentage.to_f)/100
           end
         else
-          elective_group_mark[es.exam.subject.elective_group_id] = 0
+          elective_group_mark[es.exam.subject.elective_group_id] = -1
         end    
       end 
       %>
@@ -128,7 +128,13 @@
           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
               
              <td class="col-pdf border-left-none no-warp  align-left" width="40%"> <%= es.exam.subject.elective_group.name %></td>
-              <td class="col-pdf" width="30%"><%= elective_group_mark[es.exam.subject.elective_group_id].round() %></td>
+             <td class="col-pdf" width="30%">
+                  <% if elective_group_mark[es.exam.subject.elective_group_id] == -1 %>
+                    AB
+                  <% else %>   
+                    <%= elective_group_mark[es.exam.subject.elective_group_id].round() %>
+                  <% end %>       
+             </td>
               <%  grade = GradingLevel.percentage_to_grade(elective_group_mark[es.exam.subject.elective_group_id].round(), @batch.id) %>
               <% if !grade.blank? and !grade.name.blank? %>
                             <td class="col-pdf  border-right-none" width="30%"><b><%= grade.name %></b></td>

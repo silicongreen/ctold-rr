@@ -419,11 +419,14 @@
 
               <table id="pdf-table" class="margin-top-bottom-10 float-left font-size-20" width="10%" >
                   <tr class="table-header">
-                      <td class="col-pdf">Working Days : <%= @report_data['total'] %></td>
+                      <td class="col-pdf">Working Days </td><td class="col-pdf"> <%= @report_data['total'] %></td>
                   </tr>
                   <tr class="table-header">
-                      <td class="col-pdf">Days Present : <%= @report_data['present'] %> </td>
+                      <td class="col-pdf">Days Present </td><td class="col-pdf"> <%= @report_data['present'] %> </td>
                   </tr> 
+                  <tr class="table-header">
+                      <td class="col-pdf">Days Absent </td><td class="col-pdf"><%= @report_data['total']-@report_data['present'] %> </td>
+                  </tr>
               </table>
               <table id="pdf-table" class="margin-top-bottom-10 font-size-20 float-left-10" width="22%" >
                       <tr class="table-header">

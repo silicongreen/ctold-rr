@@ -15,12 +15,14 @@
                       <td class="col-pdf">Full Marks</td>
                       <td class="col-pdf">Total</td>
                       <td class="col-pdf">Grade</td>
+                      <td class="col-pdf">Highest Mark</td>
                       <td class="col-pdf">3<sup>rd</sup> Quarter(30/15)</td>
                       <td class="col-pdf">4<sup>th</sup> Quarter (30/15)</td>
                       <td class="col-pdf">Final(40/20)</td>
                       <td class="col-pdf">Full Marks</td>
                       <td class="col-pdf">Total</td>
                       <td class="col-pdf">Grade</td>
+                      <td class="col-pdf">Highest Mark</td>
                       <td class="col-pdf">Average</td>
                       <td class="col-pdf">Grade</td>
                   </tr>
@@ -335,6 +337,7 @@
                           <% else %>
                               <td class="col-pdf"><b>N/A</b></td>
                           <% end %>
+                          <td class="col-pdf"></td>
                           <td class="col-pdf"><%= obtained_mark3.round().to_s %></td>
                           <td class="col-pdf"><%= obtained_mark4.round().to_s %></td>
                           <td class="col-pdf"><%= final_term_mark.round().to_s %></td>
@@ -346,7 +349,7 @@
                           <% else %>
                               <td class="col-pdf"><b>N/A</b></td>
                           <% end %>
-                              
+                          <td class="col-pdf"></td>   
                           <td class="col-pdf"><%=  main_mark.round().to_s %></td>
                           <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                           <% if !grade.blank? and !grade.name.blank? %>

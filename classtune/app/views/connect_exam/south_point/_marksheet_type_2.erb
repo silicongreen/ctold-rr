@@ -239,7 +239,7 @@
             <td><%= obtained_mark2.round().to_s %></td>
             <td><%= first_term_mark.round().to_s %></td>
             <td><%= full_mark.to_i  %></td>
-            <td><%= obtained_mark %></td>
+            <td><%= obtained_mark.round().to_s %></td>
             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
             <% if !grade.blank? and !grade.name.blank? %>
                 <td><b><%= grade.name %></b></td>

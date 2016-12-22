@@ -378,15 +378,15 @@
                
                 #Calculation First Term (40/20) Mark
                 full_mark_first_term = full_mark1+full_mark2+first_term_full_mark
-                obtained_mark_first_term = obtained_mark1+obtained_mark2+first_term_mark
+                obtained_mark_first_term = obtained_mark1.round()+obtained_mark2.round()+first_term_mark.round()
                 main_mark_first_term = (obtained_mark_first_term.to_f/full_mark_first_term.to_f)*100
 
                 full_mark_final_term = full_mark3+full_mark4+final_term_full_mark
-                obtained_mark_final_term = obtained_mark3+obtained_mark4+final_term_mark
+                obtained_mark_final_term = obtained_mark3.round()+obtained_mark4.round()+final_term_mark.round()
                 main_mark_final_term = (obtained_mark_final_term.to_f/full_mark_final_term.to_f)*100
 
                 full_mark = full_mark_first_term+full_mark_final_term
-                obtained_mark = obtained_mark_first_term+obtained_mark_final_term
+                obtained_mark = obtained_mark_first_term.round()+obtained_mark_final_term.round()
                 main_mark = (obtained_mark.to_f/full_mark.to_f)*100
             %> 
               

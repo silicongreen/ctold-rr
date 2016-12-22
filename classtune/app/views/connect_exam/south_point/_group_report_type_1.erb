@@ -3,8 +3,8 @@
              <table id="pdf-table" cellspacing="0" style="overflow: auto">
                   <% c = 'even'  %>
                   <tr class="table-header">
-                      <td class="col-pdf" colspan="7">First-Term Examination</td>
-                      <td class="col-pdf" colspan="6">Final Examination</td>
+                      <td class="col-pdf" colspan="8">First-Term Examination</td>
+                      <td class="col-pdf" colspan="7">Final Examination</td>
                       <td class="col-pdf" colspan="2">Combined Result</td>
                   </tr>    
                   <tr class="table-header">
@@ -386,7 +386,7 @@
                         <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                         
                         <td class="col-pdf"><%= report['subject_name'] %></td>
-                        <td class="col-pdf" colspan="13"></td>
+                        <td class="col-pdf" colspan="15"></td>
                         <td class="col-pdf"><%= report['subject_comment'] %></td>
                         </tr>
                       <% end %>

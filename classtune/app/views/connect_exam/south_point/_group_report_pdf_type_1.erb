@@ -428,7 +428,7 @@
                       <td class="col-pdf">Days Absent </td><td class="col-pdf"><%= @report_data['total']-@report_data['present'] %> </td>
                   </tr>
               </table>
-              <table id="pdf-table" class="margin-top-bottom-10 font-size-20 float-left-10" width="23%" >
+              <table id="pdf-table" class="margin-top-bottom-10 font-size-20 float-left-10" width="21%" >
                       <tr class="table-header">
                           <td class="col-pdf t-left">
                               <b>Teacher's Remark</b>
@@ -444,7 +444,7 @@
                           </td>                      
                       </tr>
               </table>
-               <table id="pdf-table" class="margin-top-bottom-10 font-size-20 float-left-10" width="20%" >
+               <table id="pdf-table" class="margin-top-bottom-10 font-size-20 float-left-10" width="18%" >
                       <tr class="table-header">
                           <td class="col-pdf t-left">
                               <b>Promoted To</b>
@@ -463,7 +463,7 @@
                 <% @grading_levels = GradingLevel.default %>
               <% end %>
               <%  unless @grading_levels.empty? %>
-                <table id="pdf-table" class="margin-top-bottom-10  font-size-20 float-left-10" width="44%" cellspacing="0">
+                <table id="pdf-table" class="margin-top-bottom-10  font-size-20 float-left-10" width="47%" cellspacing="0">
                     <tr class="even">
                         <td><b>Grade</b></td>
 

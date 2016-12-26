@@ -88,7 +88,9 @@
           elective_group_mark[es.exam.subject.elective_group_id] = elective_group_mark[es.exam.subject.elective_group_id]+(((es.marks.to_f*100)/es.exam.maximum_marks.to_f)*es.exam.subject.percentage.to_f)/100
         end
       else
-        elective_group_mark[es.exam.subject.elective_group_id] = 0
+        if elective_group_mark[es.exam.subject.elective_group_id].nil?
+          elective_group_mark[es.exam.subject.elective_group_id] = 0
+        end
       end    
     end 
       

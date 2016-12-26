@@ -97,14 +97,20 @@
    
       exam_score.each do |es|
         if es.marks.present?
-          if elective_group_mark[es.exam.subject.elective_group_id].nil?
-            elective_group_mark[es.exam.subject.elective_group_id] = (((es.marks.to_f*100)/es.exam.maximum_marks.to_f)*es.exam.subject.percentage.to_f)/100
+             
+            if elective_group_mark[es.exam.subject.elective_group_id].nil?
+              elective_group_mark[es.exam.subject.elective_group_id] = (((es.marks.to_f*100)/es.exam.maximum_marks.to_f)*es.exam.subject.percentage.to_f)/100
+            else
+              if elective_group_mark[es.exam.subject.elective_group_id] == -1
+                elective_group_mark[es.exam.subject.elective_group_id] = 0
+              end 
+              elective_group_mark[es.exam.subject.elective_group_id] = elective_group_mark[es.exam.subject.elective_group_id]+(((es.marks.to_f*100)/es.exam.maximum_marks.to_f)*es.exam.subject.percentage.to_f)/100
+            end
           else
-            elective_group_mark[es.exam.subject.elective_group_id] = elective_group_mark[es.exam.subject.elective_group_id]+(((es.marks.to_f*100)/es.exam.maximum_marks.to_f)*es.exam.subject.percentage.to_f)/100
-          end
-        else
-          elective_group_mark[es.exam.subject.elective_group_id] = -1
-        end    
+            if elective_group_mark[es.exam.subject.elective_group_id].nil?
+              elective_group_mark[es.exam.subject.elective_group_id] = -1
+            end  
+          end     
       end 
       %>
       <h4 class="h4-evaluation"><b>Result in Details</b></h4>

@@ -25,6 +25,7 @@ class ApplicationController < ActionController::Base
   helper_method :send_sms
   helper_method :sms_enable?
   helper_method :school_mock_test?
+  helper_method :get_tabulation_connect_exam
   helper_method :get_exam_result_type
   helper_method :get_exam_result_type2
   helper_method :get_exam_result_quarter
@@ -54,6 +55,22 @@ class ApplicationController < ActionController::Base
   before_filter :dev_mode
   include CustomInPlaceEditing
   
+  
+  def get_tabulation_connect_exam(connect_exam_id,batch_id)
+    require 'net/http'
+    require 'uri'
+    require "yaml"
+    champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
+    api_endpoint = champs21_api_config['api_url']
+
+    api_uri = URI(api_endpoint + "api/report/tabulation")
+    http = Net::HTTP.new(api_uri.host, api_uri.port)
+    request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })
+    request.set_form_data({"connect_exam_id"=>connect_exam_id,"batch_id"=>batch_id,"call_from_web"=>1,"user_secret" =>session[:api_info][0]['user_secret']})
+    response = http.request(request)
+    student_response = JSON::parse(response.body)
+    return student_response
+  end
   def school_mock_test?
     require "yaml"
     vreturn = false

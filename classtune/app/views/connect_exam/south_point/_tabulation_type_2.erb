@@ -98,6 +98,13 @@
             <% f_mark = 0 %>
             <% tf_mark = 0 %>
             
+            <% grades1 = [] %>
+            <% grade_count1 = {} %>
+            <% grades2 = [] %>
+            <% grade_count2 = {} %>
+            <% grades3 = [] %>
+            <% grade_count3 = {} %>
+            
             <% grades = [] %>
             <% grade_count = {} %>
             <% @report_data['report']['subjects'].each do |sub| %>
@@ -269,16 +276,34 @@
                       grade = GradingLevel.percentage_to_grade(main_mark1, @batch.id)
                       if !grade.blank? and !grade.name.blank?
                         grade_name1 = grade.name
+                        if grades1.include?(grade.name.to_s)
+                          grade_count1[grade.name.to_s] = grade_count1[grade.name.to_s]+1
+                        else
+                          grades1 << grade.name.to_s
+                          grade_count1[grade.name.to_s] = 1
+                        end
                       end
                       
                       grade = GradingLevel.percentage_to_grade(main_mark2, @batch.id)
                       if !grade.blank? and !grade.name.blank?
                         grade_name2 = grade.name
+                        if grades2.include?(grade.name.to_s)
+                          grade_count2[grade.name.to_s] = grade_count2[grade.name.to_s]+1
+                        else
+                          grades2 << grade.name.to_s
+                          grade_count2[grade.name.to_s] = 1
+                        end
                       end
                     
                       grade = GradingLevel.percentage_to_grade(main_mark3, @batch.id)
                       if !grade.blank? and !grade.name.blank?
                         grade_name3 = grade.name
+                        if grades3.include?(grade.name.to_s)
+                          grade_count3[grade.name.to_s] = grade_count3[grade.name.to_s]+1
+                        else
+                          grades3 << grade.name.to_s
+                          grade_count3[grade.name.to_s] = 1
+                        end
                       end
                     
                       grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
@@ -301,7 +326,7 @@
                         q1_mark = q1_mark+obtained_mark1.round()
                         q2_mark = q2_mark+obtained_mark2.round()
                         f_mark = f_mark+first_term_mark.round()
-                        tf_mark = f_mark+obtained_mark.round()
+                        tf_mark = tf_mark+obtained_mark.round()
                       %>
                       <%= obtained_mark1.round().to_s+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name1+"<hr/>" %>
                       <%= obtained_mark2.round().to_s+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name2+"<hr/>" %>
@@ -333,6 +358,36 @@
                   <%= tf_mark.round().to_s %>   
               </td>
               <td>
+                  <% i = 1 %>
+                  <% total_grade_std = grades1.count  %>
+                  <% grades1.each do |grade| %>
+                      <%= grade.to_s+"-"+grade_count1[grade].to_s %>
+                      <% if i!=total_grade_std %>
+                      ,
+                      <% end %>
+                      <% i = i+1 %>
+                  <% end %>
+                  <hr/>    
+                  <% i = 1 %>
+                  <% total_grade_std = grades2.count  %>
+                  <% grades2.each do |grade| %>
+                      <%= grade.to_s+"-"+grade_count2[grade].to_s %>
+                      <% if i!=total_grade_std %>
+                      ,
+                      <% end %>
+                      <% i = i+1 %>
+                  <% end %>
+                  <hr/> 
+                  <% i = 1 %>
+                  <% total_grade_std = grades3.count  %>
+                  <% grades3.each do |grade| %>
+                      <%= grade.to_s+"-"+grade_count3[grade].to_s %>
+                      <% if i!=total_grade_std %>
+                      ,
+                      <% end %>
+                      <% i = i+1 %>
+                  <% end %>
+                  <hr/>
                   <% i = 1 %>
                   <% total_grade_std = grades.count  %>
                   <% grades.each do |grade| %>

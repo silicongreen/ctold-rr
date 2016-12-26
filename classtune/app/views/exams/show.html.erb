@@ -80,7 +80,7 @@
         markexam = 0
         if no_exam  
           styletext = "style='display:none;'" 
-          markexam = 100
+          markexam = 1
         end 
    %>
     
@@ -125,7 +125,7 @@
               <% unless @exam_group.exam_type == 'Grades' %>
                 <td class="col-1"  <%=styletext%>><div class="label-field-pair">
                     <div class="text-input-bg">
-                      <% if markexam==100 %>
+                      <% if markexam==1 %>
                         <%= text_field_tag "exam[#{student.id}][marks]", @exam_score.marks,:value=>markexam, :size => '4', :class=>"marks-box" %>
                       <% else %>
                         <%= text_field_tag "exam[#{student.id}][marks]", @exam_score.marks, :size => '4', :class=>"marks-box" %>

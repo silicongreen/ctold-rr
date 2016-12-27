@@ -52,6 +52,24 @@ class ajax extends MX_Controller {
     public function getExclusiveNews() {
         echo "getExclusiveNews";
     }
+    public function send_paid_notification_eddozz() {
+        $user_id = $this->input->post("user_id");
+
+        $user_ids = explode(",", $user_id);
+
+        $notification_id = $this->input->post("notification_id");
+
+        $notification_ids = explode(",", $notification_id);
+        if (count($user_ids) > 0 && count($user_ids) == count($notification_ids)) {
+            foreach ($user_ids as $key => $value) {
+                $notification_status[] = send_notification_paid_eddozz($notification_ids[$key], $value);
+            }
+            $response['status']['noti_status'] = $notification_status;
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "Success";
+            echo json_encode($response);
+        }
+    }
 
     public function send_paid_notification() {
         $user_id = $this->input->post("user_id");

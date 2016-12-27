@@ -978,6 +978,129 @@ if(!function_exists("get_paid_school_class"))
         return $droup_down;
     }
 }
+if( !function_exists("sendMessageFcm"))
+{
+    function sendMessageFcm($data,$target){
+    //FCM api URL
+    $url = 'https://fcm.googleapis.com/fcm/send';
+    //api_key available in Firebase Console -> Project Settings -> CLOUD MESSAGING -> Server key
+    $server_key = 'AAAAhnf27-U:APA91bGrMonoWs8V1O_Zc993WfZP_ED60vjIe8vdPqD2P1-e5ZHG7motB_IPiI7VEs8NXXs-hhimMWANdkPhUYcyd-CotnsygVa5aT3pUDBoDnHwoeUAuOOQBg2cVfRnAVEU6qFdCdO5PHoWlztWJbTudl3Of1mWlw';
+
+    $fields = array();
+    $fields['data'] = $data;
+    if(is_array($target)){
+            $fields['registration_ids'] = $target;
+    }else{
+            $fields['to'] = $target;
+    }
+    //header with content_type api key
+    $headers = array(
+            'Content-Type:application/json',
+      'Authorization:key='.$server_key
+    );
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+    $result = curl_exec($ch);
+    if ($result === FALSE) {
+            die('FCM Send Error: ' . curl_error($ch));
+    }
+    curl_close($ch);
+    return $result;
+    }
+}
+
+if( !function_exists("send_notification_paid_eddozz"))
+{
+    function send_notification_paid_eddozz($notification_id,$user_id)
+    {
+        $CI = &get_instance();
+        
+        $dbeddozz = $CI->load->database('eddozz', TRUE);
+        //getting notification details
+        
+        $dbeddozz->select('*');
+        $dbeddozz_>from('reminders');
+        $dbeddozz->where('id',$notification_id);
+        $notification = $dbeddozz->get()->row();
+        
+        //getting notification details
+        $total_unread = 0;
+       
+        $dbeddozz->select('count(id) as total_unread');
+        $dbeddozz->from('reminders');
+        $dbeddozz->where('recipient',$user_id);
+        $dbeddozz->where('is_deleted_by_sender',0);
+        $dbeddozz->where('is_deleted_by_recipient',0);
+        $dbeddozz->where('is_read',0);
+        $count_notification = $dbeddozz->get()->row();
+        
+        if($count_notification)
+        {
+            $total_unread = $count_notification->total_unread;
+        }
+        
+        //getting user information
+        
+        $dbeddozz->select('*');
+        $dbeddozz->from('users');
+        $dbeddozz->where('id',$user_id);
+        $user = $dbeddozz->get()->row();
+        
+        $user_type = 0;
+        
+        if($user->admin)
+        {
+           $user_type = 1; 
+        } 
+        if($user->student)
+        {
+           $user_type = 3; 
+        } 
+        if($user->employee)
+        {
+           $user_type = 2; 
+        } 
+        if($user->parent)
+        {
+           $user_type = 4; 
+        } 
+        
+        if(!$total_unread)
+        {
+            $total_unread = 0;
+        }    
+        //getting all user gcm_ids   
+        $dbeddozz->select('gcm_ids.gcm_id as gcmid');
+        $dbeddozz->where('user_gcm.user_id',$user_id);
+        $dbeddozz->from('user_gcm');
+        $dbeddozz->join('gcm_ids', 'gcm_ids.id = user_gcm.gcm_id');
+        $all_gcm_user = $dbeddozz->get()->result();
+        
+        if($user_type && $total_unread && count($all_gcm_user)>0 && count($notification)>0)
+        {
+            $data = array("key" => "paid",'total_unread'=>$total_unread,"user_type"=>$user_type,"subject"=>$notification->subject,'messege'=>$notification->body, "rtype" => $notification->rtype, "rid" => $notification->rid, "semester_section_id" => $notification->semester_section_id, "student_id" => $notification->student_id);
+            $gcm_ids = array();
+            foreach($all_gcm_user as $value)
+            {
+               $gcm_ids[] = $value->gcmid;
+            }
+            sendMessageFcm($data, $gcm_ids);
+            return true;
+        }
+        else
+        {
+            return array("return"=>"false");
+        }    
+           
+    }
+}
 
 if( !function_exists("send_notification_paid"))
 {

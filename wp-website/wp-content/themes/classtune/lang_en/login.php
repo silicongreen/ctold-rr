@@ -60,7 +60,7 @@
                         
                         <div class="col-md-12">
                         <button name="submit" type="submit" id="submit" style="" class="btn btn-primary col-md-12 btn-success">
-                                <i class="fa"></i> Login
+                                <i class="fa"></i> Proceed
                             </button>
                         </div>
                     </div>

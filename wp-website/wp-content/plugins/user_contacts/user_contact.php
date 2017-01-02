@@ -19,12 +19,13 @@ add_action('wp_ajax_send_mail_classtune', 'send_mail_classtune');
 if (!function_exists("rsvp_video_background_frontend_script")) {
 
     function rsvp_video_background_frontend_script() {
-
-                    wp_enqueue_script('return-visit-script', plugin_dir_url(__FILE__) . 'js/user_contact.js');    		
+        wp_enqueue_script('ajax-script', plugin_dir_url(__FILE__) . 'js/user_contact.js');  
+        wp_localize_script( 'ajax-script', 'contact_lol',
+                array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
+          		
 
     }
-    wp_localize_script( 'ajax-script', 'contact_lol',
-                array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
+    
 
 }
 

@@ -48,7 +48,7 @@ do_action('show_kcurrent_language');
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
         
         <script type="text/javascript" src="<?php bloginfo('template_url'); ?>/js/login.js"></script>
-        <!--script type="text/javascript" src="<?php bloginfo('template_url'); ?>/js/contact_old.js"></script-->
+        <script type="text/javascript" src="<?php bloginfo('template_url'); ?>/js/contact.js"></script>
          
     </head>
     <body>

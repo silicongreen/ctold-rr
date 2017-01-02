@@ -64,30 +64,34 @@
 </div>
 
 <script>
-$(document).ready(function () {
-	$('#subject_type').on('change', function() {
-	  //alert( this.value ); // or $(this).val()
-	  if($(this).val() == "E")
+function validateEmail(email) {
+    var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+    return re.test(email);
+}
+jQuery(document).ready(function () {
+	jQuery('#subject_type').on('change', function() {
+	  //alert( this.value ); // or jQuery(this).val()
+	  if(jQuery(this).val() == "E")
 	  {
-		  $("#subject_text").prop('disabled', false);		  
+		  jQuery("#subject_text").prop('disabled', false);		  
 	  }
 	  else
 	  {
-		  $("#subject_text").prop('disabled', true);
-		  $('#subject_text').val('')
+		  jQuery("#subject_text").prop('disabled', true);
+		  jQuery('#subject_text').val('')
 	  }
 	});
 	
-	$('#user_type').on('change', function() {
-	  //alert( this.value ); // or $(this).val()
-	  if($(this).val() == "Visitor")
+	jQuery('#user_type').on('change', function() {
+	  //alert( this.value ); // or jQuery(this).val()
+	  if(jQuery(this).val() == "Visitor")
 	  {
-		  $("#school_name").prop('disabled', true);	
-		  $('#school_name').val('')		  
+		  jQuery("#school_name").prop('disabled', true);	
+		  jQuery('#school_name').val('')		  
 	  }
 	  else
 	  {
-		  $("#school_name").prop('disabled', false);
+		  jQuery("#school_name").prop('disabled', false);
 	  }
 	});
         
@@ -100,98 +104,98 @@ $(document).ready(function () {
 
 
 
-$(document).on('click', '#contact_classtune input#sub', function (e) {
+jQuery(document).on('click', '#contact_classtune input#sub', function (e) {
     e.preventDefault();
 	
-	//var isSubjectTextDisabled = $("#subject_text").is(':disabled');
-	var isSchoolNameDisabled = $("#school_name").is(':disabled');
+	//var isSubjectTextDisabled = jQuery("#subject_text").is(':disabled');
+	var isSchoolNameDisabled = jQuery("#school_name").is(':disabled');
 
-    if ($("#contact_classtune #name").val() == "")
+    if (jQuery("#contact_classtune #name").val() == "")
     {
 
-        $("#contact_classtune span.legend").html("<div class='alert alert-danger'><strong>Name LOL</strong> can't be empty</div>");
-        $("#contact_classtune span.legend .error").show("slow");
+        jQuery("#contact_classtune span.legend").html("<div class='alert alert-danger'><strong>Name LOL</strong> can't be empty</div>");
+        jQuery("#contact_classtune span.legend .error").show("slow");
     }
-    else if ($("#contact_classtune #email").val() == "")
+    else if (jQuery("#contact_classtune #email").val() == "")
     {
-        $("#contact_classtune span.legend").html("<div class='alert alert-danger'><strong>Email</strong> can't be empty</div>");
-        $("#contact_classtune span.legend .error").show("slow");
+        jQuery("#contact_classtune span.legend").html("<div class='alert alert-danger'><strong>Email</strong> can't be empty</div>");
+        jQuery("#contact_classtune span.legend .error").show("slow");
     }
-    else if(!validateEmail($("#contact_classtune #email").val()))
+    else if(!validateEmail(jQuery("#contact_classtune #email").val()))
     {
-        $("#contact_classtune span.legend").html("<div class='alert alert-danger'>Invalid <strong>Email</strong> Address</div>");
-        $("#contact_classtune span.legend .error").show("slow");
+        jQuery("#contact_classtune span.legend").html("<div class='alert alert-danger'>Invalid <strong>Email</strong> Address</div>");
+        jQuery("#contact_classtune span.legend .error").show("slow");
     }
-    else if ($("#contact_classtune #phone").val() == "")
+    else if (jQuery("#contact_classtune #phone").val() == "")
     {
-        $("#contact_classtune span.legend").html("<div class='alert alert-danger'><strong>Phone Number</strong> can't be empty</div>");
-        $("#contact_classtune span.legend .error").show("slow");
+        jQuery("#contact_classtune span.legend").html("<div class='alert alert-danger'><strong>Phone Number</strong> can't be empty</div>");
+        jQuery("#contact_classtune span.legend .error").show("slow");
     }
-    else if($('#contact_classtune #subject_type option:selected').val() == "")
+    else if(jQuery('#contact_classtune #subject_type option:selected').val() == "")
     {
-            $("#contact_classtune span.legend").html("<div class='alert alert-danger'>Select a <strong>Subject</strong></div>");
-            $("#contact_classtune span.legend .error").show("slow");
+            jQuery("#contact_classtune span.legend").html("<div class='alert alert-danger'>Select a <strong>Subject</strong></div>");
+            jQuery("#contact_classtune span.legend .error").show("slow");
     }
-    else if ( $("#contact_classtune #subject_text").val() == "")
+    else if ( jQuery("#contact_classtune #subject_text").val() == "")
     {
-		$("#contact_classtune span.legend").html("<div class='alert alert-danger'><strong>Subject</strong> can't be empty</div>");
-		$("#contact_classtune span.legend .error").show("slow");
+		jQuery("#contact_classtune span.legend").html("<div class='alert alert-danger'><strong>Subject</strong> can't be empty</div>");
+		jQuery("#contact_classtune span.legend .error").show("slow");
     }
-    else if(isSchoolNameDisabled == false && $("#contact_classtune #school_name").val() == "")
+    else if(isSchoolNameDisabled == false && jQuery("#contact_classtune #school_name").val() == "")
     {
-		$("#contact_classtune span.legend").html("<div class='alert alert-danger'><strong>School Name</strong> can't be empty</div>");
-		$("#contact_classtune span.legend .error").show("slow");
+		jQuery("#contact_classtune span.legend").html("<div class='alert alert-danger'><strong>School Name</strong> can't be empty</div>");
+		jQuery("#contact_classtune span.legend .error").show("slow");
 	
     }
-    else if ($("#contact_classtune #massage").val() == "")
+    else if (jQuery("#contact_classtune #massage").val() == "")
     {
-        $("#contact_classtune span.legend").html("<div class='alert alert-danger'><strong>Massage</strong> can't be empty</div>");
-        $("#contact_classtune span.legend .error").show("slow");
+        jQuery("#contact_classtune span.legend").html("<div class='alert alert-danger'><strong>Massage</strong> can't be empty</div>");
+        jQuery("#contact_classtune span.legend .error").show("slow");
     }
     else
     {
-        var subject_type = $('#contact_classtune #subject_type option:selected').val();
+        var subject_type = jQuery('#contact_classtune #subject_type option:selected').val();
 		var subject = "";
 		if(subject_type == "A")
-			subject = "New Account : "+$("#contact_classtune #subject_text").val();
+			subject = "New Account : "+jQuery("#contact_classtune #subject_text").val();
 		else if(subject_type == "B")
-			subject = "Inquiry : "+$("#contact_classtune #subject_text").val();
+			subject = "Inquiry : "+jQuery("#contact_classtune #subject_text").val();
 		else if(subject_type == "C")
-			subject = "Complaint : "+$("#contact_classtune #subject_text").val();
+			subject = "Complaint : "+jQuery("#contact_classtune #subject_text").val();
 		else if(subject_type == "D")
-			subject = "Suggestion : "+$("#contact_classtune #subject_text").val();
+			subject = "Suggestion : "+jQuery("#contact_classtune #subject_text").val();
 		else if(subject_type == "E")
-			subject = "Others : "+$("#contact_classtune #subject_text").val();
+			subject = "Others : "+jQuery("#contact_classtune #subject_text").val();
 			
 		
-		$("#contact_classtune span.legend").html("<div class='alert alert-info'><strong>Sending......</strong></div>");
+		jQuery("#contact_classtune span.legend").html("<div class='alert alert-info'><strong>Sending......</strong></div>");
 		
-		$.ajax({
-			url : contact_lol.ajax_url,
+		jQuery.ajax({
+			url : ajaxurl,
 			type : 'post',
 			data : {
 				action :     'wp_ajax_send_mail_classtune',
-				name:        $("#contact_classtune #name").val(), 
-				email:       $("#contact_classtune #email").val(),
-				phone:       $("#contact_classtune #phone").val(),			
+				name:        jQuery("#contact_classtune #name").val(), 
+				email:       jQuery("#contact_classtune #email").val(),
+				phone:       jQuery("#contact_classtune #phone").val(),			
 				subject:     subject, 
-				user_type:   $('#contact_classtune #user_type option:selected').val(),
-				school_name: $("#contact_classtune #school_name").val(),			
-				massage:     $("#contact_classtune #massage").val()
+				user_type:   jQuery('#contact_classtune #user_type option:selected').val(),
+				school_name: jQuery("#contact_classtune #school_name").val(),			
+				massage:     jQuery("#contact_classtune #massage").val()
 			},
 			success : function( data ) {
 				if(data =="0")
 				{
-					$("#contact_classtune span.legend").html("<div class='alert alert-danger'><strong>Massage</strong> can't sent at the moment</div>");
+					jQuery("#contact_classtune span.legend").html("<div class='alert alert-danger'><strong>Massage</strong> can't sent at the moment</div>");
 				}
 				else if(data =="1")
 				{
-					$("#contact_classtune span.legend").html("<div class='alert alert-danger'><strong>All</strong> the information is required</div>");
+					jQuery("#contact_classtune span.legend").html("<div class='alert alert-danger'><strong>All</strong> the information is required</div>");
 				} 
 				else
 				{
-					$("#contact_classtune span.legend").html("<div class='alert alert-success'><strong>"+data+"</strong></div>");
-					$("#contact_classtune").find("input[type=text], select, textarea").val("");
+					jQuery("#contact_classtune span.legend").html("<div class='alert alert-success'><strong>"+data+"</strong></div>");
+					jQuery("#contact_classtune").find("input[type=text], select, textarea").val("");
 				}
 			}
 		});	
@@ -202,7 +206,7 @@ $(document).on('click', '#contact_classtune input#sub', function (e) {
 	
 });
 function validateEmail(email) {
-    var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+    var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)jQuery/i;
     return re.test(email);
 }
 </script>

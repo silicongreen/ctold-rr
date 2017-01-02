@@ -61,7 +61,7 @@ $(document).on('click', '#contact_classtune input#sub', function (e) {
                         {
                             $("#contact_classtune span.legend").html("<div class='alert alert-success'><strong>"+data+"</strong></div>");
                         }
-                    }
+                    } 
                 );
     }
 });

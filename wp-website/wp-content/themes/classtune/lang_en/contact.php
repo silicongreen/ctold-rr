@@ -184,7 +184,9 @@ jQuery(document).ready(function () {
                                        massage:     jQuery("#contact_classtune #massage").val()
                                },
                                success : function( data ) {
-                                       if(data =="20")
+                                   
+                                    alert(data);
+                                       if(data =="0")
                                        {
                                                jQuery("#contact_classtune span.legend").html("<div class='alert alert-danger'><strong>Massage</strong> can't sent at the moment</div>");
                                        }

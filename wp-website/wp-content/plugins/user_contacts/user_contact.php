@@ -90,7 +90,7 @@ if (!function_exists('send_mail_classtune')) {
                         echo 'Message sent!';
                 }
             } else {
-                echo "20";
+                echo "0";
             }
         } else {
             echo "1";

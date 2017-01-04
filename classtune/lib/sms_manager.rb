@@ -27,6 +27,7 @@ class SmsManager
   def initialize(message, recipients)
     @recipients = recipients.map{|r| r.gsub(' ','')}
     @message = CGI::escape message
+    @message_without_encode = message
     @config = SmsSetting.get_sms_config
     unless @config.blank?
       @sendername = @config['sms_settings']['sendername']
@@ -63,7 +64,7 @@ class SmsManager
         api_uri = URI.parse(@sms_url)
         http = Net::HTTP.new(api_uri.host, api_uri.port)
         request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})
-        request.set_form_data({"user"=>@username,"pass"=>@password,"sms[0][0]"=>recipient,"sms[0][1]"=>@message,"sid" =>@sendername})
+        request.set_form_data({"user"=>@username,"pass"=>@password,"sms[0][0]"=>recipient,"sms[0][1]"=>@message_without_encode,"sid" =>@sendername})
         response = http.request(request)
         if response.body.present?
           message_log.sms_logs.create(:mobile=>recipient,:gateway_response=>response.body)

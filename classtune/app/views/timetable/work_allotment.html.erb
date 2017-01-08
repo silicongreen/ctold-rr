@@ -36,7 +36,19 @@
       <%= flash[:notice] %>
     </p>
   <% end %>
-
+    <% @batches.each do |batch| %>
+      <div style="display:none"><%= batch.full_name %></div>
+      <% batch.subjects.each do |subj| %>
+          <% subj.employees.each do |e|  %>
+            <% ep=@employees.find_by_id(e.id) %>
+            <% if ep.present? %>
+              <% ep.total_time = (ep.total_time.to_i - subj.max_weekly_classes.to_i) %>
+            <% end %>
+          <% end %>
+          <div style="display:none" class="subject-name"><%= subj.name %></div>
+    <% end %>
+    <% end %>
+    
   <% form_for :employee_subjects,:html=>{:id=>'work_allotment_form'} do |f| %>
     <% @batches.each do |batch| %>
       <ul class="category-list">

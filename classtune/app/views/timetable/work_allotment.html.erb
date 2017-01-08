@@ -52,7 +52,14 @@
                 <% unless t_courses.nil? %>
                   <% t_courses.each do |tc| %>
                   <div style="display:none" class="section-name">Section: <%= tc.section_name %></div>
-                  <% end %>
+                  <% t_batch = Batch.find_by_course_id_and_name(tc.course_id, batch) %>
+                    <% unless t_batch.subjects.empty? %>
+                      <% t_batch.subjects.each do |subj| %>
+                        <% subj.employees.each do |e|  %>
+                        <% end %>
+                      <% end %>
+                    <% end %>
+                   <% end %>
                 <% end %>  
           <% end %>
         <% end %>  

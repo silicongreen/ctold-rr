@@ -37,7 +37,7 @@
     </p>
   <% end %>
     <% @batches.each do |batch| %>
-      <div ><%= batch.full_name %></div>
+      <div ><b><%= batch.full_name %></b></div>
       <% batch.subjects.each do |subj| %>
           <% subj.employees.each do |e|  %>
             <% ep=@employees.find_by_id(e.id) %>

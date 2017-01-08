@@ -53,8 +53,8 @@
     
   <% form_for :employee_subjects,:html=>{:id=>'work_allotment_form'} do |f| %>
     <% @batches.each do |batch| %>
-      <ul class="category-list">
-        <li class="heading">
+      <ul class="category-list-test">
+        <li class="heading1">
           <%= batch.full_name %>
         </li>
         <% batch.subjects.each do |subj| %>
@@ -64,7 +64,7 @@
               <% ep.total_time = (ep.total_time.to_i - subj.max_weekly_classes.to_i) %>
             <% end %>
           <% end %>
-          <li class="list<%=cycle('odd','even')%>">
+          <li class="list1<%=cycle('odd','even')%>">
             <div class="category-subject-name"><%= "#{subj.name}" %></div>
             <div class="category-employee-options">
               <%= select_tag   "employee_subjects[#{subj.id}]", options_for_select([[t('select_employee'),""]]+@employees.map{|em| [em.full_name,em.id]},subj.employees.first.try(:id)) %>

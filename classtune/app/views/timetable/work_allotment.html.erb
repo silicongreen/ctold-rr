@@ -36,27 +36,13 @@
       <%= flash[:notice] %>
     </p>
   <% end %>
+
+  <% form_for :employee_subjects,:html=>{:id=>'work_allotment_form'} do |f| %>
     <% @batches.each do |batch| %>
-      <div ><b><%= batch.full_name %></b></div>
-      <% batch.subjects.each do |subj| %>
-          <% subj.employees.each do |e|  %>
-            <% ep=@employees.find_by_id(e.id) %>
-            <% if ep.present? %>
-              <% ep.total_time = (ep.total_time.to_i - subj.max_weekly_classes.to_i) %>
-            <% end %>
-          <% end %>
-          <div  class="subject-name"><%= subj.name %></div>
-          <div  class="subject-name"><%= subj.name %></div>
-          <div  class="subject-name"><%= subj.name %></div>
-    <% end %>
-    <% end %>
-    
-  
-    <% @batches.each do |batch| %>
-      <div class="category-list-test">
-        <span class="heading1">
+      <ul class="category-list">
+        <li class="heading">
           <%= batch.full_name %>
-        </span>
+        </li>
         <% batch.subjects.each do |subj| %>
           <% subj.employees.each do |e|  %>
             <% ep=@employees.find_by_id(e.id) %>
@@ -64,18 +50,18 @@
               <% ep.total_time = (ep.total_time.to_i - subj.max_weekly_classes.to_i) %>
             <% end %>
           <% end %>
-          <span class="list1<%=cycle('odd','even')%>">
+          <li class="list<%=cycle('odd','even')%>">
             <div class="category-subject-name"><%= "#{subj.name}" %></div>
             <div class="category-employee-options">
               <%= select_tag   "employee_subjects[#{subj.id}]", options_for_select([[t('select_employee'),""]]+@employees.map{|em| [em.full_name,em.id]},subj.employees.first.try(:id)) %>
             </div>
             <div class="category-employee-names"><%= "#{subj.employees.collect(&:full_name).join(',')}" %></div>
-          </span>
+          </li>
         <% end %>
-      </div>
+      </ul>
     <% end %>
-   
-
+    <%= f.submit "► #{t('update')}",:class=>:submit_button ,:disable_with=> "► #{t('please_wait')}" %>
+  <% end %>
   <ul id="teacher_status" class="category-list">
     <% @employees.each do |emp| %>
       <li class="listodd" ><%= emp.full_name %><span id="emp_status_<%=emp.id%>">

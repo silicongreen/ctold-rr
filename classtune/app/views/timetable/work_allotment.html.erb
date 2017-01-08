@@ -31,7 +31,6 @@
 </div>
 </div>
 <div id="page-yield">
-  <div style="width:94%;">
   <% unless flash[:notice].nil? %>
     <p class="flash-msg">
       <%= flash[:notice] %>
@@ -39,80 +38,28 @@
   <% end %>
 
   <% form_for :employee_subjects,:html=>{:id=>'work_allotment_form'} do |f| %>
-    
-    <% @batches.map{|b| b.name}.uniq.each do |batch| %>
+    <% @batches.each do |batch| %>
       <ul class="category-list">
-        <li class="heading f2 bottomBorderNone">
-            <%= batch.strip.downcase == 'general' ? 'no-shift' : 'Shift: ' + batch %>
-            <div style="float: right; margin-top: 8px;"><img src="/images/icons/sort_up.png" width="32" style="cursor: pointer;" onclick="toggle_batch('<%= batch %>', this);" /></div>
+        <li class="heading">
+          <%= batch.full_name %>
         </li>
-        <div class="<%= batch  %>">    
-        <%
-          tmp_batches = Batch.find(:all, :conditions => ["name LIKE ?", batch]).map{|b| b.course_id} 
-          courses = Course.find(:all, :conditions => ["id IN (?)", tmp_batches], :group => "course_name", :order => "cast(replace(course_name, 'Class ', '') as SIGNED INTEGER) asc")
-        %>
-        <% unless courses.nil? %>
-          <% courses.each do |c| %>
-            <li class="sub-heading f2 leftRightBorder padding10" style="list-style: none; color: #fff;"><%= c.course_name %></li>
-            <% if c.section_name.strip.length == 0 %>
-              <% t_batch = Batch.find_by_course_id_and_name(c.id, batch) %>
-              <% unless t_batch.subjects.empty? %>
-                <% t_batch.subjects.each do |subj| %>
-                  <% subj.employees.each do |e|  %>
-                    <% ep=@employees.find_by_id(e.id) %>
-                    <% if ep.present? %>
-                      <% ep.total_time = (ep.total_time.to_i - subj.max_weekly_classes.to_i) %>
-                    <% end %>
-                  <% end %>
-                  <li class="list<%=cycle('odd','even')%> leftRightBorder bottomBorder padding10">
-                    <div class="category-subject-name"><%= "#{subj.name}" %>: </div>
-                    <div class="category-employee-options padding_top_5">
-                      <%= select_tag   "employee_subjects[#{subj.id}]", options_for_select([[t('select_employee'),""]]+@employees.map{|em| [em.full_name,em.id]},subj.employees.first.try(:id)) %>
-                    </div>
-                    <div class="category-employee-names"><%= "#{subj.employees.collect(&:full_name).join(',')}" %></div>
-                  </li>
-                <% end %>
-              <% else %>
-                  <li class="list<%=cycle('odd','even')%> leftRightBorder bottomBorder padding10" style="font-size: 12px;">No Subjects found</li>
-              <% end %>
-            <% else %>
-                <% t_courses = Course.find_all_by_course_name(c.course_name, :conditions => {:is_deleted => false}, :select => "batches.id as batch_id, courses.section_name as section_name, courses.id as course_id", :joins => ["INNER JOIN batches ON batches.course_id = courses.id AND batches.name = '" + batch + "'"]) %>
-                <% unless t_courses.nil? %>
-                  <% t_courses.each do |tc| %>
-                  <li class="leftRightBorder padding10" style="font-size: 12px; background: #AAA; list-style: none; ">
-                    <h3>Section: <%= tc.section_name %></h3>
-                  </li>  
-                  <% t_batch = Batch.find_by_course_id_and_name(tc.course_id, batch) %>
-                  <% unless t_batch.subjects.empty? %>
-                    <% t_batch.subjects.each do |subj| %>
-                      <% subj.employees.each do |e|  %>
-                        <% ep=@employees.find_by_id(e.id) %>
-                        <% if ep.present? %>
-                          <% ep.total_time = (ep.total_time.to_i - subj.max_weekly_classes.to_i) %>
-                        <% end %>
-                      <% end %>
-                      <li class="list<%=cycle('odd','even')%> leftRightBorder padding10 bottomBorderNone">
-                        <div class="category-subject-name"><%= "#{subj.name}" %>: </div>
-                        <div class="category-employee-options padding_top_5">
-                          <%= select_tag   "employee_subjects[#{subj.id}]", options_for_select([[t('select_employee'),""]]+@employees.map{|em| [em.full_name,em.id]},subj.employees.first.try(:id)) %>
-                        </div>
-                        <div class="category-employee-names"><%= "#{subj.employees.collect(&:full_name).join(',')}" %></div>
-                      </li>
-                    <% end %>
-                  <% else %>
-                      <li class="list<%=cycle('odd','even')%> leftRightBorder padding10 bottomBorderNone" style="font-size: 12px;">No Subjects found</li>
-                  <% end %>
-                <% end %>
-                <div class="box_bottom"></div>
-              <% end %>  
+        <% batch.subjects.each do |subj| %>
+          <% subj.employees.each do |e|  %>
+            <% ep=@employees.find_by_id(e.id) %>
+            <% if ep.present? %>
+              <% ep.total_time = (ep.total_time.to_i - subj.max_weekly_classes.to_i) %>
             <% end %>
           <% end %>
-        <% end %>  
-        </div></li>
+          <li class="list<%=cycle('odd','even')%>">
+            <div class="category-subject-name"><%= "#{subj.name}" %></div>
+            <div class="category-employee-options">
+              <%= select_tag   "employee_subjects[#{subj.id}]", options_for_select([[t('select_employee'),""]]+@employees.map{|em| [em.full_name,em.id]},subj.employees.first.try(:id)) %>
+            </div>
+            <div class="category-employee-names"><%= "#{subj.employees.collect(&:full_name).join(',')}" %></div>
+          </li>
+        <% end %>
       </ul>
     <% end %>
-    
-    
     <%= f.submit "► #{t('update')}",:class=>:submit_button ,:disable_with=> "► #{t('please_wait')}" %>
   <% end %>
   <ul id="teacher_status" class="category-list">
@@ -128,23 +75,4 @@
         </span></li>
     <% end %>
   </ul>
-  </div>  
 </div>
-
-<script type="text/javascript">
-  function toggle_batch(class_name, obj)
-  {
-     if ( j("." + class_name).css('display') == 'block' )
-     {
-        j(obj).attr('src','/images/icons/sort_down.png');
-        j(obj).parent().css('margin-top','-4px');
-        j("." + class_name).slideUp("slow");
-     }
-     else
-     {
-        j(obj).attr('src','/images/icons/sort_up.png');
-        j(obj).parent().css('margin-top','8px');
-        j("." + class_name).slideDown("slow");
-     }
-  }
-</script>

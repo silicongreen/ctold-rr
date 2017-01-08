@@ -62,6 +62,7 @@
                             <% end %>
                         <% end %>
                         <div  style="display:none"  class="category-subject-name"><%= "#{subj.name}" %>: </div>
+                        <div style="display:none" class="category-employee-names"><%= "#{subj.employees.collect(&:full_name).join(',')}" %></div>
                       <% end %>
                     <% end %>
                    <% end %>

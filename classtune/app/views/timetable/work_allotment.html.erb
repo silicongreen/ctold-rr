@@ -51,7 +51,7 @@
     <% end %>
     <% end %>
     
-  <% form_for :employee_subjects,:html=>{:id=>'work_allotment_form'} do |f| %>
+  
     <% @batches.each do |batch| %>
       <ul class="category-list-test">
         <li class="heading1">
@@ -74,8 +74,8 @@
         <% end %>
       </ul>
     <% end %>
-    <%= f.submit "► #{t('update')}",:class=>:submit_button ,:disable_with=> "► #{t('please_wait')}" %>
-  <% end %>
+   
+
   <ul id="teacher_status" class="category-list">
     <% @employees.each do |emp| %>
       <li class="listodd" ><%= emp.full_name %><span id="emp_status_<%=emp.id%>">

@@ -48,6 +48,12 @@
         <% unless courses.nil? %>
           <% courses.each do |c| %>
           <div style="display:none" class="class-name"><%= c.course_name %></div>
+                <% t_courses = Course.find_all_by_course_name(c.course_name, :conditions => {:is_deleted => false}, :select => "batches.id as batch_id, courses.section_name as section_name, courses.id as course_id", :joins => ["INNER JOIN batches ON batches.course_id = courses.id AND batches.name = '" + batch + "'"]) %>
+                <% unless t_courses.nil? %>
+                  <% t_courses.each do |tc| %>
+                  <div style="display:none" class="section-name">Section: <%= tc.section_name %></div>
+                  <% end %>
+                <% end %>  
           <% end %>
         <% end %>  
     <% end %>

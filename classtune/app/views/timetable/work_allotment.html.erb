@@ -40,6 +40,9 @@
 
   <% form_for :employee_subjects,:html=>{:id=>'work_allotment_form'} do |f| %>
     <% @batches.map{|b| b.name}.uniq.each do |batch| %>
+    <div style="display:none" > <%= batch.strip.downcase == 'general' ? 'no-shift' : 'Shift: ' + batch %></div>
+    <% end %>
+    <% @batches.map{|b| b.name}.uniq.each do |batch| %>
       <ul class="category-list">
         <li class="heading f2 bottomBorderNone">
             <%= batch.strip.downcase == 'general' ? 'no-shift' : 'Shift: ' + batch %>

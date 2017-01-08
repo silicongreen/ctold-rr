@@ -37,7 +37,7 @@
     </p>
   <% end %>
     <% @batches.each do |batch| %>
-      <div style="display:none"><%= batch.full_name %></div>
+      <div ><%= batch.full_name %></div>
       <% batch.subjects.each do |subj| %>
           <% subj.employees.each do |e|  %>
             <% ep=@employees.find_by_id(e.id) %>
@@ -45,7 +45,7 @@
               <% ep.total_time = (ep.total_time.to_i - subj.max_weekly_classes.to_i) %>
             <% end %>
           <% end %>
-          <div style="display:none" class="subject-name"><%= subj.name %></div>
+          <div  class="subject-name"><%= subj.name %></div>
     <% end %>
     <% end %>
     

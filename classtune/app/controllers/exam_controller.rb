@@ -975,8 +975,8 @@ class ExamController < ApplicationController
     student_electives.each do |elect|
       elective_subjects.push Subject.find(elect.subject_id)
     end
-    elective_subjects.sort_by {|obj| obj.priority}
-    general_subjects.sort_by {|obj| obj.priority}
+    elective_subjects.sort! { |a, b|  a.priority <=> b.priority }
+    general_subjects.sort! { |a, b|  a.priority <=> b.priority }
     @subjects = general_subjects + elective_subjects
     @exams = []
     @subjects.each do |sub|

@@ -596,7 +596,11 @@ class Assignments extends CActiveRecord
                 }
                 
                 $marge['course'] = $value["subjectDetails"]['Subjectbatch']['courseDetails']->course_name;
-                $marge['section'] = $value["subjectDetails"]['Subjectbatch']['courseDetails']->section_name;
+                $marge['section'] = "";
+                if($value["subjectDetails"]['Subjectbatch']['courseDetails']->section_name)
+                {
+                    $marge['section'] = $value["subjectDetails"]['Subjectbatch']['courseDetails']->section_name;
+                }
                 $marge['subjects_id'] = $value["subjectDetails"]->id;
                 $marge['subjects_icon'] = $value["subjectDetails"]->icon_number;
                 $marge['assign_date'] = date("Y-m-d", strtotime($value->created_at));
@@ -741,7 +745,11 @@ class Assignments extends CActiveRecord
                 }
                 
                 $marge['course'] = $value["subjectDetails"]['Subjectbatch']['courseDetails']->course_name;
-                $marge['section'] = $value["subjectDetails"]['Subjectbatch']['courseDetails']->section_name;
+                $marge['section'] = "";
+                if($value["subjectDetails"]['Subjectbatch']['courseDetails']->section_name)
+                {
+                    $marge['section'] = $value["subjectDetails"]['Subjectbatch']['courseDetails']->section_name;
+                }
                 $marge['subjects_id'] = $value["subjectDetails"]->id;
                 $marge['subjects_icon'] = $value["subjectDetails"]->icon_number;
                 $marge['assign_date'] = date("Y-m-d", strtotime($value->created_at));

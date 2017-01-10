@@ -396,7 +396,7 @@ table.teacher_remarks tr td
 }
 .baf_shaheen div.grade_information
 {
-    margin-left:152px;
+    margin-left:172px;
     float:left;
     width: 17.5%;
     font-size: 10px;
@@ -413,7 +413,7 @@ table.teacher_remarks tr td
 .baf_shaheen div.grade_information p
 {
     font-size: 11px;
-    margin-left: 20px;
+    margin-left: 25px;
     margin-bottom: 3px;
 }
 div.baf_shaheen

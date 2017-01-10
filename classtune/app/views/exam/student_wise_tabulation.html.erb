@@ -102,13 +102,29 @@
         <% extender = 1 %>
         <tr class="page-break1">
             <td colspan="100">&nbsp;</td>
-        </tr>    
+        </tr> 
+        <tr class="table-header">
+          <td class="col-pdf">Roll</td>
+          <td class="col-pdf">Name</td>
+       
+          <% @elective_subjects_name.each do |name| %>
+            <td><%= name %></td>
+          <% end %>         
+        </tr>
     <% elsif std_count>8 && extender ==1 %>
         <% std_count = 0 %>
         <% extender = 1 %>
         <tr class="page-break2">
             <td colspan="100">&nbsp;</td>
         </tr> 
+        <tr class="table-header">
+          <td class="col-pdf">Roll</td>
+          <td class="col-pdf">Name</td>
+       
+          <% @elective_subjects_name.each do |name| %>
+            <td><%= name %></td>
+          <% end %>         
+        </tr>
     <% end %>
     <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
       <td class="name-std"><%= student.class_roll_no %></td>

@@ -2,34 +2,64 @@
  <h2>&nbsp;&nbsp;&nbsp;</h2>
 <div id="page-yield" class="available_sections1 baf_shaheen">
    
-<div class="student_information">
-      <h4><b>Student's Information</b></h4>
-      
-      <table class="std_info_table" width="100%" cellspacing="0">
-          <tr>
-              <td>Student's ID </td><td colspan="3" class="font-dark">:&nbsp;&nbsp;&nbsp;<%= @student.admission_no %></td>
-          </tr>
-          <tr>
-              <td>Student's Name </td><td colspan="3" class="font-light">:&nbsp;&nbsp;&nbsp;<%= @student.full_name %></td>
-          </tr>
-          <tr>
-              <td>Date of Birth </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= I18n.l(@student.date_of_birth,:format=>:normal) unless @student.date_of_birth.nil? %></td>
-              <td>Gender </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= t("#{@student.gender_as_text.downcase}") %></td>
-          </tr> 
-           <tr>
-              <td>Academic Session </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%Y"):@exam_group.exam_date.strftime("%Y") %></td>
-              <td>Roll </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @student.class_roll_no %></td>
-          </tr> 
-          <tr>
-              <td>Standard </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @batch.course.course_name %></td>
-              <td>Section </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @batch.course.section_name %></td>
+      <div class="student_information">
+        <h4><b>Student's Information</b></h4>
+
+        <table class="std_info_table" width="100%" cellspacing="0">
+            <tr>
+                <td>Student's ID </td><td colspan="3" class="font-dark">:&nbsp;&nbsp;&nbsp;<%= @student.admission_no %></td>
+            </tr>
+            <tr>
+                <td>Student's Name </td><td colspan="3" class="font-light">:&nbsp;&nbsp;&nbsp;<%= @student.full_name %></td>
+            </tr>
+            <tr>
+                <td>Date of Birth </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= I18n.l(@student.date_of_birth,:format=>:normal) unless @student.date_of_birth.nil? %></td>
+                <td>Gender </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= t("#{@student.gender_as_text.downcase}") %></td>
+            </tr> 
+             <tr>
+                <td>Academic Session </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%Y"):@exam_group.exam_date.strftime("%Y") %></td>
+                <td>Roll </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @student.class_roll_no %></td>
+            </tr> 
+            <tr>
+                <td>Standard </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @batch.course.course_name %></td>
+                <td>Section </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @batch.course.section_name %></td>
+
+            </tr>
+            <tr>
+                <td>Name of Examination </td><td class="font-dark">:&nbsp;&nbsp;&nbsp;<%= @exam_group.name %></td>
+                <td>Exam Held </td><td class="font-dark">:&nbsp;&nbsp;&nbsp;<%= @exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%B-%Y"):@exam_group.exam_date.strftime("%B-%Y") %></td>
+            </tr>
+        </table>
+    </div>
+    <div class="grade_information">
+        <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
+        <% if @grading_levels.blank? %>
+          <% @grading_levels = GradingLevel.default %>
+        <% end %>
+        <%  unless @grading_levels.empty? %>
+          <p>Grade Boundaries</p>
+          <table id="pdf-table" class="grade_info_table" width="100%" cellspacing="0">
+              <tr class="even">
+                  <td>Marks</td>
+                  <td>Grade</td>  
+              </tr> 
+             
+              <% @grading_levels.each_with_index do |grade,index| %>
+                 <tr class="odd">
+                <td>
+                    <% if grade.max_score.nil? %>  
+                      <%= '%i%' % grade.min_score %>
+                    <% else %> 
+                      <%= grade.min_score.to_s + " - " + grade.max_score.to_s %>
+                    <% end %>
+                </td>
+                <td><%= grade.name %></td>
+                  </tr> 
+              <% end %> 
               
-          </tr>
-          <tr>
-              <td>Name of Examination </td><td class="font-dark">:&nbsp;&nbsp;&nbsp;<%= @exam_group.name %></td>
-              <td>Exam Held </td><td class="font-dark">:&nbsp;&nbsp;&nbsp;<%= @exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%B-%Y"):@exam_group.exam_date.strftime("%B-%Y") %></td>
-          </tr>
-      </table>
+          </table>
+
+        <% end %> 
       </div>
       
          
@@ -117,9 +147,9 @@
       <table id="pdf-table" width="99.8%" class="table_99" cellspacing="0">
         <% c = 'even'  %>
         <tr class="table-header">  
-          <td class="col-pdf border-left-none no-warp align-left" width="40%"><%= "Subject" %></td>
-          <td class="col-pdf" width="30%"><%= "Score" %></td>
-          <td class="col-pdf border-right-none" width="30%"><%= "Grade" %></td> 
+          <td class="col-pdf no-warp align-left" width="40%"><%= "SUBJECT" %></td>
+          <td class="col-pdf" width="30%"><%= "SCORE" %></td>
+          <td class="col-pdf " width="30%"><%= "GRADE" %></td> 
         </tr>
         <tr class="tr-blank"></tr>
         <% j = 0; %>
@@ -133,7 +163,7 @@
           <% elective_group << es.exam.subject.elective_group_id %>
           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
               
-             <td class="col-pdf border-left-none no-warp  align-left" width="40%"> <%= es.exam.subject.elective_group.name %></td>
+             <td class="col-pdf no-warp  align-left" width="40%"> <%= es.exam.subject.elective_group.name %></td>
              <td class="col-pdf" width="30%">
                   <% if elective_group_mark[es.exam.subject.elective_group_id] == -1 %>
                     AB
@@ -143,9 +173,9 @@
              </td>
               <%  grade = GradingLevel.percentage_to_grade(elective_group_mark[es.exam.subject.elective_group_id].round(), @batch.id) %>
               <% if !grade.blank? and !grade.name.blank? %>
-                            <td class="col-pdf  border-right-none" width="30%"><b><%= grade.name %></b></td>
+                            <td class="col-pdf  " width="30%"><%= grade.name %></td>
                             <% else %>
-                            <td class="col-pdf  border-right-none" width="30%"><b>N/A</b></td>
+                            <td class="col-pdf  " width="30%">N/A</td>
                             <% end %>
               
    
@@ -158,11 +188,11 @@
       </table>
 
         
-      <h4 class="h4-evaluation"><b>Signature</b></h4>
+      <h5 class="h4-evaluation"><b>&nbsp;</b></h5>
       <table id="pdf-table" class="evaluation table_99"  width="99.8%" >
 
               <tr class="even">
-                  <td class="col-pdf border-left-none" width="33%">
+                  <td class="col-pdf " width="33%">
                       Class Teacher's Signature
                   </td> 
                   <td class="col-pdf" width="67%">
@@ -170,7 +200,7 @@
                   </td>
               </tr>
               <tr class="even">
-                  <td class="col-pdf border-left-none" width="33%">
+                  <td class="col-pdf " width="33%">
                       Principal's Signature
                   </td> 
                   <td class="col-pdf" width="67%">

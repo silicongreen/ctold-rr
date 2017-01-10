@@ -371,7 +371,7 @@ table.teacher_remarks tr td
     float:left;
     clear:both;
     font-size: 12px;
-    width: 75%;
+    width: 65%;
     margin: 10px 10px;
     
     
@@ -398,7 +398,7 @@ table.teacher_remarks tr td
 {
     margin-left:102px;
     float:left;
-    width: 13.5%;
+    width: 14.5%;
     font-size: 10px;
    
 }
@@ -418,7 +418,8 @@ table.teacher_remarks tr td
 }
 div.baf_shaheen
 {
-    border: 1px solid #000000;
+    font-family:Arial,"Helvetica Neue", Helvetica, sans-serif;
+    font-size: 11px;
 }
 
 

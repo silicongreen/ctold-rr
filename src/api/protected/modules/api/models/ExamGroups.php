@@ -306,6 +306,7 @@ class ExamGroups extends CActiveRecord
                     )
                 )
         );
+        $criteria->order = "Subjects.priority ASC";
         $examresult = $this->find($criteria);
         
         if($examresult)
@@ -479,6 +480,7 @@ class ExamGroups extends CActiveRecord
                     )
                 )
         );
+        $criteria->order = "Subjects.priority ASC";
         $examresult_obj = $this->findAll($criteria);
         
         
@@ -499,6 +501,7 @@ class ExamGroups extends CActiveRecord
                     )
                 )
         );
+        $criteria->order = "Subjects.priority ASC";
         $all_exams_obj = $this->findAll($criteria);
         
         
@@ -612,6 +615,7 @@ class ExamGroups extends CActiveRecord
                     )
                 )
         );
+        $criteria->order = "Subjects.priority ASC";
         $examresult = $this->find($criteria);
         
         
@@ -632,6 +636,7 @@ class ExamGroups extends CActiveRecord
                     )
                 )
         );
+        $criteria->order = "Subjects.priority ASC";
         $all_exams = $this->find($criteria);
         
         
@@ -733,6 +738,7 @@ class ExamGroups extends CActiveRecord
                     )
                 )
         );
+        $criteria->order = "Subjects.priority ASC";
         $examresult = $this->find($criteria);
         
         
@@ -753,6 +759,7 @@ class ExamGroups extends CActiveRecord
                     )
                 )
         );
+        $criteria->order = "Subjects.priority ASC";
         $all_exams = $this->find($criteria);
         
         
@@ -845,6 +852,7 @@ class ExamGroups extends CActiveRecord
                     )
                 )
         );
+        $criteria->order = "Subjects.priority ASC";
         $data = $this->findAll($criteria);
         return $data;
         

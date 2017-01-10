@@ -1006,7 +1006,7 @@ class HomeworkController extends Controller
     public function actionAddHomework()
     {
         $user_secret = Yii::app()->request->getPost('user_secret');
-        $subject_id = Yii::app()->request->getPost('subject_id');
+        $subject_ids = Yii::app()->request->getPost('subject_id');
         $content = Yii::app()->request->getPost('content');
         $title = Yii::app()->request->getPost('title');
         $is_draft = Yii::app()->request->getPost('is_draft');
@@ -1027,117 +1027,124 @@ class HomeworkController extends Controller
             {
                 $homework = new Assignments();
             }
-           
-            $homework->subject_id = $subject_id;
-            $homework->content = $content;
-            $homework->title = $title;
-            $homework->duedate = $duedate;
-            $homework->school_id = Yii::app()->user->schoolId;
-            $homework->employee_id = Yii::app()->user->profileId;
-            $homework->assignment_type = $assignment_type;
-            
-            
-            
-            
-            
-            
-            
-            if($is_draft)
+            $subject_id_array = explode(",", $subject_ids);
+            if($subject_id_array)
             {
-                $homework->is_published = 0; 
-            }
-
-
-            $homework->created_at = date("Y-m-d H:i:s");
-            if(!$id)
-            {
-                $homework->updated_at = date("Y-m-d H:i:s");
-            }
-
-
-
-
-            $studentsubjectobj = new StudentsSubjects();
-
-            $subobj = new Subjects();
-            $subject_details = $subobj->findByPk($subject_id);
-
-
-
-            $stdobj = new Students();
-
-            $students1 = $stdobj->getStudentByBatch($subject_details->batch_id);
-            $students2 = $studentsubjectobj->getSubjectStudent($subject_id);
-
-            $students = array_unique(array_merge($students1, $students2));
-            $homework->student_list = implode(",", $students);
-            $homework->save();
-            
-            if (isset($_FILES['attachment_file_name']['name']) && !empty($_FILES['attachment_file_name']['name']))
-            {
-                $homework->updated_at = date("Y-m-d H:i:s");
-                $homework->attachment_content_type = Yii::app()->request->getPost('mime_type');
-                $homework->attachment_file_size = Yii::app()->request->getPost('file_size');
-                $this->upload_homework($_FILES, $homework);
-            }     
-
-
-
-            if(!$is_draft)
-            {
-                $notification_ids = array();
-                $reminderrecipients = array();
-                foreach ($students as $value)
+                foreach($subject_id_array as $subject_id)
                 {
-                    $studentsobj = $stdobj->findByPk($value);
-                    $reminderrecipients[] = $studentsobj->user_id;
-                    $batch_ids[$studentsobj->user_id] = $studentsobj->batch_id;
-                    $student_ids[$studentsobj->user_id] = $studentsobj->id;
-                    
-                    $gstudent = new GuardianStudent(); 
-                    $all_g = $gstudent->getGuardians($studentsobj->id);
+             
+                    $homework->subject_id = $subject_id;
+                    $homework->content = $content;
+                    $homework->title = $title;
+                    $homework->duedate = $duedate;
+                    $homework->school_id = Yii::app()->user->schoolId;
+                    $homework->employee_id = Yii::app()->user->profileId;
+                    $homework->assignment_type = $assignment_type;
 
-                    if ($all_g)
+
+
+
+
+
+
+                    if($is_draft)
                     {
-                        foreach($all_g as $value)
+                        $homework->is_published = 0; 
+                    }
+
+
+                    $homework->created_at = date("Y-m-d H:i:s");
+                    if(!$id)
+                    {
+                        $homework->updated_at = date("Y-m-d H:i:s");
+                    }
+
+
+
+
+                    $studentsubjectobj = new StudentsSubjects();
+
+                    $subobj = new Subjects();
+                    $subject_details = $subobj->findByPk($subject_id);
+
+
+
+                    $stdobj = new Students();
+
+                    $students1 = $stdobj->getStudentByBatch($subject_details->batch_id);
+                    $students2 = $studentsubjectobj->getSubjectStudent($subject_id);
+
+                    $students = array_unique(array_merge($students1, $students2));
+                    $homework->student_list = implode(",", $students);
+                    $homework->save();
+
+                    if (isset($_FILES['attachment_file_name']['name']) && !empty($_FILES['attachment_file_name']['name']))
+                    {
+                        $homework->updated_at = date("Y-m-d H:i:s");
+                        $homework->attachment_content_type = Yii::app()->request->getPost('mime_type');
+                        $homework->attachment_file_size = Yii::app()->request->getPost('file_size');
+                        $this->upload_homework($_FILES, $homework);
+                    }     
+
+
+
+                    if(!$is_draft)
+                    {
+                        $notification_ids = array();
+                        $reminderrecipients = array();
+                        foreach ($students as $value)
                         {
-                            $gr = new Guardians();
-                            $grdata = $gr->findByPk($value['guardian']->id);
-                            if($grdata->user_id)
+                            $studentsobj = $stdobj->findByPk($value);
+                            $reminderrecipients[] = $studentsobj->user_id;
+                            $batch_ids[$studentsobj->user_id] = $studentsobj->batch_id;
+                            $student_ids[$studentsobj->user_id] = $studentsobj->id;
+
+                            $gstudent = new GuardianStudent(); 
+                            $all_g = $gstudent->getGuardians($studentsobj->id);
+
+                            if ($all_g)
                             {
-                                $reminderrecipients[] = $grdata->user_id;
-                                $batch_ids[$grdata->user_id] = $studentsobj->batch_id;
-                                $student_ids[$grdata->user_id] = $studentsobj->id;
+                                foreach($all_g as $value)
+                                {
+                                    $gr = new Guardians();
+                                    $grdata = $gr->findByPk($value['guardian']->id);
+                                    if($grdata->user_id)
+                                    {
+                                        $reminderrecipients[] = $grdata->user_id;
+                                        $batch_ids[$grdata->user_id] = $studentsobj->batch_id;
+                                        $student_ids[$grdata->user_id] = $studentsobj->id;
+                                    }
+                                }    
+
                             }
                         }    
-
+                        foreach ($reminderrecipients as $value)
+                        {
+                            $reminder = new Reminders();
+                            $reminder->sender = Yii::app()->user->id;
+                            $reminder->subject = Settings::$HomeworkText . ":" . $title;
+                            $reminder->body = Settings::$HomeworkText . " Added for " . $subject_details->name . " Please check the homework For details";
+                            $reminder->recipient = $value;
+                            $reminder->school_id = Yii::app()->user->schoolId;
+                            $reminder->rid = $homework->id;
+                            $reminder->rtype = 4;
+                            $reminder->batch_id = $batch_ids[$value];
+                            $reminder->student_id = $student_ids[$value];
+                            $reminder->created_at = date("Y-m-d H:i:s");
+                            $reminder->updated_at = date("Y-m-d H:i:s");
+                            $reminder->save();
+                            $notification_ids[] = $reminder->id;
+                        }
+                        if($notification_ids)
+                        {
+                            $notification_id = implode(",", $notification_ids);
+                            $user_id = implode(",", $reminderrecipients);
+                            Settings::sendCurlNotification($user_id, $notification_id);
+                        }
                     }
-                }    
-                foreach ($reminderrecipients as $value)
-                {
-                    $reminder = new Reminders();
-                    $reminder->sender = Yii::app()->user->id;
-                    $reminder->subject = Settings::$HomeworkText . ":" . $title;
-                    $reminder->body = Settings::$HomeworkText . " Added for " . $subject_details->name . " Please check the homework For details";
-                    $reminder->recipient = $value;
-                    $reminder->school_id = Yii::app()->user->schoolId;
-                    $reminder->rid = $homework->id;
-                    $reminder->rtype = 4;
-                    $reminder->batch_id = $batch_ids[$value];
-                    $reminder->student_id = $student_ids[$value];
-                    $reminder->created_at = date("Y-m-d H:i:s");
-                    $reminder->updated_at = date("Y-m-d H:i:s");
-                    $reminder->save();
-                    $notification_ids[] = $reminder->id;
                 }
-                if($notification_ids)
-                {
-                    $notification_id = implode(",", $notification_ids);
-                    $user_id = implode(",", $reminderrecipients);
-                    Settings::sendCurlNotification($user_id, $notification_id);
-                }
-            }
-
+                
+            }    
 
 
             $response['status']['code'] = 200;

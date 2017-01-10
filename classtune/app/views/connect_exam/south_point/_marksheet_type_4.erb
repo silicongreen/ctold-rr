@@ -133,7 +133,7 @@
                   avg_mark = total_mark.to_f/@report_data['result']['ST'].size
               end 
             %>
-           <td class="name"><%= avg_mark.round().to_s %></td> 
+           <td class="name"><%= sprintf( "%0.02f", avg_mark) %></td> 
 
            <% avg_mark2 = 0; %>
            <% total_mark = 0 %>
@@ -154,7 +154,7 @@
                   avg_mark2 = total_mark.to_f/@report_data['result']['CT'].size
               end 
             %>
-           <td class="name"><%= avg_mark2.round().to_s %></td> 
+           <td class="name"><%= sprintf( "%0.02f", avg_mark2) %></td> 
 
            <% total_mark = avg_mark.to_f+avg_mark2.to_f %>
            <%  full_mark = max_mark_ct.to_f+max_mark_st.to_f %>

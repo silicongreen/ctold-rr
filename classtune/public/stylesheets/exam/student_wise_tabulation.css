@@ -97,7 +97,7 @@ table#pdf-table{
     border-bottom: 1px solid #ADACAB;
 }
 .page-break1 td{
-    height: 130px;
+    height: 120px;
     border: 1px solid #fff;
     border-top: 1px solid #ADACAB;
     border-bottom: 1px solid #ADACAB;
@@ -109,7 +109,7 @@ table#pdf-table{
     border-bottom: 1px solid #ADACAB;
 }
 .page-break2 td{
-    height: 90px;
+    height: 80px;
     border: 1px solid #fff;
     border-top: 1px solid #ADACAB;
     border-bottom: 1px solid #ADACAB;

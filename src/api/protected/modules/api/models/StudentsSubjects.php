@@ -136,6 +136,7 @@ class StudentsSubjects extends CActiveRecord
                             )
                      )
             );
+            $criteria->order = "MainSubjects.priority asc";
             $subjects = $this->findAll($criteria);
             
             $subject_array = array();

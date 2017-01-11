@@ -546,7 +546,7 @@ class Assignments extends CActiveRecord
             {
                $criteria->compare('t.id', $id); 
             } 
-            $criteria->order = "duedate DESC";          
+            $criteria->order = "t.created_at DESC";         
             if($id>0)
             {
                 $criteria->limit = 1;
@@ -642,7 +642,7 @@ class Assignments extends CActiveRecord
             
             $criteria->addCondition("FIND_IN_SET(".$student_id.", student_list)");
             
-            $criteria->order = "duedate ASC";
+            $criteria->order = "t.created_at DESC";
             
             $data = $this->with("subjectDetails")->find($criteria);
             if($data)

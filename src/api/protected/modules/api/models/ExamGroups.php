@@ -305,7 +305,7 @@ class ExamGroups extends CActiveRecord
                 )
         );
         $criteria->order = "Subjects.priority ASC";
-        $comments = $this->findAll($criteria);
+        $comments = $this->find($criteria);
         $return_comments = array();
         foreach($students as $value)
         {
@@ -313,12 +313,18 @@ class ExamGroups extends CActiveRecord
         }
         if($comments)
         {
-            foreach($comments as $examresult)
+            foreach($comments['Exams'] as $examresult)
             {
-                if(isset($examresult['Exams'][0]) && isset($examresult['Exams'][0]['Scores']) && isset($examresult['Exams'][0]['Scores'][0]) && isset($examresult['Exams'][0]['Scores'][0]->remarks))
+                if(isset($examresult) && isset($examresult['Scores']) )
                 {
-                    $return_comments[$examresult['Exams'][0]['Scores'][0]['Students']->id] = $examresult['Exams'][0]['Scores'][0]->remarks;
-                } 
+                    foreach($examresult['Scores'] as $score)
+                    {
+                        if( isset($score->remarks))
+                        {
+                            $return_comments[$score['Students']->id] = $score->remarks;
+                        }
+                    }     
+                }
             } 
         }
         return  $return_comments;  

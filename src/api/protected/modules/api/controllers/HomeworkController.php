@@ -1018,20 +1018,21 @@ class HomeworkController extends Controller
         if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher && $subject_ids && $content && $title && $duedate && $school_id && $assignment_type)
         {
             
-            if($id)
-            {
-                $objhomework = new Assignments();
-                $homework = $objhomework->findByPk($id);
-            }
-            else
-            {
-                $homework = new Assignments();
-            }
+            
             $subject_id_array = explode(",", $subject_ids);
             if($subject_id_array)
             {
                 foreach($subject_id_array as $subject_id)
                 {
+                    if($id)
+                    {
+                        $objhomework = new Assignments();
+                        $homework = $objhomework->findByPk($id);
+                    }
+                    else
+                    {
+                        $homework = new Assignments();
+                    }
              
                     $homework->subject_id = $subject_id;
                     $homework->content = $content;

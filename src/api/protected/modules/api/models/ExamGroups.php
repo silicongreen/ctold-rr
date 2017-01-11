@@ -278,6 +278,52 @@ class ExamGroups extends CActiveRecord
         return $all_exam;
     }
     
+    public function getCommentAll($exam_group_id,$subject_id,$students)
+    {
+        $criteria = new CDbCriteria();
+        $criteria->select = 't.id'; 
+        $criteria->compare('t.id', $exam_group_id);
+        $criteria->compare('Subjects.is_deleted', false);
+        $criteria->compare('Subjects.id', $subject_id);
+        $criteria->with = array(
+                'Exams' => array(
+                    'select' => 'Exams.id',
+                    'with' => array(
+                        'Scores' => array(
+                            'select' => 'Scores.remarks',
+                            'with' => array(
+                                    'Students' => array(
+                                        'select' => 'Students.id',
+                                    ),
+                             )
+                        ),
+                        'Subjects' => array(
+                            'select' => 'Subjects.id',
+                        )
+
+                    )
+                )
+        );
+        $criteria->order = "Subjects.priority ASC";
+        $comments = $this->findAll($criteria);
+        $return_comments = array();
+        foreach($students as $value)
+        {
+            $return_comments[$value] = "";
+        }
+        if($comments)
+        {
+            foreach($comments as $examresult)
+            {
+                if(isset($examresult['Exams'][0]) && isset($examresult['Exams'][0]['Scores']) && isset($examresult['Exams'][0]['Scores'][0]) && isset($examresult['Exams'][0]['Scores'][0]->remarks))
+                {
+                    $return_comments[$examresult['Exams'][0]['Scores'][0]['Students']->id] = $examresult['Exams'][0]['Scores'][0]->remarks;
+                } 
+            } 
+        }
+        return  $return_comments;  
+    }
+    
     public function getComment($exam_group_id,$student_id,$subject_id)
     {
         $comment = "";

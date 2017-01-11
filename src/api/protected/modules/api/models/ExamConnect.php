@@ -58,6 +58,18 @@ class ExamConnect extends CActiveRecord
     {
         return parent::model($className);
     }
+    
+    public function getConnectExamByBatch($batch_id,$quarter=1)
+    {
+        $criteria = new CDbCriteria;
+        $criteria->compare('t.batch_id', $batch_id);
+        $criteria->compare('t.quarter_number', $quarter);
+        $criteria->compare('t.result_type', 4);
+        $criteria->select = 't.*';
+        $criteria->order = "created_at DESC";
+        $criteria->limit = 1;
+        $connect_exam = $this->find($criteria);
+    }        
 
     public function getConnectExamReportAll($id, $subject_id)
     {

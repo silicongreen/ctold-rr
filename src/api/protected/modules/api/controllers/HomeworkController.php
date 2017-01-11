@@ -1015,7 +1015,7 @@ class HomeworkController extends Controller
         $school_id = Yii::app()->user->schoolId;
         $id = Yii::app()->request->getPost('id');
 
-        if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher && $subject_id && $content && $title && $duedate && $school_id && $assignment_type)
+        if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher && $subject_ids && $content && $title && $duedate && $school_id && $assignment_type)
         {
             
             if($id)

@@ -490,21 +490,80 @@
                     </td>  
             <% end %> 
             <% @report_data['report']['no_exam_subject_resutl'].each do |sub| %>
-                    <% if !sub['subject_comment'][std['id']].nil? %>
-                      <%
-                        if !sub['subject_comment'][std['id']].blank?
-                          if grades.include?(sub['subject_comment'][std['id']].to_s)
-                            grade_count[sub['subject_comment'][std['id']]] = grade_count[sub['subject_comment'][std['id']]]+1
-                          else
-                            grades << sub['subject_comment'][std['id']].to_s
-                            grade_count[sub['subject_comment'][std['id']].to_s] = 1
-                          end 
-                        end 
-                       %>
+                    
                      <td>
-                        <%=  sub['subject_comment'][std['id']] %>
+                       <% if !sub['subject_comment3'].blank? && !sub['subject_comment3'][std['id']].blank? %>
+                          <%
+                            if !sub['subject_comment3'][std['id']].blank?
+                              if grades1.include?(sub['subject_comment3'][std['id']].to_s)
+                                grade_count1[sub['subject_comment3'][std['id']]] = grade_count1[sub['subject_comment3'][std['id']]]+1
+                              else
+                                grades1 << sub['subject_comment3'][std['id']].to_s
+                                grade_count1[sub['subject_comment3'][std['id']].to_s] = 1
+                              end 
+                            end 
+                           %>
+                          <%=  sub['subject_comment3'][std['id']] %>
+                        <% else %>
+                          &nbsp;
+                        <% end %>  
+                        <hr/>
+                         
+                       <% if !sub['subject_comment4'].blank? && !sub['subject_comment4'][std['id']].blank? %>
+                          <%
+                            if !sub['subject_comment4'][std['id']].blank?
+                              if grades2.include?(sub['subject_comment4'][std['id']].to_s)
+                                grade_count2[sub['subject_comment4'][std['id']]] = grade_count2[sub['subject_comment4'][std['id']]]+1
+                              else
+                                grades2 << sub['subject_comment4'][std['id']].to_s
+                                grade_count2[sub['subject_comment4'][std['id']].to_s] = 1
+                              end 
+                            end 
+                           %>
+                          <%=  sub['subject_comment4'][std['id']] %>
+                        <% else %>
+                          &nbsp;
+                        <% end %> 
+                        <hr/>
+                        
+                        <% if !sub['subject_comment6'].blank? && !sub['subject_comment6'][std['id']].blank? %>
+                          <%
+                            if !sub['subject_comment6'][std['id']].blank?
+                              if grades3.include?(sub['subject_comment6'][std['id']].to_s)
+                                grade_count3[sub['subject_comment6'][std['id']]] = grade_count3[sub['subject_comment6'][std['id']]]+1
+                              else
+                                grades3 << sub['subject_comment6'][std['id']].to_s
+                                grade_count3[sub['subject_comment6'][std['id']].to_s] = 1
+                              end 
+                            end 
+                           %>
+                          <%=  sub['subject_comment6'][std['id']] %>
+                        <% else %>
+                          &nbsp;
+                        <% end %> 
+                         <hr/>
+                         &nbsp;
+                         <hr/>
+                         
+                         
+                         
+                       <% if !sub['subject_comment'][std['id']].nil? && !sub['subject_comment'][std['id']].blank? %>
+                          <%
+                            if !sub['subject_comment'][std['id']].blank?
+                              if grades.include?(sub['subject_comment'][std['id']].to_s)
+                                grade_count[sub['subject_comment'][std['id']]] = grade_count[sub['subject_comment'][std['id']]]+1
+                              else
+                                grades << sub['subject_comment'][std['id']].to_s
+                                grade_count[sub['subject_comment'][std['id']].to_s] = 1
+                              end 
+                            end 
+                           %>
+                          <%=  sub['subject_comment'][std['id']] %>
+                        <% else %>
+                          &nbsp;
+                        <% end %>  
                      </td>
-                    <% end %> 
+                    
               <% end %>
               <td>
                   <%= q3_mark.round().to_s+"<hr/>" %> 

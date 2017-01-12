@@ -1,6 +1,7 @@
 <%
 @subject_highest_mark_first_term = {}
 @subject_highest_mark_final_term = {}
+@subject_highest_quarter = {}
 unless @tabulation_data.blank?
   @tabulation_data['report']['students'].each do |std| 
     @tabulation_data['report']['subjects'].each do |sub|
@@ -302,6 +303,23 @@ unless @tabulation_data.blank?
       
       first_term_round = obtained_mark_first_term.round()
       final_term_round = obtained_mark_final_term.round()
+      
+      quarter_mark = 0
+      if obtained_mark1>0
+        quarter_mark = obtained_mark1.round()
+      elsif obtained_mark2>0
+        quarter_mark = obtained_mark2.round()
+      elsif obtained_mark3>0 
+        quarter_mark = obtained_mark3.round()
+      elsif obtained_mark4>0
+        quarter_mark = obtained_mark4.round()
+      end
+      
+      if @subject_highest_quarter[sub['id'].to_i].blank?
+          @subject_highest_quarter[sub['id'].to_i] = quarter_mark
+      elsif quarter_mark.to_i > @subject_highest_quarter[sub['id'].to_i].to_i
+          @subject_highest_quarter[sub['id'].to_i] = quarter_mark.to_i
+      end
       
       if @subject_highest_mark_first_term[sub['id'].to_i].blank?
           @subject_highest_mark_first_term[sub['id'].to_i] = first_term_round

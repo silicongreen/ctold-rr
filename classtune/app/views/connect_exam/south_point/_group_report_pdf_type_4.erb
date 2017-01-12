@@ -32,6 +32,7 @@
                       <td class="col-pdf">Full Mark</td>
                       <td class="col-pdf">Obtained Mark</td>
                       <td class="col-pdf">Grade</td>
+                      <td class="col-pdf">Highest Mark</td>
                       
                     
                   </tr>
@@ -121,6 +122,11 @@
                           <% else %>
                             <td class="col-pdf">N/A</td>  
                           <% end %> 
+                          <td class="col-pdf">
+                            <% if !@subject_highest_quarter[subjects['id'].to_i].blank? %>  
+                                <%= @subject_highest_quarter[subjects['id'].to_i].to_i %>
+                            <% end %>    
+                          </td>
                           
                                
 
@@ -152,6 +158,7 @@
                             <td class="col-pdf"></td>
                             <td class="col-pdf"></td>
                             <td class="col-pdf"><%= report['subject_comment'] %></td>
+                            <td class="col-pdf">&nbsp;</td>
                             </tr>
                           <% end %>
                         <% end %>

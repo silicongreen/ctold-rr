@@ -108,38 +108,45 @@
           <tr class="<%= cycle(c,(["odd1","even1"]-[c]).first) %>">
               <td class="col-pdf"> <%= j+1 %></td>
              <td class="col-pdf"> <%= es.exam.subject.name %></td>
-              <td class="col-pdf"><%= es.exam.maximum_marks.to_f %></td>
-              <td class="col-pdf"><%= es.marks.present? ? mark=es.marks.to_f : '-' %></td>
-              <% 
-                if es.marks.present?  
-                  total_mark = total_mark.to_f+es.marks.to_f 
-                end
-              %>
-
-              <td class="col-pdf"> <%=  max_mark[j] %></td>
-              
-              <% 
-                if es.exam.maximum_marks.present?  
-                  max_total_mark = max_total_mark.to_f+es.exam.maximum_marks.to_f 
-                end
-              %>
-              
-              <td class="col-pdf">
-                  <%= "#{es.grading_level.present? ? es.grading_level : " "}" %>
-              </td>
-               
-              <% 
-                if es.grading_level.present? 
-                  if es.grading_level.credit_points.present?
-                    cradit_point = cradit_point.to_f+es.grading_level.credit_points.to_f 
+             <% if es.exam.subject.no_exam.to_i == 0 %>
+                <td class="col-pdf"><%= es.exam.maximum_marks.to_f %></td>
+                <td class="col-pdf"><%= es.marks.present? ? mark=es.marks.to_f : '-' %></td>
+                <% 
+                  if es.marks.present?  
+                    total_mark = total_mark.to_f+es.marks.to_f 
                   end
-                end
-              %>
-              
-              <% total_credit_hours = total_credit_hours + es.exam.subject.credit_hours.to_f %>
-              <% points=0 %>
-              <% points = (es.grading_level.credit_points.to_f) * (es.exam.subject.credit_hours.to_f) if es.grading_level.present? %>
-              <% total_credit_points = total_credit_points + points %>
+                %>
+
+                <td class="col-pdf"> <%=  max_mark[j] %></td>
+
+                <% 
+                  if es.exam.maximum_marks.present?  
+                    max_total_mark = max_total_mark.to_f+es.exam.maximum_marks.to_f 
+                  end
+                %>
+
+                <td class="col-pdf">
+                    <%= "#{es.grading_level.present? ? es.grading_level : " "}" %>
+                </td>
+
+                <% 
+                  if es.grading_level.present? 
+                    if es.grading_level.credit_points.present?
+                      cradit_point = cradit_point.to_f+es.grading_level.credit_points.to_f 
+                    end
+                  end
+                %>
+
+                <% total_credit_hours = total_credit_hours + es.exam.subject.credit_hours.to_f %>
+                <% points=0 %>
+                <% points = (es.grading_level.credit_points.to_f) * (es.exam.subject.credit_hours.to_f) if es.grading_level.present? %>
+                <% total_credit_points = total_credit_points + points %>
+              <% else %>
+                <td class="col-pdf">N/A</td>
+                <td class="col-pdf">N/A</td>
+                <td class="col-pdf">N/A</td>
+                <td class="col-pdf"><%= es.remarks %></td>
+              <% end %>
    
           </tr>
         <% j = j+1; %>    

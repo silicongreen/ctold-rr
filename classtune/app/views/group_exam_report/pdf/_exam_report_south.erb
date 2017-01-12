@@ -108,7 +108,7 @@
           <tr class="<%= cycle(c,(["odd1","even1"]-[c]).first) %>">
               <td class="col-pdf"> <%= j+1 %></td>
              <td class="col-pdf"> <%= es.exam.subject.name %></td>
-             <% if es.exam.subject.no_exams.to_i == 0 %>
+             <% if !es.exam.subject.no_exams %>
                 <td class="col-pdf"><%= es.exam.maximum_marks.to_f %></td>
                 <td class="col-pdf"><%= es.marks.present? ? mark=es.marks.to_f : '-' %></td>
                 <% 

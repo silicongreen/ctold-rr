@@ -40,7 +40,6 @@
 
 
                     <td > <%= es.exam.subject.name %></td>
-                    <% if es.exam.subject.no_exam.to_i == 0 %>
                     <td  <%=css%>>
 
                         <%= "#{es.grading_level.present? ? es.grading_level : " "}"+"#{es.grading_level.present? ? (es.grading_level.credit_points.present? ?  " ["+"#{es.grading_level.credit_points }"+"]"  : " ") : " "}" %></td>
@@ -91,14 +90,6 @@
                       <% total_credit_points = total_credit_points + points %>
                     <% end %>
                     <td class="col-1" <%= extra_colspan %>><%= es.remarks %></td>
-                    <% else %>
-                    <td  <%=css%>><%= es.remarks %></td>
-                    <td  <%=css%>>N/A</td>
-                    <td  <%=css%>>N/A</td>
-                    <td  <%=css%>>N/A</td>
-                    <td  <%=css%>>N/A</td>
-                    <td  <%=css%>>N/A</td>
-                    <% end %>
 
                 </tr>
                 <% j = j+1; %>  

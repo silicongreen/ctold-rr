@@ -142,10 +142,8 @@
                 <% points = (es.grading_level.credit_points.to_f) * (es.exam.subject.credit_hours.to_f) if es.grading_level.present? %>
                 <% total_credit_points = total_credit_points + points %>
               <% else %>
-                <td class="col-pdf">N/A</td>
-                <td class="col-pdf">N/A</td>
-                <td class="col-pdf">N/A</td>
-                <td class="col-pdf"><%= es.remarks %></td>
+                
+                <td class="col-pdf" colspan="4"><%= es.remarks %></td>
               <% end %>
    
           </tr>

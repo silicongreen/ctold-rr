@@ -237,7 +237,7 @@
                       obtained_mark1 = avg_mark_ct1.to_f+avg_mark_st1.to_f
                       full_mark1 = ct_full_mark1.to_i+st_full_mark1.to_i
                       
-                      main_mark1 = (obtained_mark1.to_f/full_mark1.to_f)*100
+                      main_mark1 = (obtained_mark1.round().to_f/full_mark1.to_f)*100
 
                       #Calculation 2nd Quarter Mark
                       st_marks2.sort! {|x,y| y <=> x }
@@ -257,7 +257,7 @@
 
                       obtained_mark2 = avg_mark_ct2.to_f+avg_mark_st2.to_f
                       full_mark2 = ct_full_mark2.to_i+st_full_mark2.to_i
-                      main_mark2 = (obtained_mark2.to_f/full_mark2.to_f)*100
+                      main_mark2 = (obtained_mark2.round().to_f/full_mark2.to_f)*100
 
                       #Calculation First Term (40/20) Mark
                       full_mark = full_mark1+full_mark2+first_term_full_mark

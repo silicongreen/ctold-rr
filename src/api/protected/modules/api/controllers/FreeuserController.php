@@ -23,7 +23,7 @@ class FreeuserController extends Controller
     {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index','runmusic','getleaderboard','savespellingbee', 'downloadattachment','downloadlessonplan', 'create', 'getcategorypost', 'getsinglenews', 'search', "getkeywordpost"
+                'actions' => array('index','runmusic','getleaderboard','savespellingbee', 'downloadattachment','downloadclasswork','downloadlessonplan', 'create', 'getcategorypost', 'getsinglenews', 'search', "getkeywordpost"
                     , "gettagpost", "getbylinepost", "getmenu", "getassesment", "addmark", "updateplayed", "assesmenthistory",
                     "getuserinfo", "goodread", "readlater", "goodreadall", "goodreadfolder", "removegoodread"
                     , "schoolsearch", "school", "createschool", "schoolpage", "schoolactivity", "candle"
@@ -36,6 +36,33 @@ class FreeuserController extends Controller
                 'users' => array('*'),
             ),
         );
+    }
+    public function actionDownloadClassWork()
+    {
+
+        $id = $_GET['id'];
+        if ($id)
+        {
+            $classwork = new Classworks();
+            $classworkobj = $classwork->findByPk($id);
+            if ($classworkobj->attachment_file_name)
+            {
+                $attachment_datetime_chunk = explode(" ", $classworkobj->updated_at);
+
+                $attachment_date_chunk = explode("-", $attachment_datetime_chunk[0]);
+                $attachment_time_chunk = explode(":", $attachment_datetime_chunk[1]);
+
+                $attachment_extra = $attachment_date_chunk[0] . $attachment_date_chunk[1] . $attachment_date_chunk[2];
+                $attachment_extra.= $attachment_time_chunk[0] . $attachment_date_chunk[1] . $attachment_time_chunk[2];
+                
+                $url = Settings::$paid_image_path ."uploads/classworks/attachments/" . $id . "/original/" . urlencode($classworkobj->attachment_file_name) . "?" . $attachment_extra;              
+
+                header("Content-Disposition: attachment; filename=" . $classworkobj->attachment_file_name);
+                header("Content-Type: {$classworkobj->attachment_content_type}");
+                header("Content-Length: " . $classworkobj->attachment_file_size);
+                readfile($url);
+            }
+        }
     }
     
     public function actionrunMusic()

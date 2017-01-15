@@ -23,6 +23,8 @@ class Settings {
     public static $endPoint = "plus.champs21.com";
     public static $HomeworkText = "New Homework";
     public static $AssignmentText = "New Assignment";
+    public static $ClassworkText = "New Classwork";
+    
     public static $education_changes_life = 59;
     public static $notification_url = "http://www.champs21.com/front/ajax/send_paid_notification";
     public static $mail_url = "http://www.champs21.com/front/ajax/send_email_to_user_api";

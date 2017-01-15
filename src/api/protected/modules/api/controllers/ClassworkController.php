@@ -433,6 +433,38 @@ class ClassworkController extends Controller
        echo CJSON::encode($response);
        Yii::app()->end();
     } 
+    private function copy_classwork($origin,$file_name,$classwork)
+    {
+        $classwork->attachment_updated_at = date("Y-m-d H:i:s");
+        $classwork->updated_at = date("Y-m-d H:i:s");
+                    
+        $attachment_datetime_chunk = explode(" ", $classwork->updated_at);
+
+        $attachment_date_chunk = explode("-", $attachment_datetime_chunk[0]);
+        $attachment_time_chunk = explode(":", $attachment_datetime_chunk[1]);
+
+        $attachment_extra = $attachment_date_chunk[0] . $attachment_date_chunk[1] . $attachment_date_chunk[2];
+        $attachment_extra.= $attachment_time_chunk[0] . $attachment_date_chunk[1] . $attachment_time_chunk[2];
+
+        $uploads_dir = Settings::$paid_image_path . "uploads/classworks/attachments/".$classwork->id."/original/";
+        $file_name_new =  str_replace(" ", "+",$file_name) . "?" .$attachment_extra;
+        
+        
+        if(!is_dir($uploads_dir))
+        {
+            @mkdir($uploads_dir, 0777, true);
+        }
+        
+        $uploads_dir = $uploads_dir.$file_name_new;
+        
+
+        if(@copy($origin, "$uploads_dir"))
+        {
+            $classwork->attachment_file_name = $file_name;
+            $classwork->save();
+        }
+        return $uploads_dir;
+    }
     private function upload_classwork($file,$classwork)
     {
         $classwork->attachment_updated_at = date("Y-m-d H:i:s");
@@ -462,7 +494,8 @@ class ClassworkController extends Controller
         {
             $classwork->attachment_file_name = $file['attachment_file_name']['name'];
             $classwork->save();
-        } 
+        }
+        return $uploads_dir;
     }
 
     public function actionAddClasswork()
@@ -533,14 +566,28 @@ class ClassworkController extends Controller
                     $students = array_unique(array_merge($students1, $students2));
                     $classwork->student_list = implode(",", $students);
                     $classwork->save();
+                    
 
                     if (isset($_FILES['attachment_file_name']['name']) && !empty($_FILES['attachment_file_name']['name']))
                     {
-                        $classwork->updated_at = date("Y-m-d H:i:s");
-                        $classwork->attachment_content_type = Yii::app()->request->getPost('mime_type');
-                        $classwork->attachment_file_size = Yii::app()->request->getPost('file_size');
-                        $this->upload_classwork($_FILES, $classwork);
-                    }     
+                        if(!isset($file_name_main) && !isset($origin) )
+                        {
+                            $file_name_main = $_FILES['attachment_file_name']['name'];
+
+                            $classwork->updated_at = date("Y-m-d H:i:s");
+                            $classwork->attachment_content_type = Yii::app()->request->getPost('mime_type');
+                            $classwork->attachment_file_size = Yii::app()->request->getPost('file_size');
+                            $origin = $this->upload_classwork($_FILES, $classwork);
+                        }
+                        else
+                        {
+                            $classwork->updated_at = date("Y-m-d H:i:s");
+                            $classwork->attachment_content_type = Yii::app()->request->getPost('mime_type');
+                            $classwork->attachment_file_size = Yii::app()->request->getPost('file_size');
+                            $origin = $this->copy_classwork($origin,$file_name_main, $classwork);
+                        }    
+                        
+                    }
 
 
 

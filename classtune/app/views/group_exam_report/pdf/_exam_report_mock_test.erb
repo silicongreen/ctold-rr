@@ -18,7 +18,12 @@
                 <td>Gender </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= t("#{@student.gender_as_text.downcase}") %></td>
             </tr> 
              <tr>
-                <td>Academic Session </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%Y"):@exam_group.exam_date.strftime("%Y") %></td>
+                  <% month_number =@exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%-m"):@exam_group.exam_date.strftime("%-m") %>
+                  <% if month_number>6 %>
+                    <td>Academic Session </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%Y").to_i+1:@exam_group.exam_date.strftime("%Y").to_i+1 %>-<%= @exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%Y"):@exam_group.exam_date.strftime("%Y") %></td>
+                  <% else %>
+                    <td>Academic Session </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%Y").to_i-1:@exam_group.exam_date.strftime("%Y").to_i-1 %>-<%= @exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%Y"):@exam_group.exam_date.strftime("%Y") %></td>
+                  <% end %>  
                 <td>&nbsp;&nbsp;</td>
                 <td>Roll </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @student.class_roll_no %></td>
             </tr> 

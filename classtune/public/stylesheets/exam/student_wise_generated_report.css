@@ -333,11 +333,13 @@ table.teacher_remarks tr td
 {
     padding: 2px 2px 7px 5px;  
     border: 1px solid #000000;
+    font-size: 16px;
 }
 .baf_shaheen tr.even td
 {
     padding: 2px 2px 7px 5px;
     border: 1px solid #000000;
+    font-size: 16px;
 }
 
 .baf_shaheen table#pdf-table{

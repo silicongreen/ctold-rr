@@ -902,6 +902,8 @@ class ExamController < ApplicationController
       @students=@batch.students.by_first_name
     end
     
+    @students.sort! { |a, b|  a.class_roll_no <=> b.class_roll_no }
+    
     @assigned_employee=@batch.employees
     general_subjects = Subject.find_all_by_batch_id(@batch.id, :conditions=>"elective_group_id IS NULL")
     student_electives = StudentsSubject.find_all_by_batch_id(@batch.id)

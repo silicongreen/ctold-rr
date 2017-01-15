@@ -371,7 +371,7 @@ table.teacher_remarks tr td
     float:left;
     clear:both;
     font-size: 16px;
-    width: 65%;
+    width: 70%;
     margin: 10px 10px;
     
     
@@ -398,22 +398,24 @@ table.teacher_remarks tr td
 {
     margin-left:105px;
     float:left;
-    width: 17.5%;
+    width: 15.5%;
     font-size: 12px;
    
 }
 .baf_shaheen div.grade_information table tr.odd td
 {
     padding: 3px 3px 3px 5px;
+    font-size: 16px;
 }
 .baf_shaheen div.grade_information table tr.even td
 {
     padding: 3px 3px 3px 5px;
+    font-size: 16px;
 }
 .baf_shaheen div.grade_information p
 {
-    font-size: 14px;
-    margin-left: 25px;
+    font-size: 12px;
+    margin-left: 20px;
     margin-bottom: 3px;
 }
 div.baf_shaheen

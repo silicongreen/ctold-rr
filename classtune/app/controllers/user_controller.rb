@@ -1011,11 +1011,11 @@ class UserController < ApplicationController
 
   private
   
-  def successful_user_login_pdf(user,connect_exam,batch_id,student_id)
+  def successful_user_login_pdf(user,connect_exam,batch_id,student)
     cookies.delete("_champs21_session")
     session[:user_id_main] = user.id
     session[:user_id] = user.id
-    redirect_to ({:controller => 'exam', :action => 'generated_report5_pdf', :connect_exam =>connect_exam,:batch_id =>batch_id,:student_id =>student_id,:page_height=>450,:type=>"grouped"  })
+    redirect_to ({:controller => 'exam', :action => 'generated_report5_pdf', :connect_exam =>connect_exam,:batch_id =>batch_id,:student =>student,:page_height=>450,:type=>"grouped"  })
   end
   
   def successful_user_login(user)

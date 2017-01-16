@@ -641,6 +641,7 @@ class UserController < ApplicationController
           user = User.active.find_by_username params[:username]
           if user.present? and User.authenticate?(params[:username], params[:password])
             authenticated_user = user
+            
           end
         end  
       end
@@ -679,7 +680,11 @@ class UserController < ApplicationController
       session[:api_info] = user_info
     
       flash.clear
-      successful_user_login(authenticated_user) and return
+      if !params[:connect_exam].blank? and !params[:batch_id].blank? and !params[:student].blank?
+         successful_user_login_pdf(authenticated_user,params[:connect_exam],params[:batch_id],params[:student]) and return     
+      else
+        successful_user_login(authenticated_user) and return
+      end
     elsif authenticated_user.blank? and request.post?
       flash[:notice] = "#{t('login_error_message')}"
     end
@@ -1005,6 +1010,14 @@ class UserController < ApplicationController
   end
 
   private
+  
+  def successful_user_login_pdf(user,connect_exam,batch_id,student_id)
+    cookies.delete("_champs21_session")
+    session[:user_id_main] = user.id
+    session[:user_id] = user.id
+    redirect_to ({:controller => 'exam', :action => 'generated_report5_pdf', :connect_exam =>connect_exam,:batch_id =>batch_id,:student_id =>student_id,:page_height=>450,:type=>"grouped"  })
+  end
+  
   def successful_user_login(user)
     cookies.delete("_champs21_session")
     session[:user_id_main] = user.id

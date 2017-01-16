@@ -44,9 +44,22 @@ class ReportController extends Controller
                 $userauth->expire = date("Y-m-d h:i:s", strtotime("+5 minutes"));
                 $userauth->auth_id = mt_rand();
                 $userauth->save();
-                $response['data']['auth_id'] = $userauth->auth_id;
-                $response['status']['code'] = 200;
-                $response['status']['msg'] = "GO_FOR_EXAM";
+                
+                $school_domain = new SchoolDomains();
+                $school_domain = $school_domain->getSchoolDomainBySchoolId(Yii::app()->user->schoolId);
+                
+                if($school_domain)
+                {
+                    $response['data']['domain'] = $school_domain->domain;
+                    $response['data']['auth_id'] = $userauth->auth_id;
+                    $response['status']['code'] = 200;
+                    $response['status']['msg'] = "GO_FOR_EXAM";
+                }
+                else
+                {
+                    $response['status']['code'] = 403;
+                    $response['status']['msg'] = "Access Denied.";
+                }    
                 
             }
             else

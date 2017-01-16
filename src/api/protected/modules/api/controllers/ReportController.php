@@ -41,7 +41,7 @@ class ReportController extends Controller
             {
                 $userauth = new Userauth();
                 $userauth->user_id = Yii::app()->user->id;
-                $userauth->expire = date("Y-m-d h:i:s", strtotime("+5 minutes"));
+                $userauth->expire = date("Y-m-d H:i:s", strtotime("+5 minutes"));
                 $userauth->auth_id = mt_rand();
                 $userauth->save();
                 

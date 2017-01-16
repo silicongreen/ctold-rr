@@ -20,7 +20,7 @@ class ReportController extends Controller
     {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index','tabulation','continues','groupexamsubject','getexamclass','subjectreport','getsectionreport','groupedexamreport','getTermReportAll','progressall','attendence','getsubject','progress','classtestreport','allexam', 'Getfullreport','getexamreport','acknowledge'),
+                'actions' => array('index','addauthforexam','getconnectexam','tabulation','continues','groupexamsubject','getexamclass','subjectreport','getsectionreport','groupedexamreport','getTermReportAll','progressall','attendence','getsubject','progress','classtestreport','allexam', 'Getfullreport','getexamreport','acknowledge'),
                 'users' => array('*'),
             ),
             array('deny', // deny all users
@@ -28,6 +28,92 @@ class ReportController extends Controller
             ),
         );
     }
+    
+    public function actionAddAuthForExam()
+    {
+        if (isset($_POST) && !empty($_POST))
+        {
+            $user_secret = Yii::app()->request->getPost('user_secret');
+            $response = array();
+            if (Yii::app()->user->user_secret === $user_secret && ( Yii::app()->user->isStudent || 
+                    ( Yii::app()->user->isParent && Yii::app()->request->getPost('batch_id') ))
+                )
+            {
+                $userauth = new Userauth();
+                $userauth->user_id = Yii::app()->user->id;
+                $userauth->expire = date("Y-m-d h:i:s", strtotime("+5 minutes"));
+                $userauth->auth_id = mt_rand();
+                $userauth->save();
+                $response['data']['auth_id'] = $userauth->auth_id;
+                $response['status']['code'] = 200;
+                $response['status']['msg'] = "GO_FOR_EXAM";
+                
+            }
+            else
+            {
+                $response['status']['code'] = 403;
+                $response['status']['msg'] = "Access Denied.";
+            }
+        }
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    } 
+    
+    public function actiongetConnectExam()
+    {
+        if (isset($_POST) && !empty($_POST))
+        {
+            $user_secret = Yii::app()->request->getPost('user_secret');
+            $response = array();
+            if (Yii::app()->user->user_secret === $user_secret && ( Yii::app()->user->isStudent || 
+                    ( Yii::app()->user->isParent && Yii::app()->request->getPost('batch_id') ))
+                )
+            {
+                
+                if(Yii::app()->user->isParent)
+                {
+                    $batch_id   = Yii::app()->request->getPost('batch_id');
+                    $student_id = Yii::app()->request->getPost('student_id');
+                } 
+                else
+                {
+                    $batch_id   = Yii::app()->user->batchId;
+                    $student_id = Yii::app()->user->profileId;
+                }   
+                 
+                $examConnect = new ExamConnect();
+                $exam_report = $examConnect->getConnectExam($batch_id);
+                if ($exam_report) {
+                    
+                    $response['data']['exams'] = $exam_report;
+                    $response['status']['code'] = 200;
+                    $response['status']['msg'] = "EXAM_FOUND";
+                } else {
+                    $response['data']['exams'] = array();
+                    $response['status']['code'] = 200;
+                    $response['status']['msg'] = "EXAM_FOUND";
+                }  
+            }
+            else
+            {
+                $response['status']['code'] = 403;
+                $response['status']['msg'] = "Access Denied.";
+            }
+        }
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    } 
+    
     public function actionGroupExamSubject()
     {
         $user_secret = Yii::app()->request->getPost('user_secret');

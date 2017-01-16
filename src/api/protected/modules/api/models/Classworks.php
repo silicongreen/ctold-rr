@@ -402,7 +402,7 @@ class Classworks extends CActiveRecord
                 }
                 $robject = new Reminders();
                 
-                $new_data = $robject->FindUnreadData(4, $rid);
+                $new_data = $robject->FindUnreadData(31, $rid);
                 foreach($data as $value)
                 {
                     $marge = array();

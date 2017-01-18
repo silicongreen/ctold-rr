@@ -18,7 +18,7 @@
 #under the License. -%>
 
 <div class="header-wrapper">
-    <div class="header-title" style="width:68%;">
+    <div class="header-title" style="width:58%;">
       <div class="header-icon"  style="width:12%;">
         <%= image_tag '/images/icons/report-card.png', :html => {:alt => 'Report'} %>
       </div>
@@ -40,6 +40,9 @@
                         {:action => "continues",:id=>@connect_exam_obj.id},:target => '_blank' %></li>
               <li class="themed_bg themed-dark-hover-background"><%= link_to "Tabulation Sheet",
                         {:action => "tabulation",:id=>@connect_exam_obj.id},:target => '_blank' %></li>
+              
+              <li class="themed_bg themed-dark-hover-background"><%= link_to "Comment Entry",
+                        {:action => "comment_tabulation",:id=>@connect_exam_obj.id},:target => '_blank' %></li>
             </ul>
           </div>
       <% end %>

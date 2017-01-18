@@ -2229,6 +2229,56 @@ class ExamController < ApplicationController
     end
   end
   
+  def add_comments_connect_exam
+    @comments= params[:comments].split(',') 
+    @student_ids=params[:student_ids].split(',')
+    @connect_exam= params[:connect_exam]
+    i = 0
+    now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
+    @comments.each do |cmt|
+      if !cmt.blank?
+        @exam_comment_exists = ExamConnectComment.find_by_exam_connect_id_and_student_id(@connect_exam,@student_ids[i])
+        if @exam_comment_exists.blank?
+          ecobj = ExamConnectComment.new
+          ecobj.employee_id = current_user.employee_record.id
+          ecobj.created_at = now
+          ecobj.updated_at = now
+          ecobj.school_id = MultiSchool.current_school.id
+          ecobj.student_id = @student_ids[i]
+          ecobj.comments = cmt
+          ecobj.exam_connect_id = @connect_exam
+          ecobj.save
+        else
+          @exam_comment_exists.comments = cmt
+          @exam_comment_exists.updated_at = now
+          @exam_comment_exists.save          
+        end
+      end
+      i = i+1
+    end
+    render :text =>"Succesfully Saved" and return
+    
+  end
+  
+  def comment_tabulation
+    @id = params[:id]
+    @connect_exam_obj = ExamConnect.find(@id)
+    @batch = Batch.find(@connect_exam_obj.batch_id)
+    get_tabulation(@id,@batch.id)
+    @report_data = []
+    if @student_response['status']['code'].to_i == 200
+      @report_data = @student_response['data']
+    end
+    @exam_comment = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id) 
+    @student_exam_comment = {}
+    
+    @exam_comment.each do |cmt|
+      @student_exam_comment[cmt.student_id.to_s] = cmt.comments
+    end
+    
+    
+  end   
+  
   def tabulation
     @id = params[:id]
     @connect_exam_obj = ExamConnect.find(@id)

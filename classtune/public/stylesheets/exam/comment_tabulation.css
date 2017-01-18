@@ -1,0 +1,134 @@
+
+
+.section2
+{
+    margin-top:120px;
+}
+.result_main_table
+{
+    margin-top: 40px;
+}
+h4{margin: 5px;}
+.current_batch
+{
+    margin-top: 10px;
+}
+
+
+
+/*MPSC COMBINE REPORT CARD STYLE*/
+.header_address
+{
+    margin-left: 220px;
+}
+
+
+
+.odd{
+    height:auto;
+    background: #fff;
+    font-size: 11px;
+
+}
+
+.even{
+
+    height:auto;
+    background: #fff;
+    font-size: 11px;
+
+
+}
+tr.even{
+    border: 1px solid #000000;
+}
+
+tr.odd{
+    border: 1px solid #000000;
+}
+
+.even td{
+
+    padding: 5px 5px 5px 8px;
+    border: 1px solid #000000;
+    border-top: 0px solid #fff;
+    text-align: center;
+
+}
+
+.odd td{
+    padding: 5px 5px 5px 8px;
+    border: 1px solid #000000;
+    border-top: 0px solid #fff;
+    text-align: center;
+
+}
+.table-header td{
+    padding: 5px 5px 5px 8px;
+    border: 1px solid #000000;
+    color: #000000;
+    background: #ffffff;
+    font-weight: bold;
+    text-align: center;
+    font-size: 11px;
+}
+
+table#pdf-table{
+    border-top: 1px solid #000000;
+    border-collapse:collapse
+}
+
+#pdf-header-south{
+    width:1000px;
+}
+
+.page-break4 td{
+    height: 30px;
+    border: 1px solid #fff;
+    border-top: 1px solid #ADACAB;
+    border-bottom: 1px solid #ADACAB;
+}
+.page-break1 td{
+    height: 150px;
+    border: 1px solid #fff;
+    border-top: 1px solid #ADACAB;
+    border-bottom: 1px solid #ADACAB;
+}
+.page-break3 td{
+    height: 30px;
+    border: 1px solid #fff;
+    border-top: 1px solid #ADACAB;
+    border-bottom: 1px solid #ADACAB;
+}
+.page-break2 td{
+    height: 77px;
+    border: 1px solid #fff;
+    border-top: 1px solid #ADACAB;
+    border-bottom: 1px solid #ADACAB;
+}
+.page-break5 td{
+    height: 56px;
+    border: 1px solid #fff;
+    border-top: 1px solid #ADACAB;
+    border-bottom: 1px solid #ADACAB;
+}
+.page-break6 td{
+    height: 46px;
+    border: 1px solid #fff;
+    border-top: 1px solid #ADACAB;
+    border-bottom: 1px solid #ADACAB;
+}
+
+.page-break td{
+    height: 80px;
+    border: 1px solid #fff;
+    border-top: 1px solid #ADACAB;
+    border-bottom: 1px solid #ADACAB;
+}
+.name-std
+{
+    white-space: nowrap;
+}
+
+
+

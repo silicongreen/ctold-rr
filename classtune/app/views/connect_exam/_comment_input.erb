@@ -1,0 +1,13 @@
+<tr>
+  <%
+  cmt = ""
+  
+  if !@student_exam_comment[@std_id_comment.to_s].blank?
+    cmt = @student_exam_comment[@std_id_comment.to_s]
+  end  
+  %>
+  <td colspan="100"><input type="text" placeholder="Enter Comment" class="comment_input_box_connect_exam" name="commentstd_<%= @std_id_comment %>" id="commentstd_<%= @std_id_comment %>" value="<%= cmt %>" style="width:100%; height:50px;" /></td>
+</tr>
+<tr style="border:none;">
+    <td colpsan="100" style="border:none;">&nbsp;</td>
+<tr>    

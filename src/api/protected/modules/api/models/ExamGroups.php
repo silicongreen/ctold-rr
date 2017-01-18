@@ -58,6 +58,9 @@ class ExamGroups extends CActiveRecord
                 'joinType' => 'LEFT JOIN',
                 'with' => array('Subjects'),
             ),
+            'GroupedExams' => array(self::HAS_MANY, 'GroupedExams', 'exam_group_id',
+                'joinType' => 'LEFT JOIN'
+            ),
             'Batches' => array(self::BELONGS_TO, 'Batches', 'batch_id',
                         'joinType' => 'LEFT JOIN',
                     ),
@@ -530,9 +533,12 @@ class ExamGroups extends CActiveRecord
                         )
 
                     )
+                ),
+                'GroupedExams' => array(
+                   'select' => 'GroupedExams.id' 
                 )
         );
-        $criteria->order = "Subjects.priority ASC";
+        $criteria->order = "GroupedExams.priority ASC,Subjects.priority ASC";
         $examresult_obj = $this->findAll($criteria);
         
         

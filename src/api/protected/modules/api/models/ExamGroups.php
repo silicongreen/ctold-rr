@@ -507,7 +507,7 @@ class ExamGroups extends CActiveRecord
     public function getExamGroupResultSubjectAllStudentContinues($exam_group_id,$students)
     {
         $criteria = new CDbCriteria();
-        $criteria->select = "t.name,t.id,t.sba,t.exam_category,t.quarter, CHARINDEX(CAST(t.id AS VARCHAR), '".implode(",",$exam_group_id)."') as s_order"; 
+        $criteria->select = "t.name,t.id,t.sba,t.exam_category,t.quarter, CHARINDEX(t.id,'".implode(",",$exam_group_id)."') as s_order"; 
         $criteria->addIncondition('t.id', $exam_group_id);
         //$criteria->compare('t.result_published', 1);
         $criteria->compare('Subjects.no_exams', false);
@@ -543,7 +543,7 @@ class ExamGroups extends CActiveRecord
         
         
         $criteria = new CDbCriteria();
-        $criteria->select = "t.name,t.id,t.sba,t.exam_category,t.quarter, CHARINDEX(CAST(t.id AS VARCHAR), '".implode(",",$exam_group_id)."') as s_order"; 
+        $criteria->select = "t.name,t.id,t.sba,t.exam_category,t.quarter, CHARINDEX(t.id,'".implode(",",$exam_group_id)."') as s_order"; 
         $criteria->addIncondition('t.id', $exam_group_id);
         //$criteria->compare('t.result_published', 1);
         $criteria->compare('Subjects.no_exams', false);

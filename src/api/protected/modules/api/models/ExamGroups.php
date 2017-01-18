@@ -557,9 +557,12 @@ class ExamGroups extends CActiveRecord
                         )
 
                     )
+                ),
+                'GroupedExams' => array(
+                   'select' => 'GroupedExams.id' 
                 )
         );
-        $criteria->order = "Subjects.priority ASC";
+        $criteria->order = "GroupedExams.priority ASC,Subjects.priority ASC";
         $all_exams_obj = $this->findAll($criteria);
         
         

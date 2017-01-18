@@ -532,7 +532,7 @@ class ExamGroups extends CActiveRecord
                     )
                 )
         );
-        $criteria->order = "Subjects.priority ASC";
+        $criteria->order = "CHARINDEX(CAST(t.id AS VARCHAR), '".implode(",",$exam_group_id)."'),Subjects.priority ASC";
         $examresult_obj = $this->findAll($criteria);
         
         

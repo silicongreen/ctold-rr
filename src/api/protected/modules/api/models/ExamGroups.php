@@ -507,7 +507,7 @@ class ExamGroups extends CActiveRecord
     public function getExamGroupResultSubjectAllStudentContinues($exam_group_id,$students)
     {
         $criteria = new CDbCriteria();
-        $criteria->select = "t.name,t.id,t.sba,t.exam_category,t.quarter, LOCATE(CAST(t.id AS VARCHAR), '".implode(",",$exam_group_id)."') as s_order"; 
+        $criteria->select = "t.name,t.id,t.sba,t.exam_category,t.quarter"; 
         $criteria->addIncondition('t.id', $exam_group_id);
         //$criteria->compare('t.result_published', 1);
         $criteria->compare('Subjects.no_exams', false);
@@ -538,12 +538,12 @@ class ExamGroups extends CActiveRecord
                    'select' => 'GroupedExams.id' 
                 )
         );
-        $criteria->order = "s_order ASC,Subjects.priority ASC";
+        $criteria->order = "FIELD(t.id,".implode(",",$exam_group_id)."),Subjects.priority ASC";
         $examresult_obj = $this->findAll($criteria);
         
         
         $criteria = new CDbCriteria();
-        $criteria->select = "t.name,t.id,t.sba,t.exam_category,t.quarter, LOCATE('CAST(t.id AS VARCHAR)', '".implode(",",$exam_group_id)."') as s_order"; 
+        $criteria->select = "t.name,t.id,t.sba,t.exam_category,t.quarter"; 
         $criteria->addIncondition('t.id', $exam_group_id);
         //$criteria->compare('t.result_published', 1);
         $criteria->compare('Subjects.no_exams', false);
@@ -562,7 +562,7 @@ class ExamGroups extends CActiveRecord
                    'select' => 'GroupedExams.id' 
                 )
         );
-        $criteria->order = "s_order ASC,Subjects.priority ASC";
+        $criteria->order = "FIELD(t.id,".implode(",",$exam_group_id)."),Subjects.priority ASC";
         $all_exams_obj = $this->findAll($criteria);
         
         

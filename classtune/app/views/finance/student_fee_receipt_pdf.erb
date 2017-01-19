@@ -30,7 +30,7 @@
        
             <center>
                 <div id="pdf-header-south" class="general-header">
-                  <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '12%' %></h4>
+                  <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '16%' %></h4>
                   <h2 align="center"><%=Configuration.get_config_value('InstitutionName'); %></h2>
                 </div>
             </center>

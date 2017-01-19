@@ -146,7 +146,7 @@ tr.odd{
 
 .even td{
 
-    padding: 12px 15px 12px 12px;
+    padding: 6px 6px 6px 6px;
     border: 1px solid #ADACAB;
     border-left: 0px solid #fff;
     border-top: 0px solid #fff;
@@ -154,7 +154,7 @@ tr.odd{
 }
 
 .odd td{
-    padding: 12px 15px 12px 12px;
+    padding: 6px 6px 6px 6px;
     border: 1px solid #ADACAB;
     border-left: 0px solid #fff;
     border-top: 0px solid #fff;
@@ -162,7 +162,7 @@ tr.odd{
 }
 
 .table-header td{
-    padding: 12px 15px 12px 12px;
+    padding: 6px 6px 6px 6px;
     border-top: 1px solid #ADACAB;
     border-right: 1px solid #ADACAB;
     border-left: 1px solid #ADACAB;

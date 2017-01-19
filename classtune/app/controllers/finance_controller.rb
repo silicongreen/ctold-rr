@@ -150,7 +150,7 @@ class FinanceController < ApplicationController
     end
   end
 
-  def income_create
+  def income_createstudent_fee_receipt_pdf
     @finance_transaction = FinanceTransaction.new()
     @categories = FinanceTransactionCategory.income_categories
     if @categories.empty?
@@ -1669,8 +1669,18 @@ class FinanceController < ApplicationController
       @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
     end
     @fine_amount=0 if @financefee.is_paid
-
-    render :pdf => 'student_fee_receipt_pdf'
+#    render :layout => false
+      render :pdf => 'student_fee_receipt_pdf',
+      :orientation => 'Landscape', :zoom => 1.00,
+      :margin => {    :top=> 10,
+      :bottom => 10,
+      :left=> 10,
+      :right => 10},
+      :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+      :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+    
+    
+  
 
     #        respond_to do |format|
     #            format.pdf { render :layout => false }

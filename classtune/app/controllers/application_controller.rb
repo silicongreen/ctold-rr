@@ -22,6 +22,7 @@ class ApplicationController < ActionController::Base
   helper_method :check_permission_link?
   helper_method :get_attendence_data_all
   helper_method :get_subscrived_link
+  helper_method :in_words
   helper_method :send_sms
   helper_method :sms_enable?
   helper_method :school_mock_test?
@@ -55,6 +56,31 @@ class ApplicationController < ActionController::Base
   before_filter :dev_mode
   include CustomInPlaceEditing
   
+  def in_words(int)
+    set1 = ["","one","two","three","four","five","six","seven",
+         "eight","nine","ten","eleven","twelve","thirteen",
+         "fourteen","fifteen","sixteen","seventeen","eighteen",
+         "nineteen"]
+
+    set2 = ["","","twenty","thirty","forty","fifty","sixty",
+         "seventy","eighty","ninety"]
+
+    thousands = (int/1000)
+    hundreds = ((int%1000) / 100)
+    tens = ((int % 100) / 10)
+    ones = int % 10
+    string = ""
+
+    string += set1[thousands] + " thousand " if thousands != 0 if thousands > 0
+    string += set1[hundreds] + " hundred" if hundreds != 0
+    string +=" and " if tens != 0 || ones != 0 
+    string = string + set1[tens*10+ones] if tens < 2
+    string += set2[tens]
+    string = string + " " + set1[ones] if ones != 0     
+    string << 'zero' if int == 0  
+    
+    return string+" Taka Only"
+  end
   
   def get_tabulation_connect_exam(connect_exam_id,batch_id)
     require 'net/http'
@@ -78,7 +104,7 @@ class ApplicationController < ActionController::Base
     all_schools = detention_config['numbers'].split(",")
     current_school = MultiSchool.current_school.id
     if all_schools.include?(current_school.to_s)
-        vreturn = true
+      vreturn = true
     end
     return vreturn
   end
@@ -102,8 +128,8 @@ class ApplicationController < ActionController::Base
     else
       all_types = type_config['default'].split(",") 
       all_types.each do |examtype|
-          type_array = examtype.split("_")
-          vreturn[type_array[0].to_s] = type_array[1].to_s
+        type_array = examtype.split("_")
+        vreturn[type_array[0].to_s] = type_array[1].to_s
       end
     end  
     return vreturn
@@ -128,8 +154,8 @@ class ApplicationController < ActionController::Base
     else
       all_types = type_config['default'].split(",") 
       all_types.each do |examtype|
-          type_array = examtype.split("_")
-          vreturn[type_array[0].to_s] = type_array[1].to_s
+        type_array = examtype.split("_")
+        vreturn[type_array[0].to_s] = type_array[1].to_s
       end
     end  
     return vreturn
@@ -180,7 +206,7 @@ class ApplicationController < ActionController::Base
     all_schools = detention_config['numbers'].split(",")
     current_school = MultiSchool.current_school.id
     if all_schools.include?(current_school.to_s)
-        vreturn = true
+      vreturn = true
     end
     return vreturn
   end
@@ -191,7 +217,7 @@ class ApplicationController < ActionController::Base
     all_schools = detention_config['numbers'].split(",")
     current_school = MultiSchool.current_school.id
     if all_schools.include?(current_school.to_s)
-        vreturn = true
+      vreturn = true
     end
     return vreturn
   end
@@ -202,7 +228,7 @@ class ApplicationController < ActionController::Base
     all_schools = sms_config['numbers'].split(",")
     current_school = MultiSchool.current_school.id
     if all_schools.include?(current_school.to_s)
-        vreturn = true
+      vreturn = true
     end
     return vreturn
   end
@@ -648,7 +674,7 @@ class ApplicationController < ActionController::Base
   
   
   #EDITED FOR MULTIPLE GUARDIAN
-   def protect_other_student_data
+  def protect_other_student_data
     if current_user.student? or current_user.parent?
       student = current_user.student_record if current_user.student?
       student = current_user.parent_record if current_user.parent?
@@ -673,19 +699,19 @@ class ApplicationController < ActionController::Base
     end
   end
 
-#  def protect_other_student_data
-#    if current_user.student? or current_user.parent?
-#      student = current_user.student_record if current_user.student?
-#      student = current_user.parent_record if current_user.parent?
-#      #      render :text =>student.id and return
-#      params[:id].nil?? student_id=session[:student_id]: student_id=params[:id]
-#      unless params[:id].to_i == student.id or params[:student].to_i == student.id or params[:student_id].to_i == student.id or student.siblings.select{|s| s.immediate_contact_id==current_user.guardian_entry.id}.collect(&:id).include?student_id.to_i
-#       
-#        flash[:notice] = "#{t('flash_msg5')}" + params.to_s + "  " + params[:id].to_s + "  " + student.id.to_s
-#        redirect_to :controller=>"user", :action=>"dashboard"
-#      end
-#    end
-#  end
+  #  def protect_other_student_data
+  #    if current_user.student? or current_user.parent?
+  #      student = current_user.student_record if current_user.student?
+  #      student = current_user.parent_record if current_user.parent?
+  #      #      render :text =>student.id and return
+  #      params[:id].nil?? student_id=session[:student_id]: student_id=params[:id]
+  #      unless params[:id].to_i == student.id or params[:student].to_i == student.id or params[:student_id].to_i == student.id or student.siblings.select{|s| s.immediate_contact_id==current_user.guardian_entry.id}.collect(&:id).include?student_id.to_i
+  #       
+  #        flash[:notice] = "#{t('flash_msg5')}" + params.to_s + "  " + params[:id].to_s + "  " + student.id.to_s
+  #        redirect_to :controller=>"user", :action=>"dashboard"
+  #      end
+  #    end
+  #  end
 
   def protect_user_data
     unless current_user.admin?
@@ -768,15 +794,15 @@ class ApplicationController < ActionController::Base
   end
   
   #EDITED FOR MULTIPLE GUARDIAN
-#  def protect_applied_leave_parent
-#    applied_leave = ApplyLeaveStudent.find(params[:id])
-#    applied_student = Student.find(applied_leave.student_id);
-#    guardian = Guardian.find(applied_student.immediate_contact_id)
-#    unless guardian.user_id == current_user.id
-#      flash[:notice]="#{t('flash_msg5')}"
-#      redirect_to :controller=>"user", :action=>"dashboard"
-#    end
-#  end
+  #  def protect_applied_leave_parent
+  #    applied_leave = ApplyLeaveStudent.find(params[:id])
+  #    applied_student = Student.find(applied_leave.student_id);
+  #    guardian = Guardian.find(applied_student.immediate_contact_id)
+  #    unless guardian.user_id == current_user.id
+  #      flash[:notice]="#{t('flash_msg5')}"
+  #      redirect_to :controller=>"user", :action=>"dashboard"
+  #    end
+  #  end
   
   def protect_applied_leave_parent
     applied_leave = ApplyLeaveStudent.find(params[:id])

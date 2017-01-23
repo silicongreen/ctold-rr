@@ -146,7 +146,7 @@ tr.odd{
 
 .even td{
 
-    padding: 6px 6px 6px 6px;
+    padding: 3px 3px 3px 3px;
     border: 1px solid #ADACAB;
     border-left: 0px solid #fff;
     border-top: 0px solid #fff;
@@ -154,7 +154,7 @@ tr.odd{
 }
 
 .odd td{
-    padding: 6px 6px 6px 6px;
+    padding: 3px 3px 3px 3px;
     border: 1px solid #ADACAB;
     border-left: 0px solid #fff;
     border-top: 0px solid #fff;
@@ -162,7 +162,7 @@ tr.odd{
 }
 
 .table-header td{
-    padding: 6px 6px 6px 6px;
+    padding: 3px 3px 3px 3px;
     border-top: 1px solid #ADACAB;
     border-right: 1px solid #ADACAB;
     border-left: 1px solid #ADACAB;
@@ -253,4 +253,17 @@ table.vat_area tr td.right
 table.vat_area tr td.left
 {
     text-align: left;
+}
+table.signature
+{
+    width: 100%;
+    margin-top:30px;
+}
+
+table.signature tr td
+{
+    border-top: 1px solid Black;
+    padding: 5px 10px;
+    width: 30%;
+    text-align: center;
 }

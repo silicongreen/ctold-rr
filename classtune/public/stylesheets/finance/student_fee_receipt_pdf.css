@@ -54,7 +54,7 @@ body
     width: 100%;
     margin: 0 auto;
     overflow: hidden;
-    font-size:9px;
+    font-size:8px;
     margin-top: -50px;
 }
 .copy
@@ -72,9 +72,9 @@ body
 #page-yield div.div-24
 {
     float:left;
-    width: 23%;
-    padding-right: 5px;
-    padding-left: 10px;
+    width: 24%;
+    padding-right: 3px;
+    padding-left: 5px;
     border-right: 1px dashed black;
     min-height: 680px
     
@@ -200,8 +200,57 @@ table#pdf-table{
 .col-b{
     float:right;
 }
+table.std_info
+{
+    margin-top: 7px;
+}
 
 table.std_info tr td
 {
-    padding: 4px;
+    padding: 2px;
+}
+
+
+#pdf-header-south
+{
+    padding: 0px;
+}
+#pdf-header-south h2, #pdf-header-south h3, #pdf-header-south h4, #pdf-header-south h5
+{
+    padding: 0px;
+    margin: 0px;
+    line-height: 12px;
+}
+table.vat_area tr td
+{
+    font-size: 8px;
+   
+}
+
+table.std_info
+{
+    width:100%;
+}
+table.std_info tr td.right
+{
+    
+    text-align: right;
+}
+table.std_info tr td.left
+{
+    text-align: left;
+}
+
+table.vat_area
+{
+    width:100%;
+}
+table.vat_area tr td.right
+{
+    
+    text-align: right;
+}
+table.vat_area tr td.left
+{
+    text-align: left;
 }

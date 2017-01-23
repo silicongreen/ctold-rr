@@ -2973,10 +2973,22 @@ authorization do
       :all,
       :subject_lessonplan,
       :view,
+      :comment_approved,
+      :add,
+      :delete,
+      :edit,
+      :update,
+      :lessonplan_by_subject,
       :show,
       :showall,
       :comment_view,
-      :download_attachment
+      :download_attachment,
+      :assign_to_class,
+      :categories,
+      :category_delete,
+      :category_edit,
+      :category_update,
+      :category_wise_lessonplan
     ]
     has_permission_on [:subject], :to => [:index,:list_subjects]
     has_permission_on [:timetable], :to => [:student_view,:update_timetable_view, :student_timetable_pdf]

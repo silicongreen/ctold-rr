@@ -1601,6 +1601,11 @@ class FinanceController < ApplicationController
         total_fees = params[:fine].to_f
       end
     end
+    vat = 8.5
+    
+    vat_amount = (total_fees*8.5)/100
+    total_fees = total_fees+vat_amount
+    
     unless params[:fees][:fees_paid].to_f <= 0
       unless params[:fees][:payment_mode].blank?
         unless Champs21Precision.set_and_modify_precision(params[:fees][:fees_paid]).to_f > Champs21Precision.set_and_modify_precision(total_fees).to_f
@@ -2552,10 +2557,31 @@ class FinanceController < ApplicationController
 
 
   end
+  
+  #other Fees
+  def other_fee_new
+    @other_fees = OtherFee.new(params[:other_fees])
+    if request.post? and @other_fees.save
+      flash[:notice] = "Succesfully Saved"
+      redirect_to  :action => 'other_fee'
+    end
+  end
+  def other_fees
+    @other_fees = OtherFee.paginate({:is_deleted=>0},:page => params[:page], :per_page => 10)
+  end
+  def delete_other_fee
+    @other_fee = OtherFee.find(params[:id])
+    @other_fee.update_attributes(:is_deleted=>true)
+    flash[:notice] = "Succesfully Removed"
+    redirect_to  :action => 'other_fee'
+  end
+  
   #fee Discount
   def fee_discounts
     @batches = Batch.active
   end
+  
+ 
 
   def fee_discount_new
     @batches = Batch.active

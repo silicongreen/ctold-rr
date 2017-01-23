@@ -265,6 +265,9 @@
                   {:controller => "finance", :action => "student_fee_receipt_pdf", :id => @student.id, :id2=>@date.id},:target => '_blank', :class=> 'user_button' unless @trans.nil? %>
                 <%= link_to "► #{t('print_receipt')}",
                   {:controller => "finance", :action => "student_fee_receipt_pdf", :id => @student.id, :id2=>@date.id,:batch_id=>@batch.id},:target => '_blank', :class=> 'user_button' %>
+                  
+                  <%= link_to "► Print ALL Receipt",
+                  {:controller => "finance", :action => "student_fee_receipt_all_pdf", :id=>@date.id,:batch_id=>@batch.id},:target => '_blank', :class=> 'user_button' %>
               </div>
             <% else %>
               <div class="pay_fees_buttons">

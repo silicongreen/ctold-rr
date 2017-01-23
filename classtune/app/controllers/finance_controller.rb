@@ -1649,6 +1649,25 @@ class FinanceController < ApplicationController
     end
 
   end
+  
+  def student_fee_receipt_all_pdf
+    @batch=Batch.find(params[:batch_id])
+    @students = @batch.students 
+    
+    @date = @fee_collection = FinanceFeeCollection.find(params[:id])
+    
+    
+#    render :layout => false
+      render :pdf => 'student_fee_receipt_all_pdf',
+      :orientation => 'Landscape', :zoom => 1.00,
+      :margin => {    :top=> 10,
+      :bottom => 10,
+      :left=> 10,
+      :right => 10},
+      :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+      :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+
+  end
 
   def student_fee_receipt_pdf
     @batch=Batch.find(params[:batch_id])

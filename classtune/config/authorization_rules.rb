@@ -2779,14 +2779,29 @@ authorization do
       :comment_view]  
   has_permission_on [:lessonplan],
       :to => [
-      :index,      
+      :index,
+      :classes_view,
+      :show_syllabus,
+      :add,
+      :new,
+      :add_comment,
       :all,
-      :subject_lessonplan,
+      :delete,
+      :delete_comment,
+      :comment_approved,
+      :edit,
+      :update,
+      :search_news_ajax,
       :view,
       :show,
       :showall,
       :comment_view,
-      :lessonplan_by_subject,
+      :categories,
+      :category_delete,
+      :category_edit,
+      :category_update,
+      :category_wise_lessonplan,
+      :assign_to_class,
       :download_attachment
     ]
   end
@@ -2969,26 +2984,31 @@ authorization do
       :showall]   
     has_permission_on [:lessonplan],
       :to => [
-      :index,      
-      :all,
-      :subject_lessonplan,
-      :view,
-      :comment_approved,
+      :index,
+      :classes_view,
+      :show_syllabus,
       :add,
+      :new,
+      :add_comment,
+      :all,
       :delete,
+      :delete_comment,
+      :comment_approved,
       :edit,
       :update,
-      :lessonplan_by_subject,
+      :search_news_ajax,
+      :view,
       :show,
       :showall,
       :comment_view,
-      :download_attachment,
-      :assign_to_class,
       :categories,
       :category_delete,
       :category_edit,
       :category_update,
-      :category_wise_lessonplan
+      :category_wise_lessonplan,
+      :assign_to_class,
+      :download_attachment
+      
     ]
     has_permission_on [:subject], :to => [:index,:list_subjects]
     has_permission_on [:timetable], :to => [:student_view,:update_timetable_view, :student_timetable_pdf]

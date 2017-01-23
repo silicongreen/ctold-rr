@@ -193,7 +193,7 @@
                     <td class="col-pdf"><%= "#{precision_label(balance)}" %></td>
                 </tr>
                 <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                    <% date_one = date_one+1.days %>
+                    <% date_one = date_two+1.days %>
                     <% date_two = date_one+1.months %>
                     <td colspan="2" class="col-8"><b>Payable Amount with fine 400 Tk+Vat( if payment date is from <b><%= date_one.to_s %></b> to <b><%= date_two.to_s %></b>  ) And permission of principle is needed</td>
                     <%

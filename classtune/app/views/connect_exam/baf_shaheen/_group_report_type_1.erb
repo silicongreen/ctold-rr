@@ -104,6 +104,40 @@
                       </tr> 
                     <% end %>  
                   <% end %>
+                      <%  
+                    
+                          group_exams = GroupedExam.find_all_by_connect_exam_id(@connect_exam_obj.id) 
+
+                          @all_subjects = []
+                          group_exams.each do |group_exam|
+                            allexams = Exam.find_all_by_exam_group_id(group_exam.exam_group_id);
+                            allexams.each do |exam|
+                              if !@all_subjects.include?(exam.subject.id)
+                                @all_subjects << exam.subject.id
+                              end
+                            end
+                          end 
+                      %>  
+                    <% unless @report_data['report']['no_exam_subject_resutl'].blank? %>
+                      <% @report_data['report']['no_exam_subject_resutl'].each do |report| %>
+
+                      <%  if @all_subjects.include?(report['id'].to_i) %>
+
+                          <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+
+                          <td class="col-pdf"><%= report['subject_name'] %></td>
+                          <% unless @report_data['report']['exams'].blank? %>  
+                              <% @report_data['report']['exams'].each do |report| %>
+                                  <td></td>
+                              <% end %>
+                           <% end %> 
+                          <td class="col-pdf"></td>
+                          <td class="col-pdf"><%= report['subject_comment'] %></td>
+                          <td class="col-pdf border-right-none"></td>
+                          </tr>
+                        <% end %>
+                      <% end %>
+                    <% end %>
                       <tr class="odd">
                           <td class="col-pdf"><b>Total Mark</b></td>
                           <% unless @report_data['report']['exams'].blank? %>  

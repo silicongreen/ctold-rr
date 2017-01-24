@@ -152,18 +152,19 @@
                         <td class="col-6" ><%= "#{precision_label(@fine_amount.to_f)}" %></td>
                     </tr>
                   <%end%>
-                  
-                    <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                        <%k+=1%>
-                        <td class="col-8" colspan="2" ><%= t('payment_done') %></td>
-                        <td class="col-6" ><%= precision_label(paid) %></td>
-                    </tr>
+                    <% if paid.to_i>0 %>
+                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                          <%k+=1%>
+                          <td class="col-8" colspan="2" ><%= t('payment_done') %></td>
+                          <td class="col-6" ><%= precision_label(paid) %></td>
+                      </tr>
+                    <% end %>
                   
                 <% end %>
                 <%balance=@financefee.balance.to_f+@fine.to_f+@fine_amount.to_f%>
                 <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                     <%k+=1%>
-                    <td colspan="2" class="col-8"><b><%= "Total (Without Vat)" %></b></td>
+                    <td colspan="2" class="col-8"><b><%= "Total Payable Amount (Without Vat)" %></b></td>
                     <td class="col-pdf"><%= "#{precision_label(balance)}" %></td>
                 </tr>
                 <% @fee_particulars.each do |fee| %>

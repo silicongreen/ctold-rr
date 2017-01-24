@@ -27,12 +27,14 @@
 <div id="page-yield" class="available_sections">
     <% copy.each do |cp| %>
     <div class="div-24" >
-           <table class="vat_area">
-               <tr>
-                   <td class="left">Area Code: 180303</td>
-                   <td class="right">Vat Reg No : 18131064795</td>
-               </tr>
-           </table>
+            <% if MultiSchool.current_school.id == 2 %>
+               <table class="vat_area">
+                   <tr>
+                       <td class="left">Area Code: 180303</td>
+                       <td class="right">Vat Reg No : 18131064795</td>
+                   </tr>
+               </table>
+            <% end %>
        
             <center>
                 <div id="pdf-header-south" class="general-header">
@@ -76,13 +78,15 @@
                 <% i = 0  %>
                 <% c= 'even' %>
                 <% @fee_particulars.each do |fee| %>
-                  <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                      
-                      <%k+=1%>
-                      <td class="name-td" colspan="2"><%= fee.name %></td>
-                      <td class="mark-td"><% if fee.amount.to_i > 0 %><%= "#{precision_label(fee.amount.to_s)}" %><% else %>-<% end %></td>
-                  </tr>
-                  <% total_fees += fee.amount %>
+                   <%  if fee.name.index("Vat").blank? %>
+                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+
+                          <%k+=1%>
+                          <td class="name-td" colspan="2"><%= fee.name %></td>
+                          <td class="mark-td"><% if fee.amount.to_i > 0 %><%= "#{precision_label(fee.amount.to_s)}" %><% else %>-<% end %></td>
+                      </tr>
+                      <% total_fees += fee.amount %>
+                  <% end %>
                 <% end %>
 
                 <% unless @total_discount == 0 %>
@@ -148,13 +152,13 @@
                         <td class="col-6" ><%= "#{precision_label(@fine_amount.to_f)}" %></td>
                     </tr>
                   <%end%>
-                  <% if MultiSchool.current_school.id != 2 %>
+                  
                     <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                         <%k+=1%>
                         <td class="col-8" colspan="2" ><%= t('payment_done') %></td>
                         <td class="col-6" ><%= precision_label(paid) %></td>
                     </tr>
-                  <% end %>
+                  
                 <% end %>
                 <%balance=@financefee.balance.to_f+@fine.to_f+@fine_amount.to_f%>
                 <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
@@ -162,14 +166,16 @@
                     <td colspan="2" class="col-8"><b><%= "Total (Without Vat)" %></b></td>
                     <td class="col-pdf"><%= "#{precision_label(balance)}" %></td>
                 </tr>
-                <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                    <%k+=1%>
-                    <td colspan="2" class="col-8"><b><%= "Vat (7.5%)" %></b></td>
-                    <% vat_amount = (balance*7.5)/100 %>
-                    <% vat_amount = vat_amount.ceil %>
-                    <td class="col-pdf"><%= "#{precision_label(vat_amount)}" %></td>
-                </tr>
-                <% balance = balance+vat_amount %>
+                <% @fee_particulars.each do |fee| %>
+                    <%  if !fee.name.index("Vat").blank? %>
+                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                        <td class="name-td" colspan="2"><b><%= fee.name %></b></td>
+                        <td class="mark-td"><% if fee.amount.to_i > 0 %><%= "#{precision_label(fee.amount.to_s)}" %><% else %>-<% end %></td>
+                      </tr>
+                      <% balance = balance+fee.amount %>
+                    <% end %>
+                <% end %>
+                
                 <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                     <%k+=1%>
                     <td colspan="2" class="col-8"><b>Total Payable Amount Including Vat <br/>(if paid within <%= @date.due_date %> )</b></td>
@@ -178,6 +184,8 @@
                 <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                     <td colspan="3">Amount in Word :<b><%= in_words(balance.to_i) %></b></td>
                 </tr>
+                
+                <% if MultiSchool.current_school.id == 2 %>
                 <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                     <% date_one = @date.due_date.to_date+1.days %>
                     <% date_two = date_one+1.months %>
@@ -219,6 +227,8 @@
                     
                     <td class="col-pdf"><%= "#{precision_label(balance)}" %></td>
                 </tr>
+                
+                <% end %>
                 <% if ((k+1)%1)==0 %>
               </table>
               </center>

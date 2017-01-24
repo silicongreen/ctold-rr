@@ -198,11 +198,11 @@
                       fine_vat = (200*7.5)/100
                       fine_vat = fine_vat.ceil
                       total_fine = 200+fine_vat.to_i
-                      balance = balance+total_fine
+                      balance1 = balance+total_fine
                     
                     %>
                     
-                    <td class="col-pdf"><%= "#{precision_label(balance)}" %></td>
+                    <td class="col-pdf"><%= "#{precision_label(balance1)}" %></td>
                 </tr>
                 <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                     <% date_one = date_two+1.days %>
@@ -212,11 +212,11 @@
                       fine_vat = (400*7.5)/100
                       fine_vat = fine_vat.ceil
                       total_fine = 400+fine_vat.to_i
-                      balance = balance+total_fine
+                      balance2 = balance+total_fine
                     
                     %>
                     
-                    <td class="col-pdf"><%= "#{precision_label(balance)}" %></td>
+                    <td class="col-pdf"><%= "#{precision_label(balance2)}" %></td>
                 </tr>
                 <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                     
@@ -225,11 +225,11 @@
                       fine_vat = (600*7.5)/100
                       fine_vat = fine_vat.ceil
                       total_fine = 1000+fine_vat.to_i
-                      balance = balance+total_fine
+                      balance3 = balance+total_fine
                     
                     %>
                     
-                    <td class="col-pdf"><%= "#{precision_label(balance)}" %></td>
+                    <td class="col-pdf"><%= "#{precision_label(balance3)}" %></td>
                 </tr>
                 
                 <% end %>

@@ -13,7 +13,7 @@
               <td>Student's ID </td><td colspan="3" class="font-dark">:&nbsp;&nbsp;&nbsp;<%= @student.admission_no %></td>
           </tr>
           <tr>
-              <td>Student's Name </td><td colspan="3" class="font-light">:&nbsp;&nbsp;&nbsp;<%= @student.full_name %></td>
+              <td>Student's Name </td><td colspan="3" class="font-light">:&nbsp;&nbsp;&nbsp;<%= @student.full_name.upcase %></td>
           </tr>
           <tr>
               <td>Date of Birth </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= I18n.l(@student.date_of_birth,:format=>:normal) unless @student.date_of_birth.nil? %></td>
@@ -73,12 +73,12 @@
                   <% total_mark_of_allexam = 0 %>
                  
                   <tr class="table-header">
-                      <td class="col-pdf border-left-none no-warp"><%= "Subject" %></b></td>
+                      <td class="col-pdf border-left-none no-warp"><%= "SUBJECT" %></b></td>
                       <% unless @report_data['report']['exams'].blank? %>  
                         <% @report_data['report']['exams'].each do |report| %>
                         
                           <td class="col-pdf">
-                              <%= report['exam_name'] %>
+                              <%= report['exam_name'].upcase %>
                               <hr/>
                               Score Out of <% unless @exam_marks[report['exam_id'].to_s].blank?  %><% total_mark_of_allexam = total_mark_of_allexam+@exam_marks[report['exam_id'].to_s].to_i  %><%= @exam_marks[report['exam_id'].to_s] %><% end %>
                               
@@ -87,12 +87,12 @@
                       <% end %>
 
                       <td class="col-pdf">
-                          Total Marks
+                          TOTAL MARKS
                           <hr/>
                           Score Out of <%= total_mark_of_allexam %>
                       </td>
-                      <td class="col-pdf">Grade</td>
-                      <td class="col-pdf border-right-none">Highest Marks</td>
+                      <td class="col-pdf">GRADE</td>
+                      <td class="col-pdf border-right-none">HIGHEST MARKS</td>
                       
                   </tr>
 

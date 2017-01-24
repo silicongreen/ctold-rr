@@ -21,7 +21,7 @@ end
         <tr class="even">
             <td>Result</td><td><%= result %></td>
         </tr> 
-        <% if !all_comments_array[1].nil? and !show %>
+        <% if !all_comments_array[1].nil? and show==false %>
             <tr class="even">
                 <td>Attendance</td><td><%= promotion_status %></td>
             </tr>
@@ -103,6 +103,11 @@ end
         <tr class="even">
             <td>Result</td><td><input type="text" value="<%=  result %>" size="60" style="height:30px;" id="result" name="result"></td>
         </tr>
+        <% if show == false %>
+        <tr class="even">
+            <td>Attendance</td><td><input type="text" value="<%=  promotion_status %>" size="60" style="height:30px;" id="promotion_status" name="promotion_status"></td>
+        </tr>
+        <% end %>
         <% if show == true %>
         <tr class="even">
             <td>Promotion Status</td><td><input type="text" value="<%=  promotion_status %>" size="60" style="height:30px;" id="promotion_status" name="promotion_status"></td>

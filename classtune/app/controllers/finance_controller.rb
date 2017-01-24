@@ -1589,11 +1589,7 @@ class FinanceController < ApplicationController
       @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
       @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
     end
-
-
-
     total_fees =@financefee.balance.to_f+params[:special_fine].to_f
-
     unless params[:fine].nil?
       unless @financefee.is_paid == true
         total_fees += params[:fine].to_f
@@ -1601,10 +1597,7 @@ class FinanceController < ApplicationController
         total_fees = params[:fine].to_f
       end
     end
-    vat = 8.5
     
-    vat_amount = (total_fees*8.5)/100
-    total_fees = total_fees+vat_amount
     
     unless params[:fees][:fees_paid].to_f <= 0
       unless params[:fees][:payment_mode].blank?

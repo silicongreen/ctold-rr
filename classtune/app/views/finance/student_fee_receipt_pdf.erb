@@ -162,7 +162,6 @@
                             <td class="name-td" colspan="2"><b><%= fee.name %></b></td>
                             <td class="mark-td"><% if fee.amount.to_i > 0 %><%= "#{precision_label(fee.amount.to_s)}" %><% else %>-<% end %></td>
                           </tr>
-                          <% balance = balance+fee.amount %>
                         <% end %>
                     <% end %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">

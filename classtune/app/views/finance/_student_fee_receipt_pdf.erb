@@ -77,6 +77,7 @@
                 <%k=7%>
                 <% i = 0  %>
                 <% c= 'even' %>
+                <% vat_amount = 0 %>
                 <% @fee_particulars.each do |fee| %>
                    <%  if fee.name.index("Vat").blank? %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
@@ -86,7 +87,9 @@
                           <td class="mark-td"><% if fee.amount.to_i > 0 %><%= "#{precision_label(fee.amount.to_s)}" %><% else %>-<% end %></td>
                       </tr>
                       <% total_fees += fee.amount %>
-                  <% end %>
+                  <% else %>
+                      <% vat_amount = vat_amount+fee.amount %>
+                  <% end %>    
                 <% end %>
 
                 <% unless @total_discount == 0 %>
@@ -161,7 +164,7 @@
                     <% end %>
                   
                 <% end %>
-                <%balance=@financefee.balance.to_f+@fine.to_f+@fine_amount.to_f%>
+                <%balance=@financefee.balance.to_f+@fine.to_f+@fine_amount.to_f-vat_amount%>
                 <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                     <%k+=1%>
                     <td colspan="2" class="col-8"><b><%= "Total Payable Amount (Without Vat)" %></b></td>

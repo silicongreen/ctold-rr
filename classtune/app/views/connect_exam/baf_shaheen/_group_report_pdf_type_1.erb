@@ -230,6 +230,10 @@
                     if !all_comments.blank?
                       all_comments_array = all_comments.split("|")
                       result = all_comments_array[0]
+                      promotion_status = 0
+                      if !all_comments_array[1].nil?
+                        promotion_status = all_comments_array[1]
+                      end
                     end
                   end
                 %>
@@ -253,7 +257,7 @@
                               No. of Working Days
                           </td> 
                           <td class="col-pdf align-center" width="33%">
-                              <%= @report_data['total'] %>
+                              95
                           </td>
                           <td class="col-pdf no-border" width="33%" >
                               
@@ -264,7 +268,8 @@
                               Attendance
                           </td> 
                           <td class="col-pdf align-center" width="33%">
-                              <%= @report_data['present'] %>
+                              <%#= @report_data['present'] %>
+                              <%= promotion_status %>
                           </td>
                           <td class="col-pdf no-border" width="33%">
                               

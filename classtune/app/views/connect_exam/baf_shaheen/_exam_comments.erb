@@ -20,7 +20,12 @@ end
         %>
         <tr class="even">
             <td>Result</td><td><%= result %></td>
-        </tr>  
+        </tr> 
+        <% if !all_comments_array[1].nil? and !show %>
+            <tr class="even">
+                <td>Attendance</td><td><%= promotion_status %></td>
+            </tr>
+        <% end %>
         <%
         if !all_comments_array[1].nil? and show
           promotion_status = all_comments_array[1]

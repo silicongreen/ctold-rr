@@ -682,6 +682,10 @@ sfx  .table-header td{
 {
    margin: 20px 0px 10px 10px; 
 }
+.baf_shaheen #grouped_exam_report h4.result-in-details
+{
+   margin: 5px 0px 10px 10px; 
+}
 .baf_shaheen h4
 {
     border-bottom: 2px solid black;

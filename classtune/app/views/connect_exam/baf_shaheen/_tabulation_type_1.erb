@@ -44,7 +44,6 @@
       <% c = 'even' %>
       <table id="pdf-table" width="100%" cellspacing="0">
         <tr class="table-header">
-          <td class="col-pdf">Sl.</td>
           <td class="col-pdf">Roll</td>
           <td class="col-pdf">Students Name</td>
           <% @report_data['report']['subjects'].each do |sub| %>
@@ -70,7 +69,6 @@
                   <td colspan="100">&nbsp;</td>
               </tr>  
               <tr class="table-header">
-                <td class="col-pdf">Sl.</td>
                 <td class="col-pdf">Roll</td>
                 <td class="col-pdf">Students Name</td>
                 <% @report_data['report']['subjects'].each do |sub| %>
@@ -87,11 +85,10 @@
                   <td colspan="100">&nbsp;</td>
               </tr> 
               <tr class="table-header">
-                <td class="col-pdf">Sl.</td>
                 <td class="col-pdf">Roll</td>
                 <td class="col-pdf">Students Name</td>
                 <% @report_data['report']['subjects'].each do |sub| %>
-                  <td><%=  sub['code'] %><hr/>Grade</td>
+                  <td><%=  sub['code'] %></td>
                 <% end %>
 
                 <td>Total</td>
@@ -102,7 +99,6 @@
           
           
           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-            <td class="col-pdf"><%= j %></td>
             <td class="name"><%= std['class_roll_no'] %></td>
             <td class="name-std"><%= std['first_name']+" "+std['last_name'] %></td>
             <% total_mark = 0 %>

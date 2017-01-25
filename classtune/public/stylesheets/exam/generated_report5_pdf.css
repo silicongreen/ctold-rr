@@ -648,6 +648,11 @@ sfx  .table-header td{
     font-size:22px;
 }
 
+.baf_shaheen tr.odd td.align-left-baf, .baf_shaheen tr.even td.align-left-baf
+{
+    text-align: left;
+}
+
 
 .baf_shaheen tr.odd td
 {

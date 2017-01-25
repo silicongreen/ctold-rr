@@ -106,7 +106,7 @@
                           <% total_mark = 0 %>
                           <% full_mark = 0 %>
 
-                          <td class="col-pdf border-left-none no-warp"><%= subjects['name'] %></td>
+                          <td class="col-pdf border-left-none no-warp align-left-baf"><%= subjects['name'].upcase %></td>
                           <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>
                               <td class="col-pdf no-warp">
@@ -147,11 +147,12 @@
                             main_mark = (total_mark.to_f/full_mark.to_f)*100 
                             else
                             main_mark = 0
-                            end  
+                            end 
+                          total_mark = total_mark.round()
                         %>
 
                           <% if full_mark.to_f > 0 %>
-                            <td class="col-pdf"><%= sprintf( "%0.02f", total_mark) %></td>
+                            <td class="col-pdf"><%= total_mark %></td>
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>
                               <td class="col-pdf"><%= grade.name %></td>
@@ -243,54 +244,55 @@
               <h4 class="h4-evaluation"><b>Evaluation</b></h4>
               <table id="pdf-table" class="evaluation" width="99.8%" >
                       <tr class="odd">
-                          <td class="col-pdf border-left-none" width="33%">
+                          <td class="col-pdf border-left-none" width="50%">
                               Result
                           </td> 
-                          <td class="col-pdf align-center" width="33%">
+                          <td class="col-pdf align-center" width="50%">
                               <b> <%= result %> </b>
-                          </td> 
-                          <td class="col-pdf no-border"  width="33%">
-                              
                           </td>
                       </tr>
                       
                       <tr class="odd">
-                          <td class="col-pdf border-left-none" width="33%">
+                          <td class="col-pdf border-left-none" width="50%">
                               No. of Working Days
                           </td> 
-                          <td class="col-pdf align-center" width="33%">
+                          <td class="col-pdf align-center" width="50%">
                               94
-                          </td>
-                          <td class="col-pdf no-border" width="33%" >
-                              
                           </td>
                       </tr>
                       <tr class="odd">
-                          <td class="col-pdf border-left-none" width="33%">
+                          <td class="col-pdf border-left-none" width="50%">
                               Attendance
                           </td> 
-                          <td class="col-pdf align-center" width="33%">
+                          <td class="col-pdf align-center" width="50%">
                               <%#= @report_data['present'] %>
                               <%= promotion_status %>
                           </td>
-                          <td class="col-pdf no-border" width="33%">
-                              
-                          </td>
-                      </tr>
-                      <tr class="odd">
-                          <td class="col-pdf border-left-none" width="33%">
-                              Class Teacher's Signature
-                          </td> 
-                          <td class="col-pdf" width="33%">
-                              <br/><br/>
-                          </td>
-                          <td class="col-pdf border-right-none align-center" width="33%">
-                              Principal's Signature
-                          </td> 
                       </tr>
                      
                       
               </table>
+              <h5 class="h4-evaluation"><b>&nbsp;</b></h5>
+              <table id="pdf-table" class="evaluation table_99"  width="99.8%" >
+
+                      <tr class="even">
+                          <td class="col-pdf " width="33%">
+                              Class Teacher's Signature
+                          </td> 
+                          <td class="col-pdf" width="67%">
+                              <br/><br/><br/><br/>
+                          </td>
+                      </tr>
+                      <tr class="even">
+                          <td class="col-pdf " width="33%">
+                              Principal's Signature
+                          </td> 
+                          <td class="col-pdf" width="67%">
+                              <br/><br/><br/><br/>
+                          </td>
+                      </tr>
+
+              </table> 
 
           </div>
       </div>

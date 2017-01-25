@@ -17,7 +17,7 @@
           </tr>
           <tr>
               <td>Date of Birth </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= I18n.l(@student.date_of_birth,:format=>:normal) unless @student.date_of_birth.nil? %></td>
-              <td>Gender </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= t("#{@student.gender_as_text.downcase}") unless @student.gender_as_text.nil? %></td>
+              <td>Gender </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= t("#{@student.gender_as_text.downcase}") unless @student.gender.blank? %></td>
           </tr> 
            <tr>
               <td>Academic Session </td><td class="font-light">:&nbsp;&nbsp;&nbsp;2015-2016</td>

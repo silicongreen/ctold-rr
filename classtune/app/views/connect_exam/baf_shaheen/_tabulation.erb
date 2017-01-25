@@ -126,7 +126,9 @@
                          
                         
                       %>
-                      <%= rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_s+"&nbsp;|&nbsp;"+subject_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_s %><hr/>
+                      <%= rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f %>
+                      &nbsp;|&nbsp;
+                      <%= rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f %><hr/>
                     <% end %>
                    <% end %> 
                       

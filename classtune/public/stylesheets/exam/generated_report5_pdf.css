@@ -703,19 +703,19 @@ sfx  .table-header td{
     clear:both;
     font-size: 23px;
     width: 75%;
-    margin: 10px 10px;
+    margin: 5px 5px;
     
     
 }
 .baf_shaheen div.student_information table
 {
-    margin: 20px 0px;
+    margin: 10px 0px;
     float:left;
     clear:both;
 }
 .baf_shaheen div.student_information table tr td
 {
-    padding: 9px 9px 9px 5px;  
+    padding: 7px 7px 7px 3px;  
 }
 .baf_shaheen div.student_information table tr td.font-dark
 {

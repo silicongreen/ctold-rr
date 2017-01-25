@@ -115,6 +115,7 @@
                   <% subject_full_mark = 0 %>
                   <% subject_obtain_mark = 0 %>
                   
+                  <% %>
                   <td>
                   <% @report_data['report']['exams'].each do |rs| %>
                     <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? %>
@@ -128,7 +129,10 @@
                       %>
                       <%= rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f %>
                       &nbsp;|&nbsp;
-                      <%= rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f %><hr/>
+                      <%= rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f %>
+                      <% unless rs.equal? @report_data['report']['exams'].last %>
+                      <hr/>
+                      <% end %>
                     <% end %>
                    <% end %> 
                       
@@ -154,10 +158,10 @@
                        <% end %>
                     <%#*</td>%>  
              <% end %> 
-             <% @report_data['report']['no_exam_subject_resutl'].each do |sub| %>
-                    <td>
-                    <% if !sub['subject_comment'][std['id']].nil? && !sub['subject_comment'][std['id']].blank? %>
-                      <%
+             <%# @report_data['report']['no_exam_subject_resutl'].each do |sub| %>
+                    <%#*<td>%>
+                    <%# if !sub['subject_comment'][std['id']].nil? && !sub['subject_comment'][std['id']].blank? %>
+                      <%#
                         if !sub['subject_comment'][std['id']].blank?
                           if grades.include?(sub['subject_comment'][std['id']].to_s)
                             grade_count[sub['subject_comment'][std['id']]] = grade_count[sub['subject_comment'][std['id']]]+1
@@ -166,14 +170,14 @@
                             grade_count[sub['subject_comment'][std['id']].to_s] = 1
                           end 
                         end 
-                       %>
-                      <%=  sub['subject_comment'][std['id']] %>
-                    <% else %>
-                        &nbsp;
-                    <% end %> 
-                    </td>     
+                       %>#
+                      <%#=  sub['subject_comment'][std['id']] %>
+                    <%# else %>
+                        <%#*&nbsp;%>
+                    <%# end %> 
+                    <%#*</td>%>     
                     
-             <% end %>       
+             <%# end %>       
             
               <td>
                    <%= sprintf( "%0.02f", total_mark) %>    

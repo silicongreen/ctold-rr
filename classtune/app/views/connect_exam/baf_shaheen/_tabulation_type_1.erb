@@ -138,7 +138,7 @@
                    <% main_mark = (subject_obtain_mark.to_f/subject_full_mark.to_f)*100 %>  
                 
                        <% total_mark = total_mark+subject_obtain_mark.to_f %>
-                       <hr/>T:<%= sprintf( "%0.02f", subject_obtain_mark) %>
+                       <hr/>T:&nbsp;<%= sprintf( "%0.02f", subject_obtain_mark) %>
                      
                        <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                        <% if !grade.blank? and !grade.name.blank? %>

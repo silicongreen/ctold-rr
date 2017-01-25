@@ -18,7 +18,9 @@
 #under the License. -%>
 
 <% if MultiSchool.current_school.id == 2 %>
-  <%= render  :partial=>"/connect_exam/south_point/tabulation" %>  
+  <%= render  :partial=>"/connect_exam/south_point/tabulation" %> 
+<% elsif MultiSchool.current_school.id == 323  %>
+    <%= render  :partial=>"/connect_exam/baf_shaheen/tabulation" %>
 <% else %>
   <%= render  :partial=>"/connect_exam/tabulation" %>
 <% end %>

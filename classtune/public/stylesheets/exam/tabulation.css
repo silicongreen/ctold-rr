@@ -133,6 +133,12 @@ table#pdf-table{
     border-top: 1px solid #ADACAB;
     border-bottom: 1px solid #ADACAB;
 }
+.page-break2-bf td{
+    height: 74px;
+    border: 1px solid #fff;
+    border-top: 1px solid #ADACAB;
+    border-bottom: 1px solid #ADACAB;
+}
 .name-std
 {
     white-space: nowrap;

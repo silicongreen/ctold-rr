@@ -92,9 +92,6 @@
                 <td class="col-pdf">Students Name</td>
                 <% @report_data['report']['subjects'].each do |sub| %>
                   <td><%=  sub['code'] %><hr/>Grade</td>
-                <% end %> 
-                <% @report_data['report']['no_exam_subject_resutl'].each do |sub| %>
-                    <td><%=  sub['code'] %></td>
                 <% end %>
 
                 <td>Total</td>
@@ -141,8 +138,7 @@
                    <% main_mark = (subject_obtain_mark.to_f/subject_full_mark.to_f)*100 %>  
                 
                        <% total_mark = total_mark+subject_obtain_mark.to_f %>
-                       T&nbsp;:&nbsp;<hr/>
-                       <%= sprintf( "%0.02f", subject_obtain_mark) %>
+                       <hr/>T&nbsp;:&nbsp; <%= sprintf( "%0.02f", subject_obtain_mark) %>
                      
                        <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                        <% if !grade.blank? and !grade.name.blank? %>

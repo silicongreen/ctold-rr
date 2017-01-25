@@ -125,9 +125,9 @@
                         
                       %>
                       <% unless rs.equal? @report_data['report']['exams'].last %>
-                        A&nbsp;:&nbsp;
+                        A:
                       <% else %>
-                        H&nbsp;:&nbsp;
+                        H:
                       <% end %>  
                       <%= rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f %>
                       <% unless rs.equal? @report_data['report']['exams'].last %>
@@ -138,7 +138,7 @@
                    <% main_mark = (subject_obtain_mark.to_f/subject_full_mark.to_f)*100 %>  
                 
                        <% total_mark = total_mark+subject_obtain_mark.to_f %>
-                       <hr/>T&nbsp;:&nbsp; <%= sprintf( "%0.02f", subject_obtain_mark) %>
+                       <hr/>T:<%= sprintf( "%0.02f", subject_obtain_mark) %>
                      
                        <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                        <% if !grade.blank? and !grade.name.blank? %>

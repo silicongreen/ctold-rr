@@ -156,6 +156,7 @@
                     </td>  
              <% end %> 
              <% @report_data['report']['no_exam_subject_resutl'].each do |sub| %>
+                    <td>
                     <% if !sub['subject_comment'][std['id']].nil? && !sub['subject_comment'][std['id']].blank? %>
                       <%
                         if !sub['subject_comment'][std['id']].blank?
@@ -171,6 +172,7 @@
                     <% else %>
                         &nbsp;
                     <% end %> 
+                    </td>     
                     
              <% end %>       
             

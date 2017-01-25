@@ -73,7 +73,7 @@
                   <% total_mark_of_allexam = 0 %>
                  
                   <tr class="table-header">
-                      <td class="col-pdf border-left-none no-warp"><%= "SUBJECT" %></b></td>
+                      <td class="col-pdf border-left-none no-warp  align-left-baf"><%= "SUBJECT" %></b></td>
                       <% unless @report_data['report']['exams'].blank? %>  
                         <% @report_data['report']['exams'].each do |report| %>
                         
@@ -196,7 +196,7 @@
 
                           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
 
-                          <td class="col-pdf border-left-none"><%= report['subject_name'].upcase %></td>
+                          <td class="col-pdf border-left-none  align-left-baf"><%= report['subject_name'].upcase %></td>
                           <% unless @report_data['report']['exams'].blank? %>  
                               <% @report_data['report']['exams'].each do |report1| %>
                                   <td></td>
@@ -276,18 +276,18 @@
               <table id="pdf-table" class="evaluation table_99"  width="99.8%" >
 
                       <tr class="even">
-                          <td class="col-pdf  border-left-none" width="33%">
+                          <td class="col-pdf  border-left-none border-bottom-none" width="33%">
                               Class Teacher's Signature
                           </td> 
-                          <td class="col-pdf  border-right-none" width="67%">
+                          <td class="col-pdf  border-right-none border-bottom-none" width="67%">
                               <br/><br/>
                           </td>
                       </tr>
                       <tr class="even">
-                          <td class="col-pdf  border-left-none" width="33%">
+                          <td class="col-pdf  border-left-none border-bottom-none" width="33%">
                               Principal's Signature
                           </td> 
-                          <td class="col-pdf  border-right-none" width="67%">
+                          <td class="col-pdf  border-right-none border-bottom-none" width="67%">
                               <br/><br/>
                           </td>
                       </tr>

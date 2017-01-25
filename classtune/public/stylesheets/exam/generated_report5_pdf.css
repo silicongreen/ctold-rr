@@ -828,6 +828,12 @@ div.baf_shaheen
 .mirpur_english table td.border-right-none{
    border-right: none !important;  
 }
+.mirpur_english table td.border-bottom-none{
+   border-bottom: none !important;  
+}
+.mirpur_english table td.border-top-none{
+   border-top: none !important;  
+}
  .mirpur_english table td.no-border
  {
     border: none !important;  

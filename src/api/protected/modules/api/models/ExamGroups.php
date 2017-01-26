@@ -422,8 +422,17 @@ class ExamGroups extends CActiveRecord
                                     {
                                        $result[$value['Subjects']->id][$score->student_id]['total_mark'] = $score->marks; 
                                     }
-
-                                    $max_mark[$value['Subjects']->id] = $result[$value['Subjects']->id][$score->student_id]['total_mark'];
+                                    if(isset($max_mark[$value['Subjects']->id]))
+                                    {
+                                       if($result[$value['Subjects']->id][$score->student_id]['total_mark']>$max_mark[$value['Subjects']->id]) 
+                                       {
+                                           $max_mark[$value['Subjects']->id] = $result[$value['Subjects']->id][$score->student_id]['total_mark'];
+                                       }
+                                    }
+                                    else
+                                    {
+                                        $max_mark[$value['Subjects']->id] = $result[$value['Subjects']->id][$score->student_id]['total_mark'];
+                                    }  
                                        
 
                                 }

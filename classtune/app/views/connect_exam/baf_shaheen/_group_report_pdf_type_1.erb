@@ -45,6 +45,7 @@
       <%#= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%B-%Y"):@connect_exam_obj.published_date.strftime("%B-%Y") %>
       </div>
       <div class="grade_information">
+        <%= render  :partial=>"/connect_exam/baf_shaheen/gradding_level" %>
         <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
         <% if @grading_levels.blank? %>
           <% @grading_levels = GradingLevel.default %>

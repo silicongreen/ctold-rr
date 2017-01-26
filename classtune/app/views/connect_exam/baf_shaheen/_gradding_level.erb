@@ -1,0 +1,34 @@
+<% @grading_levels = GradingLevel.for_batch(@batch.id) %>
+    <% if @grading_levels.blank? %>
+      <% @grading_levels = GradingLevel.default %>
+    <% end %>
+    <%  unless @grading_levels.empty? %>
+      <p>Grade Boundaries</p>
+      <table id="pdf-table" class="grade_info_table" width="100%" cellspacing="0">
+          <tr class="even">
+              <td>Marks</td>
+              <td>Grade</td>  
+          </tr> 
+
+          <% @grading_levels.each_with_index do |grade,index| %>
+             <tr class="odd">
+            <td>
+                <% if grade.max_score.nil? %> 
+                  <% if grade.min_score.to_i == 0 %>
+                     > <%= '%i%' % prev_score %>
+                  <% else %>
+                      <%= '%i%' % grade.min_score %> 
+                  <% end %>
+                <% else %> 
+                  <%= grade.min_score.to_s + " - " + grade.max_score.to_s %>
+                <% end %>
+                prev_score = grade.min_score
+            </td>
+            <td><%= grade.name %></td>
+              </tr> 
+          <% end %> 
+
+      </table>
+
+    <% end %> 
+

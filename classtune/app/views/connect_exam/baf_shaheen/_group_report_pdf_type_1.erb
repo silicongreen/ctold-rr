@@ -30,9 +30,10 @@
           </tr>
           <tr>
               <td>Name of Examination </td><td class="font-dark">:&nbsp;&nbsp;&nbsp;<%= @connect_exam_obj.name %></td>
-              <td>Exam Held </td><td class="font-dark">:&nbsp;&nbsp;&nbsp;<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%B-%Y"):@connect_exam_obj.published_date.strftime("%B-%Y") %></td>
+              <td>Exam Held </td><td class="font-dark">:&nbsp;&nbsp;&nbsp;December-2016</td>
           </tr>
       </table>
+      <%#= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%B-%Y"):@connect_exam_obj.published_date.strftime("%B-%Y") %>
       </div>
       <div class="grade_information">
         <% @grading_levels = GradingLevel.for_batch(@batch.id) %>

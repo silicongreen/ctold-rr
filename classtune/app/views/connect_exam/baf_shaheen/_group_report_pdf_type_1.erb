@@ -46,34 +46,7 @@
       </div>
       <div class="grade_information">
         <%= render  :partial=>"/connect_exam/baf_shaheen/gradding_level" %>
-        <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
-        <% if @grading_levels.blank? %>
-          <% @grading_levels = GradingLevel.default %>
-        <% end %>
-        <%  unless @grading_levels.empty? %>
-          <p>Grade Boundaries</p>
-          <table id="pdf-table" class="grade_info_table" width="100%" cellspacing="0">
-              <tr class="even">
-                  <td>Marks</td>
-                  <td>Grade</td>  
-              </tr> 
-             
-              <% @grading_levels.each_with_index do |grade,index| %>
-                 <tr class="odd">
-                <td>
-                    <% if grade.max_score.nil? %>  
-                      <%= '%i%' % grade.min_score %>
-                    <% else %> 
-                      <%= grade.min_score.to_s + " - " + grade.max_score.to_s %>
-                    <% end %>
-                </td>
-                <td><%= grade.name %></td>
-                  </tr> 
-              <% end %> 
-              
-          </table>
-
-        <% end %> 
+        
       </div>
       <div class ="current_batch" style="margin-left:0px;">
           <div id="grouped_exam_report">

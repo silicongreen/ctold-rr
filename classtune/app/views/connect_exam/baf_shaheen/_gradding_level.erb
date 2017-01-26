@@ -15,7 +15,7 @@
             <td>
                 <% if grade.max_score.nil? %> 
                   <% if grade.min_score.to_i == 0 %>
-                    <%= '%i%' % prev_score %>&nbsp;<
+                    <&nbsp;<%= '%i%' % prev_score %>
                   <% else %>
                       <%= '%i%' % grade.min_score %> 
                   <% end %>

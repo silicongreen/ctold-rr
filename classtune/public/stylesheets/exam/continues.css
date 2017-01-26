@@ -602,7 +602,7 @@ sfx  .table-header td{
 ///baf shaheen
 .baf_shaheen table td
 {
-    font-size:22px;
+    font-size:26px;
     padding: 8px 8px 8px 11px;   
 }
 .baf_shaheen table tr td.t-left
@@ -623,7 +623,7 @@ sfx  .table-header td{
  {
      text-align: left;
      padding: 4px 2px 5px 9px !important; 
-     font-size: 18px;
+     font-size: 21px;
  }
  .baf_shaheen td.align-center
  {
@@ -645,6 +645,12 @@ sfx  .table-header td{
     background: #ffffff;
     font-weight: bold;
     text-align: center;
+    font-size:21px;
+}
+
+.baf_shaheen tr.odd td.align-left-baf, .baf_shaheen tr.even td.align-left-baf
+{
+    text-align: left;
 }
 
 
@@ -652,11 +658,13 @@ sfx  .table-header td{
 {
     padding: 2px 2px 10px 9px;  
     border: 1px solid #000000;
+    font-size:21px;
 }
 .baf_shaheen tr.even td
 {
     padding: 2px 2px 10px 9px;
     border: 1px solid #000000;
+    font-size:21px;
 }
 
 .baf_shaheen table#pdf-table{
@@ -672,7 +680,11 @@ sfx  .table-header td{
 }
 .baf_shaheen h4.h4-evaluation
 {
-   margin: 40px 0px 15px 10px; 
+   margin: 20px 0px 10px 10px; 
+}
+.baf_shaheen #grouped_exam_report h4.result-in-details
+{
+   margin: 5px 0px 10px 10px; 
 }
 .baf_shaheen h4
 {
@@ -691,19 +703,19 @@ sfx  .table-header td{
     clear:both;
     font-size: 23px;
     width: 75%;
-    margin: 10px 10px;
+    margin: 5px 5px;
     
     
 }
 .baf_shaheen div.student_information table
 {
-    margin: 20px 0px;
+    margin: 10px 0px;
     float:left;
     clear:both;
 }
 .baf_shaheen div.student_information table tr td
 {
-    padding: 9px 9px 9px 5px;  
+    padding: 7px 7px 7px 3px;  
 }
 .baf_shaheen div.student_information table tr td.font-dark
 {
@@ -797,6 +809,9 @@ div.baf_shaheen
 
 
 
+
+
+
 ///baf shaheen
 .mirpur_english table td
 {
@@ -812,6 +827,16 @@ div.baf_shaheen
 } 
 .mirpur_english table td.border-right-none{
    border-right: none !important;  
+}
+.mirpur_english table td.border-bottom-none{
+   border-bottom: none !important;  
+}
+.mirpur_english table td.border-top-none{
+   border-top: none !important;  
+}
+.border-bottom-none
+{
+    border-bottom: none !important; 
 }
  .mirpur_english table td.no-border
  {
@@ -955,6 +980,10 @@ div.mirpur_english
     float:left;
     clear:both;
 }
+
+
+
+
 
 
 .page-break { display:block; clear:both; page-break-after:always; }

@@ -13,7 +13,7 @@
                 <td>Student's Name </td><td colspan="4" class="font-light">:&nbsp;&nbsp;&nbsp;<%= @student.full_name.upcase %></td>
             </tr>
             <tr>
-                <td>Date of Birth </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= I18n.l(@student.date_of_birth,:format=>:normal) unless @student.date_of_birth.nil? %></td>
+                <td>Date of Birth </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= I18n.l(@student.date_of_birth,:format=>:short) unless @student.date_of_birth.nil? %></td>
                 <td>&nbsp;&nbsp;</td>
                 <td>Gender </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= t("#{@student.gender_as_text.downcase}") %></td>
             </tr> 
@@ -36,7 +36,7 @@
             <tr>
                 <td>Name of Examination </td><td class="font-dark">:&nbsp;&nbsp;&nbsp;<%= @exam_group.name %></td>
                 <td>&nbsp;&nbsp;</td>
-                <td>Exam Held </td><td class="font-dark">:&nbsp;&nbsp;&nbsp;<%= @exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%B-%Y"):@exam_group.exam_date.strftime("%B-%Y") %></td>
+                <td>Exam Held </td><td class="font-dark">:&nbsp;&nbsp;&nbsp;<%= @exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%b-%Y"):@exam_group.exam_date.strftime("%b-%Y") %></td>
             </tr>
         </table>
     </div>
@@ -205,7 +205,7 @@
                       Class Teacher's Signature
                   </td> 
                   <td class="col-pdf" width="67%">
-                      <br/><br/><br/><br/>
+                      <br/><br/>
                   </td>
               </tr>
               <tr class="even">
@@ -213,7 +213,7 @@
                       Principal's Signature
                   </td> 
                   <td class="col-pdf" width="67%">
-                      <br/><br/><br/><br/>
+                      <br/><br/>
                   </td>
               </tr>
 

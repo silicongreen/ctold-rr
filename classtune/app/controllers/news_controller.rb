@@ -196,12 +196,7 @@ class NewsController < ApplicationController
     @news = News.find params[:id]
     filename = @news.attachment_file_name
     unless @news.nil?
-      if @news.download_allowed_for(current_user)
         send_file  @news.attachment.path , :type=>@news.attachment.content_type, :filename => filename
-      else
-        flash[:notice] = "#{t('you_are_not_allowed_to_download_that_file')}"
-        redirect_to :controller=>:news
-      end
     else
       flash[:notice]=t('flash_msg4')
       redirect_to :controller=>:user ,:action=>:dashboard

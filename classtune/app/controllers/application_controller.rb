@@ -421,18 +421,20 @@ class ApplicationController < ActionController::Base
       menu_links = MenuLink.find(:first, :conditions => ["target_controller = ? AND target_action = ?",controller_name, action_name], :select => "id,link_type")
       
       has_permission = true
-      if menu_links.link_type == 'user_menu'
-        menu_id = menu_links.id
-        
-        menu_links = MenuLink.find(:first, :conditions => ["target_controller = ? AND target_action = ?",controller_name, action_name], :select => "id")
-        menu_id = menu_links.id
-    
-        school_menu_links = SchoolMenuLink.find(:all, :conditions => ["school_id = ? and menu_link_id = ?",MultiSchool.current_school.id, menu_id], :select => "menu_link_id")
-      
-        if school_menu_links.nil? or school_menu_links.blank?
-          has_permission = false
-        end
-      end  
+      unless menu_links.blank?
+        if menu_links.link_type == 'user_menu'
+          menu_id = menu_links.id
+
+          menu_links = MenuLink.find(:first, :conditions => ["target_controller = ? AND target_action = ?",controller_name, action_name], :select => "id")
+          menu_id = menu_links.id
+
+          school_menu_links = SchoolMenuLink.find(:all, :conditions => ["school_id = ? and menu_link_id = ?",MultiSchool.current_school.id, menu_id], :select => "menu_link_id")
+
+          if school_menu_links.nil? or school_menu_links.blank?
+            has_permission = false
+          end
+        end  
+      end
       has_permission
     }
     

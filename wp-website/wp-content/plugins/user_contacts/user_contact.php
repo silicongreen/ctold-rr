@@ -166,7 +166,7 @@ if (!function_exists('lol_email')) {
         $header[] = "From: {$from_name}<{$from_mail}>";
         /* Set message content type HTML */
         $header[] = "Content-type:text/html; charset=iso-8859-1";
-        $header[] = "Content-Transfer-Encoding: 7bit";
+        $header[] = "Content-Transfer-Encoding: 8bit";
         
         //if (wp_mail($to, $subject, $message, implode("\r\n", $header)))
         if (wp_mail($to, $subject, $message, implode("\r\n", $header)))
@@ -183,7 +183,7 @@ if (!function_exists('lol_autoreply_email')) {
         $header[] = "From: {$from_name}<{$from_mail}>";
         /* Set message content type HTML */
         $header[] = "Content-type:text/html; charset=iso-8859-1";
-        $header[] = "Content-Transfer-Encoding: 7bit";
+        $header[] = "Content-Transfer-Encoding: 8bit";
         //if (wp_mail($to, $subject, $message, implode("\r\n", $header)))
         
         if (wp_mail($to, $subject, $message, implode("\r\n", $header)))

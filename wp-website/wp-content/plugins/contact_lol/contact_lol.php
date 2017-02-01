@@ -86,7 +86,7 @@ if (!function_exists('lol_send_mail')) {
 				} else {
 					echo "1";
 				}
-				return;
+				die();
 			}
 			die();
 		}

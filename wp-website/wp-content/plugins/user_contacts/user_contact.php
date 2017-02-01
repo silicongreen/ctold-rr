@@ -90,12 +90,12 @@ if (!function_exists('send_mail_classtune')) {
                         echo 'Message sent!';
                 }
             } else {
-                echo "20";die();
+                echo "20";exit;
             }
         } else {
-            echo "1";die();
+            echo "1";exit;
         }
-        die();
+        exit;
     }
 }
 if (!function_exists('lol_email')) {

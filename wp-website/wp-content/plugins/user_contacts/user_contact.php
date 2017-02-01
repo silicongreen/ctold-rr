@@ -37,8 +37,28 @@ wp_enqueue_script('ajax-script', plugin_dir_url(__FILE__) . 'js/user_contact.js'
 if (!function_exists('send_mail_classtune2')) {
 function send_mail_classtune2()
 {
-    echo "BALLLLLLL";exit;
-}
+    global $phpmailer;
+    $phpmailer->isSMTP();
+    //$phpmailer->Host = 'smtp.example.com';
+    //    $phpmailer->SMTPAuth = true; // Force it to use Username and Password to authenticate
+    $phpmailer->Port = 25;
+    //    $phpmailer->Username = 'yourusername';
+    //    $phpmailer->Password = 'yourpassword';
+
+    // Additional settings…
+    //$phpmailer->SMTPSecure = "tls"; // Choose SSL or TLS, if necessary for your server
+    $phpmailer->setFrom( "fromemail@bla.com", "From Name" );
+    $phpmailer->addAddress( "youremail@bla.com", "Your name" );
+    $phpmailer->Subject    = "Testing PHPMailer";           
+    $phpmailer->Body     = "Hurray! \n\n Great.";
+    if( !$phpmailer->send() ) {
+        echo "Mailer Error: " . $phpmailer->ErrorInfo;
+    } else {
+        echo "Message sent!";
+    }                       
+
+} 
+
     
 }
 if (!function_exists('send_mail_classtune')) {

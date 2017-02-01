@@ -43,7 +43,7 @@ function send_mail_classtune2()
 }
 if (!function_exists('send_mail_classtune')) {
     function send_mail_classtune() {
-        check_ajax_referer("login_security","login_security_field");
+        //check_ajax_referer("login_security","login_security_field");
         if (isset($_POST['name']) AND isset($_POST['email']) AND isset($_POST['subject']) AND isset($_POST['massage'])) {
             $to = 'rlikhon@gmail.com';
             $name = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
@@ -63,7 +63,7 @@ if (!function_exists('send_mail_classtune')) {
             $message .= "Contact Number: " . $phone . "<br/>";
             $message .= "E-mail: " . $email . "<br/>";
             $message .= "Comment: " . $message_content . "<br/><br /><br />";
-
+            echo "OOOOOOOOOOOO";
             $sent = send_email($to, $email, $name, $subject, $message);
             if ($sent) {
 
@@ -95,12 +95,12 @@ if (!function_exists('send_mail_classtune')) {
                         echo 'Message sent!';
                 }
             } else {
-                echo "20";exit;
+                echo "20";die();exit;
             }
         } else {
-            echo "1";exit;
+            echo "1";die();exit;
         }
-        exit;
+        die();exit;
     }
 }
 if (!function_exists('lol_email')) {

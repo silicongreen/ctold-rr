@@ -174,7 +174,7 @@ jQuery(document).ready(function () {
                                type : 'post',
                                url : "/wp-admin/admin-ajax.php",                               
                                data : {
-                                       action :     'wp_ajax_send_mail_classtune2',
+                                       action :     'send_mail_classtune2',
                                        name:        jQuery("#contact_classtune #name").val(), 
                                        email:       jQuery("#contact_classtune #email").val(),
                                        phone:       jQuery("#contact_classtune #phone").val(),			

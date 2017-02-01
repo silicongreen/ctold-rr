@@ -76,7 +76,7 @@ if (!function_exists('send_mail_classtune2')) {
 
                 $auto_message .= "Regards,<br/>";
                 $auto_message .= "Customer Service Team<br/>";
-                $auto_message .= "<img src='http://www.classtune.com/images/logo/classtune.png' width='20%'>";
+                $auto_message .= "<img src='http://www.classtune.com/images/logo/classtune.png' width='120'>";
 
                 $sent2 = lol_autoreply_email($email, $to, $auto_name, $auto_subject, $auto_message);
                 if ($sent2)

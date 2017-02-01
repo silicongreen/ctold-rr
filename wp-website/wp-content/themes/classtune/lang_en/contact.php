@@ -171,7 +171,7 @@ jQuery(document).ready(function () {
                        jQuery("#contact_classtune span.legend").html("<div class='alert alert-info'><strong>Sending......</strong></div>");
 
                        jQuery.ajax({
-                               type : 'POST',
+                               type : 'post',
                                url : "/wp-admin/admin-ajax.php",                               
                                data : {
                                        action :     'wp_ajax_send_mail_classtune2',

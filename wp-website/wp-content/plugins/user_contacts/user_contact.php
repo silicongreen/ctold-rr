@@ -37,8 +37,11 @@ wp_enqueue_script('ajax-script', plugin_dir_url(__FILE__) . 'js/user_contact.js'
 if (!function_exists('send_mail_classtune2')) {
 function send_mail_classtune2()
 {
-    $var = "this is a test";
-    wp_send_json($var);
+    echo "<script>";
+    echo "alert(123456);";
+    echo "</script>";
+    //$var = "this is a test";
+    //wp_send_json($var);
 
     die();               
 

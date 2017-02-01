@@ -13,8 +13,8 @@ add_action('admin_menu', 'contact_support_user');
 add_action('wp_ajax_nopriv_login_user_classtune', 'login_user_classtune');
 add_action('wp_ajax_login_user_classtune', 'login_user_classtune');
 
-add_action('wp_ajax_nopriv_send_mail_classtune', 'send_mail_classtune');
-add_action('wp_ajax_send_mail_classtune', 'send_mail_classtune');
+add_action('wp_ajax_nopriv_send_mail_classtune2', 'send_mail_classtune2');
+add_action('wp_ajax_send_mail_classtune2', 'send_mail_classtune2');
 
 /*if (!function_exists("rsvp_video_background_frontend_script")) {
 
@@ -34,10 +34,69 @@ add_action('wp_enqueue_scripts', 'rsvp_video_background_frontend_script');*/
 //wp_enqueue_script('ajax-script', plugin_dir_url(__FILE__) . 'js/user_contact.js');  
 // wp_localize_script( 'ajax-script', 'contact_lol', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
 
+if (!function_exists('send_mail_classtune2')) {
+    function send_mail_classtune2()
+    {
+        if (isset($_POST['name']) AND isset($_POST['email']) AND isset($_POST['subject']) AND isset($_POST['massage'])) {
+            $to = 'rlikhon@gmail.com';
+            $name = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
+            $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+            $phone = filter_var($_POST['phone'], FILTER_SANITIZE_EMAIL);
+            $user_type = filter_var($_POST['user_type'], FILTER_SANITIZE_EMAIL);
+            $school_name = filter_var($_POST['school_name'], FILTER_SANITIZE_EMAIL);
+            $subject = filter_var($_POST['subject'], FILTER_SANITIZE_STRING);
+            $message_content = filter_var($_POST['massage'], FILTER_SANITIZE_STRING);
+
+            $subject = $subject. "(Classtune contact)";
+
+            $message = "<b>Subject: " . $subject . "</b><br/>";
+            $message .= "Name: " . $name . "<br/>";
+            $message .= "User Type: " . $user_type . "<br/>";
+            $message .= "School Name: " . $school_name . "<br/>";
+            $message .= "Contact Number: " . $phone . "<br/>";
+            $message .= "E-mail: " . $email . "<br/>";
+            $message .= "Comment: " . $message_content . "<br/><br /><br />";
+            echo "OOOOOOOOOOOO";
+            $sent = send_email($to, $email, $name, $subject, $message);
+            if ($sent) {
+
+                $auto_name = "classtune.com";
+                $auto_subject = "Greetings from Classtune team";
+                $auto_message = "Dear " . $name . ",<br /><br />";
+                $auto_message .= "Greetings from Classtune team." . "<br /><br />";
+                $auto_message .= "Thank you very much for contacting with us. Our team will communicate with you.  <br/><br />";
+                $auto_message .= "Your Contact Details: <br/><br />";
+                $auto_message .= "Name: " . $name . "<br/>";
+                $auto_message .= "User Type: " . $user_type . "<br/>";
+                $auto_message .= "School Name: " . $school_name . "<br/>";
+                $auto_message .= "Contact Number: " . $phone . "<br/>";
+                $auto_message .= "E-mail: " . $email . "<br/>";
+                $auto_message .= "Comment: " . $message_content . "<br/><br /><br />";
 
 
-    
+                $auto_message .= "Regards,<br/>";
+                $auto_message .= "Customer Service Team<br/>";
+                $auto_message .= "<img src='http://www.classtune.dev/images/logo/classtune.png'>";
 
+                $sent2 = autoreply_email($email, $to, $auto_name, $auto_subject, $auto_message);
+                if ($sent2)
+                {
+                        echo 'Message sent! Our team will communicate with you.';
+                }
+                else
+                {
+                        echo 'Message sent!';
+                }
+            } else {
+                echo "20";die();exit;
+            }
+        } else {
+            echo "1";die();exit;
+        }
+        die();exit;
+
+    }     
+}
 if (!function_exists('send_mail_classtune')) {
     function send_mail_classtune() {
         //check_ajax_referer("login_security","login_security_field");

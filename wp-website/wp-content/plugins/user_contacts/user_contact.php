@@ -38,7 +38,7 @@ if (!function_exists('send_mail_classtune2')) {
 function send_mail_classtune2()
 {
     global $phpmailer;
-    $phpmailer->isSMTP();
+    
     //$phpmailer->Host = 'smtp.example.com';
     //    $phpmailer->SMTPAuth = true; // Force it to use Username and Password to authenticate
     $phpmailer->Port = 25;

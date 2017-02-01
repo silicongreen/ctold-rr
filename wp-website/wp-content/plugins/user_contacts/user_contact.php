@@ -37,11 +37,25 @@ add_action('wp_enqueue_scripts', 'rsvp_video_background_frontend_script');*/
 if (!function_exists('send_mail_classtune2')) {
 function send_mail_classtune2()
 {
-    echo "<script>";
-    echo "alert(123456);";
-    echo "</script>";
-    //$var = "this is a test";
-    //wp_send_json($var);
+    global $phpmailer;
+    $phpmailer->isSMTP();
+    //$phpmailer->Host = 'smtp.example.com';
+    //    $phpmailer->SMTPAuth = true; // Force it to use Username and Password to authenticate
+    $phpmailer->Port = 25;
+    //    $phpmailer->Username = 'yourusername';
+    //    $phpmailer->Password = 'yourpassword';
+
+    // Additional settings…
+    //$phpmailer->SMTPSecure = "tls"; // Choose SSL or TLS, if necessary for your server
+    $phpmailer->setFrom( "rezoanul.arefin@teamworkbd.com", "Likhon" );
+    $phpmailer->addAddress( "rlikhon@gmail.com", "Rezoan" );
+    $phpmailer->Subject    = "Testing PHPMailer";           
+    $phpmailer->Body     = "Hurray! \n\n Great.";
+    if( !$phpmailer->send() ) {
+        echo "Mailer Error: " . $phpmailer->ErrorInfo;
+    } else {
+        echo "Message sent!";
+    }          
 
     die();               
 

@@ -59,7 +59,7 @@ if (!function_exists('send_mail_classtune')) {
             $message .= "E-mail: " . $email . "<br/>";
             $message .= "Comment: " . $message_content . "<br/><br /><br />";
 
-            $sent = $this->send_email($to, $email, $name, $subject, $message);
+            $sent = send_email($to, $email, $name, $subject, $message);
             if ($sent) {
 
                 $auto_name = "classtune.com";
@@ -80,7 +80,7 @@ if (!function_exists('send_mail_classtune')) {
                 $auto_message .= "Customer Service Team<br/>";
                 $auto_message .= "<img src='http://www.classtune.dev/images/logo/classtune.png'>";
 
-                $sent2 = $this->autoreply_email($email, $to, $auto_name, $auto_subject, $auto_message);
+                $sent2 = autoreply_email($email, $to, $auto_name, $auto_subject, $auto_message);
                 if ($sent2)
                 {
                         echo 'Message sent! Our team will communicate with you.';
@@ -90,36 +90,45 @@ if (!function_exists('send_mail_classtune')) {
                         echo 'Message sent!';
                 }
             } else {
-                echo "20";
+                echo "20";die();
             }
         } else {
-            echo "1";
+            echo "1";die();
         }
         die();
     }
 }
-if (!function_exists('send_email')) {
-    function send_email($to, $from_mail, $from_name, $subject, $message) {
+if (!function_exists('lol_email')) {
+	function lol_email($to, $from_mail, $from_name, $subject, $message) {
         $header = array();
         $header[] = "MIME-Version: 1.0";
         $header[] = "From: {$from_name}<{$from_mail}>";
         /* Set message content type HTML */
         $header[] = "Content-type:text/html; charset=iso-8859-1";
         $header[] = "Content-Transfer-Encoding: 7bit";
-        if (mail($to, $subject, $message, implode("\r\n", $header)))
+        
+        //if (wp_mail($to, $subject, $message, implode("\r\n", $header)))
+        if (wp_mail($to, $subject, $message))
+        {
             return true;
+        }
+            
     }
 }
-if (!function_exists('autoreply_email')) {
-    function autoreply_email($to, $from_mail, $from_name, $subject, $message) {
+if (!function_exists('lol_autoreply_email')) {
+	function lol_autoreply_email($to, $from_mail, $from_name, $subject, $message) {
         $header = array();
         $header[] = "MIME-Version: 1.0";
         $header[] = "From: {$from_name}<{$from_mail}>";
         /* Set message content type HTML */
         $header[] = "Content-type:text/html; charset=iso-8859-1";
         $header[] = "Content-Transfer-Encoding: 7bit";
-        if (mail($to, $subject, $message, implode("\r\n", $header)))
+        //if (wp_mail($to, $subject, $message, implode("\r\n", $header)))
+        
+        if (wp_mail($to, $subject, $message))
+        {
             return true;
+        }
     }
 }
 if (!function_exists('contact_support_user')) {

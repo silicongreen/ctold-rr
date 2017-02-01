@@ -113,7 +113,7 @@ jQuery(document).ready(function () {
            if (jQuery("#contact_classtune #name").val() == "")
            {
 
-               jQuery("#contact_classtune span.legend").html("<div class='alert alert-danger'><strong>Name LOL</strong> can't be empty</div>");
+               jQuery("#contact_classtune span.legend").html("<div class='alert alert-danger'><strong>Name</strong> can't be empty</div>");
                jQuery("#contact_classtune span.legend .error").show("slow");
            }
            else if (jQuery("#contact_classtune #email").val() == "")
@@ -188,7 +188,7 @@ jQuery(document).ready(function () {
                                        console.log(data);
                                        if(data =="0")
                                        {
-                                               jQuery("#contact_classtune span.legend").html("<div class='alert alert-danger'><strong>MassageW</strong> can't sent at the moment</div>");
+                                               jQuery("#contact_classtune span.legend").html("<div class='alert alert-danger'><strong>Massage</strong> can't sent at the moment</div>");
                                        }
                                        else if(data =="1")
                                        {

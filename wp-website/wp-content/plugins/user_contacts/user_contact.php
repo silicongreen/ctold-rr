@@ -119,7 +119,7 @@ if (!function_exists('send_mail_classtune')) {
             $message .= "Contact Number: " . $phone . "<br/>";
             $message .= "E-mail: " . $email . "<br/>";
             $message .= "Comment: " . $message_content . "<br/><br /><br />";
-            echo "OOOOOOOOOOOO";
+            
             $sent = lol_email($to, $email, $name, $subject, $message);
             if ($sent) {
 
@@ -151,7 +151,7 @@ if (!function_exists('send_mail_classtune')) {
                         echo 'Message sent!';
                 }
             } else {
-                echo "20";die();exit;
+                echo "0";die();exit;
             }
         } else {
             echo "1";die();exit;
@@ -169,7 +169,7 @@ if (!function_exists('lol_email')) {
         $header[] = "Content-Transfer-Encoding: 7bit";
         
         //if (wp_mail($to, $subject, $message, implode("\r\n", $header)))
-        if (wp_mail($to, $subject, $message))
+        if (wp_mail($to, $subject, $message, implode("\r\n", $header)))
         {
             return true;
         }
@@ -186,7 +186,7 @@ if (!function_exists('lol_autoreply_email')) {
         $header[] = "Content-Transfer-Encoding: 7bit";
         //if (wp_mail($to, $subject, $message, implode("\r\n", $header)))
         
-        if (wp_mail($to, $subject, $message))
+        if (wp_mail($to, $subject, $message, implode("\r\n", $header)))
         {
             return true;
         }

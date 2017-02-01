@@ -76,7 +76,7 @@ if (!function_exists('send_mail_classtune2')) {
 
                 $auto_message .= "Regards,<br/>";
                 $auto_message .= "Customer Service Team<br/>";
-                //$auto_message .= "<img src='http://www.classtune.dev/images/logo/classtune.png'>";
+                $auto_message .= "<img src='http://www.classtune.com/images/logo/classtune.png'>";
 
                 $sent2 = lol_autoreply_email($email, $to, $auto_name, $auto_subject, $auto_message);
                 if ($sent2)
@@ -180,7 +180,7 @@ if (!function_exists('lol_autoreply_email')) {
 	function lol_autoreply_email($to, $from_mail, $from_name, $subject, $message) {
         $header = array();
         $header[] = "MIME-Version: 1.0";
-        $header[] = "From: {$from_name}<{$from_mail}>";
+        $header[] = "From: {ClassTune}<no-reply@classtune.com>";
         /* Set message content type HTML */
         $header[] = "Content-type:text/html; charset=utf-8";
         $header[] = "Content-Transfer-Encoding: 7bit";

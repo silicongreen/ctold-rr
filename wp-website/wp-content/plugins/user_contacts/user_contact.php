@@ -163,7 +163,7 @@ if (!function_exists('lol_email')) {
 	function lol_email($to, $from_mail, $from_name, $subject, $message) {
         $header = array();
         $header[] = "MIME-Version: 1.0";
-        $header[] = "From: {$from_name}<{$from_mail}>";
+        $header[] = "From: ".$from_name." <". $from_mail .">";
         /* Set message content type HTML */
         $header[] = "Content-type:text/html; charset=utf-8";
         $header[] = "Content-Transfer-Encoding: 7bit";
@@ -180,7 +180,7 @@ if (!function_exists('lol_autoreply_email')) {
 	function lol_autoreply_email($to, $from_mail, $from_name, $subject, $message) {
         $header = array();
         $header[] = "MIME-Version: 1.0";
-        $header[] = "From: {ClassTune}<no-reply@classtune.com>";
+        $header[] = "From: ClassTune <no-reply@classtune.com>";
         /* Set message content type HTML */
         $header[] = "Content-type:text/html; charset=utf-8";
         $header[] = "Content-Transfer-Encoding: 7bit";

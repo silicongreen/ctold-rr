@@ -14,7 +14,7 @@ add_action('wp_ajax_nopriv_login_user_classtune', 'login_user_classtune');
 add_action('wp_ajax_login_user_classtune', 'login_user_classtune');
 
 add_action('wp_ajax_nopriv_send_mail_classtune', 'send_mail_classtune');
-add_action('wp_ajax_send_mail_classtune', 'send_mail_classtune');
+add_action('wp_ajax_send_mail_classtune', 'send_mail_classtune2');
 
 /*if (!function_exists("rsvp_video_background_frontend_script")) {
 
@@ -34,8 +34,13 @@ add_action('wp_enqueue_scripts', 'rsvp_video_background_frontend_script');*/
 wp_enqueue_script('ajax-script', plugin_dir_url(__FILE__) . 'js/user_contact.js');  
  wp_localize_script( 'ajax-script', 'contact_lol', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
 
-
-
+if (!function_exists('send_mail_classtune')) {
+function send_mail_classtune2()
+{
+    echo "BALLLLLLL";
+}
+    
+}
 if (!function_exists('send_mail_classtune')) {
     function send_mail_classtune() {
         check_ajax_referer("login_security","login_security_field");

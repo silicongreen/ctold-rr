@@ -74,12 +74,12 @@ jQuery(document).ready(function () {
 	  //alert( this.value ); // or jQuery(this).val()
 	  if(jQuery(this).val() == "E")
 	  {
-		  jQuery("#subject_text").prop('disabled', false);		  
+		  //jQuery("#subject_text").prop('disabled', false);		  
 	  }
 	  else
 	  {
-		  jQuery("#subject_text").prop('disabled', true);
-		  jQuery('#subject_text').val('')
+		  //jQuery("#subject_text").prop('disabled', true);
+		  //jQuery('#subject_text').val('')
 	  }
 	});
 	

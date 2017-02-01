@@ -13,8 +13,8 @@ add_action('admin_menu', 'contact_support_user');
 add_action('wp_ajax_nopriv_login_user_classtune', 'login_user_classtune');
 add_action('wp_ajax_login_user_classtune', 'login_user_classtune');
 
-add_action('wp_ajax_nopriv_send_mail_classtune2', 'send_mail_classtune2');
-add_action('wp_ajax_send_mail_classtune2', 'send_mail_classtune2');
+add_action('wp_ajax_nopriv_send_mail_classtune', 'send_mail_classtune');
+add_action('wp_ajax_send_mail_classtune', 'send_mail_classtune');
 
 /*if (!function_exists("rsvp_video_background_frontend_script")) {
 
@@ -34,32 +34,7 @@ add_action('wp_enqueue_scripts', 'rsvp_video_background_frontend_script');*/
 //wp_enqueue_script('ajax-script', plugin_dir_url(__FILE__) . 'js/user_contact.js');  
 // wp_localize_script( 'ajax-script', 'contact_lol', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
 
-if (!function_exists('send_mail_classtune2')) {
-function send_mail_classtune2()
-{
-    global $phpmailer;
-    
-    //$phpmailer->Host = 'smtp.example.com';
-    //    $phpmailer->SMTPAuth = true; // Force it to use Username and Password to authenticate
-    $phpmailer->Port = 25;
-    //    $phpmailer->Username = 'yourusername';
-    //    $phpmailer->Password = 'yourpassword';
 
-    // Additional settings…
-    //$phpmailer->SMTPSecure = "tls"; // Choose SSL or TLS, if necessary for your server
-    $phpmailer->setFrom( "rezoanul.arefin@teamworkbd.com", "Likhon" );
-    $phpmailer->addAddress( "rlikhon@gmail.com", "Rezoan" );
-    $phpmailer->Subject    = "Testing PHPMailer";           
-    $phpmailer->Body     = "Hurray! \n\n Great.";
-    if( !$phpmailer->send() ) {
-        echo "Mailer Error: " . $phpmailer->ErrorInfo;
-    } else {
-        echo "Message sent!";
-    }          
-
-    die();               
-
-} 
 
     
 }

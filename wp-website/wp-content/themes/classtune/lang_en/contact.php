@@ -188,7 +188,7 @@ jQuery(document).ready(function () {
                                     
                                        if(data =="0")
                                        {
-                                               jQuery("#contact_classtune span.legend").html("<div class='alert alert-danger'><strong>Massage</strong> can't sent at the moment</div>");
+                                               jQuery("#contact_classtune span.legend").html("<div class='alert alert-danger'><strong>MassageW</strong> can't sent at the moment</div>");
                                        }
                                        else if(data =="1")
                                        {

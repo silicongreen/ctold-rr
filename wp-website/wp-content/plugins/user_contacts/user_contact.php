@@ -47,7 +47,7 @@ if (!function_exists('send_mail_classtune2')) {
             $subject = filter_var($_POST['subject'], FILTER_SANITIZE_STRING);
             $message_content = filter_var($_POST['massage'], FILTER_SANITIZE_STRING);
 
-            $subject = $subject. "(Classtune contact)";
+            $subject = $subject. "(Classtune Contact)";
 
             $message = "<b>Subject: " . $subject . "</b><br/><br/>";
             $message .= "<b>Name: </b>" . $name . "<br/>";
@@ -60,8 +60,8 @@ if (!function_exists('send_mail_classtune2')) {
             $sent = lol_email($to, $email, $name, $subject, $message);
             if ($sent) {
 
-                $auto_name = "classtune.com";
-                $auto_subject = "Greetings from Classtune team";
+                $auto_name = "ClassTune";
+                $auto_subject = "Greetings from ClassTune Team";
                 $auto_message = "Dear <b>" . $name . "</b>,<br /><br />";
                 $auto_message .= "Greetings from Classtune team." . "<br /><br />";
                 $auto_message .= "Thank you very much for contacting with us. Our team will communicate with you.  <br/><br />";
@@ -101,7 +101,7 @@ if (!function_exists('send_mail_classtune')) {
     function send_mail_classtune() {
         //check_ajax_referer("login_security","login_security_field");
         if (isset($_POST['name']) AND isset($_POST['email']) AND isset($_POST['subject']) AND isset($_POST['massage'])) {
-            $to = 'rlikhon@gmail.com';
+            $to = 'faiyead.hye@teamworkbd.com';
             $name = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
             $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
             $phone = filter_var($_POST['phone'], FILTER_SANITIZE_EMAIL);
@@ -110,7 +110,7 @@ if (!function_exists('send_mail_classtune')) {
             $subject = filter_var($_POST['subject'], FILTER_SANITIZE_STRING);
             $message_content = filter_var($_POST['massage'], FILTER_SANITIZE_STRING);
 
-            $subject = $subject. "(Classtune contact)";
+            $subject = $subject. "(Classtune Contact)";
 
             $message = "<b>Subject: " . $subject . "</b><br/>";
             $message .= "Name: " . $name . "<br/>";
@@ -139,7 +139,7 @@ if (!function_exists('send_mail_classtune')) {
 
                 $auto_message .= "Regards,<br/>";
                 $auto_message .= "Customer Service Team<br/>";
-                $auto_message .= "<img src='http://www.classtune.dev/images/logo/classtune.png'>";
+                $auto_message .= "<img src='http://www.classtune.com/images/logo/classtune.png'>";
 
                 $sent2 = lol_autoreply_email($email, $to, $auto_name, $auto_subject, $auto_message);
                 if ($sent2)

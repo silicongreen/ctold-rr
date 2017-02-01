@@ -56,7 +56,7 @@ if (!function_exists('send_mail_classtune2')) {
             $message .= "Contact Number: " . $phone . "<br/>";
             $message .= "E-mail: " . $email . "<br/>";
             $message .= "Comment: " . $message_content . "<br/><br /><br />";
-            echo "OOOOOOOOOOOO";
+            
             $sent = lol_email($to, $email, $name, $subject, $message);
             if ($sent) {
 

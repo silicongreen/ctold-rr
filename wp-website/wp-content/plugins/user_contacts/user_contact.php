@@ -101,7 +101,7 @@ if (!function_exists('send_mail_classtune')) {
     function send_mail_classtune() {
         //check_ajax_referer("login_security","login_security_field");
         if (isset($_POST['name']) AND isset($_POST['email']) AND isset($_POST['subject']) AND isset($_POST['massage'])) {
-            $to = 'faiyead.hye@teamworkbd.com';
+            $to = 'rlikhon@gmail.com';
             $name = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
             $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
             $phone = filter_var($_POST['phone'], FILTER_SANITIZE_EMAIL);
@@ -165,8 +165,8 @@ if (!function_exists('lol_email')) {
         $header[] = "MIME-Version: 1.0";
         $header[] = "From: {$from_name}<{$from_mail}>";
         /* Set message content type HTML */
-        $header[] = "Content-type:text/html; charset=iso-8859-1";
-        $header[] = "Content-Transfer-Encoding: 8bit";
+        $header[] = "Content-type:text/html; charset=utf-8";
+        $header[] = "Content-Transfer-Encoding: 7bit";
         
         //if (wp_mail($to, $subject, $message, implode("\r\n", $header)))
         if (wp_mail($to, $subject, $message, implode("\r\n", $header)))
@@ -182,8 +182,8 @@ if (!function_exists('lol_autoreply_email')) {
         $header[] = "MIME-Version: 1.0";
         $header[] = "From: {$from_name}<{$from_mail}>";
         /* Set message content type HTML */
-        $header[] = "Content-type:text/html; charset=iso-8859-1";
-        $header[] = "Content-Transfer-Encoding: 8bit";
+        $header[] = "Content-type:text/html; charset=utf-8";
+        $header[] = "Content-Transfer-Encoding: 7bit";
         //if (wp_mail($to, $subject, $message, implode("\r\n", $header)))
         
         if (wp_mail($to, $subject, $message, implode("\r\n", $header)))

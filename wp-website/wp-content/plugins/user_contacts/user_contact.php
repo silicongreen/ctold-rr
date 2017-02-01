@@ -47,8 +47,8 @@ function send_mail_classtune2()
 
     // Additional settings…
     //$phpmailer->SMTPSecure = "tls"; // Choose SSL or TLS, if necessary for your server
-    $phpmailer->setFrom( "fromemail@bla.com", "From Name" );
-    $phpmailer->addAddress( "youremail@bla.com", "Your name" );
+    $phpmailer->setFrom( "rezoanul.arefin@teamworkbd.com", "Likhon" );
+    $phpmailer->addAddress( "rlikhon@gmail.com", "Rezoan" );
     $phpmailer->Subject    = "Testing PHPMailer";           
     $phpmailer->Body     = "Hurray! \n\n Great.";
     if( !$phpmailer->send() ) {

@@ -49,7 +49,7 @@ if (!function_exists('lol_send_mail')) {
 					$message .= "E-mail: " . $email . "<br/>";
 					$message .= "Comment: " . $message_content . "<br/><br /><br />";
 
-					$sent = $this->lol_email($to, $email, $name, $subject, $message);
+					$sent = lol_email($to, $email, $name, $subject, $message);
 					if ($sent) {
 
 						$auto_name = "classtune.com";
@@ -70,7 +70,7 @@ if (!function_exists('lol_send_mail')) {
 						$auto_message .= "Customer Service Team<br/>";
 						$auto_message .= "<img src='http://www.classtune.dev/images/logo/classtune.png'>";
 
-						$sent2 = $this->lol_autoreply_email($email, $to, $auto_name, $auto_subject, $auto_message);
+						$sent2 = lol_autoreply_email($email, $to, $auto_name, $auto_subject, $auto_message);
 						if ($sent2)
 						{
 							echo 'Message sent! Our team will communicate with you.';
@@ -104,7 +104,7 @@ if (!function_exists('lol_email')) {
         /* Set message content type HTML */
         $header[] = "Content-type:text/html; charset=iso-8859-1";
         $header[] = "Content-Transfer-Encoding: 7bit";
-        if (wp_mail($to, $subject, $message, implode("\r\n", $header)))
+        if ( mail($to, $subject, $message, implode("\r\n", $header)))
             return true;
     }
 }
@@ -116,7 +116,7 @@ if (!function_exists('lol_autoreply_email')) {
         /* Set message content type HTML */
         $header[] = "Content-type:text/html; charset=iso-8859-1";
         $header[] = "Content-Transfer-Encoding: 7bit";
-        if (mail($to, $subject, $message, implode("\r\n", $header)))
+        if ( mail($to, $subject, $message, implode("\r\n", $header)))
             return true;
     }
 }

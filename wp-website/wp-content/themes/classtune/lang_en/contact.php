@@ -174,7 +174,7 @@ jQuery(document).ready(function () {
                                url : "/wp-admin/admin-ajax.php",
                                type : 'post',
                                data : {
-                                       action :     'wp_ajax_send_mail_classtune',
+                                       action :     'wp_ajax_send_mail_classtune2',
                                        name:        jQuery("#contact_classtune #name").val(), 
                                        email:       jQuery("#contact_classtune #email").val(),
                                        phone:       jQuery("#contact_classtune #phone").val(),			
@@ -185,7 +185,7 @@ jQuery(document).ready(function () {
                                },
                                success : function( data ) {
                                    
-                                    
+                                       console.log(data);
                                        if(data =="0")
                                        {
                                                jQuery("#contact_classtune span.legend").html("<div class='alert alert-danger'><strong>MassageW</strong> can't sent at the moment</div>");

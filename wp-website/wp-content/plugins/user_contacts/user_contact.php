@@ -13,8 +13,8 @@ add_action('admin_menu', 'contact_support_user');
 add_action('wp_ajax_nopriv_login_user_classtune', 'login_user_classtune');
 add_action('wp_ajax_login_user_classtune', 'login_user_classtune');
 
-add_action('wp_ajax_nopriv_send_mail_classtune', 'send_mail_classtune');
-add_action('wp_ajax_send_mail_classtune', 'send_mail_classtune2');
+//add_action('wp_ajax_nopriv_send_mail_classtune', 'send_mail_classtune');
+add_action('wp_ajax_send_mail_classtune2', 'send_mail_classtune2');
 
 /*if (!function_exists("rsvp_video_background_frontend_script")) {
 

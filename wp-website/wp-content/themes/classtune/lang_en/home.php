@@ -33,7 +33,7 @@ get_header(); ?>
                                                         <div class="col-md-6">
                                                             <div class="tx-pxcontentboxes-pi1">
                                                                 <div id="boxesBG">
-                                                                        <div class="row1" style="top:0px;">
+                                                                        <div class="row1" style="top:0px;left:0px;">
                                                                                 <div id="box_107" class="box">
                                                                                         <img title="" alt="" src="<?php bloginfo('template_url'); ?>/images/aboutus/1.png" width="100%">
                                                                                         <div style="height:120px;backgound:#EFF2F3;">

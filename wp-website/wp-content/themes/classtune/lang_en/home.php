@@ -28,13 +28,13 @@ get_header(); ?>
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <div class="col-md-6">                                                            
-                                                            <video autoplay loop muted style="width:100%;margin-top:95px;"><source src="http://www.dhakawall.com/dhakawall/ClassTune.mp4" type="video/mp4"></video>
+                                                            <video autoplay loop muted style="width:80%;margin-top:50px;"><source src="http://www.dhakawall.com/dhakawall/ClassTune.mp4" type="video/mp4"></video>
                                                         </div>
                                                         <div class="col-md-6">
                                                             <div class="tx-pxcontentboxes-pi1">
-                                                                <div id="boxesBG" style="width:100%;left:0%;margin:0px;">
+                                                                <div id="boxesBG" style="width:100%;left:0%;margin-top:50px;">
                                                                         <div class="row1" style="top:0px;left:0px;">
-                                                                                <div id="box_107" class="box">
+                                                                                <div id="box_107" class="box" style="width: 30%;">
                                                                                         <img title="" alt="" src="<?php bloginfo('template_url'); ?>/images/aboutus/1.png" width="100%">
                                                                                         <div style="height:120px;backgound:#EFF2F3;">
 
@@ -50,7 +50,7 @@ get_header(); ?>
 
                                                                                         </div>
                                                                                 </div>
-                                                                                <div id="box_105" class="box">
+                                                                                <div id="box_105" class="box" style="width: 30%;">
                                                                                         <img title="" alt="" src="<?php bloginfo('template_url'); ?>/images/aboutus/2.png" width="100%">
                                                                                         <div style="height:120px;backgound:#EFF2F3;">
 
@@ -67,7 +67,7 @@ get_header(); ?>
                                                                                         </div>
                                                                                 </div>
 
-                                                                                <div id="box_103" class="box lastinrow">
+                                                                                <div id="box_103" class="box lastinrow" style="width: 30%;">
                                                                                         <img title="" alt="" src="<?php bloginfo('template_url'); ?>/images/aboutus/3.png" width="100%">
                                                                                         <div style="height:120px;backgound:#EFF2F3;">
 

@@ -28,7 +28,7 @@ get_header(); ?>
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <div class="col-md-6">                                                            
-                                                            <video autoplay loop muted style="width:80%;margin-top:50px;"><source src="http://www.dhakawall.com/dhakawall/ClassTune.mp4" type="video/mp4"></video>
+                                                            <video autoplay loop muted style="width:100%;margin-top:50px;"><source src="http://www.dhakawall.com/dhakawall/ClassTune.mp4" type="video/mp4"></video>
                                                         </div>
                                                         <div class="col-md-6">
                                                             <div class="tx-pxcontentboxes-pi1">

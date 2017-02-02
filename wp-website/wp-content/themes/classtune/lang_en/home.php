@@ -28,7 +28,7 @@ get_header(); ?>
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <div class="col-md-6">                                                            
-                                                            <video autoplay="" loop="" style="width: 600px;"><source src="http://www.classtune.com/wp-content/uploads/2017/02/ClassTune.mp4" type="video/mp4"></video>
+                                                            <video autoplay="" loop="" style="width: 600px;margin-top:95px;"><source src="http://www.classtune.com/wp-content/themes/classtune/images/ClassTune.mp4" type="video/mp4"></video>
                                                         </div>
                                                         <div class="col-md-6">
                                                             <div class="tx-pxcontentboxes-pi1">

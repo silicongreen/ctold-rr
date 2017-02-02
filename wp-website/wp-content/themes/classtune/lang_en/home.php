@@ -24,82 +24,61 @@ get_header(); ?>
 				<div class="wrapper">
 					<div id="startWrap">            
 						<h2 class="f2" style="margin-top: 40px;"><i>Connecting Students-Parents-Teachers</i></h2>
-                                            <div class="no-container">
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <div class="col-md-6">                                                            
-                                                            <video autoplay loop muted style="width:100%;margin-top:50px;"><source src="http://www.dhakawall.com/dhakawall/ClassTune.mp4" type="video/mp4"></video>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <div class="tx-pxcontentboxes-pi1">
-                                                                <div id="boxesBG" style="width:100%;left:0%;margin:0px;top:0px">
-                                                                        <div class="row1" style="top:50px;left:0px;">
-                                                                                <div id="box_107" class="box" style="width: 30%;">
-                                                                                        <img title="" alt="" src="<?php bloginfo('template_url'); ?>/images/aboutus/1.png" width="100%">
-                                                                                        <div style="height:120px;backgound:#EFF2F3;">
+						<div class="tx-pxcontentboxes-pi1">
+							<div id="boxesBG">
+								<div class="row1">
+									<div id="box_107" class="box">
+										<img title="" alt="" src="<?php bloginfo('template_url'); ?>/images/aboutus/1.png" width="100%">
+										<div style="height:120px;backgound:#EFF2F3;">
 
 
-                                                                                                <a href="<?php echo get_site_url().'/'.$lang; ?>/admin-user<?php echo "-".$lang;?>" style="color:gray;text-decoration:none;"><h3>For Admin</h3></a>
+											<a href="<?php echo get_site_url().'/'.$lang; ?>/admin-user<?php echo "-".$lang;?>" style="color:gray;text-decoration:none;"><h3>For Admin</h3></a>
 
-                                                                                                <p style="color: gray;font-size: 14px;padding: 20px; text-align: left;">
-                                                                                                        All the collaboration tools you need to improve learning outcomes, productivity, and building teacher’s capacity.<br>
-                                                                                                </p>
-                                                                                                <p style="background: #DFE4E7 none repeat scroll 0 0;border-radius: 0px;bottom: 10px;padding: 8px 0;position: relative;width: 80px;left:10px;font-weight: bold;">
-                                                                                                        <a href="<?php echo get_site_url().'/'.$lang; ?>/admin-user<?php echo "-".$lang;?>" style="color:#000;text-decoration:none;">Learn More</a>
-                                                                                                </p>
+											<p style="color: gray;font-size: 14px;padding: 20px; text-align: left;">
+												All the collaboration tools you need to improve learning outcomes, productivity, and building teacher’s capacity.<br>
+											</p>
+											<p style="background: #DFE4E7 none repeat scroll 0 0;border-radius: 0px;bottom: 10px;padding: 8px 0;position: relative;width: 80px;left:10px;font-weight: bold;">
+												<a href="<?php echo get_site_url().'/'.$lang; ?>/admin-user<?php echo "-".$lang;?>" style="color:#000;text-decoration:none;">Learn More</a>
+											</p>
 
-                                                                                        </div>
-                                                                                </div>
-                                                                                <div id="box_105" class="box" style="width: 30%;">
-                                                                                        <img title="" alt="" src="<?php bloginfo('template_url'); ?>/images/aboutus/2.png" width="100%">
-                                                                                        <div style="height:120px;backgound:#EFF2F3;">
-
-
-                                                                                                <a href="<?php echo get_site_url().'/'.$lang; ?>/guardian-user<?php echo "-".$lang;?>" style="color:gray;text-decoration:none;"><h3>For Parent</h3></a>
-
-                                                                                                <p style="color: gray;font-size: 14px;padding: 20px; text-align: left;">
-                                                                                                        <b>ClassTune</b> is designed in such a way, that you get a simple and intuitive way to stay in your child’s learning activities.<br>
-                                                                                                </p>
-                                                                                                <p style="background: #DFE4E7 none repeat scroll 0 0;border-radius: 0px;bottom: 10px;padding: 8px 0;position: relative;width: 80px;left:10px;font-weight: bold;">
-                                                                                                        <a href="<?php echo get_site_url().'/'.$lang; ?>/guardian-user<?php echo "-".$lang;?>" style="color:#000;text-decoration:none;">Learn More</a>
-                                                                                                </p>
-
-                                                                                        </div>
-                                                                                </div>
-
-                                                                                <div id="box_103" class="box lastinrow" style="width: 30%;">
-                                                                                        <img title="" alt="" src="<?php bloginfo('template_url'); ?>/images/aboutus/3.png" width="100%">
-                                                                                        <div style="height:120px;backgound:#EFF2F3;">
+										</div>
+									</div>
+									<div id="box_105" class="box">
+										<img title="" alt="" src="<?php bloginfo('template_url'); ?>/images/aboutus/2.png" width="100%">
+										<div style="height:120px;backgound:#EFF2F3;">
 
 
-                                                                                                <a href="<?php echo get_site_url().'/'.$lang; ?>/teacher-user<?php echo "-".$lang;?>" style="color:gray;text-decoration:none;"><h3>For Teacher</h3></a>
+											<a href="<?php echo get_site_url().'/'.$lang; ?>/guardian-user<?php echo "-".$lang;?>" style="color:gray;text-decoration:none;"><h3>For Parent</h3></a>
 
-                                                                                                <p style="color: gray;font-size: 14px;padding: 20px; text-align: left;">
-                                                                                                        <b>ClassTune</b> is designed in such a way that gives you the complete control over your digital classroom. 
-                                                                                                </p>
-                                                                                                <p style="background: #DFE4E7 none repeat scroll 0 0;border-radius: 0px;bottom: 10px;padding: 8px 0;position: relative;width: 80px;left:10px;font-weight: bold;">
-                                                                                                        <a href="<?php echo get_site_url().'/'.$lang; ?>/teacher-user<?php echo "-".$lang;?>" style="color:#000;text-decoration:none;">Learn More</a>
-                                                                                                </p>
+											<p style="color: gray;font-size: 14px;padding: 20px; text-align: left;">
+												<b>ClassTune</b> is designed in such a way, that you get a simple and intuitive way to stay in your child’s learning activities.<br>
+											</p>
+											<p style="background: #DFE4E7 none repeat scroll 0 0;border-radius: 0px;bottom: 10px;padding: 8px 0;position: relative;width: 80px;left:10px;font-weight: bold;">
+												<a href="<?php echo get_site_url().'/'.$lang; ?>/guardian-user<?php echo "-".$lang;?>" style="color:#000;text-decoration:none;">Learn More</a>
+											</p>
 
-                                                                                        </div>
-                                                                                </div>
-                                                                        </div>
-                                                                </div>
-                                                        </div>
+										</div>
+									</div>
 
-
-                                                        </div>
-
-                                                    </div>
+									<div id="box_103" class="box lastinrow">
+										<img title="" alt="" src="<?php bloginfo('template_url'); ?>/images/aboutus/3.png" width="100%">
+										<div style="height:120px;backgound:#EFF2F3;">
 
 
+											<a href="<?php echo get_site_url().'/'.$lang; ?>/teacher-user<?php echo "-".$lang;?>" style="color:gray;text-decoration:none;"><h3>For Teacher</h3></a>
 
-                                                </div>    
-                                            </div>    
-                                                
-                                                
-                                                
-                                                
+											<p style="color: gray;font-size: 14px;padding: 20px; text-align: left;">
+												<b>ClassTune</b> is designed in such a way that gives you the complete control over your digital classroom. 
+											</p>
+											<p style="background: #DFE4E7 none repeat scroll 0 0;border-radius: 0px;bottom: 10px;padding: 8px 0;position: relative;width: 80px;left:10px;font-weight: bold;">
+												<a href="<?php echo get_site_url().'/'.$lang; ?>/teacher-user<?php echo "-".$lang;?>" style="color:#000;text-decoration:none;">Learn More</a>
+											</p>
+
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 
 					<div id="beforeWrap">

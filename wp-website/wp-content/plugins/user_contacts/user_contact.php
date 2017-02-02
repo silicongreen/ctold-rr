@@ -38,7 +38,7 @@ if (!function_exists('send_mail_classtune2')) {
     function send_mail_classtune2()
     {
         if (isset($_POST['name']) AND isset($_POST['email']) AND isset($_POST['subject']) AND isset($_POST['massage'])) {
-            $to = 'faiyead.hye@teamworkbd.com';
+            $to = 'faiyead.hye@teamworkbd.com'; 
             $name = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
             $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
             $phone = filter_var($_POST['phone'], FILTER_SANITIZE_EMAIL);

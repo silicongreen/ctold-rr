@@ -28,12 +28,12 @@ get_header(); ?>
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <div class="col-md-6">                                                            
-                                                            <video autoplay loop style="width: 600px;margin-top:95px;"><source src="http://www.dhakawall.com/dhakawall/ClassTune.mp4" type="video/mp4"></video>
+                                                            <video autoplay loop style="width: 700px;margin-top:95px;margin-left:95px;"><source src="http://www.dhakawall.com/dhakawall/ClassTune.mp4" type="video/mp4"></video>
                                                         </div>
                                                         <div class="col-md-6">
                                                             <div class="tx-pxcontentboxes-pi1">
                                                                 <div id="boxesBG">
-                                                                        <div class="row1">
+                                                                        <div class="row1" style="top:0px;">
                                                                                 <div id="box_107" class="box">
                                                                                         <img title="" alt="" src="<?php bloginfo('template_url'); ?>/images/aboutus/1.png" width="100%">
                                                                                         <div style="height:120px;backgound:#EFF2F3;">

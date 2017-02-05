@@ -1001,6 +1001,39 @@ class HomeworkController extends Controller
             $homework->attachment_file_name = $file['attachment_file_name']['name'];
             $homework->save();
         } 
+        return $uploads_dir;
+    }
+    private function copy_homework($origin,$file_name,$homework)
+    {
+        $homework->attachment_updated_at = date("Y-m-d H:i:s");
+        $homework->updated_at = date("Y-m-d H:i:s");
+                    
+        $attachment_datetime_chunk = explode(" ", $homework->updated_at);
+
+        $attachment_date_chunk = explode("-", $attachment_datetime_chunk[0]);
+        $attachment_time_chunk = explode(":", $attachment_datetime_chunk[1]);
+
+        $attachment_extra = $attachment_date_chunk[0] . $attachment_date_chunk[1] . $attachment_date_chunk[2];
+        $attachment_extra.= $attachment_time_chunk[0] . $attachment_date_chunk[1] . $attachment_time_chunk[2];
+
+        $uploads_dir = Settings::$paid_image_path . "uploads/assignments/attachments/".$homework->id."/original/";
+        $file_name_new =  str_replace(" ", "+",$file_name) . "?" .$attachment_extra;
+        
+        
+        if(!is_dir($uploads_dir))
+        {
+            @mkdir($uploads_dir, 0777, true);
+        }
+        
+        $uploads_dir = $uploads_dir.$file_name_new;
+        
+
+        if(@copy($origin, "$uploads_dir"))
+        {
+            $homework->attachment_file_name = $file_name;
+            $homework->save();
+        }
+        return $uploads_dir;
     }
 
     public function actionAddHomework()
@@ -1081,10 +1114,22 @@ class HomeworkController extends Controller
 
                     if (isset($_FILES['attachment_file_name']['name']) && !empty($_FILES['attachment_file_name']['name']))
                     {
-                        $homework->updated_at = date("Y-m-d H:i:s");
-                        $homework->attachment_content_type = Yii::app()->request->getPost('mime_type');
-                        $homework->attachment_file_size = Yii::app()->request->getPost('file_size');
-                        $this->upload_homework($_FILES, $homework);
+                         if(!isset($file_name_main) && !isset($origin) )
+                        {
+                            $file_name_main = $_FILES['attachment_file_name']['name'];
+
+                            $homework->updated_at = date("Y-m-d H:i:s");
+                            $homework->attachment_content_type = Yii::app()->request->getPost('mime_type');
+                            $homework->attachment_file_size = Yii::app()->request->getPost('file_size');
+                            $origin = $this->upload_homework($_FILES, $homework);
+                        }
+                        else
+                        {
+                            $homework->updated_at = date("Y-m-d H:i:s");
+                            $homework->attachment_content_type = Yii::app()->request->getPost('mime_type');
+                            $homework->attachment_file_size = Yii::app()->request->getPost('file_size');
+                            $origin = $this->copy_homework($origin,$file_name_main, $homework);
+                        } 
                     }     
 
 

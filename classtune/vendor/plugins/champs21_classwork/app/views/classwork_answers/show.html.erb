@@ -1,0 +1,71 @@
+<div class="box_content" style="background: #ffffff; float:left;">
+<div class="partial_classwork" style="padding: 20px;">
+
+  <a href="/classworks"><h2 class="f2 routine">CLASSWORK | <%= @classwork.subject.name.to_s %></h2></a>
+
+
+<div id="page-yield" class="ch_classwork_answers_wrapper">
+<% unless flash[:notice].nil? %> <p class="flash-msg"> <%= flash[:notice] %> </p> <% end %>
+<div id="answer-container">
+  <h4><%= "#{t('classwork_text')}"%></h4>
+  <% if @classwork_answer.classwork.present? %>
+    <div class="classwork-question"><%= link_to @classwork_answer.classwork.title.to_s , @classwork %></div>
+  <% else %><div class="classwork-question"><%= t('this_answer_is_not_for_the_classwork') %></div>
+
+  <% end %>
+  <h4><%= "#{t('answer')}"%></h4>
+  <div class="classwork-answer">
+    <div class="classwork-answer-title"><%= @classwork_answer.title.to_s   %></div>
+    <div class="classwork-answer-content"><%= @classwork_answer.content.to_s %></div>
+    <% unless @classwork_answer.attachment_file_name.nil? %> <div id="attachment"><%= link_to @classwork_answer.attachment_file_name.to_s, :controller => "classwork_answers", :action => "download_attachment" , :classwork_answer=>@classwork_answer.id %></div><%  end %>
+  </div>
+
+  <div class="answer-details">
+    <div class="label-div-pair"><label for="student-name"><%= "#{t('submitted_by')}"%></label><div id="student-name" class="themed_text"> <%= @classwork_answer.student_details.present? ? @classwork_answer.student_details.full_name : t('no_students') %></div></div>
+    <div class="label-div-pair"><label for="submitted-date"><%= "#{t('submitted_on')}"%> </label><div id="submitted-date" class="themed_text"><%= @classwork_answer.created_at.strftime("%I:%M %p, %d %B, %Y")%></div></div>
+    <% if @current_user.student? %>
+      <% if @current_user.student_record.id == @classwork_answer.student_id %>
+        <div class="label-div-pair"><label for="answer-status"><%= "#{t('status')}"%></label>
+          <div id="answer-status" class="themed_text">
+            <% if @classwork_answer.status == "0"  %>
+              <%= "#{t('this_answer_yet_to_be_evaluated')}"%>
+            <% else %>
+              <%= "#{t('the_classwork_is')}"%>  <%= @classwork_answer.status.capitalize   %> <%=  link_to  "(#{t('resubmit_answer')})" ,  edit_classwork_classwork_answer_path(@classwork,@classwork_answer)  unless @classwork_answer.status=="ACCEPTED"%>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+  <div id="evaluate-answer">
+    <% if @current_user.employee? %>
+      <% if @current_user.employee_record.id == @classwork_answer.classwork.employee_id %>
+        <% unless @classwork_answer.status=="ACCEPTED" %>  <%= link_to "#{t('accept_answer')}",  {:action => "evaluate_classwork" ,:id=>@classwork_answer.id,:status=>"ACCEPTED"},:class=>"submit-button" %><% end %>
+        <% unless @classwork_answer.status=="REJECTED" %>  <%= link_to "#{t('reject_answer')}",  { :action => "evaluate_classwork" ,:id=>@classwork_answer.id,:status=>"REJECTED" },:class=>"submit-button" %><% end %>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+</div>
+  </div>
+    </div>
+<style>
+  .box_content
+{
+    background:#ffffff;
+    width: 100%;
+    float:left;
+   
+}
+.partial_classwork
+{
+    clear: both;
+}
+.partial_classwork h2 {
+  color: #2dc99a;
+  float: left;
+  font-size: 38px;
+  font-weight: normal;
+  margin: 0;
+}
+</style>  

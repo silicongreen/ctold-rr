@@ -1,0 +1,97 @@
+<!--<div id="content-header">
+<%#= show_header_icon %>
+  <h1><%#= "#{t('classworks_text')}"%></h1>
+<div class='header-sep'>|</div>
+<div class='sub-header'><%#= "#{t('edit_classwork')}"%></div>
+</div>-->
+
+<div class="header-wrapper">
+  <div class="header-title">
+    <div class="header-icon">
+      <%= image_tag '/images/icons/classwork.png', :html => {:alt => 'Lessonplan'} %> 
+    </div>
+    <div class="header-title-text-wrapper">
+      <div class="header-title-main-text f2">
+       <%= link_to "classwork", :controller => 'classworks', :action => 'index' %> &nbsp;  |&nbsp; <%= "Edit"%>
+       <span style="float: left;clear:both;font-size: 15px;"><%= Time.now.strftime("%Y-%m-%d") %></span>
+      </div>
+      <div class="header-title-sub-text f5">
+        
+        </div>
+      </div>
+    </div>    
+<div class="clearfix"></div>
+  
+</div>
+
+<div id="page-yield" class="ch_classwork_answers_wrapper" style="margin-top: 0px;">
+
+  <% unless flash[:notice].nil? %>
+    <p class="flash-msg"> <%= flash[:notice] %> </p>
+  <% end %>
+  <% form_for @classwork , :html => { :multipart => true } do |f| %>
+    <%= error_messages_for :classwork %>
+    <div class="classwork_container">
+      <div class="classwork_form">
+
+
+
+        <div class="label-field-pair">
+          <label  for="classwork_title"><%= "#{t('title')}"%></label>
+          <div class="text-input-bg"><%= f.text_field :title %></div>
+        </div>
+         <% if @current_user.admin? %>
+        <div class="label-field-pair">
+          <label  for="classwork_subject"><%= "#{t('subject')}"%></label>   
+          <div class="text-input-bg" >   
+            <span style="font-size: 15px;margin-left:10px;"><%= "#{@subjects.name}  - #{@subjects.batch.full_name}"%></span>
+            <%= hidden_field :classwork,"subject_id", :value => @subjects.id %>
+          </div>
+        </div>
+        <% end %>
+        <% if @current_user.employee?  %>
+        <div class="label-field-pair">
+          <label  for="classwork_subject"><%= "#{t('subject')}"%></label>    <div class="text-input-bg" >    <%= select :classwork, :subject_id,
+              @subjects.map {|s| ["#{s.name}  - #{s.batch.full_name}",s.id]},
+              {:prompt => "#{t('select_a_subject')}"},
+              {:onChange => "#{remote_function(:url => {:action => "subjects_students_list"},
+              :with => "'subject_id='+ value",
+              :before => "Element.show('loader')",
+              :success => "Element.hide('loader')"
+              )}"} %></div>
+
+          <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader", :style =>"display: none;" ) %>
+        </div>
+        <% end %>
+        <div class="label-field-pair" style="display:none;">
+            <label >Classwork Type</label>
+            <div  class="text-input-bg" id="exam-group-select">
+                 <%= f.select :classwork_type, [['Regular',1]] %>
+            </div>
+        </div>
+        <div class="classwork_content" >
+          <label class="classwork_content_label" style="" ><%= "#{t('content')}"%></label>
+          <div  class="classwork_content_div">
+                <%= f.redactor :content %>
+          </div>
+        </div>
+        
+
+        <div class="label-field-pair" style="float:left; clear:both;">
+          <label ><%= "#{t('attach_a_file')}"%> (<%= t('max_size') %>)</label>
+          <div  class="text-input-bg" id="classwork-attachment"><%= f.file_field  :attachment %></div>
+        </div>
+        
+
+      </div>
+      <div id="subjects_student_list">
+        <%= render :partial=> "subjects_student_list" ,:object=>@classwork.subject%>
+      </div>
+    </div>
+    <div id ="classwork-submit" >
+      <%= f.submit "#{t('update_classwork')}" ,:class=>"submit_button"%>
+    </div>
+  <% end %>
+  <%= load_redactor_script %>
+</div>
+<%= stylesheet_link_tag 'tadded-header' %>

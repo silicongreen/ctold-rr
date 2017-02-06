@@ -1,0 +1,47 @@
+<% unless @classworks.empty? %>
+        <ul class="ch_classwork">
+        <% @classworks.each_with_index do |classwork,i| %>
+          <%#= debug @classworks %>
+          <li>
+            <div class="ch_classwork_content">
+              <div style="float:left;width:100%;">
+                <div style="float:left;width:35%;">
+                  <% if classwork.subject.icon_number? %>
+                    <%= image_tag("icons/subjects/"+classwork.subject.icon_number , :size=> "83x60", :alt=> classwork.subject.name) %>
+                  <% else %>
+                    <%= image_tag("icons/subjects/8.png" , :size=> "83x60", :alt=> classwork.subject.name) %>
+                  <% end %>
+                </div>
+                <div style="float:right;width:65%;">
+                  <span style="color:#999;font-size:15px;line-height: 20px;font-weight:bold;">
+                    <%  if classwork.classwork_type==1 %>
+                        Classwork
+                    <%  end %>
+                    <%  if  classwork.classwork_type==2 %>
+                        Project
+                    <%  end %>
+                    </span>
+                    <br />
+                    <span style="color:#000;font-size:12px;line-height: 20px;">
+                      <%= classwork.subject.name.to_s unless classwork.subject.nil?%>
+                    </span>
+                </div>
+              </div>
+              
+              <div style="float:left;width:100%;margin:20px 0px;">
+                <%=  link_to classwork.title, classwork%>
+              </div>
+              <div style="width:100%;text-align: right;">
+                <span style="color:#aaa;font-size:12px;line-height: 20px;">
+                  
+                </span>
+              </div>
+            </div>
+          </li>
+        <% end %>
+        </ul>
+      <% else %>
+        <div class="tr-odd" style="clear: both;"><h2><%= "#{t('you_have_not_been_assigned_any_classworks')}"%></h2></div>
+      <% end %>
+        
+     

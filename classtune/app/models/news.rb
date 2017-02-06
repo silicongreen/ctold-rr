@@ -38,10 +38,19 @@ class News < ActiveRecord::Base
   xss_terminate :except => [:content]
   @@per_page = 12
   
+  def update_attributes(attributes)
+    self.attributes = attributes
+    update_at_old = self.updated_at
+    save
+    self.updated_at = update_at_old
+    save
+  end
+  
   def download_allowed_for user
     return true if user.admin?
     return true if user.employee?
     return true if user.student?
+    return true if user.parent?
     false
   end
 

@@ -1,0 +1,331 @@
+.ch_classwork_wrapper
+{
+    float: left;
+    width: 95%;
+    background-color: #fff;
+    padding:0px 30px 30px; 
+    border:1px solid #CCC;
+}
+.champs21_feed_title {
+  background-color: #ed1c24;
+  color: #fff;
+  float: left;
+  font-size: 20px;
+  font-weight: bold;
+  height: 30px;
+  padding: 10px 0;
+  text-align: center;
+  width: 100%;
+}
+.student-options a {
+    text-decoration: none;
+    color: #BB0000
+}
+.student-options a:hover {
+    text-decoration: underline;
+}
+#quickinfo{
+    width:600px;
+    font-weight: bold;
+    overflow:hidden;
+}
+#quickinfo a{
+    float:left;
+    padding: 0px 6px;
+    text-decoration: none;
+    color: #000;
+    width: 100px;
+}
+#quickinfo a:hover{
+    text-decoration: underline;
+}
+#student-list-bg{
+    width: 535px;
+    background-color: #EEE;
+    padding :7px;
+    -webkit-border-radius : 10px;
+    -moz-border-radius : 10px;
+    margin-top: 30px;
+}
+#loaderbox{
+    height: 16px;
+}
+#student_list {
+    margin-top:5px;
+    overflow:auto;
+    padding:5px;
+    height: 100px;
+}
+.answer-link a
+{   color:#BB0000;
+    padding-left:12px;
+    text-decoration:none;
+}
+.answer-link a:hover{
+    text-decoration: underline;
+}
+.answer-details{
+    float: right;
+}
+.listitem {
+    border-bottom: 1px solid #DDDDDD;
+    overflow: hidden;
+    font-size:14px;
+    padding-left: 12px;
+    color : #444444;
+    width: 100% !important;
+}
+
+#action-buttons{
+    padding:0px 50px;
+    overflow: hidden;
+    width: 600px;
+}
+.edit_button{
+    float :left;
+    padding: 3px;
+    margin: 0px 5px;
+}
+.delete_button{
+    float :left;
+    padding: 3px;
+    margin: 0px 5px;
+}
+
+#classwork_title{
+    font-size: 25px;
+    font-weight: bold;
+}
+#classwork_due {
+    font-size: 15px;
+    font-weight: bold;
+    color:  #B00;
+}
+#classwork_content{
+    background-color: #fff;
+    -moz-border-radius : 10px;
+    -webkit-border-radius : 10px;
+    padding: 20px 5px 5px 5px;
+}
+
+#action_buttons{
+    margin-left: 300px;
+    overflow: hidden;
+    padding-top: 30px;
+}
+.submit_button {
+    margin-left: 20px;
+    padding: 5px 10px;
+    color: #fff;
+    background: #27292B;
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
+    font-weight: bold;
+    font-size: 14px;
+    border:none;
+    cursor:pointer;
+    float: left;
+}
+.submit_button:hover{
+    background: #27292B;
+}
+.submit_button a {
+    color:#fff;
+    text-decoration: none;
+}
+.submit_button a:hover {
+    color:#fff;
+    text-decoration: none;
+}
+
+.answer-link{
+    float: right;
+}
+#attachment{
+    background: url("/images/classwork/paperclip.png") no-repeat left ;
+    padding-left: 35px;
+    height: 35px;
+}
+#attachment a,.listitem a{
+    text-decoration: none;
+    color:#000;
+    margin-left: -12px;
+    /* margin-top: 6px !important;*/
+    float: left;
+}
+#attachment a:hover,.listitem a:hover {
+    text-decoration: underline;
+}
+.student-options .submit_button{
+    margin-top: 20px;
+    margin-left: 380px;
+}
+.student-options{
+    margin-top: 10px;
+}
+.admission_num {
+    float: right;
+}
+.user_button{
+    background:#db3434 !important;
+    margin-top: 20px;
+    margin-left: 35px;
+}
+.user_button:hover
+{
+    background:#7e0000 !important;
+}
+.answer
+{
+    margin-left: 384px;
+}
+
+#classwork_content p{
+    padding-left: 20px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.partial_classwork
+{
+    clear: both;
+}
+.partial_classwork h2 {
+  color: #2dc99a;
+  float: left;
+  font-size: 38px;
+  font-weight: normal;
+  margin: 0;
+}
+.partial_classwork .date_title
+{
+    height:25px;
+    color: #2DC99A;
+    text-align: right;
+    clear: both;
+    font-size: 11px;
+    font-weight: bold;
+}
+.partial_classwork .portlet-subcontent {
+  background-color: #ffffff;
+  float: left;
+  width: 80%;
+  border: 1px solid #ccc;
+}
+.partial_classwork .timetable_left {
+  border-right: 1px dotted #cccccc;
+  float: left;
+  height: 70px;
+  padding: 10px 0;
+  width: 12%;
+}
+.partial_classwork .timetable_right
+{
+    float:right;
+    width:78%;
+}
+.partial_classwork .timetable_left img {
+  height: 55px;
+  margin-left: 22px;
+  width: 70px;
+  margin-top: 8px;
+}
+.partial_classwork .subcontent-header {
+  color: #000000;
+  float: left;
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 10px;
+  padding: 2px 12px;
+  width: 93%;
+}
+
+.partial_classwork .subcontent-info {
+  color: #999999;
+  float: left;
+  font-size: 15px;
+  margin-top: 5px;
+  padding: 2px 12px;
+  width: 93%;
+}
+
+.partial_classwork .subcontent-date {
+  color: #999;
+  float: left;
+  font-size: 14px;
+  margin-top: 10px;
+  padding: 2px 15px;
+  width: 93%;
+}
+
+.answer_mark
+{
+    background: none repeat scroll 0 0 #F0F2F3;
+    float: right;
+    height: 70px;
+    padding: 10px;
+    width: 7%;
+}
+.timetable_right div a
+{
+    font-size: 16px;
+    font-weight: bold;
+    color: #000;
+    text-decoration: none;
+}
+.timetable_right div a:hover
+{
+    color: #ED1C24;
+}
+.attachment_clip
+{
+    height: 45px;
+margin-left: 22px;
+width: 70px;
+}
+.atachment_div a
+{
+    text-decoration: none;
+    color:red;
+}
+
+.partial_classwork .portlet-subcontent .answer_mark
+{
+    padding: 0px;
+    background: none;
+    width: 10%;
+}
+.partial_classwork .portlet-subcontent div:nth-of-type(3)
+{
+    width: 32% !important;
+    border:none !important;
+}
+.partial_classwork .portlet-subcontent div
+{
+    height: auto !important;
+    border:none !important;
+}
+.partial_classwork .portlet-subcontent div.timetable_right:nth-of-type(2)
+{
+    border-left: 1px dotted #cccccc !important;
+    border-right: 1px dotted #cccccc !important;
+    min-height: 70px;
+}
+#classwork_ajax_msg .answer , #classwork_ajax_msg .answer .user_button
+{
+    margin-left:10px !important;
+}

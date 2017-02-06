@@ -1,0 +1,87 @@
+<div class="box_content">
+    <div class="partial_classwork" style="padding: 20px;">
+     <h2 class="f2">CLASSWORK</h2>
+     <div style="border-bottom: 1px solid #ccc; float: left; margin: 15px; width: 95%;"></div>  
+     
+     <div style="float: left;clear:both; margin:15px; width: 98%;">
+       <div style="float: left; clear:both;  width: 40%;">
+       
+         <div class="timetable_left"><%= "#{t('subject')}"%></div>
+         <div class="timetable_right"  style="margin-top:0px;">
+              <% unless @subjects.nil? %>
+                  <%= select :classwork, :subject,
+                    @subjects.map {|s| ["#{s.name}",s.id]},
+                    {:prompt => "#{t('select_a_subject')}"},
+                    {:onChange => "#{remote_function(:url => {:action => "subject_classworks2"},
+                    :with => "'subject_id='+ value",
+                    :before => "Element.show('loader')",
+                    :success => "Element.hide('loader')"
+                    )}"} %>
+                <% end %>
+          </div> 
+        </div>
+       
+        
+       
+     </div>
+     
+     <div style="border-bottom: 1px solid #ccc; float: left; margin: 15px; width: 95%;"></div> 
+            
+           
+                
+           
+             
+        <div id="classwork-data">
+          <% unless classwork.nil? %>
+             <% total_classwork = classwork.count %>
+             <% i = 1 %>
+             <% classwork.each do |h| %>
+               <% unless h['subjects'].empty? %>
+                 <div class="portlet-subcontent">     
+                   <div class="timetable_left"><img width="30" src="/images/icons/subjects/<%= h['subjects_icon'] %>" /></div>
+                   <div class="timetable_right"  style="margin-top:5px;">
+                     <div class="subcontent-header themed_text">
+
+                         <%= link_to h['subjects']+' - '+h['teacher_name'], :controller => "classworks", :action => "show", :id => h['id'] %>
+                     </div>
+                     <div class="subcontent-date">Assign Date : <%= I18n.l(h['assign_date'].to_time,:format=>:normal) unless h['assign_date'].empty? %></div>  
+                     
+                     <div class="subcontent-info"><%= h['name'] %> </div>              
+                   </div>       
+                 </div>
+                 <% if i<total_classwork %>
+                    <div style="border-bottom: 1px solid #ccc; float: left; margin: 15px; width: 95%;"></div> 
+                 <% else %>
+                   <div style=" margin: 15px;float: left; width: 95%;"></div> 
+                 <% end %>
+                 <% i = i+1 %>
+               <% end %>
+             <% end %>
+          <% else %>
+          <div class="portlet-subcontent">    
+            No classwork Submitted
+          </div>  
+          <% end  %>
+        </div>         
+     </div>
+ </div>
+
+<style type="text/css">
+    .calendar_date_select_popup_icon{
+      margin: 12px 1px 0;
+    }
+    .attachment {
+      background: url("/images/classwork/paperclip.png") no-repeat left;
+      padding-left: 11px;
+      height: 35px;
+    }
+    .clear-date {
+      color: #db3434;
+      cursor: pointer;
+      float: left;
+      text-decoration: underline;
+      width: 10%;
+    }
+  </style>
+
+

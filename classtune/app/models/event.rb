@@ -32,7 +32,14 @@ class Event < ActiveRecord::Base
   
   has_attached_file :event_image, :styles => { :large => "100%", :dashboard => "300x180#", :thumb => "320x240#", :small => "120x80#" }, :default_style => :thumb,
     :url => '/uploads/:class/event_image/:id/:style/:basename_:timestamp.:extension'
-    
+   
+  def update_attributes(attributes)
+    self.attributes = attributes
+    update_at_old = self.updated_at
+    save
+    self.updated_at = update_at_old
+    save
+  end 
   def validate
     unless self.start_date.nil? or self.end_date.nil?
       errors.add(:end_time, :can_not_be_before_the_start_time) if self.end_date < self.start_date

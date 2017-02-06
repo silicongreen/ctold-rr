@@ -1,0 +1,33 @@
+<% unless @students.nil? %>
+  <% unless @students.empty? %>
+    <% @assigned_students ||= [] %>
+    <div class="scrollable">
+      <div class="select_all">
+        <%  if check_free_school? %>
+          <a href='javascrip:void(0)' class='themed_text subscribed-messege' >All</a>,
+          <a href='javascrip:void(0)' class='themed_text subscribed-messege' >None</a>,
+        <% else %>  
+          <%= "#{t('select')}:"%> <%= link_to_function "#{t('all')}", "$$('input.right').each(function(checkbox) { checkbox.checked = true; });" ,:class=>"themed_text"%>,
+          <%= link_to_function "#{t('none')}", "$$('input.right').each(function(checkbox) { checkbox.checked = false; });" ,:class=>"themed_text" %>
+        <% end %>  
+      </div>
+      <div id="scrollable-list">
+
+        <% @students.each do |s| %>
+          <div class="listitem">
+            <div class="student_name"> <%= s.full_name %> </div>
+            <div class="check_box">
+              <%  if check_free_school? %>
+                <%= check_box_tag "classwork[student_ids][]", s.id,@assigned_students.include?(s),:class=>"right",:checked=>"true",:onclick=>"j( '#dialog-message-subscribed' ).dialog( 'open' ); return false;" %>
+              <% else %> 
+                <%= check_box_tag "classwork[student_ids][]", s.id,@assigned_students.include?(s),:class=>"right" %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="flash-msg"><%= t('no_students') %></p>
+    <% end %>
+  <% end  %>
+</div>

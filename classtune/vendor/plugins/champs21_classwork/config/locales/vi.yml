@@ -1,0 +1,79 @@
+vi:
+  activerecord:
+    attributes:
+      Classwork:
+        title: "Tên"
+        content: "Nội dung"
+        student_list: "Danh sách học sinh"
+        duedate: "Hạn nộp"
+
+      Classwork_answer:
+        title: "Tên"
+        content: "Nội dung"
+
+
+    errors:
+      messages:
+        date_cant_be_past_date : "Date can't be past date"
+
+
+  new_Classwork_sucessfuly_created: "Bài tập mới đã được tạo thành công"
+  Classwork_details_updated: "Chi tiết về bài tập đã được cập nhật"
+  Classwork_sucessfully_deleted: "Bài tập đã được xóa thành công"
+  you_do_not_have_permission_to_delete_this_Classwork: "Bạn không được phép xóa bài tập này"
+  you_are_not_allowed_to_download_that_file: "Bạn không được phép tải tệp đó"
+  Classwork_text: "Bài tập"
+  Classworks_text: "Các bài tập"
+  submit_answer: "Nộp câu trả lời"
+  attach_a_file: "Đính kèm tệp"
+  on: "Về"
+  deleted_student: "Deleted Student"
+
+  Classworks:
+    max_size: "500KB max"
+    on_text: "Về "
+    change_subject: "Đổi môn"
+    create_new_Classwork: "Tạo bài tập mới"
+    all_Classworks: "Tất cả các bài tập"
+    there_are_no_subjects_assigned_to_this_employee: "Không có môn nào được giao cho nhân viên này"
+    you_have_not_been_assigned_any_Classworks: "Bạn chưa được giao bất kỳ bài tập nào"
+    create_a_new_Classwork: "Tạo bài tập mới"
+    Classwork_already_due: "Bài tập đã hết hạn"
+    due_in: "Hết hạn ngày"
+    delete_Classwork: "Xóa bài tập"
+    delete_this_Classwork: "Bạn có chắc chắn bạn muốn xóa bài tập này không? Nó cũng sẽ xóa tất cả các câu trả lời đã nộp cho bài tập này."
+    assigned: "Đã giao"
+    answered: "Đã trả lời"
+    resubmit: "Nộp lại"
+    answer_this_Classwork: "Trả lời bài tập này"
+    rejected: "Bị từ chối"
+    hostel_accepted: "ĐÃ ĐƯỢC CHẤP NHẬN"
+    update_Classwork: "Cập nhật bài tập"
+    edit_Classwork: "Chỉnh sửa bài tập"
+    no_Classworks_for_this_subject_have_been_created: "Bài tập cho môn này chưa được tạo"
+    no_students: "Không có học sinh"
+    you_cannot_edit_this_Classwork: "Bạn không thể chỉnh sửa bài tập này"
+
+  Classwork_answers:
+    Classwork_submitted: "Bài tập đã được nộp"
+    you_are_not_allowed_to_view_that_page: "Bạn không được phép xem trang đó"
+    you_cannot_edit_the_Classwork_once_it_is_accepted: "Bạn không thể chỉnh sửa bài tập một khi nó đã được chấp nhận"
+    you_cannot_edit_this_Classwork: "Bạn không thể chỉnh sửa bài tập này"
+    Classwork_successfuly_updated: "Bài tập đã được cập nhật thành công"
+    failed_to_update_Classwork: "Cập nhật bài tập bị lỗi"
+    failed_to_set_status_of_Classwork: "Thiết lập tình trạng bài tập bị lỗi"
+    you_cannot_approve_or_reject_this_Classwork: "Bạn không thể chấp nhận hoặc từ chối bài tập này"
+    Classwork_text: "Bài tập"
+    edit_answer: "Chỉnh sửa câu trả lời"
+    submit_an_answer: "Nộp câu trả lời"
+    reject_answer: "Từ chối câu trả lời"
+    accept_answer: "Chấp nhận câu trả lời"
+    the_Classwork_is: "Bài tập là"
+    resubmit_answer: "Nộp lại câu trả lời"
+    this_answer_yet_to_be_evaluated: "Câu trả lời này vẫn chưa được đánh giá"
+    submitted_on: "Nộp vào"
+    submitted_by: "Nộp bởi"
+    answer: "Trả lời"
+    already_answered: "Bạn đã trả lời"
+    this_answer_is_not_for_the_Classwork: "This is not the answer for this Classwork"
+

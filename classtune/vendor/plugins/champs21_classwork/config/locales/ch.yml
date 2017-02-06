@@ -1,0 +1,82 @@
+# Sample localization file for English. Add more files in this directory for other locales.
+# See http://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+ch:
+  activerecord:
+    attributes:
+      Classwork:
+        title: "標題"
+        content: "内容"
+        student_list: "學生名單"
+        duedate: "截止日期"
+
+      Classwork_answer:
+        title: "標題"
+        content: "内容"
+
+
+    errors:
+      messages:
+        date_cant_be_past_date : "Date can't be past date"
+
+
+  new_Classwork_sucessfuly_created: "新的作業成功創建"
+  Classwork_details_updated: "作業詳細信息已經更新"
+  Classwork_sucessfully_deleted: "作業已經成功删除"
+  you_do_not_have_permission_to_delete_this_Classwork: "你没有權限删除這個作業"
+  you_are_not_allowed_to_download_that_file: "不允許你下載那個文件"
+  Classwork_text: "作業"
+  Classworks_text: "作業"
+  submit_answer: "提交答案"
+  attach_a_file: "附加一個文件"
+  on: "開啓"
+  deleted_student: "Deleted Student"
+
+  Classworks:
+    max_size: "最大500KB"
+    on_text: "開啓 "
+    change_subject: "更改課目"
+    create_new_Classwork: "創建新的作業"
+    all_Classworks: "所有作業"
+    there_are_no_subjects_assigned_to_this_employee: "這位員工還没有分配課目"
+    you_have_not_been_assigned_any_Classworks: "你還没有被分配任何作業"
+    create_a_new_Classwork: "創建一項新的作業"
+    Classwork_already_due: "作業已經到期"
+    due_in: "到期在"
+    delete_Classwork: "删除作業"
+    delete_this_Classwork: "你確定要删除這個作業嗎？你會導致爲這個作業提交的所有答案。"
+    assigned: "已分配"
+    answered: "已回答"
+    resubmit: "重新提交"
+    answer_this_Classwork: "回答這個作業"
+    rejected: "被拒絶"
+    hostel_accepted: "已接受"
+    update_Classwork: "更新作業"
+    edit_Classwork: "編輯作業"
+    no_Classworks_for_this_subject_have_been_created: "這一課目項下没有創建作業"
+    no_students: "没有學生"
+    you_cannot_edit_this_Classwork: "你不能編輯這個作業"
+
+  Classwork_answers:
+    Classwork_submitted: "已提交作業"
+    you_are_not_allowed_to_view_that_page: "不允許你瀏覽那個頁面"
+    you_cannot_edit_the_Classwork_once_it_is_accepted: "如果作業已經被接受，你就不能編輯作業"
+    you_cannot_edit_this_Classwork: "你不能編輯這個作業"
+    Classwork_successfuly_updated: "作業已經成功更新"
+    failed_to_update_Classwork: "未能更新作業"
+    failed_to_set_status_of_Classwork: "未能設置作業狀態"
+    you_cannot_approve_or_reject_this_Classwork: "你不能批準或則拒絶這個作業"
+    Classwork_text: "作業"
+    edit_answer: "編輯答案"
+    submit_an_answer: "提交一個答案"
+    reject_answer: "拒絶答案"
+    accept_answer: "接受答案"
+    the_Classwork_is: "作業是"
+    resubmit_answer: "重新提交答案"
+    this_answer_yet_to_be_evaluated: "這個答案尚待評估"
+    submitted_on: "已提交在"
+    submitted_by: "已提交由"
+    answer: "答案"
+    already_answered: "你已经回答了"
+    this_answer_is_not_for_the_Classwork: "This is not the answer for this Classwork"
+

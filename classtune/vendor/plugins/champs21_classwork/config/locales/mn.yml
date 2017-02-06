@@ -1,0 +1,79 @@
+mn:
+  activerecord:
+    attributes:
+      Classwork:
+        title: "Гарчиг"
+        content: "Агуулга"
+        student_list: "Оюутаны жагсаалт"
+        duedate: "Эцсийн хугацаа"
+
+      Classwork_answer:
+        title: "Гарчиг"
+        content: "Агуулга"
+
+
+    errors:
+      messages:
+        date_cant_be_past_date : "Он сар өдөр өнгөрсөн байх боломжгүй"
+
+
+  new_Classwork_sucessfuly_created: "Шинэ даалгавар амжилттай үүслээ"
+  Classwork_details_updated: "Даалгаварийг нарийвчилсан мэдээлэл шинэчлэгдсэн"
+  Classwork_sucessfully_deleted: "Даалгавар үүрэг амжилттай усталаа"
+  you_do_not_have_permission_to_delete_this_Classwork: "Танд энэ үүрэг даалгаварыг устгах эрх байхгүй байна"
+  you_are_not_allowed_to_download_that_file: "Та энэ материалыг татаж авч болохгүй"
+  Classwork_text: "Үүрэг даалгавар"
+  Classworks_text: "Үүрэг даалгаварууд"
+  submit_answer: "Хариулт оруулах"
+  attach_a_file: "Материал хавсаргах"
+  on: "On"
+  deleted_student: "Deleted Student"
+
+  Classworks:
+    max_size: "500KB max"
+    on_text: "On "
+    change_subject: "Сэдвийг хичээлийг өөрчлөх"
+    create_new_Classwork: "Шинэ үүрэг даалгавар үүсгэх"
+    all_Classworks: "Бүх даалгавар үүргүүд"
+    there_are_no_subjects_assigned_to_this_employee: "Ажилтанд томилох сэдэв байхгүй байна"
+    you_have_not_been_assigned_any_Classworks: "Танд ямар нэгэн даалгавар томилогдоогүй байна"
+    create_a_new_Classwork: "Шинэ даалгавар үүсгэх"
+    Classwork_already_due: "Даалгавар аль хэдийн үүрэг болсон"
+    due_in: "Due in"
+    delete_Classwork: "үүрэг даалгавар устгах"
+    delete_this_Classwork: "Та энэ даалгаварыг устгахдаа итгэлтэй байна уу ?Энэ үйлдээр давхар даалгавартай холбогдолтой бүх хариултууд устана."
+    assigned: "Үүрэг болгосон/ Томилсон"
+    answered: "Хариулсан"
+    resubmit: "Resubmit"
+    answer_this_Classwork: "Энэ даалгаварт хариулах"
+    rejected: "Цуцлагдах"
+    hostel_accepted: "Хүлээн авсан"
+    update_Classwork: "Даалварыг шинэчлэх"
+    edit_Classwork: "Даалгаварыг засварлах"
+    no_Classworks_for_this_subject_have_been_created: "Энэ хичээлд даалгавар байхгүй байна"
+    no_students: "Оюутанууд байхгүй байна"
+    you_cannot_edit_this_Classwork: "Та энэ даалгаварыг засварлаж болохгүй"
+
+  Classwork_answers:
+    Classwork_submitted: "Даалгавар танилцуулагдсан өгөгдсөн"
+    you_are_not_allowed_to_view_that_page: "Та энэ хуудсыг харах боломжгүй"
+    you_cannot_edit_the_Classwork_once_it_is_accepted: "Та энэ даалгаварыг хүлээж авсан бол засварлаж болохгүй"
+    you_cannot_edit_this_Classwork: "Та энэ даалгаварыг засварлаж болохгүй"
+    Classwork_successfuly_updated: "Даалгавар амжилттай шинэчлэгдээ"
+    failed_to_update_Classwork: "Даалгаварыг  шинэчлэх нь амжилтгүй боллоо"
+    failed_to_set_status_of_Classwork: "Даалгаварын статусыг суулгах нь амжилтгүй боллоо"
+    you_cannot_approve_or_reject_this_Classwork: "Та энэ даалгаварыг баталгаажуулах цуцлаж болохгүй"
+    Classwork_text: "Даалгавар"
+    edit_answer: "Хариултыг засварлах"
+    submit_an_answer: "Харилт олгох"
+    reject_answer: "Хариултыг цуцлах"
+    accept_answer: "Хариулт зөвшөөрөх"
+    the_Classwork_is: "Даалгавар бол"
+    resubmit_answer: "Resubmit Answer"
+    this_answer_yet_to_be_evaluated: "Энэ хариулт хараахан дүгнэгдээгүй байна"
+    submitted_on: "Submitted on"
+    submitted_by: "-р танилцуулагдсан / хийгдсэн"
+    answer: "Хариулах"
+    already_answered: "Та аль хэдийн хариулсан байна"
+    this_answer_is_not_for_the_Classwork: "This is not the answer for this Classwork"
+

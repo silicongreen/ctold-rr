@@ -1,0 +1,43 @@
+<div id="content-header">
+  <%= show_header_icon %>
+  <a href="/classworks"><h1><%= "#{t('classworks_text')}"%></h1></a>
+  <div class='header-sep'>|</div>
+  <div class='sub-header'><%= "#{t('submit_an_answer')}"%></div>
+</div>
+
+<div id="page-yield" class="ch_classwork_answers_wrapper">
+
+  <% unless flash[:notice].nil? %>
+    <p class="flash-msg"> <%= flash[:notice] %> </p>
+  <% end %>
+  <div class="form-container">
+    <% form_for [@classwork,@classwork_answer] , :html => { :multipart => true } do |f| %>
+      <%= error_messages_for :classwork,:classwork_answer %>
+      <div class="classwork_container">
+        <div class="classwork_form">
+
+          <div class="label-field-pair">
+            <label  for="classwork_title"><%= "#{t('title')}"%></label>
+            <div class="text-input-bg"><%= f.text_field :title %></div>
+          </div>
+
+          <div class="label-field-pair " id="classwork_description">
+            <label ><%= "#{t('content')}"%></label>
+            <div  class="text-input-bg"><%= f.text_area  :content %></div>
+          </div>
+
+          <div class="label-field-pair">
+            <label ><%= "#{t('attach_a_file')}"%></label>
+            <div  class="text-input-bg" id="classwork-attachment"><%= f.file_field  :attachment %></div>
+          </div>
+
+          <%= f.submit "#{t('submit_answer')}" ,:class=>"submit_button", :disable_with => "#{t('please_wait')}"%>
+        </div>
+
+
+      </div>
+
+
+    <% end %>
+  </div>
+</div>

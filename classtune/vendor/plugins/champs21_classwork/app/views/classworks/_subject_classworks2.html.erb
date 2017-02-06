@@ -1,0 +1,84 @@
+<% unless @classworks.nil? %>
+                    <% total_classwork = @classworks.count %>
+                    <% i = 1 %>
+                    <% @classworks.each_with_index do |classwork,j| %>
+                      <% unless classwork.subject.nil? %>
+                        <div class="portlet-subcontent"  style="width:100%">     
+                          <div class="timetable_left">
+                            <% if classwork.subject.icon_number? %>
+                                  <%= image_tag("icons/subjects/"+classwork.subject.icon_number , :size=> "83x60", :alt=> classwork.subject.name) %>
+                                <% else %>
+                                  <%= image_tag("icons/subjects/8.png" , :size=> "83x60", :alt=> classwork.subject.name) %>
+                            <% end %>
+
+                          </div>
+                          <%
+                                    unless classwork.subject.employees.nil?
+                                      emp_name = classwork.subject.employees[0].first_name
+                                      unless classwork.subject.employees[0].middle_name.nil?
+                                        emp_name += ' ' + classwork.subject.employees[0].middle_name
+                                      end
+                                      unless classwork.subject.employees[0].last_name.nil?
+                                        emp_name += ' ' + classwork.subject.employees[0].last_name
+                                      end
+                                    end
+                                  %>
+                          <div class="timetable_right"  style="float:left;height: 70px;width: 40%;padding: 10px 0;">
+                            <div class="subcontent-header themed_text">
+                                <%=  link_to classwork.subject.name.to_s+' - '+classwork.title, classwork%>
+
+                            </div>                           
+                            <div class="subcontent-info"><%= emp_name %> </div>              
+                          </div>
+                          <div class="timetable_right"  style="float:left;height: 70px;width: 35%;padding: 10px 0;border-left:1px dotted #cccccc">                            
+                            <div class="subcontent-date"><b style="color:#000;">Assign Date &nbsp;:&nbsp; </b><%= I18n.l(classwork.created_at,:format=>"%A, %d %B, %Y") %></div>  
+                                                               
+                          </div>  
+                          
+                          
+                        </div>
+                        <% if i<total_classwork %>
+                           <div style="border-bottom: 1px solid #ccc; float: left; margin: 15px; width: 95%;"></div> 
+                        <% else %>
+                          <div style=" margin: 15px;float: left; width: 95%;"></div> 
+                        <% end %>
+                        <% i = i+1 %>
+                      <% end %>
+                    <% end %>
+                 <% else %>
+                 <div class="portlet-subcontent">    
+                   No classwork Submitted
+                 </div>  
+            <% end  %>
+                          <div class="pagination_div"><div class="div1"><%= will_paginate @classworks, :previous_label=>"<", :next_label=>">", :renderer => 'RemoteLinkRenderer' ,:remote => { :loading =>  "$('loader_paginate').show();",:complete =>"$('loader').hide();"  }, :params => {:controller=>:classworks,:action => "subject_classworks2",:subject_id => @subject_id} %></div><div class="div2"><%= image_tag("loader.gif",
+          :align => "absmiddle",
+          :border => 0,
+          :id => "loader_paginate",
+          :style =>"display: none;" ) %></div></div>
+                          
+                          <style type="text/css">
+            .calendar_date_select_popup_icon{
+              margin: 12px 1px 0;
+            }
+            .attachment {
+              background: url("/images/classwork/paperclip.png") no-repeat left;
+              padding-left: 11px;
+              height: 35px;
+            }
+            .clear-date {
+              color: #db3434;
+              cursor: pointer;
+              float: left;
+              margin-left: 23px;
+              margin-top: -22px;
+              text-decoration: underline;
+              width: 0;
+            }
+            div h2.routine
+            {
+             
+              width: 60%;
+            }
+          </style>
+            
+        

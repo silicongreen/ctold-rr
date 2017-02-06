@@ -1,0 +1,79 @@
+pt:
+  activerecord:
+    attributes:
+      Classwork:
+        title: "Título"
+        content: "Conteúdo"
+        student_list: "Lista de alunos"
+        duedate: "dia de entrega"
+
+      Classwork_answer:
+        title: "Título"
+        content: "Conteúdo"
+
+
+    errors:
+      messages:
+        date_cant_be_past_date : "Date can't be past date"
+
+
+  new_Classwork_sucessfuly_created: "Nova tarefa criada com sucesso"
+  Classwork_details_updated: "Detalhes da tarefa atualizados"
+  Classwork_sucessfully_deleted: "Tarefa APAGADO com sucesso"
+  you_do_not_have_permission_to_delete_this_Classwork: "Você não tem permissão para apagar esta tarefa"
+  you_are_not_allowed_to_download_that_file: "Você não tem permissão para baixar o arquivo"
+  Classwork_text: "Tarefa"
+  Classworks_text: "Tarefas"
+  submit_answer: "Enviar Resposta"
+  attach_a_file: "Anexar um ficheiro"
+  on: "Em"
+  deleted_student: "Deleted Student"
+
+  Classworks:
+    max_size: "500KB max"
+    on_text: "Em "
+    change_subject: "Alterar Disciplina"
+    create_new_Classwork: "Criar nova tarefa"
+    all_Classworks: "Todas tarefas"
+    there_are_no_subjects_assigned_to_this_employee: "Não há nenhuma disciplina atribuídos a esse funcionário"
+    you_have_not_been_assigned_any_Classworks: "Vocês não foram atribuídos quaisquer tarefas"
+    create_a_new_Classwork: "Criar uma nova tarefa"
+    Classwork_already_due: "Tarefa em atraso "
+    due_in: ""
+    delete_Classwork: "Tarefas APAGADAS"
+    delete_this_Classwork: "Tem certeza que quer apagar esta tarefa? Isso também irá excluir todas as respostas apresentadas a essa tarefa."
+    assigned: "Atribuido"
+    answered: "Respondida"
+    resubmit: "Reenviar"
+    answer_this_Classwork: "Responder a esta tarefa"
+    rejected: "Rejeitado"
+    hostel_accepted: "ACEITO"
+    update_Classwork: "Atualizar tarefa"
+    edit_Classwork: "Editar tarefa"
+    no_Classworks_for_this_subject_have_been_created: "Nenhuma tarefa criado para esta disciplina"
+    no_students: "Sem estudantes"
+    you_cannot_edit_this_Classwork: "Você não pode editar esta tarefa"
+
+  Classwork_answers:
+    Classwork_submitted: "Tarefa enviada"
+    you_are_not_allowed_to_view_that_page: "Você não está autorizado a ver essa página"
+    you_cannot_edit_the_Classwork_once_it_is_accepted: "Você não pode editar a tarefa uma vez que é aceito"
+    you_cannot_edit_this_Classwork: "Você não pode editar esta tarefa"
+    Classwork_successfuly_updated: "Tarefa atualizada com sucesso"
+    failed_to_update_Classwork: "Falha ao atualizar tarefa"
+    failed_to_set_status_of_Classwork: "Falha ao definir o estado da tarefa"
+    you_cannot_approve_or_reject_this_Classwork: "Você não pode aprovar ou rejeitar esta atribuição"
+    Classwork_text: "Tarefa"
+    edit_answer: "Editar resposta"
+    submit_an_answer: "Submeter uma resposta"
+    reject_answer: "Rejeitar resposta"
+    accept_answer: "Aceitar resposta"
+    the_Classwork_is: "A Taresfa esta"
+    resubmit_answer: "Resubmeter resposta"
+    this_answer_yet_to_be_evaluated: "Esta resposta ainda está para ser avaliado"
+    submitted_on: "Enviado no"
+    submitted_by: "Enviado por"
+    answer: "Resposta"
+    already_answered: "Você já respondeu"
+    this_answer_is_not_for_the_Classwork: "This is not the answer for this Classwork"
+

@@ -1,0 +1,154 @@
+<div class="box_content" style="float:left;">
+<div class="partial_classwork" style="padding: 0px 0px;">
+
+  <!--<a href="/classworks"><h2 class="f2 routine">classwork | <%#= @classwork.subject.name.to_s %></h2></a>-->
+  <div class="header-wrapper">
+    <div class="header-title">
+      <div class="header-icon">
+        <%= image_tag '/images/icons/classwork.png', :html => {:alt => 'classwork'} %>
+      </div>
+      <div class="header-title-text-wrapper">
+        <div class="header-title-main-text f2">
+          <%= link_to "classwork", :controller => 'classworks', :action => 'index' %>
+          <span style="float: left;clear:both;font-size: 15px;"><%= Time.now.strftime("%Y-%m-%d") %></span>
+        </div>
+        <div class="header-title-sub-text f5">  </div>
+      </div>
+    </div>
+
+    <div class="clearfix"></div>
+    
+    <!--<div class="tabbed-header-wrapper">
+      <ul class="header-tabs">
+        <li><a href="#" class="f2">Monthly Attendance Report</a></li>
+        <li><a href="#" class="f2">Yearly Attendance Report</a></li>
+      </ul>
+    </div>-->
+
+  </div>  
+<%#= debug @classwork %>
+  <%
+        unless @classwork.employee.nil?
+          emp_name = @classwork.employee.first_name
+          unless @classwork.employee.middle_name.nil?
+            emp_name += ' ' + @classwork.employee.middle_name
+          end
+          unless @classwork.employee.last_name.nil?
+            emp_name += ' ' + @classwork.employee.last_name
+          end
+        end
+      %>
+<div class="portlet-subcontent" style="width:100%">     
+  <div class="timetable_left">
+     <% if @classwork.subject.icon_number %>
+          <%= image_tag("icons/subjects/"+@classwork.subject.icon_number , :size=> "83x60", :alt=> @classwork.subject.name) %>
+        <% else %>
+          <%= image_tag("icons/subjects/8.png" , :size=> "83x60", :alt=> @classwork.subject.name) %>
+    <% end %>
+
+  </div>
+  <div class="timetable_right"  style="float:left;height: 70px;width: 40%;padding: 10px 0;">
+    <div class="subcontent-header themed_text">
+        <%=  link_to @classwork.subject.name.to_s+' - '+@classwork.title, @classwork%>
+    </div>                           
+    <div class="subcontent-info"><%= emp_name %> </div>              
+  </div>
+  <div class="timetable_right"  style="float:left;height: 70px;width: 35%;padding: 10px 0;border-left:1px dotted #cccccc">                            
+    <div class="subcontent-date" style="color:#000;"><b>Assigned On &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</b> <%="<small>#{@classwork.created_at.strftime("%A, %d %B, %Y")}</small>"%></div>  
+                                        
+  </div>
+  
+ 
+  
+</div>
+<% unless @classwork.attachment_file_name.nil? %>
+  <div class="portlet-subcontent atachment_div" style="width:100%">
+    <div style="border-right: 1px dotted #cccccc;float: left;height: 45px;width: 12%;">    
+        <%= image_tag("/images/classwork/attach_clip.png" , :class=> "attachment_clip", :alt=> @classwork.subject.name) %>
+    </div>
+    <div style="float:left;height: 27px;width: 35%;padding: 10px;">                            
+      <%= link_to 'Worksheet', :controller => "classworks", :action => "download_attachment" , :id=>@classwork.id %>
+    </div>
+    <div style=" float: right; height: 27px;  padding: 10px;  width: 7%;border-left: 1px dotted #cccccc;">
+      <%= link_to 'Download', :controller => "classworks", :action => "download_attachment" , :id=>@classwork.id %>
+    </div>
+  </div>  
+<% end %>
+<div id="page-yield" class="ch_classwork_wrapper bg-disable">
+
+  <% unless flash[:notice].nil? %> <p class="flash-msg"> <%= flash[:notice] %> </p> <% end %>
+  <div style="background-color: #ffffff; float: left; padding: 30px;width: 94%;">
+      <div id="classwork_content">
+      <p>
+        <%= @classwork.content.to_s%>
+      </p>
+      
+    </div>
+
+
+    <% if @classwork.employee.present? and (@current_user.employee_record == @classwork.employee || @current_user.admin?)%>
+      <div id="employee-options" >
+        <div id="action_buttons">
+          <div>
+            <%= link_to "► #{t('edit_text')}",
+              edit_classwork_path(@classwork), :class => "user_button"%>
+          </div>
+          <div>
+            <%= link_to "► #{t('delete_classwork')}",
+              @classwork, :method => "delete",
+              :confirm => "#{t('delete_this_classwork')}", :class => "user_button" %>
+          </div>
+          <% if @classwork.is_published==0 %>
+          <%= link_to "► Published classwork", { :action => 'published_classwork', :id =>params[:id]},
+              :confirm => "Do You realy want to publish this classwork?", :class => "user_button" %>
+          <% end %>  
+        </div>
+        
+
+      </div>
+      <div class="extender"></div>
+
+    <% else%>
+      <div class="student-options">
+        <div id="classwork_ajax_msg" style="clear: both;">
+              
+        </div>
+      </div>
+      
+    <% end %>
+
+  </div>
+</div>
+</div>
+  </div>
+<%= stylesheet_link_tag 'tadded-header' %>
+<style type="text/css">
+  #action_buttons {
+    margin-left: 0;
+  }
+  table#listing {
+    padding: 30px 10px 30px;
+  }
+  table#listing .tr-head td {
+    font-size: 13px;
+  }
+  .emp_name {
+    line-height: 0px;
+    font-size: 14px;
+    font-weight: normal;
+    margin-top: -15px;
+    margin-bottom: 25px;
+    color: #555;
+  }
+  .partial_classwork
+{
+    clear: both;
+}
+.partial_classwork h2 {
+  color: #2dc99a;
+  float: left;
+  font-size: 38px;
+  font-weight: normal;
+  margin: 0;
+}
+</style>

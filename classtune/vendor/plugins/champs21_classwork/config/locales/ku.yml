@@ -1,0 +1,81 @@
+# Sample localization file for English. Add more files in this directory for other locales.
+# See http://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+ku:
+  activerecord:
+    attributes:
+      Classwork:
+        title: "ناونیشان"
+        content: "ناوەڕۆک"
+        student_list: "لیستەی فێرخوازەکان"
+        duedate: "ڕۆژی تەواوکردن"
+
+      Classwork_answer:
+        title: "ناونیشان"
+        content: "ناوەڕۆک"
+
+
+    errors:
+      messages:
+        date_cant_be_past_date : "Date can't be past date"
+
+
+  new_Classwork_sucessfuly_created: "هاوتایەکی نوێ سەرکەوتووانە دروست کرا"
+  Classwork_details_updated: "درێژەی هاوتاکردن نوێکرایەوە"
+  Classwork_sucessfully_deleted: "هاوتاکردن سەرکەوتووانە سڕایەوە"
+  you_do_not_have_permission_to_delete_this_Classwork: "دەسەڵاتی سڕینەوەی ئەم هاوتاکردنەت نیە"
+  you_are_not_allowed_to_download_that_file: "ڕێگەت پێ نەدراوە کە ئەو پەڕگەیە دابگریت"
+  Classwork_text: "هاوتاکردن"
+  Classworks_text: "هاوتاکردن"
+  submit_answer: "وەڵامێک بنێرە"
+  attach_a_file: "پەڕگەیەک هاوپێچ بکە"
+  on: "لە"
+  deleted_student: "Deleted Student"
+
+  Classworks:
+    on_text: "لە "
+    change_subject: "بابەت بگۆڕە"
+    create_new_Classwork: "هاوتاکردنێکی نوێ دابنێ"
+    all_Classworks: "هەموو هاوتاکردنەکان"
+    there_are_no_subjects_assigned_to_this_employee: "هیچ بەبەتێک هاوتای ئەم فەرمانبەرە نەکراوە"
+    you_have_not_been_assigned_any_Classworks: "هیچ هاوتایەکت بۆ نەکراوە"
+    create_a_new_Classwork: "هاوتای نوێ دروست بکە"
+    Classwork_already_due: "هاوتاکردن ئیتر تەواوبووە"
+    due_in: "تەواوبووە لە"
+    delete_Classwork: "سڕینەوەی هاوتاکردن"
+    delete_this_Classwork: "دڵنیایت لە سڕیننەوەی ئەم هاوتایە؟ چونکە بەسڕینەوەی ئەم، هەموو وەڵامەکانیشی دەسڕرێنەوە."
+    assigned: "هاوتاکرا"
+    answered: "وەڵامدرایەوە"
+    resubmit: "بینێرەوە"
+    answer_this_Classwork: "وەڵامێک بۆ ئەم هاوتایی کردنە بنووسە"
+    rejected: "ڕێگەی نەدرا"
+    hostel_accepted: "وەرگیرا"
+    update_Classwork: "نوێکردنەوەی هاوتاکردن"
+    edit_Classwork: "دەستکاریی کردنی هاوتاکردن"
+    no_Classworks_for_this_subject_have_been_created: "هیچ هاوتاییەک بۆ ئەم بابەتە دانەنراوە"
+    no_students: "هیچ فێرخوازێک"
+    you_cannot_edit_this_Classwork: "ناتوانیت دەستکاری ئەم هاوتاکردنە بکەیت"
+
+  Classwork_answers:
+    Classwork_submitted: "هاوتاکردن نێررا"
+    you_are_not_allowed_to_view_that_page: "ڕێت پێ نەدراوە تەماشای ئەو پەڕەیە بکەیت"
+    you_cannot_edit_the_Classwork_once_it_is_accepted: "ناتوانیت دەستکاریی هاوتاکردنەکە بکەیت لە کاتێکدا وەرگیراوە"
+    you_cannot_edit_this_Classwork: "ناتوانیت دەستکاری ئەم هاوتاکردنە بکەیت"
+    Classwork_successfuly_updated: "هاوتاکردنەکە سەرکەوتووانە کۆتایی هات"
+    failed_to_update_Classwork: "نەتوانرا هاوتاکردنەکە نوێ بکرێتەوە"
+    failed_to_set_status_of_Classwork: "هەڵە ڕویدا لەکاتی گۆڕینی ئاستی هاوتاکردنەکە"
+    you_cannot_approve_or_reject_this_Classwork: "تۆ ناتوانیت ئەم هاوتاکردنە قبوڵ یا ڕەت بکەیتەوە"
+    Classwork_text: "هاوتاکردن"
+    edit_answer: "دەستکاری وەڵام بکە"
+    submit_an_answer: "وەڵام بنێرە"
+    reject_answer: "وەڵام وەرمەگرە"
+    accept_answer: "وەڵام وەربگرە"
+    the_Classwork_is: "هاوتاکردنەکە بریتیە لە: "
+    resubmit_answer: "وەڵامەکە بنێرەوە"
+    this_answer_yet_to_be_evaluated: "ئەم وەڵامە هەڵسەنگاندنی دەوێت"
+    submitted_on: "خرایە بەردەست لە: "
+    submitted_by: "نێرراوە لە لایەن: "
+    answer: "وەڵام"
+    already_answered: "You have already answered"
+    this_answer_is_not_for_the_Classwork: "This is not the answer for this Classwork"
+

@@ -124,6 +124,11 @@ AND exam_groups.result_published = 1"
                           %>
                             <%= link_to "<div class='report_box_icon'>"+hcount+"<span class='f2'>REPORT CARD</span></div>", :controller => 'student', :action => 'class_test_report' %> 
                         </li>
+                        <%if Champs21Plugin.can_access_plugin?("champs21_classwork")%>
+                        <li class="als-item" >
+                          <%=  link_to "<div class='classwork_box_icon'><span class='f2'>CLASSWORK</span></div>", :controller => 'classworks', :action => 'index' %>
+                        </li>
+                        <% end %>
                         <li class="als-item">
                             <%=  link_to "<div class='syllabus_box_icon'><span class='f2'>SYLLABUS</span></div>", :controller => 'syllabus', :action => 'syllabus_view' %>
                         </li>

@@ -532,6 +532,41 @@
     top: 65px;
 }
 
+.classwork_box_icon {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background: url("/images/dashpallete/grey_icon/classwork_gray.png") no-repeat scroll 42px 40px / 33px 33px #ffffff;
+    border-color: #cccccc;
+    border-image: none;
+    border-style: solid;
+    border-width: 1px 2px 3px 1px;
+    color: #969799;
+    cursor: pointer;
+    float: left;
+    font-size: 20px;
+    height: 96px;
+    margin-bottom: 15px;
+    margin-left: 0px !important;
+    margin-right: 10px !important;
+    padding: 10px;
+    text-align: center;
+    width: 96px;
+    position: relative;
+    transition: all 0.25s ease-in 0s;
+}
+.classwork_box_icon:hover {
+    background: url("/images/dashpallete/classwork_white.png") no-repeat scroll 42px 40px / 33px 33px #95D0CA;
+    color:#fff;
+    transition: all 0.25s linear 0s;
+}
+.classwork_box_icon span {
+    font-size: 12px;
+    position: relative;
+    top: 65px;
+}
+
 
 .syllabus_box_icon {
     -moz-border-bottom-colors: none;

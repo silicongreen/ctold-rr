@@ -42,7 +42,11 @@
               <li class="als-item" >
                 <%=  link_to "<div class='exam_box_icon'><span class='f2'>EXAM ROUTINE</span></div>", :controller => 'exam', :action => 'index' %>
               </li>
-             
+              <%if Champs21Plugin.can_access_plugin?("champs21_classwork")%>
+                <li class="als-item" >
+                 <%=  link_to "<div class='classwork_box_icon'><span class='f2'>CLASSWORK</span></div>", :controller => 'classworks', :action => 'index' %>
+                </li>
+              <% end %>
               
               <li class="als-item">
                 <%=  link_to "<div class='syllabus_box_icon'><span class='f2'>SYLLABUS</span></div>", :controller => 'syllabus', :action => 'classes_view' %>

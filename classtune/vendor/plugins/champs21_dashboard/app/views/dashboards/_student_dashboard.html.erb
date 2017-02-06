@@ -143,7 +143,11 @@ AND exam_groups.result_published = 1"
                                   :url => {:controller=>"dashboards",:action => "exam_result_data_student"} %>
                             </li>
                            
-                            
+                            <%if Champs21Plugin.can_access_plugin?("champs21_classwork")%>
+                              <li class="als-item" >
+                                <%=  link_to "<div class='classwork_box_icon'><span class='f2'>CLASSWORK</span></div>", :controller => 'classworks', :action => 'index' %>
+                              </li>
+                            <% end %>
                            
                             <li class="als-item">
                                 <%=  link_to "<div class='syllabus_box_icon'><span class='f2'>SYLLABUS</span></div>", :controller => 'syllabus', :action => 'syllabus_view' %>

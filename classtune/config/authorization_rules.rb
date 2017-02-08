@@ -11,6 +11,10 @@ authorization do
   #custom - privileges
   role :examination_control do
     includes :archived_exam_reports
+    has_permission_on [:marks],
+      :to => [
+      :index
+    ]
     has_permission_on [:exam],
       :to => [
       :index,
@@ -347,6 +351,10 @@ authorization do
 
   role :enter_results  do
     includes :archived_exam_reports
+    has_permission_on [:marks],
+      :to => [
+      :index
+    ]
     has_permission_on [:exam],
       :to => [
       :index,
@@ -1831,6 +1839,10 @@ authorization do
       :update_class_designation,
       :delete_class_designation
     ]
+    has_permission_on [:marks],
+      :to => [
+      :index
+    ]
     has_permission_on [:exam],
       :to => [
       :index,
@@ -3175,6 +3187,10 @@ authorization do
     has_permission_on [:attendance_reports], :to => [:index,:load_end_date, :subject, :mode, :show, :year, :report, :filter, :student_details,:report_pdf,:filter_report_pdf] do
       if_attribute :is_allowed_to_mark_attendance? => is {true}
     end
+    has_permission_on [:marks],
+      :to => [
+      :index
+    ]
     has_permission_on [:exam],
       :to => [
       :index,
@@ -3423,6 +3439,10 @@ authorization do
   end
 
   role :subject_exam do
+    has_permission_on [:marks],
+      :to => [
+      :index
+    ]
     has_permission_on [:exam],
       :to => [
       :index,

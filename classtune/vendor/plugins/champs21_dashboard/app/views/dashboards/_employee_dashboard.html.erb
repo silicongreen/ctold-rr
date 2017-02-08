@@ -144,6 +144,9 @@ employee_id = @current_user.employee_record.id
       <%=  link_to "<img src='/images/dashpallete/big_icon/sylabus.png' style='width:100%'>", :controller => 'syllabus', :action => 'classes_view' %><br/><br/>      
       <%=  link_to "<img src='/images/dashpallete/big_icon/calender.png' style='width:100%'>", :controller => 'calendar', :action => 'index' %><br/><br/>      
       <%=  link_to "<img src='/images/dashpallete/big_icon/report_card.png' style='width:100%'>", :controller => 'exam', :action => 'exam_wise_report' %>
+      <% if @current_user.employee and can_access_request? :index,:marks %>
+      <br/><br/><%=  link_to "<img src='/images/dashpallete/big_icon/marks_entry.png' style='width:100%'>", :controller => 'marks', :action => 'index' %>
+      <% end %>
       
     </div>
 
@@ -151,9 +154,10 @@ employee_id = @current_user.employee_record.id
 
       <%=  link_to "<img src='/images/dashpallete/big_icon/Leave.png' style='width:100%'>", :controller => 'employee_attendance', :action => 'leaves', :id => employee_id %><br/><br/>
       <%=  link_to "<img src='/images/dashpallete/big_icon/meeting.png' style='width:100%'>", :controller => 'meetings', :action => 'index' %><br/><br/>
-      <%  #if !@current_user.admin? %>
+      
       <%=  link_to "<img src='/images/dashpallete/big_icon/lesson_plan.png' style='width:100%'>", :controller => 'lessonplan', :action => 'index' %>
-      <% #end %>
+      
+    
       <% if !@allow_detention.blank? %>
         <br/><br/><%=  link_to "<img src='/images/dashpallete/big_icon/displine.png' style='width:100%'>", :controller => 'detention', :action => 'index' %>
       <% end %>

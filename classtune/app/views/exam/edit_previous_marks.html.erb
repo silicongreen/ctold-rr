@@ -51,6 +51,8 @@
           markexam = 1
         end 
    %>
+   &nbsp;&nbsp;&nbsp;&nbsp;<%= link_to "Back To Your Subject Exams", :controller => "marks", :action=>"index" %>
+    
   </div>
   <% unless flash[:notice].nil? %>
     <p class="flash-msg"> <%= flash[:notice] %> </p>

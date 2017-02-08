@@ -96,7 +96,10 @@
   <% unless flash[:warn_notice].nil? %>
     <div id="errorExplanation" class="errorExplanation"><p><%= flash[:warn_notice] %></p> </div>
   <% end %>
+   <% if @current_user.employee %> <div class="bread_crumb" ><%= link_to "Back To Your Subject Exams", :controller => "marks", :action=>"index" %></div><% end %>
+  
   <div class="box">
+      
 
 
     <% unless @students.empty? %>

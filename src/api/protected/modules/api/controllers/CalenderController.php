@@ -971,9 +971,13 @@ class CalenderController extends Controller
         $date = Yii::app()->request->getPost('date');
         //$reason = Yii::app()->request->getPost('reason');
 
-        if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher && $batch_id && $student_id)
+        if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher && $batch_id)
         {
-            $student_ids = explode(",", $student_id);
+            $student_ids = array();
+            if($student_id)
+            {
+                $student_ids = explode(",", $student_id);
+            }
             $lates = explode(",", $late);
             if (!$date)
             {

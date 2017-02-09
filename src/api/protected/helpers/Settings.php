@@ -35,7 +35,7 @@ class Settings {
     public static $version_update = array(
       "version"         => 11,
       "toast_update"    => FALSE,
-      "must_update"     => TRUE
+      "must_update"     => FALSE
     );
     
     //spelling bee config

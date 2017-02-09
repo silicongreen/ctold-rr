@@ -121,7 +121,7 @@ class DashboardController extends Controller
                 $studentsobj = new Students();
                 $students = $studentsobj->getStudentById($student_id);
                 $response['data']['user_details'] = $students['batchDetails']->name." ".$students['batchDetails']['courseDetails']->course_name;
-                $response['data']['attandence'] = 6;
+                $response['data']['attandence'] = $this->atttext($school_id, $batch_id, $student_id);
             }  
             else
             {
@@ -134,7 +134,7 @@ class DashboardController extends Controller
                 $employeeobj = new Employees();
                 $employees = $employeeobj->getEmployeeById($employee_id);
                 $response['data']['user_details'] = $employees['department']->name;
-                $response['data']['attandence'] = $this->atttext($school_id, $batch_id, $student_id);
+                $response['data']['attandence'] = 6;
             }  
             
             $response['data']['last_visited']['first'] = "";

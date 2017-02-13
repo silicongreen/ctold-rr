@@ -189,11 +189,11 @@
               <%# end %>
               <div class="label-field-pair" style="margin: 0px auto;">
                 <label for="student_grade"><%= t('class_label') %></label>
-                <div class="text-input-bg"><div id="course_assingment"> <%= render :partial => 'student/courses_classwork', :object => @courses %></div></div>
+                <div class="text-input-bg"><div id="course_classwork"> <%= render :partial => 'student/courses_classwork', :object => @courses %></div></div>
               </div>        
               <div class="label-field-pair" id="sections_div" style="margin: 0px auto;">
                 <label for="student_grade"><%= t('section_label') %></label>
-                <div class="text-input-bg"><div id="section_assingment"> <%= render :partial => 'student/sections_classwork_view', :object => @classes %></div></div>
+                <div class="text-input-bg"><div id="section_classwork"> <%= render :partial => 'student/sections_classwork_view', :object => @classes %></div></div>
               </div>             
             <% end %><%# FORM END%>  
 

@@ -182,14 +182,14 @@
                   <div class="text-input-bg">
                     <%= select :student, :batch_name, options_for_select(Batch.active.find(:all, :group => "name").map {|b| [b.name, b.id]}, @batch_no.to_i), 
                       {:prompt => "#{t('select')}"},
-                      {:onChange => "#{remote_function(:url => {:controller => "student", :action => "get_classes"}, :with => "'batch_id='+value+'&'+$('new_student').serialize()+'&page=course_assingment&partial_view=student/courses_assingment&section_page=section_assingment&section_partial=student/sections_classwork_view'" ,:before => "$('loading_2').show();",
+                      {:onChange => "#{remote_function(:url => {:controller => "student", :action => "get_classes"}, :with => "'batch_id='+value+'&'+$('new_student').serialize()+'&page=course_classwork&partial_view=student/courses_classwork&section_page=section_classwork&section_partial=student/sections_classwork_view'" ,:before => "$('loading_2').show();",
                       :success => "$('loading_2').hide();")}"} %>
                     <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_2", :style =>"display: none;" ) %></div>
                 </div>
               <%# end %>
               <div class="label-field-pair" style="margin: 0px auto;">
                 <label for="student_grade"><%= t('class_label') %></label>
-                <div class="text-input-bg"><div id="course_assingment"> <%= render :partial => 'student/courses_assingment', :object => @courses %></div></div>
+                <div class="text-input-bg"><div id="course_assingment"> <%= render :partial => 'student/courses_classwork', :object => @courses %></div></div>
               </div>        
               <div class="label-field-pair" id="sections_div" style="margin: 0px auto;">
                 <label for="student_grade"><%= t('section_label') %></label>

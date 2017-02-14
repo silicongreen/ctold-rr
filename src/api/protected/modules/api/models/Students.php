@@ -439,6 +439,30 @@ class Students extends CActiveRecord
 
         return $students;
     }
+    public function getBatchStudentFull($batch_id)
+    {
+        $criteria = new CDbCriteria();
+        $criteria->select = 't.id,t.first_name,t.middle_name,t.last_name,t.immediate_contact_id,t.class_roll_no';
+        $criteria->compare('batch_id', $batch_id);
+        $criteria->order = "LENGTH(t.class_roll_no) ASC,t.class_roll_no ASC";
+        $students = $this->findAll($criteria); 
+        $return_array = array();
+
+        $i = 0;
+        foreach($students as $value)
+        {
+            $middle_name = (!empty($value->middle_name)) ? $value->middle_name.' ' : '';
+            $students_name = rtrim($value->first_name.' '.$middle_name.$value->last_name);
+            $return_array[$i]['student_id'] = $value->id;
+            $return_array[$i]['roll_no'] = $value->class_roll_no;
+            $return_array[$i]['student_name'] = $students_name;
+            $return_array[$i]['att'] = 0;
+            $i++;
+
+        } 
+
+        return $return_array;
+    }
 
     public function getStudentByBatchFull($batch_id)
     {
@@ -561,5 +585,17 @@ class Students extends CActiveRecord
         }
         return $users_mapping;
     }
+    
+    public function getByIdsStudent($ids)
+    { 
+        $criteria = new CDbCriteria();
+        $criteria->select = 't.*';
+        $criteria->addInCondition('t.id',$ids);
+        $criteria->order = "t.id DESC";
+        $students = $this->with('guradianDetails')->findAll($criteria);    
+        return $students;
+
+    }
+   
 
 }

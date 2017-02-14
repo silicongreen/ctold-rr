@@ -134,6 +134,7 @@ class Batches extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+       
         public function getBatchStartMax($batch_name=false,$class_name=false,$batch_id=false) 
        {
                 $criteria = new CDbCriteria();

@@ -235,6 +235,72 @@ class EmployeesSubjects extends CActiveRecord
 
             return $subject;
         }
+        public function getAllSubject($employee_id)
+        {
+            $criteria = new CDbCriteria;
+            $criteria->select = 't.*';
+            $criteria->compare("t.employee_id", $employee_id);
+           
+            $criteria->with = array(
+                'subject' => array(
+                    'select' => 'subject.id,subject.name',
+                    'joinType' => "INNER JOIN",
+                    'with' => array(
+                        "Subjectbatch" => array(
+                            "select" => "Subjectbatch.name",
+                            'joinType' => "INNER JOIN",
+                            'with' => array(
+                                "courseDetails" => array(
+                                    "select" => "courseDetails.course_name, courseDetails.section_name",
+                                    'joinType' => "INNER JOIN",
+                                )
+                            )
+                        )
+                    )
+                )
+            );
+           
+
+            $criteria->compare("Subjectbatch.is_deleted", 0);
+            $criteria->compare("courseDetails.is_deleted", 0);
+            
+            $obj_subject = $this->findAll($criteria);
+            $all_subject = array();
+            $all_sub_id = array();
+            $i = 0;
+            foreach ($obj_subject as $value)
+            {
+                $all_sub_id[] = $value['subject']->id;
+                $all_subject[$i]['id'] = $value['subject']->id;
+                $all_subject[$i]['name'] = $value['subject']->name." - ".$value['subject']['Subjectbatch']->name." ".$value['subject']['Subjectbatch']['courseDetails']->course_name." ".$value['subject']['Subjectbatch']['courseDetails']->section_name;
+                
+                $i++;
+                if($value['subject']->elective_group_id)
+                {
+                    $sub_obj = new Subjects();
+                    $e_subject = $sub_obj->getSubjectElectiveGroup($value['subject']->elective_group_id);
+                    if($e_subject)
+                    {
+                        foreach($e_subject as $e_sub)
+                        {
+                            if(!in_array($e_sub->id, $all_sub_id))
+                            {
+                                $all_sub_id[] = $e_sub->id;
+                                $all_subject[$i]['id'] = $e_sub->id;
+                                $all_subject[$i]['name'] = $sub_obj->getSubjectFullName($e_sub->id);
+                                $i++;
+                            }
+                        }    
+                    }
+                    
+                }
+                   
+                
+            }
+            return $all_subject;
+            
+            
+        }
         public function getEmployeeSubjectElective($employee_id)
         {
             $criteria = new CDbCriteria;

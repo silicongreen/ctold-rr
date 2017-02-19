@@ -128,20 +128,42 @@ class SubjectAttendanceRegisters extends CActiveRecord
     {
         return parent::model($className);
     }
+    
+    public function getRegisterClass($subject_id,$batch_id)
+    {
+        $criteria = new CDbCriteria;
+        $criteria->select = "count(t.id) as total";
+        $criteria->compare("subject_id", $subject_id);
+        $criteria->compare('t.batch_id', $batch_id);
+        $data = $this->find($criteria);
+        if($data)
+        {
+            return $data->total;
+        }
+        return 0;
+    }
 
-    public function getRegisterDataAll($subject_id, $date)
+    public function getRegisterDataAll($subject_id, $date, $batch_id=0)
     {
         $criteria = new CDbCriteria;
         $criteria->addInCondition("subject_id", $subject_id);
+        if($batch_id)
+        {
+            $criteria->compare('t.batch_id', $batch_id);
+        }
         $criteria->compare("attendance_date", $date);
         $data = $this->findAll($criteria);
         return $data;
     }
 
-    public function getRegisterData($subject_id, $date)
+    public function getRegisterData($subject_id, $date, $batch_id=0)
     {
         $criteria = new CDbCriteria;
         $criteria->compare("subject_id", $subject_id);
+        if($batch_id)
+        {
+            $criteria->compare('t.batch_id', $batch_id);
+        }
         $criteria->compare("attendance_date", $date);
         $data = $this->find($criteria);
         return $data;

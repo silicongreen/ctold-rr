@@ -23,7 +23,7 @@ class AttendanceController extends Controller
     {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('getsubject', 'getstudents', 'addattendence', 'reportteacher', 'associatesubject', 'report'),
+                'actions' => array('getsubject', 'getstudents', 'addattendence', 'reportteacher', 'associatesubject', 'report' , 'reportallteacher'),
                 'users' => array('@'),
             ),
             array('deny', // deny all users
@@ -89,7 +89,7 @@ class AttendanceController extends Controller
             if($sub_data->elective_group_id)
             {
                 $stdObj = new StudentsSubjects();
-                $all_student = $stdObj->getSubjectStudentFull($subject_id);
+                $all_student = $stdObj->getSubjectStudentFull($subject_id,$sub_data->batch_id);
             }
             else
             {
@@ -98,14 +98,14 @@ class AttendanceController extends Controller
             }
 
             $att_register = new SubjectAttendanceRegisters();
-            $att_register_data = $att_register->getRegisterData($subject_id, $date);
+            $att_register_data = $att_register->getRegisterData($subject_id, $date,$sub_data->batch_id);
 
             if ($att_register_data)
             {
                
                 $response['data']['register'] = $att_register_data->id;
                 $attobj = new SubjectAttendances();
-                $att_data = $attobj->getAttendenceTimeTable($subject_id, $date);
+                $att_data = $attobj->getAttendenceTimeTable($subject_id, $date,$sub_data->batch_id);
                 $i = 0;
                 foreach ($all_student as $value)
                 {
@@ -164,7 +164,7 @@ class AttendanceController extends Controller
             if($sub_data->elective_group_id)
             {
                 $stdObj = new StudentsSubjects();
-                $all_student = $stdObj->getSubjectStudentFull($subject_id);
+                $all_student = $stdObj->getSubjectStudentFull($subject_id,$sub_data->batch_id);
             }
             else
             {
@@ -221,7 +221,7 @@ class AttendanceController extends Controller
                     $this->sendNotificationAll($ids, $att_date, $subject_id, $att_id, $lates_array);
                 }
             }
-            $this->register($subject_id,$sub_data->batch_id, $present, $absent, $late);
+            $this->register($subject_id,$sub_data->batch_id, $present, $absent, $late,$date);
             $response['status']['code'] = 200;
             $response['status']['msg'] = "Success";
         } else
@@ -232,6 +232,83 @@ class AttendanceController extends Controller
         echo CJSON::encode($response);
         Yii::app()->end();
     }
+    public function actionReportAllTeacher()
+    {
+        $user_secret = Yii::app()->request->getPost('user_secret');
+        $subject_id = Yii::app()->request->getPost('subject_id');
+        if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher && $subject_id)
+        { 
+            $subjectObj = new Subjects();
+            $sub_data = $subjectObj->findByPk($subject_id);     
+            if($sub_data->elective_group_id)
+            {
+                $stdObj = new StudentsSubjects();
+                $all_student = $stdObj->getSubjectStudentFull($subject_id,$sub_data->batch_id);
+            }
+            else
+            {
+                $student = new Students();
+                $all_student = $student->getBatchStudentFull($sub_data->batch_id);
+            }
+            $att_register = new SubjectAttendanceRegisters();
+            $total_class = $att_register->getRegisterClass($subject_id,$sub_data->batch_id);
+            
+            $std_array = array();
+            if($all_student)
+            {
+                foreach($all_student as $value)
+                {
+                    $std_array[] = $value['student_id'];
+                }  
+            }
+            
+            $att_std = new SubjectAttendances();
+            $absent = $att_std->getAllStdAtt($std_array, $subject_id, $sub_data->batch_id);
+            $late = $att_std->getAllStdAtt($std_array, $subject_id, $sub_data->batch_id, 1);
+            
+            $std_data = array();
+            if($all_student)
+            {
+                $i = 0;
+               foreach($all_student as $value)
+               {
+                  $std_data[$i]['roll_no'] = $value['roll_no'];
+                  $std_data[$i]['name'] = $value['student_name'];
+                  $present = $total_class;
+                  $std_data[$i]['absent'] = 0;
+                  $std_data[$i]['late'] =  0;
+                  if(isset($absent[$value['student_id']]))
+                  {
+                      $std_data[$i]['absent'] = (int)$absent[$value['student_id']];
+                      $present = $present -$absent[$value['student_id']]; 
+                  } 
+                  if(isset($late[$value['student_id']]))
+                  {
+                      $std_data[$i]['late'] = (int)$late[$value['student_id']];
+                      $present = $present -$late[$value['student_id']];
+                  }
+                  $std_data[$i]['present'] = $present;
+                  $i++;
+                  
+               } 
+            } 
+            $response['data']['std_att'] = $std_data;
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "Data Found";
+            
+            
+            
+            
+        } 
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    }        
+    
     public function actionReportTeacher()
     {
         $user_secret = Yii::app()->request->getPost('user_secret');
@@ -245,14 +322,18 @@ class AttendanceController extends Controller
             {
                 $date = date("Y-m-d");
             }
-
+            
+            $subjectObj = new Subjects();
+            $sub_data = $subjectObj->findByPk($subject_id);
             
             $present = 0;
             $absent = 0;
             $late = 0;
             $att_register = new SubjectAttendanceRegisters();
+            
+            
 
-            $att_register_data = $att_register->getRegisterData($subject_id, $date);
+            $att_register_data = $att_register->getRegisterData($subject_id, $date, $sub_data->batch_id);
             if ($att_register_data)
             {
                 $class_completed = 1;
@@ -442,8 +523,11 @@ class AttendanceController extends Controller
     
     private function deletePreviousReminder($subject_id, $date)
     {
+        $subjectObj = new Subjects();
+        $sub_data = $subjectObj->findByPk($subject_id);
+        
         $attendence = new SubjectAttendances();
-        $attendence_subject = $attendence->getAttendence($subject_id, $date);
+        $attendence_subject = $attendence->getAttendence($subject_id, $date, $sub_data->batch_id);
         $all_rids = array();
         if ($attendence_subject)
         {
@@ -494,11 +578,13 @@ class AttendanceController extends Controller
         }
         return $std_att_data;
     }
-    private function register($subject_id,$batch_id, $present, $absent, $late)
+    private function register($subject_id,$batch_id, $present, $absent, $late, $date)
     {
-        $date = date("Y-m-d");
+        $subjectObj = new Subjects();
+        $sub_data = $subjectObj->findByPk($subject_id);
+        
         $att_register_obj = new SubjectAttendanceRegisters();
-        $att_register_data = $att_register_obj->getRegisterData($subject_id, $date);
+        $att_register_data = $att_register_obj->getRegisterData($subject_id, $date, $sub_data->batch_id);
 
         if ($att_register_data)
         {

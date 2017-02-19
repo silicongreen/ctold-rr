@@ -113,11 +113,15 @@ class StudentsSubjects extends CActiveRecord
 		return parent::model($className);
 	}
         
-        public function getSubjectStudentFull($subject_id)
+        public function getSubjectStudentFull($subject_id,$batch_id=0)
         {
             $criteria = new CDbCriteria();
             $criteria->select = 't.student_id';
             $criteria->compare('t.subject_id', $subject_id);
+            if($batch_id)
+            {
+                $criteria->compare('t.batch_id', $batch_id);
+            }
             $criteria->order = "LENGTH(Subjectstudent.class_roll_no) ASC,Subjectstudent.class_roll_no ASC";
             $students = $this->with("Subjectstudent")->findAll($criteria); 
             $return_array = array();

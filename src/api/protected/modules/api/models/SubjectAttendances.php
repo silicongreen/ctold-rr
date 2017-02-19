@@ -119,6 +119,32 @@ class SubjectAttendances extends CActiveRecord
     {
         return parent::model($className);
     }
+    
+    public function getAllStdAtt($student_id,$subject_id ,$batch_id, $is_late = 0)
+    {
+        $criteria = new CDbCriteria;
+        $criteria->select = "t.student_id,count(t.id) as total";
+        $criteria->addInCondition('t.student_id', $student_id);
+        $criteria->compare("t.subject_id", $subject_id);
+        $criteria->compare("t.batch_id", $batch_id);
+        $criteria->compare('t.is_late', $is_late);
+        $criteria->group = 't.student_id';
+        $data = $this->findAll($criteria);
+
+        $return = array();
+        if ($data)
+        {
+            foreach($data as $value)
+            {
+                $return[$value->student_id] = $value->total;
+            }    
+        } 
+       
+        return $return;
+        
+    }
+    
+    
 
     public function getAllattendence($student_id, $subject_id = "",$batch_id="",$type = "", $is_late = 0)
     {
@@ -155,23 +181,31 @@ class SubjectAttendances extends CActiveRecord
         }
     }
 
-    public function getAttendence($subject_id, $date)
+    public function getAttendence($subject_id, $date, $batch_id = 0)
     {
         $criteria = new CDbCriteria;
         $criteria->select = "t.*";
         $criteria->compare('t.attendance_date', $date);
         $criteria->compare('t.subject_id', $subject_id);
+        if($batch_id)
+        {
+            $criteria->compare('t.batch_id', $batch_id);
+        }
         $data = $this->findAll($criteria);
 
         return $data;
     }
 
-    public function getAttendenceTimeTable($subject_id, $date)
+    public function getAttendenceTimeTable($subject_id, $date, $batch_id = 0)
     {
         $criteria = new CDbCriteria;
         $criteria->select = "t.student_id,is_late";
         $criteria->compare('t.attendance_date', $date);
         $criteria->compare('t.subject_id', $subject_id);
+        if($batch_id)
+        {
+            $criteria->compare('t.batch_id', $batch_id);
+        }
         $data = $this->findAll($criteria);
         $att_data = array();
         if ($data)

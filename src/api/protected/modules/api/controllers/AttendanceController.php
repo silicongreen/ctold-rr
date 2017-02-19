@@ -287,7 +287,7 @@ class AttendanceController extends Controller
                       $std_data[$i]['late'] = (int)$late[$value['student_id']];
                       $present = $present -$late[$value['student_id']];
                   }
-                  $std_data[$i]['present'] = $present;
+                  $std_data[$i]['present'] = (int)$present;
                   $i++;
                   
                } 

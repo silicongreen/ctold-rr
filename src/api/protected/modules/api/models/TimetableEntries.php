@@ -324,6 +324,7 @@ class TimetableEntries extends CActiveRecord {
         {
             $_data['batch_name'] = rtrim($row['batchDetails']->name);
             $_data['course_name'] = rtrim($row['batchDetails']['courseDetails']->course_name);
+            $_data['id'] = $row['subjectDetails']->id;
             $_data['subject_code'] = $row['subjectDetails']->code;
             $_data['subject_name'] = $row['subjectDetails']->name;
             $_data['subject_icon_name'] = $row['subjectDetails']->icon_number;
@@ -738,6 +739,7 @@ class TimetableEntries extends CActiveRecord {
         {
             $_data['batch_name'] = rtrim($row['batchDetails']->name);
             $_data['course_name'] = rtrim($row['batchDetails']['courseDetails']->course_name." ".$row['batchDetails']['courseDetails']->section_name);
+            $_data['id'] = $row['subjectDetails']->id;
             $_data['subject_code'] = $row['subjectDetails']->code;
             $_data['subject_name'] = $row['subjectDetails']->name;
             $_data['subject_icon_name'] = $row['subjectDetails']->icon_number;
@@ -797,6 +799,7 @@ class TimetableEntries extends CActiveRecord {
                 $_data['teacher_first_name'] = rtrim($employees[0]['employee']->first_name);
                 $_data['teacher_full_name'] = rtrim($employees[0]['employee']->first_name . ' ' . $middle_name . $employees[0]['employee']->last_name);
                 $_data['teacher_short_code'] = rtrim($employees[0]['employee']->short_code);
+                $_data['id'] = $std_subject_assign->id;
                 $_data['subject_code'] = $std_subject_assign->code;
                 $_data['subject_name'] = $std_subject_assign->name;
                 $_data['subject_icon_name'] = $std_subject_assign->icon_number;
@@ -1067,7 +1070,8 @@ class TimetableEntries extends CActiveRecord {
                     {
                         $_data['batch_name'] = rtrim($row['batchDetails']->name);
                         $_data['course_name'] = rtrim($row['batchDetails']['courseDetails']->course_name)." ".$row['batchDetails']['courseDetails']->section_name;
-                    }    
+                    } 
+                    $_data['id'] = $row['subjectDetails']->id;
                     $_data['subject_code'] = $row['subjectDetails']->code;
                     $_data['subject_name'] = $row['subjectDetails']->name;
                     $_data['subject_icon_name'] = $row['subjectDetails']->icon_number;

@@ -51,7 +51,15 @@
             {:controller=>"attendances", :action=>"index"},
             {:class => 'f2'}
         %>
-<%#= link_to "", {:controller => 'student_attendance', :action => ''}, {:class => 'f2'} %>
+        </li>
+        <li>
+          <%= link_to_remote "Roll Call Subject",
+            :before => "Element.show('loader2');",
+            :success => "Element.hide('loader2');",
+            :update => 'report-roll-call',
+            :url=>{:controller=>"attendances", :action=>"rollcall"},
+            :html => {:class => 'f2'}
+        %>
         </li>
         <li>
           <%= link_to_remote "Class Report",

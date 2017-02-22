@@ -1,0 +1,247 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+<div class="clearfix"></div>
+<div class="CSSTableGenerator" style="width: 97%;margin-top: 10px;">
+    <% if @register_id.to_i == 0 %><h4 style="color:red" id="att_not_taken">Attendance Not Taken Yet</h4><% end %>
+    
+    <table id="listing table-design">
+        <thead>
+            <tr class="tr-head">
+
+                <th>Roll</th>
+                <th>Student Name</th>
+                <th>Status</th>
+                <th></th>
+                <th></th>
+                <th></th>
+
+            </tr>
+        </thead>
+
+        <% @students.each do |student| %>
+
+          <tr class="tr-<%= cycle('odd', 'even') %>">
+              <td class="col-2"><%= student['roll_no'] %></td>
+              <td class="col-2"><%= student['student_name'] %></td>
+              <td class="col-2">
+                  <% if student['att']==1 or student['att']==0 %>
+                    <span class="checkmark">
+                        <div class="checkmark_circle"></div>
+                        <div class="checkmark_stem"></div>
+                        <div class="checkmark_kick"></div>
+                    </span>
+                  <% else %>
+                    <span class="checkmark">
+                        <div class="checkmark_circle absent"></div>
+                        <div class="checkmark_stem"></div>
+                        <div class="checkmark_kick"></div>
+                    </span>
+                  <% end %>
+
+              </td>
+
+              <td class="col-2 status-class">
+                  <div class="image_loading">
+                      <input type="radio" value="1" <% if student['att']==1 or student['att']==0 %> checked="checked" <% end %> name="attendance_<%= student['student_id'] %>" class="absent_student" id="<%= student['student_id'] %>" />&nbsp;&nbsp;Present
+
+                  </div>
+              </td>
+
+              <td class="col-2 status-class">
+                  <div class="image_loading">
+                      <input type="radio" value="2" <% if student['att']==2 %> checked="checked" <% end %> name="attendance_<%= student['student_id'] %>" class="absent_student" id="<%= student['student_id'] %>" />&nbsp;&nbsp;Absent
+
+                  </div>
+              </td>
+              <td class="col-2 status-class">
+                  <div class="image_loading">
+                      <input type="radio" value="3" <% if student['att']==3 %> checked="checked" <% end %> name="attendance_<%= student['student_id'] %>" class="absent_student" id="<%= student['student_id'] %>" />&nbsp;&nbsp;Late
+
+                  </div>
+              </td>
+
+
+          </tr>          
+        <% end %>
+    </table>
+    <br/>
+    <input type="button" name="save" id="attendance_save_all" value="Save Attendance"  style=" cursor: pointer;"  />
+    <br/>
+    <h4 style="color:green; display:none;" id="att_taken">Attendance Successfully Saved</h4>
+    <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading-att", :style =>"display: none;" ) %>
+
+
+</div>
+<%= stylesheet_link_tag 'list_table' %>
+<style>
+    .CSSTableGenerator td a
+    {
+        color: inherit;
+        padding : 0;
+        background-color: inherit;
+        float: none;  
+        display: block;
+        margin: -20px;
+        padding: 20px;
+    }
+    .CSSTableGenerator td a:hover
+    {
+        color: inherit;
+        padding : 0;
+        background-color: inherit;
+        float: none;
+        display: block;
+        margin: -20px;
+        padding: 20px;
+    }
+    .CSSTableGenerator table tr td 
+    {
+        font-weight: bold;
+        overflow: hidden;
+    }
+    .CSSTableGenerator table tr td:last-child
+    {
+        padding: 0;
+        width: 15%;
+    }
+    .checkmark {
+        display:inline-block;
+        width: 22px;
+        height:22px;
+        -ms-transform: rotate(45deg); /* IE 9 */
+        -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
+        transform: rotate(45deg);
+    }
+
+    span div.absent {
+        position: absolute;
+        width:22px;
+        height:22px;
+        background-color: #B3B9BB;
+        border-radius:11px;
+        left:0;
+        top:0;
+    }
+
+    .checkmark_circle {
+        position: absolute;
+        width:22px;
+        height:22px;
+        background-color: #0691D5;
+        border-radius:11px;
+        left:0;
+        top:0;
+    }
+
+    .checkmark_stem {
+        position: absolute;
+        width:3px;
+        height:9px;
+        background-color:#fff;
+        left:11px;
+        top:6px;
+    }
+
+    .checkmark_kick {
+        position: absolute;
+        width:3px;
+        height:3px;
+        background-color:#fff;
+        left:8px;
+        top:12px;
+    }
+    .status-class {
+        text-align: center !important;
+    }
+    .approved {
+        /*background-color: #9F38E7;*/
+        color: #ffffff !important;
+    }
+    .declined {
+        /*background-color: #CB232A;*/
+        color: #ffffff !important;
+    }
+    .leave_sts {
+        clear: both;
+        float: left;
+        margin-bottom: 7px;
+        width: 100%;
+    }
+    .leave_sts_appr, .leave_sts_deny {
+        background-color: #cb232a;
+        float: left;
+        margin-left: 5px;
+        padding: 6px 5px;
+    }
+    .leave_sts_deny {
+        float: left !important;
+    }
+    .leave_sts_appr a, .leave_sts_deny a {
+        color: #ffffff !important;
+        float: left !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+</style> 
+<script>
+  var jj = jQuery.noConflict();
+  jj(document).ready(function () {
+      jj('#attendance_save_all').click(function () {
+      
+          var student_ids = new Array;
+          var late = new Array;
+          jj('input.absent_student').each(function (checkbox)
+          {
+         
+              console.log(jj(this).val())
+              if (jj(this).is(":checked") && jj(this).val() != 1)
+              {
+                  if (jj(this).val() == 2)
+                  {
+                      Array.prototype.push.call(late, 0);
+                  }
+                  else
+                  {
+                      Array.prototype.push.call(late, 1);
+                  }
+                  Array.prototype.push.call(student_ids, this.id);
+              }
+          });
+          Element.show('loading-att');
+          new Ajax.Request('/attendances/save_attendance_subject', {
+              method: 'post',
+              onSuccess: function (request) {
+                Element.hide('loading-att');
+                Element.hide('att_not_taken');
+                Element.show('att_taken');
+                setTimeout(function(){ Element.hide('att_taken'); }, 3000);
+              },
+              parameters: {
+                  student_id: student_ids.toString(),
+                  late: late.toString(),
+                  attandence_date: jj('#attandence_date').val(),
+                  subject_id: <%= @subject_id %>
+              }
+          });
+
+
+
+      });
+  });
+</script>  

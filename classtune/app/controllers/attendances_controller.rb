@@ -19,35 +19,84 @@
 class AttendancesController < ApplicationController
   before_filter :login_required
   before_filter :check_permission, :only=>[:index]
-  filter_access_to :all, :except=>[:index,:graph_code,:rollcall,:show_report_student,:show_student,:class_report,:student_report,:show_report, :list_subject, :show, :new, :create, :edit,:update, :destroy,:subject_wise_register]
+  filter_access_to :all, :except=>[:index,:graph_code,:rollcall,:subjects,:show_report_student,:show_student,:class_report,:student_report,:show_report, :list_subject, :show, :new, :create, :edit,:update, :destroy,:subject_wise_register]
   filter_access_to [:index,:graph_code,:show_report_student,:rollcall,:show_student,:class_report,:student_report,:show_report, :list_subject, :show, :new, :create, :edit,:update, :destroy,:subject_wise_register], :attribute_check=>true, :load_method => lambda { current_user }
   before_filter :only_assigned_employee_allowed, :except => [:index,:graph_code,:show_report_student,:rollcall,:show_student,:class_report,:student_report,:show_report]
   before_filter :only_privileged_employee_allowed, :only => [:index,:graph_code,:show_report_student,:rollcall,:show_student,:class_report,:student_report,:show_report]
   before_filter :default_time_zone_present_time
   before_filter :check_status
   
+  def subjects
+    @subjects = []
+    if params[:batch_id].present?
+      @batch = Batch.find(params[:batch_id])
+      @subjects = @batch.subjects
+      if @current_user.employee? and @allow_access ==true and !@current_user.privileges.map{|m| m.name}.include?("StudentAttendanceRegister")
+        employee = @current_user.employee_record
+        if @batch.employee_id.to_i == employee.id
+          @subjects= @batch.subjects
+        else
+          subjects = Subject.find(:all,:joins=>"INNER JOIN employees_subjects ON employees_subjects.subject_id = subjects.id AND employee_id = #{employee.try(:id)} AND batch_id = #{@batch.id} ")
+          swapped_subjects = Subject.find(:all, :joins => :timetable_swaps, :conditions => ["subjects.batch_id = ? AND timetable_swaps.employee_id = ?",params[:batch_id],employee.try(:id)])
+          @subjects = (subjects + swapped_subjects).compact.flatten.uniq
+        end
+      end 
+    end
+    render(:update) do |page|
+      page.replace_html 'subjects', :partial=> 'subjects'
+    end
+  end
+  def save_attendance_subject
+    now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
+    if params[:attandence_date].nil? || params[:attandence_date].empty?
+      @date_to_use = @local_tzone_time.to_date
+    elsif current_user.admin?
+      @date_to_use = params[:attandence_date].to_date
+    else
+      @date_to_use = @local_tzone_time.to_date
+    end 
+    add_attendence_subject(params[:subject_id],@date_to_use,params[:student_id],params[:late])
+    render :text=>"success"
+    
+  end
+  def get_subject_student
+    now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
+    if params[:attandence_date].nil? || params[:attandence_date].empty?
+      @date_to_use = @local_tzone_time.to_date
+    elsif current_user.admin?
+      @date_to_use = params[:attandence_date].to_date
+    else
+      @date_to_use = @local_tzone_time.to_date
+    end  
+    @students = []
+    if params[:subject_id].present?
+      get_subject_attendence_student(params[:subject_id],@date_to_use)
+      @subject_id = params[:subject_id]
+      if @student_response['status']['code'].to_i == 200
+        @students = @student_response['data']['students']
+        @register_id = @student_response['data']['register']
+      end
+    end
+    respond_to do |format|
+      format.js { render :action => 'roll_sub' }
+    end
+  end
   def rollcall
-    @classes = []
+    @subjects = []
     @batches = []
     @batch_no = 0
-    @course_name = ""
-    @courses = []
-    @config = Configuration.find_by_config_key('StudentAttendanceType')
     @date_today = @local_tzone_time.to_date
     if current_user.admin?
       @batches = Batch.active
     elsif @current_user.privileges.map{|p| p.name}.include?('StudentAttendanceRegister')
       @batches = Batch.active
     elsif @current_user.employee?
-      if @config.config_value == 'Daily'
-        @batches = @current_user.employee_record.batches
-      else
         @batches = @current_user.employee_record.batches
         @batches += @current_user.employee_record.subjects.collect{|b| b.batch}
         @batches += TimetableSwap.find_all_by_employee_id(@current_user.employee_record.try(:id)).map(&:subject).flatten.compact.map(&:batch)
-        @batches = @batches.uniq unless @batches.empty?
-      end
+        @batches = @batches.uniq unless @batches.empty
     end
+    render :partial=>"rollcall"
   end
   
   def show_report_student 
@@ -1008,6 +1057,48 @@ class AttendancesController < ApplicationController
       http = Net::HTTP.new(api_uri.host, api_uri.port)
       request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })
       request.set_form_data({"date" =>date,"batch_id" =>batch_id ,"call_from_web"=>1,"user_secret" =>session[:api_info][0]['user_secret']})
+
+      response = http.request(request)
+      @student_response = JSON::parse(response.body)
+    end
+    
+    @student_response
+  end
+  
+  def add_attendence_subject(subject_id,date_to_use,student_id,late)
+    require 'net/http'
+    require 'uri'
+    require "yaml"
+ 
+    champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
+    api_endpoint = champs21_api_config['api_url']
+
+    if current_user.employee? or current_user.admin?
+      api_uri = URI(api_endpoint + "api/attendance/addattendence")
+      http = Net::HTTP.new(api_uri.host, api_uri.port)
+      request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })
+      request.set_form_data({"date"=>date_to_use,"student_id"=>student_id,"late"=>late,"subject_id" =>subject_id ,"call_from_web"=>1,"user_secret" =>session[:api_info][0]['user_secret']})
+
+      response = http.request(request)
+      @student_response = JSON::parse(response.body)
+    end
+    
+    @student_response
+  end
+  
+  def get_subject_attendence_student(subject_id,date_to_use)
+    require 'net/http'
+    require 'uri'
+    require "yaml"
+ 
+    champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
+    api_endpoint = champs21_api_config['api_url']
+
+    if current_user.employee? or current_user.admin?
+      api_uri = URI(api_endpoint + "api/attendance/getstudents")
+      http = Net::HTTP.new(api_uri.host, api_uri.port)
+      request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })
+      request.set_form_data({"subject_id" =>subject_id ,"date"=>date_to_use,"call_from_web"=>1,"user_secret" =>session[:api_info][0]['user_secret']})
 
       response = http.request(request)
       @student_response = JSON::parse(response.body)

@@ -1,0 +1,112 @@
+<% form_for(@student, :url => {:action=> 'show'}, :html=> {:id=>'new_student'}) do |s| %>
+  <div id="page-yield"  style="margin-top:0px;"> 
+      <div class="label-field-pair" style="float:left; clear:both; width:80%; margin-bottom:5px;">
+        <label for="duedate">Select Date (For Specific Date Report)</label>
+        <div  class="text-input-bg">
+          <%= calendar_date_select_tag "attandence_date","",
+            :class=>"text-input-bg",:onchange =>"j('#register').html( '' );j('#student_batch_id').val( '' );j('#student_batch_id').trigger('change');" ,:readonly=>true,:popup=>:force%>
+        </div>
+        <div class="text-input-bg" style="cursor:pointer;  font-size: 13px;
+             font-weight: bold;color: #db3434;text-decoration: underline; margin-top: 11px;"  onClick="j('#attandence_date').val('');j('#attandence_date').trigger('change');">Clear</div>
+      </div>
+      <div class="row" style="width:45%;">  
+        <div class="row_label">
+          <div>
+            Class And Section
+          </div>
+        </div>
+        <div class="row_data">
+          <div>
+            <div class="custom_drop_wrapper">
+             <%= select :student, :batch_id, options_for_select(@batches.map {|b| [b.full_name, b.id]}, @batch_no.to_i), 
+              {:prompt => "#{t('select')}"},
+              {:onChange => "#{remote_function(:url => {:controller => "attendances", :action => "subjects2"}, :with => "'batch_id='+value" ,:before => "$('loading_2').show();",
+              :success => "$('loading_2').hide();")}"} %>
+              <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_2", :style =>"display: none;" ) %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" style="width:45%;">
+        <div class="row_label">
+          <div>
+            Subject
+          </div>
+        </div>
+        <div class="row_data">
+          <div>
+            <div id="subjects" class="custom_drop_wrapper">
+              <%= render :partial => 'attendances/subjects2' %>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      
+    <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loader", :style =>"display: none;" ) %>
+
+
+  <% end %>
+  <%= hidden_field_tag 'time_zone_date',@date_today, :id=>'time_zone' %>
+  <div id="subjects"></div>
+  
+  <div id="register"></div>
+  <div id="modal-box" style="display:none;"></div>
+</div>
+<style>
+  
+  .row_data div img.calendar_date_select_popup_icon
+  {
+     width:22px;
+  }
+  .row_data div input[type="text"] {
+  font-size: 18px;
+  padding: 0px 0 0px 0px;
+  width: 90%;
+  }
+  
+  .row {
+  background-color: #f8f8fa;
+  border: 1px solid #DFE1E2;
+  float: left;
+  width: 30%;
+  margin-right: 28px;
+  border-right: 1px solid #DFE1E2;
+}
+.row_label {
+  background-color: #ffffff;
+  border-right: 1px solid #DFE1E2;
+  float: left;
+  width: 48.2%;
+  padding: 0px 0px;
+}
+.row_label div {
+  color: #868A8B;
+  float: left;
+  padding: 8px 10px;
+  width: 80%;
+}
+.row_data {
+  float: left;
+  width: 48.6%;
+}
+.custom_drop_wrapper select::-ms-expand {
+    display: none;
+}
+.custom_drop_wrapper select {
+  background-color: transparent;
+  background-image: url("/images/icons/drop_down_normal.png");
+  background-position: 98% 0;
+  background-repeat: no-repeat;
+  background-size: 37px 36px;
+  border: medium none;
+  cursor: pointer;
+  display: block;
+  height: 35px;
+  width: 100%;
+  -webkit-appearance: none;
+  /* border-right: 1px solid black; */
+}
+
+</style>  

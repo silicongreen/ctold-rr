@@ -19,12 +19,75 @@
 class AttendancesController < ApplicationController
   before_filter :login_required
   before_filter :check_permission, :only=>[:index]
-  filter_access_to :all, :except=>[:index,:graph_code,:rollcall,:subjects,:show_report_student,:show_student,:class_report,:student_report,:show_report, :list_subject, :show, :new, :create, :edit,:update, :destroy,:subject_wise_register]
-  filter_access_to [:index,:graph_code,:show_report_student,:rollcall,:show_student,:class_report,:student_report,:show_report, :list_subject, :show, :new, :create, :edit,:update, :destroy,:subject_wise_register], :attribute_check=>true, :load_method => lambda { current_user }
-  before_filter :only_assigned_employee_allowed, :except => [:index,:graph_code,:show_report_student,:rollcall,:show_student,:class_report,:student_report,:show_report]
-  before_filter :only_privileged_employee_allowed, :only => [:index,:graph_code,:show_report_student,:rollcall,:show_student,:class_report,:student_report,:show_report]
+  filter_access_to :all, :except=>[:index,:graph_code,:rollcall,:subjects,:show_report_student,:show_student,:class_report,:subject_report,:student_report,:show_report, :list_subject, :show, :new, :create, :edit,:update, :destroy,:subject_wise_register]
+  filter_access_to [:index,:graph_code,:show_report_student,:rollcall,:show_student,:class_report,:subject_report,:student_report,:show_report, :list_subject, :show, :new, :create, :edit,:update, :destroy,:subject_wise_register], :attribute_check=>true, :load_method => lambda { current_user }
+  before_filter :only_assigned_employee_allowed, :except => [:index,:graph_code,:show_report_student,:rollcall,:show_student,:class_report,:subject_report,:student_report,:show_report]
+  before_filter :only_privileged_employee_allowed, :only => [:index,:graph_code,:show_report_student,:rollcall,:show_student,:class_report,:subject_report,:student_report,:show_report]
   before_filter :default_time_zone_present_time
   before_filter :check_status
+  
+  
+  def subject_report
+    @subjects = []
+    @batches = []
+    @batch_no = 0
+    @date_today = @local_tzone_time.to_date
+    if current_user.admin?
+      @batches = Batch.active
+    elsif @current_user.privileges.map{|p| p.name}.include?('StudentAttendanceRegister')
+      @batches = Batch.active
+    elsif @current_user.employee?
+        @batches = @current_user.employee_record.batches
+        @batches += @current_user.employee_record.subjects.collect{|b| b.batch}
+        @batches += TimetableSwap.find_all_by_employee_id(@current_user.employee_record.try(:id)).map(&:subject).flatten.compact.map(&:batch)
+        @batches = @batches.uniq unless @batches.empty
+    end
+    render :partial=>"subject_report"
+  end
+  
+  def subjects2
+    @subjects = []
+    if params[:batch_id].present?
+      @batch = Batch.find(params[:batch_id])
+      @subjects = @batch.subjects
+      if @current_user.employee? and @allow_access ==true and !@current_user.privileges.map{|m| m.name}.include?("StudentAttendanceRegister")
+        employee = @current_user.employee_record
+        if @batch.employee_id.to_i == employee.id
+          @subjects= @batch.subjects
+        else
+          subjects = Subject.find(:all,:joins=>"INNER JOIN employees_subjects ON employees_subjects.subject_id = subjects.id AND employee_id = #{employee.try(:id)} AND batch_id = #{@batch.id} ")
+          swapped_subjects = Subject.find(:all, :joins => :timetable_swaps, :conditions => ["subjects.batch_id = ? AND timetable_swaps.employee_id = ?",params[:batch_id],employee.try(:id)])
+          @subjects = (subjects + swapped_subjects).compact.flatten.uniq
+        end
+      end 
+    end
+    render(:update) do |page|
+      page.replace_html 'subjects', :partial=> 'subjects2'
+    end
+  end
+  
+  def get_subject_report_all 
+    unless params[:subject_id].nil? or  params[:date].nil?
+      if params[:subject_id] && params[:date] 
+        get_subject_report_date(params[:subject_id],params[:date])
+        if @attendence_data['status']['code'].to_i == 200
+          @data = @attendence_data['data']
+        end
+        respond_to do |format|
+          format.js { render :action => 'get_subject_report_date' }
+        end
+      else
+        get_subject_report(params[:subject_id])
+        if @attendence_data['status']['code'].to_i == 200
+          @data = @attendence_data['data']
+        end
+        respond_to do |format|
+          format.js { render :action => 'get_subject_report' }
+        end
+      end  
+      
+    end
+  end
   
   def subjects
     @subjects = []

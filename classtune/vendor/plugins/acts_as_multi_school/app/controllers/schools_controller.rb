@@ -640,6 +640,7 @@ guardians as g left join tds_free_users as fu on g.user_id=fu.paid_id left join 
           end
         
           rows = []
+          rows = []
           csv << rows
         end
       end

@@ -52,15 +52,7 @@
             {:class => 'f2'}
         %>
         </li>
-        <li>
-          <%= link_to_remote "Roll Call Subject",
-            :before => "Element.show('loader2');",
-            :success => "Element.hide('loader2');",
-            :update => 'report-roll-call',
-            :url=>{:controller=>"attendances", :action=>"rollcall"},
-            :html => {:class => 'f2'}
-        %>
-        </li>
+        
         <li>
           <%= link_to_remote "Class Report",
             :before => "Element.show('loader2');",
@@ -80,6 +72,24 @@
             :html => {:class => 'f2'}
         %>
         </li>
+        <li>
+          <%= link_to_remote "Roll Call Subject",
+            :before => "Element.show('loader2');",
+            :success => "Element.hide('loader2');",
+            :update => 'report-roll-call',
+            :url=>{:controller=>"attendances", :action=>"rollcall"},
+            :html => {:class => 'f2'}
+        %>
+        </li>
+        <%#*<li>%>
+          <%#= link_to_remote "Subject Report",
+            :before => "Element.show('loader2');",
+            :success => "Element.hide('loader2');",
+            :update => 'report-roll-call',
+            :url=>{:controller=>"attendances", :action=>"subject_report"},
+            :html => {:class => 'f2'}
+        %>#
+        <%#*</li>%>
       </ul>
     </div>
   </div>

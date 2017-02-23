@@ -557,12 +557,12 @@ guardians as g left join tds_free_users as fu on g.user_id=fu.paid_id left join 
           csv << rows
         
           rows = []
-          rows << "Student Username"
+          rows << "Username"
           rows << "#{b['paid_username']}"
           csv << rows
         
           rows = []
-          rows << "Student Password"
+          rows << "Password"
           rows << "#{b['paid_password']}"
           csv << rows
         
@@ -583,22 +583,22 @@ guardians as g left join tds_free_users as fu on g.user_id=fu.paid_id left join 
               end
             
               rows = []
-              rows << "Guardian" + j.to_s
+              rows << "Guardian " + j.to_s
               rows << "#{glist['first_name']} #{glist['last_name']}"
               csv << rows
             
               rows = []
-              rows << "Guardian"+j.to_s+" Username"
+              rows << "Username"
               rows << "#{glist['paid_username']}"
               csv << rows
             
               rows = []
-              rows << "Guardian"+j.to_s+" Password"
+              rows << "Password"
               rows << "#{glist['paid_password']}"
               csv << rows
             
               rows = []
-              rows << "Guardian"+j.to_s+" Phone"
+              rows << "Phone"
               rows << "#{gPhone}"
               csv << rows
             
@@ -623,24 +623,23 @@ guardians as g left join tds_free_users as fu on g.user_id=fu.paid_id left join 
               csv << rows
 
               rows = []
-              rows << "Guardian Username"
+              rows << "Username"
               rows << "#{glist['paid_username']}"
               csv << rows
 
               rows = []
-              rows << "Guardian Password"
+              rows << "Password"
               rows << "#{glist['paid_password']}"
               csv << rows
 
               rows = []
-              rows << "Guardian Phone"
+              rows << "Phone"
               rows << "#{gPhone}"
               csv << rows
             end
           end
         
-          rows = []
-          csv << rows
+          
           rows = []
           csv << rows
         end

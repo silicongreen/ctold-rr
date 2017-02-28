@@ -1,0 +1,1 @@
+page.replace_html 'register', :partial => 'get_subject_report_date'

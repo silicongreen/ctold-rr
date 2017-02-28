@@ -1,7 +1,7 @@
 <% form_for(@student, :url => {:action=> 'show'}, :html=> {:id=>'new_student'}) do |s| %>
   <div id="page-yield"  style="margin-top:0px;"> 
       <div class="label-field-pair" style="float:left; clear:both; width:80%; margin-bottom:5px;">
-        <label for="duedate">Select Date (For Specific Date Report)</label>
+        <label for="duedate">Select Date</label>
         <div  class="text-input-bg">
           <%= calendar_date_select_tag "attandence_date","",
             :class=>"text-input-bg",:onchange =>"j('#register').html( '' );j('#student_batch_id').val( '' );j('#student_batch_id').trigger('change');" ,:readonly=>true,:popup=>:force%>
@@ -93,6 +93,10 @@
 }
 .custom_drop_wrapper select::-ms-expand {
     display: none;
+}
+.calendar_date_select_popup_icon
+{
+    margin: 10px 3px;
 }
 .custom_drop_wrapper select {
   background-color: transparent;

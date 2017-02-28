@@ -81,15 +81,15 @@
             :html => {:class => 'f2'}
         %>
         </li>
-        <%#*<li>%>
-          <%#= link_to_remote "Subject Report",
+        <li>
+          <%= link_to_remote "Subject Report",
             :before => "Element.show('loader2');",
             :success => "Element.hide('loader2');",
             :update => 'report-roll-call',
             :url=>{:controller=>"attendances", :action=>"subject_report"},
             :html => {:class => 'f2'}
-        %>#
-        <%#*</li>%>
+        %>
+        </li>
       </ul>
     </div>
   </div>

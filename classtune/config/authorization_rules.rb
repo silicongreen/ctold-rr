@@ -1664,6 +1664,9 @@ authorization do
       :subjects,
       :get_subject_student,
       :save_attendance_subject,
+      :get_subject_report_all,
+      :subjects2,
+      :subject_report,
       :show_report_student,
       :graph_code,
       :show_student,
@@ -3179,7 +3182,9 @@ authorization do
       if_attribute :has_assigned_subjects? => is {true}
     end
     has_permission_on :attendances, :to => [:index,:show_report_student,:rollcall,:subjects,:save_attendance_subject,
-      :get_subject_student,:graph_code,:show_report,:student_report,:show_student,:class_report] do
+      :get_subject_student,:get_subject_report_all,
+      :subjects2,
+      :subject_report,:graph_code,:show_report,:student_report,:show_student,:class_report] do
       if_attribute :has_assigned_subjects? => is {true}
     end
     has_permission_on :attendance_reports, :to => [:index] do

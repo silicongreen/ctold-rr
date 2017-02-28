@@ -68,24 +68,32 @@ class AttendancesController < ApplicationController
   
   def get_subject_report_all 
     unless params[:subject_id].nil? or  params[:date].nil?
-      if params[:subject_id] && params[:date] 
-        get_subject_report_date(params[:subject_id],params[:date])
-        if @attendence_data['status']['code'].to_i == 200
-          @data = @attendence_data['data']
+      if !params[:subject_id].blank? and !params[:date].blank? 
+        @date = params[:date].to_date.strftime("%Y-%m-%d")
+        get_subject_report_date(params[:subject_id],@date)
+        if @student_response['status']['code'].to_i == 200
+          @report_data = @student_response['data']
         end
+        
+        get_subject_attendence_student(params[:subject_id],@date)
+        @subject_id = params[:subject_id]
+        if @student_response['status']['code'].to_i == 200
+          @students = @student_response['data']['students']
+          @register_id = @student_response['data']['register']
+        end
+        
         respond_to do |format|
           format.js { render :action => 'get_subject_report_date' }
         end
       else
         get_subject_report(params[:subject_id])
-        if @attendence_data['status']['code'].to_i == 200
-          @data = @attendence_data['data']
+        if @student_response['status']['code'].to_i == 200
+          @data = @student_response['data']
         end
         respond_to do |format|
           format.js { render :action => 'get_subject_report' }
         end
       end  
-      
     end
   end
   
@@ -1128,6 +1136,7 @@ class AttendancesController < ApplicationController
     @student_response
   end
   
+  
   def add_attendence_subject(subject_id,date_to_use,student_id,late)
     require 'net/http'
     require 'uri'
@@ -1141,6 +1150,48 @@ class AttendancesController < ApplicationController
       http = Net::HTTP.new(api_uri.host, api_uri.port)
       request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })
       request.set_form_data({"date"=>date_to_use,"student_id"=>student_id,"late"=>late,"subject_id" =>subject_id ,"call_from_web"=>1,"user_secret" =>session[:api_info][0]['user_secret']})
+
+      response = http.request(request)
+      @student_response = JSON::parse(response.body)
+    end
+    
+    @student_response
+  end
+  
+  def get_subject_report_date(subject_id,date_to_use)
+    require 'net/http'
+    require 'uri'
+    require "yaml"
+ 
+    champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
+    api_endpoint = champs21_api_config['api_url']
+
+    if current_user.employee? or current_user.admin?
+      api_uri = URI(api_endpoint + "api/attendance/reportteacher")
+      http = Net::HTTP.new(api_uri.host, api_uri.port)
+      request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })
+      request.set_form_data({"subject_id" =>subject_id ,"date"=>date_to_use,"call_from_web"=>1,"user_secret" =>session[:api_info][0]['user_secret']})
+
+      response = http.request(request)
+      @student_response = JSON::parse(response.body)
+    end
+    
+    @student_response
+  end
+  
+  def get_subject_report(subject_id)
+    require 'net/http'
+    require 'uri'
+    require "yaml"
+ 
+    champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
+    api_endpoint = champs21_api_config['api_url']
+
+    if current_user.employee? or current_user.admin?
+      api_uri = URI(api_endpoint + "api/attendance/reportallteacher")
+      http = Net::HTTP.new(api_uri.host, api_uri.port)
+      request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })
+      request.set_form_data({"subject_id" =>subject_id ,"call_from_web"=>1,"user_secret" =>session[:api_info][0]['user_secret']})
 
       response = http.request(request)
       @student_response = JSON::parse(response.body)

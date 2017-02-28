@@ -1,0 +1,204 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+<% unless @report_data.nil? %>
+<div class="clearfix"></div>
+  <div class="CSSTableGenerator" style="width: 97%;margin-top: 20px;">
+        
+    
+      <table id="listing table-design">
+        
+        
+                  
+            <tr>
+              <td class="col-2"><b>Total</b></td>
+              <td class="col-2"><%= @report_data['total'] %></td>
+              <td class="col-2">
+               
+              </td>  
+            </tr> 
+            
+            <tr>
+              <td class="col-2"><b>Present</b></td>
+              <td class="col-2" style="color:#0091D3"><%= @report_data['present'] %></td>
+              <td class="col-2 view" id="present_list_view" onclick="show_student_list('present_list')">
+               View
+              </td>  
+            </tr>
+            
+            <tr style="display:none;" class="std_list" id="present_list">
+              <td colspan="3" style="padding:0px; border:none;">
+                <div class="CSSTableGenerator" style="width: 100%;margin-top:0px; padding: 10px 0px;">
+                  <table id="listing table-design">
+                    <% @students.each do |student| %>
+                    <% if student['att'].to_i != 2 and student['att'].to_i != 3 %>
+                      <tr class="tr-<%= cycle('odd', 'even') %>">
+                        <td class="col-2"><%= student['roll_no'] %></td>
+                        <td class="col-2"><%= student['student_name'] %></td>
+                      </tr> 
+                    <% end %>
+                    
+                    <% end %>
+                  </table>
+                </div>
+              </td>  
+            </tr>
+            
+            <tr>
+              <td class="col-2"><b>Absent</b></td>
+              <td class="col-2" style="color:#E65335"><%= @report_data['absent'] %></td>
+              <td class="col-2 view" id="absent_list_view"  onclick="show_student_list('absent_list')">
+               View
+              </td>  
+            </tr> 
+            <tr style="display:none;" class="std_list" id="absent_list">
+              <td colspan="3" style="padding:0px; border:none;">
+                <div class="CSSTableGenerator" style="width: 100%;margin-top:0px; padding: 10px 0px;">
+                  <table id="listing table-design">
+                    <% @students.each do |student| %>
+                    <% if student['att'].to_i == 2 %>
+                      <tr class="tr-<%= cycle('odd', 'even') %>">
+                        <td class="col-2"><%= student['roll_no'] %></td>
+                        <td class="col-2"><%= student['student_name'] %></td>
+                      </tr> 
+                    <% end %>
+                    
+                    <% end %>
+                  </table>
+                </div>
+              </td>  
+            </tr>
+            <tr>
+              <td class="col-2"><b>Late</b></td>
+              <td class="col-2" style="color:#F78C00"><%= @report_data['late'] %></td>
+              <td class="col-2 view" id="late_list_view"  onClick="show_student_list('late_list')">
+               View
+              </td>  
+            </tr> 
+            <tr style="display:none;" class="std_list" id="late_list">
+              <td colspan="3" style="padding:0px; border:none;">
+                <div class="CSSTableGenerator" style="width: 100%;margin-top:0px; padding: 10px 0px;">
+                  <table id="listing table-design">
+                    <% @students.each do |student| %>
+                    <% if student['att'].to_i == 3 %>
+                      <tr class="tr-<%= cycle('odd', 'even') %>">
+                        <td class="col-2"><%= student['roll_no'] %></td>
+                        <td class="col-2"><%= student['student_name'] %></td>
+                      </tr> 
+                    <% end %>
+                    
+                    <% end %>
+                  </table>
+                </div>
+              </td>  
+            </tr>
+      
+      </table>
+    
+
+  </div>
+<% end %>
+
+<%= stylesheet_link_tag 'list_table' %>
+<style>
+  .CSSTableGenerator td.view:hover
+  {
+    background: #E6585A;
+    color: white;
+  }
+  .CSSTableGenerator td.view
+  {
+     cursor: pointer;
+  }
+  .CSSTableGenerator td a
+  {
+    color: inherit;
+    padding : 0;
+    background-color: inherit;
+    float: none;  
+    display: block;
+    margin: -20px;
+    padding: 20px;
+  }
+  .CSSTableGenerator td
+  {
+      font-size: 20px;
+      text-align:center;
+  }
+  .CSSTableGenerator td a:hover
+  {
+    color: inherit;
+    padding : 0;
+    background-color: inherit;
+    float: none;
+    display: block;
+    margin: -20px;
+    padding: 20px;
+  }
+   .CSSTableGenerator table tr td 
+  {
+     font-weight: bold;
+     overflow: hidden;
+  }
+  .checkmark {
+    display:inline-block;
+    width: 22px;
+    height:22px;
+    -ms-transform: rotate(45deg); /* IE 9 */
+    -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
+    transform: rotate(45deg);
+}
+
+span div.absent {
+    position: absolute;
+    width:22px;
+    height:22px;
+    background-color: #B3B9BB;
+    border-radius:11px;
+    left:0;
+    top:0;
+}
+
+.checkmark_circle {
+    position: absolute;
+    width:22px;
+    height:22px;
+    background-color: #0691D5;
+    border-radius:11px;
+    left:0;
+    top:0;
+}
+
+.checkmark_stem {
+    position: absolute;
+    width:3px;
+    height:9px;
+    background-color:#fff;
+    left:11px;
+    top:6px;
+}
+
+.checkmark_kick {
+    position: absolute;
+    width:3px;
+    height:3px;
+    background-color:#fff;
+    left:8px;
+    top:12px;
+}
+</style>  

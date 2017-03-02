@@ -65,6 +65,25 @@ class AttendancesController < ApplicationController
       page.replace_html 'subjects', :partial=> 'subjects2'
     end
   end
+  def get_subject_report_pdf
+    unless params[:subject_id].nil?
+      if !params[:subject_id].blank?
+        get_subject_report(params[:subject_id])
+        @subject = Subject.find(params[:subject_id])
+        @batch = @subject.batch
+        if @student_response['status']['code'].to_i == 200
+          @data = @student_response['data']
+        end
+      end
+    end
+    render :pdf => 'get_subject_report_pdf',
+      :margin => {:top=> 10,
+      :bottom => 10,
+      :left=> 10,
+      :right => 10},
+      :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+      :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+  end
   
   def get_subject_report_all 
     unless params[:subject_id].nil? or  params[:date].nil?
@@ -87,6 +106,7 @@ class AttendancesController < ApplicationController
         end
       else
         get_subject_report(params[:subject_id])
+        @subject = Subject.find(params[:subject_id])
         if @student_response['status']['code'].to_i == 200
           @data = @student_response['data']
         end

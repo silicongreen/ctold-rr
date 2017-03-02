@@ -28,7 +28,9 @@
             <tr>
               <td class="col-2"><b>Roll</b></td>
               <td class="col-2 left-align"><b>Name</b></td>
-              
+              <td class="col-2">
+               <b>Total</b>
+              </td>
               <td class="col-2">
                <b>Present</b>
               </td>
@@ -44,6 +46,7 @@
             <tr>
               <td class="col-2"><%= att['roll_no'] %></td>
               <td class="col-2 left-align"><%= att['name'] %></td>
+              <td class="col-2"><%= att['present']+att['absent']+att['late'] %></td>
               <td class="col-2"><%= att['present'] %></td>
               <td class="col-2"><%= att['absent'] %></td>
               <td class="col-2"><%= att['late'] %></td> 

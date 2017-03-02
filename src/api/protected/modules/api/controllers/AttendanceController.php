@@ -23,7 +23,7 @@ class AttendanceController extends Controller
     {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('getsubject', 'getstudents', 'addattendence', 'reportteacher', 'associatesubject', 'report' , 'reportallteacher'),
+                'actions' => array('getsubject', 'getstudents', 'addattendence', 'reportteacher','reportallstd', 'associatesubject', 'report' , 'reportallteacher'),
                 'users' => array('@'),
             ),
             array('deny', // deny all users
@@ -378,6 +378,57 @@ class AttendanceController extends Controller
         echo CJSON::encode($response);
         Yii::app()->end();
     }
+    public function actionReportAllStd()
+    {
+        $user_secret = Yii::app()->request->getPost('user_secret');
+        $student_id = Yii::app()->request->getPost('student_id');
+
+        if (Yii::app()->user->user_secret === $user_secret && ( Yii::app()->user->isStudent || (Yii::app()->user->isParent && $student_id )))
+        {
+            if (Yii::app()->user->isStudent)
+            {
+                $student_id = Yii::app()->user->profileId;
+                $batch_id = Yii::app()->user->batchId;
+            } else
+            {
+                $stdobj = new Students();
+                $stdData = $stdobj->findByPk($student_id);
+                $batch_id = $stdData->batch_id;
+            }
+            $subject_report = array();
+            $subject = new Subjects();
+            $all_subject = $subject->getSubject($batch_id, $student_id);
+            $i = 0;
+            if($all_subject)
+            {
+                foreach($all_subject as $value)
+                {
+                    $subject_report[$i] = $value;
+                    $subject_id = $value['id'];
+                    $registerobj = new SubjectAttendanceRegisters();
+                    $subject_report[$i]['total'] = $registerobj->getTotalRegisterStudent($subject_id, $batch_id, 1);
+                    $atovj = new SubjectAttendances();
+                    $subject_report[$i]['absent'] = $atovj->getAllattendence($student_id, $subject_id, $batch_id, 1);
+                    $subject_report[$i]['late'] = $atovj->getAllattendence($student_id, $subject_id, $batch_id, 1, 1);
+                    $subject_report[$i]['present'] = $subject_report[$i]['total']-$subject_report[$i]['absent']-$subject_report[$i]['late'];
+                    $i++;
+                } 
+            }
+            
+           
+               
+            $response['data']['report'] = $subject_report;
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "REPORT FOUND";
+           
+        } else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    }        
     public function actionreport()
     {
         $user_secret = Yii::app()->request->getPost('user_secret');
@@ -412,7 +463,7 @@ class AttendanceController extends Controller
                 $absent = $atovj->getAllattendence($student_id, $subject_id, $batch_id, $report_type);
                 $late = $atovj->getAllattendence($student_id, $subject_id, $batch_id, $report_type, 1);
 
-                $present = $total - $absent;
+                $present = $total - $absent-$late;
                 $response['data']['report']['total'] = (int) $total;
                 $response['data']['report']['absent'] = (int) $absent;
                 $response['data']['report']['late'] = (int) $late;

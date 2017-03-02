@@ -77,7 +77,7 @@ class AttendanceController extends Controller
         $user_secret = Yii::app()->request->getPost('user_secret');
         $subject_id = Yii::app()->request->getPost('subject_id');
         $date = Yii::app()->request->getPost('date');
-        if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher && $subject_id)
+        if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher && Yii::app()->user->isAdmin && $subject_id)
         {           
             if (!$date)
             {
@@ -150,7 +150,7 @@ class AttendanceController extends Controller
         $student_id = Yii::app()->request->getPost('student_id');
         $late = Yii::app()->request->getPost('late');
         $date = Yii::app()->request->getPost('date');
-        if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher && $subject_id)
+        if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher && Yii::app()->user->isAdmin && $subject_id)
         {
             
             if (!$date)
@@ -236,7 +236,7 @@ class AttendanceController extends Controller
     {
         $user_secret = Yii::app()->request->getPost('user_secret');
         $subject_id = Yii::app()->request->getPost('subject_id');
-        if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher && $subject_id)
+        if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher  && Yii::app()->user->isAdmin && $subject_id)
         { 
             $subjectObj = new Subjects();
             $sub_data = $subjectObj->findByPk($subject_id);     
@@ -314,7 +314,7 @@ class AttendanceController extends Controller
         $user_secret = Yii::app()->request->getPost('user_secret');
         $subject_id = Yii::app()->request->getPost('subject_id');
         $date = Yii::app()->request->getPost('date');
-        if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher && $subject_id)
+        if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher  && Yii::app()->user->isAdmin && $subject_id)
         {
             
             $class_completed = 0;
@@ -362,7 +362,7 @@ class AttendanceController extends Controller
     public function actionAssociateSubject()
     {
         $user_secret = Yii::app()->request->getPost('user_secret');
-        if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher)
+        if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher  && Yii::app()->user->isAdmin)
         {
             $employee_id = Yii::app()->user->profileId;
             $empsubobj = new EmployeesSubjects();

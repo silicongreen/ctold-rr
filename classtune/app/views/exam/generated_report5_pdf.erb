@@ -29,7 +29,7 @@
   <%= render  :partial=>"/connect_exam/mpsc/group_report" %>
 <% elsif MultiSchool.current_school.id == 186 %>
   <%= render  :partial=>"/connect_exam/akmis/group_report" %>
-<% elsif MultiSchool.current_school.id == 319 %>
+<% elsif MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 2 %>
   <%= render  :partial=>"/connect_exam/sfx/group_report" %>
 <% elsif MultiSchool.current_school.id == 323  %>
   <%= render  :partial=>"/connect_exam/baf_shaheen/group_report" %>

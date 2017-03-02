@@ -72,5 +72,6 @@ website/d21_session/
 wp-website/wp-config.php
 classtune/config/database.yml
 classtune/config/app.yml
+classtune/config/environments/production.rb
 classtune/tmp/delayed_job.pid
 wp-website/wp-content/uploads

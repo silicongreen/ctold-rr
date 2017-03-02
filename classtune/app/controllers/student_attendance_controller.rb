@@ -20,7 +20,7 @@ class StudentAttendanceController < ApplicationController
   before_filter :login_required
   #before_filter :check_permission, :only=>[:index, :leaves]
   before_filter :only_assigned_employee_allowed
-  before_filter :protect_other_student_data, :except=>[:own_leave_application,:year_report,:graph_code,:month_report,:new_calendar, :cancel_application, :month_report_data]
+  before_filter :protect_other_student_data, :except=>[:own_leave_application,:year_report,:graph_code,:month_report,:subject_report,:subject_report_pdf,:new_calendar, :cancel_application, :month_report_data]
   before_filter :protect_applied_leave_parent, :only => [:own_leave_application, :cancel_application]
   before_filter :default_time_zone_present_time
   filter_access_to :all
@@ -455,6 +455,27 @@ class StudentAttendanceController < ApplicationController
     end
   end
   
+  def subject_report
+    get_subject_report
+    if @attendence_data['status']['code'].to_i == 200
+      @report = @attendence_data['data']['report']
+    end
+    render :partial => 'subject_report'
+  end
+  def subject_report_pdf
+    get_subject_report
+    if @attendence_data['status']['code'].to_i == 200
+      @report = @attendence_data['data']['report']
+    end
+    render :pdf => 'subject_report_pdf',
+      :margin => {:top=> 10,
+      :bottom => 10,
+      :left=> 10,
+      :right => 10},
+      :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+      :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+  end
+  
   def year_report
     get_year_report
     if @attendence_data['status']['code'].to_i == 200
@@ -523,6 +544,39 @@ class StudentAttendanceController < ApplicationController
   end
   
   private
+  
+  def get_subject_report()
+    require 'net/http'
+    require 'uri'
+    require "yaml"
+ 
+    champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
+    api_endpoint = champs21_api_config['api_url']
+
+    
+    if current_user.student
+      homework_uri = URI(api_endpoint + "api/attendance/reportallstd")
+      http = Net::HTTP.new(homework_uri.host, homework_uri.port)
+      homework_req = Net::HTTP::Post.new(homework_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })
+      homework_req.set_form_data({"call_from_web"=>1,"user_secret" => session[:api_info][0]['user_secret']})
+
+      homework_res = http.request(homework_req)
+      @attendence_data = JSON::parse(homework_res.body)
+    end
+    if current_user.parent
+      target = current_user.guardian_entry.current_ward_id      
+      student = Student.find_by_id(target)
+      homework_uri = URI(api_endpoint + "api/attendance/reportallstd")
+      http = Net::HTTP.new(homework_uri.host, homework_uri.port)
+      homework_req = Net::HTTP::Post.new(homework_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })
+      homework_req.set_form_data({"batch_id"=>student.batch_id,"student_id"=>student.id,"call_from_web"=>1,"user_secret" => session[:api_info][0]['user_secret']})
+
+      homework_res = http.request(homework_req)
+      @attendence_data = JSON::parse(homework_res.body)
+    end
+    
+    @attendence_data
+  end
   
   def get_year_report()
     require 'net/http'

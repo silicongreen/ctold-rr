@@ -1,0 +1,177 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+<% unless @report.nil? %>
+<div class="clearfix"></div>
+  <div class="CSSTableGenerator" style="width: 87%;margin: 0 auto;">
+        
+    
+      <table id="listing table-design">
+        
+        
+                  
+            <tr>
+              <td class="col-2 left-align"><b>Subject Name</b></td>
+              <td class="col-2"><b>Code</b></td>
+              <td class="col-2">
+               <b>Total</b>
+              </td>
+              <td class="col-2">
+               <b>Present</b>
+              </td>
+              <td class="col-2">
+               <b>Absent</b>
+              </td> 
+              <td class="col-2">
+               <b>Late</b>
+              </td> 
+            </tr> 
+            <% unless @report.blank? %>
+            <% @report.each do |att| %>
+            <tr>
+              <td class="col-2 left-align"><%= att['name'] %></td>
+              <td class="col-2"><%= att['code'] %></td>
+              <td class="col-2"><%= att['total'] %></td>
+              <td class="col-2"><%= att['present'] %></td>
+              <td class="col-2"><%= att['absent'] %></td>
+              <td class="col-2"><%= att['late'] %></td> 
+            </tr>
+            <% end %>
+            <% end %>
+      
+      </table>
+      <div class="user_button" style="margin:10px 0px;">
+        <%= link_to "#{t('pdf_report')}", {:controller => "student_attendance", :action => "subject_report_pdf"},:target => '_blank' %>
+      </div>
+  </div>
+<% end %>
+
+<%= stylesheet_link_tag 'list_table' %>
+<style>
+   .user_button a
+   {
+       color: black;
+       text-decoration: none;
+   }
+   .user_button:hover a
+   {
+       color: white;
+       text-decoration: none;
+   }
+  .CSSTableGenerator td.view:hover
+  {
+    background: #E6585A;
+    color: white;
+  }
+  .CSSTableGenerator td.view
+  {
+     cursor: pointer;
+  }
+  .CSSTableGenerator td a
+  {
+    color: inherit;
+    padding : 0;
+    background-color: inherit;
+    float: none;  
+    display: block;
+    margin: -20px;
+    padding: 20px;
+  }
+  .CSSTableGenerator td
+  {
+      font-size: 20px;
+      text-align:center;
+  }
+  .CSSTableGenerator td a:hover
+  {
+    color: inherit;
+    padding : 0;
+    background-color: inherit;
+    float: none;
+    display: block;
+    margin: -20px;
+    padding: 20px;
+  }
+   .CSSTableGenerator table tr td 
+  {
+     font-weight: bold;
+     overflow: hidden;
+  }
+  .checkmark {
+    display:inline-block;
+    width: 22px;
+    height:22px;
+    -ms-transform: rotate(45deg); /* IE 9 */
+    -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
+    transform: rotate(45deg);
+}
+
+span div.absent {
+    position: absolute;
+    width:22px;
+    height:22px;
+    background-color: #B3B9BB;
+    border-radius:11px;
+    left:0;
+    top:0;
+}
+
+.checkmark_circle {
+    position: absolute;
+    width:22px;
+    height:22px;
+    background-color: #0691D5;
+    border-radius:11px;
+    left:0;
+    top:0;
+}
+
+.checkmark_stem {
+    position: absolute;
+    width:3px;
+    height:9px;
+    background-color:#fff;
+    left:11px;
+    top:6px;
+}
+
+.checkmark_kick {
+    position: absolute;
+    width:3px;
+    height:3px;
+    background-color:#fff;
+    left:8px;
+    top:12px;
+}
+.CSSTableGenerator td {
+    font-size: 12px;
+    text-align: center;
+}
+.CSSTableGenerator td {
+    vertical-align: middle;
+    border: 1px solid #D7DBDD;
+  
+    padding: 8px;
+    font-size: 12px;
+    font-weight: normal;
+    color: #333333;
+}
+.CSSTableGenerator td.left-align {
+    text-align:left;
+}
+</style>  

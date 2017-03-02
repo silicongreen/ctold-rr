@@ -17,7 +17,7 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 
-<div id="page-yield" class="bg-disable">
+<div id="page-yield">
 
   <div class="header-wrapper">
     <div class="header-title">
@@ -55,6 +55,15 @@
             :success => "Element.hide('loader2');",
             :update => 'monthreport',
             :url=>{:controller=>"student_attendance", :action=>"year_report"},
+            :html => {:class => 'f2'}
+        %>
+        </li>
+        <li>
+          <%= link_to_remote "Subject Report",
+            :before => "Element.show('loader2');",
+            :success => "Element.hide('loader2');",
+            :update => 'monthreport',
+            :url=>{:controller=>"student_attendance", :action=>"subject_report"},
             :html => {:class => 'f2'}
         %>
         </li>

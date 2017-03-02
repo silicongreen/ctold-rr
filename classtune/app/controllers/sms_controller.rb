@@ -73,14 +73,24 @@ class SmsController < ApplicationController
           student = Student.find(s_id)
           guardian = student.immediate_contact
           if student.is_sms_enabled
-            if sms_setting.student_sms_active and (send_to.to_i == 1 or send_to.to_i == 2)          
+            
+            if sms_setting.student_sms_active and (send_to.to_i == 1 or send_to.to_i == 2 or send_to.to_i == 5)          
               @recipients.push student.phone2 unless (student.phone2.nil? or student.phone2 == "")
             end
+            
             if sms_setting.parent_sms_active and (send_to.to_i == 1 or send_to.to_i == 3)
               unless guardian.nil?
                 @recipients.push guardian.mobile_phone unless (guardian.mobile_phone.nil? or guardian.mobile_phone == "")
               end
             end
+            
+            if sms_setting.parent_sms_active and (send_to.to_i == 4 or send_to.to_i == 5)
+              guardians = student.student_guardian
+              guardians.each do |sguardian|
+                @recipients.push sguardian.mobile_phone unless (sguardian.mobile_phone.nil? or sguardian.mobile_phone == "")
+              end 
+            end
+            
           end
         end
         unless @recipients.empty?

@@ -19,9 +19,6 @@
         
       <ul class="header-tabs">
         <li>
-          <a href="/calendar/index/" class="f2">Academic Calendar</a>
-        </li>
-        <li>
           <a href="/calendar/academic_calendar/" class="f2">Calendar</a>
         </li>        
         <li class="active">
@@ -64,7 +61,7 @@
             <div class="subcontent-date"><b style="color:#000;">End date : </b><%= event.end_date.strftime("%d-%m-%Y") %></div>
         
           </div>
-          <div class='timetable_last'>
+          <div class='timetable_last' style="background:none;margin-top:-5px;">
             <%
              extra_class = "top_margin"
              if(@user.admin? or @privilege.include?("EventManagement"))
@@ -108,11 +105,18 @@
 </div>
 <style>
     
-  a.user_button
+  .partial_homework .portlet-subcontent .timetable_last a.user_button
   {
       margin-top: 5px;
       padding: 3px 10px;
       margin-left: 10px;
+      width: 30px;
+      background: #49BB4B none repeat scroll 0 0 !important;
+      
+  }
+  .partial_homework .portlet-subcontent .timetable_last a:hover
+  {
+      background: #145214 none repeat scroll 0 0 !important;
   }
   .timetable_last a.top_margin
   .timetable_last a.first_child

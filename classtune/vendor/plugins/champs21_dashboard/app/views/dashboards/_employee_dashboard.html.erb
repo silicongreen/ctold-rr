@@ -119,9 +119,14 @@ employee_id = @current_user.employee_record.id
     <div class="school_feed_box">
       <%= render :partial => "attendance" %>
       <div style="clear:both;height: 20px;"></div>
+      <%  if @current_user.admin? && sms_enable? %> 
+        <%=  link_to "<div class='sms-link' style='width:100%; margin-top:5px; padding: 20px 0px; text-align:center; font-size:22px; background:#AFA7CC; color:white;'>SEND SMS TO STUDENT &#x25BA;</div>", :controller => 'sms', :action => 'students' %>
+      <% end %>
       <%  if @current_user.admin? %>
         <%=  link_to "<img src='/images/dashpallete/big_icon/ci-green.png' style='width:100%; margin-top:5px;'>", :controller => 'intelligence', :action => 'index' %><br/>
       <% end %>
+      
+      
 
       <%= render :partial => "notice", :locals=>{:news=>@news, :type => 'all'} %>
 
@@ -170,3 +175,14 @@ employee_id = @current_user.employee_record.id
 <% content_for :head do %>
   <%= javascript_include_tag "custom/jquery.als-1.6.min" %>
 <% end %>
+
+<style>
+  .sms-link
+  {
+      text-decoration: none;
+  }
+  .school_feed_box a
+  {
+      text-decoration: none;
+  }
+</style>

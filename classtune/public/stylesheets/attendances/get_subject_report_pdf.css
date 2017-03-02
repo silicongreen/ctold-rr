@@ -1,0 +1,287 @@
+#page-yield {
+    width:800px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+#pdf-header h4
+{
+    font-size:28px;
+}
+hr
+{
+    height: 1px;
+}
+#page-yield tr.wday td:first-child
+{
+   border-left: none; 
+}
+#page-yield tr.has_event td:first-child
+{
+   border-left: none; 
+}
+#page-yield tr.leave_taken td:first-child
+{
+   border-left: none; 
+}
+#page-yield tr.absent td:first-child
+{
+   border-left: none; 
+}
+#pdf-header
+{
+   
+    text-align:center;
+}
+#page-yield tr.wday
+{
+  
+    border-left: 2px solid #0f0;
+}
+#page-yield tr.has_event
+{
+    border-left: 1px solid #00f;
+}
+#page-yield tr.leave_taken
+{
+    border-left: 1px solid #e7f720;
+}
+#page-yield tr.absent 
+{
+    border-left: 1px solid #f71f1f;
+}
+
+.att_status_td
+{
+    padding: 10px; 
+    font-size: 11px; 
+    padding-left: 10px; 
+    vertical-align: middle;
+}
+.width_25
+{
+    width:25%;
+}
+.width_20
+{
+    width:20%;
+}
+.width_10
+{
+    width:10%;
+}
+.width_15
+{
+    width:15%;
+}
+.width_5
+{
+    width:5%;
+    text-align: center;
+    font-weight: bold;
+}
+.hor_line {
+    background: none repeat scroll 0 0 #333333;
+    float: left;
+    height: 1px;
+    margin-top: -10px;
+    width: 800px;
+}
+.hor_line1{
+    background: none repeat scroll 0 0 #000000;
+    float: left;
+    height: 1px;
+    margin-top: -10px;
+    width: 800px;
+}
+h2.heading{
+    text-align: center;
+    margin:5px;
+}
+
+#main_info h4{
+    color: #555555;
+    margin-top: 2px;
+    font-weight: normal;
+}
+
+#main_info h2{
+    margin-bottom: 2px;
+    font-weight: normal;
+
+}
+
+
+.odd{
+    height:auto;
+    background: #EEEEEE;
+
+}
+
+.even{
+
+    height:auto;
+    background: #fff;
+
+
+}
+tr.even{
+    border: 1px solid #ADACAB;
+}
+
+tr.odd{
+    border: 1px solid #ADACAB;
+}
+
+.even td{
+
+    padding: 6px 6px 6px 11px;
+    border: 1px solid #ADACAB;
+    border-right: 0px solid #fff;
+    border-top: 0px solid #fff;
+    font-size:11px;
+
+}
+
+.odd td{
+    padding: 6px 6px 6px 11px;
+    border: 1px solid #ADACAB;
+    border-right: 0px solid #fff;
+    border-top: 0px solid #fff;
+    font-size:11px;
+
+}
+
+table#pdf-table{
+    border-top: 1px solid #ADACAB;
+    border-collapse:collapse
+}
+
+
+#page-extender{
+    width:100%;
+    height :300px;
+
+}
+#page-extender1{
+    width:100%;
+    height :500px;
+
+}
+
+.report{
+    min-height: 1000px;
+    margin: 0 auto;
+}
+
+#signature{
+    text-align: right;
+    width: 700px;
+    margin: 0 auto;
+    color: #999999;
+    font-size: 12px;
+}
+#page-yield p{
+    text-align:left;
+    font-size: 12px;
+}
+
+#page-yield h2{
+    text-align: left;
+    font-size: 14px;
+}
+
+.col-pdf1
+{
+    color: #000;
+    text-align: center;
+}
+.col-pdf2
+{
+    color: #000;
+    text-align: left;
+}
+
+.page1 {
+    width:800px;
+    height: auto;
+    page-break-after: always;
+    page-break-inside: avoid;
+    clear: both;
+}
+.page-break1{
+    height: 20px;
+    border: 1px solid #fff;
+    width:800px;
+    float: left;
+}
+.grand_total
+{
+    border-bottom: 1px solid #ADACAB;
+}
+.section1{
+    page-break-before:always;
+    text-align: center;
+}
+.row{
+    float: left;
+    width: 100%;
+    text-align: center;
+}
+.page-blank{
+    width: 100%;
+    float: left;
+}
+.serial-td{
+    width:60px;
+    min-width:60px;
+    max-width:60px;
+    overflow:hidden;
+
+}
+.name-td{
+    width:auto;
+    /*    min-width:180px;
+        max-width:180px;*/
+    overflow: hidden;
+}
+.total-td{
+    width:150px;
+    min-width:150px;
+    max-width:150px;
+    overflow:hidden;
+}
+
+
+#main_info h4 {
+    color: #555555;
+    font-weight: bold;
+    margin-top: 18px;
+    float: left;
+}
+.info1 {
+    float: left;
+    margin-top: -10px;
+    width: 800px;
+}
+
+.info-left {
+    float: left;
+}
+.info-right {
+    float: right;
+}
+.table-header td{
+    padding: 8px 8px 8px 8px;
+    border-top: 1px solid #ADACAB;
+    border-left: 1px solid #ADACAB;
+    border-right: 1px solid #ADACAB;
+    color: #000;
+    background: #EEEEEE;
+}
+.page-break td{
+    height: 50px;
+    border: 1px solid #fff;
+    border-top: 1px solid #ADACAB;
+    border-bottom: 1px solid #ADACAB;
+}

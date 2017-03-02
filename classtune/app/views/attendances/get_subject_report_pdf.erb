@@ -1,0 +1,72 @@
+</div>
+<div id="page-yield">
+
+    <h4 align="center"><%= @subject.name+" Attendance Report " %>,<%= Time.now.strftime("%Y") %></h4> 
+    <hr />
+    <div>
+      <% if @batch.name == "General" %>
+        <h4 align="left"> <%= @batch.course.full_name %></h4>
+      <% else %>
+        <h4 align="left"> <%= @batch.name %> - <%= @batch.course.full_name %></h4>
+      <% end %>
+    </div>
+    <% unless @data.nil? %>
+      <div id="pdf-info">
+          <table id="pdf-table" width="100%" cellspacing="0">
+              <% c = 'even'  %>
+              <tr class="even">
+                  <td class="col-pdf"><%= "Roll" %></td>
+                  <td class="col-pdf"><%= "Name" %></td>
+                  <td class="col-pdf"><%= "Present" %></td>
+                  <td class="col-pdf"><%= "Absent" %></td>
+                  <td class="col-pdf"><%= "Late" %></td>
+              </tr>
+              <tr class="tr-blank"></tr>
+              <% std_count = 0 %>
+              <% extender = 0 %>
+              <% unless @data['std_att'].blank? %>
+                <% @data['std_att'].each do |att| %>
+                  <% std_count = std_count+1 %>
+                  <% if std_count>39 && extender ==0 %>
+                    <% std_count = 0 %>
+                    <% extender = 1 %>
+                    <tr class="page-break">
+                        <td colspan="100">&nbsp;</td>
+                    </tr> 
+                    <tr class="even">
+                        <td class="col-pdf"><%= "Roll" %></td>
+                        <td class="col-pdf"><%= "Name" %></td>  
+                        <td class="col-pdf"><%= "Present" %></td>
+                        <td class="col-pdf"><%= "Absent" %></td>
+                        <td class="col-pdf"><%= "Late" %></td>
+                    </tr>
+                  <% elsif std_count>40 && extender ==1 %>
+                    <% std_count = 0 %>
+                    <% extender = 1 %>
+                    <tr class="page-break">
+                        <td colspan="100">&nbsp;</td>
+                    </tr> 
+                    <tr class="even">
+                      <td class="col-pdf"><%= "Roll" %></td>
+                      <td class="col-pdf"><%= "Name" %></td> 
+                      <td class="col-pdf"><%= "Present" %></td>
+                      <td class="col-pdf"><%= "Absent" %></td>
+                      <td class="col-pdf"><%= "Late" %></td>
+                    </tr>
+                  <% end %> 
+                      
+                  
+                  <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                      <td class="col-pdf"><%= att['roll_no'] %></td>
+                      <td class="col-pdf"><%= att['name'] %></td>
+                      <td class="col-pdf"><%= att['present'] %></td>
+                      <td class="col-pdf"><%= att['absent'] %></td>
+                      <td class="col-pdf"><%= att['late'] %></td>
+                  </tr>
+                <% end %>
+              <% end %>
+
+          </table>
+      </div>
+    <% end %>
+  </div>

@@ -159,7 +159,7 @@
 
                           </div>
                           <%
-                                    unless assignment.subject.employees.nil?
+                                    unless assignment.subject.employees.nil? or assignment.subject.employees.blank?
                                       emp_name = assignment.subject.employees[0].first_name
                                       unless assignment.subject.employees[0].middle_name.nil?
                                         emp_name += ' ' + assignment.subject.employees[0].middle_name

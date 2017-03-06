@@ -92,7 +92,7 @@
       <div class="news_label_field">
         <label for="news_content"><%= t('content') %></label>
         <div id="news_content_text_field_bg" style="">
-          <%= f.redactor :content %>
+          <%= fckeditor_textarea :lessonplan, :content %>
         </div>
       </div>
       <div class="news_label_field" >

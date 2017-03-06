@@ -85,7 +85,7 @@
         <div class="classwork_content" >
           <label class="classwork_content_label" style="" ><%= "#{t('content')}"%></label>
           <div  class="classwork_content_div">
-                <%= f.redactor :content %>
+                <%= fckeditor_textarea :classwork, :content %>
           </div>
         </div>
 

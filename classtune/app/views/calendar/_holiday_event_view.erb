@@ -24,13 +24,14 @@
     <div class="events">
       <div class="holiday_title">
         <div class="legend-icon" style='background:#01B169;'></div>
-        <%= h.title %></div>
+        <%=  link_to h.title, {:controller => 'event', :action => 'event_details', :id => h.id},:style=>"color:#01B169" %>
+      </div>
       <div class="extender"></div>
       <div class="desc"><%= h.description %></div>
       <div class="extender"></div>
       <div class="link">
         <% if permitted_to? :edit_event, :event %>
-          <%= link_to "#{t('edit_text')}",{:controller=>'event',:action=>'edit_event',:id=>h.id},:class=>"delete" %>
+          <%= link_to "#{t('edit_text')}",{:controller=>'event',:action=>'edit_event',:id=>h.id},:class=>"delete" %>&nbsp;&nbsp;
         <% end %>
         <% if permitted_to? :event_delete, :calendar %>
           <%= link_to "#{t('delete_text')}",{:action=>'event_delete',:id=>h.id},:confirm=>"#{t('delete_confirm_msg')}",:class=>"delete" %>
@@ -40,4 +41,12 @@
     </div>
   <% end %>
 <% end %>
+  <style>
+      .events a
+      {
+          text-decoration: none;
+          cursor: pointer;
+      }
+  
+  </style>    
 

@@ -31,17 +31,31 @@
       %>
       <div class="event_title" style="color: <%= color %>">        
         <div class="legend-icon" style='background:<%= color %>;'></div>
-        <%= h.title %>
+        <%=  link_to h.title, {:controller => 'event', :action => 'event_details', :id => h.id},:style=>"color:#{color}" %>
+     
       </div>
-      <% if can_access_request? "event_delete".to_sym,"calendar".to_sym %>
-        <div class="link">
-          <%= link_to "X",{:action=>'event_delete',:id=>h.id},:confirm=>"#{t('delete_confirm_msg')}",:class=>"delete" %>
-        </div>
-      <% end %>
       <div class="extender"></div>
       <div class="desc"><%= h.description %><br /><%= t('start_time') %>:<%= I18n.l(h.start_date,:format=>"%I:%M %p") %><br /><%= t('end_time') %> :<%= I18n.l(h.end_date,:format=>"%I:%M %p") %></div>
+      <div class="extender"></div>
+      <div class="link">
+        <% if permitted_to? :edit_event, :event %>
+          <%= link_to "#{t('edit_text')}",{:controller=>'event',:action=>'edit_event',:id=>h.id},:class=>"delete" %>&nbsp;&nbsp;
+        <% end %>
+        <% if permitted_to? :event_delete, :calendar %>
+          <%= link_to "#{t('delete_text')}",{:action=>'event_delete',:id=>h.id},:confirm=>"#{t('delete_confirm_msg')}",:class=>"delete" %>
+        <% end %>
+      </div>
       <div class="extender"></div>
     </div>
   <% end %>
 <% end %>
+  
+<style>
+      .event_title a
+      {
+          text-decoration: none;
+          cursor: pointer;
+      }
+  
+  </style>
 

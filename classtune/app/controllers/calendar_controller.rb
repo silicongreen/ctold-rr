@@ -21,6 +21,53 @@ class CalendarController < ApplicationController
   before_filter :check_permission, :only=>[:index]
   before_filter :default_time_zone_present_time
   filter_access_to :event_delete
+  
+  def index
+    privilege = current_user.privileges.map{|p| p.name}
+    @user = current_user
+    if params[:new_month].nil?
+      @show_month = @local_tzone_time.to_date
+    else
+      passed_date = (params[:passed_date]).to_date
+      if params[:new_month].to_i > passed_date.month
+        @show_month  = passed_date+1.month
+      else
+        @show_month = passed_date-1.month
+      end
+    end
+    @start_date = @show_month.beginning_of_month
+    @start_date_day = @start_date.wday
+    @last_day = @show_month.end_of_month
+    @notifications = Hash.new{|h,k| h[k]=Array.new}
+    first_day = @show_month.beginning_of_month
+    last_day =  @show_month.end_of_month
+    
+    event_categories = EventCategory.find(:all,:conditions=>{:is_club=>1})
+    categories = []
+    event_categories.each do |event_category|
+      categories << event_category.id
+    end 
+    
+    
+    if (categories.nil? or categories.empty?) and (@user.admin? or privilege.include?("EventManagement"))
+      @events = Event.find(:all,:conditions => ["((start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?)) and is_published = 1 ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day],:include=>[:origin])
+    elsif @user.admin? or privilege.include?("EventManagement")
+      @events = Event.find(:all,:conditions => ["((start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?)) and is_published = 1  and (event_category_id NOT IN (?) or event_category_id is null) ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day,categories],:include=>[:origin])
+    end
+    if (categories.nil? or categories.empty?) and (@user.employee? and !privilege.include?("EventManagement"))
+      @events = Event.find(:all,:conditions => ["((start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?)) and is_published = 1 ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day],:include=>[:origin,:employee_department_events]) 
+    elsif @user.employee? and !privilege.include?("EventManagement")
+      @events = Event.find(:all,:conditions => ["((start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?)) and is_published = 1  and (event_category_id NOT IN (?) or event_category_id is null) ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day,categories],:include=>[:origin,:employee_department_events]) 
+    end
+    if (categories.nil? or categories.empty?) and (@user.student? or @user.parent?)
+      @events = Event.find(:all,:conditions => ["((start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?)) and is_published = 1 ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day],:include=>[:origin,:batch_events])  
+    elsif @user.student? or @user.parent?
+       @events = Event.find(:all,:conditions => ["((start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?)) and is_published = 1  and (event_category_id NOT IN (?) or event_category_id is null) ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day,categories],:include=>[:origin,:batch_events])   
+    end
+    
+    load_notifications
+  end
+  
   def academic_calendar
     privilege = current_user.privileges.map{|p| p.name}
     @user = current_user
@@ -100,7 +147,7 @@ class CalendarController < ApplicationController
     end
   end
 
-  def index
+  def index_previous
     @privilege = current_user.privileges.map{|p| p.name}
     @user = current_user
     

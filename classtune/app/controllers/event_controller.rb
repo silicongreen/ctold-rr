@@ -203,7 +203,7 @@ class EventController < ApplicationController
       reminder_recipient_ids << @users.map(&:id)
       @users.each do |u|
         
-        if u.student == true
+        if u.student == true and !u.student_record.nil?
           student = u.student_record
           batch_ids[u.id] = student.batch_id
           student_ids[u.id] = student.id

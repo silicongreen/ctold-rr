@@ -1,3 +1,21 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
 <div class="header-wrapper">
   <div class="header-title">
     <div class="header-icon">
@@ -5,8 +23,8 @@
     </div>
     <div class="header-title-text-wrapper">
       <div class="header-title-main-text f2">
-       <a href="/calendar/index/" style="float: left;">Academic Calendar</a>
-       <span style="float: left;clear:both;font-size: 15px;"><%= Time.now.strftime("%Y-%m-%d") %></span>
+       <a href="/calendar/" style="float: left;">Calendar</a>
+       <span style="float: left;clear:both;font-size: 15px;"><%= @local_tzone_time.to_date %></span>
       </div>
       <div class="header-title-sub-text f5">
 
@@ -17,27 +35,13 @@
 
     <div class="tabbed-header-wrapper">
         
-      <ul class="header-tabs">        
+      <ul class="header-tabs">
         <li class="active">
-          <a href="/calendar/index/" class="f2">Event</a>
-        </li>
-        <li>
-          <a href="/calendar/holiday/" class="f2">Holiday</a>
-        </li>
-        <li>
-          <a href="/calendar/others/" class="f2">Others</a>
-        </li>
-        <% if permitted_to? :edit_event, :event %>
-        <li>
-          <a href="/calendar/draft/" class="f2">Draft Event</a>
-        </li>
-        <% end %>
-        <!--<li>
-          <a href="/calendar/academic_calendar/" class="f2">Calendar</a>
+          <a href="/calendar/" class="f2">Calendar</a>
         </li>
         <li>
           <a href="/calendar/list_events/" class="f2"> Event List</a>          
-        </li>-->
+        </li>
       </ul>
       <div class="loader-image">
           <%= image_tag("loader2.gif",
@@ -48,126 +52,22 @@
         </div>
     </div>
 </div>
-<div id="page-yield" class="bg-disable">
-<%#= debug @obj_events %>
-  <div class="academic_calendar" id="monthreport">
-        <div id="calendar">
-
-  <div id="head-month">
-    <div class="header">
-      <div class="prev">
-        <%= link_to_remote "<div></div>",
-          :before => "Element.show('loader')",
-          :success => "Element.hide('loader')",
-          :url=>{:controller=>"calendar", :action=>"new_academic_calendar"},
-          :with => "'new_month=#{@show_month.month-1}'+ '&passed_date=#{@show_month}'"%>
+<div id="page-yield"  class="bg-disable" style="margin-top: 0px;">
+  <div style="background-color: #ffffff;float: left;width: 94%;padding: 30px;">
+    <div id="tooltip_box">
+      <div class="image_loading">
+        <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader",:style =>"display: none; float:left;" ) %>
       </div>
-      <div class="month f5">
-        <%= I18n.l(@show_month,:format=>:month_year) %>
-
-        <div class="image_loading">
-          <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader",:style =>"display: none; float:left;" ) %>
-        </div>
+      <div id="tooltip_header">
       </div>
-      <div class="next">
-        <%= link_to_remote "<div></div>",
-          :before => "Element.show('loader')",
-          :success => "Element.hide('loader')",
-          :url=>{:controller=>"calendar", :action=>"new_academic_calendar"},
-          :with => "'new_month=#{@show_month.month+1}'+ '&passed_date=#{@show_month}'"%>
-      </div>
-      <div class="extender"></div>
+    </div>
+    <div id="calendar" sty>
+      <%= render :partial=>"month" %>
     </div>
   </div>
 </div>
 
-<div class="attendance-status">
-  <table>
-    <tbody>
-      <tr>
-        <td class="f2 head">Date</td>
-        <td class="f2 head">Title</td>
-        <td class="f5 head"></td>
-      </tr>
-    <% i = 0 %>
-    <% (1..6).each do |r|%>
-      <% (1..7).each do |c|%>
-        <% dt = c - @start_date_day + (r-1)*7 %>
-        <% day_style = (dt==@show_month.day && @local_tzone_time.to_date==@show_month)? "today" : nil %>
-        
-        <% unless (r == 1 and c <= @start_date_day) %>
-          <% unless dt > @last_day.day %>    
-      
-                <% unless @obj_events.empty? %>
-                  
-                  <% @obj_events.each do |h| %>
-                    <% if dt == h.start_date.strftime('%d').to_i and @show_month.month.to_i == h.start_date.strftime('%m').to_i and @show_month.year.to_i == h.start_date.strftime('%Y').to_i %>                
-                        <%  if h.pointing_color.nil? or h.pointing_color == ""
-                              if h.is_holiday
-                                color = "#01B169"
-                              elsif h.is_due
-                                color = "#D91404"
-                              else                              
-                                color = "#FFCF27"            
-                              end
-                            else
-                              color = h.pointing_color
-                            end
-                        %>
-                        <% if h.is_holiday or h.is_exam or h.is_due  %>
-                        
-                        <% else %>
-                          <tr>
-                            <td class=""><span> <%= h.start_date.strftime('%Y-%m-%d') %><%#= dt  %></span></td>
-                            <td class="">
-                              <a class="event_title" href="/event/event_details/<%=  h.id%>" style="font-size:16px;color: <%= color %> ;"><%= h.title %></a>
-                              <% if h.is_holiday  %>
-                              <br /><span style="font-size: 12px;color: #999;">Holiday</span>
-                              <% end %>
-                              <%#= h.description %>
-                              <%#= t('start_time') %> <%#= I18n.l(h.start_date,:format=>"%I:%M %p") %><%#= t('end_time') %> <%#= I18n.l(h.end_date,:format=>"%I:%M %p") %>
-                             </td>
-                             <td class=" total">
-                               <div class="viewmore"><a href="/event/event_details/<%=  h.id%>">View</a></div>
-                             </td>
-                          </tr>
-                        
-                        <% i += 1 %>
-                        <% end %>
-                      <% end %>                       
-                    <% end %>                      
-                
-                <% end %>
-            
-          <% end %>
-        <% end %>
-            
-      <% end %>
-    <% end %>  
-    <% if i == 0 %>
-        <tr>
-          <td colspan="4"><span style="">No event in this month</span></td>                      
-        </tr>
-    <% end %>
-    </tbody>
-  </table>
-</div>
-    
-    
-  </div>
-
-</div>
-
-
-<% content_for :head do %>
-  <%= javascript_include_tag "swfobject" %>
-  <%= javascript_include_tag "custom/tabbed-header" %>
-<% end %>
 
 <%= stylesheet_link_tag 'tadded-header' %>
 
-<style type="text/css">
-  .header-wrapper .header-title-sub-text {
-    letter-spacing: unset;
-  }
-</style>
+

@@ -16,13 +16,13 @@ class Assignment < ActiveRecord::Base
 
   named_scope :for_student, lambda { |s|{ :conditions => ["FIND_IN_SET(?,student_list)",s],:order=>"duedate asc"} }
   
-  def update_attributes(attributes)
-    self.attributes = attributes
-    update_at_old = self.updated_at
-    save
-    self.updated_at = update_at_old
-    save
-  end
+#  def update_attributes(attributes)
+#    self.attributes = attributes
+#    update_at_old = self.updated_at
+#    save
+#    self.updated_at = update_at_old
+#    save
+#  end
 
   def download_allowed_for user
     return true if user.admin?

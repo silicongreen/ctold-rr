@@ -47,7 +47,13 @@
               <div class="label-field-pair-edit">
                   <label for="master_student_admission_date"><%= t('admission_date') %> <span class="necessary-field">*</span></label>
                   <div class="text-input-bg">
-                      <%= calendar_date_select_tag 'student[admission_date]', I18n.l(@student.admission_date,:format=>:default),
+                      <% 
+                        admission_date = ""
+                        if @student.admission_date?
+                          admission_date = I18n.l(@student.admission_date,:format=>:default)
+                        end
+                      %>
+                      <%= calendar_date_select_tag 'student[admission_date]', admission_date,
                         :year_range => 15.years.ago..5.years.from_now,:popup => "force" %>
                   </div>
               </div>

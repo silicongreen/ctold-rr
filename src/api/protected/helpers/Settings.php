@@ -607,12 +607,16 @@ class Settings {
         $domains = $sd->getSchoolDomainBySchoolId($obj->school_id);
         if($domains)
         {
-            $image_url = "http://".$domains->domain."/uploads/000/000/".self::numberFormat($obj->school_id)."/".$type."/photos/".self::numberFormat($obj->id)."/original/".$obj->photo_file_name;
-//            list($width, $height, $type, $attr) = getimagesize($image_url);
-//            if(isset($width) && $width)
-//            {
+            $image_url = "http://".$domains->domain."/uploads/000/000/".self::numberFormat($obj->school_id)."/".$type."/photos/".$obj->id."/original/".$obj->photo_file_name;
+            list($width, $height, $type, $attr) = getimagesize($image_url);
+            if(isset($width) && $width)
+            {
                 $profile_image = $image_url;
-//            }
+            }
+            else
+            {
+                $profile_image = "http://".$domains->domain."/uploads/000/000/".self::numberFormat($obj->school_id)."/".$type."/photos/".self::numberFormat($obj->id)."/original/".$obj->photo_file_name;
+            }    
         }
         return $profile_image;
     }        

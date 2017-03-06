@@ -279,7 +279,7 @@ class Settings {
     public static function getImageUploadPath($obj, $type = "students")
     {
         
-        $image_url = self::$paid_image_path."uploads/000/000/".self::numberFormat($obj->school_id)."/".$type."/photos/".self::numberFormat($obj->id)."/original/";
+        $image_url = self::$paid_image_path."uploads/000/000/".self::numberFormat($obj->school_id)."/".$type."/photos/".$obj->id."/original/";
         @mkdir($image_url, 0777,true);
         return $image_url;
         

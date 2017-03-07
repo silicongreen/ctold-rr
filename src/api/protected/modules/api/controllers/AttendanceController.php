@@ -555,7 +555,7 @@ class AttendanceController extends Controller
             }
         }
         
-        if(count($sms_numbers)>0 && in_array($school_id,Sms::$sms_subject_attendence_school))
+        if(count($sms_numbers)>0 && in_array(Yii::app()->user->schoolId,Sms::$sms_subject_attendence_school))
         {
             Sms::send_sms_ssl($sms_numbers, $sms_msg_array,  Yii::app()->user->schoolId);
         }    

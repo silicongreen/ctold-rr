@@ -291,6 +291,16 @@ class CalendarController < ApplicationController
         @show_month = passed_date-1.month
       end
     end
+    
+    if current_user.student?
+      @acacal = Acacal.find(:first,:conditions=>["is_published = 1 AND (batch_acacals.batch_id = ? or acacals.is_common = 1)", current_user.student_record.batch_id],:order=>"updated_at DESC",:include=>[:batch_acacal]) 
+    end
+    if current_user.parent?
+      student_id = @current_user.guardian_entry.current_ward_id 
+      @std_record = Student.find(student_id)
+      @acacal = Acacal.find(:first,:conditions=>["is_published = 1 AND (batch_acacals.batch_id = ? or acacals.is_common = 1)", @std_record.batch_id],:order=>"updated_at DESC",:include=>[:batch_acacal]) 
+    end 
+    
     @start_date = @show_month.beginning_of_month
     @start_date_day = @start_date.wday
     @last_day = @show_month.end_of_month

@@ -76,6 +76,12 @@
     </div>
     <div id="calendar" sty>
       <%= render :partial=>"month" %>
+      
+    </div>
+    <div style="float:left; clear:both;">
+    <% unless @acacal.nil? or @acacal.blank? %> 
+        <%=  link_to "Download Alcademic Calendar", :controller => 'calendar', :action => 'download_acacal', :id => @acacal.id%>
+    <% end %>    
     </div>
   </div>
 </div>

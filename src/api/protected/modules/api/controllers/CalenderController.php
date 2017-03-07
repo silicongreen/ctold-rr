@@ -615,7 +615,7 @@ class CalenderController extends Controller
                     $reminderrecipients[] = $grdata->user_id;
                     $batch_ids[$grdata->user_id] = $studentdata->batch_id;
                     $student_ids[$grdata->user_id] = $studentdata->id;
-                    if($grdata->mobile_phone && $grdata->id == $studentdata->immediate_contact_id)
+                    if($grdata->mobile_phone && ($grdata->id == $studentdata->immediate_contact_id ||  in_array($studentdata->school_id,Sms::$sms_all_guardian)))
                     {
                         $sms_numbers[] = $grdata->mobile_phone;
                     }

@@ -64,6 +64,7 @@ class Sms {
             {
                 $configmain = $configobj->findByPk($config_id);
                 $configmain->config_value = $configmain->config_value+1;
+                $configmain->save();
             }
             
             
@@ -122,6 +123,15 @@ class Sms {
                 curl_setopt($crl,CURLOPT_POSTFIELDS,$param);
                 $response = curl_exec($crl);
                 curl_close($crl);
+            }
+            
+            $configobj = new Configurations();
+            $config_id = $configobj->getConfigId("TotalSmsCount",$school_id);
+            if($config_id)
+            {
+                $configmain = $configobj->findByPk($config_id);
+                $configmain->config_value = $configmain->config_value+count($sms_numbers);
+                $configmain->save();
             }
 
         }

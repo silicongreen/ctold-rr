@@ -49,13 +49,14 @@
                   <% if permitted_to? :edit, @additional_setting, :context=>:additional_settings %>
                     <%= link_to 'Edit', edit_additional_setting_path(@owner_type,@owner.id,child_class), :class=>"button-grey-small float-right-with-margin" %>
                   <% end %>
+                <% end %>
                   <% if @additional_setting.class.name=="SmsCredential" and @owner.class.name=="School" %>
                     <% if permitted_to? :show_sms_messages, @owner, :context=>:schools %>
                       <%= link_to "SMS Log",{:controller=>"schools",:action=>"show_sms_messages", :id=>@owner.id}, :class=>"button-grey-small float-right-with-margin"  %> <br/>
                     <% end %>
                   <% end %>
                   <% i=1 %>
-                <% end %>
+                
               <% end %>
             </fieldset>
           <% end %>

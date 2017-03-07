@@ -11,7 +11,7 @@ class MarksController < ApplicationController
     @subjects.each do |sub|
       exams = Exam.find_all_by_subject_id(sub.id)
       unless exams.blank?
-        @subjects.each do |exam|
+        exams.each do |exam|
           @exams.push exam unless exam.nil?
         end
       end

@@ -584,21 +584,25 @@ class CalenderController extends Controller
         $studentobj = new Students();
         
         $sms_numbers = array();
+        $sms_msg_array = array();
         
         $studentdata = $studentobj->findByPk($student_id);
         $reminderrecipients[] = $studentdata->user_id;
         $batch_ids[$studentdata->user_id] = $studentdata->batch_id;
         $student_ids[$studentdata->user_id] = $studentdata->id;
         
-        if($studentdata->phone2)
-        {
-            $sms_numbers[] = $studentdata->phone2;
-        }    
+           
 
         if ($late == 1)
             $message = $studentdata->first_name . " " . $studentdata->last_name . " is Present but Late on " . $newattendence->month_date;
         else
             $message = $studentdata->first_name . " " . $studentdata->last_name . " is absent on " . $newattendence->month_date;
+        
+        if($studentdata->phone2)
+        {
+            $sms_numbers[] = $studentdata->phone2;
+            $sms_msg_array[] = $message;
+        } 
         
         $gstudent = new GuardianStudent(); 
         
@@ -618,6 +622,7 @@ class CalenderController extends Controller
                     if($grdata->mobile_phone && ($grdata->id == $studentdata->immediate_contact_id ||  in_array($studentdata->school_id,Sms::$sms_all_guardian)))
                     {
                         $sms_numbers[] = $grdata->mobile_phone;
+                        $sms_msg_array[] = $message;
                     }
                 }
             }    
@@ -625,20 +630,21 @@ class CalenderController extends Controller
         }
         
         
-        if($sms_numbers && in_array($studentdata->school_id,Sms::$sms_attendence_school))
-        {
-            $sms_msg = new SmsMessages();
-            $sms_msg->body = str_replace(" ","+", $message);
-            $sms_msg->created_at = date("Y-m-d H:i:s");
-            $sms_msg->updated_at = date("Y-m-d H:i:s");
-            $sms_msg->school_id = $studentdata->school_id;
-            $sms_msg->save();
-            foreach ($sms_numbers as $value)
-            {
-                $sms_data = array($value,str_replace(" ","+", $message));
-                Sms::send_sms($sms_data, $studentdata->school_id,$sms_msg->id);
-            } 
-        }        
+//        if($sms_numbers && in_array($studentdata->school_id,Sms::$sms_attendence_school))
+//        {
+//            $sms_msg = new SmsMessages();
+//            $sms_msg->body = str_replace(" ","+", $message);
+//            $sms_msg->created_at = date("Y-m-d H:i:s");
+//            $sms_msg->updated_at = date("Y-m-d H:i:s");
+//            $sms_msg->school_id = $studentdata->school_id;
+//            $sms_msg->save();
+//            foreach ($sms_numbers as $value)
+//            {
+//                
+//                $sms_data = array($value,str_replace(" ","+", $message));
+//                Sms::send_sms($sms_data, $studentdata->school_id,$sms_msg->id);
+//            } 
+//        }        
 
 
         if ($reminderrecipients)
@@ -665,6 +671,10 @@ class CalenderController extends Controller
             $notification_id = implode(",", $notification_ids);
             $user_id = implode(",", $reminderrecipients);
             Settings::sendCurlNotification($user_id, $notification_id);
+        }
+        if($sms_numbers && in_array($studentdata->school_id,Sms::$sms_attendence_school))
+        {
+            Sms::send_sms_ssl($sms_numbers, $sms_msg_array,  Yii::app()->user->schoolId);
         }
     }
 

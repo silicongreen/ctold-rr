@@ -33,12 +33,24 @@
 
   <div class="tabbed-header-wrapper">
     <ul class="header-tabs">
+      <li>
+        <a href="/calendar/" class="f2">Calendar</a>
+      </li>
+      <li>
+        <a href="/calendar/list_events/" class="f2"> Event List</a>          
+      </li>
+      <% if permitted_to? :edit_event, :event %>
+        <li>
+          <a href="/calendar/draft/" class="f2">Draft Event</a>
+        </li>
+      <% end %>
+      <li>
+        <a href="/calendar/acacals/" class="f2">Academic Calendar</a>          
+      </li>
       <li class="active">
         <%= link_to "New Event", {:controller=>"event"}, {:class => 'f2'} %>
       </li>
-      <li>
-        <%= link_to "Event List", {:controller=>"calendar", :action=>"list_events"}, {:class => 'f2'} %>
-      </li>
+     
     </ul>
   </div>
 </div>

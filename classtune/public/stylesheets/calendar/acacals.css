@@ -1,0 +1,83 @@
+.partial_homework
+{
+    float: left;
+}
+.partial_homework h2.etitle {
+    border-bottom: 1px solid #ccc;
+    color: #c7555d;
+    font-size: 30px;
+    margin: 0 0 20px;
+    padding: 0 0 25px;
+}
+.partial_homework .portlet-subcontent {
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  float: left;
+  width: 100%;
+}
+.partial_homework .portlet-subcontent:last-child {
+    border-bottom: none;
+}
+.partial_homework .timetable_left {
+  border-right: 1px dotted #cccccc;
+  float: left;
+  height: 70px;
+  padding: 10px 0;
+  width: 12%;
+}
+.partial_homework .timetable_left img {
+  height: 55px;
+  margin-left: 22px;
+  margin-top: 8px;
+  width: 70px;
+}
+.partial_homework div.timetable_right {
+  float:left;height: 70px;width: 40%;padding: 10px 0;
+}
+.partial_homework .subcontent-header {
+    color: #000;
+    float: left;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 10px;
+    padding: 1px 15px;
+    width: 93%;
+}
+
+.partial_homework .subcontent-header a{
+ text-decoration: none;
+ color:#000;
+}
+.partial_homework .subcontent-date {
+  color: #999999;
+  float: left;
+  font-size: 14px;
+  margin-top: 10px;
+  padding: 2px 15px;
+  width: 93%;
+}
+.partial_homework .subcontent-info {
+    color: #999999;
+    float: left;
+    font-size: 14px;
+    padding: 1px 15px;
+    width: 93%;
+}
+.timetable_last {
+    background: none repeat scroll 0 0 #f0f2f3;
+    float: right;
+    height: 70px;
+    padding: 10px;
+    width: 7%;
+    text-align: center;
+}
+.timetable_last a
+{
+    text-decoration: none; color:#000;
+    font-size: 12px;
+}
+.timetable_last a:hover
+{
+    text-decoration:underline;
+}
+

@@ -1,0 +1,129 @@
+<div class="header-wrapper">
+  <div class="header-title">
+    <div class="header-icon">
+      <%= image_tag '/images/icons/academic.png', :html => {:alt => 'Calendar'} %>
+    </div>
+    <div class="header-title-text-wrapper" style="width: 72%;">
+      <div class="header-title-main-text f2">
+        <a href="/calendar/list_events/" style="float: left;">Academic Calendar</a><br />
+       <span style="float: left;clear:both;font-size: 15px;"><%= Time.now.strftime("%Y-%m-%d") %></span>
+      </div>
+      <div class="header-title-sub-text f5">
+
+        </div>
+      </div>
+    </div>
+    <div class="header-form-wrapper">
+    <% if(@current_user.admin?) %>
+    <div class='header-right-button'>
+      <%= link_to "#{t('new_text')}", :action=>'addacacal' %>
+    </div>
+    <% end %>    
+  </div>
+<div class="clearfix"></div>
+
+    <div class="tabbed-header-wrapper">
+        
+      <ul class="header-tabs">
+        <li>
+          <a href="/calendar/" class="f2">Calendar</a>
+        </li>        
+        <li>
+          <a href="/calendar/list_events/" class="f2"> Event List</a>          
+        </li>
+        <% if permitted_to? :edit_event, :event %>
+          <li>
+            <a href="/calendar/draft/" class="f2">Draft Event</a>
+          </li>
+        <% end %>
+        <li class="active">
+          <a href="/calendar/acacals/" class="f2">Academic Calendar</a>          
+        </li>
+        <% if(@user.admin? or @privilege.include?("EventManagement")) %>
+         <li>
+            <%= link_to "New Event", {:controller=>"event"}, {:class => 'f2'} %>
+         </li>
+        <% end %>
+      </ul>
+      <div class="loader-image">
+          <%= image_tag("loader2.gif",
+            :align => "absmiddle",
+            :border => 0,
+            :id => "loader2",
+            :style =>"display: none;" ) %>
+        </div>
+    </div>
+</div>
+<div id="page-yield">
+<div class="partial_homework" style="width:100%;">
+  <% unless @acacals.empty? %>
+    <% @acacals.each do |acacal| %>      
+      
+    <div class="portlet-subcontent" style="background-color: #FFFFFB;
+    border: 1px solid #EEEFEB;">     
+    <% link_value = truncate(acacal.title, :length => 50) %>
+          
+          <div class="timetable_right" style="width:80%;">
+            <div class="subcontent-header themed_text"><%=  link_to acacal.title, :controller => 'calendar', :action => 'download_acacal', :id => acacal.id%></div> 
+            
+            <div class="subcontent-info" style="margin-top:10px;">
+                Created : <%= acacal.updated_at.strftime("%Y-%m-%d") %> &nbsp;&nbsp;&nbsp
+                Updated : <%= acacal.updated_at.strftime("%Y-%m-%d") %>
+            </div>    
+          </div>
+        
+          <div class='timetable_last' style="background:none;margin-top:-5px;">
+            
+          
+            <% if(@current_user.admin?) %>
+            <div class="category-edit" style="margin-top:10px;">
+              <%= link_to t('edit_text'), {:controller => "calendar", :action=> "edit_acacal", :id=> acacal.id},{:class=>"user_button"}  %>
+            </div>
+           
+            <div class="category-delete" style="margin-top:10px;">
+              <%= link_to "#{t('delete_text')}",{:action => 'cancel_acacal', :id =>acacal.id}, :confirm => "#{t('delete_confirm_msg')}", :class=>"user_button" %>
+            </div>
+          <% end %>
+          </div>
+        </div>
+        <div style="float: left; margin: 7px; width: 95%;"></div> 
+      <% end %>
+  <% else %>
+      No Academic Calendar Uploaded  
+  <% end %>      
+        
+  
+  
+
+<div class="extender"></div>
+<%= will_paginate @acacals %>
+
+<%= stylesheet_link_tag 'tadded-header' %>
+<%= stylesheet_link_tag 'pagination_and_table' %>
+</div>
+</div>
+<style>
+    
+  .partial_homework .portlet-subcontent .timetable_last a.user_button
+  {
+      margin-top: 5px;
+      padding: 3px 10px;
+      margin-left: 10px;
+      width: 30px;
+      background: #49BB4B none repeat scroll 0 0 !important;
+      
+  }
+  .partial_homework .portlet-subcontent .timetable_last a:hover
+  {
+      background: #145214 none repeat scroll 0 0 !important;
+  }
+  .timetable_last a.top_margin
+  .timetable_last a.first_child
+  {
+      margin-top: 0px;
+  }
+  .timetable_last a.top_margin
+  {
+       margin-top: 23px;
+  }
+</style>    

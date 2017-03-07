@@ -22,6 +22,262 @@ class CalendarController < ApplicationController
   before_filter :default_time_zone_present_time
   filter_access_to :event_delete
   
+  def download_acacal
+    @privilege = current_user.privileges.map{|p| p.name}
+    @user = current_user
+    #download the  attached file
+    @acacal = Acacal.find params[:id]
+    filename = @acacal.attachment_file_name
+    unless @acacal.nil?
+        send_file  @acacal.attachment.path , :type=>@acacal.attachment.content_type, :filename => filename
+    else
+      flash[:notice]="Something Went Wrong"
+      redirect_to :controller => 'calendar', :action => 'acacals'
+    end
+  end
+  
+  def addacacal
+    @privilege = current_user.privileges.map{|p| p.name}
+    @user = current_user
+    @acacal = Acacal.new(params[:acacal])
+    @employee_department = EmployeeDepartment.find(:all, :conditions=>"status = true",:order=>"name ASC")
+    @batches = Batch.active
+    @acacal.author = current_user
+    if request.post? and @acacal.save
+      if @acacal.is_common == 0
+        batch_id_list = params[:select_options][:batch_id] unless params[:select_options].nil?
+        BatchAcacal.delete_all("acacal_id ="+@acacal.id.to_s)
+        unless batch_id_list.nil?
+          batch_id_list.each do |c|
+              BatchAcacal.create(:acacal_id => @acacal.id,:batch_id=>c)
+          end
+        end
+        
+        department_id_list = params[:select_options][:department] unless params[:select_options].nil?
+        unless department_id_list.nil?
+          DepartmentAcacal.delete_all("acacal_id ="+@acacal.id.to_s)
+          department_id_list.each do |d|
+              DepartmentAcacal.create(:acacal_id => @acacal.id,:department_id=>d)
+          end
+        end
+      else
+        BatchAcacal.delete_all("acacal_id ="+@acacal.id.to_s)
+        DepartmentAcacal.delete_all("acacal_id ="+@acacal.id.to_s)
+      end   
+      
+      if @acacal.is_published == 1
+        sms_setting = SmsSetting.new()
+#        sms_setting = SmsSetting.new()
+#        if sms_setting.application_sms_active
+#          students = Student.find(:all,:select=>'phone2',:conditions=>'is_sms_enabled = true')
+#        end
+        reminder_recipient_ids = []
+        batch_ids = {}
+        student_ids = {}
+        recipients = []
+        if @acacal.is_common?
+          @users = User.active.find(:all)
+          reminder_recipient_ids << @users.map(&:id)
+          @users.each do |u|
+
+            if u.student == true
+              student = u.student_record
+              unless student.nil?
+                batch_ids[u.id] = student.batch_id
+                student_ids[u.id] = student.id
+              end
+            elsif u.parent == true
+              guardian = Guardian.find_by_user_id(u.id)
+              unless guardian.nil?
+                student = Student.find_by_id(guardian.ward_id)
+                if !student.blank?
+                  batch_ids[u.id] = student.batch_id
+                  student_ids[u.id] = student.id
+                else
+                  batch_ids[u.id] = 0
+                  student_ids[u.id] =  0
+                end
+              else
+                batch_ids[u.id] = 0
+                student_ids[u.id] =  0
+              end  
+
+            else
+              batch_ids[u.id] = 0
+              student_ids[u.id] = 0
+            end 
+            
+            if u.student == true
+              student = u.student_record
+              unless student.nil?
+                guardian = student.immediate_contact unless student.immediate_contact.nil?
+                if student.is_sms_enabled
+                  if sms_setting.student_sms_active
+                    recipients.push student.phone2 unless student.phone2.nil?
+                  end
+                  if sms_setting.parent_sms_active
+                    unless guardian.nil?
+                      recipients.push guardian.mobile_phone unless guardian.mobile_phone.nil?
+                    end
+                  end
+                end
+              else
+                employee = u.employee_record
+                if sms_setting.employee_sms_active
+                  unless employee.nil?
+                    recipients.push employee.mobile_phone unless employee.mobile_phone.nil?
+                  end
+                end
+              end
+            end
+            
+          end
+          
+        else
+          @batchnews = BatchAcacal.find_all_by_acacal_id(@acacal.id)
+          unless @batchnews.empty?
+            @batchnews.each do |b|
+              @batch_students = Student.find(:all, :conditions=>"batch_id = #{b.batch_id}")
+              @batch_students.each do |s|
+                reminder_recipient_ids << s.user_id
+                batch_ids[s.user_id] = s.batch_id
+                student_ids[s.user_id] = s.id
+                unless s.immediate_contact.nil? 
+                  reminder_recipient_ids << s.immediate_contact.user_id
+                  batch_ids[s.immediate_contact.user_id] = s.batch_id
+                  student_ids[s.immediate_contact.user_id] = s.id
+                end
+
+
+                if sms_setting.application_sms_active and sms_setting.event_news_sms_active
+                  guardian = s.immediate_contact unless s.immediate_contact.nil?
+                  if s.is_sms_enabled
+                    if sms_setting.student_sms_active
+                      recipients.push s.phone2 unless s.phone2.nil?
+                    end
+                    if sms_setting.parent_sms_active
+                      unless guardian.nil?
+                        recipients.push guardian.mobile_phone unless guardian.mobile_phone.nil?
+                      end
+                    end
+                  end
+                end
+              end
+              
+            end
+          end
+          
+          @departmentnews = DepartmentAcacal.find_all_by_acacal_id(@acacal.id)
+          unless @departmentnews.empty?
+              @departmentnews.each do |d|
+                @dept_emp = Employee.find(:all, :conditions=>"employee_department_id = #{d.department_id}")
+                @dept_emp.each do |e|
+                  reminder_recipient_ids << e.user_id
+                  batch_ids[e.user_id] = 0
+                  student_ids[e.user_id] = 0
+
+                  if sms_setting.application_sms_active and sms_setting.event_news_sms_active
+                    if sms_setting.employee_sms_active
+                      recipients.push e.mobile_phone unless e.mobile_phone.nil?
+                    end
+                  end
+                end
+          
+              end
+          end    
+        end 
+        
+     
+        unless recipients.empty? or !send_sms("notice")
+          message = "#{t('reminder_notice')} : "+params[:news][:title]
+          Delayed::Job.enqueue(SmsManager.new(message,recipients))
+        end
+        unless reminder_recipient_ids.empty?
+          Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => current_user.id,
+              :recipient_ids => reminder_recipient_ids,
+              :subject=>@acacal.title,
+              :rtype=>105,
+              :rid=>@acacal.id,
+              :student_id => student_ids,
+              :batch_id => batch_ids,
+              :body=>@acacal.title ))
+        end
+      end  
+      flash[:notice] = "Calendar Saved Successfully"
+      redirect_to :controller => 'calendar', :action => 'acacals'
+    end
+  end
+  
+  
+  def acacals
+    @privilege = current_user.privileges.map{|p| p.name}
+    @user = current_user
+    if current_user.admin? 
+      @acacals = Acacal.paginate(:conditions=>{:is_published=>1}, :page => params[:page], :per_page => 10)
+    end
+    if current_user.employee?
+      @acacals = Acacal.paginate(:conditions=>["is_published = 1 AND (department_acacals.department_id = ? or acacals.is_common = 1 or author_id=?)", current_user.employee_record.employee_department_id,current_user.id], :page => params[:page], :per_page => 10,:include=>[:department_acacal])
+    end
+    if current_user.student?
+      @acacals = Acacal.paginate(:conditions=>["is_published = 1 AND (batch_acacals.batch_id = ? or acacals.is_common = 1)", current_user.student_record.batch_id], :page => params[:page], :per_page => 10,:include=>[:batch_acacal]) 
+    end
+    if current_user.parent?
+      student_id = @current_user.guardian_entry.current_ward_id 
+      @std_record = Student.find(student_id)
+      @acacals = Acacal.paginate(:conditions=>["is_published = 1 AND (batch_acacals.batch_id = ? or acacals.is_common = 1)", @std_record.batch_id], :page => params[:page], :per_page => 10,:include=>[:batch_acacal]) 
+    end  
+  end
+  def cancel_acacal
+    @acacal = Acacal.find(params[:id]).destroy
+    flash[:notice] = "Calendar Removed Succesfully"
+    redirect_to :controller => 'calendar', :action => 'acacals'
+  end
+  
+  def edit_acacal
+    @privilege = current_user.privileges.map{|p| p.name}
+    @user = current_user
+    @acacal = Acacal.find(params[:id])
+    @employee_department = EmployeeDepartment.find(:all, :conditions=>"status = true",:order=>"name ASC")
+    @batches = Batch.active
+    @batchacacal = BatchAcacal.find_all_by_acacal_id(@acacal.id)
+    @departmentacacal = DepartmentAcacal.find_all_by_acacal_id(@acacal.id)
+    @batches_ids = []
+    @department_ids = []
+    
+    if !@batchacacal.blank?
+      @batches_ids = @batchacacal.map{|c| c.batch_id} 
+    end
+    
+    if !@departmentacacal.blank?
+      @department_ids = @departmentacacal.map{|d| d.department_id} 
+    end
+    
+    if request.post? and @acacal.update_attributes(params[:acacal])
+      if @acacal.is_common == 0
+        batch_id_list = params[:select_options][:batch_id] unless params[:select_options].nil?
+        BatchAcacal.delete_all("acacal_id ="+@acacal.id.to_s)
+        unless batch_id_list.nil?
+          batch_id_list.each do |c|
+              BatchAcacal.create(:acacal_id => @acacal.id,:batch_id=>c)
+          end
+        end
+        
+        department_id_list = params[:select_options][:department] unless params[:select_options].nil?
+        unless department_id_list.nil?
+          DepartmentAcacal.delete_all("acacal_id ="+@acacal.id.to_s)
+          department_id_list.each do |d|
+              DepartmentAcacal.create(:acacal_id => @acacal.id,:department_id=>d)
+          end
+        end
+      else
+        BatchAcacal.delete_all("acacal_id ="+@acacal.id.to_s)
+        DepartmentAcacal.delete_all("acacal_id ="+@acacal.id.to_s)
+      end 
+      flash[:notice] = "Calendar Update Successfully"
+      redirect_to :controller => 'calendar', :action => 'acacals'
+    end
+  end
+  
   def index
     privilege = current_user.privileges.map{|p| p.name}
     @user = current_user
@@ -760,8 +1016,8 @@ class CalendarController < ApplicationController
     first_day = @date.beginning_of_month.to_time
     last_day = @date.end_of_month.to_time
 
-    common_event = Event.find_all_by_is_common_and_is_holiday(true,false, :conditions => ["(start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?) ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day])
-    non_common_events = Event.find_all_by_is_common_and_is_holiday_and_is_exam_and_is_due(false,false,false,false, :conditions => ["(start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?) ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day])
+    common_event = Event.find_all_by_is_common_and_is_holiday_and_is_published(true,false,true, :conditions => ["(start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?) ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day])
+    non_common_events = Event.find_all_by_is_common_and_is_holiday_and_is_exam_and_is_due_and_is_published(false,false,false,false,true, :conditions => ["(start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?)", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day])
     @common_event_array = []
     common_event.each do |h|
       if h.start_date.to_date == h.end_date.to_date
@@ -773,7 +1029,7 @@ class CalendarController < ApplicationController
       end
     end
     if @user.student == true or @user.parent == true
-      non_common_events = Event.find_all_by_is_common_and_is_holiday_and_is_exam_and_is_due(false,false,false,false, :conditions => ["(start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?) ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day],:include=>[:batch_events])
+      non_common_events = Event.find_all_by_is_common_and_is_holiday_and_is_exam_and_is_due_and_is_published(false,false,false,false,true, :conditions => ["(start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?)", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day],:include=>[:batch_events])
       user_student = @user.student_record if @user.student
       user_student = @user.parent_record if @user.parent
       batch = user_student.batch
@@ -804,7 +1060,7 @@ class CalendarController < ApplicationController
       end
       @events = @common_event_array + @student_batch_not_common_event_array
     elsif @user.employee == true and !privilege.include?("EventManagement")
-      non_common_events = Event.find_all_by_is_common_and_is_holiday_and_is_exam_and_is_due(false,false,false,false, :conditions => ["(start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?) ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day],:include=>[:employee_department_events])      
+      non_common_events = Event.find_all_by_is_common_and_is_holiday_and_is_exam_and_is_due_and_is_published(false,false,false,false,true, :conditions => ["(start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?)", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day],:include=>[:employee_department_events])      
       user_employee = @user.employee_record
       department = user_employee.employee_department
       @employee_dept_not_common_event_array = []
@@ -828,7 +1084,7 @@ class CalendarController < ApplicationController
       end
       @events = @common_event_array + @employee_dept_not_common_event_array
     elsif @user.admin == true or privilege.include?("EventManagement")
-      non_common_events = Event.find_all_by_is_common_and_is_holiday_and_is_exam_and_is_due(false,false,false,false, :conditions => ["(start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?) ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day])
+      non_common_events = Event.find_all_by_is_common_and_is_holiday_and_is_exam_and_is_due_and_is_published(false,false,false,false,true, :conditions => ["(start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?)", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day])
       
       @employee_dept_not_common_event_array = []
       non_common_events.each do |h|
@@ -858,8 +1114,8 @@ class CalendarController < ApplicationController
     first_day = @date.beginning_of_month.to_time
     last_day = @date.end_of_month.to_time
 
-    common_holiday_event = Event.find_all_by_is_common_and_is_holiday(true,true, :conditions => ["(start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?) ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day])
-    non_common_holiday_events = Event.find_all_by_is_common_and_is_holiday(false,true, :conditions => ["(start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?) ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day],:include=>[:batch_events,:employee_department_events])
+    common_holiday_event = Event.find_all_by_is_common_and_is_holiday_and_is_published(true,true,true, :conditions => ["(start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?)", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day])
+    non_common_holiday_events = Event.find_all_by_is_common_and_is_holiday_and_is_published(false,true,true, :conditions => ["(start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?)", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day],:include=>[:batch_events,:employee_department_events])
     @common_holiday_event_array = []
     common_holiday_event.each do |h|
       if h.start_date.to_date == h.end_date.to_date
@@ -937,7 +1193,7 @@ class CalendarController < ApplicationController
     @student_batch_exam_event_array = []
     subject_ids = []
     if @user.student == true or @user.parent == true
-      not_common_exam_event = Event.find_all_by_is_common_and_is_holiday_and_is_exam(false,false,true, :conditions => ["(start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?) ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day],:include=>[:origin,:batch_events])      
+      not_common_exam_event = Event.find_all_by_is_common_and_is_holiday_and_is_exam(false,false,true, :conditions => ["(start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?)  and is_published = 1", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day],:include=>[:origin,:batch_events])      
       user_student = @user.student_record if @user.student
       user_student = @user.parent_record if @user.parent
       subject_ids = user_student.subject_ids
@@ -960,7 +1216,7 @@ class CalendarController < ApplicationController
         end
       end
     else
-      not_common_exam_event = Event.find_all_by_is_common_and_is_holiday_and_is_exam(false,false,true, :conditions => ["(start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?) ", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day],:include=>[:origin])
+      not_common_exam_event = Event.find_all_by_is_common_and_is_holiday_and_is_exam(false,false,true, :conditions => ["(start_date >= ? and end_date <= ?) or (start_date <= ? and end_date <= ?)  or (start_date>=? and end_date>=?) or (start_date<=? and end_date>=?)  and is_published = 1", first_day, last_day, first_day,last_day, first_day,last_day,first_day,last_day],:include=>[:origin])
       not_common_exam_event.reject! { |x|x.origin.nil?  }
       not_common_exam_event.each do |h|
         if  h.start_date.to_date == h.end_date.to_date

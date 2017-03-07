@@ -19,18 +19,23 @@
         
       <ul class="header-tabs">        
         <li>
-          <a href="/calendar/index/" class="f2">Event</a>
-        </li>
-        <li >
-          <a href="/calendar/holiday/" class="f2">Holiday</a>
-        </li>
+          <a href="/calendar/" class="f2">Calendar</a>
+        </li>        
         <li>
-          <a href="/calendar/others/" class="f2">Others</a>
+          <a href="/calendar/list_events/" class="f2"> Event List</a>          
         </li>
         <% if permitted_to? :edit_event, :event %>
-        <li class="active">
-          <a href="/calendar/draft/" class="f2">Draft Event</a>
+          <li class="active">
+            <a href="/calendar/draft/" class="f2">Draft Event</a>
+          </li>
+        <% end %>
+        <li>
+          <a href="/calendar/acacals/" class="f2">Academic Calendar</a>          
         </li>
+        <% if(@user.admin? or @privilege.include?("EventManagement")) %>
+         <li>
+            <%= link_to "New Event", {:controller=>"event"}, {:class => 'f2'} %>
+         </li>
         <% end %>
         <!--<li>
           <a href="/calendar/academic_calendar/" class="f2">Calendar</a>

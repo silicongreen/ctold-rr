@@ -68,25 +68,25 @@
                   <span><%= dt  %></span></div>
                 <div class="link-group">                  
                   <% if @events.include?("#{@show_month.year}-#{@show_month.month}-#{dt}".to_date) %>
-                    <%= link_to_remote("<div class='calendar-legend' style='background:#FFCF27;'></div>", {:url => {:action => "#"}}, {:onmouseover =>remote_function(
+                    <%= link_to_remote("", {:url => {:action => "#"}}, {:onmouseover =>remote_function(
                           :url => { :action => :show_event_tooltip, :id=>Date.parse("#{@show_month.year}-#{@show_month.month}-#{dt}") },:before => "Element.show('loader')",:success => "Element.hide('loader')"),
-                        :class=>"event"}) %>
+                        :class=>"event calendar-legend", :style=>'background:#FFCF27;'}) %>
                   <% end %>
                   <% if @holiday_event.include?("#{@show_month.year}-#{@show_month.month}-#{dt}".to_date) %>
-                    <%= link_to_remote("<div class='calendar-legend' style='background:#01B169;'></div>", {:url => {:action => "#"}}, {:onmouseover =>remote_function(
+                    <%= link_to_remote("", {:url => {:action => "#"}}, {:onmouseover =>remote_function(
                           :url => { :action => :show_holiday_event_tooltip, :id=>Date.parse("#{@show_month.year}-#{@show_month.month}-#{dt}") },:before => "Element.show('loader')",:success => "Element.hide('loader')"),
-                        :class=>"event"}) %>
+                        :class=>"event calendar-legend", :style=>'background:#01B169;'}) %>
                   <% end %>
                   <% if @notifications['student_batch_exam'].include?("#{@show_month.year}-#{@show_month.month}-#{dt}".to_date) %>
-                    <%= link_to_remote("<div class='calendar-legend' style='background:#00BFF3;'></div>", {:url => {:action => "#"}} , {:onmouseover =>remote_function(
+                    <%= link_to_remote("", {:url => {:action => "#"}} , {:onmouseover =>remote_function(
                           :url => { :action => :show_exam_event_tooltip, :id=>Date.parse("#{@show_month.year}-#{@show_month.month}-#{dt}") },:before => "Element.show('loader')",:success => "Element.hide('loader')"),
-                        :class=>"event"}) %>
+                        :class=>"event calendar-legend", :style=>'background:#00BFF3;'}) %>
                   <% end %>
                   <%# if @user.admin? or @user.student? %>
                     <% if @notifications['finance_due'].include?("#{@show_month.year}-#{@show_month.month}-#{dt}".to_date) %>
-                      <%= link_to_remote("<div class='calendar-legend' style='background:#D91404;'></div>", {:url => {:action => "#"}} , {:onmouseover =>remote_function(
+                      <%= link_to_remote("", {:url => {:action => "#"}} , {:onmouseover =>remote_function(
                             :url => { :action => :show_due_tooltip, :id=>Date.parse("#{@show_month.year}-#{@show_month.month}-#{dt}") },:before => "Element.show('loader')",:success => "Element.hide('loader')"),
-                          :class=>"event"}) %>
+                          :class=>"event calendar-legend", :style=>'background:#D91404;'}) %>
                     <% end %>
                   <%# end %>
 
@@ -150,3 +150,10 @@
     </div>
   </div>
 <% end %>
+
+<style>
+    .calendar-legend
+    {
+        width:20px;
+    }
+</style>    

@@ -24,6 +24,20 @@
         <li class="active">
           <a href="/calendar/list_events/" class="f2"> Event List</a>          
         </li>
+        <% if permitted_to? :edit_event, :event %>
+          <li>
+            <a href="/calendar/draft/" class="f2">Draft Event</a>
+          </li>
+        <% end %>
+        <li>
+          <a href="/calendar/acacals/" class="f2">Academic Calendar</a>          
+        </li>
+        <% if(@user.admin? or @privilege.include?("EventManagement")) %>
+         <li>
+            <%= link_to "New Event", {:controller=>"event"}, {:class => 'f2'} %>
+         </li>
+        <% end %>
+        
       </ul>
       <div class="loader-image">
           <%= image_tag("loader2.gif",

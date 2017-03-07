@@ -4,7 +4,9 @@ authorization do
   role :open do
     has_permission_on [:calendar],
       :to => [
-      :index
+      :index,
+      :acacals,
+      :download_acacal
     ]
   end
 
@@ -1046,7 +1048,7 @@ authorization do
   role :event_management do
 
     has_permission_on [:event], :to => [:index, :show, :confirm_event, :cancel_event, :select_course, :event_group, :course_event, :remove_batch, :select_employee_department, :department_event, :remove_department,:edit_event]
-    has_permission_on [:calendar], :to => [:event_delete]
+    has_permission_on [:calendar], :to => [:event_delete,:edit_acacal,:addacacal,:cancel_acacal]
   end
 
   role :general_settings do
@@ -2645,7 +2647,7 @@ authorization do
       :view_employee_payslip
 
     ]
-    has_permission_on [:calendar], :to => [:event_delete, :event_list]
+    has_permission_on [:calendar], :to => [:event_delete, :event_list,:edit_acacal,:addacacal,:cancel_acacal]
 
     has_permission_on [:descriptive_indicators],
       :to=>[

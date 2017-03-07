@@ -492,7 +492,8 @@ class AttendanceController extends Controller
         $all_students = $studentobj->getByIdsStudent($ids);
         $reminder_ids = array();
         $receiptionist_ids = array();
-
+        $sms_numbers = array();
+        $sms_msg_array = array();
         foreach ($all_students as $key => $value)
         {
             $reminderrecipients = array();
@@ -509,37 +510,27 @@ class AttendanceController extends Controller
                 $student_ids[$value['guradianDetails']->user_id] = $value->id;
             }
 
-
-            if ($value->phone2)
-            {
-                $sms_numbers[] = $value->phone2;
-            }
-            if (isset($value['guradianDetails']) && $value['guradianDetails'] && $value['guradianDetails']->mobile_phone)
-            {
-                $sms_numbers[] = $value['guradianDetails']->mobile_phone;
-            }
             if ($late[$key] == 1)
             {
                 $message = $value->first_name . " " . $value->last_name . " is Present but Late in " . $sub_data->name . " on " . $att_date;
-            } else
+            } 
+            else
             {
                 $message = $value->first_name . " " . $value->last_name . " is absent in " . $sub_data->name . " on " . $att_date;
             }
 
-//            if ($sms_numbers && in_array($value->school_id, Sms::$sms_attendence_university))
-//            {
-//                $sms_msg = new SmsMessages();
-//                $sms_msg->body = str_replace(" ", "+", $message);
-//                $sms_msg->created_at = date("Y-m-d H:i:s");
-//                $sms_msg->updated_at = date("Y-m-d H:i:s");
-//                $sms_msg->school_id = $value->school_id;
-//                $sms_msg->save();
-//                foreach ($sms_numbers as $svalue)
-//                {
-//                    $sms_data = array($svalue, str_replace(" ", "+", $message));
-//                    Sms::send_sms($sms_data, $value->school_id, $sms_msg->id);
-//                }
-//            }
+            if ($value->phone2)
+            {
+                $sms_numbers[] = $value->phone2;
+                $sms_msg_array[] = $message;
+            }
+            if (isset($value['guradianDetails']) && $value['guradianDetails'] && $value['guradianDetails']->mobile_phone)
+            {
+                $sms_numbers[] = $value['guradianDetails']->mobile_phone;
+                $sms_msg_array[] = $message;
+            }
+
+            
 
             if ($reminderrecipients)
             {
@@ -563,6 +554,12 @@ class AttendanceController extends Controller
                 }
             }
         }
+        
+        if(count($sms_numbers)>0 && in_array($school_id,Sms::$sms_subject_attendence_school))
+        {
+            Sms::send_sms_ssl($sms_numbers, $sms_msg_array,  Yii::app()->user->schoolId);
+        }    
+        
         if ($reminder_ids && $receiptionist_ids)
         {
             $notification_id = implode(",", $reminder_ids);

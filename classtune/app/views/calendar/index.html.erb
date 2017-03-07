@@ -50,7 +50,7 @@
         <li>
           <a href="/calendar/acacals/" class="f2">Academic Calendar</a>          
         </li>
-        <% if(@user.admin? or @privilege.include?("EventManagement")) %>
+        <% if permitted_to? :index, :event %>
          <li>
             <%= link_to "New Event", {:controller=>"event"}, {:class => 'f2'} %>
          </li>

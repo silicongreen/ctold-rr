@@ -9,8 +9,12 @@ class MarksController < ApplicationController
     @subjects.reject! {|s| !s.batch.is_active}
     @exams = []
     @subjects.each do |sub|
-      exam = Exam.find_by_subject_id(sub.id)
-      @exams.push exam unless exam.nil?
+      exams = Exam.find_all_by_subject_id(sub.id)
+      unless exams.blank?
+        @subjects.each do |exam|
+          @exams.push exam unless exam.nil?
+        end
+      end
     end 
     @exams.sort! { |a, b|  b.start_time <=> a.start_time }
   end

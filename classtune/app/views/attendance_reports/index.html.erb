@@ -31,7 +31,7 @@
 <div id="page-yield">
     <% form_for(@student, :url => {:action=> 'show'}, :html=> {:id=>'new_student'}) do |s| %>
         <% if @config.config_value == 'Daily' %>
-          <% if Batch.active.find(:all, :group => "name").length > 1  %> 
+          
           <div class="label-field-pair">    
             <label> <%= t('shift_label') %>: </label>
             <div class="text-input-bg">            
@@ -51,7 +51,7 @@
             </div>
             <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loader", :style =>"display: none;" ) %><div class="extender"></div>
           </div>
-        <% end %>
+       
         <div class="label-field-pair">
           <label for="student_grade"><%= t('class_label') %></label>
           <div class="text-input-bg"><div id="courses_attendances_report_mode"> <%= render :partial => 'student/courses_attendances_report_mode_view', :object => @courses %></div></div>
@@ -61,7 +61,7 @@
           <div class="text-input-bg"><div id="sections_attendances_report_mode"> <%= render :partial => 'student/sections_attendances_report_mode_view', :object => @classes %></div></div>
         </div>
       <% else %>
-        <% if Batch.active.find(:all, :group => "name").length > 1  %> 
+        
           <div class="label-field-pair">    
             <label> <%= t('shift_label') %>: </label>
             <div class="text-input-bg">
@@ -81,7 +81,7 @@
             </div>
             <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loader", :style =>"display: none;" ) %><div class="extender"></div>
           </div>
-        <% end %>
+       
         <div class="label-field-pair">
           <label for="student_grade"><%= t('class_label') %></label>
           <div class="text-input-bg"><div id="courses_attendances_report_subject"> <%= render :partial => 'student/courses_attendances_report_subject_view', :object => @courses %></div></div>

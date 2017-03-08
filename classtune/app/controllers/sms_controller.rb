@@ -68,6 +68,9 @@ class SmsController < ApplicationController
         student_ids = params[:send_sms][:student_ids]
         sms_setting = SmsSetting.new()
         @recipients=[]
+        if MultiSchool.current_school.id == 319
+          @recipients=['8801918179040','8801764198796','8801680425262','8801841016016','8801841012012','8801941013013','8801911438293','8801771767811','8801716752996','8801715437299','8801763710825','8801714453713','8801714552559','8801715331407','8801715224886']
+        end
         send_to = params[:send_sms][:send_to]
         student_ids.each do |s_id|
           student = Student.find(s_id)
@@ -129,6 +132,9 @@ class SmsController < ApplicationController
         sms_setting = SmsSetting.new()
         send_to = params[:send_sms][:send_to]
         @recipients = []
+        if MultiSchool.current_school.id == 319
+          @recipients=['8801918179040','8801764198796','8801680425262','8801841016016','8801841012012','8801941013013','8801911438293','8801771767811','8801716752996','8801715437299','8801763710825','8801714453713','8801714552559','8801715331407','8801715224886']
+        end
         batch_ids.each do |b_id|
           batch = Batch.find(b_id)
           batch_students = batch.students
@@ -175,6 +181,9 @@ class SmsController < ApplicationController
     parent_sms=sms_setting.parent_sms_active
     employee_sms=sms_setting.employee_sms_active
     @recipients = []
+    if MultiSchool.current_school.id == 319
+        @recipients=['8801918179040','8801764198796','8801680425262','8801841016016','8801841012012','8801941013013','8801911438293','8801771767811','8801716752996','8801715437299','8801763710825','8801714453713','8801714552559','8801715331407','8801715224886']
+    end
     batches.each do |batch|
       batch_students = batch.students
       batch_students.each do |student|
@@ -213,6 +222,9 @@ class SmsController < ApplicationController
         employee_ids = params[:send_sms][:employee_ids]
         sms_setting = SmsSetting.new()
         @recipients=[]
+        if MultiSchool.current_school.id == 319
+          @recipients=['8801918179040','8801764198796','8801680425262','8801841016016','8801841012012','8801941013013','8801911438293','8801771767811','8801716752996','8801715437299','8801763710825','8801714453713','8801714552559','8801715331407','8801715224886']
+        end
         employee_ids.each do |e_id|
           employee = Employee.find(e_id)
           if sms_setting.employee_sms_active
@@ -253,6 +265,9 @@ class SmsController < ApplicationController
         dept_ids = params[:send_sms][:dept_ids]
         sms_setting = SmsSetting.new()
         @recipients = []
+        if MultiSchool.current_school.id == 319
+          @recipients=['8801918179040','8801764198796','8801680425262','8801841016016','8801841012012','8801941013013','8801911438293','8801771767811','8801716752996','8801715437299','8801763710825','8801714453713','8801714552559','8801715331407','8801715224886']
+        end
         dept_ids.each do |d_id|
           department = EmployeeDepartment.find(d_id)
           department_employees = department.employees

@@ -462,7 +462,11 @@ class ExamsController < ApplicationController
       @students = []
       assigned_students.each do |s|
         student = Student.find_by_id(s.student_id)
-        @students.push [student.class_roll_no,student.first_name, student.id, student] unless student.nil?
+        unless student.nil?
+          if student.batch_id.to_i == s.batch_id
+            @students.push [student.class_roll_no,student.first_name, student.id, student]
+          end
+        end
       end
       @ordered_students = @students.sort
       @students=[]

@@ -39,5 +39,16 @@ class Acacal < ActiveRecord::Base
     return true if user.parent?
     false
   end
+  def update_attributes(attributes)
+    self.attributes = attributes
+    update_at_old = self.updated_at
+    save
+    self.updated_at = update_at_old
+    save
+  end
+  
+  def before_save
+    self.school_id = MultiSchool.current_school.id
+  end
 
 end

@@ -23,7 +23,7 @@
     :loaded => "$('loader').hide();" , :before=>"$('submit_button').disable()",
     :complete=>"setTimeout(function(){$('submit_button').enable();},5000)" do |sms| %>
     <div class="label-field-pair">
-      <div class="text-input-bg"><%= text_area :send_sms,:message, :rows=>5,:cols=>30,:maxlength=>155 %>
+      <div class="text-input-bg"><%= text_area :send_sms,:message, :rows=>10,:cols=>40 %>
       </div>
     </div>
     <div id="textarea_sms_feedback" style="margin-left: 201px;margin-bottom: 10px;float:left; clear:both;"></div>

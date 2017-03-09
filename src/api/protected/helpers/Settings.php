@@ -12,6 +12,7 @@ class Settings {
     public static $main_path = "../../website/";
     public static $paid_image_path = "../../../../classtune/public_html/classtune/public/";
     public static $notice_attachment_path = "../../../../classtune/public_html/classtune/public/uploads/news/attachments/";
+    public static $acacal_attachment_path = "../../../../classtune/public_html/classtune/public/uploads/acacals/attachments/";
     public static $upload_image_in_classtune = TRUE; 
     public static $inner_post_to_show = 15;
     public static $api_llicence_key = "fa@#25896321";

@@ -1,0 +1,169 @@
+<div id="page-yield" class="available_sections1">
+  <div class="page1"> </div>
+  <div class="section1 row" >
+    <center>
+      <div id="pdf-header-south" class="general-header">
+        <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '4%' %></h4>
+        <h2 align="center"><%=Configuration.get_config_value('InstitutionName'); %></h2>
+      </div>
+      <h4 align="center">Tabulation Sheet, <%= @exam_group.name %></h4>
+      <table width="100%" >
+            <thead>
+                <tr>
+                    <td><b>Year: <%= @exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%B-%Y"):@exam_group.exam_date.strftime("%B-%Y") %> </b></td>
+                    <td align="right"><b>Class : 
+                        <% if @batch.name == "General" %>
+                        <%= @batch.course.full_name %>
+                        <% else %>
+                           <%= @batch.name %> ,<%= @batch.course.full_name %>
+                        <% end %></b>
+                    </td>
+                </tr>
+            </thead>    
+      </table>
+      <%
+          @elective_subjects = []
+          @elective_subjects_name = []
+          @exams.each do |exam|
+            if !@elective_subjects.include?(exam.subject.elective_group_id) 
+              @elective_subjects <<  exam.subject.elective_group_id
+              @elective_subjects_name << exam.subject.elective_group.name
+            end  
+          end
+      %>
+<% if !@students.blank? %>
+  <% extender = 0 %>
+  <% std_count = 0 %>
+  <% c  = 'even' %>
+  <% j = 0 %>
+  <table id="pdf-table" width="100%" cellspacing="0">
+        <tr class="table-header">
+          <td class="col-pdf">Roll</td>
+          <td class="col-pdf">Name</td>
+       
+          <% @elective_subjects_name.each do |name| %>
+            <td><%= name %></td>
+          <% end %>         
+        </tr>
+  <% @all_student_subject = StudentsSubject.find_all_by_batch_id(@batch.id) %>
+  <% @all_subject_exam = @exams %>
+  <% @students.each do |student| %>
+  <% 
+    @student = student
+    student_subject = []
+    exam_new = []
+    unless @subjects.blank? 
+       @subjects.each do |subjects|
+         if subjects['elective_group_id'].to_i!=0
+           @all_student_subject.each do |sub_std|
+             if subjects.id.to_i == sub_std.subject_id and student.id.to_i == sub_std.student_id
+               student_subject << subjects.id
+             end 
+           end 
+         else
+           student_subject << subjects.id 
+         end 
+       end
+    end 
+
+    unless @all_subject_exam.blank? 
+       @all_subject_exam.each do |exam|
+         if student_subject.include?(exam.subject_id) 
+          exam_new << exam
+         end 
+       end
+    end
+    @exams = exam_new
+    exam_score = []
+    @exams.each do |exam| 
+      exam_score.push exam.exam_scores.find_by_student_id(@student.id) unless exam.exam_scores.find_by_student_id(@student.id).nil?  
+    end
+  
+    elective_group_mark = {}
+    exam_score.each do |es|
+      if es.marks.present?
+        if elective_group_mark[es.exam.subject.elective_group_id].nil?
+          elective_group_mark[es.exam.subject.elective_group_id] = (((es.marks.to_f*100)/es.exam.maximum_marks.to_f)*es.exam.subject.percentage.to_f)/100
+        else
+          elective_group_mark[es.exam.subject.elective_group_id] = elective_group_mark[es.exam.subject.elective_group_id]+(((es.marks.to_f*100)/es.exam.maximum_marks.to_f)*es.exam.subject.percentage.to_f)/100
+        end
+      else
+        if elective_group_mark[es.exam.subject.elective_group_id].nil?
+          elective_group_mark[es.exam.subject.elective_group_id] = 0
+        end
+      end    
+    end 
+      
+  %>
+    <% j = j+1 %>
+    <%  std_count = std_count+1; %>
+    <% if std_count>7 && extender ==0 %>
+        <% std_count = 0 %>
+        <% extender = 1 %>
+        <tr class="page-break1">
+            <td colspan="100">&nbsp;</td>
+        </tr> 
+        <tr class="table-header">
+          <td class="col-pdf">Roll</td>
+          <td class="col-pdf">Name</td>
+       
+          <% @elective_subjects_name.each do |name| %>
+            <td><%= name %></td>
+          <% end %>         
+        </tr>
+    <% elsif std_count>8 && extender ==1 %>
+        <% std_count = 0 %>
+        <% extender = 1 %>
+        <tr class="page-break2">
+            <td colspan="100">&nbsp;</td>
+        </tr> 
+        <tr class="table-header">
+          <td class="col-pdf">Roll</td>
+          <td class="col-pdf">Name</td>
+       
+          <% @elective_subjects_name.each do |name| %>
+            <td><%= name %></td>
+          <% end %>         
+        </tr>
+    <% end %>
+    <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+      <td class="name-std"><%= student.class_roll_no %></td>
+      <td class="name-std"><%= student.full_name %></td>
+      <% @elective_subjects.each do |esubject| %>
+          <td>
+          <% exam_score.each do |es| %>
+              <% if es.exam.subject.elective_group.id.to_i == esubject.to_i %>
+                <% sub_marks = (((es.marks.to_f*100)/es.exam.maximum_marks.to_f)*es.exam.subject.percentage.to_f)/100 %>  
+                <% sub_name = es.exam.subject.name %>
+                <%  if es.exam.subject.name.index(" 1") %>
+                    <% sub_name = "P1" %>
+                <% elsif es.exam.subject.name.index(" 2") %>
+                    <% sub_name = "P2" %>
+                <% elsif es.exam.subject.name.index(" 3") %>
+                    <% sub_name = "P3" %>
+                <% elsif es.exam.subject.name.index(" 4") %>
+                    <% sub_name = "P4" %>
+                <% elsif es.exam.subject.name.index(" 5") %>
+                    <% sub_name = "P5" %>
+                <% elsif es.exam.subject.name.index(" 6") %>
+                    <% sub_name = "P6" %>
+                <% end %>
+                <%= sub_name %>&nbsp;|&nbsp;<%= es.marks.present? ? mark=es.marks.to_f : '-' %>&nbsp;|&nbsp;<%= es.marks.present? ? sprintf( "%0.02f", sub_marks) : '-' %><hr/>
+              <% end %>
+          <% end %>
+          <% if !elective_group_mark[esubject].blank? %>
+            Total&nbsp;|&nbsp;<%= elective_group_mark[esubject].round() %>&nbsp;|&nbsp;
+            <%  grade = GradingLevel.percentage_to_grade(elective_group_mark[esubject].round(), @batch.id) %>
+            <% if !grade.blank? and !grade.name.blank? %>
+              <%= grade.name %>
+            <% else %>
+              N/A
+            <% end %>
+          <% end %>    
+          </td>
+      <% end %>
+ 
+     
+
+<% end %>
+<% end %>

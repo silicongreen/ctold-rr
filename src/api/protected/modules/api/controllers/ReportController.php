@@ -182,9 +182,7 @@ class ReportController extends Controller
     }
     public function actionContinues()
     {
-        set_time_limit(0);
-        ini_set('post_max_size','20M');
-        ini_set('upload_max_filesize','2M');
+        ini_set('max_execution_time', 0);
         if (isset($_POST) && !empty($_POST))
         {
             $user_secret = Yii::app()->request->getPost('user_secret');

@@ -1087,8 +1087,6 @@ class Settings {
         curl_setopt($ch, CURLOPT_POST, count($fields));
         curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
-        curl_setopt($ch, CURLOPT_TIMEOUT_MS, 1);
 
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
             'Accept: application/json',

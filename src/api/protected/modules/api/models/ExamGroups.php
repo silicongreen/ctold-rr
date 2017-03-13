@@ -620,7 +620,7 @@ class ExamGroups extends CActiveRecord
                     {
                         foreach($value['Scores'] as $key=>$score)
                         {
-                            if(isset($score->marks) && isset($score['Students']->id) && isset($value['Subjects']->id))
+                            if(isset($score->marks) && isset($score['Students']->id) && isset($value['Subjects']->id) && isset($exam_ids[$score['Students']->id]))
                             {
                                
                                 if(in_array($examresult->id, $exam_ids[$score['Students']->id]))

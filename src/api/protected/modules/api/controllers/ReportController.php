@@ -182,6 +182,7 @@ class ReportController extends Controller
     }
     public function actionContinues()
     {
+        set_time_limit(1000);
         if (isset($_POST) && !empty($_POST))
         {
             $user_secret = Yii::app()->request->getPost('user_secret');

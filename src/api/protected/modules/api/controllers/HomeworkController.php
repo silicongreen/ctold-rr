@@ -1180,13 +1180,9 @@ class HomeworkController extends Controller
                             $reminder->updated_at = date("Y-m-d H:i:s");
                             $reminder->save();
                             $notification_ids[] = $reminder->id;
+                            Settings::sendCurlNotification($value, $reminder->id);
                         }
-                        if($notification_ids)
-                        {
-                            $notification_id = implode(",", $notification_ids);
-                            $user_id = implode(",", $reminderrecipients);
-                            Settings::sendCurlNotification($user_id, $notification_id);
-                        }
+                        
                     }
                 }
                 

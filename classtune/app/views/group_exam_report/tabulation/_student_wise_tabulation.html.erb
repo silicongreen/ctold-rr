@@ -33,7 +33,7 @@
           <td class="col-pdf">Name</td>
        
           <% @exams.each do |exam|  %>
-            <td><%= exam.subject.name %></td>
+            <td><%= exam.subject.code %></td>
           <% end %>         
         </tr>
   <% @students.each do |student| %>
@@ -58,7 +58,7 @@
           <td class="col-pdf">Name</td>
        
           <% @exams.each do |exam|  %>
-            <td><%= exam.subject.name %></td>
+            <td><%= exam.subject.code %></td>
           <% end %>        
         </tr>
     <% elsif std_count>16 && extender ==1 %>
@@ -72,7 +72,7 @@
           <td class="col-pdf">Name</td>
        
           <% @exams.each do |exam|  %>
-            <td><%= exam.subject.name %></td>
+            <td><%= exam.subject.code %></td>
           <% end %>         
         </tr>
     <% end %>
@@ -83,7 +83,7 @@
           <td>
           <% exam_score.each do |es| %>
               <% if es.exam.subject.id.to_i == exam.subject.id.to_i %> 
-                <%= es.marks.present? ? es.marks.to_f: '0' %>[<%= es.exam.maximum_marks %>]<hr/>
+                <%= es.marks.present? ? es.marks.to_f: '0' %><hr/>
                 <%= es.grading_level.present? ? es.grading_level : "N/A" %>
               <% end %>
           <% end %>   

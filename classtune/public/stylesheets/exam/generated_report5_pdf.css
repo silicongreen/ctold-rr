@@ -1011,6 +1011,19 @@ table.grade_and_attendance tr td.grade_and_attendance_td
     border-right: 2px solid #000000;
     padding: 3px 3px 3px 3px;
 }
+#pdf-header-south table
+{
+    width: 100%;
+}
+#pdf-header-south table td
+{
+    width: 10%;
+}
+#pdf-header-south table td.name-td
+{
+    width: 14.3%;
+}
+
 
 
 

@@ -1021,7 +1021,17 @@ table.grade_and_attendance tr td.grade_and_attendance_td
 }
 #pdf-header-south table td.name-td
 {
-    width: 14%;
+    width: 20%;
+    text-align: left;
+}
+#pdf-header-south table td.name-td h4, #pdf-header-south table td.name-td h5
+{
+    line-height: 0px;
+    width: 50%;
+}
+#pdf-header-south table td.name-td h5
+{
+    font-size: 10px;
 }
 
 

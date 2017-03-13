@@ -113,7 +113,11 @@
 <div id="pdf-header-south" class="general-header">
     <table width="100%">
         <td><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '20%' %></td>
-        <td class="name-td"><%=Configuration.get_config_value('InstitutionName'); %></td>
+        <td class="name-td">
+              <h4 align="center"><%=Configuration.get_config_value('InstitutionName'); %></h4>
+              <h5 align="center">English Medium - Banani Branch</h5>
+              <h5 align="center">Progress Report</h5>
+        </td>
     </table>   
 </div>  
   

@@ -72,7 +72,7 @@ class GuardianStudent extends CActiveRecord
         $criteria->with = array(
             'guardian' => array(
                 'select' => 'guardian.id',
-                'joinType' => "INNER JOIN"
+                'joinType' => "LEFT JOIN"
             )
         );
 

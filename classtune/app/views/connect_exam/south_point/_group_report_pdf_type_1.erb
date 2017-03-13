@@ -442,7 +442,7 @@
                                         <% else %> 
                                        
                                           Class Teacher Comments&nbsp:&nbsp; 
-                                          &nbsp;<br /><br /><br /><br /><br /><br /><br /><br />
+                                          &nbsp;<br /><br /><br /><br /><br /><br /><br />
                                         <% end %>
                                     </td>                      
                                 </tr>
@@ -455,7 +455,7 @@
                           <tr class="table-header">
                               <td class="col-pdf">
 
-                                  Promoted To&nbsp:&nbsp;<br /><br /><br /><br /><br />
+                                  Promoted To&nbsp:&nbsp;<br /><br /><br /><br />
 
                               </td>                      
                           </tr>
@@ -464,59 +464,7 @@
                   </tr>
               </table>
               
-              <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
-              <% if @grading_levels.blank? %>
-                <% @grading_levels = GradingLevel.default %>
-              <% end %>
-              <%  unless @grading_levels.empty? %>
-                
-                    <table  id="pdf-table" class="margin-top-bottom-10 float-left-5-10 font-size-2"  width="50%">
-                         <tr  class="even">
-                          <td colspan="3" class="col-pdf"><b>Grading System</b></td>
-                          <td colspan="3" class="col-pdf"><b>Attendance</b></td>
-                         </tr>
-                         <tr class="odd">
-                          <td class="col-pdf"><b>Marks</b></td>
-                          <td class="col-pdf"><b>Grade</b></td>
-                          <td class="col-pdf"><b>Meaning</b></td>
-                          <td class="col-pdf"><b>&nbsp</b></td>
-                          <td class="col-pdf"><b>Final term</b></td>
-                         </tr>
-                         <% l = 0; %>
-                         <% @grading_levels.each_with_index do |grade,index| %>
-                         <% l = l+1 %>
-                         <tr class="even">
-
-                          <td class="col-pdf">
-                            <% if grade.max_score.nil? %>  
-                              <%= '%i%' % grade.min_score %>
-                            <% else %> 
-                              <%= grade.min_score.to_s + " - " + grade.max_score.to_s %>
-                            <% end %>
-                          </td>
-                          <td class="col-pdf"><%= grade.name %></td>
-                          <td class="col-pdf"><%= grade.description %></td>
-                          <% if l == 1 %>
-                              <td class="col-pdf">Total Working day</td>
-                              <td class="col-pdf"><%= @report_data['total'] %></td>
-                          
-                          <% elsif l == 2 %>
-                              <td class="col-pdf">Days Present</td>
-                              <td class="col-pdf"><%= @report_data['present'] %></td>
-                          <% elsif l == 3 %>
-                              <td class="col-pdf">Days Absent</td>
-                              <td class="col-pdf"><%= @report_data['total']-@report_data['present'] %></td>
-                          <% else %>
-                              <td class="col-pdf"></td>
-                              <td class="col-pdf"></td>
-                          <% end %>
-                         </tr>
-                         <% end %>
-
-                    </table>     
-                    
-
-              <% end %> 
+              <%= render  :partial=>"/connect_exam/south_point/gradding_level" %>
 
 
           </div>

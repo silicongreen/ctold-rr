@@ -1154,7 +1154,7 @@ class HomeworkController extends Controller
                                 {
                                     $gr = new Guardians();
                                     $grdata = $gr->findByPk($value['guardian']->id);
-                                    if($grdata->user_id && !in_array($reminderrecipients, $grdata->user_id))
+                                    if($grdata->user_id && !in_array($grdata->user_id, $reminderrecipients))
                                     {
                                         $reminderrecipients[] = $grdata->user_id;
                                         $batch_ids[$grdata->user_id] = $studentsobj->batch_id;

@@ -1153,7 +1153,7 @@ class HomeworkController extends Controller
                                 foreach($all_g as $value)
                                 {
                                     $gr = new Guardians();
-                                    $grdata = $gr->findByPk($value->guardian_id);
+                                    $grdata = $gr->findByPk($value['guardian']->id);
                                     if($grdata->user_id)
                                     {
                                         $reminderrecipients[] = $grdata->user_id;

@@ -1191,8 +1191,8 @@ class HomeworkController extends Controller
                 }
                 
             }    
-
-
+            $response['status']['notification_id'] = notification_id;
+            $response['status']['user_id'] = $user_id;
             $response['status']['code'] = 200;
             $response['status']['msg'] = "SUCCESS";
         }

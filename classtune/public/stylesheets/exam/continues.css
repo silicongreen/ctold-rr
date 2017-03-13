@@ -982,6 +982,59 @@ div.mirpur_english
     float:left;
     clear:both;
 }
+table.padding-margin-0
+{
+    float:left;
+    width: 49%;
+}
+table.padding-margin-0, table.padding-margin-0 tr, table.padding-margin-0 tr td
+{
+    padding: 0px;
+    margin: 0px;
+    text-align: left;
+}
+table.padding-margin-0 tr td table tr td
+{
+    padding : 5px;
+}
+table.grade_and_attendance tr td.grade_and_attendance_td
+{
+    width: 43%;
+}
+.float-left-5-10
+{
+    margin-left: 11px;
+    margin-top: 12px;
+    float:left;
+    font-size: 9px;
+}
+.float-left-5-10 tr.even td, .float-left-5-10 tr.odd td
+{
+    border-right: 2px solid #000000;
+    padding: 3px 3px 3px 3px;
+}
+#pdf-header-south table
+{
+    width: 100%;
+}
+#pdf-header-south table td
+{
+    width: 10%;
+}
+#pdf-header-south table td.name-td
+{
+    width: 20%;
+    text-align: left;
+}
+#pdf-header-south table td.name-td h4, #pdf-header-south table td.name-td h5
+{
+    line-height: 0px;
+    width: 50%;
+}
+#pdf-header-south table td.name-td h5
+{
+    font-size: 10px;
+}
 
 
 .page-break { display:block; clear:both; page-break-after:always; }

@@ -26,7 +26,7 @@
         </center>
       </div>
       <div class="CSSTableGenerator" style="width: 97%;margin-top: 20px;">
-          <p><%= "#{@student.full_name}" %></p>
+          <p><%= "#{@student.full_name}" %> (Roll No : <%= "#{@student.class_roll_no}" %>)</p>
           <div style="width:100%; overflow:auto;">
               <% if MultiSchool.current_school.id == 319 %>
                   <%= render  :partial=>"/connect_exam/sfx/group_marks" %>

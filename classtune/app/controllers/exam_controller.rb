@@ -2216,6 +2216,7 @@ class ExamController < ApplicationController
     @assigned_employee=@batch.employees
     get_continues(@id,@batch.id)
     @report_data = []
+    
     if @student_response['status']['code'].to_i == 200
       @report_data = @student_response['data']
     end

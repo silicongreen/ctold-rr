@@ -1,0 +1,110 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+
+
+
+<%#*<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.13/datatables.min.css"/>%>
+<%#*<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.13/datatables.min.js"></script>%>
+
+<% @employee_subjects=[] %>
+<% @employee_subjects= @current_user.employee_record.subjects.map { |n| n.id} if @current_user.employee?  %>
+
+<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.0/material.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.13/css/dataTables.material.min.css"/>
+<script type="text/javascript" src="//code.jquery.com/jquery-1.12.4.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.13/js/dataTables.material.min.js"></script>
+
+<div id="content-header">
+  <h1><%= t('exams_text') %></h1>
+<div class='header-sep'>|</div>
+<div class='sub-header'><%= "Marks" %></div>
+<div id="inner-tab-menu">
+</div>
+</div>
+<div id="page-yield">
+  <% unless flash[:notice].nil? %>
+    <p class="flash-msg"> <%= flash[:notice] %> </p>
+  <% end %>
+  <div class="box">
+    <table id="exam_data"  class="mdl-data-table" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>Class</th>
+                <th>Exam Name</th>
+                <th>Subject</th>
+            </tr>
+        </thead>
+        <tbody>
+          <% @exam_connect.each do |exam_connect| %>
+          <% @subjects = [] %>
+          <% @group_exams = GroupedExam.find_all_by_connect_exam_id(exam_connect.id)  %>
+            <%  @group_exams.each do |group_exam| %>
+            <% exams = Exam.find_all_by_exam_group_id(group_exam.exam_group_id) %>
+              <% exams.each do |exam| %>
+              <% if !@subjects.include?(exam.subject) %>
+               
+                <% if exam.subject.no_exams == true and (@employee_subjects.include?(exam.subject.id) or @current_user.admin?) %>
+                <% 
+                  @subjects << exam.subject
+                %>
+                <tr>
+                    <td><%= link_to(exam_connect.batch.full_name, '/exam/' + 'connect_exam_subject_comments/' +exam_connect.id.to_s+"|"+exam.subject.id.to_s, :method => 'get') %></td>
+                    <td><%= link_to(exam_connect.name, '/exam/' + 'connect_exam_subject_comments/' +exam_connect.id.to_s+"|"+exam.subject.id.to_s, :method => 'get') %></td>
+                    <td><%= link_to(exam.subject.name, '/exam/' + 'connect_exam_subject_comments/' +exam_connect.id.to_s+"|"+exam.subject.id.to_s, :method => 'get') %></td>
+                 
+                </tr>
+                <% end %>
+              <% end %>  
+            <% end %>
+          <% end %>
+          <% end %>  
+            
+        </tbody>
+        
+    </table>   
+    <div class="extender"></div>
+  </div>
+    
+</div>
+<script>
+  var jj = jQuery.noConflict();
+  jj(document).ready(function () {
+      jj('#exam_data').DataTable( {
+        columnDefs: [
+            {
+                targets: [ 0, 1, 2 ],
+                className: 'mdl-data-table__cell--non-numeric'
+            }
+        ]
+    } );
+  });
+</script>
+<style>
+  table tr td a
+  {
+     text-decoration: none;
+     cursor: pointer;
+     color: black;
+  }
+  .pagination {
+   margin-top:0px;
+}
+</style>

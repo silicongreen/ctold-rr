@@ -129,8 +129,7 @@ class GroupedExams extends CActiveRecord
             );
             $criteria->order = "t.priority ASC,examgroup.created_at ASC";
             $examgroups = $this->findAll($criteria);
-            return $examgroups;
-            exit;
+           
             $subjects_ids = array();
             $exam_ids = array();
             if($examgroups)
@@ -182,6 +181,8 @@ class GroupedExams extends CActiveRecord
                 $examsGroupObj = new ExamGroups();
                 
                 list($subject_result,$max_mark) = $examsGroupObj->getExamGroupResultMaxMarkContinues($examgroups_ids,$subject_result,$max_mark);
+                return $examgroups;
+                exit;
                 
                 $results['all_result'] =  $examsGroupObj->getExamGroupResultSubjectAllStudentContinues($examgroups_ids,$batch_student); 
 

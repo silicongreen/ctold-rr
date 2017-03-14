@@ -180,13 +180,15 @@ class GroupedExams extends CActiveRecord
                 
                 $examsGroupObj = new ExamGroups();
                 
-                list($subject_result,$max_mark) = $examsGroupObj->getExamGroupResultMaxMarkContinues($examgroups_ids,$subject_result,$max_mark);
+                $examsObj = new Exams();
                 
+                list($subject_result,$max_mark) = $examsObj->getExamGroupResultMaxMarkContinues($examgroups_ids,$subject_result,$max_mark);
+                return $max_mark;
+                exit;
                 
                 $results['all_result'] =  $examsGroupObj->getExamGroupResultSubjectAllStudentContinues($examgroups_ids,$batch_student); 
 
-                return $examgroups;
-                exit;
+                
                 
                 
                 $results['exam_comments'] = array();

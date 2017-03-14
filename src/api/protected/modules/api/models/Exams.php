@@ -18,7 +18,8 @@
  * @property string $updated_at
  * @property integer $school_id
  */
-class Exams extends CActiveRecord {
+class Exams extends CActiveRecord
+{
 
     /**
      * @return string the associated database table name
@@ -27,14 +28,16 @@ class Exams extends CActiveRecord {
     public $total_points;
     public $std_score;
 
-    public function tableName() {
+    public function tableName()
+    {
         return 'exams';
     }
 
     /**
      * @return array validation rules for model attributes.
      */
-    public function rules() {
+    public function rules()
+    {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
@@ -50,7 +53,8 @@ class Exams extends CActiveRecord {
     /**
      * @return array relational rules.
      */
-    public function relations() {
+    public function relations()
+    {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
@@ -74,7 +78,8 @@ class Exams extends CActiveRecord {
     /**
      * @return array customized attribute labels (name=>label)
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return array(
             'id' => 'ID',
             'exam_group_id' => 'Exam Group',
@@ -104,7 +109,8 @@ class Exams extends CActiveRecord {
      * @return CActiveDataProvider the data provider that can return the models
      * based on the search/filter conditions.
      */
-    public function search() {
+    public function search()
+    {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
         $criteria = new CDbCriteria;
@@ -134,11 +140,13 @@ class Exams extends CActiveRecord {
      * @param string $className active record class name.
      * @return Exams the static model class
      */
-    public static function model($className = __CLASS__) {
+    public static function model($className = __CLASS__)
+    {
         return parent::model($className);
     }
-    
-    public function getPercentile($exam_group_id,$student_mark,$subject_id) {
+
+    public function getPercentile($exam_group_id, $student_mark, $subject_id)
+    {
         $sql = "SELECT  Scores.marks AS std_score
         FROM exams
         LEFT JOIN exam_scores AS Scores ON Scores.exam_id = exams.id
@@ -149,34 +157,37 @@ class Exams extends CActiveRecord {
         ORDER BY std_score DESC";
 
         $data = $this->findAllBySql($sql);
-        
-       
+
+
 
 
         $i = 1;
         $j = 0;
-        foreach ($data as $value) {
-            
-            if ($student_mark == $value->std_score) {
+        foreach ($data as $value)
+        {
+
+            if ($student_mark == $value->std_score)
+            {
                 $j = $i;
             }
             $i++;
         }
-        if($j==0)
+        if ($j == 0)
         {
             $j = $i;
-        } 
-       
-      
-        $percentile = (100*$j)/$i;
+        }
+
+
+        $percentile = (100 * $j) / $i;
         return $percentile;
     }
-    
-    public function getPositionConnectExam($exam_group_ids, $total_grade_point, $total_mark) {
+
+    public function getPositionConnectExam($exam_group_ids, $total_grade_point, $total_mark)
+    {
         $sql = "SELECT SUM( Scores.marks ) AS total_score
         FROM exams
         LEFT JOIN exam_scores AS Scores ON Scores.exam_id = exams.id
-        WHERE exams.exam_group_id IN (".$exam_group_ids.")
+        WHERE exams.exam_group_id IN (" . $exam_group_ids . ")
         GROUP BY Scores.student_id
         ORDER BY total_score DESC";
 
@@ -184,24 +195,25 @@ class Exams extends CActiveRecord {
 
 
         $i = 1;
-        foreach ($data as $value) {
-            if ($total_grade_point == $value->total_points && $total_mark == $value->total_score) {
+        foreach ($data as $value)
+        {
+            if ($total_grade_point == $value->total_points && $total_mark == $value->total_score)
+            {
                 break;
             }
             $i++;
         }
-        if(Yii::app()->user->schoolId == "280")
+        if (Yii::app()->user->schoolId == "280")
         {
             return 0;
-        }   
-        else
+        } else
         {
-           return $i; 
+            return $i;
         }
-        
     }
 
-    public function getPosition($exam_group_id, $total_grade_point, $total_mark) {
+    public function getPosition($exam_group_id, $total_grade_point, $total_mark)
+    {
         $sql = "SELECT SUM( Scores.marks ) AS total_score, SUM( Examgrade.credit_points ) AS total_points
         FROM exams
         LEFT JOIN exam_scores AS Scores ON Scores.exam_id = exams.id
@@ -214,30 +226,32 @@ class Exams extends CActiveRecord {
 
 
         $i = 1;
-        foreach ($data as $value) {
-            if ($total_grade_point == $value->total_points && $total_mark == $value->total_score) {
+        foreach ($data as $value)
+        {
+            if ($total_grade_point == $value->total_points && $total_mark == $value->total_score)
+            {
                 break;
             }
             $i++;
         }
-        if(Yii::app()->user->schoolId == "280")
+        if (Yii::app()->user->schoolId == "280")
         {
             return 0;
-        }   
-        else
+        } else
         {
-           return $i; 
+            return $i;
         }
-        
     }
-    public function getExamSubject($subject_id,$exam_group_id=0, $exam_id=0) {
+
+    public function getExamSubject($subject_id, $exam_group_id = 0, $exam_id = 0)
+    {
         $criteria = new CDbCriteria();
         $criteria->select = 't.*';
-        if($exam_group_id)
+        if ($exam_group_id)
         {
             $criteria->compare('t.exam_group_id', $exam_group_id);
         }
-        if($exam_id)
+        if ($exam_id)
         {
             $criteria->compare('t.id', $exam_id);
         }
@@ -245,15 +259,17 @@ class Exams extends CActiveRecord {
         $data = $this->with("Examgroup")->find($criteria);
         return $data;
     }
-    public function getPublishExam($subject_id, $batch_id,$exam_category=0) {
+
+    public function getPublishExam($subject_id, $batch_id, $exam_category = 0)
+    {
         $criteria = new CDbCriteria();
         $criteria->select = 't.*';
         $criteria->compare('Examgroup.batch_id', $batch_id);
-        if($exam_category)
+        if ($exam_category)
         {
-           $criteria->compare('Examgroup.exam_category', $exam_category); 
+            $criteria->compare('Examgroup.exam_category', $exam_category);
         }
-        
+
         $criteria->compare('Examgroup.result_published', 1);
         $criteria->compare('t.subject_id', $subject_id);
         $criteria->order = "Examgroup.exam_date ASC";
@@ -261,36 +277,40 @@ class Exams extends CActiveRecord {
         return $data;
     }
 
-    public function getPublishClassTestProjectSubjectWise($subject_id, $batch_id, $limit = true, $exam_group=0) {
+    public function getPublishClassTestProjectSubjectWise($subject_id, $batch_id, $limit = true, $exam_group = 0)
+    {
         $criteria = new CDbCriteria();
         $criteria->select = 't.*';
         $criteria->compare('Examgroup.batch_id', $batch_id);
         $criteria->compare('Examgroup.exam_category', 1);
         $criteria->compare('Examgroup.exam_category', 2, false, "OR");
-        if($exam_group>0)
+        if ($exam_group > 0)
         {
-           $criteria->compare('Examgroup.id', $exam_group); 
-        }    
-        
+            $criteria->compare('Examgroup.id', $exam_group);
+        }
+
         $criteria->compare('Examgroup.result_published', 1);
         $criteria->compare('t.subject_id', $subject_id);
         $criteria->order = "start_time DESC";
-        if ($limit) {
+        if ($limit)
+        {
             $criteria->limit = 1;
             $data = $this->with("Examgroup")->find($criteria);
-        } else {
+        } else
+        {
             $data = $this->with("Examgroup")->findAll($criteria);
         }
 
         return $data;
     }
-    public function getTeacherExam($limit=10,$no_exams=0)
+
+    public function getTeacherExam($limit = 10, $no_exams = 0)
     {
         $criteria = new CDbCriteria;
-        $criteria->select = 't.id, t.start_time, t.end_time'; 
+        $criteria->select = 't.id, t.start_time, t.end_time';
         $criteria->together = true;
-        
-        if(Yii::app()->user->isAdmin)
+
+        if (Yii::app()->user->isAdmin)
         {
             $criteria->with = array(
                 'Subjects' => array(
@@ -299,12 +319,11 @@ class Exams extends CActiveRecord {
                         'Subjectbatch' => array(
                             'select' => 'Subjectbatch.name',
                             'with' => array(
-                                    'courseDetails' => array(
-                                        'select' => 'courseDetails.course_name,courseDetails.section_name',
-                                    ),
-                             )
+                                'courseDetails' => array(
+                                    'select' => 'courseDetails.course_name,courseDetails.section_name',
+                                ),
+                            )
                         )
-
                     )
                 ),
                 'Examgroup' => array(
@@ -315,8 +334,7 @@ class Exams extends CActiveRecord {
                 ),
             );
             $criteria->compare('t.school_id', Yii::app()->user->schoolId);
-        } 
-        else
+        } else
         {
             $criteria->with = array(
                 'Subjects' => array(
@@ -325,15 +343,14 @@ class Exams extends CActiveRecord {
                         'Subjectbatch' => array(
                             'select' => 'Subjectbatch.name',
                             'with' => array(
-                                    'courseDetails' => array(
-                                        'select' => 'courseDetails.course_name,courseDetails.section_name',
-                                    ),
-                             )
+                                'courseDetails' => array(
+                                    'select' => 'courseDetails.course_name,courseDetails.section_name',
+                                ),
+                            )
                         ),
-                        'employee'=>array(
-                            'select'=>''
+                        'employee' => array(
+                            'select' => ''
                         )
-
                     )
                 ),
                 'Examgroup' => array(
@@ -345,20 +362,20 @@ class Exams extends CActiveRecord {
             );
             $criteria->compare("employee.employee_id", Yii::app()->user->profileId);
         }
-        if($no_exams==0)
+        if ($no_exams == 0)
         {
             $criteria->compare("Subjects.no_exams", 0);
         }
         $criteria->limit = $limit;
-        $criteria->addCondition("DATE(t.start_time)>='".date("Y-m-d")."'");
+        $criteria->addCondition("DATE(t.start_time)>='" . date("Y-m-d") . "'");
         $criteria->order = "t.start_time ASC";
         $data = $this->findAll($criteria);
-        
+
         $return = array();
-        if($data)
+        if ($data)
         {
             $i = 0;
-            foreach($data as $value)
+            foreach ($data as $value)
             {
                 $return[$i]['subject'] = $value['Subjects']->name;
                 $return[$i]['no_exams'] = $value['Subjects']->no_exams;
@@ -366,21 +383,20 @@ class Exams extends CActiveRecord {
                 $return[$i]['start_time'] = $value->start_time;
                 $return[$i]['end_time'] = $value->end_time;
                 $return[$i]['exam_name'] = $value['Examgroup']->name;
-                $return[$i]['batch'] = $value['Subjects']['Subjectbatch']->name." ".$value['Subjects']['Subjectbatch']['courseDetails']->course_name." ".$value['Subjects']['Subjectbatch']['courseDetails']->section_name;
+                $return[$i]['batch'] = $value['Subjects']['Subjectbatch']->name . " " . $value['Subjects']['Subjectbatch']['courseDetails']->course_name . " " . $value['Subjects']['Subjectbatch']['courseDetails']->section_name;
                 $i++;
-            }    
-            
+            }
         }
         return $return;
-        
-    }        
+    }
 
-    public function getExamTimeTable($school_id = null, $batch_id = null, $student_id = null,$exam_id=null,$tommmorow="",$no_exams=0) {
+    public function getExamTimeTable($school_id = null, $batch_id = null, $student_id = null, $exam_id = null, $tommmorow = "", $no_exams = 0)
+    {
 
         $criteria = new CDbCriteria;
 
         $criteria->select = 't.id, t.start_time, t.subject_id, t.end_time';
-        
+
 
         $criteria->with = array(
             'Subjects' => array(
@@ -399,12 +415,12 @@ class Exams extends CActiveRecord {
             ),
         );
         $criteria->order = "t.start_time ASC";
-        if($exam_id)
+        if ($exam_id)
         {
-            if($no_exams==0)
+            if ($no_exams == 0)
             {
                 $criteria->addCondition(
-                      "(Examgroup.id = :exam_id AND Examgroup.batch_id = :batch_id AND Examgroup.school_id = :school_id)
+                        "(Examgroup.id = :exam_id AND Examgroup.batch_id = :batch_id AND Examgroup.school_id = :school_id)
                        AND (
                               (
                               Subjects.elective_group_id IS NULL
@@ -419,16 +435,15 @@ class Exams extends CActiveRecord {
                               AND electiveGroup.school_id = :school_id
                           )
                        )"
-                ); 
+                );
                 $params[':exam_id'] = $exam_id;
                 $params[':school_id'] = $school_id;
                 $params[':batch_id'] = $batch_id;
                 $params[':student_id'] = $student_id;
-            }
-            else
+            } else
             {
-              $criteria->addCondition(
-                      "(Examgroup.id = :exam_id AND Examgroup.batch_id = :batch_id AND Examgroup.school_id = :school_id)
+                $criteria->addCondition(
+                        "(Examgroup.id = :exam_id AND Examgroup.batch_id = :batch_id AND Examgroup.school_id = :school_id)
                        AND (
                               (
                               Subjects.elective_group_id IS NULL
@@ -442,20 +457,18 @@ class Exams extends CActiveRecord {
                               AND electiveGroup.school_id = :school_id
                           )
                        )"
-                ); 
+                );
                 $params[':exam_id'] = $exam_id;
                 $params[':school_id'] = $school_id;
                 $params[':batch_id'] = $batch_id;
-                $params[':student_id'] = $student_id;  
+                $params[':student_id'] = $student_id;
             }
-                
-        }
-        else if($tommmorow)
+        } else if ($tommmorow)
         {
-            if($no_exams==0)
+            if ($no_exams == 0)
             {
                 $criteria->addCondition(
-                    "DATE(t.start_time) = :start_time AND (Examgroup.batch_id = :batch_id AND Examgroup.school_id = :school_id)
+                        "DATE(t.start_time) = :start_time AND (Examgroup.batch_id = :batch_id AND Examgroup.school_id = :school_id)
                      AND (
                             (
                             Subjects.elective_group_id IS NULL
@@ -474,12 +487,11 @@ class Exams extends CActiveRecord {
                 $params[':start_time'] = $tommmorow;
                 $params[':school_id'] = $school_id;
                 $params[':batch_id'] = $batch_id;
-                $params[':student_id'] = $student_id;  
-            }
-            else
+                $params[':student_id'] = $student_id;
+            } else
             {
                 $criteria->addCondition(
-                    "DATE(t.start_time) = :start_time AND (Examgroup.batch_id = :batch_id AND Examgroup.school_id = :school_id)
+                        "DATE(t.start_time) = :start_time AND (Examgroup.batch_id = :batch_id AND Examgroup.school_id = :school_id)
                      AND (
                             (
                             Subjects.elective_group_id IS NULL
@@ -497,38 +509,14 @@ class Exams extends CActiveRecord {
                 $params[':start_time'] = $tommmorow;
                 $params[':school_id'] = $school_id;
                 $params[':batch_id'] = $batch_id;
-                $params[':student_id'] = $student_id; 
-                
-            }    
-        }
-        else
-        {
-            if($no_exams==0)
-            {
-                $criteria->addCondition(
-                     "(Examgroup.is_current = '1' AND Examgroup.batch_id = :batch_id AND Examgroup.school_id = :school_id)
-                      AND (
-                             (
-                             Subjects.elective_group_id IS NULL
-                             AND Subjects.is_deleted = '0'
-                             AND Subjects.school_id = :school_id
-                         )
-                         OR (
-                             studentSubject.student_id = :student_id
-                             AND studentSubject.batch_id = :batch_id
-                             AND electiveGroup.is_deleted = '0'
-                             AND electiveGroup.school_id = :school_id
-                         )
-                      )"
-                 ); 
-                 $params[':school_id'] = $school_id;
-                 $params[':batch_id'] = $batch_id;
-                 $params[':student_id'] = $student_id;
+                $params[':student_id'] = $student_id;
             }
-            else
+        } else
+        {
+            if ($no_exams == 0)
             {
                 $criteria->addCondition(
-                     "(Examgroup.is_current = '1' AND Examgroup.batch_id = :batch_id AND Examgroup.school_id = :school_id)
+                        "(Examgroup.is_current = '1' AND Examgroup.batch_id = :batch_id AND Examgroup.school_id = :school_id)
                       AND (
                              (
                              Subjects.elective_group_id IS NULL
@@ -542,25 +530,48 @@ class Exams extends CActiveRecord {
                              AND electiveGroup.school_id = :school_id
                          )
                       )"
-                 ); 
-                 $params[':school_id'] = $school_id;
-                 $params[':batch_id'] = $batch_id;
-                 $params[':student_id'] = $student_id;
-            }    
-        }    
-   
+                );
+                $params[':school_id'] = $school_id;
+                $params[':batch_id'] = $batch_id;
+                $params[':student_id'] = $student_id;
+            } else
+            {
+                $criteria->addCondition(
+                        "(Examgroup.is_current = '1' AND Examgroup.batch_id = :batch_id AND Examgroup.school_id = :school_id)
+                      AND (
+                             (
+                             Subjects.elective_group_id IS NULL
+                             AND Subjects.is_deleted = '0'
+                             AND Subjects.school_id = :school_id
+                         )
+                         OR (
+                             studentSubject.student_id = :student_id
+                             AND studentSubject.batch_id = :batch_id
+                             AND electiveGroup.is_deleted = '0'
+                             AND electiveGroup.school_id = :school_id
+                         )
+                      )"
+                );
+                $params[':school_id'] = $school_id;
+                $params[':batch_id'] = $batch_id;
+                $params[':student_id'] = $student_id;
+            }
+        }
+
 
         $criteria->params = $params;
 
         $data = $this->findAll($criteria);
-        
+
         return (!empty($data)) ? $this->formatExamRoutine($data) : false;
     }
 
-    public function formatExamRoutine($obj_exam_routine) {
+    public function formatExamRoutine($obj_exam_routine)
+    {
 
         $formatted_exams = array();
-        foreach ($obj_exam_routine as $rows) {
+        foreach ($obj_exam_routine as $rows)
+        {
             $_data['exam_subject_id'] = $rows->subject_id;
             $_data['exam_subject_name'] = $rows->Subjects->name;
             $_data['no_exams'] = $rows->Subjects->no_exams;
@@ -573,6 +584,59 @@ class Exams extends CActiveRecord {
         }
 
         return $formatted_exams;
+    }
+
+    public function getExamGroupResultMaxMarkContinues($exam_group_id, $result = array(), $max_mark = array())
+    {
+        $criteria = new CDbCriteria();
+        $criteria->select = 'Exams.maximum_marks';
+        $criteria->addInCondition('t.exam_group_id', $exam_group_id);
+        $criteria->compare('Subjects.no_exams', false);
+        $criteria->compare('Subjects.is_deleted', false);
+        $criteria->with = array(
+            'Scores' => array(
+                'select' => 'Scores.marks,Scores.student_id',
+            ),
+            'Subjects' => array(
+                'select' => 'Subjects.id',
+            )
+        );
+        $exams = $this->findAll($criteria);
+        if ($exams)
+        {
+            foreach ($exams as $value)
+            {
+
+                if ($value['Scores'])
+                {
+                    foreach ($value['Scores'] as $score)
+                    {
+                        if ($score->marks)
+                        {
+                            if (isset($result[$value['Subjects']->id][$score->student_id]['total_mark']))
+                            {
+                                $result[$value['Subjects']->id][$score->student_id]['total_mark'] = $result[$value['Subjects']->id][$score->student_id]['total_mark'] + $score->marks;
+                            } else
+                            {
+                                $result[$value['Subjects']->id][$score->student_id]['total_mark'] = $score->marks;
+                            }
+                            if (isset($max_mark[$value['Subjects']->id]))
+                            {
+                                if ($result[$value['Subjects']->id][$score->student_id]['total_mark'] > $max_mark[$value['Subjects']->id])
+                                {
+                                    $max_mark[$value['Subjects']->id] = $result[$value['Subjects']->id][$score->student_id]['total_mark'];
+                                }
+                            } else
+                            {
+                                $max_mark[$value['Subjects']->id] = $result[$value['Subjects']->id][$score->student_id]['total_mark'];
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return array($result, $max_mark);
     }
 
 }

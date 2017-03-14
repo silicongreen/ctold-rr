@@ -15,7 +15,8 @@ authorization do
     includes :archived_exam_reports
     has_permission_on [:marks],
       :to => [
-      :index
+      :index,
+      :connect_exam
     ]
     has_permission_on [:exam],
       :to => [
@@ -355,7 +356,8 @@ authorization do
     includes :archived_exam_reports
     has_permission_on [:marks],
       :to => [
-      :index
+      :index,
+      :connect_exam
     ]
     has_permission_on [:exam],
       :to => [
@@ -1854,7 +1856,8 @@ authorization do
     ]
     has_permission_on [:marks],
       :to => [
-      :index
+      :index,
+      :connect_exam
     ]
     has_permission_on [:exam],
       :to => [
@@ -3207,7 +3210,8 @@ authorization do
     end
     has_permission_on [:marks],
       :to => [
-      :index
+      :index,
+      :connect_exam
     ]
     has_permission_on [:exam],
       :to => [
@@ -3459,7 +3463,8 @@ authorization do
   role :subject_exam do
     has_permission_on [:marks],
       :to => [
-      :index
+      :index,
+      :connect_exam
     ]
     has_permission_on [:exam],
       :to => [

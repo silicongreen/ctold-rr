@@ -40,6 +40,9 @@
     }
   });
 </script>
+<% unless @current_user.admin? %>
+  <% @enabled_subject_link = false %>
+<% end %>
 <div id="content-header">
 <%= show_header_icon %>
   <h1><%= t('exams_text') %></h1>

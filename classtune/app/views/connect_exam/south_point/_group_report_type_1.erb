@@ -319,7 +319,11 @@
                             
                               full_mark = full_mark_first_term+full_mark_final_term
                               obtained_mark = obtained_mark_first_term.round()+obtained_mark_final_term.round()
-                              main_mark = (obtained_mark.to_f/full_mark.to_f)*100
+                              if obtained_mark.to_i > 0
+                                main_mark = (obtained_mark.to_f/full_mark.to_f)*100
+                              else
+                                main_mark = 0
+                              end
                             
                             
                           %>

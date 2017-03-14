@@ -1376,7 +1376,10 @@ class StudentController < ApplicationController
               @result_publish = false
             end
           end
-        end
+        else
+          @result_publish = false
+        end   
+           
         
         if @result_publish
           @all_connect_exam<<examconnect

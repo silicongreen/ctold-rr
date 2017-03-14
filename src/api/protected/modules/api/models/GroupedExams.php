@@ -178,6 +178,8 @@ class GroupedExams extends CActiveRecord
                 $connect_exam = $cont_exam->findByPk($connect_exam_id);
                 $first_term_id = 0;
                 $final_term_id = 0;
+                $i = 0;
+                $results['all_result'] = array();
                 foreach($examgroups as $value)
                 {
                     if($value['examgroup']->quarter == 5)
@@ -189,12 +191,13 @@ class GroupedExams extends CActiveRecord
                         $final_term_id = $value['examgroup']->id;
                     }
                     $examgroups_ids[] = $value['examgroup']->id;
-                    $result_main =  $examsGroupObj->getExamGroupResultSubjectAllStudent($value['examgroup']->id,$value->weightage,$batch_student);    
-                    if($result_main)
-                    {
-                        $results['all_result'][] = $result_main;
-                    }
-                }  
+                    $results['all_result'] =  $examsGroupObj->getExamGroupResultSubjectAllStudentCont($value['examgroup']->id,$i,$results['all_result'],$value->weightage,$batch_student); 
+                    
+                   
+                   
+                    $i++;
+                } 
+               
                 
                 
                 

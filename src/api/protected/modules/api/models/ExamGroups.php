@@ -512,6 +512,126 @@ class ExamGroups extends CActiveRecord
         
         return array($result,$max_mark);
     }
+    public function getExamGroupResultSubjectAllStudentCont($exam_group_id,$count,$result,$weightage,$students)
+    {
+        $criteria = new CDbCriteria();
+        $criteria->select = 't.name,t.id,t.sba,t.exam_category,t.quarter'; 
+        $criteria->compare('t.id', $exam_group_id);
+        //$criteria->compare('t.result_published', 1);
+        $criteria->compare('Subjects.no_exams', false);
+        $criteria->compare('Subjects.is_deleted', false);
+        
+        $criteria->with = array(
+                'Exams' => array(
+                    'select' => 'Exams.maximum_marks',
+                    'with' => array(
+                        'Scores' => array(
+                            'select' => 'Scores.marks',
+                            'with' => array(
+                                    'Examgrade' => array(
+                                        'select' => 'Examgrade.name',
+                                    ),
+                                    'Students' => array(
+                                        'select' => 'Students.id',
+                                    ),
+                             )
+                        ),
+                        'Subjects' => array(
+                            'select' => 'Subjects.id',
+                        )
+
+                    )
+                )
+        );
+        $criteria->order = "Subjects.priority ASC";
+        $examresult = $this->find($criteria);
+        
+        
+        $criteria = new CDbCriteria();
+        $criteria->select = 't.name,t.id,t.sba,t.exam_category,t.quarter'; 
+        $criteria->compare('t.id', $exam_group_id);
+        //$criteria->compare('t.result_published', 1);
+        $criteria->compare('Subjects.no_exams', false);
+        $criteria->compare('Subjects.is_deleted', false);
+        $criteria->with = array(
+                'Exams' => array(
+                    'select' => 'Exams.maximum_marks',
+                    'with' => array(
+                        'Subjects' => array(
+                            'select' => 'Subjects.id',
+                        )
+
+                    )
+                )
+        );
+        $criteria->order = "Subjects.priority ASC";
+        $all_exams = $this->find($criteria);
+        
+        
+        
+        
+        $exam_ids = array();
+        if($all_exams)
+        {
+            foreach($students as $student)
+            {
+                $result[$student]['exams'][$count]['quarter'] = $all_exams->quarter;
+                $result[$student]['exams'][$count]['exam_name'] = $all_exams->name;
+                $result[$student]['exams'][$count]['sba'] = $all_exams->sba;
+
+                $result[$student]['exams'][$count]['exam_category'] = $all_exams->exam_category;
+                $result[$student]['exams'][$count]['exam_id'] = $all_exams->id;
+            
+                foreach($all_exams['Exams'] as $value)
+                {
+                    $result[$student]['exams'][$count]['result'][$all_exams->id][$value['Subjects']->id]['marks_obtained'] = "AB";
+                    $result[$student]['exams'][$count]['result'][$all_exams->id][$value['Subjects']->id]['grade'] = "N/A";
+                    $result[$student]['exams'][$count]['result'][$all_exams->id][$value['Subjects']->id]['weightage_mark'] = 0;
+                    $result[$student]['exams'][$count]['result'][$all_exams->id][$value['Subjects']->id]['full_mark'] = $value->maximum_marks;
+                   
+                } 
+                $exam_ids[$student][$count] = $all_exams->id;
+            }
+        }    
+        
+        if($examresult)
+        {
+         
+            foreach($examresult['Exams'] as $value)
+            {
+               
+
+               if(isset($value['Scores']))
+               {
+                   foreach($value['Scores'] as $key=>$score)
+                   {
+                       if(isset($score->marks) && isset($score['Students']->id) && isset($value['Subjects']->id))
+                       {
+                           
+                            $result[$score['Students']->id]['exams'][$count]['result'][$examresult->id][$value['Subjects']->id]['marks_obtained'] = $score->marks;
+                            if($value->maximum_marks==0)
+                            {
+                                $result[$score['Students']->id]['exams'][$count]['result'][$examresult->id][$value['Subjects']->id]['weightage_mark'] = 0;
+                            }
+                            else 
+                            {
+                                $result[$score['Students']->id]['exams'][$count]['result'][$examresult->id][$value['Subjects']->id]['weightage_mark'] = (($score->marks/$value->maximum_marks)*$weightage);
+                            }
+                            if(isset($score['Examgrade']->name))
+                            {
+                                $result[$score['Students']->id]['exams'][$count]['result'][$examresult->id][$value['Subjects']->id]['grade'] = $score['Examgrade']->name;
+                            }
+                       }
+                        
+                   }
+               }
+            }  
+        } 
+        
+        return $result;
+        
+    } 
+    
     
     public function getExamGroupResultSubjectAllStudentContinues($exam_group_id,$students)
     {

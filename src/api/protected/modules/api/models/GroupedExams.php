@@ -170,23 +170,28 @@ class GroupedExams extends CActiveRecord
             $examgroups_ids = array();
             if($examgroups)
             {
-                foreach($examgroups as $value)
-                {
-                    $examgroups_ids[] = $value['examgroup']->id;
-                }  
                 $stdobj = new Students();
                 $batch_student = $stdobj->getStudentByBatch($batch_id);
                 $batch_student_full = $stdobj->getStudentByBatchFull($batch_id);
+                foreach($examgroups as $value)
+                {
+                    $examgroups_ids[] = $value['examgroup']->id;
+                    $result_main =  $examsGroupObj->getExamGroupResultSubjectAllStudent($value['examgroup']->id,$value->weightage,$batch_student);    
+                    if($result_main)
+                    {
+                        $results['all_result'][] = $result_main;
+                    }
+                }  
+                
                 
                 $examsGroupObj = new ExamGroups();
                 
                 $examsObj = new Exams();
                 
                 list($subject_result,$max_mark) = $examsObj->getExamGroupResultMaxMarkContinues($examgroups_ids,$subject_result,$max_mark);
-                return $max_mark;
-                exit;
+              
                 
-                $results['all_result'] =  $examsGroupObj->getExamGroupResultSubjectAllStudentContinues($examgroups_ids,$batch_student); 
+                //$results['all_result'] =  $examsGroupObj->getExamGroupResultSubjectAllStudentContinues($examgroups_ids,$batch_student); 
 
                 
                 

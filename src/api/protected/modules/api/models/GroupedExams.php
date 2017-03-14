@@ -174,8 +174,20 @@ class GroupedExams extends CActiveRecord
                 $batch_student = $stdobj->getStudentByBatch($batch_id);
                 $batch_student_full = $stdobj->getStudentByBatchFull($batch_id);
                 $examsGroupObj = new ExamGroups();
+                $cont_exam = new ExamConnect();
+                $connect_exam = $cont_exam->findByPk($connect_exam_id);
+                $first_term_id = 0;
+                $final_term_id = 0;
                 foreach($examgroups as $value)
                 {
+                    if($value['examgroup']->quarter == 5)
+                    {
+                        $first_term_id = $value['examgroup']->id;
+                    } 
+                    if($value['examgroup']->quarter == 6)
+                    {
+                        $final_term_id = $value['examgroup']->id;
+                    }
                     $examgroups_ids[] = $value['examgroup']->id;
                     $result_main =  $examsGroupObj->getExamGroupResultSubjectAllStudent($value['examgroup']->id,$value->weightage,$batch_student);    
                     if($result_main)
@@ -230,6 +242,86 @@ class GroupedExams extends CActiveRecord
                 
                 $results['max_mark'] = $max_mark;
                 $results['no_exam_comments'] = array();
+                
+                
+                $examGroupObj = new ExamGroups();
+                if($connect_exam->result_type==1)
+                {
+                    $quarter_3_id = $cont_exam->getConnectExamByBatch($batch_id,3);
+                    $j = 0;
+                    if($subject_no_exam && $quarter_3_id)
+                    {
+                        foreach($subject_no_exam as $value)
+                        {
+                          
+                            $results['no_exam_subject_resutl'][$j]['subject_comment3'] = $cmt_connect->getCommentAll($quarter_3_id,$value['id'],$batch_student);
+                            $j++;
+                        }    
+                    }  
+                    
+                    $quarter_4_id = $cont_exam->getConnectExamByBatch($batch_id,4);
+                    $j = 0;
+                    if($subject_no_exam && $quarter_4_id)
+                    {
+                        foreach($subject_no_exam as $value)
+                        {
+                         
+                            $results['no_exam_subject_resutl'][$j]['subject_comment4'] = $cmt_connect->getCommentAll($quarter_4_id,$value['id'],$batch_student);
+                            $j++;
+                        }    
+                    } 
+                    
+                    $j = 0;
+                    if($subject_no_exam && $final_term_id)
+                    {
+                        foreach($subject_no_exam as $value)
+                        {
+                            $results['no_exam_subject_resutl'][$j]['subject_comment6'] = $examGroupObj->getCommentAll($final_term_id,$value['id'],$batch_student);
+                            $j++;
+                        }    
+                    } 
+                    
+                }  
+                
+                if($connect_exam->result_type==2)
+                {
+                    $quarter_1_id = $cont_exam->getConnectExamByBatch($batch_id,1);
+                    $j = 0;
+                    if($subject_no_exam && $quarter_1_id)
+                    {
+                        foreach($subject_no_exam as $value)
+                        {
+                     
+                            $results['no_exam_subject_resutl'][$j]['subject_comment1'] = $cmt_connect->getCommentAll($quarter_1_id,$value['id'],$batch_student);
+
+                            $j++;
+                        }    
+                    }  
+                    
+                    $quarter_2_id = $cont_exam->getConnectExamByBatch($batch_id,2);
+                    $j = 0;
+                    if($subject_no_exam && $quarter_2_id)
+                    {
+                        foreach($subject_no_exam as $value)
+                        {
+                            
+                            $results['no_exam_subject_resutl'][$j]['subject_comment2'] = $cmt_connect->getCommentAll($quarter_2_id,$value['id'],$batch_student);
+
+                            $j++;
+                        }    
+                    }  
+                    $j = 0;
+                    if($subject_no_exam && $first_term_id)
+                    {
+                        foreach($subject_no_exam as $value)
+                        {
+                          
+                            $results['no_exam_subject_resutl'][$j]['subject_comment5'] = $examGroupObj->getCommentAll($first_term_id,$value['id'],$batch_student);
+                            $j++;
+                        }    
+                    } 
+                    
+                } 
                 
                
                 if($subject_no_exam)

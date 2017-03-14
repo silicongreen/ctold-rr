@@ -20,7 +20,7 @@ class ReportController extends Controller
     {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index','addauthforexam','getconnectexam','tabulation','continues','continuestest','groupexamsubject','getexamclass','subjectreport','getsectionreport','groupedexamreport','getTermReportAll','progressall','attendence','getsubject','progress','classtestreport','allexam', 'Getfullreport','getexamreport','acknowledge'),
+                'actions' => array('index','addauthforexam','getconnectexam','tabulation','continues','groupexamsubject','getexamclass','subjectreport','getsectionreport','groupedexamreport','getTermReportAll','progressall','attendence','getsubject','progress','classtestreport','allexam', 'Getfullreport','getexamreport','acknowledge'),
                 'users' => array('*'),
             ),
             array('deny', // deny all users
@@ -180,44 +180,44 @@ class ReportController extends Controller
         echo CJSON::encode($response);
         Yii::app()->end();
     }
-    public function actionContinuesTest()
-    {
-        $user_secret = Yii::app()->request->getPost('user_secret');
-        $connect_exam_id = Yii::app()->request->getPost('connect_exam_id');
-        $batch_id = Yii::app()->request->getPost('batch_id');
-        $response = array();
-        if ($connect_exam_id && Yii::app()->user->user_secret === $user_secret &&  (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin ))
-        {
-
-            $groupexam = new GroupedExams();
-            $exam_report = $groupexam->getContinuesResultTest($batch_id,$connect_exam_id);
-            //$attandence = new Attendances();
-            //$adata = $attandence->getTotalPrsent($batch_id, $connect_exam_id,$exam_report['students']);
-
-
-            if ($exam_report) {
-
-                $response['data']['report'] = $exam_report;
-                //$response['data']['total'] = $adata[0];
-                //$response['data']['present_all'] = $adata[1];
-                $response['status']['code'] = 200;
-                $response['status']['msg'] = "EXAM_REPORT_FOUND";
-            } else {
-                $response['data']['report'] = array();
-                $response['status']['code'] = 200;
-                $response['status']['msg'] = "EXAM_REPORT_FOUND";
-            }  
-        }
-        else
-        {
-            $response['status']['code'] = 403;
-            $response['status']['msg'] = "Access Denied.";
-        }
-         
-        
-        echo CJSON::encode($response);
-        Yii::app()->end();
-    }        
+//    public function actionContinuesTest()
+//    {
+//        $user_secret = Yii::app()->request->getPost('user_secret');
+//        $connect_exam_id = Yii::app()->request->getPost('connect_exam_id');
+//        $batch_id = Yii::app()->request->getPost('batch_id');
+//        $response = array();
+//        if ($connect_exam_id && Yii::app()->user->user_secret === $user_secret &&  (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin ))
+//        {
+//
+//            $groupexam = new GroupedExams();
+//            $exam_report = $groupexam->getContinuesResultTest($batch_id,$connect_exam_id);
+//            //$attandence = new Attendances();
+//            //$adata = $attandence->getTotalPrsent($batch_id, $connect_exam_id,$exam_report['students']);
+//
+//
+//            if ($exam_report) {
+//
+//                $response['data']['report'] = $exam_report;
+//                //$response['data']['total'] = $adata[0];
+//                //$response['data']['present_all'] = $adata[1];
+//                $response['status']['code'] = 200;
+//                $response['status']['msg'] = "EXAM_REPORT_FOUND";
+//            } else {
+//                $response['data']['report'] = array();
+//                $response['status']['code'] = 200;
+//                $response['status']['msg'] = "EXAM_REPORT_FOUND";
+//            }  
+//        }
+//        else
+//        {
+//            $response['status']['code'] = 403;
+//            $response['status']['msg'] = "Access Denied.";
+//        }
+//         
+//        
+//        echo CJSON::encode($response);
+//        Yii::app()->end();
+//    }        
     public function actionContinues()
     {
        

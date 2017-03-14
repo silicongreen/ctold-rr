@@ -108,7 +108,7 @@ class GroupedExams extends CActiveRecord
 	{
 		return parent::model($className);
 	}
-        public function getContinuesResultTest($batch_id,$connect_exam_id)
+        public function getContinuesResult($batch_id,$connect_exam_id)
         {
            $criteria=new CDbCriteria;
             $criteria->compare('connect_exam_id',$connect_exam_id);
@@ -345,140 +345,7 @@ class GroupedExams extends CActiveRecord
                 return $results;
             }
         }
-        public function getContinuesResult($batch_id,$connect_exam_id)
-        {
-           $criteria=new CDbCriteria;
-            $criteria->compare('connect_exam_id',$connect_exam_id);
-            $criteria->select = 't.*'; 
-            $criteria->with = array(
-                'examgroup' => array(
-                    'select' => 'examgroup.id',
-                    'with' => array('Exams' => array(
-                            'select' => 'Exams.maximum_marks,Exams.id',
-                            'with' => array(
-                                'Subjects' => array(
-                                    'select' => 'Subjects.id',
-                                )
-                            )
-                        )
-                    )
-                )
-            );
-            $criteria->order = "t.priority ASC,examgroup.created_at ASC";
-            $examgroups = $this->findAll($criteria); 
-            $subjects_ids = array();
-            $exam_ids = array();
-            if($examgroups)
-            {
-                foreach($examgroups as $value)
-                {
-                   
-                    if(isset($value['examgroup']['Exams']))
-                    {
-                        
-                        foreach($value['examgroup']['Exams'] as $exam)
-                        {
-                            
-                            if(isset($exam['Subjects']->id))
-                            {
-                                if(!in_array($exam['Subjects']->id, $subjects_ids))
-                                {
-                                    $subjects_ids[] =$exam['Subjects']->id; 
-                                }        
-                            }    
-                        }
-                        
-                    }
-                }
-            }
-            
-            
-            
-            $subjectObj = new Subjects();
-            
-            $all_subject_without_no_exam = $subjectObj->getSubject($batch_id,0,$subjects_ids);
-            $subject_no_exam = $subjectObj->getSubjectNoExam($batch_id,0,$subjects_ids);
-            $results = array();
-            
-            $subject_result = array();
-            $max_mark = array();
-            
-            $examgroups_ids = array();
-            if($examgroups)
-            {
-                foreach($examgroups as $value)
-                {
-                    $examgroups_ids[] = $value['examgroup']->id;
-                }  
-                $stdobj = new Students();
-                $batch_student = $stdobj->getStudentByBatch($batch_id);
-                $batch_student_full = $stdobj->getStudentByBatchFull($batch_id);
-                
-                $examsGroupObj = new ExamGroups();
-                
-                list($subject_result,$max_mark) = $examsGroupObj->getExamGroupResultMaxMarkContinues($examgroups_ids,$subject_result,$max_mark);
-                
-                $results['all_result'] =  $examsGroupObj->getExamGroupResultSubjectAllStudentContinues($examgroups_ids,$batch_student); 
-
-              
-                
-                
-                $results['exam_comments'] = array();
-                
-                $cmt_connect = new ExamConnectSubjectComments();
-                
-                $sub_id_with_exam = array();
-                foreach($all_subject_without_no_exam as $value)
-                {
-                    $sub_id_with_exam[] =$value['id']; 
-                }
-                $sub_comments = $cmt_connect->getCommentAllSubjects($connect_exam_id,$sub_id_with_exam,$batch_student);
-                foreach($batch_student as $student)
-                {
-                   foreach($all_subject_without_no_exam as $value)
-                   {
-                        $results['exam_comments'][$student]['comments'][$value['id']]=$sub_comments[$student][$value['id']];
-                   } 
-
-                }
-                   
-                $sub_id_without_exam = array();
-                $subject_comments_no_exam = array();
-                if($subject_no_exam)
-                {
-                    foreach($subject_no_exam as $value)
-                    {
-                        $sub_id_without_exam[] = $value['id'];
-                    }
-                  
-                    $subject_comments_no_exam = $cmt_connect->getCommentAllSubjects($connect_exam_id,$sub_id_without_exam,$batch_student);
-                }
-                
-                $results['max_mark'] = $max_mark;
-                $results['no_exam_comments'] = array();
-                
-               
-                if($subject_no_exam)
-                {
-                    foreach($batch_student as $student)
-                    {
-                        $j = 0;
-                        foreach($subject_no_exam as $value)
-                        {
-                            $results['no_exam_comments'][$student]['no_exam_subject_resutl'][$j]['id'] =  $value['id'];
-                            $results['no_exam_comments'][$student]['no_exam_subject_resutl'][$j]['code'] =  $value['code'];
-                            $results['no_exam_comments'][$student]['no_exam_subject_resutl'][$j]['subject_name'] =  $value['name'];
-                            $results['no_exam_comments'][$student]['no_exam_subject_resutl'][$j]['subject_comment'] = $subject_comments_no_exam[$student][$value['id']];
-
-                            $j++;
-                        }  
-                    }
-                }
-                $results['students'] = $batch_student_full;
-                $results['subjects'] = $all_subject_without_no_exam;
-                return $results;
-            }
-        }
+        
         
         public function getTabulation($batch_id,$connect_exam_id)
         {

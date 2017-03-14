@@ -128,7 +128,9 @@ class GroupedExams extends CActiveRecord
                 )
             );
             $criteria->order = "t.priority ASC,examgroup.created_at ASC";
-            $examgroups = $this->findAll($criteria); 
+            $examgroups = $this->findAll($criteria);
+            return $examgroups;
+            exit;
             $subjects_ids = array();
             $exam_ids = array();
             if($examgroups)

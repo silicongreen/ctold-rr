@@ -173,6 +173,7 @@ class GroupedExams extends CActiveRecord
                 $stdobj = new Students();
                 $batch_student = $stdobj->getStudentByBatch($batch_id);
                 $batch_student_full = $stdobj->getStudentByBatchFull($batch_id);
+                $examsGroupObj = new ExamGroups();
                 foreach($examgroups as $value)
                 {
                     $examgroups_ids[] = $value['examgroup']->id;
@@ -184,7 +185,7 @@ class GroupedExams extends CActiveRecord
                 }  
                 
                 
-                $examsGroupObj = new ExamGroups();
+                
                 
                 $examsObj = new Exams();
                 

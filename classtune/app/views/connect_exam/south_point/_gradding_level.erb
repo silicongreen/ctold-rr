@@ -14,7 +14,12 @@
                           <td class="col-pdf"><b>Grade</b></td>
                           <td class="col-pdf"><b>Meaning</b></td>
                           <td class="col-pdf"><b>&nbsp</b></td>
-                          <td class="col-pdf"><b>Final term</b></td>
+                          <% if @report_data['total_first_term'].nil? %>
+                            <td class="col-pdf"><b>&nbsp;</b></td>
+                          <% else %>
+                            <td class="col-pdf"><b>First Term</b></td>
+                            <td class="col-pdf"><b>Final Term</b></td>
+                          <% end %>  
                          </tr>
                          <% l = 0; %>
                          
@@ -42,20 +47,41 @@
                           </td>
                           <td class="col-pdf"><%= grade.name %></td>
                           <td class="col-pdf"><%= grade.description %></td>
-                          <% if l == 1 %>
-                              <td class="col-pdf">Total Working day</td>
-                              <td class="col-pdf"><%= @report_data['total'] %></td>
-                          
-                          <% elsif l == 2 %>
-                              <td class="col-pdf">Days Present</td>
-                              <td class="col-pdf"><%= @report_data['present'] %></td>
-                          <% elsif l == 3 %>
-                              <td class="col-pdf">Days Absent</td>
-                              <td class="col-pdf"><%= @report_data['total']-@report_data['present'] %></td>
-                          <% else %>
-                              <td class="col-pdf"></td>
-                              <td class="col-pdf"></td>
-                          <% end %>
+                          <% if @report_data['total_first_term'].nil? %>
+                            <% if l == 1 %>
+                                <td class="col-pdf">Total Working day</td>
+                                <td class="col-pdf"><%= @report_data['total'] %></td>
+
+                            <% elsif l == 2 %>
+                                <td class="col-pdf">Days Present</td>
+                                <td class="col-pdf"><%= @report_data['present'] %></td>
+                            <% elsif l == 3 %>
+                                <td class="col-pdf">Days Absent</td>
+                                <td class="col-pdf"><%= @report_data['total']-@report_data['present'] %></td>
+                            <% else %>
+                                <td class="col-pdf"></td>
+                                <td class="col-pdf"></td>
+                            <% end %>
+                          <% else %>  
+                            <% if l == 1 %>
+                                <td class="col-pdf">Total Working day</td>
+                                <td class="col-pdf"><%= @report_data['total_first_term'] %></td>
+                                <td class="col-pdf"><%= @report_data['total'] %></td>
+
+                            <% elsif l == 2 %>
+                                <td class="col-pdf">Days Present</td>
+                                <td class="col-pdf"><%= @report_data['present_first_term'] %></td>
+                                <td class="col-pdf"><%= @report_data['present'] %></td>
+                            <% elsif l == 3 %>
+                                <td class="col-pdf">Days Absent</td>
+                                <td class="col-pdf"><%= @report_data['total_first_term']-@report_data['present_first_term'] %></td>
+                                <td class="col-pdf"><%= @report_data['total']-@report_data['present'] %></td>
+                            <% else %>
+                                <td class="col-pdf"></td>
+                                <td class="col-pdf"></td>
+                                <td class="col-pdf"></td>
+                            <% end %>
+                          <% end %>      
                          </tr>
                          <% end %>
 

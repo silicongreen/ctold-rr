@@ -151,7 +151,7 @@ employee_id = @current_user.employee_record.id
       
       <%=  link_to "<img src='/images/dashpallete/big_icon/sylabus.png' style='width:100%'>", :controller => 'syllabus', :action => 'classes_view' %><br/><br/>      
       <%=  link_to "<img src='/images/dashpallete/big_icon/calender.png' style='width:100%'>", :controller => 'calendar', :action => 'index' %><br/><br/>      
-      <%=  link_to "<img src='/images/dashpallete/big_icon/report_card.png' style='width:100%'>", :controller => 'exam', :action => 'exam_wise_report' %>
+      <%=  link_to "<img src='/images/dashpallete/big_icon/report_card.png' style='width:100%'>", :controller => 'exam', :action => 'grouped_exam_report_new' %>
       <% if (@current_user.employee or @current_user.admin) and can_access_request? :connect_exam,:marks %>
       <br/><br/><%=  link_to "<img src='/images/dashpallete/big_icon/marks_entry.png' style='width:100%'>", :controller => 'marks', :action => 'connect_exam' %>
       <% end %>

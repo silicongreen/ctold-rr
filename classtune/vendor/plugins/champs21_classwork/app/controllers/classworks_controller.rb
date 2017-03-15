@@ -78,7 +78,7 @@ class ClassworksController < ApplicationController
       end
     end
     
-    @batch_data = Rails.cache.fetch("course_data_#{course_id}_#{batch_name}_#{current_user.id}"){
+    @batch_data = Rails.cache.fetch("course_data_#{course_id}_#{batch_name.parameterize("_")}_#{current_user.id}"){
       if batch_name.length == 0
         batches = Batch.find_by_course_id(course_id)
       else

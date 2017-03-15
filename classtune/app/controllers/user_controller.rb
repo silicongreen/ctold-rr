@@ -311,7 +311,7 @@ class UserController < ApplicationController
   end
 
   def get_section_data    
-    @classes = Rails.cache.fetch("section_data_#{params[:class_name]}_#{current_user.id}"){
+    @classes = Rails.cache.fetch("section_data_#{params[:class_name].parameterize("_")}_#{current_user.id}"){
       class_data = Course.find(:all, :conditions => ["course_name LIKE ?",params[:class_name]])
       class_data
     }

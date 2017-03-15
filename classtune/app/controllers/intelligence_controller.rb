@@ -391,7 +391,7 @@ class IntelligenceController < ApplicationController
       batches_data = Batch.find_by_id(params[:student][:batch_name])
       batch_name = batches_data.name
       course_id = params[:course_id]
-      @batch_data = Rails.cache.fetch("course_data_#{course_id}_#{batch_name}_#{current_user.id}"){
+      @batch_data = Rails.cache.fetch("course_data_#{course_id}_#{batch_name.parameterize("_")}_#{current_user.id}"){
         if batch_name.length == 0
           batches = Batch.find_by_course_id(course_id)
         else
@@ -606,7 +606,7 @@ class IntelligenceController < ApplicationController
       batches_data = Batch.find_by_id(params[:student][:batch_name])
       batch_name = batches_data.name
       course_id = params[:course_id]
-      @batch_data = Rails.cache.fetch("course_data_#{course_id}_#{batch_name}_#{current_user.id}"){
+      @batch_data = Rails.cache.fetch("course_data_#{course_id}_#{batch_name.parameterize("_")}_#{current_user.id}"){
         if batch_name.length == 0
           batches = Batch.find_by_course_id(course_id)
         else
@@ -860,7 +860,7 @@ class IntelligenceController < ApplicationController
       batches_data = Batch.find_by_id(params[:student][:batch_name])
       batch_name = batches_data.name
       course_id = params[:course_id]
-      @batch_data = Rails.cache.fetch("course_data_#{course_id}_#{batch_name}_#{current_user.id}"){
+      @batch_data = Rails.cache.fetch("course_data_#{course_id}_#{batch_name.parameterize("_")}_#{current_user.id}"){
         if batch_name.length == 0
           batches = Batch.find_by_course_id(course_id)
         else

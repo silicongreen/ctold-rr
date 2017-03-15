@@ -12,11 +12,17 @@ class MarksController < ApplicationController
     end  
     @subjects.reject! {|s| !s.batch.is_active}
     @exams = []
+    @batches = []
     @subjects.each do |sub|
       exams = Exam.find_all_by_subject_id(sub.id)
       unless exams.blank?
         exams.each do |exam|  
           @exams.push exam unless exam.nil? or exam.exam_group.result_published == true
+          unless exam.nil? or exam.exam_group.result_published == true or @batches.include?(exam.exam_group.batch)
+            unless exam.exam_group.batch.nil?
+              @batches << exam.exam_group.batch
+            end
+          end 
         end
       end
     end 
@@ -26,6 +32,14 @@ class MarksController < ApplicationController
   def connect_exam
     @today = @local_tzone_time.to_date
     @exam_connect = ExamConnect.find(:all,:conditions => ["published_date < ?",@today] )
+    @batches = []
+    @exam_connect.each do |exam_connect|
+      unless @batches.include?(exam_connect.batch)
+        unless exam_connect.batch.nil?
+          @batches << exam_connect.batch
+        end
+      end  
+    end
   end
  
 end

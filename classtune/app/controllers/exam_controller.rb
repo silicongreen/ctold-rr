@@ -807,7 +807,7 @@ class ExamController < ApplicationController
         end
       end
 
-      @batch_data = Rails.cache.fetch("course_data_#{course_id}_#{batch_name}_#{current_user.id}"){
+      @batch_data = Rails.cache.fetch("course_data_#{course_id}_#{batch_name.parameterize("_")}_#{current_user.id}"){
         if batch_name.length == 0
           batches = Batch.find_by_course_id(course_id)
         else
@@ -1215,7 +1215,7 @@ class ExamController < ApplicationController
         end
       end
 
-      @batch_data = Rails.cache.fetch("course_data_#{course_id}_#{batch_name}_#{current_user.id}"){
+      @batch_data = Rails.cache.fetch("course_data_#{course_id}_#{batch_name.parameterize("_")}_#{current_user.id}"){
         if batch_name.length == 0
           batches = Batch.find_by_course_id(course_id)
         else
@@ -1309,7 +1309,7 @@ class ExamController < ApplicationController
         end
       end
 
-      @batch_data = Rails.cache.fetch("course_data_#{course_id}_#{batch_name}_#{current_user.id}"){
+      @batch_data = Rails.cache.fetch("course_data_#{course_id}_#{batch_name.parameterize("_")}_#{current_user.id}"){
         if batch_name.length == 0
           batches = Batch.find_by_course_id(course_id)
         else
@@ -1861,7 +1861,7 @@ class ExamController < ApplicationController
       end
     end
     
-    @batch_data = Rails.cache.fetch("course_data_#{course_id}_#{batch_name}_#{current_user.id}"){
+    @batch_data = Rails.cache.fetch("course_data_#{course_id}_#{batch_name.parameterize("_")}_#{current_user.id}"){
       if batch_name.length == 0
         batches = Batch.find_by_course_id(course_id)
       else
@@ -2075,7 +2075,7 @@ class ExamController < ApplicationController
         end
       end
 
-      @batch_data = Rails.cache.fetch("course_data_#{course_id}_#{batch_name}_#{current_user.id}"){
+      @batch_data = Rails.cache.fetch("course_data_#{course_id}_#{batch_name.parameterize("_")}_#{current_user.id}"){
         if batch_name.length == 0
           batches = Batch.find_by_course_id(course_id)
         else
@@ -2134,7 +2134,7 @@ class ExamController < ApplicationController
         end
       end
 
-      @batch_data = Rails.cache.fetch("course_data_#{course_id}_#{batch_name}_#{current_user.id}"){
+      @batch_data = Rails.cache.fetch("course_data_#{course_id}_#{batch_name.parameterize("_")}_#{current_user.id}"){
         if batch_name.length == 0
           batches = Batch.find_by_course_id(course_id)
         else
@@ -2280,6 +2280,33 @@ class ExamController < ApplicationController
     @exam_comment.each do |cmt|
       @student_exam_comment[cmt.student_id.to_s] = cmt.comments
     end
+    
+    
+  end 
+
+  def comment_tabulation_pdf
+    @id = params[:id]
+    @connect_exam_obj = ExamConnect.find(@id)
+    @batch = Batch.find(@connect_exam_obj.batch_id)
+    get_tabulation(@id,@batch.id)
+    @report_data = []
+    if @student_response['status']['code'].to_i == 200
+      @report_data = @student_response['data']
+    end
+    @exam_comment = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id) 
+    @student_exam_comment = {}
+    
+    @exam_comment.each do |cmt|
+      @student_exam_comment[cmt.student_id.to_s] = cmt.comments
+    end
+    render :pdf => 'comment_tabulation_pdf',
+      :orientation => 'Landscape', :zoom => 1.00,
+      :margin => {    :top=> 10,
+      :bottom => 10,
+      :left=> 10,
+      :right => 10},
+      :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+      :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
     
     
   end   
@@ -2850,7 +2877,7 @@ class ExamController < ApplicationController
       @batch = @batches[0]
       batch_name = @batch.name
       school_id = MultiSchool.current_school.id
-      @courses = Rails.cache.fetch("user_cat_links_for_exam_#{batch_name}_#{current_user.id}_#{school_id}"){
+      @courses = Rails.cache.fetch("user_cat_links_for_exam_#{batch_name.parameterize("_")}_#{current_user.id}_#{school_id}"){
         @batches_data = Batch.find(:all, :conditions => ["name = ?", batch_name], :select => "course_id")
         @batch_ids = @batches_data.map{|b| b.course_id}
         @tmp_courses = Course.find(:all, :conditions => ["courses.id IN (?) and batches.name = ?", @batch_ids, batch_name], :select => "courses.*,  GROUP_CONCAT(courses.section_name,'-',courses.id,'-',batches.id) as courses_batches", :joins=> "INNER JOIN `batches` ON batches.course_id = courses.id", :group => 'course_name', :order => "cast(replace(course_name, 'Class ', '') as SIGNED INTEGER) asc")

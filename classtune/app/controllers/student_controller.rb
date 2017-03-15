@@ -63,7 +63,7 @@ class StudentController < ApplicationController
     end
     
     school_id = MultiSchool.current_school.id
-    @classes = Rails.cache.fetch("section_data_#{params[:class_name]}_#{batch_id}_#{school_id}"){
+    @classes = Rails.cache.fetch("section_data_#{params[:class_name].parameterize("_")}_#{batch_id}_#{school_id}"){
       if batch_id.to_i > 0
         batch = Batch.find batch_id
         batch_name = batch.name
@@ -236,7 +236,7 @@ class StudentController < ApplicationController
     end
     
     school_id = MultiSchool.current_school.id
-    @batch_data = Rails.cache.fetch("course_data_#{course_id}_#{batch_name}_#{school_id}"){
+    @batch_data = Rails.cache.fetch("course_data_#{course_id}_#{batch_name.parameterize("_")}_#{school_id}"){
       if batch_name.length == 0
         batches = Batch.find_by_course_id(course_id)
       else
@@ -1538,7 +1538,7 @@ class StudentController < ApplicationController
       end
 
       if course_id.to_i > 0
-        @batch_data = Rails.cache.fetch("course_data_#{course_id}_#{batch_name}_#{current_user.id}"){
+        @batch_data = Rails.cache.fetch("course_data_#{course_id}_#{batch_name.parameterize("_")}_#{current_user.id}"){
           if batch_name.length == 0
             batches = Batch.find_by_course_id(course_id)
             
@@ -1641,7 +1641,7 @@ class StudentController < ApplicationController
     end
     
     if course_id.to_i > 0
-      @batch_data = Rails.cache.fetch("course_data_#{course_id}_#{batch_name}_#{current_user.id}"){
+      @batch_data = Rails.cache.fetch("course_data_#{course_id}_#{batch_name.parameterize("_")}_#{current_user.id}"){
         if batch_name.length == 0
           batches = Batch.find_by_course_id(course_id)
         else
@@ -1898,7 +1898,7 @@ class StudentController < ApplicationController
     unless params[:search]
       @batches = [] #Batch.all
     else
-      @classes = Rails.cache.fetch("section_data_#{params[:advv_search][:class_name]}_#{current_user.id}"){
+      @classes = Rails.cache.fetch("section_data_#{params[:advv_search][:class_name].parameterize("_")}_#{current_user.id}"){
         class_data = Course.find(:all, :conditions => ["course_name LIKE ?",params[:advv_search][:class_name]])
         class_data
       }

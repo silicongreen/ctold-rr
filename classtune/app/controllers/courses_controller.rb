@@ -95,7 +95,7 @@ class CoursesController < ApplicationController
         @batch = @batches[0]
         batch_name = @batch.name
         school_id = MultiSchool.current_school.id
-        @courses = Rails.cache.fetch("user_cat_links_for_course_#{batch_name}_#{school_id}"){
+        @courses = Rails.cache.fetch("user_cat_links_for_course_#{batch_name.parameterize("_")}_#{school_id}"){
           @batches_data = Batch.find(:all, :conditions => ["name = ?", batch_name], :select => "course_id")
           @batch_ids = @batches_data.map{|b| b.course_id}
           @tmp_courses = Course.find(:all, :conditions => ["courses.id IN (?) and courses.is_deleted = 0 and batches.name = ?", @batch_ids, batch_name], :select => "courses.*,  GROUP_CONCAT(courses.section_name,'-',courses.id,'-',batches.id) as courses_batches", :joins=> "INNER JOIN `batches` ON batches.course_id = courses.id", :group => 'course_name', :order => "cast(replace(course_name, 'Class ', '') as SIGNED INTEGER) asc")
@@ -149,7 +149,7 @@ class CoursesController < ApplicationController
     
     school_id = MultiSchool.current_school.id
     Rails.cache.delete("user_main_menu#{self.id}")
-    @courses = Rails.cache.fetch("user_cat_links_for_course_#{batch_name}_#{school_id}"){
+    @courses = Rails.cache.fetch("user_cat_links_for_course_#{batch_name.parameterize("_")}_#{school_id}"){
       @batch_ids = @batches.map{|b| b.course_id}
       @tmp_courses = Course.find(:all, :conditions => ["courses.id IN (?) and courses.is_deleted = 0 and batches.name = ?", @batch_ids, batch_name], :select => "courses.*,  GROUP_CONCAT(courses.section_name,'-',courses.id,'-',batches.id) as courses_batches", :joins=> "INNER JOIN `batches` ON batches.course_id = courses.id", :group => 'course_name', :order => "cast(replace(course_name, 'Class ', '') as SIGNED INTEGER) asc")
       @tmp_courses

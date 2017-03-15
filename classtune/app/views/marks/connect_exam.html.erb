@@ -43,6 +43,12 @@
   <% unless flash[:notice].nil? %>
     <p class="flash-msg"> <%= flash[:notice] %> </p>
   <% end %>
+    
+    <% unless @batches.blank? %>
+        <div class="box">
+            <%= select :batch, :batch_id,@batches.map {|b| [b.full_name, b.full_name] },{:prompt => "Select a Class"} %>
+        </div>
+    <% end %>
   <div class="box">
     <table id="exam_data"  class="mdl-data-table" cellspacing="0" width="100%">
         <thead>
@@ -87,7 +93,7 @@
 <script>
   var jj = jQuery.noConflict();
   jj(document).ready(function () {
-      jj('#exam_data').DataTable( {
+      var oDataTable = jj('#exam_data').DataTable( {
         columnDefs: [
             {
                 targets: [ 0, 1, 2 ],
@@ -95,6 +101,12 @@
             }
         ]
     } );
+    jj("#batch_batch_id").change(function(){
+      if(jj("#batch_batch_id").val())
+      {
+        oDataTable.column( 0 ).search( jj("#batch_batch_id").val()).draw();
+      }
+    });
   });
 </script>
 <style>
@@ -106,5 +118,17 @@
   }
   .pagination {
    margin-top:0px;
+   margin-right: 0px;
+}
+.box select
+{
+    margin-left: 16px;
+    height: 27px;
+    width: 200px;
+}
+body, html
+{
+    line-height: normal;
+    font-family: initial;
 }
 </style>

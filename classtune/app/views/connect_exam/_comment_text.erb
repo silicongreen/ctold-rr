@@ -1,0 +1,13 @@
+<tr class="even text-align-left">
+  <%
+  cmt = "&nbsp;"
+  
+  if !@student_exam_comment[@std_id_comment.to_s].blank?
+    cmt = @student_exam_comment[@std_id_comment.to_s]
+  end  
+  %>
+  <td colspan="100"><%= cmt %></td>
+</tr>
+<tr style="border:none;">
+    <td colpsan="100" style="border:none;">&nbsp;</td>
+<tr>    

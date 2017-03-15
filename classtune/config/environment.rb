@@ -25,7 +25,10 @@ Rails::Initializer.run do |config|
   if File.exists?('config/memcached.yml')
     memcached_settings = YAML.load(open('config/memcached.yml'))[RAILS_ENV.to_sym]
     config.cache_store = :mem_cache_store, memcached_settings[:host], {:namespace=>"champs21:"+(__FILE__).gsub(/^(.*)\/config\/environment.rb/,'\1')}
+  else
+    config.cache_store = :file_store, "#{Rails.root.to_s}/public/uploads/cache/"
   end
+    
 
 end
 

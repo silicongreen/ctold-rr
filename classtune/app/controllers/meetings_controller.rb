@@ -454,7 +454,7 @@ class MeetingsController < ApplicationController
     end
     
     school_id = MultiSchool.current_school.id
-    @batch_data = Rails.cache.fetch("course_data_#{course_id}_#{batch_name}_#{school_id}"){
+    @batch_data = Rails.cache.fetch("course_data_#{course_id}_#{batch_name.parameterize("_")}_#{school_id}"){
       if batch_name.length == 0
         batches = Batch.find_by_course_id(course_id)
       else
@@ -564,7 +564,7 @@ class MeetingsController < ApplicationController
     end
     
     if course_id.to_i > 0
-      @batch_data = Rails.cache.fetch("course_data_#{course_id}_#{batch_name}_#{current_user.id}"){
+      @batch_data = Rails.cache.fetch("course_data_#{course_id}_#{batch_name.parameterize("_")}_#{current_user.id}"){
         if batch_name.length == 0
           batches = Batch.find_by_course_id(course_id)
         else

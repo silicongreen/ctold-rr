@@ -16,8 +16,18 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License. -%>
-   
-<div id="page-yield" style="margin-top:30px;">
+ <div class="header-wrapper">
+    <% unless @current_user.student? or @current_user.parent? %>
+          <div id="inner-tab-menu">
+            <ul style="margin: 10px 20px 0 0;">
+              
+              <li class="themed_bg themed-dark-hover-background"><%= link_to "Pdf Download",
+                        {:action => "comment_tabulation_pdf",:id=>@connect_exam_obj.id},:target => '_blank' %></li>
+            </ul>
+          </div>
+      <% end %>
+ </div>  
+<div id="page-yield" style="margin:10px 0">
 
   <div class="box">
     

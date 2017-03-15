@@ -327,13 +327,31 @@ class ReportController extends Controller
                 $groupexam = new GroupedExams();
                 $exam_report = $groupexam->getGroupedExamReport($batch_id, $student_id, $connect_exam_id);
                 
+                $cont_exam = new ExamConnect();
+                $first_term_id = $cont_exam->getConnectExamFirstTerm($batch_id);
+                
+                
+                $this_term = $cont_exam->findByPk($connect_exam_id);
+                
                 $attandence = new Attendances();
                 $adata = $attandence->getStudentTotalPrsent($batch_id, $student_id, $connect_exam_id);
+                
+                $adata_first_term = array();
+                if($first_term_id && $first_term_id!=$connect_exam_id && $this_term->result_type == 1 && $this_term->quarter_number == 0)
+                {
+                    $adata_first_term = $attandence->getStudentTotalPrsent($batch_id, $student_id, $first_term_id);
+                }
                 if ($exam_report) {
                     
                     $response['data']['report'] = $exam_report;
                     $response['data']['total'] = $adata[0];
                     $response['data']['present'] = $adata[1];
+                    if($adata_first_term)
+                    {
+                        $response['data']['total_first_term'] = $adata_first_term[0];
+                        $response['data']['present_first_term'] = $adata_first_term[1];
+                    }
+                    
                     $response['status']['code'] = 200;
                     $response['status']['msg'] = "EXAM_REPORT_FOUND";
                 } else {

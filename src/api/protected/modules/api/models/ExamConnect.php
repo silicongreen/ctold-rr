@@ -68,7 +68,25 @@ class ExamConnect extends CActiveRecord
         $criteria->order = "published_date DESC";
         $connect_exam = $this->findAll($criteria);
         return $connect_exam;
-    }  
+    } 
+    
+    public function getConnectExamFirstTerm($batch_id)
+    {
+        $criteria = new CDbCriteria;
+        $criteria->compare('t.batch_id', $batch_id);
+        $criteria->compare('t.quarter_number', 0);
+        $criteria->compare('t.result_type', 2);
+        $criteria->select = 't.id';
+        $criteria->order = "created_at DESC";
+        $criteria->limit = 1;
+        $connect_exam = $this->find($criteria);
+        
+        if($connect_exam)
+        {
+            return $connect_exam->id;
+        }
+        return false;
+    }
     
     public function getConnectExamByBatch($batch_id,$quarter=1)
     {

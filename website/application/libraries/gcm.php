@@ -117,6 +117,9 @@ class GCM {
 	 *
 	 * @param <string> $group
 	 */
+        public function clearRecepient($registrationId) {
+            $this->payload['registration_ids'] = array();
+        }
 	public function addRecepient($registrationId) {
 		
 		$this->payload['registration_ids'][] = $registrationId;

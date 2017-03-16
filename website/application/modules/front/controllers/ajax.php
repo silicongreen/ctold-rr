@@ -78,6 +78,7 @@ class ajax extends MX_Controller {
 
         $notification_id = $this->input->post("notification_id");
 
+        $this->load->library('gcm');
         $notification_ids = explode(",", $notification_id);
         if (count($user_ids) > 0 && count($user_ids) == count($notification_ids)) {
             foreach ($user_ids as $key => $value) {

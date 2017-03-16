@@ -398,7 +398,13 @@
                         <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                         
                         <td class="col-pdf"><%= report['subject_name'] %></td>
-                        <td class="col-pdf" colspan="12"></td>
+                        <td class="col-pdf" colspan="5"></td>
+                        <td class="col-pdf">
+                        <% unless report['prev_subject_comment'].blank? %> 
+                            <%= report['prev_subject_comment'] %>
+                        <% end %>    
+                        </td>
+                        <td class="col-pdf" colspan="6"></td>
                         <td class="col-pdf"><%= report['subject_comment'] %></td>
                         <td class="col-pdf" colspan="3"></td>
                         </tr>

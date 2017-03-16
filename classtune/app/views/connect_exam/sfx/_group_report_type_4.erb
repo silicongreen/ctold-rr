@@ -37,7 +37,10 @@
         {:action => "marksheet", :subject_id => subjects['id'],:id=>@connect_exam_obj.id},:target => '_blank' %><% else %><%= subjects['name'] %><% end %></td>
                           <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>
-                              <% @exam_score_all = ExamScore.find_by_exam_id(report['exam_id'].to_i) %>
+                              <% @examobj = Exam.find_by_exam_group_id_and_subject_id(report['exam_id'].to_i,subjects['id'].to_i) %>
+                              <% unless @examobj.blank?  %>
+                                <% @exam_score_all = ExamScore.find_by_exam_id(@examobj.id.to_i) %>
+                              <% end %>
                               <td class="col-pdf">
                                      <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                                         <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i > -1 and !@exam_score_all.blank? %>

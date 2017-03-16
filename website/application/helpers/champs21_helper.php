@@ -1176,6 +1176,7 @@ if( !function_exists("send_notification_paid"))
         {
             $data = array("key" => "paid",'total_unread'=>$total_unread,"user_type"=>$user_type,"subject"=>$notification->subject, "rtype" => $notification->rtype, "rid" => $notification->rid, "batch_id" => $notification->batch_id, "student_id" => $notification->student_id);
             $messege = $notification->body;
+            $CI->load->library('gcm');
             $CI->gcm->setMessage($messege);
             $CI->gcm->setData($data);
             foreach($all_gcm_user as $value)
@@ -1184,8 +1185,6 @@ if( !function_exists("send_notification_paid"))
             }
             $response = $CI->gcm->send();
             $response['ststaus'] = $CI->gcm->status;
-            $response['data'] = $data;
-            $response['messege'] = $messege;
             $response['msg'] = $CI->gcm->messagesStatuses;
             return $response;
         }

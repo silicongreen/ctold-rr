@@ -11,6 +11,7 @@
 class GCM {
 	
 	protected $apiKey = '';
+        protected $apiData = '';
 	protected $apiSendAddress = '';
 	protected $payload = array();
 	protected $additionalData = array();
@@ -184,6 +185,7 @@ class GCM {
 		$this->responseData = curl_exec($curl);
 
 		$this->responseInfo = curl_getinfo($curl);
+                $this->apiData = $data;
 		
 		curl_close($curl);
 
@@ -253,7 +255,11 @@ class GCM {
 		{
 			$this->status = array(
 				'error' => 1,
-				'message' => 'Request could not be parsed as JSON'
+				'message' => 'Request could not be parsed as JSON',
+                                'api_key' => $this->apiKey,
+                                'apiSendAddress' => $this->apiSendAddress,
+                                'apid_data' => $this->apiData
+                            
 			);
 			return false;
 		}

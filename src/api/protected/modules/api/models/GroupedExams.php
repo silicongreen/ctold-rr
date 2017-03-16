@@ -108,7 +108,7 @@ class GroupedExams extends CActiveRecord
 	{
 		return parent::model($className);
 	}
-        public function getContinuesResult($batch_id,$connect_exam_id)
+        public function getContinuesResult($batch_id,$connect_exam_id, $previous_exam = 0)
         {
            $criteria=new CDbCriteria;
             $criteria->compare('connect_exam_id',$connect_exam_id);
@@ -233,6 +233,7 @@ class GroupedExams extends CActiveRecord
                    
                 $sub_id_without_exam = array();
                 $subject_comments_no_exam = array();
+                $subject_comments_no_exam_prev = array();
                 if($subject_no_exam)
                 {
                     foreach($subject_no_exam as $value)
@@ -241,6 +242,11 @@ class GroupedExams extends CActiveRecord
                     }
                   
                     $subject_comments_no_exam = $cmt_connect->getCommentAllSubjects($connect_exam_id,$sub_id_without_exam,$batch_student);
+                    if($previous_exam)
+                    {
+                        $subject_comments_no_exam_prev = $cmt_connect->getCommentAllSubjects($previous_exam,$sub_id_without_exam,$batch_student);
+                    }
+                    
                 }
                 
                 $results['max_mark'] = $max_mark;
@@ -338,7 +344,10 @@ class GroupedExams extends CActiveRecord
                             $results['no_exam_comments'][$student]['no_exam_subject_resutl'][$j]['code'] =  $value['code'];
                             $results['no_exam_comments'][$student]['no_exam_subject_resutl'][$j]['subject_name'] =  $value['name'];
                             $results['no_exam_comments'][$student]['no_exam_subject_resutl'][$j]['subject_comment'] = $subject_comments_no_exam[$student][$value['id']];
-
+                            if($previous_exam)
+                            {
+                                $results['no_exam_comments'][$student]['no_exam_subject_resutl'][$j]['prev_subject_comment'] = $subject_comments_no_exam_prev[$student][$value['id']];
+                            }
                             $j++;
                         }  
                     }
@@ -556,7 +565,7 @@ class GroupedExams extends CActiveRecord
             return $results;
         }        
         
-        public function getGroupedExamReport($batch_id, $student_id, $connect_exam_id)
+        public function getGroupedExamReport($batch_id, $student_id, $connect_exam_id, $previous_exam)
         {
             $criteria=new CDbCriteria;
             $criteria->compare('connect_exam_id',$connect_exam_id);
@@ -604,6 +613,8 @@ class GroupedExams extends CActiveRecord
                 
                 $results['no_exam_subject_resutl'] = array();
                 
+                $results['no_exam_subject_resutl_previous_exam'] = array();
+                
                 $results['max_mark'] = $max_mark;
                 
                 $j = 0;
@@ -614,6 +625,11 @@ class GroupedExams extends CActiveRecord
                         $results['no_exam_subject_resutl'][$j]['id'] =  $value['id'];
                         $results['no_exam_subject_resutl'][$j]['subject_name'] =  $value['name'];
                         $results['no_exam_subject_resutl'][$j]['subject_comment'] = $cmt_connect->getComment($connect_exam_id,$student_id,$value['id']);
+                        
+                        if($previous_exam)
+                        {
+                            $results['no_exam_subject_resutl'][$j]['prev_subject_comment'] = $cmt_connect->getComment($previous_exam,$student_id,$value['id']);
+                        }
                         
                         $j++;
                     }    

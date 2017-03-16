@@ -227,9 +227,19 @@ class ReportController extends Controller
         $response = array();
         if ($connect_exam_id && Yii::app()->user->user_secret === $user_secret &&  (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin ))
         {
+            $cont_exam = new ExamConnect();
+            $first_term_id = $cont_exam->getConnectExamFirstTerm($batch_id);
+            $this_term = $cont_exam->findByPk($connect_exam_id);
+
+            $previous_exam = 0;
+            if($first_term_id && $first_term_id!=$connect_exam_id && $this_term->result_type == 1 && $this_term->quarter_number == 0)
+            {
+                $previous_exam = $first_term_id;
+            }
+            
 
             $groupexam = new GroupedExams();
-            $exam_report = $groupexam->getContinuesResult($batch_id,$connect_exam_id);
+            $exam_report = $groupexam->getContinuesResult($batch_id,$connect_exam_id,$previous_exam);
             $attandence = new Attendances();
             $adata = $attandence->getTotalPrsent($batch_id, $connect_exam_id,$exam_report['students']);
 
@@ -323,15 +333,24 @@ class ReportController extends Controller
                     $batch_id   = Yii::app()->user->batchId;
                     $student_id = Yii::app()->user->profileId;
                 }   
-                 
-                $groupexam = new GroupedExams();
-                $exam_report = $groupexam->getGroupedExamReport($batch_id, $student_id, $connect_exam_id);
                 
                 $cont_exam = new ExamConnect();
                 $first_term_id = $cont_exam->getConnectExamFirstTerm($batch_id);
-                
-                
                 $this_term = $cont_exam->findByPk($connect_exam_id);
+                
+                $previous_exam = 0;
+                if($first_term_id && $first_term_id!=$connect_exam_id && $this_term->result_type == 1 && $this_term->quarter_number == 0)
+                {
+                    $previous_exam = $first_term_id;
+                }
+                
+                $groupexam = new GroupedExams();
+                $exam_report = $groupexam->getGroupedExamReport($batch_id, $student_id, $connect_exam_id, $previous_exam);
+                
+                
+                
+                
+                
                 
                 $attandence = new Attendances();
                 $adata = $attandence->getStudentTotalPrsent($batch_id, $student_id, $connect_exam_id);

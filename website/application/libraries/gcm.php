@@ -224,7 +224,10 @@ class GCM {
 
 			$this->status = array(
 				'error' => $error,
-				'message' => $message
+				'message' => $message,
+                                'api_key' => $this->apiKey,
+                                'apiSendAddress' => $this->apiSendAddress,
+                                'apid_data' => $this->apiData
 			);
 			
 			$this->messagesStatuses = array();

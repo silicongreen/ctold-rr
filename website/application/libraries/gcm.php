@@ -43,6 +43,7 @@ class GCM {
 		
 		$this->apiKey = $ci->config->item('gcm_api_key','gcm');
 		$this->apiSendAddress = $ci->config->item('gcm_api_send_address','gcm');
+                $this->payload = array();
 		
 		if (!$this->apiKey) {
 			show_error('GCM: Needed API Key');

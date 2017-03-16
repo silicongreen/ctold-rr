@@ -27,7 +27,7 @@ class MarksController < ApplicationController
       end
     end 
     
-    @exams.sort! { |a, b|  b.created_at <=> a.created_at }
+    @exams.sort! { |a, b|  a.created_at <=> b.created_at }
   end
   def connect_exam
     @today = @local_tzone_time.to_date

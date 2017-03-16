@@ -8,12 +8,12 @@
                       <% unless @report_data['report']['exams'].blank? %>  
                         <% @report_data['report']['exams'].each do |report| %>
                           <td class="col-pdf">
-                              <%= report['exam_name'] %><% unless @exam_marks[report['exam_id'].to_s].blank?  %><% total_mark_of_allexam = total_mark_of_allexam+@exam_marks[report['exam_id'].to_s].to_i  %> (<%= @exam_marks[report['exam_id'].to_s] %>)<% end %>
+                              <%= report['exam_name'] %><% unless @exam_marks[report['exam_id'].to_s].blank?  %><% total_mark_of_allexam = total_mark_of_allexam+@exam_marks[report['exam_id'].to_s].to_i  %><% end %>
                           </td> 
                         <% end %>
                       <% end %>
 
-                      <td class="col-pdf">Total(<%= total_mark_of_allexam %>)</td>
+                      <td class="col-pdf">Total</td>
                       <td class="col-pdf">PCT(%)</td>
                       <td class="col-pdf">Grade</td>
                   </tr>
@@ -37,11 +37,14 @@
         {:action => "marksheet", :subject_id => subjects['id'],:id=>@connect_exam_obj.id},:target => '_blank' %><% else %><%= subjects['name'] %><% end %></td>
                           <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>
+                              <% @exam_score_all = ExamScore.find_by_exam_id(report['exam_id'].to_i) %>
                               <td class="col-pdf">
                                      <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
-                                        <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i > -1 %>
+                                        <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i > -1 and !@exam_score_all.blank? %>
                                           <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %>
                                           <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                        <% elsif @exam_score_all.blank? %>
+                                           -
                                         <% elsif report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i == -1 %>
                                             N/A
                                         <% grade_i= true %>
@@ -52,7 +55,7 @@
                                       <% else %>
                                         N/A
                                       <% end %>
-                                      <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
+                                      <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? and !@exam_score_all.blank? %>
                                         <% exam_marks = exam_marks+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                         <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                       <% else %>

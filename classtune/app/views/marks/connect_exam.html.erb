@@ -72,9 +72,9 @@
                   @subjects << exam.subject
                 %>
                 <tr>
-                    <td><%= link_to(exam_connect.batch.full_name, '/exam/' + 'connect_exam_subject_comments/' +exam_connect.id.to_s+"|"+exam.subject.id.to_s, :method => 'get') %></td>
-                    <td><%= link_to(exam_connect.name, '/exam/' + 'connect_exam_subject_comments/' +exam_connect.id.to_s+"|"+exam.subject.id.to_s, :method => 'get') %></td>
-                    <td><%= link_to(exam.subject.name, '/exam/' + 'connect_exam_subject_comments/' +exam_connect.id.to_s+"|"+exam.subject.id.to_s, :method => 'get') %></td>
+                    <td><%= link_to(exam_connect.batch.full_name, '/exam/' + 'connect_exam_subject_comments/' +exam_connect.id.to_s+"|"+exam.subject.id.to_s, :target => "_blank") %></td>
+                    <td><%= link_to(exam_connect.name, '/exam/' + 'connect_exam_subject_comments/' +exam_connect.id.to_s+"|"+exam.subject.id.to_s, :target => "_blank") %></td>
+                    <td><%= link_to(exam.subject.name, '/exam/' + 'connect_exam_subject_comments/' +exam_connect.id.to_s+"|"+exam.subject.id.to_s, :target => "_blank") %></td>
                  
                 </tr>
                 <% end %>

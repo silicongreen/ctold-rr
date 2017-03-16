@@ -599,6 +599,8 @@ sfx  .table-header td{
 }
 
 
+
+
 ///baf shaheen
 .baf_shaheen table td
 {
@@ -1032,6 +1034,12 @@ table.grade_and_attendance tr td.grade_and_attendance_td
 #pdf-header-south table td.name-td h5
 {
     font-size: 10px;
+}
+
+
+td.td-align-left
+{
+    text-align: left !important;
 }
 
 

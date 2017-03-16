@@ -1185,6 +1185,8 @@ if( !function_exists("send_notification_paid"))
             }
             $response = $CI->gcm->send();
             $response['ststaus'] = $CI->gcm->status;
+            $response['data'] = $data;
+            $response['messege'] = $messege;
             $response['msg'] = $CI->gcm->messagesStatuses;
             return $response;
         }

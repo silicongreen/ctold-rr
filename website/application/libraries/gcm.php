@@ -227,10 +227,7 @@ class GCM {
 
 			$this->status = array(
 				'error' => $error,
-				'message' => $message,
-                                'api_key' => $this->apiKey,
-                                'apiSendAddress' => $this->apiSendAddress,
-                                'apid_data' => $this->apiData
+				'message' => $message
 			);
 			
 			$this->messagesStatuses = array();
@@ -262,10 +259,7 @@ class GCM {
 		{
 			$this->status = array(
 				'error' => 1,
-				'message' => 'Request could not be parsed as JSON',
-                                'api_key' => $this->apiKey,
-                                'apiSendAddress' => $this->apiSendAddress,
-                                'apid_data' => $this->apiData
+				'message' => 'Request could not be parsed as JSON'
                             
 			);
 			return false;

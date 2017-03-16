@@ -23,7 +23,7 @@ class HomeworkController extends Controller
     {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index','homeworkintelligence','teacherintelligence', 'Done','subjects','publishhomework','singleteacher','assessmentscore','singlehomework', 'saveassessment', 'assessment', 'getassessment', 'getproject', 'getsubject', 'addhomework', 'teacherhomework', 'homeworkstatus', 'teacherQuiz'),
+                'actions' => array('index', 'homeworkintelligence', 'teacherintelligence', 'Done', 'subjects', 'publishhomework', 'singleteacher', 'assessmentscore', 'singlehomework', 'saveassessment', 'assessment', 'getassessment', 'getproject', 'getsubject', 'addhomework', 'teacherhomework', 'homeworkstatus', 'teacherQuiz'),
                 'users' => array('*'),
             ),
             array('deny', // deny all users
@@ -31,62 +31,62 @@ class HomeworkController extends Controller
             ),
         );
     }
+
     public function actionTeacherIntelligence()
     {
         $user_secret = Yii::app()->request->getPost('user_secret');
         $date = Yii::app()->request->getPost('date');
         $department_id = Yii::app()->request->getPost('department_id');
-        
+
         $sort_by = Yii::app()->request->getPost('sort_by');
         $sort_type = Yii::app()->request->getPost('sort_type');
         $time_range = Yii::app()->request->getPost('time_range');
-        
-        if(!$sort_by)
+
+        if (!$sort_by)
         {
             $sort_by = "frequency";
         }
-        if(!$sort_type)
+        if (!$sort_type)
         {
             $sort_type = "1";
         }
-        
-        if(!$time_range)
+
+        if (!$time_range)
         {
             $time_range = "day";
         }
-        
-        
-        
-       
+
+
+
+
         if (Yii::app()->user->user_secret === $user_secret && (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin))
         {
             if (!$date)
             {
                 $date = date("Y-m-d");
             }
-            
-            if(!$department_id)
+
+            if (!$department_id)
             {
                 $department_id = FALSE;
             }
             $attendence = new Attendances();
-            
+
             $day_type = $attendence->check_date($date);
-            
-            
+
+
             $assignments = new Assignments();
-            
-            
-            
-            $employee_data = $assignments->getAssignmentEmployee($date,$sort_by,$sort_type,$time_range,$department_id);
+
+
+
+            $employee_data = $assignments->getAssignmentEmployee($date, $sort_by, $sort_type, $time_range, $department_id);
 
             $response['data']['day_type'] = $day_type;
             $response['data']['employee_data'] = $employee_data;
 
             $response['status']['code'] = 200;
             $response['status']['msg'] = "DATA_FOUND";
-        }
-        else
+        } else
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
@@ -94,6 +94,7 @@ class HomeworkController extends Controller
         echo CJSON::encode($response);
         Yii::app()->end();
     }
+
     public function actionHomeworkIntelligence()
     {
         $user_secret = Yii::app()->request->getPost('user_secret');
@@ -101,72 +102,71 @@ class HomeworkController extends Controller
         $batch_name = Yii::app()->request->getPost('batch_name');
         $class_name = Yii::app()->request->getPost('class_name');
         $batch_id = Yii::app()->request->getPost('batch_id');
-        
+
         $number_of_day = Yii::app()->request->getPost('number_of_day');
-        if(!$number_of_day)
+        if (!$number_of_day)
         {
             $number_of_day = 10;
-        } 
+        }
         $type = Yii::app()->request->getPost('type');
-        if(!$type)
+        if (!$type)
         {
             $type = "days";
         }
-        
-       
+
+
         if (Yii::app()->user->user_secret === $user_secret && (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin))
         {
             if (!$date)
             {
                 $date = date("Y-m-d");
             }
-            if(!$batch_name)
+            if (!$batch_name)
             {
                 $batch_name = FALSE;
             }
-            if(!$class_name)
+            if (!$class_name)
             {
                 $class_name = FALSE;
             }
-            if(!$batch_id)
+            if (!$batch_id)
             {
                 $batch_id = FALSE;
             }
             $attendence = new Attendances();
-            
+
             $day_type = $attendence->check_date($date);
-            
-            
+
+
             $assignments = new Assignments();
             $timetable = new TimetableEntries();
-            $homework_given= 0;
+            $homework_given = 0;
             $total_class = 0;
             $frequency = "N/A";
-            
-            if($day_type=="1")
+
+            if ($day_type == "1")
             {
-                $homework_given = $assignments->getAssignmentTotalAdmin($date,$batch_name,$class_name,$batch_id);
-                $total_class = $timetable->getTotalClass($date,$batch_name,$class_name,$batch_id);
-                if($homework_given>0)
+                $homework_given = $assignments->getAssignmentTotalAdmin($date, $batch_name, $class_name, $batch_id);
+                $total_class = $timetable->getTotalClass($date, $batch_name, $class_name, $batch_id);
+                if ($homework_given > 0)
                 {
-                    $frequency = round($total_class/$homework_given);
+                    $frequency = round($total_class / $homework_given);
                 }
             }
-            
+
             $graph_data = $assignments->getAssignmentGraph($number_of_day, $type, $batch_name, $class_name, $batch_id);
 
             $response['data']['day_type'] = $day_type;
             $response['data']['total_class'] = $total_class;
             $response['data']['homework_given'] = $homework_given;
             $response['data']['frequency'] = $frequency;
-            
+
             $response['data']['att_graph'] = $graph_data[0];
             $response['data']['att_graph_date'] = $graph_data[1];
 
             $response['status']['code'] = 200;
             $response['status']['msg'] = "DATA_FOUND";
-        }
-        else
+        } else
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
@@ -174,6 +174,7 @@ class HomeworkController extends Controller
         echo CJSON::encode($response);
         Yii::app()->end();
     }
+
     public function actionAssessmentScore()
     {
         if (isset($_POST) && !empty($_POST))
@@ -186,7 +187,7 @@ class HomeworkController extends Controller
             if ($id && Yii::app()->user->user_secret === $user_secret && ( Yii::app()->user->isStudent || ($batch_id && $student_id)))
             {
 
-                if(!$batch_id)
+                if (!$batch_id)
                 {
                     $batch_id = Yii::app()->user->batchId;
                     $student_id = Yii::app()->user->profileId;
@@ -198,20 +199,17 @@ class HomeworkController extends Controller
                     $response['data']['assesment'] = $homework_data;
                     $response['status']['code'] = 200;
                     $response['status']['msg'] = "Data Found";
-                }
-                else
+                } else
                 {
                     $response['status']['code'] = 404;
                     $response['status']['msg'] = "Data Not Found";
                 }
-            }
-            else
+            } else
             {
                 $response['status']['code'] = 403;
                 $response['status']['msg'] = "Access Denied.";
             }
-        }
-        else
+        } else
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
@@ -262,7 +260,7 @@ class HomeworkController extends Controller
                     {
                         if ($answer_question)
                         {
-                            foreach ($answer_question as $key=>$value)
+                            foreach ($answer_question as $key => $value)
                             {
 
                                 $objexamScore = new OnlineExamScoreDetails();
@@ -280,26 +278,22 @@ class HomeworkController extends Controller
 
                         $response['status']['code'] = 200;
                         $response['status']['msg'] = "Data Found";
-                    }
-                    else
+                    } else
                     {
                         $response['status']['code'] = 400;
                         $response['status']['msg'] = "Bad Request";
                     }
-                }
-                else
+                } else
                 {
                     $response['status']['code'] = 400;
                     $response['status']['msg'] = "Bad Request";
                 }
-            }
-            else
+            } else
             {
                 $response['status']['code'] = 403;
                 $response['status']['msg'] = "Access Denied.";
             }
-        }
-        else
+        } else
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
@@ -314,15 +308,15 @@ class HomeworkController extends Controller
         {
             $user_secret = Yii::app()->request->getPost('user_secret');
             $id = Yii::app()->request->getPost('id');
-            
+
             $response = array();
             if ($id && Yii::app()->user->user_secret === $user_secret && ( Yii::app()->user->isStudent))
             {
 
-               
+
                 $batch_id = Yii::app()->user->batchId;
                 $student_id = Yii::app()->user->profileId;
-               
+
 
 
                 $assignment = new OnlineExamGroups();
@@ -332,26 +326,23 @@ class HomeworkController extends Controller
                 if ($homework_data)
                 {
                     $robject = new Reminders();
-                    $robject->ReadReminderNew(Yii::app()->user->id, 0 ,15, $id);
-                    
+                    $robject->ReadReminderNew(Yii::app()->user->id, 0, 15, $id);
+
                     $response['data']['current_date'] = date("Y-m-d H:i:s");
                     $response['data']['assesment'] = $homework_data;
                     $response['status']['code'] = 200;
                     $response['status']['msg'] = "Data Found";
-                }
-                else
+                } else
                 {
                     $response['status']['code'] = 404;
                     $response['status']['msg'] = "Data Not Found";
                 }
-            }
-            else
+            } else
             {
                 $response['status']['code'] = 403;
                 $response['status']['msg'] = "Access Denied.";
             }
-        }
-        else
+        } else
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
@@ -371,31 +362,30 @@ class HomeworkController extends Controller
             $response = array();
             if (Yii::app()->user->user_secret === $user_secret && ( Yii::app()->user->isStudent || ($batch_id && $student_id)))
             {
-                if(Yii::app()->user->isStudent)
+                if (Yii::app()->user->isStudent)
                 {
                     $batch_id = Yii::app()->user->batchId;
                     $student_id = Yii::app()->user->profileId;
                 }
-                
-                if($not_started)
+
+                if ($not_started)
                 {
                     $not_started = 1;
-                }
-                else 
+                } else
                 {
                     $not_started = 0;
                 }
 
-                
+
                 $page_number = Yii::app()->request->getPost('page_number');
 
                 $page_size = Yii::app()->request->getPost('page_size');
 
-                
+
 
                 $subject_id = Yii::app()->request->getPost('subject_id');
 
-                
+
 
                 if (empty($page_number))
                 {
@@ -405,7 +395,7 @@ class HomeworkController extends Controller
                 {
                     $page_size = 10;
                 }
-                
+
                 if (!$subject_id)
                 {
                     $subject_id = 0;
@@ -415,8 +405,8 @@ class HomeworkController extends Controller
                 $assignment = new OnlineExamGroups();
 
 
-                $homework_data = $assignment->getOnlineExamList($batch_id, $student_id,$page_number,$page_size,"",$subject_id,$not_started);
-                $response['data']['total'] = $assignment->getOnlineExamTotal($batch_id, $student_id,$subject_id,$not_started);
+                $homework_data = $assignment->getOnlineExamList($batch_id, $student_id, $page_number, $page_size, "", $subject_id, $not_started);
+                $response['data']['total'] = $assignment->getOnlineExamTotal($batch_id, $student_id, $subject_id, $not_started);
                 $has_next = false;
                 if ($response['data']['total'] > $page_number * $page_size)
                 {
@@ -426,14 +416,12 @@ class HomeworkController extends Controller
                 $response['data']['homework'] = $homework_data;
                 $response['status']['code'] = 200;
                 $response['status']['msg'] = "Data Found";
-            }
-            else
+            } else
             {
                 $response['status']['code'] = 403;
                 $response['status']['msg'] = "Access Denied.";
             }
-        }
-        else
+        } else
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
@@ -454,8 +442,7 @@ class HomeworkController extends Controller
                 {
                     $batch_id = Yii::app()->request->getPost('batch_id');
                     $student_id = Yii::app()->request->getPost('student_id');
-                }
-                else
+                } else
                 {
                     $batch_id = Yii::app()->user->batchId;
                     $student_id = Yii::app()->user->profileId;
@@ -496,8 +483,7 @@ class HomeworkController extends Controller
                     $response['data']['homework'] = $homework_data;
                     $response['status']['code'] = 200;
                     $response['status']['msg'] = "Data Found";
-                }
-                else
+                } else
                 {
                     $response['data']['total'] = 0;
                     $response['data']['has_next'] = false;
@@ -505,14 +491,12 @@ class HomeworkController extends Controller
                     $response['status']['code'] = 200;
                     $response['status']['msg'] = "Data Not Found";
                 }
-            }
-            else
+            } else
             {
                 $response['status']['code'] = 403;
                 $response['status']['msg'] = "Access Denied.";
             }
-        }
-        else
+        } else
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
@@ -520,7 +504,7 @@ class HomeworkController extends Controller
         echo CJSON::encode($response);
         Yii::app()->end();
     }
-    
+
     public function actionSingleTeacher()
     {
         $user_secret = Yii::app()->request->getPost('user_secret');
@@ -539,15 +523,14 @@ class HomeworkController extends Controller
             {
                 $page_size = 10;
             }
-            $homework_data = $homework->getAssignmentTeacher($employee_id, $page_number, $page_size,1, $id);
+            $homework_data = $homework->getAssignmentTeacher($employee_id, $page_number, $page_size, 1, $id);
             if ($homework_data)
             {
 
                 $response['data']['homework'] = $homework_data[0];
                 $response['status']['code'] = 200;
                 $response['status']['msg'] = "Data Found";
-            }
-            else
+            } else
             {
                 $response['data']['total'] = 0;
                 $response['data']['has_next'] = false;
@@ -555,8 +538,7 @@ class HomeworkController extends Controller
                 $response['status']['code'] = 200;
                 $response['status']['msg'] = "Data Not Found";
             }
-        }
-        else
+        } else
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
@@ -565,10 +547,7 @@ class HomeworkController extends Controller
         echo CJSON::encode($response);
         Yii::app()->end();
     }
-    
-    
-   
-     
+
     public function actionSingleHomework()
     {
         if (isset($_POST) && !empty($_POST))
@@ -582,36 +561,32 @@ class HomeworkController extends Controller
                 {
                     $batch_id = Yii::app()->request->getPost('batch_id');
                     $student_id = Yii::app()->request->getPost('student_id');
-                }
-                else
+                } else
                 {
                     $batch_id = Yii::app()->user->batchId;
                     $student_id = Yii::app()->user->profileId;
                 }
                 $assignment = new Assignments();
-                $homework_data = $assignment->getAssignment($batch_id, $student_id, "", 1, null, 1, 1,$id);
+                $homework_data = $assignment->getAssignment($batch_id, $student_id, "", 1, null, 1, 1, $id);
                 if ($homework_data)
                 {
                     $robject = new Reminders();
-                    $robject->ReadReminderNew(Yii::app()->user->id, 0 ,4, $id);
-                    
+                    $robject->ReadReminderNew(Yii::app()->user->id, 0, 4, $id);
+
                     $response['data']['homework'] = $homework_data[0];
                     $response['status']['code'] = 200;
                     $response['status']['msg'] = "Data Found";
-                }
-                else
+                } else
                 {
                     $response['status']['code'] = 404;
                     $response['status']['msg'] = "Data Not Found";
                 }
-            }
-            else
+            } else
             {
                 $response['status']['code'] = 403;
                 $response['status']['msg'] = "Access Denied.";
             }
-        }
-        else
+        } else
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
@@ -619,7 +594,7 @@ class HomeworkController extends Controller
         echo CJSON::encode($response);
         Yii::app()->end();
     }
-    
+
     public function actionSubjects()
     {
         if (isset($_POST) && !empty($_POST))
@@ -632,27 +607,23 @@ class HomeworkController extends Controller
                 {
                     $batch_id = Yii::app()->request->getPost('batch_id');
                     $student_id = Yii::app()->request->getPost('student_id');
-                }
-                else
+                } else
                 {
                     $batch_id = Yii::app()->user->batchId;
                     $student_id = Yii::app()->user->profileId;
                 }
-                
+
                 $subject = new Subjects();
                 $all_subject = $subject->getSubject($batch_id, $student_id);
                 $response['data']['subject'] = $all_subject;
                 $response['status']['code'] = 200;
                 $response['status']['msg'] = "Data Found";
-                
-            }
-            else
+            } else
             {
                 $response['status']['code'] = 403;
                 $response['status']['msg'] = "Access Denied.";
             }
-        }
-        else
+        } else
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
@@ -673,8 +644,7 @@ class HomeworkController extends Controller
                 {
                     $batch_id = Yii::app()->request->getPost('batch_id');
                     $student_id = Yii::app()->request->getPost('student_id');
-                }
-                else
+                } else
                 {
                     $batch_id = Yii::app()->user->batchId;
                     $student_id = Yii::app()->user->profileId;
@@ -686,7 +656,7 @@ class HomeworkController extends Controller
                 $page_size = Yii::app()->request->getPost('page_size');
 
                 $subject_id = Yii::app()->request->getPost('subject_id');
-                
+
                 $duedate = Yii::app()->request->getPost('duedate');
 
                 if (empty($page_number))
@@ -705,11 +675,12 @@ class HomeworkController extends Controller
                 if (!$duedate)
                 {
                     $duedate = NULL;
-                } else {
+                } else
+                {
                     $duedate = date('Y-m-d', strtotime($duedate));
                 }
-                
-                $homework_data = $assignment->getAssignment($batch_id, $student_id, "", $page_number, $subject_id, $page_size, 1, 0,$duedate);
+
+                $homework_data = $assignment->getAssignment($batch_id, $student_id, "", $page_number, $subject_id, $page_size, 1, 0, $duedate);
                 if ($homework_data)
                 {
 
@@ -723,8 +694,7 @@ class HomeworkController extends Controller
                     $response['data']['homework'] = $homework_data;
                     $response['status']['code'] = 200;
                     $response['status']['msg'] = "Data Found";
-                }
-                else
+                } else
                 {
                     $response['data']['total'] = 0;
                     $response['data']['has_next'] = false;
@@ -732,14 +702,12 @@ class HomeworkController extends Controller
                     $response['status']['code'] = 200;
                     $response['status']['msg'] = "Data Not Found";
                 }
-            }
-            else
+            } else
             {
                 $response['status']['code'] = 403;
                 $response['status']['msg'] = "Access Denied.";
             }
-        }
-        else
+        } else
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
@@ -759,8 +727,7 @@ class HomeworkController extends Controller
             $response['data']['subjects'] = $subjects;
             $response['status']['code'] = 200;
             $response['status']['msg'] = "EVENTS_FOUND";
-        }
-        else
+        } else
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
@@ -780,8 +747,7 @@ class HomeworkController extends Controller
             $response['data']['homework_status'] = $homework_status;
             $response['status']['code'] = 200;
             $response['status']['msg'] = "Data Found";
-        }
-        else
+        } else
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
@@ -795,19 +761,19 @@ class HomeworkController extends Controller
         $user_secret = Yii::app()->request->getPost('user_secret');
         $draft = Yii::app()->request->getPost('draft');
         $employee_id = Yii::app()->user->profileId;
-        if (Yii::app()->user->user_secret === $user_secret && (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin) )
+        if (Yii::app()->user->user_secret === $user_secret && (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin))
         {
             $homework = new Assignments();
             $page_number = Yii::app()->request->getPost('page_number');
             $page_size = Yii::app()->request->getPost('page_size');
             $subject_id = Yii::app()->request->getPost('subject_id');
             $duedate = Yii::app()->request->getPost('duedate');
-            
+
             if (!$duedate)
             {
                 $duedate = NULL;
             }
-                
+
             if (empty($page_number))
             {
                 $page_number = 1;
@@ -818,18 +784,18 @@ class HomeworkController extends Controller
             }
             if (empty($subject_id))
             {
-                    $subject_id = NULL;
+                $subject_id = NULL;
             }
             $is_published = 1;
-            if($draft)
+            if ($draft)
             {
                 $is_published = 0;
-            }    
-            $homework_data = $homework->getAssignmentTeacher($employee_id, $page_number, $page_size,$is_published,0,$subject_id,$duedate);
+            }
+            $homework_data = $homework->getAssignmentTeacher($employee_id, $page_number, $page_size, $is_published, 0, $subject_id, $duedate);
             if ($homework_data)
             {
 
-                $response['data']['total'] = $homework->getAssignmentTotalTeacher($employee_id,$is_published,$subject_id,$duedate);
+                $response['data']['total'] = $homework->getAssignmentTotalTeacher($employee_id, $is_published, $subject_id, $duedate);
                 $has_next = false;
                 if ($response['data']['total'] > $page_number * $page_size)
                 {
@@ -839,8 +805,7 @@ class HomeworkController extends Controller
                 $response['data']['homework'] = $homework_data;
                 $response['status']['code'] = 200;
                 $response['status']['msg'] = "Data Found";
-            }
-            else
+            } else
             {
                 $response['data']['total'] = 0;
                 $response['data']['has_next'] = false;
@@ -848,8 +813,7 @@ class HomeworkController extends Controller
                 $response['status']['code'] = 200;
                 $response['status']['msg'] = "Data Not Found";
             }
-        }
-        else
+        } else
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
@@ -858,19 +822,19 @@ class HomeworkController extends Controller
         echo CJSON::encode($response);
         Yii::app()->end();
     }
-    
+
     public function actionPublishHomework()
     {
-       $id = Yii::app()->request->getPost('id'); 
-       $user_secret = Yii::app()->request->getPost('user_secret');
-       if(Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher && $id)
-       {
-           $homework = new Assignments();
-           $ehomework = $homework->findByPk($id);
-           if($ehomework)
-           {
-                $ehomework->is_published = 1; 
-                $ehomework->created_at = date("Y-m-d H:i:s"); 
+        $id = Yii::app()->request->getPost('id');
+        $user_secret = Yii::app()->request->getPost('user_secret');
+        if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher && $id)
+        {
+            $homework = new Assignments();
+            $ehomework = $homework->findByPk($id);
+            if ($ehomework)
+            {
+                $ehomework->is_published = 1;
+                $ehomework->created_at = date("Y-m-d H:i:s");
                 $ehomework->save();
                 $studentsubjectobj = new StudentsSubjects();
 
@@ -884,7 +848,7 @@ class HomeworkController extends Controller
                 $students1 = $stdobj->getStudentByBatch($subject_details->batch_id);
                 $students2 = $studentsubjectobj->getSubjectStudent($ehomework->subject_id);
                 $students = array_unique(array_merge($students1, $students2));
-                
+
                 $notification_ids = array();
                 $reminderrecipients = array();
                 foreach ($students as $value)
@@ -893,26 +857,28 @@ class HomeworkController extends Controller
                     $reminderrecipients[] = $studentsobj->user_id;
                     $batch_ids[$studentsobj->user_id] = $studentsobj->batch_id;
                     $student_ids[$studentsobj->user_id] = $studentsobj->id;
-                    
-                    $gstudent = new GuardianStudent(); 
+
+                    $gstudent = new GuardianStudent();
                     $all_g = $gstudent->getGuardians($studentsobj->id);
 
                     if ($all_g)
                     {
-                        foreach($all_g as $value)
+                        foreach ($all_g as $value)
                         {
                             $gr = new Guardians();
-                            $grdata = $gr->findByPk($value['guardian']->id);
-                            if($grdata->user_id)
+                            if (isset($value['guardian']) && isset($value['guardian']->id))
                             {
-                                $reminderrecipients[] = $grdata->user_id;
-                                $batch_ids[$grdata->user_id] = $studentsobj->batch_id;
-                                $student_ids[$grdata->user_id] = $studentsobj->id;
+                                $grdata = $gr->findByPk($value['guardian']->id);
+                                if ($grdata && $grdata->user_id && !in_array($grdata->user_id, $reminderrecipients))
+                                {
+                                    $reminderrecipients[] = $grdata->user_id;
+                                    $batch_ids[$grdata->user_id] = $studentsobj->batch_id;
+                                    $student_ids[$grdata->user_id] = $studentsobj->id;
+                                }
                             }
-                        }    
-
+                        }
                     }
-                } 
+                }
                 foreach ($reminderrecipients as $value)
                 {
                     $reminder = new Reminders();
@@ -929,6 +895,7 @@ class HomeworkController extends Controller
                     $reminder->updated_at = date("Y-m-d H:i:s");
                     $reminder->save();
                     $notification_ids[] = $reminder->id;
+                    Settings::sendCurlNotification($value, $reminder->id);
                 }
 //                foreach ($students as $value)
 //                {
@@ -948,34 +915,33 @@ class HomeworkController extends Controller
 //                    $reminderrecipients[] = $studentsobj->user_id;
 //                    $notification_ids[] = $reminder->id;
 //                }
-                if($notification_ids)
-                {
-                    $notification_id = implode(",", $notification_ids);
-                    $user_id = implode(",", $reminderrecipients);
-                    Settings::sendCurlNotification($user_id, $notification_id);
-                }
+//                if ($notification_ids)
+//                {
+//                    $notification_id = implode(",", $notification_ids);
+//                    $user_id = implode(",", $reminderrecipients);
+//                    Settings::sendCurlNotification($user_id, $notification_id);
+//                }
                 $response['status']['code'] = 200;
                 $response['status']['msg'] = "SUCCESS";
-           }
-           else
-           {
+            } else
+            {
                 $response['status']['code'] = 400;
                 $response['status']['msg'] = "Bad Request";
-           }    
-       } 
-       else 
-       {
+            }
+        } else
+        {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
-       }
-       echo CJSON::encode($response);
-       Yii::app()->end();
-    } 
-    private function upload_homework($file,$homework)
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    }
+
+    private function upload_homework($file, $homework)
     {
         $homework->attachment_updated_at = date("Y-m-d H:i:s");
         $homework->updated_at = date("Y-m-d H:i:s");
-                    
+
         $attachment_datetime_chunk = explode(" ", $homework->updated_at);
 
         $attachment_date_chunk = explode("-", $attachment_datetime_chunk[0]);
@@ -984,30 +950,31 @@ class HomeworkController extends Controller
         $attachment_extra = $attachment_date_chunk[0] . $attachment_date_chunk[1] . $attachment_date_chunk[2];
         $attachment_extra.= $attachment_time_chunk[0] . $attachment_date_chunk[1] . $attachment_time_chunk[2];
 
-        $uploads_dir = Settings::$paid_image_path . "uploads/assignments/attachments/".$homework->id."/original/";
-        $file_name =  str_replace(" ", "+",$file['attachment_file_name']['name']) . "?" .$attachment_extra;
+        $uploads_dir = Settings::$paid_image_path . "uploads/assignments/attachments/" . $homework->id . "/original/";
+        $file_name = str_replace(" ", "+", $file['attachment_file_name']['name']) . "?" . $attachment_extra;
         $tmp_name = $file["attachment_file_name"]["tmp_name"];
-        
-        if(!is_dir($uploads_dir))
+
+        if (!is_dir($uploads_dir))
         {
             @mkdir($uploads_dir, 0777, true);
         }
-        
-        $uploads_dir = $uploads_dir.$file_name;
-        
 
-        if(@move_uploaded_file($tmp_name, "$uploads_dir"))
+        $uploads_dir = $uploads_dir . $file_name;
+
+
+        if (@move_uploaded_file($tmp_name, "$uploads_dir"))
         {
             $homework->attachment_file_name = $file['attachment_file_name']['name'];
             $homework->save();
-        } 
+        }
         return $uploads_dir;
     }
-    private function copy_homework($origin,$file_name,$homework)
+
+    private function copy_homework($origin, $file_name, $homework)
     {
         $homework->attachment_updated_at = date("Y-m-d H:i:s");
         $homework->updated_at = date("Y-m-d H:i:s");
-                    
+
         $attachment_datetime_chunk = explode(" ", $homework->updated_at);
 
         $attachment_date_chunk = explode("-", $attachment_datetime_chunk[0]);
@@ -1016,19 +983,19 @@ class HomeworkController extends Controller
         $attachment_extra = $attachment_date_chunk[0] . $attachment_date_chunk[1] . $attachment_date_chunk[2];
         $attachment_extra.= $attachment_time_chunk[0] . $attachment_date_chunk[1] . $attachment_time_chunk[2];
 
-        $uploads_dir = Settings::$paid_image_path . "uploads/assignments/attachments/".$homework->id."/original/";
-        $file_name_new =  str_replace(" ", "+",$file_name) . "?" .$attachment_extra;
-        
-        
-        if(!is_dir($uploads_dir))
+        $uploads_dir = Settings::$paid_image_path . "uploads/assignments/attachments/" . $homework->id . "/original/";
+        $file_name_new = str_replace(" ", "+", $file_name) . "?" . $attachment_extra;
+
+
+        if (!is_dir($uploads_dir))
         {
             @mkdir($uploads_dir, 0777, true);
         }
-        
-        $uploads_dir = $uploads_dir.$file_name_new;
-        
 
-        if(@copy($origin, "$uploads_dir"))
+        $uploads_dir = $uploads_dir . $file_name_new;
+
+
+        if (@copy($origin, "$uploads_dir"))
         {
             $homework->attachment_file_name = $file_name;
             $homework->save();
@@ -1050,23 +1017,22 @@ class HomeworkController extends Controller
 
         if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher && $subject_ids && $content && $title && $duedate && $school_id && $assignment_type)
         {
-            
-            
+
+
             $subject_id_array = explode(",", $subject_ids);
-            if($subject_id_array)
+            if ($subject_id_array)
             {
-                foreach($subject_id_array as $subject_id)
+                foreach ($subject_id_array as $subject_id)
                 {
-                    if($id)
+                    if ($id)
                     {
                         $objhomework = new Assignments();
                         $homework = $objhomework->findByPk($id);
-                    }
-                    else
+                    } else
                     {
                         $homework = new Assignments();
                     }
-             
+
                     $homework->subject_id = $subject_id;
                     $homework->content = $content;
                     $homework->title = $title;
@@ -1081,14 +1047,14 @@ class HomeworkController extends Controller
 
 
 
-                    if($is_draft)
+                    if ($is_draft)
                     {
-                        $homework->is_published = 0; 
+                        $homework->is_published = 0;
                     }
 
 
                     $homework->created_at = date("Y-m-d H:i:s");
-                    if(!$id)
+                    if (!$id)
                     {
                         $homework->updated_at = date("Y-m-d H:i:s");
                     }
@@ -1114,7 +1080,7 @@ class HomeworkController extends Controller
 
                     if (isset($_FILES['attachment_file_name']['name']) && !empty($_FILES['attachment_file_name']['name']))
                     {
-                         if(!isset($file_name_main) && !isset($origin) )
+                        if (!isset($file_name_main) && !isset($origin))
                         {
                             $file_name_main = $_FILES['attachment_file_name']['name'];
 
@@ -1122,19 +1088,18 @@ class HomeworkController extends Controller
                             $homework->attachment_content_type = Yii::app()->request->getPost('mime_type');
                             $homework->attachment_file_size = Yii::app()->request->getPost('file_size');
                             $origin = $this->upload_homework($_FILES, $homework);
-                        }
-                        else
+                        } else
                         {
                             $homework->updated_at = date("Y-m-d H:i:s");
                             $homework->attachment_content_type = Yii::app()->request->getPost('mime_type');
                             $homework->attachment_file_size = Yii::app()->request->getPost('file_size');
-                            $origin = $this->copy_homework($origin,$file_name_main, $homework);
-                        } 
-                    }     
+                            $origin = $this->copy_homework($origin, $file_name_main, $homework);
+                        }
+                    }
 
 
 
-                    if(!$is_draft)
+                    if (!$is_draft)
                     {
                         $notification_ids = array();
                         $reminderrecipients = array();
@@ -1145,25 +1110,27 @@ class HomeworkController extends Controller
                             $batch_ids[$studentsobj->user_id] = $studentsobj->batch_id;
                             $student_ids[$studentsobj->user_id] = $studentsobj->id;
 
-                            $gstudent = new GuardianStudent(); 
+                            $gstudent = new GuardianStudent();
                             $all_g = $gstudent->getGuardians($studentsobj->id);
 
                             if ($all_g)
                             {
-                                foreach($all_g as $value)
+                                foreach ($all_g as $value)
                                 {
                                     $gr = new Guardians();
-                                    $grdata = $gr->findByPk($value['guardian']->id);
-                                    if($grdata->user_id && !in_array($grdata->user_id, $reminderrecipients))
+                                    if (isset($value['guardian']) && isset($value['guardian']->id))
                                     {
-                                        $reminderrecipients[] = $grdata->user_id;
-                                        $batch_ids[$grdata->user_id] = $studentsobj->batch_id;
-                                        $student_ids[$grdata->user_id] = $studentsobj->id;
+                                        $grdata = $gr->findByPk($value['guardian']->id);
+                                        if ($grdata && $grdata->user_id && !in_array($grdata->user_id, $reminderrecipients))
+                                        {
+                                            $reminderrecipients[] = $grdata->user_id;
+                                            $batch_ids[$grdata->user_id] = $studentsobj->batch_id;
+                                            $student_ids[$grdata->user_id] = $studentsobj->id;
+                                        }
                                     }
-                                }    
-
+                                }
                             }
-                        }    
+                        }
                         foreach ($reminderrecipients as $value)
                         {
                             $reminder = new Reminders();
@@ -1182,16 +1149,13 @@ class HomeworkController extends Controller
                             $notification_ids[] = $reminder->id;
                             Settings::sendCurlNotification($value, $reminder->id);
                         }
-                        
                     }
                 }
-                
-            }    
-            
+            }
+
             $response['status']['code'] = 200;
             $response['status']['msg'] = "SUCCESS";
-        }
-        else
+        } else
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
@@ -1228,14 +1192,12 @@ class HomeworkController extends Controller
                 $response['status']['code'] = 200;
                 $response['status']['msg'] = "Data Found";
                 //}
-            }
-            else
+            } else
             {
                 $response['status']['code'] = 403;
                 $response['status']['msg'] = "Access Denied.";
             }
-        }
-        else
+        } else
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
@@ -1243,64 +1205,68 @@ class HomeworkController extends Controller
         echo CJSON::encode($response);
         Yii::app()->end();
     }
-    
-    public function actionTeacherQuiz() {
-        if (isset($_POST) && !empty($_POST)) {
+
+    public function actionTeacherQuiz()
+    {
+        if (isset($_POST) && !empty($_POST))
+        {
             $user_secret = Yii::app()->request->getPost('user_secret');
             $page_number = Yii::app()->request->getPost('page_number');
             $page_size = Yii::app()->request->getPost('page_size');
             $subject_id = Yii::app()->request->getPost('subject_id');
-            
+
             if (empty($page_number))
             {
                 $page_number = 1;
             }
-            
+
             if (empty($page_size))
             {
                 $page_size = 10;
             }
-            
+
             if (empty($subject_id))
             {
                 $subject_id = 0;
             }
-            
+
             $response = array();
-            if (Yii::app()->user->user_secret === $user_secret && (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin)) {
-                
-                $mod_timetable_entries = TimetableEntries::model()->findAllByAttributes( array('employee_id' => Yii::app()->user->profileId), array('select' => 'subject_id', 'group' => 'batch_id') );
-                
+            if (Yii::app()->user->user_secret === $user_secret && (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin))
+            {
+
+                $mod_timetable_entries = TimetableEntries::model()->findAllByAttributes(array('employee_id' => Yii::app()->user->profileId), array('select' => 'subject_id', 'group' => 'batch_id'));
+
                 $subject_ids = array();
-                
-                if($mod_timetable_entries)
-                foreach($mod_timetable_entries as $te) {
-                    $subject_ids[] = $te->subject_id;
-                }
-                
+
+                if ($mod_timetable_entries)
+                    foreach ($mod_timetable_entries as $te)
+                    {
+                        $subject_ids[] = $te->subject_id;
+                    }
+
                 $mod_online_exam = new OnlineExamGroups();
                 $online_exams = $mod_online_exam->getOnlineExamListTeacher($page_number, $page_size, $subject_ids);
-                
+
                 $response['data']['total'] = $mod_online_exam->getOnlineExamListTeacher($page_number, $page_size, $subject_ids, TRUE);
                 $has_next = false;
                 if ($response['data']['total'] > $page_number * $page_size)
                 {
                     $has_next = true;
                 }
-                
+
                 $response['data']['has_next'] = $has_next;
                 $response['data']['teacher_quiz'] = $online_exams;
                 $response['status']['code'] = 200;
                 $response['status']['msg'] = "Data Found";
-                
-            } else {
+            } else
+            {
                 $response['status']['code'] = 400;
                 $response['status']['msg'] = "Bad Request";
             }
-            
+
             echo CJSON::encode($response);
             Yii::app()->end();
         }
     }
-    
+
 }

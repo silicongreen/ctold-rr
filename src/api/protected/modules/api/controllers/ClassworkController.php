@@ -382,12 +382,15 @@ class ClassworkController extends Controller
                         foreach($all_g as $value)
                         {
                             $gr = new Guardians();
-                            $grdata = $gr->findByPk($value['guardian']->id);
-                            if($grdata->user_id)
+                            if (isset($value['guardian']) && isset($value['guardian']->id))
                             {
-                                $reminderrecipients[] = $grdata->user_id;
-                                $batch_ids[$grdata->user_id] = $studentsobj->batch_id;
-                                $student_ids[$grdata->user_id] = $studentsobj->id;
+                                $grdata = $gr->findByPk($value['guardian']->id);
+                                if($grdata && $grdata->user_id && !in_array($grdata->user_id, $reminderrecipients))
+                                {
+                                    $reminderrecipients[] = $grdata->user_id;
+                                    $batch_ids[$grdata->user_id] = $studentsobj->batch_id;
+                                    $student_ids[$grdata->user_id] = $studentsobj->id;
+                                }
                             }
                         }    
 
@@ -409,13 +412,14 @@ class ClassworkController extends Controller
                     $reminder->updated_at = date("Y-m-d H:i:s");
                     $reminder->save();
                     $notification_ids[] = $reminder->id;
+                    Settings::sendCurlNotification($value, $reminder->id);
                 }
-                if($notification_ids)
-                {
-                    $notification_id = implode(",", $notification_ids);
-                    $user_id = implode(",", $reminderrecipients);
-                    Settings::sendCurlNotification($user_id, $notification_id);
-                }
+//                if($notification_ids)
+//                {
+//                    $notification_id = implode(",", $notification_ids);
+//                    $user_id = implode(",", $reminderrecipients);
+//                    Settings::sendCurlNotification($user_id, $notification_id);
+//                }
                 $response['status']['code'] = 200;
                 $response['status']['msg'] = "SUCCESS";
            }
@@ -610,13 +614,16 @@ class ClassworkController extends Controller
                                 foreach($all_g as $value)
                                 {
                                     $gr = new Guardians();
-                                    $grdata = $gr->findByPk($value['guardian']->id);
-                                    if($grdata->user_id)
+                                    if (isset($value['guardian']) && isset($value['guardian']->id))
                                     {
-                                        $reminderrecipients[] = $grdata->user_id;
-                                        $batch_ids[$grdata->user_id] = $studentsobj->batch_id;
-                                        $student_ids[$grdata->user_id] = $studentsobj->id;
-                                    }
+                                        $grdata = $gr->findByPk($value['guardian']->id);
+                                        if($grdata && $grdata->user_id && !in_array($grdata->user_id, $reminderrecipients))
+                                        {
+                                            $reminderrecipients[] = $grdata->user_id;
+                                            $batch_ids[$grdata->user_id] = $studentsobj->batch_id;
+                                            $student_ids[$grdata->user_id] = $studentsobj->id;
+                                        }
+                                    }    
                                 }    
 
                             }
@@ -637,13 +644,14 @@ class ClassworkController extends Controller
                             $reminder->updated_at = date("Y-m-d H:i:s");
                             $reminder->save();
                             $notification_ids[] = $reminder->id;
+                            Settings::sendCurlNotification($value, $reminder->id);
                         }
-                        if($notification_ids)
-                        {
-                            $notification_id = implode(",", $notification_ids);
-                            $user_id = implode(",", $reminderrecipients);
-                            Settings::sendCurlNotification($user_id, $notification_id);
-                        }
+//                        if($notification_ids)
+//                        {
+//                            $notification_id = implode(",", $notification_ids);
+//                            $user_id = implode(",", $reminderrecipients);
+//                            Settings::sendCurlNotification($user_id, $notification_id);
+//                        }
                     }
                 }
                 

@@ -23,7 +23,7 @@ class FreeuserController extends Controller
     {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index','runmusic','getleaderboard','savespellingbee', 'downloadattachment','downloadclasswork','downloadlessonplan', 'create', 'getcategorypost', 'getsinglenews', 'search', "getkeywordpost"
+                'actions' => array('index', 'runmusic', 'getleaderboard', 'savespellingbee', 'downloadattachment', 'downloadclasswork', 'downloadlessonplan', 'create', 'getcategorypost', 'getsinglenews', 'search', "getkeywordpost"
                     , "gettagpost", "getbylinepost", "getmenu", "getassesment", "addmark", "updateplayed", "assesmenthistory",
                     "getuserinfo", "goodread", "readlater", "goodreadall", "goodreadfolder", "removegoodread"
                     , "schoolsearch", "school", "createschool", "schoolpage", "schoolactivity", "candle"
@@ -37,6 +37,7 @@ class FreeuserController extends Controller
             ),
         );
     }
+
     public function actionDownloadClassWork()
     {
 
@@ -54,8 +55,8 @@ class FreeuserController extends Controller
 
                 $attachment_extra = $attachment_date_chunk[0] . $attachment_date_chunk[1] . $attachment_date_chunk[2];
                 $attachment_extra.= $attachment_time_chunk[0] . $attachment_date_chunk[1] . $attachment_time_chunk[2];
-                
-                $url = Settings::$paid_image_path ."uploads/classworks/attachments/" . $id . "/original/" . urlencode($classworkobj->attachment_file_name) . "?" . $attachment_extra;              
+
+                $url = Settings::$paid_image_path . "uploads/classworks/attachments/" . $id . "/original/" . urlencode($classworkobj->attachment_file_name) . "?" . $attachment_extra;
 
                 header("Content-Disposition: attachment; filename=" . $classworkobj->attachment_file_name);
                 header("Content-Type: {$classworkobj->attachment_content_type}");
@@ -64,91 +65,86 @@ class FreeuserController extends Controller
             }
         }
     }
-    
+
     public function actionrunMusic()
     {
-      
+
         $left = Yii::app()->request->getParam('left');
         $right = Yii::app()->request->getParam('right');
-        
+
         $operator = Yii::app()->request->getParam('operator');
-        
+
         $word = Yii::app()->request->getParam('word');
-        
+
         $top = Yii::app()->request->getParam('top');
         $bottom = Yii::app()->request->getParam('bottom');
-        
-        
-        
-        $strWord = Settings::retriveWord($left, $right,$operator, $word, $top,$bottom);
-       
-        
-      
-        
-        if($strWord)
+
+
+
+        $strWord = Settings::retriveWord($left, $right, $operator, $word, $top, $bottom);
+
+
+
+
+        if ($strWord)
         {
-        
-            $strMusicFile = Settings::$main_path."upload/spellingbee/".$strWord.".mp3";
+
+            $strMusicFile = Settings::$main_path . "upload/spellingbee/" . $strWord . ".mp3";
 
 
-            if ( file_exists( $strMusicFile ) && is_file( $strMusicFile ) && is_readable( $strMusicFile ) && filesize($strMusicFile)>500 )
+            if (file_exists($strMusicFile) && is_file($strMusicFile) && is_readable($strMusicFile) && filesize($strMusicFile) > 500)
             {
                 //do nothing
-
-            }
-            else
+            } else
             {
                 Settings::downloadMP3($strWord);
             }
-            
-          
-            header( 'Content-Description: File Transfer' );
+
+
+            header('Content-Description: File Transfer');
 //            header( 'Content-Type: audio/mpeg' );
 //            header( 'Content-Disposition: attachment; filename=' . basename( $strMusicFile ) );
-            header( 'Content-Transfer-Encoding: binary' );
-            header( 'Expires: 0' );
-            header( 'Cache-Control: must-revalidate, post-check=0, pre-check=0' );
-            header( 'Pragma: public' );
-            header( 'Content-Length: ' . filesize( $strMusicFile ) );
-            readfile( $strMusicFile );
+            header('Content-Transfer-Encoding: binary');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+            header('Pragma: public');
+            header('Content-Length: ' . filesize($strMusicFile));
+            readfile($strMusicFile);
             exit;
         }
-        
-        
     }
-    
+
     public function actiongetLeaderboard()
     {
         $limit = Yii::app()->request->getPost('limit');
         $division = Yii::app()->request->getPost('division');
 //        $user_id = Settings::getSessionId();
-        
-        /** Quick Fix free_id **/
+
+        /** Quick Fix free_id * */
         $user_id = Yii::app()->request->getPost('free_id');
-       /** Quick Fix free_id **/
-        
-        if(!$limit)
+        /** Quick Fix free_id * */
+        if (!$limit)
         {
             $limit = 30;
-        } 
-        if($user_id || $division)
+        }
+        if ($user_id || $division)
         {
             $user_division = "";
             $user_division_main = "";
-            if($user_id)
+            if ($user_id)
             {
                 $objUser = new Freeusers();
                 $user_data = $objUser->findByPk($user_id);
-                
-                if($user_data->division)
+
+                if ($user_data->division)
                 {
                     $user_division = $user_data->division;
                     $user_division_main = $user_data->division;
                 }
                 $country = $user_data->tds_country_id;
             }
-            
-            if($division)
+
+            if ($division)
             {
                 $user_division = $division;
                 $country = 14;
@@ -163,8 +159,7 @@ class FreeuserController extends Controller
             {
                 $current_score = $response['current_score'];
                 $current_time = $response['current_time'];
-            }
-            else
+            } else
             {
                 $user_score_data = $highscore->getUserScore($user_id);
                 if ($user_score_data)
@@ -173,31 +168,29 @@ class FreeuserController extends Controller
                     $current_time = $user_score_data->test_time;
                 }
             }
-            
-            if($user_division_main=="rajshashi")
+
+            if ($user_division_main == "rajshashi")
             {
                 $user_division_main = "rajshahi";
-            }  
-            if($user_division=="rajshashi")
+            }
+            if ($user_division == "rajshashi")
             {
                 $user_division = "rajshahi";
             }
-            
-            
-            $rresponse['data']['rank'] = $highscore->getUserRank($current_score, $current_time,$country, $user_division_main);
-            
-            
-            
-            
+
+
+            $rresponse['data']['rank'] = $highscore->getUserRank($current_score, $current_time, $country, $user_division_main);
+
+
+
+
             $arUserScores = $highscore->getLeaderBoard($limit, $user_division, $country);
-            $rresponse['data']['leaderboard'] = (array)$arUserScores;
+            $rresponse['data']['leaderboard'] = (array) $arUserScores;
             $rresponse['data']['division'] = $user_division_main;
             $rresponse['data']['best_score'] = $current_score;
             $rresponse['status']['code'] = 200;
             $rresponse['status']['msg'] = "Success";
-           
-        }
-        else
+        } else
         {
             $rresponse['status']['code'] = 400;
             $rresponse['status']['msg'] = "Bad Request";
@@ -205,38 +198,34 @@ class FreeuserController extends Controller
         echo CJSON::encode($rresponse);
         Yii::app()->end();
     }
-    
+
     public function actionsaveSpellingBee()
     {
-        
-        if(Yii::app()->request->getPost('left') && Yii::app()->request->getPost('right') && Yii::app()->request->getPost('method')
-                 && Yii::app()->request->getPost('operator') && Yii::app()->request->getPost('send_id') )
+
+        if (Yii::app()->request->getPost('left') && Yii::app()->request->getPost('right') && Yii::app()->request->getPost('method') && Yii::app()->request->getPost('operator') && Yii::app()->request->getPost('send_id'))
         {
-            if(Yii::app()->request->getPost('total_time'))
+            if (Yii::app()->request->getPost('total_time'))
             {
                 $total_time = Yii::app()->request->getPost('total_time');
-            }
-            else
+            } else
             {
                 $total_time = 0;
-            }  
-            if(Yii::app()->request->getPost('score'))
+            }
+            if (Yii::app()->request->getPost('score'))
             {
                 $score = Yii::app()->request->getPost('score');
-            }
-            else
+            } else
             {
                 $score = 0;
             }
-            if(Yii::app()->request->getPost('is_cheater'))
+            if (Yii::app()->request->getPost('is_cheater'))
             {
                 $cheat = 1;
-            }
-            else
+            } else
             {
                 $cheat = 0;
             }
-         
+
             $objParams = (object) null;
             $objParams->left = Yii::app()->request->getPost('left');
             $objParams->right = Yii::app()->request->getPost('right');
@@ -248,7 +237,7 @@ class FreeuserController extends Controller
             $objParams->score = $score;
             $objParams->isCheater = $cheat;
 
-            
+
             #$data = Yii::app()->user->free_id;
 //            $data = Settings::getSessionId();
 //            $valid_user = FALSE;
@@ -265,13 +254,12 @@ class FreeuserController extends Controller
             $arUserData = array();
             $arUserData['rank'] = "UnRanked";
             $arUserData['highestScore'] = 0;
-            
-            /** Quick Fix free_id **/
+
+            /** Quick Fix free_id * */
             $data = Yii::app()->request->getPost('free_id');
-            $data = (int)$data;
+            $data = (int) $data;
             $valid_user = TRUE;
-            /** Quick Fix free_id **/
-            
+            /** Quick Fix free_id * */
             if ($valid_user)
             {
                 $iUserId = $data;
@@ -300,8 +288,7 @@ class FreeuserController extends Controller
                             $prev_id = $response['prev_id'];
                             $play_total_time = $response['play_total_time'] = $response['play_total_time'] + $objParams->total_time;
                             Settings::setSpellingBeeCache($cache_name_userdata, $response);
-                        }
-                        else
+                        } else
                         {
                             $user_score_data = $highscore->getUserScore($iUserId);
                             if ($user_score_data)
@@ -312,14 +299,12 @@ class FreeuserController extends Controller
                                 $response['play_total_time'] = $play_total_time = $user_score_data->play_total_time + $objParams->total_time;
 
                                 Settings::setSpellingBeeCache($cache_name_userdata, $response);
-                            }
-                            else
+                            } else
                             {
                                 $play_total_time = $objParams->total_time;
-                            }    
+                            }
                         }
-                    }
-                    else
+                    } else
                     {
                         $response = array();
 
@@ -331,14 +316,13 @@ class FreeuserController extends Controller
                             $response['prev_id'] = $prev_id = $user_score_data->id;
                             $response['play_total_time'] = $play_total_time = $user_score_data->play_total_time + $objParams->total_time;
                             Settings::setSpellingBeeCache($cache_name_userdata, $response);
-                        }
-                        else
+                        } else
                         {
                             $play_total_time = $objParams->total_time;
                         }
                     }
 
-                    if  ( $play_total_time > $current_score && ( $objParams->score > $current_score || ($objParams->score == $current_score && $objParams->total_time < $current_time) ))
+                    if ($play_total_time > $current_score && ( $objParams->score > $current_score || ($objParams->score == $current_score && $objParams->total_time < $current_time) ))
                     {
 
                         $score_for_rank = $objParams->score;
@@ -358,7 +342,7 @@ class FreeuserController extends Controller
                         $highscore->division = strtolower($user_data->division);
                         $highscore->country = $user_data->tds_country_id;
                         $highscore->from_mobile = 1;
-                        
+
                         $highscore->save();
 
                         $response['current_score'] = $score_for_rank;
@@ -366,34 +350,30 @@ class FreeuserController extends Controller
                         $response['prev_id'] = $highscore->id;
                         $response['play_total_time'] = $play_total_time;
                         Settings::setSpellingBeeCache($cache_name_userdata, $response);
-                    }
-                    else
+                    } else
                     {
                         $score_for_rank = $current_score;
                         $time_for_rank = $current_time;
                     }
                     $arUserData['highestScore'] = $score_for_rank;
-                    $arUserData['rank'] = $highscore->getUserRank($score_for_rank, $time_for_rank,$user_data->tds_country_id, strtolower($user_data->division));
-                    
-                    
-                    
+                    $arUserData['rank'] = $highscore->getUserRank($score_for_rank, $time_for_rank, $user_data->tds_country_id, strtolower($user_data->division));
+
+
+
                     $rresponse['data'] = $arUserData;
                     $rresponse['status']['code'] = 200;
                     $rresponse['status']['msg'] = "Success";
-                }
-                else
+                } else
                 {
                     $rresponse['status']['code'] = 400;
                     $rresponse['status']['msg'] = "Bad Request";
-                }    
-            }
-            else
+                }
+            } else
             {
                 $rresponse['status']['code'] = 400;
                 $rresponse['status']['msg'] = "Bad Request";
-            }    
-        }
-        else
+            }
+        } else
         {
             $rresponse['status']['code'] = 400;
             $rresponse['status']['msg'] = "Bad Request";
@@ -401,7 +381,7 @@ class FreeuserController extends Controller
         echo CJSON::encode($rresponse);
         Yii::app()->end();
     }
-    
+
     public function actionDownloadLessonplan()
     {
 
@@ -420,7 +400,7 @@ class FreeuserController extends Controller
                 $attachment_extra = $attachment_date_chunk[0] . $attachment_date_chunk[1] . $attachment_date_chunk[2];
                 $attachment_extra.= $attachment_time_chunk[0] . $attachment_date_chunk[1] . $attachment_time_chunk[2];
 
-                $url = Settings::$paid_image_path ."uploads/lessonplans/attachments/" . $id . "/original/" . str_replace(" ", "+", $lessonplantobj->attachment_file_name) . "?" . $attachment_extra;
+                $url = Settings::$paid_image_path . "uploads/lessonplans/attachments/" . $id . "/original/" . str_replace(" ", "+", $lessonplantobj->attachment_file_name) . "?" . $attachment_extra;
 
                 header("Content-Disposition: attachment; filename=" . $lessonplantobj->attachment_file_name);
                 header("Content-Type: {$lessonplantobj->attachment_content_type}");
@@ -447,8 +427,8 @@ class FreeuserController extends Controller
 
                 $attachment_extra = $attachment_date_chunk[0] . $attachment_date_chunk[1] . $attachment_date_chunk[2];
                 $attachment_extra.= $attachment_time_chunk[0] . $attachment_date_chunk[1] . $attachment_time_chunk[2];
-                
-                $url = Settings::$paid_image_path ."uploads/assignments/attachments/" . $id . "/original/" . urlencode($assignmentobj->attachment_file_name) . "?" . $attachment_extra;              
+
+                $url = Settings::$paid_image_path . "uploads/assignments/attachments/" . $id . "/original/" . urlencode($assignmentobj->attachment_file_name) . "?" . $attachment_extra;
 
                 header("Content-Disposition: attachment; filename=" . $assignmentobj->attachment_file_name);
                 header("Content-Type: {$assignmentobj->attachment_content_type}");
@@ -466,8 +446,7 @@ class FreeuserController extends Controller
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
-        }
-        else
+        } else
         {
             $schooluser = new SchoolUser();
             $user_schools = $schooluser->userSchool($user_id);
@@ -482,8 +461,7 @@ class FreeuserController extends Controller
 
                     $response['status']['code'] = 404;
                     $response['status']['msg'] = "ALREADY_SHARE";
-                }
-                else
+                } else
                 {
                     $objpostmain = new Post();
 
@@ -495,8 +473,7 @@ class FreeuserController extends Controller
                         {
                             $response['status']['code'] = 400;
                             $response['status']['msg'] = "Bad Request";
-                        }
-                        else
+                        } else
                         {
                             $objpost->post_id = $id;
                             $objpost->school_id = $school_id;
@@ -506,15 +483,13 @@ class FreeuserController extends Controller
                             $response['status']['code'] = 200;
                             $response['status']['msg'] = "Successfully Saved";
                         }
-                    }
-                    else
+                    } else
                     {
                         $response['status']['code'] = 400;
                         $response['status']['msg'] = "Bad Request";
                     }
                 }
-            }
-            else
+            } else
             {
                 $response['status']['code'] = 400;
                 $response['status']['msg'] = "Bad Request";
@@ -527,13 +502,12 @@ class FreeuserController extends Controller
     public function actionRelatednews()
     {
         $id = Yii::app()->request->getPost('id');
-        
+
         if (!$id)
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
-        }
-        else
+        } else
         {
 
             $objrelated = new RelatedNews();
@@ -545,7 +519,7 @@ class FreeuserController extends Controller
                 $post_data[$i] = $this->getSingleNewsFromCache($value['id']);
                 $i++;
             }
-            
+
             $response['data']['post'] = $post_data;
             $response['status']['code'] = 200;
             $response['status']['msg'] = "success";
@@ -562,8 +536,7 @@ class FreeuserController extends Controller
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
-        }
-        else
+        } else
         {
             $folders = Settings::$ar_default_folder;
             $fobj = new UserFolder();
@@ -574,8 +547,7 @@ class FreeuserController extends Controller
                 $goodread->deleteAll("folder_id=:folder_id", array(':folder_id' => $return));
                 $response['status']['code'] = 200;
                 $response['status']['msg'] = "success";
-            }
-            else
+            } else
             {
                 $response['status']['code'] = 404;
                 $response['status']['msg'] = "Cant delete this folder";
@@ -596,8 +568,7 @@ class FreeuserController extends Controller
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
-        }
-        else
+        } else
         {
 
             $objcmark = new Cmark();
@@ -605,7 +576,7 @@ class FreeuserController extends Controller
             {
                 $limit = 100;
             }
-            
+
             if ($type == 2)
             {
                 $objassessment = $objcmark->getTopMark($id, $limit, 0, $type);
@@ -613,11 +584,11 @@ class FreeuserController extends Controller
 
                 $assessment_school_mark = new AssesmentSchoolMark();
                 $response['data']['school_score_board'] = $assessment_school_mark->getSchoolTopMark($id, 100);
-                
-            } else {
-                
+            } else
+            {
+
                 $objassessment = $objcmark->getTopMark($id, $limit);
-                $response['data']['assesment'] = $objassessment;                
+                $response['data']['assesment'] = $objassessment;
             }
 
             $response['status']['code'] = 200;
@@ -635,8 +606,7 @@ class FreeuserController extends Controller
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
-        }
-        else
+        } else
         {
 
             $objcmark = new Cmark();
@@ -656,8 +626,7 @@ class FreeuserController extends Controller
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
-        }
-        else
+        } else
         {
 
             $assesmentObj = new Cassignments();
@@ -682,8 +651,7 @@ class FreeuserController extends Controller
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
-        }
-        else
+        } else
         {
 
             $assesmentObj = new Cassignments();
@@ -715,23 +683,20 @@ class FreeuserController extends Controller
                         {
                             $marksobj->delete();
                             $add = true;
-                        }
-                        else if ($objassessment->mark == $mark &&
+                        } else if ($objassessment->mark == $mark &&
                                 ($objassessment->time_taken > $time_taken ||
                                 ($objassessment->time_taken == $time_taken && $objassessment->avg_time_per_ques > $avg_time))
                         )
                         {
                             $marksobj->delete();
                             $add = true;
-                        }
-                        else
+                        } else
                         {
                             $marksobj->created_date = date("Y-m-d H:i:s");
                             $marksobj->no_played = $marksobj->no_played + 1;
                             $marksobj->save();
                         }
-                    }
-                    else
+                    } else
                     {
                         $add = true;
                         $new = true;
@@ -752,8 +717,7 @@ class FreeuserController extends Controller
                         if ($new)
                         {
                             $objcmark->no_played = 1;
-                        }
-                        else
+                        } else
                         {
                             $objcmark->no_played = $marksobj->no_played + 1;
                         }
@@ -763,15 +727,13 @@ class FreeuserController extends Controller
                     $response['data']['last_played'] = date("Y-m-d H:i:s");
                     $response['status']['code'] = 200;
                     $response['status']['msg'] = "success";
-                }
-                else
+                } else
                 {
                     $response['data']['last_played'] = $last_played;
                     $response['status']['code'] = 404;
                     $response['status']['msg'] = "Can-play-now";
                 }
-            }
-            else
+            } else
             {
                 $response['status']['code'] = 400;
                 $response['status']['msg'] = "Bad Request";
@@ -794,15 +756,13 @@ class FreeuserController extends Controller
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
-        }
-        else
+        } else
         {
 
             if ($webview == 1)
             {
                 $webview = TRUE;
-            }
-            else
+            } else
             {
                 $webview = FALSE;
             }
@@ -815,8 +775,7 @@ class FreeuserController extends Controller
                 if ($webview)
                 {
                     $limit = 10;
-                }
-                else
+                } else
                 {
                     $limit = 3;
                 }
@@ -859,19 +818,19 @@ class FreeuserController extends Controller
             $response['data']['current_date'] = date("Y-m-d H:i:s");
             $response['data']['last_played'] = $last_played;
             $response['data']['can_play'] = $can_play;
-            
+
             if ($type == 2)
             {
                 $response['data']['score_board'] = $cmark->getTopMark($assesment_id, $limit, 0, $type);
 
                 $assessment_school_mark = new AssesmentSchoolMark();
                 $response['data']['school_score_board'] = $assessment_school_mark->getSchoolTopMark($assesment_id, 100);
-                
-            } else {
-                
+            } else
+            {
+
                 $response['data']['score_board'] = $cmark->getTopMark($assesment_id, $limit);
             }
-            
+
             $response['data']['higistmark'] = $cmark->assessmentHighistMark($assesment_id);
             $response['data']['assesment'] = $assesmentObj->getAssessment($assesment_id, $webview, $type, $level);
             $response['data']['assesment']['levels'] = $assesmentObj->getAssessmentLevels($assesment_id);
@@ -893,8 +852,7 @@ class FreeuserController extends Controller
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
-        }
-        else
+        } else
         {
             $objwow = new Wow();
             if (Settings::$wow_login == false || !$objwow->wowexists($post_id, $user_id))
@@ -924,8 +882,7 @@ class FreeuserController extends Controller
                 $response['data']['wow_count'] = $postobj->wow_count;
                 $response['status']['code'] = 200;
                 $response['status']['msg'] = "success";
-            }
-            else
+            } else
             {
                 $postModel = new Post();
                 $postobj = $postModel->findByPk($post_id);
@@ -946,8 +903,7 @@ class FreeuserController extends Controller
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
-        }
-        else
+        } else
         {
             $schooluser = new SchoolUser();
             $userschool = $schooluser->userSchoolSingle($user_id, $school_id);
@@ -978,8 +934,7 @@ class FreeuserController extends Controller
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
-        }
-        else
+        } else
         {
 
             $is_approved = 0;
@@ -1003,8 +958,7 @@ class FreeuserController extends Controller
             if (isset($school_join[$school_id]))
             {
                 //do nothing
-            }
-            else
+            } else
             {
                 $schooluser->user_id = $user_id;
                 $schooluser->school_id = $school_id;
@@ -1081,8 +1035,7 @@ class FreeuserController extends Controller
             $response['data']['id'] = $gcm_id;
             $response['status']['code'] = 200;
             $response['status']['msg'] = "SUCCESFULLY_SAVED";
-        }
-        else
+        } else
         {
             $response['data']['id'] = 0;
             $response['status']['code'] = 400;
@@ -1104,8 +1057,7 @@ class FreeuserController extends Controller
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
-        }
-        else
+        } else
         {
             $userCretedSchool = new UserCreatedSchool();
             $userCretedSchool->freeuser_id = $user_id;
@@ -1161,8 +1113,7 @@ class FreeuserController extends Controller
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
-        }
-        else
+        } else
         {
             $user_school = new SchoolUser();
             $userschool = $user_school->userSchoolSingle($user_id, $school_id);
@@ -1270,8 +1221,7 @@ class FreeuserController extends Controller
                         $objposttype->type_id = $value;
                         $objposttype->save();
                     }
-                }
-                else
+                } else
                 {
                     for ($i = 1; $i <= 4; $i++)
                     {
@@ -1284,8 +1234,7 @@ class FreeuserController extends Controller
 
                 $response['status']['code'] = 200;
                 $response['status']['msg'] = "Successfully Saved";
-            }
-            else
+            } else
             {
                 $response['status']['code'] = 400;
                 $response['status']['msg'] = "Bad Request";
@@ -1307,8 +1256,7 @@ class FreeuserController extends Controller
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
-        }
-        else
+        } else
         {
             $postobj = new Post();
             $postobj->headline = $headline;
@@ -1420,8 +1368,7 @@ class FreeuserController extends Controller
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
-        }
-        else
+        } else
         {
 
             $schoolActivity = new SchoolActivities();
@@ -1455,8 +1402,7 @@ class FreeuserController extends Controller
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
-        }
-        else
+        } else
         {
             $school_page = new SchoolPage();
 
@@ -1487,8 +1433,7 @@ class FreeuserController extends Controller
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
-        }
-        else
+        } else
         {
             $schoolobj = new School();
             $response['data']['schools'] = $schoolobj->getSchoolInfo($school_id, $user_id);
@@ -1533,8 +1478,7 @@ class FreeuserController extends Controller
         if ($user_id && $userschool)
         {
             $response['data']['total'] = $schoolobj->getSchoolTotal($user_id, $userschool);
-        }
-        else
+        } else
         {
             $response['data']['total'] = $schoolobj->getSchoolTotal();
         }
@@ -1565,8 +1509,7 @@ class FreeuserController extends Controller
             $response['data']['schools'] = array();
             $response['status']['code'] = 200;
             $response['status']['msg'] = "NOT_FOUND";
-        }
-        else
+        } else
         {
             $schoolobj = new School();
 
@@ -1606,8 +1549,7 @@ class FreeuserController extends Controller
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
-        }
-        else
+        } else
         {
             $obj_good_read = new UserGoodRead();
             $obj_good_read->removeGoodRead($post_id, $user_id, $folder_name, $folder_id);
@@ -1626,8 +1568,7 @@ class FreeuserController extends Controller
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
-        }
-        else
+        } else
         {
             $response['data']['folder'] = $folderObj->getAllFolder($user_id);
             $response['status']['code'] = 200;
@@ -1645,8 +1586,7 @@ class FreeuserController extends Controller
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
-        }
-        else
+        } else
         {
             $response['data']['post'] = $folderObj->getPost($user_id);
             $response['status']['code'] = 200;
@@ -1703,8 +1643,7 @@ class FreeuserController extends Controller
                 $folderObj->user_id = $user_id;
                 $folderObj->save();
                 $folder_id = $folderObj->id;
-            }
-            else
+            } else
             {
                 $folder_id = $folder->id;
             }
@@ -1725,8 +1664,7 @@ class FreeuserController extends Controller
             $response['data']['folder_id'] = $folder_id;
             $response['status']['code'] = 200;
             $response['status']['msg'] = "DATA_FOUND";
-        }
-        else if ($folder_id)
+        } else if ($folder_id)
         {
             $response['data']['folder_id'] = $folder_id;
             $response['status']['code'] = 200;
@@ -1747,8 +1685,7 @@ class FreeuserController extends Controller
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
-        }
-        else
+        } else
         {
             $folderObj = new UserFolder();
             $goodreadObj = new UserGoodRead();
@@ -1761,8 +1698,7 @@ class FreeuserController extends Controller
                 $folderObj->save();
 
                 $folder_id = $folderObj->id;
-            }
-            else
+            } else
             {
                 $folder_id = $folder->id;
             }
@@ -1801,8 +1737,7 @@ class FreeuserController extends Controller
         if (!$user_id)
         {
             $user_type = 1;
-        }
-        else
+        } else
         {
             $freeuserObj = new Freeusers();
             $user_info = $freeuserObj->getUserInfo($user_id);
@@ -1826,8 +1761,7 @@ class FreeuserController extends Controller
             $response['data']['post'] = $post;
             $response['status']['code'] = 200;
             $response['status']['msg'] = "DATA_FOUND";
-        }
-        else
+        } else
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
@@ -1855,8 +1789,7 @@ class FreeuserController extends Controller
         if (!$user_id)
         {
             $user_type = 1;
-        }
-        else
+        } else
         {
             $freeuserObj = new Freeusers();
             $user_info = $freeuserObj->getUserInfo($user_id);
@@ -1879,8 +1812,7 @@ class FreeuserController extends Controller
             $response['data']['post'] = $post;
             $response['status']['code'] = 200;
             $response['status']['msg'] = "DATA_FOUND";
-        }
-        else
+        } else
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
@@ -1907,8 +1839,7 @@ class FreeuserController extends Controller
         if (!$user_id)
         {
             $user_type = 1;
-        }
-        else
+        } else
         {
             $freeuserObj = new Freeusers();
             $user_info = $freeuserObj->getUserInfo($user_id);
@@ -1931,8 +1862,7 @@ class FreeuserController extends Controller
             $response['data']['post'] = $post;
             $response['status']['code'] = 200;
             $response['status']['msg'] = "DATA_FOUND";
-        }
-        else
+        } else
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
@@ -1951,8 +1881,7 @@ class FreeuserController extends Controller
             $response['data']['post'] = $postObj->getSearchPost($term);
             $response['status']['code'] = 200;
             $response['status']['msg'] = "DATA_FOUND";
-        }
-        else
+        } else
         {
             $response['data']['post'] = array();
 
@@ -1987,8 +1916,7 @@ class FreeuserController extends Controller
             $postModel = new Post();
             Yii::app()->cache->delete($cache_name);
             $singlepost = $postModel->getSinglePost($id);
-        }
-        else if ($cache_data !== false && $delete_cache == "no" && $user_view_count && $view_count)
+        } else if ($cache_data !== false && $delete_cache == "no" && $user_view_count && $view_count)
         {
             $postModel = new Post();
             $postobj = $postModel->findByPk($id);
@@ -1996,14 +1924,12 @@ class FreeuserController extends Controller
             $cache_data['view_count'] = $postobj->view_count;
             $cache_data['user_view_count'] = $postobj->user_view_count;
             $singlepost = $cache_data;
-        }
-        else if ($cache_data !== false)
+        } else if ($cache_data !== false)
         {
             $postModel = new Post();
             Yii::app()->cache->delete($cache_name);
             $singlepost = $postModel->getSinglePost($id);
-        }
-        else
+        } else
         {
             $postModel = new Post();
             $singlepost = $postModel->getSinglePost($id);
@@ -2020,13 +1946,12 @@ class FreeuserController extends Controller
             $postModel = new Post();
             $singlepost = $postModel->getSinglePost($id);
             Yii::app()->cache->set($cache_name, $singlepost, 5184000);
-        }
-        else
+        } else
         {
             $datestring = Settings::get_post_time($singlepost['published_date']);
             $singlepost['current_date'] = date("Y-m-d H:i:s");
             $singlepost['published_date_string'] = $datestring;
-        }    
+        }
         return $singlepost;
     }
 
@@ -2058,8 +1983,7 @@ class FreeuserController extends Controller
                     {
                         $comments_total = $coments_obj_for_all->getCommentsTotal($post_id, true);
                         $comments_data = $coments_obj_for_all->getCommentsPost($post_id, $page_number, $page_size, true);
-                    }
-                    else
+                    } else
                     {
                         $comments_total = $coments_obj_for_all->getCommentsTotal($post_id);
                         $comments_data = $coments_obj_for_all->getCommentsPost($post_id, $page_number, $page_size);
@@ -2079,8 +2003,7 @@ class FreeuserController extends Controller
                 $response['data']['comments'] = $comments_data;
                 $response['status']['code'] = 200;
                 $response['status']['msg'] = "Success";
-            }
-            else
+            } else
             {
                 $response['data']['total'] = 0;
                 $response['data']['has_next'] = false;
@@ -2088,8 +2011,7 @@ class FreeuserController extends Controller
                 $response['status']['code'] = 200;
                 $response['status']['msg'] = "Success";
             }
-        }
-        else
+        } else
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "BAD_REQUEST";
@@ -2122,8 +2044,7 @@ class FreeuserController extends Controller
                     if (($user_id && $user_id = $post_value['user_id']))
                     {
                         $comments_data = $coments_obj_for_all->getCommentsTotal($post_id, true);
-                    }
-                    else
+                    } else
                     {
                         $comments_data = $coments_obj_for_all->getCommentsTotal($post_id);
                     }
@@ -2131,14 +2052,12 @@ class FreeuserController extends Controller
                 $response['data']['total'] = $comments_data;
                 $response['status']['code'] = 200;
                 $response['status']['msg'] = "Success";
-            }
-            else
+            } else
             {
                 $response['status']['code'] = 400;
                 $response['status']['msg'] = "BAD_REQUEST";
             }
-        }
-        else
+        } else
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "BAD_REQUEST";
@@ -2171,8 +2090,7 @@ class FreeuserController extends Controller
                 $cache_data['view_count'] = $postobj->view_count;
                 $cache_data['user_view_count'] = $postobj->user_view_count;
                 $singlepost = $cache_data;
-            }
-            else
+            } else
             {
                 $singlepost = $postModel->getSinglePost($id);
             }
@@ -2190,8 +2108,7 @@ class FreeuserController extends Controller
                     if (($user_id && $user_id = $singlepost['user_id']))
                     {
                         $comments_data = $coments_obj->getCommentsTotal($id, true);
-                    }
-                    else
+                    } else
                     {
                         $comments_data = $coments_obj->getCommentsTotal($id);
                     }
@@ -2212,8 +2129,7 @@ class FreeuserController extends Controller
             if (!$user_id)
             {
                 $user_type = 1;
-            }
-            else
+            } else
             {
                 $freeuserObj = new Freeusers();
                 $user_info = $freeuserObj->getUserInfo($user_id);
@@ -2269,8 +2185,7 @@ class FreeuserController extends Controller
                 {
                     $next_id = $postcategoryObj->nextpreviousid($category_id, $user_type, $next_id, $singlepost['published_date'], $singlepost['inner_priority'], "next", $id);
                 }
-            }
-            else
+            } else
             {
                 $next_id = $postcategoryObj->nextpreviousid($category_id, $user_type, $main_id, $singlepost['published_date'], $singlepost['inner_priority']);
 
@@ -2307,8 +2222,7 @@ class FreeuserController extends Controller
             if ($main_id)
             {
                 $response['data']['language'] = $postModel->getLanguage($main_id);
-            }
-            else
+            } else
             {
                 $response['data']['language'] = $postModel->getLanguage($id);
             }
@@ -2316,8 +2230,7 @@ class FreeuserController extends Controller
             if ($main_id)
             {
                 $response['data']['main_id'] = $main_id;
-            }
-            else
+            } else
             {
                 $response['data']['main_id'] = $id;
             }
@@ -2329,8 +2242,7 @@ class FreeuserController extends Controller
             //$response['data']['comments_total']  = $comments_data;
             $response['status']['code'] = 200;
             $response['status']['msg'] = "DATA_FOUND";
-        }
-        else
+        } else
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "BAD_REQUEST";
@@ -2350,8 +2262,7 @@ class FreeuserController extends Controller
         {
             $new_cache[] = $cache_name;
             Yii::app()->cache->set($cache_all, $new_cache);
-        }
-        else if (!in_array($cache_name, $cache_values))
+        } else if (!in_array($cache_name, $cache_values))
         {
             array_push($cache_values, $cache_name);
             Yii::app()->cache->set($cache_all, $cache_values);
@@ -2368,7 +2279,7 @@ class FreeuserController extends Controller
     public function actionIndex()
     {
         $website_only = 0;
-        
+
         $page_number = Yii::app()->request->getPost('page_number');
         $total_showed = Yii::app()->request->getPost('total_showed');
         $page_size = Yii::app()->request->getPost('page_size');
@@ -2383,9 +2294,9 @@ class FreeuserController extends Controller
         $already_showed = Yii::app()->request->getPost('already_showed');
         $from_main_site = Yii::app()->request->getPost('from_main_site');
         $callded_for_cache = Yii::app()->request->getPost('callded_for_cache');
-        
+
         $lang = array_search(Yii::app()->request->getPost('lang'), Settings::$_ar_language);
-        
+
         $content_showed_for_caching = "top";
         if ($already_showed)
             $content_showed_for_caching = md5(str_replace(",", "-", $already_showed));
@@ -2395,8 +2306,7 @@ class FreeuserController extends Controller
         if (!$user_id)
         {
             $user_type = 1;
-        }
-        else
+        } else
         {
             $freeuserObj = new Freeusers();
             $user_info = $freeuserObj->getUserInfo($user_id);
@@ -2447,11 +2357,12 @@ class FreeuserController extends Controller
 
 
         $cache_name = "YII-RESPONSE-HOME-" . $total_showed . "-" . $page_size . "-" . $content_showed_for_caching . "-" . $category_filter . "-" . $user_type;
-        
-        if(!empty($lang)) {
-            $cache_name .= '-'.$lang;
+
+        if (!empty($lang))
+        {
+            $cache_name .= '-' . $lang;
         }
-        
+
         $this->createAllCache($cache_name);
         $response = Yii::app()->cache->get($cache_name);
 
@@ -2463,15 +2374,10 @@ class FreeuserController extends Controller
 
             if ($already_showed)
             {
-                $homepage_post = $homepageObj->getHomePagePost($website_only, $user_type, $page_number,
-                        $page_size, false, $already_showed, $from_main_site, $category_not_to_show,
-                        $lang);
-            }
-            else
+                $homepage_post = $homepageObj->getHomePagePost($website_only, $user_type, $page_number, $page_size, false, $already_showed, $from_main_site, $category_not_to_show, $lang);
+            } else
             {
-                $homepage_post = $homepageObj->getHomePagePost($website_only, $user_type, $page_number,
-                        $page_size, false, false, $from_main_site, $category_not_to_show,
-                        $lang);
+                $homepage_post = $homepageObj->getHomePagePost($website_only, $user_type, $page_number, $page_size, false, false, $from_main_site, $category_not_to_show, $lang);
             }
 
             $response['data']['total'] = $homepageObj->getPostTotal($user_type, false, $category_not_to_show, $lang);
@@ -2498,8 +2404,9 @@ class FreeuserController extends Controller
             $all_pinpost = $pinpostobj->getPinPost(0, $website_only);
             $new_post = array();
             $i = 0;
-            
-            if(!empty($response['data']['post'])) {
+
+            if (!empty($response['data']['post']))
+            {
                 foreach ($response['data']['post'] as $value)
                 {
                     for ($k = $i; $k < 10; $k++)
@@ -2511,8 +2418,7 @@ class FreeuserController extends Controller
                             {
                                 $i = $k;
                             }
-                        }
-                        else
+                        } else
                         {
                             break;
                         }
@@ -2523,12 +2429,14 @@ class FreeuserController extends Controller
                     }
                     $i++;
                 }
-            } else {
-                foreach ($all_pinpost as $value) {
+            } else
+            {
+                foreach ($all_pinpost as $value)
+                {
                     $new_post[]['id'] = $value;
                 }
             }
-            
+
             $response['data']['post'] = $new_post;
         }
 
@@ -2569,8 +2477,7 @@ class FreeuserController extends Controller
         if (!$id || !$user_id)
         {
             echo 0;
-        }
-        else
+        } else
         {
             $schooluser = new SchoolUser();
             $user_schools = $schooluser->userSchool($user_id);
@@ -2584,8 +2491,7 @@ class FreeuserController extends Controller
                 {
 
                     echo 0;
-                }
-                else
+                } else
                 {
                     $objpostmain = new Post();
 
@@ -2596,19 +2502,16 @@ class FreeuserController extends Controller
                         if ($postData->school_id)
                         {
                             echo 0;
-                        }
-                        else
+                        } else
                         {
                             echo 1;
                         }
-                    }
-                    else
+                    } else
                     {
                         echo 0;
                     }
                 }
-            }
-            else
+            } else
             {
                 echo 0;
             }
@@ -2620,8 +2523,7 @@ class FreeuserController extends Controller
         if (!$id || !$user_id)
         {
             return 0;
-        }
-        else
+        } else
         {
             $schooluser = new SchoolUser();
             $user_schools = $schooluser->userSchool($user_id);
@@ -2635,8 +2537,7 @@ class FreeuserController extends Controller
                 {
 
                     return 0;
-                }
-                else
+                } else
                 {
                     $objpostmain = new Post();
 
@@ -2647,19 +2548,16 @@ class FreeuserController extends Controller
                         if ($postData->school_id)
                         {
                             return 0;
-                        }
-                        else
+                        } else
                         {
                             return 1;
                         }
-                    }
-                    else
+                    } else
                     {
                         return 0;
                     }
                 }
-            }
-            else
+            } else
             {
                 return 0;
             }
@@ -2690,8 +2588,7 @@ class FreeuserController extends Controller
             if (!$user_id)
             {
                 $user_type = 1;
-            }
-            else
+            } else
             {
                 $freeuserObj = new Freeusers();
                 $user_info = $freeuserObj->getUserInfo($user_id);
@@ -2767,8 +2664,7 @@ class FreeuserController extends Controller
                 }
                 $response['data']['post'] = $post_data;
             }
-        }
-        else
+        } else
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
@@ -2793,10 +2689,10 @@ class FreeuserController extends Controller
         $last_api_call = Yii::app()->request->getPost('last_api_call');
 
         $check_news_update = Yii::app()->request->getPost('check_news_update');
-        
+
         $already_showed = Yii::app()->request->getPost('already_showed');
         $lang = array_search(Yii::app()->request->getPost('lang'), Settings::$_ar_language);
-        
+
         $news_category = $category_id;
         if ($subcategory_id)
         {
@@ -2815,8 +2711,7 @@ class FreeuserController extends Controller
         if ($fetaured == 1)
         {
             $extra.= "-featured";
-        }
-        else if ($fetaured == 2)
+        } else if ($fetaured == 2)
         {
             $extra.= "-notfeatured";
         }
@@ -2833,8 +2728,7 @@ class FreeuserController extends Controller
         if (!$user_id)
         {
             $user_type = 1;
-        }
-        else
+        } else
         {
             $freeuserObj = new Freeusers();
             $user_info = $freeuserObj->getUserInfo($user_id);
@@ -2865,11 +2759,12 @@ class FreeuserController extends Controller
         }
 
         $cache_name = "YII-RESPONSE-CATEGORY-" . $news_category . "-" . $total_showed . "-" . $page_size . "-" . $user_type . $extra;
-        
-        if(!empty($lang)) {
-            $cache_name .= '-'.$lang;
+
+        if (!empty($lang))
+        {
+            $cache_name .= '-' . $lang;
         }
-        
+
         $this->createAllCache($cache_name);
         $response = Yii::app()->cache->get($cache_name);
         if ($response === false)
@@ -2878,21 +2773,17 @@ class FreeuserController extends Controller
             $postcategoryObj = new PostCategory();
             if ($already_showed)
             {
-                $post = $postcategoryObj->getPost($news_category, $user_type, $total_showed,
-                        $page_size, $popular_sort, $game_type, $fetaured, $already_showed, $lang);
-            }
-            else
+                $post = $postcategoryObj->getPost($news_category, $user_type, $total_showed, $page_size, $popular_sort, $game_type, $fetaured, $already_showed, $lang);
+            } else
             {
-                $post = $postcategoryObj->getPost($news_category, $user_type, $total_showed,
-                        $page_size, $popular_sort, $game_type, $fetaured, false, $lang);
+                $post = $postcategoryObj->getPost($news_category, $user_type, $total_showed, $page_size, $popular_sort, $game_type, $fetaured, false, $lang);
             }
-            
-            
+
+
             if ($already_showed)
             {
                 $response['data']['total'] = $postcategoryObj->getPostTotal($news_category, $user_type, $already_showed, $lang);
-            }
-            else
+            } else
             {
                 $response['data']['total'] = $postcategoryObj->getPostTotal($news_category, $user_type, FALSE, $lang);
             }
@@ -2921,8 +2812,9 @@ class FreeuserController extends Controller
         {
             $new_post = array();
             $i = 0;
-            
-            if(!empty($response['data']['post'])) {
+
+            if (!empty($response['data']['post']))
+            {
                 foreach ($response['data']['post'] as $value)
                 {
                     for ($k = $i; $k < 10; $k++)
@@ -2934,8 +2826,7 @@ class FreeuserController extends Controller
                             {
                                 $i = $k;
                             }
-                        }
-                        else
+                        } else
                         {
                             break;
                         }
@@ -2948,15 +2839,16 @@ class FreeuserController extends Controller
                     }
                     $i++;
                 }
-            } else {
-                foreach ($all_pinpost as $value) {
+            } else
+            {
+                foreach ($all_pinpost as $value)
+                {
                     $new_post[]['id'] = $value;
                 }
             }
-            
+
             $response['data']['post'] = $new_post;
-        }
-        else
+        } else
         {
             $new_post = array();
             $i = 0;
@@ -3040,28 +2932,25 @@ class FreeuserController extends Controller
             {
                 $freeuserObj = new Freeusers();
                 if ($freeuserObj->getUserInfo($user_id))
-                { 
+                {
                     $countryObj = new Countries();
                     $response['data'] = $freeuserObj->getPaidUserInfo();
                     $response['data']['countries'] = $countryObj->getCountryies();
                     $response['data']['user'] = $freeuserObj->getUserInfo($user_id);
-                    
+
                     $response['status']['code'] = 200;
                     $response['status']['msg'] = "DATA_FOUND";
-                }
-                else
+                } else
                 {
                     $response['status']['code'] = 400;
                     $response['status']['msg'] = "Bad Request";
                 }
-            }
-            else
+            } else
             {
                 $response['status']['code'] = 400;
                 $response['status']['msg'] = "Bad Request";
             }
-        }
-        else
+        } else
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
@@ -3087,36 +2976,34 @@ class FreeuserController extends Controller
             $freeuserObj = new Freeusers();
             if ($fb_profile_id)
             {
-                
+
                 if ($user = $freeuserObj->getFreeuserFb($fb_profile_id))
                 {
                     $folderObj = new UserFolder();
 
                     $folderObj->createGoodReadFolder($user->id);
-                    
-                    Yii::app()->user->setState("free_id",$user->id);
+
+                    Yii::app()->user->setState("free_id", $user->id);
 
                     $response['data'] = $freeuserObj->getPaidUserInfo($freeuserObj);
-                    
-                   
+
+
                     $response['data']['can_play_spellingbee'] = Settings::can_play_spelling_bee($user);
-                    
-                    
+
+
                     $response['data']['free_id'] = $user->id;
                     $response['data']['user'] = $freeuserObj->getUserInfo($user->id);
                     $response['status']['code'] = 200;
                     $response['data']['is_register'] = true;
                     $response['data']['is_login'] = true;
                     $response['status']['msg'] = "Successfully Saved";
-                }
-                else if (!Yii::app()->request->getPost('user_type'))
+                } else if (!Yii::app()->request->getPost('user_type'))
                 {
                     $response['status']['code'] = 200;
                     $response['data']['is_register'] = false;
                     $response['data']['is_login'] = false;
                     $response['status']['msg'] = "Successfully Saved";
-                }
-                else
+                } else
                 {
                     $freeuserObj->fb_profile_id = $fb_profile_id;
                     $freeuserObj->first_name = $first_name;
@@ -3138,10 +3025,10 @@ class FreeuserController extends Controller
                     $freeuserObj->teaching_for = Yii::app()->request->getPost('teaching_for');
                     $freeuserObj->occupation = Yii::app()->request->getPost('occupation');
                     $freeuserObj->profile_image = Yii::app()->request->getPost('profile_image');
-                    
+
                     if (Yii::app()->request->getPost('is_joined_spellbee'))
                         $freeuserObj->is_joined_spellbee = Yii::app()->request->getPost('is_joined_spellbee');
-                    
+
                     $freeuserObj->save();
 
                     $folderObj = new UserFolder();
@@ -3149,17 +3036,17 @@ class FreeuserController extends Controller
                     $folderObj->createGoodReadFolder($freeuserObj->id);
 
                     $this->sendRegistrationMail($freeuserObj);
-                    
-                    Yii::app()->user->setState("free_id",$freeuserObj->id);
+
+                    Yii::app()->user->setState("free_id", $freeuserObj->id);
 
                     $response['data'] = $freeuserObj->getPaidUserInfo($freeuserObj);
-                    
-                    
-                    
+
+
+
                     $response['data']['can_play_spellingbee'] = Settings::can_play_spelling_bee($freeuserObj);
-                   
-                    
-                    
+
+
+
                     $response['data']['free_id'] = $freeuserObj->id;
                     $response['data']['user'] = $freeuserObj->getUserInfo($freeuserObj->id);
                     $response['data']['countries'] = $countryObj->getCountryies();
@@ -3171,35 +3058,33 @@ class FreeuserController extends Controller
             }
             else if ($gl_profile_id)
             {
-                
+
                 if ($user = $freeuserObj->getFreeuserGmail($gl_profile_id))
                 {
                     $folderObj = new UserFolder();
-                    Yii::app()->user->setState("free_id",$user->id);
+                    Yii::app()->user->setState("free_id", $user->id);
 
                     $folderObj->createGoodReadFolder($user->id);
                     $response['data'] = $freeuserObj->getPaidUserInfo($freeuserObj);
-                    
+
                     $response['data']['can_play_spellingbee'] = Settings::can_play_spelling_bee($user);
-                        
-                   
-                    
-                    
+
+
+
+
                     $response['data']['free_id'] = $user->id;
                     $response['data']['user'] = $freeuserObj->getUserInfo($user->id);
                     $response['status']['code'] = 200;
                     $response['data']['is_register'] = true;
                     $response['data']['is_login'] = true;
                     $response['status']['msg'] = "Successfully Saved";
-                }
-                else if (!Yii::app()->request->getPost('user_type'))
+                } else if (!Yii::app()->request->getPost('user_type'))
                 {
                     $response['status']['code'] = 200;
                     $response['data']['is_register'] = false;
                     $response['data']['is_login'] = false;
                     $response['status']['msg'] = "Successfully Saved";
-                }
-                else
+                } else
                 {
                     $freeuserObj->gl_profile_id = $gl_profile_id;
                     $freeuserObj->first_name = $first_name;
@@ -3221,27 +3106,27 @@ class FreeuserController extends Controller
                     $freeuserObj->teaching_for = Yii::app()->request->getPost('teaching_for');
                     $freeuserObj->occupation = Yii::app()->request->getPost('occupation');
                     $freeuserObj->profile_image = Yii::app()->request->getPost('profile_image');
-                    
+
                     if (Yii::app()->request->getPost('is_joined_spellbee'))
                         $freeuserObj->is_joined_spellbee = Yii::app()->request->getPost('is_joined_spellbee');
-                    
+
                     $freeuserObj->save();
                     $folderObj = new UserFolder();
 
                     $folderObj->createGoodReadFolder($freeuserObj->id);
 
                     $this->sendRegistrationMail($freeuserObj);
-                    
-                    Yii::app()->user->setState("free_id",$freeuserObj->id);
+
+                    Yii::app()->user->setState("free_id", $freeuserObj->id);
 
                     $response['data'] = $freeuserObj->getPaidUserInfo($freeuserObj);
-                    
-                    
-                    
+
+
+
                     $response['data']['can_play_spellingbee'] = Settings::can_play_spelling_bee($freeuserObj);
-                   
-                    
-                    
+
+
+
                     $response['data']['free_id'] = $freeuserObj->id;
                     $response['data']['user'] = $freeuserObj->getUserInfo($freeuserObj->id);
                     $response['data']['countries'] = $countryObj->getCountryies();
@@ -3253,210 +3138,207 @@ class FreeuserController extends Controller
             }
             else if ($user_id)
             {
-                
+
                 $paid_image_name = "";
                 $freeuserObj = $freeuserObj->findByPk($user_id);
                 $salt_paid = "";
                 $pass_paid = "";
-                if ($password)
+                if ($freeuserObj)
                 {
-                    if (Yii::app()->request->getPost('previous_password') && $this->encrypt(Yii::app()->request->getPost('previous_password'), $freeuserObj->salt) == $freeuserObj->password)
+                    if ($password)
                     {
-                        $freeuserObj->salt = md5(uniqid(rand(), true));
-                        $freeuserObj->password = $this->encrypt($password, $freeuserObj->salt);
-
-                        $salt_paid = $freeuserObj->salt;
-                        $pass_paid = $password;
-                    }
-                    else
-                    {
-                        $response['status']['code'] = 402;
-                        $response['status']['msg'] = "Password Missmatch";
-                        echo CJSON::encode($response);
-                        Yii::app()->end();
-                        eit;
-                    }
-                }
-                
-                if (isset($_FILES['profile_image']['name']) && !empty($_FILES['profile_image']['name']))
-                {
-                    $main_dir = Settings::$image_path . 'upload/free_user_profile_images/';
-                    $uploads_dir = Settings::$main_path . 'upload/free_user_profile_images/';
-                    $tmp_name = $_FILES["profile_image"]["tmp_name"];
-                    $name = "file_" . $user_id . "_" . time() . "_" . str_replace(" ", "-", $_FILES["profile_image"]["name"]);
-
-                    move_uploaded_file($tmp_name, "$uploads_dir/$name");
-                    $freeuserObj->profile_image = $main_dir . $name;
-                    
-                    $paid_image_path = Settings::getProfileImagePaidPath($user_id);
-                    if($paid_image_path)
-                    {
-                        copy("$uploads_dir/$name", "$paid_image_path/$name");
-                        $paid_image_name = $name;
-                        $photo_content_type = "image/jpeg";
-                        $photo_file_size = $_FILES['profile_image']["size"];
-                    }    
-                }
-
-
-                if (!$password)
-                {
-                    if ($first_name)
-                        $freeuserObj->first_name = $first_name;
-
-                    if (Yii::app()->request->getPost('last_name'))
-                        $freeuserObj->last_name = Yii::app()->request->getPost('last_name');
-
-                    if (Yii::app()->request->getPost('middle_name'))
-                        $freeuserObj->middle_name = Yii::app()->request->getPost('middle_name');
-
-                    if (Yii::app()->request->getPost('gender'))
-                        $freeuserObj->gender = Yii::app()->request->getPost('gender');
-
-                    if (Yii::app()->request->getPost('nick_name'))
-                        $freeuserObj->nick_name = Yii::app()->request->getPost('nick_name');
-
-                    if (Yii::app()->request->getPost('user_type'))
-                        $freeuserObj->user_type = Yii::app()->request->getPost('user_type');
-
-                    if (Yii::app()->request->getPost('medium'))
-                        $freeuserObj->medium = Yii::app()->request->getPost('medium');
-
-                    if (Yii::app()->request->getPost('country'))
-                        $freeuserObj->tds_country_id = Yii::app()->request->getPost('country');
-
-                    if (Yii::app()->request->getPost('district'))
-                        $freeuserObj->district = Yii::app()->request->getPost('district');
-                    
-                    if (Yii::app()->request->getPost('division'))
-                        $freeuserObj->division = Yii::app()->request->getPost('division');
-
-                    if (Yii::app()->request->getPost('grade_ids'))
-                        $freeuserObj->grade_ids = Yii::app()->request->getPost('grade_ids');
-
-                    if (Yii::app()->request->getPost('mobile_no'))
-                        $freeuserObj->mobile_no = Yii::app()->request->getPost('mobile_no');
-
-                    if (Yii::app()->request->getPost('dob'))
-                        $freeuserObj->dob = Yii::app()->request->getPost('dob');
-
-                    if (Yii::app()->request->getPost('school_name'))
-                        $freeuserObj->school_name = Yii::app()->request->getPost('school_name');
-
-                    if (Yii::app()->request->getPost('location'))
-                        $freeuserObj->location = Yii::app()->request->getPost('location');
-
-                    if (Yii::app()->request->getPost('teaching_for'))
-                        $freeuserObj->teaching_for = Yii::app()->request->getPost('teaching_for');
-
-                    if (Yii::app()->request->getPost('occupation'))
-                        $freeuserObj->occupation = Yii::app()->request->getPost('occupation');
-                    
-                    if (Yii::app()->request->getPost('is_joined_spellbee'))
-                        $freeuserObj->is_joined_spellbee = Yii::app()->request->getPost('is_joined_spellbee');
-                    
-                }
-
-                $freeuserObj->save();
-
-                if ($freeuserObj->paid_id)
-                {
-                    $freeuserObjnew = $freeuserObj->findByPk($user_id);
-                    $userobj = new Users();
-                    $user_obj = $userobj->findByPk($freeuserObj->paid_id);
-                    if ($user_obj)
-                    {
-                        $user_obj->first_name = $freeuserObj->first_name;
-                        $user_obj->last_name = $freeuserObj->last_name;
-                        if ($salt_paid && $pass_paid)
+                        if (Yii::app()->request->getPost('previous_password') && $this->encrypt(Yii::app()->request->getPost('previous_password'), $freeuserObj->salt) == $freeuserObj->password)
                         {
-                            $user_obj->hashed_password = sha1($user_obj->salt . $pass_paid);
-                            $freeuserObjnew->paid_password = $pass_paid;
-                            
+                            $freeuserObj->salt = md5(uniqid(rand(), true));
+                            $freeuserObj->password = $this->encrypt($password, $freeuserObj->salt);
+
+                            $salt_paid = $freeuserObj->salt;
+                            $pass_paid = $password;
+                        } else
+                        {
+                            $response['status']['code'] = 402;
+                            $response['status']['msg'] = "Password Missmatch";
+                            echo CJSON::encode($response);
+                            Yii::app()->end();
+                            eit;
                         }
-                        $user_obj->save();
-                        if ($user_obj->student == 1)
+                    }
+
+                    if (isset($_FILES['profile_image']['name']) && !empty($_FILES['profile_image']['name']))
+                    {
+                        $main_dir = Settings::$image_path . 'upload/free_user_profile_images/';
+                        $uploads_dir = Settings::$main_path . 'upload/free_user_profile_images/';
+                        $tmp_name = $_FILES["profile_image"]["tmp_name"];
+                        $name = "file_" . $user_id . "_" . time() . "_" . str_replace(" ", "-", $_FILES["profile_image"]["name"]);
+
+                        move_uploaded_file($tmp_name, "$uploads_dir/$name");
+                        $freeuserObj->profile_image = $main_dir . $name;
+
+                        $paid_image_path = Settings::getProfileImagePaidPath($user_id);
+                        if ($paid_image_path)
                         {
-                            $freeuserObjnew->user_type = 2;
-                            $std_obj = new Students();
-                            $std_data = $std_obj->getStudentByUserId($freeuserObj->paid_id);
-                            if ($std_data)
+                            copy("$uploads_dir/$name", "$paid_image_path/$name");
+                            $paid_image_name = $name;
+                            $photo_content_type = "image/jpeg";
+                            $photo_file_size = $_FILES['profile_image']["size"];
+                        }
+                    }
+
+
+                    if (!$password)
+                    {
+                        if ($first_name)
+                            $freeuserObj->first_name = $first_name;
+
+                        if (Yii::app()->request->getPost('last_name'))
+                            $freeuserObj->last_name = Yii::app()->request->getPost('last_name');
+
+                        if (Yii::app()->request->getPost('middle_name'))
+                            $freeuserObj->middle_name = Yii::app()->request->getPost('middle_name');
+
+                        if (Yii::app()->request->getPost('gender'))
+                            $freeuserObj->gender = Yii::app()->request->getPost('gender');
+
+                        if (Yii::app()->request->getPost('nick_name'))
+                            $freeuserObj->nick_name = Yii::app()->request->getPost('nick_name');
+
+                        if (Yii::app()->request->getPost('user_type'))
+                            $freeuserObj->user_type = Yii::app()->request->getPost('user_type');
+
+                        if (Yii::app()->request->getPost('medium'))
+                            $freeuserObj->medium = Yii::app()->request->getPost('medium');
+
+                        if (Yii::app()->request->getPost('country'))
+                            $freeuserObj->tds_country_id = Yii::app()->request->getPost('country');
+
+                        if (Yii::app()->request->getPost('district'))
+                            $freeuserObj->district = Yii::app()->request->getPost('district');
+
+                        if (Yii::app()->request->getPost('division'))
+                            $freeuserObj->division = Yii::app()->request->getPost('division');
+
+                        if (Yii::app()->request->getPost('grade_ids'))
+                            $freeuserObj->grade_ids = Yii::app()->request->getPost('grade_ids');
+
+                        if (Yii::app()->request->getPost('mobile_no'))
+                            $freeuserObj->mobile_no = Yii::app()->request->getPost('mobile_no');
+
+                        if (Yii::app()->request->getPost('dob'))
+                            $freeuserObj->dob = Yii::app()->request->getPost('dob');
+
+                        if (Yii::app()->request->getPost('school_name'))
+                            $freeuserObj->school_name = Yii::app()->request->getPost('school_name');
+
+                        if (Yii::app()->request->getPost('location'))
+                            $freeuserObj->location = Yii::app()->request->getPost('location');
+
+                        if (Yii::app()->request->getPost('teaching_for'))
+                            $freeuserObj->teaching_for = Yii::app()->request->getPost('teaching_for');
+
+                        if (Yii::app()->request->getPost('occupation'))
+                            $freeuserObj->occupation = Yii::app()->request->getPost('occupation');
+
+                        if (Yii::app()->request->getPost('is_joined_spellbee'))
+                            $freeuserObj->is_joined_spellbee = Yii::app()->request->getPost('is_joined_spellbee');
+                    }
+
+                    $freeuserObj->save();
+
+                    if ($freeuserObj->paid_id)
+                    {
+                        $freeuserObjnew = $freeuserObj->findByPk($user_id);
+                        $userobj = new Users();
+                        $user_obj = $userobj->findByPk($freeuserObj->paid_id);
+                        if ($user_obj)
+                        {
+                            $user_obj->first_name = $freeuserObj->first_name;
+                            $user_obj->last_name = $freeuserObj->last_name;
+                            if ($salt_paid && $pass_paid)
                             {
-                                $stdobj = $std_obj->findByPk($std_data->id);
-                                $stdobj->first_name = $freeuserObj->first_name;
-                                $stdobj->last_name = $freeuserObj->last_name;
-                                if($paid_image_name)
+                                $user_obj->hashed_password = sha1($user_obj->salt . $pass_paid);
+                                $freeuserObjnew->paid_password = $pass_paid;
+                            }
+                            $user_obj->save();
+                            if ($user_obj->student == 1)
+                            {
+                                $freeuserObjnew->user_type = 2;
+                                $std_obj = new Students();
+                                $std_data = $std_obj->getStudentByUserId($freeuserObj->paid_id);
+                                if ($std_data)
                                 {
-                                    $stdobj->photo_file_name = $paid_image_name;
-                                    $stdobj->photo_content_type = $photo_content_type;
-                                    $stdobj->photo_file_size = $photo_file_size;
+                                    $stdobj = $std_obj->findByPk($std_data->id);
+                                    $stdobj->first_name = $freeuserObj->first_name;
+                                    $stdobj->last_name = $freeuserObj->last_name;
+                                    if ($paid_image_name)
+                                    {
+                                        $stdobj->photo_file_name = $paid_image_name;
+                                        $stdobj->photo_content_type = $photo_content_type;
+                                        $stdobj->photo_file_size = $photo_file_size;
+                                    }
+
+                                    $stdobj->save();
                                 }
-                                
-                                $stdobj->save();
-                            }
-                        }
-                        else if ($user_obj->employee == 1)
-                        {
-                            $freeuserObjnew->user_type = 3;
-                            $em_obj = new Employees();
-                            $em_data = $em_obj->getEmployeeByUserId($freeuserObj->paid_id);
-                            if ($em_data)
+                            } else if ($user_obj->employee == 1)
                             {
-                                $emobj = $em_obj->findByPk($em_data->id);
-                                $emobj->first_name = $freeuserObj->first_name;
-                                $emobj->last_name = $freeuserObj->last_name;
-                                if($paid_image_name)
+                                $freeuserObjnew->user_type = 3;
+                                $em_obj = new Employees();
+                                $em_data = $em_obj->getEmployeeByUserId($freeuserObj->paid_id);
+                                if ($em_data)
                                 {
-                                    $emobj->photo_file_name = $paid_image_name;
-                                    $emobj->photo_content_type = $photo_content_type;
-                                    $emobj->photo_file_size = $photo_file_size;
+                                    $emobj = $em_obj->findByPk($em_data->id);
+                                    $emobj->first_name = $freeuserObj->first_name;
+                                    $emobj->last_name = $freeuserObj->last_name;
+                                    if ($paid_image_name)
+                                    {
+                                        $emobj->photo_file_name = $paid_image_name;
+                                        $emobj->photo_content_type = $photo_content_type;
+                                        $emobj->photo_file_size = $photo_file_size;
+                                    }
+                                    $emobj->save();
                                 }
-                                $emobj->save();
-                            }
-                        }
-                        else if ($user_obj->parent == 1)
-                        {
-                            $freeuserObjnew->user_type = 4;
-                            $gu_obj = new Guardians();
-                            $gu_data = $gu_obj->getGuardianByUserId($freeuserObj->paid_id);
-                            if ($gu_data)
+                            } else if ($user_obj->parent == 1)
                             {
-                                $guobj = $gu_obj->findByPk($gu_data->id);
-                                $guobj->first_name = $freeuserObj->first_name;
-                                $guobj->last_name = $freeuserObj->last_name;
-                                if (Yii::app()->request->getPost('relation'))
+                                $freeuserObjnew->user_type = 4;
+                                $gu_obj = new Guardians();
+                                $gu_data = $gu_obj->getGuardianByUserId($freeuserObj->paid_id);
+                                if ($gu_data)
                                 {
-                                    $guobj->relation = Yii::app()->request->getPost('relation');
-                                }    
-                                
-                                $guobj->save();
+                                    $guobj = $gu_obj->findByPk($gu_data->id);
+                                    $guobj->first_name = $freeuserObj->first_name;
+                                    $guobj->last_name = $freeuserObj->last_name;
+                                    if (Yii::app()->request->getPost('relation'))
+                                    {
+                                        $guobj->relation = Yii::app()->request->getPost('relation');
+                                    }
+
+                                    $guobj->save();
+                                }
                             }
+                            $freeuserObjnew->save();
                         }
-                        $freeuserObjnew->save();
                     }
                 }
 
-                Yii::app()->user->setState("free_id",$freeuserObj->id);
+                Yii::app()->user->setState("free_id", $freeuserObj->id);
                 $this->sendRegistrationMail($freeuserObj);
                 $response['data'] = $freeuserObj->getPaidUserInfo($freeuserObj);
-                
-                
-                
+
+
+
                 $response['data']['can_play_spellingbee'] = Settings::can_play_spelling_bee($freeuserObj);
-               
-                    
-                
-                
+
+
+
+
                 $response['data']['free_id'] = $freeuserObj->id;
                 $response['data']['user'] = $freeuserObj->getUserInfo($freeuserObj->id);
                 $response['data']['is_register'] = true;
                 $response['data']['is_login'] = true;
                 $response['status']['code'] = 200;
                 $response['status']['msg'] = "Successfully Saved";
-            }
-            else if (Yii::app()->request->getPost('user_type') && $email && !$freeuserObj->getFreeuser($email) && $password)
+            } else if (Yii::app()->request->getPost('user_type') && $email && !$freeuserObj->getFreeuser($email) && $password)
             {
-                
+
                 $freeuserObj->salt = md5(uniqid(rand(), true));
                 $freeuserObj->password = $this->encrypt($password, $freeuserObj->salt);
                 $freeuserObj->email = Yii::app()->request->getPost('email');
@@ -3466,15 +3348,15 @@ class FreeuserController extends Controller
                 $folderObj = new UserFolder();
 
                 $folderObj->createGoodReadFolder($freeuserObj->id);
-                
-                Yii::app()->user->setState("free_id",$freeuserObj->id);
+
+                Yii::app()->user->setState("free_id", $freeuserObj->id);
 
                 $response['data'] = $freeuserObj->getPaidUserInfo($freeuserObj);
-                
+
                 $response['data']['can_play_spellingbee'] = Settings::can_play_spelling_bee($freeuserObj);
-                        
-               
-                
+
+
+
                 $response['data']['free_id'] = $freeuserObj->id;
                 $response['data']['countries'] = $countryObj->getCountryies();
                 $response['data']['user'] = $freeuserObj->getUserInfo($freeuserObj->id);
@@ -3482,19 +3364,16 @@ class FreeuserController extends Controller
                 $response['data']['is_login'] = false;
                 $response['status']['code'] = 200;
                 $response['status']['msg'] = "Successfully Saved";
-            }
-            else if ($email && $password && $freeuserObj->getFreeuser($email))
+            } else if ($email && $password && $freeuserObj->getFreeuser($email))
             {
                 $response['status']['code'] = 404;
                 $response['status']['msg'] = "Username Exists";
-            }
-            else
+            } else
             {
                 $response['status']['code'] = 400;
                 $response['status']['msg'] = "Bad Request";
             }
-        }
-        else
+        } else
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
@@ -3515,8 +3394,7 @@ class FreeuserController extends Controller
         if ($b_join_school)
         {
             $message .= '<title>Welcome to Champs21.com</title>';
-        }
-        else
+        } else
         {
             $message .= '<title>Join to school</title>';
         }
@@ -3541,8 +3419,7 @@ class FreeuserController extends Controller
                 $message .= '<p>&nbsp;</p>';
                 $message .= '<p>&nbsp;</p>';
                 $message .= '<p>Champs21.com</p>';
-            }
-            else
+            } else
             {
 
                 $message .= '<div id="header" style="width: 50%; height: 60px; margin: 0 auto; padding: 10px; color: #fff; text-align: center; background-color: #E0E0E0;font-family: Open Sans,Arial,sans-serif;">';
@@ -3604,8 +3481,7 @@ class FreeuserController extends Controller
                 $message .= '<p>Russell T. Ahmed</p>';
                 $message .= '<p>Founder &amp; CEO</p>';
             }
-        }
-        else
+        } else
         {
             $message .= '<img src="' . $main_url . '/styles/layouts/tdsfront/image/welcome-email.png">';
         }
@@ -3682,15 +3558,13 @@ class FreeuserController extends Controller
                     $response['data']['preferred_categories'] = $user_pref_mod->category_ids;
                     $response['status']['code'] = 200;
                     $response['status']['msg'] = "PREFERENCE_SAVED";
-                }
-                else
+                } else
                 {
 
                     $response['status']['code'] = 400;
                     $response['status']['msg'] = "USER_PREFERENCE_NOT_SAVED";
                 }
-            }
-            else
+            } else
             {
 
                 $user_pref_mod = new FreeUserPreference;
@@ -3704,16 +3578,14 @@ class FreeuserController extends Controller
                     $response['data']['preferred_categories'] = $user_pref_mod->category_ids;
                     $response['status']['code'] = 200;
                     $response['status']['msg'] = "USER_PREFERENCE_SAVED";
-                }
-                else
+                } else
                 {
 
                     $response['status']['code'] = 400;
                     $response['status']['msg'] = "BAD_REQUEST";
                 }
             }
-        }
-        else
+        } else
         {
 
             $response['status']['code'] = 400;
@@ -3757,16 +3629,14 @@ class FreeuserController extends Controller
             if (!empty($user_pref_mod) && !empty($all_categoires))
             {
                 $status = 200;
-            }
-            else if (!empty($all_categoires))
+            } else if (!empty($all_categoires))
             {
                 $status = 202;
             }
 
             $response['status']['code'] = $status;
             $response['status']['msg'] = (!empty($user_pref_mod)) ? "USER_PREFERENCE_FOUND" : "USER_PREFERENCE_NOT_FOUND";
-        }
-        else
+        } else
         {
 
             $response['status']['code'] = 400;
@@ -3777,29 +3647,31 @@ class FreeuserController extends Controller
         echo CJSON::encode($response);
         Yii::app()->end();
     }
-    
-    public function actionRegenspellcache() {
-        
+
+    public function actionRegenspellcache()
+    {
+
 //        $cache_name_old_userdata = 'YII-SPELLINGBEE-USERWORD';
 //        $response = Settings::getSpellingBeeCache($cache_name_old_userdata);
 //        echo '<pre>';
 //        print_r($response);
 //        
 //        exit;
-        
-        
-        
+
+
+
         $responsesss = array(
             6199
         );
-        
-        foreach ($responsesss as $userdata) {
+
+        foreach ($responsesss as $userdata)
+        {
             $cache_name_old_user_word = 'YII-SPELLINGBEE-USERWORD-' . $userdata;
-            
+
             $cache_name_user_data = 'YII-SPELLINGBEE-USERDATA-' . $userdata;
             $cache_name_old_user_word_played = 'YII-SPELLINGBEE-USERWORD-PLAYED-' . $userdata;
             $cache_name_old_user_word_current = 'YII-SPELLINGBEE-CURRENTUSERWORD-' . $userdata;
-            
+
             $response_user_data = Settings::getSpellingBeeCache($cache_name_user_data);
             $response_word = Settings::getSpellingBeeCache($cache_name_old_user_word);
             $response_played = Settings::getSpellingBeeCache($cache_name_old_user_word_played);
@@ -3821,7 +3693,7 @@ class FreeuserController extends Controller
             print_r($response_user_data);
         }
         exit;
-        
+
         $response = array(
             'total_time' => 104533,
             'remaining_word' => 30,
@@ -3832,7 +3704,7 @@ class FreeuserController extends Controller
             'current_time' => 3876,
             'prev_id' => 1196,
             'play_total_time' => 104533
-        );        
+        );
 //        $ar_cache_names = array(
 //            'YII-SPELLINGBEE-CURRENTUSERWORD'
 //        );
@@ -3873,15 +3745,15 @@ class FreeuserController extends Controller
         echo '<pre>';
         print_r($response);
         exit;
-        
     }
-    
-    public function actionGetspellstatus() {
-        
+
+    public function actionGetspellstatus()
+    {
+
         $resulsts = Yii::app()->db->createCommand()->select('*')->from(Highscore::model()->tableName())->group('userid')->queryAll();
         $i = 0;
         $total = 0;
-        
+
 //        foreach ($resulsts as $userdata) {
 //            $cache_name_old_user_word = 'YII-SPELLINGBEE-USERWORD-' . $userdata['id'];
 //            $cache_name_old_user_word_played = 'YII-SPELLINGBEE-USERWORD-PLAYED-' . $userdata['id'];
@@ -3901,30 +3773,29 @@ class FreeuserController extends Controller
 //            echo '<br />';
 //        }
 //        exit;
-        
-      
-        
-         foreach ($resulsts as $rows) {
-            $user_words = 'YII-SPELLINGBEE-USERDATA-'. $rows['userid'];
+
+
+
+        foreach ($resulsts as $rows)
+        {
+            $user_words = 'YII-SPELLINGBEE-USERDATA-' . $rows['userid'];
             $response_words = Settings::getSpellingBeeCache($user_words);
-            
-            if(!isset($response_words['user_checkpoint']) && $response_words['current_score']>=20)
+
+            if (!isset($response_words['user_checkpoint']) && $response_words['current_score'] >= 20)
             {
                 $i++;
                 echo ",";
                 echo $rows['userid'];
             }
-            
-         }
-            echo "<br/>";
-            echo "<br/>";
-            echo $i;
-            exit;
-            
-            $high_score = (int)$rows['score'];
+        }
+        echo "<br/>";
+        echo "<br/>";
+        echo $i;
+        exit;
+
+        $high_score = (int) $rows['score'];
 //            echo '<pre>';
 //            print_r($response_words);
-            
 //            $cache_userwords = array();
 //            $cache_userwords_played = array();
 //            $is_modified = 0;
@@ -3983,10 +3854,8 @@ class FreeuserController extends Controller
 //            print_r($response_words);
 //        }
 //        var_dump($sql);
-        
 //        echo '<br /><br />' . $total . '====' . $i;
 //        exit;
-        
     }
 
 }

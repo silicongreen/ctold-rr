@@ -120,7 +120,11 @@ class DashboardController extends Controller
                 
                 $studentsobj = new Students();
                 $students = $studentsobj->getStudentById($student_id);
-                $response['data']['user_details'] = $students['batchDetails']->name." ".$students['batchDetails']['courseDetails']->course_name;
+                $response['data']['user_details'] =  "";
+                if(isset($students['batchDetails']) && isset($students['batchDetails']->name) && isset($students['batchDetails']['courseDetails']) && isset($students['batchDetails']['courseDetails']->course_name))
+                {    
+                    $response['data']['user_details'] = $students['batchDetails']->name." ".$students['batchDetails']['courseDetails']->course_name;
+                }
                 $response['data']['attandence'] = $this->atttext($school_id, $batch_id, $student_id);
             }  
             else
@@ -163,7 +167,10 @@ class DashboardController extends Controller
             
             $userObj = new Users();
             $user_data = $userObj->findByPk($user_id);
-            $response['data']['user_name'] = $user_data->first_name.' '.$user_data->last_name;
+            if(isset($user_data) && isset($user_data->first_name) && isset($user_data->last_name))
+            {
+                $response['data']['user_name'] = $user_data->first_name.' '.$user_data->last_name;
+            }
             
            
             $freobj = new Freeusers();

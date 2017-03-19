@@ -820,6 +820,53 @@ div.baf_shaheen
 }
 
 
+.south-point-protrait table td
+{
+    font-size:17px;
+}
+.south-point-protrait margin-top-bottom-10
+{
+    margin: 20px 0px;
+}
+.south-point-protrait .academia_box table th
+{
+    font-size:17px !important;
+}
+
+.south-point-protrait .academia_box table td
+{
+    font-size:17px;
+
+}
+.potrait_header_south_point h4
+{
+    font-size:23px;
+}
+.potrait_header_south_point h5
+{
+    font-size:15px !important;
+}
+.south-point-protrait h2
+{
+    font-size:32px;
+}
+
+.south-point-protrait table td
+{
+    font-size:17px;
+    padding: 10px 10px 10px 0px;   
+}
+
+.south-point-protrait table.gradding td
+{
+    padding: 7px 8px 8px 8px !important;
+}
+.south-point-protrait .margin-top-bottom-10
+{
+    margin-top: 30px !important;
+}
+
+
 
 
 

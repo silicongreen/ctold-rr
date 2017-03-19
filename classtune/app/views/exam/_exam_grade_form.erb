@@ -70,6 +70,7 @@
       <td <%= styletextall %>><%= t('start_time') %></td>
       <td <%= styletextall %>><%= t('end_time') %></td>
       <td <%= styletextall %>><%= t('do_not_create') %></td>
+      <td <%= styletextall %>>No Schedule</td>
     </tr>
 
     <% f.fields_for :exams do |exam_form| %>
@@ -102,6 +103,7 @@
         <td class="col-2"  <%= styletext %> > <div class="label-field-pair3"> <div class="text-input-bg3"><%= exam_form.calendar_date_select :start_time,:value=>start_date ,:readonly=>true,:popup=>"force"%></div></div></td>
         <td class="col-3"  <%= styletext %> > <div class="label-field-pair3"> <div class="text-input-bg3"><%= exam_form.calendar_date_select :end_time,:value=>end_date,:readonly=>true,:popup=>"force" %></div></div></td>
         <td class="col-1"><%= exam_form.check_box :_delete %></td>
+        <td class="col-1"><%= exam_form.check_box :no_date %></td>
       </tr>
       <% if exam_form.object.subject.name.present? %>
         <% @flag=1 %>

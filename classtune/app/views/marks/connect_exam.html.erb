@@ -95,7 +95,13 @@
   jj(document).ready(function () {
       var oDataTable = jj('#exam_data').DataTable( {
         "order": [],
-        "oSearch": { "bSmart": false }
+        "oSearch": { "bSmart": false },
+        columnDefs: [
+            {
+                targets: [ 0, 1, 2 ],
+                className: 'mdl-data-table__cell--non-numeric'
+            }
+        ]
     } );
     jj("#batch_batch_id").change(function(){
       if(jj("#batch_batch_id").val())

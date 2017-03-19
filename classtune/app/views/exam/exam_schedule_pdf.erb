@@ -32,9 +32,15 @@
                     <tr class="<%= cycle('even' , 'odd') %>">
                         <% @exam = exam %>
                         <td class="col-pdf"><%= exam.subject.name %></td>
-                        <td class="col-pdf"><%= I18n.l(exam.end_time.to_date,:format =>:long) %></td>
-                        <td class="col-pdf"><%= I18n.l(exam.start_time,:format=>"%I:%M %p") %></td>
-                        <td class="col-pdf"><%= I18n.l(exam.end_time,:format=>"%I:%M %p") %></td>
+                        <% if exam.no_date.blank? %>
+                          <td class="col-pdf"><%= I18n.l(exam.end_time.to_date,:format =>:long) %></td>
+                          <td class="col-pdf"><%= I18n.l(exam.start_time,:format=>"%I:%M %p") %></td>
+                          <td class="col-pdf"><%= I18n.l(exam.end_time,:format=>"%I:%M %p") %></td>
+                        <% else %>
+                          <td class="col-pdf">N/A</td>
+                          <td class="col-pdf">N/A</td>
+                          <td class="col-pdf">N/A</td>
+                        <% end %>
 
                     </tr>          
                   <% end %>

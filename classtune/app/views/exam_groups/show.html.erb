@@ -1,4 +1,4 @@
-<%-# Champs21
+no<%-# Champs21
 #Copyright 2010 teamCreative Private Limited
 #
 #This product includes software developed at
@@ -186,9 +186,15 @@
                   styletext = "style='display:none;'" 
                 end 
               %>
-              <td class="col-2" <%= styletext %> ><%= I18n.l(exam.end_time.to_date,:format =>:long) %></td>
-              <td class="col-1" <%= styletext %> ><%= I18n.l(exam.start_time,:format=>"%I:%M %p") %></td>
-              <td class="col-1" <%= styletext %> ><%= I18n.l(exam.end_time,:format=>"%I:%M %p") %></td>
+              <% if exam.no_date.blank? %>
+                <td class="col-2" <%= styletext %> ><%= I18n.l(exam.end_time.to_date,:format =>:long) %></td>
+                <td class="col-1" <%= styletext %> ><%= I18n.l(exam.start_time,:format=>"%I:%M %p") %></td>
+                <td class="col-1" <%= styletext %> ><%= I18n.l(exam.end_time,:format=>"%I:%M %p") %></td>
+              <% else %>
+                <td class="col-2">N/A</td>
+                <td class="col-1">N/A</td>
+                <td class="col-1">N/A</td>
+              <% end %>
 
               <% if permitted_to? :edit, :exams %>
                 <td class="col-1" <%= styletext %> >

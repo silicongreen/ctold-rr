@@ -2597,7 +2597,15 @@ class ExamController < ApplicationController
     elsif MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 323 or MultiSchool.current_school.id == 325 or MultiSchool.current_school.id == 324
       render :pdf => 'generated_report5_pdf',
         :orientation => 'Portrait', :zoom => 1.00
-    else    
+    elsif  MultiSchool.current_school.id == 2 
+      if @connect_exam_obj.result_type == 2
+        render :pdf => 'generated_report5_pdf',
+        :orientation => 'Portrait', :zoom => 1.00
+      else
+        render :pdf => 'generated_report5_pdf',
+          :orientation => 'Landscape', :zoom => 1.00
+      end
+    else 
       render :pdf => 'generated_report5_pdf',
         :orientation => 'Landscape', :zoom => 1.00
     end

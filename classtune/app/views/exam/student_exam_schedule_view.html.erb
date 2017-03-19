@@ -116,7 +116,7 @@
               <% end %>    
               </td>
               <td class="col-1">
-              <% if !no_exams %>
+              <% if !no_exams and exam.no_date.blank? %>
                 <%= I18n.l(exam.start_time,:format=>"%I:%M %p") %> - <%= I18n.l(exam.end_time,:format=>"%I:%M %p") %>
               <% else %>
                   N/A

@@ -17,7 +17,7 @@
 #limitations under the License.
 
 class Exam < ActiveRecord::Base
-  validates_presence_of :start_time, :end_time
+  validates_presence_of :start_time, :end_time, :if => :no_date_not_present?
   validates_numericality_of :maximum_marks, :minimum_marks, :allow_nil => true
   validates_presence_of :maximum_marks, :minimum_marks, :if => :validation_should_present?, :on=>:update
   belongs_to :exam_group
@@ -36,6 +36,14 @@ class Exam < ActiveRecord::Base
   delegate :name,:is_current, :to => :exam_group
   
   accepts_nested_attributes_for :exam_scores
+  
+  def no_date_not_present?
+    if self.no_date?
+      return false
+    else
+      return true
+    end
+  end
 
   def validation_should_present?
     if self.exam_group.exam_type=="Grades"
@@ -105,7 +113,11 @@ class Exam < ActiveRecord::Base
   private
   def update_exam_group_date
     group = self.exam_group
-    if group.exam_date_edited==0 and self.start_time.to_date.to_s!="1979-01-01"
+    if self.no_date?
+      if group.exam_date.blank?
+        group.update_attribute(:exam_date,"1979-01-01")
+      end 
+    elsif group.exam_date_edited==0 and self.start_time.to_date.to_s!="1979-01-01"
       group.update_attribute(:exam_date, self.start_time.to_date)
       group.update_attribute(:exam_date_edited, 1)
       group.update_attribute(:only_comment_base, 0)
@@ -115,7 +127,7 @@ class Exam < ActiveRecord::Base
   end
 
   def create_exam_event
-    if self.event.blank?
+    if self.event.blank? and self.no_date.blank?
       new_event = Event.create do |e|
         e.title       = "#{t('exam_text')}"
         e.description = "#{self.exam_group.name} #{t('for')} #{self.subject.batch.full_name} - #{self.subject.name}"

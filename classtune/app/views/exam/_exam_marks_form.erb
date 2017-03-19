@@ -92,6 +92,7 @@
       <td <%= styletextall %>><%= t('start_time') %></td>
       <td <%= styletextall %>><%= t('end_time') %></td>
       <td><%= t('do_not_create') %></td>
+      <td <%= styletextall %>>No Schedule</td>
     </tr>
 
     <% f.fields_for :exams do |exam_form| %>
@@ -154,6 +155,13 @@
           <div class="label-field-pair2">
             <div class="text-input-bg2">
               <%= exam_form.check_box :_delete %>
+            </div>
+          </div>
+        </td>
+        <td class="col-1">
+          <div class="label-field-pair2">
+            <div class="text-input-bg2">
+              <%= exam_form.check_box :no_date %>
             </div>
           </div>
         </td>

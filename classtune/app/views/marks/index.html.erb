@@ -78,12 +78,13 @@
   var jj = jQuery.noConflict();
   jj(document).ready(function () {
       var oDataTable = jj('#exam_data').DataTable( {
-        "order": []
+        "order": [],
+        "oSearch": { "bSmart": false }
     } );
     jj("#batch_batch_id").change(function(){
       if(jj("#batch_batch_id").val())
       {
-        oDataTable.column( 0 ).search( jj("#batch_batch_id").val()).draw();
+        oDataTable.column( 0 ).search( jj("#batch_batch_id").val(),false,false).draw();
       }
     });
   });

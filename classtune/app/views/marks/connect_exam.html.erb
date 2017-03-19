@@ -67,7 +67,7 @@
               <% exams.each do |exam| %>
               <% if !@subjects.include?(exam.subject) %>
                
-                <% if exam.subject.no_exams == true and (@employee_subjects.include?(exam.subject.id) or @current_user.admin?) %>
+                <% if @employee_subjects.include?(exam.subject.id) or @current_user.admin? %>
                 <% 
                   @subjects << exam.subject
                 %>
@@ -94,17 +94,13 @@
   var jj = jQuery.noConflict();
   jj(document).ready(function () {
       var oDataTable = jj('#exam_data').DataTable( {
-        columnDefs: [
-            {
-                targets: [ 0, 1, 2 ],
-                className: 'mdl-data-table__cell--non-numeric'
-            }
-        ]
+        "order": [],
+        "oSearch": { "bSmart": false }
     } );
     jj("#batch_batch_id").change(function(){
       if(jj("#batch_batch_id").val())
       {
-        oDataTable.column( 0 ).search( jj("#batch_batch_id").val()).draw();
+        oDataTable.column( 0 ).search( jj("#batch_batch_id").val(),false,false).draw();
       }
     });
   });

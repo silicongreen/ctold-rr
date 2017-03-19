@@ -86,6 +86,11 @@
       {
         oDataTable.column( 0 ).search( jj("#batch_batch_id").val(),false,false).draw();
       }
+      else
+      {
+        oDataTable.column( 0 ).search("").draw();
+        //oDataTable.column( 0 ).search("").val(),false,false).draw();
+      }   
     });
   });
 </script>

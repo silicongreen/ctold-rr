@@ -766,7 +766,15 @@ class Subjects extends CActiveRecord
        
         $result['exam_id'] = $exam->id;
         $result['exam_name'] = $exam['Examgroup']->name;
-        $result['exam_date'] = DATE("Y-m-d", strtotime($exam->start_time));
+        if($exam->no_date)
+        {
+            $result['exam_date'] = "N/A";
+        }
+        else 
+        {
+            $result['exam_date'] = DATE("Y-m-d", strtotime($exam->start_time));
+        }
+        
         $result['category'] = $exam['Examgroup']->exam_category;
         $result['total_mark'] = $exam->maximum_marks;
 
@@ -845,7 +853,15 @@ class Subjects extends CActiveRecord
                     
                     $progress['exam'][$i]['exam_id'] = $exam_details->id;
                     $progress['exam'][$i]['exam_name'] = $exam_details['Examgroup']->name;
-                    $progress['exam'][$i]['exam_date'] = DATE("Y-m-d", strtotime($exam_details->start_time));
+                    if($exam_details->no_date)
+                    {
+                        $progress['exam'][$i]['exam_date'] = "N/A";
+                    }
+                    else 
+                    {
+                        $progress['exam'][$i]['exam_date'] = DATE("Y-m-d", strtotime($exam_details->start_time));
+                    }
+                    
 
                     $progress['exam'][$i]['your_grade'] = "-";
                     $progress['exam'][$i]['grade_point'] = "-";
@@ -953,7 +969,17 @@ class Subjects extends CActiveRecord
                             $report_class_test_merge['subject_exam']['class_test'][$i]['exam_id'] = $exam_details->id;
                             $report_class_test_merge['subject_exam']['class_test'][$i]['exam_name'] = $exam_details['Examgroup']->name;
                             $report_class_test_merge['subject_exam']['class_test'][$i]['exam_group_id'] = $exam_details['Examgroup']->id;
-                            $report_class_test_merge['subject_exam']['class_test'][$i]['exam_date'] = DATE("Y-m-d", strtotime($exam_details->start_time));
+                            
+                            if($exam_details->no_date)
+                            {
+                                $report_class_test_merge['subject_exam']['class_test'][$i]['exam_date'] = "N/A";
+                            }
+                            else 
+                            {
+                                $report_class_test_merge['subject_exam']['class_test'][$i]['exam_date'] = DATE("Y-m-d", strtotime($exam_details->start_time));
+                            }
+                            
+                            
                             
                             $report_class_test_merge['subject_exam']['class_test'][$i]['your_grade'] = "-";
                             $report_class_test_merge['subject_exam']['class_test'][$i]['grade_point'] = "-";
@@ -993,7 +1019,15 @@ class Subjects extends CActiveRecord
                             $report_class_test_merge['subject_exam']['project'][$j]['exam_id'] = $exam_details->id;
                             $report_class_test_merge['subject_exam']['project'][$j]['exam_name'] = $exam_details['Examgroup']->name;
                             $report_class_test_merge['subject_exam']['project'][$i]['exam_group_id'] = $exam_details['Examgroup']->id;
-                            $report_class_test_merge['subject_exam']['project'][$j]['exam_date'] = DATE("Y-m-d", strtotime($exam_details->start_time));
+                            
+                            if($exam_details->no_date)
+                            {
+                                $report_class_test_merge['subject_exam']['project'][$j]['exam_date'] = "N/A";
+                            }
+                            else 
+                            {
+                                 $report_class_test_merge['subject_exam']['project'][$j]['exam_date'] = DATE("Y-m-d", strtotime($exam_details->start_time));
+                            }
                             
                             $report_class_test_merge['subject_exam']['project'][$j]['your_grade'] = "-";
                             $report_class_test_merge['subject_exam']['project'][$j]['grade_point'] = "-";

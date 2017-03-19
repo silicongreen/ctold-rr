@@ -307,7 +307,7 @@ class Exams extends CActiveRecord
     public function getTeacherExam($limit = 10, $no_exams = 0)
     {
         $criteria = new CDbCriteria;
-        $criteria->select = 't.id, t.start_time, t.end_time';
+        $criteria->select = 't.id, t.start_time, t.end_time, t.no_date';
         $criteria->together = true;
 
         if (Yii::app()->user->isAdmin)
@@ -380,8 +380,16 @@ class Exams extends CActiveRecord
                 $return[$i]['subject'] = $value['Subjects']->name;
                 $return[$i]['no_exams'] = $value['Subjects']->no_exams;
                 $return[$i]['subject_icon'] = $value['Subjects']->icon_number;
-                $return[$i]['start_time'] = $value->start_time;
-                $return[$i]['end_time'] = $value->end_time;
+                if($value->no_date)
+                {
+                    $return[$i]['start_time'] = "N/A";
+                    $return[$i]['end_time'] = "N/A";
+                }
+                else
+                {
+                    $return[$i]['start_time'] = $value->start_time;
+                    $return[$i]['end_time'] = $value->end_time; 
+                }    
                 $return[$i]['exam_name'] = $value['Examgroup']->name;
                 $return[$i]['batch'] = $value['Subjects']['Subjectbatch']->name . " " . $value['Subjects']['Subjectbatch']['courseDetails']->course_name . " " . $value['Subjects']['Subjectbatch']['courseDetails']->section_name;
                 $i++;
@@ -395,7 +403,7 @@ class Exams extends CActiveRecord
 
         $criteria = new CDbCriteria;
 
-        $criteria->select = 't.id, t.start_time, t.subject_id, t.end_time';
+        $criteria->select = 't.id, t.start_time, t.subject_id, t.end_time, t.no_date';
 
 
         $criteria->with = array(
@@ -575,10 +583,20 @@ class Exams extends CActiveRecord
             $_data['exam_subject_id'] = $rows->subject_id;
             $_data['exam_subject_name'] = $rows->Subjects->name;
             $_data['no_exams'] = $rows->Subjects->no_exams;
-            $_data['exam_start_time'] = date('h:i a', strtotime($rows->start_time));
-            $_data['exam_end_time'] = date('h:i a', strtotime($rows->end_time));
-            $_data['exam_date'] = date('d/m/Y', strtotime($rows->start_time));
-            $_data['exam_day'] = date('l', strtotime($rows->start_time));
+            if($rows->no_date)
+            {
+                $_data['exam_start_time'] = "N/A";
+                $_data['exam_end_time'] = "N/A";
+                $_data['exam_date'] = "N/A";
+                $_data['exam_day'] = "N/A"; 
+            }
+            else
+            {
+                $_data['exam_start_time'] = date('h:i a', strtotime($rows->start_time));
+                $_data['exam_end_time'] = date('h:i a', strtotime($rows->end_time));
+                $_data['exam_date'] = date('d/m/Y', strtotime($rows->start_time));
+                $_data['exam_day'] = date('l', strtotime($rows->start_time));
+            }
 
             $formatted_exams[] = $_data;
         }

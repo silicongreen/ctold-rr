@@ -108,6 +108,9 @@ class ExamConnect extends CActiveRecord
 
     public function getConnectExamReportAll($id, $subject_id)
     {
+        $subjectObj = new Subjects();
+        $sub_data = $subjectObj->findByPk($subject_id);
+        
         $criteria = new CDbCriteria;
         $criteria->compare('t.id', $id);
         $criteria->select = 't.*';
@@ -128,7 +131,7 @@ class ExamConnect extends CActiveRecord
                                         'select' => 'Scores.marks,Scores.student_id',
                                         'with' => array(
                                             'Students' => array(
-                                                'select' => 'Students.first_name,Students.last_name,Students.middle_name,Students.class_roll_no,Students.id',
+                                                'select' => 'Students.first_name,Students.last_name,Students.middle_name,Students.class_roll_no,Students.id,,Students.batch_id',
                                             ),
                                         )
                                     ),
@@ -176,7 +179,7 @@ class ExamConnect extends CActiveRecord
                         }
                         foreach($exam['Scores'] as $scores)
                         {
-                            if(isset($scores['Students']))
+                            if(isset($scores['Students']) && $sub_data->batch_id == $scores['Students']->batch_id )
                             {
                                 $std_middle_name = ($scores['Students']->middle_name)?$scores['Students']->middle_name." ":"";
                                 if(!in_array($scores['Students']->id, $students))
@@ -215,7 +218,7 @@ class ExamConnect extends CActiveRecord
                         }
                         foreach($exam['Scores'] as $scores)
                         {
-                            if(isset($scores['Students']))
+                            if(isset($scores['Students']) && $sub_data->batch_id == $scores['Students']->batch_id )
                             {
                                 $std_middle_name = ($scores['Students']->middle_name)?$scores['Students']->middle_name." ":"";
                                 if(!in_array($scores['Students']->id, $students))
@@ -246,7 +249,7 @@ class ExamConnect extends CActiveRecord
                     $result['ALL'][$f]['maximum_marks'] = $exam->maximum_marks;
                     foreach($exam['Scores'] as $scores)
                     {
-                        if(isset($scores['Students']))
+                        if(isset($scores['Students']) && $sub_data->batch_id == $scores['Students']->batch_id )
                         {
                             $std_middle_name = ($scores['Students']->middle_name)?$scores['Students']->middle_name." ":"";
                             if(!in_array($scores['Students']->id, $allstudents))

@@ -220,7 +220,14 @@ class ExamGroups extends CActiveRecord
             {
                 $all_exam[$i]['id'] = $value->id;
                 $all_exam[$i]['name'] = $value->name;
-                $all_exam[$i]['exam_date'] = $value->exam_date;
+                if($value->exam_date != "1979-01-01")
+                {
+                    $all_exam[$i]['exam_date'] = $value->exam_date;
+                }
+                else 
+                {
+                    $all_exam[$i]['exam_date'] = "N/A";
+                }
                 $all_exam[$i]['only_comment_base'] = $value->only_comment_base;
                 $all_exam[$i]['is_new'] = 0;
                     
@@ -265,7 +272,14 @@ class ExamGroups extends CActiveRecord
             {
                 $all_exam[$i]['id'] = $value->id;
                 $all_exam[$i]['name'] = $value->name;
-                $all_exam[$i]['exam_date'] = $value->exam_date;
+                if($value->exam_date!="1979-01-01")
+                {
+                    $all_exam[$i]['exam_date'] = $value->exam_date;
+                }
+                else 
+                {
+                    $all_exam[$i]['exam_date'] = "N/A";
+                }
                 $all_exam[$i]['only_comment_base'] = $value->only_comment_base;
                 $all_exam[$i]['is_new'] = 0;
                     
@@ -1119,7 +1133,14 @@ class ExamGroups extends CActiveRecord
         foreach ($obj_exam_cat as $row) {
             $_data['id'] = $row->id;
             $_data['title'] = $row->name;
-            $_data['exam_date'] = $row->exam_date;
+            if($row->exam_date != "1979-01-01")
+            {
+                $_data['exam_date'] = $row->exam_date;
+            }
+            else
+            {
+                $_data['exam_date'] = "N/A";
+            }    
             
             $ar_formatted_data[] = $_data;
         }

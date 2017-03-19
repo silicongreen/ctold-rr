@@ -274,7 +274,14 @@ class DashboardController extends Controller
                         $formated_feed[$i]['title'] = "<b>".$examsdata->name."</b>";
                         $formated_feed[$i]['created'] = date("Y-m-d", strtotime($examsdata->created_at));
                         $formated_feed[$i]['body1'] = "<b>".$examsdata->name."</b> Exam Routine Publish";
-                        $formated_feed[$i]['body2'] = "<b>Start Date : </b>".$examsdata->exam_date;
+                        if($examsdata->exam_date != "1979-01-01")
+                        {
+                            $formated_feed[$i]['body2'] = "<b>Start Date : </b>".$examsdata->exam_date;
+                        }
+                        else
+                        {
+                            $formated_feed[$i]['body2'] = "";
+                        }    
                         $formated_feed[$i]['body3'] = "";
                         $formated_feed[$i]['attachment_file_name'] = "";
                        

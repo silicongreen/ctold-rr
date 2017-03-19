@@ -131,7 +131,7 @@ class ExamConnect extends CActiveRecord
                                         'select' => 'Scores.marks,Scores.student_id',
                                         'with' => array(
                                             'Students' => array(
-                                                'select' => 'Students.first_name,Students.last_name,Students.middle_name,Students.class_roll_no,Students.id,,Students.batch_id',
+                                                'select' => 'Students.first_name,Students.last_name,Students.middle_name,Students.class_roll_no,Students.id,Students.batch_id',
                                             ),
                                         )
                                     ),

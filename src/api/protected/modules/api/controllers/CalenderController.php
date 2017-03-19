@@ -612,17 +612,20 @@ class CalenderController extends Controller
         {
             foreach($all_g as $value)
             {
-                $gr = new Guardians();
-                $grdata = $gr->findByPk($value['guardian']->id);
-                if($grdata->user_id)
+                if(isset($value['guardian']) && isset($value['guardian']->id))
                 {
-                    $reminderrecipients[] = $grdata->user_id;
-                    $batch_ids[$grdata->user_id] = $studentdata->batch_id;
-                    $student_ids[$grdata->user_id] = $studentdata->id;
-                    if($grdata->mobile_phone && ($grdata->id == $studentdata->immediate_contact_id ||  in_array($studentdata->school_id,Sms::$sms_all_guardian)))
+                    $gr = new Guardians();
+                    $grdata = $gr->findByPk($value['guardian']->id);
+                    if($grdata && $grdata->user_id && !in_array($grdata->user_id, $reminderrecipients))
                     {
-                        $sms_numbers[] = $grdata->mobile_phone;
-                        $sms_msg_array[] = $message;
+                        $reminderrecipients[] = $grdata->user_id;
+                        $batch_ids[$grdata->user_id] = $studentdata->batch_id;
+                        $student_ids[$grdata->user_id] = $studentdata->id;
+                        if($grdata->mobile_phone && ($grdata->id == $studentdata->immediate_contact_id ||  in_array($studentdata->school_id,Sms::$sms_all_guardian)))
+                        {
+                            $sms_numbers[] = $grdata->mobile_phone;
+                            $sms_msg_array[] = $message;
+                        }
                     }
                 }
             }    
@@ -695,13 +698,16 @@ class CalenderController extends Controller
         {
             foreach($all_g as $value)
             {
-                $gr = new Guardians();
-                $grdata = $gr->findByPk($value['guardian']->id);
-                if($grdata->user_id)
+                if(isset($value['guardian']) && isset($value['guardian']->id))
                 {
-                    $reminderrecipients[] = $grdata->user_id;
-                    $batch_ids[$grdata->user_id] = $studentdata->batch_id;
-                    $student_ids[$grdata->user_id] = $studentdata->id;
+                    $gr = new Guardians();
+                    $grdata = $gr->findByPk($value['guardian']->id);
+                    if($grdata && $grdata->user_id && !in_array($grdata->user_id, $reminderrecipients))
+                    {
+                        $reminderrecipients[] = $grdata->user_id;
+                        $batch_ids[$grdata->user_id] = $studentdata->batch_id;
+                        $student_ids[$grdata->user_id] = $studentdata->id;
+                    }
                 }
             }    
             

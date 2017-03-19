@@ -865,6 +865,7 @@ class HomeworkController extends Controller
                     {
                         foreach ($all_g as $value)
                         {
+                            
                             $gr = new Guardians();
                             if (isset($value['guardian']) && isset($value['guardian']->id))
                             {

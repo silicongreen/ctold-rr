@@ -49,13 +49,17 @@ class FreeschoolController extends Controller {
 
             if ($all_g) {
                 foreach ($all_g as $value) {
-                    $gr = new Guardians();
-                    $grdata = $gr->findByPk($value['guardian']->id);
-                    if ($grdata->user_id) {
-                        $reminderrecipients[] = $grdata->user_id;
-                        $batch_ids[$grdata->user_id] = $studentdata->batch_id;
-                        $student_ids[$grdata->user_id] = $studentdata->id;
-                    }
+                    if(isset($value['guardian']) && isset($value['guardian']->id))
+                    {
+                        $gr = new Guardians();
+                        $grdata = $gr->findByPk($value['guardian']->id);
+                        if ($grdata && $grdata->user_id && !in_array($grdata->user_id, $reminderrecipients)) {
+                            $reminderrecipients[] = $grdata->user_id;
+                            $batch_ids[$grdata->user_id] = $studentdata->batch_id;
+                            $student_ids[$grdata->user_id] = $studentdata->id;
+                        }
+                        
+                    }    
                 }
             }
 

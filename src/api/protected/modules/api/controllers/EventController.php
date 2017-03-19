@@ -717,33 +717,36 @@ class EventController extends Controller
             {
                 foreach ($all_g as $value)
                 {
-                    $gr = new Guardians();
-                    $grdata = $gr->findByPk($value['guardian']->id);
-                    if($grdata->user_id)
+                    if(isset($value['guardian']) && isset($value['guardian']->id))
                     {
-                        $receptionist_id = $grdata->user_id;
-                        $batch_id = $studentdata->batch_id;
-                        $student_id = $studentdata->id;
-                    }
-                    if($receptionist_id)
-                    {
-                        $reminder = new Reminders();
-                        $reminder->sender = Yii::app()->user->id;
-                        $reminder->subject = "New Meeting Request";
-                        $reminder->body = "New Meeting Request Send from " . $techer_profile->first_name . " at ".$datetime;
-                        $reminder->recipient = $receptionist_id;
-                        $reminder->school_id = Yii::app()->user->schoolId;
-                        $reminder->rid = $meetingreq->id;
-                        $reminder->rtype = 11;
-                        $reminder->batch_id = $batch_id;
-                        $reminder->student_id = $student_id;
-                        $reminder->created_at = date("Y-m-d H:i:s");
+                        $gr = new Guardians();
+                        $grdata = $gr->findByPk($value['guardian']->id);
+                        if($grdata && $grdata->user_id)
+                        {
+                            $receptionist_id = $grdata->user_id;
+                            $batch_id = $studentdata->batch_id;
+                            $student_id = $studentdata->id;
+                        }
+                        if($receptionist_id)
+                        {
+                            $reminder = new Reminders();
+                            $reminder->sender = Yii::app()->user->id;
+                            $reminder->subject = "New Meeting Request";
+                            $reminder->body = "New Meeting Request Send from " . $techer_profile->first_name . " at ".$datetime;
+                            $reminder->recipient = $receptionist_id;
+                            $reminder->school_id = Yii::app()->user->schoolId;
+                            $reminder->rid = $meetingreq->id;
+                            $reminder->rtype = 11;
+                            $reminder->batch_id = $batch_id;
+                            $reminder->student_id = $student_id;
+                            $reminder->created_at = date("Y-m-d H:i:s");
 
-                        $reminder->updated_at = date("Y-m-d H:i:s");
-                        $reminder->save();
+                            $reminder->updated_at = date("Y-m-d H:i:s");
+                            $reminder->save();
 
-                        Settings::sendCurlNotification($receptionist_id, $reminder->id);
-                    }
+                            Settings::sendCurlNotification($receptionist_id, $reminder->id);
+                        }
+                    }    
                 }
                 ///push notification
             }
@@ -863,16 +866,20 @@ class EventController extends Controller
 
                     if ($all_g)
                     {
+                        
                         foreach($all_g as $value)
                         {
-                            $gr = new Guardians();
-                            $grdata = $gr->findByPk($value['guardian']->id);
-                            if($grdata->user_id)
+                            if(isset($value['guardian']) && isset($value['guardian']->id))
                             {
-                                $reminderrecipients[] = $grdata->user_id;
-                                $batch_ids[$grdata->user_id] = $studentdata->batch_id;
-                                $student_ids[$grdata->user_id] = $studentdata->id;
-                            }
+                                $gr = new Guardians();
+                                $grdata = $gr->findByPk($value['guardian']->id);
+                                if($grdata && $grdata->user_id && !in_array($grdata->user_id, $reminderrecipients))
+                                {
+                                    $reminderrecipients[] = $grdata->user_id;
+                                    $batch_ids[$grdata->user_id] = $studentdata->batch_id;
+                                    $student_ids[$grdata->user_id] = $studentdata->id;
+                                }
+                            }            
                         }    
 
                     }

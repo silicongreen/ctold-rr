@@ -111,6 +111,7 @@
                   <% full_mark2 = 0 %>
 
                   <% first_term_mark = 0 %>
+                  <% first_term_ab = false %>
                   <% first_term_full_mark = 0 %>
                   <% first_term_avg_mark = 0 %>
                   <% 
@@ -186,6 +187,8 @@
                                 end
                                 if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
                                    first_term_mark = report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                else
+                                   first_term_ab = true
                                 end
 
                               end
@@ -309,7 +312,7 @@
                       %>
                       <%= obtained_mark1.round().to_s+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name1+"<hr/>" %>
                       <%= obtained_mark2.round().to_s+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name2+"<hr/>" %>
-                      <%= first_term_mark.round().to_s+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name3+"<hr/>" %>
+                      <%= (first_term_ab == true)?"AB":first_term_mark.round().to_s+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name3+"<hr/>" %>
                       <%= obtained_mark.round().to_s+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name %>   
                     </td>  
             <% end %> 

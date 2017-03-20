@@ -105,6 +105,7 @@
             <% full_mark2 = 0 %>
 
             <% first_term_mark = 0 %>
+            <% first_term_ab = false %>
             <% first_term_full_mark = 0 %>
             <% first_term_avg_mark = 0 %>
             
@@ -184,6 +185,8 @@
                        end
                        if !report['students'].blank? && !report['students'][std['id']].blank? && !report['students'][std['id']]['score'].blank?
                           first_term_mark = report['students'][std['id']]['score'].to_f
+                       else
+                          first_term_ab = true
                        end
 
                      end
@@ -237,7 +240,7 @@
               
             <td><%= obtained_mark1.round().to_s %></td>
             <td><%= obtained_mark2.round().to_s %></td>
-            <td><%= first_term_mark.round().to_s %></td>
+            <td><%= (first_term_ab == true)?"AB":first_term_mark.round().to_s %></td>
             <td><%= full_mark.to_i  %></td>
             <td><%= obtained_mark.round().to_s %></td>
             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>

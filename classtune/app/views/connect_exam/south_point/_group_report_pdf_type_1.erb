@@ -93,10 +93,12 @@
                           <% full_mark4 = 0 %>
                           
                           <% first_term_mark = 0 %>
+                          <% first_term_ab = false %>
                           <% first_term_full_mark = 0 %>
                           <% first_term_avg_mark = 0 %>
                           
                           <% final_term_mark = 0 %>
+                          <% final_term_ab = false %>
                           <% final_term_full_mark = 0 %>
                           <% final_term_avg_mark = 0 %>
                           
@@ -231,6 +233,8 @@
                                      end
                                      if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
                                         first_term_mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
+                                     else
+                                        first_term_ab = true
                                      end
                                      
                                    end
@@ -242,6 +246,8 @@
                                      end
                                      if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
                                         final_term_mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
+                                     else
+                                        final_term_ab = true
                                      end
                                      
                                    end
@@ -345,7 +351,7 @@
                           <td class="col-pdf"><%= subjects['name'] %></td>
                           <td class="col-pdf"><%= obtained_mark1.round().to_s %></td>
                           <td class="col-pdf"><%= obtained_mark2.round().to_s %></td>
-                          <td class="col-pdf"><%= first_term_mark.round().to_s %></td>
+                          <td class="col-pdf"><%= (first_term_ab == true)?"AB":first_term_mark.round().to_s %></td>
                           <td class="col-pdf"><%= full_mark_first_term.to_i  %></td>
                           <td class="col-pdf"><%= obtained_mark_first_term.round().to_s %></td>
                           <%  grade = GradingLevel.percentage_to_grade(main_mark_first_term, @batch.id) %>
@@ -361,7 +367,7 @@
                           </td>
                           <td class="col-pdf"><%= obtained_mark3.round().to_s %></td>
                           <td class="col-pdf"><%= obtained_mark4.round().to_s %></td>
-                          <td class="col-pdf"><%= final_term_mark.round().to_s %></td>
+                          <td class="col-pdf"><%= (final_term_ab == true)?"AB":final_term_mark.round().to_s %></td>
                           <td class="col-pdf"><%= full_mark_final_term.to_i  %></td>
                           <td class="col-pdf"><%= obtained_mark_final_term.round().to_s %></td>
                           <%  grade = GradingLevel.percentage_to_grade(main_mark_final_term, @batch.id) %>

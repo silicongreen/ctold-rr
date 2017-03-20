@@ -36,7 +36,7 @@ h2.heading{
 }
 
 #main_info h4{
-    color: #555555;
+    color: #000;
     margin-top: 2px;
     font-weight: normal;
 }
@@ -137,7 +137,7 @@ table#pdf-table{
 }
 
 .col-pdf1
-{color: #990A10;}
+{color: #000000;}
 
 .page1 {
     width:800px;
@@ -194,7 +194,7 @@ table#pdf-table{
 
 
 #main_info h4 {
-    color: #555555;
+    color: #000000;
     font-weight: bold;
     margin-top: 18px;
     float: left;

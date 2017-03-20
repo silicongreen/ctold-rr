@@ -515,6 +515,15 @@ class Students extends CActiveRecord
         }
         return $std_ids;
     }
+    public function getStudentBatchIds($ids)
+    {
+        $criteria = new CDbCriteria();
+        $criteria->select = 't.batch_id';
+        $criteria->addInCondition('id', $ids);
+        $students = $this->findAll($criteria);
+        return $students;
+    }
+    
 
     public function getStudentNotInAdmission($admission_no, $school_id, $all_std_admission = array())
     {

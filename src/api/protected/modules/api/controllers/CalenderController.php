@@ -964,7 +964,7 @@ class CalenderController extends Controller
                     $this->sendnotificationAttendence($student_id, $newattendence, $late);
                 }
             }
-            
+            $attendence->Register($batch_id, $date);
 
             $response['status']['code'] = 200;
             $response['status']['msg'] = "Success";
@@ -1065,7 +1065,8 @@ class CalenderController extends Controller
                     $this->sendnotificationAttendence($student_id, $newattendence, $late);
                 }
             }
-
+            
+            $attendence->Register($batch_id, $date);
             $response['status']['code'] = 200;
             $response['status']['msg'] = "Success";
         }
@@ -1652,4 +1653,5 @@ class CalenderController extends Controller
 //        
 //        
 //    }
+    
 }

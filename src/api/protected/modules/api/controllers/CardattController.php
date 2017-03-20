@@ -269,8 +269,8 @@ class CardattController extends Controller
                 $absent_studnets = $std->getStudentNotInAdmission($student_id_array,$school_id,$all_std_admission);
                 $attendence = new Attendances();
                 $attendence->deleteAttendanceStudent($school_id, $date,$all_std_id);
-
-
+                $batch_ids = $std->getStudentBatchIds($all_std_id);
+                
                 $leaveStudent = new ApplyLeaveStudents();
                 $leave_today = $leaveStudent->getallleaveStudentsDate($date,$school_id);
                 $notification_send = new NotificationSend();
@@ -341,6 +341,13 @@ class CardattController extends Controller
 
 
                 }
+                if($batch_ids)
+                {
+                    foreach($batch_ids as $batch)
+                    {
+                        $attendence->Register($batch->batch_id, $date);
+                    }    
+                }    
                 $response['success'] = true;
                 $response['msg'] = "Successfully Inseted";
             }   

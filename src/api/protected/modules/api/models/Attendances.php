@@ -1217,7 +1217,65 @@ class Attendances extends CActiveRecord {
         
     }
    
-          
+    public function Register($batch_id,$date)
+    {
+        $criteria = new CDbCriteria;
+        $criteria->select="t.student_id,t.forenoon,t.afternoon,t.is_leave";
+        $criteria->compare('month_date', $date);
+        $criteria->compare('batch_id', $batch_id);
+        $data = $this->findAll($criteria);
+        
+        $stdobj = new Students();
+        $students = $stdobj->getStudentByBatch($batch_id);
+        
+        $present = $total = count($students);
+        $late = 0;
+        $absent = 0;
+        $leave = 0;
+        foreach($data as $value)
+        {
+            if($value->is_leave == 1)
+            {
+                $leave++;
+            }    
+            else if($value->forenoon == 1 && $value->afternoon == 1)
+            {
+                $absent++;
+            }
+            else if($value->forenoon == 1 || $value->afternoon == 1)
+            {
+                $late++;
+            }
+        }
+        $present = $present - $absent - $leave;
+        
+        $att_register_obj = new AttendanceRegisters();
+        $att_register_data = $att_register_obj->getRegisterData($date, $batch_id);
+
+        if ($att_register_data)
+        {
+            $att_register = $att_register_obj->findByPk($att_register_data->id);
+        } 
+        else
+        {
+            $att_register = new AttendanceRegisters();
+            $att_register->attendance_date = $date;
+            $att_register->created_at = date("Y-m-d H:i:s");
+        }
+        
+        $att_register->total = $total;
+        $att_register->batch_id = $batch_id;
+        $att_register->employee_id = Yii::app()->user->profileId;
+        $att_register->present = $present;
+        $att_register->absent = $absent;
+        $att_register->late = $late;
+        $att_register->leave = $leave;
+        $att_register->updated_at = date("Y-m-d H:i:s");
+        $att_register->school_id = Yii::app()->user->schoolId;
+        $att_register->save();
+        
+        
+    }        
     
     public function getBatchStudentTodayAttendence($batch_id,$date)
     {

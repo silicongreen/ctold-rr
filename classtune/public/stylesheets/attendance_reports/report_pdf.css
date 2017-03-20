@@ -3,6 +3,7 @@
 #page-yield {
     width:800px;
     margin: 0 auto;
+    float: left;
     overflow: hidden;
 }
 
@@ -63,19 +64,34 @@ tr.odd{
 
 .even td{
 
-    padding: 12px 12px 12px 15px;
+    padding: 8px 8px 8px 11px;
     border: 1px solid #ADACAB;
     border-right: 0px solid #fff;
     border-top: 0px solid #fff;
+    font-size:12px;
+    text-align: center;
 
 }
 
 .odd td{
-    padding: 12px 12px 12px 15px;
+    padding: 8px 8px 8px 11px;
     border: 1px solid #ADACAB;
     border-right: 0px solid #fff;
     border-top: 0px solid #fff;
+    font-size:12px;
+    text-align: center;
 
+}
+.table-header td{
+    padding: 8px 8px 8px 11px;
+    border-top: 1px solid #ADACAB;
+    border-left: 1px solid #ADACAB;
+    border-right: 1px solid #ADACAB;
+    border-bottom: 1px solid #ADACAB;
+    color:black;
+    font-weight: bold;
+    font-size:12px;
+    text-align: center;
 }
 
 table#pdf-table{

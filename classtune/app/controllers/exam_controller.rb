@@ -906,7 +906,7 @@ class ExamController < ApplicationController
       @students=@batch.students.by_first_name
     end
     
-    @students.sort! { |a, b|  a.class_roll_no <=> b.class_roll_no }
+    @students.sort! { |a, b|  a.class_roll_no.to_i <=> b.class_roll_no.to_i }
     
     @assigned_employee=@batch.employees
     general_subjects = Subject.find_all_by_batch_id(@batch.id, :conditions=>"elective_group_id IS NULL")
@@ -921,7 +921,7 @@ class ExamController < ApplicationController
     end
     
     @subjects = general_subjects + elective_subjects
-    @subjects.sort! { |a, b|  a.priority <=> b.priority }
+    @subjects.sort! { |a, b|  a.priority.to_i <=> b.priority.to_i }
     @exams = []
     @subjects.each do |sub|
       exam = Exam.find_by_exam_group_id_and_subject_id(@exam_group.id,sub.id)
@@ -987,7 +987,7 @@ class ExamController < ApplicationController
    
     
     @subjects = general_subjects + elective_subjects
-    @subjects.sort! { |a, b|  a.priority <=> b.priority }
+    @subjects.sort! { |a, b|  a.priority.to_i <=> b.priority.to_i }
     @exams = []
     @subjects.each do |sub|
       exam = Exam.find_by_exam_group_id_and_subject_id(@exam_group.id,sub.id)

@@ -86,6 +86,7 @@
               <td class="col-pdf1"><%= t('total') %></td>
               <td class="col-pdf1"><%= t('percentage') %></td>
           </tr>
+          <% extender = 0 %>
           <% std_count = 0 %>
           <% @students.each_with_index do |student,i| %>
               <%  std_count = std_count+1; %>

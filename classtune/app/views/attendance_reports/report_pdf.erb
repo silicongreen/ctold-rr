@@ -86,7 +86,22 @@
               <td class="col-pdf1"><%= t('total') %></td>
               <td class="col-pdf1"><%= t('percentage') %></td>
           </tr>
+          <% std_count = 0 %>
           <% @students.each_with_index do |student,i| %>
+              <%  std_count = std_count+1; %>
+              <% if std_count>22 && extender ==0 %>
+                  <% std_count = 0 %>
+                  <% extender = 1 %>
+                  <tr class="page-break">
+                      <td colspan="100">&nbsp;</td>
+                  </tr>    
+              <% elsif std_count>25 && extender ==1 %>
+                  <% std_count = 0 %>
+                  <% extender = 1 %>
+                  <tr class="page-break">
+                      <td colspan="100">&nbsp;</td>
+                  </tr> 
+              <% end %>
             <% c =cycle('even','odd ') %>
             <tr class="<%= "#{c}" %>">
               <td class="col-pdf1"><%= student.class_roll_no %></td>

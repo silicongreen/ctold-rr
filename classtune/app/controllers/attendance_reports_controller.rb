@@ -646,7 +646,7 @@ class AttendanceReportsController < ApplicationController
     #if request.post?
     @config = Configuration.find_by_config_key('StudentAttendanceType')
     @batch = Batch.find(params[:batch])
-    @students = @batch.students.by_first_name
+    @students = @batch.students.by_class_roll_no
     @start_date = (params[:start_date]).to_date
     @end_date = (params[:end_date]).to_date
     @range = (params[:range])

@@ -1044,6 +1044,23 @@ td.td-align-left
 {
     text-align: left !important;
 }
+table tr td.comment_section_others
+{
+   height: 322px !important;   
+}
+table tr td.comment_section_quarter
+{
+   height: 168px !important;   
+}
 
+
+table tr td.comment_section_final
+{
+   height: 92px !important;   
+}
+table tr td.promoted_section_final
+{
+   height: 50px !important;   
+}
 
 

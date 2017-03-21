@@ -168,15 +168,13 @@
                         <table id="pdf-table" class="margin-top-bottom-10 font-size-2" width="100%" >
 
                                 <tr class="table-header">
-                                    <td class="col-pdf">
+                                    <td class="col-pdf comment_section_quarter" valign="top">
                                         <% if !@exam_comment.blank? %>
                                         
                                           Class Teacher Comments&nbsp:&nbsp;<%= @exam_comment.comments %>
-                                          <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
                                         <% else %> 
                                        
-                                          Class Teacher Comments&nbsp:&nbsp; 
-                                          &nbsp;<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+                                          Class Teacher Comments&nbsp:&nbsp;
                                         <% end %>
                                     </td>                      
                                 </tr>

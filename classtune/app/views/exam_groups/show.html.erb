@@ -186,7 +186,7 @@ no<%-# Champs21
                   styletext = "style='display:none;'" 
                 end 
               %>
-              <% if exam.no_date.blank? %>
+              <% if exam.no_date.to_i == 0 %>
                 <td class="col-2" <%= styletext %> ><%= I18n.l(exam.end_time.to_date,:format =>:long) %></td>
                 <td class="col-1" <%= styletext %> ><%= I18n.l(exam.start_time,:format=>"%I:%M %p") %></td>
                 <td class="col-1" <%= styletext %> ><%= I18n.l(exam.end_time,:format=>"%I:%M %p") %></td>

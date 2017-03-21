@@ -62,7 +62,7 @@
                 <td><%= link_to @exam_group.batch.full_name, [@exam_group, exam], :target => "_blank" %></td>
                 <td><%= link_to @exam_group.name, [@exam_group, exam], :target => "_blank" %></td>
                 <td><%= link_to exam.subject.name, [@exam_group, exam], :target => "_blank" %></td>
-                <% if exam.subject.no_exams.blank? and exam.no_date.blank? %>
+                <% if exam.subject.no_exams.blank? and exam.no_date.to_i == 0 %>
                   <td><%= I18n.l(exam.start_time,:format=>"%d %b,%Y %I:%M %p") %></td>
                   <td><%= I18n.l(exam.end_time,:format=>"%d %b,%y %I:%M %p") %></td>
                 <% else %>

@@ -69,7 +69,7 @@ module MultiSchool
     cache_models_hash=YAML.load_file(File.dirname(__FILE__)+"/../config/multi_school_models_cache.yml")
     models_hash=YAML.load_file(File.dirname(__FILE__)+"/../config/multi_school_models.yml")
     classes_hash=YAML.load_file(File.dirname(__FILE__)+"/../config/multi_school_classes.yml")
-    setup_multi_school_for_models_cache(cache_models_hash["multi_school_models_cache"]) unless cache_models_hash["multi_school_models_cache"].nil?
+#    setup_multi_school_for_models_cache(cache_models_hash["multi_school_models_cache"]) unless cache_models_hash["multi_school_models_cache"].nil?
     setup_multi_school_for_models(models_hash["multi_school_models"]) unless models_hash["multi_school_models"].nil?
     setup_multi_school_for_classes(classes_hash["multi_school_classes"]) unless classes_hash["multi_school_classes"].nil?
   end

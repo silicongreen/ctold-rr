@@ -766,7 +766,7 @@ class Subjects extends CActiveRecord
        
         $result['exam_id'] = $exam->id;
         $result['exam_name'] = $exam['Examgroup']->name;
-        if($exam->no_date)
+        if($exam->no_date == 1)
         {
             $result['exam_date'] = "N/A";
         }
@@ -853,7 +853,7 @@ class Subjects extends CActiveRecord
                     
                     $progress['exam'][$i]['exam_id'] = $exam_details->id;
                     $progress['exam'][$i]['exam_name'] = $exam_details['Examgroup']->name;
-                    if($exam_details->no_date)
+                    if($exam_details->no_date == 1)
                     {
                         $progress['exam'][$i]['exam_date'] = "N/A";
                     }
@@ -970,7 +970,7 @@ class Subjects extends CActiveRecord
                             $report_class_test_merge['subject_exam']['class_test'][$i]['exam_name'] = $exam_details['Examgroup']->name;
                             $report_class_test_merge['subject_exam']['class_test'][$i]['exam_group_id'] = $exam_details['Examgroup']->id;
                             
-                            if($exam_details->no_date)
+                            if($exam_details->no_date == 1)
                             {
                                 $report_class_test_merge['subject_exam']['class_test'][$i]['exam_date'] = "N/A";
                             }
@@ -1020,7 +1020,7 @@ class Subjects extends CActiveRecord
                             $report_class_test_merge['subject_exam']['project'][$j]['exam_name'] = $exam_details['Examgroup']->name;
                             $report_class_test_merge['subject_exam']['project'][$i]['exam_group_id'] = $exam_details['Examgroup']->id;
                             
-                            if($exam_details->no_date)
+                            if($exam_details->no_date == 1)
                             {
                                 $report_class_test_merge['subject_exam']['project'][$j]['exam_date'] = "N/A";
                             }

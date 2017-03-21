@@ -380,7 +380,7 @@ class Exams extends CActiveRecord
                 $return[$i]['subject'] = $value['Subjects']->name;
                 $return[$i]['no_exams'] = $value['Subjects']->no_exams;
                 $return[$i]['subject_icon'] = $value['Subjects']->icon_number;
-                if($value->no_date)
+                if($value->no_date == 1)
                 {
                     $return[$i]['start_time'] = "N/A";
                     $return[$i]['end_time'] = "N/A";
@@ -583,7 +583,7 @@ class Exams extends CActiveRecord
             $_data['exam_subject_id'] = $rows->subject_id;
             $_data['exam_subject_name'] = $rows->Subjects->name;
             $_data['no_exams'] = $rows->Subjects->no_exams;
-            if($rows->no_date)
+            if($rows->no_date == 1)
             {
                 $_data['exam_start_time'] = "N/A";
                 $_data['exam_end_time'] = "N/A";

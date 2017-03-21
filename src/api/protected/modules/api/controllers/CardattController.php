@@ -341,11 +341,16 @@ class CardattController extends Controller
 
 
                 }
+                
+                $batchches = array();
                 if($batch_ids)
                 {
                     foreach($batch_ids as $batch)
                     {
-                        $attendence->Register($batch->batch_id, $date);
+                        if(!in_array($batch->batch_id, $batchches))
+                        {
+                            $attendence->Register($batch->batch_id, $date);
+                        }
                     }    
                 }    
                 $response['success'] = true;

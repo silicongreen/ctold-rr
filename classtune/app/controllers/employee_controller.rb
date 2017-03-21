@@ -26,7 +26,23 @@ class EmployeeController < ApplicationController
       :view_payslip ]
   before_filter :limit_employee_profile_access , :only => [:profile,:profile_pdf]
 
-
+  def late_employee
+    @today = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d')
+    @employee = Employee.all
+    @emp_data = []    
+    @employee.each do |emp|
+      @emp_set = EmployeeSetting.find_by_employee_id(emp.id)
+      unless @emp_set.blank?
+        @emp_attendance = CardAttendance.find(:first,:select=>'max(time) as maxtime,min(time) as mintime,date',:conditions=>{:profile_id=>emp.id,:date => @today,:type=>1})
+        if @emp_attendance.blank?
+          
+        elsif @emp_attendance.mintime > @emp_set.start_time
+          @emp_data << emp
+        end  
+      end      
+    end 
+    render :layout => false
+  end
   def employee_settings
     @employee = Employee.find(params[:id])
     @employee_settings = EmployeeSetting.find_by_employee_id(params[:id])

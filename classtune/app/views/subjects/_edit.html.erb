@@ -82,7 +82,7 @@
     <% if @batch and (@batch.cwa_enabled? or @batch.gpa_enabled?) %>
       <div class="label-field-pair" style="display: none;">
         <div class="label-container"><label>Credit Hours</label></div>
-        <div class="input-container"> <%= f.text_field :credit_hours %></div>
+        <div class="input-container"> <%= f.text_field :credit_hours, :value => "100" %></div>
       </div>
     <% end %>
 

@@ -27,6 +27,41 @@ class EmployeeController < ApplicationController
   before_filter :limit_employee_profile_access , :only => [:profile,:profile_pdf]
 
 
+  def employee_settings
+    @employee = Employee.find(params[:id])
+    @employee_settings = EmployeeSetting.find_by_employee_id(params[:id])
+    render :partial => "employee_settings"
+  end
+  
+  def edit_employee_settings
+    @employee = Employee.find(params[:id])
+    @employee_settings = EmployeeSetting.find_by_employee_id(params[:id])
+    @default_weekdays = WeekdaySet.default_weekdays
+    render :update do |page|
+      page.replace_html 'profile-infos', :partial => 'edit_employee_settings'
+    end
+  end
+  
+  def employee_setting_update
+    now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
+    @employee = Employee.find(params[:id])
+    @employee_settings = EmployeeSetting.find_by_employee_id(params[:id])
+    weekdays = params[:weekdays].join(",")
+  
+    unless @employee_settings.nil? 
+      @employee_settings.update_attributes(params[:employee_setting])
+      @employee_settings.update_attribute("weekdays",weekdays)
+    else
+      @employee_settings = EmployeeSetting.new(params[:employee_setting])
+      @employee_settings.weekdays = weekdays  
+      @employee_settings.employee_id = params[:id]
+      @employee_settings.save
+    end   
+    render :update do |page|
+      page.replace_html 'profile-infos',:partial => "employee_settings"
+    end
+  end
+  
   def add_category
     @categories = EmployeeCategory.find(:all,:order => "name asc",:conditions=>'status = 1')
     @inactive_categories = EmployeeCategory.find(:all,:conditions=>'status = 0')

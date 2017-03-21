@@ -1,0 +1,46 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+
+  <table width="700">
+
+          <tr class="odd left">
+              <td>Office Start Time</td>
+              <td class="right"><%= @employee_settings.start_time.strftime("%I:%M %p") unless @employee_settings.nil? %></td>
+          </tr>
+          <tr class="odd left">
+              <td>Office Hours</td>
+              <td class="right"><%= @employee_settings.office_hours.strftime("%H:%M") unless @employee_settings.nil? %></td>
+          </tr>
+          <tr class="odd left">
+              <td>Weekdays</td>
+              <td class="right"><% unless @employee_settings.nil? %>
+                <% weekdays = @employee_settings.weekdays.split(",") %>
+                <% weekdays.each do |weekday| %>
+                  <%= WeekdaySet.weekday_name(weekday) %>&nbsp;&nbsp;
+                <% end %> 
+                  
+                <% end %></td>
+          </tr>
+  </table>
+  <% if permitted_to? :edit_employee_settings,:employee %>
+        <div  style="margin:0px 0px 10px 0px; float:left;">
+          <%=  link_to_remote "&nbsp;#{t('edit_text')}&nbsp;",{:url =>{:action=>"edit_employee_settings", :id=>@employee.id  }},:class=>"user_button"%>
+        </div>
+<%end%>

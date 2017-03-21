@@ -1443,7 +1443,10 @@ authorization do
       :search_ajax,
       :employee_leave_count_edit,
       :employee_leave_count_update,
-      :view_attendance
+      :view_attendance,
+      :employee_setting_update,
+      :edit_employee_settings,
+      :employee_settings
     ]
     has_permission_on [:employee_attendances],
       :to => [
@@ -2652,7 +2655,10 @@ authorization do
       :employee_individual_payslip_pdf,
       :employee_leave_count_edit,
       :employee_leave_count_update,
-      :view_employee_payslip
+      :view_employee_payslip,
+      :employee_setting_update,
+      :edit_employee_settings,
+      :employee_settings
 
     ]
     has_permission_on [:calendar], :to => [:event_delete, :event_list,:edit_acacal,:addacacal,:cancel_acacal]

@@ -1,0 +1,71 @@
+<% if !@exam_comment.blank? and (@current_user.student? or @current_user.parent? ) %>
+<table id="pdf-table" class="margin-top-20 class-text-align-left" width="100%" cellspacing="0">
+  <% 
+    comments = ""
+    parcents = ""
+    if !@exam_comment.blank?
+      all_comments = @exam_comment.comments
+      if !all_comments.blank?
+        all_comments_array = all_comments.split("|")
+        comments = all_comments_array[0]
+        %>
+        <tr class="even">
+            <td>Comments</td><td><%= comments %></td>
+        </tr> 
+          <% 
+              if !all_comments_array[1].nil? 
+              parcents = all_comments_array[1]
+          %>
+            <tr class="even">
+                <td>Attendance</td><td><%= parcents %></td>
+            </tr>
+         <% end %>
+      <% end %> 
+    <% end %>         
+
+  </table>
+<% end %>   
+
+<% unless @current_user.student? or @current_user.parent? %>
+
+  <% 
+    comments = ""
+    parcents = ""
+    if !@exam_comment.blank?
+      all_comments = @exam_comment.comments
+      if !all_comments.blank?
+        all_comments_array = all_comments.split("|")
+        comments = all_comments_array[0]
+        
+        if !all_comments_array[1].nil?
+          parcents = all_comments_array[1].to_s
+        end
+      end
+    end
+  %>
+   <table id="pdf-table" class="margin-top-20 class-text-align-left" width="100%" cellspacing="0">
+        <tr class="even">
+            <td>Comments</td><td><input type="text" value="<%=  comments %>" size="60" style="height:30px;" id="result" name="result"></td>
+        </tr>
+      
+        <tr class="even">
+            <td>Attendance</td><td><input type="text" value="<%=  parcents %>" size="60" style="height:30px;" id="promotion_status" name="promotion_status"></td>
+        </tr>
+        
+  </table>
+  <p><%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader2", :style =>"display: none;" ) %><input type="button" value="save" name="exam_comment_save_all" id="exam_comment_save_all" /></p>
+
+<% end %>
+  
+<script>
+  var jj = jQuery.noConflict();
+    jj(document).ready(function() {
+    jj('#exam_comment_save_all').click(function(){
+    Element.show('loader2')
+    new Ajax.Request('/exam/generated_report5',
+    {asynchronous:true, evalScripts:true,
+      parameters:'comments='+jj('#result').val()+"|"+jj('#promotion_status').val()+'&student=<%= @student.id %>&type=<%= @type %>&connect_exam=<%= @connect_exam %>',onSuccess:function(request){Element.hide('loader2')}
+    }); 
+    });   
+});     
+</script>

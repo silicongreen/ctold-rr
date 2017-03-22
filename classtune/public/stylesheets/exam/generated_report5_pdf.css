@@ -1129,18 +1129,18 @@ table tr td.promoted_section_final
 
 .sfx-with-comment table#pdf-table tr.table-header td
 {
-    padding: 4px;
+    padding: 3px;
     font-size:18px;
 }
 
 .sfx-with-comment table#pdf-table tr.even td
 {
-    padding: 4px;
+    padding: 3px;
     font-size:18px;
 }
 .sfx-with-comment table#pdf-table tr.odd td
 {
-    padding: 4px;
+    padding: 3px;
     font-size:18px;
 }
 

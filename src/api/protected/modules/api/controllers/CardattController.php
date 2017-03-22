@@ -342,6 +342,7 @@ class CardattController extends Controller
 
                 }
                 
+                $user = new Users();
                 $batchches = array();
                 if($batch_ids)
                 {
@@ -349,7 +350,7 @@ class CardattController extends Controller
                     {
                         if(!in_array($batch->batch_id, $batchches))
                         {
-                            $attendence->Register($batch->batch_id, $date);
+                            $attendence->Register($batch->batch_id, $date, $school_id);
                         }
                     }    
                 }    

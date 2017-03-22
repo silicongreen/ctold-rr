@@ -1217,7 +1217,7 @@ class Attendances extends CActiveRecord {
         
     }
    
-    public function Register($batch_id,$date)
+    public function Register($batch_id,$date,$school_id = 0)
     {
         $criteria = new CDbCriteria;
         $criteria->select="t.student_id,t.forenoon,t.afternoon,t.is_leave";
@@ -1265,13 +1265,22 @@ class Attendances extends CActiveRecord {
         
         $att_register->total = $total;
         $att_register->batch_id = $batch_id;
-        $att_register->employee_id = Yii::app()->user->profileId;
+        if($school_id == 0)
+        {
+            $att_register->employee_id = Yii::app()->user->profileId;
+            $att_register->school_id = Yii::app()->user->schoolId;
+        }
+        else
+        {
+            $att_register->employee_id = 0;
+            $att_register->school_id = $school_id; 
+        }    
         $att_register->present = $present;
         $att_register->absent = $absent;
         $att_register->late = $late;
         $att_register->leave = $leave;
         $att_register->updated_at = date("Y-m-d H:i:s");
-        $att_register->school_id = Yii::app()->user->schoolId;
+        
         $att_register->save();
         
         

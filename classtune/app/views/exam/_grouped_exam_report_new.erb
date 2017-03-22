@@ -82,6 +82,8 @@
               <%= render  :partial=>"/connect_exam/baf_shaheen/exam_comments" %>  
           <% elsif MultiSchool.current_school.id == 325 %>
               <%= render  :partial=>"/connect_exam/mirpur_english/exam_comments" %>
+          <% elsif MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 324 %>
+              <%= render  :partial=>"/connect_exam/sfx/exam_comments" %>
           <% else %> 
               <%= render  :partial=>"/connect_exam/exam_comments" %>  
           <% end %>

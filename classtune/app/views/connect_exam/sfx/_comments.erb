@@ -29,6 +29,7 @@ if !@report_data['total'].blank? and @report_data['total'].to_i>0 and !@report_d
         <% avg = "N/A" %>
         <% unless parcents.blank? %>
           <% avg = (parcents.to_f/90)*100 %>
+          <% avg = avg.round().to_i %>
           
         <% end %>
         <td class="no-warp" colspan="1"><%= avg %></td>

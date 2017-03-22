@@ -1064,19 +1064,19 @@ table tr td.promoted_section_final
 }
 .sfx-with-comment table#pdf-table tr.table-header td
 {
-    padding: 3px;
-    font-size:18px;
+    padding: 5px;
+    font-size:19px;
 }
 
 .sfx-with-comment table#pdf-table tr.even td
 {
-    padding: 3px;
-    font-size:18px;
+    padding: 5px;
+    font-size:19px;
 }
 .sfx-with-comment table#pdf-table tr.odd td
 {
-    padding: 3px;
-    font-size:18px;
+    padding: 5px;
+    font-size:19px;
 }
 
 

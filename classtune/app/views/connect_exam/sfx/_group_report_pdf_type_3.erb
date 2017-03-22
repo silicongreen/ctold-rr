@@ -1,5 +1,5 @@
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
-  <div id="page-yield"  class="available_sections1 sfx">
+  <div id="page-yield"  class="available_sections1 sfx sfx-with-comment">
       
       
       <h4 align="center">&nbsp;</h4>
@@ -33,10 +33,9 @@
                       <% end %>
 
                       <td class="col-pdf">Total (<%= total_mark_of_allexam %>)</td>
+                      <td class="col-pdf">Highest Marks</td>
                       <td class="col-pdf">Grade</td>
                       <td class="col-pdf">Remarks Code</td>
-                      <td class="col-pdf">Highest Marks</td>
-                      <%#*<td class="col-pdf">Grade</td>%>
                   </tr>
 
                   <% total_parcent = 0 %>
@@ -109,6 +108,7 @@
 
                           <% if full_mark.to_f > 0 %>
                             <td class="col-pdf"><%= total_mark.to_f.round.to_i %></td>
+                            <td class="col-pdf"><% if heighst_mark.to_f.round.to_i > 0 %><%= heighst_mark.to_f.round.to_i %><% end %> </td>
                             <td class="col-pdf">
                             <% if grade_i %>
                               <%= "I" %>
@@ -130,7 +130,7 @@
                               <% end %>
                             <% end %>
                             </td>
-                            <td class="col-pdf"><% if heighst_mark.to_f.round.to_i > 0 %><%= heighst_mark.to_f.round.to_i %><% end %> </td>
+                            
                             
 
                             <% total_parcent= total_parcent+main_mark %>

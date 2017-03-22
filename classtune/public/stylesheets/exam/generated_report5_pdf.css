@@ -1125,21 +1125,23 @@ table tr td.promoted_section_final
    height: 50px !important;   
 }
 
+//new CSS
+
 .sfx-with-comment table#pdf-table tr.table-header td
 {
-    padding: 5px;
-    font-size:20px;
+    padding: 4px;
+    font-size:18px;
 }
 
 .sfx-with-comment table#pdf-table tr.even td
 {
-    padding: 5px;
-    font-size:20px;
+    padding: 4px;
+    font-size:18px;
 }
 .sfx-with-comment table#pdf-table tr.odd td
 {
-    padding: 5px;
-    font-size:20px;
+    padding: 4px;
+    font-size:18px;
 }
 
 

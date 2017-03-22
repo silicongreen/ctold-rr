@@ -26,16 +26,16 @@
                       <td class="col-pdf"><%= "Subject" %></b></td>
                       <% unless @report_data['report']['exams'].blank? %>  
                         <% @report_data['report']['exams'].each do |report| %>
-                          <td class="col-pdf">
-                              <%= report['exam_name'] %><% unless @exam_marks[report['exam_id'].to_s].blank?  %><% total_mark_of_allexam = total_mark_of_allexam+@exam_marks[report['exam_id'].to_s].to_i  %> (<%= @exam_marks[report['exam_id'].to_s] %>)<% end %>
-                          </td> 
+                         <% unless @exam_marks[report['exam_id'].to_s].blank?  %><% total_mark_of_allexam = total_mark_of_allexam+@exam_marks[report['exam_id'].to_s].to_i  %><% end %>
+                         
                         <% end %>
                       <% end %>
 
                       <td class="col-pdf">Total (<%= total_mark_of_allexam %>)</td>
+                      <td class="col-pdf">Highest Marks</td>
                       <td class="col-pdf">Grade</td>
                       <td class="col-pdf">Remarks Code</td>
-                      <td class="col-pdf">Highest Marks</td>
+                     
                       <%#*<td class="col-pdf">Grade</td>%>
                   </tr>
 
@@ -60,17 +60,16 @@
                               <td class="col-pdf">
                                       <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                                         <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i > -1 %>
-                                          <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %>
                                           <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                         <% elsif report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i == -1 %>
-                                            N/A
+                                           
                                         <% grade_i= true %>
                                         <% elsif report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i == -2 %>
-                                            N/A
+                                           
                                             <% grade_w = true %>
                                         <% end %>
                                       <% else %>
-                                        N/A
+                                       
                                       <% end %>
                                       <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
                                         <% exam_marks = exam_marks+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
@@ -109,6 +108,7 @@
 
                           <% if full_mark.to_f > 0 %>
                             <td class="col-pdf"><%= total_mark.to_f.round.to_i %></td>
+                            <td class="col-pdf"><%= heighst_mark.to_f.round.to_i %> </td>
                             <td class="col-pdf">
                             <% if grade_i %>
                               <%= "I" %>
@@ -130,13 +130,12 @@
                               <% end %>
                             <% end %>
                             </td>
-                            <td class="col-pdf"><%= heighst_mark.to_f.round.to_i %> </td>
+                            
                             
 
                             <% total_parcent= total_parcent+main_mark %>
                             <% total_subject = total_subject+1 %>
                           <% else  %>
-                            <td class="col-pdf">N/A</td>
                             <td class="col-pdf">N/A</td>
                             <td class="col-pdf">N/A</td>
                             <td class="col-pdf">N/A</td>
@@ -148,6 +147,12 @@
                   <% end %>     
 
               </table>
+              <%
+                avg = 0
+                if !@report_data['total'].blank? and @report_data['total'].to_i>0 and !@report_data['present'].blank? and @report_data['present'].to_i>0
+                  avg = (@report_data['present'].to_f/@report_data['total'].to_f)*100  
+                end
+              %>
               <table id="pdf-table" class="margin-top-20 td-align-left text-size-18" width="100%" cellspacing="0">
                 <tr class="even">
                   <td class="no-warp" colspan="1"><b>School begins On</b></td>

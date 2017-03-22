@@ -503,11 +503,48 @@ class ExamController < ApplicationController
     end
   end
   def connect_exam_subject_comments
+    @employee_subjects=[]
+    
+    
     exam_subject_id = params[:id]
     exam_subject_id_array = exam_subject_id.split("|")
     @exam_connect = ExamConnect.find_by_id(exam_subject_id_array[0]) 
+    
+     
+    
+    
     @batch = Batch.find(@exam_connect.batch_id)
-    @exam_subject = Subject.find_by_id(exam_subject_id_array[1]) 
+    @exam_subject = Subject.find_by_id(exam_subject_id_array[1])
+    
+    @employee_subjects= @current_user.employee_record.subjects.map { |n| n.id} if @current_user.employee?
+    unless @employee_subjects.include?(@exam_subject.id) or @current_user.admin? or @current_user.privileges.map{|p| p.name}.include?('ExaminationControl') or @current_user.privileges.map{|p| p.name}.include?('EnterResults')
+      flash[:notice] = "#{t('flash_msg6')}"
+      redirect_to :controller=>"user", :action=>"dashboard"
+    end
+    
+    @exams = []
+    
+    if @exam_subject.no_exams.blank?
+      @group_exam = GroupedExam.find_all_by_connect_exam_id(@exam_connect.id)
+
+      unless @group_exam.blank?
+        @group_exam.each do |group_exam|
+          exam_group = ExamGroup.find(group_exam.exam_group_id)
+          unless exam_group.blank?
+             exam = Exam.find_by_exam_group_id_and_subject_id(exam_group.id,@exam_subject.id)
+             unless exam.blank?
+               @exams << exam
+             end
+          end  
+        end
+      else
+        flash[:notice] = "Something Went Wrong"
+        redirect_to :controller=>"user", :action=>"dashboard"
+      end 
+    end    
+    
+    
+    
     is_elective = @exam_subject.elective_group_id
     if is_elective == nil
       @students = @batch.students.by_roll_number_name
@@ -527,8 +564,41 @@ class ExamController < ApplicationController
       @ordered_students.each do|s|
         @students.push s[3]
       end
-    end  
+    end 
+    
+    @config = Configuration.get_config_value('ExamResultType') || 'Marks'
+    @grades = @batch.grading_level_list
+    
     if request.post?
+      unless params[:exam_score].blank?
+        params[:exam_score].each_pair do |exam_id, stdetails|
+          @exam = Exam.find_by_id(exam_id)
+          stdetails.each_pair do |student_id, details|
+            @exam_score = ExamScore.find(:first, :conditions => {:exam_id => @exam.id, :student_id => student_id} )
+            if @exam_score.nil?
+              if details[:marks].to_f <= @exam.maximum_marks.to_f
+                ExamScore.create do |score|
+                  score.exam_id          = @exam.id
+                  score.student_id       = student_id
+                  score.marks            = details[:marks]
+                end
+              else
+                @error = true
+              end
+            else
+              if details[:marks].to_f <= @exam.maximum_marks.to_f
+                if @exam_score.update_attributes(details)
+                else
+                  flash[:warn_notice] = "#{t('flash4')}"
+                  @error = nil
+                end
+              else
+                @error = true
+              end
+            end
+          end
+        end
+      end
       params[:exam].each_pair do |student_id, details|
         @exam_comments = ExamConnectSubjectComment.find(:first, :conditions => {:exam_connect_id=>@exam_connect.id,:subject_id => @exam_subject.id, :student_id => student_id} )
         if @exam_comments.nil?

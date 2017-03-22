@@ -31,7 +31,8 @@ class MarksController < ApplicationController
   end
   def connect_exam
     @today = @local_tzone_time.to_date
-    @exam_connect = ExamConnect.find(:all,:conditions => ["published_date > ?",@today] )
+    @exam_connect = ExamConnect.find(:all)
+#    @exam_connect = ExamConnect.find(:all,:conditions => ["published_date > ?",@today] )
     @batches = []
     @exam_connect.each do |exam_connect|
       unless @batches.include?(exam_connect.batch)

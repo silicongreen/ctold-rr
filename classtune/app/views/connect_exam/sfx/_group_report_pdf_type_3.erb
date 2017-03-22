@@ -23,7 +23,7 @@
                   <% c = 'even'  %>
                   <% total_mark_of_allexam = 0 %>
                   <tr class="table-header">
-                      <td class="col-pdf"><%= "Subject" %></b></td>
+                      <td class="col-pdf td-align-left"><%= "Subject" %></b></td>
                       <% unless @report_data['report']['exams'].blank? %>  
                         <% @report_data['report']['exams'].each do |report| %>
                           <td class="col-pdf">
@@ -53,7 +53,7 @@
                           <% grade_i = false %>
                           <% grade_w = false %>
 
-                          <td class="col-pdf"><%= subjects['name'] %></td>
+                          <td class="col-pdf td-align-left"><%= subjects['name'] %></td>
                           <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>
                               <td class="col-pdf">

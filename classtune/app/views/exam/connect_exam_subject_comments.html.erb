@@ -89,7 +89,7 @@
                   <div class="text-input-bg2">
                     <%= text_field_tag "exam[#{student.id}][comments]", exam_comment, :size => '30' %></div>
                   </div>
-                  <div class="date"><span class="themed_text"><%=  student.class_roll_no.to_s+" : "+student.full_name %></span></div>
+                  <div class="date2"><span class="themed_text"><%=  student.class_roll_no.to_s+" : "+student.full_name %></span></div>
               </td>
               <% unless @exams.blank? %>
               <% @exams.each do |exam| %>
@@ -102,7 +102,7 @@
                           <%= text_field_tag "exam_score[#{exam.id}][#{student.id}][marks]", @exam_score.marks, :size => '4', :class=>"marks-box" %>
                        </div>
                     </div>
-                    <div class="date2"><span class="themed_text"><%=  student.class_roll_no.to_s+" : "+student.full_name %><div> <%= exam.name %></div></span></div>
+                    <div class="date" ><span class="themed_text"><%=  student.class_roll_no.to_s+" : "+student.full_name %><div> <%= exam.name %></div></span></div>
                 </td>
               <% end %>
               <% end %>  

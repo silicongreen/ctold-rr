@@ -28,10 +28,10 @@ if !@report_data['total'].blank? and @report_data['total'].to_i>0 and !@report_d
         <td class="no-warp" colspan="1">&nbsp;Attendance Percentage</td>
         <% avg = "N/A" %>
         <% unless parcents.blank? %>
-           <% parcent = parcents.to_i %>
-          <% avg = parcent/90 %>
+          <% avg = (parcents.to_i/90)*100 %>
+          <% avg = avg.round().to_i %>
         <% end %>
-        <td class="no-warp" colspan="1"><%= avg %>&nbsp;<%= parcents %></td>
+        <td class="no-warp" colspan="1"><%= avg %></td>
     </tr>
     <tr class="even">
         <td class="no-warp" colspan="1">&nbsp;Result Issue Date</td>

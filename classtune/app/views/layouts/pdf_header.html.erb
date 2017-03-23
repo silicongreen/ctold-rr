@@ -117,6 +117,10 @@
               <h4 align="center"><%=Configuration.get_config_value('InstitutionName'); %></h4>
               <h5 align="center">English Medium - Banani Branch</h5>
               <h5 align="center">Progress Report</h5>
+              <% unless @connect_exam_obj.blank? and @batch.blank? %>
+                <h5 align="center"><%= @batch.course.course_name %></h5>
+                <h5 align="center"><%= @connect_exam_obj.name %></h5>
+              <% end %>
         </td>
     </table>   
 </div>  

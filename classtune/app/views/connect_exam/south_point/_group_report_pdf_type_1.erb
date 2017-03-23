@@ -1,8 +1,7 @@
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
   <div id="page-yield"  class="available_sections1 st_joseph_bg">
 
-      <h5 align="center"><%= @batch.course.course_name %></h5>
-      <h5 align="center"><%= @connect_exam_obj.name %></h5>
+      
       <table  width="100%" >
             <thead>
                 <tr>
@@ -12,7 +11,7 @@
                     <td align="right"><b>Section Name. : <%= @batch.course.section_name %></b></td>
                 </tr>
             </thead>    
-      </table
+      </table>
 
 
       <div class ="current_batch" style="margin-left:0px;">

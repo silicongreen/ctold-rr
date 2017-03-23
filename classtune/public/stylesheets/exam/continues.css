@@ -1078,5 +1078,9 @@ table tr td.promoted_section_final
     padding: 4px;
     font-size:19px;
 }
+.st_joseph_bg table.big_font_south tr td
+{
+    font-size: 13px;
+}
 
 

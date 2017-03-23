@@ -1108,7 +1108,7 @@ td.td-align-left
 }
 table tr td.comment_section_others
 {
-   height: 332px !important;   
+   height: 200px !important;   
 }
 table tr td.comment_section_quarter
 {
@@ -1147,6 +1147,31 @@ table tr td.promoted_section_final
 .st_joseph_bg table.big_font_south tr td
 {
     font-size: 13px;
+}
+
+.float-left-5-10-new
+{
+    margin-left: 25px;
+    margin-top: 12px;
+    float:left;
+    font-size: 9px;
+}
+table.float-left-clear-both
+{
+    flooat:left;
+    clear:both;
+    width:100%;
+}
+table.float-left-clear-both
+{
+    flooat:left;
+    clear:both;
+    width:100%;
+    margin-top:0px;
+}
+#pdf-header-south table td h4
+{
+    font-size: 18px;
 }
 
 //new CSS

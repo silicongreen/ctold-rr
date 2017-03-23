@@ -253,7 +253,10 @@
               
               
               <%= render  :partial=>"/connect_exam/south_point/gradding_level2" %>
-              <table class="padding-margin-0"  class="margin-top-bottom-10 float-left-5-10 font-size-2 gradding" width="100%" >
+              <table class="float-left-clear-both-10"   width="100%" >
+                  <tr><td><b>Class Teacher Comments</b></td></tr>
+              </table>
+              <table class="float-left-clear-both"   width="100%" >
                   <tr>
                       <td>    
                         <table id="pdf-table" class="margin-top-bottom-10 font-size-2" width="100%" >
@@ -262,10 +265,9 @@
                                     <td class="col-pdf comment_section_others" valign="top">
                                         <% if !@exam_comment.blank? %>
                                         
-                                          Class Teacher Comments&nbsp:&nbsp;<%= @exam_comment.comments %>
+                                          <%= @exam_comment.comments %>
                                         <% else %> 
                                        
-                                          Class Teacher Comments&nbsp:&nbsp;
                                         <% end %>
                                     </td>                      
                                 </tr>

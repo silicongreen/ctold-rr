@@ -47,14 +47,18 @@ class OnlineExamController < ApplicationController
           end
         end
 
-        @batch_data = Rails.cache.fetch("course_data_#{course_id}_#{batch_name.parameterize("_")}_#{current_user.id}"){
-          if batch_name.length == 0
+        if batch_name.length == 0
+          @batch_data = Rails.cache.fetch("batch_data_#{course_id}"){
             batches = Batch.find_by_course_id(course_id)
-          else
+            batches
+          }
+        else
+          @batch_data = Rails.cache.fetch("batch_data_#{course_id}_#{batch_name.parameterize("_")}"){
             batches = Batch.find_by_course_id_and_name(course_id, batch_name)
-          end
-          batches
-        }
+            batches
+          }
+        end 
+      
         @batch_id = 0
         unless @batch_data.nil?
           params[:batch_id] = @batch_data.id 
@@ -146,7 +150,7 @@ class OnlineExamController < ApplicationController
   
   def get_classes
     school_id = MultiSchool.current_school.id
-    @courses = Rails.cache.fetch("classes_data_#{params[:batch_id]}_#{school_id}"){
+    @courses = Rails.cache.fetch("course_data_#{params[:batch_id]}_#{school_id}"){
       unless params[:batch_id].empty?
         batch_data = Batch.find params[:batch_id]
         batch_name = batch_data.name
@@ -240,14 +244,18 @@ class OnlineExamController < ApplicationController
           end
         end
 
-        @batch_data = Rails.cache.fetch("course_data_#{course_id}_#{batch_name.parameterize("_")}_#{current_user.id}"){
-          if batch_name.length == 0
+        if batch_name.length == 0
+          @batch_data = Rails.cache.fetch("batch_data_#{course_id}"){
             batches = Batch.find_by_course_id(course_id)
-          else
+            batches
+          }
+        else
+          @batch_data = Rails.cache.fetch("batch_data_#{course_id}_#{batch_name.parameterize("_")}"){
             batches = Batch.find_by_course_id_and_name(course_id, batch_name)
-          end
-          batches
-        }
+            batches
+          }
+        end 
+      
         @batch_id = 0
         unless @batch_data.nil?
           params[:batch_id] = @batch_data.id 

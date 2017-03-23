@@ -310,8 +310,9 @@ class UserController < ApplicationController
     end
   end
 
-  def get_section_data    
-    @classes = Rails.cache.fetch("section_data_#{params[:class_name].parameterize("_")}_#{current_user.id}"){
+  def get_section_data
+    school_id = MultiSchool.current_school.id    
+    @classes = Rails.cache.fetch("section_data_#{params[:class_name].parameterize("_")}_#{school_id}"){
       class_data = Course.find(:all, :conditions => ["course_name LIKE ?",params[:class_name]])
       class_data
     }
@@ -330,7 +331,7 @@ class UserController < ApplicationController
   end
 
   def get_batches
-    @batch_data = Rails.cache.fetch("course_data_#{params[:course_id]}_#{current_user.id}"){
+    @batch_data = Rails.cache.fetch("course_data_#{params[:course_id]}"){
       batches = Batch.find_by_course_id(params[:course_id])
       batches
     }

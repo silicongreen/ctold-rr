@@ -58,32 +58,7 @@
                 <th>Subject</th>
             </tr>
         </thead>
-        <tbody>
-          <% @exam_connect.each do |exam_connect| %>
-          <% @subjects = [] %>
-          <% @group_exams = GroupedExam.find_all_by_connect_exam_id(exam_connect.id)  %>
-            <%  @group_exams.each do |group_exam| %>
-            <% exams = Exam.find_all_by_exam_group_id(group_exam.exam_group_id) %>
-              <% exams.each do |exam| %>
-              <% if !@subjects.include?(exam.subject) %>
-               
-                <% if @employee_subjects.include?(exam.subject.id) or @current_user.admin? %>
-                <% 
-                  @subjects << exam.subject
-                %>
-                <tr>
-                    <td><%= link_to(exam_connect.batch.full_name, '/exam/' + 'connect_exam_subject_comments/' +exam_connect.id.to_s+"|"+exam.subject.id.to_s, :target => "_blank") %></td>
-                    <td><%= link_to(exam_connect.name, '/exam/' + 'connect_exam_subject_comments/' +exam_connect.id.to_s+"|"+exam.subject.id.to_s, :target => "_blank") %></td>
-                    <td><%= link_to(exam.subject.name, '/exam/' + 'connect_exam_subject_comments/' +exam_connect.id.to_s+"|"+exam.subject.id.to_s, :target => "_blank") %></td>
-                 
-                </tr>
-                <% end %>
-              <% end %>  
-            <% end %>
-          <% end %>
-          <% end %>  
-            
-        </tbody>
+        
         
     </table>   
     <div class="extender"></div>
@@ -94,6 +69,8 @@
   var jj = jQuery.noConflict();
   jj(document).ready(function () {
       var oDataTable = jj('#exam_data').DataTable( {
+        "ajax": "/marks/data_connect_exam",
+        "deferRender": true,
         "order": [],
         "oSearch": { "bSmart": false },
         columnDefs: [

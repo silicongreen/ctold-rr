@@ -368,18 +368,20 @@ class MeetingsController < ApplicationController
   
   def get_classes
     school_id = MultiSchool.current_school.id
-    @courses = Rails.cache.fetch("classes_data_#{params[:batch_id]}_#{school_id}"){
-      unless params[:batch_id].empty?
+    unless params[:batch_id].empty?
         batch_data = Batch.find params[:batch_id]
         batch_name = batch_data.name
-        batches = Batch.find(:all, :conditions => ["name = ? and is_deleted = 0", batch_name]).map{|b| b.course_id}
-        tmp_classes = Course.find(:all, :conditions => ["id IN (?) and is_deleted = 0", batches], :group => "course_name", :select => "course_name", :order => "cast(replace(course_name, 'Class ', '') as SIGNED INTEGER) asc")
-      else  
-        tmp_classes = []
-      end
+    end 
+    @courses = []
+    unless batch_name.blank?
+    @courses = Rails.cache.fetch("classes_data_#{batch_name.parameterize("_")}_#{school_id}"){
+      @batch_name = batch_name;
+      batches = Batch.find(:all, :conditions => ["name = ? and is_deleted = 0", batch_name]).map{|b| b.course_id}
+      tmp_classes = Course.find(:all, :conditions => ["id IN (?) and is_deleted = 0", batches], :group => "course_name", :select => "course_name", :order => "cast(replace(course_name, 'Class ', '') as SIGNED INTEGER) asc")
       class_data = tmp_classes
       class_data
     }
+    end
     @classes = []
     @batch_id = ''
     @course_name = ""
@@ -454,14 +456,19 @@ class MeetingsController < ApplicationController
     end
     
     school_id = MultiSchool.current_school.id
-    @batch_data = Rails.cache.fetch("course_data_#{course_id}_#{batch_name.parameterize("_")}_#{school_id}"){
-      if batch_name.length == 0
-        batches = Batch.find_by_course_id(course_id)
-      else
+    
+    if batch_name.length == 0
+        @batch_data = Rails.cache.fetch("batch_data_#{course_id}"){
+          batches = Batch.find_by_course_id(course_id)
+          batches
+        }
+    else
+      @batch_data = Rails.cache.fetch("batch_data_#{course_id}_#{batch_name.parameterize("_")}"){
         batches = Batch.find_by_course_id_and_name(course_id, batch_name)
-      end
-      batches
-    }
+        batches
+      }
+    end 
+      
     @batch_id = 0
     unless @batch_data.nil?
       @batch_id = @batch_data.id 
@@ -564,14 +571,18 @@ class MeetingsController < ApplicationController
     end
     
     if course_id.to_i > 0
-      @batch_data = Rails.cache.fetch("course_data_#{course_id}_#{batch_name.parameterize("_")}_#{current_user.id}"){
-        if batch_name.length == 0
+      if batch_name.length == 0
+        @batch_data = Rails.cache.fetch("batch_data_#{course_id}"){
           batches = Batch.find_by_course_id(course_id)
-        else
+          batches
+        }
+      else
+        @batch_data = Rails.cache.fetch("batch_data_#{course_id}_#{batch_name.parameterize("_")}"){
           batches = Batch.find_by_course_id_and_name(course_id, batch_name)
-        end
-        batches
-      }
+          batches
+        }
+      end 
+      
       @batch_id = 0
       unless @batch_data.nil?
         @batch_id = @batch_data.id 

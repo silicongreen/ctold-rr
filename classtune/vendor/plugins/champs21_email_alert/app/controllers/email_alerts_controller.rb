@@ -89,14 +89,18 @@ class EmailAlertsController < ApplicationController
           end
         end
 
-        @batch_data = Rails.cache.fetch("course_data_#{course_id}_#{batch_name.parameterize("_")}_#{current_user.id}"){
-          if batch_name.length == 0
+        if batch_name.length == 0
+          @batch_data = Rails.cache.fetch("batch_data_#{course_id}"){
             batches = Batch.find_by_course_id(course_id)
-          else
+            batches
+          }
+        else
+          @batch_data = Rails.cache.fetch("batch_data_#{course_id}_#{batch_name.parameterize("_")}"){
             batches = Batch.find_by_course_id_and_name(course_id, batch_name)
-          end
-          batches
-        }
+            batches
+          }
+        end 
+      
         params[:course_name] = 0
         unless @batch_data.nil?
           params[:course_name] = @batch_data.id 
@@ -133,14 +137,18 @@ class EmailAlertsController < ApplicationController
           end
         end
 
-        @batch_data = Rails.cache.fetch("course_data_#{course_id}_#{batch_name.parameterize("_")}_#{current_user.id}"){
-          if batch_name.length == 0
-            batches = Batch.find_by_course_id(course_id)
-          else
-            batches = Batch.find_by_course_id_and_name(course_id, batch_name)
-          end
+        if batch_name.length == 0
+        @batch_data = Rails.cache.fetch("batch_data_#{course_id}"){
+          batches = Batch.find_by_course_id(course_id)
           batches
-        }
+          }
+        else
+          @batch_data = Rails.cache.fetch("batch_data_#{course_id}_#{batch_name.parameterize("_")}"){
+            batches = Batch.find_by_course_id_and_name(course_id, batch_name)
+            batches
+          }
+        end 
+      
         params[:guardian_name] = 0
         unless @batch_data.nil?
           params[:guardian_name] = @batch_data.id 

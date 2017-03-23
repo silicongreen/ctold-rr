@@ -76,6 +76,21 @@ class Batch < ActiveRecord::Base
   def before_create
     self.weekday_set = WeekdaySet.first
   end
+  
+  def after_save
+    school_id = MultiSchool.current_school.id
+    course_name = self.course.course_name.parameterize("_")
+    Rails.cache.delete("batch_data_#{self.course_id}")
+    Rails.cache.delete("batch_data_#{self.course_id}_#{self.name.parameterize("_")}")
+    Rails.cache.delete("course_data_#{self.name.parameterize("_")}_#{school_id}")
+    Rails.cache.delete("classes_data_#{self.name.parameterize("_")}_#{school_id}")
+    Rails.cache.delete("section_data_#{course_name}_#{self.name.parameterize("_")}_#{school_id}")
+    Rails.cache.delete("section_data_section_#{course_name}_#{school_id}")
+    Rails.cache.delete("course_data_batch_#{self.course_id}")
+    Rails.cache.delete("course_data_#{self.course_id}")
+    Rails.cache.delete("section_data_#{course_name}_#{school_id}")
+    
+  end
 
   def validate
     errors.add(:start_date, :should_be_before_end_date) \

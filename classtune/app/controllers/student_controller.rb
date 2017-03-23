@@ -63,21 +63,25 @@ class StudentController < ApplicationController
     end
     
     school_id = MultiSchool.current_school.id
-    @classes = Rails.cache.fetch("section_data_#{params[:class_name].parameterize("_")}_#{batch_id}_#{school_id}"){
-      if batch_id.to_i > 0
+    batch_name = ""
+    if batch_id.to_i > 0
         batch = Batch.find batch_id
         batch_name = batch.name
         @batch_name = batch_name
-        
-        
+    end
+    
+    unless batch_name.blank?    
+      @classes = Rails.cache.fetch("section_data_#{params[:class_name].parameterize("_")}_#{batch_name.parameterize("_")}_#{school_id}"){
         batches = Batch.find(:all, :conditions => ["name = ? and is_active = 1 and is_deleted = 0", batch_name]).map{|b| b.course_id}
         tmp_class_data = Course.find(:all, :conditions => ["course_name LIKE ? and is_deleted = 0 and id IN (?)",params[:class_name], batches])
-      else  
-        tmp_class_data = Course.find(:all, :conditions => ["course_name LIKE ? and is_deleted = 0",params[:class_name]])
-      end
-      class_data = tmp_class_data
-      class_data
-    }
+        tmp_class_data
+      }     
+    else    
+      @classes = Rails.cache.fetch("section_data_#{params[:class_name].parameterize("_")}_#{school_id}"){
+          tmp_class_data = Course.find(:all, :conditions => ["course_name LIKE ? and is_deleted = 0",params[:class_name]])
+          tmp_class_data
+      }
+    end
     @selected_section = 0
     
     @batch_id = 0
@@ -124,19 +128,20 @@ class StudentController < ApplicationController
   def get_classes
     school_id = MultiSchool.current_school.id
     @batch_name = false
-    @courses = Rails.cache.fetch("classes_data_#{params[:batch_id]}_#{school_id}"){
-      unless params[:batch_id].empty?
+    unless params[:batch_id].empty?
         batch_data = Batch.find params[:batch_id]
         batch_name = batch_data.name
-        @batch_name = batch_name;
-        batches = Batch.find(:all, :conditions => ["name = ? and is_deleted = 0", batch_name]).map{|b| b.course_id}
-        tmp_classes = Course.find(:all, :conditions => ["id IN (?) and is_deleted = 0", batches], :group => "course_name", :select => "course_name", :order => "cast(replace(course_name, 'Class ', '') as SIGNED INTEGER) asc")
-      else  
-        tmp_classes = []
-      end
+    end 
+    @courses = []
+    unless batch_name.blank?
+    @courses = Rails.cache.fetch("classes_data_#{batch_name.parameterize("_")}_#{school_id}"){
+      @batch_name = batch_name;
+      batches = Batch.find(:all, :conditions => ["name = ? and is_deleted = 0", batch_name]).map{|b| b.course_id}
+      tmp_classes = Course.find(:all, :conditions => ["id IN (?) and is_deleted = 0", batches], :group => "course_name", :select => "course_name", :order => "cast(replace(course_name, 'Class ', '') as SIGNED INTEGER) asc")
       class_data = tmp_classes
       class_data
     }
+    end
     
     @classes = []
     @batch_id = ''
@@ -236,14 +241,18 @@ class StudentController < ApplicationController
     end
     
     school_id = MultiSchool.current_school.id
-    @batch_data = Rails.cache.fetch("course_data_#{course_id}_#{batch_name.parameterize("_")}_#{school_id}"){
-      if batch_name.length == 0
-        batches = Batch.find_by_course_id(course_id)
-      else
+    if batch_name.length == 0
+        @batch_data = Rails.cache.fetch("batch_data_#{course_id}"){
+          batches = Batch.find_by_course_id(course_id)
+          batches
+        }
+    else
+      @batch_data = Rails.cache.fetch("batch_data_#{course_id}_#{batch_name.parameterize("_")}"){
         batches = Batch.find_by_course_id_and_name(course_id, batch_name)
-      end
-      batches
-    }
+        batches
+      }
+    end 
+      
     @batch_id = 0
     unless @batch_data.nil?
       @batch_id = @batch_data.id 
@@ -288,20 +297,20 @@ class StudentController < ApplicationController
               @success_data[i] = {:sdata => [],:pdata => []}
 
               
-              @classes = Rails.cache.fetch("section_data_section_#{current_user.id}_#{row[7]}_#{MultiSchool.current_school.id}"){
+              @classes = Rails.cache.fetch("section_data_section_#{row[7].parameterize("_")}_#{MultiSchool.current_school.id}"){
                 class_data = Course.find(:all, :conditions => ["course_name LIKE ?",row[7].strip])
                 class_data
               }
                 
               @classes.each do|c|                
                 if c.section_name == row[8]  
-                  @batch_data = Rails.cache.fetch("course_data_batch_#{c.id}_#{current_user.id}_#{MultiSchool.current_school.id}"){
+                  @batch_data = Rails.cache.fetch("course_data_batch_#{c.id}"){
                     batches = Batch.find(:all, :conditions => ["course_id =?",c.id])
                     batches
                   }
                 else
                   if row[8].nil? and c.section_name == ""
-                    @batch_data = Rails.cache.fetch("course_data_batch_#{c.id}_#{current_user.id}_#{MultiSchool.current_school.id}"){
+                    @batch_data = Rails.cache.fetch("course_data_batch_#{c.id}"){
                       batches = Batch.find(:all, :conditions => ["course_id =?",c.id])
                       batches
                     }
@@ -1538,15 +1547,18 @@ class StudentController < ApplicationController
       end
 
       if course_id.to_i > 0
-        @batch_data = Rails.cache.fetch("course_data_#{course_id}_#{batch_name.parameterize("_")}_#{current_user.id}"){
-          if batch_name.length == 0
+        if batch_name.length == 0
+          @batch_data = Rails.cache.fetch("batch_data_#{course_id}"){
             batches = Batch.find_by_course_id(course_id)
-            
-          else
+            batches
+          }
+        else
+          @batch_data = Rails.cache.fetch("batch_data_#{course_id}_#{batch_name.parameterize("_")}"){
             batches = Batch.find_by_course_id_and_name(course_id, batch_name)
-          end
-          batches
-        }
+            batches
+          }
+        end 
+      
         @batch_id = 0
         unless @batch_data.nil?
           @batch_id = @batch_data.id 
@@ -1641,14 +1653,18 @@ class StudentController < ApplicationController
     end
     
     if course_id.to_i > 0
-      @batch_data = Rails.cache.fetch("course_data_#{course_id}_#{batch_name.parameterize("_")}_#{current_user.id}"){
-        if batch_name.length == 0
+      if batch_name.length == 0
+        @batch_data = Rails.cache.fetch("batch_data_#{course_id}"){
           batches = Batch.find_by_course_id(course_id)
-        else
+          batches
+        }
+      else
+        @batch_data = Rails.cache.fetch("batch_data_#{course_id}_#{batch_name.parameterize("_")}"){
           batches = Batch.find_by_course_id_and_name(course_id, batch_name)
-        end
-        batches
-      }
+          batches
+        }
+      end 
+      
       @batch_id = 0
       unless @batch_data.nil?
         @batch_id = @batch_data.id 
@@ -1898,7 +1914,8 @@ class StudentController < ApplicationController
     unless params[:search]
       @batches = [] #Batch.all
     else
-      @classes = Rails.cache.fetch("section_data_#{params[:advv_search][:class_name].parameterize("_")}_#{current_user.id}"){
+      school_id = MultiSchool.current_school.id
+      @classes = Rails.cache.fetch("section_data_#{params[:advv_search][:class_name].parameterize("_")}_#{school_id}"){
         class_data = Course.find(:all, :conditions => ["course_name LIKE ?",params[:advv_search][:class_name]])
         class_data
       }

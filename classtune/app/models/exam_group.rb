@@ -40,6 +40,21 @@ class ExamGroup < ActiveRecord::Base
 
   def invalidate_student_cache
     batch.delete_student_cce_report_cache if result_published_changed?
+    exams = self.exams
+    grouped_exams = GroupedExam.find_all_by_exam_group_id(self.id)
+    unless exams.blank?
+      exams.each do |exam|
+        Rails.cache.delete("exam_group_from_exam_#{exam.id}")
+      end
+    end
+    unless grouped_exams.blank?
+      grouped_exams.each do |grouped_exam|
+        Rails.cache.delete("group_exam_from_exam_connect_#{grouped_exam.connect_exam_id}")
+      end
+    end
+    
+    Rails.cache.delete("batch_from_exam_group_#{self.id}")
+    
   end
 
   def before_save

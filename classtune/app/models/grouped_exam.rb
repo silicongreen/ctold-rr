@@ -18,4 +18,8 @@
 
 class GroupedExam < ActiveRecord::Base
   has_many :exam_groups
+  def after_save
+    Rails.cache.delete("batch_from_exam_connect_#{self.connect_exam_id}")
+    Rails.cache.delete("group_exam_from_exam_connect_#{self.connect_exam_id}")
+  end
 end

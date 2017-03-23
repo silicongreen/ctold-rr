@@ -42,6 +42,25 @@ class Course < ActiveRecord::Base
   named_scope :deleted, :conditions => { :is_deleted => true }, :order => 'course_name asc'
   named_scope :cce, {:select => "courses.*",:conditions=>{:grading_type => GRADINGTYPES.invert["CCE"],:is_deleted => false}, :order => 'course_name asc'}
 
+  def after_save
+    school_id = MultiSchool.current_school.id
+    course_name = self.course_name.parameterize("_")
+    Rails.cache.delete("batch_data_#{self.id}")
+    batches = self.batches
+    unless batches.blank?
+        batches.each do |batch|
+          Rails.cache.delete("batch_data_#{self.id}_#{batch.name.parameterize("_")}")
+          Rails.cache.delete("course_data_#{batch.name.parameterize("_")}_#{school_id}")
+          Rails.cache.delete("classes_data_#{batch.name.parameterize("_")}_#{school_id}")
+          Rails.cache.delete("section_data_#{course_name}_#{batch.name.parameterize("_")}_#{school_id}")
+        end
+    end
+    Rails.cache.delete("section_data_section_#{course_name}_#{school_id}")
+    Rails.cache.delete("course_data_#{self.id}")
+    Rails.cache.delete("course_data_batch_#{self.id}")
+    Rails.cache.delete("section_data_#{course_name}_#{school_id}")
+  end
+  
   def presence_of_initial_batch
     errors.add_to_base :should_have_an_initial_batch if batches.length == 0
   end

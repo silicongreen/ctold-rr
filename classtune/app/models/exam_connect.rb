@@ -20,7 +20,10 @@ class ExamConnect < ActiveRecord::Base
   validates_presence_of :name  
   belongs_to :batch
   has_many :grouped_exam
-  
+  def after_save
+    Rails.cache.delete("batch_from_exam_connect_#{self.id}")
+    Rails.cache.delete("group_exam_from_exam_connect_#{self.id}")
+  end  
 
   
 end

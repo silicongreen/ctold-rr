@@ -54,26 +54,7 @@
                 <th>End</th>
             </tr>
         </thead>
-        <tbody>
-          <% @exams.each do |exam| %>
-            
-            <% @exam_group = exam.exam_group  %>
-            <tr>
-                <td><%= link_to @exam_group.batch.full_name, [@exam_group, exam], :target => "_blank" %></td>
-                <td><%= link_to @exam_group.name, [@exam_group, exam], :target => "_blank" %></td>
-                <td><%= link_to exam.subject.name, [@exam_group, exam], :target => "_blank" %></td>
-                <% if exam.subject.no_exams.blank? and exam.no_date.to_i == 0 %>
-                  <td><%= I18n.l(exam.start_time,:format=>"%d %b,%Y %I:%M %p") %></td>
-                  <td><%= I18n.l(exam.end_time,:format=>"%d %b,%y %I:%M %p") %></td>
-                <% else %>
-                  <td>N/A</td>
-                  <td>N/A</td>
-                <% end %>   
-                
-            </tr>
-          <% end %>  
-            
-        </tbody>
+       
         
     </table>   
     <div class="extender"></div>
@@ -84,6 +65,8 @@
   var jj = jQuery.noConflict();
   jj(document).ready(function () {
       var oDataTable = jj('#exam_data').DataTable( {
+        "ajax": "/marks/data",
+        "deferRender": true,
         "order": [],
         "oSearch": { "bSmart": false },
         columnDefs: [

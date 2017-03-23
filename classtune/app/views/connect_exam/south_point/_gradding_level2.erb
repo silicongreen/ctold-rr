@@ -1,0 +1,68 @@
+<% @grading_levels = GradingLevel.for_batch(@batch.id) %>
+              <% if @grading_levels.blank? %>
+                <% @grading_levels = GradingLevel.default %>
+              <% end %>
+              <%  unless @grading_levels.empty? %>
+                
+                    <table class="padding-margin-0"  class="margin-top-bottom-9 float-left font-size-2" width="50%" >
+                         <tr  class="even">
+                          <td colspan="3" class="col-pdf"><b>Grading System</b></td>
+                         </tr>
+                         <tr class="odd">
+                          <td class="col-pdf"><b>Marks</b></td>
+                          <td class="col-pdf"><b>Grade</b></td>
+                          <td class="col-pdf"><b>Meaning</b></td>
+                         </tr> 
+                         <% l = 0; %>
+                         
+                         <% @grading_levels.each_with_index do |grade,index| %>
+                         <% l = l+1 %>
+                         <tr class="even">
+
+                          <td class="col-pdf">
+                            <% if grade.max_score.nil? %>  
+                            <%= '%i%' % grade.min_score %>
+                          <% else %>  
+                            <% min_score = grade.min_score.to_f  %>
+                            <% max_score = grade.max_score.to_f  %>
+                            <% min_score = min_score.to_i %>
+                            <% max_score = max_score.to_i %>
+                            <% if max_score.to_i == 100  %>
+                            <%= min_score.to_s+" and above"  %>
+                            <% elsif min_score.to_i == 0  %>
+                            <% below = max_score.to_i+1 %>
+                            <%=  "Below "+below.to_s  %>
+                            <% else %>
+                                <%= min_score.to_s + " - " + max_score.to_s %>
+                            <% end %>
+                          <% end %> 
+                          </td>
+                          <td class="col-pdf"><%= grade.name %></td>
+                          <td class="col-pdf"><%= grade.description %></td>
+                         </tr>
+                         <% end %>
+                          
+                    </table> 
+                  <% end %>
+                    <table class="padding-margin-0"  class="margin-top-bottom-9 float-left font-size-2" width="50%" >
+                         <tr  class="even">
+                          <td colspan="1" class="col-pdf"><b>&nbsp;</b></td>
+                          <td colspan="2" class="col-pdf"><b>Attendance</b></td>
+                         </tr>
+                          
+                           <tr>
+                                <td class="col-pdf">Total Working day</td>
+                                <td class="col-pdf"><%= @report_data['total'] %></td>
+
+                           
+                                <td class="col-pdf">Days Present</td>
+                                <td class="col-pdf"><%= @report_data['present'] %></td>
+                            
+                                <td class="col-pdf">Days Absent</td>
+                                <td class="col-pdf"><%= @report_data['total']-@report_data['present'] %></td>
+                            
+                         </tr>
+                   
+
+                    </table>     
+          

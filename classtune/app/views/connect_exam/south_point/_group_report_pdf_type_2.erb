@@ -1,14 +1,15 @@
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
   <div id="page-yield"  class="available_sections1 st_joseph_bg south-point-protrait">
       
-      <h5 align="center">&nbsp;</h5>
+      <h5 align="center"><%= @batch.course.course_name %></h5>
+      <h5 align="center"><%= @connect_exam_obj.name %></h5>
       <table  width="100%" >
             <thead>
                 <tr>
-                    <td><b>Exam : <%= @connect_exam_obj.name %> </b></td>
-                    <td><b>Class : <% if @batch.name == "General" %><%= @batch.course.full_name %><% else %><%= @batch.name %> ,<%= @batch.course.full_name %> <% end %></b></td>
+                   
                     <td><b>Student's Name : <%= "#{@student.full_name}" %> </b></td>
                     <td align="right"><b>Roll No. : <%= "#{@student.class_roll_no}" %></b></td>
+                    <td align="right"><b>Section Name. : <%= @batch.course.section_name %></b></td>
                 </tr>
             </thead>    
       </table>  

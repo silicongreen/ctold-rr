@@ -1,17 +1,16 @@
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
-  <div id="page-yield"  class="available_sections1 st_joseph_bg">
+  <div id="page-yield"  class="available_sections1 st_joseph_bg south-point-protrait">
       
-      <h5 align="center">&nbsp;</h5>
       <table  width="100%" >
             <thead>
                 <tr>
-                    <td><b>Exam : <%= @connect_exam_obj.name %> </b></td>
-                    <td><b>Class : <% if @batch.name == "General" %><%= @batch.course.full_name %><% else %><%= @batch.name %> ,<%= @batch.course.full_name %> <% end %></b></td>
+                   
                     <td><b>Student's Name : <%= "#{@student.full_name}" %> </b></td>
                     <td align="right"><b>Roll No. : <%= "#{@student.class_roll_no}" %></b></td>
+                    <td align="right"><b>Section Name. : <%= @batch.course.section_name %></b></td>
                 </tr>
             </thead>    
-      </table>  
+      </table>    
 
 
       <div class ="current_batch" style="margin-left:0px;">
@@ -124,19 +123,21 @@
 
               </table>
               
-              <table class="padding-margin-0"  class="margin-top-bottom-10 float-left font-size-2" width="50%" >
+              <table class="float-left-clear-both-10"   width="100%" >
+                  <tr><td><b>Class Teacher Comments</b></td></tr>
+              </table>
+              <table class="float-left-clear-both"   width="100%" >
                   <tr>
                       <td>    
                         <table id="pdf-table" class="margin-top-bottom-10 font-size-2" width="100%" >
 
                                 <tr class="table-header">
-                                    <td class="col-pdf comment_section_quarter" valign="top">
+                                    <td class="col-pdf comment_section_others" valign="top">
                                         <% if !@exam_comment.blank? %>
                                         
-                                          Class Teacher Comments&nbsp:&nbsp;<%= @exam_comment.comments %>
+                                          <%= @exam_comment.comments %>
                                         <% else %> 
                                        
-                                          Class Teacher Comments&nbsp:&nbsp;
                                         <% end %>
                                     </td>                      
                                 </tr>
@@ -145,8 +146,6 @@
                   </tr>   
                    
               </table>
-              
-              <%= render  :partial=>"/connect_exam/south_point/gradding_level" %>
 
 
           </div>

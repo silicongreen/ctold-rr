@@ -2714,7 +2714,7 @@ class ExamController < ApplicationController
           :orientation => 'Portrait', :zoom => 1.00
       end
     elsif  MultiSchool.current_school.id == 2 
-      if @connect_exam_obj.result_type == 2
+      if @connect_exam_obj.result_type != 1
         render :pdf => 'generated_report5_pdf',
         :orientation => 'Portrait', :zoom => 1.00
       else

@@ -1,0 +1,60 @@
+
+    <div class="box" style="float:left; clear:both; margin:10px 0px;">
+        
+        <select id="department_id" name="department_id" onchange="filterEmployeeDatatableByDepartment(this)">
+              <option value="" selected="selected">Select a Department</option>
+              <% unless @departments.nil? or @departments.blank? %>
+                  <% @departments.each do |department| %>
+                        <option value="<%= department.id %>"><%= department.name %></option>
+                  <% end %>
+              <% end %>
+          </select>
+     
+        
+      
+        
+        <select id="category_id"  name="category_id" onchange="filterEmployeeDatatableByCategory(this)">
+              <option value="" selected="selected">Select a Category</option>
+              <% unless @categories.nil? or @categories.blank? %>
+                  <% @categories.each do |category| %>
+                        <option value="<%= category.id %>"><%= category.name %></option>
+                  <% end %>
+              <% end %>
+          </select>
+     
+ 
+    
+      
+        <select id="position_id" name="position_id" onchange="filterEmployeeDatatableByPosition(this)">
+            <option value="" selected="selected">Select a position</option>
+            <% unless @positions.nil? or @positions.blank? %>
+                <% @positions.each do |position| %>
+                      <option value="<%= position.id %>"><%= position.name %></option>
+                <% end %>
+            <% end %>
+        </select>
+      
+  
+ 
+      
+        <select id="grade_id" name="grade_id" onchange="filterEmployeeDatatableByGrade(this)">
+            <option value="" selected="selected">Select a Grade</option>
+            <% unless @grades.nil? or @grades.blank? %>
+                <% @grades.each do |grade| %>
+                      <option value="<%= grade.id %>"><%= grade.name %></option>
+                <% end %>
+            <% end %>
+        </select>
+    </div>
+
+<div class="box"  style="float:left; clear:both; margin:10px 0px; width: 100%;">
+  <table class="mdl-data-table" id="hr_report" cellspacing="0" width="100%" style="float:left; clear:both; margin:10px 0px;">
+    <thead>
+        <th width="30%"><%= "Employee Info" %></th>
+        <th width="25%"><%= "Department" %></th>
+        <th width="25%" data-orderable="false"><%= "In Time" %></th>
+        <th width="25%" data-orderable="false"><%= "Out Time" %></th>
+        <th width="20%" data-orderable="false"><%= "Duration/Status" %></th>
+    </thead>
+  </table>
+</div>

@@ -19,13 +19,11 @@
 class AttendanceReportsController < ApplicationController
   before_filter :login_required
   before_filter :check_permission, :only=>[:index]
-  filter_access_to :all, :except=>[:index,:load_end_date, :subject, :show, :year, :report, :filter, :student_details,:report_pdf,:filter_report_pdf]
+  filter_access_to :all, :except=>[:index,:load_end_date,:campus_report, :subject, :show, :year, :report, :filter, :student_details,:report_pdf,:filter_report_pdf]
   filter_access_to [:index, :subject,:load_end_date, :mode, :show, :year, :report, :filter, :student_details,:report_pdf,:filter_report_pdf], :attribute_check=>true, :load_method => lambda { current_user }
   before_filter :only_assigned_employee_allowed
   before_filter :default_time_zone_present_time
   before_filter :check_status
-
-
   def index
     @classes = []
     @batches = []

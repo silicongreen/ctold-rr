@@ -24,7 +24,7 @@
       <table id="listing table-design">
         
         
-                  
+            <% if @report_data['class_completed'].to_i == 1 %>
             <tr>
               <td class="col-2"><b>Total</b></td>
               <td class="col-2"><%= @report_data['total'] %></td>
@@ -107,6 +107,9 @@
                 </div>
               </td>  
             </tr>
+            <% else %>
+            <tr><td colspan ="3"> Attendance Not Taken</td> </tr>
+            <% end %>
       
       </table>
     

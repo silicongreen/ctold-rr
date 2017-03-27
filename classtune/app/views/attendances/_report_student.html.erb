@@ -45,9 +45,18 @@
               <td colspan="3" style="padding:0px; border:none;">
                 <div class="CSSTableGenerator" style="width: 100%;margin-top:0px; padding: 10px 0px;">
                   <table id="listing table-design">
+                    <tr>
+                        <td><b>Roll No</b></td>
+                        <td><b>Class</b></td>
+                        <td><b>Name</b></td>
+                    </tr>
+                    
                     <% @report_data['student']['present'].each do |student| %>
+                  
                     <tr class="tr-<%= cycle('odd', 'even') %>">
+                      <% std_info = Student.find(student['student_id']) %>
                       <td class="col-2"><%= student['roll_no'] %></td>
+                      <td class="col-2"><%= std_info.batch.full_name %></td>
                       <td class="col-2"><%= student['student_name'] %></td>
                     </tr>  
                     
@@ -68,9 +77,16 @@
               <td colspan="3" style="padding:0px; border:none;">
                 <div class="CSSTableGenerator" style="width: 100%;margin-top:0px; padding: 10px 0px;">
                   <table id="listing table-design">
+                    <tr>
+                       <td><b>Roll No</b></td>
+                        <td><b>Class</b></td>
+                        <td><b>Name</b></td>
+                    </tr>
                     <% @report_data['student']['absent'].each do |student| %>
+                    <% std_info = Student.find(student['student_id'].to_i) %>
                     <tr class="tr-<%= cycle('odd', 'even') %>">
                       <td class="col-2"><%= student['roll_no'] %></td>
+                      <td class="col-2"><%= std_info.batch.full_name %></td>
                       <td class="col-2"><%= student['student_name'] %></td>
                     </tr>  
                     
@@ -90,9 +106,16 @@
               <td colspan="3" style="padding:0px; border:none;">
                 <div class="CSSTableGenerator" style="width: 100%;margin-top:0px; padding: 10px 0px;">
                   <table id="listing table-design">
+                    <tr>
+                        <td><b>Roll No</b></td>
+                        <td><b>Class</b></td>
+                        <td><b>Name</b></td>
+                    </tr>
                     <% @report_data['student']['late'].each do |student| %>
+                    <% std_info = Student.find(student['student_id'].to_i) %>
                     <tr class="tr-<%= cycle('odd', 'even') %>">
                       <td class="col-2"><%= student['roll_no'] %></td>
+                      <td class="col-2"><%= std_info.batch.full_name %></td>
                       <td class="col-2"><%= student['student_name'] %></td>
                     </tr>  
                     
@@ -112,9 +135,16 @@
               <td colspan="3" style="padding:0px; border:none;">
                 <div class="CSSTableGenerator" style="width: 100%;margin-top:0px; padding: 10px 0px;">
                   <table id="listing table-design">
+                    <tr>
+                       <td><b>Roll No</b></td>
+                        <td><b>Class</b></td>
+                        <td><b>Name</b></td>
+                    </tr>
                     <% @report_data['student']['leave'].each do |student| %>
+                    <% std_info = Student.find(student['student_id'].to_i) %>
                     <tr class="tr-<%= cycle('odd', 'even') %>">
                       <td class="col-2"><%= student['roll_no'] %></td>
+                      <td class="col-2"><%= std_info.batch.full_name %></td>
                       <td class="col-2"><%= student['student_name'] %></td>
                     </tr>  
                     
@@ -149,7 +179,7 @@
     float: none;  
     display: block;
     margin: -20px;
-    padding: 20px;
+    padding: 10px;
   }
   .CSSTableGenerator td
   {
@@ -164,12 +194,14 @@
     float: none;
     display: block;
     margin: -20px;
-    padding: 20px;
+    padding: 10px;
   }
    .CSSTableGenerator table tr td 
   {
      font-weight: bold;
      overflow: hidden;
+     padding: 8px;
+     font-size: 15px !important;
   }
   .checkmark {
     display:inline-block;

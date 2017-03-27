@@ -110,12 +110,13 @@
   <h2 align="center"><%=Configuration.get_config_value('InstitutionName'); %></h2>
 </div> 
 <% else %>
-<div id="pdf-header-south" class="general-header <% if !@connect_exam_obj.blank? and @connect_exam_obj.result_type.to_i != 1 %>potrait_header_south_point<% end %>">
+<div id="pdf-header-south" class="general-header <% if !@connect_exam_obj.blank? %> <% if @connect_exam_obj.result_type.to_i != 1 %>potrait_header_south_point<% end %><% end %>">
     <table width="100%">
         <td><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '20%' %></td>
         <td class="name-td">
               <h4 align="center"><%=Configuration.get_config_value('InstitutionName'); %></h4>
               <h5 align="center">English Medium - Banani Branch</h5>
+              <% if !@connect_exam_obj.blank? %>
               <% unless @connect_exam_obj.blank? and @batch.blank? and @connect_exam_obj.result_type.to_i == 4 %>
                   <h5 align="center">Result Sheet - <%= @connect_exam_obj.name %></h5>
                   <h5 align="center"><%= @batch.course.course_name+", Section - "+@batch.course.section_name %></h5>
@@ -125,6 +126,7 @@
                 <h5 align="center"><%= @batch.course.course_name %></h5>
                 <h5 align="center"><%= @connect_exam_obj.name %></h5>
               <% end %>
+              <% end %>   
              <% end %>   
         </td>
     </table>   

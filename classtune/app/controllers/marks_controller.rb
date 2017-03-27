@@ -135,5 +135,12 @@ class MarksController < ApplicationController
       @batches = Batch.active
     end 
   end
+  def connect_exam_report
+    if current_user.employee
+      @batches = @employee_obj.batches
+    elsif current_user.admin
+      @batches = Batch.active
+    end 
+  end
  
 end

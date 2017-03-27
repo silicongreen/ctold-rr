@@ -119,6 +119,9 @@ employee_id = @current_user.employee_record.id
     <div class="school_feed_box">
       <%= render :partial => "attendance" %>
       <div style="clear:both;height: 20px;"></div>
+      <% if @current_user.admin? %>
+        <%=  link_to "<div class='sms-link' style='width:100%; margin-top:5px; padding: 20px 0px; text-align:center; font-size:22px; background:#49BB4B; color:white;'>Employee Attendance &#x25BA;</div>", :controller => 'empattendance', :action => 'index' %>
+      <% end %>
       <%  if @current_user.admin? && sms_enable? %> 
         <%=  link_to "<div class='sms-link' style='width:100%; margin-top:5px; padding: 20px 0px; text-align:center; font-size:22px; background:#AFA7CC; color:white;'>SEND SMS TO STUDENT &#x25BA;</div>", :controller => 'sms', :action => 'students' %>
       <% end %>

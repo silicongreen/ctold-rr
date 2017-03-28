@@ -16,6 +16,8 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License. -%>
+<link rel="stylesheet" href="/stylesheets/jquery.auto-complete.css">
+<%= javascript_include_tag 'jquery.auto-complete.js' %>
  <div class="header-wrapper">
     <% unless @current_user.student? or @current_user.parent? %>
           <div id="inner-tab-menu">

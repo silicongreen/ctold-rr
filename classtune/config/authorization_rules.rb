@@ -18,7 +18,9 @@ authorization do
       :index,
       :connect_exam,
       :data,
-      :data_connect_exam
+      :data_connect_exam,
+      :data_connect_exam_report,
+      :connect_exam_report
     ]
     has_permission_on [:exam],
       :to => [
@@ -362,7 +364,9 @@ authorization do
       :index,
       :connect_exam,
       :data,
-      :data_connect_exam
+      :data_connect_exam,
+      :data_connect_exam_report,
+      :connect_exam_report
     ]
     has_permission_on [:exam],
       :to => [
@@ -1871,7 +1875,9 @@ authorization do
       :index,
       :connect_exam,
       :data,
-      :data_connect_exam
+      :data_connect_exam,
+      :data_connect_exam_report,
+      :connect_exam_report
     ]
     has_permission_on [:exam],
       :to => [
@@ -3231,7 +3237,9 @@ authorization do
       :index,
       :connect_exam,
       :data,
-      :data_connect_exam
+      :data_connect_exam,
+      :data_connect_exam_report,
+      :connect_exam_report
     ]
     has_permission_on [:exam],
       :to => [
@@ -3487,7 +3495,9 @@ authorization do
       :index,
       :connect_exam,
       :data,
-      :data_connect_exam
+      :data_connect_exam,
+      :data_connect_exam_report,
+      :connect_exam_report
     ]
     has_permission_on [:exam],
       :to => [

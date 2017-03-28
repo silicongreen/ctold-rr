@@ -120,6 +120,58 @@ class MarksController < ApplicationController
     render :text => @data
   end
   
+  def data_connect_exam_report
+    @employee_subjects = current_user.employee_record.subjects.active
+    
+    @today = @local_tzone_time.to_date
+    school_id = MultiSchool.current_school.id
+    @exam_connect = Rails.cache.fetch("connect_exam_all_#{school_id}"){
+      exams_data = ExamConnect.find(:all)
+      exams_data
+    }
+    k = 0
+    data = []
+    @exam_connect.each do |exam_connect|
+      exam_connect_batch = Rails.cache.fetch("batch_from_exam_connect_#{exam_connect.id}"){
+        exam_connect_batch_data = exam_connect.batch
+        exam_connect_batch_data
+      }
+      @subjects = []
+      @group_exams = Rails.cache.fetch("group_exam_from_exam_connect_#{exam_connect.id}"){
+        exam_connect_group_exams_data = GroupedExam.find_all_by_connect_exam_id(exam_connect.id)
+        exam_connect_group_exams_data
+      }
+      @group_exams.each do |group_exam|
+        exams = Rails.cache.fetch("exam_from_exam_group_#{group_exam.exam_group_id}"){
+          exam_data = Exam.find_all_by_exam_group_id(group_exam.exam_group_id)
+          exam_data
+        }
+        exams.each do |exam|
+          exam_subject = Rails.cache.fetch("subject_from_exam_#{exam.id}"){
+            exam_subject_data = exam.subject
+            exam_subject_data
+          }
+          if !@subjects.include?(exam_subject) 
+            if @employee_subjects.include?(exam_subject.id) or @current_user.admin?
+              @subjects << exam_subject
+              data[k] = []
+              data[k][0] = @template.link_to(exam_connect_batch.full_name.to_s+" (All Result)", '/exam/' + 'continues/' +exam_connect.id.to_s, :target => "_blank")
+              data[k][1] = @template.link_to(exam_connect.name.to_s+" (Tablulation)", '/exam/' + 'tabulation/' +exam_connect.id.to_s, :target => "_blank")
+              data[k][2] = @template.link_to(exam_subject.name.to_s+" (Marksheet)", '/exam/' + 'marksheet/' +exam_connect.id.to_s+"?subject_id="+exam_subject.id.to_s, :target => "_blank")
+              data[k][3] = @template.link_to("Comment Entry", '/exam/' + 'comment_tabulation/' +exam_connect.id.to_s, :target => "_blank")
+              data[k][4] = @template.link_to("Results", '/exam/' + 'generated_report5?connect_exam='+exam_connect.id.to_s+"&batch_id="+exam_connect_batch.id.to_s, :target => "_blank")
+              k = k+1
+            end
+          end    
+        end       
+      end          
+        
+    end
+    json_data = {:data => data}
+    @data = JSON.generate(json_data)
+    render :text => @data
+  end
+  
   def index
     if current_user.employee
       employee= current_user.employee_record
@@ -140,6 +192,7 @@ class MarksController < ApplicationController
     end 
   end
   def connect_exam_report
+    @exams_data = ExamConnect.find(:all,:group=>"name")
     if current_user.employee
       employee= current_user.employee_record
       @employee_obj = Employee.find_by_id(employee.id)

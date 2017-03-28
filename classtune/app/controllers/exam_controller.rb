@@ -547,7 +547,11 @@ class ExamController < ApplicationController
     
     is_elective = @exam_subject.elective_group_id
     if is_elective == nil
-      @students = @batch.students.by_roll_number_name
+      if MultiSchool.current_school.id == 319
+        @students = @batch.students.by_first_name
+      else
+        @students = @batch.students.by_roll_number_name
+      end
     else
       assigned_students = StudentsSubject.find_all_by_subject_id(@exam_subject.id)
       @students = []
@@ -555,7 +559,11 @@ class ExamController < ApplicationController
         student = Student.find_by_id(s.student_id)
         unless student.nil?
           if student.batch_id.to_i == s.batch_id
-            @students.push [student.class_roll_no,student.first_name, student.id, student] 
+            if MultiSchool.current_school.id == 319
+              @students.push [student.first_name,student.class_roll_no, student.id, student]
+            else
+              @students.push [student.class_roll_no,student.first_name, student.id, student] 
+            end
           end
         end
       end
@@ -2471,6 +2479,10 @@ class ExamController < ApplicationController
   end
   
   def generated_report5
+    unless params[:batch_id].nil?
+      params[:exam_report] = {}
+      params[:exam_report][:batch_id] = params[:batch_id]
+    end 
     if params[:student].nil? or !params[:student][:class_name].nil?
       if params[:exam_report].nil? or params[:exam_report][:batch_id].empty?
         flash[:notice] = "#{t('select_a_batch_to_continue')}"
@@ -2911,21 +2923,22 @@ class ExamController < ApplicationController
     exam_subject = Subject.find(@exam.subject_id)
     is_elective = exam_subject.elective_group_id
     if is_elective == nil
-      @students = @batch.students.by_roll_number_name
-      #      @students = []
-      #      batch_students = BatchStudent.find_all_by_batch_id(@batch.id)
-      #      unless batch_students.empty?
-      #        batch_students.each do|b|
-      #          student = Student.find_by_id(b.student_id)
-      #          @students.push [student.class_roll_no,student.first_name,student.id,student] unless student.nil?
-      #        end
-      #      end
+      if MultiSchool.current_school.id == 319
+        @students = @batch.students.by_first_name
+      else
+        @students = @batch.students.by_roll_number_name
+      end
     else
       assigned_students = StudentsSubject.find_all_by_subject_id(exam_subject.id)
       @students = []
       assigned_students.each do |s|
         student = Student.find_by_id(s.student_id)
-        @students.push [student.class_roll_no,student.first_name, student.id, student] unless student.nil?
+        if MultiSchool.current_school.id == 319
+          @students.push [student.first_name,student.class_roll_no, student.id, student] unless student.nil?
+        else
+          @students.push [student.class_roll_no,student.first_name, student.id, student] unless student.nil? 
+        end
+#        @students.push [student.class_roll_no,student.first_name, student.id, student] unless student.nil?
       end
       
       @ordered_students = @students.sort

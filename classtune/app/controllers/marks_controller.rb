@@ -122,6 +122,8 @@ class MarksController < ApplicationController
   
   def index
     if current_user.employee
+      employee= current_user.employee_record
+      @employee_obj = Employee.find_by_id(employee.id)
       @batches = @employee_obj.batches
     elsif current_user.admin
       @batches = Batch.active
@@ -130,6 +132,8 @@ class MarksController < ApplicationController
   end
   def connect_exam
     if current_user.employee
+      employee= current_user.employee_record
+      @employee_obj = Employee.find_by_id(employee.id)
       @batches = @employee_obj.batches
     elsif current_user.admin
       @batches = Batch.active
@@ -137,6 +141,8 @@ class MarksController < ApplicationController
   end
   def connect_exam_report
     if current_user.employee
+      employee= current_user.employee_record
+      @employee_obj = Employee.find_by_id(employee.id)
       @batches = @employee_obj.batches
     elsif current_user.admin
       @batches = Batch.active

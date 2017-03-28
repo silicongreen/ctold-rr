@@ -19,7 +19,13 @@
 class GroupedExam < ActiveRecord::Base
   has_many :exam_groups
   def after_save
-    Rails.cache.delete("batch_from_exam_connect_#{self.connect_exam_id}")
-    Rails.cache.delete("group_exam_from_exam_connect_#{self.connect_exam_id}")
+    
+    grouped_exam = GroupedExam.find_by_id(self.id)
+    unless grouped_exam.blank?
+      Rails.cache.delete("tabulation_#{grouped_exam.connect_exam_id}_#{grouped_exam.batch_id}")
+      Rails.cache.delete("continues_#{grouped_exam.connect_exam_id}_#{grouped_exam.batch_id}")
+      Rails.cache.delete_matched("/student_exam_#{grouped_exam.connect_exam_id}_#{grouped_exam.batch_id}*/")
+    end
+    
   end
 end

@@ -39,6 +39,23 @@ class Subject < ActiveRecord::Base
   named_scope :active, :conditions => { :is_deleted => false }
 
   before_save :fa_group_valid
+  
+  def after_save 
+    exams = Exam.find_all_by_subject_id(self.id)
+    unless exams.blank?
+      exams.each do |exam|
+        grouped_exams = GroupedExam.find_all_by_exam_group_id(exam.exam_group.id)
+        unless grouped_exams.blank?
+          grouped_exams.each do |grouped_exam|
+            Rails.cache.delete("tabulation_#{grouped_exam.connect_exam_id}_#{grouped_exam.batch_id}")
+            Rails.cache.delete("continues_#{grouped_exam.connect_exam_id}_#{grouped_exam.batch_id}")
+            key = "student_exam_#{grouped_exam.connect_exam_id}_#{grouped_exam.batch_id}"
+            Rails.cache.delete_matched(/#{key}*/)
+          end
+        end
+      end
+    end 
+  end
 
   def check_grade_type
     unless self.batch.nil?

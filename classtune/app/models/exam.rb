@@ -38,10 +38,15 @@ class Exam < ActiveRecord::Base
   accepts_nested_attributes_for :exam_scores
   
   def after_save
-    Rails.cache.delete("subject_exam_#{self.subject_id}")
-    Rails.cache.delete("exam_group_from_exam_#{self.id}")
-    Rails.cache.delete("exam_from_exam_group_#{self.exam_group.id}")
-    Rails.cache.delete("subject_from_exam_#{self.id}")
+    grouped_exams = GroupedExam.find_all_by_exam_group_id(self.exam_group.id)
+    unless grouped_exams.blank?
+      grouped_exams.each do |grouped_exam|
+        Rails.cache.delete("tabulation_#{grouped_exam.connect_exam_id}_#{grouped_exam.batch_id}")
+        Rails.cache.delete("continues_#{grouped_exam.connect_exam_id}_#{grouped_exam.batch_id}")
+        key = "student_exam_#{grouped_exam.connect_exam_id}_#{grouped_exam.batch_id}"
+        Rails.cache.delete_matched(/#{key}*/)
+      end
+    end
   end
   
   def no_date_not_present?

@@ -2316,12 +2316,15 @@ class ExamController < ApplicationController
     @connect_exam_obj = ExamConnect.find(@id)
     @batch = Batch.find(@connect_exam_obj.batch_id)
     @assigned_employee=@batch.employees
-    get_continues(@id,@batch.id)
-    @report_data = []
+    @report_data = Rails.cache.fetch("continues_#{@id}_#{@batch.id}"){
+      get_continues(@id,@batch.id)
+      report_data = []
+      if @student_response['status']['code'].to_i == 200
+        report_data = @student_response['data']
+      end
+      report_data
+    }
     
-    if @student_response['status']['code'].to_i == 200
-      @report_data = @student_response['data']
-    end
     @exam_comment_all = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id)
     if MultiSchool.current_school.id == 246
       render :pdf => 'continues',
@@ -2382,11 +2385,14 @@ class ExamController < ApplicationController
     @id = params[:id]
     @connect_exam_obj = ExamConnect.find(@id)
     @batch = Batch.find(@connect_exam_obj.batch_id)
-    get_tabulation(@id,@batch.id)
-    @report_data = []
-    if @student_response['status']['code'].to_i == 200
-      @report_data = @student_response['data']
-    end
+    @report_data = Rails.cache.fetch("tabulation_#{@id}_#{@batch.id}"){
+      get_tabulation(@id,@batch.id)
+      report_data = []
+      if @student_response['status']['code'].to_i == 200
+        report_data = @student_response['data']
+      end
+      report_data
+    }
     @exam_comment = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id) 
     @student_exam_comment = {}
     
@@ -2401,11 +2407,14 @@ class ExamController < ApplicationController
     @id = params[:id]
     @connect_exam_obj = ExamConnect.find(@id)
     @batch = Batch.find(@connect_exam_obj.batch_id)
-    get_tabulation(@id,@batch.id)
-    @report_data = []
-    if @student_response['status']['code'].to_i == 200
-      @report_data = @student_response['data']
-    end
+    @report_data = Rails.cache.fetch("tabulation_#{@id}_#{@batch.id}"){
+      get_tabulation(@id,@batch.id)
+      report_data = []
+      if @student_response['status']['code'].to_i == 200
+        report_data = @student_response['data']
+      end
+      report_data
+    }
     @exam_comment = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id) 
     @student_exam_comment = {}
     
@@ -2428,11 +2437,14 @@ class ExamController < ApplicationController
     @id = params[:id]
     @connect_exam_obj = ExamConnect.find(@id)
     @batch = Batch.find(@connect_exam_obj.batch_id)
-    get_tabulation(@id,@batch.id)
-    @report_data = []
-    if @student_response['status']['code'].to_i == 200
-      @report_data = @student_response['data']
-    end
+    @report_data = Rails.cache.fetch("tabulation_#{@id}_#{@batch.id}"){
+      get_tabulation(@id,@batch.id)
+      report_data = []
+      if @student_response['status']['code'].to_i == 200
+        report_data = @student_response['data']
+      end
+      report_data
+    }
     @exam_comment = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id)
     render :pdf => 'tabulation',
       :orientation => 'Landscape', :zoom => 1.00,
@@ -2522,12 +2534,14 @@ class ExamController < ApplicationController
         flash[:notice] = "#{t('flash5')}"
         redirect_to :action=>'grouped_exam_report_new' and return
       end
-      
+      @report_data = Rails.cache.fetch("student_exam_#{@connect_exam}_#{@batch.id}_#{@student.id}"){
       get_exam_report(@connect_exam,@student.id,@batch.id)
-      @report_data = []
+      report_data = []
       if @student_response['status']['code'].to_i == 200
-        @report_data = @student_response['data']
+        report_data = @student_response['data']
       end
+      report_data
+      }
       @exam_comment = ExamConnectComment.find_by_exam_connect_id_and_student_id(@connect_exam_obj.id,@student.id)
       
     else
@@ -2539,12 +2553,14 @@ class ExamController < ApplicationController
         @batch = @student.batch
       end
       @type  = params[:type]
-      
+      @report_data = Rails.cache.fetch("student_exam_#{@connect_exam}_#{@batch.id}_#{@student.id}"){
       get_exam_report(@connect_exam,@student.id,@batch.id)
-      @report_data = []
+      report_data = []
       if @student_response['status']['code'].to_i == 200
-        @report_data = @student_response['data']
+        report_data = @student_response['data']
       end
+      report_data
+      }
       if current_user.admin? or current_user.employee?  
       
         now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
@@ -2686,11 +2702,14 @@ class ExamController < ApplicationController
         redirect_to :action=>'grouped_exam_report_new' and return
       end
       
+      @report_data = Rails.cache.fetch("student_exam_#{@connect_exam}_#{@batch.id}_#{@student.id}"){
       get_exam_report(@connect_exam,@student.id,@batch.id)
-      @report_data = []
+      report_data = []
       if @student_response['status']['code'].to_i == 200
-        @report_data = @student_response['data']
+        report_data = @student_response['data']
       end
+      report_data
+      }
     else
       @student = Student.find(params[:student])
       @batch = Batch.find_by_id(params[:batch_id])
@@ -2700,11 +2719,14 @@ class ExamController < ApplicationController
         redirect_to :action=>'grouped_exam_report_new' and return
       end
       
+      @report_data = Rails.cache.fetch("student_exam_#{@connect_exam}_#{@batch.id}_#{@student.id}"){
       get_exam_report(@connect_exam,@student.id,@batch.id)
-      @report_data = []
+      report_data = []
       if @student_response['status']['code'].to_i == 200
-        @report_data = @student_response['data']
+        report_data = @student_response['data']
       end
+      report_data
+      }
       
     end
     @exam_comment = ExamConnectComment.find_by_exam_connect_id_and_student_id(@connect_exam_obj.id,@student.id)

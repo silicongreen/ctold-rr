@@ -24,6 +24,15 @@ class ExamConnectSubjectComment < ActiveRecord::Base
   belongs_to :subject
   def before_save
     self.school_id = MultiSchool.current_school.id
-  end  
+  end 
+  def after_save
+    exam_connect = ExamConnect.find_by_id(self.exam_connect_id)
+    unless exam_connect.blank?
+        Rails.cache.delete("tabulation_#{exam_connect.id}_#{exam_connect.batch_id}")
+        Rails.cache.delete("continues_#{exam_connect.id}_#{exam_connect.batch_id}")
+        key = "student_exam_#{exam_connect.id}_#{exam_connect.batch_id}"
+        Rails.cache.delete_matched(/#{key}*/)
+    end
+  end
 end
 

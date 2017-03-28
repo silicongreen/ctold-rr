@@ -31,6 +31,17 @@ class ExamScore < ActiveRecord::Base
   validates_uniqueness_of :exam_id, :scope=> [:student_id],:message => "score already present."
   
 
+  def after_save
+    grouped_exams = GroupedExam.find_all_by_exam_group_id(self.exam.exam_group.id)
+    unless grouped_exams.blank?
+      grouped_exams.each do |grouped_exam|
+        Rails.cache.delete("tabulation_#{grouped_exam.connect_exam_id}_#{grouped_exam.batch_id}")
+        Rails.cache.delete("continues_#{grouped_exam.connect_exam_id}_#{grouped_exam.batch_id}")
+        key = "student_exam_#{grouped_exam.connect_exam_id}_#{grouped_exam.batch_id}"
+        Rails.cache.delete_matched(/#{key}*/)
+      end
+    end
+  end
 
   def check_existing
     exam_score = ExamScore.find(:first,:conditions => {:exam_id => self.exam_id,:student_id => self.student_id})

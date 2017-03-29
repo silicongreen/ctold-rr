@@ -33,6 +33,9 @@ class ExamConnectComment < ActiveRecord::Base
         key = "student_exam_#{exam_connect.id}_#{exam_connect.batch_id}"
         Rails.cache.delete_matched(/#{key}*/)
         
+        keymarksheet = "marksheet_#{exam_connect.id}"
+        Rails.cache.delete_matched(/#{keymarksheet}*/)
+        
     end
   end
 end

@@ -25,6 +25,10 @@ class GroupedExam < ActiveRecord::Base
       Rails.cache.delete("tabulation_#{grouped_exam.connect_exam_id}_#{grouped_exam.batch_id}")
       Rails.cache.delete("continues_#{grouped_exam.connect_exam_id}_#{grouped_exam.batch_id}")
       Rails.cache.delete_matched("/student_exam_#{grouped_exam.connect_exam_id}_#{grouped_exam.batch_id}*/")
+      
+      keymarksheet = "marksheet_#{grouped_exam.connect_exam_id}"
+      Rails.cache.delete_matched(/#{keymarksheet}*/)
+      
     end
     
   end

@@ -51,6 +51,7 @@ class Subject < ActiveRecord::Base
             Rails.cache.delete("continues_#{grouped_exam.connect_exam_id}_#{grouped_exam.batch_id}")
             key = "student_exam_#{grouped_exam.connect_exam_id}_#{grouped_exam.batch_id}"
             Rails.cache.delete_matched(/#{key}*/)
+            Rails.cache.delete("marksheet_#{grouped_exam.connect_exam_id}_#{self.id}")
           end
         end
       end

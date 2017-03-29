@@ -32,6 +32,7 @@ class ExamConnectSubjectComment < ActiveRecord::Base
         Rails.cache.delete("continues_#{exam_connect.id}_#{exam_connect.batch_id}")
         key = "student_exam_#{exam_connect.id}_#{exam_connect.batch_id}"
         Rails.cache.delete_matched(/#{key}*/)
+        Rails.cache.delete("marksheet_#{exam_connect.id}_#{self.subject_id}")
     end
   end
 end

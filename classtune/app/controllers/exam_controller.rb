@@ -595,11 +595,13 @@ class ExamController < ApplicationController
               end
             else
               if details[:marks].to_f <= @exam.maximum_marks.to_f
-                if @exam_score.update_attributes(details)
-                else
-                  flash[:warn_notice] = "#{t('flash4')}"
-                  @error = nil
-                end
+                if details[:marks].to_f != @exam_score.marks.to_f
+                  if @exam_score.update_attributes(details)
+                  else
+                    flash[:warn_notice] = "#{t('flash4')}"
+                    @error = nil
+                  end
+                end  
               else
                 @error = true
               end
@@ -2467,11 +2469,13 @@ class ExamController < ApplicationController
     if !@employee_sub.nil?
       @employee = Employee.find(@employee_sub.employee_id)
     end
+    @report_data = Rails.cache.fetch("marksheet_#{@id}_#{@subject_id}"){
     get_subject_mark_sheet(@id,@subject_id)
     @report_data = []
     if @student_response['status']['code'].to_i == 200
       @report_data = @student_response['data']
     end
+    }
     render :pdf => 'marksheet',
       :orientation => 'Landscape', :zoom => 1.00,
       :margin => {    :top=> 10,

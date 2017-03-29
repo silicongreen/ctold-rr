@@ -39,8 +39,11 @@ class Exam < ActiveRecord::Base
   
   def after_save
     grouped_exams = GroupedExam.find_all_by_exam_group_id(self.exam_group.id)
+    exam_subject_id = self.subject.id
+    
     unless grouped_exams.blank?
       grouped_exams.each do |grouped_exam|
+        Rails.cache.delete("marksheet_#{grouped_exam.connect_exam_id}_#{exam_subject_id}")
         Rails.cache.delete("tabulation_#{grouped_exam.connect_exam_id}_#{grouped_exam.batch_id}")
         Rails.cache.delete("continues_#{grouped_exam.connect_exam_id}_#{grouped_exam.batch_id}")
         key = "student_exam_#{grouped_exam.connect_exam_id}_#{grouped_exam.batch_id}"

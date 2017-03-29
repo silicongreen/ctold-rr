@@ -35,7 +35,9 @@
 <div id="content-header">
   <h1><%= t('exams_text') %></h1>
 <div class='header-sep'>|</div>
-<div class='sub-header'><%= "Marks" %></div>
+<div class='sub-header'><%= "Report card" %></div>
+<div class='sub-header2' style=""><%= link_to "Combained Exam Marks", :action=>'connect_exam' %></div>
+<div class='sub-header3' style=""><%= link_to "Exam Marks", :action=>'index' %></div>
 <div id="inner-tab-menu">
 </div>
 </div>
@@ -135,5 +137,46 @@ body, html
 {
     line-height: normal;
     font-family: initial;
+}
+.sub-header3
+{
+    float: left;
+    padding-top: 38px;
+    margin-left: 10px;
+}
+.sub-header3 a
+{
+    float: left;
+    margin-left: 0px;
+    text-decoration: none;
+    color: black;
+    padding: 7px;
+    border: 1px solid white;
+    background: white;
+    cursor: pointer;
+    width: 73px;
+    
+}
+.sub-header2
+{
+    float: left;
+    padding-top: 38px;
+    margin-left: 130px;
+}
+.sub-header2 a
+{
+    float: left;
+    margin-left: 446px;
+    text-decoration: none;
+    color: black;
+    padding: 7px;
+    border: 1px solid white;
+    background: white;
+    cursor: pointer;
+    
+}
+a:hover
+{
+  text-decoration: underline;
 }
 </style>

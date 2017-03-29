@@ -24,6 +24,9 @@
 <div class='sub-header'><%= t('students') %></div>
 
 </div>
+<script>
+  var jj = jQuery.noConflict();
+</script>  
 <div id="page-yield">
   <div class="box">
 <% remote_form_for :send_sms,
@@ -31,11 +34,11 @@
         :success => "Element.hide('loader2'), setTimeout(function(){$('submit_button').enable();},5000)" do |x| %>
    <div class="label-field-pair">
     <div class="label-container"><label><%= t('select_a_batch') %>:</label> </div>
-    <div class="text-input-bg"><%= select :send_sms, :batch_id,
+    <div class="text-input-bg text-input-bg2" style="height: 320px;"><%= select :send_sms, :batch_id,
         @batches.map {|b| [b.full_name, b.id]},
-        {:prompt => "#{t('select_a_batch')}"},
-        {:onChange => "#{remote_function(:url => {:action => "list_students"},
-        :with => "'batch_id='+value",
+        {:prompt => "Select"},
+        {:multiple => true,:onChange => "#{remote_function(:url => {:action => "list_students"},
+        :with => "'batch_id='+jj('#send_sms_batch_id').val()",
         :before => "Element.show('loader')",
         :success => "Element.hide('loader')"
         )}"} %>
@@ -77,3 +80,9 @@
 
   </div>
 </div>
+<style>
+.text-input-bg2 select
+{
+   height: 300px;
+}
+</style>    

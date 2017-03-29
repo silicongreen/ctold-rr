@@ -84,6 +84,7 @@ class SmsController < ApplicationController
             if sms_setting.parent_sms_active and (send_to.to_i == 1 or send_to.to_i == 3)
               unless guardian.nil?
                 @recipients.push guardian.mobile_phone unless (guardian.mobile_phone.nil? or guardian.mobile_phone == "")
+                
               end
             end
             
@@ -120,8 +121,11 @@ class SmsController < ApplicationController
   end
   
   def list_students
-    batch = Batch.find(params[:batch_id])
-    @students = Student.find_all_by_batch_id(batch.id,:conditions=>"is_sms_enabled=true")
+    @students = []
+    unless params[:batch_id].blank?
+      batch_ids = params[:batch_id].split(",")
+      @students = Student.find_all_by_batch_id(batch_ids,:conditions=>"is_sms_enabled=true")
+    end
   end
 
   def batches

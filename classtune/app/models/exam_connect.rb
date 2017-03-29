@@ -21,6 +21,8 @@ class ExamConnect < ActiveRecord::Base
   belongs_to :batch
   has_many :grouped_exam
   def after_save
+    keymarksheet = "marksheet_#{self.id}"
+    Rails.cache.delete_matched(/#{keymarksheet}*/)
     Rails.cache.delete("tabulation_#{self.id}_#{self.batch_id}")
     Rails.cache.delete("continues_#{self.id}_#{self.batch_id}")
     key = "student_exam_#{self.id}_#{self.batch_id}"

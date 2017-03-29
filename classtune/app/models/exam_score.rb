@@ -37,8 +37,8 @@ class ExamScore < ActiveRecord::Base
       grouped_exams.each do |grouped_exam|
         Rails.cache.delete("tabulation_#{grouped_exam.connect_exam_id}_#{grouped_exam.batch_id}")
         Rails.cache.delete("continues_#{grouped_exam.connect_exam_id}_#{grouped_exam.batch_id}")
-        key = "student_exam_#{grouped_exam.connect_exam_id}_#{grouped_exam.batch_id}"
-        Rails.cache.delete_matched(/#{key}*/)
+        Rails.cache.delete("student_exam_#{grouped_exam.connect_exam_id}_#{grouped_exam.batch_id}_#{self.student_id}")
+        Rails.cache.delete("marksheet_#{grouped_exam.connect_exam_id}_#{self.exam.subject_id}")        
       end
     end
   end

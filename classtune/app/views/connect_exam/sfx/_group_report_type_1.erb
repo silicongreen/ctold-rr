@@ -41,7 +41,7 @@
                               <td class="col-pdf">
                                      <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                                         <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i > -1 %>
-                                          <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %>
+                                          <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                           <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                         <% elsif report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i == -1 %>
                                             N/A
@@ -89,7 +89,7 @@
                         %>
 
                           <% if full_mark.to_f > 0 %>
-                            <td class="col-pdf"><%= total_mark.to_f.round.to_i %></td>
+                            <td class="col-pdf"><%= total_mark.to_f %></td>
                             <td class="col-pdf">
                             <% if grade_i %>
                               <%= "I" %>
@@ -104,7 +104,7 @@
                               <% end %>
                             <% end %>
                             </td>
-                            <td class="col-pdf"><%= heighst_mark.to_f.round.to_i %> </td>
+                            <td class="col-pdf"><%= heighst_mark.to_f %> </td>
                             
 
                             <% total_parcent= total_parcent+main_mark %>

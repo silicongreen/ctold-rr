@@ -62,7 +62,7 @@
                               <td class="col-pdf">
                                      <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                                         <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i > -1 and !@exam_score_all.blank? %>
-                                          <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %>
+                                          <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                           <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                         <% elsif @exam_score_all.blank? %>
                                            -
@@ -112,7 +112,7 @@
                         %>
 
                           <% if full_mark.to_f > 0 %>
-                            <td class="col-pdf"><%= total_mark.to_f.round.to_i %></td>
+                            <td class="col-pdf"><%= total_mark.to_f %></td>
                             <td class="col-pdf"><%= sprintf( "%0.02f", main_mark) %></td>
                             <td class="col-pdf">
                             <% if grade_i %>

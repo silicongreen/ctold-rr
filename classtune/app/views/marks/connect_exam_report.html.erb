@@ -50,11 +50,13 @@
         <div class="box">
             <%= select :batch, :batch_id,@batches.map {|b| [b.full_name, b.full_name] },{:prompt => "Select a Class"} %>
         </div>
+        
     <% end %>
     <% unless @exams_data.blank? %>
-        <div class="box" style="margin-top:10px;">
+        <div class="box" id="examgroup" style="margin-top:10px;">
             <%= select :exam, :exam_id,@exams_data.map {|b| [b.name, b.name] },{:prompt => "Select a Exam"} %>
         </div>
+        
     <% end %>
     <div id="exams-list" class="box">
       
@@ -92,8 +94,7 @@
             }
         ]
     } );
-    
-    jj("#exam_exam_id").change(function(){
+   jj( document ).on( "change", "#exam_exam_id", function() {
       if(jj("#exam_exam_id").val())
       {
         oDataTable.column( 1 ).search( jj("#exam_exam_id").val(),false,false).draw();
@@ -108,10 +109,19 @@
       if(jj("#batch_batch_id").val())
       {
         oDataTable.column( 0 ).search( jj("#batch_batch_id").val(),false,false).draw();
+        jj.get( "/marks/examgroup", { batch_name: jj("#batch_batch_id").val() } )
+        .done(function( data ) {
+          jj("#examgroup").html(data);
+        });
       }
       else
       {
         oDataTable.column( 0 ).search("").draw();
+        jj.get( "/marks/examgroup", { batch_name: "0" } )
+        .done(function( data ) {
+          jj("#examgroup").html(data);
+        });
+        
       } 
     });
   });

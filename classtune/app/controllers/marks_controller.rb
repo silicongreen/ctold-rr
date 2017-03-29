@@ -136,6 +136,7 @@ class MarksController < ApplicationController
     
   end
   def connect_exam
+    @exams_data = ExamConnect.find(:all,:group=>"name")
     if current_user.employee
       employee= current_user.employee_record
       @employee_obj = Employee.find_by_id(employee.id)
@@ -144,6 +145,27 @@ class MarksController < ApplicationController
       @batches = Batch.active
     end 
   end
+  def examgroup
+    if params[:batch_name] == "0"
+      @exams_data = ExamConnect.find(:all,:group=>"name")
+    else
+      @batches = Batch.active
+      @batch_id = 0
+      @batches.each do |batch|
+        if batch.full_name == params[:batch_name]
+          @batch_id = batch.id
+          break
+        end
+      end
+      if @batch_id.blank?
+        @exams_data = ExamConnect.find(:all,:group=>"name")
+      else
+        @exams_data = ExamConnect.find_all_by_batch_id(@batch_id)
+      end  
+    end  
+    render :layout => false
+  end
+  
   def connect_exam_report
     @exams_data = ExamConnect.find(:all,:group=>"name")
     if current_user.employee

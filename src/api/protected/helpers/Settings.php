@@ -32,6 +32,9 @@ class Settings {
     public static $free_domain_string = array("free");
     public static $card_attendence_school = [2,3,246];
     
+    public static $school_sms_extra_string = array(
+        319 => " GH."
+    );
     
     public static $version_update = array(
       "version"         => 11,

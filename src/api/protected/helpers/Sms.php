@@ -103,6 +103,10 @@ class Sms {
                     $sms_log->school_id = $school_id;
                     $sms_log->save(); 
                 }
+                if(isset(Settings::$school_sms_extra_string[$school_id]))
+                {
+                    $sms_msg_array[$key] = $sms_msg_array[$key].Settings::$school_sms_extra_string[$school_id];
+                }    
                 $sms_params[] = "sms[".$key."][0]= ".$value."&sms[".$key."][1]=".urlencode($sms_msg_array[$key])."&sms[".$key."][2]=123456789"; 
             }
             if($sms_params)

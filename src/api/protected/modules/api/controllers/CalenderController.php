@@ -1350,24 +1350,28 @@ class CalenderController extends Controller
                 if ($value['main_status'] == 1)
                 {
                     $student['present'][$present]['student_name'] = $value['student_name'];
+                    $student['present'][$present]['student_id'] = $value['student_id'];
                     $student['present'][$present]['roll_no'] = $value['roll_no'];
                     $present++;
                 }
                 else if ($value['main_status'] == 0)
                 {
                     $student['absent'][$absent]['student_name'] = $value['student_name'];
+                    $student['absent'][$absent]['student_id'] = $value['student_id'];
                     $student['absent'][$absent]['roll_no'] = $value['roll_no'];
                     $absent++;
                 }
                 else if ($value['main_status'] == 2)
                 {
                     $student['late'][$late]['student_name'] = $value['student_name'];
+                    $student['late'][$late]['student_id'] = $value['student_id'];
                     $student['late'][$late]['roll_no'] = $value['roll_no'];
                     $late++;
                 }
                 else if ($value['main_status'] == 3)
                 {
                     $student['leave'][$leave]['student_name'] = $value['student_name'];
+                    $student['leave'][$leave]['student_id'] = $value['student_id'];
                     $student['leave'][$leave]['roll_no'] = $value['roll_no'];
                     $leave++;
                 }
@@ -1420,24 +1424,28 @@ class CalenderController extends Controller
                 if ($value['main_status'] == 1)
                 {
                     $student['present'][$present]['student_name'] = $value['student_name'];
+                    $student['present'][$present]['student_id'] = $value['student_id'];
                     $student['present'][$present]['roll_no'] = $value['roll_no'];
                     $present++;
                 }
                 else if ($value['main_status'] == 0)
                 {
                     $student['absent'][$absent]['student_name'] = $value['student_name'];
+                    $student['absent'][$absent]['student_id'] = $value['student_id'];
                     $student['absent'][$absent]['roll_no'] = $value['roll_no'];
                     $absent++;
                 }
                 else if ($value['main_status'] == 2)
                 {
                     $student['late'][$late]['student_name'] = $value['student_name'];
+                    $student['late'][$late]['student_id'] = $value['student_id'];
                     $student['late'][$late]['roll_no'] = $value['roll_no'];
                     $late++;
                 }
                 else if ($value['main_status'] == 3)
                 {
                     $student['leave'][$leave]['student_name'] = $value['student_name'];
+                    $student['leave'][$leave]['student_id'] = $value['student_id'];
                     $student['leave'][$leave]['roll_no'] = $value['roll_no'];
                     $leave++;
                 }

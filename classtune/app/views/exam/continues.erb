@@ -43,7 +43,7 @@
     @report_data['present'] = 0;
     if !@report_data['report']['all_result'][std['id']]['exams'].blank?
       
-      @report_data = Rails.cache.fetch("student_exam_#{@connect_exam_obj.id}_#{@batch.id}_#{@student.id}"){
+     
         @report_data['report']['exams'] = @report_data['report']['all_result'][std['id']]['exams']
 
         if !@report_data['report']['exam_comments'].blank? and !@report_data['report']['exam_comments'][std['id']]['comments'].blank?
@@ -56,8 +56,7 @@
         if !@report_data['present_all'].blank? and !@report_data['present_all'][std['id']].blank?
           @report_data['present'] = @report_data['present_all'][std['id']]
         end  
-        @report_data
-      }
+       
       @exam_comment = {}
         @exam_comment_all.each do |ec|
             if ec.student_id.to_i == std['id'].to_i

@@ -112,6 +112,7 @@ class ExamConnect extends CActiveRecord
         $sub_data = $subjectObj->findByPk($subject_id);
         
         $criteria = new CDbCriteria;
+        $criteria->together = true;
         $criteria->compare('t.id', $id);
         $criteria->select = 't.*';
         $criteria->with = array(

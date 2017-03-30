@@ -50,11 +50,11 @@
           <td class="name">Name</td>
           <% @report_data['result']['ALL'].each do |rs| %>
             <td><%=  rs['name'] %> (<%=  rs['maximum_marks'] %>)</td>
-            <% full_mark = full_mark+rs['maximum_marks'].to_i %>
+            
             <% colspan = colspan+1 %>
           <% end %>  
           
-          <td>Total ( <%=  full_mark %> )</td>
+          <td>Total</td>
           <td>Grade</td>
         
         </tr>
@@ -81,6 +81,7 @@
         
         
           <% total_mark = 0 %>
+          <% full_mark = 0 %>
           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
             <td class="name"><%= std['class_roll_no'] %></td>
             <td class="name-std"><%= std['name'] %></td>
@@ -89,6 +90,7 @@
               <% if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank? %>
                 <%= rs['students'][std['id']]['score'] %>
                 <% total_mark = total_mark.to_f+rs['students'][std['id']]['score'].to_f %>
+                <% full_mark = full_mark+rs['maximum_marks'].to_i %>
               <% else %>
                   AB
               <% end %>    

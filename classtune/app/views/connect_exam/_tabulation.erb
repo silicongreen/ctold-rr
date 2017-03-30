@@ -124,7 +124,21 @@
                   <% subject_obtain_mark = 0 %>
                   
                   <% @report_data['report']['exams'].each do |rs| %>
-                    <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? %>
+                    <% check_exam = false %>
+                    <% @exam_score_all = ExamScore.find_all_by_exam_id(rs['exam_id'].to_i) %>
+                    <% if @exam_score_all.blank? %>
+                        <% check_exam = false %>
+                    <% else %>
+                      <% @exam_score_all.each do |score| %>
+                      <%
+                        unless score.marks.blank?
+                          check_exam = true
+                          break
+                        end
+                      %>
+                      <% end %>
+                    <% end %>
+                    <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and check_exam == true %>
                       
                       <%
                           

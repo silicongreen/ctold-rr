@@ -64,7 +64,7 @@
                                 <% else %>
                                   <% @exam_score_all.each do |score| %>
                                   <%
-                                    unless score.marks.empty?
+                                    unless score.marks.blank?
                                       check_exam = true
                                       break
                                     end

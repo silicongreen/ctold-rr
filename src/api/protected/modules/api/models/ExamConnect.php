@@ -129,8 +129,10 @@ class ExamConnect extends CActiveRecord
                                 'with' => array(
                                     'Scores' => array(
                                         'select' => 'Scores.marks,Scores.student_id',
+                                        'joinType' => 'LEFT JOIN',
                                         'with' => array(
                                             'Students' => array(
+                                                'joinType' => 'LEFT JOIN',
                                                 'select' => 'Students.first_name,Students.last_name,Students.middle_name,Students.class_roll_no,Students.id,Students.batch_id',
                                             ),
                                         )

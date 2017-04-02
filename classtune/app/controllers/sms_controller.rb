@@ -258,8 +258,11 @@ class SmsController < ApplicationController
   end
 
   def list_employees
-    dept = EmployeeDepartment.find(params[:dept_id])
-    @employees = dept.employees
+    @employees = []
+    unless params[:dept_id].blank?
+      dept_ids = params[:dept_id].split(",")
+      @employees = Employee.find_all_by_employee_department_id(dept_ids)
+    end
   end
 
   def departments

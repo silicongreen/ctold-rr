@@ -89,7 +89,7 @@
                                       <% else %>
                                         N/A
                                       <% end %>
-                                      <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? and !@exam_score_all.blank? %>
+                                      <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? and check_exam == true  %>
                                         <% exam_marks = exam_marks+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                         <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                       <% else %>

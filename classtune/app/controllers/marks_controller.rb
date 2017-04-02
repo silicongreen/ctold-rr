@@ -127,9 +127,7 @@ class MarksController < ApplicationController
   
   def index
     if current_user.employee
-      employee= current_user.employee_record
-      @employee_obj = Employee.find_by_id(employee.id)
-      @batches = @employee_obj.batches
+      @batches = current_user.employee_record.subjects.active.batch
     elsif current_user.admin
       @batches = Batch.active
     end  
@@ -138,9 +136,7 @@ class MarksController < ApplicationController
   def connect_exam
     @exams_data = ExamConnect.find(:all,:group=>"name")
     if current_user.employee
-      employee= current_user.employee_record
-      @employee_obj = Employee.find_by_id(employee.id)
-      @batches = @employee_obj.batches
+      @batches = current_user.employee_record.subjects.active.batch
     elsif current_user.admin
       @batches = Batch.active
     end 
@@ -169,9 +165,7 @@ class MarksController < ApplicationController
   def connect_exam_report
     @exams_data = ExamConnect.find(:all,:group=>"name")
     if current_user.employee
-      employee= current_user.employee_record
-      @employee_obj = Employee.find_by_id(employee.id)
-      @batches = @employee_obj.batches
+      @batches = current_user.employee_record.subjects.active.batch
     elsif current_user.admin
       @batches = Batch.active
     end 

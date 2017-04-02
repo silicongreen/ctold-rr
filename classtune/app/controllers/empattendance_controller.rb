@@ -6,7 +6,7 @@ class EmpattendanceController < ApplicationController
   
   
   def index
-    @date_today = @local_tzone_time.to_date
+    @date_today = @local_tzone_time.to_date.strftime("%Y-%m-%d")
   end
   def campus_report_show
     @departments = EmployeeDepartment.active

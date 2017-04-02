@@ -70,7 +70,7 @@ class MarksController < ApplicationController
         exams.each do |exam|
           exam_subject = exam.subject
           if !@subjects.include?(exam_subject) 
-            if @employee_subjects.include?(exam_subject.id) or @current_user.admin?
+            if @employee_subjects.include?(exam_subject) or @current_user.admin?
               @subjects << exam_subject
               data[k] = []
               data[k][0] = @template.link_to(exam_connect_batch.full_name, '/exam/' + 'connect_exam_subject_comments/' +exam_connect.id.to_s+"|"+exam_subject.id.to_s, :target => "_blank")

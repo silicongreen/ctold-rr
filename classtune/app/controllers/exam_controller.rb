@@ -2355,8 +2355,8 @@ class ExamController < ApplicationController
   end
   
   def add_comments_connect_exam
-    @comments= params[:comments].split(',') 
-    @student_ids=params[:student_ids].split(',')
+    @comments= params[:comments].split('||') 
+    @student_ids=params[:student_ids].split('||')
     @connect_exam= params[:connect_exam]
     i = 0
     now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')

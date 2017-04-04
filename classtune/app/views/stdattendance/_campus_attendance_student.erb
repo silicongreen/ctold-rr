@@ -1,0 +1,25 @@
+
+    <div class="box" style="float:left; clear:both; margin:10px 0px;">
+        
+        <select id="batch_id" name="batch_id" onchange="filterEmployeeDatatableByDepartment(this)">
+              <option value="" selected="selected">Select a Class</option>
+              <% unless @batches.nil? or @batches.blank? %>
+                  <% @batches.each do |batch| %>
+                        <option value="<%= batch.id %>"><%= batch.full_name %></option>
+                  <% end %>
+              <% end %>
+          </select>
+        </select>
+    </div>
+
+<div class="box"  style="float:left; clear:both; margin:10px 0px; width: 100%;">
+  <table class="mdl-data-table" id="hr_report" cellspacing="0" width="100%" style="float:left; clear:both; margin:10px 0px;">
+    <thead>
+        <th width="30%"><%= "Student Info" %></th>
+        <th width="25%"><%= "Class" %></th>
+        <th width="25%" data-orderable="false"><%= "In Time" %></th>
+        <th width="25%" data-orderable="false"><%= "Out Time" %></th>
+        <th width="20%" data-orderable="false"><%= "Duration/Status" %></th>
+    </thead>
+  </table>
+</div>

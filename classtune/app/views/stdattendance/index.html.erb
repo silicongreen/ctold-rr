@@ -1,0 +1,144 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.0/material.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.13/css/dataTables.material.min.css"/>
+<script type="text/javascript" src="//code.jquery.com/jquery-1.12.4.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.13/js/dataTables.material.min.js"></script>
+
+<div id="content-header">
+  <h1><%= "Attendance Report" %></h1>
+<div class='header-sep'>|</div>
+<div class='sub-header'><%= "Students" %></div>
+<div id="inner-tab-menu">
+</div>
+</div>
+<div id="page-yield">
+  <% unless flash[:notice].nil? %>
+    <p class="flash-msg"> <%= flash[:notice] %> </p>
+  <% end %>
+  <% form_remote_for :campus_report, :url => {:action=> 'campus_report_show'}, :html=> {:id=>'campus_report_show'} do |s| %>
+  <div class="box">
+      <div class="label-field-pair" style="float:left; clear:both; width:80%; margin-bottom:5px;margin-left: 17px;">
+          <label for="attandence_date"><%= "Report Type" %></label>
+          <div class="text-input-bg">
+              <%= select :campus_report, :report_type, [["All",1],["Absent",2],["Present",3]] %>
+          </div>
+      </div>
+      <div class="label-field-pair" style="float:left; clear:both; width:80%; margin-bottom:5px;margin-left: 17px;">
+       <label for="duedate">Select date</label>
+       <div  class="text-input-bg">
+         <%= calendar_date_select_tag "campus_report[attandence_date]",@date_today,
+           :class=>"text-input-bg" ,:readonly=>true,:popup=>:force%>
+       </div>
+     </div>
+     <%= submit_tag "", :value => "► Proceed", :class => "submit_button", :disable_with => "► #{t('please_wait')}" %>  
+  </div>
+  <% end %>
+  <%= hidden_field_tag 'time_zone_date',@date_today, :id=>'time_zone' %>
+  <div id="report_content"></div>
+    
+</div>
+<script>
+  var jq = jQuery.noConflict();
+  var oDataTable;
+  function generate_datatable(report_type, report_date)
+  {
+      jq(document).ready(function() {
+          oDataTable = jq('#hr_report').DataTable( {
+              processing: true,
+              serverSide: true,
+              columnDefs: [
+                  {
+                      targets: [ 0, 1, 2 ],
+                      className: 'mdl-data-table__cell--non-numeric'
+                  }
+              ],
+              ajax: {
+                  url: "/stdattendance/campus_report_view",
+                  type: 'POST',
+                  data: {
+                      report_type: report_type, 
+                      report_date: report_date,
+                      all_record: 1, 
+                      batch_id: jq("#batch_id").val()
+                  }
+              },
+              columns: [
+                  { "data": "student_info" },
+                  { "data": "batch" },
+                  { "data": "in_time", "sClass" : "ofc_time" },
+                  { "data": "out_time", "sClass" : "ofc_time" },
+                  { "data": "status", "sClass" : "ofc_time" }
+              ]
+          });
+      });
+  }
+
+
+function filterEmployeeDatatableByDepartment(data)
+{
+    var value = jq("#batch_id").val();
+    oDataTable.column( 1 ).search( value ).draw(); 
+  
+}
+</script>
+<style>
+  table tr td a
+  {
+     text-decoration: none;
+     cursor: pointer;
+     color: black;
+  }
+  .pagination {
+       margin-top: 0px;
+    margin-right: -18px;
+}
+.box select
+{
+    margin-left: 16px;
+    height: 27px;
+    width: 200px;
+}
+body, html
+{
+    line-height: normal;
+    font-family: initial;
+}
+.calendar_date_select_popup_icon
+{
+    margin-top: 10px;
+    margin-left: 7px;
+}
+.submit_button
+{
+  padding: 5px 5px;
+  float:left;
+  clear:both;
+  cursor: pointer;
+  margin-left: 15px;
+  margin-bottom: 10px;
+  background-color: white !important;
+}
+.submit_button:hover
+{
+  background-color: #CCC !important;
+}
+</style>

@@ -122,6 +122,9 @@ employee_id = @current_user.employee_record.id
       <% if @current_user.admin? %>
         <%=  link_to "<div class='sms-link' style='width:100%; margin-top:5px; padding: 20px 0px; text-align:center; font-size:22px; background:#49BB4B; color:white;'>Employee Attendance &#x25BA;</div>", :controller => 'empattendance', :action => 'index' %>
       <% end %>
+      <% if @current_user.admin? and MultiSchool.current_school.id == 325 %>
+        <%=  link_to "<div class='sms-link' style='width:100%; margin-top:5px; padding: 10px 0px; text-align:center; font-size:18px; background:#AFA7CC; color:white;'>Print Admit Card &#x25BA;</div>", :controller => 'other', :action => 'admit_card' %>
+      <% end %>
       <%  if @current_user.admin? && sms_enable? %> 
         <%=  link_to "<div class='sms-link' style='width:100%; margin-top:5px; padding: 20px 0px; text-align:center; font-size:22px; background:#AFA7CC; color:white;'>SEND SMS TO STUDENT &#x25BA;</div>", :controller => 'sms', :action => 'students' %>
       <% end %>

@@ -473,7 +473,7 @@ class Students extends CActiveRecord
         $criteria->compare('batch_id', $batch_id);
         if(Yii::app()->user->schoolId == 319)
         {
-            $criteria->order = "t.first_name ASC";
+            $criteria->order = "t.first_name ASC, t.middle_name ASC, t.last_name ASC";
         }
         else
         {

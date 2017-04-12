@@ -48,6 +48,7 @@ class GroupedExams extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
                     'examgroup' => array(self::BELONGS_TO, 'ExamGroups', 'exam_group_id'),
+                    'examconnect' => array(self::BELONGS_TO, 'ExamConnect', 'connect_exam_id'),
 		);
 	}
 
@@ -111,9 +112,11 @@ class GroupedExams extends CActiveRecord
         public function getContinuesResult($batch_id,$connect_exam_id, $previous_exam = 0)
         {
            $criteria=new CDbCriteria;
-            $criteria->compare('connect_exam_id',$connect_exam_id);
-            $criteria->select = 't.*'; 
-            $criteria->with = array(
+           $criteria->compare('connect_exam_id',$connect_exam_id);
+           $criteria->compare('examgroup.is_deleted', 0);
+           $criteria->compare('examconnect.is_deleted', 0);
+           $criteria->select = 't.*'; 
+           $criteria->with = array(
                 'examgroup' => array(
                     'select' => 'examgroup.id',
                     'with' => array('Exams' => array(
@@ -125,7 +128,10 @@ class GroupedExams extends CActiveRecord
                             )
                         )
                     )
-                )
+                ),
+                'examconnect' => array(
+                    'select' => "examconnect.id"
+                 )   
             );
             $criteria->order = "t.priority ASC,examgroup.created_at ASC";
             $examgroups = $this->findAll($criteria);
@@ -363,6 +369,8 @@ class GroupedExams extends CActiveRecord
         {
             $criteria=new CDbCriteria;
             $criteria->compare('connect_exam_id',$connect_exam_id);
+            $criteria->compare('examgroup.is_deleted', 0);
+            $criteria->compare('examconnect.is_deleted', 0);
             $criteria->select = 't.*'; 
             $criteria->with = array(
                 'examgroup' => array(
@@ -376,7 +384,10 @@ class GroupedExams extends CActiveRecord
                             )
                         )
                     )
-                )
+                ),
+                'examconnect' => array(
+                    'select' => "examconnect.id"
+                 )
             );
             $criteria->order = "t.priority ASC,examgroup.created_at ASC";
             $examgroups = $this->findAll($criteria);
@@ -569,11 +580,16 @@ class GroupedExams extends CActiveRecord
         {
             $criteria=new CDbCriteria;
             $criteria->compare('connect_exam_id',$connect_exam_id);
+            $criteria->compare('examgroup.is_deleted', 0);
+            $criteria->compare('examconnect.is_deleted', 0);
             $criteria->select = 't.*'; 
             $criteria->with = array(
                 'examgroup' => array(
                     'select' => 'examgroup.id',
-                    )
+                    ),
+                'examconnect' => array(
+                    'select' => "examconnect.id"
+                 )
                 );
             $criteria->order = "t.priority ASC,examgroup.created_at ASC";
             $examgroups = $this->findAll($criteria);

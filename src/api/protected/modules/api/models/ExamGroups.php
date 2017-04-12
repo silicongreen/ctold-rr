@@ -141,6 +141,7 @@ class ExamGroups extends CActiveRecord
     {
        $criteria = new CDbCriteria();
        $criteria->select = 't.id.t.name';
+       $criteria->compare('t.is_deleted', 0);
        $criteria->compare('t.result_published', 1);
        $criteria->compare('t.school_id', Yii::app()->user->schoolId);
        $criteria->compare('t.only_comment_base', 0);
@@ -165,6 +166,7 @@ class ExamGroups extends CActiveRecord
     {
        $criteria = new CDbCriteria();
        $criteria->select = 't.id';
+       $criteria->compare('t.is_deleted', 0);
        $criteria->compare('t.result_published', 1);
        $criteria->compare('t.name', trim($exam_name));
        $criteria->compare('t.school_id', Yii::app()->user->schoolId);
@@ -192,6 +194,7 @@ class ExamGroups extends CActiveRecord
         $criteria = new CDbCriteria();
         $criteria->select = 't.id,t.name,t.exam_date,t.only_comment_base';
         $criteria->compare('t.batch_id', $batch_id);
+        $criteria->compare('t.is_deleted', 0);
         $criteria->compare('t.result_published', 1);
         
         if($no_exams==0)
@@ -248,6 +251,7 @@ class ExamGroups extends CActiveRecord
         $criteria = new CDbCriteria();
         $criteria->select = 't.id,t.name,t.exam_date,t.only_comment_base';
         $criteria->compare('t.batch_id', $batch_id);
+        $criteria->compare('t.is_deleted', 0);
         $criteria->compare('t.is_published', 1);
         if($no_exams==0)
         {
@@ -300,6 +304,7 @@ class ExamGroups extends CActiveRecord
         $criteria = new CDbCriteria();
         $criteria->select = 't.id'; 
         $criteria->compare('t.id', $exam_group_id);
+        $criteria->compare('t.is_deleted', 0);
         $criteria->compare('Subjects.is_deleted', false);
         $criteria->compare('Subjects.id', $subject_id);
         $criteria->with = array(
@@ -353,6 +358,7 @@ class ExamGroups extends CActiveRecord
         $criteria = new CDbCriteria();
         $criteria->select = 't.id'; 
         $criteria->compare('t.id', $exam_group_id);
+        $criteria->compare('t.is_deleted', 0);
         $criteria->compare('Subjects.is_deleted', false);
         $criteria->compare('Subjects.id', $subject_id);
         $criteria->compare('Students.id', $student_id);
@@ -395,6 +401,7 @@ class ExamGroups extends CActiveRecord
     {
         $criteria = new CDbCriteria();
         $criteria->select = 't.name,t.id'; 
+        $criteria->compare('t.is_deleted', 0);
         $criteria->addInCondition('t.id', $exam_group_id);
         //$criteria->compare('t.result_published', 1);
         $criteria->compare('Subjects.no_exams', false);
@@ -465,6 +472,7 @@ class ExamGroups extends CActiveRecord
     {
         $criteria = new CDbCriteria();
         $criteria->select = 't.name,t.id'; 
+        $criteria->compare('t.is_deleted', 0);
         $criteria->compare('t.id', $exam_group_id);
         //$criteria->compare('t.result_published', 1);
         $criteria->compare('Subjects.no_exams', false);
@@ -531,6 +539,7 @@ class ExamGroups extends CActiveRecord
         $criteria = new CDbCriteria();
         $criteria->select = 't.name,t.id,t.sba,t.exam_category,t.quarter'; 
         $criteria->compare('t.id', $exam_group_id);
+        $criteria->compare('t.is_deleted', 0);
         //$criteria->compare('t.result_published', 1);
         $criteria->compare('Subjects.no_exams', false);
         $criteria->compare('Subjects.is_deleted', false);
@@ -652,6 +661,7 @@ class ExamGroups extends CActiveRecord
         $criteria = new CDbCriteria();
         $criteria->select = "t.name,t.id,t.sba,t.exam_category,t.quarter"; 
         $criteria->addIncondition('t.id', $exam_group_id);
+        $criteria->compare('t.is_deleted', 0);
         //$criteria->compare('t.result_published', 1);
         $criteria->compare('Subjects.no_exams', false);
         $criteria->compare('Subjects.is_deleted', false);
@@ -793,6 +803,7 @@ class ExamGroups extends CActiveRecord
         $criteria = new CDbCriteria();
         $criteria->select = 't.name,t.id,t.sba,t.exam_category,t.quarter'; 
         $criteria->compare('t.id', $exam_group_id);
+        $criteria->compare('t.is_deleted', 0);
         //$criteria->compare('t.result_published', 1);
         $criteria->compare('Subjects.no_exams', false);
         $criteria->compare('Subjects.is_deleted', false);
@@ -915,6 +926,7 @@ class ExamGroups extends CActiveRecord
         $criteria = new CDbCriteria();
         $criteria->select = 't.name,t.id,t.sba,t.exam_category,t.quarter'; 
         $criteria->compare('t.id', $exam_group_id);
+        $criteria->compare('t.is_deleted', 0);
         //$criteria->compare('t.result_published', 1);
         $criteria->compare('Subjects.no_exams', false);
         $criteria->compare('Subjects.is_deleted', false);
@@ -1031,6 +1043,7 @@ class ExamGroups extends CActiveRecord
         $criteria = new CDbCriteria();
         $criteria->select = 't.name'; 
         $criteria->compare('t.id', $id);
+        $criteria->compare('t.is_deleted', 0);
         //$criteria->compare('t.result_published', 1);
         $criteria->compare('Subjects.no_exams', false);
         $criteria->compare('Subjects.is_deleted', false);
@@ -1086,6 +1099,7 @@ class ExamGroups extends CActiveRecord
         
         $criteria = new CDbCriteria();
         $criteria->select = 't.*';
+        $criteria->compare('t.is_deleted', 0);
         $criteria->compare('t.batch_id', $batch_id);
         if($id>0)
         {
@@ -1114,6 +1128,7 @@ class ExamGroups extends CActiveRecord
         
         $criteria = new CDbCriteria();
         $criteria->select = 't.id, t.name, t.exam_date';
+        $criteria->compare('t.is_deleted', 0);
         $criteria->compare('t.school_id', $school_id);
         $criteria->compare('t.batch_id', $batch_id);
         $criteria->compare('t.exam_category', $category_id);

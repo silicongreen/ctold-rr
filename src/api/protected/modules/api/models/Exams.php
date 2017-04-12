@@ -151,7 +151,7 @@ class Exams extends CActiveRecord
         FROM exams
         LEFT JOIN exam_scores AS Scores ON Scores.exam_id = exams.id
         LEFT OUTER JOIN grading_levels AS Examgrade ON Scores.grading_level_id = Examgrade.id 
-        WHERE exams.exam_group_id = $exam_group_id
+        WHERE exams.exam_group_id = $exam_group_id and exams.is_deleted = 0
         AND exams.subject_id = $subject_id
         GROUP BY Scores.student_id
         ORDER BY std_score DESC";
@@ -187,7 +187,7 @@ class Exams extends CActiveRecord
         $sql = "SELECT SUM( Scores.marks ) AS total_score
         FROM exams
         LEFT JOIN exam_scores AS Scores ON Scores.exam_id = exams.id
-        WHERE exams.exam_group_id IN (" . $exam_group_ids . ")
+        WHERE exams.exam_group_id IN (" . $exam_group_ids . ") and exams.is_deleted = 0
         GROUP BY Scores.student_id
         ORDER BY total_score DESC";
 
@@ -218,7 +218,7 @@ class Exams extends CActiveRecord
         FROM exams
         LEFT JOIN exam_scores AS Scores ON Scores.exam_id = exams.id
         LEFT OUTER JOIN grading_levels AS Examgrade ON Scores.grading_level_id = Examgrade.id 
-        WHERE exams.exam_group_id = $exam_group_id
+        WHERE exams.exam_group_id = $exam_group_id and exams.is_deleted = 0
         GROUP BY Scores.student_id
         ORDER BY total_points DESC, total_score DESC";
 
@@ -271,6 +271,7 @@ class Exams extends CActiveRecord
         }
 
         $criteria->compare('Examgroup.result_published', 1);
+        $criteria->compare('Examgroup.is_deleted', 0);
         $criteria->compare('t.subject_id', $subject_id);
         $criteria->order = "Examgroup.exam_date ASC";
         $data = $this->with("Examgroup")->findAll($criteria);
@@ -282,6 +283,7 @@ class Exams extends CActiveRecord
         $criteria = new CDbCriteria();
         $criteria->select = 't.*';
         $criteria->compare('Examgroup.batch_id', $batch_id);
+        $criteria->compare('Examgroup.is_deleted', 0);
         $criteria->compare('Examgroup.exam_category', 1);
         $criteria->compare('Examgroup.exam_category', 2, false, "OR");
         if ($exam_group > 0)
@@ -308,6 +310,7 @@ class Exams extends CActiveRecord
     {
         $criteria = new CDbCriteria;
         $criteria->select = 't.id, t.start_time, t.end_time, t.no_date';
+        $criteria->compare('Examgroup.is_deleted', 0);
         $criteria->together = true;
 
         if (Yii::app()->user->isAdmin)
@@ -405,7 +408,7 @@ class Exams extends CActiveRecord
 
         $criteria->select = 't.id, t.start_time, t.subject_id, t.end_time, t.no_date';
 
-
+        $criteria->compare('Examgroup.is_deleted', 0);
         $criteria->with = array(
             'Subjects' => array(
                 'select' => 'Subjects.name,Subjects.no_exams',

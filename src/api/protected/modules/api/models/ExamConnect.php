@@ -63,6 +63,7 @@ class ExamConnect extends CActiveRecord
     {
         $criteria = new CDbCriteria;
         $criteria->compare('t.batch_id', $batch_id);
+        $criteria->compare('t.is_deleted', 0);
         $criteria->addCondition('t.published_date<="'.date("Y-m-d").'"');
         $criteria->select = 't.*';
         $criteria->order = "published_date DESC";
@@ -74,6 +75,7 @@ class ExamConnect extends CActiveRecord
     {
         $criteria = new CDbCriteria;
         $criteria->compare('t.batch_id', $batch_id);
+        $criteria->compare('t.is_deleted', 0);
         $criteria->compare('t.quarter_number', 0);
         $criteria->compare('t.result_type', 2);
         $criteria->select = 't.id';
@@ -92,6 +94,7 @@ class ExamConnect extends CActiveRecord
     {
         $criteria = new CDbCriteria;
         $criteria->compare('t.batch_id', $batch_id);
+        $criteria->compare('t.is_deleted', 0);
         $criteria->compare('t.quarter_number', $quarter);
         $criteria->compare('t.result_type', 4);
         $criteria->select = 't.id';
@@ -114,6 +117,7 @@ class ExamConnect extends CActiveRecord
         $criteria = new CDbCriteria;
         $criteria->together = true;
         $criteria->compare('t.id', $id);
+        $criteria->compare('t.is_deleted', 0);
         $criteria->select = 't.*';
         $criteria->with = array(
             'groupedexam' => array(

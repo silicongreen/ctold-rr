@@ -108,10 +108,10 @@ class ExamReportsController < ApplicationController
         @grouped_exams = GroupedExam.find_all_by_batch_id(@batch.id)
         @exam_groups = []
         @grouped_exams.each do |x|
-          @exam_groups.push ExamGroup.find(x.exam_group_id)
+          @exam_groups.push ExamGroup.active.find(x.exam_group_id)
         end
       else
-        @exam_groups = ExamGroup.find_all_by_batch_id(@batch.id)
+        @exam_groups = ExamGroup.active.find_all_by_batch_id(@batch.id)
       end
       general_subjects = Subject.find_all_by_batch_id(@batch.id, :conditions=>"elective_group_id IS NULL AND is_deleted=false")
       student_electives = StudentsSubject.find_all_by_student_id(@student.id,:conditions=>"batch_id = #{@batch.id}")
@@ -135,10 +135,10 @@ class ExamReportsController < ApplicationController
         @grouped_exams = GroupedExam.find_all_by_batch_id(@batch.id)
         @exam_groups = []
         @grouped_exams.each do |x|
-          @exam_groups.push ExamGroup.find(x.exam_group_id)
+          @exam_groups.push ExamGroup.active.find(x.exam_group_id)
         end
       else
-        @exam_groups = ExamGroup.find_all_by_batch_id(@batch.id)
+        @exam_groups = ExamGroup.active.find_all_by_batch_id(@batch.id)
       end
       general_subjects = Subject.find_all_by_batch_id(@batch.id, :conditions=>"elective_group_id IS NULL AND is_deleted=false")
       student_electives = StudentsSubject.find_all_by_student_id(@student.id,:conditions=>"batch_id = #{@batch.id}")
@@ -159,7 +159,7 @@ class ExamReportsController < ApplicationController
 #      if grouped_exams.empty?
 #        flash[:notice]="Select a Batch to continue." and return
 #      else
-#        @exam_groups = ExamGroup.find_all_by_id(grouped_exams.collect(&:exam_group_id))
+#        @exam_groups = ExamGroup.active.find_all_by_id(grouped_exams.collect(&:exam_group_id))
 #
 #      end
 #    else
@@ -193,10 +193,10 @@ class ExamReportsController < ApplicationController
         @grouped_exams = GroupedExam.find_all_by_batch_id(@batch.id)
         @exam_groups = []
         @grouped_exams.each do |x|
-          @exam_groups.push ExamGroup.find(x.exam_group_id)
+          @exam_groups.push ExamGroup.active.find(x.exam_group_id)
         end
       else
-        @exam_groups = ExamGroup.find_all_by_batch_id(@batch.id)
+        @exam_groups = ExamGroup.active.find_all_by_batch_id(@batch.id)
       end
       general_subjects = Subject.find_all_by_batch_id(@batch.id, :conditions=>"elective_group_id IS NULL and is_deleted=false")
       student_electives = StudentsSubject.find_all_by_student_id(@student.id,:conditions=>"batch_id = #{@batch.id}")
@@ -220,10 +220,10 @@ class ExamReportsController < ApplicationController
         @grouped_exams = GroupedExam.find_all_by_batch_id(@batch.id)
         @exam_groups = []
         @grouped_exams.each do |x|
-          @exam_groups.push ExamGroup.find(x.exam_group_id)
+          @exam_groups.push ExamGroup.active.find(x.exam_group_id)
         end
       else
-        @exam_groups = ExamGroup.find_all_by_batch_id(@batch.id)
+        @exam_groups = ExamGroup.active.find_all_by_batch_id(@batch.id)
       end
       general_subjects = Subject.find_all_by_batch_id(@batch.id, :conditions=>"elective_group_id IS NULL")
       student_electives = StudentsSubject.find_all_by_student_id(@student.id,:conditions=>"batch_id = #{@batch.id}")
@@ -263,7 +263,7 @@ class ExamReportsController < ApplicationController
     batch_id = params[:exam_report] ? params[:exam_report][:batch_id] : params[:batch_id] ? params[:batch_id] : ""
     if exam_group_id and batch_id
       @batch = Batch.find(batch_id)
-      @exam_group = ExamGroup.find(exam_group_id)
+      @exam_group = ExamGroup.active.find(exam_group_id)
       active_students = @batch.students + @batch.graduated_students
       archived_students = @batch.archived_students
       @students = active_students + archived_students
@@ -301,7 +301,7 @@ class ExamReportsController < ApplicationController
   end
 
   def load_consolidated_exam_prerequsites
-    @exam_group = ExamGroup.find(params[:exam_group])
+    @exam_group = ExamGroup.active.find(params[:exam_group])
     @active_students = @exam_group.batch.students + @exam_group.batch.graduated_students
     @archvied_students = @exam_group.batch.archived_students
   end

@@ -251,8 +251,8 @@ class LessonplanController < ApplicationController
       @batch = Batch.find params[:batch_id]
       #@subjects = @batch.normal_batch_subject
       #@elective_groups = ElectiveGroup.find_all_by_batch_id(params[:batch_id], :conditions =>{:is_deleted=>false})
-      #@exam_group = ExamGroup.find(params[:batch_id])
-      @exam_groups = ExamGroup.find_all_by_batch_id(params[:batch_id])
+      #@exam_group = ExamGroup.active.find(params[:batch_id])
+      @exam_groups = ExamGroup.active.find_all_by_batch_id(params[:batch_id])
       @subjects = Subject.find_all_by_batch_id(params[:batch_id],:conditions=>"is_deleted=false AND no_exams=false")
     end
     

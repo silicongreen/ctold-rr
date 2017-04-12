@@ -62,7 +62,7 @@
           <%="Section" %> : <%=@course.section_name %><br />
         <% end %>
         <% if @syllabus.exam_group_id > 0 %>
-          <% @examgroup = ExamGroup.find_by_id(@syllabus.exam_group_id) %>
+          <% @examgroup = ExamGroup.active.find_by_id(@syllabus.exam_group_id) %>
           <% unless @examgroup.nil? %>
             <%="Exam" %> : <%= @examgroup.name %><br />
           <% end %>

@@ -174,8 +174,8 @@ class SyllabusController < ApplicationController
             if params[:syllabus][:is_yearly].to_i == 1
               @syllabus.exam_group_id = 0
             else  
-              exg = ExamGroup.find_by_id(params[:syllabus][:exam_group_id]) 
-              exgb = ExamGroup.find_all_by_batch_id(bid)
+              exg = ExamGroup.active.find_by_id(params[:syllabus][:exam_group_id]) 
+              exgb = ExamGroup.active.find_all_by_batch_id(bid)
               unless exg.nil?
                 unless exgb.nil?
                   exgb.each do |exdata|
@@ -242,7 +242,7 @@ class SyllabusController < ApplicationController
         @exam_groups = []
       else        
         @batch = Batch.find params[:batch_id]
-        @exam_groups = ExamGroup.find_all_by_batch_id(params[:batch_id])
+        @exam_groups = ExamGroup.active.find_all_by_batch_id(params[:batch_id])
         @subjects = Subject.find_all_by_batch_id(params[:batch_id],:conditions=>"is_deleted=false AND no_exams=false")
       end
 
@@ -260,7 +260,7 @@ class SyllabusController < ApplicationController
         @batches.each do |batch_id|
           if batch_id != this_id
             @ar_bathces << batch_id
-            @tmp_exam_groups = ExamGroup.find_all_by_batch_id(batch_id)          
+            @tmp_exam_groups = ExamGroup.active.find_all_by_batch_id(batch_id)          
             @exam_groups = @exam_groups + @tmp_exam_groups
 
             #@tmp_subjects = Subject.find_all_by_batch_id(batch_id,:conditions=>"is_deleted=false AND no_exams=false")
@@ -372,7 +372,7 @@ class SyllabusController < ApplicationController
   def edit
     @syllabus = Syllabus.find(params[:id])
     @batches = Batch.active
-    @exam_groups = ExamGroup.find_all_by_batch_id(@syllabus.batch_id)
+    @exam_groups = ExamGroup.active.find_all_by_batch_id(@syllabus.batch_id)
     @subjects = Subject.find_all_by_batch_id(@syllabus.batch_id,:conditions=>"is_deleted=false AND no_exams=false")
     @syllabus.author = current_user
     if @syllabus.exam_group_id.nil?
@@ -454,8 +454,8 @@ class SyllabusController < ApplicationController
       @batch = Batch.find params[:batch_id]
       #@subjects = @batch.normal_batch_subject
       #@elective_groups = ElectiveGroup.find_all_by_batch_id(params[:batch_id], :conditions =>{:is_deleted=>false})
-      #@exam_group = ExamGroup.find(params[:batch_id])
-      @exam_groups = ExamGroup.find_all_by_batch_id(params[:batch_id])
+      #@exam_group = ExamGroup.active.find(params[:batch_id])
+      @exam_groups = ExamGroup.active.find_all_by_batch_id(params[:batch_id])
       @subjects = Subject.find_all_by_batch_id(params[:batch_id],:conditions=>"is_deleted=false AND no_exams=false")
     end
     

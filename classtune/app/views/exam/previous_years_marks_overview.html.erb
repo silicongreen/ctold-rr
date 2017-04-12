@@ -58,10 +58,10 @@
         <%   @grouped_exams = GroupedExam.find_all_by_batch_id(b.id) %>
         <%   @exam_groups = [] %>
         <%   @grouped_exams.each do |x| %>
-          <%   @exam_groups.push ExamGroup.find(x.exam_group_id) %>
+          <%   @exam_groups.push ExamGroup.active.find(x.exam_group_id) %>
         <%   end %>
       <% else %>
-        <%   @exam_groups = ExamGroup.find_all_by_batch_id(b.id) %>
+        <%   @exam_groups = ExamGroup.active.find_all_by_batch_id(b.id) %>
       <%  end %>
       <%  general_subjects = Subject.find_all_by_batch_id(b.id, :conditions=>"elective_group_id IS NULL AND is_deleted=false") %>
       <%  student_electives = StudentsSubject.find_all_by_student_id(@student.id,:conditions=>"batch_id = #{b.id}") %>
@@ -147,7 +147,7 @@
         </table>
       </div>
       <br />
-      <% @additional_exam_groups = AdditionalExamGroup.find_all_by_batch_id(b) %>
+      <% @additional_exam_groups = AdditionalExamGroup.active.find_all_by_batch_id(b) %>
       <% @additional_exam_groups.each do |additional_exam_group| %>
         <% if additional_exam_group.students.include?(@student) %>
           <div id="additional_register">

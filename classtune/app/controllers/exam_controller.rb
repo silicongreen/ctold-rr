@@ -181,7 +181,7 @@ class ExamController < ApplicationController
     unless ARGV[0].nil?
       @from = ARGV[0]
     end
-    @exam_group = ExamGroup.find(params[:id])
+    @exam_group = ExamGroup.active.find(params[:id])
     @exams = @exam_group.exams
     @batch = @exam_group.batch
     @sms_setting_notice = ""
@@ -212,7 +212,7 @@ class ExamController < ApplicationController
     
     if @is_class_exam
       @exam_group_id = this_id
-      @exam_groups_all_batches = ExamGroup.find(:all, :conditions => ["name = ? and batch_id IN (?)", @exam_group.name, @batches ])
+      @exam_groups_all_batches = ExamGroup.active.find(:all, :conditions => ["name = ? and batch_id IN (?)", @exam_group.name, @batches ])
       @exam_groups_ids = @exam_groups_all_batches.map{|e| e.id}
     end
     
@@ -264,7 +264,7 @@ class ExamController < ApplicationController
       unless @exam_groups_ids.nil? or @exam_groups_ids.empty?
         @exam_groups_ids.each do |exam_groups_id|
           if exam_groups_id != this_id
-            @tmp_exam_group = ExamGroup.find(exam_groups_id)
+            @tmp_exam_group = ExamGroup.active.find(exam_groups_id)
             unless @tmp_exam_group.is_published
               @tmp_batch = @tmp_exam_group.batch
               available_user_ids = []
@@ -346,7 +346,7 @@ class ExamController < ApplicationController
         unless @exam_groups_ids.nil? or @exam_groups_ids.empty?
           @exam_groups_ids.each do |exam_groups_id|
             if exam_groups_id != this_id
-              @tmp_exam_group = ExamGroup.find(exam_groups_id)
+              @tmp_exam_group = ExamGroup.active.find(exam_groups_id)
               @tmp_batch = @tmp_exam_group.batch
               students = @tmp_batch.students
               students.each do |s|
@@ -447,14 +447,14 @@ class ExamController < ApplicationController
       student = current_user.student_record   
       @batch = student.batch
       @course = @batch.course unless @batch.nil?
-      @exam_group = ExamGroup.find(params[:id], :include => :exams) 
+      @exam_group = ExamGroup.active.find(params[:id], :include => :exams) 
       Reminder.update_all("is_read='1'",  ["rid = ? and rtype = ? and recipient= ?", params[:id], 2,current_user.id])
     elsif    @current_user.parent?
       target = @current_user.guardian_entry.current_ward_id      
       student = Student.find_by_id(target)
       @batch = student.batch
       @course = @batch.course unless @batch.nil?
-      @exam_group = ExamGroup.find(params[:id], :include => :exams)
+      @exam_group = ExamGroup.active.find(params[:id], :include => :exams)
       Reminder.update_all("is_read='1'",  ["rid = ? and rtype = ? and recipient= ?", params[:id], 2,current_user.id])
     end    
   end
@@ -465,31 +465,31 @@ class ExamController < ApplicationController
       student = current_user.student_record   
       @batch = student.batch
       @course = @batch.course unless @batch.nil?
-      @exam_group = ExamGroup.find(params[:id], :include => :exams) 
+      @exam_group = ExamGroup.active.find(params[:id], :include => :exams) 
     elsif    @current_user.parent?
       target = @current_user.guardian_entry.current_ward_id      
       student = Student.find_by_id(target)
       @batch = student.batch
       @course = @batch.course unless @batch.nil?
-      @exam_group = ExamGroup.find(params[:id], :include => :exams)
+      @exam_group = ExamGroup.active.find(params[:id], :include => :exams)
     elsif    @current_user.employee?
       @batch = Batch.find_by_id(params[:batch_id])
       @course = @batch.course unless @batch.nil?
-      @exam_group = ExamGroup.find(params[:id], :include => :exams)
+      @exam_group = ExamGroup.active.find(params[:id], :include => :exams)
     elsif    @current_user.admin?
       @batch = Batch.find_by_id(params[:batch_id])
       @course = @batch.course unless @batch.nil?
-      @exam_group = ExamGroup.find(params[:id], :include => :exams)
+      @exam_group = ExamGroup.active.find(params[:id], :include => :exams)
     end    
     
     render :pdf => 'exam_schedule_pdf'
   end
   def exam_connect_list
     @batch = Batch.find(params[:id])
-    @exam_connect_data = ExamConnect.find_all_by_batch_id(@batch.id)
+    @exam_connect_data = ExamConnect.active.find_all_by_batch_id(@batch.id)
   end
   def connect_exam_subject
-    @exam_connect = ExamConnect.find_by_id(params[:id])        
+    @exam_connect = ExamConnect.active.find_by_id(params[:id])        
     @batch = Batch.find(@exam_connect.batch_id)
     @group_exams = GroupedExam.find_all_by_connect_exam_id(@exam_connect.id)    
     @subjects = []
@@ -508,7 +508,7 @@ class ExamController < ApplicationController
     
     exam_subject_id = params[:id]
     exam_subject_id_array = exam_subject_id.split("|")
-    @exam_connect = ExamConnect.find_by_id(exam_subject_id_array[0]) 
+    @exam_connect = ExamConnect.active.find_by_id(exam_subject_id_array[0]) 
     
      
     
@@ -529,7 +529,7 @@ class ExamController < ApplicationController
 
       unless @group_exam.blank?
         @group_exam.each do |group_exam|
-          exam_group = ExamGroup.find(group_exam.exam_group_id)
+          exam_group = ExamGroup.active.find(group_exam.exam_group_id)
           unless exam_group.blank?
              exam = Exam.find_by_exam_group_id_and_subject_id(exam_group.id,@exam_subject.id)
              unless exam.blank?
@@ -560,7 +560,7 @@ class ExamController < ApplicationController
         unless student.nil?
           if student.batch_id.to_i == s.batch_id
             if MultiSchool.current_school.id == 319
-              @students.push [student.first_name,student.class_roll_no, student.id, student]
+              @students.push [student.first_name,student.last_name, student.id, student]
             else
               @students.push [student.class_roll_no,student.first_name, student.id, student] 
             end
@@ -631,7 +631,7 @@ class ExamController < ApplicationController
   end
   def new_exam_connect
     @batch = Batch.find(params[:id])
-    @exam_groups = ExamGroup.find_all_by_batch_id(@batch.id)
+    @exam_groups = ExamGroup.active.find_all_by_batch_id(@batch.id)
     @exam_groups.reject!{|e| e.exam_type=="Grades"}
     
     if request.post?
@@ -667,9 +667,9 @@ class ExamController < ApplicationController
   end
   
   def edit_exam_connect
-    @exam_connect = ExamConnect.find_by_id(params[:id])        
+    @exam_connect = ExamConnect.active.find_by_id(params[:id])        
     @batch = Batch.find(@exam_connect.batch_id)
-    @exam_groups = ExamGroup.find_all_by_batch_id(@exam_connect.batch_id)
+    @exam_groups = ExamGroup.active.find_all_by_batch_id(@exam_connect.batch_id)
     @exam_groups.reject!{|e| e.exam_type=="Grades"}
     
     if request.post? 
@@ -712,7 +712,7 @@ class ExamController < ApplicationController
   end
   
   def remove_exam_connect    
-    @exam_connect = ExamConnect.find_by_id(params[:id])    
+    @exam_connect = ExamConnect.active.find_by_id(params[:id])    
     #abort @exam_connect.inspect
     @batch_id = @exam_connect.batch_id
     @exam_connect.delete
@@ -722,7 +722,7 @@ class ExamController < ApplicationController
   
   def grouping
     @batch = Batch.find(params[:id])
-    @exam_groups = ExamGroup.find_all_by_batch_id(@batch.id)
+    @exam_groups = ExamGroup.active.find_all_by_batch_id(@batch.id)
     @exam_groups.reject!{|e| e.exam_type=="Grades"}
     if request.post?
       unless params[:exam_grouping].nil?
@@ -910,7 +910,7 @@ class ExamController < ApplicationController
       @batch_id = batch.id
     end  
     
-    @exam_groups = ExamGroup.find_all_by_batch_id(@batch_id)
+    @exam_groups = ExamGroup.active.find_all_by_batch_id(@batch_id)
     #@exam_groups.map! {|exam| [:name=>exam.is_current? ? "#{exam.name} (Current)" : exam.name,:id=>exam.id] } # now names contains ['Danil', 'Edmund']
     #abort @exam_groups.inspect
     render(:update) do |page|
@@ -919,7 +919,7 @@ class ExamController < ApplicationController
   end
   
   def student_wise_tabulation  
-    @exam_group = ExamGroup.find(params[:exam_group])
+    @exam_group = ExamGroup.active.find(params[:exam_group])
     if @exam_group.is_current == false
       student_list = []
       allExam = @exam_group.exams
@@ -970,7 +970,9 @@ class ExamController < ApplicationController
   end
   
   def student_wise_generated_report_all  
-    @exam_group = ExamGroup.find(params[:exam_group])
+    @exam_group = ExamGroup.active.find(params[:exam_group])
+    
+    
     if @exam_group.is_current == false
       student_list = []
       allExam = @exam_group.exams
@@ -1055,13 +1057,16 @@ class ExamController < ApplicationController
 #    @present = @academic_days-on_leaves-leaves_full
 #    @absent = @academic_days-@present
 #    @exam_comment = ExamGroupComment.find_by_exam_group_id_and_student_id(@exam_group.id,@student.id)
+   
     render :pdf => 'student_wise_generated_report_all'
   end
 
   def student_wise_generated_report
     
-    @exam_group = ExamGroup.find(params[:exam_group])
+    @exam_group = ExamGroup.active.find(params[:exam_group])
     @student = Student.find_by_id(params[:student])
+    @for_save = params[:for_save]
+    
     @batch = @student.batch
     @assigned_employee=@batch.employees
     general_subjects = Subject.find_all_by_batch_id(@batch.id, :conditions=>"elective_group_id IS NULL")
@@ -1119,7 +1124,20 @@ class ExamController < ApplicationController
     @present = @academic_days-on_leaves-leaves_full
     @absent = @academic_days-@present
     @exam_comment = ExamGroupComment.find_by_exam_group_id_and_student_id(@exam_group.id,@student.id)
-    render :pdf => 'student_wise_generated_report'
+    
+    if @for_save.blank?
+      render :pdf => 'student_wise_generated_report'
+    else
+      pdf_name = "group_exam_"+params[:exam_group].to_s+"_"+params[:student].to_s+".pdf"
+      dirname = Rails.root.join('public','result_pdf',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"examgroup","0"+@exam_group.id.to_s)
+      unless File.directory?(dirname)
+        FileUtils.mkdir_p(dirname)
+        FileUtils.chmod_R(0777, Rails.root.join('public','result_pdf',"0"+MultiSchool.current_school.id.to_s))
+      end
+      render :pdf  => 'student_wise_generated_report',
+      :save_to_file => Rails.root.join('public','result_pdf',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"examgroup","0"+@exam_group.id.to_s,pdf_name),
+      :save_only    => true
+    end
   end
 
   def generated_report
@@ -1135,7 +1153,7 @@ class ExamController < ApplicationController
       end
     end
     if params[:student].nil? or !params[:student][:class_name].nil?
-      @exam_group = ExamGroup.find(params[:exam_report][:exam_group_id])
+      @exam_group = ExamGroup.active.find(params[:exam_report][:exam_group_id])
       
       if @exam_group.is_current == false
         student_list = []
@@ -1181,7 +1199,7 @@ class ExamController < ApplicationController
       @graph = open_flash_chart_object(700, 350,
         "/exam/graph_for_generated_report?batch=#{@student.batch.id}&examgroup=#{@exam_group.id}&student=#{@student.id}")
     else
-      @exam_group = ExamGroup.find(params[:exam_group])
+      @exam_group = ExamGroup.active.find(params[:exam_group])
       @student = Student.find_by_id(params[:student])
       if params[:batch_id].nil? 
         @batch = @student.batch
@@ -1237,7 +1255,7 @@ class ExamController < ApplicationController
 
   def generated_report_pdf
     @config = Configuration.get_config_value('InstitutionName')
-    @exam_group = ExamGroup.find(params[:exam_group])
+    @exam_group = ExamGroup.active.find(params[:exam_group])
     @batch = Batch.find(params[:batch])
     @students = @batch.students.by_first_name
     render :pdf => 'generated_report_pdf'
@@ -1245,12 +1263,12 @@ class ExamController < ApplicationController
 
 
   def consolidated_exam_report
-    @exam_group = ExamGroup.find(params[:exam_group])
+    @exam_group = ExamGroup.active.find(params[:exam_group])
     @batch = @exam_group.batch
   end
 
   def consolidated_exam_report_pdf
-    @exam_group = ExamGroup.find(params[:exam_group])
+    @exam_group = ExamGroup.active.find(params[:exam_group])
     @batch = @exam_group.batch
     render :pdf => 'consolidated_exam_report_pdf'
     #        respond_to do |format|
@@ -1335,7 +1353,7 @@ class ExamController < ApplicationController
       unless @subject.elective_group_id.nil?
         @students.reject!{|s| !StudentsSubject.exists?(:student_id=>s.id,:subject_id=>@subject.id)}
       end
-      @exam_groups = ExamGroup.find(:all,:conditions=>{:batch_id=>@batch.id})
+      @exam_groups = ExamGroup.active.find(:all,:conditions=>{:batch_id=>@batch.id})
       @exam_groups.reject!{|e| e.exam_type=="Grades"}
     else
       flash[:notice] = "#{t('flash4')}"
@@ -1350,7 +1368,7 @@ class ExamController < ApplicationController
     unless @subject.elective_group_id.nil?
       @students.reject!{|s| !StudentsSubject.exists?(:student_id=>s.id,:subject_id=>@subject.id)}
     end
-    @exam_groups = ExamGroup.find(:all,:conditions=>{:batch_id=>@batch.id})
+    @exam_groups = ExamGroup.active.find(:all,:conditions=>{:batch_id=>@batch.id})
     @exam_groups.reject!{|e| e.exam_type=="Grades"}
     render :pdf => 'student_subject_rank_pdf',
       :zoom => 0.68,:orientation => :landscape
@@ -1431,7 +1449,7 @@ class ExamController < ApplicationController
       @subject = Subject.find(params[:exam_report][:subject_id])
       @batch = @subject.batch
       @students = @batch.students
-      @exam_groups = ExamGroup.find(:all,:conditions=>{:batch_id=>@batch.id})
+      @exam_groups = ExamGroup.active.find(:all,:conditions=>{:batch_id=>@batch.id})
     else
       flash[:notice] = "#{t('flash4')}"
       redirect_to :action=>'subject_wise_report'
@@ -1442,7 +1460,7 @@ class ExamController < ApplicationController
     @subject = Subject.find(params[:subject_id])
     @batch = @subject.batch
     @students = @batch.students
-    @exam_groups = ExamGroup.find(:all,:conditions=>{:batch_id=>@batch.id})
+    @exam_groups = ExamGroup.active.find(:all,:conditions=>{:batch_id=>@batch.id})
     render :pdf => 'generated_report_pdf'
     
     #        respond_to do |format|
@@ -2134,7 +2152,7 @@ class ExamController < ApplicationController
     @student = Student.find(params[:student])
     @batch = @student.batch
     @subject = Subject.find(params[:subject])
-    @exam_groups = ExamGroup.find(:all,:conditions=>{:batch_id=>@batch.id})
+    @exam_groups = ExamGroup.active.find(:all,:conditions=>{:batch_id=>@batch.id})
     @exam_groups.reject!{|e| e.result_published==false}
     @graph = open_flash_chart_object(950, 450,
       "/exam/graph_for_generated_report3?subject=#{@subject.id}&student=#{@student.id}")
@@ -2200,7 +2218,7 @@ class ExamController < ApplicationController
       @for_batch_rank = params[:for_batch_rank]
     end 
     
-    @all_connect_exam = ExamConnect.find_all_by_batch_id(batch.id);
+    @all_connect_exam = ExamConnect.active.find_all_by_batch_id(batch.id);
     
     render(:update) do |page|
       page.replace_html 'report_type',:partial=>'report_type_new'
@@ -2317,7 +2335,7 @@ class ExamController < ApplicationController
   
   def continues   
     @id = params[:id]
-    @connect_exam_obj = ExamConnect.find(@id)
+    @connect_exam_obj = ExamConnect.active.find(@id)
     @batch = Batch.find(@connect_exam_obj.batch_id)
     @assigned_employee=@batch.employees
     @report_data = Rails.cache.fetch("continues_#{@id}_#{@batch.id}"){
@@ -2387,7 +2405,7 @@ class ExamController < ApplicationController
   
   def comment_tabulation
     @id = params[:id]
-    @connect_exam_obj = ExamConnect.find(@id)
+    @connect_exam_obj = ExamConnect.active.find(@id)
     @batch = Batch.find(@connect_exam_obj.batch_id)
     @report_data = Rails.cache.fetch("tabulation_#{@id}_#{@batch.id}"){
       get_tabulation(@id,@batch.id)
@@ -2409,7 +2427,7 @@ class ExamController < ApplicationController
 
   def comment_tabulation_pdf
     @id = params[:id]
-    @connect_exam_obj = ExamConnect.find(@id)
+    @connect_exam_obj = ExamConnect.active.find(@id)
     @batch = Batch.find(@connect_exam_obj.batch_id)
     @report_data = Rails.cache.fetch("tabulation_#{@id}_#{@batch.id}"){
       get_tabulation(@id,@batch.id)
@@ -2439,7 +2457,7 @@ class ExamController < ApplicationController
   
   def tabulation
     @id = params[:id]
-    @connect_exam_obj = ExamConnect.find(@id)
+    @connect_exam_obj = ExamConnect.active.find(@id)
     @batch = Batch.find(@connect_exam_obj.batch_id)
     @report_data = Rails.cache.fetch("tabulation_#{@id}_#{@batch.id}"){
       get_tabulation(@id,@batch.id)
@@ -2463,7 +2481,7 @@ class ExamController < ApplicationController
   def marksheet
     @id = params[:id]
     @subject_id = params[:subject_id]
-    @connect_exam_obj = ExamConnect.find(@id)
+    @connect_exam_obj = ExamConnect.active.find(@id)
     @batch = Batch.find(@connect_exam_obj.batch_id) 
     @subject = Subject.find(@subject_id)
     
@@ -2490,7 +2508,7 @@ class ExamController < ApplicationController
   
   def exam_connect_comment_entry
     @connect_exam = params[:connect_exam]
-    @connect_exam_obj = ExamConnect.find(@connect_exam)
+    @connect_exam_obj = ExamConnect.active.find(@connect_exam)
     @batch = Batch.find(@connect_exam_obj.batch_id)
     @students=@batch.students.by_first_name
     @comments = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id)
@@ -2525,7 +2543,7 @@ class ExamController < ApplicationController
     end 
     
     
-    @connect_exam_obj = ExamConnect.find(@connect_exam)
+    @connect_exam_obj = ExamConnect.active.find(@connect_exam)
     
     
     
@@ -2629,10 +2647,10 @@ class ExamController < ApplicationController
         @grouped_exams = GroupedExam.find_all_by_batch_id(@batch.id)
         @exam_groups = []
         @grouped_exams.each do |x|
-          @exam_groups.push ExamGroup.find(x.exam_group_id)
+          @exam_groups.push ExamGroup.active.find(x.exam_group_id)
         end
       else
-        @exam_groups = ExamGroup.find_all_by_batch_id(@batch.id)
+        @exam_groups = ExamGroup.active.find_all_by_batch_id(@batch.id)
         @exam_groups.reject!{|e| e.result_published==false}
       end
       general_subjects = Subject.find_all_by_batch_id(@batch.id, :conditions=>"elective_group_id IS NULL AND is_deleted=false")
@@ -2656,10 +2674,10 @@ class ExamController < ApplicationController
         @grouped_exams = GroupedExam.find_all_by_batch_id(@batch.id)
         @exam_groups = []
         @grouped_exams.each do |x|
-          @exam_groups.push ExamGroup.find(x.exam_group_id)
+          @exam_groups.push ExamGroup.active.find(x.exam_group_id)
         end
       else
-        @exam_groups = ExamGroup.find_all_by_batch_id(@batch.id)
+        @exam_groups = ExamGroup.active.find_all_by_batch_id(@batch.id)
         @exam_groups.reject!{|e| e.result_published==false}
       end
       general_subjects = Subject.find_all_by_batch_id(@batch.id, :conditions=>"elective_group_id IS NULL AND is_deleted=false")
@@ -2685,6 +2703,7 @@ class ExamController < ApplicationController
   def generated_report5_pdf
     
     #grouped-exam-report-for-batch
+    @for_save = params[:for_save]
     if params[:student].nil?  or params[:student][:connect_exam].blank? 
       if params[:connect_exam].blank? 
         flash[:notice] = "Select A Combined Exam Please"
@@ -2696,7 +2715,7 @@ class ExamController < ApplicationController
       @connect_exam = params[:student][:connect_exam]
     end 
     
-    @connect_exam_obj = ExamConnect.find(@connect_exam)
+    @connect_exam_obj = ExamConnect.active.find(@connect_exam)
     
     if params[:student].nil?
       @type = params[:type]
@@ -2736,35 +2755,89 @@ class ExamController < ApplicationController
       
     end
     @exam_comment = ExamConnectComment.find_by_exam_connect_id_and_student_id(@connect_exam_obj.id,@student.id)
-    if MultiSchool.current_school.id == 246
-      render :pdf => 'generated_report5_pdf',
-        :orientation => 'Landscape', :zoom => 1.00
-    elsif MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 323 or MultiSchool.current_school.id == 325 or MultiSchool.current_school.id == 324
-      if (MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 324) and (@connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 3)
+    if @for_save.blank?
+        if MultiSchool.current_school.id == 246
+          render :pdf => 'generated_report5_pdf',
+            :orientation => 'Landscape', :zoom => 1.00
+        elsif MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 323 or MultiSchool.current_school.id == 325 or MultiSchool.current_school.id == 324
+          if (MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 324) and (@connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 3)
+            render :pdf => 'generated_report5_pdf',
+            :orientation => 'Portrait', :zoom => 1.00,
+            :margin => {    :top=> 10,
+            :bottom => 10,
+            :left=> 10,
+            :right => 10},
+            :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+            :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+          else  
+            render :pdf => 'generated_report5_pdf',
+              :orientation => 'Portrait', :zoom => 1.00
+          end
+        elsif  MultiSchool.current_school.id == 2 
+          if @connect_exam_obj.result_type != 1
+            render :pdf => 'generated_report5_pdf',
+            :orientation => 'Portrait', :zoom => 1.00
+          else
+            render :pdf => 'generated_report5_pdf',
+              :orientation => 'Landscape', :zoom => 1.00
+          end
+        else 
+          render :pdf => 'generated_report5_pdf',
+            :orientation => 'Landscape', :zoom => 1.00
+        end
+    else
+        pdf_name = "connect_exam_"+@connect_exam.to_s+"_"+@student.id.to_s+".pdf"
+        dirname = Rails.root.join('public','result_pdf',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"connectexam","0"+@connect_exam.to_s)
+        unless File.directory?(dirname)
+          FileUtils.mkdir_p(dirname)
+          FileUtils.chmod_R(0777, Rails.root.join('public','result_pdf',"0"+MultiSchool.current_school.id))
+        end
+        file_name = Rails.root.join('public','result_pdf',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"connectexam","0"+@connect_exam.to_s,pdf_name)
+        
+        if MultiSchool.current_school.id == 246
         render :pdf => 'generated_report5_pdf',
-        :orientation => 'Portrait', :zoom => 1.00,
-        :margin => {    :top=> 10,
-        :bottom => 10,
-        :left=> 10,
-        :right => 10},
-        :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
-        :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
-      else  
-        render :pdf => 'generated_report5_pdf',
-          :orientation => 'Portrait', :zoom => 1.00
-      end
-    elsif  MultiSchool.current_school.id == 2 
-      if @connect_exam_obj.result_type != 1
-        render :pdf => 'generated_report5_pdf',
-        :orientation => 'Portrait', :zoom => 1.00
-      else
-        render :pdf => 'generated_report5_pdf',
-          :orientation => 'Landscape', :zoom => 1.00
-      end
-    else 
-      render :pdf => 'generated_report5_pdf',
-        :orientation => 'Landscape', :zoom => 1.00
+        :orientation => 'Landscape', :zoom => 1.00,
+        :save_to_file => file_name,
+        :save_only    => true
+        elsif MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 323 or MultiSchool.current_school.id == 325 or MultiSchool.current_school.id == 324
+          if (MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 324) and (@connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 3)
+            render :pdf => 'generated_report5_pdf',
+            :orientation => 'Portrait', :zoom => 1.00,
+            :margin => {    :top=> 10,
+            :bottom => 10,
+            :left=> 10,
+            :right => 10},
+            :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+            :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}},
+            :save_to_file => file_name,
+            :save_only    => true
+          else  
+            render :pdf => 'generated_report5_pdf',
+              :orientation => 'Portrait', :zoom => 1.00,
+              :save_to_file => file_name,
+              :save_only    => true
+          end
+        elsif  MultiSchool.current_school.id == 2 
+          if @connect_exam_obj.result_type != 1
+            render :pdf => 'generated_report5_pdf',
+            :orientation => 'Portrait', :zoom => 1.00,
+            :save_to_file => file_name,
+            :save_only    => true
+          else
+            render :pdf => 'generated_report5_pdf',
+              :orientation => 'Landscape', :zoom => 1.00,
+              :save_to_file => file_name,
+              :save_only    => true
+          end
+        else 
+          render :pdf => 'generated_report5_pdf',
+            :orientation => 'Landscape', :zoom => 1.00,
+            :save_to_file => file_name,
+            :save_only    => true
+        end
+     
     end
+    
    
 
   end
@@ -2780,10 +2853,10 @@ class ExamController < ApplicationController
         @grouped_exams = GroupedExam.find_all_by_batch_id(@batch.id)
         @exam_groups = []
         @grouped_exams.each do |x|
-          @exam_groups.push ExamGroup.find(x.exam_group_id)
+          @exam_groups.push ExamGroup.active.find(x.exam_group_id)
         end
       else
-        @exam_groups = ExamGroup.find_all_by_batch_id(@batch.id)
+        @exam_groups = ExamGroup.active.find_all_by_batch_id(@batch.id)
         @exam_groups.reject!{|e| e.result_published==false}
       end
       general_subjects = Subject.find_all_by_batch_id(@batch.id, :conditions=>"elective_group_id IS NULL and is_deleted=false")
@@ -2805,10 +2878,10 @@ class ExamController < ApplicationController
         @grouped_exams = GroupedExam.find_all_by_batch_id(@batch.id)
         @exam_groups = []
         @grouped_exams.each do |x|
-          @exam_groups.push ExamGroup.find(x.exam_group_id)
+          @exam_groups.push ExamGroup.active.find(x.exam_group_id)
         end
       else
-        @exam_groups = ExamGroup.find_all_by_batch_id(@batch.id)
+        @exam_groups = ExamGroup.active.find_all_by_batch_id(@batch.id)
         @exam_groups.reject!{|e| e.result_published==false}
       end
       general_subjects = Subject.find_all_by_batch_id(@batch.id, :conditions=>"elective_group_id IS NULL")
@@ -2839,10 +2912,10 @@ class ExamController < ApplicationController
       @grouped_exams = GroupedExam.find_all_by_batch_id(@batch.id)
       @exam_groups = []
       @grouped_exams.each do |x|
-        @exam_groups.push ExamGroup.find(x.exam_group_id)
+        @exam_groups.push ExamGroup.active.find(x.exam_group_id)
       end
     else
-      @exam_groups = ExamGroup.find_all_by_batch_id(@batch.id)
+      @exam_groups = ExamGroup.active.find_all_by_batch_id(@batch.id)
       @exam_groups.reject!{|e| e.result_published==false}
     end
     render :pdf => 'combined_grouped_exam_report_pdf'
@@ -2877,10 +2950,10 @@ class ExamController < ApplicationController
       @grouped_exams = GroupedExam.find_all_by_batch_id(@batch.id)
       @exam_groups = []
       @grouped_exams.each do |x|
-        @exam_groups.push ExamGroup.find(x.exam_group_id)
+        @exam_groups.push ExamGroup.active.find(x.exam_group_id)
       end
     else
-      @exam_groups = ExamGroup.find_all_by_batch_id(@batch.id)
+      @exam_groups = ExamGroup.active.find_all_by_batch_id(@batch.id)
     end
     general_subjects = Subject.find_all_by_batch_id(@batch.id, :conditions=>"elective_group_id IS NULL and is_deleted=false and no_exams=false")
     student_electives = StudentsSubject.find_all_by_student_id(@student.id,:conditions=>"batch_id = #{@batch.id}")
@@ -2911,7 +2984,7 @@ class ExamController < ApplicationController
 
   def list_inactive_exam_groups
     unless params[:batch_id]==""
-      @exam_groups = ExamGroup.find(:all, :conditions=>{:batch_id=>params[:batch_id]})
+      @exam_groups = ExamGroup.active.find(:all, :conditions=>{:batch_id=>params[:batch_id]})
       @exam_groups.reject!{|e| !GroupedExam.exists?(:exam_group_id=>e.id,:batch_id=>params[:batch_id])}
       render(:update) do|page|
         page.replace_html "inactive_exam_groups", :partial=>"inactive_exam_groups"
@@ -2926,7 +2999,7 @@ class ExamController < ApplicationController
   def previous_exam_marks
     #abort params.inspect
     unless params[:exam_goup_id]==""
-      @exam_group = ExamGroup.find(params[:exam_group_id], :include => :exams)
+      @exam_group = ExamGroup.active.find(params[:exam_group_id], :include => :exams)
       render(:update) do|page|
         page.replace_html "previous_exam_marks", :partial=>"previous_exam_marks"
       end
@@ -2962,7 +3035,7 @@ class ExamController < ApplicationController
       assigned_students.each do |s|
         student = Student.find_by_id(s.student_id)
         if MultiSchool.current_school.id == 319
-          @students.push [student.first_name,student.class_roll_no, student.id, student] unless student.nil?
+          @students.push [student.first_name,student.last_name, student.id, student] unless student.nil?
         else
           @students.push [student.class_roll_no,student.first_name, student.id, student] unless student.nil? 
         end
@@ -3079,7 +3152,7 @@ class ExamController < ApplicationController
 
   def graph_for_generated_report
     student = Student.find(params[:student])
-    examgroup = ExamGroup.find(params[:examgroup])
+    examgroup = ExamGroup.active.find(params[:examgroup])
     if params[:batch].nil?
       batch = student.batch
     else

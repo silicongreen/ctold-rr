@@ -44,7 +44,7 @@ class ExamsController < ApplicationController
       @is_batch_exam = true
     end
     
-    @exam_group = ExamGroup.find params[:exam_group_id]
+    @exam_group = ExamGroup.active.find params[:exam_group_id]
     
     if @is_class_exam
       @batch_name = @batch.name
@@ -58,7 +58,7 @@ class ExamsController < ApplicationController
     
     if @is_class_exam
       @subject_ids = Subject.find(:all, :conditions => ["batch_id IN (?)", @batches]).map{|s| s.id}
-      @exam_groups = ExamGroup.find(:all, :conditions => ["name LIKE ? and batch_id IN (?) and exam_type = ? and exam_category = ? and exam_date = ?", @exam_group.name, @batches, @exam_group.exam_type, @exam_group.exam_category, @exam_group.exam_date]).map{|eg| eg.id}
+      @exam_groups = ExamGroup.active.find(:all, :conditions => ["name LIKE ? and batch_id IN (?) and exam_type = ? and exam_category = ? and exam_date = ?", @exam_group.name, @batches, @exam_group.exam_type, @exam_group.exam_category, @exam_group.exam_date]).map{|eg| eg.id}
       @tmp_subjects = Exam.find(:all, :conditions => ["exam_group_id IN (?)", @exam_groups]).map{|s| s.subject_id}
       @subject_ids.reject!{|s| (@tmp_subjects.include?(s))}
       @subjects = Subject.find(:all, :conditions => ["id IN (?) and batch_id IN (?)",@subject_ids, @batches], :group => 'name')
@@ -132,7 +132,7 @@ class ExamsController < ApplicationController
     saved = false
     if @is_class_exam
       @exam = Exam.new(params[:exam])
-      @exam_group = ExamGroup.find params[:exam_group_id]
+      @exam_group = ExamGroup.active.find params[:exam_group_id]
       tmp_subject_id = params[:exam][:subject_id]
       tmp_subject = Subject.find tmp_subject_id
       
@@ -152,10 +152,10 @@ class ExamsController < ApplicationController
         ar_subjects = Subject.find(:all, :conditions => ["name like ? and batch_id IN (?) and is_deleted = 0", tmp_subject.name, @batches ], :group => "batch_id").map{|s| [s.id, s.batch_id]}
       end
       
-      @exam_groups = ExamGroup.find(:all, :conditions => ["name LIKE ? and batch_id IN (?) and exam_type = ? and exam_category = ? and exam_date = ?", @exam_group.name, @batches, @exam_group.exam_type, @exam_group.exam_category, @exam_group.exam_date]).map{|eg| [eg.id, eg.batch_id]}
+      @exam_groups = ExamGroup.active.find(:all, :conditions => ["name LIKE ? and batch_id IN (?) and exam_type = ? and exam_category = ? and exam_date = ?", @exam_group.name, @batches, @exam_group.exam_type, @exam_group.exam_category, @exam_group.exam_date]).map{|eg| [eg.id, eg.batch_id]}
       @error=false
       @exam_groups.each do |eg|
-        tmp_exam_grp = ExamGroup.find eg[0]
+        tmp_exam_grp = ExamGroup.active.find eg[0]
         unless tmp_exam_grp.exam_type=="Grades"
           unless params[:exam][:maximum_marks].present?
             @exam.errors.add_to_base("#{t('maxmarks_cant_be_blank')}")
@@ -230,7 +230,7 @@ class ExamsController < ApplicationController
     else
       if @is_class_exam
         @subject_ids = Subject.find(:all, :conditions => ["batch_id IN (?)", @batches]).map{|s| s.id}
-        @exam_groups = ExamGroup.find(:all, :conditions => ["name LIKE ? and batch_id IN (?) and exam_type = ? and exam_category = ? and exam_date = ?", @exam_group.name, @batches, @exam_group.exam_type, @exam_group.exam_category, @exam_group.exam_date]).map{|eg| eg.id}
+        @exam_groups = ExamGroup.active.find(:all, :conditions => ["name LIKE ? and batch_id IN (?) and exam_type = ? and exam_category = ? and exam_date = ?", @exam_group.name, @batches, @exam_group.exam_type, @exam_group.exam_category, @exam_group.exam_date]).map{|eg| eg.id}
         @tmp_subjects = Exam.find(:all, :conditions => ["exam_group_id IN (?)", @exam_groups]).map{|s| s.subject_id}
         @subject_ids.reject!{|s| (@tmp_subjects.include?(s))}
         @subjects = Subject.find(:all, :conditions => ["id IN (?) and batch_id IN (?)",@subject_ids, @batches], :group => 'name')
@@ -345,7 +345,7 @@ class ExamsController < ApplicationController
       end
     end
     
-    @exam_group = ExamGroup.find params[:exam_group_id]
+    @exam_group = ExamGroup.active.find params[:exam_group_id]
     @batch = Batch.find @exam_group.batch_id
     
     if @is_class_exam
@@ -362,10 +362,10 @@ class ExamsController < ApplicationController
     if @is_class_exam
       @exam = Exam.find(params[:id])
     
-      @exam_group = ExamGroup.find @exam.exam_group_id
+      @exam_group = ExamGroup.active.find @exam.exam_group_id
       @tmp_subject = Subject.find @exam.subject_id
       @exam_group_name = @exam_group.name
-      @exam_groups = ExamGroup.find(:all, :conditions => ["name LIKE ? and batch_id IN (?) and exam_type = ? and exam_category = ? and exam_date = ?", @exam_group.name, @batches, @exam_group.exam_type, @exam_group.exam_category, @exam_group.exam_date]).map{|eg| eg.id}
+      @exam_groups = ExamGroup.active.find(:all, :conditions => ["name LIKE ? and batch_id IN (?) and exam_type = ? and exam_category = ? and exam_date = ?", @exam_group.name, @batches, @exam_group.exam_type, @exam_group.exam_category, @exam_group.exam_date]).map{|eg| eg.id}
       @tmp_subjects = Subject.find(:all, :conditions => ["name LIKE ? and batch_id IN (?)", @tmp_subject.name, @batches]).map{|s| s.id}
       
       tmp_subject_id = params[:exam][:subject_id]
@@ -374,7 +374,7 @@ class ExamsController < ApplicationController
       
       @exam_groups.each do |exam_group_id|
         @tmp_subjects.each do |subject_id|
-          @t_exam_group = ExamGroup.find exam_group_id
+          @t_exam_group = ExamGroup.active.find exam_group_id
           b_found = false
           s_id = 0
           tmp_exam = Exam.find_by_exam_group_id_and_subject_id_and_start_time_and_end_time_and_maximum_marks_and_minimum_marks(exam_group_id, subject_id, @exam.start_time, @exam.end_time, @exam.maximum_marks, @exam.minimum_marks)
@@ -469,7 +469,7 @@ class ExamsController < ApplicationController
         unless student.nil?
           if student.batch_id.to_i == s.batch_id
             if MultiSchool.current_school.id == 319
-              @students.push [student.first_name,student.class_roll_no, student.id, student] unless student.nil?
+              @students.push [student.first_name,student.last_name, student.id, student] unless student.nil?
             else
               @students.push [student.class_roll_no,student.first_name, student.id, student] unless student.nil? 
             end
@@ -502,7 +502,7 @@ class ExamsController < ApplicationController
       @is_batch_exam = true
     end
     
-    @exam_group = ExamGroup.find params[:exam_group_id]
+    @exam_group = ExamGroup.active.find params[:exam_group_id]
     
     if @is_class_exam
       @batch_name = @batch.name
@@ -520,7 +520,7 @@ class ExamsController < ApplicationController
     
       @tmp_subject = Subject.find @exam.subject_id
       @exam_group_name = @exam_group.name
-      @exam_groups = ExamGroup.find(:all, :conditions => ["name LIKE ? and batch_id IN (?) and exam_type = ? and exam_category = ? and exam_date = ?", @exam_group.name, @batches, @exam_group.exam_type, @exam_group.exam_category, @exam_group.exam_date]).map{|eg| eg.id}
+      @exam_groups = ExamGroup.active.find(:all, :conditions => ["name LIKE ? and batch_id IN (?) and exam_type = ? and exam_category = ? and exam_date = ?", @exam_group.name, @batches, @exam_group.exam_type, @exam_group.exam_category, @exam_group.exam_date]).map{|eg| eg.id}
       @tmp_subjects = Subject.find(:all, :conditions => ["name LIKE ? and batch_id IN (?)", @tmp_subject.name, @batches]).map{|s| s.id}
       if @current_user.employee? and  !@current_user.privileges.map{|m| m.name}.include?("ExaminationControl")
         @subjects = Subject.find(:all,:joins=>"INNER JOIN employees_subjects ON employees_subjects.subject_id = subjects.id AND employee_id = #{@current_user.employee_record.id} AND batch_id IN (#{@batches.join(',')}) ", :group => "subjects.name").map{|s| s.id}
@@ -540,7 +540,7 @@ class ExamsController < ApplicationController
       else
         @exam_groups.each do |exam_group_id|
           @tmp_subjects.each do |subject_id|
-            @t_exam_group = ExamGroup.find exam_group_id
+            @t_exam_group = ExamGroup.active.find exam_group_id
             batch_id = @t_exam_group.batch_id
             tmp_exam = Exam.find_by_exam_group_id_and_subject_id_and_start_time_and_end_time_and_maximum_marks_and_minimum_marks(exam_group_id, subject_id, @exam.start_time, @exam.end_time, @exam.maximum_marks, @exam.minimum_marks)
             unless tmp_exam.nil?
@@ -646,7 +646,7 @@ class ExamsController < ApplicationController
 
   private
   def query_data
-    @exam_group = ExamGroup.find(params[:exam_group_id], :include => :batch)
+    @exam_group = ExamGroup.active.find(params[:exam_group_id], :include => :batch)
     @batch = @exam_group.batch
     @course = @batch.course
   end

@@ -166,7 +166,7 @@ module CceReportMod
               end
 
             else
-              fa_weight = all_weightages.find{|w| w.cce_exam_category_id == (ExamGroup.find_by_id(exam_group_id).cce_exam_category_id || 1) and w.criteria_type=="FA"}
+              fa_weight = all_weightages.find{|w| w.cce_exam_category_id == (ExamGroup.active.find_by_id(exam_group_id).cce_exam_category_id || 1) and w.criteria_type=="FA"}
               if fa_weight.nil?
                 @error=true
               else

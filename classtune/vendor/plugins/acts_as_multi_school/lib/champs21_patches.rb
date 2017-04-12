@@ -1,0 +1,7 @@
+require 'champs21_patches/delayed_additional_report_csv_patch.rb'
+require 'champs21_patches/delayed_reminder_job_patch.rb'
+require 'champs21_patches/sms_manager_patch.rb'
+require 'champs21_patches/delayed_batch_tranfer_patch.rb'
+require 'champs21_patches/news_fragment_cache_patch.rb'
+require 'champs21_patches/sms_setting_patch.rb'
+require 'champs21_patches/sms_log_patch.rb'

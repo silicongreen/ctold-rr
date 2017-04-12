@@ -36,11 +36,11 @@ class ArchivedExamScore < ActiveRecord::Base
       grouped_exams = GroupedExam.find_all_by_batch_id(batch)
       exam_groups = []
       grouped_exams.each do |x|
-        eg = ExamGroup.find(x.exam_group_id)
-        exam_groups.push ExamGroup.find(x.exam_group_id)
+        eg = ExamGroup.active.find(x.exam_group_id)
+        exam_groups.push ExamGroup.active.find(x.exam_group_id)
       end
     else
-      exam_groups = ExamGroup.find_all_by_batch_id(batch)
+      exam_groups = ExamGroup.active.find_all_by_batch_id(batch)
     end
     total_marks = 0
     exam_groups.each do |exam_group|
@@ -57,7 +57,7 @@ class ArchivedExamScore < ActiveRecord::Base
 
 
   def batch_wise_aggregate(student,batch)
-    check = ExamGroup.find_all_by_batch_id(batch.id)
+    check = ExamGroup.active.find_all_by_batch_id(batch.id)
     var = []
     check.each do |x|
       if x.exam_type == 'Grades'
@@ -67,11 +67,11 @@ class ArchivedExamScore < ActiveRecord::Base
     if var.empty?
       grouped_exam = GroupedExam.find_all_by_batch_id(batch.id)
       if grouped_exam.empty?
-        exam_groups = ExamGroup.find_all_by_batch_id(batch.id)
+        exam_groups = ExamGroup.active.find_all_by_batch_id(batch.id)
       else
         exam_groups = []
         grouped_exam.each do |x|
-          exam_groups.push ExamGroup.find(x.exam_group_id)
+          exam_groups.push ExamGroup.active.find(x.exam_group_id)
         end
       end
       exam_groups.size

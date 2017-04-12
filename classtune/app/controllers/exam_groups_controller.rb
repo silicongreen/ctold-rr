@@ -134,7 +134,7 @@ class ExamGroupsController < ApplicationController
     
     @exam = Exam.find(params[:id])
     
-    @exam_group = ExamGroup.find @exam.exam_group_id
+    @exam_group = ExamGroup.active.find @exam.exam_group_id
     @tmp_subject = Subject.find @exam.subject_id
     
     @batch = Batch.find @exam_group.batch_id
@@ -151,7 +151,7 @@ class ExamGroupsController < ApplicationController
     
     if @is_class_exam
       @exam_group_name = @exam_group.name
-      @exam_groups = ExamGroup.find(:all, :conditions => ["name LIKE ? and batch_id IN (?) and exam_type = ? and exam_category = ? and exam_date = ?", @exam_group.name, @batches, @exam_group.exam_type, @exam_group.exam_category, @exam_group.exam_date]).map{|eg| eg.id}
+      @exam_groups = ExamGroup.active.find(:all, :conditions => ["name LIKE ? and batch_id IN (?) and exam_type = ? and exam_category = ? and exam_date = ?", @exam_group.name, @batches, @exam_group.exam_type, @exam_group.exam_category, @exam_group.exam_date]).map{|eg| eg.id}
       @subjects = Subject.find(:all, :conditions => ["name LIKE ? and batch_id IN (?)", @tmp_subject.name, @batches]).map{|s| s.id}
       @exam_groups.each do |exam_group_id|
         @subjects.each do |subject_id|
@@ -183,7 +183,7 @@ class ExamGroupsController < ApplicationController
       @is_batch_exam = true
     end
     
-    @exam_group = ExamGroup.find(params[:id], :include => :exams)
+    @exam_group = ExamGroup.active.find(params[:id], :include => :exams)
     @batch = Batch.find @exam_group.batch_id
     this_id = @batch.id
     if @is_class_exam
@@ -247,7 +247,7 @@ class ExamGroupsController < ApplicationController
     
     @exam = Exam.find(params[:id])
     
-    @exam_group = ExamGroup.find @exam.exam_group_id
+    @exam_group = ExamGroup.active.find @exam.exam_group_id
     @tmp_subject = Subject.find @exam.subject_id
     
     @batch = Batch.find @exam_group.batch_id
@@ -264,7 +264,7 @@ class ExamGroupsController < ApplicationController
     
     if @is_class_exam
       @exam_group_name = @exam_group.name
-      @exam_groups = ExamGroup.find(:all, :conditions => ["name LIKE ? and batch_id IN (?) and exam_type = ? and exam_category = ? and exam_date = ?", @exam_group.name, @batches, @exam_group.exam_type, @exam_group.exam_category, @exam_group.exam_date]).map{|eg| eg.id}
+      @exam_groups = ExamGroup.active.find(:all, :conditions => ["name LIKE ? and batch_id IN (?) and exam_type = ? and exam_category = ? and exam_date = ?", @exam_group.name, @batches, @exam_group.exam_type, @exam_group.exam_category, @exam_group.exam_date]).map{|eg| eg.id}
       @subjects = Subject.find(:all, :conditions => ["name LIKE ? and batch_id IN (?)", @tmp_subject.name, @batches]).map{|s| s.id}
       @exam_groups.each do |exam_group_id|
         @subjects.each do |subject_id|
@@ -395,7 +395,7 @@ class ExamGroupsController < ApplicationController
     unless ARGV[0].nil?
       @from = ARGV[0]
     end
-    @exam_group = ExamGroup.find params[:id]
+    @exam_group = ExamGroup.active.find params[:id]
     @cce_exam_categories = CceExamCategory.all if @batch.cce_enabled?
   end
 
@@ -404,7 +404,7 @@ class ExamGroupsController < ApplicationController
     unless ARGV[0].nil?
       @from = ARGV[0]
     end
-    @exam_group = ExamGroup.find params[:id]
+    @exam_group = ExamGroup.active.find params[:id]
     if @exam_group.update_attributes(params[:exam_group])
       flash[:notice] = "#{t('flash2')}"
       redirect_to [@batch, @exam_group]
@@ -429,7 +429,7 @@ class ExamGroupsController < ApplicationController
       @is_batch_exam = true
     end
     
-    @exam_group = ExamGroup.find(params[:id], :include => :exams)
+    @exam_group = ExamGroup.active.find(params[:id], :include => :exams)
     
     if @is_class_exam
       @batch_name = @batch.name
@@ -451,9 +451,9 @@ class ExamGroupsController < ApplicationController
     
     deleted = false
     if @is_class_exam
-       @exam_groups = ExamGroup.find(:all, :conditions => ["name LIKE ? and batch_id IN (?) and exam_type = ? and exam_category = ? and exam_date = ?", @exam_group.name, @batches, @exam_group.exam_type, @exam_group.exam_category, @exam_group.exam_date]).map{|eg| eg.id}
+       @exam_groups = ExamGroup.active.find(:all, :conditions => ["name LIKE ? and batch_id IN (?) and exam_type = ? and exam_category = ? and exam_date = ?", @exam_group.name, @batches, @exam_group.exam_type, @exam_group.exam_category, @exam_group.exam_date]).map{|eg| eg.id}
        @exam_groups.each do |exam_group_id|
-         @t_exam_group = ExamGroup.find(exam_group_id, :include => :exams)
+         @t_exam_group = ExamGroup.active.find(exam_group_id, :include => :exams)
          if @t_exam_group.destroy
            deleted = true
            flash[:notice] = "#{t('flash3')}"
@@ -505,11 +505,11 @@ class ExamGroupsController < ApplicationController
       @enabled_subject_link = true
     end
      
-    @exam_group = ExamGroup.find(params[:id], :include => :exams)
+    @exam_group = ExamGroup.active.find(params[:id], :include => :exams)
     
     if @is_class_exam
       @exam_group_name = @exam_group.name
-      @exam_groups = ExamGroup.find(:all, :conditions => ["name LIKE ? and batch_id IN (?) and exam_type = ? and exam_category = ? and exam_date = ?", @exam_group.name, @batches, @exam_group.exam_type, @exam_group.exam_category, @exam_group.exam_date]).map{|eg| eg.id}
+      @exam_groups = ExamGroup.active.find(:all, :conditions => ["name LIKE ? and batch_id IN (?) and exam_type = ? and exam_category = ? and exam_date = ?", @exam_group.name, @batches, @exam_group.exam_type, @exam_group.exam_category, @exam_group.exam_date]).map{|eg| eg.id}
       
       @exams = Exam.find(:all, :conditions => ["exam_group_id IN (?)", @exam_groups], :joins => "INNER JOIN subjects ON subjects.id = exams.subject_id", :group => "subjects.name, exams.start_time, exams.end_time, exams.maximum_marks, exams.minimum_marks",:order => "exams.start_time asc")
     else

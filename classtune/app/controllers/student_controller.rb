@@ -22,16 +22,37 @@ class StudentController < ApplicationController
   before_filter :login_required
   before_filter :check_permission, :only=>[:index,:admission1,:profile,:reports,:categories,:add_additional_details]
   before_filter  :set_precision
-  before_filter :protect_other_student_data, :except =>[:update_is_promoted,:insert_into_new_parent_student_table,:show,:class_test_report,:previous_batch_report,:combined_exam,:progress_report,:class_test_report_single,:term_test_report]
+  before_filter :protect_other_student_data, :except =>[:get_previous_exam,:update_is_promoted,:insert_into_new_parent_student_table,:show,:class_test_report,:previous_batch_report,:combined_exam,:progress_report,:class_test_report_single,:term_test_report]
   before_filter :default_time_zone_present_time
   protect_from_forgery :except => [:fee_details]
   
-  before_filter :find_student, :only => [
+  before_filter :find_student, :only => [:previous_report,
     :academic_report, :academic_report_all, :admission3, :change_to_former,
     :delete, :edit, :add_guardian, :email, :remove, :reports, 
     :guardians, :academic_pdf,:show_previous_details,:fees,:fee_details
   ]
   CONN = ActiveRecord::Base.connection
+  
+  def get_previous_exam
+    unless params[:batch_id].blank?
+      @batch_previous = BatchStudent.find(params[:batch_id])
+      @previous_exam = ExamConnectStudent.find_all_by_student_id_and_batch_id(@batch_previous.student_id,@batch_previous.batch_id)
+      @previous_group_exam = GroupExamStudent.find_all_by_student_id_and_batch_id(@batch_previous.student_id,@batch_previous.batch_id)
+      render :update do |page|
+        page.replace_html 'exams', :partial => 'get_previous_exam'
+      end
+    else
+      render :update do |page|
+        page.replace_html 'exams', :text => 'Slect A Class'
+      end
+    end  
+      
+  end
+  
+  def previous_report
+    @previous_batch = BatchStudent.find_all_by_student_id(@student.id)
+    @sms_module = Configuration.available_modules
+  end
   
   def academic_report_all
     @user = current_user
@@ -1371,7 +1392,7 @@ class StudentController < ApplicationController
     end
     @batch = @student.batch
     @all_connect_exam = []
-    @all_connect_exams = ExamConnect.find_all_by_batch_id(@batch.id);
+    @all_connect_exams = ExamConnect.active.find_all_by_batch_id(@batch.id);
     
     
     if !@all_connect_exams.blank?
@@ -1380,9 +1401,10 @@ class StudentController < ApplicationController
         @grouped_exam = GroupedExam.find_all_by_connect_exam_id(examconnect.id);
         if !@grouped_exam.blank?
           @grouped_exam.each do |groupexam|
-            @examgroup = ExamGroup.find(groupexam.exam_group_id)
+            @examgroup = ExamGroup.active.find(groupexam.exam_group_id)
             if @examgroup.result_published==false
               @result_publish = false
+              break
             end
           end
         else

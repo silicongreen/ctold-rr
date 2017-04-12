@@ -243,7 +243,7 @@ no<%-# Champs21
                   <%
                     is_removable = true
                     exam_id = @exam.id
-                    @exam_groups_data = ExamGroup.find(:all, :conditions => ["name LIKE ? and batch_id IN (?) and exam_type = ? and exam_category = ? and exam_date = ?", @exam_group.name, @batches, @exam_group.exam_type, @exam_group.exam_category, @exam_group.exam_date]).map{|eg| eg.id}
+                    @exam_groups_data = ExamGroup.active.find(:all, :conditions => ["name LIKE ? and batch_id IN (?) and exam_type = ? and exam_category = ? and exam_date = ?", @exam_group.name, @batches, @exam_group.exam_type, @exam_group.exam_category, @exam_group.exam_date]).map{|eg| eg.id}
                     @subjects_data = Subject.find(:all, :conditions => ["name LIKE ? and batch_id IN (?)", exam.subject.name, @batches]).map{|s| s.id}
                     
                     @exam_groups_data.each do |exam_group_id|          
@@ -323,7 +323,7 @@ no<%-# Champs21
                   <%
                     is_removable = false
                     exam_id = @exam.id
-                    @exam_groups_data = ExamGroup.find(:all, :conditions => ["name LIKE ? and batch_id IN (?) and exam_type = ? and exam_category = ? and exam_date = ?", @exam_group.name, @batches, @exam_group.exam_type, @exam_group.exam_category, @exam_group.exam_date]).map{|eg| eg.id}
+                    @exam_groups_data = ExamGroup.active.find(:all, :conditions => ["name LIKE ? and batch_id IN (?) and exam_type = ? and exam_category = ? and exam_date = ?", @exam_group.name, @batches, @exam_group.exam_type, @exam_group.exam_category, @exam_group.exam_date]).map{|eg| eg.id}
                     @subjects_data = Subject.find(:all, :conditions => ["name LIKE ? and batch_id IN (?)", exam.subject.name, @batches]).map{|s| s.id}
                     @exam_groups_data.each do |exam_group_id|
                       @subjects_data.each do |subject_id|

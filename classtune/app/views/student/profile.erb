@@ -39,6 +39,14 @@
                   <%= link_to "#{t('reports_text')}", {:controller => 'student', :action => 'reports', :id => @student}, {:class => 'f2'} %>
               </li>
             <%  end %>
+              
+            <% BatchStudent.find_by_student_id(@student.id) %>  
+       
+            <% unless BatchStudent.blank? %>
+              <li>
+                <%= link_to "Previous Report", {:controller => "student", :action => "previous_report", :id => @student.id}, {:class => 'f2'} %>
+              </li>
+            <%  end %>  
 
             <% if permitted_to? :guardians,:student %>
               <li>
@@ -46,11 +54,6 @@
               </li>
             <% end %>
 
-            <% if permitted_to? :email,:student and !check_free_school?  %>
-              <% if @student.is_email_enabled %>
-            
-              <%  end %>
-            <%  end %>
 
             <% if permitted_to? :remove, :student or permitted_to? :admission1, :student %>
               <li>

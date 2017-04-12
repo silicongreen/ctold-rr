@@ -25,6 +25,7 @@ class ApplicationController < ActionController::Base
   helper_method :in_words
   helper_method :send_sms
   helper_method :sms_enable?
+  helper_method :save_group_exam_pdf
   helper_method :school_mock_test?
   helper_method :get_tabulation_connect_exam
   helper_method :get_exam_result_type
@@ -56,6 +57,8 @@ class ApplicationController < ActionController::Base
   before_filter :dev_mode
   include CustomInPlaceEditing
   
+  
+
   def in_words(int)
     set1 = ["","one","two","three","four","five","six","seven",
          "eight","nine","ten","eleven","twelve","thirteen",

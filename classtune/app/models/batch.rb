@@ -453,7 +453,7 @@ class Batch < ActiveRecord::Base
         exam_totals = []
         exam_marks.each do|exam_mark|
           student_id = exam_mark[0]
-          exam_group = ExamGroup.find(exam_mark[1])
+          exam_group = ExamGroup.active.find(exam_mark[1])
           score = exam_mark[2].sum
           max_marks = exam_mark[3].sum
           tot_score = 0
@@ -597,7 +597,7 @@ class Batch < ActiveRecord::Base
         exam_totals = []
         exam_marks.each do|exam_mark|
           student_id = exam_mark[0]
-          exam_group = ExamGroup.find(exam_mark[1])
+          exam_group = ExamGroup.active.find(exam_mark[1])
           score = exam_mark[2].sum
           max_marks = exam_mark[3].sum
           if grading_type.nil? or self.normal_enabled?

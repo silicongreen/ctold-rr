@@ -31,6 +31,7 @@ class ExamGroup < ActiveRecord::Base
   validates_associated :exams
 
   after_save :invalidate_student_cache, :on=>:update
+  named_scope :active, :conditions => {:is_deleted=>false}
 
   validates_uniqueness_of :cce_exam_category_id, :scope=>:batch_id, :message=>"already assigned for another Exam Group",:unless => lambda { |e| e.cce_exam_category_id.nil?}
   
@@ -200,7 +201,7 @@ class ExamGroup < ActiveRecord::Base
     removable = false
     exam_group_name = self.name
     batches_id.each do |b|
-      tmp_exam = ExamGroup.find(:first, :conditions => ["name = ? and exam_type = ? and exam_category = ? and exam_date = ? and batch_id = ?", exam_group_name, self.exam_type, self.exam_category, self.exam_date, b])
+      tmp_exam = ExamGroup.active.find(:first, :conditions => ["name = ? and exam_type = ? and exam_category = ? and exam_date = ? and batch_id = ?", exam_group_name, self.exam_type, self.exam_category, self.exam_date, b])
       unless tmp_exam.nil?
         unless tmp_exam.removable?
           removable = true
@@ -251,7 +252,7 @@ class ExamGroup < ActiveRecord::Base
     
     no_of_batches = batches_ids.length
     
-    ar_exams = ExamGroup.find(:all, :conditions => ["name LIKE ? and batch_id IN (?) and exam_type = ? and exam_category = ? and exam_date = ?", self.name, batches_ids, self.exam_type, self.exam_category, self.exam_date]).map{|eg| eg.batch_id}
+    ar_exams = ExamGroup.active.find(:all, :conditions => ["name LIKE ? and batch_id IN (?) and exam_type = ? and exam_category = ? and exam_date = ?", self.name, batches_ids, self.exam_type, self.exam_category, self.exam_date]).map{|eg| eg.batch_id}
     
     s_message = "<p class='course_text'>Only for: "
     

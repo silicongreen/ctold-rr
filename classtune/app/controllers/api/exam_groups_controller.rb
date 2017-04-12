@@ -3,7 +3,7 @@ class Api::ExamGroupsController < ApiController
 
   def index
     @xml = Builder::XmlMarkup.new
-    @exam_groups = ExamGroup.search(params[:search])
+    @exam_groups = ExamGroup.active.search(params[:search])
 
     respond_to do |format|
       unless params[:search].present? 

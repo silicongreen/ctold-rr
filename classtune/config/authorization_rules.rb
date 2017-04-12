@@ -512,7 +512,7 @@ authorization do
 
   role :view_results  do
     includes :archived_exam_reports
-    has_permission_on [:student], :to => [:reports]
+    has_permission_on [:student], :to => [:reports,:previous_report]
     has_permission_on [:exam], :to => [:index,
       :exam_wise_report,
       :list_exam_types,
@@ -662,7 +662,7 @@ authorization do
       :update_student_result_for_examtype,
       :previous_years_marks_overview,
       :previous_years_marks_overview_pdf,
-      :remove,:reports,
+      :remove,:reports,:previous_report,:get_previous_exam,
       :search_ajax,
       :subject_wise_report,
       :graph_for_previous_years_marks_overview,
@@ -1709,7 +1709,7 @@ authorization do
       :subject_wise_register,
       :daily_register
     ]
-    has_permission_on [:other],  :to => [:admit_card,:list_students,:print_admit_card]
+    has_permission_on [:other], :to => [:admit_card,:list_students,:print_admit_card]
     has_permission_on [:empattendance],  :to => [:index,:campus_report_show,:campus_report_view]
     has_permission_on [:stdattendance],  :to => [:index,:campus_report_show,:campus_report_view]
     has_permission_on [:sms],  :to => [:index, :settings, :update_general_sms_settings, :students, :list_students, :batches, :sms_all, :employees, :list_employees, :departments, :all, :show_sms_messages, :show_sms_logs]
@@ -2418,6 +2418,7 @@ authorization do
       :previous_years_marks_overview_pdf,
       :remove,
       :reports,
+      :previous_report,:get_previous_exam,
       :search_ajax,
       :student_annual_overview,
       :subject_wise_report,
@@ -2883,6 +2884,7 @@ authorization do
       :previous_years_marks_overview,
       :previous_years_marks_overview_pdf,
       :reports,
+      :previous_report,:get_previous_exam,
       :class_test_report,
       :class_test_report_single,
       :term_test_report,
@@ -2980,6 +2982,7 @@ authorization do
       :previous_years_marks_overview,
       :previous_years_marks_overview_pdf,
       :reports,
+      :previous_report,:get_previous_exam,
       :class_test_report,
       :class_test_report_single,
       :progress_report,

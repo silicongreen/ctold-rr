@@ -1,0 +1,81 @@
+.clearfix {
+    clear: both;
+}
+#page-yield{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+.wrapper {
+    background-color: #ffffff;
+    float: left;
+    width: 100%;
+}
+#exam-results-dashboard {    
+    float: left;
+    border-bottom: 1px solid #d7d7d7;
+    padding: 20px;
+}
+#exam-results-dashboard h4 {
+    margin-right: 10px;
+    padding: 20px;
+    background: #DC3434;
+    color: #fff;
+}
+#exam-results-dashboard h3 {
+    color: #999999;
+    margin: 0;
+    padding: 10px 0 20px 0;
+    font-size: 30px;
+}
+.exam-results-reports-col {
+    float:left;
+    width: 100%;
+}
+.exam-results-reports-col ul,
+#attendance-reports-dashboard ul {
+    margin: 0;
+    padding: 0;
+}
+.exam-results-reports-col ul li,
+#attendance-reports-dashboard ul li {
+    list-style-type: none;
+    float: left;
+    width: 39.5%;
+    margin: 2px;
+    background: #B0B8BA;
+    padding: 20px;
+}
+.exam-results-reports-col ul li:hover,
+#attendance-reports-dashboard ul li:hover
+{
+    background: #606060;
+}
+.exam-results-reports-col ul li a,
+#attendance-reports-dashboard ul li a {
+    color: #fff;
+    text-decoration: none;    
+}
+.exam-results-reports-col ul li a:hover,
+#attendance-reports-dashboard ul li a:hover {    
+    color: #fff;
+    text-decoration: underline;
+}
+#attendance-reports-dashboard {
+    color: #999999;
+    float: left;
+    padding: 0 20px 20px;
+    width: 100%;    
+}
+#attendance-reports-dashboard h3 {
+    color: #999999;
+    margin: 0;
+    padding: 30px 0 20px 0;
+    font-size: 30px;
+}
+#attendance-reports-dashboard h4 {
+    margin-right: 10px;
+    padding: 20px;
+    background: #DC3434;
+    color: #fff;
+}

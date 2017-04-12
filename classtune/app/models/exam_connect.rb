@@ -20,6 +20,7 @@ class ExamConnect < ActiveRecord::Base
   validates_presence_of :name  
   belongs_to :batch
   has_many :grouped_exam
+  named_scope :active, :conditions => {:is_deleted=>false}
   def after_save
     keymarksheet = "marksheet_#{self.id}"
     Rails.cache.delete_matched(/#{keymarksheet}*/)

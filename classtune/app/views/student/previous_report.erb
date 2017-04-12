@@ -1,3 +1,4 @@
+
 <div class="header-wrapper">
 
   <div class="header-title">
@@ -6,7 +7,7 @@
     </div>
     <div class="header-title-text-wrapper">
       <div class="header-title-main-text f2">
-        <%= link_to "Delete Student", :controller => 'student', :action => 'remove', :id => @student.id %>
+        <%= link_to "#{t('report_center')}", :controller => 'student', :action => 'reports', :id => @student.id %>
       </div>
       <div class="clearfix"></div>
       <div class="header-title-sub-text">
@@ -30,10 +31,11 @@
           <%= link_to "#{t('reports_text')}", {:controller => 'student', :action => 'reports', :id => @student}, {:class => 'f2'} %>
         </li>
       <%end%>
+        
       <% BatchStudent.find_by_student_id(@student.id) %>  
        
       <% unless BatchStudent.blank? %>
-        <li>
+        <li class="active">
           <%= link_to "Previous Report", {:controller => "student", :action => "previous_report", :id => @student.id}, {:class => 'f2'} %>
         </li>
       <%  end %>
@@ -47,7 +49,7 @@
       
 
       <% if permitted_to? :remove, :student or permitted_to? :admission1, :student %>
-        <li class="active">
+        <li>
           <%= link_to "#{t('delete_text')}", {:controller => 'student', :action => 'remove', :id => @student.id}, {:class => 'f2'} %>
         </li>
       <% end %>
@@ -73,43 +75,29 @@
 <div id="page-yield" class="bg-disable">
   <div class="wrapper">
 
-    <div id="student-details">
-      <h3><%= @student.full_name %></h3>
-      <h4><%= t('adm_no') %> : <%= @student.admission_no %></h4>
-      <h4><%= t('class') %> : <%= @student.batch.course_name %></h4>
-    </div>
+    <div id="exam-results-dashboard">
 
-    <div class="extender"> </div>
-    <% if @dependency.present? %>
-      <% @dependency.each do |mod| %>
-        <%= render :partial=>mod.classify.constantize.send("student_dependency_hook") if mod.classify.constantize.respond_to?("student_dependency_hook") %>
-      <% end %>
-    <% else %>
-      <div id="remove-student">
-        <% unless flash[:notice].nil? %> <p class="flash-msg"> <%= flash[:notice] %> </p> <% end %>
-        <p><%= t('description_for_students_leaving') %></p>
-
-        <% remote_form_for :remove, :before=>"$('submit_button').disable()",:complete=>"setTimeout(function(){$('submit_button').enable();},5000)" do |f| %>
-          <div class="label-field-pair">
-            <label for="remove_descr"><%= t('reason_for_leaving') %></label>
-            <div class="text-input-bg"><%= f.text_field :status_description %></div>
-          </div>
-          <div class="label-field-pair">
-            <label><%= t('leaving_date') %>:</label>
-            <div class="input-container"><%= calendar_date_select_tag 'leaving_date', I18n.l(Date.today,:format=>:default) ,:popup=>:force%></div>
-          </div>
-          <div id="submit-button">
-            <%= submit_tag "► #{t('delete_text')}", :id => 'submit_button' %>
-          </div>
-
-        <% end %>
-      </div><br />
-      <br/>
-      <div id="tc-generate"></div>
-    <% end %>
+      <h3><%= "Previous Reports" %></h3>
+      <div class="label-field-pair">
+          <label for="category_name">Class</label>
+         <div class="text-input-bg">
+             <%= select :student, :batch_name, options_for_select(@previous_batch.map {|b| [b.batch.full_name+" ("+b.session+")", b.id]},""), 
+              {:prompt => "#{t('select')}"},
+              {:onChange => "#{remote_function(:url => {:controller => "student", :action => "get_previous_exam"}, :with => "'batch_id='+value" ,:before => "$('loading_2').show();",
+              :success => "$('loading_2').hide();")}"} %>
+              <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_2", :style =>"display: none;" ) %>
+         </div>
+         
+      </div>
       
+      <div id="exams">
+        
+      </div>
+
+    </div>
   </div>
 </div>
+
 
 <%= stylesheet_link_tag 'tadded-header' %>
 <% content_for :head do %>

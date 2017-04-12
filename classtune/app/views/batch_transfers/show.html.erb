@@ -35,7 +35,12 @@
 
   <% form_for :transfer,@batch, :url => { :controller => 'batch_transfers', :action => 'transfer', :id => @batch.id },:html => {:id => "new_student"} do |f| %>
     <%= error_messages_for 'batch', :header_message => nil %>
-    <% if Batch.active.find(:all, :group => "name").length > 1  %> 
+    
+    <div class="label-field-pair">
+      <label for="student_grade"><%= "Session" %></label>
+      <div class="text-input-bg"><input type="text" name="session" placeholder="2017-2018" /></div>
+    </div>
+    
     <div class="label-field-pair">
       <label for="student_grade"><%= t('shift_label') %></label>
       <div class="text-input-bg"><%= select :student, :batch_name, options_for_select(Batch.active.find(:all, :group => "name").map {|b| [b.name, b.id]}, @batch_no.to_i),
@@ -43,8 +48,8 @@
       {:onChange => "#{remote_function(:url => {:controller => "student", :action => "get_classes"}, :with => "'batch_id='+value+'&'+$('new_student').serialize()+'&section_page=section_data&section_partial=sections_transfer&page_batch=batches_data&partial_view_batch=batches_transfer'" ,:before => "$('loading_2').show();",
       :success => "$('loading_2').hide();")}"} %>
       <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_2", :style =>"display: none;" ) %></div>
-      </div>
-    <% end %>
+    </div>
+    
     
     <div class="label-field-pair">
       <label for="student_grade"><%= t('class_label') %></label>
@@ -55,6 +60,8 @@
       <label for="student_grade"><%= t('section_label') %></label>
       <div class="text-input-bg"><div id="section_data"> <%= render :partial => 'student/sections_transfer', :object => @classes %></div></div>
     </div>
+    
+    
     
     <div class="label-field-pair" style="display: none;">
       <label for="student_grade"><%= t('course_and_batch') %></label>

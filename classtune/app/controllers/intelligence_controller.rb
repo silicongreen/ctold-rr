@@ -254,7 +254,7 @@ class IntelligenceController < ApplicationController
       @subject = Subject.find(params[:subject_id])
       @batch = @subject.batch
       @students = @batch.students
-      @exam_groups = ExamGroup.find(:all,:conditions=>{:batch_id=>@batch.id})
+      @exam_groups = ExamGroup.active.find(:all,:conditions=>{:batch_id=>@batch.id})
     end
     render :partial=>"report_overall_subject"
   end
@@ -264,7 +264,7 @@ class IntelligenceController < ApplicationController
     if !params[:exam_id].blank?
       @exam_id = params[:exam_id]
       if params[:student].nil?
-         @exam_group = ExamGroup.find(@exam_id)
+         @exam_group = ExamGroup.active.find(@exam_id)
          @batch = @exam_group.batch
          @students=@batch.students.by_first_name
          @student = @students.first  unless @students.empty?
@@ -290,7 +290,7 @@ class IntelligenceController < ApplicationController
          
         render :partial=>"exam_report_student_single"
       else
-        @exam_group = ExamGroup.find(params[:exam_id])
+        @exam_group = ExamGroup.active.find(params[:exam_id])
         @student = Student.find_by_id(params[:student])
         @batch = @student.batch
         general_subjects = Subject.find_all_by_batch_id(@student.batch.id, :conditions=>"elective_group_id IS NULL")

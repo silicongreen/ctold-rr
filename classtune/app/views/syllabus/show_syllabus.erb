@@ -130,7 +130,7 @@
           </div>
           <div class="category-code">            
             <% if syllabus.exam_group_id.to_i > 0 %>              
-              <% @examgroup = ExamGroup.find_by_id(syllabus.exam_group_id) %>
+              <% @examgroup = ExamGroup.active.find_by_id(syllabus.exam_group_id) %>
               <% unless @examgroup.nil? %>
                 <%= @examgroup.name %>
               <% else %>

@@ -59,19 +59,8 @@ class ArchivedStudentController < ApplicationController
   end
 
   def reports
-    @student= ArchivedStudent.find params[:id]
-    @batch = @student.batch
-    @grouped_exams = GroupedExam.find_all_by_batch_id(@batch.id)
-    @normal_subjects = Subject.find_all_by_batch_id(@batch.id,:conditions=>"no_exams = false AND elective_group_id IS NULL AND is_deleted = false")
-    @student_electives = StudentsSubject.find_all_by_student_id(@student.former_id,:conditions=>{:batch_id=>@batch.id})
-    @elective_subjects = []
-    @student_electives.each do |e|
-      @elective_subjects.push Subject.find(e.subject_id)
-    end
-    @subjects = @normal_subjects+@elective_subjects
-    @exam_groups = @batch.exam_groups
-    @exam_groups.reject!{|e| e.result_published==false}
-    @old_batches = @student.all_batches
+    @arcstudent = ArchivedStudent.find params[:id]
+    @previous_batch = BatchStudent.find_all_by_student_id(@arcstudent.former_id)
   end
 
   def consolidated_exam_report

@@ -20,6 +20,7 @@ class GroupExamStudent < ActiveRecord::Base
   belongs_to :student
   belongs_to :exam_group
   belongs_to :school
+  belongs_to :batch_student
   validates_presence_of :student_id,:batch_id,:exam_group_id
   
   def before_save

@@ -49,28 +49,30 @@ class DelayedBatchTranfer
       save_batch_transfer(@from,@to,@session,now)
       reminder_recipient_ids = []
 
-      unless @exam_groups.blank?
-        @exam_groups.each do |eg|
-          students.each do |s|
+      students.each do |s|
+        batch_student = s.batch_students.find_or_create_by_batch_id_and_session(s.batch.id,@session)
+        unless @exam_groups.blank?
+          @exam_groups.each do |eg|
             save_group_pdf(eg.id,s.id,@user_cookie_variable)
-            create_group_exam_student(@batch,s,eg,now)
+            create_group_exam_student(@batch,s,eg,now,batch_student.id)
           end
         end
       end
+     
 
-      unless @connect_exam.blank?
-        @connect_exam.each do |ec|
-          students.each do |s| 
-             save_combained_pdf(ec.id,s.id,@user_cookie_variable,@batch.id)
-             create_combined_exam_student(@batch,s,ec,now) 
+      students.each do |s| 
+        batch_student = s.batch_students.find_or_create_by_batch_id_and_session(s.batch.id,@session)
+        unless @connect_exam.blank?
+          @connect_exam.each do |ec|
+            save_combained_pdf(ec.id,s.id,@user_cookie_variable,@batch.id)
+            create_combined_exam_student(@batch,s,ec,now,batch_student.id) 
           end
         end
       end  
 
      
       
-      students.each do |s|            
-        s.batch_students.find_or_create_by_batch_id_and_session(s.batch.id,@session)
+      students.each do |s|    
         if @graduation == false
           s.update_attribute(:batch_id, @to)
           s.update_attribute(:has_paid_fees,0)
@@ -87,11 +89,11 @@ class DelayedBatchTranfer
       if @graduation == false
         unless reminder_recipient_ids.empty?
           Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => @current_user.id,
-            :recipient_ids => reminder_recipient_ids,
-            :subject=>"Promoted",
-            :rtype=>25,
-            :rid=>0,
-            :body=>"Congratulation. You have been promoted to new Class. Wish you all the best." ))
+              :recipient_ids => reminder_recipient_ids,
+              :subject=>"Promoted",
+              :rtype=>25,
+              :rid=>0,
+              :body=>"Congratulation. You have been promoted to new Class. Wish you all the best." ))
         end 
       end
       
@@ -103,27 +105,28 @@ class DelayedBatchTranfer
       
       @stu = Student.find_all_by_batch_id(@batch.id)
       unless @stu.empty?
-        @stu.each do |s|            
-          s.batch_students.find_or_create_by_batch_id_and_session(s.batch.id,@session)
-        end  
+          
+        @stu.each do |s|
+          batch_student = s.batch_students.find_or_create_by_batch_id_and_session(s.batch.id,@session)
+          unless @exam_groups.blank?
+            @exam_groups.each do |eg|
+            
+              save_group_pdf(eg.id,s.id,@user_cookie_variable)
+              create_group_exam_student(@batch,s,eg,now,batch_student.id)
+            end
+          end
+        end
         
-      unless @exam_groups.blank?
-        @exam_groups.each do |eg|
-          @stu.each do |s|
-            save_group_pdf(eg.id,s.id,@user_cookie_variable)
-            create_group_exam_student(@batch,s,eg,now)
+        @stu.each do |s|
+          batch_student = s.batch_students.find_or_create_by_batch_id_and_session(s.batch.id,@session)
+          unless @connect_exam.blank?
+            @connect_exam.each do |ec|
+             
+              save_combained_pdf(ec.id,s.id,@user_cookie_variable,@batch.id)
+              create_combined_exam_student(@batch,s,ec,now,batch_student.id) 
+            end
           end
-        end
-      end
-
-      unless @connect_exam.blank?
-        @connect_exam.each do |ec|
-          @stu.each do |s| 
-             save_combained_pdf(ec.id,s.id,@user_cookie_variable,@batch.id)
-             create_combined_exam_student(@batch,s,ec,now) 
-          end
-        end
-      end 
+        end 
         
       end
 
@@ -207,22 +210,24 @@ class DelayedBatchTranfer
     batchboj.save()
   end
   
-  def create_group_exam_student(batch,s,eg,now)
+  def create_group_exam_student(batch,s,eg,now,batch_student_id)
     examgroup = GroupExamStudent.new
     examgroup.batch_id = batch.id
     examgroup.student_id = s.id
     examgroup.exam_group_id = eg.id
+    examgroup.batch_student_id = batch_student_id
     examgroup.year = eg.exam_date
     examgroup.created_at = now
     examgroup.updated_at = now
     examgroup.save
   end
   
-  def create_combined_exam_student(batch,s,ec,now)
+  def create_combined_exam_student(batch,s,ec,now,batch_student_id)
     examconnect = ExamConnectStudent.new
     examconnect.batch_id = batch.id
     examconnect.student_id = s.id
     examconnect.exam_connect_id = ec.id
+    examconnect.batch_student_id = batch_student_id
     examconnect.year = ec.published_date
     examconnect.created_at = now
     examconnect.updated_at = now

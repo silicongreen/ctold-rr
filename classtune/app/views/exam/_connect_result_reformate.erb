@@ -3,7 +3,7 @@
 <% subjects_new = [] %> 
 <% @exam_marks = {} %>
 <% i = 0 %>
-<% unless @report_data['report']['subjects'].blank? %> 
+<% unless @report_data['report'].blank? or @report_data['report']['subjects'].blank? %> 
   <% @report_data['report']['subjects'].each do |subjects| %>
     <% weightage_mark = 0 %>
     <% total_mark = 0 %>    

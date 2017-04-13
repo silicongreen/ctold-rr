@@ -36,14 +36,14 @@ class StudentController < ApplicationController
   def get_previous_exam
     unless params[:batch_id].blank?
       @batch_previous = BatchStudent.find(params[:batch_id])
-      @previous_exam = ExamConnectStudent.find_all_by_student_id_and_batch_id(@batch_previous.student_id,@batch_previous.batch_id)
-      @previous_group_exam = GroupExamStudent.find_all_by_student_id_and_batch_id(@batch_previous.student_id,@batch_previous.batch_id)
+      @previous_exam = ExamConnectStudent.find_all_by_batch_student_id(@batch_previous.id)
+      @previous_group_exam = GroupExamStudent.find_all_by_batch_student_id(@batch_previous.id)
       render :update do |page|
         page.replace_html 'exams', :partial => 'get_previous_exam'
       end
     else
       render :update do |page|
-        page.replace_html 'exams', :text => 'Slect A Class'
+        page.replace_html 'exams', :text => 'Select A Class'
       end
     end  
       

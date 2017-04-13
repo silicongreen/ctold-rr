@@ -156,7 +156,7 @@ class StudentsSubjects extends CActiveRecord
             $criteria->with =array(
                         "MainSubjects" => array(
                             "select" => "MainSubjects.*",
-                            'joinType' => "INNER JOIN",
+                            'joinType' => "LEFT JOIN",
                             'with' => array(
                                 "electiveGroup" => array(
                                     "select" => "electiveGroup.*",

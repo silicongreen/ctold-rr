@@ -272,8 +272,16 @@ class Subjects extends CActiveRecord
                     $subject_array[$i]['code'] = $value->code;
                     $subject_array[$i]['id'] = $value->id;
                     $subject_array[$i]['icon'] = "";
-                    $subject_array[$i]['elective_group_id'] = $value['electiveGroup']->id;
-                    $subject_array[$i]['elective_group_name'] = $value['electiveGroup']->name;
+                    if(isset($value['electiveGroup']))
+                    {
+                        $subject_array[$i]['elective_group_id'] = $value['electiveGroup']->id;
+                        $subject_array[$i]['elective_group_name'] = $value['electiveGroup']->name;
+                    }
+                    else
+                    {
+                        $subject_array[$i]['elective_group_id'] = 0;
+                        $subject_array[$i]['elective_group_name'] = "";
+                    }    
                     if(isset($value->icon_number))
                     {
                         $subject_array[$i]['icon'] = $value->icon_number;

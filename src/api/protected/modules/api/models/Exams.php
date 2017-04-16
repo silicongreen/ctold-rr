@@ -151,7 +151,7 @@ class Exams extends CActiveRecord
         FROM exams
         LEFT JOIN exam_scores AS Scores ON Scores.exam_id = exams.id
         LEFT OUTER JOIN grading_levels AS Examgrade ON Scores.grading_level_id = Examgrade.id 
-        WHERE exams.exam_group_id = $exam_group_id and exams.is_deleted = 0
+        WHERE exams.exam_group_id = $exam_group_id
         AND exams.subject_id = $subject_id
         GROUP BY Scores.student_id
         ORDER BY std_score DESC";
@@ -187,7 +187,7 @@ class Exams extends CActiveRecord
         $sql = "SELECT SUM( Scores.marks ) AS total_score
         FROM exams
         LEFT JOIN exam_scores AS Scores ON Scores.exam_id = exams.id
-        WHERE exams.exam_group_id IN (" . $exam_group_ids . ") and exams.is_deleted = 0
+        WHERE exams.exam_group_id IN (" . $exam_group_ids . ")
         GROUP BY Scores.student_id
         ORDER BY total_score DESC";
 
@@ -218,7 +218,7 @@ class Exams extends CActiveRecord
         FROM exams
         LEFT JOIN exam_scores AS Scores ON Scores.exam_id = exams.id
         LEFT OUTER JOIN grading_levels AS Examgrade ON Scores.grading_level_id = Examgrade.id 
-        WHERE exams.exam_group_id = $exam_group_id and exams.is_deleted = 0
+        WHERE exams.exam_group_id = $exam_group_id
         GROUP BY Scores.student_id
         ORDER BY total_points DESC, total_score DESC";
 

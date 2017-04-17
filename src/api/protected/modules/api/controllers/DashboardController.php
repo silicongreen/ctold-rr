@@ -261,7 +261,7 @@ class DashboardController extends Controller
                         $formated_feed[$i]['attachment_file_name'] = $classwork_data[0]['attachment_file_name'];
                         $formated_feed[$i]['is_read'] = $value['is_read'];  
                         $formated_feed[$i]['rtype'] = $value['rtype'];
-                        $formated_feed[$i]['rid'] = $classwork_data[0]['subjects_id'];
+                        $formated_feed[$i]['rid'] = $value['rid'];
                         $i++;
                         
                     }
@@ -332,7 +332,7 @@ class DashboardController extends Controller
                         $i++;
                     }
                 } 
-                else if($value['rtype']==6 or $value['rtype']==45)
+                else if($value['rtype']==6)
                 {
                     
                     $formated_feed[$i]['title'] = "<b>Attendance</b>";
@@ -346,6 +346,26 @@ class DashboardController extends Controller
                     $formated_feed[$i]['rtype'] = $value['rtype'];
                     $formated_feed[$i]['rid'] = $value['rid'];
                     $i++;
+                    
+                } 
+                else if($value['rtype']==45)
+                {
+                    $subjectAtt = new SubjectAttendances();
+                    $sub_data = $subjectAtt->findByPk($value['rid']);
+                    if($sub_data)
+                    {
+                        $formated_feed[$i]['title'] = "<b>Attendance</b>";
+                        $formated_feed[$i]['created'] = date("Y-m-d", strtotime($value['created_at']));
+                        $formated_feed[$i]['body1'] = "Attendance Notice";
+                        $formated_feed[$i]['body2'] = strip_tags($value['body']);
+                        $formated_feed[$i]['body3'] = "";
+                        $formated_feed[$i]['attachment_file_name'] = "";
+
+                        $formated_feed[$i]['is_read'] = $value['is_read']; 
+                        $formated_feed[$i]['rtype'] = $value['rtype'];
+                        $formated_feed[$i]['rid'] = $sub_data->subject_id;
+                        $i++;
+                    }
                     
                 } 
                 else if($value['rtype']==13 && $value['rtype']==11 && $value['rtype']==12 && $value['rtype']==14)

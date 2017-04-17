@@ -3001,4 +3001,6 @@ en: # locale
   font_face: "Set Font"
   
   homework_intelligence: Homework
+  classwork_intelligence: Classwork
+  lessonplan_intelligence: Lessonplan
   attendance_intelligence: Attendance

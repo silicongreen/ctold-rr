@@ -1,0 +1,17 @@
+<script type="text/javascript">
+  j.ajax({
+    type: "POST",
+    url: "/intelligence/get_lessonplan_report",
+    data: $('new_student').serialize()
+  })
+  .done(function( msg ) {
+    $('loading_2').hide();
+  });
+</script>  
+
+<%= select :student, :class_name, options_for_select(@courses.map {|c| [c.course_name]}, @course_name),
+{:prompt => "#{t('select')}"},
+{:onChange => "#{remote_function(:url => {:controller => "student",:action => "get_section_data"}, :with => "'class_name='+value+'&'+$('new_student').serialize()+'&page=sections_lessonplan_intelligence_batch&partial_view=student/sections_lessonplan_intelligence_batch_view'" ,:before => "$('loading').show();",
+:success => "")}"} %>  
+
+<%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading", :style =>"display: none;" ) %>

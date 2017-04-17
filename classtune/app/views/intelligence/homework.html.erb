@@ -17,6 +17,8 @@
     </div>
     <div id="inner-tab-menu" style="width: 31%;float: left;">
         <ul>
+          <li class='themed_bg themed-dark-hover-background'><%= link_to "Lessonplan", {:controller => "intelligence", :action => "lessonplan"} %></li>
+          <li class='themed_bg themed-dark-hover-background'><%= link_to "Classwork", {:controller => "intelligence", :action => "classwork"} %></li>
           <li class='themed_bg themed-dark-hover-background'><%= link_to "Attendance", {:controller => "intelligence", :action => "index"} %></li>
           <li class='themed_bg themed-dark-hover-background'><%= link_to "Exam Report", {:controller => "intelligence", :action => "report"} %></li>
         </ul>

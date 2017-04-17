@@ -1599,7 +1599,10 @@ authorization do
     includes :open
     includes :reports_view
     includes :timetable_track
-    has_permission_on [:intelligence], :to => [:subject_wise_report,:section_report,:get_exam,:graph_for_generated_report_section,:report_section,:report_overall_subject,:individual_report,:report_overall_individual,:report_overall,:report,:homework,:teacher_homework,:get_teacher_homeworks,:get_homework_report,:graph_for_homework,:index,:get_att_report,:graph_for_attandence,:comparisom,:get_att_report_class,:graph_for_attandence_class,:cricticalinfo,:get_att_report_crictal]
+    has_permission_on [:intelligence], :to => [:subject_wise_report,:section_report,:get_exam,:graph_for_generated_report_section,:report_section,:report_overall_subject,:individual_report,:report_overall_individual,:report_overall,:report,:homework,:teacher_homework,:get_teacher_homeworks,:get_homework_report,:graph_for_homework,:index,:get_att_report,:graph_for_attandence,:comparisom,:get_att_report_class,:graph_for_attandence_class,:cricticalinfo,:get_att_report_crictal,
+      :classwork,:teacher_classwork,:get_teacher_classworks,:get_classwork_report,:graph_for_classwork,
+      :lessonplan,:teacher_lessonplan,:get_teacher_lessonplans,:get_lessonplan_report,:graph_for_lessonplan
+      ]
     has_permission_on [:importdata],  :to => [:import_batches,:import_employee_data,:import_grade]
     has_permission_on [:meetings], :to => [:index,:outbox,:inbox, :new, :create, :edit, :update, :show, :destroy, :get_classes, :get_batches, :get_section_data, :list_students_by_course]
     has_permission_on [:user],  :to => [:edit_privilege,:index,:make_sibligns]

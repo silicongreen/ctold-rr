@@ -1,0 +1,41 @@
+<script type="text/javascript">
+  <% if !@batch_name.blank? && !@class_name.blank? %>
+  j.ajax({
+    type: "POST",
+    url: "/intelligence/get_lessonplan_report",
+    data: $('new_student').serialize()
+  })
+  .done(function( msg ) {
+    $('loading').hide();
+  });
+  
+  <% end %>
+</script> 
+
+<% if @classes.length == 1 %>
+<script type="text/javascript">
+  j("#sections_div").hide();
+</script>  
+<% else %>
+<script type="text/javascript">
+  j("#sections_div").show();
+</script>
+<% if @selected_section.to_i > 0 %>
+<%= select :student, :section, options_for_select(@classes.map { |c| [c.section_name.strip.length > 0 ? c.section_name.strip : "no-section", c.id] }, @selected_section.to_i),
+    {:prompt => "#{t('select')}"},
+    {:onchange => "#{remote_function(
+          :url => {:controller => "intelligence", :action => 'get_lessonplan_report' },
+          :with => "$('new_student').serialize()",
+          :before => "Element.show('loader')",
+          :success => "Element.hide('loader')"  )}"} %>  
+<% else %>    
+<%= select :student, :section, options_for_select(@classes.map { |c| [c.section_name.strip.length > 0 ? c.section_name.strip : "no-section", c.id] }, @selected_section.to_i),
+    {:prompt => "#{t('select')}"},
+    {:onchange => "#{remote_function(
+          :url => {:controller => "intelligence",:action => 'get_lessonplan_report' },
+          :with => "$('new_student').serialize()",
+          :before => "Element.show('loader')",
+          :success => "Element.hide('loader')"  )}"} %>  
+<% end %>
+<% end %>
+<%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_1", :style =>"display: none;" ) %>

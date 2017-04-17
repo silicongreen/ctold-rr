@@ -1,0 +1,157 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+<% unless @report_data.blank? %>
+<div class="clearfix"></div>
+  <div class="CSSTableGenerator" style="width: 97%;margin-top: 20px;">
+        
+      <% if @report_data['day_type']!="1" && @time_range=="days" %>
+        <h2><%=@report_data['day_type']%></h2>
+      <% end %>
+      <% unless @report_data.blank? %>
+        <div class="clearfix"></div>
+          <div class="CSSTableGenerator" style="width: 97%;margin-top: 20px;">       
+              <h2><%=@report_data['report_type']%></h2>
+              <table id="listing table-design">
+                    <tr>
+                        <td><b>Teacher Name</b></td> 
+                        <td><b>Department</b></td> 
+                        <td><b>Total Class</b></td> 
+                        <td><b>Lessonplan Given</b></td> 
+                        <td><b>Frequency</b></td> 
+                    </tr>    
+                    <% unless @report_data['employee_data'].blank? %>  
+                      <% @report_data['employee_data'].each do |employee| %>
+                        <% 
+                          if @report_data['day_type']!="1" && @time_range=="days"
+                            employee['lessonplan_given'] = "N/A"
+                            employee['total_class'] = "N/A"
+                            employee['frequency'] = "N/A"
+                          end 
+                        %>
+                        <tr>
+                          <td class="col-2"><b><%= employee['emp_name'] %></b></td>
+                          <td class="col-2"><b><%= employee['emp_dep'] %></b></td>
+                          <td class="col-2"><b><%= employee['total_class'] %></b></td>
+                          <td class="col-2"><b><%= employee['lessonplan_given'] %></b></td>
+                          <td class="col-2"><b><%= employee['frequency'] %></b></td>
+
+                        </tr> 
+                      <% end %>  
+                    <% end %>
+              </table>
+
+          </div>
+        <% end %>
+         
+  </div>
+<% end %>
+
+
+ 
+
+<%= stylesheet_link_tag 'list_table' %>
+ 
+<style>
+  .CSSTableGenerator td.view:hover
+  {
+    background: #E6585A;
+    color: white;
+  }
+  .CSSTableGenerator td.view
+  {
+     cursor: pointer;
+  }
+  .CSSTableGenerator td a
+  {
+    color: inherit;
+    padding : 0;
+    background-color: inherit;
+    float: none;  
+    display: block;
+    margin: -20px;
+    padding: 10px;
+  }
+  .CSSTableGenerator td
+  {
+      font-size: 20px;
+      text-align:center;
+       padding: 10px;
+  }
+  .CSSTableGenerator td a:hover
+  {
+    color: inherit;
+    padding : 0;
+    background-color: inherit;
+    float: none;
+    display: block;
+    margin: -20px;
+    padding: 10px;
+  }
+   .CSSTableGenerator table tr td 
+  {
+     font-weight: bold;
+     overflow: hidden;
+  }
+  .checkmark {
+    display:inline-block;
+    width: 22px;
+    height:22px;
+    -ms-transform: rotate(45deg); /* IE 9 */
+    -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
+    transform: rotate(45deg);
+}
+
+span div.absent {
+    position: absolute;
+    width:22px;
+    height:22px;
+    background-color: #B3B9BB;
+    border-radius:11px;
+    left:0;
+    top:0;
+}
+
+.checkmark_circle {
+    position: absolute;
+    width:22px;
+    height:22px;
+    background-color: #0691D5;
+    border-radius:11px;
+    left:0;
+    top:0;
+}
+
+.checkmark_stem {
+    position: absolute;
+    width:3px;
+    height:9px;
+    background-color:#fff;
+    left:11px;
+    top:6px;
+}
+
+.checkmark_kick {
+    position: absolute;
+    width:3px;
+    height:3px;
+    background-color:#fff;
+    left:8px;
+    top:12px;
+}
+</style>  

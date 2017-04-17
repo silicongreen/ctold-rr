@@ -1,0 +1,1 @@
+page.replace_html 'att_report', :partial => 'report_teacher_lessonplan'

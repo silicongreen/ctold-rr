@@ -4,22 +4,22 @@
   <div class="header-wrapper">
     <div class="header-title" style="width:68%;">
       <div class="header-icon"  style="width:12%;">
-        <%= image_tag '/images/icons/attendance-header.png', :html => {:alt => 'Attendance'} %>
+        <%= image_tag '/images/icons/lessonplan_icon.png', :html => {:alt => 'Lessonplan'} %>
       </div>
       <div class="header-title-text-wrapper">
         <div class="header-title-main-text f2">
-          <%= t('attendance_intelligence') %>
+          <%= t('lessonplan_intelligence') %>
         </div>
         <div class="header-title-sub-text">
           <%= Time.now.strftime("%d/%m/%Y") %>
         </div>
       </div>
     </div>
-   <div id="inner-tab-menu" style="width: 31%;float: left;">
+    <div id="inner-tab-menu" style="width: 31%;float: left;">
         <ul>
-          <li class='themed_bg themed-dark-hover-background'><%= link_to "Lessonplan", {:controller => "intelligence", :action => "lessonplan"} %></li>
           <li class='themed_bg themed-dark-hover-background'><%= link_to "Classwork", {:controller => "intelligence", :action => "classwork"} %></li>
           <li class='themed_bg themed-dark-hover-background'><%= link_to "Homework", {:controller => "intelligence", :action => "homework"} %></li>
+          <li class='themed_bg themed-dark-hover-background'><%= link_to "Attendance", {:controller => "intelligence", :action => "index"} %></li>
           <li class='themed_bg themed-dark-hover-background'><%= link_to "Exam Report", {:controller => "intelligence", :action => "report"} %></li>
         </ul>
     </div>
@@ -27,39 +27,22 @@
     <div class="tabbed-header-wrapper">
       <ul class="header-tabs">
         <li class="active">
-          <%= link_to "Attendance Overall",
-            {:controller=>"intelligence", :action=>"index"},
+          <%= link_to "Lessonplan Overall",
+            {:controller=>"intelligence", :action=>"lessonplan"},
             {:class => 'f2'}
         %>
         </li>
       
         <li>
-          <%= link_to_remote "Individual Student Report",
+          <%= link_to_remote "Teacher Lessonplan",
             :before => "Element.show('loader2');",
             :success => "Element.hide('loader2');",
             :update => 'report-roll-call',
-            :url=>{:controller=>"attendances", :action=>"student_report"},
+            :url=>{:controller=>"intelligence", :action=>"teacher_lessonplan"},
             :html => {:class => 'f2'}
         %>
         </li>
-        <li>
-          <%= link_to_remote "Class Comparison",
-            :before => "Element.show('loader2');",
-            :success => "Element.hide('loader2');",
-            :update => 'report-roll-call',
-            :url=>{:controller=>"intelligence", :action=>"comparisom"},
-            :html => {:class => 'f2'}
-        %>
-        </li>
-        <li>
-          <%= link_to_remote "Quick Critical Information",
-            :before => "Element.show('loader2');",
-            :success => "Element.hide('loader2');",
-            :update => 'report-roll-call',
-            :url=>{:controller=>"intelligence", :action=>"cricticalinfo"},
-            :html => {:class => 'f2'}
-        %>
-        </li>
+        
       </ul>
     </div>
   </div>
@@ -73,7 +56,7 @@
   </div>
 
   <div id="report-roll-call">
-    <%= render :partial => "attendence_class" %>
+    <%= render :partial => "attendence_class_lessonplan" %>
   </div>
 
 </div>

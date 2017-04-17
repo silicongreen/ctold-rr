@@ -4,11 +4,11 @@
   <div class="header-wrapper">
     <div class="header-title" style="width:68%;">
       <div class="header-icon"  style="width:12%;">
-        <%= image_tag '/images/icons/homework.png', :html => {:alt => 'Homework'} %>
+        <%= image_tag '/images/icons/classwork_web.png', :html => {:alt => 'classwork'} %>
       </div>
       <div class="header-title-text-wrapper">
         <div class="header-title-main-text f2">
-          Exam Report
+          <%= t('classwork_intelligence') %>
         </div>
         <div class="header-title-sub-text">
           <%= Time.now.strftime("%d/%m/%Y") %>
@@ -18,45 +18,27 @@
     <div id="inner-tab-menu" style="width: 31%;float: left;">
         <ul>
           <li class='themed_bg themed-dark-hover-background'><%= link_to "Lessonplan", {:controller => "intelligence", :action => "lessonplan"} %></li>
-          <li class='themed_bg themed-dark-hover-background'><%= link_to "Classwork", {:controller => "intelligence", :action => "classwork"} %></li>
-          <li class='themed_bg themed-dark-hover-background'><%= link_to "Attendance", {:controller => "intelligence", :action => "index"} %></li>
           <li class='themed_bg themed-dark-hover-background'><%= link_to "Homework", {:controller => "intelligence", :action => "homework"} %></li>
+          <li class='themed_bg themed-dark-hover-background'><%= link_to "Attendance", {:controller => "intelligence", :action => "index"} %></li>
+          <li class='themed_bg themed-dark-hover-background'><%= link_to "Exam Report", {:controller => "intelligence", :action => "report"} %></li>
         </ul>
     </div>
     <div class="clearfix"></div>
     <div class="tabbed-header-wrapper">
       <ul class="header-tabs">
         <li class="active">
-          <%= link_to "Report Overall",
-            {:controller=>"intelligence", :action=>"report"},
+          <%= link_to "Classwork Overall",
+            {:controller=>"intelligence", :action=>"classwork"},
             {:class => 'f2'}
         %>
         </li>
       
         <li>
-          <%= link_to_remote "Individual Report",
+          <%= link_to_remote "Teacher Classwork",
             :before => "Element.show('loader2');",
             :success => "Element.hide('loader2');",
             :update => 'report-roll-call',
-            :url=>{:controller=>"intelligence", :action=>"individual_report"},
-            :html => {:class => 'f2'}
-        %>
-        </li>
-        <li>
-          <%= link_to_remote "Subject Wise Report",
-            :before => "Element.show('loader2');",
-            :success => "Element.hide('loader2');",
-            :update => 'report-roll-call',
-            :url=>{:controller=>"intelligence", :action=>"subject_wise_report"},
-            :html => {:class => 'f2'}
-        %>
-        </li>
-        <li>
-          <%= link_to_remote "Section Comparisom",
-            :before => "Element.show('loader2');",
-            :success => "Element.hide('loader2');",
-            :update => 'report-roll-call',
-            :url=>{:controller=>"intelligence", :action=>"section_report"},
+            :url=>{:controller=>"intelligence", :action=>"teacher_classwork"},
             :html => {:class => 'f2'}
         %>
         </li>
@@ -74,7 +56,7 @@
   </div>
 
   <div id="report-roll-call">
-    <%= render :partial => "report_overall" %>
+    <%= render :partial => "attendence_class_classwork" %>
   </div>
 
 </div>
@@ -85,17 +67,3 @@
 
 <%= stylesheet_link_tag 'tadded-header' %>
 <%= stylesheet_link_tag 'inline-calendar' %>
-<script type="text/javascript">
-
- function draw_report(id){
-    Element.show('loader');
-    new Ajax.Request('/intelligence/report_overall_individual',
-    {asynchronous:true, evalScripts:true,
-      parameters:'student='+id+'&exam_id='+$('exam_report_exam_group_id').value,onSuccess:function(request){Element.hide('loader')}
-    })
-  }
-
- 
-
-</script>
-

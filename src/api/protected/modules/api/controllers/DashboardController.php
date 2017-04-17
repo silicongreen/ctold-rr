@@ -246,6 +246,28 @@ class DashboardController extends Controller
                     
                     
                 } 
+                if($value['rtype']==31)
+                {
+                    $classwork = new Classworks();
+                    $classwork_data = $classwork->getClasswork("",array(), "", 1, null, 1, 1,$id);
+                    if($classwork_data)
+                    {
+                        
+                        $formated_feed[$i]['title'] = "<b>".$classwork_data[0]['subjects']."</b> Homework assigned by <b>".$classwork_data[0]['teacher_name']."</b>";
+                        $formated_feed[$i]['created'] = date("Y-m-d", strtotime($classwork_data[0]['assign_date']));
+                        $formated_feed[$i]['body1'] = strip_tags($classwork_data[0]['name']);
+                        $formated_feed[$i]['body2'] = strip_tags($classwork_data[0]['content']);
+                        $formated_feed[$i]['body3'] = "";
+                        $formated_feed[$i]['attachment_file_name'] = $classwork_data[0]['attachment_file_name'];
+                        $formated_feed[$i]['is_read'] = $value['is_read'];  
+                        $formated_feed[$i]['rtype'] = $value['rtype'];
+                        $formated_feed[$i]['rid'] = $value['rid'];
+                        $i++;
+                        
+                    }
+                    
+                    
+                }
                 else if($value['rtype']==5)
                 {
                     $news = new News;
@@ -310,13 +332,13 @@ class DashboardController extends Controller
                         $i++;
                     }
                 } 
-                else if($value['rtype']==6)
+                else if($value['rtype']==6 or $value['rtype']==45)
                 {
                     
                     $formated_feed[$i]['title'] = "<b>Attendance</b>";
                     $formated_feed[$i]['created'] = date("Y-m-d", strtotime($value['created_at']));
                     $formated_feed[$i]['body1'] = "Attendance Notice";
-                    $formated_feed[$i]['body2'] = str_replace("absent on (forenoon)","Present but Late on ",strip_tags($value['body']));
+                    $formated_feed[$i]['body2'] = strip_tags($value['body']);
                     $formated_feed[$i]['body3'] = "";
                     $formated_feed[$i]['attachment_file_name'] = "";
 

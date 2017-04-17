@@ -253,7 +253,7 @@ class DashboardController extends Controller
                     if($classwork_data)
                     {
                         
-                        $formated_feed[$i]['title'] = "<b>".$classwork_data[0]['subjects']."</b> Homework assigned by <b>".$classwork_data[0]['teacher_name']."</b>";
+                        $formated_feed[$i]['title'] = "<b>".$classwork_data[0]['subjects']."</b> Classwork assigned by <b>".$classwork_data[0]['teacher_name']."</b>";
                         $formated_feed[$i]['created'] = date("Y-m-d", strtotime($classwork_data[0]['assign_date']));
                         $formated_feed[$i]['body1'] = strip_tags($classwork_data[0]['name']);
                         $formated_feed[$i]['body2'] = strip_tags($classwork_data[0]['content']);
@@ -261,7 +261,7 @@ class DashboardController extends Controller
                         $formated_feed[$i]['attachment_file_name'] = $classwork_data[0]['attachment_file_name'];
                         $formated_feed[$i]['is_read'] = $value['is_read'];  
                         $formated_feed[$i]['rtype'] = $value['rtype'];
-                        $formated_feed[$i]['rid'] = $value['rid'];
+                        $formated_feed[$i]['rid'] = $classwork_data[0]['subjects_id'];
                         $i++;
                         
                     }

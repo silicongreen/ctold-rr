@@ -165,6 +165,32 @@ class Batches extends CActiveRecord
 
                 return $batch->maxstartdate;
         }
+        
+        public function getBatchsByName($batch_name=false,$class_name=false) 
+       {
+                $criteria = new CDbCriteria();
+                $criteria->select = 't.*';
+                $criteria->compare('t.school_id', Yii::app()->user->schoolId);
+                $criteria->compare('t.is_deleted', 0);
+                
+                if($batch_name)
+                {
+                   $criteria->compare('t.name', $batch_name);  
+                }
+                if($class_name)
+                {
+                    $criteria->compare('courseDetails.course_name', $class_name); 
+                }
+               
+                $criteria->with = array(
+                            "courseDetails" => array(
+                                'joinType' => "LEFT JOIN",
+                            )
+                );
+                $batch = $this->findAll($criteria);
+                return $batch;
+        }
+           
             
         
         public function checkSchoolBatch($school_id,$batch_id)

@@ -271,7 +271,7 @@ class Employees extends CActiveRecord {
     public function getEmployee($department_id=false) {
 
         $criteria = new CDbCriteria;
-        $criteria->select = 'id,first_name,middle_name,last_name';
+        $criteria->select = 'id,t.user_id,first_name,middle_name,last_name';
         $criteria->compare('t.school_id', Yii::app()->user->schoolId);
         
         if($department_id)

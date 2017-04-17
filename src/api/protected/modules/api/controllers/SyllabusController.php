@@ -20,7 +20,7 @@ class SyllabusController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index','lessonplansstd','lsubjects', 'terms','single','addlessonplan','singlelessonplans','lessonplandelete','lessoncategory','getsubject','lessonplanedit','lessonplans','assignlesson'),
+                'actions' => array('index','intelligence','teacherintelligence','lessonplansstd','lsubjects', 'terms','single','addlessonplan','singlelessonplans','lessonplandelete','lessoncategory','getsubject','lessonplanedit','lessonplans','assignlesson'),
                 'users' => array('@'),
             ),
             array('deny', // deny all users
@@ -28,6 +28,147 @@ class SyllabusController extends Controller {
             ),
         );
     }
+    
+    public function actionTeacherIntelligence()
+    {
+        $user_secret = Yii::app()->request->getPost('user_secret');
+        $date = Yii::app()->request->getPost('date');
+        $department_id = Yii::app()->request->getPost('department_id');
+
+        $sort_by = Yii::app()->request->getPost('sort_by');
+        $sort_type = Yii::app()->request->getPost('sort_type');
+        $time_range = Yii::app()->request->getPost('time_range');
+
+        if (!$sort_by)
+        {
+            $sort_by = "frequency";
+        }
+        if (!$sort_type)
+        {
+            $sort_type = "1";
+        }
+
+        if (!$time_range)
+        {
+            $time_range = "day";
+        }
+
+        if (Yii::app()->user->user_secret === $user_secret && (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin))
+        {
+            if (!$date)
+            {
+                $date = date("Y-m-d");
+            }
+
+            if (!$department_id)
+            {
+                $department_id = FALSE;
+            }
+            $attendence = new Attendances();
+
+            $day_type = $attendence->check_date($date);
+            $lessonplans = new Lessonplan();
+
+            $employee_data = $lessonplans->getLessonplanEmployee($date, $sort_by, $sort_type, $time_range, $department_id);
+
+            $response['data']['day_type'] = $day_type;
+            $response['data']['employee_data'] = $employee_data;
+
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "DATA_FOUND";
+        } else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    }
+
+    public function actionIntelligence()
+    {
+        $user_secret = Yii::app()->request->getPost('user_secret');
+        $date = Yii::app()->request->getPost('date');
+        $batch_name = Yii::app()->request->getPost('batch_name');
+        $class_name = Yii::app()->request->getPost('class_name');
+        $batch_id = Yii::app()->request->getPost('batch_id');
+
+        $number_of_day = Yii::app()->request->getPost('number_of_day');
+        if (!$number_of_day)
+        {
+            $number_of_day = 10;
+        }
+        $type = Yii::app()->request->getPost('type');
+        if (!$type)
+        {
+            $type = "days";
+        }
+
+
+        if (Yii::app()->user->user_secret === $user_secret && (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin))
+        {
+            if (!$date)
+            {
+                $date = date("Y-m-d");
+            }
+            if (!$batch_name)
+            {
+                $batch_name = FALSE;
+            }
+            if (!$class_name)
+            {
+                $class_name = FALSE;
+            }
+            if (!$batch_id)
+            {
+                $batch_id = FALSE;
+            }
+            $attendence = new Attendances();
+
+            $day_type = $attendence->check_date($date);
+
+
+            $lessonplans = new Lessonplan();
+            $timetable = new TimetableEntries();
+            $lessonplan_given = 0;
+            $total_class = 0;
+            $frequency = "N/A";
+
+            if ($day_type == "1")
+            {
+                $lessonplan_given = $lessonplans->getLessonplanTotalAdmin($date, $batch_name, $class_name, $batch_id);
+                $total_class = $timetable->getTotalClass($date, $batch_name, $class_name, $batch_id);
+                if ($lessonplan_given > 0)
+                {
+                    $frequency = round($total_class / $lessonplan_given);
+                }
+            }
+
+            $graph_data = $lessonplans->getLessonplanGraph($number_of_day, $type, $batch_name, $class_name, $batch_id);
+
+            $response['data']['day_type'] = $day_type;
+            $response['data']['total_class'] = $total_class;
+            $response['data']['lessonplan_given'] = $lessonplan_given;
+            $response['data']['frequency'] = $frequency;
+
+            $response['data']['att_graph'] = $graph_data[0];
+            $response['data']['att_graph_date'] = $graph_data[1];
+
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "DATA_FOUND";
+        } else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    }
+    
+    
+    
+    
+    
     
     public function actionlessonplansStd()
     {

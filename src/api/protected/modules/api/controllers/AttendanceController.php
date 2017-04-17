@@ -462,8 +462,18 @@ class AttendanceController extends Controller
 
                 $absent = $atovj->getAllattendence($student_id, $subject_id, $batch_id, $report_type);
                 $late = $atovj->getAllattendence($student_id, $subject_id, $batch_id, $report_type, 1);
+                
+                $subject_name = "";
+                if($subject_id)
+                {
+                    $subObj = new Subjects();
+                    $subData = $subObj->findByPk($subject_id);
+                    $subject_name = $subData->name;
+                    
+                }
 
                 $present = $total - $absent-$late;
+                $response['data']['report']['subject_name'] = $subject_name;
                 $response['data']['report']['total'] = (int) $total;
                 $response['data']['report']['absent'] = (int) $absent;
                 $response['data']['report']['late'] = (int) $late;

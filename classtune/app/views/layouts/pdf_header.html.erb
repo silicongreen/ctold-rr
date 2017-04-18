@@ -101,12 +101,11 @@
   </div>
 <% elsif MultiSchool.current_school.id == 319 %>
 <div id="pdf-header-south" class="sfx-header">
-  <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/2/sfx-logo.png")),:width=> '10%' %></h4>
+ 
   <h2 align="center">St. Francis Xavier's Greenherald International School</h2>
 </div> 
 <% elsif MultiSchool.current_school.id == 324 %>
 <div id="pdf-header-south" class="sfx-header">
-  <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '10%' %></h4>
   <h2 align="center"><%=Configuration.get_config_value('InstitutionName'); %></h2>
 </div> 
 <% elsif MultiSchool.current_school.id == 325 %>

@@ -492,7 +492,7 @@ class ExamGroups extends CActiveRecord
                 )
         );
         $examresult = $this->find($criteria);
-        if(Yii::app()->user->schoolId == 319 or Yii::app()->user->schoolId == 324 && $exam_loop == 0 && $result_type == 5)
+        if((Yii::app()->user->schoolId == 319 or Yii::app()->user->schoolId == 324) && $exam_loop == 0 && $result_type == 5)
         {
             if($examresult)
             {

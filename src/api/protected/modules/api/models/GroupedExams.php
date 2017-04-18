@@ -130,7 +130,7 @@ class GroupedExams extends CActiveRecord
                     )
                 ),
                 'examconnect' => array(
-                    'select' => "examconnect.id"
+                    'select' => "examconnect.id,examconnect.result_type"
                  )   
             );
             $criteria->order = "t.priority ASC,examgroup.created_at ASC";
@@ -170,8 +170,8 @@ class GroupedExams extends CActiveRecord
             $subject_no_exam = $subjectObj->getSubjectNoExam($batch_id,0,$subjects_ids);
             $results = array();
             
-            $subject_result = array();
-            $max_mark = array();
+           
+            
             
             $examgroups_ids = array();
             if($examgroups)
@@ -186,6 +186,9 @@ class GroupedExams extends CActiveRecord
                 $final_term_id = 0;
                 $i = 0;
                 $results['all_result'] = array();
+                $subject_result = array();
+                $max_mark = array();
+                $exam_loop = 0;
                 foreach($examgroups as $value)
                 {
                     if($value['examgroup']->quarter == 5)
@@ -198,8 +201,8 @@ class GroupedExams extends CActiveRecord
                     }
                     $examgroups_ids[] = $value['examgroup']->id;
                     $results['all_result'] =  $examsGroupObj->getExamGroupResultSubjectAllStudentCont($value['examgroup']->id,$i,$results['all_result'],$value->weightage,$batch_student); 
-                    
-                   
+                    list($subject_result,$max_mark) = $examsGroupObj->getExamGroupResultMaxMark($value['examgroup']->id,$subject_result,$max_mark,$exam_loop,$value['examconnect']->result_type);
+                    $exam_loop++;
                    
                     $i++;
                 } 
@@ -210,7 +213,7 @@ class GroupedExams extends CActiveRecord
                 
                 $examsObj = new Exams();
                 
-                list($subject_result,$max_mark) = $examsObj->getExamGroupResultMaxMarkContinues($examgroups_ids,$subject_result,$max_mark);
+                //list($subject_result,$max_mark) = $examsObj->getExamGroupResultMaxMarkContinues($examgroups_ids,$subject_result,$max_mark);
               
                 
                 //$results['all_result'] =  $examsGroupObj->getExamGroupResultSubjectAllStudentContinues($examgroups_ids,$batch_student); 

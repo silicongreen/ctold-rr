@@ -24,7 +24,7 @@
     subjects_new = []
     unless @all_subject_exam.blank? 
        @all_subject_exam.each do |subjects|
-         if subjects['elective_group_id'].to_i!=0
+         if subjects['elective_group_id'].to_i!=0 && MultiSchool.current_school.id!=319 && MultiSchool.current_school.id!=324
            @all_student_subject.each do |sub_std|
              if subjects['id'].to_i == sub_std.subject_id and std['id'].to_i == sub_std.student_id
                subjects_new << subjects

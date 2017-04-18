@@ -2352,7 +2352,7 @@ class ExamController < ApplicationController
       render :pdf => 'continues',
         :orientation => 'Landscape', :zoom => 1.00
     elsif MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 323 or MultiSchool.current_school.id == 325 or MultiSchool.current_school.id == 324
-      if (MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 324) and (@connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 3)
+      if (MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 324) and (@connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 3)
         render :pdf => 'continues',
         :orientation => 'Portrait', :zoom => 1.00,
         :margin => {    :top=> 10,
@@ -2760,7 +2760,7 @@ class ExamController < ApplicationController
           render :pdf => 'generated_report5_pdf',
             :orientation => 'Landscape', :zoom => 1.00
         elsif MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 323 or MultiSchool.current_school.id == 325 or MultiSchool.current_school.id == 324
-          if (MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 324) and (@connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 3)
+          if (MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 324) and (@connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 5)
             render :pdf => 'generated_report5_pdf',
             :orientation => 'Portrait', :zoom => 1.00,
             :margin => {    :top=> 10,
@@ -2800,7 +2800,7 @@ class ExamController < ApplicationController
         :save_to_file => file_name,
         :save_only    => true
         elsif MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 323 or MultiSchool.current_school.id == 325 or MultiSchool.current_school.id == 324
-          if (MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 324) and (@connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 3)
+          if (MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 324) and (@connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 3)
             render :pdf => 'generated_report5_pdf',
             :orientation => 'Portrait', :zoom => 1.00,
             :margin => {    :top=> 10,

@@ -45,6 +45,22 @@
                   
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
+                      <% check_std_subject = StudentsSubject.find_by_student_id_and_subject_id(@student.id,subjects['id'].to_i) %>
+                      <% if check_std_subject.blank? %>
+                          <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                              <td class="col-pdf  td-align-left"><%= subjects['name'] %></td>
+                              <% unless @report_data['report']['exams'].blank? %>  
+                                <% @report_data['report']['exams'].each do |report| %>
+                                  <td class="col-pdf">-</td>
+                                <% end %>
+                              <% end %>  
+                              
+                              <td class="col-pdf">-</td>
+                              <td class="col-pdf">-</td>
+                              <td class="col-pdf">-</td>
+                              <td class="col-pdf">-</td>
+                          </tr>
+                      <% else %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                           <% weightage_mark = 0 %>
                           <% total_mark = 0 %>
@@ -144,6 +160,7 @@
                           <% end %>      
 
                       </tr> 
+                      <% end %>
                     <% end %>  
                   <% end %>     
 

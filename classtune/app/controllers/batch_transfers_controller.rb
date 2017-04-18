@@ -54,7 +54,7 @@ class BatchTransfersController < ApplicationController
       @batch = Batch.find params[:id], :include => [:students], :order => "students.first_name ASC"
       if params[:transfer][:to].present? and params[:session].present?
         unless params[:transfer][:students].nil?         
-          Delayed::Job.enqueue(DelayedBatchTranfer.new(params[:transfer][:students].join(","),params[:id],params[:transfer][:to],params[:session],false,"","",@local_tzone_time,current_user,request.domain))
+          Delayed::Job.enqueue(DelayedBatchTranfer.new(params[:transfer][:students].join(","),params[:id],params[:transfer][:to],params[:session],false,"","",@local_tzone_time,current_user,request.domain,params[:start_previous],params[:end_previous],params[:start_next],params[:end_next]))
         end
         flash[:notice] = "#{t('flash1')}"
         redirect_to :controller => 'batch_transfers'
@@ -88,7 +88,7 @@ class BatchTransfersController < ApplicationController
       @student_list.each do |s|
         @admission_list.push s.admission_no
       end
-      Delayed::Job.enqueue(DelayedBatchTranfer.new(student_id_list.join(","),params[:id],0,params[:graduate][:status_description],true,params[:graduate][:status_description],params[:leaving_date],@local_tzone_time,current_user,request.domain))
+      Delayed::Job.enqueue(DelayedBatchTranfer.new(student_id_list.join(","),params[:id],0,params[:graduate][:status_description],true,params[:graduate][:status_description],params[:leaving_date],@local_tzone_time,current_user,request.domain,params[:start_previous],params[:end_previous],params[:start_next],params[:end_next]))
       flash[:notice]= "#{t('flash2')}"
       redirect_to :action=>"graduation", :id=>params[:id], :ids => @admission_list
     end

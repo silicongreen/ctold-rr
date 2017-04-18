@@ -22,9 +22,9 @@ require 'yaml'
 require 'translator'
 
 class DelayedBatchTranfer
-  attr_accessor :students, :from, :to,:session,:graduation, :status_description, :leaving_date, :local_tzone_time,:current_user,:request
+  attr_accessor :students, :from, :to,:session,:graduation, :status_description, :leaving_date, :local_tzone_time,:current_user,:request,:prev_start,:prev_end,:next_start,:next_end
 
-  def initialize(students, from, to, session, graduation, status_description, leaving_date, local_tzone_time,current_user,request)
+  def initialize(students, from, to, session, graduation, status_description, leaving_date, local_tzone_time,current_user,request,prev_start,prev_end,next_start,next_end)
     @students = students.split(",")
     @from = from
     @to = to
@@ -34,7 +34,12 @@ class DelayedBatchTranfer
     @leaving_date = leaving_date
     @local_tzone_time = local_tzone_time
     @current_user = current_user
+    @prev_start = prev_start
+    @prev_end = prev_end
+    @next_start = next_start
+    @next_end = next_end
     @request = request
+    
     
   end
 
@@ -50,7 +55,7 @@ class DelayedBatchTranfer
       reminder_recipient_ids = []
 
       students.each do |s|
-        batch_student = s.batch_students.find_or_create_by_batch_id_and_session(s.batch.id,@session)
+        batch_student = s.batch_students.find_or_create_by_batch_id_and_session_and_batch_start_and_batch_end(s.batch.id,@session,@prev_start,@prev_end)
         unless @exam_groups.blank?
           @exam_groups.each do |eg|
             save_group_pdf(eg.id,s.id,@user_cookie_variable)
@@ -61,7 +66,7 @@ class DelayedBatchTranfer
      
 
       students.each do |s| 
-        batch_student = s.batch_students.find_or_create_by_batch_id_and_session(s.batch.id,@session)
+        batch_student = s.batch_students.find_or_create_by_batch_id_and_session_and_batch_start_and_batch_end(s.batch.id,@session,@prev_start,@prev_end)
         unless @connect_exam.blank?
           @connect_exam.each do |ec|
             save_combained_pdf(ec.id,s.id,@user_cookie_variable,@batch.id)
@@ -107,7 +112,7 @@ class DelayedBatchTranfer
       unless @stu.empty?
           
         @stu.each do |s|
-          batch_student = s.batch_students.find_or_create_by_batch_id_and_session(s.batch.id,@session)
+          batch_student = s.batch_students.find_or_create_by_batch_id_and_session_and_batch_start_and_batch_end(s.batch.id,@session,@prev_start,@prev_end)
           unless @exam_groups.blank?
             @exam_groups.each do |eg|
             
@@ -118,7 +123,7 @@ class DelayedBatchTranfer
         end
         
         @stu.each do |s|
-          batch_student = s.batch_students.find_or_create_by_batch_id_and_session(s.batch.id,@session)
+          batch_student = s.batch_students.find_or_create_by_batch_id_and_session_and_batch_start_and_batch_end(s.batch.id,@session,@prev_start,@prev_end)
           unless @connect_exam.blank?
             @connect_exam.each do |ec|
              
@@ -141,6 +146,9 @@ class DelayedBatchTranfer
           ec.update_attribute(:is_deleted,true)
         end
       end 
+      
+      @batch.update_attribute(:start_date,@next_start+" 00:00:00")
+      @batch.update_attribute(:end_date,@next_end+" 00:00:00")
       
     end
     

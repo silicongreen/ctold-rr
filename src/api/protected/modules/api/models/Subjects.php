@@ -241,6 +241,7 @@ class Subjects extends CActiveRecord
         $stsub = new StudentsSubjects();
         $student_subject = $stsub->getStudentSubject($batch_id,$student_id);
         $subject_array = array();
+        $subject_elective = array();
         $i = 0;
         if($data_subject)
         {
@@ -268,6 +269,7 @@ class Subjects extends CActiveRecord
             {
                 if($subjects_ids===false || in_array($value->id, $subjects_ids) )
                 {
+                    $subject_elective[] = $value->id;
                     $subject_array[$i]['name'] = $value->name;
                     $subject_array[$i]['code'] = $value->code;
                     $subject_array[$i]['id'] = $value->id;
@@ -290,6 +292,45 @@ class Subjects extends CActiveRecord
                 }
             }    
         } 
+        
+        if(Yii::app()->user->schoolId == 319 or Yii::app()->user->schoolId == 324)
+        {
+            $criteria = new CDbCriteria();
+            $criteria->select = 't.name,t.id,t.icon_number,t.no_exams,t.code';
+            $criteria->compare('t.batch_id', $batch_id);
+            $criteria->compare('t.is_deleted', 0);
+            $criteria->compare('t.no_exams', 0);
+            $criteria->addCondition("t.elective_group_id IS NOT NULL");
+            $criteria->order = "t.priority asc";
+
+            $data_subject = $this->findAll($criteria);
+            if($data_subject)
+            {
+                foreach($data_subject as $value)
+                {
+                    if(($subjects_ids===false || in_array($value->id, $subjects_ids)) &&  in_array($value->id, $subject_elective))
+                    {
+                        $subject_array[$i]['name'] = $value->name;
+                        $subject_array[$i]['code'] = $value->code;
+                        $subject_array[$i]['id'] = $value->id;
+                        $subject_array[$i]['elective_group_id'] = 0;
+                        $subject_array[$i]['elective_group_name'] = "";
+                        $subject_array[$i]['icon'] = "";
+                        if(isset($value->icon_number))
+                        {
+                            $subject_array[$i]['icon'] = $value->icon_number;
+                        }
+                        $i++;
+                    }
+                }    
+            }
+            
+            usort($subject_array, function($a, $b) use ($sort_by) {
+                return $b["name"] - $a["name"];
+            });
+        }
+        
+        
         return $subject_array;
     }
     

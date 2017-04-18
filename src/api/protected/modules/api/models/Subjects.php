@@ -325,7 +325,7 @@ class Subjects extends CActiveRecord
                 }    
             }
             
-            usort($subject_array, function($a, $b) use ($sort_by) {
+            usort($subject_array, function($a, $b) {
                 return $b["name"] - $a["name"];
             });
         }

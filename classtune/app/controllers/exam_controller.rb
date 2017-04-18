@@ -99,9 +99,9 @@ class ExamController < ApplicationController
     @attandence_end_date = params[:exam_option][:attandence_end_date]
     @topic = params[:exam_option][:topic]
     name=@batch.exam_groups.collect(&:name)
-    if name.include?@name
-      @error=true
-    end
+#    if name.include?@name
+#      @error=true
+#    end
     @cce_exam_category_id = params[:exam_option][:cce_exam_category_id]
     @cce_exam_categories = CceExamCategory.all if @batch.cce_enabled?
     unless @name == '' or @error

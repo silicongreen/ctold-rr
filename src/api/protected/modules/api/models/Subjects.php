@@ -308,7 +308,7 @@ class Subjects extends CActiveRecord
             {
                 foreach($data_subject as $value)
                 {
-                    if(($subjects_ids===false || in_array($value->id, $subjects_ids)) &&  in_array($value->id, $subject_elective))
+                    if(($subjects_ids===false || in_array($value->id, $subjects_ids)) &&  !in_array($value->id, $subject_elective))
                     {
                         $subject_array[$i]['name'] = $value->name;
                         $subject_array[$i]['code'] = $value->code;

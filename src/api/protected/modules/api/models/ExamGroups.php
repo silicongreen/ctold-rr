@@ -468,7 +468,7 @@ class ExamGroups extends CActiveRecord
     }
     
     
-    public function getExamGroupResultMaxMark($exam_group_id,$result=array(),$max_mark=array())
+    public function getExamGroupResultMaxMark($exam_group_id,$result=array(),$max_mark=array(),$exam_loop = 1,$result_type = false)
     {
         $criteria = new CDbCriteria();
         $criteria->select = 't.name,t.id'; 
@@ -492,41 +492,88 @@ class ExamGroups extends CActiveRecord
                 )
         );
         $examresult = $this->find($criteria);
-        if($examresult)
+        if(Yii::app()->user->schoolId == 319 or Yii::app()->user->schoolId == 324 && $exam_loop == 0 && $result_type == 5)
         {
-            if($examresult['Exams'])
+            if($examresult)
             {
-                foreach($examresult['Exams'] as $value)
+                if($examresult['Exams'])
                 {
-                    if($value['Scores'])
+                    foreach($examresult['Exams'] as $value)
                     {
-                        foreach($value['Scores'] as $score)
+                        if($value['Scores'])
                         {
-                            if($score->marks)
+                            foreach($value['Scores'] as $score)
                             {
-                                if(isset($result[$value['Subjects']->id][$score->student_id]['total_mark']))
+                                if($score->marks)
                                 {
-                                   $result[$value['Subjects']->id][$score->student_id]['total_mark'] = $result[$value['Subjects']->id][$score->student_id]['total_mark']+$score->marks; 
+                                    if(isset($result[$value['Subjects']->id][$score->student_id]['total_mark']))
+                                    {
+
+                                       $result[$value['Subjects']->id][$score->student_id]['total_mark'] = $result[$value['Subjects']->id][$score->student_id]['total_mark']+(($score->marks*60)/100); 
+                                    }
+                                    else 
+                                    {
+                                       $result[$value['Subjects']->id][$score->student_id]['total_mark'] = ($score->marks*60)/100; 
+                                    }
+
+                                    if(isset($max_mark[$value['Subjects']->id]))
+                                    {
+                                       if($result[$value['Subjects']->id][$score->student_id]['total_mark']>$max_mark[$value['Subjects']->id]) 
+                                       {
+                                           $max_mark[$value['Subjects']->id] = $result[$value['Subjects']->id][$score->student_id]['total_mark'];
+                                       }
+                                    }
+                                    else
+                                    {
+                                        $max_mark[$value['Subjects']->id] = $result[$value['Subjects']->id][$score->student_id]['total_mark'];
+                                    }    
+
                                 }
-                                else 
+                            } 
+                        }
+                    }
+                }
+            } 
+        } 
+        else
+        {
+            if($examresult)
+            {
+                if($examresult['Exams'])
+                {
+                    foreach($examresult['Exams'] as $value)
+                    {
+                        if($value['Scores'])
+                        {
+                            foreach($value['Scores'] as $score)
+                            {
+                                if($score->marks)
                                 {
-                                   $result[$value['Subjects']->id][$score->student_id]['total_mark'] = $score->marks; 
+                                    if(isset($result[$value['Subjects']->id][$score->student_id]['total_mark']))
+                                    {
+
+                                       $result[$value['Subjects']->id][$score->student_id]['total_mark'] = $result[$value['Subjects']->id][$score->student_id]['total_mark']+$score->marks; 
+                                    }
+                                    else 
+                                    {
+                                       $result[$value['Subjects']->id][$score->student_id]['total_mark'] = $score->marks; 
+                                    }
+
+                                    if(isset($max_mark[$value['Subjects']->id]))
+                                    {
+                                       if($result[$value['Subjects']->id][$score->student_id]['total_mark']>$max_mark[$value['Subjects']->id]) 
+                                       {
+                                           $max_mark[$value['Subjects']->id] = $result[$value['Subjects']->id][$score->student_id]['total_mark'];
+                                       }
+                                    }
+                                    else
+                                    {
+                                        $max_mark[$value['Subjects']->id] = $result[$value['Subjects']->id][$score->student_id]['total_mark'];
+                                    }    
+
                                 }
-                                
-                                if(isset($max_mark[$value['Subjects']->id]))
-                                {
-                                   if($result[$value['Subjects']->id][$score->student_id]['total_mark']>$max_mark[$value['Subjects']->id]) 
-                                   {
-                                       $max_mark[$value['Subjects']->id] = $result[$value['Subjects']->id][$score->student_id]['total_mark'];
-                                   }
-                                }
-                                else
-                                {
-                                    $max_mark[$value['Subjects']->id] = $result[$value['Subjects']->id][$score->student_id]['total_mark'];
-                                }    
-                                
-                            }
-                        } 
+                            } 
+                        }
                     }
                 }
             }

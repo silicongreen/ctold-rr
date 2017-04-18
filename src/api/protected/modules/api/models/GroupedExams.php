@@ -588,7 +588,7 @@ class GroupedExams extends CActiveRecord
                     'select' => 'examgroup.id',
                     ),
                 'examconnect' => array(
-                    'select' => "examconnect.id"
+                    'select' => "examconnect.id,examconnect.result_type"
                  )
                 );
             $criteria->order = "t.priority ASC,examgroup.created_at ASC";
@@ -606,6 +606,7 @@ class GroupedExams extends CActiveRecord
             {
                 $examsGroupObj = new ExamGroups();
                 $results['subjects'] = $all_subject_without_no_exam;
+                $exam_loop = 0;
                 foreach($examgroups as $value)
                 {
                     $result_main =  $examsGroupObj->getExamGroupResultSubject($value['examgroup']->id,$student_id,$value->weightage);    
@@ -613,7 +614,8 @@ class GroupedExams extends CActiveRecord
                     {
                         $results['exams'][] = $result_main;
                     }
-                    list($subject_result,$max_mark) = $examsGroupObj->getExamGroupResultMaxMark($value['examgroup']->id,$subject_result,$max_mark);
+                    list($subject_result,$max_mark) = $examsGroupObj->getExamGroupResultMaxMark($value['examgroup']->id,$subject_result,$max_mark,$exam_loop,$value['examconnect']->result_type);
+                    $exam_loop++;
                 }
                 $results['comments'] = array();
                 

@@ -2,7 +2,7 @@
 <div id="page-yield" class="bg-disable">
 
   <div class="header-wrapper">
-    <div class="header-title" style="width:68%;">
+    <div class="header-title" style="width:50%;">
       <div class="header-icon"  style="width:12%;">
         <%= image_tag '/images/icons/attendance-header.png', :html => {:alt => 'Attendance'} %>
       </div>
@@ -15,9 +15,10 @@
         </div>
       </div>
     </div>
-   <div id="inner-tab-menu" style="width: 31%;float: left;">
+      
+   <div id="inner-tab-menu" style="width: 50%;float: left;">
         <ul>
-          <li class='themed_bg themed-dark-hover-background'><%= link_to "Lessonplan", {:controller => "intelligence", :action => "lessonplan"} %></li>
+          <li class='themed_bg themed-dark-hover-background'><%= link_to "Lesson Plan", {:controller => "intelligence", :action => "lessonplan"} %></li>
           <li class='themed_bg themed-dark-hover-background'><%= link_to "Classwork", {:controller => "intelligence", :action => "classwork"} %></li>
           <li class='themed_bg themed-dark-hover-background'><%= link_to "Homework", {:controller => "intelligence", :action => "homework"} %></li>
           <li class='themed_bg themed-dark-hover-background'><%= link_to "Exam Report", {:controller => "intelligence", :action => "report"} %></li>

@@ -2,7 +2,7 @@
 <div id="page-yield" class="bg-disable">
 
   <div class="header-wrapper">
-    <div class="header-title" style="width:68%;">
+    <div class="header-title" style="width:50%;">
       <div class="header-icon"  style="width:12%;">
         <%= image_tag '/images/icons/lessonplan_icon.png', :html => {:alt => 'Lessonplan'} %>
       </div>
@@ -15,7 +15,8 @@
         </div>
       </div>
     </div>
-    <div id="inner-tab-menu" style="width: 31%;float: left;">
+      
+    <div id="inner-tab-menu" style="width: 50%;float: left;">
         <ul>
           <li class='themed_bg themed-dark-hover-background'><%= link_to "Classwork", {:controller => "intelligence", :action => "classwork"} %></li>
           <li class='themed_bg themed-dark-hover-background'><%= link_to "Homework", {:controller => "intelligence", :action => "homework"} %></li>
@@ -34,7 +35,7 @@
         </li>
       
         <li>
-          <%= link_to_remote "Teacher Lessonplan",
+          <%= link_to_remote "Lessonplan by Teacher",
             :before => "Element.show('loader2');",
             :success => "Element.hide('loader2');",
             :update => 'report-roll-call',

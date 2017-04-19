@@ -1260,7 +1260,7 @@ body > #content_wrapper {
     font-size: 13px;
     /*    height: 1.5em;*/
     list-style-type: none;
-    margin: 0 0 0 10px;
+    margin: 0 5px 0 5px;
     min-width: 50px !important;
     /*    padding: 5px 10px !important;*/
     text-align: center;

@@ -41,8 +41,9 @@
                   
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
+                      <% subjectdata = Subject.find(subjects['id'].to_i) %>
                       <% check_std_subject = StudentsSubject.find_by_student_id_and_subject_id(@student.id,subjects['id'].to_i) %>
-                      <% if check_std_subject.blank? %>
+                      <% if check_std_subject.blank? and !subjectdata.elective_group_id.blank? %>
                           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                               <td class="col-pdf  td-align-left"><%= subjects['name'] %></td>
                               <td class="col-pdf">-</td>

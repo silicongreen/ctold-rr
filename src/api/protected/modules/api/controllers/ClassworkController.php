@@ -141,9 +141,10 @@ class ClassworkController extends Controller
             {
                 $classwork_given = $classworks->getClassworkTotalAdmin($date, $batch_name, $class_name, $batch_id);
                 $total_class = $timetable->getTotalClass($date, $batch_name, $class_name, $batch_id);
-                if ($classwork_given > 0)
+                if ($total_class > 0)
                 {
-                    $frequency = round($total_class / $classwork_given);
+                    $frequency = $classwork_given / $total_class;
+                    $frequency = number_format((float)$frequency, 2, '.', '');
                 }
             }
 

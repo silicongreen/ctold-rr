@@ -148,9 +148,10 @@ class HomeworkController extends Controller
             {
                 $homework_given = $assignments->getAssignmentTotalAdmin($date, $batch_name, $class_name, $batch_id);
                 $total_class = $timetable->getTotalClass($date, $batch_name, $class_name, $batch_id);
-                if ($homework_given > 0)
+                if ($total_class > 0)
                 {
-                    $frequency = round($total_class / $homework_given);
+                    $frequency = $homework_given / $total_class;
+                    $frequency = number_format((float)$frequency, 2, '.', '');
                 }
             }
 

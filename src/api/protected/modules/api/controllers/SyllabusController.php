@@ -138,9 +138,10 @@ class SyllabusController extends Controller {
             {
                 $lessonplan_given = $lessonplans->getLessonplanTotalAdmin($date, $batch_name, $class_name, $batch_id);
                 $total_class = $timetable->getTotalClass($date, $batch_name, $class_name, $batch_id);
-                if ($lessonplan_given > 0)
+                if ($total_class > 0)
                 {
-                    $frequency = round($total_class / $lessonplan_given);
+                    $frequency = $lessonplan_given / $total_class;
+                    $frequency = number_format((float)$frequency, 2, '.', '');
                 }
             }
 

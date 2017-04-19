@@ -541,17 +541,17 @@ sfx  .table-header td{
 }
 .sfx table  tr.odd td
 {
-   padding: 8px 8px 8px 12px; 
+   padding: 7px 7px 7px 11px; 
 }
 .sfx table  tr.even td
 {
-   padding: 8px 8px 8px 12px; 
+   padding: 7px 7px 7px 11px; 
 }
 .sfx table  td
 {
 
-    font-size:22px;
-    padding: 8px 8px 8px 12px;
+    font-size:21px;
+    padding: 7px 7px 7px 11px; 
 }
 
 .sfx .left-table
@@ -566,12 +566,12 @@ sfx  .table-header td{
 .sfx td.remarks_code_table2
 {
     text-align: left;
-    font-size:14px;
+    font-size:13px;
 }
 .sfx td.remarks_code_table
 {
     text-align: left;
-    font-size:18px;
+    font-size:17px;
 }
 .sfx td.remarks_code_table span
 {
@@ -606,7 +606,7 @@ sfx  .table-header td{
 }
 .sfx table.text-size-18 tr td
 {
-   font-size: 18px; 
+   font-size: 17px; 
 }
 
 

@@ -3,7 +3,7 @@ require File.join(File.dirname(__FILE__), 'boot')
 RAILS_GEM_VERSION = '2.3.5' unless defined? RAILS_GEM_VERSION
 
 Rails::Initializer.run do |config|
-  config.time_zone = 'UTC'
+  config.time_zone = 'Dhaka'
   config.gem 'declarative_authorization', :source => 'http://gemcutter.org'
   config.action_controller.session_store = :active_record_store if RAILS_ENV != "development"
   

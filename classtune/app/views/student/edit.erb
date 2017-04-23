@@ -201,6 +201,12 @@
                   <label for="master_student_nationality"><%= t('nationality') %></label>
                   <div class="text-input-bg"><%= select :student, :nationality_id, Country.all.map {|c| [c.name, c.id]}, :selected => @student.nationality.id %></div>
           </div>
+          
+          <div class="label-field-pair">
+                  <label for="master_student_nationality"><%= t('dual_nationality') %></label>
+                  <div class="text-input-bg"><%= select :student, :dual_nationality_id, options_for_select(Country.find(:all).map {|c| [c.name, c.id]}, @student.dual_nationality_id.to_i),
+        {:prompt => "#{t('select')}"} %></div>
+          </div>
           <div class="label-field-pair">
               <label for="master_student_religion"><%= t('religion') %></label>
               <div class="text-input-bg"><%= s.text_field :religion, :value =>@student.religion %></div>
@@ -273,6 +279,13 @@
               <div class="label-field-pair">
                   <label for="master_student_phone2"><%= t('mobile') %></label>
                   <div class="text-input-bg"><%= s.text_field :phone2, :value =>@student.phone2 %></div>
+              </div>
+              
+              <hr class="label-underline" style="display: none;"></hr>
+
+              <div class="label-field-pair">
+                  <label for="student_phone2"><%= "Designated Number for sms" %></label>
+                  <div class="text-input-bg"><%= s.text_field :sms_number, :value =>@student.sms_number %></div>
               </div>
 
               <hr class="label-underline" style="display: none;"></hr>

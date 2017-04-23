@@ -51,7 +51,7 @@
 
       <div id="autofill-area">
 
-        <div class="student_admission_date" style="display: none;">
+        <div class="student_admission_date">
           <label for="student_admission_no"><%= t('admission_number') %> <span class="necessary-field">*</span> </label>
           <div class="text-input-bg-admission">
             <% unless @config.config_value == '0' or @last_admitted_student.nil? %>
@@ -63,19 +63,7 @@
         </div>
           
         
-       <div class="student_admission_date" >
-          <label><b>Username : 
-            <%
-              school_id = MultiSchool.current_school.id
-              school_id_str = school_id.to_s.length < 2 ? "0" + school_id.to_s : "" + school_id.to_s
-            %>      
-            <% unless @config.config_value == '0' or @last_admitted_student.nil? %>
-              <%= school_id_str+"-"+@last_admitted_student.admission_no.next%>
-            <% else %>
-              <%= school_id_str+"-"+"ST0001" %>
-            <% end %>  
-          </b></label>
-        </div>
+     
 
         <div class="student_admission_date">
           <label for="student_admission_date"><%= t('admission_date') %> <span class="necessary-field">*</span> </label>
@@ -215,6 +203,15 @@
             <%= select :student, :nationality_id, Country.all.map {|c| [c.name, c.id]}, :selected=> @student.nationality_id || @selected_value.to_i %>
           </div>
         </div>
+        
+        <hr class="label-underline"  style="display: none;"></hr>
+        <div class="label-field-pair">
+          <label for="student_nationality"><%= t("dual_nationality") %></label>
+          <div class="text-input-bg">
+            <%= select :student, :dual_nationality_id, options_for_select(Country.find(:all).map {|c| [c.name, c.id]}, @student.dual_nationality_id.to_i),
+        {:prompt => "#{t('select')}"} %>
+          </div>
+        </div>
 
         <hr class="label-underline"  style="display: none;"></hr>
 
@@ -289,6 +286,13 @@
         <div class="label-field-pair">
           <label for="student_phone2"><%= t('mobile') %></label>
           <div class="text-input-bg"><%= s.text_field :phone2 %></div>
+        </div>
+        
+        <hr class="label-underline"></hr>
+
+        <div class="label-field-pair">
+          <label for="student_phone2"><%= "Designated Number for sms" %></label>
+          <div class="text-input-bg"><%= s.text_field :sms_number %></div>
         </div>
                
         <br />

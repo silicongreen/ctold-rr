@@ -26,6 +26,7 @@ class Student < ActiveRecord::Base
   belongs_to :batch
   belongs_to :student_category
   belongs_to :nationality, :class_name => 'Country'
+  belongs_to :dual_nationality, :class_name => 'Country'
   belongs_to :user
 
   #  has_one    :immediate_contact,:class_name => 'Guardian',:foreign_key => 'id',:primary_key => 'immediate_contact_id'

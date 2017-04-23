@@ -233,6 +233,18 @@
                   </div>
                   <div class="clearfix"></div>
                 <% end %>
+                  
+                <% unless @student.dual_nationality_id.nil? %>
+                  <div class="row">
+                      <div class="row_label">
+                          <div><%= t('dual_nationality') %></div>
+                      </div>
+                      <div class="row_data">
+                          <div><%= @student.dual_nationality.name %></div>
+                      </div>
+                  </div>
+                  <div class="clearfix"></div>
+                <% end %>
 
                 <% unless @student.religion.nil? or @student.religion.blank? %>
                   <div class="row">
@@ -337,6 +349,18 @@
                       </div>
                       <div class="row_data">
                           <div><%= @student.phone2 %></div>
+                      </div>
+                  </div>
+                  <div class="clearfix"></div>
+                <% end %>
+                  
+                 <% unless @student.sms_number.nil? or @student.sms_number.blank? %>
+                  <div class="row">
+                      <div class="row_label">
+                          <div><%= "Designated Number for sms" %></div>
+                      </div>
+                      <div class="row_data">
+                          <div><%= @student.sms_number %></div>
                       </div>
                   </div>
                   <div class="clearfix"></div>

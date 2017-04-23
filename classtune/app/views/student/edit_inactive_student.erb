@@ -185,6 +185,13 @@
                   <label for="master_student_nationality"><%= t('nationality') %></label>
                   <div class="text-input-bg"><%= select :student, :nationality_id, Country.all.map {|c| [c.name, c.id]}, :selected => @student.nationality.id %></div>
               </div>
+              
+              <hr class="label-underline"></hr>
+              <div class="label-field-pair">
+                  <label for="master_student_nationality"><%= t('dual_nationality') %></label>
+                  <div class="text-input-bg"><%= select :student, :dual_nationality_id, options_for_select(Country.find(:all).map {|c| [c.name, c.id]}, @student.dual_nationality_id.to_i),
+        {:prompt => "#{t('select')}"} %></div>
+              </div>
 
               <hr class="label-underline"></hr>
 

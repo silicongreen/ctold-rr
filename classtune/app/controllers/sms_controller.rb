@@ -68,17 +68,22 @@ class SmsController < ApplicationController
         student_ids = params[:send_sms][:student_ids]
         sms_setting = SmsSetting.new()
         @recipients=[]
-        if MultiSchool.current_school.id == 319
+        send_to = params[:send_sms][:send_to]
+        if MultiSchool.current_school.id == 319 and send_to.to_i != 6
           @recipients=['8801918179040','8801711924683','8801678401308','8801815709133','8801764198796','8801680425262','8801941013013','8801911438293','8801771767811','8801716752996','8801715437299','8801763710825','8801714453713','8801714552559','8801715331407','8801715224886']
         end
-        send_to = params[:send_sms][:send_to]
+        
         student_ids.each do |s_id|
           student = Student.find(s_id)
           guardian = student.immediate_contact
           if student.is_sms_enabled
             
-            if sms_setting.student_sms_active and (send_to.to_i == 1 or send_to.to_i == 2 or send_to.to_i == 5)          
-              @recipients.push student.phone2 unless (student.phone2.nil? or student.phone2 == "")
+            if sms_setting.student_sms_active and (send_to.to_i == 1 or send_to.to_i == 2 or send_to.to_i == 5 or send_to.to_i == 6)    
+              if student.sms_number.nil? or student.sms_number == ""
+                @recipients.push student.phone2 unless (student.phone2.nil? or student.phone2 == "")
+              else
+                @recipients.push student.sms_number unless (student.sms_number.nil? or student.sms_number == "")
+              end  
             end
             
             if sms_setting.parent_sms_active and (send_to.to_i == 1 or send_to.to_i == 3)
@@ -88,7 +93,7 @@ class SmsController < ApplicationController
               end
             end
             
-            if sms_setting.parent_sms_active and (send_to.to_i == 4 or send_to.to_i == 5)
+            if sms_setting.parent_sms_active and (send_to.to_i == 4 or send_to.to_i == 5 or send_to.to_i == 6)
               guardians = student.student_guardian
               guardians.each do |sguardian|
                 @recipients.push sguardian.mobile_phone unless (sguardian.mobile_phone.nil? or sguardian.mobile_phone == "")
@@ -145,7 +150,11 @@ class SmsController < ApplicationController
           batch_students.each do |student|
             if student.is_sms_enabled
               if sms_setting.student_sms_active and (send_to.to_i == 1 or send_to.to_i == 2) 
-                @recipients.push student.phone2 unless (student.phone2.nil? or student.phone2 == "")
+                if student.sms_number.nil? or student.sms_number == ""
+                  @recipients.push student.phone2 unless (student.phone2.nil? or student.phone2 == "")
+                else
+                  @recipients.push student.sms_number unless (student.sms_number.nil? or student.sms_number == "")
+                end
               end
               if sms_setting.parent_sms_active and (send_to.to_i == 1 or send_to.to_i == 3) 
                 guardian = student.immediate_contact
@@ -193,7 +202,11 @@ class SmsController < ApplicationController
       batch_students.each do |student|
         if student.is_sms_enabled
           if student_sms
-            @recipients.push student.phone2 unless (student.phone2.nil? or student.phone2 == "")
+            if student.sms_number.nil? or student.sms_number == ""
+                @recipients.push student.phone2 unless (student.phone2.nil? or student.phone2 == "")
+            else
+                @recipients.push student.sms_number unless (student.sms_number.nil? or student.sms_number == "")
+            end
           end
           if parent_sms
             guardian = student.immediate_contact

@@ -44,9 +44,9 @@
       <div class="portlet-subcontent">           
         <div class="timetable_right">
           <div class="subcontent-header themed_text"><%=  link_to n.title, :controller => 'news', :action => 'view', :id => n.id%></div>
-          <div class="subcontent-date">Posted at : <%= I18n.l(n.created_at.to_date, :format=>'%A, %d %B %Y %l:%M %p') %></div>  
+          <div class="subcontent-date">Posted at : <%= I18n.l(n.created_at.to_time, :format=>'%A, %d %B %Y %l:%M %p') %></div>  
           <% if n.created_at != n.updated_at %>
-          <div class="subcontent-info">Updated at : <%= I18n.l(n.updated_at.to_date, :format=>'%A, %d %B %Y %l:%M %p') %></div>   
+          <div class="subcontent-info">Updated at : <%= I18n.l(n.updated_at.to_time, :format=>'%A, %d %B %Y %l:%M %p') %></div>   
           <% end %>
         </div>       
       </div>

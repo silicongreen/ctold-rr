@@ -1,6 +1,6 @@
 
 <%  
-    @dt_year = @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") 
+    @dt_year = @connect_exam_obj.created_at.strftime("%Y") 
     @dt_start = @dt_year.to_s+"-01-01 00:00:00"
     @dt_end   = @dt_year.to_s+"-12-31 00:00:00"
     @student_detention_count = Detention.count(:all,:conditions=>{:student_id=>@student.id,:created_at => @dt_start..@dt_end})

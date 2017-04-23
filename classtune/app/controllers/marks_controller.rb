@@ -33,19 +33,21 @@ class MarksController < ApplicationController
       @exam_group = exam.exam_group
       exam_group_batch = @exam_group.batch
       exam_subject = exam.subject
-      data[k] = []
-      
-      data[k][0] = @template.link_to exam_group_batch.full_name, [@exam_group, exam], :target => "_blank"
-      data[k][1] = @template.link_to @exam_group.name, [@exam_group, exam], :target => "_blank"
-      data[k][2] = @template.link_to exam_subject.name, [@exam_group, exam], :target => "_blank"
-      if exam.subject.no_exams.blank? and exam.no_date.to_i == 0
-        data[k][3] = I18n.l(exam.start_time,:format=>"%d %b,%Y %I:%M %p")
-        data[k][4] = I18n.l(exam.end_time,:format=>"%d %b,%y %I:%M %p")
-      else
-        data[k][3] = "N/A"
-        data[k][4] = "N/A"
+      unless exam_subject.blank? 
+        data[k] = []
+
+        data[k][0] = @template.link_to exam_group_batch.full_name, [@exam_group, exam], :target => "_blank"
+        data[k][1] = @template.link_to @exam_group.name, [@exam_group, exam], :target => "_blank"
+        data[k][2] = @template.link_to exam_subject.name, [@exam_group, exam], :target => "_blank"
+        if exam.subject.no_exams.blank? and exam.no_date.to_i == 0
+          data[k][3] = I18n.l(exam.start_time,:format=>"%d %b,%Y %I:%M %p")
+          data[k][4] = I18n.l(exam.end_time,:format=>"%d %b,%y %I:%M %p")
+        else
+          data[k][3] = "N/A"
+          data[k][4] = "N/A"
+        end
+        k = k+1
       end
-      k = k+1
     end
     json_data = {:data => data}
     @data = JSON.generate(json_data)
@@ -69,7 +71,7 @@ class MarksController < ApplicationController
           
         exams.each do |exam|
           exam_subject = exam.subject
-          if !@subjects.include?(exam_subject) 
+          if !exam_subject.blank? and !@subjects.include?(exam_subject) 
             if @employee_subjects.include?(exam_subject) or @current_user.admin?
               @subjects << exam_subject
               data[k] = []
@@ -104,7 +106,7 @@ class MarksController < ApplicationController
         exams = Exam.find_all_by_exam_group_id(group_exam.exam_group_id)
         exams.each do |exam|
           exam_subject = exam.subject
-          if !@subjects.include?(exam_subject) 
+          if !exam_subject.blank? and !@subjects.include?(exam_subject) 
             if @employee_subjects.include?(exam_subject) or @current_user.admin?
               @subjects << exam_subject
               data[k] = []

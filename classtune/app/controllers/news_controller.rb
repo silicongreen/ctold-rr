@@ -223,7 +223,6 @@ class NewsController < ApplicationController
     now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
     @news = News.find_by_id(params[:id])
     @news.is_published = 1
-    @news.created_at = now
     
     if @news.save
         sms_setting = SmsSetting.new()

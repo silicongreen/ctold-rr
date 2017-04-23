@@ -61,7 +61,14 @@ class SmsController < ApplicationController
   end
 
   def students
-    @batches=Batch.active.all(:include=>:course)
+    if current_user.admin?
+      @batches = Batch.active
+    elsif @current_user.employee?
+      @batches=@current_user.employee_record.batches
+      @batches+=@current_user.employee_record.subjects.collect{|b| b.batch}
+      @batches=@batches.uniq unless @batches.empty?
+    end 
+    
     if request.post?
       error=false
       unless params[:send_sms][:student_ids].nil?
@@ -134,7 +141,13 @@ class SmsController < ApplicationController
   end
 
   def batches
-    @batches = Batch.active
+    if current_user.admin?
+      @batches = Batch.active
+    elsif @current_user.employee?
+      @batches=@current_user.employee_record.batches
+      @batches+=@current_user.employee_record.subjects.collect{|b| b.batch}
+      @batches=@batches.uniq unless @batches.empty?
+    end
     if request.post?
       unless params[:send_sms][:batch_ids].nil?
         batch_ids = params[:send_sms][:batch_ids]

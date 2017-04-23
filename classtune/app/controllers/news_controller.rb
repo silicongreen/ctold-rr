@@ -25,7 +25,13 @@ class NewsController < ApplicationController
   def add
     @news = News.new(params[:news])
     @employee_department = EmployeeDepartment.find(:all, :conditions=>"status = true",:order=>"name ASC")
-    @batches = Batch.active
+    if current_user.admin?
+      @batches = Batch.active
+    elsif @current_user.employee?
+      @batches=@current_user.employee_record.batches
+      @batches+=@current_user.employee_record.subjects.collect{|b| b.batch}
+      @batches=@batches.uniq unless @batches.empty?
+    end  
     @news.author = current_user
     if request.post? and @news.save
       if @news.is_common == 0
@@ -395,7 +401,13 @@ class NewsController < ApplicationController
   def edit
     @news = News.find(params[:id])
     @employee_department = EmployeeDepartment.find(:all, :conditions=>"status = true",:order=>"name ASC")
-    @batches = Batch.active
+    if current_user.admin?
+      @batches = Batch.active
+    elsif @current_user.employee?
+      @batches=@current_user.employee_record.batches
+      @batches+=@current_user.employee_record.subjects.collect{|b| b.batch}
+      @batches=@batches.uniq unless @batches.empty?
+    end 
     @batchnews = BatchNews.find_all_by_news_id(@news.id)
     @departmentnews = DepartmentNews.find_all_by_news_id(@news.id)
     @batches_ids = []
@@ -505,7 +517,12 @@ class NewsController < ApplicationController
     @news = News.find(news_id, :include=>[:author])
     @comments = @news.comments.latest.paginate(:page => params_page, :per_page => 15, :include =>[:author])
     @current_user = current_user
-    @is_moderator = @current_user.admin? || @current_user.privileges.include?(Privilege.find_by_name('ManageNews'))
+    @is_moderator = false
+    if @current_user.admin?
+      @is_moderator = true
+    elsif @current_user.employee? and @current_user.privileges.include?(Privilege.find_by_name('ManageNews')) and @news.author_id == @current_user.id
+      @is_moderator = true
+    end  
     @config = Configuration.find_by_config_key('EnableNewsCommentModeration')
     @permitted_to_delete_comment_news = permitted_to? :delete_comment , :news
   end

@@ -78,6 +78,7 @@
           <label >Attach a File</label>
           <div  class="text-input-bg" id="assignment-attachment"><%= f.file_field  :attachment %></div>
       </div>
+      <% if @current_user.admin? %>
       <div class="news_label_field" >
           <label>Common</label>
           <div class="text-input-bg">
@@ -87,6 +88,7 @@
               </select>
           </div>
       </div>
+      
       <div class="news_label_field hidden_field_class_department" style="float: left; display:none;clear: both;width: 100%;margin: 10px 0px;" >
           <label >Select Class</label>
           <% @batches.each do |batch| %>
@@ -95,6 +97,27 @@
             </div>    
           <% end %>
       </div>
+      <% else %>
+      <div class="news_label_field" style="display:none;" >
+          <label>Common</label>
+          <div class="text-input-bg">
+              <select name="news[is_common]" style="margin:0px;" onchange="hide_show_hidden(this.value)">
+                <option value="1">Yes</option>
+                <option value="0" selected="selected">No</option>
+              </select>
+          </div>
+      </div>
+      <div class="news_label_field hidden_field_class_department" style="float: left;clear: both;width: 100%;margin: 10px 0px;" >
+          <label >Select Class</label>
+          <% @batches.each do |batch| %>
+            <div style="float:left; width:33%;">
+                <%= check_box_tag "select_options[batch_id][]",batch.id %>&nbsp;&nbsp;<%= batch.full_name %> 
+            </div>    
+          <% end %>
+      </div>
+      <% end %>
+      
+      <% if @current_user.admin? %>
       <div class="news_label_field hidden_field_class_department" style="float: left;clear: both;width: 100%;display:none;margin: 10px 0px;" >
           <label >Select Employee Department</label>
           <% @employee_department.each do |department| %>
@@ -103,6 +126,7 @@
             </div>    
           <% end %>
       </div>
+      <% end %>
     </div>
     <%= hidden_field :news,"is_published", :value =>1 %>
 

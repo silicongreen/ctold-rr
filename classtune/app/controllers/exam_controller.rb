@@ -525,7 +525,7 @@ class ExamController < ApplicationController
     @exams = []
     
     if @exam_subject.no_exams.blank?
-      @group_exam = GroupedExam.find_all_by_connect_exam_id(@exam_connect.id)
+      @group_exam = GroupedExam.find_all_by_connect_exam_id(@exam_connect.id, :order=>"priority ASC")
 
       unless @group_exam.blank?
         @group_exam.each do |group_exam|

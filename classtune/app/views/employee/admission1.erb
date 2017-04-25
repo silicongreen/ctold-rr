@@ -67,11 +67,20 @@
       </div>
       <hr class="label-underline"></hr>
       <% end %>
-      
+      <div class="label-field-pair">
+        <label for="employee_name"><%= "Punch Card Number (If Any)" %></label>
+        <div class="text-input-bg"><%= a.text_field :punch_card_number %></div>
+      </div>
+      <hr class="label-underline"></hr>
       <div class="label-field-pair">
         <label for="employee_joining_date"><%= t('joining_date') %></label>
         <div class="text-input-bg"><%= calendar_date_select_tag 'employee[joining_date]', I18n.l(Date.today,:format=>:default),
             :year_range => 83.years.ago..0.years.from_now , :popup=>"force"%></div>
+      </div>
+      <hr class="label-underline"></hr>
+      <div class="label-field-pair">
+        <label for="employee_name"><%= t('last_name') %></label>
+        <div class="text-input-bg"><%= a.text_field :last_name %></div>
       </div>
       <hr class="label-underline"></hr>
       <div class="label-field-pair">
@@ -83,11 +92,7 @@
         <label for="employee_name"><%= t('middle_name') %></label>
         <div class="text-input-bg"><%= a.text_field :middle_name %></div>
       </div>
-      <hr class="label-underline"></hr>
-      <div class="label-field-pair">
-        <label for="employee_name"><%= t('last_name') %></label>
-        <div class="text-input-bg"><%= a.text_field :last_name %></div>
-      </div>
+      
       <hr class="label-underline"></hr>
       <div class="label-field-pair">
         <label for="short_code"><%= t('short_code') %></label>

@@ -41,7 +41,7 @@ class CardattController extends Controller
         $card_number = Yii::app()->request->getPost('card_number');
         $school_id = Yii::app()->request->getPost('school_id');
         $add_att = Yii::app()->request->getPost('add_att');
-        if($card_numbe && $school_id)
+        if($card_number && $school_id)
         {
             $empObj = new Employees();
             $employee = $empObj->getEmployeeByPunchCard($card_number, $school_id);

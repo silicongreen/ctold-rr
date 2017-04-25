@@ -29,7 +29,7 @@ class AdditionalField < ActiveRecord::Base
   named_scope :inactive,:conditions => {:status => false}
   
   def options_check
-    unless self.input_type=="text" or self.input_type=="text_area"
+    unless self.input_type=="text" or self.input_type=="text_area" or self.input_type=="for_date"
       all_valid_options=self.additional_field_options.reject{|o| (o._destroy==true if o._destroy)}
       unless all_valid_options.present?
         errors.add_to_base(:create_atleast_one_option)

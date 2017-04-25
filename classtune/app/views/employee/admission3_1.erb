@@ -87,6 +87,16 @@
               <% end %></label>
             <div class="textarea-input-bg"><%= text_area_tag "employee_additional_details[#{additional.id}][additional_info]", input_val %></div>
           </div>
+       <% elsif additional.input_type=="for_date" %>
+          <div class="label-field-pair-text-area">
+            <label><%= additional.name %>
+              <% if additional.is_mandatory %>
+                <span class="necessary-field">*</span>
+              <% end %></label>
+            <div class="textarea-input-bg"><%= calendar_date_select_tag "employee_additional_details[#{additional.id}][additional_info]", input_val,
+            :year_range => 83.years.ago..10.years.from_now , :popup=>"force"%></div>
+          </div>
+        
         <% else %>
           <div class="label-field-pair">
             <label><%= additional.name %>

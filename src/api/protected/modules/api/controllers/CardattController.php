@@ -28,7 +28,7 @@ class CardattController extends Controller
     {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('addattendance'),
+                'actions' => array('addattendance','attsync'),
                 'users' => array('*'),
             ),
             array('deny', // deny all users
@@ -36,7 +36,63 @@ class CardattController extends Controller
             ),
         );
     }
-     private function sendnotificationAttendence($student_id, $newattendence, $late)
+    public function actionattSync()
+    {
+        $card_number = Yii::app()->request->getPost('card_number');
+        $school_id = Yii::app()->request->getPost('school_id');
+        $add_att = Yii::app()->request->getPost('add_att');
+        if($card_numbe && $school_id)
+        {
+            $empObj = new Employees();
+            $employee = $empObj->getEmployeeByPunchCard($card_number, $school_id);
+            if($employee)
+            {
+                $cardAttObj = new CardAttendance();
+                $cardAttObj->school_id = $school_id;
+                $cardAttObj->user_id = $employee->user_id;
+                $cardAttObj->profile_id = $employee->id;
+                $cardAttObj->date = date("Y-m-d");
+                $cardAttObj->time = date("H:i:s");
+                $cardAttObj->type = 1;
+                $cardAttObj->save();
+            }
+        }
+        if($add_att && $school_id)
+        {
+            $date = date("Y-m-d");
+            $empObj = new Employees();
+            $employees = $empObj->getAllEmployeeByPunchCard($school_id);
+            if($employees)
+            {
+                foreach($employees as $value)
+                {   
+                    $cardAttObj = new CardAttendance();
+                    $attExists = $cardAttObj->getEmpAttExists($value->user_id);
+                    $em_attendance = new EmployeeAttendances();
+                    $em_attendance->deleteAttendanceEmployee($school_id,$date,$value->id);
+                    if(!$attExists)
+                    {
+                        $em_attendance = new EmployeeAttendances();
+                        $em_attendance->employee_id = $value->id;
+                        $em_attendance->attendance_date = $date;
+                        $em_attendance->created_at = date("Y-m-d H:i:s");
+                        $em_attendance->updated_at = date("Y-m-d H:i:s");
+                        $em_attendance->school_id = $school_id;
+                        $em_attendance->reason = "From Smart Card";
+                        $em_attendance->is_half_day = 0;
+                        $em_attendance->save();
+                    }
+                }    
+            }
+        }
+        $response['success'] = true;
+        $response['msg'] = "Successfully Inseted";
+        echo CJSON::encode($response);
+        Yii::app()->end();
+        
+    }
+    
+    private function sendnotificationAttendence($student_id, $newattendence, $late)
     {
         $reminderrecipients = array();
         $batch_ids = array();

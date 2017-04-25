@@ -285,6 +285,24 @@ class Employees extends CActiveRecord {
         return $this->findAll($criteria);
     }
     
+    public function getAllEmployeeByPunchCard($school_id) {
+
+        $criteria = new CDbCriteria();
+        $criteria->select = '*';
+        $criteria->addCondition("t.punch_card_number is NOT NULL and t.punch_card_number!=''");
+        $criteria->compare("t.school_id", $school_id);
+        return $this->findAll($criteria);
+    }
+    
+    public function getEmployeeByPunchCard($card_number,$school_id) {
+
+        $criteria = new CDbCriteria();
+        $criteria->select = '*';
+        $criteria->compare('t.punch_card_number', $card_number);
+        $criteria->compare("t.school_id", $school_id);
+        return $this->find($criteria);
+    }
+    
     public function getEmployeeByUserId($uid) {
 
         $criteria = new CDbCriteria();

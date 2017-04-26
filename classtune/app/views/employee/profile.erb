@@ -74,6 +74,9 @@
           <li>
             <%= link_to_remote "#{t('additional_info')}", {:url => {:action => "profile_additional_details", :id => @employee.id}, :update => "profile-infos"}, {:class => 'f2'} %>
           </li>
+          <li>
+            <%= link_to_remote "History", {:url => {:action => "history", :id => @employee.id}, :update => "profile-infos"}, {:class => 'f2'} %>
+          </li>
         </ul>
       </li>
 

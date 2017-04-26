@@ -1014,6 +1014,47 @@ class EmployeeController < ApplicationController
     @bank_details = EmployeeBankDetail.find_all_by_employee_id(@employee.id)
     render :partial => "bank_details"
   end
+  
+  def history
+    @employee = Employee.find(params[:id])
+    @history = EmployeeHistory.find_all_by_employee_id(@employee.id,:order=>"date_discontinuation DESC")
+    render :partial => "history"
+  end
+  
+  def edit_history
+    @history = EmployeeHistory.find_by_id(params[:id])
+    render :update do |page|
+      page.replace_html 'profile-infos', :partial => 'edit_history'
+    end
+  end
+  def add_history
+   @employee = Employee.find(params[:id])
+    render :update do |page|
+      page.replace_html 'profile-infos', :partial => 'add_history'
+    end
+  end
+  def create_history
+    @employeehistory = EmployeeHistory.new(params[:history])
+    @employeehistory.employee_id = params[:id]
+    @employeehistory.save
+    @history = EmployeeHistory.find_all_by_employee_id(@employeehistory.employee_id,:order=>"date_discontinuation DESC")
+    @employee = Employee.find(@employeehistory.employee_id)
+    render :update do |page|
+      page.replace_html 'profile-infos',:partial => "history"
+    end
+  end
+  
+   def update_history
+    now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
+    @employeehistory = EmployeeHistory.find(params[:id])
+    @employeehistory.update_attributes(params[:history])
+    @history = EmployeeHistory.find_all_by_employee_id(@employeehistory.employee_id,:order=>"date_discontinuation DESC")
+    @employee = Employee.find(@employeehistory.employee_id)
+    render :update do |page|
+      page.replace_html 'profile-infos',:partial => "history"
+    end
+  end
+  
 
   def profile_additional_details
     @employee = Employee.find(params[:id])

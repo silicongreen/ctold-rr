@@ -372,7 +372,7 @@ class Users extends CActiveRecord {
          $criteria = new CDbCriteria;
          $criteria->select = 't.*';
          $criteria->compare('t.school_id', Yii::app()->user->schoolId);
-         $criteria->addCondition("( (t.first_name like '".$term."%' or t.last_name like '".$term."%') and t.employee=1 )");
+         $criteria->addCondition("( (t.first_name like '%".$term."%' or t.last_name like '%".$term."%') and t.employee=1 )");
          $criteria->compare('t.is_deleted', 0);
          $data = $this->with('employeeDetails')->findAll($criteria);
          if (!empty($data)) {
@@ -390,7 +390,7 @@ class Users extends CActiveRecord {
          $criteria = new CDbCriteria;
          $criteria->select = 't.*';
          $criteria->compare('t.school_id', Yii::app()->user->schoolId);
-         $criteria->addCondition("( (t.first_name like '".$term."%' or t.last_name like '".$term."%') and t.student=1  )");
+         $criteria->addCondition("( (t.first_name like '%".$term."%' or t.last_name like '%".$term."%') and t.student=1  )");
          $criteria->compare('t.is_deleted', 0);
          $data = $this->with('studentDetails')->findAll($criteria);
          if (!empty($data)) {

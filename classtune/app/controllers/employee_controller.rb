@@ -1015,6 +1015,49 @@ class EmployeeController < ApplicationController
     render :partial => "bank_details"
   end
   
+  def references
+    @employee = Employee.find(params[:id])
+    @reference = EmployeeReferences.find_all_by_employee_id(@employee.id,:order=>"id DESC")
+    render :partial => "references"
+  end
+  
+  def edit_references
+    @reference = EmployeeReferences.find_by_id(params[:id])
+    render :update do |page|
+      page.replace_html 'profile-infos', :partial => 'edit_references'
+    end
+  end
+  def add_references
+   @employee = Employee.find(params[:id])
+    render :update do |page|
+      page.replace_html 'profile-infos', :partial => 'add_references'
+    end
+  end
+  def create_references
+    @employeereferences = EmployeeReferences.new(params[:reference])
+    @employeereferences.employee_id = params[:id]
+    @employeereferences.save
+    @reference = EmployeeReferences.find_all_by_employee_id(@employeereferences.employee_id,:order=>"id DESC")
+    @employee = Employee.find(@employeereferences.employee_id)
+    render :update do |page|
+      page.replace_html 'profile-infos',:partial => "references"
+    end
+  end
+  
+   def update_references
+    now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
+    @employeereferences = EmployeeReferences.find(params[:id])
+    @employeereferences.update_attributes(params[:reference])
+    @reference = EmployeeReferences.find_all_by_employee_id(@employeereferences.employee_id,:order=>"id DESC")
+    @employee = Employee.find(@employeereferences.employee_id)
+    render :update do |page|
+      page.replace_html 'profile-infos',:partial => "references"
+    end
+  end
+  
+  
+  
+  
   def history
     @employee = Employee.find(params[:id])
     @history = EmployeeHistory.find_all_by_employee_id(@employee.id,:order=>"date_discontinuation DESC")

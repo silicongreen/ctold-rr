@@ -1,0 +1,55 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<div class="box">
+  <% remote_form_for :history,:url=>{:action=>'update_history', :id=>@history.id} do |c| %>
+    <div id="form-content" style="height: 250px;">
+      <div class="label-field-pair">
+        <label for="category_name"><%= "Position Held" %></label>
+        <div class="text-bg"><%= c.text_field :position,:value=>@history.position %></div>
+      </div>
+      <div class="label-field-pair">
+        <label for="category_name"><%= "Name of Institution / Organisation / Company" %></label>
+        <div class="text-bg"><%= c.text_field :name,:value=>@history.name %></div>
+      </div>
+      <div class="label-field-pair">
+        <label for="category_name"><%= "Date of Commencement of Employment" %></label>
+        <div class="text-bg"><%= calendar_date_select_tag 'history[date_commencement]', I18n.l(@history.date_commencement,:format=>:default),
+              :year_range => 90.years.ago..5.years.from_now, :readonly=>true, :popup=>"force" %></div>
+      </div>
+      <div class="label-field-pair">
+        <label for="category_name"><%= "Date of Discontinuation of Employment" %></label>
+        <div class="text-bg"><%= calendar_date_select_tag 'history[date_discontinuation]', I18n.l(@history.date_discontinuation,:format=>:default),
+              :year_range => 90.years.ago..5.years.from_now, :readonly=>true, :popup=>"force" %></div>
+      </div>
+        
+      <div id="submit-button">
+          <%=submit_tag("► #{t('save')}") %>
+      </div>
+
+
+    </div>
+  <%end%>
+  </div>
+<style>
+    #attendance-report
+    {
+        margin-left:0px !important;
+    }
+</style>    

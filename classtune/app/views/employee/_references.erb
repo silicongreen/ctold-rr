@@ -1,0 +1,68 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<div id="attendance-report">
+
+    <div class="attendance-stats">
+        <% if permitted_to? :add_references, :employee %>
+          <%=  link_to_remote "Add", :url =>{:action=>"add_references", :id=>@employee.id }%>
+        <% end %>
+        <br/>
+        <% unless @reference.blank? %>
+          <table id="listing" width="100%" style="margin-top:10px;">
+              <tr class="tr-head">
+                  <td><%= "Full Name" %></td>
+                  <td><%= "Mailing Address" %></td>
+                  <td><%= "Land Phone" %></td>
+                  <td><%= "Mobile" %></td>
+                  <td><%= "Email Address" %></td>
+                  <% if permitted_to? :edit_references, :employee %>
+                    <td>&nbsp;</td>
+                  <% end %>
+              </tr>
+              <% @reference.each do |e| %>
+
+                <tr class="tr-<%= cycle('odd','even') %>">
+                    <td  class="col-3" ><%= e.name %>:</td>
+                    <td  class="col-3" ><%= e.mailing_address %></td>
+                    <td  class="col-3" ><%= e.land_phone %></td>
+                    <td  class="col-3" ><%= e.mobile %></div>
+                    <td  class="col-3" ><%= e.email %></div>
+                        <% if permitted_to? :edit_references, :employee %>
+                      <td  class="col-3" ><%=  link_to_remote "#{t('edit_text')}", :url =>{:action=>"edit_references", :id=>e.id }%></td>
+                    <%end%>
+                </tr>
+
+              <%end%>
+          </table>
+        <% end %> 
+        
+        
+    </div>
+
+</div>
+<style>
+    #attendance-report
+    {
+        margin-left:0px !important;
+    }
+</style>  
+
+
+

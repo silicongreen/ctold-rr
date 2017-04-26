@@ -102,6 +102,12 @@
           <label for="subject_minimum_marks"><%= t('min_mark') %><span class="necessary-field">*</span></label>
           <div class="text-input-bg"> <%= f.text_field :minimum_marks %></div>
         </div>
+        <div class="label-field-pair">
+          <label >No Schedule</label>
+          <div  class="text-input-bg" id="exam-group-select">
+            <%= f.select :no_date, [['No',0],['Yes',1]] %>
+          </div>
+        </div>
         <%= submit_tag "", :value => "► #{t('save')}", :class => "submit_button", :disable_with => "► #{t('please_wait')}" %>
 
       <% end %>

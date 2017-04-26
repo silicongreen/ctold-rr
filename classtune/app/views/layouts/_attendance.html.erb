@@ -54,7 +54,7 @@
               <%= link_to profile_text, :controller => "student", :action => "profile", :id => student_id %>
             <% end %>
 
-            <p><%= student.full_name%></p>
+           
        <% elsif @current_user.student? %>
         <% student_id = @current_user.student_record.id 
             student = Student.find_by_id(student_id)
@@ -70,23 +70,21 @@
         <% else  %>
           <%= link_to profile_text, :controller => "student", :action => "profile", :id => student_id %>
         <% end %>
-        <p><%= @main_user_data.full_name %></p>
+       
       <% elsif @current_user.employee? || @current_user.admin? %> 
         <% employee_id = @current_user.employee_record.id
            employee = Employee.find_by_id(employee_id)
       %>  
             
-            <%  profile_text = "<div id='profile_image_div' style='background: url(  #{@profile_image}) no-repeat scroll 50% top / 100% auto rgba(0, 0, 0, 0);
-                height: 85px;
-                width: 120px;'
-                >                           
-            </div>" %>
+            <%  profile_text = "<img src='#{@profile_image}'
+            style='height: 120px;
+            width: 120px;' />" %>
         <%  if !check_free_school? %>
           <%= link_to profile_text, :controller => "employee", :action => "profile", :id => employee_id %>
         <% else  %>
           <%= link_to profile_text, :controller => "employee", :action => "profile", :id => employee_id %>
         <% end %>
-        <p><%= @main_user_data.full_name %></p> 
+        
       <% else %> 
             
             
@@ -103,10 +101,16 @@
    <%  if !check_free_school? %>
    <div class="timetable_right">      
      <div class="subcontent-date user_name" style="overflow:hidden;">
-       <p class="f2" style="color: #ffffff;
+       <p class="f2 att-link" style="color: #ffffff;
                             font-size: 12px;
                             margin-left: 75px;
-                            margin-top: 23px;">ATTENDANCE</p>       
+                            margin-top: 23px;">
+                  <%if @current_user.employee? || @current_user.admin? %>
+                  <%= link_to "ATTENDANCE", :controller => "attendances", :action => "index" %>
+                  <% else %>
+                  <%= link_to "ATTENDANCE", :controller => "student_attendance", :action => "student", :id => student_id %>
+                  <% end %>
+        </p>       
      </div>      
      <div class="subcontent-info">
        <ul class="champs21_feed">             
@@ -119,16 +123,20 @@
                </span>         
              </div>
            </li>  
-           <li>
-             <div class="champs21_feed_item_box">  
-                <div class="viewmore">
-                  <%if @current_user.employee? || @current_user.admin? %>
-                  <%= link_to "View Report", :controller => "attendances", :action => "index" %>
-                  <% else %>
-                  <%= link_to "View Report", :controller => "student_attendance", :action => "student", :id => student_id %>
-                  <% end %>
-                </div>
-             </div>
+           <li class="att-name">
+              <%if @current_user.parent? %>
+              <% 
+                  student_id = @current_user.guardian_entry.current_ward_id      
+                  student = Student.find_by_id(student_id)
+              %>
+               <%= link_to student.full_name, :controller => "student", :action => "profile", :id => student_id %>
+             <% elsif @current_user.student? %>
+                <% student_id = @current_user.student_record.id  %>
+                <%= link_to @main_user_data.full_name, :controller => "student", :action => "profile", :id => student_id %>
+             <% else %>  
+               <% employee_id = @current_user.employee_record.id  %>
+                <%= link_to @main_user_data.full_name, :controller => "employee", :action => "profile", :id => employee_id %>
+             <% end %> 
            </li>              
        </ul>
      </div>              
@@ -146,6 +154,21 @@
   margin: 5px 10px;
   overflow: hidden;
   text-align: center;
+}
+.timetable_right div .att-link a
+{
+  color: #ffffff;
+  font-size: 12px; 
+  cursor: pointer;
+  text-decoration: none;
+}
+.timetable_right div .att-name a
+{
+    float: left;
+    margin: 20px 10px;
+    color:#49BB4B;
+    cursor: pointer;
+    text-decoration: none;
 }
 </style>  
 

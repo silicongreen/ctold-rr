@@ -1,10 +1,14 @@
 <%
 show = true
+all_show = true
 if @connect_exam_obj.result_type.to_i == 1 or @connect_exam_obj.result_type.to_i == 3
   show = false
+end 
+if @connect_exam_obj.result_type.to_i == 5 
+  all_show = false
 end  
 %>
-<% if !@exam_comment.blank? and (@current_user.student? or @current_user.parent? ) %>
+<% if !@exam_comment.blank? and (@current_user.student? or @current_user.parent? ) and all_show %>
 <table id="pdf-table" class="margin-top-20 class-text-align-left" width="100%" cellspacing="0">
   <% 
     result = ""

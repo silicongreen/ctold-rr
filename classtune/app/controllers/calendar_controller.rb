@@ -213,7 +213,7 @@ class CalendarController < ApplicationController
     @privilege = current_user.privileges.map{|p| p.name}
     @user = current_user
     if current_user.admin? 
-      @acacals = Acacal.paginate(:conditions=>{:is_published=>1}, :page => params[:page], :per_page => 10)
+      @acacals = Acacal.paginate(:conditions=>{:is_published=>1,:school_id=>current_user.school_id}, :page => params[:page], :per_page => 10)
     end
     if current_user.employee?
       @acacals = Acacal.paginate(:conditions=>["is_published = 1 AND (department_acacals.department_id = ? or acacals.is_common = 1 or author_id=?) and school_id=?", current_user.employee_record.employee_department_id,current_user.id,current_user.school_id], :page => params[:page], :per_page => 10,:include=>[:department_acacal])

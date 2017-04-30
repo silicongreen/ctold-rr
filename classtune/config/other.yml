@@ -1,6 +1,6 @@
 resulttype:
  numbers: "323,2,325"
- type: "325_Summer,325_Spring,325_Fall,323_Mid Term,323_Final Term,323_Class 10 Mid Term,323_Class 10 Final Term,2_Final Term,2_First Term,2_Mock Test,2_Quarter" 
+ type: "325_Summer,325_Spring,325_Fall,323_Mid Term,323_Final Term,323_Class 10 Mid Term,323_Class 10 Final Term,323_Class Test,2_Final Term,2_First Term,2_Mock Test,2_Quarter" 
  default: "Type 1,Type 2,Type 3,Type 4,Type 5"
 resulttype2:
  numbers: "323,2,325"

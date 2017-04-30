@@ -374,6 +374,14 @@ class Users extends CActiveRecord {
          $criteria->compare('t.school_id', Yii::app()->user->schoolId);
          $criteria->addCondition("( (t.first_name like '%".$term."%' or t.last_name like '%".$term."%') and t.employee=1 )");
          $criteria->compare('t.is_deleted', 0);
+         $criteria->order = "CASE 
+               WHEN t.first_name like '".$term."%' THEN 0
+               WHEN t.first_name like '% %".$term."% %' THEN 1
+               WHEN t.first_name like '%".$term."' THEN 2
+               WHEN t.last_name like '".$term."%' THEN 3
+               WHEN t.last_name like '% %".$term."% %' THEN 4
+               WHEN t.last_name like '%".$term."' THEN 5
+               ELSE 6 END, t.first_name";
          $data = $this->with('employeeDetails')->findAll($criteria);
          if (!empty($data)) {
           
@@ -392,6 +400,14 @@ class Users extends CActiveRecord {
          $criteria->compare('t.school_id', Yii::app()->user->schoolId);
          $criteria->addCondition("( (t.first_name like '%".$term."%' or t.last_name like '%".$term."%') and t.student=1  )");
          $criteria->compare('t.is_deleted', 0);
+         $criteria->order = "CASE 
+               WHEN t.first_name like '".$term."%' THEN 0
+               WHEN t.first_name like '% %".$term."% %' THEN 1
+               WHEN t.first_name like '%".$term."' THEN 2
+               WHEN t.last_name like '".$term."%' THEN 3
+               WHEN t.last_name like '% %".$term."% %' THEN 4
+               WHEN t.last_name like '%".$term."' THEN 5
+               ELSE 6 END, t.first_name";
          $data = $this->with('studentDetails')->findAll($criteria);
          if (!empty($data)) {
           

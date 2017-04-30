@@ -129,18 +129,7 @@
                         <% end %>
                       <% end %>
                     <% end %>
-                      <tr class="odd">
-                          <td class="col-pdf"><b>Total Mark</b></td>
-                          <% unless @report_data['report']['exams'].blank? %>  
-                            <% @report_data['report']['exams'].each do |report| %>
-                                <td></td>
-                            <% end %>
-                          <% end %> 
-                         <td class="col-pdf"><b><%= total_mark_all_subject %></b></td>
-                          
-                         <td class="col-pdf"></td>
-                         <td class="col-pdf"></td>
-                      </tr> 
+                     
 
               </table>          
 <% end %>

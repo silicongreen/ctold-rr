@@ -45,11 +45,7 @@
         </li>
       <% end %>
 
-      <% if (permitted_to? :remove, :student or permitted_to? :admission1, :student) and !check_free_school?  %>
-        <li>
-          <%= link_to "#{t('delete_text')}", {:controller => 'student', :action => 'remove', :id => @student.id}, {:class => 'f2'} %>
-        </li>
-      <% end %>
+    
 
       <% if @sms_module.include?('Finance') and permitted_to? :fees, :student and !check_free_school? %>
         <li>
@@ -59,11 +55,18 @@
       <% if !check_free_school? %>
         <% Champs21Plugin::ADDITIONAL_LINKS[:student_profile_more_menu].each do |mod| %>
           <% if can_access_request? "#{mod[:destination][:action]}".to_sym,"#{mod[:destination][:controller]}".to_sym %>
-            <li>
+            <% unless t(mod[:title]) == "Hostel" %>
+          <li>
               <%= link_to "#{t(mod[:title])}", mod[:destination].merge(:id=>@student.id), {:class => 'f2'} %>
-            </li>
+          </li>
+          <% end %>
           <% end %>
         <% end %>
+      <% end %>
+        <% if (permitted_to? :remove, :student or permitted_to? :admission1, :student) and !check_free_school?  %>
+        <li>
+          <%= link_to "#{t('delete_text')}", {:controller => 'student', :action => 'remove', :id => @student.id}, {:class => 'f2'} %>
+        </li>
       <% end %>
     </ul>
   </div>

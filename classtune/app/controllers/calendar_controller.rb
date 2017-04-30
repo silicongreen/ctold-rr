@@ -216,15 +216,15 @@ class CalendarController < ApplicationController
       @acacals = Acacal.paginate(:conditions=>{:is_published=>1}, :page => params[:page], :per_page => 10)
     end
     if current_user.employee?
-      @acacals = Acacal.paginate(:conditions=>["is_published = 1 AND (department_acacals.department_id = ? or acacals.is_common = 1 or author_id=?)", current_user.employee_record.employee_department_id,current_user.id], :page => params[:page], :per_page => 10,:include=>[:department_acacal])
+      @acacals = Acacal.paginate(:conditions=>["is_published = 1 AND (department_acacals.department_id = ? or acacals.is_common = 1 or author_id=?) and school_id=?", current_user.employee_record.employee_department_id,current_user.id,current_user.school_id], :page => params[:page], :per_page => 10,:include=>[:department_acacal])
     end
     if current_user.student?
-      @acacals = Acacal.paginate(:conditions=>["is_published = 1 AND (batch_acacals.batch_id = ? or acacals.is_common = 1)", current_user.student_record.batch_id], :page => params[:page], :per_page => 10,:include=>[:batch_acacal]) 
+      @acacals = Acacal.paginate(:conditions=>["is_published = 1 AND (batch_acacals.batch_id = ? or acacals.is_common = 1) and school_id=?", current_user.student_record.batch_id,current_user.school_id], :page => params[:page], :per_page => 10,:include=>[:batch_acacal]) 
     end
     if current_user.parent?
       student_id = @current_user.guardian_entry.current_ward_id 
       @std_record = Student.find(student_id)
-      @acacals = Acacal.paginate(:conditions=>["is_published = 1 AND (batch_acacals.batch_id = ? or acacals.is_common = 1)", @std_record.batch_id], :page => params[:page], :per_page => 10,:include=>[:batch_acacal]) 
+      @acacals = Acacal.paginate(:conditions=>["is_published = 1 AND (batch_acacals.batch_id = ? or acacals.is_common = 1) and school_id=?", @std_record.batch_id,current_user.school_id], :page => params[:page], :per_page => 10,:include=>[:batch_acacal]) 
     end  
   end
   def cancel_acacal

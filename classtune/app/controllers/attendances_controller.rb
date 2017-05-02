@@ -152,10 +152,10 @@ class AttendancesController < ApplicationController
   end
   def get_subject_student
     now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
-    if params[:attandence_date].nil? || params[:attandence_date].empty?
+    if params[:date_to_use].nil? || params[:date_to_use].empty?
       @date_to_use = @local_tzone_time.to_date
     elsif current_user.admin?
-      @date_to_use = params[:attandence_date].to_date
+      @date_to_use = params[:date_to_use].to_date
     else
       @date_to_use = @local_tzone_time.to_date
     end  

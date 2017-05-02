@@ -126,10 +126,10 @@
                               
                             <% att_percentize = 0 %>  
                             <% if total_att.to_i > 0 %>
-                                <% total_present = total_att-absent_att  %>
+                                <% total_present = total_att.to_i-absent_att.to_i  %>
                                 <% if total_present > 0 %>
-                                  <% att_percentize = ((total_att-absent_att)/total_att)*100  %>
-                                  
+                                  <% att_percentize = (total_present/total_att)*100  %>
+                                  <%= att_percentize  %>
                                 <% end %>
                                 <%= sprintf( "%0.02f", total_att) %>
                             <% else %> 

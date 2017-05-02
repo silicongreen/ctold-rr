@@ -49,6 +49,12 @@
   <div id="register"></div>
   <div id="modal-box" style="display:none;"></div>
 </div>
+<script>
+  var jq = jQuery.noConflict();
+  jq(document).ready(function() {
+    jq("#batch_id").val("").trigger('change');
+  });
+</script>  
 <style>
   
   .row_data div img.calendar_date_select_popup_icon

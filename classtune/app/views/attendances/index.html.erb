@@ -27,98 +27,98 @@
 <%  end %>
 <div id="page-yield" class="bg-disable">
 
-  <div class="header-wrapper">
-    <div class="header-title" style="width:68%;">
-      <div class="header-icon"  style="width:12%;">
-        <%= image_tag '/images/icons/attendance-header.png', :html => {:alt => 'Attendance'} %>
-      </div>
-      <div class="header-title-text-wrapper">
-        <div class="header-title-main-text f2">
-          <%= t('attendance_register') %>
+    <div class="header-wrapper">
+        <div class="header-title" style="width:68%;">
+            <div class="header-icon"  style="width:12%;">
+                <%= image_tag '/images/icons/attendance-header.png', :html => {:alt => 'Attendance'} %>
+            </div>
+            <div class="header-title-text-wrapper">
+                <div class="header-title-main-text f2">
+                    <%= t('attendance_register') %>
+                </div>
+                <div class="header-title-sub-text">
+<%#= Time.now.strftime("%d/%m/%Y") %>
+                    <%= @local_tzone_time.to_time %>
+                </div>
+            </div>
         </div>
-        <div class="header-title-sub-text">
-          <%#= Time.now.strftime("%d/%m/%Y") %>
-          <%= @local_tzone_time.to_time %>
-        </div>
-      </div>
-    </div>
-    <div class="clearfix"></div>
+        <div class="clearfix"></div>
 
-    <div class="tabbed-header-wrapper">
-      <ul class="header-tabs">
-        <li class="active">
-          <%= link_to "Roll Call",
-            {:controller=>"attendances", :action=>"index"},
-            {:class => 'f2'}
-        %>
-        </li>
-        
-        <li>
-          <%= link_to_remote "Class Report",
-            :before => "Element.show('loader2');",
-            :success => "Element.hide('loader2');",
-            :update => 'report-roll-call',
-            :url=>{:controller=>"attendances", :action=>"class_report"},
-            :html => {:class => 'f2'}
-        %>
+        <div class="tabbed-header-wrapper">
+            <ul class="header-tabs">
+                <li class="active">
+                    <%= link_to "Roll Call",
+                      {:controller=>"attendances", :action=>"index"},
+                      {:class => 'f2'}
+                  %>
+                </li>
+
+                <li>
+                    <%= link_to_remote "Class Report",
+                      :before => "Element.show('loader2');",
+                      :success => "Element.hide('loader2');",
+                      :update => 'report-roll-call',
+                      :url=>{:controller=>"attendances", :action=>"class_report"},
+                      :html => {:class => 'f2',:id=>"class_report"}
+                  %>
 <%#= link_to "", {:controller => 'student_attendance', :action => ''}, {:class => 'f2'} %>
-        </li>
-        <li>
-          <%= link_to_remote "Student Report",
-            :before => "Element.show('loader2');",
-            :success => "Element.hide('loader2');",
-            :update => 'report-roll-call',
-            :url=>{:controller=>"attendances", :action=>"student_report"},
-            :html => {:class => 'f2'}
-        %>
-        </li>
-        <li>
-          <%= link_to_remote "Roll Call Subject",
-            :before => "Element.show('loader2');",
-            :success => "Element.hide('loader2');",
-            :update => 'report-roll-call',
-            :url=>{:controller=>"attendances", :action=>"rollcall"},
-            :html => {:class => 'f2'}
-        %>
-        </li>
-        <li>
-          <%= link_to_remote "Subject Report",
-            :before => "Element.show('loader2');",
-            :success => "Element.hide('loader2');",
-            :update => 'report-roll-call',
-            :url=>{:controller=>"attendances", :action=>"subject_report"},
-            :html => {:class => 'f2'}
-        %>
-        </li>
-      </ul>
+                </li>
+                <li>
+                    <%= link_to_remote "Student Report",
+                      :before => "Element.show('loader2');",
+                      :success => "Element.hide('loader2');",
+                      :update => 'report-roll-call',
+                      :url=>{:controller=>"attendances", :action=>"student_report"},
+                      :html => {:class => 'f2',:id=>"std_report"}
+                  %>
+                </li>
+                <li>
+                    <%= link_to_remote "Roll Call Subject",
+                      :before => "Element.show('loader2');",
+                      :success => "Element.hide('loader2');",
+                      :update => 'report-roll-call',
+                      :url=>{:controller=>"attendances", :action=>"rollcall"},
+                      :html => {:class => 'f2',:id=>"subject_roll_call"}
+                  %>
+                </li>
+                <li>
+                    <%= link_to_remote "Subject Report",
+                      :before => "Element.show('loader2');",
+                      :success => "Element.hide('loader2');",
+                      :update => 'report-roll-call',
+                      :url=>{:controller=>"attendances", :action=>"subject_report"},
+                      :html => {:class => 'f2',:id=>"subject_report"}
+                  %>
+                </li>
+            </ul>
+        </div>
     </div>
-  </div>
 
-  <div class="loader-image">
-    <%= image_tag("loader2.gif",
-      :align => "absmiddle",
-      :border => 0,
-      :id => "loader2",
-      :style =>"display: none;" ) %>
-  </div>
+    <div class="loader-image">
+        <%= image_tag("loader2.gif",
+          :align => "absmiddle",
+          :border => 0,
+          :id => "loader2",
+          :style =>"display: none;" ) %>
+    </div>
 
-  <div id="report-roll-call">
-    <%= render :partial => "roll_register" %>
-  </div>
+    <div id="report-roll-call">
+        <%= render :partial => "roll_register" %>
+    </div>
 
 </div>
 <style>
-  div.button-link-report
-  {
-    
-    background: #C91018;
-    color:white;
-    
-  }
-  div.button-link-report:hover
-  {
-    background: #383838;
-  }
+    div.button-link-report
+    {
+
+        background: #C91018;
+        color:white;
+
+    }
+    div.button-link-report:hover
+    {
+        background: #383838;
+    }
 </style>  
 
 <% content_for :head do %>
@@ -132,21 +132,31 @@
 <script>
   function show_student_list(type)
   {
-    if(j("#"+type).is(":visible"))
-    {
-      j(".std_list").hide(); 
-      j("td.view").css( "background-color", "white" );
-      j("td.view").css( "color", "black" );
-    }
-    else
-    {
-      j(".std_list").hide();
-      j("td.view").css( "background-color", "white" );
-      j("td.view").css( "color", "black" );
-      j("#"+type).show();
-      j("#"+type+"_view").css( "background-color", "#E6585A" );
-      j("#"+type+"_view").css( "color", "white" );
-    }
-    
+      if (j("#" + type).is(":visible"))
+      {
+          j(".std_list").hide();
+          j("td.view").css("background-color", "white");
+          j("td.view").css("color", "black");
+      }
+      else
+      {
+          j(".std_list").hide();
+          j("td.view").css("background-color", "white");
+          j("td.view").css("color", "black");
+          j("#" + type).show();
+          j("#" + type + "_view").css("background-color", "#E6585A");
+          j("#" + type + "_view").css("color", "white");
+      }
+
   }
+  var jq = jQuery.noConflict();
+  jq(document).ready(function () {
+      if (window.location.hash) {
+          var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
+          jq("#" + hash).trigger("click");
+          
+      } else {
+          
+      }
+  });
 </script>

@@ -562,7 +562,7 @@ class ExamController < ApplicationController
             if MultiSchool.current_school.id == 319
               @students.push [student.first_name,student.last_name, student.id, student]
             else
-              @students.push [student.class_roll_no,student.first_name, student.id, student] 
+              @students.push [student.class_roll_no.to_i,student.first_name, student.id, student] 
             end
           end
         end
@@ -3037,7 +3037,7 @@ class ExamController < ApplicationController
         if MultiSchool.current_school.id == 319
           @students.push [student.first_name,student.last_name, student.id, student] unless student.nil?
         else
-          @students.push [student.class_roll_no,student.first_name, student.id, student] unless student.nil? 
+          @students.push [student.class_roll_no.to_i,student.first_name, student.id, student] unless student.nil? 
         end
 #        @students.push [student.class_roll_no,student.first_name, student.id, student] unless student.nil?
       end

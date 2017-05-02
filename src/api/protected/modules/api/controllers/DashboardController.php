@@ -167,7 +167,7 @@ class DashboardController extends Controller
             
             $userObj = new Users();
             $user_data = $userObj->findByPk($user_id);
-            if(isset($user_data) && isset($user_data->first_name) && isset($user_data->last_name))
+            if(isset($user_data) && isset($user_data->first_name))
             {
                 $response['data']['user_name'] = $user_data->first_name.' '.$user_data->last_name;
             }

@@ -1,0 +1,140 @@
+<html>
+    <head>
+        <title>Admit Card</title>
+        <meta charset="UTF-8">
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" media="all" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+        <!-- Optional theme -->
+        <link rel="stylesheet" media="all" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <% i = 0 %>
+        <% @student_ids.each do |std_id| %>
+        
+        <% std_info = Student.find(std_id) %>
+        <% i = i+1 %>
+        <% if i > 2 %>
+          <% i = 1 %>
+          <div class="col-xs-12">&nbsp;</div>
+          <div class="col-xs-12">&nbsp;</div>
+          <div class="col-xs-12">&nbsp;</div>
+        <% end %>
+        <div class="col-xs-6">
+            <div class="col-xs-12">&nbsp;</div>
+            <div class="col-xs-12">
+              <div class="col-xs-2" style="padding:0px;"><img style='margin-top:9px; height:45px;' src='<%=  current_school_detail.logo.url %>' /></div>
+              <div class="col-xs-10">
+                  <div class="col-xs-12"><center><h4><b><font size="3"><%=Configuration.get_config_value('InstitutionName'); %></font></b></h4></center></div>
+                  <div class="col-xs-12"><center><font size="1">Mirpur-10,House-8,Road 11/12,Block-B,Mirpur Dhaka 1216</font></center></div>
+                  <div class="col-xs-12"><center><font size="1">Contact:9030096,01678850500,01811655022</font></center></div>
+              </div>
+            </div>
+            <div class="col-xs-12">
+                <center>
+                    <h5><b><font size="3">Admit Card</font></b></h5>
+                </center>    
+            </div>
+            <div class="col-xs-12">
+              <table class="table table-user-information" width="90%">
+                    <tbody>
+                      <tr>
+                        <td>Name of Exam</td>
+                        <td>&nbsp;:&nbsp;<%= @exam_name %></td>
+                      </tr>
+                      <tr>
+                        <td>Term & Year:</td>
+                        <td>&nbsp;:&nbsp;<%= @term_year %></td>
+                      </tr>
+                      <tr>
+                        <td>Name Of Student:</td>
+                        <td>&nbsp;:&nbsp;<%= std_info.full_name %></td>
+                      </tr>
+                      <tr>
+                        <td>Roll No:</td>
+                        <td>&nbsp;:&nbsp;<%= std_info.class_roll_no %></td>
+                      </tr>
+                      <tr>
+                        <td>Shift:</td>
+                        <td>&nbsp;:&nbsp;<%= std_info.batch.name %></td>
+                      </tr>
+                      <tr>
+                        <td>Class:</td>
+                        <td>&nbsp;:&nbsp;<%= std_info.batch.course.course_name %></td>
+                      </tr>
+                      <tr>
+                        <td>Section:</td>
+                        <td>&nbsp;:&nbsp;<%= std_info.batch.course.section_name %></td>
+                      </tr>
+                    </tbody> 
+              </table>       
+            </div>
+            <div class="col-xs-12" style="margin-top:30px; font-size:12px;">
+                <div class="col-xs-4"></div>
+                <div class="col-xs-8">
+                    <center>Principal</center>
+                    <center><%=Configuration.get_config_value('InstitutionName'); %></center>
+                </div>
+            </div>
+            <div class="col-xs-12" style="margin-top:10px;">
+                <center>
+                    <h5><b><font size="3">Instruction for Examinees</font></b></h5>
+                </center>   
+            </div>    
+              <div class="col-xs-12" style="padding:0px;">  
+                  <ul>
+                      <li>Examinee should come to the examination hall with Admit card/Permission Slip.</li>
+                      <li>Bring the admit card with you every day.</li>
+                      <li>Reach your Classroom before 15 minutes of exam.</li>
+                      <li>Bring pens, pencils, ruler, eraser and other necessary things with you.</li>
+                      <li>Take your alloted seat before exam starts.</li>
+                      <li>Books and sheets are not allowed to bring with you in the exam.</li>
+                      <li>Any examines adopting unfair means will be brought under disciplinary action including expulsion</li>
+                      <li>Any kind of misbehavior will be considered as serious offence under the rules of the school</li>
+                  </ul>    
+               
+                    
+            </div>
+            
+            
+        </div>   
+        <% end %>
+    </body>
+</html>
+<style>
+  .table-user-information > tbody > tr {
+    border-top: 1px solid rgb(221, 221, 221);
+}
+
+.table-user-information > tbody > tr:first-child {
+    border-top: 0;
+}
+
+.table-user-information
+{
+    border: 0;
+    
+}
+.table-user-information > tbody > tr > td {
+    border: 0;
+    font-size: 12px;
+    
+}
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+    padding: 5px;
+}
+ul li
+{
+    list-style: decimal;
+    font-size: 12px;
+}
+</style>
+<style type="text/css" media="print">
+  @page { size: landscape; }
+</style>
+<script>
+  window.print();
+</script>  

@@ -598,7 +598,7 @@ sfx  .table-header td{
 }
 .no-warp
 {
-    white-space: nowrap;
+    white-space: nowrap !important;
 }
 .sfx table.td-align-left td
 {

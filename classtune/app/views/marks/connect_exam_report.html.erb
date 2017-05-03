@@ -29,6 +29,7 @@
 <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.0/material.min.css"/>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.13/css/dataTables.material.min.css"/>
 <script type="text/javascript" src="//code.jquery.com/jquery-1.12.4.js"></script>
+<%= javascript_include_tag 'pdfobject' %>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.13/js/dataTables.material.min.js"></script>
 
@@ -78,10 +79,13 @@
     <div class="extender"></div>
   </div>
     
+    <div id="pdf_file" style="float: left; width:60%; margin-top:-70px; margin-left: 10px;background: transparent url(/images/pdf_loading2.gif) no-repeat;background-position: center;"></div>  
+    
 </div>
 <script>
   var jj = jQuery.noConflict();
   jj(document).ready(function () {
+      <%#*PDFObject.embed("http://chs.classtune.dev/exam/tabulation/91", "#pdf_file");%>
       var oDataTable = jj('#exam_data').DataTable( {
         "ajax": "/marks/data_connect_exam_report",
         "deferRender": true,
@@ -103,6 +107,19 @@
       {
         oDataTable.column( 1 ).search("").draw();
       } 
+    });
+    
+   jj( document ).on( "click", "a", function(event) {
+      jj("#pdf_file").hide();
+      if(jj(this).attr("href").indexOf("continues")!=-1 || (jj(this).attr("href").indexOf("tabulation")!=-1 && jj(this).attr("href").indexOf("comment_tabulation")==-1 ) || jj(this).attr("href").indexOf("marksheet")!=-1)
+      {
+         jj("#pdf_file").show();
+         event.preventDefault();
+         PDFObject.embed(jj(this).attr("href"), "#pdf_file", {id: "pdf_id"});
+        
+         
+      }
+      
     });
     
     jj("#batch_batch_id").change(function(){
@@ -127,6 +144,11 @@
   });
 </script>
 <style>
+ #pdf_file
+ {
+     display:none;
+     min-height: 50px;
+ }
   table tr td a
   {
      text-decoration: none;
@@ -150,9 +172,9 @@ body, html
 }
 .sub-header3
 {
-    float: left;
+    float: right;
     padding-top: 38px;
-    margin-left: 10px;
+    margin-right: 10px;
 }
 .sub-header3 a
 {
@@ -169,14 +191,14 @@ body, html
 }
 .sub-header2
 {
-    float: left;
+    float: right;
     padding-top: 38px;
-    margin-left: 130px;
+    
 }
 .sub-header2 a
 {
     float: left;
-    margin-left: 446px;
+    
     text-decoration: none;
     color: black;
     padding: 7px;
@@ -193,4 +215,42 @@ a:hover
 {
    white-space: normal;
 }
+#content_wrapper
+{
+    width:96%;
+}
+.champs21_palette_container_1 #boxes
+{
+    width:100% !important;
+}
+.champs21_palette_container_1 #boxes .als-viewport
+{
+    width:1440px !important;
+}
+.champs21_palette_container_1 #boxes .als-next
+{
+    display:none;
+}
+.school_feed_box
+{
+    width:0px;
+    display:none;
+}
+#page-yield
+{
+    width: 97%;
+}
+#page-yield .box
+{
+    width: 38%;
+    float:left;
+    clear:both;
+}
+
+
+
+</style>
+<style>
+.pdfobject-container { height: 700px;}
+.pdfobject { border: 1px solid #666; }
 </style>

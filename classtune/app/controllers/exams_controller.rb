@@ -469,15 +469,15 @@ class ExamsController < ApplicationController
         unless student.nil?
           if student.batch_id.to_i == s.batch_id
             if MultiSchool.current_school.id == 319
-              @students.push [student.first_name,student.last_name, student.id, student] unless student.nil?
+              @students.push [student.first_name.to_s,student.last_name.to_s, student.id, student] unless student.nil?
             else
-              @students.push [student.class_roll_no.to_i,student.first_name, student.id, student] unless student.nil? 
+              @students.push [student.class_roll_no.to_i,student.first_name.to_s, student.id.to_i, student] unless student.nil? 
             end
           end
         end
       end
       unless @students.blank?
-        @ordered_students = @students
+        @ordered_students = @students.sort
         @students=[]
         @ordered_students.each do|s|
           @students.push s[3]

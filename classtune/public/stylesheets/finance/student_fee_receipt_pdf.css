@@ -293,9 +293,9 @@ table.signature tr td
     padding-right: 0px;
 }
 
-#pdf-header-south div.div-50 h2, #pdf-header-south div.div-50 h3, #pdf-header-south div.div-50 h4, #pdf-header-south div.div-50 h5
+div.div-50 h2, div.div-50 h3,  div.div-50 h4,div.div-50 h5
 {
     padding: 0px;
     margin: 0px;
-    line-height: 15px;
+    line-height: 15px !important;
 }

@@ -187,7 +187,7 @@
                       <td class="col-pdf"><%= "#{precision_label(balance)}" %></td>
                   </tr>
                   <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                      <td colspan="3">Amount in Word :<b><%= in_words(balance.to_i) %></b></td>
+                      <td colspan="3">Amount in Word :<b><%= in_words(balance.to_i).split.map(&:capitalize).join(' ') %></b></td>
                   </tr>
 
 

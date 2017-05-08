@@ -150,6 +150,21 @@ class DelayedBatchTranfer
       @batch.update_attribute(:start_date,@next_start+" 00:00:00")
       @batch.update_attribute(:end_date,@next_end+" 00:00:00")
       
+      @attendance = AttendanceRegister.find_all_by_batch_id_and_previous(@batch.id,0)
+      unless @attendance.blank?
+        @attendance.each do |att|
+          att.update_attribute(:previous,@batch_tranfer_id)
+        end
+      end
+      
+      @attendance = SubjectAttendanceRegister.find_all_by_batch_id_and_previous(@batch.id,0)
+      unless @attendance.blank?
+        @attendance.each do |att|
+          att.update_attribute(:previous,@batch_tranfer_id)
+        end
+      end
+      
+      
     end
     
   end
@@ -216,6 +231,7 @@ class DelayedBatchTranfer
     batchboj.created_at = now
     batchboj.updated_at = now
     batchboj.save()
+    @batch_tranfer_id = batchboj.id
   end
   
   def create_group_exam_student(batch,s,eg,now,batch_student_id)

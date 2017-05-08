@@ -429,11 +429,11 @@ div.page-break { display:block; clear:both; page-break-after:always; }
 
 .st-joshef-header h5, .st-joshef-header h4
 {
-    line-height: 4px;
+    line-height: 3px;
 }
 .st-joshef-header h4
 {
-    font-size: 15px;
+    font-size: 15px !important;
 }
 
 

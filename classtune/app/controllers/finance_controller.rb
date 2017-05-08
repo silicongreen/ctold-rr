@@ -1687,6 +1687,7 @@ class FinanceController < ApplicationController
     end
     @fine_amount=0 if @financefee.is_paid
 #    render :layout => false
+      if MultiSchool.current_school.id == 2
       render :pdf => 'student_fee_receipt_pdf',
       :orientation => 'Landscape', :zoom => 1.00,
       :margin => {    :top=> 10,
@@ -1695,6 +1696,16 @@ class FinanceController < ApplicationController
       :right => 10},
       :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
       :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+      else
+        render :pdf => 'student_fee_receipt_pdf',
+        :orientation => 'Portrait', :zoom => 1.00,
+        :margin => {    :top=> 10,
+        :bottom => 10,
+        :left=> 10,
+        :right => 10},
+        :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+        :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+      end  
     
     
   

@@ -432,6 +432,10 @@ div.page-break { display:block; clear:both; page-break-after:always; }
     line-height: 3px;
     font-size: 18px !important;
 }
+.st-joshef-header h5
+{
+   font-size: 16px !important; 
+}
 
 
 

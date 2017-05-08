@@ -275,13 +275,30 @@
 
                 <% 
                   result = ""
+                  promotion_status = 0
+                  merit_position = 0
                   if !@exam_comment.blank?
-                    all_comments = @exam_comment.comments
-                    if !all_comments.blank?
-                      all_comments_array = all_comments.split("|")
-                      result = all_comments_array[0]
+                  all_comments = @exam_comment.comments
+                  if !all_comments.blank?
+                    all_comments_array = all_comments.split("|")
+                    result = all_comments_array[0]
+
+                    if !all_comments_array[1].nil?
+                      promotion_status = all_comments_array[1].to_s
+                      if !all_comments_array[2].nil?
+                        merit_position = all_comments_array[2]
+                        if !all_comments_array[3].nil?
+                          new_roll = all_comments_array[3]
+                          if !all_comments_array[4].nil?
+                            new_section = all_comments_array[4]
+                          end
+                        end
+
+                      end
+
                     end
                   end
+                end
                 %>
               <table id="pdf-table" class="evaluation" width="99.8%" >
                       <tr class="odd">
@@ -301,7 +318,7 @@
                               Working Days
                           </td> 
                           <td class="col-pdf align-center" width="33%">
-                              <%= @report_data['total'] %>
+                              <%= promotion_status %>
                           </td>
                           <td class="col-pdf no-border" width="33%" >
                               
@@ -312,7 +329,7 @@
                               Present
                           </td> 
                           <td class="col-pdf align-center" width="33%">
-                              <%= @report_data['present'] %>
+                              <%= merit_position %>
                           </td>
                           <td class="col-pdf no-border" width="33%">
                               
@@ -323,7 +340,7 @@
                               Absent
                           </td> 
                           <td class="col-pdf align-center" width="33%">
-                              <%= @report_data['total']-@report_data['present'] %>
+                              <%= promotion_status.to_i-merit_position.to_i %>
                           </td>
                           <td class="col-pdf no-border" width="33%">
                               

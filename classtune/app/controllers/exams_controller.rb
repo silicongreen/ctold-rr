@@ -463,7 +463,7 @@ class ExamsController < ApplicationController
       end
     else
       assigned_students = StudentsSubject.find_all_by_subject_id(exam_subject.id)
-      @students = []
+      @students = {}
       assigned_students.each do |s|
         student = Student.find_by_id(s.student_id)
         unless student.nil?
@@ -476,10 +476,12 @@ class ExamsController < ApplicationController
           end
         end
       end
-      @ordered_students = @students
-      @students=[]
-      @ordered_students.each do|s|
-        @students.push s[3]
+      unless @students.blank?
+        @ordered_students = @students.sort
+        @students=[]
+        @ordered_students.each do|s|
+          @students.push s[3]
+        end
       end
     end
     @config = Configuration.get_config_value('ExamResultType') || 'Marks'

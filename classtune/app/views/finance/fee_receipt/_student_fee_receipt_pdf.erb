@@ -184,10 +184,10 @@
                   <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                       <%k+=1%>
                       <td colspan="2" class="col-8"><b>Total</td>
-                      <td class="col-pdf"><%= "#{precision_label(balance)}" %></td>
+                      <td class="col-pdf"><b><%= "#{precision_label(balance)}" %></b></td>
                   </tr>
                   <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                      <td colspan="3">Amount in Word :<b><%= in_words(balance.to_i).split.map(&:capitalize).join(' ') %></b></td>
+                      <td colspan="3">Amount in Word : <b><%= in_words(balance.to_i).split.map(&:capitalize).join(' ') %></b></td>
                   </tr>
 
 

@@ -1175,5 +1175,8 @@ table.float-left-clear-both
 }
 
 //new CSS
-
+.st-joshef-header h4
+{
+    line-height: 5px;
+}
 

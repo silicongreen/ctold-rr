@@ -1,0 +1,281 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+<%
+  copy = []
+  copy << "Parent/Student Copy"
+  copy << "School Copy"
+  copy << "Vat Office Copy"
+  copy << "Bank Copy"
+%>
+
+<div id="page-yield" class="available_sections">
+    <% copy.each do |cp| %>
+    <div class="div-24" >
+            <% if MultiSchool.current_school.id == 2 %>
+               <table class="vat_area">
+                   <tr>
+                       <td class="left">Area Code: 180303</td>
+                       <td class="right">Vat Reg No : 18131064795</td>
+                   </tr>
+               </table>
+            <% end %>
+       
+            <center>
+                <div id="pdf-header-south" class="general-header">
+                  <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '16%' %></h4>
+                  <h3 align="center"><%=Configuration.get_config_value('InstitutionName'); %></h3>
+                  <% if MultiSchool.current_school.id == 2 %>
+                    <h5 align="center">House#02, Road#02, Banani, Dhaka-1213</h5>
+                    <h5 align="center">Tel : 9895153</h5>
+                    <h4 align="center">Dhaka Bank Limited, Mohakhali Branch</h4>
+                    <h5 align="center">SND Account No : 225.150.132</h5>
+                  <% end %>
+                </div>
+            </center>
+            <% total_fees = 0 %>
+            <table class="std_info">
+                <tr>  
+                     <td class="left">For Month</td> <td>:<%=  "#{@date.name.capitalize}" %></td>
+                     <td class="right">Date</td> <td>:&nbsp;______/______/______</td>
+                </tr>
+            </table>     
+            <table class="std_info">
+               
+                <tr>
+                    <td><%= "#{t('name')}" %></td> <td>:&nbsp; <%=  "#{@student.full_name}" %></td>
+                </tr>
+                   <tr> <td><%= "Roll" %></td> <td>:&nbsp;  <%=  "#{@student.class_roll_no}" %></td>
+                </tr> 
+                <tr>
+                    <td><%= "#{t('course_text')}" %> </td><td>:&nbsp;  <%=  "#{@student.batch.full_name}" %></td>
+                </tr>  
+            </table>
+          
+       
+       
+            <table id="pdf-table" width="98%" cellspacing="0">
+                <tr class="table-header">
+                    <td class="name-td"  colspan="2"><%= "Fee Details" %></td>
+                    <td class="mark-td"> <%= "Taka" %></td>
+                </tr>
+                <%k=7%>
+                <% i = 0  %>
+                <% c= 'even' %>
+                <% vat_amount = 0 %>
+                <% @fee_particulars.each do |fee| %>
+                   <%  if fee.name.index("Vat").blank? %>
+                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+
+                          <%k+=1%>
+                          <td class="name-td" colspan="2"><%= fee.name %></td>
+                          <td class="mark-td"><% if fee.amount.to_i > 0 %><%= "#{precision_label(fee.amount.to_s)}" %><% else %>-<% end %></td>
+                      </tr>
+                      <% total_fees += fee.amount %>
+                  <% else %>
+                      <% vat_amount = vat_amount+fee.amount %>
+                  <% end %>    
+                <% end %>
+
+                <% unless @total_discount == 0 %>
+                  <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                      <%k+=1%>
+                      <td class="col-1" colspan="3"><span class="space"><%= t('discount') %></span></td>
+                  </tr>
+
+                  <% @discounts.each do |d| %>
+                    <%k+=1%>
+                    <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                        
+                        <% discount_text = d.is_amount == true ? "#{d.name}" : "#{d.name}(#{d.discount})%" %>
+                        <td class="name-td"  colspan="2"><%= discount_text %></td>
+                        <td class="mark-td"><%= precision_label(@total_payable * d.discount.to_f/ (d.is_amount?? @total_payable : 100)) %></td>
+                    </tr>
+                  <% end %>
+
+
+                  <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                      <%k+=1%>
+                      <td class="mark-td" colspan="2" ><%= t('total_discount') %></td>
+                      <td class="mark-td" ><%= "#{precision_label(@total_discount)}" %></td>
+                  </tr>
+
+                  <% total_fees = (@total_payable-@total_discount) %>
+                  <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                      <%k+=1%>
+                      <td class="mark-td" colspan="2" ><%= t('total_fees') %></td>
+                      <td class="mark-td" ><%=  precision_label(total_fees) %></td>
+                  </tr>
+
+
+                <% end %>
+
+                <% if @paid_fees%>
+
+
+
+                  <% unless @paid_fees.blank? %>
+                    <% @paid_fees.each do |trans| %>
+                      <% if trans.fine_included %>
+                        <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                            <%k+=1%>
+                            
+                            <td class="col-2"  colspan="2"><span><%= t('fine_on') %> <%= trans.transaction_date %></span></td>
+
+                            <td class="col-4"><%= "#{precision_label(trans.fine_amount.to_f)}" %></td>
+                        </tr>
+                        <% total_fees += trans.fine_amount.to_f %>
+                      <% end %>
+                    <% end %>
+                  <% end %>
+                <%end%>
+                <% unless @paid_fees.nil? %>
+                  <% paid=0 %>
+                  <% @paid_fees.each{|a| paid += a.amount.to_f} %>
+                  <% total_fees -= paid %>
+                  <%if @fine_amount.present?%>
+                    <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                        <%k+=1%>
+                        <td class="col-8" colspan="2" ><%= t('fine_on') %> <%= Date.today %></td>
+                        <td class="col-6" ><%= "#{precision_label(@fine_amount.to_f)}" %></td>
+                    </tr>
+                  <%end%>
+                    <% if paid.to_i>0 %>
+                     <% @fee_particulars.each do |fee| %>
+                        <%  if !fee.name.index("Vat").blank? %>
+                          <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                            <td class="name-td" colspan="2"><b><%= fee.name %></b></td>
+                            <td class="mark-td"><% if fee.amount.to_i > 0 %><%= "#{precision_label(fee.amount.to_s)}" %><% else %>-<% end %></td>
+                          </tr>
+                        <% end %>
+                    <% end %>
+                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                          <%k+=1%>
+                          <td class="col-8" colspan="2" ><%= t('payment_done') %></td>
+                          <td class="col-6" ><%= precision_label(paid) %></td>
+                      </tr>
+                    <% end %>
+                  
+                <% end %>
+                <% if paid.to_i<=0 %> 
+                  <%balance=@financefee.balance.to_f+@fine.to_f+@fine_amount.to_f-vat_amount%>
+                  <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                      <%k+=1%>
+                      <td colspan="2" class="col-8"><b><%= "Total Payable Amount (Without Vat)" %></b></td>
+                      <td class="col-pdf"><%= "#{precision_label(balance)}" %></td>
+                  </tr>
+                  <% @fee_particulars.each do |fee| %>
+                      <%  if !fee.name.index("Vat").blank? %>
+                        <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                          <td class="name-td" colspan="2"><b><%= fee.name %></b></td>
+                          <td class="mark-td"><% if fee.amount.to_i > 0 %><%= "#{precision_label(fee.amount.to_s)}" %><% else %>-<% end %></td>
+                        </tr>
+                        <% balance = balance+fee.amount %>
+                      <% end %>
+                  <% end %>
+
+                  <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                      <%k+=1%>
+                      <td colspan="2" class="col-8"><b>Total Payable Amount Including Vat <br/>(if paid within <%= @date.due_date %> )</b></td>
+                      <td class="col-pdf"><%= "#{precision_label(balance)}" %></td>
+                  </tr>
+                  <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                      <td colspan="3">Amount in Word :<b><%= in_words(balance.to_i) %></b></td>
+                  </tr>
+
+
+                  <% if MultiSchool.current_school.id == 2 %>
+                  <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                      <% date_one = @date.due_date.to_date+1.days %>
+                      <% date_two = date_one+1.months %>
+                      <td colspan="2" class="col-8"><b>Payable Amount with fine 200 Tk+Vat( if payment date is from <b><%= date_one.to_s %></b> to <b><%= date_two.to_s %></b>  ) And permission of principle is needed</td>
+                      <%
+                        fine_vat = (200*7.5)/100
+                        fine_vat = fine_vat.ceil
+                        total_fine = 200+fine_vat.to_i
+                        balance1 = balance+total_fine
+
+                      %>
+
+                      <td class="col-pdf"><%= "#{precision_label(balance1)}" %></td>
+                  </tr>
+                  <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                      <% date_one = date_two+1.days %>
+                      <% date_two = date_one+1.months %>
+                      <td colspan="2" class="col-8"><b>Payable Amount with fine 400 Tk+Vat( if payment date is from <b><%= date_one.to_s %></b> to <b><%= date_two.to_s %></b>  ) And permission of principle is needed</td>
+                      <%
+                        fine_vat = (400*7.5)/100
+                        fine_vat = fine_vat.ceil
+                        total_fine = 400+fine_vat.to_i
+                        balance2 = balance+total_fine
+
+                      %>
+
+                      <td class="col-pdf"><%= "#{precision_label(balance2)}" %></td>
+                  </tr>
+                  <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+
+                      <td colspan="2" class="col-8"><b>Payable Amount with fine 1000 Tk+Vat( if paid after from <b><%= date_two.to_s %></b> ) And permission of principle is needed</td>
+                      <%
+                        fine_vat = (600*7.5)/100
+                        fine_vat = fine_vat.ceil
+                        total_fine = 1000+fine_vat.to_i
+                        balance3 = balance+total_fine
+
+                      %>
+
+                      <td class="col-pdf"><%= "#{precision_label(balance3)}" %></td>
+                  </tr>
+                <% end %>
+                
+                <% end %>
+                <% if ((k+1)%1)==0 %>
+              </table>
+              </center>
+               <table id="pdf-table" width="100%" >
+
+                    <% end %>
+                </table>
+              
+              <table class="signature">
+                  <tr>
+                      <td>Parent/Student</td>
+                      <td>Cashier</td>
+                      <td>Officer</td>
+                  </tr>
+              </table>
+              
+              <h4 align="center">Parent Mobile No: .........................</h4>
+             
+              <center class="margin-top-10">
+                  <img src="http://www.barcodes4.me/barcode/c128a/<%= @student.id.to_s+"-"+params[:id2].to_s+"-"+@student.batch.id.to_s %>.png?width=200&height=50" />
+              </center>
+              <center>
+                <div id="pdf-header-south" class="copy">
+                    <h3><%= cp %></h3>
+                </div>          
+              <center>      
+              
+    </div>
+    
+    <% end %>
+    
+    
+</div>
+
+

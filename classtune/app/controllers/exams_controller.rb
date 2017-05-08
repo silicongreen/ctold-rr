@@ -477,7 +477,7 @@ class ExamsController < ApplicationController
         end
       end
       unless @students.blank?
-        @ordered_students = @students
+        @ordered_students = @students.sort
         @students=[]
         @ordered_students.each do|s|
           @students.push s[3]

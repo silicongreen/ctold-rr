@@ -1,0 +1,236 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+
+
+
+<div id="page-yield">
+  <% unless flash[:notice].nil? %>
+    <p class="flash-msg"> <%= flash[:notice] %> </p>
+  <% end %>
+    
+    <% unless @batches.blank? %>
+        <div class="box">
+            <%= select :batch, :batch_id,@batches.map {|b| [b.full_name, b.full_name] },{:prompt => "Select a Class"} %>
+        </div>
+        
+    <% end %>
+    <% unless @exams_data.blank? %>
+        <div class="box" id="examgroup" style="margin-top:10px;">
+            <%= select :exam, :exam_id,@exams_data.map {|b| [b.name, b.name] },{:prompt => "Select a Exam"} %>
+        </div>
+        
+    <% end %>
+    <div id="exams-list" class="box">
+      
+    </div>
+  <div class="box">
+    <table id="exam_data"  class="mdl-data-table" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>Class</th>
+                <th>Exam Name</th>
+                <th>Subject</th>
+                <th>&nbsp;</th>
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
+        
+        
+    </table>   
+    <div class="extender"></div>
+  </div>
+    
+    <div id="pdf_file" style="float: left; width:60%; margin-top:-70px; margin-left: 10px;background: transparent url(/images/pdf_loading2.gif) no-repeat;background-position: center;"></div>  
+    
+</div>
+<script>
+  var jj = jQuery.noConflict();
+  jj(document).ready(function () {
+      <%#*PDFObject.embed("http://chs.classtune.dev/exam/tabulation/91", "#pdf_file");%>
+      var oDataTable = jj('#exam_data').DataTable( {
+        "ajax": "/marks/data_connect_exam_report",
+        "deferRender": true,
+        "order": [],
+        "oSearch": { "bSmart": false },
+        columnDefs: [
+            {
+                targets: [ 0, 1, 2 ],
+                className: 'mdl-data-table__cell--non-numeric'
+            }
+        ]
+    } );
+   jj( document ).on( "change", "#exam_exam_id", function() {
+      if(jj("#exam_exam_id").val())
+      {
+        oDataTable.column( 1 ).search( jj("#exam_exam_id").val(),false,false).draw();
+      }
+      else
+      {
+        oDataTable.column( 1 ).search("").draw();
+      } 
+    });
+    
+   jj( document ).on( "click", "a", function(event) {
+      jj("#pdf_file").hide();
+      if(jj(this).attr("href").indexOf("continues")!=-1 || (jj(this).attr("href").indexOf("tabulation")!=-1 && jj(this).attr("href").indexOf("comment_tabulation")==-1 ) || jj(this).attr("href").indexOf("marksheet")!=-1)
+      {
+         jj("#pdf_file").show();
+         event.preventDefault();
+         PDFObject.embed(jj(this).attr("href"), "#pdf_file", {id: "pdf_id"});
+        
+         
+      }
+      
+    });
+    
+    jj("#batch_batch_id").change(function(){
+      if(jj("#batch_batch_id").val())
+      {
+        oDataTable.column( 0 ).search( jj("#batch_batch_id").val(),false,false).draw();
+        jj.get( "/marks/examgroup", { batch_name: jj("#batch_batch_id").val() } )
+        .done(function( data ) {
+          jj("#examgroup").html(data);
+        });
+      }
+      else
+      {
+        oDataTable.column( 0 ).search("").draw();
+        jj.get( "/marks/examgroup", { batch_name: "0" } )
+        .done(function( data ) {
+          jj("#examgroup").html(data);
+        });
+        
+      } 
+    });
+  });
+</script>
+<style>
+ #pdf_file
+ {
+     display:none;
+     min-height: 50px;
+ }
+  table tr td a
+  {
+     text-decoration: none;
+     cursor: pointer;
+     color: black;
+  }
+  .pagination {
+      margin-top: 0px;
+    margin-right: -18px;
+}
+.box select
+{
+    margin-left: 16px;
+    height: 27px;
+    width: 200px;
+}
+body, html
+{
+    line-height: normal;
+    font-family: initial;
+}
+.sub-header3
+{
+    float: right;
+    padding-top: 38px;
+    margin-right: 10px;
+}
+.sub-header3 a
+{
+    float: left;
+    margin-left: 0px;
+    text-decoration: none;
+    color: black;
+    padding: 7px;
+    border: 1px solid white;
+    background: white;
+    cursor: pointer;
+    width: 73px;
+    
+}
+.sub-header2
+{
+    float: right;
+    padding-top: 38px;
+    
+}
+.sub-header2 a
+{
+    float: left;
+    
+    text-decoration: none;
+    color: black;
+    padding: 7px;
+    border: 1px solid white;
+    background: white;
+    cursor: pointer;
+    
+}
+a:hover
+{
+  text-decoration: underline;
+}
+.mdl-data-table
+{
+   white-space: normal;
+}
+#content_wrapper
+{
+    width:96%;
+}
+.champs21_palette_container_1 #boxes
+{
+    width:100% !important;
+    display:none;
+    height: 0px;
+}
+.champs21_palette_container_1 #boxes .als-viewport
+{
+    width:100% !important
+}
+.champs21_palette_container_1 #boxes .als-next
+{
+    display:none;
+}
+.school_feed_box
+{
+    width:0px;
+    display:none;
+}
+#page-yield
+{
+    width: 97%;
+}
+#page-yield .box
+{
+    width: 38%;
+    float:left;
+    clear:both;
+}
+
+
+
+</style>
+<style>
+.pdfobject-container { height: 700px;}
+.pdfobject { border: 1px solid #666; }
+</style>

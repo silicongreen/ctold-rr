@@ -432,50 +432,42 @@ class Exams extends CActiveRecord
             if ($no_exams == 0)
             {
                 $criteria->addCondition(
-                        "(Examgroup.id = :exam_id AND Examgroup.batch_id = :batch_id AND Examgroup.school_id = :school_id)
+                        "(Examgroup.id = ".$exam_id." AND Examgroup.batch_id = ".$batch_id." AND Examgroup.school_id = ".$school_id.")
                        AND (
                               (
                               Subjects.elective_group_id IS NULL
-                              AND Subjects.no_exams = '0'
-                              AND Subjects.is_deleted = '0'
-                              AND Subjects.school_id = :school_id
+                              AND Subjects.no_exams = 0
+                              AND Subjects.is_deleted = 0
+                              AND Subjects.school_id = ".$school_id."
                           )
                           OR (
-                              studentSubject.student_id = :student_id
-                              AND studentSubject.batch_id = :batch_id
-                              AND electiveGroup.is_deleted = '0'
-                              AND electiveGroup.school_id = :school_id
+                              studentSubject.student_id = ".$student_id."
+                              AND studentSubject.batch_id = ".$batch_id."
+                              AND electiveGroup.is_deleted = 0
+                              AND electiveGroup.school_id = ".$school_id."
                           )
                        )"
                 );
-                $params[':exam_id'] = $exam_id;
-                $params[':school_id'] = $school_id;
-                $params[':batch_id'] = $batch_id;
-                $params[':student_id'] = $student_id;
             } 
             else
             {
                 $criteria->addCondition(
-                        "(Examgroup.id = :exam_id AND Examgroup.batch_id = :batch_id AND Examgroup.school_id = :school_id)
+                        "(Examgroup.id = ".$exam_id." AND Examgroup.batch_id = ".$batch_id." AND Examgroup.school_id = ".$school_id.")
                        AND (
                               (
                               Subjects.elective_group_id IS NULL
-                              AND Subjects.no_exams = '1'
-                              AND Subjects.is_deleted = '0'
-                              AND Subjects.school_id = :school_id
+                              AND Subjects.is_deleted = 0
+                              AND Subjects.school_id = ".$school_id."
                           )
                           OR (
-                              studentSubject.student_id = :student_id
-                              AND studentSubject.batch_id = :batch_id
-                              AND electiveGroup.is_deleted = '0'
-                              AND electiveGroup.school_id = :school_id
+                              studentSubject.student_id = ".$student_id."
+                              AND studentSubject.batch_id = ".$batch_id."
+                              AND electiveGroup.is_deleted = 0
+                              AND electiveGroup.school_id = ".$school_id."
                           )
                        )"
                 );
-                $params[':exam_id'] = $exam_id;
-                $params[':school_id'] = $school_id;
-                $params[':batch_id'] = $batch_id;
-                $params[':student_id'] = $student_id;
+               
             }
         } 
         else if ($tommmorow)
@@ -483,49 +475,42 @@ class Exams extends CActiveRecord
             if ($no_exams == 0)
             {
                 $criteria->addCondition(
-                        "DATE(t.start_time) = :start_time AND (Examgroup.batch_id = :batch_id AND Examgroup.school_id = :school_id)
-                     AND (
-                            (
-                            Subjects.elective_group_id IS NULL
-                            AND Subjects.is_deleted = '0'
-                            AND Subjects.no_exams = '0'
-                            AND Subjects.school_id = :school_id
-                        )
-                        OR (
-                            studentSubject.student_id = :student_id
-                            AND studentSubject.batch_id = :batch_id
-                            AND electiveGroup.is_deleted = '0'
-                            AND electiveGroup.school_id = :school_id
-                        )
-                     )"
+                        "(DATE(t.start_time) = '".$tommmorow."' AND Examgroup.batch_id = ".$batch_id." AND Examgroup.school_id = ".$school_id.")
+                       AND (
+                              (
+                              Subjects.elective_group_id IS NULL
+                              AND Subjects.no_exams = 0
+                              AND Subjects.is_deleted = 0
+                              AND Subjects.school_id = ".$school_id."
+                          )
+                          OR (
+                              studentSubject.student_id = ".$student_id."
+                              AND studentSubject.batch_id = ".$batch_id."
+                              AND electiveGroup.is_deleted = 0
+                              AND electiveGroup.school_id = ".$school_id."
+                          )
+                       )"
                 );
-                $params[':start_time'] = $tommmorow;
-                $params[':school_id'] = $school_id;
-                $params[':batch_id'] = $batch_id;
-                $params[':student_id'] = $student_id;
             } 
             else
             {
                 $criteria->addCondition(
-                        "DATE(t.start_time) = :start_time AND (Examgroup.batch_id = :batch_id AND Examgroup.school_id = :school_id)
-                     AND (
-                            (
-                            Subjects.elective_group_id IS NULL
-                            AND Subjects.is_deleted = '0'
-                            AND Subjects.school_id = :school_id
-                        )
-                        OR (
-                            studentSubject.student_id = :student_id
-                            AND studentSubject.batch_id = :batch_id
-                            AND electiveGroup.is_deleted = '0'
-                            AND electiveGroup.school_id = :school_id
-                        )
-                     )"
+                        "(DATE(t.start_time) = '".$tommmorow."' AND Examgroup.batch_id = ".$batch_id." AND Examgroup.school_id = ".$school_id.")
+                       AND (
+                              (
+                              Subjects.elective_group_id IS NULL
+                              AND Subjects.is_deleted = 0
+                              AND Subjects.school_id = ".$school_id."
+                          )
+                          OR (
+                              studentSubject.student_id = ".$student_id."
+                              AND studentSubject.batch_id = ".$batch_id."
+                              AND electiveGroup.is_deleted = 0
+                              AND electiveGroup.school_id = ".$school_id."
+                          )
+                       )"
                 );
-                $params[':start_time'] = $tommmorow;
-                $params[':school_id'] = $school_id;
-                $params[':batch_id'] = $batch_id;
-                $params[':student_id'] = $student_id;
+             
             }
         } 
         else
@@ -533,50 +518,44 @@ class Exams extends CActiveRecord
             if ($no_exams == 0)
             {
                 $criteria->addCondition(
-                        "(Examgroup.is_current = '1' AND Examgroup.batch_id = :batch_id AND Examgroup.school_id = :school_id)
-                      AND (
-                             (
-                             Subjects.elective_group_id IS NULL
-                             AND Subjects.is_deleted = '0'
-                             AND Subjects.school_id = :school_id
-                         )
-                         OR (
-                             studentSubject.student_id = :student_id
-                             AND studentSubject.batch_id = :batch_id
-                             AND electiveGroup.is_deleted = '0'
-                             AND electiveGroup.school_id = :school_id
-                         )
-                      )"
+                        "(Examgroup.is_current = 1 AND Examgroup.batch_id = ".$batch_id." AND Examgroup.school_id = ".$school_id.")
+                       AND (
+                              (
+                              Subjects.elective_group_id IS NULL
+                              AND Subjects.no_exams = 0
+                              AND Subjects.is_deleted = 0
+                              AND Subjects.school_id = ".$school_id."
+                          )
+                          OR (
+                              studentSubject.student_id = ".$student_id."
+                              AND studentSubject.batch_id = ".$batch_id."
+                              AND electiveGroup.is_deleted = 0
+                              AND electiveGroup.school_id = ".$school_id."
+                          )
+                       )"
                 );
-                $params[':school_id'] = $school_id;
-                $params[':batch_id'] = $batch_id;
-                $params[':student_id'] = $student_id;
+                
             } else
             {
                 $criteria->addCondition(
-                        "(Examgroup.is_current = '1' AND Examgroup.batch_id = :batch_id AND Examgroup.school_id = :school_id)
-                      AND (
-                             (
-                             Subjects.elective_group_id IS NULL
-                             AND Subjects.is_deleted = '0'
-                             AND Subjects.school_id = :school_id
-                         )
-                         OR (
-                             studentSubject.student_id = :student_id
-                             AND studentSubject.batch_id = :batch_id
-                             AND electiveGroup.is_deleted = '0'
-                             AND electiveGroup.school_id = :school_id
-                         )
-                      )"
+                        "(Examgroup.is_current = 1 AND Examgroup.batch_id = ".$batch_id." AND Examgroup.school_id = ".$school_id.")
+                       AND (
+                              (
+                              Subjects.elective_group_id IS NULL
+                              AND Subjects.is_deleted = 0
+                              AND Subjects.school_id = ".$school_id."
+                          )
+                          OR (
+                              studentSubject.student_id = ".$student_id."
+                              AND studentSubject.batch_id = ".$batch_id."
+                              AND electiveGroup.is_deleted = 0
+                              AND electiveGroup.school_id = ".$school_id."
+                          )
+                       )"
                 );
-                $params[':school_id'] = $school_id;
-                $params[':batch_id'] = $batch_id;
-                $params[':student_id'] = $student_id;
             }
         }
 
-
-        $criteria->params = $params;
 
         $data = $this->findAll($criteria);
 

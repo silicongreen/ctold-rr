@@ -428,6 +428,7 @@ class Exams extends CActiveRecord
         $criteria->order = "t.start_time ASC";
         if ($exam_id)
         {
+            
             if ($no_exams == 0)
             {
                 $criteria->addCondition(
@@ -451,13 +452,15 @@ class Exams extends CActiveRecord
                 $params[':school_id'] = $school_id;
                 $params[':batch_id'] = $batch_id;
                 $params[':student_id'] = $student_id;
-            } else
+            } 
+            else
             {
                 $criteria->addCondition(
                         "(Examgroup.id = :exam_id AND Examgroup.batch_id = :batch_id AND Examgroup.school_id = :school_id)
                        AND (
                               (
                               Subjects.elective_group_id IS NULL
+                              AND Subjects.no_exams = '1'
                               AND Subjects.is_deleted = '0'
                               AND Subjects.school_id = :school_id
                           )
@@ -474,7 +477,8 @@ class Exams extends CActiveRecord
                 $params[':batch_id'] = $batch_id;
                 $params[':student_id'] = $student_id;
             }
-        } else if ($tommmorow)
+        } 
+        else if ($tommmorow)
         {
             if ($no_exams == 0)
             {
@@ -499,7 +503,8 @@ class Exams extends CActiveRecord
                 $params[':school_id'] = $school_id;
                 $params[':batch_id'] = $batch_id;
                 $params[':student_id'] = $student_id;
-            } else
+            } 
+            else
             {
                 $criteria->addCondition(
                         "DATE(t.start_time) = :start_time AND (Examgroup.batch_id = :batch_id AND Examgroup.school_id = :school_id)
@@ -522,7 +527,8 @@ class Exams extends CActiveRecord
                 $params[':batch_id'] = $batch_id;
                 $params[':student_id'] = $student_id;
             }
-        } else
+        } 
+        else
         {
             if ($no_exams == 0)
             {

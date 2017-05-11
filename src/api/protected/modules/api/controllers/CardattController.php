@@ -252,7 +252,10 @@ class CardattController extends Controller
             {
 
                 $this->insert_employee($emp,$ids_array,$entry_date_time_array,$school_id);
-                $this->insert_student($std,$ids_array,$entry_date_time_array,$school_id);
+                if(!in_array($school_id,Settings::$card_attendence_school_employee_only))
+                {
+                    $this->insert_student($std,$ids_array,$entry_date_time_array,$school_id);
+                }
 
             }
         }   
@@ -320,7 +323,7 @@ class CardattController extends Controller
             }
             // employee attendance
             
-            if($all_std_id)
+            if($all_std_id && !in_array($school_id,Settings::$card_attendence_school_employee_only))
             {
                 $absent_studnets = $std->getStudentNotInAdmission($student_id_array,$school_id,$all_std_admission);
                 $attendence = new Attendances();

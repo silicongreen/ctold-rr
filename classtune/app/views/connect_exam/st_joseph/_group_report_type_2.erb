@@ -37,6 +37,7 @@
                   <% total_parcent = 0 %>
                   <% total_subject = 0 %>
                   <% full_marks_total = 0 %>
+                  <% total_marks_student = 0 %>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
@@ -130,10 +131,10 @@
                                 <td class="col-pdf"><b>N/A</b></td>
                               <% end %>
                             <% end %>  
-
+                            <% full_marks_total = full_marks_total+full_mark.to_f %>  
+                            <% total_marks_student = total_marks_student+total_mark.to_f %> 
                             <% total_parcent= total_parcent+main_mark %>
                             <% total_subject = total_subject+1 %>
-                            <%  full_marks_total = full_marks_total.to_f+full_mark.to_f %>
                           <% else  %>
                             <td class="col-pdf">N/A</td>
                             <td class="col-pdf">N/A</td>
@@ -148,7 +149,7 @@
               </table>
 
 
-              <% avgparcent = (total_parcent.to_f/full_marks_total.to_f)*100 %>
+              <% avgparcent = (total_marks_student.to_f/full_marks_total.to_f)*100 %>
               <table id="pdf-table" class="margin-top-bottom-10 font-size-20" width="100%" >
 
                   <tr class="table-header">

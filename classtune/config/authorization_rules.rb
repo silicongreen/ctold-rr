@@ -21,6 +21,8 @@ authorization do
       :data_connect_exam,
       :data_connect_exam_report,
       :connect_exam_report,
+      :get_class,
+      :get_section,
       :examgroup
     ]
     has_permission_on [:exam],
@@ -368,6 +370,8 @@ authorization do
       :data_connect_exam,
       :data_connect_exam_report,
       :connect_exam_report,
+      :get_class,
+      :get_section,
       :examgroup
     ]
     has_permission_on [:exam],
@@ -1897,6 +1901,8 @@ authorization do
       :data_connect_exam,
       :data_connect_exam_report,
       :connect_exam_report,
+      :get_class,
+      :get_section,
       :examgroup
     ]
     has_permission_on [:exam],
@@ -3275,6 +3281,8 @@ authorization do
       :data_connect_exam,
       :data_connect_exam_report,
       :connect_exam_report,
+      :get_class,
+      :get_section,
       :examgroup
     ]
     has_permission_on [:exam],
@@ -3534,6 +3542,8 @@ authorization do
       :data_connect_exam,
       :data_connect_exam_report,
       :connect_exam_report,
+      :get_class,
+      :get_section,
       :examgroup
     ]
     has_permission_on [:exam],

@@ -5,6 +5,44 @@ class MarksController < ApplicationController
   before_filter :default_time_zone_present_time
   
   
+  def get_class
+    batch_name = params[:batch]
+    batches = Batch.find_all_by_name(batch_name)
+    @class_list = []
+    @class_names = []
+    unless batches.blank?
+      batches.each do |batch|
+        if !@class_names.include?(batch.course.course_name)
+          @class_list << batch
+          @class_names << batch.course.course_name
+        end
+      end
+    end
+    
+    json_data = {:data => @class_list}
+    @data = JSON.generate(json_data)
+    render :text => @data
+    
+  end
+  
+  def get_section
+    batch_name = params[:batch]
+    course_name = params[:course_name]
+    batches = Batch.find_all_by_name(batch_name)
+    @class_list = []
+    unless batches.blank?
+      batches.each do |batch|
+        if batch.course.course_name == course_name
+          @batch_list << batch
+        end
+      end
+    end
+    json_data = {:data => @batch_list}
+    @data = JSON.generate(json_data)
+    render :text => @data
+    
+  end
+  
   def data
     if current_user.employee
       @subjects = current_user.employee_record.subjects.active

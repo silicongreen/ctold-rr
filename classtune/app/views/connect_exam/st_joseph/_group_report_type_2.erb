@@ -80,6 +80,12 @@
                                             end
                                          end
                                       end
+                                    
+                                      if fail_grade = false and !report['exam_name'].index('Obj').nil? and total_marks_single_exam.to_i = 25
+                                        if marks_obtain_single_exam.to_f < 12
+                                          fail_grade = true
+                                        end
+                                      end
                                     %>
                                     
 
@@ -194,7 +200,10 @@
                         <% @grading_levels.each_with_index do |grade,index| %>
 
                           <td>
-                              <% if grade.max_score.nil? %>  
+                              <% if grade.max_score.nil? %>
+                                <% if grade.min_score == 44.00 %>
+                                  <% grade.min_score = 45.00 %>
+                                <% end %>
                                 <%= '%i%' % grade.min_score %>
                               <% else %> 
                                 <%= grade.min_score.to_s + " - " + grade.max_score.to_s %>

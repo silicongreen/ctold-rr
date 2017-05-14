@@ -24,15 +24,15 @@
   <% unless flash[:notice].nil? %>
     <p class="flash-msg"> <%= flash[:notice] %> </p>
   <% end %>
-    <div class="all-exam-links" >
-        <a href="javascript:void(0)" onclick="result_type_change(1)" class="active" >Tabulation Sheet</a>
-        <a href="javascript:void(0)" onclick="result_type_change(2)"  >Term End Tabulation Sheet</a>
-        <a href="javascript:void(0)" onclick="result_type_change(3)"  >Progress Report</a>
-        <a href="javascript:void(0)" onclick="result_type_change(4)"  >Comment Entry</a>
-        <a href="javascript:void(0)" onclick="result_type_change(5)"  >Marks Sheet for Subject Teacher</a>
-        <a href="javascript:void(0)" onclick="result_type_change(6)"  >Marks Sheet for Class Teacher</a>
-        <a href="javascript:void(0)" onclick="result_type_change(7)"  >Subjectwise Classroom Participation</a>
-        <a href="javascript:void(0)" onclick="result_type_change(8)"  >Studentwise Classroom Participation</a>
+    <div class="all-exam-links exam_types" >
+        <a href="javascript:void(0)" onclick="result_type_change(1)" id="type_1" class="active" >Tabulation Sheet</a>
+        <a href="javascript:void(0)" onclick="result_type_change(2)"  id="type_2" >Term End Tabulation Sheet</a>
+        <a href="javascript:void(0)" onclick="result_type_change(3)"  id="type_3" >Progress Report</a>
+        <a href="javascript:void(0)" onclick="result_type_change(4)"  id="type_4" >Comment Entry</a>
+        <a href="javascript:void(0)" onclick="result_type_change(5)"  id="type_5" >Marks Sheet for Subject Teacher</a>
+        <a href="javascript:void(0)" onclick="result_type_change(6)"  id="type_6" >Marks Sheet for Class Teacher</a>
+        <a href="javascript:void(0)" onclick="result_type_change(7)"  id="type_7" >Subjectwise Classroom Participation</a>
+        <a href="javascript:void(0)" onclick="result_type_change(8)"  id="type_8" >Studentwise Classroom Participation</a>
     </div>
     <input type="hidden" name="result_type" value="1" id="result_type" />
     <% batches = Batch.active.find(:all, :group => "name") %>
@@ -41,11 +41,22 @@
       <% 
       number_of_batches = batches.count()
       width_percentize = (100/number_of_batches)
+      
       %>
-        <div class="shift">
-            
+        <div class="shift all-exam-links">
+          <% batches.each do |batch| %>
+            <a style="width:<%= width_percentize-2 %>%;" href="javascript:void(0)" onclick="get_class('<%= batch.name %>')"  ><%= batch.name %></a>
+          <% end %>  
         </div>    
-      <% end %>  
+      <% end %> 
+        <div class="class_section" >
+          <div class="class_only">
+              
+          </div>
+          <div class="section_only">
+              
+          </div>
+        </div>
     </div>
     
     <div class="result_div">
@@ -54,6 +65,7 @@
     
 </div>
 <style>
+    
  #pdf_file
  {
      display:none;
@@ -162,6 +174,36 @@ a:hover
 
 
 
+.class_section
+{
+    float:left;
+    clear:both;
+    width: 100%;
+    margin-top: 10px;
+    
+}
+
+.class_only
+{
+    float:left;
+    clear:both;
+    width: 33%;
+    margin-left: 10px;   
+}
+
+.section_only
+{
+    float:left;
+    clear:both;
+    width: 65%;
+    margin-left: 10px;   
+}
+
+
+.shift
+{
+    margin-top:10px;
+}
 .all-exam-links
 {
     width: 100%;
@@ -205,8 +247,17 @@ a:hover
    clear:both;
    width: 20%;
    margin: 10px 5px;
-   min-height: 600px;
+   min-height: 700px;
    border: 2px solid #000;
+}
+
+.result_div
+{
+   float:left;
+   width: 77.5%;
+   margin: 10px 5px;
+   min-height: 700px;
+   border: 2px solid #000; 
 }
 
 
@@ -215,3 +266,24 @@ a:hover
 .pdfobject-container { height: 700px;}
 .pdfobject { border: 1px solid #666; }
 </style>
+<script>
+   var jj = jQuery.noConflict();
+   function result_type_change(type_number)
+   {
+     jj("#result_type").val(type_number);
+     jj(".exam_types a").removeClass('active');
+     jj("#type_"+type_number).addClass('active');
+     jj(".result_div").html("");
+   }
+   function get_class(batch_name)
+   {
+      jj.get( "marks/get_class?batch="+batch_name, function( data ) {
+        alert(data);
+      });
+   }
+   
+    jj(document).ready(function () {
+
+    });
+  
+</script>  

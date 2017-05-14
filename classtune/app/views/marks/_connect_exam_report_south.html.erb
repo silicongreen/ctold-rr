@@ -25,14 +25,31 @@
     <p class="flash-msg"> <%= flash[:notice] %> </p>
   <% end %>
     <div class="all-exam-links" >
-        <%= link_to_remote "Tabulation Sheet", {:url => {:action => "marks", :id =>1}, :update => "class_section"}, {:class => 'f2'} %>
-        <%= link_to_remote "Term End Tabulation Sheet", {:url => {:action => "marks", :id =>2}, :update => "class_section"}, {:class => 'f2'} %>
-        <%= link_to_remote "Progress Report", {:url => {:action => "marks", :id =>3}, :update => "class_section"}, {:class => 'f2'} %>
-        <%= link_to_remote "Comment Entry", {:url => {:action => "marks", :id =>4}, :update => "class_section"}, {:class => 'f2'} %>
-        <%= link_to_remote "Marks Sheet for Subject Teacher", {:url => {:action => "marks", :id =>5}, :update => "class_section"}, {:class => 'f2'} %>
-        <%= link_to_remote "Marks Sheet for Class Teacher", {:url => {:action => "marks", :id =>6}, :update => "class_section"}, {:class => 'f2'} %>
-        <%= link_to_remote "Subjectwise Classroom Participation", {:url => {:action => "marks", :id =>7}, :update => "class_section"}, {:class => 'f2'} %>
-        <%= link_to_remote "Studentwise Classroom Participation", {:url => {:action => "marks", :id =>8}, :update => "class_section"}, {:class => 'f2'} %>
+        <a href="javascript:void(0)" onclick="result_type_change(1)" class="active" >Tabulation Sheet</a>
+        <a href="javascript:void(0)" onclick="result_type_change(2)"  >Term End Tabulation Sheet</a>
+        <a href="javascript:void(0)" onclick="result_type_change(3)"  >Progress Report</a>
+        <a href="javascript:void(0)" onclick="result_type_change(4)"  >Comment Entry</a>
+        <a href="javascript:void(0)" onclick="result_type_change(5)"  >Marks Sheet for Subject Teacher</a>
+        <a href="javascript:void(0)" onclick="result_type_change(6)"  >Marks Sheet for Class Teacher</a>
+        <a href="javascript:void(0)" onclick="result_type_change(7)"  >Subjectwise Classroom Participation</a>
+        <a href="javascript:void(0)" onclick="result_type_change(8)"  >Studentwise Classroom Participation</a>
+    </div>
+    <input type="hidden" name="result_type" value="1" id="result_type" />
+    <% batches = Batch.active.find(:all, :group => "name") %>
+    <div class="shift_batch_section">
+      <% if batches %>
+      <% 
+      number_of_batches = batches.count()
+      width_percentize = (100/number_of_batches)
+      %>
+        <div class="shift">
+            
+        </div>    
+      <% end %>  
+    </div>
+    
+    <div class="result_div">
+      
     </div>
     
 </div>
@@ -142,16 +159,35 @@ a:hover
     clear:both;
 }
 
+
+
+
+.all-exam-links
+{
+    width: 100%;
+    cloat:left;
+    clear:both;
+}
+
+
 .all-exam-links a
 {
+    width: 12%;
     float:left;
-    padding: 5px 7px;
+    padding: 5px 0px;
+    text-align: center;
+    margin-left:5px;
     color: black;
     cursor: pointer;
     text-decoration: none;
     border:1px solid black;
-    background: #ccc;
-    border-right: none;
+    background: #d6f5d6;
+   
+}
+.all-exam-links a.active
+{
+  background: #fff;
+  cursor: crosshair;
 }
 .all-exam-links a:last-child
 {
@@ -163,6 +199,15 @@ a:hover
     background: #fff; 
 }
 
+.shift_batch_section
+{
+   float:left;
+   clear:both;
+   width: 20%;
+   margin: 10px 5px;
+   min-height: 600px;
+   border: 2px solid #000;
+}
 
 
 </style>

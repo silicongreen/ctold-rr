@@ -26,7 +26,7 @@ class FeeDiscount < ActiveRecord::Base
   has_many   :collection_discounts
   belongs_to :batch
   belongs_to :finance_fee_particular
-  validates_uniqueness_of :name,:scope=>[:batch_id,:finance_fee_category_id]
+#  validates_uniqueness_of :name,:scope=>[:batch_id,:finance_fee_category_id]
   validates_inclusion_of :discount, :in => 0..100,:unless=>:is_amount,:message=>:amount_in_percentage_cant_exceed_100,:allow_blank=>true
 #  after_create :update_category,:if=>Proc.new{Configuration.find_by_config_key("SetupDiscountReceiverType").present? and Configuration.find_by_config_key("SetupCollectionDiscount").present?}
   before_update :collection_exist

@@ -42,8 +42,8 @@ class EmpattendanceController < ApplicationController
       @report_type = params[:report_type]
       @report_date = params[:report_date]
       
-      @report_date_from = @report_date
-      @date_today = @report_date
+      @report_date_from = @report_date.to_date.strftime("%Y-%m-%d")
+      @date_today = @report_date.to_date.strftime("%Y-%m-%d")
       @year = @report_date.to_date.strftime("%Y")
       @month = @report_date.to_date.strftime("%m")
      
@@ -169,7 +169,7 @@ class EmpattendanceController < ApplicationController
             b_filtered_search = true
         end
       end
-      unless @report_type.to_i == 3
+      unless @report_type.to_i == 3 or @report_type.to_i == 4
         unless @report_type.to_i == 1
           if b_filtered_search == true
             conditions += " AND "
@@ -187,14 +187,26 @@ class EmpattendanceController < ApplicationController
           recordsFiltered = employees_length
         end
       else
-        if b_filtered_search
-          conditions += " AND "
-        end
-        @employees_all = Employee.find(:all, :conditions=>conditions + " date BETWEEN '" + @report_date_from + "' and '" + @date_today + "' and type = 1", :select => "employees.id,employees.user_id, concat( employees.employee_number, ' - ', employees.first_name,' ',employees.last_name )  as employee_info, employees.employee_department_id, '' as in_time, '' as out_time, '' as stat", :joins => "INNER JOIN card_attendance ON employees.user_id = card_attendance.user_id", :group => "employees.user_id")
-        @employees = Employee.paginate(:conditions=>conditions + " date BETWEEN '" + @report_date_from + "' and '" + @date_today + "' and type = 1", :select => "employees.id,employees.user_id, concat( employees.employee_number, ' - ', employees.first_name,' ',employees.last_name )  as employee_info, employees.employee_department_id, '' as in_time, '' as out_time, '' as stat", :joins => "INNER JOIN card_attendance ON employees.user_id = card_attendance.user_id", :page => page.to_i, :per_page => per_page.to_i,:order=>""  + order_str, :group => "employees.user_id")
-        emp_ids = @employees_all.map(&:user_id).uniq
-        employees_length = emp_ids.length
-        recordsFiltered = employees_length
+        if @report_type.to_i == 3
+          if b_filtered_search
+            conditions += " AND "
+          end
+          @employees_all = Employee.find(:all, :conditions=>conditions + " date BETWEEN '" + @report_date_from + "' and '" + @date_today + "' and type = 1", :select => "employees.id,employees.user_id, concat( employees.employee_number, ' - ', employees.first_name,' ',employees.last_name )  as employee_info, employees.employee_department_id, '' as in_time, '' as out_time, '' as stat", :joins => "INNER JOIN card_attendance ON employees.user_id = card_attendance.user_id", :group => "employees.user_id")
+          @employees = Employee.paginate(:conditions=>conditions + " date BETWEEN '" + @report_date_from + "' and '" + @date_today + "' and type = 1", :select => "employees.id,employees.user_id, concat( employees.employee_number, ' - ', employees.first_name,' ',employees.last_name )  as employee_info, employees.employee_department_id, '' as in_time, '' as out_time, '' as stat", :joins => "INNER JOIN card_attendance ON employees.user_id = card_attendance.user_id", :page => page.to_i, :per_page => per_page.to_i,:order=>""  + order_str, :group => "employees.user_id")
+          emp_ids = @employees_all.map(&:user_id).uniq
+          employees_length = emp_ids.length
+          recordsFiltered = employees_length
+        else
+          if b_filtered_search
+            conditions += " AND "
+          end
+          @employees_all = Employee.find(:all, :conditions=>conditions + " date BETWEEN '" + @report_date_from + "' and '" + @date_today + "' and type = 1", :select => "employees.id,employees.user_id, concat( employees.employee_number, ' - ', employees.first_name,' ',employees.last_name )  as employee_info, employees.employee_department_id, '' as in_time, '' as out_time, '' as stat", :joins => "INNER JOIN card_attendance ON employees.user_id = card_attendance.user_id", :group => "employees.user_id")
+          @employees = @employees_all
+          emp_ids = @employees_all.map(&:user_id).uniq
+          employees_length = emp_ids.length
+          recordsFiltered = employees_length
+          
+        end  
       end
       
       employess_id = @employees.map(&:user_id)
@@ -227,8 +239,20 @@ class EmpattendanceController < ApplicationController
               in_time = ' - '
               out_time = ' - '
               time_diff = ' - '
+              is_late = ' - '
           else 
+            is_late = ' - '
+            @employee_setting = EmployeeSetting.find_by_employee_id(employee.id)
             if cardAttendance.length == 1
+              
+              unless @employee_setting.blank?
+                if cardAttendance[0]['time'].to_time > @employee_setting.start_time.to_time
+                  is_late = 'Late'
+                else
+                  is_late = 'On Time'
+                end  
+              end
+              
               in_time = cardAttendance[0]['time'].strftime("%I:%M %p")
               out_time = cardAttendance[0]['time'].strftime("%I:%M %p")
               if @date_today == @report_date.to_date
@@ -239,14 +263,28 @@ class EmpattendanceController < ApplicationController
             else  
               cardAttendance = cardAttendance.sort_by {|c| c['time']  unless c.blank?}
               in_time = cardAttendance[0]['time'].strftime("%I:%M %p")
+              unless @employee_setting.blank?
+                if cardAttendance[0]['time'].to_time > @employee_setting.start_time.to_time
+                  is_late = 'Late'
+                else
+                  is_late = 'On Time'
+                end  
+              end
               out_time = cardAttendance[cardAttendance.length - 1]['time'].strftime("%I:%M %p")
               time_diff = time_diff(cardAttendance[0]['time'], cardAttendance[cardAttendance.length - 1]['time'])
             end
            
           end
-          emp = {:employee_info => "<a href='/employee_attendance/card_attendance_pdf?employee_id=" + employee.id.to_s + "&month=" + @month.to_s + "&year="+@year.to_s+"' target='_blank'>" + employee.employee_info + "<a/>", :department => dept_name, :in_time => in_time, :out_time => out_time, :status => time_diff }
-          data[k] = emp
-          k += 1
+          @emp = Employee.find(employee.id)
+          employee_image = "<img src='/images/HR/default_employee.png' width='100px' />"
+          if @emp.photo.file?
+            employee_image = "<img src='"+@emp.photo.url+"' width='100px' />"
+          end
+          if @report_type.to_i != 4 or is_late == "Late" 
+            emp = {:employee_image => employee_image,:employee_info => "<a href='/employee_attendance/card_attendance_pdf?employee_id=" + employee.id.to_s + "&month=" + @month.to_s + "&year="+@year.to_s+"' target='_blank'>" + employee.employee_info + "<a/>", :department => dept_name, :in_time => in_time, :out_time => out_time, :status => time_diff,:late => is_late }
+            data[k] = emp
+            k += 1
+          end
         end
       end
       data_hash = {:draw => draw, :recordsTotal => employees_length, :recordsFiltered => recordsFiltered, :data => data}

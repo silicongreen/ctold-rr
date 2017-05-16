@@ -38,17 +38,30 @@
         <div id="pdf-info">
             <% c='even' %>
             <% unless @employee.blank? or @emp_attendance.blank? %>
+            <% 
+              @employee_setting = EmployeeSetting.find_by_employee_id(@employee.id)
+            %>
               <table id="pdf-table" width="100%" cellspacing="0">
-                  <tr class="table-header"><td class="col-pdf">Date</td><td class="col-pdf">In Time</td><td class="col-pdf">Out Time</td></tr>
+                  <tr class="table-header"><td class="col-pdf">Date</td><td class="col-pdf">In Time</td><td class="col-pdf">Out Time</td><td class="col-pdf">Late</td></tr>
                   <% i = 0 %>
                   <% @emp_attendance.each do |e| %>
-                   
+                    <% late = "-" %>
+                    <%
+                      unless @employee_setting.blank?
+                        if Time.parse(e.mintime).strftime("%H%M").to_i > @employee_setting.start_time.strftime("%H%M").to_i
+                          late = 'Late'
+                        else
+                          late = 'On Time'
+                        end
+                      end
+                    %>
                     <tr class="<%= cycle('odd', 'even') %>">
                         <td class="col-pdf">
                             <%= e.date.strftime("%d/%m/%Y") %>
                         </td>
                         <td class="col-pdf"><%= Time.parse(e.mintime).strftime("%I:%M %p") unless e.mintime.nil? %></td>
                         <td class="col-pdf"><%= Time.parse(e.maxtime).strftime("%I:%M %p") unless e.maxtime.nil? %></td>
+                        <td class="col-3"><%= late %></td>
                     </tr><!-- attendance_tr -->
                   <% end %>
 

@@ -246,7 +246,8 @@ class EmpattendanceController < ApplicationController
             if cardAttendance.length == 1
               
               unless @employee_setting.blank?
-                if cardAttendance[0]['time'].to_time > @employee_setting.start_time.to_time
+                
+                if cardAttendance[0]['time'].to_time.strftime("%H%M").to_i > @employee_setting.start_time.strftime("%H%M").to_i
                   is_late = 'Late'
                 else
                   is_late = 'On Time'
@@ -264,7 +265,8 @@ class EmpattendanceController < ApplicationController
               cardAttendance = cardAttendance.sort_by {|c| c['time']  unless c.blank?}
               in_time = cardAttendance[0]['time'].strftime("%I:%M %p")
               unless @employee_setting.blank?
-                if cardAttendance[0]['time'].to_time > @employee_setting.start_time.to_time
+             
+                if cardAttendance[0]['time'].to_time.strftime("%H%M").to_i > @employee_setting.start_time.strftime("%H%M").to_i
                   is_late = 'Late'
                 else
                   is_late = 'On Time'

@@ -182,9 +182,9 @@
           </div>
         </div>
 
-        <hr class="label-underline"  style="display: none;"></hr>
+        <hr class="label-underline"></hr>
 
-        <div class="label-field-pair"  style="display: none;">
+        <div class="label-field-pair" >
           <label for="student_blood_group"><%= t('blood_group') %></label>
           <div class="text-input-bg"><%= select :student, :blood_group, ["A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"],{:prompt=> "#{t('unknown')}"} %></div>
         </div>
@@ -242,13 +242,13 @@
         <span class="span-sub-heading"><%= t('contact_details') %></span>
         <hr class="sub-heading"></hr>
         <div class="label-field-pair">
-          <label for="student_city"><%= t('address_line') %>1</label>
+          <label for="student_city"><%= t('address_line') %></label>
           <div class="text-input-bg"><%= s.text_field :address_line1 %></div>
         </div>
         <hr class="label-underline"></hr>
 
         <div class="label-field-pair">
-          <label for="student_city"><%= t('address_line') %>2</label>
+          <label for="student_city"><%= t('address_line2') %></label>
           <div class="text-input-bg"><%= s.text_field :address_line2 %></div>
         </div>
         <hr class="label-underline"></hr>
@@ -257,15 +257,15 @@
           <label for="student_city"><%= t('city') %></label>
           <div class="text-input-bg"><%= s.text_field :city %></div>
         </div>
-        <hr class="label-underline"  style="display: none;"></hr>
+        <hr class="label-underline" ></hr>
 
-        <div class="label-field-pair"  style="display: none;">
+        <div class="label-field-pair">
           <label for="student_state"><%= t('state') %></label>
           <div class="text-input-bg"><%= s.text_field :state %></div>
         </div>
-        <hr class="label-underline"  style="display: none;"></hr>
+        <hr class="label-underline"></hr>
 
-        <div class="label-field-pair"  style="display: none;">
+        <div class="label-field-pair" >
           <label for="student_pin_code"><%= t('zip') %></label>
           <div class="text-input-bg"><%= s.text_field :pin_code %></div>
         </div>

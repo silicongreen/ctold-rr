@@ -172,13 +172,14 @@
           </div>
 
           <hr class="label-underline"></hr>
-
-          <div style="display: none;">
-              <div class="label-field-pair">
+          <div class="label-field-pair">
                   <label for="master_student_blood_group"><%= t('blood_group') %></label>
                   <div class="text-input-bg"><%= select :student, :blood_group, ["#{t('unknown')}","A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"],{ :prompt => "#{t('select_blood_group')}" },
                         :selected => @student.blood_group %></div>
               </div>
+
+          <div style="display: none;">
+              
 
               <hr class="label-underline"></hr>
 
@@ -231,7 +232,7 @@
           <div id="admission1_form_vertical_block_right">
 
               <div class="label-field-pair">
-                  <label for="master_student_city"><%= t('address_line1') %></label>
+                  <label for="master_student_city"><%= t('address_line') %></label>
                   <div class="text-input-bg"><%= s.text_field :address_line1, :value => @student.address_line1 %></div>
               </div>
 
@@ -251,19 +252,19 @@
 
               <hr class="label-underline"></hr>
 
-              <div class="label-field-pair" style="display: none;">
+              <div class="label-field-pair">
                   <label for="master_student_state"><%= t('state') %></label>
                   <div class="text-input-bg"><%= s.text_field :state, :value =>@student.state %></div>
               </div>
 
-              <hr class="label-underline" style="display: none;"></hr>
+              <hr class="label-underline"></hr>
 
-              <div class="label-field-pair" style="display: none;">
+              <div class="label-field-pair">
                   <label for="master_student_pin_code"><%= t('zip') %></label>
                   <div class="text-input-bg"><%= s.text_field :pin_code, :value =>@student.pin_code %></div>
               </div>
 
-              <hr class="label-underline" style="display: none;"></hr>
+              <hr class="label-underline"></hr>
 
               <div class="label-field-pair">
                   <label for="master_student_country"><%= t('country') %></label>

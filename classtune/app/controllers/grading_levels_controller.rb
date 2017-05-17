@@ -108,6 +108,7 @@ class GradingLevelsController < ApplicationController
       params[:grading_level][:max_score] = nil
     end
     @grading_level = GradingLevel.find params[:id]
+    @grade_name = @grading_level.name
     respond_to do |format|
       if @grading_level.update_attributes(params[:grading_level])
         if @grading_level.batch.nil?
@@ -122,7 +123,7 @@ class GradingLevelsController < ApplicationController
             @batches = Batch.find_all_by_course_id(c.id)
             @batches.each do |batch|
               if this_id != batch.id
-                @tmp_grading_level = GradingLevel.find_by_batch_id(batch.id)
+                @tmp_grading_level = GradingLevel.find_by_batch_id_and_name_and_is_deleted(batch.id,@grade_name,0)
                 if !@tmp_grading_level.blank?
                   @tmp_grading_level.update_attributes(params[:grading_level])
                 end
@@ -152,8 +153,10 @@ class GradingLevelsController < ApplicationController
         @batches = Batch.find_all_by_course_id(c.id)
         @batches.each do |batch|
           if this_id != batch.id
-            @tmp_grading_level = GradingLevel.find_by_batch_id(batch.id)
-            @tmp_grading_level.inactivate
+            @tmp_grading_level = GradingLevel.find_by_batch_id_and_name_and_is_deleted(batch.id,@grading_level.name,0)
+            unless @tmp_grading_level.blank?
+              @tmp_grading_level.inactivate
+            end
           end
         end  
       end

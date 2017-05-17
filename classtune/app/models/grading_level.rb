@@ -24,7 +24,7 @@ class GradingLevel < ActiveRecord::Base
   validates_presence_of :min_score, :if => Proc.new { |grading_level| grading_level.grading_type}
   validates_presence_of :max_score, :if => Proc.new { |grading_level| grading_level.grading_type and grading_level.type_data == "normal"}
 #  validates_presence_of :credit_points, :if=>:batch_has_gpa
-#  validates_uniqueness_of :name, :scope => [:batch_id, :is_deleted],:case_sensitive => false
+  validates_uniqueness_of :name, :scope => [:batch_id, :is_deleted],:case_sensitive => false
   validates_numericality_of :min_score ,:credit_points ,:greater_than_or_equal_to => 0, :message =>:must_be_positive ,:allow_blank=>true
 
   default_scope :order => 'min_score desc'

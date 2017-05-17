@@ -29,7 +29,7 @@ class StudentController < ApplicationController
   before_filter :find_student, :only => [:previous_report,
     :academic_report, :academic_report_all, :admission3, :change_to_former,
     :delete, :edit, :add_guardian, :email, :remove, :reports, 
-    :guardians, :academic_pdf,:show_previous_details,:fees,:fee_details
+    :guardians, :academic_pdf,:show_previous_details,:fees,:fee_details, :form_to_apply, :noc_letter, :noc_letter_update, :close_letter
   ]
   CONN = ActiveRecord::Base.connection
   
@@ -1787,7 +1787,214 @@ class StudentController < ApplicationController
     @sms_module = Configuration.available_modules
     @parents = @student.student_guardian
   end
+  
+  def studentformlist
+    @formData = StudentForm.find_all_by_is_delete(0)
+  end
+  
+  def generate_pdf_letter
+    unless params[:st_content].nil?      
+      @formData = StudentForm.find_by_id(params[:aid])
+      @formData.update_attributes(:generated_form => params[:content_editor])
+      
+      flash[:warn_notice]="<p>Form updated.</p>"
+      redirect_to :action=>'studentformlist'
+    else
+      @schoolData = MultiSchool.current_school
+      @student = Student.find(params[:id])
+      @formData = StudentForm.find_by_id(params[:aid])
+    end
+    
+  end
+  
+  def view_pdf_letter
+    @student = Student.find(params[:id])
+    @formData = StudentForm.find_by_id(params[:aid])
+    
+    render :pdf=>'view_pdf_letter',:margin => {
+      :top=> 40,
+      :bottom => 20,
+      :left=> 10,
+      :right => 10 
+    }
+  end
+  
+  def form_to_apply    
+    @transferFormData             = StudentForm.find_all_by_student_id_and_form_type_text_and_is_delete(params[:id],"transfer_letter", 0)
+    @nocFormData                  = StudentForm.find_all_by_student_id_and_form_type_text_and_is_delete(params[:id],"noc_letter", 0)
+    @recommendationFormData       = StudentForm.find_all_by_student_id_and_form_type_text_and_is_delete(params[:id],"recommendation_letter", 0)
+    @studentshipFormData          = StudentForm.find_all_by_student_id_and_form_type_text_and_is_delete(params[:id],"studentship_letter", 0)
+    @visa_recommendationFormData  = StudentForm.find_all_by_student_id_and_form_type_text_and_is_delete(params[:id],"visa_recommendation_letter", 0)
+  end
+ 
+  def transfer_letter
+    @student = Student.find(params[:id])
+    respond_to do |format|
+      format.js { render :action => 'transfer_letter' }
+    end    
+  end
+  def transfer_letter_update
+    @studentForm = StudentForm.new
+    
+    @studentForm.student_id =  params[:id]
+    @studentForm.form_type_text =  "transfer_letter"
+    @studentForm.form_data =  params[:letter_data]
+    @studentForm.status =  1    
+    
+    if @studentForm.save
+        @error = true
+    end
+    render :update do |page|
+      if @studentForm.save
+        page.replace_html 'form-errors', :text => ''
+        page << "Modalbox.hide();"
+        page.replace_html 'flash_box', :text => "<p class='flash-msg'>#{t('flash_msg20')}</p>"
 
+      else
+        page.replace_html 'form-errors', :partial => 'transfer_letter', :object => @student
+        page.visual_effect(:highlight, 'form-errors')
+      end
+    end
+  end
+  
+  def noc_letter
+    @student = Student.find(params[:id])
+    respond_to do |format|
+      format.js { render :action => 'noc_letter' }
+    end    
+  end
+  def noc_letter_update
+    @studentForm = StudentForm.new
+    
+    @studentForm.student_id =  params[:id]
+    @studentForm.form_type_text =  "noc_letter"
+    @studentForm.form_data =  params[:letter_data]
+    @studentForm.status =  1    
+    
+    if @studentForm.save
+        @error = true
+    end
+    render :update do |page|
+      if @studentForm.save
+        page.replace_html 'form-errors', :text => ''
+        page << "Modalbox.hide();"
+        page.replace_html 'flash_box', :text => "<p class='flash-msg'>#{t('flash_msg20')}</p>"
+
+      else
+        page.replace_html 'form-errors', :partial => 'noc_letter', :object => @student
+        page.visual_effect(:highlight, 'form-errors')
+      end
+    end
+  end
+  
+  def recommendation_letter
+    @student = Student.find(params[:id])
+    respond_to do |format|
+      format.js { render :action => 'recommendation_letter' }
+    end    
+  end
+  def recommendation_letter_update
+    @studentForm = StudentForm.new
+    
+    @studentForm.student_id =  params[:id]
+    @studentForm.form_type_text =  "recommendation_letter"
+    @studentForm.form_data =  params[:letter_data]
+    @studentForm.status =  1    
+    
+    if @studentForm.save
+        @error = true
+    end
+    render :update do |page|
+      if @studentForm.save
+        page.replace_html 'form-errors', :text => ''
+        page << "Modalbox.hide();"
+        page.replace_html 'flash_box', :text => "<p class='flash-msg'>#{t('flash_msg20')}</p>"
+
+      else
+        page.replace_html 'form-errors', :partial => 'recommendation_letter', :object => @student
+        page.visual_effect(:highlight, 'form-errors')
+      end
+    end
+  end
+  
+  def studentship_letter
+    @student = Student.find(params[:id])
+    respond_to do |format|
+      format.js { render :action => 'studentship_letter' }
+    end 
+  end
+  
+  def studentship_letter_update
+    @studentForm = StudentForm.new
+    
+    @studentForm.student_id =  params[:id]
+    @studentForm.form_type_text =  "studentship_letter"
+    @studentForm.form_data =  params[:letter_data]
+    @studentForm.status =  1    
+    
+    if @studentForm.save
+        @error = true
+    end
+    render :update do |page|
+      if @studentForm.save
+        page.replace_html 'form-errors', :text => ''
+        page << "Modalbox.hide();"
+        page.replace_html 'flash_box', :text => "<p class='flash-msg'>#{t('flash_msg20')}</p>"
+
+      else
+        page.replace_html 'form-errors', :partial => 'studentship_letter', :object => @student
+        page.visual_effect(:highlight, 'form-errors')
+      end
+    end
+  end
+  
+  def visa_recommendation_letter
+    @student = Student.find(params[:id])
+    respond_to do |format|
+      format.js { render :action => 'visa_recommendation_letter' }
+    end 
+  end
+  
+  def visa_recommendation_letter_update
+    @studentForm = StudentForm.new
+    
+    @studentForm.student_id =  params[:id]
+    @studentForm.form_type_text =  "visa_recommendation_letter"
+    @studentForm.form_data =  params[:letter_data]
+    @studentForm.status =  1    
+    
+    if @studentForm.save
+        @error = true
+    end
+    render :update do |page|
+      if @studentForm.save
+        page.replace_html 'form-errors', :text => ''
+        page << "Modalbox.hide();"
+        page.replace_html 'flash_box', :text => "<p class='flash-msg'>#{t('flash_msg20')}</p>"
+
+      else
+        page.replace_html 'form-errors', :partial => 'visa_recommendation_letter', :object => @student
+        page.visual_effect(:highlight, 'form-errors')
+      end
+    end
+  end
+  
+  def close_letter
+    @formData = StudentForm.find_by_id(params[:aid])        
+    @formData.update_attributes(:is_delete => 1)
+    
+    flash[:warn_notice]="<p>Request is closed.</p>"
+    redirect_to :action=>'form_to_apply', :id => params[:id]
+  end
+  
+  def update_letter_status
+    @formData = StudentForm.find_by_id(params[:aid])        
+    @formData.update_attributes(:status => params[:status])
+    
+    flash[:warn_notice]="<p>Request is Updated.</p>"
+    redirect_to :action=>'studentformlist', :id => params[:id]
+  end
+  
   def del_guardian
     @guardian = Guardian.find(params[:id])
     @student = Student.find(params[:student_id])

@@ -662,7 +662,7 @@ class UserController < ApplicationController
       auth_response = JSON::parse(auth_res.body)
     
       ar_user_cookie = auth_res.response['set-cookie'].split('; ');
-      
+      #abort ar_user_cookie.inspect
       if api_from == "local"
         user_info = [ 
           "user_secret" => auth_response['data']['paid_user']['secret'],

@@ -1,0 +1,189 @@
+.clearfix {
+    clear: both;
+}
+#page-yield{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+#personal_detail {
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px 0 #bbb;
+    -webkit-box-shadow: 0 2px 4px 0 #bbbbbb;
+    -ms-box-shadow: 0 2px 4px 0 #bbbbbb;
+    -o-box-shadow: 0 2px 4px 0 #bbbbbb;
+    float: left;
+    width: 100%;
+}
+#student_profile_heading{
+    float: left;
+    margin: 0;
+    max-height: 120px;
+    padding: 0;
+    width: 100%;
+}
+#profile_picture_display{
+    float: left;
+    height: 120px;
+}
+#profile_picture_display img{
+    height: 100%;
+}
+#student_main_info{
+    float: left;
+    padding: 30px 0 0 20px;
+    width: 75%;
+}
+#student_name{
+    color: #505761;
+    font-size: 35px;
+    margin-bottom: 5px;
+}
+#student_class{
+    color: #868a8b;
+    font-size: 20px;
+}
+#personal_info_wrapper {
+    float: left;
+    width: 100%;
+}
+#class_info{
+    border-bottom: 1px solid #DFE1E2;
+    border-top: 1px solid #DFE1E2;
+    float: left;
+    width: 100%;
+}
+#class_info .infos{
+    background-color: #f6f8f8;
+    border-right: 1px solid #DFE1E2;
+    float: left;
+    width: 33.3%;
+}
+#class_info .last {
+    border-right: 0 none;
+    float: right;
+    width: 33.1%;
+}
+#class_info .infos div:first-child{
+    color: #d71921;
+    font-size: 25px;
+    padding: 30px 0 0;
+    text-align: center;
+}
+#class_info .infos div:last-child{
+    color: #868a8b;
+    font-size: 18px;
+    padding: 5px 0 20px;
+    text-align: center;
+}
+.row_wrapper {
+    float: left;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+.row {
+    border-bottom: 1px solid #DFE1E2;
+    float: left;
+    width: 100%;
+}
+.row_label {
+    
+    float: left;
+    width: 33%;
+}
+.row_data {
+    float: left;
+    width: 66%;
+}
+.row_action {
+    float: left;
+    width: 100%;
+}
+
+.row_label div {
+    color: #868A8B;
+}
+.row_data div {
+    color: #242021;
+}
+.row_label div, .row_data div, .row_action div {
+    padding: 15px 30px;
+}
+.row_data div a {
+    color: #868A8B;
+    text-decoration: none;
+}
+.row_action div a {
+    color: #fff;
+    text-decoration: none;
+}
+.row_data div a:active, .row_action div a:active {
+    color: #000;
+    text-decoration: none;
+}
+.row_data div a:hover , .row_action div a:hover {
+    color: #000;
+    text-decoration: none;
+}
+.row_data div span, .row_action div span {
+    float: right;
+}
+#guardian_detail {
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px 0 #bbb;
+    -webkit-box-shadow: 0 2px 4px 0 #bbbbbb;
+    -ms-box-shadow: 0 2px 4px 0 #bbbbbb;
+    -o-box-shadow: 0 2px 4px 0 #bbbbbb;
+    float: left;
+    margin-top: 20px;
+    width: 100%;
+}
+.guardian_header_txt {
+    color: #d71921;
+    float: left;
+    font-size: 22px;
+    padding: 15px 0 15px 30px;
+    text-transform: capitalize;
+    width: 95%;
+}
+.margin-left-20{
+    margin-left: 20px;
+}
+.margin-left-20-important{
+    margin-left: 20px !important;
+}
+#new_profile_info_top{
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px 0 #bbb;
+    -webkit-box-shadow: 0 2px 4px 0 #bbbbbb;
+    -ms-box-shadow: 0 2px 4px 0 #bbbbbb;
+    -o-box-shadow: 0 2px 4px 0 #bbbbbb;
+    float: left;
+    margin-top: 20px;
+    width: 100%;
+}
+.user_button {
+    font-size: 16px;
+    font-weight: normal;
+    margin: 0;
+    padding: 10px 20px;
+}
+.buttons{
+    padding: 15px 0 57px 20px;
+}
+.content_div {
+	background-color: #eee;
+	border: 1px solid #c6c6c6;
+	border-radius: 10px;	
+	clear: both;
+	height: 273px;
+	margin-top: 5px;
+	padding: 10px;
+	width: 94%;
+}
+.content_editor
+{
+    width: 100%;
+    height: 250px;
+}

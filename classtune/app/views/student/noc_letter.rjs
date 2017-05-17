@@ -1,0 +1,2 @@
+  page.replace_html 'modal-box', :partial => 'noc_letter'
+  page << "Modalbox.show($('modal-box'), {title: '#{t('noc_text')}', width: 500});"

@@ -1,0 +1,2 @@
+  page.replace_html 'modal-box', :partial => 'studentship_letter'
+  page << "Modalbox.show($('modal-box'), {title: '#{t('studentship_text')}', width: 500});"

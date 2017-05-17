@@ -1,0 +1,129 @@
+<div class="header-wrapper">
+    <div class="header-title" style="width:100%;">
+        <div class="header-icon" style="width:10%;">
+            <%= image_tag '/images/icons/profile-icon.png', :html => {:alt => 'Student Profile'} %>
+        </div>
+        <div class="header-title-text-wrapper" style="width:80%;">
+            <div class="header-title-main-text f2" style="width:100%;">
+                List of Applications
+            </div>
+            <div class="clearfix"></div>
+            <div class="header-title-sub-text">
+                From Students
+            </div>
+            <div class="header-title-sub-text">
+                <%= I18n.l(@local_tzone_time.to_date, :format=>'%d/%m/%Y') %>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+      
+</div>
+
+<div id="page-yield" class="bg-disable">
+  <div id="guardian_detail" class="row_wrapper">
+    <div class="row">
+        <div class="guardian_header_txt">List</div>
+    </div>
+    <div class="clearfix"></div>
+    
+    <% if !@formData.empty? and @formData.count > 0 %>  
+      <% @formData.each do |a| %>
+        <% 
+        if a.form_type_text == "transfer_letter" 
+          title = "Transfer Certificate Letter"
+          style = "transfer_letter"
+        elsif a.form_type_text == "noc_letter" 
+          title = "No Objection Certificate Letter"
+          style = "noc_letter"
+        elsif a.form_type_text == "recommendation_letter" 
+          title = "Recommendation Certificate Letter"
+          style = "recommendation_letter"
+        elsif a.form_type_text == "studentship_letter" 
+          title = "Studentship Letter"
+          style = "studentship_letter"
+        elsif a.form_type_text == "visa_recommendation_letter" 
+          title = "VISA Recommendation Certificate Letter"
+          style = "visa_recommendation_letter"
+        end 
+        %>        
+       
+        <div class="row <%= style %>">
+            <div class="row_label">
+              <div><%= title %></div>
+            </div>
+            <div class="row_data">
+              <% if a.form_type_text == "transfer_letter" %>
+                
+              <% elsif a.form_type_text == "noc_letter"  %>
+                <div>
+                <% result = a.form_data.split("|") %>
+
+                <b>Student Name :</b> <%= link_to result[0], { :controller=>"student",:action => 'profile', :id => a.student_id},:target => "blank" %> <br />
+                <b>Class :</b> <%= result[1] %> <br />
+                <b>Reason :</b> <%= result[2] %> <br />
+                <b>Duration :</b> <%= result[3] %> - <%= result[4] %> <br />
+                </div>
+              <% elsif a.form_type_text == "recommendation_letter" %>
+                <div>
+                <% result = a.form_data.split("|") %>
+
+                <b>Student Name :</b> <%= link_to result[0], { :controller=>"student",:action => 'profile', :id => a.student_id},:target => "blank" %> <br />
+                <b>Class :</b> <%= result[1] %> <br />
+                <b>Admission Date :</b> <%= result[2] %> <br />
+                <b>Achievement Hints :</b>  <%= result[3] %><br />
+                </div>
+              <% elsif a.form_type_text == "studentship_letter"  %>
+                
+              <% elsif a.form_type_text == "visa_recommendation_letter" %>
+                
+              <% end %>
+            </div>
+            <div class="row_action">
+              <div>
+                <% if a.status == 1 %>
+                  <span class="apply_tag">
+                      <%= link_to "Start Processing", { :controller=>"student",:action => 'update_letter_status', :aid => a.id, :id => a.student_id, :status => 2},:confirm=>"#{t('delete_confirm_msg')}",:class=>"delete" %>
+                  </span>  
+                <% end %>
+                <% if a.status == 2 %>
+                  <span class="Pending">Processing</span>
+                <% end %>
+                <% if a.status == 2 %>                  
+                <span class="Processing">
+                  <%= link_to "Processing Complete ", { :controller=>"student",:action => 'update_letter_status', :aid => a.id, :id => a.student_id, :status => 3},:confirm=>"#{t('delete_confirm_msg')}",:class=>"delete" %>
+                </span>
+                <% end %>
+                <% if a.status == 3 %> 
+                  <span class="Ready">Ready</span>
+                <% end %>
+                
+                <% if a.status == 22 %>
+                <span class="rejected">Rejected</span>
+                <% elsif a.status == 3 %>
+                
+                <% else %>
+                <span class="Denied">
+                  <%= link_to "Deney", { :controller=>"student",:action => 'update_letter_status', :aid => a.id, :id => a.student_id, :status => 22},:confirm=>"#{t('delete_confirm_msg')}",:class=>"delete" %>
+                </span>
+                <% end %>
+                <span class="generate_pdf">
+                <%= link_to "Generate PDF", { :controller=>"student",:action => 'generate_pdf_letter', :aid => a.id, :id => a.student_id}, :target => "blank" %>
+                </span>
+                <span class="generate_pdf">
+                <%= link_to "View PDF", { :controller=>"student",:action => 'view_pdf_letter', :aid => a.id, :id => a.student_id}, :target => "blank" %>
+                </span>
+              </div>
+            </div>
+        </div>
+      <% end %>
+    <% end %>
+    
+  </div>
+</div>
+
+<%= stylesheet_link_tag 'tadded-header' %>
+<% content_for :head do %>
+  <%= javascript_include_tag "custom/tabbed-header" %>
+<% end %>
+

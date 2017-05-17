@@ -1,0 +1,113 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+<div class="box_noc">
+  <form name="employee" action="" style="display:inline;">
+    <div id="flash-box-popup">
+      <% unless flash[:notice].nil? %>
+        <p class="flash-msg"> <%= flash[:notice] %> </p>
+      <% end %>
+    </div>  
+    <div id="form-errors"></div>
+
+    <div class="row">
+      <div class="row_label">Student Name</div>
+      <div class="row_data"><%= @student.full_name %><input type="hidden" id="student_name" value="<%= @student.full_name %>"></div>
+    </div>
+    
+    <div class="row">
+      <div class="row_label">Class</div>
+      <div class="row_data"><%= @student.batch.name %>&nbsp;<%= @student.batch.course.course_name %>&nbsp;
+                    <% unless  @student.batch.course.section_name.empty? %>                      
+                      <%= ", " %>
+                      <%= t('profile_section_label') %>         
+                      <%= @student.batch.course.section_name %>
+                    <% end %>
+          <input type="hidden" id="student_class" value="<%= @student.batch.course.course_name %>">
+    </div>
+    
+    <div class="row">
+      <div class="row_label"><%= t('admission_date') %></div>
+      <div class="row_data">
+          <% unless @student.admission_date.nil? %>
+            <%= I18n.l(@student.admission_date,:format=>:normal) %>
+            <input type="hidden" id="admission_date" value="<%= I18n.l(@student.admission_date,:format=>:normal) %>">
+          <% else %>
+            <%= calendar_date_select_tag 'admission_date', I18n.l(Date.today,:format=>:default),  :popup=>"force" %>
+          <% end %>
+      </div>
+    </div>
+      
+    <div class="row" id="start_date_1">
+      <div class="row_label">Inform Achievements </div>
+      <div class="row_data">
+        <textarea name="st_achivement" class="st_achivement" id="st_achivement" rows="100" cols="10"></textarea>
+        <p>Write about Academic Result, Attendance also Extra Activities to help admin to write a good letter.</p>
+      </div>
+    </div>
+      
+    <div class="row">
+      <div class="row_label">&nbsp;</div>
+      <div class="row_data">
+        <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader2", :style =>"display: none;" ) %>
+        <input type="button" value="Submit" name="submit_recommendation" id="submit_recommendation" />
+      </div>
+    </div>
+   
+
+  </form>
+  <div class="extender"></div>
+</div>
+<script>
+    var jj = jQuery.noConflict();
+    jj(document).on("click", '#submit_recommendation', function(e){
+      
+      Element.show('loader2')
+      new Ajax.Request('/student/recommendation_letter_update',
+      {asynchronous:true, evalScripts:true,
+        parameters:'letter_data='+jj('#student_name').val()+"|"+jj('#student_class').val()+"|"+jj('#admission_date').val()+"|"+jj('#st_achivement').val()+'&id=<%= @student.id %>',onSuccess:function(request){Element.hide('loader2')}
+      }); 
+    }); 
+</script>
+
+<style>
+.box_noc{
+    width:450px;
+    margin:0px auto;
+}
+.row_label
+{
+    color: #444444;
+    display: block;
+    float: left;
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0 0 10px;
+    padding-top: 10px;
+    width: 200px;
+}
+.row_data {
+    width:217px;
+    float: left;
+}
+.st_achivement
+{
+    width: 100%;
+    height: 250px;
+}
+</style>

@@ -1,0 +1,130 @@
+<div class="header-wrapper">
+    <div class="header-title" style="width:100%;">
+        <div class="header-icon" style="width:10%;">
+            <%= image_tag '/images/icons/profile-icon.png', :html => {:alt => 'Student Profile'} %>
+        </div>
+        <div class="header-title-text-wrapper" style="width:80%;">
+            <div class="header-title-main-text f2" style="width:100%;">
+                From Content
+            </div>
+            <div class="clearfix"></div>
+            <div class="header-title-sub-text">
+                From Students
+            </div>
+            <div class="header-title-sub-text">
+                <%= I18n.l(@local_tzone_time.to_date, :format=>'%d/%m/%Y') %>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+      
+</div>
+<% if !@formData.nil? %>  
+
+  <% 
+    if @formData.form_type_text == "transfer_letter" 
+      title = "Transfer Certificate Letter"
+      style = "transfer_letter"
+    elsif @formData.form_type_text == "noc_letter" 
+      title = "No Objection Certificate Letter"
+      style = "noc_letter"
+    elsif @formData.form_type_text == "recommendation_letter" 
+      title = "Recommendation Certificate Letter"
+      style = "recommendation_letter"
+    elsif @formData.form_type_text == "studentship_letter" 
+      title = "Studentship Letter"
+      style = "studentship_letter"
+    elsif @formData.form_type_text == "visa_recommendation_letter" 
+      title = "VISA Recommendation Certificate Letter"
+      style = "visa_recommendation_letter"
+    end 
+  %>
+
+ <% result = @formData.form_data.split("|") %>
+
+<% form_for :student, :url => {:action => 'generate_pdf_letter'}, :html => {:multipart => true, :id => 'new_student'} do |s| %>
+<input type="hidden" name="st_content" value="st_form">
+<input type="hidden" name="aid" value="<%= @formData.id %>">
+<div id="page-yield" class="bg-disable">
+  <div id="guardian_detail" class="row_wrapper">
+    <div class="row">
+        <div class="guardian_header_txt"><%= title %> Content</div>
+    </div>
+    <div class="row">
+      <div class="row_label">
+          <div>School Name</div>
+      </div>
+      <div class="row_data">
+          <div><%= @schoolData.name %> </div>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="row">
+      <div class="row_label">
+          <div>Studnet Name</div>
+      </div>
+      <div class="row_data"><div>
+          <%= result[0] %> </div>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="row">
+      <div class="row_label">
+          <div>Class</div>
+      </div>
+      <div class="row_data"><div>
+          <%= result[1] %> </div>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="row">
+      <div class="row_label">
+          <div>Reason</div>
+      </div>
+      <div class="row_data"><div>
+          <%= result[2] %> </div>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="row">
+      <div class="row_label">
+          <div>Start Date</div>
+      </div>
+      <div class="row_data"><div>
+          <%= result[3] %> </div>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="row">
+      <div class="row_label">
+          <div>End Date</div>
+      </div>
+      <div class="row_data"><div>
+          <%= result[4] %> </div>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+    
+        <div class="row">
+            
+            <div class="row_action">
+              <div class="content_div">
+                  <textarea name="content_editor" class="content_editor" id="content_editor" rows="100" cols="10"><%= @formData.generated_form %></textarea>
+              </div>
+            </div>
+            <div class="row_action">
+              <div>
+                <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader2", :style =>"display: none;" ) %>
+                <%= submit_tag "", :class => "submit_button", :value => "► #{t('update')}" %>
+              </div>
+            </div>
+        </div>
+  </div>
+</div>
+<% end %>
+<% end %>
+<%= stylesheet_link_tag 'tadded-header' %>
+<% content_for :head do %>
+  <%= javascript_include_tag "custom/tabbed-header" %>
+<% end %>
+

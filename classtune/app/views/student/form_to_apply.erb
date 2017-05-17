@@ -1,0 +1,399 @@
+<div class="header-wrapper">
+
+  <div class="header-title">
+    <div class="header-icon">
+      <%= image_tag '/images/icons/profile-icon.png', :html => {:alt => 'Student Profile'} %>
+    </div>
+    <div class="header-title-text-wrapper">
+      <div class="header-title-main-text f2">
+        <%= link_to "Forms", :controller => "student", :action => "form_to_apply", :id => @student.id %>
+      </div>
+      <div class="clearfix"></div>
+      <div class="header-title-sub-text">
+        <%= I18n.l(@local_tzone_time.to_date, :format=>'%d/%m/%Y') %>
+      </div>
+    </div>
+  </div>
+
+  <div class="clearfix"></div>
+
+  <div class="tabbed-header-wrapper">
+    <ul class="header-tabs">
+      <% if permitted_to? :profile,:student %>
+        <li>
+          <%= link_to "#{t('student_profile')}", {:controller => 'student', :action => 'profile', :id => @student.id}, {:class => 'f2'} %>
+        </li>
+      <%end%>
+
+      <% if permitted_to? :reports,:student and !check_free_school?  %>
+        <li>
+          <%= link_to "#{t('reports_text')}", {:controller => 'student', :action => 'reports', :id => @student}, {:class => 'f2'} %>
+        </li>
+      <%end%>
+        
+      <% BatchStudent.find_by_student_id(@student.id) %>  
+       
+      <% unless BatchStudent.blank? %>
+        <li>
+          <%= link_to "Previous Report", {:controller => "student", :action => "previous_report", :id => @student.id}, {:class => 'f2'} %>
+        </li>
+      <%  end %>
+
+      <% if permitted_to? :guardians,:student %>
+        <li>
+          <%= link_to "#{t('guardians_text')}", {:controller => "student", :action => "guardians", :id => @student.id}, {:class => 'f2'} %>
+        </li>
+      <% end %>
+
+    
+
+      
+
+      <% if @sms_module.include?('Finance') and permitted_to? :fees, :student and !check_free_school? %>
+        <li>
+          <%= link_to "#{t('fees_text')}", {:controller => 'student', :action => 'fees', :id => @student.id}, {:class => 'f2'} %>
+        </li>
+      <% end %>
+      <% if !check_free_school? %>
+        <% Champs21Plugin::ADDITIONAL_LINKS[:student_profile_more_menu].each do |mod| %>
+          <% if can_access_request? "#{mod[:destination][:action]}".to_sym,"#{mod[:destination][:controller]}".to_sym %>
+            <% unless t(mod[:title]) == "Hostel" %>
+          <li>
+              <%= link_to "#{t(mod[:title])}", mod[:destination].merge(:id=>@student.id), {:class => 'f2'} %>
+          </li>
+          <% end %>
+          <% end %>
+        <% end %>
+      <% end %> 
+          
+      <% if permitted_to? :guardians,:student %>
+        <li class="active">
+            <%= link_to "#{t('form_text')}", {:controller => "student", :action => "form_to_apply", :id => @student.id}, {:class => 'f2'} %>
+        </li>
+      <% end %> 
+          
+      <% if (permitted_to? :remove, :student or permitted_to? :admission1, :student) and !check_free_school?  %>
+        <li>
+          <%= link_to "#{t('delete_text')}", {:controller => 'student', :action => 'remove', :id => @student.id}, {:class => 'f2'} %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+
+</div>
+
+<div id="page-yield" class="bg-disable">
+  <div class="clearfix"></div>
+  <div id="guardian_detail" class="row_wrapper">
+    <div class="row">
+        <div class="guardian_header_txt">Choose Form and Apply</div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="row">
+        <%#= debug @formData %>
+    </div>
+    <% if !@transferFormData.empty? and @transferFormData.count > 0 %>  
+      <% @transferFormData.each do |a| %>
+        <%  close_transfer = 0
+            status_transfer = 0
+        %>
+        <% if a.form_type_text == "transfer_letter" %>
+          <%  if a.status == 1
+                  status_transfer = "Pending"
+                  close_transfer = 1
+                elsif a.status == 2
+                  status_transfer = "Processing"
+                  close_transfer = 1
+                elsif a.status == 22
+                  close_transfer = 1
+                  status_transfer = "Denied"
+                elsif a.status == 3
+                  close_transfer = 1
+                  status_transfer = "Ready"
+                end
+             %>
+        <% end %>
+          <div class="row">
+              <div class="row_label">
+                  <div><%= t('transfer_certificate') %></div>
+              </div>
+              <div class="row_data">
+                <div>
+                  <span class="<%= status_transfer %>">         
+                    <% if status_transfer != 0 %>
+                        <%= status_transfer %>
+                    <% end %>           
+                  </span>
+                  <span class="close_tag">
+                    <% if close_transfer == 1 %>                  
+                        <%= link_to "Close", { :controller=>"student",:action => 'close_letter',:aid => a.id, :id => @student.id},:confirm=>"#{t('delete_confirm_msg')}",:class=>"delete"  %>
+                        
+                    <% end %>
+                  </span> 
+                </div>
+              </div>
+          </div>  
+
+          <div class="clearfix"></div>
+
+      <% end %> 
+    <% else %>
+      <div class="row">
+        <div class="row_label">
+            <div><%= t('transfer_certificate') %></div>
+        </div>
+        <div class="row_data">
+          <div>
+            <span class="apply_tag">            
+              <%= link_to_remote "Apply", :url => { :controller=>"student",:action => 'transfer_letter', :id => @student.id} %>                              
+            </span>
+          </div>
+        </div>
+      </div>
+    <% end %> 
+    <% if !@nocFormData.empty? and @nocFormData.count > 0 %>  
+      <% @nocFormData.each do |b| %>
+        <%  close_noc = 0
+            status_noc = 0
+        %>
+        <% if b.form_type_text == "noc_letter" %>
+            <%  if b.status == 1
+                  status_noc = "Pending"
+                  close_noc = 1
+                elsif b.status == 2
+                  status_noc = "Processing"
+                  close_noc = 1
+                elsif b.status == 22
+                  close_noc = 1
+                  status_noc = "Denied"
+                elsif b.status == 3
+                  close_noc = 1
+                  status_noc = "Ready"
+                end
+             %>
+          <% end %>
+          <div class="row">
+              <div class="row_label">
+                  <div><%= t('noc_text') %></div>
+              </div>
+              <div class="row_data"><div>
+                <span class="<%= status_noc %>">           
+                  <% if status_noc != 0 %>
+                      <%= status_noc %>
+                  <% end %>
+                </span>
+                <span class="close_tag">  
+                  <% if close_noc == 1 %>                  
+                      <%= link_to "Close", {:action => 'close_letter',:aid => b.id, :id => @student.id},:confirm=>"#{t('delete_confirm_msg')}",:class=>"delete" %>
+                      
+                  <% end %>
+                </span>  </div>
+              </div>
+          </div> 
+          <div class="clearfix"></div>
+        
+      <% end %>
+    <% else %>
+      <div class="row">
+        <div class="row_label">
+            <div><%= t('noc_text') %></div>
+        </div>
+        <div class="row_data"><div>
+            <span class="apply_tag">                 
+              <%= link_to_remote "Apply", :url => { :controller=>"student",:action => 'noc_letter', :id => @student.id} %>                              
+            </span> </div>
+        </div>
+      </div>
+    <% end %>
+          
+    
+    <% if !@recommendationFormData.empty? and @recommendationFormData.count > 0 %>  
+      
+      <% @recommendationFormData.each do |c| %>
+        <%  close_recommendation = 0
+            status_recommendation = 0
+        %>
+        <% if c.form_type_text == "recommendation_letter" %>
+          <%  if c.status == 1
+                status_recommendation = "Pending"
+                close_recommendation = 1
+              elsif c.status == 2
+                status_recommendation = "Processing"
+                close_recommendation = 1
+              elsif c.status == 22
+                close_recommendation = 1
+                status_recommendation = "Denied"
+              elsif c.status == 3
+                close_recommendation = 1
+                status_recommendation = "Ready"
+              end
+           %>
+          
+        <% end %>
+          <div class="row">
+              <div class="row_label">
+                  <div><%= t('recommendation_text') %></div>
+              </div>
+              <div class="row_data">
+                  <div>
+                  <span class="<%= status_recommendation %>">
+                    <% if status_recommendation != 0 %>
+                      <%= status_recommendation %>
+                    <% end %>
+                  </span>
+                  <span class="close_tag">
+                    <% if close_recommendation == 1 %>                  
+                        <%= link_to "Close", { :action => 'close_letter', :aid => c.id, :id => @student.id},:confirm=>"#{t('delete_confirm_msg')}",:class=>"delete" %>
+                        
+                    <% end %>
+                  </span>
+                  </div>
+              </div>
+          </div>
+
+        <div class="clearfix"></div>
+        
+      <% end %>
+    <% else %>
+      <div class="row">
+        <div class="row_label">
+            <div><%= t('recommendation_text') %></div>
+        </div>
+        <div class="row_data">
+            <div>
+              <span class="apply_tag">
+              <%= link_to_remote "Apply", :url => { :controller=>"student",:action => 'recommendation_letter', :id => @student.id} %>                              
+              </span>
+            </div> 
+        </div>
+      </div>
+    <% end %>
+    <% if !@studentshipFormData.empty? and @studentshipFormData.count > 0 %>    
+      <% @studentshipFormData.each do |d| %>
+        <%  close_studentship = 0
+            status_studentship = 0
+        %>
+        <% if d.form_type_text == "studentship_letter" %>
+          <%  if d.status == 1
+                status_studentship = "Pending"
+                close_studentship = 1
+              elsif d.status == 2
+                status_studentship = "Processing"
+                close_studentship = 1
+              elsif d.status == 22
+                close_studentship = 1
+                status_studentship = "Denied"
+              elsif d.status == 3
+                close_studentship = 1
+                status_studentship = "Ready"
+              end
+           %>
+        <% end %>
+        <div class="row">
+            <div class="row_label">
+                <div><%= t('studentship_text') %></div>
+            </div>
+            <div class="row_data"><div>
+                <span class="<%= status_studentship %>">                  
+                  <% if status_studentship != 0 %>
+                      <%= status_studentship %>
+                  <% end %> 
+                </span> 
+                <span class="close_tag">
+                  <% if close_studentship == 1 %>                  
+                      <%= link_to "Close", { :controller=>"student",:action => 'close_letter',:aid => d.id, :id => @student.id},:confirm=>"#{t('delete_confirm_msg')}",:class=>"delete" %>
+                  <% end %>
+                </span> </div>
+            </div>
+        </div> 
+        <div class="clearfix"></div>
+        
+      <% end %>
+    <% else %>
+      <div class="row">
+        <div class="row_label">
+            <div><%= t('studentship_text') %></div>
+        </div>
+        <div class="row_data"><div>
+            <span class="apply_tag">             
+              <%= link_to_remote "Apply", :url => { :controller=>"student",:action => 'studentship_letter', :id => @student.id} %>                              
+            </span> </div>
+        </div>
+      </div>
+    <% end %>
+      
+    <% if !@visa_recommendationFormData.empty? and @visa_recommendationFormData.count > 0 %>    
+      <% @visa_recommendationFormData.each do |e| %>  
+        <%  close_visa_recommendation = 0
+            status_visa_recommendation = 0
+        %>
+        <% if e.form_type_text == "visa_recommendation_letter" %>
+          <%  if e.status == 1
+                status_visa_recommendation = "Pending"
+                close_visa_recommendation = 1
+              elsif e.status == 2
+                status_visa_recommendation = "Processing"
+                close_visa_recommendation = 1
+              elsif e.status == 22
+                close_visa_recommendation = 1
+                status_visa_recommendation = "Denied"
+              elsif e.status == 3
+                close_visa_recommendation = 1
+                status_visa_recommendation = "Ready"
+              end
+           %>
+        <% end %>
+        <div class="row">
+            <div class="row_label">
+                <div><%= t('visa_recommendation_text') %></div>
+            </div>
+            <div class="row_data"><div>
+                <span class="<%= status_visa_recommendation %>">           
+                    <% if status_visa_recommendation != 0 %>
+                        <%= status_visa_recommendation %>
+                    <% end %>
+                </span> 
+                <span class="close_tag">
+                    <% if close_visa_recommendation == 1 %>                  
+                        <%= link_to "Close", { :controller=>"student",:action => 'close_letter',:aid => e.id, :id => @student.id},:confirm=>"#{t('delete_confirm_msg')}",:class=>"delete" %>
+                    <% end %>
+                </span> </div>
+            </div>
+        </div>
+
+      <% end %>
+    <% else %>
+      <div class="row">
+        <div class="row_label">
+            <div><%= t('visa_recommendation_text') %></div>
+        </div>
+        <div class="row_data"><div>
+            <span class="apply_tag">              
+              <%= link_to_remote "Apply", :url => { :controller=>"student",:action => 'visa_recommendation_letter', :id => @student.id} %>                              
+            </span> </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+   <div id="modal-box" style="display:none;"></div>
+   <div class="extender"></div>
+</div>
+
+<%= stylesheet_link_tag 'tadded-header' %>
+<% content_for :head do %>
+  <%= javascript_include_tag "custom/tabbed-header" %>
+<% end %>
+
+
+<style>
+.row_data div span{float: none;}
+.row_data div span a {color:#fff;text-decoration: none;}
+.row_data div span a:hover {color:#000;}
+span.apply_tag{ padding: 5px 10px; background-color: royalblue; color:#fff;border-radius: 4px;margin:10px;}
+span.close_tag{ padding: 5px 10px; background-color: red; color:#fff;border-radius: 4px;margin:10px;}
+span.Pending{ padding: 5px 10px; background-color: darkorange; color:#fff;border-radius: 4px;margin:10px;}
+span.Processing{ padding: 5px 10px; background-color: darkorchid; color:#fff;border-radius: 4px;margin:10px;}
+span.Denied{ padding: 5px 10px; background-color: deeppink; color:#fff;border-radius: 4px;margin:10px;}
+span.Ready{ padding: 5px 10px; background-color: greenyellow; color:#fff;border-radius: 4px;margin:10px;}
+    
+</style>

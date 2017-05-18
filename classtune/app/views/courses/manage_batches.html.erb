@@ -40,7 +40,7 @@
   </div>
     
   <div class="box">
-    <% if @batches.length > 1 %>
+   
       <h4 align="center"><%= t('batches_available_text') %></h4>  
       <ul id="category-list">
           <% @batches.each do |batch| %>
@@ -61,7 +61,7 @@
             </li>
           <% end %>
       </ul>
-    <% end %>
+    
     <div id="class_info" ></div>
     <div class="label-field-pair" style="display: none;">
       <label for="student_course"><%= "#{t('select_a_course')}" %>:

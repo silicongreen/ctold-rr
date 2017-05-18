@@ -108,7 +108,8 @@
                           30% of Mid Term Score
                       </td>
                       <td class="col-pdf">Accumulated Score</td>
-                      <td class="col-pdf border-right-none">Grade</td>
+                      <td class="col-pdf">Grade</td>
+                      <td class="col-pdf border-right-none">Highest Mark</td>
                       
                   </tr>
 
@@ -207,13 +208,20 @@
                             <td class="col-pdf"><%= accumulated %></td>
                             <%  grade = GradingLevel.percentage_to_grade(accumulated, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>
-                              <td class="col-pdf border-right-none"><b><%= grade.name %></b></td>
+                              <td ><b><%= grade.name %></b></td>
                               <% if grade.name == "U" %>
                               <% total_u +=1 %>
                               <% end %>
                             <% else %>
-                              <td class="col-pdf border-right-none"><b>N/A</b></td>
+                              <td ><b>N/A</b></td>
                             <% end %>
+                              
+                            <% unless @subject_highest[subjects['id'].to_i].blank? %> 
+                              
+                                <td class="col-pdf border-right-none"><b><%= @subject_highest[subjects['id'].to_i].round() %></b></td>
+                            <% else %>
+                                <td class="col-pdf border-right-none"><b>N/A</b></td>
+                            <% end %>    
                             
                             
 
@@ -221,6 +229,7 @@
                             <% total_subject = total_subject+1 %>
                             <%  total_mark_all_subject = total_mark_all_subject+accumulated %>
                           <% else  %>
+                            <td class="col-pdf">N/A</td>
                             <td class="col-pdf">N/A</td>
                             <td class="col-pdf">N/A</td>
                             <td class="col-pdf">N/A</td>
@@ -240,6 +249,7 @@
                          <td class="col-pdf"></td>
                          <td class="col-pdf"><b><%= total_mark_all_subject %></b></td>
                           
+                         <td></td>
                          <td class="col-pdf border-right-none"></td>
                       </tr>   
 

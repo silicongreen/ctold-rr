@@ -90,17 +90,17 @@
 .row_label {
     
     float: left;
-    width: 33.3%;
+    width: 25%;
 }
 .row_data {
     float: left;
-    width: 33.6%;
+    width: 30%;
     border-right: 1px solid #DFE1E2;
     border-left: 1px solid #DFE1E2;
 }
 .row_action {
     float: right;
-    width: 32%;
+    width: 44%;
     
 }
 
@@ -110,8 +110,11 @@
 .row_data div {
     color: #242021;
 }
-.row_label div, .row_data div, .row_action div {
+.row_label div, .row_data div {
     padding: 15px 30px;
+}
+ .row_action div {
+    padding: 10px;
 }
 .row_data div a {
     color: #868A8B;
@@ -177,11 +180,11 @@
 }
 
 .row_data div span{float: none;}
-span.apply_tag{ padding: 5px 10px; background-color: royalblue; color:#fff;border-radius: 4px;margin:10px;}
-span.close_tag{ padding: 5px 10px; background-color: red; color:#fff;border-radius: 4px;margin:10px;}
-span.Pending{ padding: 5px 10px; background-color: darkorange; color:#fff;border-radius: 4px;margin:10px;}
-span.Processing{ padding: 5px 10px; background-color: darkorchid; color:#fff;border-radius: 4px;margin:10px;}
-span.Denied{ padding: 5px 10px; background-color: deeppink; color:#fff;border-radius: 4px;margin:10px;}
-span.Ready{ padding: 5px 10px; background-color: greenyellow; color:#fff;border-radius: 4px;margin:10px;}
-span.rejected{ padding: 5px 10px; background-color: brown; color:#fff;border-radius: 4px;margin:10px;}
-span.generate_pdf{ padding: 5px 10px; background-color: goldenrod; color:#fff;border-radius: 4px;margin:10px;}
+span.apply_tag{ padding: 2px 7px; background-color: royalblue; color:#fff;border-radius: 4px;margin:5px;}
+span.close_tag{ padding: 2px 7px; background-color: red; color:#fff;border-radius: 4px;margin:5px;}
+span.Pending{ padding: 2px 7px; background-color: darkorange; color:#fff;border-radius: 4px;margin:5px;}
+span.Processing{ padding: 2px 7px; background-color: darkorchid; color:#fff;border-radius: 4px;margin:10px;}
+span.Denied{ padding: 2px 7px; background-color: deeppink; color:#fff;border-radius: 4px;margin:5px;}
+span.Ready{ padding: 2px 7px; background-color: greenyellow; color:#fff;border-radius: 4px;margin:5px;}
+span.rejected{ padding: 2px 7px; background-color: brown; color:#fff;border-radius: 4px;margin:5px;}
+span.generate_pdf{ padding: 2px 7px; background-color: goldenrod; color:#fff;border-radius: 4px;margin:5px;}

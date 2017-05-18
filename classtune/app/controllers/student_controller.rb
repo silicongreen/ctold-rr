@@ -1789,20 +1789,26 @@ class StudentController < ApplicationController
   end
   
   def studentformlist
-    @formData = StudentForm.find_all_by_is_delete(0)
+    school_id = MultiSchool.current_school.id 
+    @formData = StudentForm.find_all_by_is_delete_and_school_id(0, school_id)
   end
   
   def generate_pdf_letter
     unless params[:st_content].nil?      
       @formData = StudentForm.find_by_id(params[:aid])
+      @formData.update_attributes(:form_head => params[:form_head])
       @formData.update_attributes(:generated_form => params[:content_editor])
       
       flash[:warn_notice]="<p>Form updated.</p>"
       redirect_to :action=>'studentformlist'
     else
+      school_id = MultiSchool.current_school.id 
+      
       @schoolData = MultiSchool.current_school
       @student = Student.find(params[:id])
       @formData = StudentForm.find_by_id(params[:aid])
+      @defaultFromData = StudentFormDefault.find_by_form_type_text_and_school_id(@formData.form_type_text, school_id)
+      
     end
     
   end
@@ -1840,6 +1846,7 @@ class StudentController < ApplicationController
     @studentForm.form_type_text =  "transfer_letter"
     @studentForm.form_data =  params[:letter_data]
     @studentForm.status =  1    
+    @studentForm.school_id = MultiSchool.current_school.id    
     
     if @studentForm.save
         @error = true
@@ -1869,7 +1876,8 @@ class StudentController < ApplicationController
     @studentForm.student_id =  params[:id]
     @studentForm.form_type_text =  "noc_letter"
     @studentForm.form_data =  params[:letter_data]
-    @studentForm.status =  1    
+    @studentForm.status =  1 
+    @studentForm.school_id = MultiSchool.current_school.id  
     
     if @studentForm.save
         @error = true
@@ -1899,7 +1907,8 @@ class StudentController < ApplicationController
     @studentForm.student_id =  params[:id]
     @studentForm.form_type_text =  "recommendation_letter"
     @studentForm.form_data =  params[:letter_data]
-    @studentForm.status =  1    
+    @studentForm.status =  1 
+    @studentForm.school_id = MultiSchool.current_school.id  
     
     if @studentForm.save
         @error = true
@@ -1931,6 +1940,7 @@ class StudentController < ApplicationController
     @studentForm.form_type_text =  "studentship_letter"
     @studentForm.form_data =  params[:letter_data]
     @studentForm.status =  1    
+    @studentForm.school_id = MultiSchool.current_school.id  
     
     if @studentForm.save
         @error = true
@@ -1962,6 +1972,7 @@ class StudentController < ApplicationController
     @studentForm.form_type_text =  "visa_recommendation_letter"
     @studentForm.form_data =  params[:letter_data]
     @studentForm.status =  1    
+    @studentForm.school_id = MultiSchool.current_school.id  
     
     if @studentForm.save
         @error = true

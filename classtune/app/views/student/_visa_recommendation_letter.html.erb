@@ -41,6 +41,7 @@
                       <%  class_string = class_string + t('profile_section_label')+ @student.batch.course.section_name %>
                     <% end %>
           <input type="hidden" id="student_class" value="<%= class_string %>"></div>
+      </div>
     </div>
     <div class="row">
       <div class="row_label"><%= t('admission_date') %></div>
@@ -76,6 +77,10 @@
       </div>
     </div>
     <div class="row">
+      <div class="row_label">Passport No.</div>
+      <div class="row_data"><div><%= text_field_tag("passport_no","", :placeholder => "Exp:Passport No.", :autocomplete => 'off') %></div></div>
+    </div>
+    <div class="row">
       <div class="row_label">Head To Embassy </div>
       <div class="row_data"><div>
           <textarea name="head_to_embassy" class="head_to_embassy" id="head_to_embassy" rows="100" cols="10">
@@ -106,7 +111,7 @@ Baridhara, Dhaka-1212
       Element.show('loader2')
       new Ajax.Request('/student/visa_recommendation_letter_update',
       {asynchronous:true, evalScripts:true,
-        parameters:'letter_data='+jj('#student_name').val()+"|"+jj('#student_class').val()+"|"+jj('#admission_date').val()+"|"+jj('#father').val()+"|"+jj('#mother').val()+"|"+jj('#date_of_birth').val()+"|"+jj('#head_to_embassy').val()+'&id=<%= @student.id %>',onSuccess:function(request){Element.hide('loader2')}
+        parameters:'letter_data='+jj('#student_name').val()+"|"+jj('#student_class').val()+"|"+jj('#admission_date').val()+"|"+jj('#father').val()+"|"+jj('#mother').val()+"|"+jj('#date_of_birth').val()+"|"+jj('#passport_no').val()+"|"+jj('#head_to_embassy').val()+'&id=<%= @student.id %>',onSuccess:function(request){Element.hide('loader2')}
       }); 
     }); 
 </script>
@@ -136,4 +141,4 @@ Baridhara, Dhaka-1212
     width: 100%;
     height: 150px;
 }
-<</style>
+</style>

@@ -41,8 +41,8 @@
                       <%  class_string = class_string + t('profile_section_label')+ @student.batch.course.section_name %>
                     <% end %>
           <input type="hidden" id="student_class" value="<%= class_string %>">
+      </div>
     </div>
-    
     <div class="row">
       <div class="row_label">Father's Name</div>
       <div class="row_data"><%= text_field_tag("father","", :placeholder => "Exp:full name", :autocomplete => 'off') %></div>
@@ -71,7 +71,7 @@
       Element.show('loader2')
       new Ajax.Request('/student/studentship_letter_update',
       {asynchronous:true, evalScripts:true,
-        parameters:'letter_data='+jj('#student_name').val()+"|"+jj('#student_class').val()+"|"+jj('#reason').val()+"|"+jj('#start_date').val()+"|"+jj('#start_date').val()+'&id=<%= @student.id %>',onSuccess:function(request){Element.hide('loader2')}
+        parameters:'letter_data='+jj('#student_name').val()+"|"+jj('#student_class').val()+"|"+jj('#father').val()+"|"+jj('#mother').val()+'&id=<%= @student.id %>',onSuccess:function(request){Element.hide('loader2')}
       }); 
     }); 
 </script>

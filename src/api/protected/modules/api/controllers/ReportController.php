@@ -274,16 +274,61 @@ class ReportController extends Controller
             $user_secret = Yii::app()->request->getPost('user_secret');
             $connect_exam_id = Yii::app()->request->getPost('connect_exam_id');
             $batch_id = Yii::app()->request->getPost('batch_id');
+            $all_class_report = Yii::app()->request->getPost('all_class_report');
             $response = array();
+            $new_connect_exam_id = array();
             if ($connect_exam_id && Yii::app()->user->user_secret === $user_secret &&  (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin ))
             {
+                if($all_class_report)
+                {
+                    $connectexmObj = new ExamConnect();
+                    $data = $connectexmObj->findByPk($connect_exam_id);
+                    $objBatch = new Batches();
+                    $batchData = $objBatch->findByPk($data->batch_id);
+                    
+                    $courseObj = new Courses();
+                    $courseData = $courseObj->findByPk($batchData->course_id);
+                    
+                    $find_all_batches = $batchData->getBatchsByName(false,$courseData->course_name);
+                    $new_connect_exam_id = array(); 
+                    if($find_all_batches)
+                    {
+                        foreach($find_all_batches as $value)
+                        {
+                            $new_exam = $connectexmObj->getConnectExamByBatch($value->id,$data->quarter_number,$data->result_type);
+                            if($new_exam)
+                            {
+                                $new_connect_exam_id[] = $new_exam;
+                            }
+                        }    
+                    }
+                    
+                    
+                }    
                 
                 $groupexam = new GroupedExams();
-                $exam_report = $groupexam->getTabulation($batch_id,$connect_exam_id);
+                if($all_class_report)
+                {
+                   $exam_report = array();
+                   if($new_connect_exam_id)
+                   {
+                       foreach($new_connect_exam_id as $value)
+                       {
+                           $examData = $connectexmObj->findByPk($value);
+                           $exam_report[] = $groupexam->getTabulation($examData->batch_id,$value);
+                       }    
+                   }
+                   
+                }
+                else 
+                {
+                   $exam_report = $groupexam->getTabulation($batch_id,$connect_exam_id);
+                }
                 
                 if ($exam_report) {
                     
                     $response['data']['report'] = $exam_report;
+                    $response['data']['connect_exams'] = $new_connect_exam_id;
                     $response['status']['code'] = 200;
                     $response['status']['msg'] = "EXAM_REPORT_FOUND";
                 } else {

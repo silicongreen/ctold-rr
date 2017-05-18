@@ -368,10 +368,12 @@ class GroupedExams extends CActiveRecord
         }
         
         
-        public function getTabulation($batch_id,$connect_exam_id)
+        public function getTabulation($batch_id,$connect_exam_id,$condition_in = false)
         {
             $criteria=new CDbCriteria;
             $criteria->compare('connect_exam_id',$connect_exam_id);
+                
+            
             $criteria->compare('examgroup.is_deleted', 0);
             $criteria->compare('examconnect.is_deleted', 0);
             $criteria->select = 't.*'; 

@@ -31,7 +31,19 @@
 -%>
 
 <div id="page-yield" class="available_sections">
- <div class="appoved_date">Date : 16 May 2017</div>
- <div class="form_head">TO WHOME IT MAY CONCERN</div>
- <div class="form_content"><%=@formData.generated_form.gsub(/\n/, '<br/>') %></div>
+  <% if @formData.form_type_text == "visa_recommendation_letter"  %>
+    <div class="appoved_date">Date : 16 May 2017</div>
+ 
+    <div class="visa_form_head"><%=@formData.form_head.gsub(/\n/, '<br/>') %></div>
+ 
+    <div class="form_content"><%=@formData.generated_form.gsub(/\n/, '<br/>') %></div>
+    
+  <% else %>
+    <div class="appoved_date">Date : 16 May 2017</div>
+ 
+    <div class="form_head"></div>
+ 
+    <div class="form_content"><%=@formData.generated_form.gsub(/\n/, '<br/>') %></div>
+  <% end %>
+    
 </div>

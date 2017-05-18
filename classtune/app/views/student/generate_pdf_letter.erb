@@ -20,109 +20,140 @@
       
 </div>
 <% if !@formData.nil? %>  
-
+  <% result = @formData.form_data.split("|") %>
   <% 
+    arStudentData = []
     if @formData.form_type_text == "transfer_letter" 
       title = "Transfer Certificate Letter"
       style = "transfer_letter"
+      
+      arStudentData << ["Student Name", result[0]] 
+      arStudentData << ["Class", result[1]] 
+      arStudentData << ["Admission Date", result[2]] 
+      arStudentData << ["End Date", result[3]]    
     elsif @formData.form_type_text == "noc_letter" 
       title = "No Objection Certificate Letter"
       style = "noc_letter"
+      
+      arStudentData << ["Student Name", result[0]] 
+      arStudentData << ["Class", result[1]] 
+      arStudentData << ["Reason", result[2]] 
+      arStudentData << ["Start Date", result[3]] 
+      arStudentData << ["End Date", result[4]] 
     elsif @formData.form_type_text == "recommendation_letter" 
       title = "Recommendation Certificate Letter"
       style = "recommendation_letter"
+      
+      arStudentData << ["Student Name", result[0]] 
+      arStudentData << ["Class", result[1]] 
+      arStudentData << ["Admission Date", result[2]] 
+      arStudentData << ["Achievements Hints", result[3]] 
     elsif @formData.form_type_text == "studentship_letter" 
       title = "Studentship Letter"
       style = "studentship_letter"
+      
+      arStudentData << ["Student Name", result[0]] 
+      arStudentData << ["Class", result[1]] 
+      arStudentData << ["Father Name", result[2]] 
+      arStudentData << ["Mother Name", result[3]]    
     elsif @formData.form_type_text == "visa_recommendation_letter" 
       title = "VISA Recommendation Certificate Letter"
       style = "visa_recommendation_letter"
+      
+      arStudentData << ["Student Name", result[0]] 
+      arStudentData << ["Class", result[1]] 
+      arStudentData << ["Admission Date", result[2]] 
+      arStudentData << ["Father Name", result[3]] 
+      arStudentData << ["Mother Name", result[4]] 
+      arStudentData << ["Date of Birth", result[5]] 
+      arStudentData << ["Passport No", result[6]] 
+      arStudentData << ["Head To Embassy", result[7].gsub(/\n/, '<br/>')] 
     end 
   %>
-
- <% result = @formData.form_data.split("|") %>
-
-<% form_for :student, :url => {:action => 'generate_pdf_letter'}, :html => {:multipart => true, :id => 'new_student'} do |s| %>
-<input type="hidden" name="st_content" value="st_form">
-<input type="hidden" name="aid" value="<%= @formData.id %>">
-<div id="page-yield" class="bg-disable">
-  <div id="guardian_detail" class="row_wrapper">
-    <div class="row">
-        <div class="guardian_header_txt"><%= title %> Content</div>
-    </div>
-    <div class="row">
-      <div class="row_label">
-          <div>School Name</div>
-      </div>
-      <div class="row_data">
-          <div><%= @schoolData.name %> </div>
-      </div>
-    </div>
-    <div class="clearfix"></div>
-    <div class="row">
-      <div class="row_label">
-          <div>Studnet Name</div>
-      </div>
-      <div class="row_data"><div>
-          <%= result[0] %> </div>
-      </div>
-    </div>
-    <div class="clearfix"></div>
-    <div class="row">
-      <div class="row_label">
-          <div>Class</div>
-      </div>
-      <div class="row_data"><div>
-          <%= result[1] %> </div>
-      </div>
-    </div>
-    <div class="clearfix"></div>
-    <div class="row">
-      <div class="row_label">
-          <div>Reason</div>
-      </div>
-      <div class="row_data"><div>
-          <%= result[2] %> </div>
-      </div>
-    </div>
-    <div class="clearfix"></div>
-    <div class="row">
-      <div class="row_label">
-          <div>Start Date</div>
-      </div>
-      <div class="row_data"><div>
-          <%= result[3] %> </div>
-      </div>
-    </div>
-    <div class="clearfix"></div>
-    <div class="row">
-      <div class="row_label">
-          <div>End Date</div>
-      </div>
-      <div class="row_data"><div>
-          <%= result[4] %> </div>
-      </div>
-    </div>
-    <div class="clearfix"></div>
+  
+  <%
+    formContent = ""
+    formHead = ""
+    if !@formData.generated_form.nil? and @formData.generated_form != ""
+      formContent = @formData.generated_form
+    elsif @defaultFromData.form_data != "" and !@defaultFromData.form_data.nil?
+      formContent = @defaultFromData.form_data
+    end
     
-        <div class="row">
-            
-            <div class="row_action">
-              <div class="content_div">
-                  <textarea name="content_editor" class="content_editor" id="content_editor" rows="100" cols="10"><%= @formData.generated_form %></textarea>
+    if @formData.form_head != "" and !@formData.form_head.nil?
+      formHead = @formData.form_head
+    elsif @defaultFromData.form_head != "" and !@defaultFromData.form_head.nil?
+      formHead = @defaultFromData.form_head
+    end
+    
+  %>
+  
+  <% if !arStudentData.nil? %>
+    
+      <% form_for :student, :url => {:action => 'generate_pdf_letter'}, :html => {:multipart => true, :id => 'new_student'} do |s| %>
+      <input type="hidden" name="st_content" value="st_form">
+      <input type="hidden" name="aid" value="<%= @formData.id %>">
+      <div id="page-yield" class="bg-disable">
+        <div id="guardian_detail" class="row_wrapper">
+              <div class="row">
+                  <div class="guardian_header_txt"><%= title %> Content</div>
               </div>
-            </div>
-            <div class="row_action">
-              <div>
-                <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader2", :style =>"display: none;" ) %>
-                <%= submit_tag "", :class => "submit_button", :value => "► #{t('update')}" %>
+              <div class="row">
+                <div class="row_label">
+                    <div>School Name</div>
+                </div>
+                <div class="row_data">
+                    <div><%= @schoolData.name %> </div>
+                </div>
               </div>
-            </div>
+              
+            <% arStudentData.each do |a| %>
+              <div class="row">
+                <div class="row_label">
+                    <div><%= a[0] %></div>
+                </div>
+                <div class="row_data">
+                    <div><%= a[1] %> </div>
+                </div>
+              </div>
+              <div class="clearfix"></div>
+            <% end %>
+              <div class="clearfix"></div>    
+              <div class="row"><h3>Form Head</h3></div>
+              <div class="row">
+
+                  <div class="row_action">
+                    <div class="content_div">
+                      <textarea name="form_head" class="form_head" id="form_head" rows="100" cols="4"><%= formHead %></textarea>
+                    </div>
+                  </div>
+
+              </div>
+              <div class="clearfix"></div>
+              <div class="row"><h3>Form Content</h3></div>
+              <div class="row">
+                  <div class="row_action">
+                    <div class="content_div">
+                        <textarea name="content_editor" class="content_editor" id="content_editor" rows="100" cols="10"><%= formContent %></textarea>
+                    </div>
+                  </div>
+              </div>
+              <div class="clearfix"></div>
+              <div class="row">
+                  <div class="row_action">
+                    <div>
+                      <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader2", :style =>"display: none;" ) %>
+                      <%= submit_tag "", :class => "submit_button", :value => "► #{t('update')}" %>
+                    </div>
+                  </div>
+              </div>
         </div>
-  </div>
-</div>
+      </div>
+    <% end %>
+  <% end %>
+
 <% end %>
-<% end %>
+
 <%= stylesheet_link_tag 'tadded-header' %>
 <% content_for :head do %>
   <%= javascript_include_tag "custom/tabbed-header" %>

@@ -53,31 +53,12 @@
               <div><%= title %></div>
             </div>
             <div class="row_data">
-              <% if a.form_type_text == "transfer_letter" %>
-                
-              <% elsif a.form_type_text == "noc_letter"  %>
-                <div>
+              <div>
                 <% result = a.form_data.split("|") %>
 
                 <b>Student Name :</b> <%= link_to result[0], { :controller=>"student",:action => 'profile', :id => a.student_id},:target => "blank" %> <br />
-                <b>Class :</b> <%= result[1] %> <br />
-                <b>Reason :</b> <%= result[2] %> <br />
-                <b>Duration :</b> <%= result[3] %> - <%= result[4] %> <br />
-                </div>
-              <% elsif a.form_type_text == "recommendation_letter" %>
-                <div>
-                <% result = a.form_data.split("|") %>
-
-                <b>Student Name :</b> <%= link_to result[0], { :controller=>"student",:action => 'profile', :id => a.student_id},:target => "blank" %> <br />
-                <b>Class :</b> <%= result[1] %> <br />
-                <b>Admission Date :</b> <%= result[2] %> <br />
-                <b>Achievement Hints :</b>  <%= result[3] %><br />
-                </div>
-              <% elsif a.form_type_text == "studentship_letter"  %>
-                
-              <% elsif a.form_type_text == "visa_recommendation_letter" %>
-                
-              <% end %>
+                <b>Class :</b> <%= result[1] %> <br />                
+              </div>
             </div>
             <div class="row_action">
               <div>

@@ -33,14 +33,16 @@
     <div class="row">
       <div class="row_label">Class</div>
       <div class="row_data"><%= @student.batch.name %>&nbsp;<%= @student.batch.course.course_name %>&nbsp;
+                    <%  class_string = @student.batch.name+" "+@student.batch.course.course_name %>
                     <% unless  @student.batch.course.section_name.empty? %>                      
                       <%= ", " %>
                       <%= t('profile_section_label') %>         
                       <%= @student.batch.course.section_name %>
+                      <%  class_string = class_string+" " + t('profile_section_label')+" " + @student.batch.course.section_name %>
                     <% end %>
-          <input type="hidden" id="student_class" value="<%= @student.batch.course.course_name %>">
+          <input type="hidden" id="student_class" value="<%= class_string %>">
+      </div>
     </div>
-    
     <div class="row">
       <div class="row_label"><%= t('admission_date') %></div>
       <div class="row_data">

@@ -1,141 +1,176 @@
 
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
-             <table id="pdf-table" width="100%" cellspacing="0">
+             <table id="pdf-table" width="99.8%" cellspacing="0">
                   <% c = 'even'  %>
+                  <% total_mark_of_allexam = 0 %>
+                 
                   <tr class="table-header">
-                      <td class="col-pdf"><%= "Sl. No." %></td>
-                      <td class="col-pdf"><%= "Subject" %></td>
-                      <td class="col-pdf">Full Mark</td>
-                      <td class="col-pdf">Obtained Mark</td>
-                      <td class="col-pdf">Grade</td>
-                      <td class="col-pdf">Highest</td>
-                    
+                      <td class="col-pdf border-left-none"><%= "Subject" %></b></td>
+                      <% loop=0 %>
+                      <% unless @report_data['report']['exams'].blank? %>  
+                        <% @report_data['report']['exams'].each do |report| %>
+                          <% 
+                            loop = loop+1  
+                            if loop>2
+                              break
+                            end  
+                          %>
+                          <td class="col-pdf">
+                              <%= report['exam_name'] %>
+                              <hr/>
+                              Score Out of <% unless @exam_marks[report['exam_id'].to_s].blank?  %><% total_mark_of_allexam = total_mark_of_allexam+@exam_marks[report['exam_id'].to_s].to_i  %><%= @exam_marks[report['exam_id'].to_s] %><% end %>
+                              
+                          </td>
+                          
+                        <% end %>
+                      <% end %>
+
+                      <td class="col-pdf">
+                          Total Marks
+                          <hr/>
+                          Score Out of <%= total_mark_of_allexam %>
+                      </td>
+                      <td class="col-pdf">
+                          70% of Final Term Score
+                      </td>
+                      <td class="col-pdf">
+                          30% of Mid Term Score
+                      </td>
+                      <td class="col-pdf">Accumulated Score</td>
+                      <td class="col-pdf border-right-none">Grade</td>
+                      
                   </tr>
 
                   <% total_parcent = 0 %>
                   <% total_subject = 0 %>
-                  <% i = 0 %>
+                  <% total_mark_all_subject = 0 %>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
-                      <% i = i+1 %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                          
-                          <% obtained_mark = 0 %>
+                          <% weightage_mark = 0 %>
+                          <% total_mark = 0 %>
                           <% full_mark = 0 %>
-                          <% highest_mark = 0 %>
-                          <% st_full_mark = 0 %>
-                          <% ct_full_mark = 0 %>
-                          
-                          <% st_marks = [] %>
-                          <% ct_marks = [] %>
-                          <% avg_mark_st = 0; %>
-                          <% avg_mark_ct = 0; %>
-                          
-                          <td class="col-pdf"><%= i %></td>
-                          <td class="col-pdf"><%= subjects['name'] %><% unless @current_user.student? or @current_user.parent? %>
-                  &nbsp;|&nbsp;&nbsp;&nbsp;<%= link_to "Mark Sheet",
-                    {:action => "marksheet", :subject_id => subjects['id'],:id=>@connect_exam_obj.id},:target => '_blank' %><% end %></td>
-                            <% 
-                              unless @report_data['report']['exams'].blank?  
-                                 @report_data['report']['exams'].each do |report| 
-                                    if st_full_mark == 0 and report['exam_category'] == '4'
-                                      if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank?
-                                        st_full_mark = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
-                                      end
-                                    end                     
-                                    if ct_full_mark == 0 and report['exam_category'] == '1'
-                                      if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank?
-                                        ct_full_mark = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
-                                      end
-                                    end
-                                    
-                                    if report['exam_category'] == '4'
-                                     if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
-                                        st_marks << report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
-                                     else
-                                        st_marks << 0
-                                     end      
-                                    end
 
-                                    if report['exam_category'] == '1'
-                                      if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
-                                         ct_marks << report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
-                                      else
-                                         ct_marks << 0
-                                      end      
-                                    end
-                                    
+                          <td class="col-pdf border-left-none no-warp"><%= subjects['name'] %></td>
+                          <% unless @report_data['report']['exams'].blank? %>  
+                          <% loop=0 %>
+                            <% @report_data['report']['exams'].each do |report| %>
+                              <% 
+                                loop = loop+1  
+                                if loop>2
+                                  break
+                                end  
+                              %>
+                              <td class="col-pdf no-warp">
+                                  <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
+                                    <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %>
+                                    <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                  <% else %>
+                                    N/A
+                                  <% end %>
+                                  <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
+                                    <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                  <% else %>
+
+                                  <% end %>  
+
+
+
+                              </td>
+
+                              <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['weightage_mark'].blank? %>
+                                <% weightage_mark = weightage_mark+report['result'][report['exam_id']][subjects['id']]['weightage_mark'] %>
+                              <% end %>
+
+                            <% end %>
+                          <% end %>
+
+                          <% 
+                          midterm_total = 0
+                          midterm_30 = 0
+                          unless @report_data['report']['exams'].blank? 
+                            loop=0 
+                            @report_data['report']['exams'].each do |report| 
+
+                              loop = loop+1  
+                              if loop>2
+                                if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
+                                  midterm_total = midterm_total.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f 
                                 end
                               end
-                            
-                              st_marks.sort! {|x,y| y <=> x }
-                              ct_marks.sort! {|x,y| y <=> x }
-                              
-                            if ct_full_mark.to_i == 20 
-                                avg_mark_ct = (ct_marks[0].to_f+ct_marks[1].to_f)/2
-                            else 
-                                avg_mark_ct = ct_marks[0].to_f
-                            end 
-                          
-                            if st_full_mark.to_i == 10 
-                                avg_mark_st = (st_marks[0].to_f+st_marks[1].to_f+st_marks[0].to_f)/3
-                            else st_full_mark.to_i == 5  
-                                avg_mark_st = (st_marks[0].to_f+st_marks[1].to_f)/2
+
                             end
+                          end
+                        
+                            if midterm_total.to_f>0
+                              midterm_30  = (midterm_total.to_f*30)/100
+                            end
+                          %>
+
+
+
+                          <% 
+                          highest_mark = 0
+                          if !@report_data['report']['max_mark'].blank? and !@report_data['report']['max_mark'][subjects['id']].blank?
+                            highest_mark = @report_data['report']['max_mark'][subjects['id']].to_f
+                            end  
+
+                          if total_mark.to_f>0 and full_mark.to_f>0
+                            main_mark = (total_mark.to_f/full_mark.to_f)*100 
+                            total_70 = (total_mark.to_f*70)/100
+                          else
+                            main_mark = 0
+                            total_70 = 0
+                          end
+                        
+                          accumulated = midterm_30+total_70
+                          accumulated = accumulated.round()
                           
-                            full_mark = ct_full_mark.to_i+st_full_mark.to_i
-                            obtained_mark = avg_mark_ct.to_f+avg_mark_st.to_f
-                            
-                            main_mark = (obtained_mark.to_f/full_mark.to_f)*100 
-                            
-                            %>
+                        
+                        %>
 
+                          <% if full_mark.to_f > 0 %>
+                            <td class="col-pdf"><%= sprintf( "%0.02f", total_mark) %></td>
+                            <td class="col-pdf"><%= sprintf( "%0.02f", total_70) %></td>
+                            <td class="col-pdf"><%= sprintf( "%0.02f", midterm_30) %></td>
+                            <td class="col-pdf"><%= accumulated %></td>
+                            <%  grade = GradingLevel.percentage_to_grade(accumulated, @batch.id) %>
+                            <% if !grade.blank? and !grade.name.blank? %>
+                              <td class="col-pdf border-right-none"><b><%= grade.name %></b></td>
+                              <% if grade.name == "U" %>
+                              <% total_u +=1 %>
+                              <% end %>
+                            <% else %>
+                              <td class="col-pdf border-right-none"><b>N/A</b></td>
+                            <% end %>
+                            
+                            
 
-                          <td class="col-pdf"><%= sprintf( "%0.02f", full_mark) %></td>
-                          <td class="col-pdf"><%= sprintf( "%0.02f", obtained_mark) %></td>
-                          <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
-                          <% if !grade.blank? and !grade.name.blank? %>
-                            <td class="col-pdf"><%= grade.name %></td>  
-                          <% else %>
-                            <td class="col-pdf">N/A</td>  
-                          <% end %> 
-                          <td class="col-pdf"><%= sprintf( "%0.02f", full_mark) %></td>
-                               
+                            <% total_parcent= total_parcent+main_mark %>
+                            <% total_subject = total_subject+1 %>
+                            <%  total_mark_all_subject = total_mark_all_subject+accumulated %>
+                          <% else  %>
+                            <td class="col-pdf">N/A</td>
+                            <td class="col-pdf">N/A</td>
+                            <td class="col-pdf">N/A</td>
+                            <td class="col-pdf">N/A</td>
+                            <td class="col-pdf border-right-none">N/A</td>
+                          <% end %>      
 
                       </tr> 
-                    <% end %>
-                    <%  
-                    
-                    group_exams = GroupedExam.find_all_by_connect_exam_id(@connect_exam_obj.id) 
-                    
-                    @all_subjects = []
-                    group_exams.each do |group_exam|
-                      allexams = Exam.find_all_by_exam_group_id(group_exam.exam_group_id);
-                      allexams.each do |exam|
-                        if !@all_subjects.include?(exam.subject.id)
-                          @all_subjects << exam.subject.id
-                        end
-                      end
-                    end 
-                    %>
-                    
-                      <% unless @report_data['report']['no_exam_subject_resutl'].blank? %>
-                        <% @report_data['report']['no_exam_subject_resutl'].each do |report| %>
-                        
-                        <%  if @all_subjects.include?(report['id'].to_i) %>
-                          <% i = i+1 %>
-                            <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                            <td class="col-pdf"><%= i %></td>
-                            <td class="col-pdf"><%= report['subject_name'] %></td>
-                            <td class="col-pdf"></td>
-                            <td class="col-pdf"></td>
-                            <td class="col-pdf"><%= report['subject_comment'] %></td>
-                            <td class="col-pdf"></td>
-                            </tr>
-                          <% end %>
-                        <% end %>
-                      <% end %>
-                  <% end %>     
+                    <% end %>  
+                  <% end %>
+                      <tr class="odd">
+                        <td class="col-pdf border-left-none"><b>Total Mark</b></td>
+                         <td class="col-pdf"></td>
+                         <td class="col-pdf"></td>
+                         <td class="col-pdf"></td>
+                         <td class="col-pdf"></td>
+                         <td class="col-pdf"></td>
+                         <td class="col-pdf"><b><%= total_mark_all_subject %></b></td>
+                          
+                         <td class="col-pdf border-right-none"></td>
+                      </tr>   
 
-              </table>          
+              </table>         
 <% end %>

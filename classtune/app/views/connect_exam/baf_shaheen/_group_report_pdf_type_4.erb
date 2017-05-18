@@ -1,5 +1,6 @@
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
   <p>&nbsp;<p>
+  <% total_u = 0 %>
   
   <div id="page-yield"  class="available_sections1 baf_shaheen">
 
@@ -104,7 +105,7 @@
                           70% of Final Term Score
                       </td>
                       <td class="col-pdf">
-                          30% of Final Term Score
+                          30% of Mid Term Score
                       </td>
                       <td class="col-pdf">Accumulated Score</td>
                       <td class="col-pdf border-right-none">Grade</td>
@@ -207,6 +208,9 @@
                             <%  grade = GradingLevel.percentage_to_grade(accumulated, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>
                               <td class="col-pdf border-right-none"><b><%= grade.name %></b></td>
+                              <% if grade.name == "U" %>
+                              <% total_u +=1 %>
+                              <% end %>
                             <% else %>
                               <td class="col-pdf border-right-none"><b>N/A</b></td>
                             <% end %>
@@ -270,6 +274,7 @@
                 end
               %>
               <h4 class="h4-evaluation"><b>Evaluation</b></h4>
+              <% unless result.blank?  %>
               <table id="pdf-table" class="evaluation" width="99.8%" >
                       <tr class="odd">
                           <td class="col-pdf border-left-none" width="33%">
@@ -361,6 +366,140 @@
                       </tr>
                       
               </table>
+              <% else %>
+              <% if total_u == 0 or (@batch.course.course_name!="VIII" and @batch.course.course_name!="IX" and @batch.course.course_name!="X" and  total_u<2) %>
+                 <% if total_u > 0   %>
+                  <% result = "Passed Under Consideration" %>
+                 <% else %>
+                  <% result = "Passed" %>
+                 <% end %>
+                 <% if @promoted_to!="0" %>
+                 <% promotion_status = "Promoted to STD- "+@promoted_to %>
+                 <% else %>
+                 <% promotion_status = "N/A" %>
+                 <% end %>
+                 <% unless @student_position[@student.id.to_i].blank? %>
+                 <% merit_position = @student_position[@student.id.to_i] %>
+                 <% unless @student_roll[@student_position[@student.id.to_i].to_i].blank? %>
+                    <% new_roll = @student_roll[@student_position[@student.id.to_i].to_i] %>
+                 <% else %>
+                    <% new_roll = "N/A" %>
+                 <% end %>
+              
+                 <% unless @student_section[@student_position[@student.id.to_i].to_i].blank? %>
+                    <% new_section = @student_section[@student_position[@student.id.to_i].to_i] %>
+                 <% else %>
+                    <% new_section = "N/A" %>
+                 <% end %>
+                  <% else %>
+                  <%
+                    merit_position = "N/A"
+                    new_roll = "N/A"
+                    new_section = "N/A"
+                  %>
+                  <% end %>
+              <% else %>
+                <% result = "Failed" %>
+                <% promotion_status = "Not Promoted" %>
+                <% new_roll = "N/A" %>
+                <% merit_position = "N/A" %>
+                <% new_section = "N/A" %>
+              <% end %>
+              
+              
+              <table id="pdf-table" class="evaluation" width="99.8%" >
+                      <tr class="odd">
+                          <td class="col-pdf border-left-none" width="33%">
+                              Result
+                          </td> 
+                          <td class="col-pdf align-center" width="33%">
+                              <b> <%= result %> </b>
+                          </td> 
+                          <td class="col-pdf no-border"  width="33%">
+                             
+                          </td>
+                      </tr>
+                      <tr class="odd">
+                          <td class="col-pdf border-left-none" width="33%">
+                              Promotion Status
+                          </td> 
+                          <td class="col-pdf align-center" width="33%">
+                              <%= promotion_status %>
+                          </td>
+                          <td class="col-pdf no-border" width="33%">
+                              
+                          </td>
+                      </tr>
+                      <tr class="odd">
+                          <td class="col-pdf border-left-none" width="33%">
+                              Merit Position
+                          </td> 
+                          <td class="col-pdf align-center" width="33%">
+                             <%= merit_position %>
+                          </td> 
+                          <td class="col-pdf no-border"  width="33%">
+                             
+                          </td>
+                      </tr>
+                      <tr class="odd">
+                          <td class="col-pdf border-left-none" width="33%">
+                              New Roll
+                          </td> 
+                          <td class="col-pdf align-center" width="33%">
+                            
+                             <%=  new_roll %>
+                          </td> 
+                          <td class="col-pdf no-border"  width="33%">
+                             
+                          </td>
+                      </tr>
+                      <tr class="odd">
+                          <td class="col-pdf border-left-none" width="33%">
+                              New Section
+                          </td> 
+                          <td class="col-pdf align-center" width="33%">
+                             <%= new_section %>
+                          </td> 
+                          <td class="col-pdf no-border" width="33%">
+                            
+                          </td>
+                      </tr>
+                      <tr class="odd">
+                          <td class="col-pdf border-left-none" width="33%">
+                              No. of Working Days
+                          </td> 
+                          <td class="col-pdf align-center" width="33%">
+                              <%= @report_data['total'] %>
+                          </td>
+                          <td class="col-pdf no-border" width="33%" >
+                              
+                          </td>
+                      </tr>
+                      <tr class="odd">
+                          <td class="col-pdf border-left-none" width="33%">
+                              Attendance
+                          </td> 
+                          <td class="col-pdf align-center" width="33%">
+                              <%= @report_data['present'] %>
+                          </td>
+                          <td class="col-pdf no-border" width="33%">
+                              
+                          </td>
+                      </tr>
+                      <tr class="odd">
+                          <td class="col-pdf border-left-none" width="33%">
+                              Class Teacher's Signature
+                          </td> 
+                          <td class="col-pdf" width="33%">
+                              <br/><br/>
+                          </td>
+                          <td class="col-pdf border-right-none align-center" width="33%">
+                              Principal's Signature
+                          </td> 
+                      </tr>
+                      
+              </table>
+              <% end %>
           </div>
       </div>
 

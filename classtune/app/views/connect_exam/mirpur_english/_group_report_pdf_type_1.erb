@@ -30,7 +30,7 @@
             </tr> 
 
             <tr>
-                <td>Name Of Class Teacher</td>
+                <td>Class Teacher</td>
                 <% if !@assigned_employee.blank? %>
         <% i = 0 %>
         <% @assigned_employee.each do |emp| %>
@@ -40,7 +40,7 @@
             break
          end
         %>
-          <td><% if i == 1 %> : &nbsp;&nbsp;&nbsp;<% end %> <%= emp.first_name %>&nbsp;<%= emp.last_name %></td>
+          <td colspan="3" ><% if i == 1 %> : &nbsp;&nbsp;&nbsp;<% end %> <%= emp.first_name %>&nbsp;<%= emp.last_name %></td>
         <% end %>
         <% end %> 
             </tr>

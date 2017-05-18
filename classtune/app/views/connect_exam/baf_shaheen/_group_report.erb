@@ -1,1 +1,12 @@
+<% if @connect_exam_obj.result_type.to_i == 4  %> 
+<%
+      student_response = get_tabulation_connect_exam(@connect_exam_obj.id,@batch.id,true)
+      @tabulation_data = []
+      if student_response['status']['code'].to_i == 200
+        @tabulation_data = student_response['data']
+      end
+%>
+
+<%= render  :partial=>"/connect_exam/baf_shaheen/finding_data" %>
+<% end %>
 <%= render  :partial=>"/connect_exam/baf_shaheen/group_report_pdf_type_"+@connect_exam_obj.result_type.to_s %>

@@ -85,7 +85,7 @@ class ApplicationController < ActionController::Base
     return string+" Taka Only"
   end
   
-  def get_tabulation_connect_exam(connect_exam_id,batch_id)
+  def get_tabulation_connect_exam(connect_exam_id,batch_id,all_class_report=false)
     require 'net/http'
     require 'uri'
     require "yaml"
@@ -95,7 +95,11 @@ class ApplicationController < ActionController::Base
     api_uri = URI(api_endpoint + "api/report/tabulation")
     http = Net::HTTP.new(api_uri.host, api_uri.port)
     request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })
-    request.set_form_data({"connect_exam_id"=>connect_exam_id,"batch_id"=>batch_id,"call_from_web"=>1,"user_secret" =>session[:api_info][0]['user_secret']})
+    if all_class_report
+      request.set_form_data({"connect_exam_id"=>connect_exam_id,"batch_id"=>batch_id,"all_class_report"=>all_class_report,"call_from_web"=>1,"user_secret" =>session[:api_info][0]['user_secret']})
+    else
+      request.set_form_data({"connect_exam_id"=>connect_exam_id,"batch_id"=>batch_id,"call_from_web"=>1,"user_secret" =>session[:api_info][0]['user_secret']})
+    end
     response = http.request(request)
     student_response = JSON::parse(response.body)
     return student_response

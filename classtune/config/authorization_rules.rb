@@ -21,13 +21,10 @@ authorization do
       :data_connect_exam,
       :data_connect_exam_report,
       :connect_exam_report,
-<<<<<<< HEAD
       :get_class,
       :get_exam_subject,
       :get_exams,
       :get_section,
-=======
->>>>>>> sjws-task-3
       :examgroup
     ]
     has_permission_on [:exam],
@@ -375,13 +372,10 @@ authorization do
       :data_connect_exam,
       :data_connect_exam_report,
       :connect_exam_report,
-<<<<<<< HEAD
       :get_class,
       :get_exams,
       :get_exam_subject,
       :get_section,
-=======
->>>>>>> sjws-task-3
       :examgroup
     ]
     has_permission_on [:exam],
@@ -1911,13 +1905,10 @@ authorization do
       :data_connect_exam,
       :data_connect_exam_report,
       :connect_exam_report,
-<<<<<<< HEAD
       :get_class,
       :get_exams,
-      :get_exam_subject,
       :get_section,
-=======
->>>>>>> sjws-task-3
+      :get_exam_subject,
       :examgroup
     ]
     has_permission_on [:exam],
@@ -3296,15 +3287,12 @@ authorization do
       :data_connect_exam,
       :data_connect_exam_report,
       :connect_exam_report,
-<<<<<<< HEAD
       :get_class,
       :get_exam_subject,
       :get_section,
       :examgroup,
-      :get_exams
-=======
+      :get_exams,
       :examgroup
->>>>>>> sjws-task-3
     ]
     has_permission_on [:exam],
       :to => [
@@ -3563,13 +3551,10 @@ authorization do
       :data_connect_exam,
       :data_connect_exam_report,
       :connect_exam_report,
-<<<<<<< HEAD
       :get_class,
       :get_exams,
       :get_exam_subject,
       :get_section,
-=======
->>>>>>> sjws-task-3
       :examgroup
     ]
     has_permission_on [:exam],

@@ -59,6 +59,24 @@
                 <b>Student Name :</b> <%= link_to result[0], { :controller=>"student",:action => 'profile', :id => a.student_id},:target => "blank" %> <br />
                 <b>Class :</b> <%= result[1] %> <br />                
               </div>
+            </div> 
+            <div class="row_status"> 
+                <div>
+                  <% if a.status == 1 %>
+                    <span class="Pending">
+                        Pending
+                    </span>  
+                  <% end %>
+                  <% if a.status == 2 %>
+                    <span class="Pending">Processing</span>
+                  <% end %>
+                  <% if a.status == 3 %> 
+                    <span class="Ready">Ready</span>
+                  <% end %>
+                  <% if a.status == 22 %>
+                    <span class="rejected">Rejected</span>
+                  <% end %>
+                </div>
             </div>
             <div class="row_action">
               <div>
@@ -67,20 +85,18 @@
                       <%= link_to "Start Processing", { :controller=>"student",:action => 'update_letter_status', :aid => a.id, :id => a.student_id, :status => 2},:confirm=>"#{t('delete_confirm_msg')}",:class=>"delete" %>
                   </span>  
                 <% end %>
-                <% if a.status == 2 %>
-                  <span class="Pending">Processing</span>
-                <% end %>
+                
                 <% if a.status == 2 %>                  
                 <span class="Processing">
                   <%= link_to "Processing Complete ", { :controller=>"student",:action => 'update_letter_status', :aid => a.id, :id => a.student_id, :status => 3},:confirm=>"#{t('delete_confirm_msg')}",:class=>"delete" %>
                 </span>
                 <% end %>
                 <% if a.status == 3 %> 
-                  <span class="Ready">Ready</span>
+                  
                 <% end %>
                 
                 <% if a.status == 22 %>
-                <span class="rejected">Rejected</span>
+                
                 <% elsif a.status == 3 %>
                 
                 <% else %>
@@ -88,12 +104,14 @@
                   <%= link_to "Deney", { :controller=>"student",:action => 'update_letter_status', :aid => a.id, :id => a.student_id, :status => 22},:confirm=>"#{t('delete_confirm_msg')}",:class=>"delete" %>
                 </span>
                 <% end %>
-                <span class="generate_pdf">
-                <%= link_to "Generate PDF", { :controller=>"student",:action => 'generate_pdf_letter', :aid => a.id, :id => a.student_id}, :target => "blank" %>
-                </span>
-                <span class="generate_pdf">
-                <%= link_to "View PDF", { :controller=>"student",:action => 'view_pdf_letter', :aid => a.id, :id => a.student_id}, :target => "blank" %>
-                </span>
+                <% if a.status != 22 %>
+                  <span class="generate_pdf">
+                  <%= link_to "Generate PDF", { :controller=>"student",:action => 'generate_pdf_letter', :aid => a.id, :id => a.student_id}, :target => "blank" %>
+                  </span>
+                  <span class="generate_pdf">
+                  <%= link_to "View PDF", { :controller=>"student",:action => 'view_pdf_letter', :aid => a.id, :id => a.student_id}, :target => "blank" %>
+                  </span>
+                <% end %>
               </div>
             </div>
         </div>

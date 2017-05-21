@@ -87,6 +87,13 @@
       <% elsif MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 324 %>
         <%= render  :partial=>"/connect_exam/sfx/group_report" %>
       <% elsif MultiSchool.current_school.id == 323 or MultiSchool.current_school.id == 2  %>
+        <%
+          student_response = get_tabulation_connect_exam(@connect_exam_obj.id,@batch.id,true)
+          @tabulation_data = []
+          if student_response['status']['code'].to_i == 200
+            @tabulation_data = student_response['data']
+          end
+        %>
         <%= render  :partial=>"/connect_exam/baf_shaheen/group_report" %>
       <% elsif MultiSchool.current_school.id == 325  %>
         <%= render  :partial=>"/connect_exam/mirpur_english/group_report" %>

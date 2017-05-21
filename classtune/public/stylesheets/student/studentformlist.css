@@ -98,9 +98,14 @@
     border-right: 1px solid #DFE1E2;
     border-left: 1px solid #DFE1E2;
 }
+.row_status {
+    float: left;
+    width: 20%;
+    border-right: 1px solid #DFE1E2; 
+}
 .row_action {
     float: right;
-    width: 44%;
+    width: 23%;
     
 }
 
@@ -116,6 +121,9 @@
  .row_action div {
     padding: 10px;
 }
+ .row_status div {
+    padding: 10px;
+}
 .row_data div a {
     color: #868A8B;
     text-decoration: none;
@@ -124,7 +132,11 @@
     color: #fff;
     text-decoration: none;
 }
-.row_data div a:active, .row_action div a:active {
+.row_status div a {
+    color: #fff;
+    text-decoration: none;
+}
+.row_data div a:active, .row_action div a:active, .row_status div a:active {
     color: #000;
     text-decoration: none;
 }

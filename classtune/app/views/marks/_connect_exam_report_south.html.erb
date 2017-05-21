@@ -29,12 +29,11 @@
         <a href="javascript:void(0)" onclick="result_type_change(2)"  id="type_2" >Term End Tabulation Sheet</a>
         <a href="javascript:void(0)" onclick="result_type_change(3)"  id="type_3" >Progress Report</a>
         <a href="javascript:void(0)" onclick="result_type_change(4)"  id="type_4" >Comment Entry</a>
-        <a href="javascript:void(0)" onclick="result_type_change(5)"  id="type_5" >Marks Sheet for Subject Teacher</a>
-        <a href="javascript:void(0)" onclick="result_type_change(6)"  id="type_6" >Marks Sheet for Class Teacher</a>
-        <a href="javascript:void(0)" onclick="result_type_change(7)"  id="type_7" >Subjectwise Classroom Participation</a>
-        <a href="javascript:void(0)" onclick="result_type_change(8)"  id="type_8" >Studentwise Classroom Participation</a>
+        <a href="javascript:void(0)" onclick="result_type_change(5)"  id="type_5" >Marks Sheet Class Teacher</a>
+        <a href="javascript:void(0)" onclick="result_type_change(6)"  id="type_5" >Marks Sheet Subject Teacher</a>
     </div>
     <input type="hidden" name="result_type" value="1" id="result_type" />
+    <input type="hidden" name="batch_id" value="0" id="batch_id" />
     <% batches = Batch.active.find(:all, :group => "name") %>
     <div class="shift_batch_section">
       <% if batches %>
@@ -45,26 +44,32 @@
       %>
         <div class="shift all-exam-links">
           <% batches.each do |batch| %>
-            <a style="width:<%= width_percentize-2 %>%;" href="javascript:void(0)" onclick="get_class('<%= batch.name %>')"  ><%= batch.name %></a>
+            <a style="width:<%= width_percentize-2 %>%;" href="javascript:void(0)" onclick="get_class('<%= batch.name %>','<%= batch.id %>')" id="batch_name_<%= batch.id %>" ><%= batch.name %></a>
           <% end %>  
         </div>    
       <% end %> 
         <div class="class_section" >
-          <div class="class_only">
+          <div class="class_only all-exam-links">
               
           </div>
-          <div class="section_only">
+          <div class="section_only all-exam-links">
               
           </div>
         </div>
     </div>
     
     <div class="result_div">
-      
+        
     </div>
     
 </div>
 <style>
+ #content-header
+ {
+   display:none !important;
+ }
+    
+    
     
  #pdf_file
  {
@@ -163,6 +168,7 @@ a:hover
 #page-yield
 {
     width: 97%;
+    margin-top:0px;
 }
 #page-yield .box
 {
@@ -171,8 +177,24 @@ a:hover
     clear:both;
 }
 
+.subject_div
+{
+    float:left;
+    clear:both;
+    width: 100%;
+    margin-top: 20px; 
+    margin-left: 25px; 
+}
 
 
+.exam_div
+{
+    float:left;
+    clear:both;
+    width: 100%;
+    margin-top: 20px; 
+    margin-left: 25px;
+}
 
 .class_section
 {
@@ -186,16 +208,14 @@ a:hover
 .class_only
 {
     float:left;
-    clear:both;
-    width: 33%;
+    width: 33% !important;
     margin-left: 10px;   
 }
 
 .section_only
 {
     float:left;
-    clear:both;
-    width: 65%;
+    width: 61% !important;
     margin-left: 10px;   
 }
 
@@ -208,7 +228,6 @@ a:hover
 {
     width: 100%;
     cloat:left;
-    clear:both;
 }
 
 
@@ -247,7 +266,7 @@ a:hover
    clear:both;
    width: 20%;
    margin: 10px 5px;
-   min-height: 700px;
+   min-height: 788px;
    border: 2px solid #000;
 }
 
@@ -256,7 +275,7 @@ a:hover
    float:left;
    width: 77.5%;
    margin: 10px 5px;
-   min-height: 700px;
+   min-height: 788px;
    border: 2px solid #000; 
 }
 
@@ -274,16 +293,122 @@ a:hover
      jj(".exam_types a").removeClass('active');
      jj("#type_"+type_number).addClass('active');
      jj(".result_div").html("");
+     get_exams();
    }
-   function get_class(batch_name)
+   function get_class(batch_name,batch_id)
    {
-      jj.get( "marks/get_class?batch="+batch_name, function( data ) {
-        alert(data);
+     var html = "";
+      jj.get( "/marks/get_class?batch="+batch_name, function( data ) {
+        var batch_data = jQuery.parseJSON(data)
+        var dataA = batch_data.data;
+        jj.each( dataA, function( key, value ) {
+          
+            html = html+"<a style='width:100%;clear:both;margin-top:10px;' href='javascript:void(0)' id='section_"+value[0]+"' onclick=\"get_section('"+value[1]+"','"+value[2]+"','"+value[0]+"')\"  >"+value[2]+"</a>";
+        });
+        jj(".class_only").html(html);
+        jj(".shift a").removeClass('active');
+        jj("#batch_name_"+batch_id).addClass('active');
+        jj(".result_div").html("");
+        jj("#batch_id").val(0);
       });
+      
+     
+   }
+   function get_section(batch_name,course_name,batch_id)
+   {
+     var html = "";
+      jj.get( "/marks/get_section?batch="+batch_name+"&course_name="+course_name, function( data ) {
+        var batch_data = jQuery.parseJSON(data)
+        var dataA = batch_data.data;
+        jj.each( dataA, function( key, value ) {
+          
+            html = html+"<a style='width:44%;margin-top:10px;' href='javascript:void(0)' id='batch_id_"+value[0]+"' onclick='set_batch_id("+value[0]+")\'>"+value[3]+"</a>";
+        });
+        jj(".section_only").html(html);
+        jj(".class_only a").removeClass('active');
+        jj("#section_"+batch_id).addClass('active');
+        jj(".result_div").html("");
+        jj("#batch_id").val(0);
+      });
+      
+     
+   }
+   function get_exam_subject(exam_id)
+   {  
+      jj.get( "/marks/get_exam_subject?exam_id="+exam_id, function( data ) {
+          var exam_data = jQuery.parseJSON(data)
+          var dataA = exam_data.data;
+          var html = "";
+          jj.each( dataA, function( key, value ) {
+
+              html = html+value;
+          });
+          html = "<div class='subject_div all-exam-links'>"+html+"</div><div id='pdf_file' style='float: left;clear:both; width:95%; margin:20px 30px; background: transparent url(/images/pdf_loading2.gif) no-repeat;background-position: center;'></div> "
+          
+          jj(".result_div").append(html);
+          jj(".exam_div a").removeClass("active");
+          jj("#exams_id_"+exam_id).addClass("active");
+      });
+      
    }
    
-    jj(document).ready(function () {
-
+   function set_batch_id(batch_id)
+   {
+     jj("#batch_id").val(batch_id);
+     jj(".section_only a").removeClass('active');
+     jj("#batch_id_"+batch_id).addClass('active');
+     jj(".result_div").html("");
+     get_exams();
+   }
+   
+  
+   
+   function get_exams()
+   {
+      var batch_id = jj("#batch_id").val();
+      var result_type = jj("#result_type").val();
+      var html = "";
+      if(batch_id && result_type)
+      {
+        jj.get( "/marks/get_exams?batch_id="+batch_id+"&data_type="+result_type, function( data ) {
+            var exam_data = jQuery.parseJSON(data)
+            var dataA = exam_data.data;
+            jj.each( dataA, function( key, value ) {
+             
+                html = html+value;
+            });
+            html = "<div class='exam_div all-exam-links'>"+html+"</div>";
+            if(result_type<5)
+            {
+              html = html+"<div id='pdf_file' style='float: left;clear:both; width:95%; margin:20px 30px; background: transparent url(/images/pdf_loading2.gif) no-repeat;background-position: center;'></div>"; 
+            }  
+            jj(".result_div").html(html);
+        });
+      }
+   }
+   
+   jj( document ).on( "click", "a", function(event) {
+      
+      if(jj(this).attr("href").indexOf("continues")!=-1 || jj(this).attr("href").indexOf("tabulation")!=-1 || jj(this).attr("href").indexOf("marksheet")!=-1 || jj(this).attr("href").indexOf("comment_tabulation_pdf")!=-1)
+      {
+         jj("#pdf_file").hide();
+         jj("#pdf_file").show();
+         event.preventDefault();
+         PDFObject.embed(jj(this).attr("href"), "#pdf_file", {id: "pdf_id"});
+         if(jj(this).attr("href").indexOf("marksheet")!=-1)
+         {
+           jj(".subject_div a").removeClass("active");
+         }
+         else
+         {  
+            jj(".exam_div a").removeClass("active");
+         }
+         
+         jj(this).addClass("active");
+        
+         
+      }
+      
     });
   
 </script>  

@@ -6,15 +6,21 @@ class MarksController < ApplicationController
   
   
   def get_class
+    require 'json'
     batch_name = params[:batch]
     batches = Batch.find_all_by_name(batch_name)
     @class_list = []
     @class_names = []
+    k = 0
     unless batches.blank?
       batches.each do |batch|
         if !@class_names.include?(batch.course.course_name)
-          @class_list << batch
+          @class_list[k] = []
+          @class_list[k][0] = batch.id
+          @class_list[k][1] = batch.name
+          @class_list[k][2] = batch.course.course_name
           @class_names << batch.course.course_name
+          k =k+1
         end
       end
     end
@@ -22,18 +28,85 @@ class MarksController < ApplicationController
     json_data = {:data => @class_list}
     @data = JSON.generate(json_data)
     render :text => @data
+  end
+  
+  def get_exam_subject
+    require 'json'
+    exam_id = params[:exam_id]
+    exam_connect = ExamConnect.find(exam_id)
+    
+    @group_exams = GroupedExam.find_all_by_connect_exam_id(exam_connect.id)
+    k = 0
+    data = []
+    @subjects = []
+    @group_exams.each do |group_exam|
+      exams = Exam.find_all_by_exam_group_id(group_exam.exam_group_id)
+      exams.each do |exam|
+        exam_subject = exam.subject
+        if !exam_subject.blank? and !@subjects.include?(exam_subject) 
+          @subjects << exam_subject  
+          data[k] = @template.link_to(exam_subject.name.to_s, '/exam/' + 'marksheet/' +exam_connect.id.to_s+"?subject_id="+exam_subject.id.to_s)
+          k = k+1
+        end    
+      end
+
+    end
+    json_data = {:data => data}
+    @data = JSON.generate(json_data)
+    render :text => @data 
     
   end
   
+  def get_exams
+    require 'json'
+    batch_id = params[:batch_id]
+    data_type = params[:data_type]
+    if data_type.to_i == 1
+      @exam_connect = ExamConnect.active.find(:all,:conditions=>"batch_id="+batch_id+" and (result_type=3 or result_type=4) and is_deleted=0")
+    elsif data_type.to_i == 2
+      @exam_connect = ExamConnect.active.find(:all,:conditions=>"batch_id="+batch_id+" and (result_type=1 or result_type=2) and is_deleted=0")
+    else
+      @exam_connect = ExamConnect.active.find(:all,:conditions=>"batch_id="+batch_id+" and is_deleted=0")
+    end 
+    
+    k = 0
+    data = []
+    unless @exam_connect.blank?
+      @exam_connect.each do |exam_connect|
+        if data_type.to_i == 1 or data_type.to_i == 2
+          data[k] = @template.link_to(exam_connect.name.to_s, '/exam/' + 'tabulation/' +exam_connect.id.to_s, :id=>"exams_id_"+exam_connect.id.to_s)
+        elsif data_type.to_i == 3
+          data[k] = @template.link_to(exam_connect.name.to_s, '/exam/' + 'continues/' +exam_connect.id.to_s, :id=>"exams_id_"+exam_connect.id.to_s)
+        elsif data_type.to_i == 4
+          data[k] = @template.link_to(exam_connect.name.to_s, '/exam/' + 'comment_tabulation_pdf/' +exam_connect.id.to_s, :id=>"exams_id_"+exam_connect.id.to_s)
+        else
+          data[k] = "<a href='javascript:void(0);' id='exams_id_"+exam_connect.id.to_s+"' onclick='get_exam_subject("+exam_connect.id.to_s+")' >"+exam_connect.name.to_s+"</a>"
+        end  
+        k = k+1
+      end
+    end
+    
+    json_data = {:data => data}
+    @data = JSON.generate(json_data)
+    render :text => @data 
+  end
+  
   def get_section
+    require 'json'
     batch_name = params[:batch]
     course_name = params[:course_name]
     batches = Batch.find_all_by_name(batch_name)
-    @class_list = []
+    @batch_list = []
+    k = 0
     unless batches.blank?
       batches.each do |batch|
         if batch.course.course_name == course_name
-          @batch_list << batch
+          @batch_list[k] = []
+          @batch_list[k][0] = batch.id
+          @batch_list[k][1] = batch.name
+          @batch_list[k][2] = batch.course.course_name
+          @batch_list[k][3] = batch.course.section_name
+          k =k+1
         end
       end
     end

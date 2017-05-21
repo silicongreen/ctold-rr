@@ -108,9 +108,11 @@
                   <span class="generate_pdf">
                   <%= link_to "Generate PDF", { :controller=>"student",:action => 'generate_pdf_letter', :aid => a.id, :id => a.student_id}, :target => "blank" %>
                   </span>
-                  <span class="generate_pdf">
-                  <%= link_to "View PDF", { :controller=>"student",:action => 'view_pdf_letter', :aid => a.id, :id => a.student_id}, :target => "blank" %>
-                  </span>
+                  <% if !a.generated_form.nil? %>
+                    <span class="generate_pdf">
+                    <%= link_to "View PDF", { :controller=>"student",:action => 'view_pdf_letter', :aid => a.id, :id => a.student_id}, :target => "blank" %>
+                    </span>
+                  <% end %>
                 <% end %>
               </div>
             </div>

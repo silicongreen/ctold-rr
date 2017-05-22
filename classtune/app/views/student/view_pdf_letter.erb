@@ -32,18 +32,26 @@
 
 <div id="page-yield" class="available_sections">
   <% if @formData.form_type_text == "visa_recommendation_letter"  %>
-    <div class="appoved_date">Date : 16 May 2017</div>
+    <div class="appoved_date">Date : <%= I18n.l(@local_tzone_time.to_date, :format=>'%d %b, %Y') %></div>
  
     <div class="visa_form_head"><%=@formData.form_head.gsub(/\n/, '<br/>') %></div>
  
     <div class="form_content"><%=@formData.generated_form.gsub(/\n/, '<br/>') %></div>
     
   <% else %>
-    <div class="appoved_date">Date : 16 May 2017</div>
+    <div class="appoved_date">Date : <%= I18n.l(@local_tzone_time.to_date, :format=>'%d %b, %Y') %></div>
  
-    <div class="form_head"></div>
+    <div class="form_head"><%=@formData.form_head.gsub(/\n/, '<br/>') %></div>
  
     <div class="form_content"><%=@formData.generated_form.gsub(/\n/, '<br/>') %></div>
   <% end %>
     
+  <% if MultiSchool.current_school.id == 340 or MultiSchool.current_school.id == 2 %>  
+    <div class="form_footer">
+        <p>--------------------------------</p>
+        <p>Sabrina Shaheed</p>
+        <p>Principal</p>
+        <p><%= @schoolData.name %></p>
+    </div>
+  <% end %>
 </div>

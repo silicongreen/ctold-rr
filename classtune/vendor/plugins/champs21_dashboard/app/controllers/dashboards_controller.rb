@@ -646,6 +646,7 @@ class DashboardsController < ApplicationController
     api_endpoint = champs21_api_config['api_url']
 
     form_data['user_secret'] = session[:api_info][0]['user_secret']
+    form_data['call_from_web'] = 1
     if current_user.student
       homework_uri = URI(api_endpoint + "api/homework")
       http = Net::HTTP.new(homework_uri.host, homework_uri.port)

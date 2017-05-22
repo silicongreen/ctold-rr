@@ -659,6 +659,7 @@ class HomeworkController extends Controller
                 $subject_id = Yii::app()->request->getPost('subject_id');
 
                 $duedate = Yii::app()->request->getPost('duedate');
+                $call_from_web = Yii::app()->request->getPost('call_from_web');
 
                 if (empty($page_number))
                 {
@@ -681,11 +682,11 @@ class HomeworkController extends Controller
                     $duedate = date('Y-m-d', strtotime($duedate));
                 }
 
-                $homework_data = $assignment->getAssignment($batch_id, $student_id, "", $page_number, $subject_id, $page_size, 1, 0, $duedate);
+                $homework_data = $assignment->getAssignment($batch_id, $student_id, "", $page_number, $subject_id, $page_size, 1, 0, $duedate,$call_from_web);
                 if ($homework_data)
                 {
 
-                    $response['data']['total'] = $assignment->getAssignmentTotal($batch_id, $student_id, "", $subject_id, 1, $duedate);
+                    $response['data']['total'] = $assignment->getAssignmentTotal($batch_id, $student_id, "", $subject_id, 1, $duedate,$call_from_web);
                     $has_next = false;
                     if ($response['data']['total'] > $page_number * $page_size)
                     {

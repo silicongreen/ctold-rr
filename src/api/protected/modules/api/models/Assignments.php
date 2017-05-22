@@ -623,13 +623,16 @@ class Assignments extends CActiveRecord
         
         
         
-        public function getAssignmentTotal($batch_id, $student_id, $date = '', $subject_id=NULL, $type, $duedate=null)
+        public function getAssignmentTotal($batch_id, $student_id, $date = '', $subject_id=NULL, $type, $duedate=null,$call_from_web=0)
         {
             $date = (!empty($date)) ? $date : \date('Y-m-d', \time());
             $criteria = new CDbCriteria();
             $criteria->select = 'count(t.id) as total';
             $criteria->compare('subjectDetails.batch_id', $batch_id);
-            $criteria->compare('t.assignment_type', $type);
+            if($call_from_web == 0)
+            {
+                $criteria->compare('t.assignment_type', $type);
+            }
             $criteria->compare('t.is_published', 1);
             if($subject_id!=NULL)
             {
@@ -769,7 +772,7 @@ class Assignments extends CActiveRecord
             
         }        
         
-        public function getAssignment($batch_id="", $student_id=array(), $date = '',$page=1, $subject_id=NULL, $page_size,$type,$id=0,$duedate="")
+        public function getAssignment($batch_id="", $student_id=array(), $date = '',$page=1, $subject_id=NULL, $page_size,$type,$id=0,$duedate="",$call_from_web=0)
         {
             $date = (!empty($date)) ? $date : \date('Y-m-d', \time());
             
@@ -789,7 +792,7 @@ class Assignments extends CActiveRecord
             {
                $criteria->compare('t.id', $id); 
             } 
-            else
+            else if($call_from_web == 0)
             {
                 $criteria->compare('t.assignment_type', $type);
             }    

@@ -1815,14 +1815,18 @@ class StudentController < ApplicationController
   
   def view_pdf_letter
     @student = Student.find(params[:id])
-    @formData = StudentForm.find_by_id(params[:aid])
+    @formData = StudentForm.find_by_id(params[:aid])    
+    @schoolData = MultiSchool.current_school
     
-    render :pdf=>'view_pdf_letter',:margin => {
-      :top=> 40,
-      :bottom => 20,
-      :left=> 10,
-      :right => 10 
-    }
+    render :pdf=>'view_pdf_letter',
+           :margin => {
+              :top=> 40,
+              :bottom => 20,
+              :left=> 20,
+              :right => 20 
+            },            
+            :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+            :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
   end
   
   def form_to_apply    

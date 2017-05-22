@@ -54,9 +54,6 @@
               </li>
             <% end %>
 
-
-            
-
             <% if @sms_module.include?('Finance') and permitted_to? :fees, :student and !check_free_school? %>
               <li>
                   <%= link_to "#{t('fees_text')}", {:controller => 'student', :action => 'fees', :id => @student.id}, {:class => 'f2'} %>
@@ -75,7 +72,7 @@
               <% end %>
             <% end %> 
             
-            <% if permitted_to? :guardians,:student %>
+            <% if school_form_apply? and ( @current_user.admin? or permitted_to? :form_to_apply, :student ) %>
               <li>
                   <%= link_to "#{t('form_text')}", {:controller => "student", :action => "form_to_apply", :id => @student.id}, {:class => 'f2'} %>
               </li>

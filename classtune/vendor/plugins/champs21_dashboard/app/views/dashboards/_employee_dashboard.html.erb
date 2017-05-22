@@ -122,7 +122,7 @@ employee_id = @current_user.employee_record.id
       <% if @current_user.admin? %>
         <%=  link_to "<div class='sms-link' style='width:100%; margin-top:5px; padding: 10px 0px;  font-size:18px; background:#CFB53B; color:white;'><span style='text-align:center;width:80%; float:left;'>Employee Attendance</span><span style='text-align:right;width:20%;float:left;'> &#x25BA;</span></div>", :controller => 'empattendance', :action => 'index' %>
      
-        <%=  link_to "<div class='sms-link' style='width:100%; margin-top:5px; padding: 10px 0px;  font-size:18px; background:#FF6347; color:white;'><span style='text-align:center;width:80%; float:left;'>Student Attendance</span><span style='text-align:right;width:20%;float:left;'> &#x25BA;</span></div>", :controller => 'stdattendance', :action => 'index' %>
+        <%=  link_to "<div class='sms-link' style='width:100%; margin-top:5px; padding: 10px 0px;  font-size:18px; background:#FF6347; color:white;'><span style='text-align:center;width:80%; float:left;'>Student Attendance</span><span style='text-align:right;width:20%;float:left;'> &#x25BA;</span></div>", :controller => 'attendances', :action => 'index',:anchor => "class_report" %>
       <% end %>
       <% if @current_user.admin? and (MultiSchool.current_school.id == 325 or MultiSchool.current_school.id == 246 or MultiSchool.current_school.id == 2) %>
         <%=  link_to "<div class='sms-link' style='width:100%; margin-top:5px; padding: 10px 0px;  font-size:18px; background:#A1C935; color:white;'><span style='text-align:center;width:80%; float:left;'>Print Admit Card</span><span style='text-align:right;width:20%;float:left;'> &#x25BA;</span></div>", :controller => 'other', :action => 'admit_card' %>
@@ -133,7 +133,7 @@ employee_id = @current_user.employee_record.id
       <% if (@current_user.employee or @current_user.admin) and can_access_request? :index,:marks %>
         <%=  link_to "<div class='sms-link' style='width:100%; margin-top:5px; padding: 10px 0px;  font-size:18px; background:#000000; color:white;'><span style='text-align:center;width:80%; float:left;'>Marks Entry</span><span style='text-align:right;width:20%;float:left;'> &#x25BA;</span></div>", :controller => 'marks', :action => 'index' %>
       <% end %>
-      <% if @current_user.admin %>
+      <% if school_form_apply? and ( @current_user.admin? or permitted_to? :form_to_apply, :student ) %>
         <%=  link_to "<div class='sms-link' style='width:100%; margin-top:5px; padding: 10px 0px;  font-size:18px; background:royalblue; color:white;'><span style='text-align:center;width:80%; float:left;'>Student Form</span><span style='text-align:right;width:20%;float:left;'> &#x25BA;</span></div>", :controller => 'student', :action => 'studentformlist' %>
       <% end %>
       <%  if @current_user.admin? %>

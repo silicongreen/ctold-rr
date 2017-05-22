@@ -27,6 +27,7 @@ class ApplicationController < ActionController::Base
   helper_method :sms_enable?
   helper_method :save_group_exam_pdf
   helper_method :school_mock_test?
+  helper_method :school_form_apply?
   helper_method :get_tabulation_connect_exam
   helper_method :get_exam_result_type
   helper_method :get_exam_result_type2
@@ -104,6 +105,7 @@ class ApplicationController < ActionController::Base
     student_response = JSON::parse(response.body)
     return student_response
   end
+  
   def school_mock_test?
     require "yaml"
     vreturn = false
@@ -187,6 +189,18 @@ class ApplicationController < ActionController::Base
     else
       vreturn = type_config['default'].split(",")     
     end  
+    return vreturn
+  end
+  
+  def school_form_apply?
+    require "yaml"
+    vreturn = false
+    detention_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/other.yml")['formapply']
+    all_schools = detention_config['numbers'].split(",")
+    current_school = MultiSchool.current_school.id
+    if all_schools.include?(current_school.to_s)
+      vreturn = true
+    end
     return vreturn
   end
   

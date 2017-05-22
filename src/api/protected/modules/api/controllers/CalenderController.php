@@ -575,6 +575,53 @@ class CalenderController extends Controller
         echo CJSON::encode($response);
         Yii::app()->end();
     }
+    
+    private function sendFeedBackSms($student_id,$date)
+    {
+        $std_obj = new Students();
+        $studentdata = $std_obj->findByPk($student_id);
+
+
+        $message = "Ignore last messege. ".$studentdata->first_name . " " . $studentdata->last_name . " is Present on " . $date;
+
+        $sms_numbers = array();
+        $sms_msg_array = array();
+        if($studentdata->phone2)
+        {
+            $sms_numbers[] = $studentdata->phone2;
+            $sms_msg_array[] = $message;
+        } 
+
+        $gstudent = new GuardianStudent(); 
+
+        $all_g = $gstudent->getGuardians($student_id);
+
+        if ($all_g)
+        {
+            foreach($all_g as $value)
+            {
+                if(isset($value['guardian']) && isset($value['guardian']->id))
+                {
+                    $gr = new Guardians();
+                    $grdata = $gr->findByPk($value['guardian']->id);
+                    if($grdata && $grdata->user_id)
+                    {
+                        if($grdata->mobile_phone && ($grdata->id == $studentdata->immediate_contact_id ||  in_array($studentdata->school_id,Sms::$sms_all_guardian)))
+                        {
+                            $sms_numbers[] = $grdata->mobile_phone;
+                            $sms_msg_array[] = $message;
+                        }
+                    }
+                }
+            }    
+
+        }
+
+        if($sms_numbers && in_array(Yii::app()->user->schoolId,Sms::$sms_attendence_school))
+        {
+            Sms::send_sms_ssl($sms_numbers, $sms_msg_array,  Yii::app()->user->schoolId);
+        }
+    }        
 
     private function sendnotificationAttendence($student_id, $newattendence, $late)
     {
@@ -964,6 +1011,11 @@ class CalenderController extends Controller
                     $this->sendnotificationAttendence($student_id, $newattendence, $late);
                 }
             }
+            else
+            {
+                $this->sendFeedBackSms($student_id, $date);
+                
+            }    
             $attendence->Register($batch_id, $date);
 
             $response['status']['code'] = 200;

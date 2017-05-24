@@ -149,7 +149,7 @@ class CoursesController < ApplicationController
     
     
     school_id = MultiSchool.current_school.id
-    Rails.cache.delete("user_main_menu#{self.id}")
+    Rails.cache.delete("course_data_#{batch_name.parameterize("_")}_#{school_id}")
     @courses = Rails.cache.fetch("course_data_#{batch_name.parameterize("_")}_#{school_id}"){
       @batches = Batch.find(:all, :conditions => ["name = ?", batch_name], :select => "course_id")
       @batch_ids = @batches.map{|b| b.course_id}

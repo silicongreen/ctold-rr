@@ -57,7 +57,8 @@
                 <% result = a.form_data.split("|") %>
 
                 <b>Student Name :</b> <%= link_to result[0], { :controller=>"student",:action => 'profile', :id => a.student_id},:target => "blank" %> <br />
-                <b>Class :</b> <%= result[1] %> <br />                
+                <b>Class :</b> <%= result[1] %> <br />
+                <b>Date of Collection :</b> <%= result[2] %> <br />
               </div>
             </div> 
             <div class="row_status"> 

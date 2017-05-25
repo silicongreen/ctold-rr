@@ -19,8 +19,9 @@
     <div class="clearfix"></div>
       
 </div>
-<% if !@formData.nil? %>  
+<% if !@formData.nil? %>    
   <% result = @formData.form_data.split("|") %>
+  <%#= debug result %>
   <% 
     arStudentData = []
     if @formData.form_type_text == "transfer_letter" 
@@ -28,46 +29,52 @@
       style = "transfer_letter"
       
       arStudentData << ["Student Name", result[0]] 
-      arStudentData << ["Class", result[1]] 
-      arStudentData << ["Admission Date", result[2]] 
-      arStudentData << ["End Date", result[3]]    
+      arStudentData << ["Class", result[1]]       
+      arStudentData << ["Admission Date", result[3]] 
+      arStudentData << ["End Date", result[4]]   
+      arStudentData << ["Request Date of Collection", result[2]] 
     elsif @formData.form_type_text == "noc_letter" 
       title = "No Objection Certificate Letter"
       style = "noc_letter"
       
       arStudentData << ["Student Name", result[0]] 
-      arStudentData << ["Class", result[1]] 
-      arStudentData << ["Reason", result[2]] 
-      arStudentData << ["Start Date", result[3]] 
-      arStudentData << ["End Date", result[4]] 
+      arStudentData << ["Class", result[1]]       
+      arStudentData << ["Reason", result[3]] 
+      arStudentData << ["Start Date", result[4]] 
+      arStudentData << ["End Date", result[5]] 
+      arStudentData << ["Request Date of Collection", result[2]] 
     elsif @formData.form_type_text == "recommendation_letter" 
       title = "Recommendation Certificate Letter"
       style = "recommendation_letter"
       
       arStudentData << ["Student Name", result[0]] 
       arStudentData << ["Class", result[1]] 
-      arStudentData << ["Admission Date", result[2]] 
-      arStudentData << ["Achievements Hints", result[3]] 
+      arStudentData << ["Admission Date", result[3]] 
+      arStudentData << ["Achievements Hints", result[4]] 
+      arStudentData << ["Request Date of Collection", result[2]] 
     elsif @formData.form_type_text == "studentship_letter" 
       title = "Studentship Letter"
       style = "studentship_letter"
       
       arStudentData << ["Student Name", result[0]] 
       arStudentData << ["Class", result[1]] 
-      arStudentData << ["Father Name", result[2]] 
-      arStudentData << ["Mother Name", result[3]]    
+      arStudentData << ["Admission Date", result[3]] 
+      arStudentData << ["Father Name", result[4]] 
+      arStudentData << ["Mother Name", result[5]] 
+      arStudentData << ["Request Date of Collection", result[2]] 
     elsif @formData.form_type_text == "visa_recommendation_letter" 
       title = "VISA Recommendation Certificate Letter"
       style = "visa_recommendation_letter"
       
       arStudentData << ["Student Name", result[0]] 
       arStudentData << ["Class", result[1]] 
-      arStudentData << ["Admission Date", result[2]] 
-      arStudentData << ["Father Name", result[3]] 
-      arStudentData << ["Mother Name", result[4]] 
-      arStudentData << ["Date of Birth", result[5]] 
-      arStudentData << ["Passport No", result[6]] 
-      arStudentData << ["Head To Embassy", result[7].gsub(/\n/, '<br/>')] 
+      arStudentData << ["Admission Date", result[3]] 
+      arStudentData << ["Father Name", result[4]] 
+      arStudentData << ["Mother Name", result[5]] 
+      arStudentData << ["Date of Birth", result[6]] 
+      arStudentData << ["Passport No", result[7]] 
+      arStudentData << ["Head To Embassy", result[8].gsub(/\n/, '<br/>')] 
+      arStudentData << ["Request Date of Collection", result[2]] 
     end 
   %>
   
@@ -119,7 +126,7 @@
               <div class="clearfix"></div>
             <% end %>
               <div class="clearfix"></div>    
-              <div class="row"><h3>Form Head</h3></div>
+              <div class="row"><h3 style="margin-left: 30px;">Form Head</h3></div>
               <div class="row">
 
                   <div class="row_action">
@@ -130,7 +137,7 @@
 
               </div>
               <div class="clearfix"></div>
-              <div class="row"><h3>Form Content</h3></div>
+              <div class="row"><h3 style="margin-left: 30px;">Form Content</h3></div>
               <div class="row">
                   <div class="row_action">
                     <div class="content_div">

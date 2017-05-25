@@ -1,6 +1,8 @@
+<% if @grading_levels.blank? %>
 <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
 <% if @grading_levels.blank? %>
   <% @grading_levels = GradingLevel.default %>
+<% end %>
 <% end %>
 <%
 @student_list = []
@@ -98,6 +100,51 @@ unless @tabulation_data.blank?
   @student_position = {}
   @student_section = {}
   @student_roll = {}
+  
+  sections = ["A","B","C"]
+  student_classes = ["KG","I","II","III","IV","V","VI","VII","VIII","IX","X"]
+  @promoted_to = "";
+  if student_classes.include?(@batch.course.course_name)
+    array_index = student_classes.index @batch.course.course_name
+    if array_index < student_classes.count
+        @promoted_to = student_classes[array_index+1]
+        if @promoted_to == "I"
+          sections = ["Camellia","Marigold","Cosmos"]
+        end
+        if @promoted_to == "II"
+          sections = ["Rose","Sunflower","Gardenia"]
+        end
+        if @promoted_to == "III"
+          sections = ["Orchid","Tulip","Jasmine"]
+        end
+        if @promoted_to == "IV"
+          sections = ["Daisy","daffodil"]
+        end
+        if @promoted_to == "V"
+          sections = ["Bluebell","Levender"]
+        end
+        if @promoted_to == "VI"
+          sections = ["Primrose","Snowdrop"]
+        end
+        if @promoted_to == "VII"
+          sections = ["Parrot","Swift"]
+        end
+        if @promoted_to == "VIII"
+          sections = ["Kingfisher","Nightingale"]
+        end
+        if @promoted_to == "IX"
+          sections = ["Robin","Seagull"]
+        end
+        if @promoted_to == "X"
+          sections = ["Penguin","Pelican"]
+        end
+        
+        
+    else
+        @promoted_to = "0"
+    end
+  end  
+
   unless @student_list.blank?
     @sorted_students = @student_list.sort
     position = 0
@@ -108,12 +155,12 @@ unless @tabulation_data.blank?
     
     iloop = 0
     jloop = 0
-    sections = ["A","B","C"]
+    
     s_a_loop = 1
     s_b_loop = 1
     s_c_loop = 1
     while iloop < @sorted_students.count do
-        if jloop > 2
+        if jloop > (sections.count-1)
           jloop = 0
           sections.reverse!
         end
@@ -122,19 +169,21 @@ unless @tabulation_data.blank?
         iloop +=1
         @student_section[iloop] = sections[jloop]
         
-        if sections[jloop] == "A"
+        if sections[jloop] == sections[0]
           @student_roll[iloop] = s_a_loop
           s_a_loop +=1
         end
         
-        if sections[jloop] == "B"
+        if sections[jloop] == sections[1]
           @student_roll[iloop] = s_b_loop
           s_b_loop +=1
         end
         
-        if sections[jloop] == "C"
-          @student_roll[iloop] = s_c_loop
-          s_c_loop +=1
+        if sections.count>2
+          if sections[jloop] == sections[2]
+            @student_roll[iloop] = s_c_loop
+            s_c_loop +=1
+          end
         end
       
         jloop +=1
@@ -143,15 +192,6 @@ unless @tabulation_data.blank?
   end
 
 
-  student_classes = ["I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII"]
-  @promoted_to = "";
-  if student_classes.include?(@batch.course.course_name)
-    array_index = student_classes.index @batch.course.course_name
-    if array_index < student_classes.count
-        @promoted_to = student_classes[array_index+1]
-    else
-        @promoted_to = "0"
-    end
-  end
+  
 
 %> 

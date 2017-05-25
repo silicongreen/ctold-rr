@@ -388,7 +388,7 @@
                  <% else %>
                  <% promotion_status = "N/A" %>
                  <% end %>
-                 <% unless @student_position[@student.id.to_i].blank? %>
+                 <% if !@student_position[@student.id.to_i].blank? and promotion_status != "N/A" %>
                  <% merit_position = @student_position[@student.id.to_i] %>
                  <% unless @student_roll[@student_position[@student.id.to_i].to_i].blank? %>
                     <% new_roll = @student_roll[@student_position[@student.id.to_i].to_i] %>

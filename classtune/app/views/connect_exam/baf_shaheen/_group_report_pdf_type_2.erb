@@ -103,7 +103,7 @@
                           70% of Final Term Score
                       </td>
                       <td class="col-pdf">
-                          30% of Final Term Score
+                          30% of Mid Term Score
                       </td>
                       <td class="col-pdf">Accumulated Score</td>
                       <td class="col-pdf border-right-none">Grade</td>
@@ -120,7 +120,7 @@
                           <% total_mark = 0 %>
                           <% full_mark = 0 %>
 
-                          <td class="col-pdf border-left-none no-warp"><%= subjects['name'] %></td>
+                          <td class="col-pdf border-left-none no-warp align-left-baf"><%= subjects['name'].upcase %></td>
                           <% unless @report_data['report']['exams'].blank? %>  
                           <% loop=0 %>
                             <% @report_data['report']['exams'].each do |report| %>

@@ -27,77 +27,79 @@
 
     <div class="row">
       <div class="row_label">Student Name</div>
-      <div class="row_data"><div><%= @student.full_name %></div><input type="hidden" id="student_name" value="<%= @student.full_name %>"></div>
+      <div class="row_data"><%= @student.full_name %><input type="hidden" id="student_name" value="<%= @student.full_name %>"></div>
     </div>
     
     <div class="row">
       <div class="row_label">Class</div>
-      <div class="row_data"><div><%= @student.batch.name %>&nbsp;<%= @student.batch.course.course_name %>&nbsp;
+      <div class="row_data"><%= @student.batch.name %>&nbsp;<%= @student.batch.course.course_name %>&nbsp;
                     <%  class_string = @student.batch.name+" "+@student.batch.course.course_name %>
                     <% unless  @student.batch.course.section_name.empty? %>                      
                       <%= ", " %>
                       <%= t('profile_section_label') %>         
                       <%= @student.batch.course.section_name %>
-                      <%  class_string = class_string + t('profile_section_label')+ @student.batch.course.section_name %>
+                      <%  class_string = class_string +" "+ t('profile_section_label')+" " +  @student.batch.course.section_name %>
                     <% end %>
-          <input type="hidden" id="student_class" value="<%= class_string %>"></div>
+          <input type="hidden" id="student_class" value="<%= class_string %>">
       </div>
     </div>
     <div class="row">
       <div class="row_label"><%= t('admission_date') %></div>
-      <div class="row_data"><div>
+      <div class="row_data">
           <% unless @student.admission_date.nil? %>
             <%= I18n.l(@student.admission_date,:format=>:normal) %>
             <input type="hidden" id="admission_date" value="<%= I18n.l(@student.admission_date,:format=>:normal) %>">
           <% else %>
             <%= calendar_date_select_tag 'admission_date', I18n.l(Date.today,:format=>:default),  :popup=>"force" %>
-          <% end %></div>
+          <% end %>
       </div>
     </div>
     
     <div class="row">
       <div class="row_label">Father's Name</div>
-      <div class="row_data"><div><%= text_field_tag("father","", :placeholder => "Exp:full name", :autocomplete => 'off') %></div></div>
+      <div class="row_data"><%= text_field_tag("father","", :placeholder => "Exp:full name", :autocomplete => 'off') %></div>
     </div>
     
     <div class="row">
       <div class="row_label">Mother's Name</div>
-      <div class="row_data"><div><%= text_field_tag("mother","", :placeholder => "Exp:full name", :autocomplete => 'off') %></div></div>
+      <div class="row_data"><%= text_field_tag("mother","", :placeholder => "Exp:full name", :autocomplete => 'off') %></div>
     </div>
           
-    <div class="row" id='date_of_birth'>
+    <div class="row" id='date_of_birth_1'>
       <div class="row_label"><%= t('date_of_birth') %></div>
-      <div class="row_data"><div>
+      <div class="row_data">
           <% unless @student.date_of_birth.nil? %>
             <%= I18n.l(@student.date_of_birth,:format=>:normal) %>
             <input type="hidden" id="date_of_birth" value="<%= I18n.l(@student.date_of_birth,:format=>:normal) %>">
           <% else %>
             <%= calendar_date_select_tag 'date_of_birth', I18n.l(Date.today,:format=>:default),  :popup=>"force" %>
-          <% end %></div>
+          <% end %>
       </div>
     </div>
     <div class="row">
       <div class="row_label">Passport No.</div>
-      <div class="row_data"><div><%= text_field_tag("passport_no","", :placeholder => "Exp:Passport No.", :autocomplete => 'off') %></div></div>
+      <div class="row_data"><%= text_field_tag("passport_no","", :placeholder => "Exp:Passport No.", :autocomplete => 'off') %></div>
     </div>
     <div class="row">
-      <div class="row_label">Head To Embassy </div>
-      <div class="row_data"><div>
+      <div class="row_label">Head To Embassy<p style="font-size: 10px; font-style: 100;">To whom  this letter will be written.</p> </div>
+      <div class="row_data">
           <textarea name="head_to_embassy" class="head_to_embassy" id="head_to_embassy" rows="100" cols="10">
 To,
 The Visa Officer
 Embassy of the United Stated of America
 Madani Avenue
 Baridhara, Dhaka-1212
-          </textarea>
-        <p>To whom  this letter will be written.</p></div>
+          </textarea>        
       </div>
     </div>  
-   <div class="row">
-      <div class="row_label">&nbsp;</div>
-      <div class="row_data">
+   <div class="row" id="request_date_1">
+      <div class="row_label">Request Date of Collection</div>
+      <div class="row_data"><%= calendar_date_select_tag 'request_date', I18n.l(Date.today,:format=>:default), :popup=>"force" %></div>
+    </div> 
+    <div class="row" style="border: 0px;">      
+      <div class="row_button">
         <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader2", :style =>"display: none;" ) %>
-        <input type="button" value="Submit" name="submit_visa_recommendation" id="submit_visa_recommendation" />
+        <input type="button" value="Apply" name="submit_visa_recommendation" class="apply_button" id="submit_visa_recommendation" />
       </div>
     </div>
    
@@ -111,7 +113,7 @@ Baridhara, Dhaka-1212
       Element.show('loader2')
       new Ajax.Request('/student/visa_recommendation_letter_update',
       {asynchronous:true, evalScripts:true,
-        parameters:'letter_data='+jj('#student_name').val()+"|"+jj('#student_class').val()+"|"+jj('#admission_date').val()+"|"+jj('#father').val()+"|"+jj('#mother').val()+"|"+jj('#date_of_birth').val()+"|"+jj('#passport_no').val()+"|"+jj('#head_to_embassy').val()+'&id=<%= @student.id %>',onSuccess:function(request){Element.hide('loader2')}
+        parameters:'letter_data='+jj('#student_name').val()+"|"+jj('#student_class').val()+"|"+jj('#request_date').val()+"|"+jj('#admission_date').val()+"|"+jj('#father').val()+"|"+jj('#mother').val()+"|"+jj('#date_of_birth').val()+"|"+jj('#passport_no').val()+"|"+jj('#head_to_embassy').val()+'&id=<%= @student.id %>',onSuccess:function(request){Element.hide('loader2')}
       }); 
     }); 
 </script>
@@ -139,6 +141,24 @@ Baridhara, Dhaka-1212
 .head_to_embassy
 {
     width: 100%;
-    height: 150px;
+    height: 100px;
+}
+.row_button
+{
+    width:100%;
+    text-align: center;
+}
+.apply_button {
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    background: #49BB4B none repeat scroll 0 0 !important;
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: bold;
+    margin-left: 0px;
+    margin-top: 30px;
+    padding: 7px 10px;
+    border: none;
+    cursor: pointer;
 }
 </style>

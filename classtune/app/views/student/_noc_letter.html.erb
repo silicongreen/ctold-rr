@@ -39,28 +39,18 @@
                       <%= ", " %>
                       <%= t('profile_section_label') %>         
                       <%= @student.batch.course.section_name %>
-                      <%  class_string = class_string + t('profile_section_label')+ @student.batch.course.section_name %>
+                      <%  class_string = class_string+" "  + t('profile_section_label')+" " +  @student.batch.course.section_name %>
                     <% end %>
           <input type="hidden" id="student_class" value="<%= class_string %>">
       </div>
     </div> 
-      
+   
     <div class="row">
-      <div class="row_label">Class</div>
-      <div class="row_data"><div><%= @student.batch.name %>&nbsp;<%= @student.batch.course.course_name %>&nbsp;
-                    <%  class_string = @student.batch.name+" "+@student.batch.course.course_name %>
-                    <% unless  @student.batch.course.section_name.empty? %>                      
-                      <%= ", " %>
-                      <%= t('profile_section_label') %>         
-                      <%= @student.batch.course.section_name %>
-                      <%  class_string = class_string + t('profile_section_label')+ @student.batch.course.section_name %>
-                    <% end %>
-          <input type="hidden" id="student_class" value="<%= class_string %>"></div>
-    </div>
-    
-    <div class="row">
-      <div class="row_label">Reason</div>
-      <div class="row_data"><%= text_field_tag("reason","", :placeholder => "Exp:Travels Abroad", :autocomplete => 'off') %></div>
+      <div class="row_label">Reason<p style="font-size: 10px; font-style: 100;">Exp:Travels Abroad.</p></div>
+      <div class="row_data">
+        <textarea name="reason" class="st_achivement" id="st_achivement" rows="100" cols="10"></textarea>
+        
+      </div>
     </div>
     
     <div class="row" id="start_date_1">
@@ -70,13 +60,18 @@
 
     <div class="row" id="end_date_1">
       <div class="row_label">End Date</div>
-      <div class="row_data"><%= calendar_date_select_tag 'start_date', I18n.l(Date.today + 5.year,:format=>:default), :popup=>"force" %></div>
+      <div class="row_data"><%= calendar_date_select_tag 'start_date', I18n.l(Date.today,:format=>:default), :popup=>"force" %></div>
     </div>
-   <div class="row">
-      <div class="row_label">&nbsp;</div>
-      <div class="row_data">
+    
+    <div class="row" id="request_date_1">
+      <div class="row_label">Request Date of Collection</div>
+      <div class="row_data"><%= calendar_date_select_tag 'request_date', I18n.l(Date.today,:format=>:default), :popup=>"force" %></div>
+    </div>
+    
+    <div class="row" style="border: 0px;">      
+      <div class="row_button">
         <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader2", :style =>"display: none;" ) %>
-        <input type="button" value="Submit" name="submit_noc" id="submit_noc" />
+        <input type="button" value="Apply" name="submit_noc" class="apply_button" id="submit_noc" />
       </div>
     </div>
    
@@ -90,7 +85,7 @@
       Element.show('loader2')
       new Ajax.Request('/student/noc_letter_update',
       {asynchronous:true, evalScripts:true,
-        parameters:'letter_data='+jj('#student_name').val()+"|"+jj('#student_class').val()+"|"+jj('#reason').val()+"|"+jj('#start_date').val()+"|"+jj('#start_date').val()+'&id=<%= @student.id %>',onSuccess:function(request){Element.hide('loader2')}
+        parameters:'letter_data='+jj('#student_name').val()+"|"+jj('#student_class').val()+"|"+jj('#request_date').val()+"|"+jj('#st_achivement').val()+"|"+jj('#start_date').val()+"|"+jj('#start_date').val()+'&id=<%= @student.id %>',onSuccess:function(request){Element.hide('loader2')}
       }); 
     }); 
 </script>
@@ -114,5 +109,28 @@
 .row_data {
     width:217px;
     float: left;
+}
+.st_achivement
+{
+    width: 100%;
+    height: 60px;
+}
+.row_button
+{
+    width:100%;
+    text-align: center;
+}
+.apply_button {
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    background: #49BB4B none repeat scroll 0 0 !important;
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: bold;
+    margin-left: 0px;
+    margin-top: 30px;
+    padding: 7px 10px;
+    border: none;
+    cursor: pointer;
 }
 </style>

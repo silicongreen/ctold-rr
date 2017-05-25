@@ -1,2 +1,2 @@
   page.replace_html 'modal-box', :partial => 'visa_recommendation_letter'
-  page << "Modalbox.show($('modal-box'), {title: '#{t('noc_text')}', width: 500});"
+  page << "Modalbox.show($('modal-box'), {title: '#{t('visa_recommendation_text')}', width: 500});"

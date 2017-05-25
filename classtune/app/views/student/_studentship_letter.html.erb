@@ -38,11 +38,23 @@
                       <%= ", " %>
                       <%= t('profile_section_label') %>         
                       <%= @student.batch.course.section_name %>
-                      <%  class_string = class_string + t('profile_section_label')+ @student.batch.course.section_name %>
+                      <%  class_string = class_string + t('profile_section_label')+" " +  @student.batch.course.section_name %>
                     <% end %>
           <input type="hidden" id="student_class" value="<%= class_string %>">
       </div>
     </div>
+    <div class="row">
+      <div class="row_label"><%= t('admission_date') %></div>
+      <div class="row_data">
+          <% unless @student.admission_date.nil? %>
+            <%= I18n.l(@student.admission_date,:format=>:normal) %>
+            <input type="hidden" id="admission_date" value="<%= I18n.l(@student.admission_date,:format=>:normal) %>">
+          <% else %>
+            <%= calendar_date_select_tag 'admission_date', I18n.l(Date.today,:format=>:default),  :popup=>"force" %>
+          <% end %>
+      </div>
+    </div>
+    
     <div class="row">
       <div class="row_label">Father's Name</div>
       <div class="row_data"><%= text_field_tag("father","", :placeholder => "Exp:full name", :autocomplete => 'off') %></div>
@@ -52,12 +64,14 @@
       <div class="row_label">Mother's Name</div>
       <div class="row_data"><%= text_field_tag("mother","", :placeholder => "Exp:full name", :autocomplete => 'off') %></div>
     </div>
-
-   <div class="row">
-      <div class="row_label">&nbsp;</div>
-      <div class="row_data">
+    <div class="row" id="request_date_1">
+      <div class="row_label">Request Date of Collection</div>
+      <div class="row_data"><%= calendar_date_select_tag 'request_date', I18n.l(Date.today,:format=>:default), :popup=>"force" %></div>
+    </div> 
+    <div class="row" style="border: 0px;">      
+      <div class="row_button">
         <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader2", :style =>"display: none;" ) %>
-        <input type="button" value="Submit" name="submit_studentship" id="submit_studentship" />
+        <input type="button" value="Apply" name="submit_studentship" class="apply_button" id="submit_studentship" />
       </div>
     </div>
    
@@ -71,7 +85,7 @@
       Element.show('loader2')
       new Ajax.Request('/student/studentship_letter_update',
       {asynchronous:true, evalScripts:true,
-        parameters:'letter_data='+jj('#student_name').val()+"|"+jj('#student_class').val()+"|"+jj('#father').val()+"|"+jj('#mother').val()+'&id=<%= @student.id %>',onSuccess:function(request){Element.hide('loader2')}
+        parameters:'letter_data='+jj('#student_name').val()+"|"+jj('#student_class').val()+"|"+jj('#request_date').val()+"|"+jj('#admission_date').val()+"|"+jj('#father').val()+"|"+jj('#mother').val()+'&id=<%= @student.id %>',onSuccess:function(request){Element.hide('loader2')}
       }); 
     }); 
 </script>
@@ -95,5 +109,23 @@
 .row_data {
     width:217px;
     float: left;
+}
+.row_button
+{
+    width:100%;
+    text-align: center;
+}
+.apply_button {
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    background: #49BB4B none repeat scroll 0 0 !important;
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: bold;
+    margin-left: 0px;
+    margin-top: 30px;
+    padding: 7px 10px;
+    border: none;
+    cursor: pointer;
 }
 </style>

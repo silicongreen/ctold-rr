@@ -56,18 +56,19 @@
     </div>
       
     <div class="row" id="start_date_1">
-      <div class="row_label">Inform Achievements </div>
+      <div class="row_label">Reason & Information<p style="font-size: 10px; font-style: 100;">Write about Academic Result, Attendance also Extra Activities to help Admin to write a good letter.</p> </div>
       <div class="row_data">
-        <textarea name="st_achivement" class="st_achivement" id="st_achivement" rows="100" cols="10"></textarea>
-        <p>Write about Academic Result, Attendance also Extra Activities to help admin to write a good letter.</p>
+        <textarea name="st_achivement" class="st_achivement" id="st_achivement" rows="100" cols="10"></textarea>       
       </div>
     </div>
-      
-    <div class="row">
-      <div class="row_label">&nbsp;</div>
-      <div class="row_data">
+    <div class="row" id="request_date_1">
+      <div class="row_label">Request Date of Collection</div>
+      <div class="row_data"><%= calendar_date_select_tag 'request_date', I18n.l(Date.today,:format=>:default), :popup=>"force" %></div>
+    </div> 
+    <div class="row" style="border: 0px;">      
+      <div class="row_button">
         <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader2", :style =>"display: none;" ) %>
-        <input type="button" value="Submit" name="submit_recommendation" id="submit_recommendation" />
+        <input type="button" value="Apply" name="submit_recommendation" class="apply_button" id="submit_recommendation" />
       </div>
     </div>
    
@@ -82,7 +83,7 @@
       Element.show('loader2')
       new Ajax.Request('/student/recommendation_letter_update',
       {asynchronous:true, evalScripts:true,
-        parameters:'letter_data='+jj('#student_name').val()+"|"+jj('#student_class').val()+"|"+jj('#admission_date').val()+"|"+jj('#st_achivement').val()+'&id=<%= @student.id %>',onSuccess:function(request){Element.hide('loader2')}
+        parameters:'letter_data='+jj('#student_name').val()+"|"+jj('#student_class').val()+"|"+jj('#request_date').val()+"|"+jj('#admission_date').val()+"|"+jj('#st_achivement').val()+'&id=<%= @student.id %>',onSuccess:function(request){Element.hide('loader2')}
       }); 
     }); 
 </script>
@@ -110,6 +111,25 @@
 .st_achivement
 {
     width: 100%;
-    height: 250px;
+    height: 150px;
+}
+
+.row_button
+{
+    width:100%;
+    text-align: center;
+}
+.apply_button {
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    background: #49BB4B none repeat scroll 0 0 !important;
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: bold;
+    margin-left: 0px;
+    margin-top: 30px;
+    padding: 7px 10px;
+    border: none;
+    cursor: pointer;
 }
 </style>

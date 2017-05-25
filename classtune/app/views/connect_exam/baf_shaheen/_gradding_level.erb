@@ -1,6 +1,8 @@
-<% @grading_levels = GradingLevel.for_batch(@batch.id) %>
     <% if @grading_levels.blank? %>
-      <% @grading_levels = GradingLevel.default %>
+      <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
+      <% if @grading_levels.blank? %>
+        <% @grading_levels = GradingLevel.default %>
+      <% end %>
     <% end %>
     <%  unless @grading_levels.empty? %>
       <p>Grade Boundaries</p>

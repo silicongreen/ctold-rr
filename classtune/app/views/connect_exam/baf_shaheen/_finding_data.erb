@@ -169,20 +169,28 @@ unless @tabulation_data.blank?
         iloop +=1
         @student_section[iloop] = sections[jloop]
         
-        if sections[jloop] == sections[0]
+    
+        if @student.id.to_i == 8344 || @student.id.to_i == 11700 || @student.id.to_i == 8058 || @student.id.to_i == 8051
+          @student_section[iloop] = sections[0]
           @student_roll[iloop] = s_a_loop
           s_a_loop +=1
-        end
-        
-        if sections[jloop] == sections[1]
-          @student_roll[iloop] = s_b_loop
-          s_b_loop +=1
-        end
-        
-        if sections.count>2
-          if sections[jloop] == sections[2]
-            @student_roll[iloop] = s_c_loop
-            s_c_loop +=1
+        else
+      
+          if sections[jloop] == sections[0]
+            @student_roll[iloop] = s_a_loop
+            s_a_loop +=1
+          end
+
+          if sections[jloop] == sections[1]
+            @student_roll[iloop] = s_b_loop
+            s_b_loop +=1
+          end
+
+          if sections.count>2
+            if sections[jloop] == sections[2]
+              @student_roll[iloop] = s_c_loop
+              s_c_loop +=1
+            end
           end
         end
       

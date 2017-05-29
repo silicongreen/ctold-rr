@@ -86,7 +86,7 @@ unless @tabulation_data.blank?
       end
     
       @exam_comment = ExamConnectComment.find_by_exam_connect_id_and_student_id(connect_exam_id,std['id'].to_i)
-      if @exam_comment.blank? or @exam_comment.comments.blank? and(u_grade==0 or (@batch.course.course_name!="VIII" and @batch.course.course_name!="IX" and @batch.course.course_name!="X" and  u_grade<2))
+      if @exam_comment.blank? or @exam_comment.comments.blank? and (u_grade==0 or (@batch.course.course_name!="VIII" and @batch.course.course_name!="IX" and @batch.course.course_name!="X" and  u_grade<2))
         std_marks_full = 5000-std_marks_full.round()
         std_marks_core_subject = 5000-std_marks_core_subject.round()
         subject_count_std = 5000-subject_count_std
@@ -165,18 +165,14 @@ unless @tabulation_data.blank?
           jloop = 0
           new_sections.reverse!
         end
-        
-        
         iloop +=1
-        @student_section[iloop] = new_sections[jloop]
         
-    
         if @student.id.to_i == 8344 || @student.id.to_i == 11700 || @student.id.to_i == 8058 || @student.id.to_i == 8051
           @student_section[iloop] = sections[0]
           @student_roll[iloop] = s_a_loop
           s_a_loop +=1
         else
-      
+          @student_section[iloop] = new_sections[jloop]
           if new_sections[jloop] == sections[0]
             @student_roll[iloop] = s_a_loop
             s_a_loop +=1

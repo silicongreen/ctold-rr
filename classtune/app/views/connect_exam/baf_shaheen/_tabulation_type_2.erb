@@ -16,7 +16,7 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License. -%>
-<div id="page-yield" class="available_sections1">
+<div id="page-yield" class="available_sections1 baf_shaheen">
   <div class="page1"> </div>
   <div class="section1 row" >
     <center>
@@ -44,7 +44,6 @@
       <% c = 'even' %>
       <table id="pdf-table" width="100%" cellspacing="0">
         <tr class="table-header">
-          <td class="col-pdf">Sl.</td>
           <td class="col-pdf">Roll</td>
           <td class="col-pdf">Students Name</td>
           <% @report_data['report']['subjects'].each do |sub| %>
@@ -63,14 +62,13 @@
         <% @report_data['report']['students'].each do |std| %>
           <% j = j+1 %>
           <%  std_count = std_count+1; %>
-          <% if std_count>12 && extender ==0 %>
+          <% if std_count>8 && extender ==0 %>
               <% std_count = 0 %>
               <% extender = 1 %>
               <tr class="page-break">
                   <td colspan="100">&nbsp;</td>
               </tr>  
               <tr class="table-header">
-                <td class="col-pdf">Sl.</td>
                 <td class="col-pdf">Roll</td>
                 <td class="col-pdf">Students Name</td>
                 <% @report_data['report']['subjects'].each do |sub| %>
@@ -80,18 +78,17 @@
                 <td>Total</td>
 
               </tr>
-          <% elsif std_count>13 && extender ==1 %>
+          <% elsif std_count>9 && extender ==1 %>
               <% std_count = 0 %>
               <% extender = 1 %>
-              <tr class="page-break">
+              <tr class="page-break2-bf">
                   <td colspan="100">&nbsp;</td>
               </tr> 
               <tr class="table-header">
-                <td class="col-pdf">Sl.</td>
                 <td class="col-pdf">Roll</td>
                 <td class="col-pdf">Students Name</td>
                 <% @report_data['report']['subjects'].each do |sub| %>
-                  <td><%=  sub['code'] %><hr/>Grade</td>
+                  <td><%=  sub['code'] %></td>
                 <% end %>
 
                 <td>Total</td>
@@ -102,7 +99,6 @@
           
           
           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-            <td class="col-pdf"><%= j %></td>
             <td class="name"><%= std['class_roll_no'] %></td>
             <td class="name-std"><%= std['first_name']+" "+std['last_name'] %></td>
             <% total_mark = 0 %>
@@ -111,31 +107,49 @@
             <% @report_data['report']['subjects'].each do |sub| %>
                   <% subject_full_mark = 0 %>
                   <% subject_obtain_mark = 0 %>
+            
+                  <% subject_mark_final = 0 %>
+                  <% subject_mark_midterm = 0 %>
                   
-                  <% %>
+                  <% iloop = 0  %>
                   <td>
                   <% @report_data['report']['exams'].each do |rs| %>
+                    <% iloop = iloop+1 %>
                     <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? %>
                       
                       <%
-                          
-                          subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-                          subject_obtain_mark = subject_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                         
-                        
+                      subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                       %>
-                      <% unless rs.equal? @report_data['report']['exams'].last %>
-                        A&nbsp;:&nbsp;
+                      <% if iloop < 3  %>
+                        <%  subject_mark_final = subject_mark_final+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f %>
                       <% else %>
-                        H&nbsp;:&nbsp;
+                        <%  subject_mark_midterm = subject_mark_midterm+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f %>
+                      <% end %>
+                      
+                      
+                      <% if iloop == 1 or iloop == 3  %>
+                        A:
+                      <% elsif iloop == 2  %>
+                        F:
+                      <% else  %>
+                        M:
                       <% end %>  
+                        
+                        
                       <%= rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f %>
-                      <% unless rs.equal? @report_data['report']['exams'].last %>
+                      <% if iloop == 1 or iloop == 3  %>
                       |
                       <% end %>
+                      
+                      <% if iloop == 2  %>
+                        <hr/>
+                      <% end %>
+                        
                     <% end %>
                    <% end %>
-                   <% main_mark = (subject_obtain_mark.to_f/subject_full_mark.to_f)*100 %>  
+                        <% subject_obtain_mark = ((subject_mark_final.to_f/100)*70)+((subject_mark_midterm.to_f/100)*30) %>
+                        <% subject_obtain_mark = subject_obtain_mark.round() %>
+                        <% main_mark = subject_obtain_mark %>  
                 
                        <% total_mark = total_mark+subject_obtain_mark.to_f %>
                        <hr/>T&nbsp;:&nbsp; <%= sprintf( "%0.02f", subject_obtain_mark) %>
@@ -162,7 +176,7 @@
                 
             
               <td>
-                   <%= sprintf( "%0.02f", total_mark) %>    
+                   <%= total_mark %>    
               </td>
             
               

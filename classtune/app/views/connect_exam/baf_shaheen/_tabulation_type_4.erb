@@ -62,7 +62,7 @@
         <% @report_data['report']['students'].each do |std| %>
           <% j = j+1 %>
           <%  std_count = std_count+1; %>
-          <% if std_count>8 && extender ==0 %>
+          <% if std_count>6 && extender ==0 %>
               <% std_count = 0 %>
               <% extender = 1 %>
               <tr class="page-break">
@@ -78,7 +78,7 @@
                 <td>Total</td>
 
               </tr>
-          <% elsif std_count>9 && extender ==1 %>
+          <% elsif std_count>7 && extender ==1 %>
               <% std_count = 0 %>
               <% extender = 1 %>
               <tr class="page-break2-bf">
@@ -137,12 +137,12 @@
                         
                         
                       <%= rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f %>
-                      <% if iloop == 1 or iloop == 3  %>
-                      |
+                      <% unless rs.equal? @report_data['report']['exams'].last %>
+                      <hr/>
                       <% end %>
                       
                       <% if iloop == 2  %>
-                        <hr/>
+                        
                       <% end %>
                         
                     <% end %>

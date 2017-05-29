@@ -118,31 +118,33 @@
                     <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? %>
                       
                       <%
-                          
-                          subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-                          
-                         
-                        
+                      subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                       %>
                       <% if iloop < 3  %>
                         <%  subject_mark_final = subject_mark_final+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f %>
                       <% else %>
                         <%  subject_mark_midterm = subject_mark_midterm+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f %>
                       <% end %>
+                      
+                      
                       <% if iloop == 1 or iloop == 3  %>
                         A:
-                      <% if iloop == 2  %>
+                      <% elsif iloop == 2  %>
                         F:
                       <% else  %>
                         M:
                       <% end %>  
+                        
+                        
                       <%= rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f %>
                       <% if iloop == 1 or iloop == 3  %>
                       |
                       <% end %>
+                      
                       <% if iloop == 2  %>
                         <hr/>
                       <% end %>
+                        
                     <% end %>
                    <% end %>
                         <% subject_obtain_mark = ((subject_mark_final.to_f/100)*70)+((subject_mark_midterm.to_f/100)*30) %>

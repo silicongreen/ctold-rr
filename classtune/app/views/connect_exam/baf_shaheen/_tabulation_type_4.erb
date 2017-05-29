@@ -113,6 +113,11 @@
                   
                   <% iloop = 0  %>
                   <td>
+                  <% subjectdata = Subject.find(sub['id'].to_i) %>
+                  <% check_std_subject = StudentsSubject.find_by_student_id_and_subject_id(@student.id,sub['id'].to_i) %>
+                  <% if check_std_subject.blank? and !subjectdata.elective_group_id.blank? %>
+
+                  <% else %>
                   <% @report_data['report']['exams'].each do |rs| %>
                     <% iloop = iloop+1 %>
                     <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].blank? %>
@@ -166,7 +171,7 @@
                            %>
                         
                        <% end %>
-                      
+                     <% end %> 
                   </td>   
                        
                            

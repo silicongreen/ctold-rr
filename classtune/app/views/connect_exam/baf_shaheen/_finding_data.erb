@@ -1,205 +1,205 @@
-<% if @grading_levels.blank? %>
-<% @grading_levels = GradingLevel.for_batch(@batch.id) %>
-<% if @grading_levels.blank? %>
-  <% @grading_levels = GradingLevel.default %>
-<% end %>
-<% end %>
-<%
-@student_list = []
-@subject_highest = {}
 
-unless @tabulation_data.blank?
-  connect_exam = 0
-  @tabulation_data['report'].each do |tab|
-    
-    subject_count_std = 0
-    connect_exam_id = @tabulation_data['connect_exams'][connect_exam]
-    connect_exam = connect_exam+1
-    u_grade = 0
-    tab['students'].each do |std| 
-      
-      std_marks_full = 0
-      std_marks_core_subject = 0
-      
-      tab['subjects'].each do |sub|
-        
-        subject_count_std = subject_count_std+1
-        std_subject_marks_final = 0
-        i = 0
-        tab['exams'].each do |rs|
-          if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
-            i = i+1
-            if i<3
-              std_subject_marks_final = std_subject_marks_final+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+<% if @student_position.blank? %>
+  <% if @grading_levels.blank? %>
+  <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
+  <% if @grading_levels.blank? %>
+    <% @grading_levels = GradingLevel.default %>
+  <% end %>
+  <% end %>
+  <%
+  @student_list = []
+  @subject_highest = {}
+
+  unless @tabulation_data.blank?
+    connect_exam = 0
+    @tabulation_data['report'].each do |tab|
+
+      subject_count_std = 0
+      connect_exam_id = @tabulation_data['connect_exams'][connect_exam]
+      connect_exam = connect_exam+1
+      u_grade = 0
+      tab['students'].each do |std| 
+
+        std_marks_full = 0
+        std_marks_core_subject = 0
+
+        tab['subjects'].each do |sub|
+
+          subject_count_std = subject_count_std+1
+          std_subject_marks_final = 0
+          i = 0
+          tab['exams'].each do |rs|
+            if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
+              i = i+1
+              if i<3
+                std_subject_marks_final = std_subject_marks_final+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+              else
+                break
+              end  
+            end    
+          end
+
+
+          std_subject_marks_mid = 0
+          i = 0
+          tab['exams'].each do |rs|
+            if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
+              i = i+1
+              if i>2
+                std_subject_marks_mid = std_subject_marks_mid+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+              end
+            end    
+          end 
+
+          subject_full_marks = ((std_subject_marks_final.to_f*70)/100)+((std_subject_marks_mid.to_f*30)/100)
+          std_marks_full = std_marks_full+subject_full_marks.round()
+
+          subject_grade = ""
+          last_grade_score = 0
+          @grading_levels.each_with_index do |grade,index|
+            if grade.max_score.nil? 
+              if subject_full_marks.to_f > grade.min_score.to_f and grade.min_score.to_f > last_grade_score.to_f
+                last_grade_score = grade.min_score.to_f
+                subject_grade = grade.name
+              end  
             else
-              break
+              if subject_full_marks.to_f > grade.min_score.to_f and subject_full_marks.to_f < grade.max_score.to_f
+                subject_grade = grade.name
+              end  
             end  
-          end    
-        end
-        
-        
-        std_subject_marks_mid = 0
-        i = 0
-        tab['exams'].each do |rs|
-          if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
-            i = i+1
-            if i>2
-              std_subject_marks_mid = std_subject_marks_mid+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-            end
-          end    
-        end 
-      
-        subject_full_marks = ((std_subject_marks_final.to_f*70)/100)+((std_subject_marks_mid.to_f*30)/100)
-        std_marks_full = std_marks_full+subject_full_marks.round()
-        
-        subject_grade = ""
-        last_grade_score = 0
-        @grading_levels.each_with_index do |grade,index|
-          if grade.max_score.nil? 
-            if subject_full_marks.to_f > grade.min_score.to_f and grade.min_score.to_f > last_grade_score.to_f
-              last_grade_score = grade.min_score.to_f
-              subject_grade = grade.name
-            end  
-          else
-            if subject_full_marks.to_f > grade.min_score.to_f and subject_full_marks.to_f < grade.max_score.to_f
-              subject_grade = grade.name
-            end  
+          end 
+
+          if subject_grade == "U"
+            u_grade = u_grade+1
           end  
-        end 
-      
-        if subject_grade == "U"
-          u_grade = u_grade+1
-        end  
-        
-        if @subject_highest[sub['id'].to_i].blank?
-          @subject_highest[sub['id'].to_i] = subject_full_marks
-        elsif subject_full_marks.to_f > @subject_highest[sub['id'].to_i].to_f
-           @subject_highest[sub['id'].to_i] = subject_full_marks.to_f
-        end
-        
-        
-        
-        if subject_count_std<4
-           std_marks_core_subject = std_marks_core_subject+subject_full_marks.round()
-        end 
-        
-      end
-    
-      @exam_comment = ExamConnectComment.find_by_exam_connect_id_and_student_id(connect_exam_id,std['id'].to_i)
-      if @exam_comment.blank? or @exam_comment.comments.blank? and (u_grade==0 or (@batch.course.course_name!="VIII" and @batch.course.course_name!="IX" and @batch.course.course_name!="X" and  u_grade<2))
-        std_marks_full = 5000-std_marks_full.round()
-        std_marks_core_subject = 5000-std_marks_core_subject.round()
-        subject_count_std = 5000-subject_count_std
-        @student_list << [std_marks_full,std_marks_core_subject,subject_count_std,std['first_name']+" "+std['last_name'],std['id'].to_i]
-      end
-      
-    end
-  end
- end
 
-  @student_position = {}
-  @student_section = {}
-  @student_roll = {}
-  
-  @sections = ["A","B","C"]
-  student_classes = ["KG","I","II","III","IV","V","VI","VII","VIII","IX","X"]
-  @promoted_to = "";
-  if student_classes.include?(@batch.course.course_name)
-    array_index = student_classes.index @batch.course.course_name
-    if array_index < student_classes.count
-        @promoted_to = student_classes[array_index+1]
-        if @promoted_to == "I"
-          @sections = ["Camellia","Marigold","Cosmos"]
-        end
-        if @promoted_to == "II"
-          @sections = ["Rose","Sunflower","Gardenia"]
-        end
-        if @promoted_to == "III"
-          @sections = ["Orchid","Tulip","Jasmine"]
-        end
-        if @promoted_to == "IV"
-          @sections = ["Daisy","daffodil"]
-        end
-        if @promoted_to == "V"
-          @sections = ["Bluebell","Levender"]
-        end
-        if @promoted_to == "VI"
-          @sections = ["Primrose","Snowdrop"]
-        end
-        if @promoted_to == "VII"
-          @sections = ["Parrot","Swift"]
-        end
-        if @promoted_to == "VIII"
-          @sections = ["Kingfisher","Nightingale"]
-        end
-        if @promoted_to == "IX"
-          @sections = ["Robin","Seagull"]
-        end
-        if @promoted_to == "X"
-          @sections = ["Penguin","Pelican"]
-        end
-        
-        
-    else
-        @promoted_to = "0"
-    end
-  end  
+          if @subject_highest[sub['id'].to_i].blank?
+            @subject_highest[sub['id'].to_i] = subject_full_marks
+          elsif subject_full_marks.to_f > @subject_highest[sub['id'].to_i].to_f
+             @subject_highest[sub['id'].to_i] = subject_full_marks.to_f
+          end
 
-  unless @student_list.blank?
-    @sorted_students = @student_list.sort
-    position = 0
-    @sorted_students.each do|s|
-        position = position+1
-        @student_position[s[4].to_i] = position
-    end
-    
-    @iloop = 0
-    @jloop = 0
-    
-    @sloop = 0
-    
-    @s_a_loop = 1
-    @s_b_loop = 1
-    @s_c_loop = 1
-    @new_sections = @sections
-    while @iloop < @sorted_students.count do
-        if @jloop > (@new_sections.count-1)
-          @jloop = 0
-          @new_sections = @new_sections.reverse
+
+
+          if subject_count_std<4
+             std_marks_core_subject = std_marks_core_subject+subject_full_marks.round()
+          end 
+
         end
-        @iloop +=1
-        
-        if @sorted_students[@sloop][4].to_i == 8344 || @sorted_students[@sloop][4].to_i == 11700 || @sorted_students[@sloop][4].to_i == 8058 || @sorted_students[@sloop][4].to_i == 8051
-          @student_section[@iloop] = @sections[0]
-          @student_roll[@iloop] = @s_a_loop
-          @s_a_loop +=1
-        else
-          @student_section[@iloop] = @new_sections[@jloop]
-          if @new_sections[@jloop] == @sections[0]
+
+        @exam_comment = ExamConnectComment.find_by_exam_connect_id_and_student_id(connect_exam_id,std['id'].to_i)
+        if @exam_comment.blank? or @exam_comment.comments.blank? and (u_grade==0 or (@batch.course.course_name!="VIII" and @batch.course.course_name!="IX" and @batch.course.course_name!="X" and  u_grade<2))
+          std_marks_full = 5000-std_marks_full.round()
+          std_marks_core_subject = 5000-std_marks_core_subject.round()
+          subject_count_std = 5000-subject_count_std
+          @student_list << [std_marks_full,std_marks_core_subject,subject_count_std,std['first_name']+" "+std['last_name'],std['id'].to_i]
+        end
+
+      end
+    end
+   end
+
+    @student_position = {}
+    @student_section = {}
+    @student_roll = {}
+
+    @sections = ["A","B","C"]
+    student_classes = ["KG","I","II","III","IV","V","VI","VII","VIII","IX","X"]
+    @promoted_to = "";
+    if student_classes.include?(@batch.course.course_name)
+      array_index = student_classes.index @batch.course.course_name
+      if array_index < student_classes.count
+          @promoted_to = student_classes[array_index+1]
+          if @promoted_to == "I"
+            @sections = ["Camellia","Marigold","Cosmos"]
+          end
+          if @promoted_to == "II"
+            @sections = ["Rose","Sunflower","Gardenia"]
+          end
+          if @promoted_to == "III"
+            @sections = ["Orchid","Tulip","Jasmine"]
+          end
+          if @promoted_to == "IV"
+            @sections = ["Daisy","daffodil"]
+          end
+          if @promoted_to == "V"
+            @sections = ["Bluebell","Levender"]
+          end
+          if @promoted_to == "VI"
+            @sections = ["Primrose","Snowdrop"]
+          end
+          if @promoted_to == "VII"
+            @sections = ["Parrot","Swift"]
+          end
+          if @promoted_to == "VIII"
+            @sections = ["Kingfisher","Nightingale"]
+          end
+          if @promoted_to == "IX"
+            @sections = ["Robin","Seagull"]
+          end
+          if @promoted_to == "X"
+            @sections = ["Penguin","Pelican"]
+          end
+
+
+      else
+          @promoted_to = "0"
+      end
+    end  
+
+    unless @student_list.blank?
+      @sorted_students = @student_list.sort
+      position = 0
+      @sorted_students.each do|s|
+          position = position+1
+          @student_position[s[4].to_i] = position
+      end
+
+      @iloop = 0
+      @jloop = 0
+
+      @sloop = 0
+
+      @s_a_loop = 1
+      @s_b_loop = 1
+      @s_c_loop = 1
+      @new_sections = @sections
+      while @iloop < @sorted_students.count do
+          if @jloop > (@new_sections.count-1)
+            @jloop = 0
+            @new_sections = @new_sections.reverse
+          end
+          @iloop +=1
+
+          if @sorted_students[@sloop][4].to_i == 8344 || @sorted_students[@sloop][4].to_i == 11700 || @sorted_students[@sloop][4].to_i == 8058 || @sorted_students[@sloop][4].to_i == 8051
+            @student_section[@iloop] = @sections[0]
             @student_roll[@iloop] = @s_a_loop
             @s_a_loop +=1
-          end
+          else
+            @student_section[@iloop] = @new_sections[@jloop]
+            if @new_sections[@jloop] == @sections[0]
+              @student_roll[@iloop] = @s_a_loop
+              @s_a_loop +=1
+            end
 
-          if @new_sections[@jloop] == @sections[1]
-            @student_roll[@iloop] = @s_b_loop
-            @s_b_loop +=1
-          end
+            if @new_sections[@jloop] == @sections[1]
+              @student_roll[@iloop] = @s_b_loop
+              @s_b_loop +=1
+            end
 
-          if @sections.count>2
-            if @new_sections[@jloop] == @sections[2]
-              @student_roll[@iloop] = @s_c_loop
-              @s_c_loop +=1
+            if @sections.count>2
+              if @new_sections[@jloop] == @sections[2]
+                @student_roll[@iloop] = @s_c_loop
+                @s_c_loop +=1
+              end
             end
           end
-        end
-      
-        @jloop +=1
-        @sloop +=1
+
+          @jloop +=1
+          @sloop +=1
+      end
+
     end
-    
   end
-
-
-  
 
 %> 

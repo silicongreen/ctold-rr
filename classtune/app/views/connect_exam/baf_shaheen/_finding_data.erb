@@ -101,7 +101,7 @@ unless @tabulation_data.blank?
   @student_section = {}
   @student_roll = {}
   
-  sections = ["A","B","C"]
+  @sections = ["A","B","C"]
   student_classes = ["KG","I","II","III","IV","V","VI","VII","VIII","IX","X"]
   @promoted_to = "";
   if student_classes.include?(@batch.course.course_name)
@@ -109,34 +109,34 @@ unless @tabulation_data.blank?
     if array_index < student_classes.count
         @promoted_to = student_classes[array_index+1]
         if @promoted_to == "I"
-          sections = ["Camellia","Marigold","Cosmos"]
+          @sections = ["Camellia","Marigold","Cosmos"]
         end
         if @promoted_to == "II"
-          sections = ["Rose","Sunflower","Gardenia"]
+          @sections = ["Rose","Sunflower","Gardenia"]
         end
         if @promoted_to == "III"
-          sections = ["Orchid","Tulip","Jasmine"]
+          @sections = ["Orchid","Tulip","Jasmine"]
         end
         if @promoted_to == "IV"
-          sections = ["Daisy","daffodil"]
+          @sections = ["Daisy","daffodil"]
         end
         if @promoted_to == "V"
-          sections = ["Bluebell","Levender"]
+          @sections = ["Bluebell","Levender"]
         end
         if @promoted_to == "VI"
-          sections = ["Primrose","Snowdrop"]
+          @sections = ["Primrose","Snowdrop"]
         end
         if @promoted_to == "VII"
-          sections = ["Parrot","Swift"]
+          @sections = ["Parrot","Swift"]
         end
         if @promoted_to == "VIII"
-          sections = ["Kingfisher","Nightingale"]
+          @sections = ["Kingfisher","Nightingale"]
         end
         if @promoted_to == "IX"
-          sections = ["Robin","Seagull"]
+          @sections = ["Robin","Seagull"]
         end
         if @promoted_to == "X"
-          sections = ["Penguin","Pelican"]
+          @sections = ["Penguin","Pelican"]
         end
         
         
@@ -153,45 +153,45 @@ unless @tabulation_data.blank?
         @student_position[s[4].to_i] = position
     end
     
-    iloop = 0
-    jloop = 0
+    @iloop = 0
+    @jloop = 0
     
-    s_a_loop = 1
-    s_b_loop = 1
-    s_c_loop = 1
-    new_sections = sections
-    while iloop < @sorted_students.count do
-        if jloop > (new_sections.count-1)
-          jloop = 0
-          new_sections = new_sections.reverse
+    @s_a_loop = 1
+    @s_b_loop = 1
+    @s_c_loop = 1
+    @new_sections = @sections
+    while @iloop < @sorted_students.count do
+        if @jloop > (@new_sections.count-1)
+          @jloop = 0
+          @new_sections = @new_sections.reverse
         end
-        iloop +=1
+        @iloop +=1
         
         if @student.id.to_i == 8344 || @student.id.to_i == 11700 || @student.id.to_i == 8058 || @student.id.to_i == 8051
-          @student_section[iloop] = sections[0]
-          @student_roll[iloop] = s_a_loop
-          s_a_loop +=1
+          @student_section[@iloop] = @sections[0]
+          @student_roll[@iloop] = @s_a_loop
+          @s_a_loop +=1
         else
-          @student_section[iloop] = new_sections[jloop]
-          if new_sections[jloop] == sections[0]
-            @student_roll[iloop] = s_a_loop
-            s_a_loop +=1
+          @student_section[@iloop] = @new_sections[@jloop]
+          if @new_sections[@jloop] == @sections[0]
+            @student_roll[@iloop] = @s_a_loop
+            @s_a_loop +=1
           end
 
-          if new_sections[jloop] == sections[1]
-            @student_roll[iloop] = s_b_loop
-            s_b_loop +=1
+          if @new_sections[@jloop] == @sections[1]
+            @student_roll[@iloop] = @s_b_loop
+            @s_b_loop +=1
           end
 
-          if sections.count>2
-            if new_sections[jloop] == sections[2]
-              @student_roll[iloop] = s_c_loop
-              s_c_loop +=1
+          if @sections.count>2
+            if @new_sections[@jloop] == @sections[2]
+              @student_roll[@iloop] = @s_c_loop
+              @s_c_loop +=1
             end
           end
         end
       
-        jloop +=1
+        @jloop +=1
     end
     
   end

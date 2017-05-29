@@ -382,25 +382,25 @@
                  <% promotion_status = "N/A" %>
                  <% end %>
                  <% if !@student_position[@student.id.to_i].blank? and promotion_status != "N/A" %>
-                 <% merit_position = @student_position[@student.id.to_i] %>
-                 <% unless @student_roll[@student_position[@student.id.to_i].to_i].blank? %>
-                    <% new_roll = @student_roll[@student_position[@student.id.to_i].to_i] %>
-                 <% else %>
-                    <% new_roll = "N/A" %>
-                 <% end %>
-              
-                 <% unless @student_section[@student_position[@student.id.to_i].to_i].blank? %>
-                    <% new_section = @student_section[@student_position[@student.id.to_i].to_i] %>
-                 <% else %>
-                    <% new_section = "N/A" %>
-                 <% end %>
-                  <% else %>
-                  <%
-                    merit_position = "N/A"
-                    new_roll = "N/A"
-                    new_section = "N/A"
-                  %>
-                  <% end %>
+                    <% merit_position = @student_position[@student.id.to_i] %>
+                    <% unless @student_roll[@student_position[@student.id.to_i].to_i].blank? %>
+                       <% new_roll = @student_roll[@student_position[@student.id.to_i].to_i] %>
+                    <% else %>
+                       <% new_roll = "N/A" %>
+                    <% end %>
+
+                    <% unless @student_section[@student_position[@student.id.to_i].to_i].blank? %>
+                       <% new_section = @student_section[@student_position[@student.id.to_i].to_i] %>
+                    <% else %>
+                       <% new_section = "N/A" %>
+                    <% end %>
+                <% else %>
+                <%
+                  merit_position = "N/A"
+                  new_roll = "N/A"
+                  new_section = "N/A"
+                %>
+                <% end %>
               <% else %>
                 <% result = "Failed" %>
                 <% promotion_status = "Not Promoted" %>

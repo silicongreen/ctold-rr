@@ -114,7 +114,7 @@
                   <% iloop = 0  %>
                   <td>
                   <% subjectdata = Subject.find(sub['id'].to_i) %>
-                  <% check_std_subject = StudentsSubject.find_by_student_id_and_subject_id(@student.id,sub['id'].to_i) %>
+                  <% check_std_subject = StudentsSubject.find_by_student_id_and_subject_id(std['id'],sub['id'].to_i) %>
                   <% if check_std_subject.blank? and !subjectdata.elective_group_id.blank? %>
 
                   <% else %>

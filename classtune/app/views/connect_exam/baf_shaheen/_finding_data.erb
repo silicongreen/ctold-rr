@@ -163,7 +163,7 @@ unless @tabulation_data.blank?
     while iloop < @sorted_students.count do
         if jloop > (new_sections.count-1)
           jloop = 0
-          new_sections.reverse!
+          new_sections = new_sections.reverse
         end
         iloop +=1
         

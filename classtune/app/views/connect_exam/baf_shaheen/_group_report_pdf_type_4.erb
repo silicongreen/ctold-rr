@@ -104,7 +104,7 @@
                           <% total_mark = 0 %>
                           <% full_mark = 0 %>
 
-                          <td class="col-pdf border-left-none no-warp align-left-baf"><%= subjects['name']+" "+subjects['id'] %></td>
+                          <td class="col-pdf border-left-none no-warp align-left-baf"><%= subjects['name'] %></td>
                           <% unless @report_data['report']['exams'].blank? %>  
                           <% loop=0 %>
                             <% @report_data['report']['exams'].each do |report| %>
@@ -150,6 +150,13 @@
                                 if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
                                   midterm_total = midterm_total.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f 
                                 end
+                                
+                                if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank?
+                                 full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
+                                end
+
+                                  
+                                
                               end
 
                             end
@@ -182,7 +189,7 @@
                         
                         %>
 
-                          
+                          <% if full_mark.to_f > 0 %>
                             <td class="col-pdf"><%= sprintf( "%0.02f", total_mark) %></td>
                             <td class="col-pdf"><%= sprintf( "%0.02f", total_70) %></td>
                             <td class="col-pdf"><%= sprintf( "%0.02f", midterm_30) %></td>
@@ -221,7 +228,14 @@
                             <% total_parcent= total_parcent+main_mark %>
                             <% total_subject = total_subject+1 %>
                             <%  total_mark_all_subject = total_mark_all_subject+accumulated %>
-                                
+                          <% else  %>
+                            <td class="col-pdf">N/A</td>
+                            <td class="col-pdf">N/A</td>
+                            <td class="col-pdf">N/A</td>
+                            <td class="col-pdf">N/A</td>
+                            <td class="col-pdf">N/A</td>
+                            <td class="col-pdf border-right-none">N/A</td>
+                          <% end %>      
 
                       </tr> 
                     <% end %>  

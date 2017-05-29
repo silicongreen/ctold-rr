@@ -156,6 +156,8 @@ unless @tabulation_data.blank?
     @iloop = 0
     @jloop = 0
     
+    @sloop = 0
+    
     @s_a_loop = 1
     @s_b_loop = 1
     @s_c_loop = 1
@@ -167,7 +169,7 @@ unless @tabulation_data.blank?
         end
         @iloop +=1
         
-        if @student.id.to_i == 8344 || @student.id.to_i == 11700 || @student.id.to_i == 8058 || @student.id.to_i == 8051
+        if @sorted_students[@sloop][4].to_i == 8344 || @sorted_students[@sloop][4].to_i == 11700 || @sorted_students[@sloop][4].to_i == 8058 || @sorted_students[@sloop][4].to_i == 8051
           @student_section[@iloop] = @sections[0]
           @student_roll[@iloop] = @s_a_loop
           @s_a_loop +=1
@@ -192,6 +194,7 @@ unless @tabulation_data.blank?
         end
       
         @jloop +=1
+        @sloop +=1
     end
     
   end

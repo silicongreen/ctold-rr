@@ -99,6 +99,11 @@
                   <% total_mark_all_subject = 0 %>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
+                      <% subjectdata = Subject.find(subjects['id'].to_i) %>
+                      <% check_std_subject = StudentsSubject.find_by_student_id_and_subject_id(@student.id,subjects['id'].to_i) %>
+                      <% if check_std_subject.blank? and !subjectdata.elective_group_id.blank? %>
+                  
+                      <% else %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                           <% weightage_mark = 0 %>
                           <% total_mark = 0 %>
@@ -195,26 +200,17 @@
                             <td class="col-pdf"><%= sprintf( "%0.02f", midterm_30) %></td>
                             <td class="col-pdf"><%= accumulated %></td>
                             
-                            <%
-                            subject_grade = "N/A"
-                            last_grade_score = 0
-                            @grading_levels.each_with_index do |grade,index|
-                              if grade.max_score.nil? 
-                                if accumulated.to_f < grade.min_score.to_f and grade.min_score.to_f < last_grade_score.to_f
-                                  last_grade_score = grade.min_score.to_f
-                                  subject_grade = grade.name
-                                end  
-                              else
-                                if accumulated.to_f > grade.min_score.to_f and accumulated.to_f < grade.max_score.to_f
-                                  subject_grade = grade.name
-                                end  
-                              end  
-                            end 
-                            %>
-                             <% if subject_grade == "U" %>
+                            <%  grade = GradingLevel.percentage_to_grade(accumulated, @batch.id) %>
+                            <% if !grade.blank? and !grade.name.blank? %>
+                              <td class="col-pdf"><%= grade.name %></td>
+                               <% if grade.name == "U" %>
                               <% total_u +=1 %>
                               <% end %>
-                            <td><b><%= subject_grade %></b></td>
+                            <% else %>
+                              <td class="col-pdf">N/A</td>
+                            <% end %>
+                            
+                            
                               
                             <% unless @subject_highest[subjects['id'].to_i].blank? %> 
                               
@@ -238,6 +234,7 @@
                           <% end %>      
 
                       </tr> 
+                      <% end %>
                     <% end %>  
                   <% end %>
                       <tr class="odd">

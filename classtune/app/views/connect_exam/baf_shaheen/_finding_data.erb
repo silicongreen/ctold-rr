@@ -55,19 +55,10 @@
           std_marks_full = std_marks_full+subject_full_marks.round()
 
           subject_grade = ""
-          last_grade_score = 0
-          @grading_levels.each_with_index do |grade,index|
-            if grade.max_score.nil? 
-              if subject_full_marks.to_f > grade.min_score.to_f and grade.min_score.to_f > last_grade_score.to_f
-                last_grade_score = grade.min_score.to_f
-                subject_grade = grade.name
-              end  
-            else
-              if subject_full_marks.to_f > grade.min_score.to_f and subject_full_marks.to_f < grade.max_score.to_f
-                subject_grade = grade.name
-              end  
-            end  
-          end 
+          grade = GradingLevel.percentage_to_grade(subject_full_marks, @batch.id)
+          if !grade.blank? and !grade.name.blank?
+            subject_grade = grade.name
+          end  
 
           if subject_grade == "U"
             u_grade = u_grade+1
@@ -88,7 +79,34 @@
         end
 
         @exam_comment = ExamConnectComment.find_by_exam_connect_id_and_student_id(connect_exam_id,std['id'].to_i)
-        if @exam_comment.blank? or @exam_comment.comments.blank? and (u_grade==0 or (@batch.course.course_name!="VIII" and @batch.course.course_name!="IX" and @batch.course.course_name!="X" and  u_grade<2))
+        result = ""
+        promotion_status = ""
+        merit_position = ""
+        new_roll = ""
+        new_section = ""
+        if !@exam_comment.blank?
+          all_comments = @exam_comment.comments
+          if !all_comments.blank?
+            all_comments_array = all_comments.split("|")
+            result = all_comments_array[0]
+            if !all_comments_array[1].nil?
+              promotion_status = all_comments_array[1]
+              if !all_comments_array[2].nil?
+                merit_position = all_comments_array[2]
+                if !all_comments_array[3].nil?
+                  new_roll = all_comments_array[3]
+                  if !all_comments_array[4].nil?
+                    new_section = all_comments_array[4]
+                  end
+                end
+
+              end
+
+            end
+          end
+        end
+        
+        if new_section.blank?  and (u_grade==0 or (@batch.course.course_name!="VIII" and @batch.course.course_name!="IX" and @batch.course.course_name!="X" and  u_grade<2))
           std_marks_full = 5000-std_marks_full.round()
           std_marks_core_subject = 5000-std_marks_core_subject.round()
           subject_count_std = 5000-subject_count_std

@@ -88,7 +88,7 @@
                       <td class="col-pdf">
                           30% of Mid Term Score
                       </td>
-                      <td class="col-pdf">Accumu- lated Score</td>
+                      <td class="col-pdf">Accumulated Score</td>
                       <td class="col-pdf">Grade</td>
                       <td class="col-pdf border-right-none">Highest Mark</td>
                       
@@ -104,7 +104,7 @@
                           <% total_mark = 0 %>
                           <% full_mark = 0 %>
 
-                          <td class="col-pdf border-left-none no-warp align-left-baf"><%= subjects['name'] %></td>
+                          <td class="col-pdf border-left-none no-warp align-left-baf"><%= subjects['name'].upcase %></td>
                           <% unless @report_data['report']['exams'].blank? %>  
                           <% loop=0 %>
                             <% @report_data['report']['exams'].each do |report| %>
@@ -200,7 +200,7 @@
                             last_grade_score = 0
                             @grading_levels.each_with_index do |grade,index|
                               if grade.max_score.nil? 
-                                if accumulated.to_f > grade.min_score.to_f and grade.min_score.to_f > last_grade_score.to_f
+                                if accumulated.to_f < grade.min_score.to_f and grade.min_score.to_f < last_grade_score.to_f
                                   last_grade_score = grade.min_score.to_f
                                   subject_grade = grade.name
                                 end  

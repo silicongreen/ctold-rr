@@ -58,7 +58,7 @@
           last_grade_score = 0
           @grading_levels.each_with_index do |grade,index|
             if grade.max_score.nil? 
-              if subject_full_marks.to_f <= grade.min_score.to_f and grade.min_score.to_f < last_grade_score.to_f
+              if subject_full_marks.to_f >= grade.min_score.to_f and grade.min_score.to_f > last_grade_score.to_f
                 last_grade_score = grade.min_score.to_f
                 subject_grade = grade.name
               end  

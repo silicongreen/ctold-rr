@@ -44,7 +44,7 @@
       %>
         <div class="shift all-exam-links">
           <% batches.each do |batch| %>
-            <a style="width:<%= width_percentize-2 %>%;" href="javascript:void(0)" onclick="get_class('<%= batch.name %>','<%= batch.id %>')" id="batch_name_<%= batch.id %>" ><%= batch.name %></a>
+            <a style="width:<%= width_percentize-5 %>%;" href="javascript:void(0)" onclick="get_class('<%= batch.name %>','<%= batch.id %>')" id="batch_name_<%= batch.id %>" ><%= batch.name %></a>
           <% end %>  
         </div>    
       <% end %> 
@@ -338,6 +338,7 @@ a:hover
    }
    function get_exam_subject(exam_id)
    {  
+       jj(".subject_div").html("<img src='/images/loader.gif' />");
       jj.get( "/marks/get_exam_subject?exam_id="+exam_id, function( data ) {
           var exam_data = jQuery.parseJSON(data)
           var dataA = exam_data.data;
@@ -346,9 +347,9 @@ a:hover
 
               html = html+value;
           });
-          html = "<div class='subject_div all-exam-links'>"+html+"</div><div id='pdf_file' style='float: left;clear:both; width:95%; margin:20px 30px; background: transparent url(/images/pdf_loading2.gif) no-repeat;background-position: center;'></div> "
           
-          jj(".result_div").append(html);
+          
+          jj(".subject_div").html(html);
           jj(".exam_div a").removeClass("active");
           jj("#exams_id_"+exam_id).addClass("active");
       });
@@ -381,11 +382,9 @@ a:hover
              
                 html = html+value;
             });
-            html = "<div class='exam_div all-exam-links'>"+html+"</div>";
-            if(result_type<5)
-            {
-              html = html+"<div id='pdf_file' style='float: left;clear:both; width:95%; margin:20px 30px; background: transparent url(/images/pdf_loading2.gif) no-repeat;background-position: center;'></div>"; 
-            }  
+            html = "<div class='exam_div all-exam-links'>"+html+"</div><div class='subject_div all-exam-links'></div>";
+            html = html+"<div id='pdf_file' style='float: left;clear:both; width:95%; margin:20px 30px; background: transparent url(/images/pdf_loading2.gif) no-repeat;background-position: center;'></div>"; 
+            
             jj(".result_div").html(html);
         });
       }

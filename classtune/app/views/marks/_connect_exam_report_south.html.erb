@@ -398,7 +398,7 @@ a:hover
          jj("#pdf_file").hide();
          jj("#pdf_file").show();
          event.preventDefault();
-         PDFObject.embed(jj(this).attr("href"), "#pdf_file", {id: "pdf_id"});
+         PDFObject.embed(jj(this).attr("href"), "#pdf_file", {id: "pdf_id",forcePDFJS:true});
          if(jj(this).attr("href").indexOf("marksheet")!=-1)
          {
            jj(".subject_div a").removeClass("active");

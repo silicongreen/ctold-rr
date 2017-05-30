@@ -307,7 +307,7 @@ a:hover
             html = html+"<a style='width:100%;clear:both;margin-top:10px;' href='javascript:void(0)' id='section_"+value[0]+"' onclick=\"get_section('"+value[1]+"','"+value[2]+"','"+value[0]+"')\"  >"+value[2]+"</a>";
         });
         
-        jj(".class_only").app(html);
+        jj(".class_only").html(html);
         jj(".shift a").removeClass('active');
         jj("#batch_name_"+batch_id).addClass('active');
         jj(".result_div").html("");

@@ -50,7 +50,7 @@
       <% end %> 
         <div class="class_section" >
           <div class="class_only all-exam-links">
-              
+              <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_2", :style =>"display: none;" ) %>
           </div>
           <div class="section_only all-exam-links">
               
@@ -298,6 +298,7 @@ a:hover
    function get_class(batch_name,batch_id)
    {
      var html = "";
+      jj(".class_only").html("<img src='/images/loader.gif' />");
       jj.get( "/marks/get_class?batch="+batch_name, function( data ) {
         var batch_data = jQuery.parseJSON(data)
         var dataA = batch_data.data;
@@ -305,7 +306,8 @@ a:hover
           
             html = html+"<a style='width:100%;clear:both;margin-top:10px;' href='javascript:void(0)' id='section_"+value[0]+"' onclick=\"get_section('"+value[1]+"','"+value[2]+"','"+value[0]+"')\"  >"+value[2]+"</a>";
         });
-        jj(".class_only").html(html);
+        
+        jj(".class_only").app(html);
         jj(".shift a").removeClass('active');
         jj("#batch_name_"+batch_id).addClass('active');
         jj(".result_div").html("");
@@ -317,6 +319,7 @@ a:hover
    function get_section(batch_name,course_name,batch_id)
    {
      var html = "";
+     jj(".section_only").html("<img src='/images/loader.gif' />");
       jj.get( "/marks/get_section?batch="+batch_name+"&course_name="+course_name, function( data ) {
         var batch_data = jQuery.parseJSON(data)
         var dataA = batch_data.data;
@@ -370,6 +373,7 @@ a:hover
       var html = "";
       if(batch_id && result_type)
       {
+        jj(".result_div").html("<img src='/images/loader.gif' />");
         jj.get( "/marks/get_exams?batch_id="+batch_id+"&data_type="+result_type, function( data ) {
             var exam_data = jQuery.parseJSON(data)
             var dataA = exam_data.data;

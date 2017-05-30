@@ -1,9 +1,11 @@
 <% if @connect_exam_obj.result_type.to_i == 1 or  @connect_exam_obj.result_type.to_i == 2 or  @connect_exam_obj.result_type.to_i == 4  %>
   <%
-      student_response = get_tabulation_connect_exam(@connect_exam_obj.id,@batch.id,false)
-      @tabulation_data = []
-      if student_response['status']['code'].to_i == 200
-        @tabulation_data = student_response['data']
+      if @tabulation_data.blank?
+        student_response = get_tabulation_connect_exam(@connect_exam_obj.id,@batch.id,false)
+        @tabulation_data = []
+        if student_response['status']['code'].to_i == 200
+          @tabulation_data = student_response['data']
+        end
       end
   %>
   <%= render  :partial=>"/connect_exam/south_point/highest_marks" %>

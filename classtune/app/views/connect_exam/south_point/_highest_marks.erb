@@ -1,339 +1,341 @@
 <%
-@subject_highest_mark_first_term = {}
-@subject_highest_mark_final_term = {}
-@subject_highest_quarter = {}
-unless @tabulation_data.blank?
-  @tabulation_data['report']['students'].each do |std| 
-    @tabulation_data['report']['subjects'].each do |sub|
-      obtained_mark = 0
-      full_mark = 0
-      highest_mark = 0
+if @subject_highest_mark_first_term.blank? and @subject_highest_mark_final_term.blank? and @subject_highest_quarter.blank?
+  @subject_highest_mark_first_term = {}
+  @subject_highest_mark_final_term = {}
+  @subject_highest_quarter = {}
+  unless @tabulation_data.blank?
+    @tabulation_data['report']['students'].each do |std| 
+      @tabulation_data['report']['subjects'].each do |sub|
+        obtained_mark = 0
+        full_mark = 0
+        highest_mark = 0
 
 
-      st_full_mark1 = 0
-      ct_full_mark1 = 0
+        st_full_mark1 = 0
+        ct_full_mark1 = 0
 
-      st_marks1 = []
-      ct_marks1 = []
-      avg_mark_st1 = 0;
-      avg_mark_ct1 = 0;
-      full_mark1 = 0
+        st_marks1 = []
+        ct_marks1 = []
+        avg_mark_st1 = 0;
+        avg_mark_ct1 = 0;
+        full_mark1 = 0
 
-      st_full_mark2 = 0
-      ct_full_mark2 = 0
+        st_full_mark2 = 0
+        ct_full_mark2 = 0
 
-      st_marks2 = []
-      ct_marks2 = []
-      avg_mark_st2 = 0;
-      avg_mark_ct2 = 0;
-      full_mark2 = 0
+        st_marks2 = []
+        ct_marks2 = []
+        avg_mark_st2 = 0;
+        avg_mark_ct2 = 0;
+        full_mark2 = 0
 
-      st_full_mark3 = 0
-      ct_full_mark3 = 0
+        st_full_mark3 = 0
+        ct_full_mark3 = 0
 
-      st_marks3 = []
-      ct_marks3 = []
-      avg_mark_st3 = 0;
-      avg_mark_ct3 = 0;
-      full_mark3 = 0
+        st_marks3 = []
+        ct_marks3 = []
+        avg_mark_st3 = 0;
+        avg_mark_ct3 = 0;
+        full_mark3 = 0
 
-      st_full_mark4 = 0
-      ct_full_mark4 = 0
+        st_full_mark4 = 0
+        ct_full_mark4 = 0
 
-      st_marks4 = []
-      ct_marks4 = []
-      avg_mark_st4 = 0;
-      avg_mark_ct4 = 0;
-      full_mark4 = 0
+        st_marks4 = []
+        ct_marks4 = []
+        avg_mark_st4 = 0;
+        avg_mark_ct4 = 0;
+        full_mark4 = 0
 
-      first_term_mark = 0
-      first_term_full_mark = 0
-      first_term_avg_mark = 0
+        first_term_mark = 0
+        first_term_full_mark = 0
+        first_term_avg_mark = 0
 
-      final_term_mark = 0
-      final_term_full_mark = 0
-      final_term_avg_mark = 0
-      unless @tabulation_data['report']['exams'].blank?  
-        @tabulation_data['report']['exams'].each do |report|
-          if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank? and !report['result'][report['exam_id']][sub['id']][std['id']].blank?
+        final_term_mark = 0
+        final_term_full_mark = 0
+        final_term_avg_mark = 0
+        unless @tabulation_data['report']['exams'].blank?  
+          @tabulation_data['report']['exams'].each do |report|
+            if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank? and !report['result'][report['exam_id']][sub['id']][std['id']].blank?
 
-            #Calculation First Quarter Mark
-            if report['quarter'] == '1'
-              if st_full_mark1 == 0 and report['exam_category'] == '4'
+              #Calculation First Quarter Mark
+              if report['quarter'] == '1'
+                if st_full_mark1 == 0 and report['exam_category'] == '4'
+                  if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].blank?
+                    st_full_mark1 = report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                  end
+                  end                     
+                if ct_full_mark1 == 0 and report['exam_category'] == '1'
+                  if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].blank?
+                    ct_full_mark1 = report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                  end
+                  end
+
+                if report['exam_category'] == '4'
+                  if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
+                    st_marks1 << report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                    else
+                    st_marks1 << 0
+                  end      
+                  end
+
+                if report['exam_category'] == '1'
+                  if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
+                    ct_marks1 << report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                    else
+                    ct_marks1 << 0
+                  end      
+                end
+                end 
+
+              #Calculation 2nd Quarter Mark
+              if report['quarter'] == '2'
+                if st_full_mark2 == 0 and report['exam_category'] == '4'
+                  if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].blank?
+                    st_full_mark2 = report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                  end
+                  end                     
+                if ct_full_mark2 == 0 and report['exam_category'] == '1'
+                  if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].blank?
+                    ct_full_mark2 = report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                  end
+                  end
+
+                if report['exam_category'] == '4'
+                  if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
+                    st_marks2 << report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                    else
+                    st_marks2 << 0
+                  end      
+                  end
+
+                if report['exam_category'] == '1'
+                  if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
+                    ct_marks2 << report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                    else
+                    ct_marks2 << 0
+                  end      
+                end
+                end
+
+
+              #Calculation 3rd Quarter Mark
+              if report['quarter'] == '3'
+                if st_full_mark3 == 0 and report['exam_category'] == '4'
+                  if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].blank?
+                    st_full_mark3 = report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                  end
+                  end                     
+                if ct_full_mark3 == 0 and report['exam_category'] == '1'
+                  if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].blank?
+                    ct_full_mark3 = report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                  end
+                  end
+
+                if report['exam_category'] == '4'
+                  if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
+                    st_marks3 << report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                    else
+                    st_marks3 << 0
+                  end      
+                  end
+
+                if report['exam_category'] == '1'
+                  if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
+                    ct_marks3 << report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                    else
+                    ct_marks3 << 0
+                  end      
+                end
+                end 
+
+
+              #Calculation 4th Quarter Mark
+              if report['quarter'] == '4'
+                if st_full_mark4 == 0 and report['exam_category'] == '4'
+                  if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].blank?
+                    st_full_mark4 = report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                  end
+                  end                     
+                if ct_full_mark4 == 0 and report['exam_category'] == '1'
+                  if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].blank?
+                    ct_full_mark4 = report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                  end
+                  end
+
+                if report['exam_category'] == '4'
+                  if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
+                    st_marks4 << report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                    else
+                    st_marks4 << 0
+                  end      
+                  end
+
+                if report['exam_category'] == '1'
+                  if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
+                    ct_marks4 << report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                    else
+                    ct_marks4 << 0
+                  end      
+                end
+                end 
+
+              #Calculation First Term (40/20) Mark
+              if report['quarter'] == '5'
                 if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].blank?
-                  st_full_mark1 = report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                  first_term_full_mark = report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                  end
+                if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
+                  first_term_mark = report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                 end
-              end                     
-              if ct_full_mark1 == 0 and report['exam_category'] == '1'
+
+                end
+
+              #Calculation Final Term Mark
+              if report['quarter'] == '6'
                 if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].blank?
-                  ct_full_mark1 = report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-                end
-              end
-
-              if report['exam_category'] == '4'
+                  final_term_full_mark = report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                  end
                 if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
-                  st_marks1 << report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                  else
-                  st_marks1 << 0
-                end      
-              end
-
-              if report['exam_category'] == '1'
-                if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
-                  ct_marks1 << report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                  else
-                  ct_marks1 << 0
-                end      
-              end
-            end 
-
-            #Calculation 2nd Quarter Mark
-            if report['quarter'] == '2'
-              if st_full_mark2 == 0 and report['exam_category'] == '4'
-                if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].blank?
-                  st_full_mark2 = report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                  final_term_mark = report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                 end
-              end                     
-              if ct_full_mark2 == 0 and report['exam_category'] == '1'
-                if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].blank?
-                  ct_full_mark2 = report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-                end
-              end
 
-              if report['exam_category'] == '4'
-                if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
-                  st_marks2 << report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                  else
-                  st_marks2 << 0
-                end      
-              end
-
-              if report['exam_category'] == '1'
-                if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
-                  ct_marks2 << report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                  else
-                  ct_marks2 << 0
-                end      
-              end
-            end
-
-
-            #Calculation 3rd Quarter Mark
-            if report['quarter'] == '3'
-              if st_full_mark3 == 0 and report['exam_category'] == '4'
-                if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].blank?
-                  st_full_mark3 = report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-                end
-              end                     
-              if ct_full_mark3 == 0 and report['exam_category'] == '1'
-                if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].blank?
-                  ct_full_mark3 = report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-                end
-              end
-
-              if report['exam_category'] == '4'
-                if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
-                  st_marks3 << report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                else
-                  st_marks3 << 0
-                end      
-              end
-
-              if report['exam_category'] == '1'
-                if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
-                  ct_marks3 << report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                  else
-                  ct_marks3 << 0
-                end      
-              end
-            end 
-
-
-            #Calculation 4th Quarter Mark
-            if report['quarter'] == '4'
-              if st_full_mark4 == 0 and report['exam_category'] == '4'
-                if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].blank?
-                  st_full_mark4 = report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-                end
-              end                     
-              if ct_full_mark4 == 0 and report['exam_category'] == '1'
-                if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].blank?
-                  ct_full_mark4 = report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-                end
-              end
-
-              if report['exam_category'] == '4'
-                if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
-                  st_marks4 << report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                  else
-                  st_marks4 << 0
-                end      
-              end
-
-              if report['exam_category'] == '1'
-                if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
-                  ct_marks4 << report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                  else
-                  ct_marks4 << 0
-                end      
-              end
-            end 
-
-            #Calculation First Term (40/20) Mark
-            if report['quarter'] == '5'
-              if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].blank?
-                first_term_full_mark = report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-                end
-              if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
-                first_term_mark = report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-              end
-
-            end
-
-            #Calculation Final Term Mark
-            if report['quarter'] == '6'
-              if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].blank?
-                final_term_full_mark = report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-                end
-              if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
-                final_term_mark = report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
               end
 
             end
 
           end
+          end 
+        #Calculation First Quarter Mark
+        st_marks1.sort! {|x,y| y <=> x }
+        ct_marks1.sort! {|x,y| y <=> x }
 
-        end
-      end 
-      #Calculation First Quarter Mark
-      st_marks1.sort! {|x,y| y <=> x }
-      ct_marks1.sort! {|x,y| y <=> x }
+        if ct_full_mark1.to_i == 20 
+          avg_mark_ct1 = (ct_marks1[0].to_f+ct_marks1[1].to_f)/2
+          else 
+          avg_mark_ct1 = ct_marks1[0].to_f
+          end 
 
-      if ct_full_mark1.to_i == 20 
-        avg_mark_ct1 = (ct_marks1[0].to_f+ct_marks1[1].to_f)/2
-      else 
-        avg_mark_ct1 = ct_marks1[0].to_f
-      end 
+        if st_full_mark1.to_i == 10 
+          avg_mark_st1 = (st_marks1[0].to_f+st_marks1[1].to_f+st_marks1[2].to_f)/3
+          else st_full_mark1.to_i == 5  
+          avg_mark_st1 = (st_marks1[0].to_f+st_marks1[1].to_f)/2
+          end
 
-      if st_full_mark1.to_i == 10 
-        avg_mark_st1 = (st_marks1[0].to_f+st_marks1[1].to_f+st_marks1[2].to_f)/3
-      else st_full_mark1.to_i == 5  
-        avg_mark_st1 = (st_marks1[0].to_f+st_marks1[1].to_f)/2
-      end
+        obtained_mark1 = avg_mark_ct1.to_f+avg_mark_st1.to_f
+        full_mark1 = ct_full_mark1.to_i+st_full_mark1.to_i
 
-      obtained_mark1 = avg_mark_ct1.to_f+avg_mark_st1.to_f
-      full_mark1 = ct_full_mark1.to_i+st_full_mark1.to_i
+        main_mark1 = (obtained_mark1.to_f/full_mark1.to_f)*100
 
-      main_mark1 = (obtained_mark1.to_f/full_mark1.to_f)*100
+        #Calculation 2nd Quarter Mark
+        st_marks2.sort! {|x,y| y <=> x }
+        ct_marks2.sort! {|x,y| y <=> x }
 
-      #Calculation 2nd Quarter Mark
-      st_marks2.sort! {|x,y| y <=> x }
-      ct_marks2.sort! {|x,y| y <=> x }
+        if ct_full_mark2.to_i == 20 
+          avg_mark_ct2 = (ct_marks2[0].to_f+ct_marks2[1].to_f)/2
+          else 
+          avg_mark_ct2 = ct_marks2[0].to_f
+          end 
 
-      if ct_full_mark2.to_i == 20 
-        avg_mark_ct2 = (ct_marks2[0].to_f+ct_marks2[1].to_f)/2
-      else 
-        avg_mark_ct2 = ct_marks2[0].to_f
-      end 
+        if st_full_mark2.to_i == 10 
+          avg_mark_st2 = (st_marks2[0].to_f+st_marks2[1].to_f+st_marks2[2].to_f)/3
+          else st_full_mark2.to_i == 5  
+          avg_mark_st2 = (st_marks2[0].to_f+st_marks2[1].to_f)/2
+          end
+        obtained_mark2 = avg_mark_ct2.to_f+avg_mark_st2.to_f
+        full_mark2 = ct_full_mark2.to_i+st_full_mark2.to_i
+        main_mark2 = (obtained_mark2.to_f/full_mark2.to_f)*100
 
-      if st_full_mark2.to_i == 10 
-        avg_mark_st2 = (st_marks2[0].to_f+st_marks2[1].to_f+st_marks2[2].to_f)/3
-      else st_full_mark2.to_i == 5  
-        avg_mark_st2 = (st_marks2[0].to_f+st_marks2[1].to_f)/2
-      end
-      obtained_mark2 = avg_mark_ct2.to_f+avg_mark_st2.to_f
-      full_mark2 = ct_full_mark2.to_i+st_full_mark2.to_i
-      main_mark2 = (obtained_mark2.to_f/full_mark2.to_f)*100
+        #Calculation 3rd Quarter Mark
+        st_marks3.sort! {|x,y| y <=> x }
+        ct_marks3.sort! {|x,y| y <=> x }
 
-      #Calculation 3rd Quarter Mark
-      st_marks3.sort! {|x,y| y <=> x }
-      ct_marks3.sort! {|x,y| y <=> x }
+        if ct_full_mark3.to_i == 20 
+          avg_mark_ct3 = (ct_marks3[0].to_f+ct_marks3[1].to_f)/2
+          else 
+          avg_mark_ct3 = ct_marks3[0].to_f
+          end 
 
-      if ct_full_mark3.to_i == 20 
-        avg_mark_ct3 = (ct_marks3[0].to_f+ct_marks3[1].to_f)/2
-      else 
-        avg_mark_ct3 = ct_marks3[0].to_f
-      end 
+        if st_full_mark3.to_i == 10 
+          avg_mark_st3 = (st_marks3[0].to_f+st_marks3[1].to_f+st_marks3[2].to_f)/3
+          else st_full_mark3.to_i == 5  
+          avg_mark_st3 = (st_marks3[0].to_f+st_marks3[1].to_f)/2
+          end
 
-      if st_full_mark3.to_i == 10 
-        avg_mark_st3 = (st_marks3[0].to_f+st_marks3[1].to_f+st_marks3[2].to_f)/3
-      else st_full_mark3.to_i == 5  
-        avg_mark_st3 = (st_marks3[0].to_f+st_marks3[1].to_f)/2
-      end
+        obtained_mark3 = avg_mark_ct3.to_f+avg_mark_st3.to_f
+        full_mark3 = ct_full_mark3.to_i+st_full_mark3.to_i
+        main_mark3 = (obtained_mark2.to_f/full_mark2.to_f)*100
 
-      obtained_mark3 = avg_mark_ct3.to_f+avg_mark_st3.to_f
-      full_mark3 = ct_full_mark3.to_i+st_full_mark3.to_i
-      main_mark3 = (obtained_mark2.to_f/full_mark2.to_f)*100
+        #Calculation 4th Quarter Mark
+        st_marks4.sort! {|x,y| y <=> x }
+        ct_marks4.sort! {|x,y| y <=> x }
 
-      #Calculation 4th Quarter Mark
-      st_marks4.sort! {|x,y| y <=> x }
-      ct_marks4.sort! {|x,y| y <=> x }
+        if ct_full_mark4.to_i == 20 
+          avg_mark_ct4 = (ct_marks4[0].to_f+ct_marks4[1].to_f)/2
+          else 
+          avg_mark_ct4 = ct_marks4[0].to_f
+          end 
 
-      if ct_full_mark4.to_i == 20 
-        avg_mark_ct4 = (ct_marks4[0].to_f+ct_marks4[1].to_f)/2
-      else 
-        avg_mark_ct4 = ct_marks4[0].to_f
-      end 
+        if st_full_mark4.to_i == 10 
+          avg_mark_st4 = (st_marks4[0].to_f+st_marks4[1].to_f+st_marks4[2].to_f)/3
+          else st_full_mark4.to_i == 5  
+          avg_mark_st4 = (st_marks4[0].to_f+st_marks4[1].to_f)/2
+          end
 
-      if st_full_mark4.to_i == 10 
-        avg_mark_st4 = (st_marks4[0].to_f+st_marks4[1].to_f+st_marks4[2].to_f)/3
-      else st_full_mark4.to_i == 5  
-        avg_mark_st4 = (st_marks4[0].to_f+st_marks4[1].to_f)/2
-      end
+        obtained_mark4 = avg_mark_ct4.to_f+avg_mark_st4.to_f
+        full_mark4 = ct_full_mark4.to_i+st_full_mark4.to_i
+        main_mark4 = (obtained_mark2.to_f/full_mark2.to_f)*100
 
-      obtained_mark4 = avg_mark_ct4.to_f+avg_mark_st4.to_f
-      full_mark4 = ct_full_mark4.to_i+st_full_mark4.to_i
-      main_mark4 = (obtained_mark2.to_f/full_mark2.to_f)*100
+        #Calculation First Term (40/20) Mark
+        full_mark_first_term = full_mark1+full_mark2+first_term_full_mark
+        obtained_mark_first_term = obtained_mark1.round()+obtained_mark2.round()+first_term_mark.round()
+        main_mark_first_term = (obtained_mark_first_term.to_f/full_mark_first_term.to_f)*100
 
-      #Calculation First Term (40/20) Mark
-      full_mark_first_term = full_mark1+full_mark2+first_term_full_mark
-      obtained_mark_first_term = obtained_mark1.round()+obtained_mark2.round()+first_term_mark.round()
-      main_mark_first_term = (obtained_mark_first_term.to_f/full_mark_first_term.to_f)*100
+        full_mark_final_term = full_mark3+full_mark4+final_term_full_mark
+        obtained_mark_final_term = obtained_mark3.round()+obtained_mark4.round()+final_term_mark.round()
+        main_mark_final_term = (obtained_mark_final_term.to_f/full_mark_final_term.to_f)*100
 
-      full_mark_final_term = full_mark3+full_mark4+final_term_full_mark
-      obtained_mark_final_term = obtained_mark3.round()+obtained_mark4.round()+final_term_mark.round()
-      main_mark_final_term = (obtained_mark_final_term.to_f/full_mark_final_term.to_f)*100
+        main_mark_only_final_term = (final_term_mark.to_f/final_term_full_mark.to_f)*100
 
-      main_mark_only_final_term = (final_term_mark.to_f/final_term_full_mark.to_f)*100
+        full_mark = full_mark_first_term+full_mark_final_term
+        obtained_mark = obtained_mark_first_term.round()+obtained_mark_final_term.round()
+        main_mark = (obtained_mark.to_f/full_mark.to_f)*100
 
-      full_mark = full_mark_first_term+full_mark_final_term
-      obtained_mark = obtained_mark_first_term.round()+obtained_mark_final_term.round()
-      main_mark = (obtained_mark.to_f/full_mark.to_f)*100
-   
-      
-      first_term_round = obtained_mark_first_term.round()
-      final_term_round = obtained_mark_final_term.round()
-      
-      quarter_mark = 0
-      if obtained_mark1>0
-        quarter_mark = obtained_mark1.round()
-      elsif obtained_mark2>0
-        quarter_mark = obtained_mark2.round()
-      elsif obtained_mark3>0 
-        quarter_mark = obtained_mark3.round()
-      elsif obtained_mark4>0
-        quarter_mark = obtained_mark4.round()
-      end
-      
-      if @subject_highest_quarter[sub['id'].to_i].blank?
+
+        first_term_round = obtained_mark_first_term.round()
+        final_term_round = obtained_mark_final_term.round()
+
+        quarter_mark = 0
+        if obtained_mark1>0
+          quarter_mark = obtained_mark1.round()
+          elsif obtained_mark2>0
+          quarter_mark = obtained_mark2.round()
+          elsif obtained_mark3>0 
+          quarter_mark = obtained_mark3.round()
+          elsif obtained_mark4>0
+          quarter_mark = obtained_mark4.round()
+          end
+
+        if @subject_highest_quarter[sub['id'].to_i].blank?
           @subject_highest_quarter[sub['id'].to_i] = quarter_mark
-      elsif quarter_mark.to_i > @subject_highest_quarter[sub['id'].to_i].to_i
+          elsif quarter_mark.to_i > @subject_highest_quarter[sub['id'].to_i].to_i
           @subject_highest_quarter[sub['id'].to_i] = quarter_mark.to_i
-      end
-      
-      if @subject_highest_mark_first_term[sub['id'].to_i].blank?
+          end
+
+        if @subject_highest_mark_first_term[sub['id'].to_i].blank?
           @subject_highest_mark_first_term[sub['id'].to_i] = first_term_round
-      elsif first_term_round.to_i > @subject_highest_mark_first_term[sub['id'].to_i].to_i
+          elsif first_term_round.to_i > @subject_highest_mark_first_term[sub['id'].to_i].to_i
           @subject_highest_mark_first_term[sub['id'].to_i] = first_term_round.to_i
-      end
-      
-      if @subject_highest_mark_final_term[sub['id'].to_i].blank?
+          end
+
+        if @subject_highest_mark_final_term[sub['id'].to_i].blank?
           @subject_highest_mark_final_term[sub['id'].to_i] = first_term_round
-      elsif final_term_round.to_i > @subject_highest_mark_final_term[sub['id'].to_i].to_i
+          elsif final_term_round.to_i > @subject_highest_mark_final_term[sub['id'].to_i].to_i
           @subject_highest_mark_final_term[sub['id'].to_i] = final_term_round.to_i
+        end
       end
+    end
   end
-end
 end
 
 %> 

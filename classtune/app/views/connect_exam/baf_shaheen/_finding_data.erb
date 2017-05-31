@@ -47,15 +47,14 @@
     batch_subject_id = batch_subject.map(&:id)
     @tabulation_data['report'].each do |tab|
 
-      subject_count_std = 0
+      
       connect_exam_id = @tabulation_data['connect_exams'][connect_exam]
       connect_exam = connect_exam+1
       u_grade = 0
       tab['students'].each do |std| 
+        subject_count_std = 0
         total_std_subject = StudentsSubject.find_all_by_student_id(std['id'].to_i)
         std_subject_id = total_std_subject.map(&:subject_id)
-        
-        
         std_marks_full = 0
         std_marks_core_subject = 0
         total_subject = 0

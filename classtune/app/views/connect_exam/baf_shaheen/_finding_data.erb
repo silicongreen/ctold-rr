@@ -43,7 +43,7 @@
     
     
     connect_exam = 0
-    batch_subject = Subject.find_all_by_batch_id_and_elective_group_id(@batch.id,false)
+    batch_subject = Subject.find_all_by_batch_id(@batch.id, :conditions=>"elective_group_id IS NULL and is_deleted=false")
     batch_subject_id = batch_subject.map(&:id)
     @tabulation_data['report'].each do |tab|
 

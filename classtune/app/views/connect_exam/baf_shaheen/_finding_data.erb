@@ -134,7 +134,7 @@
           std_marks_full = 5000-std_marks_full
           std_marks_core_subject = 5000-std_marks_core_subject.round()
           subject_count_std = 5000-subject_count_std
-          @student_list << [std_marks_full,std_marks_core_subject,subject_count_std,std['first_name']+" "+std['last_name'],std['id'].to_i]
+          @student_list << [std_marks_full.to_f,std_marks_core_subject,subject_count_std,std['first_name']+" "+std['last_name'],std['id'].to_i]
         end
 
       end

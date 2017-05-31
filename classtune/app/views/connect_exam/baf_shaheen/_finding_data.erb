@@ -8,45 +8,14 @@
   <% end %>
   <%
   @student_list = []
-  #@final_term_student_list = []
   @subject_highest = {}
 
   unless @tabulation_data.blank?
-    #@tabulation_data['report'].each do |tab|
-     
-      #tab['students'].each do |std|
-        #mid_term_mark = false
-        #tab['subjects'].each do |sub|
-          #std_subject_marks_mid = 0
-          #i = 0
-          #tab['exams'].each do |rs|
-            #if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
-              #i = i+1
-              #if i>2
-                #std_subject_marks_mid = std_subject_marks_mid+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-              #end
-            #end    
-          #end
-        
-          #unless std_subject_marks_mid.blank? 
-            #mid_term_mark = true
-          #end 
-          
-        #end 
-      
-        #if mid_term_mark == false
-          #@final_term_student_list << std['id'].to_i
-        #end 
-      #end
-       
-    #end  
-    
-    
     connect_exam = 0
-    batch_subject = Subject.find_all_by_batch_id(@batch.id, :conditions=>"elective_group_id IS NULL and is_deleted=false")
-    batch_subject_id = batch_subject.map(&:id)
+    batch_loop = 0
     @tabulation_data['report'].each do |tab|
-
+      batch_subject = Subject.find_all_by_batch_id(@tabulation_data['batches'][batch_loop], :conditions=>"elective_group_id IS NULL and is_deleted=false")
+      batch_subject_id = batch_subject.map(&:id)
       
       connect_exam_id = @tabulation_data['connect_exams'][connect_exam]
       connect_exam = connect_exam+1

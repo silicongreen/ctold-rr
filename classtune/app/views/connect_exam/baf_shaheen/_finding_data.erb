@@ -59,7 +59,7 @@
         std_marks_core_subject = 0
         total_subject = 0
         tab['subjects'].each do |sub|
-          if batch_subject_id.include?(std['id'].to_i) or std_subject_id.include?(std['id'].to_i)
+          if batch_subject_id.include?(sub['id'].to_i) or std_subject_id.include?(sub['id'].to_i)
             
             subject_count_std = subject_count_std+1
             std_subject_marks_final = 0

@@ -8,10 +8,43 @@
   <% end %>
   <%
   @student_list = []
+  #@final_term_student_list = []
   @subject_highest = {}
 
   unless @tabulation_data.blank?
+    #@tabulation_data['report'].each do |tab|
+     
+      #tab['students'].each do |std|
+        #mid_term_mark = false
+        #tab['subjects'].each do |sub|
+          #std_subject_marks_mid = 0
+          #i = 0
+          #tab['exams'].each do |rs|
+            #if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
+              #i = i+1
+              #if i>2
+                #std_subject_marks_mid = std_subject_marks_mid+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+              #end
+            #end    
+          #end
+        
+          #unless std_subject_marks_mid.blank? 
+            #mid_term_mark = true
+          #end 
+          
+        #end 
+      
+        #if mid_term_mark == false
+          #@final_term_student_list << std['id'].to_i
+        #end 
+      #end
+       
+    #end  
+    
+    
     connect_exam = 0
+    batch_subject = Subject.find_all_by_batch_id_and_elective_group_id(@batch.id,false)
+    batch_subject_id = batch_subject.map(&:id)
     @tabulation_data['report'].each do |tab|
 
       subject_count_std = 0
@@ -19,74 +52,83 @@
       connect_exam = connect_exam+1
       u_grade = 0
       tab['students'].each do |std| 
-
+        total_std_subject = StudentsSubject.find_all_by_student_id(std['id'].to_i)
+        std_subject_id = total_std_subject.map(&:subject_id)
+        
+        
         std_marks_full = 0
         std_marks_core_subject = 0
-
+        total_subject = 0
         tab['subjects'].each do |sub|
+          if batch_subject_id.include?(std['id'].to_i) or std_subject_id.include?(std['id'].to_i)
+            
+            subject_count_std = subject_count_std+1
+            std_subject_marks_final = 0
+            i = 0
+            tab['exams'].each do |rs|
+              if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
+                i = i+1
+                if i<3
+                  std_subject_marks_final = std_subject_marks_final+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                else
+                  break
+                end  
+              end    
+            end
 
-          subject_count_std = subject_count_std+1
-          std_subject_marks_final = 0
-          i = 0
-          tab['exams'].each do |rs|
-            if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
-              i = i+1
-              if i<3
-                std_subject_marks_final = std_subject_marks_final+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+
+            std_subject_marks_mid = 0
+            i = 0
+            tab['exams'].each do |rs|
+              if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
+                i = i+1
+                if i>2
+                  std_subject_marks_mid = std_subject_marks_mid+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                end
+              end    
+            end
+
+            #unless @final_term_student_list.include?(std['id'].to_i)
+              subject_full_marks = ((std_subject_marks_final.to_f*70)/100)+((std_subject_marks_mid.to_f*30)/100)
+            #else
+              #subject_full_marks = std_subject_marks_final.to_f
+            #end
+
+            std_marks_full = std_marks_full+subject_full_marks.round()
+
+            subject_grade = ""
+            last_grade_score = 0
+            @grading_levels.each_with_index do |grade,index|
+              if grade.max_score.nil? 
+                if subject_full_marks.to_f >= grade.min_score.to_f and grade.min_score.to_f > last_grade_score.to_f
+                  last_grade_score = grade.min_score.to_f
+                  subject_grade = grade.name
+                end  
               else
-                break
+                if subject_full_marks.to_f > grade.min_score.to_f and subject_full_marks.to_f < grade.max_score.to_f
+                  subject_grade = grade.name
+                end  
               end  
-            end    
-          end
+            end 
 
 
-          std_subject_marks_mid = 0
-          i = 0
-          tab['exams'].each do |rs|
-            if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?
-              i = i+1
-              if i>2
-                std_subject_marks_mid = std_subject_marks_mid+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-              end
-            end    
-          end 
 
-          subject_full_marks = ((std_subject_marks_final.to_f*70)/100)+((std_subject_marks_mid.to_f*30)/100)
-          std_marks_full = std_marks_full+subject_full_marks.round()
-
-          subject_grade = ""
-          last_grade_score = 0
-          @grading_levels.each_with_index do |grade,index|
-            if grade.max_score.nil? 
-              if subject_full_marks.to_f >= grade.min_score.to_f and grade.min_score.to_f > last_grade_score.to_f
-                last_grade_score = grade.min_score.to_f
-                subject_grade = grade.name
-              end  
-            else
-              if subject_full_marks.to_f > grade.min_score.to_f and subject_full_marks.to_f < grade.max_score.to_f
-                subject_grade = grade.name
-              end  
+            if subject_grade == "U"
+              u_grade = u_grade+1
             end  
-          end 
-        
-        
 
-          if subject_grade == "U"
-            u_grade = u_grade+1
+            if @subject_highest[sub['id'].to_i].blank?
+              @subject_highest[sub['id'].to_i] = subject_full_marks
+            elsif subject_full_marks.to_f > @subject_highest[sub['id'].to_i].to_f
+               @subject_highest[sub['id'].to_i] = subject_full_marks.to_f
+            end
+
+
+
+            if subject_count_std<4
+               std_marks_core_subject = std_marks_core_subject+subject_full_marks.round()
+            end 
           end  
-
-          if @subject_highest[sub['id'].to_i].blank?
-            @subject_highest[sub['id'].to_i] = subject_full_marks
-          elsif subject_full_marks.to_f > @subject_highest[sub['id'].to_i].to_f
-             @subject_highest[sub['id'].to_i] = subject_full_marks.to_f
-          end
-
-
-
-          if subject_count_std<4
-             std_marks_core_subject = std_marks_core_subject+subject_full_marks.round()
-          end 
-
         end
 
         @exam_comment = ExamConnectComment.find_by_exam_connect_id_and_student_id(connect_exam_id,std['id'].to_i)
@@ -117,7 +159,10 @@
           end
         end
         
-        if new_section.blank?  and (u_grade==0 or (@batch.course.course_name!="VIII" and @batch.course.course_name!="IX" and @batch.course.course_name!="X" and  u_grade<2))
+        
+        
+        if subject_count_std>0 and new_section.blank?  and (u_grade==0 or (@batch.course.course_name!="VIII" and @batch.course.course_name!="IX" and @batch.course.course_name!="X" and  u_grade<2))     
+          std_marks_full = std_marks_full/subject_count_std
           std_marks_full = 5000-std_marks_full.round()
           std_marks_core_subject = 5000-std_marks_core_subject.round()
           subject_count_std = 5000-subject_count_std

@@ -87,6 +87,10 @@
           <div class="text-input-bg"><%= f.select :subject_id, @subjects.map { |s| [s.name, s.id]} %></div>
         </div>
         <div class="label-field-pair">
+          <label for="subject_id"><%= "Subject Exam Title" %><span class="necessary-field">*</span></label>
+          <div class="text-input-bg"><%= f.text_field :alternative_title %></div>
+        </div>
+        <div class="label-field-pair">
           <label for="subject_start_time"><%= t('start_time') %><span class="necessary-field">*</span></label>
           <div class="text-input-bg"> <%= f.calendar_date_select :start_time,:readonly=>true,:popup=>"force" %></div>
         </div>

@@ -61,12 +61,19 @@
         <table class="zui-table">
        
           <tr class="tr-head fixed-position">
-            <td  class="zui-sticky-col"><%= "Roll" %></td>
-            <td  class="zui-sticky-col2"><%= t('name') %></td>
-            <td><%= t('remarks') %></td>
+            <td  class="zui-sticky-col"><b><%= "Roll" %></b></td>
+            <td  class="zui-sticky-col2"><b><%= t('name') %></b></td>
+            <td><b><%= t('remarks') %></b></td>
             <% unless @exams.blank? %>
             <% @exams.each do |exam| %>
-              <td><%= exam.exam_group.name %></td>
+              <td>
+                  <b><%= exam.exam_group.name %></b>
+                  <% if !exam.alternative_title.nil? and exam.alternative_title != "" %>  
+                   <p style="font-size: 10px;"> (<%= exam.alternative_title %>)</p>
+                  <% else %>
+                   <p>&nbsp;</p>
+                  <% end %> 
+              </td>
             <% end %>
             <% end %>  
             

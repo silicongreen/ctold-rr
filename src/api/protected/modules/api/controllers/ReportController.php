@@ -307,10 +307,11 @@ class ReportController extends Controller
                 }    
                 
                 $groupexam = new GroupedExams();
+                $batch_ids =  array();
                 if($all_class_report)
                 {
                    $exam_report = array();
-                   $batch_ids =  array();
+                   
                    if($new_connect_exam_id)
                    {
                        foreach($new_connect_exam_id as $value)

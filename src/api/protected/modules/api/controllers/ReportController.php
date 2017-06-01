@@ -310,12 +310,14 @@ class ReportController extends Controller
                 if($all_class_report)
                 {
                    $exam_report = array();
+                   $batch_ids =  array();
                    if($new_connect_exam_id)
                    {
                        foreach($new_connect_exam_id as $value)
                        {
                            $examData = $connectexmObj->findByPk($value);
                            $exam_report[] = $groupexam->getTabulation($examData->batch_id,$value);
+                           $batch_ids[] = $examData->batch_id;
                        }    
                    }
                    
@@ -326,8 +328,8 @@ class ReportController extends Controller
                 }
                 
                 if ($exam_report) {
-                    $response['data']['exams'] = $new_connect_exam_id;
                     $response['data']['report'] = $exam_report;
+                    $response['data']['batches'] = $batch_ids;
                     $response['data']['connect_exams'] = $new_connect_exam_id;
                     $response['status']['code'] = 200;
                     $response['status']['msg'] = "EXAM_REPORT_FOUND";

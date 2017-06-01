@@ -87,6 +87,10 @@
         <%= f.label "#{t('subject')}" %>
         <div class="text-input-bg"><%= f.select :subject_id, @subjects.map { |s| [s.name, s.id]} %></div>
       </div>
+      <div class="label-field-pair">
+        <%= f.label "Subject Exam Title" %>
+         <div class="text-input-bg"><%= f.text_field :alternative_title %></div>
+      </div>
 
       <div class="label-field-pair">
         <%= f.label "#{t('start_time')}" %>

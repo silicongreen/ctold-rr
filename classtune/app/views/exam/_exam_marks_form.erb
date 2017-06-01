@@ -95,7 +95,7 @@
       <td <%= styletextall %>>No Schedule</td>
     </tr>
 
-    <% f.fields_for :exams do |exam_form| %>
+    <% f.fields_for :exams do |exam_form| %>    
       <tr class="tr-<%= cycle('odd', 'even') %>">
         <% no_exam = exam_form.object.subject.no_exams %>
         <% s_message = "" %>
@@ -107,7 +107,14 @@
           <%= exam_form.object.subject.name %><%= exam_form.hidden_field :subject_id %>
           <% if @is_class_exam %>  
           <%= s_message %>  
-          <% end %>  
+          <% end %>
+          <br />
+          
+          <div class="label-field-pair3">
+            <div class="text-input-bg3">
+              <%= exam_form.text_field :alternative_title, :size => 15, :placeholder => "Subject Exam Title" %>
+            </div>
+          </div>
         </td>
         
         <% 

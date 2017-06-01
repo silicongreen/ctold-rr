@@ -19,7 +19,25 @@
     <div class="clearfix"></div>
       
 </div>
-<% if !@formData.nil? %>    
+<%= debug  @student %>
+<% if !@formData.nil? %>  
+
+  <%
+    formContent = ""
+    formHead = ""
+    if !@formData.generated_form.nil? and @formData.generated_form != ""
+      formContent = @formData.generated_form
+    elsif @defaultFromData.form_data != "" and !@defaultFromData.form_data.nil?
+      formContent = @defaultFromData.form_data
+    end
+    
+    if @formData.form_head != "" and !@formData.form_head.nil?
+      formHead = @formData.form_head
+    elsif @defaultFromData.form_head != "" and !@defaultFromData.form_head.nil?
+      formHead = @defaultFromData.form_head
+    end
+    
+  %>
   <% result = @formData.form_data.split("|") %>
   <%#= debug result %>
   <% 
@@ -30,9 +48,28 @@
       
       arStudentData << ["Student Name", result[0]] 
       arStudentData << ["Class", result[1]]       
-      arStudentData << ["Admission Date", result[3]] 
-      arStudentData << ["End Date", result[4]]   
+      arStudentData << ["Admission Date", result[4]] 
+      arStudentData << ["Date of Birth", result[3]] 
+      arStudentData << ["End Date", result[5]]   
       arStudentData << ["Request Date of Collection", result[2]] 
+      
+      
+      formContent = formContent.gsub("{Student_name}", result[0])
+      formContent = formContent.gsub("{Class_title}", result[1])
+      #formContent = formContent.gsub("{Section_title}", result[1])
+      formContent = formContent.gsub("{School_name}", @schoolData.name)
+      formContent = formContent.gsub("{Admission_date}", result[4])
+      formContent = formContent.gsub("{Date_of_birth}", result[3])
+      formContent = formContent.gsub("{Academic_duration}", DateTime.parse(result[5].to_s) - DateTime.parse(result[4].to_s) )
+        
+      if @student.gender == 'f'
+        formContent = formContent.gsub("{he/she}", "she")
+        formContent = formContent.gsub("{his/her}", "her")
+      elsif @student.gender == 'm'
+        formContent = formContent.gsub("{he/she}", "he")
+        formContent = formContent.gsub("{his/her}", "his")
+      end
+      
     elsif @formData.form_type_text == "noc_letter" 
       title = "No Objection Certificate Letter"
       style = "noc_letter"
@@ -78,22 +115,7 @@
     end 
   %>
   
-  <%
-    formContent = ""
-    formHead = ""
-    if !@formData.generated_form.nil? and @formData.generated_form != ""
-      formContent = @formData.generated_form
-    elsif @defaultFromData.form_data != "" and !@defaultFromData.form_data.nil?
-      formContent = @defaultFromData.form_data
-    end
-    
-    if @formData.form_head != "" and !@formData.form_head.nil?
-      formHead = @formData.form_head
-    elsif @defaultFromData.form_head != "" and !@defaultFromData.form_head.nil?
-      formHead = @defaultFromData.form_head
-    end
-    
-  %>
+  
   
   <% if !arStudentData.nil? %>
     

@@ -178,7 +178,10 @@ no<%-# Champs21
                 <% else %>  
                   <%= exam.subject.name %><br />
                   <%= s_message %>
-                <% end %>  
+                <% end %> 
+                <% if !exam.alternative_title.nil? and exam.alternative_title != "" %>  
+                   (<%= exam.alternative_title %>)
+                <% end %> 
               </td>
                <% 
                 styletext = ""

@@ -99,7 +99,7 @@
             <div class="text-input-bg"><%= form.text_field :name, :value=>@ename%></div>
           </div>
           <div class="label-field-pair">
-              <% exam_type = get_exam_result_type2() %>
+              <% exam_type = get_exam_result_type2() %>              
             <label >Exam Category</label>
             <div  class="text-input-bg" id="exam-category-select">
               <%= select :exam_option,:exam_category,options_from_collection_for_select(exam_type, :first, :last) %>

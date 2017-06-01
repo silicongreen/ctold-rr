@@ -19,6 +19,8 @@
 
 <% if MultiSchool.current_school.id == 2 %>
   <%= render  :partial=>"/connect_exam/south_point/marksheet" %>  
+<% elsif MultiSchool.current_school.id == 340 %>
+  <%= render  :partial=>"/connect_exam/sir_john_wilson_school/marksheet" %>  
 <% else %>
   <%= render  :partial=>"/connect_exam/marksheet" %>
 <% end %>

@@ -316,7 +316,7 @@
                 end
               %>
               <h4 class="h4-evaluation"><b>Evaluation</b></h4>
-              <% if new_section.blank? or !new_section.blank?  %>
+              <% if new_section.blank? and !new_section.blank?  %>
               <table id="pdf-table" class="evaluation" width="99.8%" >
                       <tr class="odd">
                           <td class="col-pdf border-left-none" width="33%">
@@ -481,7 +481,7 @@
                               Merit Position
                           </td> 
                           <td class="col-pdf align-center" width="33%">
-                             <%= merit_position %> - <%= std_marks %>
+                             <%= merit_position %>
                           </td> 
                           <td class="col-pdf no-border"  width="33%">
                              

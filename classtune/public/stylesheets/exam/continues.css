@@ -1,6 +1,7 @@
 
 
 
+
 .akmis .CSSTableGenerator td{
 
     padding: 12px 12px 12px 15px;
@@ -454,10 +455,6 @@ table#pdf-table{
 {
     margin-top:40px;
 }
-.margin-top-10
-{
-    margin-top:10px;
-}
 .margin-top-20
 {
     margin-top:20px;
@@ -475,7 +472,10 @@ table#pdf-table{
     width:1000px;
 }
 
-
+cherry_blossoms h5
+{
+    margin:0px;
+}
 
 .cherry_blossoms  table tr td
 {
@@ -486,7 +486,7 @@ table#pdf-table{
 .cherry_blossoms  table tr td.avg_mark
 {
     text-align: right;
-    padding: 5px 20px; 
+    padding: 2px 20px; 
 }
 .cherry_blossoms  .CSSTableGenerator table thead tr th
 {
@@ -540,19 +540,12 @@ sfx  .table-header td{
 {
     text-align: center;
 }
-.sfx table  tr.odd td
-{
-   padding: 7px 7px 7px 11px; 
-}
-.sfx table  tr.even td
-{
-   padding: 7px 7px 7px 11px; 
-}
+
 .sfx table  td
 {
 
-    font-size:21px;
-    padding: 7px 7px 7px 11px; 
+    font-size:22px;
+    padding: 12px 12px 12px 15px;
 }
 
 .sfx .left-table
@@ -567,12 +560,12 @@ sfx  .table-header td{
 .sfx td.remarks_code_table2
 {
     text-align: left;
-    font-size:13px;
+    font-size:14px;
 }
 .sfx td.remarks_code_table
 {
     text-align: left;
-    font-size:17px;
+    font-size:18px;
 }
 .sfx td.remarks_code_table span
 {
@@ -599,7 +592,7 @@ sfx  .table-header td{
 }
 .no-warp
 {
-    white-space: nowrap !important;
+    white-space: nowrap;
 }
 .sfx table.td-align-left td
 {
@@ -607,10 +600,8 @@ sfx  .table-header td{
 }
 .sfx table.text-size-18 tr td
 {
-   font-size: 17px; 
+   font-size: 18px; 
 }
-
-
 
 
 ///baf shaheen
@@ -660,7 +651,6 @@ sfx  .table-header td{
     font-weight: bold;
     text-align: center;
     font-size:21px;
-    padding: 2px 2px 2px 2px;
 }
 
 .baf_shaheen tr.odd td.align-left-baf, .baf_shaheen tr.even td.align-left-baf
@@ -671,13 +661,13 @@ sfx  .table-header td{
 
 .baf_shaheen tr.odd td
 {
-    padding: 2px 2px 5px 2px;  
+    padding: 2px 2px 10px 9px;  
     border: 1px solid #000000;
     font-size:21px;
 }
 .baf_shaheen tr.even td
 {
-    padding: 2px 2px 5px 2px; 
+    padding: 2px 2px 10px 9px;
     border: 1px solid #000000;
     font-size:21px;
 }
@@ -819,58 +809,6 @@ div.baf_shaheen
 {
     font-size:12px;
     padding: 5px 5px 5px 0px;   
-}
-
-
-.south-point-protrait table td
-{
-    font-size:18px;
-}
-.south-point-protrait margin-top-bottom-10
-{
-    margin: 20px 0px;
-}
-.south-point-protrait .academia_box table th
-{
-    font-size:18px !important;
-}
-
-.south-point-protrait .academia_box table td
-{
-    font-size:18px;
-
-}
-.potrait_header_south_point h4
-{
-    font-size:23px;
-}
-.potrait_header_south_point h5
-{
-    font-size:11px !important;
-}
-.south-point-protrait h2
-{
-    font-size:32px;
-}
-
-.south-point-protrait table td
-{
-    font-size:17px;
-    padding: 12px 12px 12px 12px;   
-}
-
-.south-point-protrait table.gradding td
-{
-    padding: 7px 8px 8px 8px !important;
-}
-.south-point-protrait .margin-top-bottom-10
-{
-    margin-top: 30px !important;
-}
-
-.south-point-protrait .margin-top-bottom-9
-{
-    margin-top: 28px !important;
 }
 
 
@@ -1102,6 +1040,7 @@ table.grade_and_attendance tr td.grade_and_attendance_td
 }
 
 
+.page-break { display:block; clear:both; page-break-after:always; }
 
 
 td.td-align-left
@@ -1110,7 +1049,7 @@ td.td-align-left
 }
 table tr td.comment_section_others
 {
-   height: 200px !important;   
+   height: 332px !important;   
 }
 table tr td.comment_section_quarter
 {
@@ -1126,9 +1065,6 @@ table tr td.promoted_section_final
 {
    height: 50px !important;   
 }
-
-
-
 .sfx-with-comment table#pdf-table tr.table-header td
 {
     padding: 4px;
@@ -1145,46 +1081,9 @@ table tr td.promoted_section_final
     padding: 4px;
     font-size:19px;
 }
-
 .st_joseph_bg table.big_font_south tr td
 {
     font-size: 13px;
 }
 
-.float-left-5-10-new
-{
-    margin-left: 25px;
-    margin-top: 12px;
-    float:left;
-    font-size: 9px;
-}
-table.float-left-clear-both
-{
-    flooat:left;
-    clear:both;
-    width:100%;
-}
-table.float-left-clear-both
-{
-    flooat:left;
-    clear:both;
-    width:100%;
-    margin-top:0px;
-}
-#pdf-header-south table td h4
-{
-    font-size: 18px;
-}
-
-//new CSS
-.st-joshef-header h5, .st-joshef-header h4
-{
-    line-height: 4px;
-}
-
-
-
-
-
-.page-break { display:block; clear:both; page-break-after:always; }
 

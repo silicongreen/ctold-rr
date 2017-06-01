@@ -64,20 +64,25 @@
 
             std_marks_full = std_marks_full+subject_full_marks.round()
 
-            subject_grade = ""
-            last_grade_score = 0
-            @grading_levels.each_with_index do |grade,index|
-              if grade.max_score.nil? 
-                if subject_full_marks.to_f >= grade.min_score.to_f and grade.min_score.to_f > last_grade_score.to_f
-                  last_grade_score = grade.min_score.to_f
-                  subject_grade = grade.name
-                end  
-              else
-                if subject_full_marks.to_f > grade.min_score.to_f and subject_full_marks.to_f < grade.max_score.to_f
-                  subject_grade = grade.name
-                end  
-              end  
-            end 
+            #subject_grade = ""
+            #last_grade_score = 0
+            #@grading_levels.each_with_index do |grade,index|
+              #if grade.max_score.nil? 
+                #if subject_full_marks.to_f >= grade.min_score.to_f and grade.min_score.to_f > last_grade_score.to_f
+                  #last_grade_score = grade.min_score.to_f
+                  #subject_grade = grade.name
+                #end  
+              #else
+                #if subject_full_marks.to_f > grade.min_score.to_f and subject_full_marks.to_f < grade.max_score.to_f
+                  #subject_grade = grade.name
+                #end  
+              #end  
+            #end 
+          
+            grade = GradingLevel.percentage_to_grade(subject_full_marks, @batch.id)
+            if !grade.blank? and !grade.name.blank?
+              subject_grade = grade.name
+            end
 
 
 

@@ -447,6 +447,7 @@
                 <% merit_position = "N/A" %>
                 <% new_section = "N/A" %>
               <% end %>
+              
               <% std_marks = "" %>
               <% unless @student_avg_mark[@student.id.to_i].blank? %>
                 <% std_marks = @student_avg_mark[@student.id.to_i] %>
@@ -480,7 +481,7 @@
                               Merit Position
                           </td> 
                           <td class="col-pdf align-center" width="33%">
-                             <%= merit_position %>- <%= std_marks %>
+                             <%= merit_position %> - <%= std_marks %>
                           </td> 
                           <td class="col-pdf no-border"  width="33%">
                              

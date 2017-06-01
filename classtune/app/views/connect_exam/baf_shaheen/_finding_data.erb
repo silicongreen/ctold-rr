@@ -139,7 +139,9 @@
           subject_count_std = 5000-subject_count_std
           @student_avg_mark[std['id'].to_i] = u_grade
           @student_list << [std_marks_full_new.to_f,std_marks_core_subject,subject_count_std,std['first_name']+" "+std['last_name'],std['id'].to_i]
-        end
+        else
+          @student_avg_mark[std['id'].to_i] = u_grade
+        end  
 
       end
     end

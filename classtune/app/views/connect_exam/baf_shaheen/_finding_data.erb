@@ -129,7 +129,7 @@
         
         
         
-        if subject_count_std>0 and new_section.blank?  and (u_grade==0 or (@batch.course.course_name!="VIII" and @batch.course.course_name!="IX" and @batch.course.course_name!="X" and  u_grade<2))           
+        if subject_count_std>0 and (u_grade==0 or (@batch.course.course_name!="VIII" and @batch.course.course_name!="IX" and @batch.course.course_name!="X" and  u_grade<2))           
           
           std_marks_full_new = std_marks_full.to_f/subject_count_std.to_f
           std_marks_full_new = 5000.00-std_marks_full_new.to_f

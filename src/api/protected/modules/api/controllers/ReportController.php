@@ -295,7 +295,7 @@ class ReportController extends Controller
                     {
                         foreach($find_all_batches as $value)
                         {
-                            $new_exam = $connectexmObj->getConnectExamByBatch($value->id,$data->quarter_number,$data->result_type);
+                            $new_exam = $connectexmObj->getConnectExamByBatch($value->id,$data->result_type,$data->name);
                             if($new_exam)
                             {
                                 $new_connect_exam_id[] = $new_exam;
@@ -326,7 +326,7 @@ class ReportController extends Controller
                 }
                 
                 if ($exam_report) {
-                    
+                    $response['data']['report'] = $new_connect_exam_id;
                     $response['data']['report'] = $exam_report;
                     $response['data']['connect_exams'] = $new_connect_exam_id;
                     $response['status']['code'] = 200;

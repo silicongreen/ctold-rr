@@ -92,12 +92,15 @@ class ExamConnect extends CActiveRecord
     
    
     
-    public function getConnectExamByBatch($batch_id,$quarter=1,$result_type = 4)
+    public function getConnectExamByBatch($batch_id,$result_type = 4,$name="")
     {
         $criteria = new CDbCriteria;
         $criteria->compare('t.batch_id', $batch_id);
         $criteria->compare('t.is_deleted', 0);
-        $criteria->compare('t.quarter_number', $quarter);
+        if($name)
+        {
+            $criteria->compare('t.name', $name);
+        }
         $criteria->compare('t.result_type', $result_type);
         $criteria->select = 't.id';
         $criteria->order = "created_at DESC";

@@ -326,7 +326,7 @@ class ReportController extends Controller
                 }
                 
                 if ($exam_report) {
-                    $response['data']['report'] = $new_connect_exam_id;
+                    $response['data']['exams'] = $new_connect_exam_id;
                     $response['data']['report'] = $exam_report;
                     $response['data']['connect_exams'] = $new_connect_exam_id;
                     $response['status']['code'] = 200;

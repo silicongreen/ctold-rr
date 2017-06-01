@@ -472,12 +472,6 @@ table#pdf-table{
     width:1000px;
 }
 
-cherry_blossoms .academia_middle_box h5
-{
-    margin:0px;
-    padding: 0px;
-    line-height: 15px;
-}
 
 .cherry_blossoms  table tr td
 {
@@ -488,7 +482,7 @@ cherry_blossoms .academia_middle_box h5
 .cherry_blossoms  table tr td.avg_mark
 {
     text-align: right;
-    padding: 2px 20px; 
+    padding: 5px 20px; 
 }
 .cherry_blossoms  .CSSTableGenerator table thead tr th
 {

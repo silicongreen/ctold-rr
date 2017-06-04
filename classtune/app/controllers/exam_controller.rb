@@ -2365,7 +2365,7 @@ class ExamController < ApplicationController
     @exam_comment_all = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id)
     if MultiSchool.current_school.id == 246
       render :pdf => 'continues',
-        :orientation => 'Portrait', :zoom => 1.00
+        :orientation => 'Landscape', :zoom => 0.90
     elsif MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 323 or MultiSchool.current_school.id == 2 or MultiSchool.current_school.id == 325 or MultiSchool.current_school.id == 324
       if (MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 324) and (@connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 5)
         render :pdf => 'continues',
@@ -2499,6 +2499,8 @@ class ExamController < ApplicationController
     @connect_exam_obj = ExamConnect.active.find(@id)
     @batch = Batch.find(@connect_exam_obj.batch_id) 
     @subject = Subject.find(@subject_id)
+    
+    @grades = @batch.grading_level_list
     
     @employee_sub = EmployeesSubject.find_by_subject_id(@subject_id)
     if !@employee_sub.nil?

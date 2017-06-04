@@ -17,47 +17,67 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 <div id="page-yield" class="available_sections1">
-  <div class="page1 swjs"> 
+  <div class="page1 sjws"> 
       <div class="logo_left"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/340/sjws_logo.png")),:width=> '80%' %></div>
       <div class="exam_title_left"><p><%= @connect_exam_obj.name %> - PUPIL PROGRESS REPORT - ACADEMIC YEAR 2016-2017</p></div>
-      <div class="grad_list_right">ATTAINMENT:<br /></div>
+      <div class="grad_list_right">ATTAINMENT:<br />
+          <%#= debug @grades %>
+          <% @grades.each do |g| %>
+            <% gValue = g.min_score.to_i %>
+            <% if gValue > 0 %>            
+              <%= gValue.to_s+"% + ="+ g.name + " - " + g.description %><br />
+            <% else %>
+              <%= "Less than 50% = " + g.name + " - " + g.description %><br />
+            <% end %>
+          <% end %>
+      </div>
   </div>
   <div class="section1 row" >
-    <center>
-      <h3 align="center">Mark Sheet</h3>
-      <div class="hor_line"></div>
-      <h4 align="center">For Subject Teacher</h4>
+    <center>     
       
-      <div id ="main_info">
-          <table>
-              <tr>
-                 <% if !@employee.nil? %> 
-                  <td align='left'><h4>Teacher's Name : <%=  @employee.full_name %></h4></td>
-                  <td align='center'><h4>Subject : <%= @subject.name %></h4></td>
-                 <% else %>
-                  <td align='left'><h4>Subject : <%= @subject.name %></h4></td>
-                 <% end %> 
-                  
-                  <td align='center'><h4>Class : <%= (@batch.name=="General")?"":@batch.name+" " %><%= @batch.course.course_name %></h4></td>
-                  <td align='right'><h4>Section : <%= @batch.course.section_name %></h4></td>
-              </tr>    
-          </table>    
+      <div id ="main_info" class="sjws">
+            
        
       </div>
       <% unless @report_data.blank?  or  @report_data['result'].blank? %>
       <% c = 'even' %>
       <% full_mark = 0 %>
       <% colspan = 0 %>
-      <table id="pdf-table" width="100%" cellspacing="0">
+      <table id="pdf-table" class="sjws_table_head" width="100%" cellspacing="0">
+        
         <tr class="table-header">
-          <td class="name">Roll NO.</td>
-          <td class="name">Name</td>
+            <td colspan="2">
+            <% if !@employee.nil? %> 
+              <p>Teacher's Name : <%=  @employee.full_name %></p>
+              <p>Subject : <%= @subject.name %></p>
+            <% else %>
+              <p>Subject : <%= @subject.name %></p>
+            <% end %>
+            <p>Class : <%= (@batch.name=="General")?"":@batch.name+" " %><%= @batch.course.course_name %></p>
+            <p>Section : <%= @batch.course.section_name %></p>
+            <p></p>
+          </td>
           <% @report_data['result']['ALL'].each do |rs| %>
-            <td><%=  rs['name'] %> (<%=  rs['maximum_marks'] %>)</td>
+          <td class="rotate"><div><span><%=  rs['name'] %></span></div></td>
+            <% colspan = colspan+1 %>
+          <% end %> 
+          <td class="rotate"><div><span>TOTAL NUM. OF H.W.</span></div></td>
+          <td class="rotate"><div><span>MARKS ACHIEVED <br /> MRKS OUT OF</span></div></td>
+          <td class="rotate"><div><span>MARK - PERCENTANGE(%)</span></div></td>
+          <td class="rotate"><div><span>GRADE</span></div></td>
+        </tr>
+        
+        
+        <tr class="table-header">
+          <td class="sl">SL.</td>
+          <td class="name">STUDENTS' NAME / Out of</td>
+          <% @report_data['result']['ALL'].each do |rs| %>
+            <td><%=  rs['maximum_marks'].to_i %></td>
             
             <% colspan = colspan+1 %>
           <% end %>  
-          
+          <td>aa</td>
+          <td>Arrow</td>
           <td>Total</td>
           <td>Grade</td>
         
@@ -93,18 +113,19 @@
             <% @report_data['result']['ALL'].each do |rs| %>
               <td>
               <% if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank? %>
-                <%= rs['students'][std['id']]['score'] %>
+                <%= rs['students'][std['id']]['score'].to_i %>
                 <% total_mark = total_mark.to_f+rs['students'][std['id']]['score'].to_f %>
                 <% full_mark = full_mark+rs['maximum_marks'].to_i %>
               <% else %>
-                  -
+                  AB
               <% end %>    
               </td>
               
             <% end %> 
-              
+          <td class="name"></td>  
+          <td class="name"></td>  
            <% main_mark = (total_mark.to_f/full_mark.to_f)*100 %>
-
+            
            <td class="name"><%= sprintf( "%0.02f", main_mark) %> %</td>
 
            <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>

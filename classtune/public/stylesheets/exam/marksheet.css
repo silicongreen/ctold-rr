@@ -5,33 +5,7 @@
     page-break-inside: avoid;
     clear: both;
 }
-.swjs{width:100%;}
-.swjs .logo_left
-{
-    float: left;border: 1px solid #000;
-    width: 8%;
-}
-.swjs .exam_title_left
-{
-    float: left;border: 1px solid #000;
-    width: 70%;
-    font-size: 20px;
-    font-weight: bold;
-}
-.swjs .exam_title_left p {
-display:inline-block;
-transform:scale(1,1.5); /* W3C */
--webkit-transform:scale(1,1.5); /* Safari and Chrome */
--moz-transform:scale(1,1.5); /* Firefox */
--ms-transform:scale(1,1.5); /* IE 9 */
--o-transform:scale(1,1.5); /* Opera */
-/* Rest Of CSS Code Here*/
-} 
-.swjs .grad_list_right
-{
-    float: right;border: 1px solid #000;
-    width: 20%;
-}
+
 .page-break1{
     height: 20px;
     border: 1px solid #fff;
@@ -254,4 +228,59 @@ table tr td
 
 
 
+/***************SJWS START************/
+.sjws{width:100%;}
+.sjws .logo_left
+{
+    float: left;
+    width: 8%;
+}
+.sjws .exam_title_left
+{
+    float: left;
+    width: 68%;
+    font-size: 20px;
+    font-weight: bold;
+}
+.sjws .exam_title_left p {
+display:inline-block;
+transform:scale(1,1.5); /* W3C */
+-webkit-transform:scale(1,1.5); /* Safari and Chrome */
+-moz-transform:scale(1,1.5); /* Firefox */
+-ms-transform:scale(1,1.5); /* IE 9 */
+-o-transform:scale(1,1.5); /* Opera */
+/* Rest Of CSS Code Here*/
+} 
 
+.sjws .grad_list_right
+{
+    float: right;
+    width: 23%;
+    font-size: 15px;
+    line-height: 20px;
+}
+.sjws_table_head
+{
+    border: 
+}
+.sjws_table_head .sl{
+    width:20px !important;
+}
+.sjws_table_head .name{
+    width:200px !important;
+}
+.sjws_table_head td.rotate {
+  /* Something you can count on */
+  height: 220px;
+  white-space: nowrap;
+}
+
+.sjws_table_head td.rotate div {
+    -webkit-transform: translate(15px, 100px) rotate(270deg);
+    transform: translate(15px, 100px) rotate(270deg);
+    width: 30px;
+}
+.sjws_table_head td.rotate div span {  
+  padding: 5px 10px;
+}
+/***************SJWS END************/

@@ -469,7 +469,7 @@ table#pdf-table{
 }
 
 #pdf-header-south{
-    width:1000px;
+    width:1270px;
 }
 
 
@@ -657,13 +657,13 @@ sfx  .table-header td{
 
 .baf_shaheen tr.odd td
 {
-    padding: 2px 2px 3px 3px;  
+    padding: 2px 2px 10px 9px;  
     border: 1px solid #000000;
     font-size:21px;
 }
 .baf_shaheen tr.even td
 {
-    padding: 2px 2px 3px 3px;
+    padding: 2px 2px 10px 9px;
     border: 1px solid #000000;
     font-size:21px;
 }

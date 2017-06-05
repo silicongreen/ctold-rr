@@ -2378,7 +2378,7 @@ class ExamController < ApplicationController
         :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
       else 
         render :pdf => 'continues',
-          :orientation => 'Portrait', :zoom => 0.90
+          :orientation => 'Portrait', :zoom => 0.70
       end
     else
     

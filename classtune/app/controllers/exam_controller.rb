@@ -2370,7 +2370,7 @@ class ExamController < ApplicationController
       if (MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 324) and (@connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 5)
         render :pdf => 'continues',
         :orientation => 'Portrait', :zoom => 0.80,
-        :margin => {    :top=> 10,
+        :margin => {    :top=> 8,
         :bottom => 10,
         :left=> 10,
         :right => 10},

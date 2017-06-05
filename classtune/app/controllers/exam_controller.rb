@@ -2369,7 +2369,7 @@ class ExamController < ApplicationController
     elsif MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 323 or MultiSchool.current_school.id == 2 or MultiSchool.current_school.id == 325 or MultiSchool.current_school.id == 324
       if (MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 324) and (@connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 5)
         render :pdf => 'continues',
-        :orientation => 'Portrait', :zoom => 1.00,
+        :orientation => 'Portrait', :zoom => 0.90,
         :margin => {    :top=> 10,
         :bottom => 10,
         :left=> 10,
@@ -2493,7 +2493,7 @@ class ExamController < ApplicationController
       :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
   end
   
-  def marksheet
+  def marksheet    
     @id = params[:id]
     @subject_id = params[:subject_id]
     @connect_exam_obj = ExamConnect.active.find(@id)
@@ -2513,6 +2513,7 @@ class ExamController < ApplicationController
       @report_data = @student_response['data']
     end
     }
+    abort @report_data.inspect
     render :pdf => 'marksheet',
       :orientation => 'Landscape', :zoom => 1.00,
       :margin => {    :top=> 10,

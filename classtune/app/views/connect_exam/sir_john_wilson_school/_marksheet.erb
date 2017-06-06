@@ -45,41 +45,42 @@
       <% colspan = 0 %>
       <table id="pdf-table" class="sjws_table_head" width="100%" cellspacing="0">
         
-        <tr class="table-header">
+        <tr class="sjws-table-header">
             <td colspan="2">
+              <h3><i>SENUIR SECTION</i></h3>
+              <p><b>TERM: <%= @connect_exam_obj.name %></b></p>
+              <p><b>Class : <%= (@batch.name=="General")?"":@batch.name+" " %><%= @batch.course.course_name %>&nbsp;<%= @batch.course.section_name %></b></p>
             <% if !@employee.nil? %> 
-              <p>Teacher's Name : <%=  @employee.full_name %></p>
-              <p>Subject : <%= @subject.name %></p>
+              <p><b>Subject : <%= @subject.name %></b></p>
+              <p><b>Teacher's Name : <%=  @employee.full_name %></b></p>              
             <% else %>
-              <p>Subject : <%= @subject.name %></p>
-            <% end %>
-            <p>Class : <%= (@batch.name=="General")?"":@batch.name+" " %><%= @batch.course.course_name %></p>
-            <p>Section : <%= @batch.course.section_name %></p>
+              <p><b>Subject : <%= @subject.name %></b></p>
+            <% end %> 
             <p></p>
           </td>
           <% @report_data['result']['ALL'].each do |rs| %>
-          <td class="rotate"><div><span><%=  rs['name'] %></span></div></td>
+          <td class="rotate"><div><span>05/05/17<br /></span><span><%=  rs['name'] %></span></div></td>
             <% colspan = colspan+1 %>          
           <% end %> 
-          <td class="rotate"><div><span>TOTAL NUM. OF H.W.</span></div></td>
-          <td class="rotate"><div><span>MARKS ACHIEVED <br /> MRKS OUT OF</span></div></td>
+          <td class="rotate"><div><span>TOTAL NUM. OF H.W.</span><span class="rotate_box">4</span></div></td>
+          <td class="rotate"><div><br /><br /><br /><span>MARKS ACHIEVED </span><br /><br /><br /><span> MRKS OUT OF</span><br /></div></td>
           <td class="rotate"><div><span>MARK - PERCENTANGE(%)</span></div></td>
-          <td class="rotate"><div><span>GRADE</span></div></td>
+          <td class="rotate"><center><div><span>GRADE</span></div></center></td>
         </tr>
         
         
-        <tr class="table-header">
-          <td class="sl">SL.</td>
-          <td class="name">STUDENTS' NAME / Out of</td>
+        <tr class="sjws-table-header">
+          <td class="sl"><b>SL.</b></td>
+          <td class="st_name"><b>STUDENTS' NAME / Out of</b></td>
           <% @report_data['result']['ALL'].each do |rs| %>
-            <td><%=  rs['maximum_marks'].to_i %></td>
+            <td class="class_test"><b><%=  rs['maximum_marks'].to_i %></b></td>
             
             <% colspan = colspan+1 %>
           <% end %>  
-          <td>aa</td>
-          <td>Arrow</td>
-          <td>Total</td>
-          <td>Grade</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;&darr;&nbsp;</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;&darr;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&darr;</td>
+          <td>&nbsp;</td>
+          <td></td>
         
         </tr>
         
@@ -107,9 +108,9 @@
           <% total_mark = 0 %>
           <% full_mark = 0 %>
               
-          <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-            <td class="name"><%= std['class_roll_no'] %></td>
-            <td class="name-std"><%= std['name'] %></td>
+          <tr class="<%= cycle(c,(["sjws_odd","sjws_even"]-[c]).first) %>">
+            <td class="sl"><%#= std['class_roll_no'] %><%= std_count %></td>
+            <td class="st_name"><%= std['name'] %></td>
             <% @report_data['result']['ALL'].each do |rs| %>
               <td>
               <% if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank? %>
@@ -122,17 +123,17 @@
               </td>
               
             <% end %> 
-          <td class="name"></td>  
-          <td class="name"></td>  
+          <td class="name">&nbsp;&nbsp;&nbsp;&nbsp;0</td>  
+          <td class="name">&nbsp;&nbsp;&nbsp;<%=total_mark.to_i %>&nbsp; /&nbsp; <%=full_mark.to_i %></td>  
            <% main_mark = (total_mark.to_f/full_mark.to_f)*100 %>
             
            <td class="name"><%= sprintf( "%0.02f", main_mark) %> %</td>
 
            <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
            <% if !grade.blank? and !grade.name.blank? %>
-            <td class="col-2"><b><%= grade.name %></b></td>
+            <td class="col-2"><center><b><%= grade.name %></b></center></td>
           <% else %>
-            <td class="col-2"><b>N/A</b></td>
+            <td class="col-2"><center><b>N/A</b></center></td>
           <% end %>
         </tr>
         <% end %>

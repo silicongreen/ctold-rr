@@ -1,7 +1,5 @@
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
- <p>&nbsp;<p>
- <p>&nbsp;<p>
- <h2>&nbsp;&nbsp;&nbsp;</h2>
+  <p>&nbsp;<p>
   <% total_u = 0 %>
   
   <div id="page-yield"  class="available_sections1 baf_shaheen">
@@ -22,13 +20,7 @@
               <td>Gender </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<% unless @student.gender_as_text.blank?  %><%= t("#{@student.gender_as_text.downcase}") %><% end %></td>
           </tr> 
            <tr>
-              <% month_number =@connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%-m"):@connect_exam_obj.published_date.strftime("%-m") %>
-                 
-                  <% if month_number.to_i>6 %>
-                    <td>Academic Session </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i+1:@connect_exam_obj.published_date.strftime("%Y").to_i+1 %></td>
-                  <% else %>
-                    <td>Academic Session </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i-1:@connect_exam_obj.published_date.strftime("%Y").to_i-1 %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %></td>
-                  <% end %> 
+              <td>Academic Session </td><td class="font-light">:&nbsp;&nbsp;&nbsp;2015-2016</td>
               <td>Roll </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @student.class_roll_no %></td>
           </tr> 
           <tr>
@@ -38,14 +30,41 @@
           </tr>
           <tr>
               <td>Name of Examination </td><td class="font-dark">:&nbsp;&nbsp;&nbsp;<%= @connect_exam_obj.name %></td>
-              <td>Exam Held </td><td class="font-dark">:&nbsp;&nbsp;&nbsp;May-2017</td>
+              <td>Exam Held </td><td class="font-dark">:&nbsp;&nbsp;&nbsp;<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%B-%Y"):@connect_exam_obj.published_date.strftime("%B-%Y") %></td>
           </tr>
       </table>
       </div>
       <div class="grade_information">
-        <%= render  :partial=>"/connect_exam/baf_shaheen/gradding_level" %>   
+        <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
+        <% if @grading_levels.blank? %>
+          <% @grading_levels = GradingLevel.default %>
+        <% end %>
+        <%  unless @grading_levels.empty? %>
+          <p>Grade Boundaries</p>
+          <table id="pdf-table" class="grade_info_table" width="100%" cellspacing="0">
+              <tr class="even">
+                  <td>Marks</td>
+                  <td>Grade</td>  
+              </tr> 
+             
+              <% @grading_levels.each_with_index do |grade,index| %>
+                 <tr class="odd">
+                <td>
+                    <% if grade.max_score.nil? %>  
+                      <%= '%i%' % grade.min_score %>
+                    <% else %> 
+                      <%= grade.min_score.to_s + " - " + grade.max_score.to_s %>
+                    <% end %>
+                </td>
+                <td><%= grade.name %></td>
+                  </tr> 
+              <% end %> 
+              
+          </table>
+
+        <% end %> 
       </div>
-     
+
 
     
       <div class ="current_batch" style="margin-left:0px;">
@@ -99,17 +118,12 @@
                   <% total_mark_all_subject = 0 %>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
-                      <% subjectdata = Subject.find(subjects['id'].to_i) %>
-                      <% check_std_subject = StudentsSubject.find_by_student_id_and_subject_id(@student.id,subjects['id'].to_i) %>
-                      <% if check_std_subject.blank? and !subjectdata.elective_group_id.blank? %>
-                  
-                      <% else %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                           <% weightage_mark = 0 %>
                           <% total_mark = 0 %>
                           <% full_mark = 0 %>
 
-                          <td class="col-pdf border-left-none no-warp align-left-baf"><%= subjects['name'].upcase %></td>
+                          <td class="col-pdf border-left-none no-warp"><%= subjects['name'] %></td>
                           <% unless @report_data['report']['exams'].blank? %>  
                           <% loop=0 %>
                             <% @report_data['report']['exams'].each do |report| %>
@@ -155,13 +169,6 @@
                                 if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
                                   midterm_total = midterm_total.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f 
                                 end
-                                
-                                if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank?
-                                 full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
-                                end
-
-                                  
-                                
                               end
 
                             end
@@ -199,18 +206,15 @@
                             <td class="col-pdf"><%= sprintf( "%0.02f", total_70) %></td>
                             <td class="col-pdf"><%= sprintf( "%0.02f", midterm_30) %></td>
                             <td class="col-pdf"><%= accumulated %></td>
-                            
                             <%  grade = GradingLevel.percentage_to_grade(accumulated, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>
-                              <td class="col-pdf"><%= grade.name %></td>
-                               <% if grade.name == "U" %>
+                              <td ><b><%= grade.name %></b></td>
+                              <% if grade.name == "U" %>
                               <% total_u +=1 %>
                               <% end %>
                             <% else %>
-                              <td class="col-pdf">N/A</td>
+                              <td ><b>N/A</b></td>
                             <% end %>
-                            
-                            
                               
                             <% unless @subject_highest[subjects['id'].to_i].blank? %> 
                               
@@ -234,45 +238,10 @@
                           <% end %>      
 
                       </tr> 
-                      <% end %>
                     <% end %>  
                   <% end %>
-                      <%  
-                    
-                          group_exams = GroupedExam.find_all_by_connect_exam_id(@connect_exam_obj.id) 
-
-                          @all_subjects = []
-                          group_exams.each do |group_exam|
-                            allexams = Exam.find_all_by_exam_group_id(group_exam.exam_group_id);
-                            allexams.each do |exam|
-                              if !@all_subjects.include?(exam.subject.id)
-                                @all_subjects << exam.subject.id
-                              end
-                            end
-                          end 
-                      %>  
-                    <% unless @report_data['report']['no_exam_subject_resutl'].blank? %>
-                      <% @report_data['report']['no_exam_subject_resutl'].each do |report| %>
-
-                      <%  if @all_subjects.include?(report['id'].to_i) %>
-
-                          <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-
-                          <td class="col-pdf border-left-none  align-left-baf"><%= report['subject_name'].upcase %></td>
-                          <td class="col-pdf"></td>
-                          <td class="col-pdf"></td>
-                          <td class="col-pdf"></td>
-                          <td class="col-pdf"></td>
-                          <td class="col-pdf"></td>
-                          <td class="col-pdf"></td>
-                          <td class="col-pdf"><%= report['subject_comment'] %></td>
-                          <td class="col-pdf border-right-none"></td>
-                          </tr>
-                        <% end %>
-                      <% end %>
-                    <% end %>
                       <tr class="odd">
-                        <td class="col-pdf border-left-none"><b>Total Marks</b></td>
+                        <td class="col-pdf border-left-none"><b>Total Mark</b></td>
                          <td class="col-pdf"></td>
                          <td class="col-pdf"></td>
                          <td class="col-pdf"></td>
@@ -286,8 +255,7 @@
 
               </table>
 
-              <%
-                @exam_comment = ExamConnectComment.find_by_exam_connect_id_and_student_id(@connect_exam_obj.id,@student.id)
+              <% 
                 result = ""
                 promotion_status = ""
                 merit_position = ""
@@ -316,7 +284,7 @@
                 end
               %>
               <h4 class="h4-evaluation"><b>Evaluation</b></h4>
-              <% unless new_section.blank?  %>
+              <% unless result.blank?  %>
               <table id="pdf-table" class="evaluation" width="99.8%" >
                       <tr class="odd">
                           <td class="col-pdf border-left-none" width="33%">
@@ -416,30 +384,30 @@
                   <% result = "Passed" %>
                  <% end %>
                  <% if @promoted_to!="0" %>
-                 <% promotion_status = "Promoted to Standard- "+@promoted_to %>
+                 <% promotion_status = "Promoted to STD- "+@promoted_to %>
                  <% else %>
                  <% promotion_status = "N/A" %>
                  <% end %>
-                 <% if !@student_position[@student.id.to_i].blank? and promotion_status != "N/A" %>
-                    <% merit_position = @student_position[@student.id.to_i] %>
-                    <% unless @student_roll[@student_position[@student.id.to_i].to_i].blank? %>
-                       <% new_roll = @student_roll[@student_position[@student.id.to_i].to_i] %>
-                    <% else %>
-                       <% new_roll = "N/A" %>
-                    <% end %>
-
-                    <% unless @student_section[@student_position[@student.id.to_i].to_i].blank? %>
-                       <% new_section = @student_section[@student_position[@student.id.to_i].to_i] %>
-                    <% else %>
-                       <% new_section = "N/A" %>
-                    <% end %>
-                <% else %>
-                <%
-                  merit_position = "N/A"
-                  new_roll = "N/A"
-                  new_section = "N/A"
-                %>
-                <% end %>
+                 <% unless @student_position[@student.id.to_i].blank? %>
+                 <% merit_position = @student_position[@student.id.to_i] %>
+                 <% unless @student_roll[@student_position[@student.id.to_i].to_i].blank? %>
+                    <% new_roll = @student_roll[@student_position[@student.id.to_i].to_i] %>
+                 <% else %>
+                    <% new_roll = "N/A" %>
+                 <% end %>
+              
+                 <% unless @student_section[@student_position[@student.id.to_i].to_i].blank? %>
+                    <% new_section = @student_section[@student_position[@student.id.to_i].to_i] %>
+                 <% else %>
+                    <% new_section = "N/A" %>
+                 <% end %>
+                  <% else %>
+                  <%
+                    merit_position = "N/A"
+                    new_roll = "N/A"
+                    new_section = "N/A"
+                  %>
+                  <% end %>
               <% else %>
                 <% result = "Failed" %>
                 <% promotion_status = "Not Promoted" %>
@@ -448,10 +416,6 @@
                 <% new_section = "N/A" %>
               <% end %>
               
-              <% std_marks = "" %>
-              <% unless @student_avg_mark[@student.id.to_i].blank? %>
-                <% std_marks = @student_avg_mark[@student.id.to_i] %>
-              <% end %>
               
               <table id="pdf-table" class="evaluation" width="99.8%" >
                       <tr class="odd">
@@ -492,7 +456,7 @@
                               New Roll
                           </td> 
                           <td class="col-pdf align-center" width="33%">
-                           
+                            
                              <%=  new_roll %>
                           </td> 
                           <td class="col-pdf no-border"  width="33%">

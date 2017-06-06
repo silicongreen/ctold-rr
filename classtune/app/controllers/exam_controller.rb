@@ -505,18 +505,14 @@ class ExamController < ApplicationController
   def connect_exam_subject_comments
     @employee_subjects=[]
     
-    
     exam_subject_id = params[:id]
     exam_subject_id_array = exam_subject_id.split("|")
-    @exam_connect = ExamConnect.active.find_by_id(exam_subject_id_array[0]) 
     
-     
-    
-    
+    @exam_connect = ExamConnect.active.find_by_id(exam_subject_id_array[0])     
     @batch = Batch.find(@exam_connect.batch_id)
     @exam_subject = Subject.find_by_id(exam_subject_id_array[1])
-    
     @employee_subjects= @current_user.employee_record.subjects.map { |n| n.id} if @current_user.employee?
+    
     unless @employee_subjects.include?(@exam_subject.id) or @current_user.admin? or @current_user.privileges.map{|p| p.name}.include?('ExaminationControl') or @current_user.privileges.map{|p| p.name}.include?('EnterResults')
       flash[:notice] = "#{t('flash_msg6')}"
       redirect_to :controller=>"user", :action=>"dashboard"
@@ -526,7 +522,6 @@ class ExamController < ApplicationController
     
     if @exam_subject.no_exams.blank?
       @group_exam = GroupedExam.find_all_by_connect_exam_id(@exam_connect.id, :order=>"priority ASC")
-
       unless @group_exam.blank?
         @group_exam.each do |group_exam|
           exam_group = ExamGroup.active.find(group_exam.exam_group_id)
@@ -541,11 +536,10 @@ class ExamController < ApplicationController
         flash[:notice] = "Something Went Wrong"
         redirect_to :controller=>"user", :action=>"dashboard"
       end 
-    end    
-    
-    
+    end  
     
     is_elective = @exam_subject.elective_group_id
+    
     if is_elective == nil
       if MultiSchool.current_school.id == 319
         @students = @batch.students.by_first_name
@@ -629,6 +623,7 @@ class ExamController < ApplicationController
     end
     
   end
+  
   def new_exam_connect
     @batch = Batch.find(params[:id])
     @exam_groups = ExamGroup.active.find_all_by_batch_id(@batch.id)
@@ -2378,7 +2373,7 @@ class ExamController < ApplicationController
         :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
       else 
         render :pdf => 'continues',
-          :orientation => 'Portrait', :zoom => 0.70
+          :orientation => 'Portrait', :zoom => 0.65
       end
     else
     
@@ -2435,9 +2430,7 @@ class ExamController < ApplicationController
     
     @exam_comment.each do |cmt|
       @student_exam_comment[cmt.student_id.to_s] = cmt.comments
-    end
-    
-    
+    end 
   end 
 
   def comment_tabulation_pdf
@@ -2512,8 +2505,7 @@ class ExamController < ApplicationController
     if @student_response['status']['code'].to_i == 200
       @report_data = @student_response['data']
     end
-    }
-    abort @report_data.inspect
+    }    
     render :pdf => 'marksheet',
       :orientation => 'Landscape', :zoom => 1.00,
       :margin => {    :top=> 10,

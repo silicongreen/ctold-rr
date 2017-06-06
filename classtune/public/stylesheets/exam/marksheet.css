@@ -139,7 +139,8 @@ td.col-pdf-bold{
 
 table#pdf-table{
     border-top: 1px solid #ADACAB;
-    border-collapse:collapse
+    border-collapse:collapse;
+    border-bottom: 1px solid #ADACAB;
 }
 
 
@@ -261,26 +262,89 @@ transform:scale(1,1.5); /* W3C */
 }
 .sjws_table_head
 {
-    border: 
+    
+}
+
+.sjws .sjws_odd{
+    height:auto;
+    background: #fff;
+
+}
+
+.sjws .sjws_even{
+
+    height:auto;
+    background: #fff;
+
+
+}
+tr.sjws_even{
+    border: 1px solid #ADACAB;
+    border-bottom: 0;
+}
+
+tr.sjws_odd{
+    border: 1px solid #ADACAB;
+    border-bottom: 0;
+}
+.sjws_even td{
+
+    padding: 8px 8px 8px 8px;
+    border: 1px solid #ADACAB;
+    border-right: 0px solid #fff;
+    border-top: 0px solid #fff;
+    border-bottom: 0;
+}
+
+.sjws_odd td{
+    padding: 8px 8px 8px 8px;
+    border: 1px solid #ADACAB;
+    border-right: 0px solid #fff;
+    border-top: 0px solid #fff;
+    border-bottom: 0;
+}
+
+.sjws td.col-pdf-bold{
+    font-weight: bold !important;
+}
+
+.sjws-table-header td{
+    padding: 8px 8px 8px 8px;
+    border-top: 1px solid #ADACAB;
+    border-left: 1px solid #ADACAB;
+    border-right: 1px solid #ADACAB;
+    color: #000;
+    background: #fff;
 }
 .sjws_table_head .sl{
     width:20px !important;
 }
-.sjws_table_head .name{
-    width:200px !important;
+.sjws_table_head .st_name{
+    width:350px !important;
+}
+.sjws_table_head .class_test{
+    width:40px !important;
 }
 .sjws_table_head td.rotate {
   /* Something you can count on */
   height: 220px;
-  white-space: nowrap;
+  white-space: nowrap; 
+  line-height: 20px;
+  font-weight: 500;
 }
 
 .sjws_table_head td.rotate div {
-    -webkit-transform: translate(15px, 100px) rotate(270deg);
-    transform: translate(15px, 100px) rotate(270deg);
-    width: 30px;
+    -webkit-transform: translate(5px, 100px) rotate(270deg);
+    transform: translate(5px, 100px) rotate(270deg);
+    width: 40px;
 }
 .sjws_table_head td.rotate div span {  
-  padding: 5px 10px;
+  padding: 15px;
+}
+.sjws_table_head td.rotate div span.rotate_box
+{
+    border-top:1px solid #ADACAB;
+    border-bottom: 1px solid #ADACAB;
+    border-left:1px solid #ADACAB;
 }
 /***************SJWS END************/

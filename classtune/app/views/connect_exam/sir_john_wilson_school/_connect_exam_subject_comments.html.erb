@@ -1,0 +1,235 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<div id="content-header">
+<%= show_header_icon %>
+  <h1><%= t('exams_text') %></h1>
+<div class='header-sep'>|</div>
+<div class='sub-header'>Connect Exam Subjects Comments</div>
+<div id="inner-tab-menu">
+  <ul>
+    <% if permitted_to? :previous_batch_exams, :exam %>
+      <li class='themed_bg themed-dark-hover-background' style="display: none;"><%= link_to "#{t('previous_batch_exam')}", {:controller => "exam", :action => "previous_batch_exams"} %></li>
+    <% end %>
+    <% unless @show_class_exam %>   
+        <li class='themed_bg themed-dark-hover-background'><%= link_to t('exams_text'), :controller => "exam", :action => "exam_connect_list",:id=>@batch.id %></li>
+    <% end %>  
+    <%  if permitted_to? :grouping,:exam %>
+      <% unless @is_class_exam %>   
+      <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('connect_exams_new')}", :controller=>'exam', :action=>'new_exam_connect', :id=>@batch %></li>
+      <% end %>
+    <% end %>
+  </ul>
+    
+
+</div>
+</div>
+
+
+<div id="page-yield">
+  
+  <div id="flash-box">   
+    <% unless flash[:notice].nil? %>
+      <p class="flash-msg"> <%= flash[:notice] %> </p>
+    <% end %>
+  </div>
+    
+ 
+
+  <h3>EXAM COMMENTS  >> <%= @exam_subject.name %></h3>
+
+  <% unless @students.empty? %>
+      <% form_for :exams do |f| %>
+        <div class="zui-wrapper">
+    <div class="zui-scroller">
+        <table class="zui-table">
+       
+          <tr class="tr-head fixed-position">
+            <td  class="zui-sticky-col"><b><%= "Roll" %></b></td>
+            <td  class="zui-sticky-col2"><b><%= t('name') %></b></td>            
+            <% unless @exams.blank? %>
+            <% @exams.each do |exam| %>
+              <td>
+                  <b><%= exam.exam_group.name %></b>
+                  <% if !exam.alternative_title.nil? and exam.alternative_title != "" %>  
+                   <p style="font-size: 10px;"> (<%= exam.alternative_title %>)</p>
+                  <% else %>
+                   <p>&nbsp;</p>
+                  <% end %> 
+              </td>
+            <% end %>
+            <% end %>  
+            <td><b><%= "Effort" %></b></td>
+            <td><b><%= t('remarks') %></b></td>
+            
+          </tr>
+          <% @students.each do |student| %>
+            <tr class="tr-<%= cycle('odd', 'even') %>">
+              <td class="col-2 zui-sticky-col" style="padding: 13px 10px"><%= student.class_roll_no %> </td>
+              <td class="col-2 zui-sticky-col2"  style="padding: 13px 10px"><%= student.full_name %> </td>
+              <%
+                exam_comment = ""
+                @exam_comments = ExamConnectSubjectComment.find(:first, :conditions => {:exam_connect_id=>@exam_connect.id,:subject_id => @exam_subject.id, :student_id => student.id} )
+                if !@exam_comments.blank?
+                  exam_comment = @exam_comments.comments
+                end
+              %>
+              
+              <% unless @exams.blank? %>
+              <% @exams.each do |exam| %>
+                <% @exam_score = exam.score_for(student) %>
+                <td class="col-2 td-mark">
+
+                    <div class="label-field-pair2">
+
+                      <div class="text-input-bg2">
+                          <%= text_field_tag "exam_score[#{exam.id}][#{student.id}][marks]", @exam_score.marks, :size => '3', :class=>"marks-4box" %>
+                       </div>
+                    </div>
+                    <div class="date" ><span class="themed_text"><%=  student.class_roll_no.to_s+" : "+student.full_name %><div> <%= exam.name %></div></span></div>
+                </td>
+              <% end %>
+              <% end %>
+              <td class="col-2 td-mark">
+                  
+                  <div class="label-field-pair2">
+                  
+                  <div class="text-input-bg2">
+                    <%= text_field_tag "exam[#{student.id}][effort]","0", :size => '2' %></div>
+                  </div>
+                  <div class="date2"><span class="themed_text"><%=  student.class_roll_no.to_s+" : "+student.full_name %></span></div>
+              </td>
+              <td class="col-2 td-mark">
+                  
+                  <div class="label-field-pair2">
+                  
+                  <div class="text-input-bg2">
+                    <%= text_field_tag "exam[#{student.id}][comments]", exam_comment, :size => '30' %></div>
+                  </div>
+                  <div class="date2"><span class="themed_text"><%=  student.class_roll_no.to_s+" : "+student.full_name %></span></div>
+              </td>
+            <tr>
+          <% end %>      
+        </table>
+        </div> 
+        </div>    
+        <br/>
+        <div id="sub-button"><%= submit_tag "", :value => "► #{t('save')}", :class => "submit_button" %></div>
+      <% end %> 
+        
+    <% end %>
+
+     </div>
+<style>
+  #sub-button .submit_button
+  {
+    cursor: pointer;
+  }
+  table#listing {
+    padding: 0px;
+    width: 100%;
+    overflow-x: auto;
+}
+.zui-table {
+    border: none;
+    border-right: solid 1px #DDEFEF;
+    border-collapse: separate;
+    border-spacing: 0;
+    font: normal 13px Arial, sans-serif;
+}
+.zui-table thead th {
+    background-color: #DDEFEF;
+    border: none;
+    color: #336B6B;
+    padding: 10px;
+    text-align: left;
+    text-shadow: 1px 1px 1px #fff;
+    white-space: nowrap;
+}
+.zui-table tbody td {
+    border-bottom: solid 1px #DDEFEF;
+    color: #333;
+    padding: 10px;
+    text-shadow: 1px 1px 1px #fff;
+    white-space: nowrap;
+    border-left: solid 1px #DDEFEF;
+}
+.zui-wrapper {
+    position: relative;
+}
+.zui-scroller {
+    overflow-x: auto;
+    overflow-y: auto;
+    padding-bottom: 5px;
+    width: 930px;
+    max-height: 500px;
+}
+
+.td-mark .date2{
+    position: relative;
+    left: -172px;
+    top: -73px;
+}
+.td-mark .date2 span,.td-name .date2 span{
+    display: none;
+    color: #FFFFFF;
+}
+.td-mark:hover .date2 span{
+    display: block;
+    position: absolute;
+    min-width: 150px;
+    background-color: #fff;
+    border:1px solid #c3d9ff;
+    min-height: 30px;
+    left: 20px;
+    top: 10px;
+    color: #FFFFFF;
+    padding-top: 10px;
+    padding: 3px;
+
+    color:#990A10;
+    font-size: 12px;
+}
+
+.td-mark .date{
+    position: relative;
+    left: -172px;
+    top: -73px;
+}
+.td-mark .date span,.td-name .date span{
+    display: none;
+    color: #FFFFFF;
+}
+.td-mark:hover .date span{
+    display: block;
+    position: absolute;
+    min-width: 150px;
+    background-color: #fff;
+    border:1px solid #c3d9ff;
+    min-height: 20px;
+    left: 20px;
+    top: 10px;
+    color: #FFFFFF;
+    padding: 3px;
+
+    color:#990A10;
+    font-size: 12px;
+}
+
+</style>

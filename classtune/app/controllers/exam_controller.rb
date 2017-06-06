@@ -441,6 +441,7 @@ class ExamController < ApplicationController
       abort("@current_user.inspect")
     end      
   end
+  
   def student_exam_schedule_view
     @current_user = current_user
     if @current_user.student?
@@ -484,10 +485,12 @@ class ExamController < ApplicationController
     
     render :pdf => 'exam_schedule_pdf'
   end
+  
   def exam_connect_list
     @batch = Batch.find(params[:id])
     @exam_connect_data = ExamConnect.active.find_all_by_batch_id(@batch.id)
   end
+  
   def connect_exam_subject
     @exam_connect = ExamConnect.active.find_by_id(params[:id])        
     @batch = Batch.find(@exam_connect.batch_id)
@@ -502,6 +505,7 @@ class ExamController < ApplicationController
       end
     end
   end
+  
   def connect_exam_subject_comments
     @employee_subjects=[]
     
@@ -605,6 +609,7 @@ class ExamController < ApplicationController
           end
         end
       end
+      
       params[:exam].each_pair do |student_id, details|
         @exam_comments = ExamConnectSubjectComment.find(:first, :conditions => {:exam_connect_id=>@exam_connect.id,:subject_id => @exam_subject.id, :student_id => student_id} )
         if @exam_comments.nil?
@@ -614,6 +619,7 @@ class ExamController < ApplicationController
             score.exam_connect_id  = exam_subject_id_array[0]
             score.employee_id      = current_user.employee_record.id
             score.comments         = details[:comments]
+            score.effort         = details[:effort] # For Sir John Wilson School
           end
         else
           @exam_comments.update_attributes(details)

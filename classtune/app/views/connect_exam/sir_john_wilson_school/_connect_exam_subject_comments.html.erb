@@ -75,6 +75,10 @@
               </td>
             <% end %>
             <% end %>  
+            <td><b><%= "M. Obt." %><hr><%="T. Marks"%></b></td>
+            <td><b><%= "%" %></b></td>
+            <td><b><%= "Grade" %></b></td>
+            <td><b><%= "H.W." %></b></td>
             <td><b><%= "Effort" %></b></td>
             <td><b><%= t('remarks') %></b></td>
             
@@ -88,30 +92,54 @@
                 @exam_comments = ExamConnectSubjectComment.find(:first, :conditions => {:exam_connect_id=>@exam_connect.id,:subject_id => @exam_subject.id, :student_id => student.id} )
                 if !@exam_comments.blank?
                   exam_comment = @exam_comments.comments
+                  exam_effort = @exam_comments.effort
                 end
               %>
-              
+              <% total_mark = 0 %>
+              <% full_mark = 0 %>
               <% unless @exams.blank? %>
-              <% @exams.each do |exam| %>
-                <% @exam_score = exam.score_for(student) %>
-                <td class="col-2 td-mark">
-
-                    <div class="label-field-pair2">
-
-                      <div class="text-input-bg2">
-                          <%= text_field_tag "exam_score[#{exam.id}][#{student.id}][marks]", @exam_score.marks, :size => '3', :class=>"marks-4box" %>
-                       </div>
-                    </div>
-                    <div class="date" ><span class="themed_text"><%=  student.class_roll_no.to_s+" : "+student.full_name %><div> <%= exam.name %></div></span></div>
-                </td>
+                <% @exams.each do |exam| %>
+                  <% @exam_score = exam.score_for(student) %>                  
+                  <% if !@exam_score.marks.blank? %>
+                    <% total_mark = total_mark.to_f+@exam_score.marks.to_f %>
+                    <% full_mark = full_mark+exam['maximum_marks'].to_f %>      
+                  <% end %>
+                  <td class="col-2 td-mark">
+                      <div class="label-field-pair2">
+                        <div class="text-input-bg2">
+                            <%= text_field_tag "exam_score[#{exam.id}][#{student.id}][marks]", @exam_score.marks, :size => '3', :class=>"marks-4box" %>
+                         </div>
+                      </div>
+                      <div class="date" ><span class="themed_text"><%=  student.class_roll_no.to_s+" : "+student.full_name %><div> <%= exam.name %></div></span></div>
+                  </td>                    
+                <% end %>
               <% end %>
-              <% end %>
+              <td class="col-2 td-mark"><center><b><%=total_mark.to_i%><hr><%=  full_mark.to_i %></b></center></td>
+              <td class="col-2 td-mark">
+                <%
+                  stGetPercentage = (total_mark/full_mark)*100
+                %>
+                <center><b><%=stGetPercentage.to_i%> % </b></center>
+              </td>
+              <td class="col-2 td-mark">
+                <%  grade = GradingLevel.percentage_to_grade(stGetPercentage, @batch.id) %>
+                <% if !grade.blank? and !grade.name.blank? %>
+                  <center><b><%= grade.name %></b></center>
+                <% else %>
+                  <center><b>N/A</b></center>
+                <% end %>
+              </td>
+              <td class="col-2 td-mark">
+                  
+                <% #assignmentCount = Assignment.count(:all, {:subject_id => @exam_subject.id,:is_published=>1,:duedate => @start_date..@end_date}) %>
+                <center><b><%= debug @exam_connect %></b></center>
+              </td>
               <td class="col-2 td-mark">
                   
                   <div class="label-field-pair2">
                   
                   <div class="text-input-bg2">
-                    <%= text_field_tag "exam[#{student.id}][effort]","0", :size => '2' %></div>
+                    <%= text_field_tag "exam[#{student.id}][effort]",exam_effort, :size => '2' %></div>
                   </div>
                   <div class="date2"><span class="themed_text"><%=  student.class_roll_no.to_s+" : "+student.full_name %></span></div>
               </td>

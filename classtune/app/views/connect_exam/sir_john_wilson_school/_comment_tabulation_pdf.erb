@@ -1,0 +1,223 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+<div id="page-yield" class="available_sections1">
+  <div class="page1"> </div>
+  <div class="section1 row" >
+    <center>
+      <div id="pdf-header-south" class="general-header">
+        <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '4%' %></h4>
+        <h2 align="center"><%=Configuration.get_config_value('InstitutionName'); %></h2>
+      </div>
+      <h4 align="center">Tabulation Sheet, <%= @connect_exam_obj.name %></h4>
+      <table width="100%" >
+            <thead>
+                <tr>
+                    <td><b>Year: <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%B-%Y"):@connect_exam_obj.published_date.strftime("%B-%Y") %> </b></td>
+                    <td align="right"><b>Class : 
+                        <% if @batch.name == "General" %>
+                        <%= @batch.course.full_name %>
+                        <% else %>
+                           <%= @batch.name %> ,<%= @batch.course.full_name %>
+                        <% end %></b>
+                    </td>
+                </tr>
+            </thead>    
+      </table>
+     
+      <% unless @report_data.blank? %>
+      <% c = 'even' %>
+      <table id="pdf-table" width="100%" cellspacing="0">
+        <tr class="table-header">
+          <td class="col-pdf">Sl.</td>
+          <td class="col-pdf">Roll</td>
+          <td class="col-pdf">Students Name</td>
+          <% @report_data['report']['subjects'].each do |sub| %>
+            <td><%=  sub['code'] %><hr/>Grade</td>
+          <% end %> 
+          <% @report_data['report']['no_exam_subject_resutl'].each do |sub| %>
+            <td><%=  sub['code'] %></td>
+          <% end %>
+          
+          <td>Total</td>
+          <td>Grade Count</td>
+        
+        </tr>
+        
+        <% extender = 0 %>
+        <% std_count = 0 %>
+        <% j = 0 %>
+      
+        <% @report_data['report']['students'].each do |std| %>
+          <% j = j+1 %>
+          <%  std_count = std_count+1; %>
+          <% if std_count>5 && extender ==0 %>
+              <% std_count = 0 %>
+              <% extender = 1 %>
+              <tr class="page-break">
+                  <td colspan="100">&nbsp;</td>
+              </tr>  
+              <tr class="table-header">
+                <td class="col-pdf">Sl.</td>
+                <td class="col-pdf">Roll</td>
+                <td class="col-pdf">Students Name</td>
+                <% @report_data['report']['subjects'].each do |sub| %>
+                  <td><%=  sub['code'] %><hr/>Grade</td>
+                <% end %>
+                <% @report_data['report']['no_exam_subject_resutl'].each do |sub| %>
+                    <td><%=  sub['code'] %></td>
+                <% end %>
+
+                <td>Total</td>
+                <td>Grade Count</td>
+
+              </tr>
+          <% elsif std_count>5 && extender ==1 %>
+              <% std_count = 0 %>
+              <% extender = 1 %>
+              <tr class="page-break">
+                  <td colspan="100">&nbsp;</td>
+              </tr> 
+              <tr class="table-header">
+                <td class="col-pdf">Sl.</td>
+                <td class="col-pdf">Roll</td>
+                <td class="col-pdf">Students Name</td>
+                <% @report_data['report']['subjects'].each do |sub| %>
+                  <td><%=  sub['code'] %><hr/>Grade</td>
+                <% end %> 
+                <% @report_data['report']['no_exam_subject_resutl'].each do |sub| %>
+                    <td><%=  sub['code'] %></td>
+                <% end %>
+
+                <td>Total</td>
+                <td>Grade Count</td>
+
+              </tr>
+          <% end %>    
+        
+          
+          
+          <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+            <td class="col-pdf"><%= j %></td>
+            <td class="name"><%= std['class_roll_no'] %></td>
+            <td class="name-std"><%= std['first_name']+" "+std['last_name'] %></td>
+            <% total_mark = 0 %>
+            <% grades = [] %>
+            <% grade_count = {} %>
+            <% @report_data['report']['subjects'].each do |sub| %>
+                  
+                  <% subject_full_mark = 0 %>
+                  <% subject_obtain_mark = 0 %>
+                  
+                  <% @report_data['report']['exams'].each do |rs| %>
+                    <% @examobj = Exam.find_by_exam_group_id_and_subject_id(rs['exam_id'].to_i,sub['id'].to_i) %>
+                    <% unless @examobj.blank?  %>
+                      <% check_exam = false %>
+                      <% @exam_score_all = ExamScore.find_all_by_exam_id(@examobj.id.to_i) %>
+                      <% if @exam_score_all.blank? %>
+                          <% check_exam = false %>
+                      <% else %>
+                        <% @exam_score_all.each do |score| %>
+                        <%
+                          unless score.marks.blank?
+                            check_exam = true
+                            break
+                          end
+                        %>
+                        <% end %>
+                      <% end %>
+                    <% end %>
+                    <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and check_exam == true %>
+                      
+                      <%
+                          
+                          subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                          subject_obtain_mark = subject_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                         
+                        
+                      %>
+                    <% end %>
+                   <% end %> 
+                       <% main_mark = (subject_obtain_mark.to_f/subject_full_mark.to_f)*100 %>  
+                    <td>
+                       <% total_mark = total_mark+subject_obtain_mark.to_f %>
+                       <%= sprintf( "%0.02f", subject_obtain_mark) %><hr/>
+                       <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
+                       <% if !grade.blank? and !grade.name.blank? %>
+                           <%
+                              if grades.include?(grade.name.to_s)
+                                grade_count[grade.name.to_s] = grade_count[grade.name.to_s]+1
+                              else
+                                grades << grade.name.to_s
+                                grade_count[grade.name.to_s] = 1
+                              end  
+                           %>
+                          <%= grade.name %>  
+                       <% else %>
+                          N/A  
+                       <% end %>
+                    </td>  
+             <% end %> 
+             <% @report_data['report']['no_exam_subject_resutl'].each do |sub| %>
+                    <td>
+                    <% if !sub['subject_comment'][std['id']].nil? && !sub['subject_comment'][std['id']].blank? %>
+                      <%
+                        if !sub['subject_comment'][std['id']].blank?
+                          if grades.include?(sub['subject_comment'][std['id']].to_s)
+                            grade_count[sub['subject_comment'][std['id']]] = grade_count[sub['subject_comment'][std['id']]]+1
+                          else
+                            grades << sub['subject_comment'][std['id']].to_s
+                            grade_count[sub['subject_comment'][std['id']].to_s] = 1
+                          end 
+                        end 
+                       %>
+                      <%=  sub['subject_comment'][std['id']] %>
+                    <% else %>
+                        &nbsp;
+                    <% end %> 
+                    </td>     
+                    
+             <% end %>       
+            
+              <td>
+                   <%= sprintf( "%0.02f", total_mark) %>    
+              </td>
+              <td>
+                  <% i = 1 %>
+                  <% total_grade_std = grades.count  %>
+                  <% grades.each do |grade| %>
+                      <%= grade.to_s+"-"+grade_count[grade].to_s %>
+                      <% if i!=total_grade_std %>
+                      ,
+                      <% end %>
+                      <% i = i+1 %>
+                  <% end %>
+              </td> 
+              
+           
+        </tr>
+        <% @std_id_comment = std['id'] %>
+        <%= render  :partial=>"/connect_exam/comment_text" %>
+        <% end %>
+      </table>
+      <% end %>
+    </center>
+  </div>
+  
+  
+</div>

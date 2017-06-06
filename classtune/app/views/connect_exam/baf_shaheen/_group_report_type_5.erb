@@ -28,7 +28,7 @@
                           <% weightage_mark = 0 %>
                           <% total_mark = 0 %>
                           <% full_mark = 0 %>
-                          <td class="col-pdf"><% unless @current_user.student? or @current_user.parent? %>
+                          <td class="col-pdf subject"><% unless @current_user.student? or @current_user.parent? %>
                   <%= link_to "#{subjects['name']}",
         {:action => "marksheet", :subject_id => subjects['id'],:id=>@connect_exam_obj.id},:target => '_blank' %><% else %><%= subjects['name'] %><% end %></td>
                           <% unless @report_data['report']['exams'].blank? %>  

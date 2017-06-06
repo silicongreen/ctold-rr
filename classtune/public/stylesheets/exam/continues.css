@@ -159,7 +159,7 @@ div.button-link-report:hover
 {
     width:60% !important;
 }
-.subject{text-align: left;}
+.subject{text-align: left !important;}
 #page-yield 
 {
     width:1250px;

@@ -1,0 +1,360 @@
+hr{    
+    border-top: 1px solid #000;
+   }
+.page1 {
+    width:100%;
+    height: auto;
+    page-break-after: always;
+    page-break-inside: avoid;
+    clear: both;
+}
+
+.page-break1{
+    height: 20px;
+    border: 1px solid #fff;
+    width: 100%;
+    float: left;
+}
+.grand_total
+{
+    border-bottom: 1px solid #ADACAB;
+}
+.section1{
+    page-break-before:always;
+    text-align: center;
+}
+.row{
+    float: left;
+    width: 100%;
+    text-align: center;
+}
+.page-blank{
+    width: 100%;
+    float: left;
+    border-top: 1px solid #ADACAB;
+}
+.page_break{
+    margin-top: 60px;
+}
+.marks{
+    width:100px;
+    min-width:115px;
+    max-width:115px;
+}
+.name{
+    width:40px;
+    min-width:100px;
+    max-width:100px;
+    font-size: 22px;
+}
+.grand_total
+{
+    border-bottom: 1px solid #ADACAB;
+}
+
+
+#page-yield {
+    width:-moz-max-content;
+    margin: 0 auto;
+    float: left;
+    overflow: hidden;
+}
+
+#pdf-info{
+    padding-top: 50px;
+}
+
+
+.hor_line{
+    width:-moz-max-content;
+    background: #333333;
+    height: 1px;
+}
+
+h2.heading{
+    text-align: center;
+    margin:5px;
+}
+
+#main_info h4{
+    color: #555555;
+    margin-top: 18px;
+    font-weight: normal;
+}
+
+#main_info h2{
+    margin-bottom: 2px;
+    font-weight: normal;
+
+}
+
+.odd{
+    height:auto;
+    background: #EEEEEE;
+
+}
+
+.even{
+
+    height:auto;
+    background: #fff;
+
+
+}
+tr.even{
+    border: 1px solid #ADACAB;
+    border-bottom: 0;
+}
+
+tr.odd{
+    border: 1px solid #ADACAB;
+    border-bottom: 0;
+}
+
+.even td{
+
+    padding: 8px 8px 8px 8px;
+    border: 1px solid #ADACAB;
+    border-right: 0px solid #fff;
+    border-top: 0px solid #fff;
+    border-bottom: 0;
+}
+
+.odd td{
+    padding: 8px 8px 8px 8px;
+    border: 1px solid #ADACAB;
+    border-right: 0px solid #fff;
+    border-top: 0px solid #fff;
+    border-bottom: 0;
+}
+
+td.col-pdf-bold{
+    font-weight: bold !important;
+}
+
+.table-header td{
+    padding: 8px 8px 8px 8px;
+    border-top: 1px solid #ADACAB;
+    border-left: 1px solid #ADACAB;
+    border-right: 1px solid #ADACAB;
+    color: #000;
+    background: #EEEEEE;
+}
+
+table#pdf-table{
+    border-top: 1px solid #ADACAB;
+    border-collapse:collapse;
+    border-bottom: 1px solid #ADACAB;
+}
+
+
+#page-extender{
+    width:100%;
+    height :200px;
+
+}
+#page-extender1{
+    width:100%;
+    height :500px;
+
+}
+
+.report{
+    min-height: 1000px;
+    margin: 0 auto;
+}
+
+#signature{
+    text-align: right;
+    width: 700px;
+    margin: 0 auto;
+    color: #999999;
+    font-size: 18px;
+}
+
+
+#page-yield h2{
+    text-align: center;
+}
+
+.page-break4 td{
+    height: 47px;
+    border: 1px solid #fff;
+    border-top: 1px solid #ADACAB;
+    border-bottom: 1px solid #ADACAB;
+}
+
+
+.page-break td{
+    height: 50px;
+    border: 1px solid #fff;
+    border-top: 1px solid #ADACAB;
+    border-bottom: 1px solid #ADACAB;
+}
+.page-break1 td{
+    height: 100px;
+    border: 1px solid #fff;
+    border-top: 1px solid #ADACAB;
+    border-bottom: 1px solid #ADACAB;
+}
+.page-last-element td{
+    height: 5px;
+    border: 1px solid #fff;
+    border-top: 1px solid #ADACAB;
+}
+table, tr, td, th, tbody, thead, tfoot {
+    page-break-inside: avoid !important;
+}
+table.final-term tr td
+{
+    
+   text-align: center;
+   font-size: 24px;
+   white-space: nowrap;
+    
+}
+table tr td
+{
+    white-space: nowrap;
+}
+
+#page-yield 
+{
+    width:1350px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+#page-yield.marksheet4 
+{
+    width:1550px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+
+
+/***************SJWS START************/
+.sjws{width:100%;}
+.sjws .logo_left
+{
+    float: left;
+    width: 12%;
+}
+.sjws .exam_title_left
+{
+    float: left;
+    width: 75%;
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center;
+}
+.sjws .exam_title_left p {
+display:inline-block;
+transform:scale(1,1.5); /* W3C */
+-webkit-transform:scale(1,1.5); /* Safari and Chrome */
+-moz-transform:scale(1,1.5); /* Firefox */
+-ms-transform:scale(1,1.5); /* IE 9 */
+-o-transform:scale(1,1.5); /* Opera */
+/* Rest Of CSS Code Here*/
+} 
+
+.sjws .grad_list_right
+{
+    float: right;
+    width: 12%;
+    font-size: 15px;
+    line-height: 20px;
+}
+.sjws_table_head
+{
+    
+}
+.sjws_table_intro
+{
+    font-size: 22px;
+}
+.sjws .sjws_odd{
+    height:auto;
+    background: #fff;
+
+}
+
+.sjws .sjws_even{
+
+    height:auto;
+    background: #fff;
+
+
+}
+tr.sjws_even{
+    border: 1px solid #ADACAB;
+    border-bottom: 0;
+}
+
+tr.sjws_odd{
+    border: 1px solid #ADACAB;
+    border-bottom: 0;
+}
+.sjws_even td{
+
+    padding: 8px 8px 8px 8px;
+    border: 1px solid #ADACAB;
+    border-right: 0px solid #fff;
+    border-top: 0px solid #fff;
+    border-bottom: 0;
+}
+
+.sjws_odd td{
+    padding: 8px 8px 8px 8px;
+    border: 1px solid #ADACAB;
+    border-right: 0px solid #fff;
+    border-top: 0px solid #fff;
+    border-bottom: 0;
+}
+
+.sjws td.col-pdf-bold{
+    font-weight: bold !important;
+}
+
+.sjws-table-header td{
+    padding: 8px 8px 8px 8px;
+    border-top: 1px solid #ADACAB;
+    border-left: 1px solid #ADACAB;
+    border-right: 1px solid #ADACAB;
+    color: #000;
+    background: #fff;
+}
+.sjws_table_head .sl{
+    width:20px !important;
+    font-size: 22px;
+}
+.sjws_table_head .st_name{
+    width:350px !important;
+    font-size: 22px;
+}
+.sjws_table_head .class_test{
+    width:40px !important;
+}
+.sjws_table_head td.rotate {
+  /* Something you can count on */
+  height: 220px;
+  white-space: nowrap; 
+  line-height: 20px;
+  font-weight: 500;
+}
+
+.sjws_table_head td.rotate div {
+    -webkit-transform: translate(5px, 100px) rotate(270deg);
+    transform: translate(5px, 100px) rotate(270deg);
+    width: 40px;
+}
+.sjws_table_head td.rotate div span {  
+  padding: 15px;
+}
+.sjws_table_head td.rotate div span.rotate_box
+{
+    border-top:1px solid #ADACAB;
+    border-bottom: 1px solid #ADACAB;
+    border-left:1px solid #ADACAB;
+}
+/***************SJWS END************/

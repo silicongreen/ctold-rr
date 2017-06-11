@@ -95,6 +95,7 @@
                   exam_effort = @exam_comments.effort
                 end
               %>
+              <%= student.id %>
               <% total_mark = 0 %>
               <% full_mark = 0 %>
               <% unless @exams.blank? %>
@@ -131,8 +132,8 @@
               </td>
               <td class="col-2 td-mark">
                   
-                <% #assignmentCount = Assignment.count(:all, {:subject_id => @exam_subject.id,:is_published=>1,:duedate => @start_date..@end_date}) %>
-                <center><b><%= debug @exam_connect %></b></center>
+                <% assignmentCount = Assignment.count(:all, :conditions => {:subject_id => @exam_subject.id,:is_published=>1,:duedate => @exam_connect.attandence_start_date..@exam_connect.attandence_end_date}) %>
+                <center><b><%= "2" %><hr><%= assignmentCount %></b></center>
               </td>
               <td class="col-2 td-mark">
                   
@@ -141,7 +142,7 @@
                   <div class="text-input-bg2">
                     <%= text_field_tag "exam[#{student.id}][effort]",exam_effort, :size => '2' %></div>
                   </div>
-                  <div class="date2"><span class="themed_text"><%=  student.class_roll_no.to_s+" : "+student.full_name %></span></div>
+                  
               </td>
               <td class="col-2 td-mark">
                   
@@ -150,7 +151,7 @@
                   <div class="text-input-bg2">
                     <%= text_field_tag "exam[#{student.id}][comments]", exam_comment, :size => '30' %></div>
                   </div>
-                  <div class="date2"><span class="themed_text"><%=  student.class_roll_no.to_s+" : "+student.full_name %></span></div>
+                  
               </td>
             <tr>
           <% end %>      

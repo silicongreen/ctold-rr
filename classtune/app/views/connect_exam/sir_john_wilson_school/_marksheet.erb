@@ -47,7 +47,7 @@
         
         <tr class="sjws-table-header">
             <td colspan="2">
-              <h3><i>SENUIR SECTION</i></h3>
+              <h3><i>SENOIR SECTION</i></h3>
               <p><b>TERM: <%= @connect_exam_obj.name %></b></p>
               <p><b>Class : <%= (@batch.name=="General")?"":@batch.name+" " %><%= @batch.course.course_name %>&nbsp;<%= @batch.course.section_name %></b></p>
             <% if !@employee.nil? %> 
@@ -62,7 +62,9 @@
           <td class="rotate"><div><span>05/05/17<br /></span><span><%=  rs['name'] %></span></div></td>
             <% colspan = colspan+1 %>          
           <% end %> 
-          <td class="rotate"><div><span>TOTAL NUM. OF H.W.</span><span class="rotate_box">4</span></div></td>
+          <% assignmentCount = Assignment.count(:all, :conditions => {:subject_id => @subject.id,:is_published=>1,:duedate => @connect_exam_obj.attandence_start_date..@connect_exam_obj.attandence_end_date}) %>
+          
+          <td class="rotate"><div><span>TOTAL NUM. OF H.W.</span><span class="rotate_box"><%=assignmentCount%></span></div></td>
           <td class="rotate"><div><br /><br /><br /><span>MARKS ACHIEVED </span><br /><br /><br /><span> MRKS OUT OF</span><br /></div></td>
           <td class="rotate"><div><span>MARK - PERCENTANGE(%)</span></div></td>
           <td class="rotate"><center><div><span>GRADE</span></div></center></td>

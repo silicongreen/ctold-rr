@@ -2522,6 +2522,37 @@ class ExamController < ApplicationController
       :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
   end
   
+  def effot_gradesheet    
+    @id = params[:id]
+    @subject_id = params[:subject_id]
+    @connect_exam_obj = ExamConnect.active.find(@id)
+    
+    @batch = Batch.find(@connect_exam_obj.batch_id) 
+    @subject = Subject.find(@subject_id)
+    
+    @grades = @batch.grading_level_list
+    
+    @employee_sub = EmployeesSubject.find_by_subject_id(@subject_id)
+    if !@employee_sub.nil?
+      @employee = Employee.find(@employee_sub.employee_id)
+    end
+    @report_data = Rails.cache.fetch("marksheet_#{@id}_#{@subject_id}"){
+    get_subject_mark_sheet(@id,@subject_id)
+    @report_data = []
+    if @student_response['status']['code'].to_i == 200
+      @report_data = @student_response['data']
+    end
+    }    
+    render :pdf => 'effot_gradesheet',
+      :orientation => 'Portrait', :zoom => 1.00,
+      :margin => {    :top=> 10,
+      :bottom => 10,
+      :left=> 10,
+      :right => 10},
+      :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+      :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+  end
+  
   def exam_connect_comment_entry
     @connect_exam = params[:connect_exam]
     @connect_exam_obj = ExamConnect.active.find(@connect_exam)

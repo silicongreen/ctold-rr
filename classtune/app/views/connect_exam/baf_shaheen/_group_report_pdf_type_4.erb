@@ -76,7 +76,7 @@
                   <% total_mark_of_allexam = 0 %>
                  
                   <tr class="table-header">
-                      <td class="col-pdf border-left-none"><%= "Subject" %></b></td>
+                      <td class="col-pdf border-left-none no-warp  align-left-baf"><%= "SUBJECT" %></b></td>
                       <% loop=0 %>
                       <% unless @report_data['report']['exams'].blank? %>  
                         <% @report_data['report']['exams'].each do |report| %>
@@ -123,7 +123,7 @@
                           <% total_mark = 0 %>
                           <% full_mark = 0 %>
 
-                          <td class="col-pdf border-left-none no-warp"><%= subjects['name'] %></td>
+                          <td class="col-pdf border-left-none  no-warp align-left-baf"><%= subjects['name'].upcase %></td>
                           <% unless @report_data['report']['exams'].blank? %>  
                           <% loop=0 %>
                             <% @report_data['report']['exams'].each do |report| %>

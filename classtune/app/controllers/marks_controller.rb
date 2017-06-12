@@ -256,7 +256,9 @@ class MarksController < ApplicationController
       @employee_subjects = current_user.employee_record.subjects.active
       unless @employee_subjects.nil?
         @employee_subjects.each do |esub|
-          @batches << esub.batch
+          unless @batches.include?(esub.batch)
+            @batches << esub.batch
+          end
         end  
       end
     elsif current_user.admin
@@ -271,7 +273,9 @@ class MarksController < ApplicationController
       @employee_subjects = current_user.employee_record.subjects.active
       unless @employee_subjects.nil?
         @employee_subjects.each do |esub|
-          @batches << esub.batch
+          unless @batches.include?(esub.batch)
+            @batches << esub.batch
+          end
         end  
       end
     elsif current_user.admin
@@ -306,7 +310,9 @@ class MarksController < ApplicationController
       @employee_subjects = current_user.employee_record.subjects.active
       unless @employee_subjects.nil?
         @employee_subjects.each do |esub|
-          @batches << esub.batch
+          unless @batches.include?(esub.batch)
+            @batches << esub.batch
+          end
         end  
       end
     elsif current_user.admin

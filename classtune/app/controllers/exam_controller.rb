@@ -2365,11 +2365,11 @@ class ExamController < ApplicationController
     
     @exam_comment_all = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id)
     if MultiSchool.current_school.id == 246
-      render :pdf => 'continues',
-        :orientation => 'Landscape', :zoom => 0.75
-    elsif MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 323 or MultiSchool.current_school.id == 2 or MultiSchool.current_school.id == 325 or MultiSchool.current_school.id == 324
+          render :pdf => 'generated_report5_pdf',
+            :orientation => 'Landscape', :zoom => 1.00
+    elsif MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 323 or MultiSchool.current_school.id == 325 or MultiSchool.current_school.id == 324
       if (MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 324) and (@connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 5)
-        render :pdf => 'continues',
+        render :pdf => 'generated_report5_pdf',
         :orientation => 'Portrait', :zoom => 1.00,
         :margin => {    :top=> 10,
         :bottom => 10,
@@ -2377,13 +2377,20 @@ class ExamController < ApplicationController
         :right => 10},
         :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
         :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
-      else 
-        render :pdf => 'continues',
-          :orientation => 'Portrait', :zoom => 0.65
+      else  
+        render :pdf => 'generated_report5_pdf',
+          :orientation => 'Portrait', :zoom => 1.00
       end
-    else
-    
-      render :pdf => 'continues',
+    elsif  MultiSchool.current_school.id == 2 
+      if @connect_exam_obj.result_type != 1 and @connect_exam_obj.result_type != 6
+        render :pdf => 'generated_report5_pdf',
+        :orientation => 'Portrait', :zoom => 1.00
+      else
+        render :pdf => 'generated_report5_pdf',
+          :orientation => 'Landscape', :zoom => 1.00
+      end
+    else 
+      render :pdf => 'generated_report5_pdf',
         :orientation => 'Landscape', :zoom => 1.00
     end
   end
@@ -2827,7 +2834,7 @@ class ExamController < ApplicationController
               :orientation => 'Portrait', :zoom => 1.00
           end
         elsif  MultiSchool.current_school.id == 2 
-          if @connect_exam_obj.result_type != 1
+          if @connect_exam_obj.result_type != 1 and @connect_exam_obj.result_type != 6
             render :pdf => 'generated_report5_pdf',
             :orientation => 'Portrait', :zoom => 1.00
           else
@@ -2882,7 +2889,7 @@ class ExamController < ApplicationController
               :save_only    => true
           end
         elsif  MultiSchool.current_school.id == 2 
-          if @connect_exam_obj.result_type != 1
+          if @connect_exam_obj.result_type != 1 and @connect_exam_obj.result_type != 6
             render :pdf => 'generated_report5_pdf',
             :orientation => 'Portrait', :zoom => 1.00,
             :save_to_file => file_name,

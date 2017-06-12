@@ -17,7 +17,7 @@
 #limitations under the License.
 
 class GroupedExam < ActiveRecord::Base
-  has_many :exam_groups
+  has_many :exam_groups, :conditions => { :is_deleted => false }
   def after_save
     
     grouped_exam = GroupedExam.find_by_id(self.id)

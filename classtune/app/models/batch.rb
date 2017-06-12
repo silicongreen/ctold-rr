@@ -30,7 +30,7 @@ class Batch < ActiveRecord::Base
   has_many :grading_levels, :conditions => { :is_deleted => false }
   has_many :subjects, :conditions => { :is_deleted => false }
   has_many :employees_subjects, :through =>:subjects
-  has_many :exam_groups
+  has_many :exam_groups, :conditions => { :is_deleted => false }
   has_many :fee_category , :class_name => "FinanceFeeCategory"
   has_many :elective_groups
   has_many :finance_fee_collections

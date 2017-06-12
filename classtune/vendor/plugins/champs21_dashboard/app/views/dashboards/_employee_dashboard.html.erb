@@ -129,6 +129,8 @@ employee_id = @current_user.employee_record.id
       <% end %>
       <%  if (@current_user.admin? || @current_user.privileges.include?(Privilege.find_by_name('SMSManagement'))) && sms_enable? %> 
         <%=  link_to "<div class='sms-link' style='width:100%; margin-top:5px; padding: 10px 0px;  font-size:18px; background:#8B4513; color:white;'><span style='text-align:center;width:80%; float:left;'>Send Sms To Students</span><span style='text-align:right;width:20%;float:left;'> &#x25BA;</span></div>", :controller => 'sms', :action => 'students' %>
+      
+        <%=  link_to "<div class='sms-link' style='width:100%; margin-top:5px; padding: 10px 0px;  font-size:18px; background:#FF6347; color:white;'><span style='text-align:center;width:80%; float:left;'>Send Sms To Employee</span><span style='text-align:right;width:20%;float:left;'> &#x25BA;</span></div>", :controller => 'sms', :action => 'employees' %>
       <% end %>
       <% if (@current_user.employee or @current_user.admin) and can_access_request? :index,:marks %>
         <%=  link_to "<div class='sms-link' style='width:100%; margin-top:5px; padding: 10px 0px;  font-size:18px; background:#000000; color:white;'><span style='text-align:center;width:80%; float:left;'>Marks Entry</span><span style='text-align:right;width:20%;float:left;'> &#x25BA;</span></div>", :controller => 'marks', :action => 'index' %>

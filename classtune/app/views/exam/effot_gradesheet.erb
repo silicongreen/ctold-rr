@@ -103,16 +103,7 @@
         
           <% total_mark = 0 %>
           <% full_mark = 0 %>
-          <% @report_data['result']['ALL'].each do |rs| %>
-            <%
-              exam_comment = ""
-              exam_effort = ""
-              @exam_comments = ExamConnectSubjectComment.find(:first, :conditions => {:exam_connect_id=>@connect_exam_obj.id,:subject_id => @subject_id, :student_id => std['id']} )
-              if !@exam_comments.blank?
-                exam_comment = @exam_comments['comments']
-                exam_effort = @exam_comments['effort']
-              end
-            %>
+          <% @report_data['result']['ALL'].each do |rs| %>            
            
             <% if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank? %>              
               <% total_mark = total_mark.to_f+rs['students'][std['id']]['score'].to_f %>
@@ -139,10 +130,18 @@
             <% assignmentCount = Assignment.count(:all, :conditions => {:subject_id => @subject_id,:is_published=>1,:duedate => @connect_exam_obj.attandence_start_date..@connect_exam_obj.attandence_end_date}) %>
             
             <td class="name"> <center><%= "2" %><hr><%= assignmentCount %></center></td>
-
+            <%
+              exam_comment = ""
+              exam_effort = ""
+              @exam_comments = ExamConnectSubjectComment.find(:first, :conditions => {:exam_connect_id=>@connect_exam_obj.id,:subject_id => @subject_id, :student_id => std['id']} )
+              if !@exam_comments.blank?
+                exam_comment = @exam_comments['comments']
+                exam_effort = @exam_comments['effort']
+              end
+            %>
             
-            <td class="name"><center><%= @exam_comments['effort'] %></center></td>
-            <td class="st_name"><%= @exam_comments['comments'] %></td>
+            <td class="name"><center><%= exam_effort %></center></td>
+            <td class="st_name"><%= exam_comment %></td>
           </tr>
         <% end %>
         <% end %>

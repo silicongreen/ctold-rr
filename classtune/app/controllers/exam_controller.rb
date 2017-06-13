@@ -2834,6 +2834,17 @@ class ExamController < ApplicationController
             render :pdf => 'generated_report5_pdf',
               :orientation => 'Landscape', :zoom => 1.00
           end
+        elsif  MultiSchool.current_school.id == 340
+          if @connect_exam_obj.result_type == 1
+            render :pdf => 'generated_report5_pdf',
+            :orientation => 'Portrait', :zoom => 1.00,
+            :margin => {    :top=> 10,
+            :bottom => 10,
+            :left=> 10,
+            :right => 10},
+            :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+            :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+          end
         else 
           render :pdf => 'generated_report5_pdf',
             :orientation => 'Landscape', :zoom => 1.00

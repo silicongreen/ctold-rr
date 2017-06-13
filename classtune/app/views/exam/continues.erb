@@ -93,7 +93,7 @@
           <%= render  :partial=>"/connect_exam/baf_shaheen/group_report" %>
         <% elsif MultiSchool.current_school.id == 325  %>
           <%= render  :partial=>"/connect_exam/mirpur_english/group_report" %>
-        <% elsif MultiSchool.current_school.id == 2  %>
+        <% elsif MultiSchool.current_school.id == 2 or MultiSchool.current_school.id == 312  %>
           <%= render  :partial=>"/connect_exam/south_point/group_report" %>
         <% else %>
           <%= render  :partial=>"/connect_exam/general_pdf" %>

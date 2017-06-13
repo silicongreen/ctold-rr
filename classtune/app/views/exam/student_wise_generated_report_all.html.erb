@@ -71,7 +71,7 @@
     %>
       <% if @exam_group.exam_category == 5 %>
         <%= render  :partial=>"/group_exam_report/pdf/exam_report_mock_test" %>
-      <% elsif MultiSchool.current_school.id == 323 or MultiSchool.current_school.id == 2 %>
+      <% elsif MultiSchool.current_school.id == 323 or MultiSchool.current_school.id == 2 or MultiSchool.current_school.id == 312 %>
         <%= render  :partial=>"/group_exam_report/pdf/exam_report_south" %>
       <% elsif MultiSchool.current_school.id == 280 %>
         <%= render  :partial=>"/group_exam_report/pdf/exam_report_st_joshef" %>

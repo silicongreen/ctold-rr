@@ -35,7 +35,7 @@
               <% elsif MultiSchool.current_school.id == 325 %>
                   <%= render  :partial=>"/connect_exam/mirpur_english/group_marks" %>
               
-              <% elsif MultiSchool.current_school.id == 2 %>
+              <% elsif MultiSchool.current_school.id == 2 or MultiSchool.current_school.id == 312 %>
                   <%= render  :partial=>"/connect_exam/south_point/group_marks" %>
                <% else %>
                   <%= render  :partial=>"/connect_exam/group_marks" %>
@@ -84,7 +84,7 @@
               <%= render  :partial=>"/connect_exam/mirpur_english/exam_comments" %>
           <% elsif MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 324 %>
               <%= render  :partial=>"/connect_exam/sfx/exam_comments" %>
-          <% elsif MultiSchool.current_school.id == 2 %>
+          <% elsif MultiSchool.current_school.id == 2 or MultiSchool.current_school.id == 312 %>
               <%= render  :partial=>"/connect_exam/south_point/exam_comments" %>
           <% else %> 
               <%= render  :partial=>"/connect_exam/exam_comments" %>  

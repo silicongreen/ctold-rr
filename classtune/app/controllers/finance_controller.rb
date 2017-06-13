@@ -1649,7 +1649,7 @@ class FinanceController < ApplicationController
     
     @date = @fee_collection = FinanceFeeCollection.find(params[:id])
 
-    if MultiSchool.current_school.id == 2
+    if MultiSchool.current_school.id == 2  or MultiSchool.current_school.id == 312
       render :pdf => 'student_fee_receipt_all_pdf',
       :orientation => 'Landscape', :zoom => 1.00,
       :margin => {    :top=> 10,
@@ -1696,7 +1696,7 @@ class FinanceController < ApplicationController
     end
     @fine_amount=0 if @financefee.is_paid
 #    render :layout => false
-      if MultiSchool.current_school.id == 2
+      if MultiSchool.current_school.id == 2  or MultiSchool.current_school.id == 312
         render :pdf => 'student_fee_receipt_pdf',
         :orientation => 'Landscape', :zoom => 1.00,
         :margin => {    :top=> 10,

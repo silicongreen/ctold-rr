@@ -1177,3 +1177,86 @@ table.float-left-clear-both
 //new CSS
 
 
+/***************SJWS START************/
+.sjws{width:100%;font-size: 22px;}
+.sjws .logo_left
+{
+    float: left;
+    width: 12%;
+}
+.sjws .exam_title_left
+{
+    float: left;
+    width: 75%;
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center;
+}
+.sjws .exam_title_left p {
+display:inline-block;
+transform:scale(1,1.5); /* W3C */
+-webkit-transform:scale(1,1.5); /* Safari and Chrome */
+-moz-transform:scale(1,1.5); /* Firefox */
+-ms-transform:scale(1,1.5); /* IE 9 */
+-o-transform:scale(1,1.5); /* Opera */
+/* Rest Of CSS Code Here*/
+} 
+
+.sjws .grad_list_right
+{
+    float: right;
+    width: 12%;
+    font-size: 15px;
+    line-height: 20px;
+}
+.sjws_table_head
+{
+    font-size: 22px;
+    line-height: 40px;
+}
+.sjws_table_intro .table-header td
+{
+    font-size: 22px;
+    text-align: left!important;
+    
+}
+.sjws_table_intro .col-pdf
+{
+    text-align: left!important;font-size: 22px;
+}
+.sjws_table_intro .col-pdf
+{
+    text-align: left!important;font-size: 22px;
+}
+.sjws_table_intro .tickbox_uncheck
+{
+    background-image: url(../../images/icons/tickbox_uncheck.png);
+    background-repeat: no-repeat;
+    background-position: 10%;
+    background-size: 60%;
+    padding: 30px;
+}
+
+.sjws_table_intro .tickbox_check
+{
+    background-image: url(../../images/icons/tickbox_check.png);
+    background-repeat: no-repeat;
+    background-position: 10%;
+    background-size: 60%;
+    padding: 30px;
+}
+.sjws .roundbox
+{
+    border:1px solid ;
+    padding:10px;
+    margin-left: 20px;
+}
+
+.sjws .roundbox_line
+{
+    text-decoration: underline;
+}
+.sjws .note
+{
+    text-align: justify;
+}

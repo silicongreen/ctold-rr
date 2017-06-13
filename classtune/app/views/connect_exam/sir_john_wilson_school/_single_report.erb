@@ -1,155 +1,155 @@
-<%-# Champs21
-#Copyright 2010 teamCreative Private Limited
-#
-#This product includes software developed at
-#Project Champs21 - http://www.champs21.com/
-#
-#Licensed under the Apache License, Version 2.0 (the "License");
-#you may not use this file except in compliance with the License.
-#You may obtain a copy of the License at
-#
-#  http://www.apache.org/licenses/LICENSE-2.0
-#
-#Unless required by applicable law or agreed to in writing,
-#software distributed under the License is distributed on an
-#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-#KIND, either express or implied.  See the License for the
-#specific language governing permissions and limitations
-#under the License. -%>
-<div id="page-yield" class="available_sections1">
-  <div class="page1 sjws"> 
-      <div class="logo_left">&nbsp;</div>
-      <div class="exam_title_left">
-          <p>SIR JOHN WILSON SCHOOLgsdfsdf</p>
-          <p><%= @connect_exam_obj.name %> - EFFORT/GRADE SHEET sdfsdf- 2016/2017</p>
-      </div>
-      <div class="grad_list_right">
-          <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/340/sjws_logo.png")),:width=> '90%' %>
-      </div>
-  </div>
-  <div class="section1 row" >
-    <center>     
+<% unless @report_data.blank?  or  @report_data['report'].blank? %>
+  <div id="page-yield"  class="available_sections1 sjws">
+    <div class="page1"> 
+        <div class="logo_left">
+          <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/340/sjws_logo.png")),:width=> '120%' %>
+        </div>
+        <div class="exam_title_left">
+            <p>PROGRESS REPORT OF <%= @connect_exam_obj.name %> (YEAE <%= Time.current.year %> - <%= Time.current.year + 1 %>)</p>
+            <p>EVALUATION PERIOD: <%= @connect_exam_obj.attandence_start_date.strftime("%B") %> - <%= @connect_exam_obj.attandence_end_date.strftime("%B") %> <%= @connect_exam_obj.attandence_end_date.strftime("%Y") %></p>
+        </div>
+        <div class="grad_list_right">&nbsp; </div>
+    </div>
       
-      <div id ="main_info" class="sjws">
-            
-       
-      </div>
-      <% unless @report_data.blank?  or  @report_data['result'].blank? %>
-      <% c = 'even' %>
-      <% full_mark = 0 %>
-      <% colspan = 0 %>
-      <table class="sjws_table_intro" width="100%" cellspacing="0">
-        <tr>
-          <td colspan="2">
-              <p>&nbsp;</p>
-              <p><b>Class : <%= (@batch.name=="General")?"":@batch.name+" " %><%= @batch.course.course_name %>&nbsp;<%= @batch.course.section_name %></b></p>
-              <p><b>Subject : <%= @subject.name %></b></p>
-              <p>&nbsp;</p>
-          </td>
-          
-          <td>&nbsp;</td>
-          <td>&nbsp;</td>
-          <td>&nbsp;</td>
-          <td>&nbsp;</td>
-          
-          <td colspan="2" align="right">
-            <p>&nbsp;</p>
-            <p><b>TERM: <%= @connect_exam_obj.name %></b></p>
-            <% if !@employee.nil? %>
-              <p><b>Teacher's Name : <%=  @employee.full_name %></b></p>                          
-            <% end %> 
-            <p>&nbsp;</p>
-          </td>
-        </tr>
-        
-      </table>
-      <table id="pdf-table" class="sjws_table_head" width="100%" cellspacing="0">
-        
-        
-        
-        
-        <tr class="sjws-table-header">
-          <td class="sl"><b>SL.</b></td>
-          <td class="st_name"><b>NAME</b></td>
-          <td class="name"><center><b><%= "M. Obt." %><hr><%="T. Marks"%></b></center></td>
-          <td class="name"><center><b><%= "%" %></b></center></td>
-          <td class="name"><center><b><%= "Grade" %></b></center></td>
-          <td class="name"><center><b><%= "H.W." %></b></center></td>
-          <td class="name"><center><b><%= "Effort" %></b></center></td>
-          <td class="st_name"><b><%= "Comment" %></b></td>
-        
-        </tr>
-        
-        <% extender = 0 %>
-        <% std_count = 0 %>
-        <% unless @report_data['result']['al_students'].blank? %>
-        <% @report_data['result']['al_students'].each do |std| %>
-          <%  std_count = std_count+1; %>
-          <% colspan = colspan+4 %>
-          <% if std_count>17 && extender ==0 %>
-              <% std_count = 0 %>
-              <% extender = 1 %>
-              <tr class="page-break">
-                  <td colspan="<%= colspan %>">&nbsp;</td>
-              </tr>    
-          <% elsif std_count>22 && extender ==1 %>
-              <% std_count = 0 %>
-              <% extender = 1 %>
-              <tr class="page-break">
-                  <td colspan="<%= colspan %>">&nbsp;</td>
-              </tr> 
-          <% end %>    
-        
-        
-          <% total_mark = 0 %>
-          <% full_mark = 0 %>
-          <% @report_data['result']['ALL'].each do |rs| %>
-            <%
-              exam_comment = ""
-              exam_effort = ""
-              @exam_comments = ExamConnectSubjectComment.find(:first, :conditions => {:exam_connect_id=>@connect_exam_obj.id,:subject_id => @subject_id, :student_id => std['id']} )
-              if !@exam_comments.blank?
-                exam_comment = @exam_comments['comments']
-                exam_effort = @exam_comments['effort']
-              end
-            %>
-           
-            <% if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank? %>              
-              <% total_mark = total_mark.to_f+rs['students'][std['id']]['score'].to_f %>
-              <% full_mark = full_mark+rs['maximum_marks'].to_i %>
-            <% else %>
-                
-            <% end %>    
-           
-          <% end %>     
-          <tr class="<%= cycle(c,(["sjws_odd","sjws_even"]-[c]).first) %>">
-            <td class="sl"><%#= std['class_roll_no'] %><%= std_count %></td>
-            <td class="st_name"><%= std['name'] %></td>
-            
-            <td class="name"><center><%=total_mark.to_i%><hr><%=  full_mark.to_i %></center></td>
-            <% main_mark = (total_mark.to_f/full_mark.to_f)*100 %>
-            <td class="name"><center><%= sprintf( "%0.02f", main_mark) %> %</center></td>  
-            <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
-            <% if !grade.blank? and !grade.name.blank? %>
-            <td class="name"><center><%= grade.name %></center></td>
-            <% else %>
-              <td class="name"><center>N/A</center></td>
-            <% end %> 
-            
-            <% assignmentCount = Assignment.count(:all, :conditions => {:subject_id => @subject_id,:is_published=>1,:duedate => @connect_exam_obj.attandence_start_date..@connect_exam_obj.attandence_end_date}) %>
-            
-            <td class="name"> <center><%= "2" %><hr><%= assignmentCount %></center></td>
+      
+      
+      <p>&nbsp;<p>
+      
+      
 
-            
-            <td class="name"><center><%= @exam_comments['effort'] %></center></td>
-            <td class="st_name"><%= @exam_comments['comments'] %></td>
+      <table class="sjws_table_head" width="100%" cellspacing="0">
+          <tr>
+              <td colspan="2"><b>STUDENT'S NAME : <%= @student.full_name %></b></td> 
           </tr>
-        <% end %>
-        <% end %>
+          <tr>
+              <td colspan="1"><b>Class : <%= @batch.course.course_name %></b></td>
+              <td colspan="1"><b>Section : <%= @batch.course.section_name %></b></td> 
+          </tr>
       </table>
-      <% end %>
-    </center>
+      <p>&nbsp;<p>
+      <div class ="current_batch" style="margin-left:0px;">
+          <div id="grouped_exam_report">
+
+
+              <table id="pdf-table" class="sjws_table_intro" width="100%" cellspacing="0">
+                  <% c = 'even'  %>
+                  <tr class="table-header">
+                      <td class="col-pdf"><%= "Subject" %></b></td>                      
+
+                      <td class="col-pdf">Level of progress</td>
+                  </tr>
+
+                  <% total_parcent = 0 %>
+                  <% total_subject = 0 %>
+                  <% unless @report_data['report']['subjects'].blank? %> 
+                    <% @report_data['report']['subjects'].each do |subjects| %>
+                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">                          
+                          <% total_mark = 0 %>
+                          <% full_mark = 0 %>
+
+                          <td class="col-pdf"><%= subjects['name'] %></td>
+                          <% unless @report_data['report']['exams'].blank? %>  
+                            <% @report_data['report']['exams'].each do |report| %>                              
+                                  <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
+                                    <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                  <% end %>
+                                  <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
+                                    <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                  <% end %>                                  
+                            <% end %>
+                          <% end %>
+                          
+                          <% 
+                            if total_mark.to_f>0 and full_mark.to_f>0
+                              main_mark = (total_mark.to_f/full_mark.to_f)*100 
+                            else
+                              main_mark = 0
+                            end  
+                          %>
+
+                          <% if full_mark.to_f > 0 %>  
+                            <% if main_mark > 0 %>
+                              <td class="col-pdf">
+                                <% if main_mark >69 and main_mark < 101 %>
+                                  <p><span class="tickbox_check"></span>Progressing well</p>
+                                  <p><span class="tickbox_uncheck"></span>Progressing with difficulty</p>
+                                  <p><span class="tickbox_uncheck"></span>Unsatisfactory progress</p>
+                                <% elsif main_mark > 49 and main_mark < 70 %>
+                                  <p><span class="tickbox_uncheck"></span>Progressing well</p>
+                                  <p><span class="tickbox_check"></span>Progressing with difficulty</p>
+                                  <p><span class="tickbox_uncheck"></span>Unsatisfactory progress</p>
+                                <% elsif main_mark > 0 and main_mark < 50 %>
+                                  <p><span class="tickbox_uncheck"></span>Progressing well</p>
+                                  <p><span class="tickbox_uncheck"></span>Progressing with difficulty</p>
+                                  <p><span class="tickbox_check"></span>Unsatisfactory progress</p>
+                                <% else %>
+                                  <p><span class="tickbox_uncheck"></span>Progressing well</p>
+                                  <p><span class="tickbox_uncheck"></span>Progressing with difficulty</p>
+                                  <p><span class="tickbox_uncheck"></span>Unsatisfactory progress</p>
+                                <% end %>
+                              </td>                            
+                            <% else  %>                            
+                              <td class="col-pdf">
+                                <p><span class="tickbox_uncheck"></span>Progressing well</p>
+                                <p><span class="tickbox_uncheck"></span>Progressing with difficulty</p>
+                                <p><span class="tickbox_uncheck"></span>Unsatisfactory progress</p>
+                              </td>                            
+                            <% end %>      
+                          <% end %> 
+                      </tr> 
+                    <% end %>  
+                  <% end %>     
+
+              </table>
+
+
+              <%# avgparcent = total_parcent.to_f/total_subject.to_f %>
+              <!--table id="pdf-table" class="margin-top-bottom-10 font-size-20" width="100%" >
+                 
+                      <tr class="table-header">
+
+                          <td class="col-pdf">Working Days : <%#= @report_data['total'] %></td>
+
+                          <td class="col-pdf">Days Present : <%#= @report_data['present'] %> </td>
+                          <td class="col-pdf">Days Absent : <%#= @report_data['total']-@report_data['present'] %> </td>
+                          <td class="col-pdf">Average Marks : <%#= sprintf( "%0.02f",avgparcent) %> % </td>
+                          <td class="col-pdf">Detention : <%#= @student.number_of_detention  %> </td>
+                      </tr> 
+                  
+
+              </table-->
+              <p>&nbsp;<p>
+              <table class='sjws_table_head' width="100%" >                 
+                      <tr>
+                          <td class="col-pdf">CLASS TEACHER'S SIGNATURE: .................................... </td>                          
+                          <td class="col-pdf">DATE: <%=Time.now.strftime("%d-%m-%Y")%> </td>                          
+                      </tr> 
+              </table>
+              <table class='sjws_table_head' width="100%" >                 
+                      <tr>
+                          <td width="50%">
+                              <p class="note">Note: The level of progress is based on the marking class works and class test(s) taken in the month of 
+                                <b><%= @connect_exam_obj.attandence_start_date.strftime("%B") %> - <%= @connect_exam_obj.attandence_end_date.strftime("%B") %> <%= @connect_exam_obj.attandence_end_date.strftime("%Y") %></b>.
+                                Parents are encouraged to meet the subject teachers if the students are progressing with difficulty or below the satisfactory level.
+                              </p>
+                          </td>                          
+                          <td width="50%">
+                              <div class="roundbox">
+                                <p class="roundbox_line">Progress Indicator Key:</p>
+                                <span>70-100% - Progressing well (Grade A + B)</span><br />
+                                <span>50-69% - Progressing with difficulty (Grade C)</span><br />
+                                <span>49% and below - Unsatisfactory progress (Grade D)</span>
+                              </div>
+                          </td>                          
+                      </tr> 
+              </table>
+
+
+              
+          </div>
+      </div>
   </div>
-  
-  
-</div>
+
+<% end %>
+
+

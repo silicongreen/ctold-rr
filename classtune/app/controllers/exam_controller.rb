@@ -2530,6 +2530,7 @@ class ExamController < ApplicationController
   end
   
   def effot_gradesheet    
+    #This is used for Sir John Wilson School Report Card First Term First Half Effort/Grade Sheet
     @id = params[:id]
     @subject_id = params[:subject_id]
     @connect_exam_obj = ExamConnect.active.find(@id)
@@ -2551,6 +2552,47 @@ class ExamController < ApplicationController
     end
     }    
     render :pdf => 'effot_gradesheet',
+      :orientation => 'Portrait', :zoom => 1.00,
+      :margin => {    :top=> 10,
+      :bottom => 10,
+      :left=> 10,
+      :right => 10},
+      :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+      :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+  end
+  
+  def score_sheet    
+    #This is used for Sir John Wilson School Report Card Half Yearly Grade Sheet
+    @id = params[:id]
+    @subject_id = params[:subject_id]
+    @connect_exam_obj = ExamConnect.active.find(@id)
+    
+    @batch = Batch.find(@connect_exam_obj.batch_id) 
+    @subject = Subject.find(@subject_id)
+    
+    @grades = @batch.grading_level_list
+    
+    @employee_sub = EmployeesSubject.find_by_subject_id(@subject_id)
+    if !@employee_sub.nil?
+      @employee = Employee.find(@employee_sub.employee_id)
+    end
+    @report_data = Rails.cache.fetch("marksheet_#{@id}_#{@subject_id}"){
+    get_subject_mark_sheet(@id,@subject_id)
+    @report_data = []
+    if @student_response['status']['code'].to_i == 200
+      @report_data = @student_response['data']
+    end
+    }  
+    
+    if @tabulation_data.nil?
+      student_response = get_tabulation_connect_exam(@connect_exam_obj.id,@batch.id,true)
+      @tabulation_data = []
+      if student_response['status']['code'].to_i == 200
+        @tabulation_data = student_response['data']
+      end
+    end
+    
+    render :pdf => 'score_sheet',
       :orientation => 'Portrait', :zoom => 1.00,
       :margin => {    :top=> 10,
       :bottom => 10,

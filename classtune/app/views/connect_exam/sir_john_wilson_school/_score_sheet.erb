@@ -1,0 +1,136 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+<div id="page-yield" class="available_sections1">
+  <div class="page1 sjws"> 
+      <div class="logo_left">&nbsp;</div>
+      <div class="exam_title_left">
+          <p>SIR JOHN WILSON SCHOOL</p><br />
+          <p><%= @connect_exam_obj.name %> - SCORE SHEET - <%= Time.current.year %> / <%= Time.current.year + 1%></p>
+      </div>
+      <div class="grad_list_right">
+          <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/340/sjws_logo.png")),:width=> '90%' %>
+      </div>
+  </div>
+  <div class="section1 row" >
+    <center>     
+      
+      <div id ="main_info" class="sjws">
+            
+       
+      </div>
+      <% unless @report_data.blank?  or  @report_data['result'].blank? %>
+      <% c = 'even' %>
+      <% full_mark = 0 %>
+      <% colspan = 0 %>
+      <table class="sjws_table_intro" width="100%" cellspacing="0">
+        <tr>
+          <td colspan="2">
+              <p>&nbsp;</p>
+              <p><b>Class : <%= (@batch.name=="General")?"":@batch.name+" " %><%= @batch.course.course_name %>&nbsp;<%= @batch.course.section_name %></b></p>
+              <p><b>Subject : <%= @subject.name %></b></p>
+              <p>&nbsp;</p>
+          </td>
+          
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          
+          <td colspan="2" align="right">
+            <p>&nbsp;</p>            
+            <% if !@employee.nil? %>
+              <p><b>Teacher's Name : <%=  @employee.full_name %></b></p>
+            <% else %>
+              <p><b>Teacher's Name : ..............................</b></p> 
+            <% end %> 
+            <p><b>Highest Score : 89</b></p>
+          </td>
+        </tr>
+        
+      </table>
+      <table id="pdf-table" class="sjws_table_head" width="100%" cellspacing="0">
+        <%#= debug @tabulation_data %>
+        <% subject_full_mark = 0 %>
+        <% @report_data['result']['ALL'].each do |rs| %>
+            <% subject_full_mark = subject_full_mark+rs['maximum_marks'].to_i %>
+        <% end %>   
+        <tr class="sjws-table-header">
+          <td class="sl"><b>SL.</b></td>
+          <td class="st_name"><b>STUDENTS' NAME</b></td>
+          <td class="name"><center><b><%= @connect_exam_obj.name %> OUT OF</b><hr><b><%=  subject_full_mark%></b></center></td>
+          <td class="name"><center><b><%= @connect_exam_obj.name %> <%= "%" %></b></center></td>
+          <td class="name"><center><b><%= "Grade" %></b></center></td>        
+        </tr>
+        
+        <% extender = 0 %>
+        <% std_count = 0 %>
+        <% unless @report_data['result']['al_students'].blank? %>
+        <% @report_data['result']['al_students'].each do |std| %>
+          <%  std_count = std_count+1; %>
+          <% colspan = colspan+4 %>
+          <% if std_count>17 && extender ==0 %>
+              <% std_count = 0 %>
+              <% extender = 1 %>
+              <tr class="page-break">
+                  <td colspan="<%= colspan %>">&nbsp;</td>
+              </tr>    
+          <% elsif std_count>22 && extender ==1 %>
+              <% std_count = 0 %>
+              <% extender = 1 %>
+              <tr class="page-break">
+                  <td colspan="<%= colspan %>">&nbsp;</td>
+              </tr> 
+          <% end %>    
+        
+        
+          <% total_mark = 0 %>
+          <% full_mark = 0 %>
+          <% @report_data['result']['ALL'].each do |rs| %>            
+           
+            <% if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank? %>              
+              <% total_mark = total_mark.to_f+rs['students'][std['id']]['score'].to_f %>
+              <% full_mark = full_mark+rs['maximum_marks'].to_i %>
+            <% else %>
+                
+            <% end %>    
+           
+          <% end %>     
+          <tr class="<%= cycle(c,(["sjws_odd","sjws_even"]-[c]).first) %>">
+            <td class="sl"><%#= std['class_roll_no'] %><%= std_count %></td>
+            <td class="st_name"><%= std['name'] %></td>
+            
+            <td class="name"><center><%=total_mark.to_i%></center></td>
+            <% main_mark = (total_mark.to_f/full_mark.to_f)*100 %>
+            <td class="name"><center><%= sprintf( "%0.02f", main_mark) %> %</center></td>  
+            <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
+            <% if !grade.blank? and !grade.name.blank? %>
+            <td class="name"><center><%= grade.name %></center></td>
+            <% else %>
+              <td class="name"><center>N/A</center></td>
+            <% end %> 
+          </tr>
+        <% end %>
+        <% end %>
+      </table>
+      <% end %>
+    </center>
+  </div>
+  
+  
+</div>

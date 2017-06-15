@@ -205,18 +205,6 @@ table#pdf-table{
 table, tr, td, th, tbody, thead, tfoot {
     page-break-inside: avoid !important;
 }
-table.final-term tr td
-{
-    
-   text-align: center;
-   font-size: 24px;
-   white-space: nowrap;
-    
-}
-table tr td
-{
-    
-}
 
 #page-yield 
 {
@@ -323,13 +311,14 @@ tr.sjws_odd{
     border-right: 1px solid #ADACAB;
     color: #000;
     background: #fff;
+    height: 100px;
 }
 .sjws_table_head .sl{
     width:20px !important;
     font-size: 22px;
 }
 .sjws_table_head .st_name{
-    width:350px !important;
+    width:200px !important;
     font-size: 22px;
 }
 .sjws_table_head .class_test{

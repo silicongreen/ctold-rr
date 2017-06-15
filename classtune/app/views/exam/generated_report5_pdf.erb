@@ -31,12 +31,14 @@
   <%= render  :partial=>"/connect_exam/akmis/group_report" %>
 <% elsif MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 324 %>
   <%= render  :partial=>"/connect_exam/sfx/group_report" %>
-<% elsif MultiSchool.current_school.id == 323 %>
+<% elsif MultiSchool.current_school.id == 323 or MultiSchool.current_school.id == 2   %>
   <%= render  :partial=>"/connect_exam/baf_shaheen/group_report" %>
-<% elsif MultiSchool.current_school.id == 2 or MultiSchool.current_school.id == 312  %>
+<% elsif MultiSchool.current_school.id == 2  %>
   <%= render  :partial=>"/connect_exam/south_point/group_report" %>
 <% elsif MultiSchool.current_school.id == 325  %>
   <%= render  :partial=>"/connect_exam/mirpur_english/group_report" %>
+<% elsif MultiSchool.current_school.id == 340  %>
+  <%= render  :partial=>"/connect_exam/sir_john_wilson_school/single_report" %> 
 <% else %>
   <%= render  :partial=>"/connect_exam/general_pdf" %>
 <% end %>

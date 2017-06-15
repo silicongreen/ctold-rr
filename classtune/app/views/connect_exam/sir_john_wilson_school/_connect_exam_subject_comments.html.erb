@@ -118,9 +118,12 @@
               <td class="col-2 td-mark"><center><b><%=total_mark.to_i%><hr><%=  full_mark.to_i %></b></center></td>
               <td class="col-2 td-mark">
                 <%
-                  stGetPercentage = (total_mark/full_mark)*100
+                  stGetPercentage = 0
+                  if full_mark != 0
+                    stGetPercentage = (total_mark/full_mark)*100
+                  end
                 %>
-                <center><b><%=stGetPercentage.to_i%> % </b></center>
+                <center><b><%=  stGetPercentage.to_i%> % </b></center>
               </td>
               <td class="col-2 td-mark">
                 <%  grade = GradingLevel.percentage_to_grade(stGetPercentage, @batch.id) %>

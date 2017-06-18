@@ -20,7 +20,7 @@ class DashboardsController < ApplicationController
         @allow_detention = true      
       end
       time_diff = Time.now-time_now
-      
+      time_now = Time.now
       
       
       if current_user.employee?
@@ -46,9 +46,11 @@ class DashboardsController < ApplicationController
       end
       
       if current_user.admin?
-        time_diff1 = Time.now-time_diff
+        time_diff1 = Time.now-time_now
+        time_now = Time.now
         @news = News.find(:all,:conditions=>{:is_published=>1}, :limit =>3)
-        time_diff2 = Time.now-time_diff1
+        time_diff2 = Time.now-time_now
+        time_now = Time.now
         @view_layout = 'employee'
         
         if check_free_school?
@@ -58,7 +60,8 @@ class DashboardsController < ApplicationController
           end
         else
           get_next_class_routine_admin
-          time_diff3 = Time.now-time_diff2
+          time_diff3 = Time.now-time_now
+          time_now = Time.now
           if @next_routine_response['status']['code'].to_i == 200
             @data['next_class'] = @next_routine_response['data']['next_classess']
             @data['current_class'] = @next_routine_response['data']['current_class']
@@ -102,7 +105,8 @@ class DashboardsController < ApplicationController
     
       
       @event = Event.find(:last, :conditions=>" is_common = 1 AND is_exam = 0 AND is_due = 0 AND is_club = 0 AND end_date >= '" + I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')+ "'")
-      time_diff4 = Time.now-time_diff3
+      time_diff4 = Time.now-time_now
+      time_now = Time.now
       @att_text = ''
       @att_image = ''
       get_attendence_text
@@ -110,9 +114,10 @@ class DashboardsController < ApplicationController
         @att_text = @attendence_text['data']['text']
         @att_image = @attendence_text['data']['profile_picture']
       end
-      time_diff5 = Time.now-time_diff4
+      time_diff5 = Time.now-time_now
+      time_now = Time.now
       
-      @time_diff_string = "Time 1 : "+time_diff1.to_s+"Time 2 : "+time_diff2.to_s+"Time 3 : "+time_diff3.to_s+"Time 4 : "+time_diff4.to_s+"Time 5 : "+time_diff5.to_s
+      @time_diff_string = "Time  : "+time_diff.to_s+" || Time 1 : "+time_diff1.to_s+" || Time 2 : "+time_diff2.to_s+" || Time 3 : "+time_diff3.to_s+" || Time 4 : "+time_diff4.to_s+" || Time 5 : "+time_diff5.to_s
       
 #    end
   end

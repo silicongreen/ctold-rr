@@ -358,7 +358,7 @@
 
 
 </script>
-<% time_diff2 = Time.now-time_diff %>
+<% time_diff2 = Time.now-time_now %>
 <%= debug time_diff2  %>
 <% unless flash[:notice].nil? %>
   <p class="flash-msg"> <%= flash[:notice] %> </p>
@@ -474,6 +474,6 @@
 <% content_for :head do %>
   <%= javascript_include_tag "custom/dashboard-filter" %>
 <% end %>
-<% time_diff3 = Time.now-time_diff2 %>
+<% time_diff3 = Time.now-time_now %>
 <%= debug time_diff3  %>
 <%= debug @time_diff_string %>

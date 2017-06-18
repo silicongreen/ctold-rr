@@ -45,7 +45,9 @@ class DashboardsController < ApplicationController
 #        end
 #      end
       time_diff1 = Time.now-time_now
+      time_now = Time.now
       if current_user.admin?
+        time_diff_if = Time.now-time_now
         time_now = Time.now
         @news = News.find(:all,:conditions=>{:is_published=>1}, :limit =>3)
         time_diff2 = Time.now-time_now
@@ -116,7 +118,7 @@ class DashboardsController < ApplicationController
       time_diff5 = Time.now-time_now
       time_now = Time.now
       
-      @time_diff_string = "Time  : "+time_diff.to_s+" || Time 1 : "+time_diff1.to_s+" || Time 2 : "+time_diff2.to_s+" || Time 3 : "+time_diff3.to_s+" || Time 4 : "+time_diff4.to_s+" || Time 5 : "+time_diff5.to_s
+      @time_diff_string = "Time  : "+time_diff.to_s+" || Time 1 : "+time_diff1.to_s+" || Time if : "+time_diff_if.to_s+" || Time 2 : "+time_diff2.to_s+" || Time 3 : "+time_diff3.to_s+" || Time 4 : "+time_diff4.to_s+" || Time 5 : "+time_diff5.to_s
       
 #    end
   end

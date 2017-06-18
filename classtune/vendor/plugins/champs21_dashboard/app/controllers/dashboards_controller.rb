@@ -23,27 +23,27 @@ class DashboardsController < ApplicationController
       time_now = Time.now
       
       
-      if current_user.employee?
-        @view_layout = 'employee'
-        @news = News.find(:all,:conditions=>["is_published = 1 AND (department_news.department_id = ? or news.is_common = 1 or author_id=?)", current_user.employee_record.employee_department_id,current_user.id], :limit =>4,:include=>[:department_news])
-        
-        if check_free_school?
-          get_employee_homework
-          if @employee_homework_response['status']['code'].to_i == 200
-            @data['employee_homework'] = @employee_homework_response['data']['homework']
-          end
-        else
-          get_next_class_routine
-          if @next_routine_response['status']['code'].to_i == 200
-            @data['next_class'] = @next_routine_response['data']['time_table']
-          end
-
-          get_class_routine
-          if @routine_response['status']['code'].to_i == 200
-            @data['today_class'] = @routine_response['data']['time_table']
-          end
-        end
-      end
+#      if current_user.employee?
+#        @view_layout = 'employee'
+#        @news = News.find(:all,:conditions=>["is_published = 1 AND (department_news.department_id = ? or news.is_common = 1 or author_id=?)", current_user.employee_record.employee_department_id,current_user.id], :limit =>4,:include=>[:department_news])
+#        
+#        if check_free_school?
+#          get_employee_homework
+#          if @employee_homework_response['status']['code'].to_i == 200
+#            @data['employee_homework'] = @employee_homework_response['data']['homework']
+#          end
+#        else
+#          get_next_class_routine
+#          if @next_routine_response['status']['code'].to_i == 200
+#            @data['next_class'] = @next_routine_response['data']['time_table']
+#          end
+#
+#          get_class_routine
+#          if @routine_response['status']['code'].to_i == 200
+#            @data['today_class'] = @routine_response['data']['time_table']
+#          end
+#        end
+#      end
       
       if current_user.admin?
         time_diff1 = Time.now-time_now

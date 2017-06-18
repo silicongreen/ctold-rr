@@ -1,0 +1,65 @@
+ 
+<% if @connect_exam_obj.result_type.to_i == 5 or @connect_exam_obj.result_type.to_i == 6 %>
+<% unless @current_user.student? or @current_user.parent? %>
+
+<% 
+  all_comments_array = []
+  if !@exam_comment.blank?
+    all_comments = @exam_comment.comments
+    if !all_comments.blank?
+      all_comments_array = all_comments.split("|")
+    end
+  end
+%>
+   <table id="pdf-table" class="margin-top-20 class-text-align-left" width="100%" cellspacing="0">
+        <tr class="even">
+            <td>Complete works in time</td><td><input type="text" value="<%= all_comments_array[0].blank? ? "":all_comments_array[0] %>" size="60" style="height:30px;" id="c1" name="c1"></td>
+        </tr>
+        
+        <tr class="even">
+            <td>Does home-work regularly</td><td><input type="text" value="<%= all_comments_array[1].blank? ? "":all_comments_array[1] %>" size="60" style="height:30px;" id="c2" name="c2"></td>
+        </tr>
+        
+        <tr class="even">
+            <td>Does work neatly</td><td><input type="text" value="<%= all_comments_array[2].blank? ? "":all_comments_array[2] %>" size="60" style="height:30px;" id="c3" name="c3"></td>
+        </tr>
+        <tr class="even">
+            <td>Eagerly participates in class</td><td><input type="text" value="<%= all_comments_array[3].blank? ? "":all_comments_array[3] %>" size="60" style="height:30px;" id="c4" name="c4"></td>
+        </tr>
+        <tr class="even">
+            <td>Express good behaviour</td><td><input type="text" value="<%= all_comments_array[4].blank? ? "":all_comments_array[4] %>" size="60" style="height:30px;" id="c5" name="c5"></td>
+        </tr>
+        <tr class="even">
+            <td>Is attentive to work</td><td><input type="text" value="<%= all_comments_array[5].blank? ? "":all_comments_array[5] %>" size="60" style="height:30px;" id="c6" name="c6"></td>
+        </tr>
+        <tr class="even">
+            <td>Punctual in class</td><td><input type="text" value="<%= all_comments_array[6].blank? ? "":all_comments_array[6] %>" size="60" style="height:30px;" id="c7" name="c7"></td>
+        </tr>
+        <tr class="even">
+            <td>Takes interest in game</td><td><input type="text" value="<%= all_comments_array[7].blank? ? "":all_comments_array[7] %>" size="60" style="height:30px;" id="c8" name="c8"></td>
+        </tr>
+        <tr class="even">
+            <td>Understand and follows instruction</td><td><input type="text" value="<%= all_comments_array[8].blank? ? "":all_comments_array[8] %>" size="60" style="height:30px;" id="c9" name="c9"></td>
+        </tr>
+        <tr class="even">
+            <td>Works cooperatively with peers</td><td><input type="text" value="<%= all_comments_array[9].blank? ? "":all_comments_array[9] %>" size="60" style="height:30px;" id="c0" name="c0"></td>
+        </tr>
+      
+  </table>
+  <p><%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader2", :style =>"display: none;" ) %><input type="button" value="save" name="exam_comment_save_all" id="exam_comment_save_all" /></p>
+
+<% end %>
+  
+<script>
+  var jj = jQuery.noConflict();
+    jj(document).ready(function() {
+    jj('#exam_comment_save_all').click(function(){
+    Element.show('loader2')
+    new Ajax.Request('/exam/generated_report5',
+    {asynchronous:true, evalScripts:true,
+      parameters:'comments='+jj('#c1').val()+"|"+jj('#c2').val()+"|"+jj('#c3').val()+"|"+jj('#c4').val()+"|"+jj('#c5').val()+"|"+jj('#c6').val()+"|"+jj('#c7').val()+"|"+jj('#c8').val()+"|"+jj('#c9').val()+"|"+jj('#c0').val()+'&student=<%= @student.id %>&type=<%= @type %>&connect_exam=<%= @connect_exam %>',onSuccess:function(request){Element.hide('loader2')}
+    }); 
+    });   
+});     
+</script>
+<% end %>

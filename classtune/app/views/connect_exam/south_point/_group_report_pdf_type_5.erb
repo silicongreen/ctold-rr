@@ -1,0 +1,200 @@
+<%
+  personal_and_social = ['Complete works in time','Does home-work regularly','Does work neatly','Eagerly participates in class','Express good behaviour','Is attentive to work','Punctual in class','Takes interest in game','Understand and follows instruction','Works cooperatively with peers']
+%>
+<% 
+  all_comments_array = []
+  if !@exam_comment.blank?
+    all_comments = @exam_comment.comments
+    if !all_comments.blank?
+      all_comments_array = all_comments.split("|")
+    end
+  end
+%>
+
+<% unless @report_data.blank?  or  @report_data['report'].blank? %>
+  <div id="page-yield"  class="available_sections1 st_joseph_bg south-point-protrait">
+      
+      <table  width="100%" >
+            <thead>
+                <tr>
+                   
+                    <td><b>Student's Name : <%= "#{@student.full_name}" %> </b></td>
+                    <td align="right"><b>Roll No. : <%= "#{@student.class_roll_no}" %></b></td>
+                    <td align="right"><b>Section Name. : <%= @batch.course.section_name %></b></td>
+                </tr>
+            </thead>    
+      </table>    
+
+
+      <div class ="current_batch" style="margin-left:0px;">
+          <div id="grouped_exam_report">
+
+
+              <table id="pdf-table" width="100%" cellspacing="0">
+                  <% c = 'even'  %>
+                  <tr class="table-header">
+                      <td class="col-pdf" colspan="2">Academic Performance</td>
+                      <td class="col-pdf" colspan="4">Personal and Social Development</td>
+                  </tr> 
+                  <tr class="table-header">
+                      <td class="col-pdf"><%= "Subject" %></td>
+                      <td class="col-pdf">Grade</td>
+                      <td class="col-pdf"></td>
+                      <td class="col-pdf">Sometimes</td>
+                      <td class="col-pdf">Usually</td>
+                      <td class="col-pdf">Mostly</td>
+                    
+                  </tr>
+
+                  <% total_mark = 0 %>
+                  <% full_mark = 0 %>
+                  <% i = 0 %>
+                  <% unless @report_data['report']['subjects'].blank? %> 
+                    <% @report_data['report']['subjects'].each do |subjects| %>
+                      
+                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                        
+                          <td class="col-pdf"><%= subjects['name'] %></td>
+                            <% unless @report_data['report']['exams'].blank? %>  
+                              <% @report_data['report']['exams'].each do |report| %>
+                                <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
+                                  <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+
+                                <% end %>
+                                <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
+                                  <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+
+                                <% end %>
+                              <% end %>
+                            <% end %>
+                            <% 
+                            if total_mark.to_f>0 and full_mark.to_f>0
+                              main_mark = (total_mark.to_f/full_mark.to_f)*100 
+                              else
+                              main_mark = 0
+                              end  
+                           %>
+                            <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
+
+                            <% if !grade.blank? and !grade.name.blank?  %>
+                              <td class="col-2"><b><%= grade.name %></b></td>
+                            <% else %>
+                              <td class="col-2"><b>-</b></td>
+                            <% end %>
+                            <% unless personal_and_social[i].blank? %>
+                                <td class="col-2"><%= personal_and_social[i] %></td>
+                                <td class="col-2">
+                                  <% if !all_comments_array[i].blank? and all_comments_array[i].to_i == 1  %>
+                                    &#10004;
+                                  <% end %>
+                                </td>
+                                <td class="col-2">
+                                  <% if !all_comments_array[i].blank? and all_comments_array[i].to_i == 2  %>
+                                    &#10004;
+                                  <% end %>
+                                </td>
+                                <td class="col-2">
+                                  <% if !all_comments_array[i].blank? and all_comments_array[i].to_i == 3  %>
+                                    &#10004;
+                                  <% end %>
+                                </td>
+                            <% else %>
+                                <td class="col-2"></td>
+                                <td class="col-2"></td>
+                                <td class="col-2"></td>
+                                <td class="col-2"></td>
+                              
+                            <% end %>  
+                               
+
+                      </tr> 
+                      <% i = i+1 %>
+                    <% end %>  
+                  <% end %> 
+                  <% if i<9 %>
+                     
+                      <% (i..9).each do |j| %>
+                        <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                        <td class="col-2"></td>
+                        <td class="col-2"></td>
+                        <% unless personal_and_social[i].blank? %>
+                            <td class="col-2"><%= personal_and_social[j] %></td>
+                            <td class="col-2">
+                              <% if !all_comments_array[j].blank? and all_comments_array[j].to_i == 1  %>
+                                &#10004;
+                              <% end %>
+                            </td>
+                            <td class="col-2">
+                              <% if !all_comments_array[j].blank? and all_comments_array[j].to_i == 2  %>
+                                &#10004;
+                              <% end %>
+                            </td>
+                            <td class="col-2">
+                              <% if !all_comments_array[j].blank? and all_comments_array[j].to_i == 3  %>
+                                &#10004;
+                              <% end %>
+                            </td>
+                        <% else %>
+                            <td class="col-2"></td>
+                            <td class="col-2"></td>
+                            <td class="col-2"></td>
+                            <td class="col-2"></td>
+
+                        <% end %> 
+                        </tr>    
+                        
+                      <% end %>
+                      
+                  <% end %>     
+
+              </table>
+              
+              <%= render  :partial=>"/connect_exam/south_point/gradding_level2" %>
+
+
+          </div>
+      </div>
+
+
+
+  </div>
+
+<% end %>
+<%= stylesheet_link_tag 'list_table' %>
+
+<% if params[:page_height] %>
+  <script type="text/javascript">
+    var body = document.body,
+            html = document.documentElement;
+    var pg_height = parseInt(<%= params[:page_height] %>)
+    var page = new Element('div', {'class': 'page1'});
+    var pageBreak = new Element('div', {'class': 'page-break1'});
+    var insertPageBreak = function () {
+        body.appendChild(pageBreak.cloneNode(true))
+    };
+    var insertPage = function () {
+        body.appendChild(page.cloneNode(true));
+    };
+    var currPage = function () {
+        return $$('.page1').last()
+    };
+    var current_page_height = 0
+    var i = 0
+    $$('.available_sections1 .section1').each(function (el) {
+        a = parseInt(el.getHeight());
+        c = current_page_height + a;
+        current_page_height = c;
+        if (c > pg_height) {
+            current_page_height = a
+            body.appendChild(new Element('div', {'id': 'page-blank_' + i, 'class': 'page-blank'}))
+            document.getElementById('page-blank_' + i).style.height = (c - pg_height) + 'px';
+            document.getElementById('page-blank_' + i).innerHTML = "&nbsp;"/* if a div doesnt have any content it may not display.. set height will not work */
+            i += 1
+            el.style.marginTop = "50px"; /* for this border-top is coming, top section of each page */
+            insertPageBreak();
+            insertPage();
+        }
+        currPage().appendChild(el);
+    });
+  </script>
+<% end %>

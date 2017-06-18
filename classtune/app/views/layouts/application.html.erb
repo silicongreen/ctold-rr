@@ -593,26 +593,9 @@
       
     <div id="cover_photo" style="display:none;" >
       <div style="margin-top:1px;position: relative;">
-        <% banner = @current_user.get_banner %>
-        
-        <% unless banner.empty? %>  
-          <% unless banner['data'].nil? %>
-            <% if banner['data']['cover'] != "" %>
-              <%= image_tag("http://www.champs21.com/#{banner['data']['cover']}", :size=> "980x300" ,:class => "cover_img" ) %>
-            <% else %>
-              <%= image_tag("application/cover.jpg", :size=> "980x300",:class => "cover_img" ) %> 
-            <% end %>
-          <% else %>
-            <%= image_tag("application/cover.jpg", :size=> "980x300",:class => "cover_img" ) %>           
-          <% end %>
-        <% else %>
-          <%= image_tag("application/cover.jpg", :size=> "980x300",:class => "cover_img" ) %> 
-        <% end %>
-        <% class_name = "nocover" %>      
-        <% unless banner.empty? %>      
-          <% class_name = (banner['data'].nil?) ? "nocover" : "nocover" %>
-          <%# class_name = (@obj_banner['data'].nil?) ? "nocover" : "hascover" %>
-        <% end %>
+         
+        <% class_name = "nocover" %>  
+      
         <!--<div class='sc_title_h2'>
           <div style="height:130px;">
             

@@ -1,0 +1,60 @@
+
+<% unless @report_data.blank?  or  @report_data['report'].blank? %>
+  <table id="pdf-table" width="100%" cellspacing="0">
+      <% c = 'even'  %>
+      <tr class="table-header">
+          <td class="col-pdf"><%= "Sl. No." %></td>
+          <td class="col-pdf"><%= "Subject" %></td>
+          <td class="col-pdf">Grade</td>
+
+      </tr>
+
+
+      <% i = 0 %>
+      
+      <% unless @report_data['report']['subjects'].blank? %> 
+        <% @report_data['report']['subjects'].each do |subjects| %>
+          <% i = i+1 %>
+          <% total_mark = 0 %>
+          <% full_mark = 0 %>
+          <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+
+              <td class="col-pdf"><%= i %></td>
+              <td class="col-pdf"><%= subjects['name'] %><% unless @current_user.student? or @current_user.parent? %>
+                    &nbsp;|&nbsp;&nbsp;&nbsp;<%= link_to "Mark Sheet",
+                      {:action => "marksheet", :subject_id => subjects['id'],:id=>@connect_exam_obj.id},:target => '_blank' %><% end %></td>
+              <% unless @report_data['report']['exams'].blank? %>  
+                <% @report_data['report']['exams'].each do |report| %>
+                  <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
+                    <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                    
+                  <% end %>
+                  <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
+                    <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                 
+                  <% end %>
+                <% end %>
+              <% end %>
+              <% 
+              if total_mark.to_f>0 and full_mark.to_f>0
+                main_mark = (total_mark.to_f/full_mark.to_f)*100 
+                else
+                main_mark = 0
+                end  
+             %>
+              <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
+
+              <% if !grade.blank? and !grade.name.blank?  %>
+                <td class="col-2"><b><%= grade.name %></b></td>
+              <% else %>
+                <td class="col-2"><b>-</b></td>
+              <% end %>
+
+
+
+          </tr> 
+        <% end %>
+     <% end %>
+
+    </table>       
+  <% end %>

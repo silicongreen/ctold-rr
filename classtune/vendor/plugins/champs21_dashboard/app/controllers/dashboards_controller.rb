@@ -4,8 +4,10 @@ class DashboardsController < ApplicationController
   filter_access_to :all
 
   def index
-      time_now = Time.now
+      
       require "yaml"
+      require "time"
+      time_now = Time.now
       detention_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/detention.yml")['school']
       all_schools = detention_config['numbers'].split(",")
       current_school = MultiSchool.current_school.id

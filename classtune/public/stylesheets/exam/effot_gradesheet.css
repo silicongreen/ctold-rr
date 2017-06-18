@@ -357,4 +357,8 @@ tr.sjws_odd{
     border-bottom: 1px solid #ADACAB;
     border-left:1px solid #ADACAB;
 }
+.sjws_table_head .mark_with_std
+{
+    float:right;
+}
 /***************SJWS END************/

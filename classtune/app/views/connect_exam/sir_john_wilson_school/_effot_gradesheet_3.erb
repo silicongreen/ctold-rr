@@ -21,10 +21,10 @@
       <div class="logo_left">&nbsp;</div>
       <div class="exam_title_left">
           <p>SIR JOHN WILSON SCHOOL</p><br />
-          <p><%= @connect_exam_obj.name %> - SCORE SHEET - <%= Time.current.year %> / <%= Time.current.year + 1%></p>
+          <p><%= @connect_exam_obj.name %> - EFFORT / GRADE SHEET - <%= Time.current.year %> / <%= Time.current.year + 1 %></p>
       </div>
       <div class="grad_list_right">
-          <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/340/sjws_logo.png")),:width=> '90%' %>
+          <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/340/sjws_logo.png")),:width=> '100%' %>
       </div>
   </div>
   <div class="section1 row" >
@@ -53,29 +53,32 @@
           <td>&nbsp;</td>
           
           <td colspan="2" align="right">
-            <p>&nbsp;</p>            
+            <p>&nbsp;</p>
+            <p><b>TERM: <%= @connect_exam_obj.name %></b></p>
             <% if !@employee.nil? %>
-              <p><b>Teacher's Name : <%=  @employee.full_name %></b></p>
+              <p><b>Teacher's Name : <%=  @employee.full_name %></b></p>  
             <% else %>
               <p><b>Teacher's Name : ..............................</b></p> 
             <% end %> 
-            <p><b>Highest Score : 89</b></p>
+            <p>&nbsp;</p>
           </td>
         </tr>
         
       </table>
       <table id="pdf-table" class="sjws_table_head" width="100%" cellspacing="0">
-        <%#= debug @tabulation_data %>
-        <% subject_full_mark = 0 %>
-        <% @report_data['result']['ALL'].each do |rs| %>
-            <% subject_full_mark = subject_full_mark+rs['maximum_marks'].to_i %>
-        <% end %>   
+        
+        
+        
+        
         <tr class="sjws-table-header">
           <td class="sl"><b>SL.</b></td>
-          <td class="st_name"><b>STUDENTS' NAME</b></td>
-          <td class="name"><center><b><%= @connect_exam_obj.name %> OUT OF</b><hr><b><%=  subject_full_mark%></b></center></td>
-          <td class="name"><center><b><%= @connect_exam_obj.name %> <%= "%" %></b></center></td>
-          <td class="name"><center><b><%= "Grade" %></b></center></td>        
+          <td class="st_name"><b>NAME</b></td>         
+          <td class="name"><center><b><%= @connect_exam_obj.name %><%= " Mark" %><br /><%="%"%></b></center></td>
+          <td class="name"><center><b><%= "Grade" %></b></center></td>
+          <td class="name"><center><b><%= "H.W." %></b></center></td>
+          <td class="name"><center><b><%= "Effort" %></b></center></td>
+          <td class="st_name"><b><%= "Teacher's Comment" %></b></td>
+        
         </tr>
         
         <% extender = 0 %>
@@ -101,22 +104,22 @@
         
           <% total_mark = 0 %>
           <% full_mark = 0 %>
+          <% main_mark = 0 %>
+          
           <% @report_data['result']['ALL'].each do |rs| %>            
            
             <% if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank? %>              
-              <% total_mark = total_mark.to_f+rs['students'][std['id']]['score'].to_f %>
-              <% full_mark = full_mark+rs['maximum_marks'].to_i %>
+                <% total_mark = total_mark.to_f+rs['students'][std['id']]['score'].to_f %>
+                <% full_mark = full_mark+rs['maximum_marks'].to_i %>
             <% else %>
                 
-            <% end %>    
-           
+            <% end %>              
           <% end %>     
+          
           <tr class="<%= cycle(c,(["sjws_odd","sjws_even"]-[c]).first) %>">
             <td class="sl"><%#= std['class_roll_no'] %><%= std_count %></td>
-            <td class="st_name"><%= std['name'] %></td>
-            
-            <td class="name"><center><%=total_mark.to_i%></center></td>
-            <% main_mark = (total_mark.to_f/full_mark.to_f)*100 %>
+            <td class="st_name"><%= std['name'] %><div class="mark_with_std"><%=total_mark.to_i %><hr><%=full_mark.to_i %></div></td>            
+            <% main_mark = (total_mark/full_mark)*100 %>
             <td class="name"><center><%= sprintf( "%0.02f", main_mark).to_i %> %</center></td>  
             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
             <% if !grade.blank? and !grade.name.blank? %>
@@ -124,6 +127,22 @@
             <% else %>
               <td class="name"><center>N/A</center></td>
             <% end %> 
+            
+            <% assignmentCount = Assignment.count(:all, :conditions => {:subject_id => @subject_id,:is_published=>1,:duedate => @connect_exam_obj.attandence_start_date..@connect_exam_obj.attandence_end_date}) %>
+            
+            <td class="name"> <center><%= "2" %><hr><%= assignmentCount %></center></td>
+            <%
+              exam_comment = ""
+              exam_effort = ""
+              @exam_comments = ExamConnectSubjectComment.find(:first, :conditions => {:exam_connect_id=>@connect_exam_obj.id,:subject_id => @subject_id, :student_id => std['id']} )
+              if !@exam_comments.blank?
+                exam_comment = @exam_comments['comments']
+                exam_effort = @exam_comments['effort']
+              end
+            %>
+            
+            <td class="name"><center><%= exam_effort %></center></td>
+            <td class="st_name"><%= exam_comment %></td>
           </tr>
         <% end %>
         <% end %>

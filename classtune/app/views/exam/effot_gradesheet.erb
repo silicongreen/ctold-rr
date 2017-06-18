@@ -22,6 +22,8 @@
     <%= render  :partial=>"/connect_exam/sir_john_wilson_school/effot_gradesheet_1" %>
   <% elsif @connect_exam_obj.result_type == 3 %>
     <%= render  :partial=>"/connect_exam/sir_john_wilson_school/effot_gradesheet_2" %>
+  <% elsif @connect_exam_obj.result_type == 4 %>
+    <%= render  :partial=>"/connect_exam/sir_john_wilson_school/effot_gradesheet_3" %>
   <% end %>
 <% else %>
   <%= render  :partial=>"/connect_exam/general_pdf" %>

@@ -38,7 +38,11 @@
 <% elsif MultiSchool.current_school.id == 325  %>
   <%= render  :partial=>"/connect_exam/mirpur_english/group_report" %>
 <% elsif MultiSchool.current_school.id == 340  %>
-  <%= render  :partial=>"/connect_exam/sir_john_wilson_school/single_report" %> 
+  <% if @connect_exam_obj.result_type == 4 %>
+    <%= render  :partial=>"/connect_exam/sir_john_wilson_school/first_term_report_for_10_to_12" %> 
+  <% else %>
+    <%= render  :partial=>"/connect_exam/sir_john_wilson_school/single_report" %> 
+  <% end %>
 <% else %>
   <%= render  :partial=>"/connect_exam/general_pdf" %>
 <% end %>

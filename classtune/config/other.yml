@@ -1,8 +1,9 @@
 resulttype:
- numbers: "323,2,325"
+ numbers: "323,2,325,340"
  type_323: "Mid Term,Final Term,Class 10 Mid Term,Class 10 Final Term,Class Test"
  type_325: "Summer,Spring,Fall"
  type_2: "Final Term,First Term,Mock Test,Quarter,KG First Term,KG Final Term"
+ type_340: "TERM 1 (FIRST HALF) ,TERM 1 (SECOND HALF),HALF YEARLY (Class 5 - Class 9),HALF YEARLY (Class 10 - Class 12),TERM 2 (FIRST HALF),TERM 2 (SECOND HALF),FINAL (Class 5 - Class 9),FINAL (Class 10 - Class 12)"
  default: "Type 1,Type 2,Type 3,Type 4,Type 5,Type 6"
 resulttype2:
  numbers: "323,2,325"

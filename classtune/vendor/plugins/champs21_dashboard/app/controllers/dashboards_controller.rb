@@ -44,9 +44,8 @@ class DashboardsController < ApplicationController
 #          end
 #        end
 #      end
-      
+      time_diff1 = Time.now-time_now
       if current_user.admin?
-        time_diff1 = Time.now-time_now
         time_now = Time.now
         @news = News.find(:all,:conditions=>{:is_published=>1}, :limit =>3)
         time_diff2 = Time.now-time_now

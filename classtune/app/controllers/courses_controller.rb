@@ -325,7 +325,7 @@ class CoursesController < ApplicationController
     section = params[:course][:section_name].strip
     #grading_type = params[:course][:grading_type]
     #course = Course.find_by_course_name_and_code_and_section_name_and_grading_type(course_name, code, section, grading_type, :include => :batches)
-    course = Course.find_by_course_name_and_code_and_section_name(course_name, code, section, :include => :batches)
+    course = Course.find_by_course_name_and_code_and_section_name_and_is_deleted(course_name, code, section,false, :include => :batches)
     if params[:new_batches_selection].join(',').to_i == 1
       #FIND IF COURSE EXISTS
       if course.nil?
@@ -342,7 +342,7 @@ class CoursesController < ApplicationController
         if @save_the_course
           has_batch = false
           course_name = params[:course][:course_name]
-          course_ids = Course.find(:all, :conditions => ["course_name LIKE ?", course_name]).map{|c| c.id}
+          course_ids = Course.find(:all, :conditions => ["is_deleted = 0 and course_name LIKE ?", course_name]).map{|c| c.id}
           params[:course][:batches_attributes].each do |k, b|
             tmp_batch = Batch.find(:all, :conditions => ['course_id IN (?) and name LIKE ?', course_ids, b['name']])
             unless tmp_batch.nil?

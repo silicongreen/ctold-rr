@@ -443,7 +443,7 @@ class CoursesController < ApplicationController
         end
         if has_batch
           @course = Course.new params[:course]
-          @course.errors.add("Shift"," and class already exists")
+          @course.errors.add("Shift Test2"," and class already exists")
           @error = true
         else
           #IF there is a General Batch for this course, then we have to remove that
@@ -672,7 +672,7 @@ class CoursesController < ApplicationController
           
           if has_batch
             @course = Course.new params[:course]
-            @course.errors.add("Shift"," and class already exists")
+            @course.errors.add("Shift Test1"," and class already exists")
             @error = true
           else
             t_batch = Batch.find_by_name_and_course_id('General',course_id)

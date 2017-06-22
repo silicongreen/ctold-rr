@@ -3,7 +3,7 @@ resulttype:
  type_323: "Mid Term,Final Term,Class 10 Mid Term,Class 10 Final Term,Class Test"
  type_325: "Summer,Spring,Fall"
  type_2: "Final Term,First Term,Mock Test,Quarter,KG First Term,KG Final Term"
- type_340: "TERM 1 (FIRST HALF) ,TERM 1 (SECOND HALF),HALF YEARLY (Class 5 - Class 9),HALF YEARLY (Class 10 - Class 12),TERM 2 (FIRST HALF),TERM 2 (SECOND HALF),FINAL (Class 5 - Class 9),FINAL (Class 10 - Class 12)"
+ type_340: "TERM (FIRST HALF) ,TERM (SECOND HALF),TERM (FIRST HALF) EFFORT/GRADE SHEET (CLASS 5-9),TERM (SECOND HALF) EFFORT/GRADE SHEET (CLASS 5-9),TERM (FIRST HALF) EFFORT/GRADE SHEET (CLASS 10-12),TERM (SECOND HALF) EFFORT/GRADE SHEET (CLASS 10-12),MOCK EXAM,FINAL SCORE SHEET,TERM REPORT CARD(CLASS 5-9),FINAL REPORT CARD(CLASS 5-9),TERM REPORT CARD(CLASS 10-12),"
  default: "Type 1,Type 2,Type 3,Type 4,Type 5,Type 6"
 resulttype2:
  numbers: "323,2,325"

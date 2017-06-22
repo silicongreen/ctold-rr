@@ -21,7 +21,7 @@
       <div class="logo_left">&nbsp;</div>
       <div class="exam_title_left">
           <p>SIR JOHN WILSON SCHOOL</p><br />
-          <p><%= @connect_exam_obj.name %> - EFFORT / GRADE SHEET - <%= Time.current.year %> / <%= Time.current.year + 1 %></p>
+          <p><%= @connect_exam_obj.name %> - <%= Time.current.year %> / <%= Time.current.year + 1 %></p>
       </div>
       <div class="grad_list_right">
           <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/340/sjws_logo.png")),:width=> '100%' %>
@@ -54,7 +54,27 @@
           
           <td colspan="2" align="right">
             <p>&nbsp;</p>
-            <p><b>TERM: <%= @connect_exam_obj.name %></b></p>
+            <p><b>TERM:
+              <% if @connect_exam_obj.name.include? ("FIRST") %>
+                  <%=  "FIRST TERM"%>
+              <% elsif @connect_exam_obj.name.include? ("First") %>
+                  <%=  "FIRST TERM"%>
+              <% elsif @connect_exam_obj.name.include? ("first") %>
+                  <%=  "FIRST TERM"%>
+              <% elsif @connect_exam_obj.name.include? ("SECOND") %>
+                  <%=  "SECOND TERM"%>
+              <% elsif @connect_exam_obj.name.include? ("Second") %>
+                  <%=  "SECOND TERM"%>
+              <% elsif @connect_exam_obj.name.include? ("second") %>
+                  <%=  "SECOND TERM"%>
+              <% elsif @connect_exam_obj.name.include? ("FINAL") %>
+                  <%=  "FINAL TERM"%>
+              <% elsif @connect_exam_obj.name.include? ("Final") %>
+                  <%=  "FINAL TERM"%>
+              <% elsif @connect_exam_obj.name.include? ("final") %>
+                  <%=  "FINAL TERM"%>
+              <% end %>
+                </b></p>
             <% if !@employee.nil? %>
               <p><b>Teacher's Name : <%=  @employee.full_name %></b></p>  
             <% else %>
@@ -73,7 +93,26 @@
         <tr class="sjws-table-header">
           <td class="sl"><b>SL.</b></td>
           <td class="st_name"><b>NAME</b></td>         
-          <td class="name"><center><b><%= @connect_exam_obj.name %><%= " Mark" %><br /><%="%"%></b></center></td>
+          <td class="name"><center><b><% if @connect_exam_obj.name.include? ("FIRST") %>
+                  <%=  "First Term"%>
+              <% elsif @connect_exam_obj.name.include? ("First") %>
+                  <%=  "First Term"%>
+              <% elsif @connect_exam_obj.name.include? ("first") %>
+                  <%=  "First Term"%>
+              <% elsif @connect_exam_obj.name.include? ("SECOND") %>
+                  <%=  "Second Term"%>
+              <% elsif @connect_exam_obj.name.include? ("Second") %>
+                  <%=  "Second Term"%>
+              <% elsif @connect_exam_obj.name.include? ("second") %>
+                  <%=  "Second Term"%>
+              <% elsif @connect_exam_obj.name.include? ("FINAL") %>
+                  <%=  "Final Term"%>
+              <% elsif @connect_exam_obj.name.include? ("Final") %>
+                  <%=  "Final Term"%>
+              <% elsif @connect_exam_obj.name.include? ("final") %>
+                  <%=  "Final Term"%>
+              <% end %>
+              <%= " Mark" %><br /><%="%"%></b></center></td>
           <td class="name"><center><b><%= "Grade" %></b></center></td>
           <td class="name"><center><b><%= "H.W." %></b></center></td>
           <td class="name"><center><b><%= "Effort" %></b></center></td>

@@ -31,8 +31,47 @@
                   <% c = 'even'  %>
                   <tr class="table-header t_head">
                       <td class="" rowspan="2"><b><%= "Subject" %></b></td> 
-                      <td class="" colspan="4"><center><%= @connect_exam_obj.name %></center></td>
-                      <td class="" colspan="3"><center><%= @connect_exam_obj.name %></center></td>
+                      <td class="" colspan="4"><center>
+              <% if @connect_exam_obj.name.include? ("FIRST") %>
+                  <%=  "First Term"%>
+              <% elsif @connect_exam_obj.name.include? ("First") %>
+                  <%=  "First Term"%>
+              <% elsif @connect_exam_obj.name.include? ("first") %>
+                  <%=  "First Term"%>
+              <% elsif @connect_exam_obj.name.include? ("SECOND") %>
+                  <%=  "Second Term"%>
+              <% elsif @connect_exam_obj.name.include? ("Second") %>
+                  <%=  "Second Term"%>
+              <% elsif @connect_exam_obj.name.include? ("second") %>
+                  <%=  "Second Term"%>
+              <% elsif @connect_exam_obj.name.include? ("FINAL") %>
+                  <%=  "Final Term"%>
+              <% elsif @connect_exam_obj.name.include? ("Final") %>
+                  <%=  "Final Term"%>
+              <% elsif @connect_exam_obj.name.include? ("final") %>
+                  <%=  "Final Term"%>
+              <% end %></center></td>
+              <td class="" colspan="3"><center>
+                <% if @connect_exam_obj.name.include? ("FIRST") %>
+                  <%=  "First Mock Examination Report"%>
+              <% elsif @connect_exam_obj.name.include? ("First") %>
+                  <%=  "First Mock Examination Report"%>
+              <% elsif @connect_exam_obj.name.include? ("first") %>
+                  <%=  "First Mock Examination Report"%>
+              <% elsif @connect_exam_obj.name.include? ("SECOND") %>
+                  <%=  "Second Mock Examination Report"%>
+              <% elsif @connect_exam_obj.name.include? ("Second") %>
+                  <%=  "Second Mock Examination Report"%>
+              <% elsif @connect_exam_obj.name.include? ("second") %>
+                  <%=  "Second Mock Examination Report"%>
+              <% elsif @connect_exam_obj.name.include? ("FINAL") %>
+                  <%=  "Final Mock Examination Report"%>
+              <% elsif @connect_exam_obj.name.include? ("Final") %>
+                  <%=  "Final Mock Examination Report"%>
+              <% elsif @connect_exam_obj.name.include? ("final") %>
+                  <%=  "Final Mock Examination Report"%>
+              <% end %>
+              </center></td>
                   </tr>
                   <tr class="table-header t_head">
                       <td class="">Mark<br />(%)</td> 
@@ -104,7 +143,7 @@
                           <td class="col-pdf"><center>N/A</center></td>
                           <% end %>  
                           <% assignmentCount = Assignment.count(:all, :conditions => {:subject_id => subjects['id'],:is_published=>1,:duedate => @connect_exam_obj.attandence_start_date..@connect_exam_obj.attandence_end_date}) %>
-                          <td class="col-pdf"><center><%= "2" %><hr><%= assignmentCount %></center></td>  
+                          <td class="col-pdf"><center><%= "0" %><hr><%= assignmentCount %></center></td>  
                           
                           <%
                             exam_comment2 = ""
@@ -177,8 +216,12 @@
                                 <b>Advisor's Comments</b>                                
                               </p>
                           </td>                          
-                          <td class="col-pdf" width='35%'><i><%=@exam_comment.comments%></i></td>                          
-                          <td class="col-pdf" width='35%'>N/A</td>                          
+                          <td class="col-pdf" width='35%'><i>
+                            <% if !@exam_comment.nil? %>
+                              <%=@exam_comment.comments%>
+                            <% end %>
+                          </i></td>                          
+                          <td class="col-pdf" width='35%'>&nbsp;</td>                          
                       </tr> 
               </table>
               <br />
@@ -189,7 +232,7 @@
                                 <b>Principal</b>                                
                               </p>
                           </td>                          
-                          <td class="col-pdf" width='70%'>N/A</td>
+                          <td class="col-pdf" width='70%'>&nbsp;</td>
                       </tr> 
               </table>
               <br />
@@ -200,7 +243,7 @@
                                 <b>Parent's Signature</b>                                
                               </p>
                           </td>                          
-                          <td class="col-pdf" width='70%'>N/A</td>
+                          <td class="col-pdf" width='70%'>&nbsp;</td>
                       </tr> 
               </table>
               

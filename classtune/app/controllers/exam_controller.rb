@@ -2349,49 +2349,65 @@ class ExamController < ApplicationController
     @exam_groups = []
   end
   
-  def continues   
+  def continues
     @id = params[:id]
+    
     @connect_exam_obj = ExamConnect.active.find(@id)
     @batch = Batch.find(@connect_exam_obj.batch_id)
-    @assigned_employee=@batch.employees
-    @report_data = Rails.cache.fetch("continues_#{@id}_#{@batch.id}"){
-      get_continues(@id,@batch.id)
-      report_data = []
-      if @student_response['status']['code'].to_i == 200
-        report_data = @student_response['data']
-      end
-      report_data
-    }
     
-    @exam_comment_all = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id)
-    if MultiSchool.current_school.id == 246
-          render :pdf => 'generated_report5_pdf',
-            :orientation => 'Landscape', :zoom => 1.00
-    elsif MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 323 or MultiSchool.current_school.id == 325 or MultiSchool.current_school.id == 324
-      if (MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 324) and (@connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 5)
-        render :pdf => 'generated_report5_pdf',
-        :orientation => 'Portrait', :zoom => 1.00,
-        :margin => {    :top=> 10,
-        :bottom => 10,
-        :left=> 10,
-        :right => 10},
-        :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
-        :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
-      else  
-        render :pdf => 'generated_report5_pdf',
-          :orientation => 'Portrait', :zoom => 1.00
+    pdf_name = "continues_connect_exam_"+@connect_exam_obj.id.to_s+".pdf"
+    dirname = Rails.root.join('public','result_pdf',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"continues","0"+@connect_exam_obj.id.to_s)
+    unless File.directory?(dirname)
+      FileUtils.mkdir_p(dirname)
+      FileUtils.chmod_R(0777, Rails.root.join('public','result_pdf',"0"+MultiSchool.current_school.id))
+    end
+    file_name = Rails.root.join('public','result_pdf',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"continues","0"+@connect_exam_obj.id.to_s,pdf_name)
+    
+    if File.file?(file_name) && Rails.cache.exist?("continues_#{@id}_#{@batch.id}")
+      redirect_to "/result_pdf/0"+MultiSchool.current_school.id.to_s+"/0"+@batch.id.to_s+"/continues/0"+@connect_exam_obj.id.to_s+"/"+pdf_name
+    else
+      @assigned_employee=@batch.employees
+      @report_data = Rails.cache.fetch("continues_#{@id}_#{@batch.id}"){
+        get_continues(@id,@batch.id)
+        report_data = []
+        if @student_response['status']['code'].to_i == 200
+          report_data = @student_response['data']
+        end
+        report_data
+      }
+
+
+
+      @exam_comment_all = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id)
+      if MultiSchool.current_school.id == 246
+            render :pdf => 'continues',
+              :orientation => 'Landscape', :zoom => 1.00,:save_to_file => file_name
+      elsif MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 323 or MultiSchool.current_school.id == 325 or MultiSchool.current_school.id == 324
+        if (MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 324) and (@connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 5)
+          render :pdf => 'continues',
+          :orientation => 'Portrait', :zoom => 1.00,:save_to_file => file_name,
+          :margin => {    :top=> 10,
+          :bottom => 10,
+          :left=> 10,
+          :right => 10},
+          :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+          :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+        else  
+          render :pdf => 'continues',
+            :orientation => 'Portrait', :zoom => 1.00
+        end
+      elsif  MultiSchool.current_school.id == 312 
+        if @connect_exam_obj.result_type != 1 and @connect_exam_obj.result_type != 6
+          render :pdf => 'continues',
+          :orientation => 'Portrait', :zoom => 1.00,:save_to_file => file_name
+        else
+          render :pdf => 'continues',
+            :orientation => 'Landscape', :zoom => 1.00,:save_to_file => file_name
+        end
+      else 
+        render :pdf => 'continues',
+          :orientation => 'Landscape', :zoom => 1.00,:save_to_file => file_name
       end
-    elsif  MultiSchool.current_school.id == 2 
-      if @connect_exam_obj.result_type != 1 and @connect_exam_obj.result_type != 6
-        render :pdf => 'generated_report5_pdf',
-        :orientation => 'Portrait', :zoom => 1.00
-      else
-        render :pdf => 'generated_report5_pdf',
-          :orientation => 'Landscape', :zoom => 1.00
-      end
-    else 
-      render :pdf => 'generated_report5_pdf',
-        :orientation => 'Landscape', :zoom => 1.00
     end
   end
   
@@ -2450,29 +2466,41 @@ class ExamController < ApplicationController
     @id = params[:id]
     @connect_exam_obj = ExamConnect.active.find(@id)
     @batch = Batch.find(@connect_exam_obj.batch_id)
-    @report_data = Rails.cache.fetch("tabulation_#{@id}_#{@batch.id}"){
-      get_tabulation(@id,@batch.id)
-      report_data = []
-      if @student_response['status']['code'].to_i == 200
-        report_data = @student_response['data']
-      end
-      report_data
-    }
-    @exam_comment = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id) 
-    @student_exam_comment = {}
     
-    @exam_comment.each do |cmt|
-      @student_exam_comment[cmt.student_id.to_s] = cmt.comments
+    pdf_name = "comment_tabulation_connect_exam_"+@connect_exam_obj.id.to_s+".pdf"
+    dirname = Rails.root.join('public','result_pdf',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"tabulation","0"+@connect_exam_obj.id.to_s)
+    unless File.directory?(dirname)
+      FileUtils.mkdir_p(dirname)
+      FileUtils.chmod_R(0777, Rails.root.join('public','result_pdf',"0"+MultiSchool.current_school.id))
     end
-    render :pdf => 'comment_tabulation_pdf',
-      :orientation => 'Landscape', :zoom => 1.00,
-      :margin => {    :top=> 10,
-      :bottom => 10,
-      :left=> 10,
-      :right => 10},
-      :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
-      :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+    file_name = Rails.root.join('public','result_pdf',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"tabulation","0"+@connect_exam_obj.id.to_s,pdf_name)
     
+    if File.file?(file_name) && Rails.cache.exist?("tabulation_#{@id}_#{@batch.id}")
+      redirect_to "/result_pdf/0"+MultiSchool.current_school.id.to_s+"/0"+@batch.id.to_s+"/tabulation/0"+@connect_exam_obj.id.to_s+"/"+pdf_name
+    else
+      @report_data = Rails.cache.fetch("tabulation_#{@id}_#{@batch.id}"){
+        get_tabulation(@id,@batch.id)
+        report_data = []
+        if @student_response['status']['code'].to_i == 200
+          report_data = @student_response['data']
+        end
+        report_data
+      }
+      @exam_comment = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id) 
+      @student_exam_comment = {}
+
+      @exam_comment.each do |cmt|
+        @student_exam_comment[cmt.student_id.to_s] = cmt.comments
+      end
+      render :pdf => 'comment_tabulation_pdf',
+        :orientation => 'Landscape', :zoom => 1.00,:save_to_file => file_name,
+        :margin => {    :top=> 10,
+        :bottom => 10,
+        :left=> 10,
+        :right => 10},
+        :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+        :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+    end
     
   end   
   
@@ -2480,23 +2508,36 @@ class ExamController < ApplicationController
     @id = params[:id]
     @connect_exam_obj = ExamConnect.active.find(@id)
     @batch = Batch.find(@connect_exam_obj.batch_id)
-    @report_data = Rails.cache.fetch("tabulation_#{@id}_#{@batch.id}"){
-      get_tabulation(@id,@batch.id)
-      report_data = []
-      if @student_response['status']['code'].to_i == 200
-        report_data = @student_response['data']
-      end
-      report_data
-    }
-    @exam_comment = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id)
-    render :pdf => 'tabulation',
-      :orientation => 'Landscape', :zoom => 1.00,
-      :margin => {    :top=> 10,
-      :bottom => 10,
-      :left=> 10,
-      :right => 10},
-      :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
-      :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+    
+    pdf_name = "tabulation_connect_exam_"+@connect_exam_obj.id.to_s+".pdf"
+    dirname = Rails.root.join('public','result_pdf',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"tabulation","0"+@connect_exam_obj.id.to_s)
+    unless File.directory?(dirname)
+      FileUtils.mkdir_p(dirname)
+      FileUtils.chmod_R(0777, Rails.root.join('public','result_pdf',"0"+MultiSchool.current_school.id))
+    end
+    file_name = Rails.root.join('public','result_pdf',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"tabulation","0"+@connect_exam_obj.id.to_s,pdf_name)
+    
+    if File.file?(file_name) && Rails.cache.exist?("tabulation_#{@id}_#{@batch.id}")
+      redirect_to "/result_pdf/0"+MultiSchool.current_school.id.to_s+"/0"+@batch.id.to_s+"/tabulation/0"+@connect_exam_obj.id.to_s+"/"+pdf_name
+    else
+      @report_data = Rails.cache.fetch("tabulation_#{@id}_#{@batch.id}"){
+        get_tabulation(@id,@batch.id)
+        report_data = []
+        if @student_response['status']['code'].to_i == 200
+          report_data = @student_response['data']
+        end
+        report_data
+      }
+      @exam_comment = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id)
+      render :pdf => 'tabulation',
+        :orientation => 'Landscape', :zoom => 1.00,:save_to_file => file_name,
+        :margin => {    :top=> 10,
+        :bottom => 10,
+        :left=> 10,
+        :right => 10},
+        :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+        :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+    end  
   end
   
   def marksheet    
@@ -2506,27 +2547,40 @@ class ExamController < ApplicationController
     @batch = Batch.find(@connect_exam_obj.batch_id) 
     @subject = Subject.find(@subject_id)
     
-    @grades = @batch.grading_level_list
     
-    @employee_sub = EmployeesSubject.find_by_subject_id(@subject_id)
-    if !@employee_sub.nil?
-      @employee = Employee.find(@employee_sub.employee_id)
+    pdf_name = "marksheet_connect_exam_"+@subject_id.to_s+"_"+@connect_exam_obj.id.to_s+".pdf"
+    dirname = Rails.root.join('public','result_pdf',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"marksheet","0"+@connect_exam_obj.id.to_s)
+    unless File.directory?(dirname)
+      FileUtils.mkdir_p(dirname)
+      FileUtils.chmod_R(0777, Rails.root.join('public','result_pdf',"0"+MultiSchool.current_school.id))
     end
-    @report_data = Rails.cache.fetch("marksheet_#{@id}_#{@subject_id}"){
-    get_subject_mark_sheet(@id,@subject_id)
-    @report_data = []
-    if @student_response['status']['code'].to_i == 200
-      @report_data = @student_response['data']
+    file_name = Rails.root.join('public','result_pdf',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"marksheet","0"+@connect_exam_obj.id.to_s,pdf_name)
+    
+    if File.file?(file_name) && Rails.cache.exist?("marksheet_#{@id}_#{@subject_id}")
+      redirect_to "/result_pdf/0"+MultiSchool.current_school.id.to_s+"/0"+@batch.id.to_s+"/marksheet/0"+@connect_exam_obj.id.to_s+"/"+pdf_name
+    else
+      @grades = @batch.grading_level_list
+
+      @employee_sub = EmployeesSubject.find_by_subject_id(@subject_id)
+      if !@employee_sub.nil?
+        @employee = Employee.find(@employee_sub.employee_id)
+      end
+      @report_data = Rails.cache.fetch("marksheet_#{@id}_#{@subject_id}"){
+      get_subject_mark_sheet(@id,@subject_id)
+      @report_data = []
+      if @student_response['status']['code'].to_i == 200
+        @report_data = @student_response['data']
+      end
+      }    
+      render :pdf => 'marksheet',
+        :orientation => 'Landscape', :zoom => 1.00,:save_to_file => file_name,
+        :margin => {    :top=> 10,
+        :bottom => 10,
+        :left=> 10,
+        :right => 10},
+        :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+        :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
     end
-    }    
-    render :pdf => 'marksheet',
-      :orientation => 'Landscape', :zoom => 1.00,
-      :margin => {    :top=> 10,
-      :bottom => 10,
-      :left=> 10,
-      :right => 10},
-      :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
-      :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
   end
   
   def effot_gradesheet    
@@ -2875,7 +2929,7 @@ class ExamController < ApplicationController
             render :pdf => 'generated_report5_pdf',
               :orientation => 'Portrait', :zoom => 1.00
           end
-        elsif  MultiSchool.current_school.id == 2 
+        elsif  MultiSchool.current_school.id == 312 
           if @connect_exam_obj.result_type != 1 and @connect_exam_obj.result_type != 6
             render :pdf => 'generated_report5_pdf',
             :orientation => 'Portrait', :zoom => 1.00
@@ -2928,7 +2982,7 @@ class ExamController < ApplicationController
               :save_to_file => file_name,
               :save_only    => true
           end
-        elsif  MultiSchool.current_school.id == 2 
+        elsif  MultiSchool.current_school.id == 312 
           if @connect_exam_obj.result_type != 1 and @connect_exam_obj.result_type != 6
             render :pdf => 'generated_report5_pdf',
             :orientation => 'Portrait', :zoom => 1.00,

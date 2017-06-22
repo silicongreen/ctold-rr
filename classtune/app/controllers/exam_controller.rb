@@ -2394,7 +2394,7 @@ class ExamController < ApplicationController
           :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
         else  
           render :pdf => 'continues',
-            :orientation => 'Portrait', :zoom => 1.00
+            :orientation => 'Portrait', :zoom => 1.00,:save_to_file => file_name
         end
       elsif  MultiSchool.current_school.id == 312 
         if @connect_exam_obj.result_type != 1 and @connect_exam_obj.result_type != 6

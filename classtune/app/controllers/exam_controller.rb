@@ -2556,7 +2556,7 @@ class ExamController < ApplicationController
     end
     file_name = Rails.root.join('public','result_pdf',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"marksheet","0"+@connect_exam_obj.id.to_s,pdf_name)
     
-    if File.file?(file_name) && Rails.cache.exist?("marksheet_#{@id}_#{@subject_id}")
+    if File.file?(file_name)
       redirect_to "/result_pdf/0"+MultiSchool.current_school.id.to_s+"/0"+@batch.id.to_s+"/marksheet/0"+@connect_exam_obj.id.to_s+"/"+pdf_name
     else
       @grades = @batch.grading_level_list

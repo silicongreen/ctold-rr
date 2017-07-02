@@ -118,28 +118,21 @@
 
               </table>
               
-              <table class="float-left-clear-both-10"   width="100%" >
-                  <tr><td><b>Class Teacher Comments</b></td></tr>
-              </table>
-              <table class="float-left-clear-both"   width="100%" >
-                  <tr>
-                      <td>    
-                        <table id="pdf-table" class="margin-top-bottom-10 font-size-2" width="100%" >
+              <table id="pdf-table" class="margin-top-bottom-10 font-size-2" width="100%" >
 
-                                <tr class="table-header">
-                                    <td class="col-pdf comment_section_others" valign="top">
-                                        <% if !@exam_comment.blank? %>
-                                        
-                                          <%= @exam_comment.comments %>
-                                        <% else %> 
-                                       
-                                        <% end %>
-                                    </td>                      
-                                </tr>
-                        </table>
-                      </td>
-                  </tr>   
-                   
+                      <tr class="table-header">
+                          <td class="col-pdf comment_section_final td-align-left" valign="top">
+                              <% if !@exam_comment.blank? %>
+
+                                Class Teacher Comments&nbsp:&nbsp;<%= @exam_comment.comments %>
+
+                              <% else %> 
+
+                                Class Teacher Comments&nbsp:&nbsp; 
+
+                              <% end %>
+                          </td>                      
+                      </tr>
               </table>
 
 

@@ -45,11 +45,13 @@
           <td class="col-pdf">Roll</td>
           <td class="col-pdf">Students Name</td>
           <% @report_data['report']['subjects'].each do |sub| %>
-            <td><%=  sub['code'] %><hr/>Grade</td>
-          <% end %> 
-          <% @report_data['report']['no_exam_subject_resutl'].each do |sub| %>
-            <td><%=  sub['code'] %></td>
-          <% end %> 
+            <td>
+                <%=  sub['code'] %><hr/>
+                Mock-1|Avg<hr/>
+                Mock-2|Grd<hr/>
+                Ttl|Gp
+            </td>
+          <% end %>  
           
           <td>Total</td>
           <td>Grade Count</td>
@@ -62,113 +64,87 @@
         <% j = 0 %>
       
         <% @report_data['report']['students'].each do |std| %>
-          <% j = j+1 %>
-          <%  std_count = std_count+1; %>
+          
           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
             <td class="col-pdf"><%= j %></td>
             <td class="name"><%= std['class_roll_no'] %></td>
             <td class="name-std"><%= std['first_name']+" "+std['last_name'] %></td>
             <% total_mark = 0 %>
+            <% mock_1 = 0 %>
+            <% mock_2 = 0 %>
             <% grades = [] %>
             <% grade_count = {} %>
+            
             <% @report_data['report']['subjects'].each do |sub| %>
-                  <% st_full_mark = 0 %>
-                  <% ct_full_mark = 0 %>
-                  <% st_marks = [] %>
-                  <% ct_marks = [] %>
-                  <% avg_mark_st = 0; %>
-                  <% avg_mark_ct = 0; %>
+                  <% subject_full_mark = 0 %>
+                  <% subject_obtain_mark = 0 %>
+                  
+                  <% test_loop = 0 %>
                   <% @report_data['report']['exams'].each do |rs| %>
-                    <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? %>
+                    <% test_loop = test_loop+1 %>
+                    <% @examobj = Exam.find_by_exam_group_id_and_subject_id(rs['exam_id'].to_i,sub['id'].to_i) %>
+                    <% unless @examobj.blank?  %>
+                      <% check_exam = false %>
+                      <% @exam_score_all = ExamScore.find_all_by_exam_id(@examobj.id.to_i) %>
+                      <% if @exam_score_all.blank? %>
+                          <% check_exam = false %>
+                      <% else %>
+                        <% @exam_score_all.each do |score| %>
+                        <%
+                          unless score.marks.blank?
+                            check_exam = true
+                            break
+                          end
+                        %>
+                        <% end %>
+                      <% end %>
+                    <% end %>
+                    <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and check_exam == true %>
                       
                       <%
-                          if st_full_mark == 0 and rs['exam_category'] == '4'
-                            st_full_mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                          if test_loop == 1
+                            mock_1 = rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                           end
-                        
-                          if ct_full_mark == 0 and rs['exam_category'] == '1'
-                            ct_full_mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                          if test_loop == 2
+                            mock_2 = rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                           end
-                          
-                          if rs['exam_category'] == '4'
-                            if rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained']!="AB"
-                              st_marks << rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                            else
-                              st_marks << 0
-                            end
-                          end
-                        
-                          if rs['exam_category'] == '1'
-                            if rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained']!="AB"
-                              ct_marks << rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                            else
-                              ct_marks << 0
-                            end
-                          end
+                          subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                          subject_obtain_mark = subject_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                         
                         
                       %>
                     <% end %>
                    <% end %> 
-                       <%   
-                          st_marks.sort! {|x,y| y <=> x }
-                          ct_marks.sort! {|x,y| y <=> x }
-                          
-                          if ct_full_mark.to_i == 20 
-                                avg_mark_ct = (ct_marks[0].to_f+ct_marks[1].to_f)/2
-                          else 
-                              avg_mark_ct = ct_marks[0].to_f
-                          end 
-
-                          if st_full_mark.to_i == 10 
-                              avg_mark_st = (st_marks[0].to_f+st_marks[1].to_f+st_marks[2].to_f)/3
-                          else st_full_mark.to_i == 5  
-                              avg_mark_st = (st_marks[0].to_f+st_marks[1].to_f)/2
-                          end
-
-                          full_mark = ct_full_mark.to_i+st_full_mark.to_i
-                          obtained_mark = avg_mark_ct.to_f+avg_mark_st.to_f
-
-                          main_mark = (obtained_mark.to_f/full_mark.to_f)*100 
-                        
-                      %>  
+                       <% main_mark = (subject_obtain_mark.to_f/subject_full_mark.to_f)*100 %> 
+                       <% main_mark = main_mark.round() %>
                     <td>
-                       <% total_mark = total_mark+obtained_mark.round() %>
-                       <%= obtained_mark.round().to_s %><hr/>
+                       <% total_mark = total_mark+main_mark %>
+                       <%= mock_1.round()  %>|<%= main_mark %><hr/>
                        <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
+                       <%= mock_2.round()  %>|
                        <% if !grade.blank? and !grade.name.blank? %>
-                           <%
-                              if grades.include?(grade.name.to_s)
-                                grade_count[grade.name.to_s] = grade_count[grade.name.to_s]+1
-                              else
-                                grades << grade.name.to_s
-                                grade_count[grade.name.to_s] = 1
-                              end  
-                           %>
-                          <%= grade.name %>  
-                       <% else %>
-                          N/A  
-                       <% end %>
-                    </td>  
-            <% end %> 
-            <% @report_data['report']['no_exam_subject_resutl'].each do |sub| %>
-                    <% if !sub['subject_comment'][std['id']].nil? %>
-                      <%
-                        if !sub['subject_comment'][std['id']].blank?
-                          if grades.include?(sub['subject_comment'][std['id']].to_s)
-                            grade_count[sub['subject_comment'][std['id']]] = grade_count[sub['subject_comment'][std['id']]]+1
+                       <%= grade.name.to_s %>
+                       <%
+                          if grades.include?(grade.name.to_s)
+                            grade_count[grade.name.to_s] = grade_count[grade.name.to_s]+1
                           else
-                            grades << sub['subject_comment'][std['id']].to_s
-                            grade_count[sub['subject_comment'][std['id']].to_s] = 1
-                          end 
-                        end 
-                       %>
-                     <td>
-                        <%=  sub['subject_comment'][std['id']] %>
-                     </td>
-                    <% end %> 
-              <% end %>
+                            grades << grade.name.to_s
+                            grade_count[grade.name.to_s] = 1
+                          end  
+                       %> 
+                       <% end %>
+                       <hr/>
+                       <%= subject_obtain_mark.round()  %>|
+                       <% if !grade.blank? and !grade.credit_points.blank? %>
+                        <%= grade.credit_points %>
+                       <% end %>
+                       
+                    </td>  
+             <% end %> 
+               
+            
               <td>
-                   <%= total_mark.round().to_s %>    
+                   <%= total_mark.round() %>    
               </td>
               <td>
                   <% i = 1 %>
@@ -181,15 +157,6 @@
                       <% i = i+1 %>
                   <% end %>
               </td> 
-              <%# @exam_comment.each do |exm_cmt| %>
-              <%# if exm_cmt.student_id.to_i == std['id'].to_i %>
-                <%#*<td>%>
-                    <%#= exm_cmt.comments %>
-                <%#*</td>%>
-              <%# else %>
-                <%#*<td></td>%>
-              <%# end %>  
-              <%# end %>
               
            
         </tr>

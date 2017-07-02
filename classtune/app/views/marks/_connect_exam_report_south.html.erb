@@ -398,14 +398,14 @@ a:hover
          jj("#pdf_file").hide();
          jj("#pdf_file").show();
          event.preventDefault();
-         if(jQuery.browser.mozilla)
-         {
-            PDFObject.embed(jj(this).attr("href"), "#pdf_file", {id: "pdf_id",forcePDFJS: true,PDFJS_URL: "/javascripts/pdfjs/web/viewer.html"});
-         } 
-         else
-         {
+         //if(jQuery.browser.mozilla)
+         //{
+           // PDFObject.embed(jj(this).attr("href"), "#pdf_file", {id: "pdf_id",forcePDFJS: true,PDFJS_URL: "/javascripts/pdfjs/web/viewer.html"});
+         //} 
+         //else
+         //{
             PDFObject.embed(jj(this).attr("href"), "#pdf_file", {id: "pdf_id"});
-         }
+        // }
          //
          if(jj(this).attr("href").indexOf("marksheet")!=-1)
          {

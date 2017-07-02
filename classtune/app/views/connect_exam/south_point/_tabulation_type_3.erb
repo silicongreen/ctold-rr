@@ -50,9 +50,9 @@
           <% @report_data['report']['subjects'].each do |sub| %>
             <td>
                 <%=  sub['code'] %><hr/>
-                Mock-1|Avg<hr/>
-                Mock-2|Grd<hr/>
-                Ttl|Gp
+                Mock-1 | Avg<hr/>
+                Mock-2 | Grd<hr/>
+                Ttl | Gp
             </td>
           <% end %> 
           
@@ -137,9 +137,9 @@
                        <% main_mark = main_mark.round() %>
                     <td>
                        <% total_mark = total_mark+main_mark %>
-                       <%= mock_1.round()  %>|<%= main_mark %><hr/>
+                       <%= mock_1.round()  %> | <%= main_mark %><hr/>
                        <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
-                       <%= mock_2.round()  %>|
+                       <%= mock_2.round()  %> | 
                        <% if !grade.blank? and !grade.name.blank? %>
                        <%= grade.name.to_s %>
                        <%
@@ -152,7 +152,7 @@
                        %> 
                        <% end %>
                        <hr/>
-                       <%= subject_obtain_mark.round()  %>|
+                       <%= subject_obtain_mark.round()  %> | 
                        <% if !grade.blank? and !grade.credit_points.blank? %>
                         <%= grade.credit_points %>
                        <% end %>

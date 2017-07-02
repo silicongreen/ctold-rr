@@ -2914,7 +2914,6 @@ class ExamController < ApplicationController
 #      }
       
     end
-    
     @exam_comment = ExamConnectComment.find_by_exam_connect_id_and_student_id(@connect_exam_obj.id,@student.id)
     if @for_save.blank?
         if MultiSchool.current_school.id == 246

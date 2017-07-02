@@ -1652,6 +1652,7 @@ class FinanceController < ApplicationController
     if MultiSchool.current_school.id == 2  or MultiSchool.current_school.id == 312
       render :pdf => 'student_fee_receipt_all_pdf',
       :orientation => 'Landscape', :zoom => 1.00,
+      :page_size => 'Legal',
       :margin => {    :top=> 10,
       :bottom => 10,
       :left=> 10,
@@ -1699,15 +1700,7 @@ class FinanceController < ApplicationController
       if MultiSchool.current_school.id == 2  or MultiSchool.current_school.id == 312
         render :pdf => 'student_fee_receipt_pdf',
         :orientation => 'Landscape', :zoom => 1.00,
-        :margin => {    :top=> 10,
-        :bottom => 10,
-        :left=> 10,
-        :right => 10},
-        :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
-        :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
-      elsif MultiSchool.current_school.id == 312
-        render :pdf => 'student_fee_receipt_pdf',
-        :orientation => 'Landscape', :zoom => 1.00,
+        :page_size => 'Legal',
         :margin => {    :top=> 10,
         :bottom => 10,
         :left=> 10,

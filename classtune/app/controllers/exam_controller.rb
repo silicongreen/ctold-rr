@@ -1139,13 +1139,13 @@ class ExamController < ApplicationController
       render :pdf => 'student_wise_generated_report'
     else
       pdf_name = "group_exam_"+params[:exam_group].to_s+"_"+params[:student].to_s+".pdf"
-      dirname = Rails.root.join('public','result_pdf',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"examgroup","0"+@exam_group.id.to_s)
+      dirname = Rails.root.join('public','result_pdf_archive',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"examgroup","0"+@exam_group.id.to_s)
       unless File.directory?(dirname)
         FileUtils.mkdir_p(dirname)
-        FileUtils.chmod_R(0777, Rails.root.join('public','result_pdf',"0"+MultiSchool.current_school.id.to_s))
+        FileUtils.chmod_R(0777, Rails.root.join('public','result_pdf_archive',"0"+MultiSchool.current_school.id.to_s))
       end
       render :pdf  => 'student_wise_generated_report',
-      :save_to_file => Rails.root.join('public','result_pdf',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"examgroup","0"+@exam_group.id.to_s,pdf_name),
+      :save_to_file => Rails.root.join('public','result_pdf_archive',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"examgroup","0"+@exam_group.id.to_s,pdf_name),
       :save_only    => true
     end
   end
@@ -2957,12 +2957,12 @@ class ExamController < ApplicationController
         end
     else
         pdf_name = "connect_exam_"+@connect_exam.to_s+"_"+@student.id.to_s+".pdf"
-        dirname = Rails.root.join('public','result_pdf',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"connectexam","0"+@connect_exam.to_s)
+        dirname = Rails.root.join('public','result_pdf_archive',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"connectexam","0"+@connect_exam.to_s)
         unless File.directory?(dirname)
           FileUtils.mkdir_p(dirname)
-          FileUtils.chmod_R(0777, Rails.root.join('public','result_pdf',"0"+MultiSchool.current_school.id.to_s))
+          FileUtils.chmod_R(0777, Rails.root.join('public','result_pdf_archive',"0"+MultiSchool.current_school.id.to_s))
         end
-        file_name = Rails.root.join('public','result_pdf',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"connectexam","0"+@connect_exam.to_s,pdf_name)
+        file_name = Rails.root.join('public','result_pdf_archive',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"connectexam","0"+@connect_exam.to_s,pdf_name)
         
         if MultiSchool.current_school.id == 246
         render :pdf => 'generated_report5_pdf',

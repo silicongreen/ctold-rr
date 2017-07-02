@@ -128,7 +128,6 @@
                   <h5 align="center">Result Sheet - <%= @connect_exam_obj.name %></h5>
                   <h5 align="center"><%= @batch.course.course_name+", Section - "+@batch.course.section_name %></h5>
               <% else %>
-              <h5 align="center">Progress Report</h5>
               <% unless @connect_exam_obj.blank? and @batch.blank? %>
                 <h5 align="center"><%= @batch.course.course_name %></h5>
                 <h5 align="center"><%= @connect_exam_obj.name %></h5>

@@ -54,7 +54,7 @@ body
     width: 100%;
     margin: 0 auto;
     overflow: hidden;
-    font-size:8px;
+    font-size:10px;
     margin-top: -50px;
 }
 .copy
@@ -186,11 +186,11 @@ table#pdf-table{
 
 .notes{
     float:right;
-    font-size:12px;
+    font-size:14px;
 }
 .note{
     float:left;
-    font-size:12px;
+    font-size:14px;
     height:60px;
 }
 .note_text{
@@ -223,7 +223,7 @@ table.std_info tr td
 }
 table.vat_area tr td
 {
-    font-size: 8px;
+    font-size: 10px;
    
 }
 
@@ -280,7 +280,7 @@ table.signature tr td
     padding-left: 5px;
     border-right: 1px dashed black;
     min-height: 880px;
-    font-size: 12px !important;
+    font-size: 14px !important;
     
 } 
 #page-yield div.div-50 .section .general-header

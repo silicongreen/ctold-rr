@@ -1292,3 +1292,6 @@ transform:scale(1,1.5); /* W3C */
     margin:0px;
 }
 /***************SJWS END************/
+
+/**********Addition****************/
+.subject{text-align: left !important;}

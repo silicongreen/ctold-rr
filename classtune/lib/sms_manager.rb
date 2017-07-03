@@ -72,33 +72,6 @@ class SmsManager
           new_count = sms_count.config_value.to_i + 1
           sms_count.update_attributes(:config_value=>new_count)   
         end
-        
-#        cur_request = request
-#        cur_request += "#{recipient}"
-#        begin
-#          uri = URI.parse(cur_request)
-#          http = Net::HTTP.new(uri.host, uri.port)
-#          if cur_request.include? "https://"
-#            http.use_ssl = true
-#            http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-#          end
-#          get_request = Net::HTTP::Get.new(uri.request_uri)
-#          response = http.request(get_request)
-#          if response.body.present?
-#            message_log.sms_logs.create(:mobile=>recipient,:gateway_response=>response.body)
-#            if @success_code.present?
-#              if response.body.to_s.include? @success_code
-#                sms_count = Configuration.find_by_config_key("TotalSmsCount")
-#                new_count = sms_count.config_value.to_i + 1
-#                sms_count.update_attributes(:config_value=>new_count)
-#              end
-#            end
-#          end
-#        rescue Timeout::Error => e
-#          message_log.sms_logs.create(:mobile=>recipient,:gateway_response=>e.message)
-#        rescue Errno::ECONNREFUSED => e
-#          message_log.sms_logs.create(:mobile=>recipient,:gateway_response=>e.message)
-#        end
       end
     end
   end

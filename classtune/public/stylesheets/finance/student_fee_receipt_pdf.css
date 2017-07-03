@@ -73,8 +73,8 @@ body
 {
     float:left;
     width: 24%;
-    padding-right: 3px;
-    padding-left: 7px;
+    padding-right: 0px;
+    padding-left: 10px;
     border-right: 1px dashed black;
     min-height: 680px
     

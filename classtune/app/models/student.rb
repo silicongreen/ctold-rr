@@ -59,7 +59,7 @@ class Student < ActiveRecord::Base
 
   named_scope :by_first_name, :order=>'first_name',:conditions => { :is_active => true }
   
-  named_scope :by_roll_number_name, :order=>'class_roll_no ASC, first_name ASC',:conditions => { :is_active => true }
+  named_scope :by_roll_number_name, :order=>'cast(class_roll_no as unsigned) ASC, first_name ASC',:conditions => { :is_active => true }
 
   validates_presence_of :admission_no, :batch_id, :date_of_birth,:nationality_id
   validates_presence_of :pass, :unless => Proc.new { |student| student.batch_name.nil? or student.batch_name.empty?}

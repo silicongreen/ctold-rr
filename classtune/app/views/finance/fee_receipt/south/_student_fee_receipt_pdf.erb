@@ -231,7 +231,7 @@
 
                       <td colspan="2" class="col-8"><b>Payable Amount with fine 1000 Tk+Vat( if paid after from <b><%= date_two.to_s %></b> ) And permission of principle is needed</td>
                       <%
-                        fine_vat = (600*7.5)/100
+                        fine_vat = (1000*7.5)/100
                         fine_vat = fine_vat.ceil
                         total_fine = 1000+fine_vat.to_i
                         balance3 = balance+total_fine

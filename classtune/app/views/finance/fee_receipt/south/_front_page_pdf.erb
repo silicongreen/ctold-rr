@@ -19,16 +19,18 @@
 
 <div id="page-yield" class="available_sections">
   <center>
-      <div id="pdf-header-south" class="general-header">
+      <div  class="general-header">
           <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '16%' %></h4>
           <h1 align="center"><%=Configuration.get_config_value('InstitutionName'); %></h1>
+          
+          <h2 align="center">Branch: Banani</h2>
 
           <h4 align="center">House#02, Road#02, Banani, Dhaka-1213</h4>
           <h4 align="center">Tel : 9895153</h4>
           
-          <h3 align="center">Fees Receipt Book</h3>
+          <h2 align="center"><b>Fees Receipt Book</b></h2>
          
-          <table class="std_info">
+          <table class="std_info2">
                
                 <tr>
                     <td colspan="1"><%= "#{t('name')}" %></td> <td colspan="11">:&nbsp; <%=  "#{@student.full_name}" %></td>

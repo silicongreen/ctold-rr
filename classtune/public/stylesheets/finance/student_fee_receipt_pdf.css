@@ -224,22 +224,22 @@ table.std_info2 tr td.td-align-right
     text-align: right;
 }
 
-front-page.h1
+.front-page.h1
 {
     font-size: 28px;
 }
-front-page.h2
+.front-page.h2
 {
     font-size: 22px;
 }
 
-front-page.h2 b
+.front-page.h2 b
 {
     margin-top:70px;
     font-size: 24px;
 }
 
-front-page.h3
+.front-page.h3
 {
     font-size: 18px;
 }

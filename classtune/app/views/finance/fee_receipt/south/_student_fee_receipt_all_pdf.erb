@@ -40,7 +40,11 @@
           @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
         end
         @fine_amount=0 if @financefee.is_paid
-        %>    
+        %> 
+        <% unless params[:front_page].blank? %>
+        <%=  render  :partial=>"finance/fee_receipt/south/front_page_pdf" %>
+        <div class="page-break"></div>
+        <% end %>
         <%=  render  :partial=>"finance/fee_receipt/south/student_fee_receipt_pdf" %>
 
         <div class="page-break"></div>

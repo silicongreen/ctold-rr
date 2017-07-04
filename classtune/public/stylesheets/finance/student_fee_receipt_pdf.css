@@ -209,7 +209,7 @@ table.std_info
 {
     margin-top: 7px;
 }
-table.std_info tr td:first-child
+table.std_info tr td.td-align-right
 {
     text-align: right;
 }

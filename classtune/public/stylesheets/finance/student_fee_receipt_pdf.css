@@ -213,6 +213,7 @@ table.std_info
 table.std_info tr td
 {
     padding: 2px;
+    text-align: left;
 }
 
 

@@ -209,7 +209,10 @@ table.std_info
 {
     margin-top: 7px;
 }
-
+table.std_info tr td:first-child
+{
+    text-align: right;
+}
 table.std_info tr td
 {
     padding: 2px;

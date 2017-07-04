@@ -22,12 +22,15 @@
   copy << "School Copy"
   copy << "Vat Office Copy"
   copy << "Bank Copy"
+  
+  
 %>
 
-
+<% i = 0 %>
 <div id="page-yield" class="available_sections">
     <% copy.each do |cp| %>
-    <div class="div-24" >
+    <% i = i+1 %>
+    <div class="div-24 div_number_<%= i %>" >
             
                <table class="vat_area">
                    <tr>

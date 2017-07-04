@@ -26,11 +26,11 @@
   
 %>
 
-<% i = 0 %>
+<% @jloop = 0 %>
 <div id="page-yield" class="available_sections">
     <% copy.each do |cp| %>
-    <% i = i+1 %>
-    <div class="div-24 div_number_<%= i %>" >
+    <% @jloop = @jloop+1 %>
+    <div class="div-24 div_number_<%= @jloop %>" >
             
                <table class="vat_area">
                    <tr>

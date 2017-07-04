@@ -80,7 +80,7 @@
                 <% c= 'even' %>
                 <% vat_amount = 0 %>
                 <% @fee_particulars.each do |fee| %>
-                   <%  if fee.name.index("Vat").blank? %>
+                   <%  if fee.name.index("VAT").blank? %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
 
                           <%k+=1%>

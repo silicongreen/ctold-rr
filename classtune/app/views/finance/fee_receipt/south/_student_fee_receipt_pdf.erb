@@ -62,15 +62,15 @@
             <table class="std_info">
                
                 <tr>
-                    <td colspan="6"><%= "#{t('name')}" %></td> <td colspan="6">:&nbsp; <%=  "#{@student.full_name}" %></td>
+                    <td colspan="2"><%= "#{t('name')}" %></td> <td colspan="10">:&nbsp; <%=  "#{@student.full_name}" %></td>
                 </tr>
                 <tr>
-                    <td colspan="3"><%= "Shift" %></td> <td colspan="3">:&nbsp; <%=  "#{@student.batch.name}" %></td>
-                    <td colspan="3"><%= "Medium" %></td> <td colspan="3">:&nbsp; <%=  "English" %></td>
+                    <td colspan="2"><%= "Shift" %></td> <td colspan="4">:&nbsp; <%=  "#{@student.batch.name}" %></td>
+                    <td colspan="2"><%= "Medium" %></td> <td colspan="4">:&nbsp; <%=  "English" %></td>
                 </tr>
-                    <td colspan="2"><%= "Class" %></td> <td colspan="2">:&nbsp; <%=  "#{@student.batch.course.course_name}" %></td>
-                    <td colspan="2"><%= "Section" %></td> <td colspan="2">:&nbsp; <%=  "#{@student.batch.course.section_name}" %></td>
-                    <td colspan="2"><%= "Roll" %></td> <td colspan="2">:&nbsp; <%=  "#{@student.class_roll_no}" %></td>
+                    <td colspan="1"><%= "Class" %></td> <td colspan="3">:&nbsp; <%=  "#{@student.batch.course.course_name}" %></td>
+                    <td colspan="1"><%= "Section" %></td> <td colspan="3">:&nbsp; <%=  "#{@student.batch.course.section_name}" %></td>
+                    <td colspan="1"><%= "Roll" %></td> <td colspan="3">:&nbsp; <%=  "#{@student.class_roll_no}" %></td>
                 </tr> 
                  
             </table>

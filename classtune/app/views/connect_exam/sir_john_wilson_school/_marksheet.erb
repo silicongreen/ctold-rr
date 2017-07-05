@@ -39,6 +39,7 @@
             
        
       </div>
+      
       <% unless @report_data.blank?  or  @report_data['result'].blank? %>
       <% c = 'even' %>
       <% full_mark = 0 %>
@@ -59,7 +60,7 @@
             <p></p>
           </td>
           <% @report_data['result']['ALL'].each do |rs| %>
-          <td class="rotate"><div><span>05/05/17<br /></span><span><%=  rs['name'] %></span></div></td>
+          <td class="rotate"><div><span>05/05/17<br /></span><span><%=  rs['alternative_title'] %></span></div></td>
             <% colspan = colspan+1 %>          
           <% end %> 
           <% assignmentCount = Assignment.count(:all, :conditions => {:subject_id => @subject.id,:is_published=>1,:duedate => @connect_exam_obj.attandence_start_date..@connect_exam_obj.attandence_end_date}) %>

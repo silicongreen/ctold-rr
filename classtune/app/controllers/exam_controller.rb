@@ -2362,8 +2362,9 @@ class ExamController < ApplicationController
     end
     FileUtils.chmod_R(0777, Rails.root.join('public','result_pdf',"0"+MultiSchool.current_school.id.to_s))
     file_name = Rails.root.join('public','result_pdf',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"continues","0"+@connect_exam_obj.id.to_s,pdf_name)
-    
-    if File.file?(file_name) && Rails.cache.exist?("continues_#{@id}_#{@batch.id}")
+    champs21_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
+    api_from = champs21_config['from']
+    if File.file?(file_name) && Rails.cache.exist?("continues_#{@id}_#{@batch.id}") && api_from != "local"
       FileUtils.chown 'champs21','champs21',file_name
       redirect_to "/result_pdf/0"+MultiSchool.current_school.id.to_s+"/0"+@batch.id.to_s+"/continues/0"+@connect_exam_obj.id.to_s+"/"+pdf_name
     else
@@ -2475,8 +2476,9 @@ class ExamController < ApplicationController
     end
     FileUtils.chmod_R(0777, Rails.root.join('public','result_pdf',"0"+MultiSchool.current_school.id.to_s))
     file_name = Rails.root.join('public','result_pdf',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"tabulation","0"+@connect_exam_obj.id.to_s,pdf_name)
-    
-    if File.file?(file_name) && Rails.cache.exist?("tabulation_#{@id}_#{@batch.id}")
+    champs21_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
+    api_from = champs21_config['from']
+    if File.file?(file_name) && Rails.cache.exist?("tabulation_#{@id}_#{@batch.id}") && api_from != "local"
       FileUtils.chown 'champs21','champs21',file_name
       redirect_to "/result_pdf/0"+MultiSchool.current_school.id.to_s+"/0"+@batch.id.to_s+"/tabulation/0"+@connect_exam_obj.id.to_s+"/"+pdf_name
     else
@@ -2518,8 +2520,9 @@ class ExamController < ApplicationController
     end
     FileUtils.chmod_R(0777, Rails.root.join('public','result_pdf',"0"+MultiSchool.current_school.id.to_s))
     file_name = Rails.root.join('public','result_pdf',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"tabulation","0"+@connect_exam_obj.id.to_s,pdf_name)
-    
-    if File.file?(file_name) && Rails.cache.exist?("tabulation_#{@id}_#{@batch.id}")
+    champs21_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
+    api_from = champs21_config['from']
+    if File.file?(file_name) && Rails.cache.exist?("tabulation_#{@id}_#{@batch.id}") && api_from != "local"
       FileUtils.chown 'champs21','champs21',file_name
       redirect_to "/result_pdf/0"+MultiSchool.current_school.id.to_s+"/0"+@batch.id.to_s+"/tabulation/0"+@connect_exam_obj.id.to_s+"/"+pdf_name
     else
@@ -2559,7 +2562,10 @@ class ExamController < ApplicationController
     FileUtils.chmod_R(0777, Rails.root.join('public','result_pdf',"0"+MultiSchool.current_school.id.to_s))
     file_name = Rails.root.join('public','result_pdf',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"marksheet","0"+@connect_exam_obj.id.to_s,pdf_name)
     
-    if File.file?(file_name) && Rails.cache.exist?("marksheet_#{@id}_#{@subject_id}")
+    champs21_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
+    api_from = champs21_config['from']
+    
+    if File.file?(file_name) && Rails.cache.exist?("marksheet_#{@id}_#{@subject_id}") && api_from != "local"
       FileUtils.chown 'champs21','champs21',file_name
       redirect_to "/result_pdf/0"+MultiSchool.current_school.id.to_s+"/0"+@batch.id.to_s+"/marksheet/0"+@connect_exam_obj.id.to_s+"/"+pdf_name
     else

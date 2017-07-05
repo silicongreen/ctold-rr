@@ -801,7 +801,7 @@ div.baf_shaheen
 }
 .south_point h4
 {
-    font-size:21px;
+    font-size:18px;
 }
 .south_point h2
 {
@@ -844,7 +844,7 @@ div.baf_shaheen
 }
 .potrait_header_south_point h5
 {
-    font-size:17px !important;
+    font-size:11px !important;
 }
 .south-point-protrait h2
 {
@@ -1200,7 +1200,13 @@ transform:scale(1,1.5); /* W3C */
 -ms-transform:scale(1,1.5); /* IE 9 */
 -o-transform:scale(1,1.5); /* Opera */
 /* Rest Of CSS Code Here*/
+margin:10px;
 } 
+
+.sjws .container_body
+{
+    margin-top: 10px;min-height: 1600px !important;
+}
 
 .sjws .grad_list_right
 {
@@ -1208,6 +1214,10 @@ transform:scale(1,1.5); /* W3C */
     width: 12%;
     font-size: 15px;
     line-height: 20px;
+}
+.sjws table#pdf-table{
+    border: 1px solid #000000 !important;
+    border-collapse:collapse !important;
 }
 .sjws_table_head
 {
@@ -1247,7 +1257,7 @@ transform:scale(1,1.5); /* W3C */
 }
 .sjws .roundbox
 {
-    border:1px solid ;
+    border:1px solid #000;
     padding:0px 10px;
     margin-left: 20px;
     font-size: 22px;
@@ -1264,7 +1274,7 @@ transform:scale(1,1.5); /* W3C */
 
 .sjws .roundbox_left
 {
-    border:1px solid ;
+    border:1px solid #000 ;
     padding:0px 10px;    
     font-size: 22px;
 }
@@ -1275,7 +1285,7 @@ transform:scale(1,1.5); /* W3C */
 }
 .sjws_table_intro .t_head
 {
-    background: #CCC!IMPORTANT;
+    background: #000!IMPORTANT;
 }
 .sjws_table_intro .term_remark
 {
@@ -1291,7 +1301,11 @@ transform:scale(1,1.5); /* W3C */
     padding:1px;
     margin:0px;
 }
-/***************SJWS END************/
 
-/**********Addition****************/
-.subject{text-align: left !important;}
+.sjws .footer {
+   position:fixed;   
+   bottom:0px; 
+   width: 1240px !important;
+   background:#fff;
+}
+/***************SJWS END************/

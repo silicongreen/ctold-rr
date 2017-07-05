@@ -581,7 +581,7 @@ class ExamGroups extends CActiveRecord
         
         return array($result,$max_mark);
     }
-    public function getExamGroupResultSubjectAllStudentCont($exam_group_id,$count,$result,$weightage,$students)
+    public function getExamGroupResultSubjectAllStudentCont($exam_group_id,$count,$result,$weightage,$students,$priority = 0)
     {
         $criteria = new CDbCriteria();
         $criteria->select = 't.name,t.id,t.sba,t.exam_category,t.quarter'; 
@@ -645,6 +645,7 @@ class ExamGroups extends CActiveRecord
         {
             foreach($students as $student)
             {
+                $result[$student]['exams'][$count]['priority'] = $priority;
                 $result[$student]['exams'][$count]['quarter'] = $all_exams->quarter;
                 $result[$student]['exams'][$count]['exam_name'] = $all_exams->name;
                 $result[$student]['exams'][$count]['sba'] = $all_exams->sba;
@@ -968,7 +969,7 @@ class ExamGroups extends CActiveRecord
         
     }   
     
-    public function getExamGroupResultSubject($exam_group_id,$student_id,$weightage)
+    public function getExamGroupResultSubject($exam_group_id,$student_id,$weightage,$priority = 0)
     {
         $criteria = new CDbCriteria();
         $criteria->select = 't.name,t.id,t.sba,t.exam_category,t.quarter'; 
@@ -981,7 +982,7 @@ class ExamGroups extends CActiveRecord
         
         $criteria->with = array(
                 'Exams' => array(
-                    'select' => 'Exams.maximum_marks',
+                    'select' => 'Exams.maximum_marks,Exams.alternative_title',
                     'with' => array(
                         'Scores' => array(
                             'select' => 'Scores.marks',
@@ -1013,7 +1014,7 @@ class ExamGroups extends CActiveRecord
         $criteria->compare('Subjects.is_deleted', false);
         $criteria->with = array(
                 'Exams' => array(
-                    'select' => 'Exams.maximum_marks',
+                    'select' => 'Exams.maximum_marks,Exams.alternative_title',
                     'with' => array(
                         'Subjects' => array(
                             'select' => 'Subjects.id',
@@ -1032,6 +1033,7 @@ class ExamGroups extends CActiveRecord
         
         if($all_exams)
         {
+            $result['priority'] = $priority;
             $result['quarter'] = $all_exams->quarter;
             $result['exam_name'] = $all_exams->name;
             $result['sba'] = $all_exams->sba;
@@ -1049,6 +1051,7 @@ class ExamGroups extends CActiveRecord
         
         if($examresult)
         {
+            $result['priority'] = $priority;
             $result['exam_name'] = $examresult->name;
             $result['exam_id'] = $examresult->id;
             $result['sba'] = $examresult->sba;

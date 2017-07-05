@@ -69,7 +69,25 @@ class ExamConnect extends CActiveRecord
         $criteria->order = "published_date DESC";
         $connect_exam = $this->findAll($criteria);
         return $connect_exam;
-    } 
+    }
+    
+    public function getConnectExamKgFirstTerm($batch_id)
+    {
+        $criteria = new CDbCriteria;
+        $criteria->compare('t.batch_id', $batch_id);
+        $criteria->compare('t.is_deleted', 0);
+        $criteria->compare('t.result_type', 5);
+        $criteria->select = 't.id';
+        $criteria->order = "created_at DESC";
+        $criteria->limit = 1;
+        $connect_exam = $this->find($criteria);
+        
+        if($connect_exam)
+        {
+            return $connect_exam->id;
+        }
+        return false;
+    }
     
     public function getConnectExamFirstTerm($batch_id)
     {
@@ -134,7 +152,7 @@ class ExamConnect extends CActiveRecord
                         'joinType' => 'LEFT JOIN',
                         'with' => array(
                             'Exams' => array(
-                                'select' => 'Exams.id,Exams.maximum_marks',
+                                'select' => 'Exams.id,Exams.maximum_marks,Exams.alternative_title',
                                 'joinType' => 'LEFT JOIN',
                                 'with' => array(
                                     'Scores' => array(
@@ -182,6 +200,7 @@ class ExamConnect extends CActiveRecord
                     {
                         $exam =$groupedexam['examgroup']['Exams'][0];
                         $result['CT'][$i]['name'] = $groupedexam['examgroup']->name;
+                        $result['CT'][$i]['alternative_title'] = $exam->alternative_title;
                         $result['CT'][$i]['quarter'] = $groupedexam['examgroup']->quarter;
                         
                         $result['CT'][$i]['maximum_marks'] = $exam->maximum_marks;
@@ -221,6 +240,7 @@ class ExamConnect extends CActiveRecord
                     {
                         $exam =$groupedexam['examgroup']['Exams'][0];
                         $result['ST'][$k]['name'] = $groupedexam['examgroup']->name;
+                        $result['ST'][$k]['alternative_title'] = $exam->alternative_title;
                         $result['ST'][$k]['quarter'] = $groupedexam['examgroup']->quarter;
                         
                         $result['ST'][$k]['maximum_marks'] = $exam->maximum_marks;
@@ -256,6 +276,7 @@ class ExamConnect extends CActiveRecord
                     
                     $exam =$groupedexam['examgroup']['Exams'][0];
                     $result['ALL'][$f]['name'] = $groupedexam['examgroup']->name;
+                    $result['ALL'][$f]['alternative_title'] = $exam->alternative_title;
                     $result['ALL'][$f]['quarter'] = $groupedexam['examgroup']->quarter;
                     $result['ALL'][$f]['exam_category'] = $groupedexam['examgroup']->exam_category;
                     $result['ALL'][$f]['maximum_marks'] = $exam->maximum_marks;

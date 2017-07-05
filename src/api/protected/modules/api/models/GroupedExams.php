@@ -200,7 +200,7 @@ class GroupedExams extends CActiveRecord
                         $final_term_id = $value['examgroup']->id;
                     }
                     $examgroups_ids[] = $value['examgroup']->id;
-                    $results['all_result'] =  $examsGroupObj->getExamGroupResultSubjectAllStudentCont($value['examgroup']->id,$i,$results['all_result'],$value->weightage,$batch_student); 
+                    $results['all_result'] =  $examsGroupObj->getExamGroupResultSubjectAllStudentCont($value['examgroup']->id,$i,$results['all_result'],$value->weightage,$batch_student,$value->priority); 
                     list($subject_result,$max_mark) = $examsGroupObj->getExamGroupResultMaxMark($value['examgroup']->id,$subject_result,$max_mark,$exam_loop,$value['examconnect']->result_type);
                     $exam_loop++;
                    
@@ -614,7 +614,7 @@ class GroupedExams extends CActiveRecord
                 $exam_loop = 0;
                 foreach($examgroups as $value)
                 {
-                    $result_main =  $examsGroupObj->getExamGroupResultSubject($value['examgroup']->id,$student_id,$value->weightage);    
+                    $result_main =  $examsGroupObj->getExamGroupResultSubject($value['examgroup']->id,$student_id,$value->weightage,$value->priority);    
                     if($result_main)
                     {
                         $results['exams'][] = $result_main;

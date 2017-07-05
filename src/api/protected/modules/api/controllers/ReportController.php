@@ -392,6 +392,13 @@ class ReportController extends Controller
                     $previous_exam = $first_term_id;
                 }
                 
+                $first_term_id_kg = 0;
+                if($this_term->result_type == 6)
+                {
+                    $first_term_id_kg = $cont_exam->getConnectExamKgFirstTerm($batch_id);
+                }    
+                
+                
                 $groupexam = new GroupedExams();
                 $exam_report = $groupexam->getGroupedExamReport($batch_id, $student_id, $connect_exam_id, $previous_exam);
                 
@@ -408,6 +415,12 @@ class ReportController extends Controller
                 {
                     $adata_first_term = $attandence->getStudentTotalPrsent($batch_id, $student_id, $first_term_id);
                 }
+                
+                if($first_term_id_kg)
+                {
+                    $adata_first_term = $attandence->getStudentTotalPrsent($batch_id, $student_id, $first_term_id_kg);
+                }
+                
                 if ($exam_report) {
                     
                     $response['data']['report'] = $exam_report;

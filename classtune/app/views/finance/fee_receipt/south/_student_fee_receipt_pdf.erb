@@ -82,6 +82,24 @@
                     <td class="name-td"  colspan="2"><%= "Fee Details" %></td>
                     <td class="mark-td"> <%= "Taka" %></td>
                 </tr>
+                <% subject_discount = 0 %>
+                <% laboratory_discount = 0 %>
+                <% unless @total_discount == 0 %>
+                  <% @discounts.each do |d| %>
+                    <% unless d.name.index("Tuition").blank?  %>
+                    
+                         <% subject_discount = d.discount.to_f %> 
+                    
+                    <% end %>
+                    <% unless d.name.index("Laboratory").blank?  %>
+                    
+                         <% laboratory_discount = d.discount.to_f %> 
+                    
+                    <% end %>
+                  <% end %>  
+                <% end %>
+                <% @total_discount = @total_discount - subject_discount - laboratory_discount  %>
+                
                 <%k=7%>
                 <% i = 0  %>
                 <% c= 'even' %>
@@ -89,7 +107,12 @@
                 <% @fee_particulars.each do |fee| %>
                    <%  if fee.name.index("VAT").blank? %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-
+                          <% unless fee.name.index("Tuition").blank?  %>
+                            <% fee.amount = fee.amount.to_f-subject_discount %>
+                          <% end %>
+                          <% unless fee.name.index("Laboratory").blank?  %>
+                            <% fee.amount = fee.amount.to_f-laboratory_discount %>
+                          <% end %>
                           <%k+=1%>
                           <td class="name-td" colspan="2"><%= fee.name %></td>
                           <td class="mark-td"><% if fee.amount.to_i > 0 %><%= "#{precision_label(fee.amount.to_s)}" %><% else %>-<% end %></td>
@@ -107,13 +130,15 @@
                   </tr>
 
                   <% @discounts.each do |d| %>
+                    <% discount_text = d.is_amount == true ? "#{d.name}" : "#{d.name}(#{d.discount})%" %>
+                    <% if d.name.index("Tuition").blank? or d.name.index("Laboratory").blank?  %>
                     <%k+=1%>
-                    <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                        
-                        <% discount_text = d.is_amount == true ? "#{d.name}" : "#{d.name}(#{d.discount})%" %>
+                    <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">   
                         <td class="name-td"  colspan="2"><%= discount_text %></td>
                         <td class="mark-td"><%= precision_label(@total_payable * d.discount.to_f/ (d.is_amount?? @total_payable : 100)) %></td>
                     </tr>
+                    
+                    <% end %>
                   <% end %>
 
 

@@ -203,7 +203,7 @@
                       <td class="col-pdf"><%= "#{precision_label(balance)}" %></td>
                   </tr>
                   <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                      <td colspan="3">Amount in Word :<b><%= in_words(balance.to_i).titleize  %></b></td>
+                      <td colspan="3">Amount in words :<b><%= in_words(balance.to_i).titleize  %></b></td>
                   </tr>
 
 
@@ -236,7 +236,7 @@
                   </tr>
                   <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
 
-                      <td colspan="2" class="col-8"><b>Payable Amount with fine 1000 Tk+VAT( if paid after from <b><%= date_two.to_date.strftime("%d-%m-%Y").to_s %></b> )</td>
+                      <td colspan="2" class="col-8"><b>Payable Amount with fine 1000 Tk+VAT( if paid after <b><%= date_two.to_date.strftime("%d-%m-%Y").to_s %></b> )</td>
                       <%
                         fine_vat = (1000*7.5)/100
                         fine_vat = fine_vat.ceil

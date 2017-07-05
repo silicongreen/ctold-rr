@@ -184,7 +184,7 @@
                   <%balance=@financefee.balance.to_f+@fine.to_f+@fine_amount.to_f-vat_amount%>
                   <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                       <%k+=1%>
-                      <td colspan="2" class="col-8"><b><%= "Total Payable Amount (Without VAT)" %></b></td>
+                      <td colspan="2" class="col-8"><b><%= "Total(Without VAT)" %></b></td>
                       <td class="col-pdf"><%= "#{precision_label(balance)}" %></td>
                   </tr>
                   <% @fee_particulars.each do |fee| %>
@@ -199,7 +199,7 @@
 
                   <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                       <%k+=1%>
-                      <td colspan="2" class="col-8"><b>Total Payable Amount Including VAT <br/>(if paid within <%= @date.due_date %> )</b></td>
+                      <td colspan="2" class="col-8"><b>Total Payable Amount Including VAT <br/>(if paid within <%= @date.due_date.to_date.strftime("%d-%m-%Y") %> )</b></td>
                       <td class="col-pdf"><%= "#{precision_label(balance)}" %></td>
                   </tr>
                   <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
@@ -211,7 +211,7 @@
                   <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                       <% date_one = @date.due_date.to_date+1.days %>
                       <% date_two = date_one+1.months %>
-                      <td colspan="2" class="col-8"><b>Payable Amount with fine 200 Tk+VAT( if payment date is from <b><%= date_one.to_s %></b> to <b><%= date_two.to_s %></b>  ) And permission of principle is needed</td>
+                      <td colspan="2" class="col-8"><b>Payable Amount with fine 200 Tk+VAT( if payment date is from <b><%= date_one.to_date.strftime("%d-%m-%Y").to_s %></b> to <b><%= date_two.to_s %></b>  ) </td>
                       <%
                         fine_vat = (200*7.5)/100
                         fine_vat = fine_vat.ceil
@@ -224,7 +224,7 @@
                   <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                       <% date_one = date_two+1.days %>
                       <% date_two = date_one+1.months %>
-                      <td colspan="2" class="col-8"><b>Payable Amount with fine 400 Tk+VAT( if payment date is from <b><%= date_one.to_s %></b> to <b><%= date_two.to_s %></b>  ) And permission of principle is needed</td>
+                      <td colspan="2" class="col-8"><b>Payable Amount with fine 400 Tk+VAT( if payment date is from <b><%= date_one.to_date.strftime("%d-%m-%Y").to_s %></b> to <b><%= date_two.to_s %></b>  ) </td>
                       <%
                         fine_vat = (400*7.5)/100
                         fine_vat = fine_vat.ceil
@@ -236,7 +236,7 @@
                   </tr>
                   <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
 
-                      <td colspan="2" class="col-8"><b>Payable Amount with fine 1000 Tk+VAT( if paid after from <b><%= date_two.to_s %></b> ) And permission of principle is needed</td>
+                      <td colspan="2" class="col-8"><b>Payable Amount with fine 1000 Tk+VAT( if paid after from <b><%= date_two.to_date.strftime("%d-%m-%Y").to_s %></b> )</td>
                       <%
                         fine_vat = (1000*7.5)/100
                         fine_vat = fine_vat.ceil

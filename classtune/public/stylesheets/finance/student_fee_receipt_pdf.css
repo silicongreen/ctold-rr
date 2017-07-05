@@ -142,32 +142,32 @@ h2.heading{
 
 }
 tr.even{
-    border: 2px solid black;
+    border: 1px solid black;
 }
 
 tr.odd{
-    border: 2px solid black;
+    border: 1px solid black;
 }
 
 .even td{
 
-    padding: 2px 2px 2px 2px;
-    border: 2px solid black;
+    padding: 1px 1px 1px 1px;
+    border: 1px solid black;
     border-left: 0px solid #fff;
     border-top: 0px solid #fff;
 
 }
 
 .odd td{
-    padding: 2px 2px 2px 2px;
-    border: 2px solid black;
+    padding: 1px 1px 1px 1px;
+    border: 1px solid black;
     border-left: 0px solid #fff;
     border-top: 0px solid #fff;
 
 }
 
 .table-header td{
-    padding: 2px 2px 2px 2px;
+    padding: 2px 1px 1px 1px;
     border-top: 2px solid black;
     border-right: 2px solid black;
     border-left: 2px solid black;

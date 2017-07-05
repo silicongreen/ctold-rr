@@ -71,7 +71,7 @@ body
 }
 #page-yield div.div_number_1
 {
-    margin-left: 50px;
+    margin-left: 40px;
     
 }
 #page-yield div.div-24
@@ -80,7 +80,7 @@ body
     width: 23%;
     padding-right: 2px;
     padding-left: 8px;
-    border-right: 1px dashed black;
+    border-right: 2px dashed black;
     min-height: 680px
     
 } 
@@ -130,7 +130,7 @@ h2.heading{
 
 .odd{
     height:auto;
-    background: #EEEEEE;
+    background: #fff;
 
 }
 
@@ -142,17 +142,17 @@ h2.heading{
 
 }
 tr.even{
-    border: 1px solid #ADACAB;
+    border: 2px solid black;
 }
 
 tr.odd{
-    border: 1px solid #ADACAB;
+    border: 2px solid black;
 }
 
 .even td{
 
     padding: 3px 3px 3px 3px;
-    border: 1px solid #ADACAB;
+    border: 2px solid black;
     border-left: 0px solid #fff;
     border-top: 0px solid #fff;
 
@@ -160,7 +160,7 @@ tr.odd{
 
 .odd td{
     padding: 3px 3px 3px 3px;
-    border: 1px solid #ADACAB;
+    border: 2px solid black;
     border-left: 0px solid #fff;
     border-top: 0px solid #fff;
 
@@ -168,18 +168,18 @@ tr.odd{
 
 .table-header td{
     padding: 3px 3px 3px 3px;
-    border-top: 1px solid #ADACAB;
-    border-right: 1px solid #ADACAB;
-    border-left: 1px solid #ADACAB;
+    border-top: 2px solid black;
+    border-right: 2px solid black;
+    border-left: 2px solid black;
     font-weight: bold;
-    background: #EEEEEE;
+    background: #fff;
    
 }
 #pdf-info{
     float:left;
 }
 table#pdf-table{
-    border: 1px solid #ADACAB;
+    border: 2px solid black;
     border-collapse:collapse;
 }
 
@@ -302,7 +302,7 @@ table.vat_area tr td.left
 table.signature
 {
     width: 100%;
-    margin-top:100px;
+    margin-top:70px;
 }
 
 table.signature tr td
@@ -323,7 +323,7 @@ table.signature tr td
     width: 48%;
     padding-right: 3px;
     padding-left: 5px;
-    border-right: 1px dashed black;
+    border-right: 2px dashed black;
     min-height: 880px;
     font-size: 13px !important;
     

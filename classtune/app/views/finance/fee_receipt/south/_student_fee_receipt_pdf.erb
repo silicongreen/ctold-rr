@@ -43,7 +43,7 @@
             <center>
                 <div id="pdf-header-south" class="general-header">
                   <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '16%' %></h4>
-                  <h3 align="center"><%=Configuration.get_config_value('InstitutionName'); %></h3>
+                  <h3 align="center"><%=Configuration.get_config_value('InstitutionName').upcase %></h3>
                  
                     <h5 align="center">House#02, Road#02, Banani, Dhaka-1213</h5>
                     <h5 align="center">Tel : 9895153</h5>
@@ -203,7 +203,7 @@
                       <td class="col-pdf"><%= "#{precision_label(balance)}" %></td>
                   </tr>
                   <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                      <td colspan="3">Amount in Word :<b><%= in_words(balance.to_i) %></b></td>
+                      <td colspan="3">Amount in Word :<b><%= in_words(balance.to_i).titleize  %></b></td>
                   </tr>
 
 
@@ -211,7 +211,7 @@
                   <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                       <% date_one = @date.due_date.to_date+1.days %>
                       <% date_two = date_one+1.months %>
-                      <td colspan="2" class="col-8"><b>Payable Amount with fine 200 Tk+VAT( if payment date is from <b><%= date_one.to_date.strftime("%d-%m-%Y").to_s %></b> to <b><%= date_two.to_s %></b>  ) </td>
+                      <td colspan="2" class="col-8"><b>Payable Amount with fine 200 Tk+VAT( if payment date is from <b><%= date_one.to_date.strftime("%d-%m-%Y").to_s %></b> to <b><%= date_two.to_date.strftime("%d-%m-%Y").to_s %></b>  ) </td>
                       <%
                         fine_vat = (200*7.5)/100
                         fine_vat = fine_vat.ceil
@@ -224,7 +224,7 @@
                   <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                       <% date_one = date_two+1.days %>
                       <% date_two = date_one+1.months %>
-                      <td colspan="2" class="col-8"><b>Payable Amount with fine 400 Tk+VAT( if payment date is from <b><%= date_one.to_date.strftime("%d-%m-%Y").to_s %></b> to <b><%= date_two.to_s %></b>  ) </td>
+                      <td colspan="2" class="col-8"><b>Payable Amount with fine 400 Tk+VAT( if payment date is from <b><%= date_one.to_date.strftime("%d-%m-%Y").to_s %></b> to <b><%= date_two.to_date.strftime("%d-%m-%Y").to_s %></b>  ) </td>
                       <%
                         fine_vat = (400*7.5)/100
                         fine_vat = fine_vat.ceil

@@ -179,7 +179,7 @@ tr.odd{
     float:left;
 }
 table#pdf-table{
-    border: 2px solid black;
+    border: 1px solid black;
     border-collapse:collapse;
 }
 

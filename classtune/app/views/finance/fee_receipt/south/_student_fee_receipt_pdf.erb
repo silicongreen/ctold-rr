@@ -55,22 +55,22 @@
             <% total_fees = 0 %>
             <table class="std_info">
                 <tr>  
-                     <td class="left">For Month</td> <td>:<%=  "#{@date.name.capitalize}" %></td>
-                     <td class="right">Date</td> <td>:&nbsp;______/______/______</td>
+                    <td class="left">For Month:</td> <td><b><%=  "#{@date.name.capitalize}" %></b></td>
+                    <td class="right">Date:</td> <td><b>&nbsp;______/______/______</b></td>
                 </tr>
             </table>     
             <table class="std_info">
                
                 <tr>
-                    <td colspan="1"><%= "#{t('name')}" %></td> <td colspan="11">:&nbsp; <%=  "#{@student.full_name}" %></td>
+                    <td colspan="1"><%= "#{t('name')}" %>:</td> <td colspan="11"><b> <%=  "#{@student.full_name}" %></b></td>
                 </tr>
                 <tr>
-                    <td colspan="1"><%= "Shift" %></td> <td colspan="5">:&nbsp; <%=  "#{@student.batch.name}" %></td>
-                    <td colspan="2" class="td-align-right"><%= "Medium" %></td> <td colspan="4">:&nbsp; <%=  "English" %></td>
+                    <td colspan="1"><%= "Shift" %>:</td> <td colspan="5"><b> <%=  "#{@student.batch.name}" %></b></td>
+                    <td colspan="2" class="td-align-right"><%= "Medium" %>:</td> <td colspan="4"><b><%=  "English" %></b></td>
                 </tr>
-                    <td colspan="1"><%= "Class" %></td> <td colspan="3">:&nbsp; <%=  "#{@student.batch.course.course_name}" %></td>
-                    <td colspan="1" class="td-align-right"><%= "Section" %></td> <td colspan="3">:&nbsp; <%=  "#{@student.batch.course.section_name}" %></td>
-                    <td colspan="1" class="td-align-right"><%= "Roll" %></td> <td colspan="3">:&nbsp; <%=  "#{@student.class_roll_no}" %></td>
+                    <td colspan="1"><%= "Class" %>:</td> <td colspan="3"><b><%=  "#{@student.batch.course.course_name}" %></b></td>
+                    <td colspan="1" class="td-align-right"><%= "Section" %>:</td> <td colspan="3"> <b><%=  "#{@student.batch.course.section_name}" %></b></td>
+                    <td colspan="1" class="td-align-right"><%= "Roll" %>:</td> <td colspan="3"><b> <%=  "#{@student.class_roll_no}" %></b></td>
                 </tr> 
                  
             </table>

@@ -1243,7 +1243,7 @@ margin:10px;
     background-image: url(../../images/icons/tickbox_uncheck.png);
     background-repeat: no-repeat;
     background-position: 10%;
-    background-size: 60%;
+    background-size: 40%;
     padding: 20px;
 }
 
@@ -1252,7 +1252,7 @@ margin:10px;
     background-image: url(../../images/icons/tickbox_check.png);
     background-repeat: no-repeat;
     background-position: 10%;
-    background-size: 60%;
+    background-size: 40%;
     padding: 20px;
 }
 .sjws .roundbox

@@ -16,6 +16,8 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License. -%>
+<% grades = [] %>
+<% grade_count = {} %>
 <div id="page-yield" class="available_sections1">
   <div class="page1 sjws"> 
       <div class="logo_left">&nbsp;</div>
@@ -84,21 +86,6 @@
         <% @report_data['result']['al_students'].each do |std| %>
           <%  std_count = std_count+1; %>
           <% colspan = colspan+4 %>
-          <% if std_count>17 && extender ==0 %>
-              <% std_count = 0 %>
-              <% extender = 1 %>
-              <tr class="page-break">
-                  <td colspan="<%= colspan %>">&nbsp;</td>
-              </tr>    
-          <% elsif std_count>22 && extender ==1 %>
-              <% std_count = 0 %>
-              <% extender = 1 %>
-              <tr class="page-break">
-                  <td colspan="<%= colspan %>">&nbsp;</td>
-              </tr> 
-          <% end %>    
-        
-        
           <% total_mark = 0 %>
           <% full_mark = 0 %>
           <% @report_data['result']['ALL'].each do |rs| %>            
@@ -120,6 +107,14 @@
             <td class="name"><center><%= sprintf( "%0.02f", main_mark).to_i %> %</center></td>  
             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
             <% if !grade.blank? and !grade.name.blank? %>
+              <%
+                if grades.include?(grade.name.to_s)
+                  grade_count[grade.name.to_s] = grade_count[grade.name.to_s]+1
+                else
+                  grades << grade.name.to_s
+                  grade_count[grade.name.to_s] = 1
+                end  
+             %>
             <td class="name"><center><%= grade.name %></center></td>
             <% else %>
               <td class="name"><center>N/A</center></td>
@@ -129,6 +124,18 @@
         <% end %>
       </table>
       <% end %>
+      <table class="sjws_table_intro" width="100%" cellspacing="0">
+        <tr class="sjws_odd">
+            <td>
+             <% unless grades.blank? %>
+              <% grades.each do |grade| %>
+                <p> Number of '<%= grade.to_s %>' : <%=  grade_count[grade].to_s %></p>
+                      
+              <% end %>
+             <% end %>   
+            </td>
+        </tr>
+      </table>  
     </center>
   </div>
   

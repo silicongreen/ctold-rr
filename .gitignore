@@ -83,3 +83,9 @@ wp-website/wp-config.php
 wp-website/wp-config_.php
 wp-website/wp-content/themes/classtune/images/ClassTune.mp4
 wp-website/wp-content/themes/classtune/images/test/ClassTune.mp4
+classtune/app/views/layouts/_pdf_header.html.erb
+classtune/config/newPHPClass.php
+classtune/public/images/icons/subjects/higher-mathematics_1.png
+classtune/public/images/pdf_loader.gif
+clear/
+website/d21_session/

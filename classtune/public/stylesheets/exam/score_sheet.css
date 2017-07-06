@@ -346,4 +346,12 @@ tr.sjws_odd{
     border-bottom: 1px solid #ADACAB;
     border-left:1px solid #ADACAB;
 }
+
+sjws-table-left-30
+{
+    float:right;
+    clear:both;
+    border:1px solid black;
+    margin-top: 20px;
+}
 /***************SJWS END************/

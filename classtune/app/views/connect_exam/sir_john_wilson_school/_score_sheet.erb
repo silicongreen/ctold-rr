@@ -124,10 +124,11 @@
         <% end %>
       </table>
       <% end %>
-      <table class="sjws_table_intro" width="100%" cellspacing="0">
-        <tr class="sjws_odd">
+      <table class="sjws-table-left-30" width="40%" cellspacing="0">
+        <tr>
             <td>
              <% unless grades.blank? %>
+               
               <% grades.each do |grade| %>
                 <p> Number of '<%= grade.to_s %>' : <%=  grade_count[grade].to_s %></p>
                       

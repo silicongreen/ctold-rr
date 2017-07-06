@@ -2406,6 +2406,16 @@ class ExamController < ApplicationController
           render :pdf => 'continues',
             :orientation => 'Landscape', :zoom => 1.00,:save_to_file => file_name
         end
+      elsif  MultiSchool.current_school.id == 340          
+            render :pdf => 'generated_report5_pdf',
+            :orientation => 'continues', :zoom => 1.00,
+            :save_to_file => file_name,
+            :margin => {    :top=> 10,
+            :bottom => 10,
+            :left=> 10,
+            :right => 10},
+            :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+            :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}  
       else 
         render :pdf => 'continues',
           :orientation => 'Landscape', :zoom => 1.00,:save_to_file => file_name
@@ -3005,6 +3015,17 @@ class ExamController < ApplicationController
               :save_to_file => file_name,
               :save_only    => true
           end
+        elsif  MultiSchool.current_school.id == 340          
+            render :pdf => 'generated_report5_pdf',
+            :orientation => 'Portrait', :zoom => 1.00,
+            :save_to_file => file_name,
+            :save_only    => true,
+            :margin => {    :top=> 10,
+            :bottom => 10,
+            :left=> 10,
+            :right => 10},
+            :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+            :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}} 
         else 
           render :pdf => 'generated_report5_pdf',
             :orientation => 'Landscape', :zoom => 1.00,

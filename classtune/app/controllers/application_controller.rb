@@ -18,6 +18,9 @@
 #require 'champs21_setting.rb'
 class ApplicationController < ActionController::Base
   helper :all
+  helper_method :has_subject_group
+  helper_method :get_subject_group
+  helper_method :get_subject_sub_group
   helper_method :can_access_request?
   helper_method :check_permission_link?
   helper_method :get_attendence_data_all
@@ -104,6 +107,39 @@ class ApplicationController < ActionController::Base
     response = http.request(request)
     student_response = JSON::parse(response.body)
     return student_response
+  end
+  
+  def get_subject_group(subject_id)
+    require "yaml"
+    vreturn = false
+    subject_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/subject_sub.yml")['subjects']
+    all_group = subject_config['group_'+subject_id.to_s].split(",")
+    return all_group  
+  end
+  
+  def get_subject_sub_group(subject_id,loop)
+    require "yaml"
+    vreturn = false
+    subject_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/subject_sub.yml")['subjects']
+    unless subject_config['group_sub_'+subject_id.to_s].blank?
+      all_sub_group = subject_config['group_sub_'+subject_id.to_s].split("|")
+      unless all_sub_group[loop.to_i].blank?
+        vreturn = all_sub_group[loop.to_i].split(",")
+      end
+    end  
+    return vreturn  
+  end
+  
+  
+  def has_subject_group(subject_id)
+    require "yaml"
+    vreturn = false
+    subject_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/subject_sub.yml")['subjects']
+    all_subject = subject_config['numbers'].split(",")
+    if all_subject.include?(subject_id.to_s)
+      vreturn = true
+    end
+    return vreturn
   end
   
   def school_mock_test?

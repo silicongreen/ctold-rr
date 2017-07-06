@@ -78,7 +78,7 @@
     <% 
         styletext = ""
         markexam = 0
-        if no_exam  
+        if no_exam or (@exam_group.exam_category == 4 && has_subject_group(@exam.subject.id))
           styletext = "style='display:none;'" 
           markexam = 1
         end 
@@ -98,7 +98,7 @@
   <% end %>
    <% if @current_user.employee %> <div class="bread_crumb" ><%= link_to "Back To Your Subject Exams", :controller => "marks", :action=>"index" %></div><% end %>
   
-  <div class="box">
+  <div class="box" style="width:100%; overflow: auto;">
       
 
 
@@ -114,7 +114,31 @@
             <% else %>
               <td  <%=styletext%>><%= t('grades') %></td>
             <% end %>
-            <td><%= t('remarks') %></td>
+            <% if @exam_group.exam_category == 4 && has_subject_group(@exam.subject.id) %>
+             
+              <% subject_groups = get_subject_group(@exam.subject.id) %>
+              <% iloop = 0 %>
+              <% subject_groups.each do |group_name| %>
+                      
+                        
+                        <% subject_subgroup = get_subject_sub_group(@exam.subject.id,iloop) %>
+                        <% if subject_subgroup %>
+                          
+                            <% subject_subgroup.each do |sub_group_name| %>
+                                  <td><%= group_name %><hr/><%= sub_group_name %></td>
+                            <% end %>      
+                         
+                        <% else %>
+                          <td><%= group_name %></td>
+                        <% end %>   
+                       
+                <% iloop = iloop+1 %>      
+              <% end %>
+                  
+            <% else %>  
+              <td><%= t('remarks') %><%= @exam.subject.id %></td>
+            <% end %>
+              
             <% unless @exam_group.exam_type == 'Marks' %>
               <td  <%=styletext%>><%= t('grade') %></td>
             <% end %>
@@ -142,9 +166,65 @@
                         { :selected => @exam_score.grading_level_id }, :class=>"marks-box" %></div></div></td>
               <% end %>
 
-              <td class="col-2"><div class="label-field-pair2">
-                  <div class="text-input-bg2">
-                    <%= text_field_tag "exam[#{student.id}][remarks]", @exam_score.remarks, :size => '40' %></div></div></td>
+              
+                  <% if @exam_group.exam_category == 4 && has_subject_group(@exam.subject.id) %>
+                   
+                        <% unless @exam_score.blank? or @exam_score.remarks.blank?  %>
+                          <% exam_score_split = @exam_score.remarks.split("|") %>
+                        <% end %>
+                        <% subject_groups = get_subject_group(@exam.subject.id) %>
+                        <% iloop = 0 %>
+                        <% @group_loop = 0 %>
+                        <% subject_groups.each do |group_name| %>
+                                 
+                                 
+                                    
+                                  
+                                  <% subject_subgroup = get_subject_sub_group(@exam.subject.id,iloop) %>
+                                  <% unless subject_subgroup.blank? %>
+                                       
+                                      <% subject_subgroup.each do |sub_group_name| %>
+                                            <% exam_group_remarks = "" %>
+                                            <% unless @exam_score.blank? or @exam_score.remarks.blank?  %>
+
+                                              <% unless exam_score_split[@group_loop.to_i].blank? %>
+
+                                                <% exam_group_remarks = exam_score_split[@group_loop.to_i] %>
+                                              <% end %>
+                                            <% end %>
+                                            <td  class="col-2 td-mark" style="text-align:center;">
+                                                <%= text_field_tag "exam[#{student.id}][remarks][]", exam_group_remarks, :size => '10' %>
+                                                <div class="date" ><span class="themed_text"><%=  student.full_name %><div> <%= group_name+">>"+sub_group_name %></div></span></div>
+                                            </td>
+                                            <% @group_loop = @group_loop+1 %>
+                                            
+                                      <% end %>      
+                                      
+                                  <% else %>
+                                     <% exam_group_remarks = "" %>
+                                      <% unless @exam_score.blank? or @exam_score.remarks.blank?  %>
+
+                                        <% unless exam_score_split[@group_loop.to_i].blank? %>
+
+                                          <% exam_group_remarks = exam_score_split[@group_loop.to_i] %>
+                                        <% end %>
+                                      <% end %>
+                                     <td  class="col-2 td-mark" style="text-align:center;">
+                                            <%= text_field_tag "exam[#{student.id}][remarks][]", exam_group_remarks, :size => '10' %>
+                                            <div class="date" ><span class="themed_text"><%=  student.full_name %><div> <%= group_name %></div></span></div>
+                                     </td>
+                                     <% @group_loop = @group_loop+1 %>
+                                  <% end %>  
+ 
+                          <% iloop = iloop+1 %>      
+                        <% end %>
+                                 
+                  <% else %>
+                    <td class="col-2">
+                    <%= text_field_tag "exam[#{student.id}][remarks]", @exam_score.remarks, :size => '40' %>
+                    </td>    
+                  <% end %>
+          
               <% unless @exam_group.exam_type == 'Marks' %>
                 <td class="col-1"  <%=styletext%>><% if @exam_score.grading_level.nil? %> <%= '_' %> <% else %> <%= @exam_score.grading_level %> <% end %></td>
               <% end %>
@@ -161,3 +241,60 @@
     <div class="extender"></div>
   </div>
 </div>
+
+<style>
+    table#listing
+    {
+      padding:0px;
+    }
+    .td-mark .date2{
+    position: relative;
+    left: -172px;
+    top: -73px;
+}
+.td-mark .date2 span,.td-name .date2 span{
+    display: none;
+    color: #FFFFFF;
+}
+.td-mark:hover .date2 span{
+    display: block;
+    position: absolute;
+    min-width: 150px;
+    background-color: #fff;
+    border:1px solid #c3d9ff;
+    min-height: 30px;
+    left: 20px;
+    top: 10px;
+    color: #FFFFFF;
+    padding-top: 10px;
+    padding: 3px;
+
+    color:#990A10;
+    font-size: 12px;
+}
+
+.td-mark .date{
+    position: relative;
+    left: -172px;
+    top: -73px;
+}
+.td-mark .date span,.td-name .date span{
+    display: none;
+    color: #FFFFFF;
+}
+.td-mark:hover .date span{
+    display: block;
+    position: absolute;
+    min-width: 150px;
+    background-color: #fff;
+    border:1px solid #c3d9ff;
+    min-height: 20px;
+    left: 10px;
+    top: 0px;
+    color: #FFFFFF;
+    padding: 3px;
+
+    color:#990A10;
+    font-size: 12px;
+}
+</style>    

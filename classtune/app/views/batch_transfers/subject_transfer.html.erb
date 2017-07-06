@@ -53,7 +53,8 @@
             <div class="category-name"> 
               <% unless sub.icon_number.nil? or sub.icon_number.empty? %>  
                 <%= image_tag "/images/icons/subjects/#{sub.icon_number}", :class => 'custom_icon' %>
-              <% end %>  
+              <% end %> 
+              <span style="display: inline-table; vertical-align: top; margin-left: 10px; margin-top: 10px;"><%= sub.id %></span> 
               <span style="display: inline-table; vertical-align: top; margin-left: 10px; margin-top: 10px;"><%= sub.name %></span>  
             </div>
             <div class="category-code" style="margin-top: 10px;"><%= truncate(sub.code, :length => 20) %></div>
@@ -75,6 +76,7 @@
                     <% unless elect.icon_number.nil? or elect.icon_number.empty? %>  
                       <%= image_tag "/images/icons/subjects/#{elect.icon_number}", :class => 'custom_icon' %>
                     <% end %>
+                    <span style="display: inline-table; vertical-align: top; margin-left: 10px; margin-top: 10px;"><%= elect.id %></span> 
                     <span style="display: inline-table; vertical-align: top; margin-left: 10px; margin-top: 10px;"><%= elect.name %></span>
                   </div>
                   <div class="category-code" style="margin-top: 10px;"><%= truncate(elect.code, :length => 20) %></div>

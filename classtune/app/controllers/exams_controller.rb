@@ -617,12 +617,23 @@ class ExamsController < ApplicationController
       if @exam_score.nil?
         unless details[:marks].nil? 
           if details[:marks].to_f <= @exam.maximum_marks.to_f
-            ExamScore.create do |score|
-              score.exam_id          = @exam.id
-              score.student_id       = student_id
-              score.marks            = details[:marks]
-              score.grading_level_id = details[:grading_level_id]
-              score.remarks          = details[:remarks]
+            if details[:remarks].kind_of?(Array)
+                remarks_details = details[:remarks].join("|")
+                ExamScore.create do |score|
+                  score.exam_id          = @exam.id
+                  score.student_id       = student_id
+                  score.marks            = details[:marks]
+                  score.grading_level_id = details[:grading_level_id]
+                  score.remarks          = remarks_details
+                end
+            else
+              ExamScore.create do |score|
+                score.exam_id          = @exam.id
+                score.student_id       = student_id
+                score.marks            = details[:marks]
+                score.grading_level_id = details[:grading_level_id]
+                score.remarks          = details[:remarks]
+              end
             end
           else
             @error = true
@@ -630,6 +641,9 @@ class ExamsController < ApplicationController
         end
       else
         if details[:marks].to_f <= @exam.maximum_marks.to_f
+          if details[:remarks].kind_of?(Array)
+            details[:remarks] = details[:remarks].join("|")
+          end 
           if @exam_score.update_attributes(details)
           else
             flash[:warn_notice] = "#{t('flash4')}"

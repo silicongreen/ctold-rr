@@ -1314,4 +1314,9 @@ margin:10px;
     border-top: 1px solid Black;
     border-bottom: 1px solid Black;
 }
+td.checkbox_inline p
+{
+    float:left;
+    margin-left:10px;
+}
 /***************SJWS END************/

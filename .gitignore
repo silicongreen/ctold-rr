@@ -48,4 +48,8 @@ website/styles/layouts/tdsfront/images/ads/
 website/styles/layouts/tdsfront/images/doodle-f*
 website/swf
 website/system/
-classtune/config/subject_sub.yml
+classtune/config/app.yml
+classtune/config/environments/production.rb
+classtune/public/result_pdf/
+classtune/public/uploads/
+classtune/tmp/

@@ -2407,8 +2407,8 @@ class ExamController < ApplicationController
             :orientation => 'Landscape', :zoom => 1.00,:save_to_file => file_name
         end
       elsif  MultiSchool.current_school.id == 340          
-            render :pdf => 'generated_report5_pdf',
-            :orientation => 'continues', :zoom => 1.00,
+            render :pdf => 'continues',
+            :orientation => 'Portrait', :zoom => 1.00,
             :save_to_file => file_name,
             :margin => {    :top=> 10,
             :bottom => 10,

@@ -354,9 +354,12 @@ tr.sjws_odd{
     border:1px solid black;
     margin-top: 20px;
     wdith: 40%;
+    
 }
 .sjws-table-left-30 tr
 {
     border:1px solid black !important;
+    padding:10px;
+    font-size: 15px;
 }
 /***************SJWS END************/

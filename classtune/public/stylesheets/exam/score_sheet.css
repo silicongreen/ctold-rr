@@ -353,5 +353,10 @@ sjws-table-left-30
     clear:both;
     border:1px solid black;
     margin-top: 20px;
+    wdith: 40%;
+}
+sjws-table-left-30 tr
+{
+    border:1px solid black;
 }
 /***************SJWS END************/

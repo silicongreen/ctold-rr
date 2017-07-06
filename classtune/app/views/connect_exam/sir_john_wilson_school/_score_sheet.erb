@@ -128,7 +128,7 @@
         <tr>
             <td>
              <% unless grades.blank? %>
-               
+               <% grades.sort %>
               <% grades.each do |grade| %>
                 <p> Number of '<%= grade.to_s %>' : <%=  grade_count[grade].to_s %></p>
                       

@@ -1309,8 +1309,8 @@ margin:10px;
    background:#fff;
 }
 .page-break td{
-    height: 80px;
-    border: 1px solid Black;
+    height: 120px;
+    border: 1px solid #fff;
     border-top: 1px solid Black;
     border-bottom: 1px solid Black;
 }

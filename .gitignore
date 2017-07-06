@@ -53,3 +53,5 @@ classtune/config/environments/production.rb
 classtune/public/result_pdf/
 classtune/public/uploads/
 classtune/tmp/
+classtune/config/database.yml
+classtune/config/subject_sub.yml

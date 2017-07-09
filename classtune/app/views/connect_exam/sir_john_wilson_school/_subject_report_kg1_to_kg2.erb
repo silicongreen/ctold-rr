@@ -1,0 +1,167 @@
+<% c = 'even' %>
+ <div id="page-yield"  class="available_sections sjws"> 
+<div class="container_body">
+    <div id="grouped_exam_report">
+        <table id="pdf-table" class="sjws_table_intro sjws_table_head" width="100%" cellspacing="0">
+            <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">                          
+                <% total_mark = 0 %>
+                <% full_mark = 0 %>
+
+                <td class="col-pdf" colspan="2"><h3><%= subjects['name'] %></h3></td>
+                <td class="col-pdf rotate" rowspan="2"><div><span>Below Requirement</span></div></td>
+                <td class="col-pdf rotate" rowspan="2"><div><span>With help</span></div></td>
+                <td class="col-pdf rotate" rowspan="2"><div><span>Without help</span></div></td>
+                <td class="col-pdf rotate" rowspan="2"><div><span>High level</span></div></td>
+            </tr>     
+            <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>"> 
+                <td class="col-pdf" colspan="2">
+                    <h3>NAME : <%= @student.full_name %></h3>
+                    <h3>Class : <%= @batch.course.course_name %>&nbsp;Class : <%= @batch.course.course_name %> </h3>
+                </td>
+            </tr> 
+            <% subject_groups = get_subject_group(subjects['id']) %>          
+            <% ilooop = 0 %>  <% @group_loop = 0 %>                    
+            <% subject_groups.each do |group_name| %>
+              <% groupCount = 1 %>
+              <% subject_subgroup = get_subject_sub_group(subjects['id'],ilooop) %>
+
+              <% if subject_subgroup %>
+                <% groupCount = subject_subgroup.count %>
+                <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                    <td class="text_left" rowspan="<%=groupCount.to_i %>" colspan="1"><%= group_name.to_s %><%=groupCount.to_i %></td>  
+                    <% isublooop = 0 %>
+                    <% subject_subgroup.each do |sub_group_name| %>
+                      <% if isublooop > 0 %>
+                    <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                      <% end %>
+                      <td class="text_left" colspan="1"> 
+                          <%= sub_group_name %>
+                      </td>
+                      <% unless @report_data['report']['exams'].blank? %>  
+                        <% total_mark = 0 %><% full_mark = 5 %><% avg_counter = 0 %>
+                        <% @report_data['report']['exams'].each do |report| %>                              
+
+                          <% wordString = report['result'][report['exam_id']][subjects['id']]['remarks'] %>
+                          <% wordString_split = wordString.split("|") %>
+                          <% exam_group_remarks = "" %>
+                          <% unless report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
+                            <% unless wordString_split[isublooop.to_i].blank? %>
+                              <% exam_group_remarks = wordString_split[@group_loop.to_i] %>
+                              <% total_mark = total_mark + exam_group_remarks.to_i %>
+
+                              <% avg_counter = avg_counter +1 %>
+                            <% end %>
+                          <% end %>
+                        <% end %>
+                      <% end %>
+
+                      <% total_avg = total_mark.to_f/avg_counter.to_i %>                                                          
+                      <% mark_percentage = (total_avg.to_f/full_mark.to_f)*100 %>  
+                      <% if mark_percentage.to_f > 80 %>
+                        <td class="col-pdf text_center">
+                            *
+                        </td>
+                        <td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td>
+                      <% elsif  mark_percentage.to_f > 60 %>                          
+                        <td class="col-pdf text_center">&nbsp;</td>
+                        <td class="col-pdf text_center">
+                            *
+                        </td>
+                        <td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td>
+                      <% elsif  mark_percentage.to_f > 40 %>
+                        <td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td>
+                        <td class="col-pdf text_center">
+                            *
+                        </td>
+                        <td class="col-pdf text_center">&nbsp;</td>
+                      <% elsif  mark_percentage.to_f <= 40 %>
+                        <td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td>
+                        <td class="col-pdf text_center">
+                            *
+                        </td>
+                      <% end %>
+                      <% @group_loop = @group_loop+1 %>
+                  </tr>
+                  <% isublooop = isublooop+1 %>   
+                <% end %>
+              <% else %>
+                <% total_mark = 0 %><% full_mark = 5 %><% avg_counter = 0 %>
+                <% @report_data['report']['exams'].each do |report| %> 
+                  <% wordString = report['result'][report['exam_id']][subjects['id']]['remarks'] %>
+                  <% wordString_split = wordString.split("|") %>
+                  <% exam_group_remarks = "" %>
+                  <% unless report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
+                    <% unless wordString_split[ilooop.to_i].blank? %>
+                      <% exam_group_remarks = wordString_split[@group_loop.to_i] %>
+                      <% total_mark = total_mark + exam_group_remarks.to_i %>
+                      <% avg_counter = avg_counter +1 %>
+                    <% end %>                                                            
+                  <% end %>
+                <% end %>  
+                <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                    <td colspan="2" class="text_left"><%= group_name.to_s %></td> 
+
+                    <% total_avg = total_mark.to_f/avg_counter.to_i %>                                                          
+                    <% mark_percentage = (total_avg.to_f/full_mark.to_f)*100 %>  
+
+                    <% if mark_percentage.to_f > 80 %>
+                      <td class="col-pdf text_center">
+                          *
+                      </td>
+                      <td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td>
+                    <% elsif  mark_percentage.to_f > 60 %>
+                      <td class="col-pdf text_center">&nbsp;</td>
+                      <td class="col-pdf text_center">
+                          *
+                      </td>
+                      <td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td>
+                    <% elsif  mark_percentage.to_f > 40 %>
+                      <td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td>
+                      <td class="col-pdf text_center">
+                          *
+                      </td>
+                      <td class="col-pdf text_center">&nbsp;</td>
+                    <% elsif  mark_percentage.to_f < 40 %>
+                      <td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td>
+                      <td class="col-pdf text_center">
+                          *
+                      </td>
+                    <% end %>
+
+                </tr>  
+
+              <% end %> 
+              <% @group_loop = @group_loop+1 %>
+              <% ilooop = ilooop+1 %>   
+            <% end %>
+
+            <%
+            exam_comment = "<br/>"
+            #exam_effort = ""
+            @exam_comments = ExamConnectSubjectComment.find(:first, :conditions => {:exam_connect_id=>@connect_exam_obj.id,:subject_id => subjects['id'], :student_id => @student.id} )
+            if !@exam_comments.blank?
+              exam_comment = @exam_comments['comments']
+            #exam_effort = @exam_comments['effort']
+              end
+          %>
+            <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                <td colspan="6" class="text_left"><b>COMMENTS:</b></td> 		  
+            </tr>
+            <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                <td colspan="6" rowspan="6" class="text_left"><%=exam_comment%></td> 		  
+            </tr>
+
+
+        </table>
+        <p>&nbsp;</p>
+        <table class='sjws_table_head' width="100%" >                 
+            <tr>
+                <td class="col-pdf">TEACHER'S SIGNATURE: .................................... </td>                          
+                <td class="col-pdf">DATE: <%=Time.now.strftime("%d-%m-%Y")%> </td>                          
+            </tr> 
+        </table>
+    </div>
+</div>
+
+</div>
+

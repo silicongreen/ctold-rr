@@ -17,30 +17,30 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 <% if !@report_data.blank? %>
-<% @all_subject_exam = @report_data['report']['subjects'] %>
-<% @all_student_subject = StudentsSubject.find_all_by_batch_id(@batch.id) %>
+  <% @all_subject_exam = @report_data['report']['subjects'] %>
+  <% @all_student_subject = StudentsSubject.find_all_by_batch_id(@batch.id) %>
   <% @report_data['report']['students'].each do |std| %>
     <%
     subjects_new = []
     subjects_ids = []
     unless @all_subject_exam.blank? 
-       @all_subject_exam.each do |subjects|
-         if subjects['elective_group_id'].to_i!=0 && MultiSchool.current_school.id!=319 && MultiSchool.current_school.id!=324
-           @all_student_subject.each do |sub_std|
-             if subjects['id'].to_i == sub_std.subject_id and std['id'].to_i == sub_std.student_id and !subjects_ids.include?(subjects['id'].to_i)
-               subjects_new << subjects
-               subjects_ids << subjects['id'].to_i
-             end 
-           end 
-         elsif !subjects_ids.include?(subjects['id'].to_i)
-           subjects_new << subjects 
-           subjects_ids << subjects['id'].to_i
-         end 
-       end
-    end
+      @all_subject_exam.each do |subjects|
+        if subjects['elective_group_id'].to_i!=0 && MultiSchool.current_school.id!=319 && MultiSchool.current_school.id!=324
+          @all_student_subject.each do |sub_std|
+            if subjects['id'].to_i == sub_std.subject_id and std['id'].to_i == sub_std.student_id and !subjects_ids.include?(subjects['id'].to_i)
+              subjects_new << subjects
+              subjects_ids << subjects['id'].to_i
+            end 
+          end 
+          elsif !subjects_ids.include?(subjects['id'].to_i)
+          subjects_new << subjects 
+          subjects_ids << subjects['id'].to_i
+        end 
+      end
+      end
     @report_data['report']['subjects'] = subjects_new
     @student = Student.find_by_id(std['id'].to_i)
-    
+
     unless @student.blank?
       @report_data['report']['no_exam_subject_resutl'] = []
       @report_data['report']['exams'] = []
@@ -49,27 +49,27 @@
       if !@report_data['report']['all_result'][std['id']]['exams'].blank?
 
 
-          @report_data['report']['exams'] = @report_data['report']['all_result'][std['id']]['exams']
+        @report_data['report']['exams'] = @report_data['report']['all_result'][std['id']]['exams']
 
-          if !@report_data['report']['exam_comments'].blank? and !@report_data['report']['exam_comments'][std['id']]['comments'].blank?
-            @report_data['report']['comments'] = @report_data['report']['exam_comments'][std['id']]['comments']
+        if !@report_data['report']['exam_comments'].blank? and !@report_data['report']['exam_comments'][std['id']]['comments'].blank?
+          @report_data['report']['comments'] = @report_data['report']['exam_comments'][std['id']]['comments']
           end
-          if !@report_data['report']['no_exam_comments'].blank? and !@report_data['report']['no_exam_comments'][std['id']]['no_exam_subject_resutl'].blank?
-            @report_data['report']['no_exam_subject_resutl'] = @report_data['report']['no_exam_comments'][std['id']]['no_exam_subject_resutl']
+        if !@report_data['report']['no_exam_comments'].blank? and !@report_data['report']['no_exam_comments'][std['id']]['no_exam_subject_resutl'].blank?
+          @report_data['report']['no_exam_subject_resutl'] = @report_data['report']['no_exam_comments'][std['id']]['no_exam_subject_resutl']
           end 
 
-          if !@report_data['present_all'].blank? and !@report_data['present_all'][std['id']].blank?
-            @report_data['present'] = @report_data['present_all'][std['id']]
+        if !@report_data['present_all'].blank? and !@report_data['present_all'][std['id']].blank?
+          @report_data['present'] = @report_data['present_all'][std['id']]
           end  
 
         @exam_comment = {}
-          @exam_comment_all.each do |ec|
-              if ec.student_id.to_i == std['id'].to_i
-                @exam_comment = ec
-                break
-              end
+        @exam_comment_all.each do |ec|
+          if ec.student_id.to_i == std['id'].to_i
+            @exam_comment = ec
+          break
           end
-        %>
+          end
+      %>
 
 
 
@@ -101,7 +101,9 @@
           <% elsif @connect_exam_obj.result_type == 9 %>
             <%= render  :partial=>"/connect_exam/sir_john_wilson_school/term_report_for_5_to_9" %> 
           <% elsif @connect_exam_obj.result_type == 10 %>
-            <%= render  :partial=>"/connect_exam/sir_john_wilson_school/final_term_report_for_5_to_9" %> 
+            <%= render  :partial=>"/connect_exam/sir_john_wilson_school/final_term_report_for_5_to_9" %>
+          <% elsif @connect_exam_obj.result_type == 13 %>
+            <%= render  :partial=>"/connect_exam/sir_john_wilson_school/term_report_for_KG1_to_KG2" %>
           <% else %>
             <%= render  :partial=>"/connect_exam/sir_john_wilson_school/single_report" %> 
           <% end %>        
@@ -109,10 +111,10 @@
           <%= render  :partial=>"/connect_exam/general_pdf" %>
         <% end %>
         <% unless std.equal? @report_data['report']['students'].last %>
-        <div class="page-break"></div>
+          <div class="page-break"></div>
         <% end %>
-        <% end %>
+      <% end %>
     <% end %>
-  
+
   <% end %>
 <% end %>

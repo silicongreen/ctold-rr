@@ -1203,9 +1203,11 @@ transform:scale(1,1.5); /* W3C */
 margin:10px;
 } 
 
+
+.page-break { display:block;clear:both; page-break-after:always;  }
 .sjws .container_body
 {
-    margin-top: 10px;min-height: 1600px !important;
+    margin-top: 10px;
 }
 
 .sjws .grad_list_right
@@ -1224,6 +1226,7 @@ margin:10px;
     font-size: 22px;
     line-height: 40px;
 }
+
 .sjws_table_intro .table-header td
 {
     font-size: 22px;
@@ -1352,4 +1355,3 @@ td.checkbox_inline p
     border-left:1px solid #ADACAB;
 
 }
-/***************SJWS END************/

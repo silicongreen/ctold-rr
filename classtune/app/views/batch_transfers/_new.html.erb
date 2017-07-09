@@ -66,6 +66,13 @@
       <div class="label-container"><%= f.label "#{t('no_exam')}" %></div>
       <div class="input-container"><%= f.check_box :no_exams %></div>
     </div>
+    
+    <% if MultiSchool.current_school.id == 340  %>   
+    <div class="label-field-pair">
+      <div class="label-container"><label><%= "No Written" %></label></div>
+      <div class="input-container"><%= f.check_box :no_exams_sjws %></div>
+    </div>
+    <% end %> 
 
     <%= f.submit  "", :value => "► #{t('save')}", :class => "submit_button", :id => "submit_button" %>
 

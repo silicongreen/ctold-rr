@@ -554,6 +554,7 @@ class SubjectsController < ApplicationController
     subject[:code] = @tmp_subject.code
     subject[:icon_number] = @tmp_subject.icon_number
     subject[:no_exams] = @tmp_subject.no_exams
+    subject[:no_exams_sjws] = @tmp_subject.no_exams_sjws
     subject[:max_weekly_classes] = @tmp_subject.max_weekly_classes
     subject[:credit_hours] = @tmp_subject.credit_hours
     subject[:is_deleted] = 0

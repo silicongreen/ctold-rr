@@ -384,17 +384,17 @@ class CoursesController < ApplicationController
                     unless subjects.nil? or subjects.empty?
                       subjects.each do |subject|
                         if subject.elective_group_id.nil?
-                          Subject.create(:name=>subject.name,:code=>subject.code,:batch_id=>batch_id,:no_exams=>subject.no_exams, :icon_number => subject.icon_number,
+                          Subject.create(:name=>subject.name,:code=>subject.code,:batch_id=>batch_id,:no_exams=>subject.no_exams,:no_exams_sjws=>subject.no_exams_sjws, :icon_number => subject.icon_number,
                             :max_weekly_classes=>subject.max_weekly_classes,:elective_group_id=>subject.elective_group_id,:credit_hours=>subject.credit_hours,:is_deleted=>false)
                         else
                           elect_group_exists = ElectiveGroup.find_by_name_and_batch_id(ElectiveGroup.find(subject.elective_group_id).name,batch_id)
                           if elect_group_exists.nil?
                             elect_group = ElectiveGroup.create(:name=>ElectiveGroup.find(subject.elective_group_id).name,
                               :batch_id=>self.id,:is_deleted=>false)
-                            Subject.create(:name=>subject.name,:code=>subject.code,:batch_id=>batch_id,:no_exams=>subject.no_exams, :icon_number => subject.icon_number,
+                            Subject.create(:name=>subject.name,:code=>subject.code,:batch_id=>batch_id,:no_exams=>subject.no_exams,:no_exams_sjws=>subject.no_exams_sjws, :icon_number => subject.icon_number,
                               :max_weekly_classes=>subject.max_weekly_classes,:elective_group_id=>elect_group.id,:credit_hours=>subject.credit_hours,:is_deleted=>false)
                           else
-                            Subject.create(:name=>subject.name,:code=>subject.code,:batch_id=>batch_id,:no_exams=>subject.no_exams, :icon_number => subject.icon_number,
+                            Subject.create(:name=>subject.name,:code=>subject.code,:batch_id=>batch_id,:no_exams=>subject.no_exams,:no_exams_sjws=>subject.no_exams_sjws, :icon_number => subject.icon_number,
                               :max_weekly_classes=>subject.max_weekly_classes,:elective_group_id=>elect_group_exists.id,:credit_hours=>subject.credit_hours,:is_deleted=>false)
                           end
                         end
@@ -582,17 +582,17 @@ class CoursesController < ApplicationController
                         unless subjects.nil? or subjects.empty?
                           subjects.each do |subject|
                             if subject.elective_group_id.nil?
-                              Subject.create(:name=>subject.name,:code=>subject.code,:batch_id=>batch_id,:no_exams=>subject.no_exams, :icon_number => subject.icon_number,
+                              Subject.create(:name=>subject.name,:code=>subject.code,:batch_id=>batch_id,:no_exams=>subject.no_exams,:no_exams_sjws=>subject.no_exams_sjws, :icon_number => subject.icon_number,
                                 :max_weekly_classes=>subject.max_weekly_classes,:elective_group_id=>subject.elective_group_id,:credit_hours=>subject.credit_hours,:is_deleted=>false)
                             else
                               elect_group_exists = ElectiveGroup.find_by_name_and_batch_id(ElectiveGroup.find(subject.elective_group_id).name,batch_id)
                               if elect_group_exists.nil?
                                 elect_group = ElectiveGroup.create(:name=>ElectiveGroup.find(subject.elective_group_id).name,
                                   :batch_id=>self.id,:is_deleted=>false)
-                                Subject.create(:name=>subject.name,:code=>subject.code,:batch_id=>batch_id,:no_exams=>subject.no_exams, :icon_number => subject.icon_number,
+                                Subject.create(:name=>subject.name,:code=>subject.code,:batch_id=>batch_id,:no_exams=>subject.no_exams,:no_exams_sjws=>subject.no_exams_sjws, :icon_number => subject.icon_number,
                                   :max_weekly_classes=>subject.max_weekly_classes,:elective_group_id=>elect_group.id,:credit_hours=>subject.credit_hours,:is_deleted=>false)
                               else
-                                Subject.create(:name=>subject.name,:code=>subject.code,:batch_id=>batch_id,:no_exams=>subject.no_exams, :icon_number => subject.icon_number,
+                                Subject.create(:name=>subject.name,:code=>subject.code,:batch_id=>batch_id,:no_exams=>subject.no_exams,:no_exams_sjws=>subject.no_exams_sjws, :icon_number => subject.icon_number,
                                   :max_weekly_classes=>subject.max_weekly_classes,:elective_group_id=>elect_group_exists.id,:credit_hours=>subject.credit_hours,:is_deleted=>false)
                               end
                             end
@@ -853,7 +853,7 @@ class CoursesController < ApplicationController
             @subject_data = []
             @subjects = Subject.find(:all, :conditions => ["batch_id = ?", b.id])
             @subjects.each do |s|
-              @subject_data << {"name" => s.name, "code" => s.code, "max_weekly_classes" => s.max_weekly_classes, "credit_hours" => s.credit_hours, "icon_number" => s.icon_number, "no_exams" => s.no_exams, "elective_group_id" => s.elective_group_id, "is_deleted" => s.is_deleted, "prefer_consecutive" => s.prefer_consecutive, "amount" => s.amount}
+              @subject_data << {"name" => s.name, "code" => s.code, "max_weekly_classes" => s.max_weekly_classes, "credit_hours" => s.credit_hours, "icon_number" => s.icon_number, "no_exams" => s.no_exams, "no_exams_sjws" => s.no_exams_sjws, "elective_group_id" => s.elective_group_id, "is_deleted" => s.is_deleted, "prefer_consecutive" => s.prefer_consecutive, "amount" => s.amount}
             end
             @shifts_data << {"name" => b.name, "start_date" => b.start_date, "end_date" => b.end_date, "weekday_set_id" => b.weekday_set_id, "class_timing_set_id" => b.class_timing_set_id, "subjects_attributes" => @subject_data}
             school_id = MultiSchool.current_school.id

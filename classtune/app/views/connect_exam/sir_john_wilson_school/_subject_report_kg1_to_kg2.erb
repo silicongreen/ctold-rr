@@ -1,5 +1,5 @@
 <% c = 'even' %>
- <div id="page-yield"  class="available_sections sjws"> 
+ <div id="page-yield"  class="available_sections sjws subject-result-landscape"> 
 <div class="container_body">
     <div id="grouped_exam_report">
         <table id="pdf-table" class="sjws_table_intro sjws_table_head" width="100%" cellspacing="0">
@@ -7,7 +7,7 @@
                 <% total_mark = 0 %>
                 <% full_mark = 0 %>
 
-                <td class="col-pdf" colspan="2"><h3><%= subjects['name'] %></h3></td>
+                <td class="col-pdf" colspan="2"><h4><%= subjects['name'] %></h4></td>
                 <td class="col-pdf rotate" rowspan="2"><div><span>Below Requirement</span></div></td>
                 <td class="col-pdf rotate" rowspan="2"><div><span>With help</span></div></td>
                 <td class="col-pdf rotate" rowspan="2"><div><span>Without help</span></div></td>
@@ -15,8 +15,8 @@
             </tr>     
             <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>"> 
                 <td class="col-pdf" colspan="2">
-                    <h3>NAME : <%= @student.full_name %></h3>
-                    <h3>Class : <%= @batch.course.course_name %>&nbsp;Class : <%= @batch.course.course_name %> </h3>
+                    <h4>NAME : <%= @student.full_name %></h4>
+                    <h4>Class : <%= @batch.course.course_name %>&nbsp;Class : <%= @batch.course.course_name %> </h4>
                 </td>
             </tr> 
             <% subject_groups = get_subject_group(subjects['id']) %>          

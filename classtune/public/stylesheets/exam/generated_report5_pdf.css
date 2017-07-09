@@ -1204,6 +1204,28 @@ margin:10px;
 } 
 
 
+
+.subject-result-landscape table.sjws_table_intro tr.even td
+{
+    padding: 0px 5px 0px 5px !important;
+   
+}
+.subject-result-landscape table.sjws_table_intro tr.odd td
+{
+    padding: 0px 5px 0px 5px !important;
+   
+}
+.subject-result-landscape .sjws_table_head td.rotate div span
+{
+    padding: 3px !important;
+}
+.subject-result-landscape .sjws_table_head
+{
+    font-size: 22px;
+    line-height: 35px;
+}
+
+
 .page-break { display:block;clear:both; page-break-after:always;  }
 .sjws .container_body
 {
@@ -1224,7 +1246,7 @@ margin:10px;
 .sjws_table_head
 {
     font-size: 22px;
-    line-height: 40px;
+    line-height: 34px;
 }
 
 .sjws_table_intro .table-header td
@@ -1355,3 +1377,4 @@ td.checkbox_inline p
     border-left:1px solid #ADACAB;
 
 }
+

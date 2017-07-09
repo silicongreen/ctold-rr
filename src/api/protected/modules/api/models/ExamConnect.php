@@ -156,7 +156,7 @@ class ExamConnect extends CActiveRecord
                                 'joinType' => 'LEFT JOIN',
                                 'with' => array(
                                     'Scores' => array(
-                                        'select' => 'Scores.marks,Scores.student_id',
+                                        'select' => 'Scores.marks,Scores.student_id,Scores.remarks',
                                         'joinType' => 'LEFT JOIN',
                                         'with' => array(
                                             'Students' => array(
@@ -225,6 +225,7 @@ class ExamConnect extends CActiveRecord
                             
                             
                             $result['CT'][$i]['students'][$scores['Students']->id]['score'] = $scores->marks;
+                            $result['CT'][$i]['students'][$scores['Students']->id]['remarks'] = $scores->remarks;
                             }
                             else
                             {
@@ -262,6 +263,7 @@ class ExamConnect extends CActiveRecord
                                     $j++;
                                 }
                                 $result['ST'][$k]['students'][$scores['Students']->id]['score'] = $scores->marks;
+                                $result['ST'][$k]['students'][$scores['Students']->id]['remarks'] = $scores->remarks;
                             }
                             else
                             {
@@ -296,6 +298,7 @@ class ExamConnect extends CActiveRecord
 
 
                             $result['ALL'][$f]['students'][$scores['Students']->id]['score'] = $scores->marks;
+                            $result['ALL'][$f]['students'][$scores['Students']->id]['remarks'] = $scores->remarks;
                         }
                         else
                         {

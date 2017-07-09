@@ -89,7 +89,7 @@
     
    jj( document ).on( "click", "a", function(event) {
       jj("#pdf_file").hide();
-      if(jj(this).attr("href").indexOf("continues")!=-1 || (jj(this).attr("href").indexOf("tabulation")!=-1 || jj(this).attr("href").indexOf("comment_tabulation")==-1 ) || jj(this).attr("href").indexOf("marksheet")!=-1)
+      if(jj(this).attr("href").indexOf("continues")!=-1 || jj(this).attr("href").indexOf("tabulation")!=-1  || jj(this).attr("href").indexOf("marksheet")!=-1 || jj(this).attr("href").indexOf("score_sheet")!=-1 || jj(this).attr("href").indexOf("effot_gradesheet")!=-1 || jj(this).attr("href").indexOf("comment_tabulation_pdf")!=-1)
       {
          jj("#pdf_file").show();
          event.preventDefault();

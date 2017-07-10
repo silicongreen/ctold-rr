@@ -262,7 +262,9 @@ transform:scale(1,1.5); /* W3C */
 }
 .sjws_table_head
 {
-    
+    width: 1240px !important;
+    margin: 0 auto;
+    overflow: hidden;
 }
 
 .sjws .sjws_odd{
@@ -346,5 +348,9 @@ tr.sjws_odd{
     border-top:1px solid #ADACAB;
     border-bottom: 1px solid #ADACAB;
     border-left:1px solid #ADACAB;
+}
+.sjws_table_head td.word_break
+{
+   white-space: pre-wrap;   
 }
 /***************SJWS END************/

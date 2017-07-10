@@ -46,6 +46,8 @@
     <%= render  :partial=>"/connect_exam/sir_john_wilson_school/final_term_report_for_5_to_9" %>
   <% elsif @connect_exam_obj.result_type == 13 %>
     <%= render  :partial=>"/connect_exam/sir_john_wilson_school/term_report_for_KG1_to_KG2" %>
+  <% elsif @connect_exam_obj.result_type == 14 %>
+    <%= render  :partial=>"/connect_exam/sir_john_wilson_school/term_report_for_C1_to_C4" %>
   <% else %>
     <%= render  :partial=>"/connect_exam/sir_john_wilson_school/single_report" %> 
   <% end %>

@@ -985,7 +985,7 @@ class ExamGroups extends CActiveRecord
                     'select' => 'Exams.maximum_marks,Exams.alternative_title',
                     'with' => array(
                         'Scores' => array(
-                            'select' => 'Scores.marks',
+                            'select' => 'Scores.marks,Scores.remarks',
                             'with' => array(
                                     'Examgrade' => array(
                                         'select' => 'Examgrade.name',
@@ -1042,6 +1042,7 @@ class ExamGroups extends CActiveRecord
             $result['exam_id'] = $all_exams->id;
             foreach($all_exams['Exams'] as $value)
             {
+               $result['result'][$all_exams->id][$value['Subjects']->id]['remarks'] = "";
                $result['result'][$all_exams->id][$value['Subjects']->id]['marks_obtained'] = "AB";
                $result['result'][$all_exams->id][$value['Subjects']->id]['grade'] = "N/A";
                $result['result'][$all_exams->id][$value['Subjects']->id]['weightage_mark'] = 0;
@@ -1067,6 +1068,7 @@ class ExamGroups extends CActiveRecord
 
                if(isset($value['Scores'][0]->marks))
                {
+                    $result['result'][$examresult->id][$value['Subjects']->id]['remarks'] = $value['Scores'][0]->remarks;
                     $result['result'][$examresult->id][$value['Subjects']->id]['marks_obtained'] = $value['Scores'][0]->marks;
                     if($value->maximum_marks==0)
                     {

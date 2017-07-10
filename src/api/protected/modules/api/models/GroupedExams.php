@@ -583,6 +583,12 @@ class GroupedExams extends CActiveRecord
         
         public function getGroupedExamReport($batch_id, $student_id, $connect_exam_id, $previous_exam)
         {
+            $exam_connect_obj = new ExamConnect();
+            $exm_connect_data = $exam_connect_obj->findByPk($connect_exam_id);
+            
+            $send_no_exam = false;
+           
+                    
             $criteria=new CDbCriteria;
             $criteria->compare('connect_exam_id',$connect_exam_id);
             $criteria->compare('examgroup.is_deleted', 0);
@@ -601,7 +607,7 @@ class GroupedExams extends CActiveRecord
             
             $subjectObj = new Subjects();
             
-            $all_subject_without_no_exam = $subjectObj->getSubject($batch_id, $student_id);
+            $all_subject_without_no_exam = $subjectObj->getSubject($batch_id, $student_id,$send_no_exam);
             $subject_no_exam = $subjectObj->getSubjectNoExam($batch_id, $student_id);
             $results = array();
             
@@ -614,7 +620,7 @@ class GroupedExams extends CActiveRecord
                 $exam_loop = 0;
                 foreach($examgroups as $value)
                 {
-                    $result_main =  $examsGroupObj->getExamGroupResultSubject($value['examgroup']->id,$student_id,$value->weightage,$value->priority);    
+                    $result_main =  $examsGroupObj->getExamGroupResultSubject($value['examgroup']->id,$student_id,$value->weightage,$value->priority,$send_no_exam);    
                     if($result_main)
                     {
                         $results['exams'][] = $result_main;

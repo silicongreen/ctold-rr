@@ -227,12 +227,13 @@ class Subjects extends CActiveRecord
         } 
         return $subject_array;
     }
-    public function getSubject($batch_id,$student_id=0,$subjects_ids = false)
+    public function getSubject($batch_id,$student_id=0,$subjects_ids = false,$send_no_exam=false)
     {
         $criteria = new CDbCriteria();
         $criteria->select = 't.name,t.id,t.icon_number,t.no_exams,t.code';
         $criteria->compare('t.batch_id', $batch_id);
         $criteria->compare('t.is_deleted', 0);
+        if($send_no_exam == false)
         $criteria->compare('t.no_exams', 0);
         $criteria->addCondition("t.elective_group_id IS NULL");
 	$criteria->order = "t.priority asc";

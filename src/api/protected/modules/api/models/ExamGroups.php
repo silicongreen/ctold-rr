@@ -596,7 +596,7 @@ class ExamGroups extends CActiveRecord
                     'select' => 'Exams.maximum_marks',
                     'with' => array(
                         'Scores' => array(
-                            'select' => 'Scores.marks',
+                            'select' => 'Scores.marks,Score.remarks',
                             'with' => array(
                                     'Examgrade' => array(
                                         'select' => 'Examgrade.name',
@@ -655,6 +655,7 @@ class ExamGroups extends CActiveRecord
             
                 foreach($all_exams['Exams'] as $value)
                 {
+                    $result[$student]['exams'][$count]['result'][$all_exams->id][$value['Subjects']->id]['remarks'] = "";
                     $result[$student]['exams'][$count]['result'][$all_exams->id][$value['Subjects']->id]['marks_obtained'] = "AB";
                     $result[$student]['exams'][$count]['result'][$all_exams->id][$value['Subjects']->id]['grade'] = "N/A";
                     $result[$student]['exams'][$count]['result'][$all_exams->id][$value['Subjects']->id]['weightage_mark'] = 0;
@@ -679,6 +680,7 @@ class ExamGroups extends CActiveRecord
                        if(isset($score->marks) && isset($score['Students']->id) && isset($value['Subjects']->id))
                        {
                            
+                            $result[$score['Students']->id]['exams'][$count]['result'][$examresult->id][$value['Subjects']->id]['remarks'] = $score->remarks; 
                             $result[$score['Students']->id]['exams'][$count]['result'][$examresult->id][$value['Subjects']->id]['marks_obtained'] = $score->marks;
                             if($value->maximum_marks==0)
                             {
@@ -969,13 +971,14 @@ class ExamGroups extends CActiveRecord
         
     }   
     
-    public function getExamGroupResultSubject($exam_group_id,$student_id,$weightage,$priority = 0)
+    public function getExamGroupResultSubject($exam_group_id,$student_id,$weightage,$priority = 0,$send_no_exam = false)
     {
         $criteria = new CDbCriteria();
         $criteria->select = 't.name,t.id,t.sba,t.exam_category,t.quarter'; 
         $criteria->compare('t.id', $exam_group_id);
         $criteria->compare('t.is_deleted', 0);
         //$criteria->compare('t.result_published', 1);
+        if($send_no_exam == false)
         $criteria->compare('Subjects.no_exams', false);
         $criteria->compare('Subjects.is_deleted', false);
         $criteria->compare('Students.id', $student_id);

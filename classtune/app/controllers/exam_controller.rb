@@ -2584,6 +2584,7 @@ class ExamController < ApplicationController
       }    
       render :pdf => 'marksheet',
         :orientation => 'Landscape', :zoom => 1.00,:save_to_file => file_name,
+        :page_size => 'Legal',
         :margin => {    :top=> 10,
         :bottom => 10,
         :left=> 10,

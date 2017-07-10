@@ -1280,8 +1280,16 @@ margin:10px;
 }
 .sjws .text_right
 {
-    float: right;
-    text-align: right;
+    text-align: right!IMPORTANT;
+}
+
+.sjws .text_left
+{
+    text-align: left!IMPORTANT;
+}
+.sjws .text_center
+{
+    text-align: center!IMPORTANT;
 }
 .sjws_table_intro .t_head
 {
@@ -1307,5 +1315,27 @@ margin:10px;
    bottom:0px; 
    width: 1240px !important;
    background:#fff;
+}
+.sjws_table_head td.rotate {
+  /* Something you can count on */
+  height: 220px;
+  white-space: nowrap; 
+  line-height: 20px;
+  font-weight: 500;
+}
+
+.sjws_table_head td.rotate div {
+    -webkit-transform: translate(5px, 100px) rotate(270deg);
+    transform: translate(5px, 100px) rotate(270deg);
+    width: 40px;
+}
+.sjws_table_head td.rotate div span {  
+  padding: 15px;
+}
+.sjws_table_head td.rotate div span.rotate_box
+{
+    border-top:1px solid #ADACAB;
+    border-bottom: 1px solid #ADACAB;
+    border-left:1px solid #ADACAB;
 }
 /***************SJWS END************/

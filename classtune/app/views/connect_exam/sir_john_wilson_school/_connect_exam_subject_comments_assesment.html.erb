@@ -64,6 +64,7 @@
             <td  class="zui-sticky-col"><b><%= "Roll" %></b></td>
             <td  class="zui-sticky-col2"><b><%= t('name') %></b></td>
             <td><b><%= t('remarks') %></b></td>
+            <td><b><%= "Effort" %></b></td>
             <% unless @exams.blank? %>
             <% @exams.each do |exam| %>
               <td>
@@ -83,18 +84,30 @@
               <td class="col-2 zui-sticky-col" style="padding: 13px 10px"><%= student.class_roll_no %> </td>
               <td class="col-2 zui-sticky-col2"  style="padding: 13px 10px"><%= student.full_name %> </td>
               <%
-                exam_comment = ""
+                exam_comment = "0"
+                exam_effort = "0"
                 @exam_comments = ExamConnectSubjectComment.find(:first, :conditions => {:exam_connect_id=>@exam_connect.id,:subject_id => @exam_subject.id, :student_id => student.id} )
                 if !@exam_comments.blank?
                   exam_comment = @exam_comments.comments
+                  exam_effort = @exam_comments.effort
                 end
               %>
+              
               <td class="col-2 td-mark">
                   
                   <div class="label-field-pair2">
                   
                   <div class="text-input-bg2">
                     <%= text_field_tag "exam[#{student.id}][comments]", exam_comment, :size => '30' %></div>
+                  </div>
+                  <div class="date2"><span class="themed_text"><%=  student.class_roll_no.to_s+" : "+student.full_name %></span></div>
+              </td>
+              <td class="col-2 td-mark">
+                  
+                  <div class="label-field-pair2">
+                  
+                  <div class="text-input-bg2">
+                    <%= text_field_tag "exam[#{student.id}][effort]",exam_effort, :size => '2' %></div>
                   </div>
                   <div class="date2"><span class="themed_text"><%=  student.class_roll_no.to_s+" : "+student.full_name %></span></div>
               </td>

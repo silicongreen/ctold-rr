@@ -44,7 +44,8 @@
       <% unless @report_data.blank?  or  @report_data['result'].blank? %>
       <% c = 'even' %>
       <% full_mark = 0 %>
-      <% colspan = 0 %>
+      <% colspan = 0 %>        
+      
       <table id="pdf-table" class="sjws_table_head" width="100%" cellspacing="0">
         
         <tr class="sjws-table-header">
@@ -75,6 +76,11 @@
             <% end %> 
             
             <% ilooop = ilooop+1 %>   
+          <% end %>
+          <% if @subject.no_exams_sjws %>
+            <td colspan="1" rowspan="3"><b>TOTAL<br />MARKS</b></td> 
+            <td colspan="1" rowspan="3"><b>%</b></td> 
+            <td colspan="1" rowspan="3"><b>GRADE<br />&<br />EFFORT</b></td> 
           <% end %>
         </tr>
         
@@ -134,9 +140,10 @@
               				
 					
 					
-					<% iloooop = 0 %><% @group_loop = 0 %>
+					<% iloooop = 0 %><% @group_loop = 0 %><% all_total_mark = 0 %><% all_full_mark = 0 %>
 					<% subject_groups.each do |group_name| %>
 					  <% subject_subgroup = get_subject_sub_group(@subject.id,iloooop) %>
+                                                
 						<% unless subject_subgroup.blank? %>
 						  <% subject_subgroup.each do |sub_group_name| %>
                                                     <% total_mark = 0 %><% full_mark = 5 %><% avg_counter = 0 %>
@@ -147,9 +154,11 @@
                                                       <% unless rs['students'][std['id']]['remarks'].blank?  %>
                                                         <% unless wordString_split[iloooop.to_i].blank? %>
                                                               <% exam_group_remarks = wordString_split[@group_loop.to_i] %>
-                                                              <% total_mark = total_mark + exam_group_remarks.to_i %>
-                                                              
+                                                              <% total_mark = total_mark + exam_group_remarks.to_i %>                                                              
                                                               <% avg_counter = avg_counter +1 %>
+            
+                                                              <% all_total_mark = all_total_mark + exam_group_remarks.to_i %>
+                                                              <% all_full_mark = all_full_mark + 5 %>
                                                         <% end %>
                                                       <% end %>
                                                       <td> 
@@ -170,8 +179,8 @@
                                                           <% elsif  mark_percentage.to_f <= 40 %>
                                                             <%= "D" %>
                                                           <% end %>
-                                                    </td>
-							<% @group_loop = @group_loop+1 %>
+                                                    </td>                                                    
+                                                    <% @group_loop = @group_loop+1 %>
 						  <% end %>
 						<% else %>
                                                     <% total_mark = 0 %><% full_mark = 5 %><% avg_counter = 0 %>
@@ -184,6 +193,9 @@
                                                                   <% exam_group_remarks = wordString_split[@group_loop.to_i] %>
                                                                   <% total_mark = total_mark + exam_group_remarks.to_i %>
                                                                   <% avg_counter = avg_counter +1 %>
+                                                      
+                                                                  <% all_total_mark = all_total_mark + exam_group_remarks.to_i %>
+                                                                  <% all_full_mark = all_full_mark + 5 %>
                                                             <% end %>                                                            
                                                           <% end %>
                                                           <td> 
@@ -204,11 +216,30 @@
                                                             <%= "D" %>
                                                           <% end %>
                                                     </td>
-                                                          <% @group_loop = @group_loop+1 %>                      
+                                                    <% @group_loop = @group_loop+1 %>                      
 						<% end %>  
 					  <% iloooop = iloooop+1 %>      
 					<% end %>
-					
+					<% if @subject.no_exams_sjws %>
+                                          <td colspan="1" rowspan="1"><b><%= all_total_mark %>/<%= all_full_mark %></b></td> 
+                                          <% all_mark_percentage = (all_total_mark.to_f/all_full_mark.to_f)*100 %>
+                                          <td colspan="1" rowspan="1"><b><%= all_mark_percentage %></b></td> 
+                                          <%
+                                            #exam_comment = ""
+                                            exam_effort = ""
+                                            @exam_comments = ExamConnectSubjectComment.find(:first, :conditions => {:exam_connect_id=>@connect_exam_obj.id,:subject_id => @subject.id, :student_id => std['id']} )
+                                            if !@exam_comments.blank?
+                                              #exam_comment = @exam_comments['comments']
+                                              exam_effort = @exam_comments['effort']
+                                            end
+                                          %>
+                                          <%  grade = GradingLevel.percentage_to_grade(all_mark_percentage, @batch.id) %>
+                                          <% if !grade.blank? and !grade.name.blank? %>
+                                             <td class="col-2"><b><%= grade.name %> - <%= exam_effort %></b></td>
+                                          <% else %>
+                                             <td class="col-2"><b>N/A - <%= exam_effort %></b></td>
+                                          <% end %>
+                                        <% end %>  
 				
             
         </tr>

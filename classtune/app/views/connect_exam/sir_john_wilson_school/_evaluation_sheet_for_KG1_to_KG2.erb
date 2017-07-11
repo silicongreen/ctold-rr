@@ -49,8 +49,7 @@
       <table id="pdf-table" class="sjws_table_head" width="100%" cellspacing="0">
         
         <tr class="sjws-table-header">
-            <td colspan="2" rowspan="2">
-              <h3><i>SENOIR SECTION</i></h3>
+            <td colspan="2" rowspan="2">              
               <p><b>TERM: <%= @connect_exam_obj.name %></b></p>
               <p><b>Class : <%= (@batch.name=="General")?"":@batch.name+" " %><%= @batch.course.course_name %>&nbsp;<%= @batch.course.section_name %></b></p>
             <% if !@employee.nil? %> 
@@ -64,20 +63,20 @@
           
           <% subject_groups = get_subject_group(@subject.id) %>          
           <% ilooop = 0 %>
-          
+          <% groupCount = subject_groups.count %>
           <% subject_groups.each do |group_name| %>
             <% subject_subgroup = get_subject_sub_group(@subject.id,ilooop) %>
-            <% groupCount = 1 %>
+            <% subGroupCount = 1 %>
             <% if subject_subgroup %>
-              <% groupCount = subject_subgroup.count %>
-              <td colspan="<%=groupCount.to_i * 3 %>"><%= group_name.to_s %><%=groupCount.to_i * 3 %></td>  
+              <% subGroupCount = subject_subgroup.count %>
+              <td colspan="<%=subGroupCount.to_i * 3 %>" class="word_break" ><%= group_name.to_s %></td>  
             <% else %>
-              <td colspan="3" rowspan="3"><%= group_name.to_s %></td>  
+              <td colspan="3" rowspan="3" class="word_break" ><%= group_name.to_s %></td>  
             <% end %> 
             
             <% ilooop = ilooop+1 %>   
           <% end %>
-          <% if @subject.no_exams_sjws %>
+          <% if @subject.no_exams_sjws.to_i == 1 %>
             <td colspan="1" rowspan="3"><b>TOTAL<br />MARKS</b></td> 
             <td colspan="1" rowspan="3"><b>%</b></td> 
             <td colspan="1" rowspan="3"><b>GRADE<br />&<br />EFFORT</b></td> 
@@ -220,7 +219,7 @@
                       <% end %>  
                 <% iloooop = iloooop+1 %>      
               <% end %>
-              <% if @subject.no_exams_sjws %>
+              <% if @subject.no_exams_sjws.to_i == 1 %>
                 <td colspan="1" rowspan="1"><b><%= all_total_mark %>/<%= all_full_mark %></b></td> 
                 <% all_mark_percentage = (all_total_mark.to_f/all_full_mark.to_f)*100 %>
                 <td colspan="1" rowspan="1"><b><%= all_mark_percentage %></b></td> 

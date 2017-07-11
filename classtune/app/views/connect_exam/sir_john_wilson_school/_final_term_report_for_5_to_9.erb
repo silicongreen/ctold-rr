@@ -31,18 +31,20 @@
                   <% c = 'even'  %>
                   <tr class="table-header t_head">
                       <td class="" rowspan="2"><b><%= "Subject" %></b></td> 
-                      <td class="" colspan="3"><center>First Term</center></td>
-                      <td class="" colspan="3"><center>Second Term</center></td>
-                      <td class="" colspan="3"><center>Overall Final</center></td>
+                      <td class="" colspan="4"><center>First Term</center></td>
+                      <td class="" colspan="4"><center>Second Term</center></td>
+                      <td class="" colspan="4"><center>Overall Final</center></td>
                   </tr>
                   <tr class="table-header t_head">
                       <td class="">Class<br />Assessment<br />Mark(40%)</td>
                       <td class="">Half Yearly Exam <br />(60%)</td>
                       <td class="">Overall<br />Term Mark<br />(%)</td>
+                      <td class="">H.W.</td>
                       
                       <td class="">Class<br />Assessment<br />Mark(40%)</td>
                       <td class="">Final Exam <br />(60%)</td>
                       <td class="">Overall<br />Term Mark<br />(%)</td>
+                      <td class="">H.W.</td>
                       
                       <td class="">40% of First<br />Term Mark</td>
                       <td class="">60% of Second<br />Term Mark</td>
@@ -58,33 +60,61 @@
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">                          
                           <% total_mark = 0 %>
                           <% total_mark_2 = 0 %>
+                          <% total_mark_3 = 0 %>
+                          <% total_mark_4 = 0 %>
                           <% full_mark = 0 %>
                           <% full_mark_2 = 0 %>
-                          <% exam_incremental = 1 %>
+                          <% full_mark_3 = 0 %>
+                          <% full_mark_4 = 0 %>
+                         
+                          
 
                           <td class="col-pdf"><b><%= subjects['name'] %></b></td>
-                          <% unless @report_data['report']['exams'].blank? %>  
-                            <% exam_priority = @report_data['report']['exams'].priority %>
-                            <% @report_data['report']['exams'].each do |report| %>                              
-                                <% if total_exam_count != exam_incremental %>
+                          <% unless @report_data['report']['exams'].blank? %>
+                            
+                            <% @report_data['report']['exams'].each do |report| %>  
+                                <% if report['priority'].to_i == 1 and report['exam_category'].to_i == 1 %>
+                                  
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                                     <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                   <% end %>
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
                                     <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                   <% end %> 
-                                <% end %> 
                           
-                                <% if total_exam_count == exam_incremental %>
+                                <% end %>  
+                          
+                                <% if report['priority'].to_i == 2 and report['exam_category'].to_i == 3 %>                           
+                                  
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                                     <% total_mark_2 = total_mark_2.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                   <% end %>
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
                                     <% full_mark_2 = full_mark_2+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                   <% end %> 
-                                <% end %> 
+                                
+                                <% end %>
+                                
+                                <% if report['priority'].to_i == 3 and report['exam_category'].to_i == 1 %>
+                                  <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
+                                    <% total_mark_3 = total_mark_3.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                  <% end %>
+                                  <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
+                                      <% full_mark_3 = full_mark_3+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                  <% end %>
+                                <% end %>
+                          
+                                <% if report['priority'].to_i == 4 and report['exam_category'].to_i == 3 %>                           
                                   
-                                <% exam_incremental = exam_incremental+1 %>
+                                  <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
+                                    <% total_mark_4 = total_mark_4.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                  <% end %>
+                                  <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
+                                    <% full_mark_4 = full_mark_4+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                  <% end %> 
+                                
+                                <% end %>
+                                
                             <% end %>
                           <% end %>
                           
@@ -103,11 +133,27 @@
                             end  
                           %>
                           
-                          <td class="col-pdf"><center><%=main_mark.to_i %>  <%=exam_priority%></center></td>                          
+                          <td class="col-pdf"><center><%=main_mark.to_i %>  <%#=exam_priority%></center></td>                          
                           <td class="col-pdf"><center><%= main_mark2.to_i %></center></td>
                           
                           <% assignmentCount = Assignment.count(:all, :conditions => {:subject_id => subjects['id'],:is_published=>1,:duedate => @connect_exam_obj.attandence_start_date..@connect_exam_obj.attandence_end_date}) %>
-                                                    
+                          
+                          <% 
+                            if total_mark_3.to_f>0 and full_mark_3.to_f>0
+                              main_mark3 = (total_mark_3.to_f/full_mark_3.to_f)*40 
+                            else
+                              main_mark3 = 0
+                            end  
+                          %>
+                          <% 
+                            if total_mark_4.to_f>0 and full_mark_4.to_f>0
+                              main_mark4 = (total_mark_4.to_f/full_mark_4.to_f)*60 
+                            else
+                              main_mark4 = 0
+                            end  
+                          %>
+              
+              
                           <%
                             exam_comment2 = ""
                             exam_effort2 = ""
@@ -120,16 +166,26 @@
                           
                           <td class="col-pdf"><center><%= (main_mark + main_mark2).to_i %></center></td>
                           <td class="col-pdf"><center><%= "0" %><hr><%= assignmentCount %></center></td> 
-                          <td class="col-pdf"><center><%=main_mark2.to_i %></center></td>
-                          <%  grade2 = GradingLevel.percentage_to_grade(main_mark2, @batch.id) %>
+  
+                          <td class="col-pdf"><center><%=main_mark3.to_i %>  <%#=exam_priority%></center></td>                          
+                          <td class="col-pdf"><center><%= main_mark4.to_i %></center></td>
+                          <td class="col-pdf"><center><%= (main_mark3 + main_mark4).to_i %></center></td>
+                          <td class="col-pdf"><center><%= "0" %><hr><%= assignmentCount %></center></td>
+                          <% final40Mark = ((main_mark.to_f + main_mark2.to_f)/100)*40 %>
+                          <% final60Mark = ((main_mark3.to_f + main_mark4.to_f)/100)*60 %>
+                          <% finalMark = final40Mark.to_f + final60Mark.to_f %>
+                          <td class="col-pdf"><center><%= final40Mark.to_i %></center></td>
+                          <td class="col-pdf"><center><%= final60Mark.to_i %></center></td>
+                          <td class="col-pdf"><center><%= finalMark.to_i %></center></td>
+                          
+                          
+                          <%  grade2 = GradingLevel.percentage_to_grade(finalMark, @batch.id) %>
                           <% if !grade2.blank? and !grade2.name.blank? %>
                           <td class="col-pdf"><center><%= grade2.name %></center></td>
                           <% else %>
                           <td class="col-pdf"><center>N/A</center></td>
                           <% end %>                          
-                          <td class="col-pdf"><p class="term_remark"><i><%= exam_comment2 %></i></p></td>
-                          <td class="col-pdf"><center><%= "0" %><hr><%= assignmentCount %></center></td> 
-                          <td class="col-pdf"><center><%= "0" %><hr><%= assignmentCount %></center></td> 
+                          
                           
                       </tr> 
                     <% end %>  
@@ -173,23 +229,29 @@
                         </tr> 
                 </table>
                 <br />
-                <table id="pdf-table" width="100%" cellspacing="0">              
+                <table id="pdf-table" class='sjws_table_intro' width="100%" cellspacing="0">              
                         <tr class="table-header t_head">
                             <td class="col-pdf" width='30%'>
                                 <p class="note">
                                   <b>Advisor's Comments</b>                                
                                 </p>
                             </td>                          
-                            <td class="col-pdf" width='35%'><i>
-                              <% if !@exam_comment.nil? %>
-                                <%=@exam_comment.comments%>
-                              <% end %>
-                            </i></td>                          
-                            <td class="col-pdf" width='35%'>&nbsp;</td>                          
+                            <td class="term_remark" width='60%'>
+                              <i>
+                                <% if !@exam_comment.nil? %>
+                                  <%=@exam_comment.comments%>
+                                <% else %>
+                                  &nbsp;
+                                <% end %>
+                              </i>
+                            
+                            
+                            </td>                          
+                            <td class="col-pdf" width='70%'>&nbsp;</td>                
                         </tr> 
                 </table>
                 <br />
-                <table id="pdf-table" width="100%" cellspacing="0">     
+                <table id="pdf-table" class='sjws_table_intro' width="100%" cellspacing="0">     
                         <tr class="table-header t_head">
                             <td class="col-pdf" width='30%'>
                                 <p class="note">
@@ -200,7 +262,7 @@
                         </tr> 
                 </table>
                 <br />
-                <table id="pdf-table" width="100%" cellspacing="0">             
+                <table id="pdf-table" class='sjws_table_intro' width="100%" cellspacing="0">             
                         <tr class="table-header t_head">
                             <td class="col-pdf" width='30%'>
                                 <p class="note">

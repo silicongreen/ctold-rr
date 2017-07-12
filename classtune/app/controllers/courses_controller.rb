@@ -123,14 +123,14 @@ class CoursesController < ApplicationController
     
     unless params[:from].nil?
       if params[:from] == "subject"
-        @tmp_batch = Batch.find_by_id(params[:id])
+        @tmp_batch = Batch.active.find_by_id(params[:id])
         unless @tmp_batch.nil?
           batch_name = @tmp_batch.name
         else
           batch_name = params[:name]
         end
       else
-        @batch = Batch.find_by_id(params[:id])
+        @batch = Batch.active.find_by_id(params[:id])
         unless @batch.nil?
           batch_name = @batch.name
         else
@@ -138,7 +138,7 @@ class CoursesController < ApplicationController
         end
       end  
     else  
-      @batch = Batch.find_by_id(params[:id])
+      @batch = Batch.active.find_by_id(params[:id])
       unless @batch.nil?
         batch_name = @batch.name
       else
@@ -151,7 +151,7 @@ class CoursesController < ApplicationController
     school_id = MultiSchool.current_school.id
     Rails.cache.delete("course_data_#{batch_name.parameterize("_")}_#{school_id}")
     @courses = Rails.cache.fetch("course_data_#{batch_name.parameterize("_")}_#{school_id}"){
-      @batches = Batch.find(:all, :conditions => ["name = ?", batch_name], :select => "course_id")
+      @batches = Batch.active.find(:all, :conditions => ["name = ?", batch_name], :select => "course_id")
       @batch_ids = @batches.map{|b| b.course_id}
       @tmp_courses = Course.find(:all, :conditions => ["courses.id IN (?) and courses.is_deleted = 0 and batches.name = ?", @batch_ids, batch_name], :select => "courses.*,  GROUP_CONCAT(courses.section_name,'-',courses.id,'-',batches.id) as courses_batches", :joins=> "INNER JOIN `batches` ON batches.course_id = courses.id", :group => 'course_name', :order => "cast(replace(course_name, 'Class ', '') as SIGNED INTEGER) asc")
       @tmp_courses

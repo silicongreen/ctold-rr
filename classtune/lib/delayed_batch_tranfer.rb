@@ -112,23 +112,27 @@ class DelayedBatchTranfer
       unless @stu.empty?
           
         @stu.each do |s|
-          batch_student = s.batch_students.find_or_create_by_batch_id_and_session_and_batch_start_and_batch_end(s.batch.id,@session,@prev_start,@prev_end)
-          unless @exam_groups.blank?
-            @exam_groups.each do |eg|
-            
-              save_group_pdf(eg.id,s.id,@user_cookie_variable)
-              create_group_exam_student(@batch,s,eg,now,batch_student.id)
+          if s.batch.id.to_i == @batch.id.to_i
+            batch_student = s.batch_students.find_or_create_by_batch_id_and_session_and_batch_start_and_batch_end(s.batch.id,@session,@prev_start,@prev_end)
+            unless @exam_groups.blank?
+              @exam_groups.each do |eg|
+
+                save_group_pdf(eg.id,s.id,@user_cookie_variable)
+                create_group_exam_student(@batch,s,eg,now,batch_student.id)
+              end
             end
           end
         end
         
         @stu.each do |s|
-          batch_student = s.batch_students.find_or_create_by_batch_id_and_session_and_batch_start_and_batch_end(s.batch.id,@session,@prev_start,@prev_end)
-          unless @connect_exam.blank?
-            @connect_exam.each do |ec|
-             
-              save_combained_pdf(ec.id,s.id,@user_cookie_variable,@batch.id)
-              create_combined_exam_student(@batch,s,ec,now,batch_student.id) 
+          if s.batch.id.to_i == @batch.id.to_i
+            batch_student = s.batch_students.find_or_create_by_batch_id_and_session_and_batch_start_and_batch_end(s.batch.id,@session,@prev_start,@prev_end)
+            unless @connect_exam.blank?
+              @connect_exam.each do |ec|
+
+                save_combained_pdf(ec.id,s.id,@user_cookie_variable,@batch.id)
+                create_combined_exam_student(@batch,s,ec,now,batch_student.id) 
+              end
             end
           end
         end 

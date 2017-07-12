@@ -150,11 +150,13 @@ class CoursesController < ApplicationController
     
     school_id = MultiSchool.current_school.id
     Rails.cache.delete("course_data_#{batch_name.parameterize("_")}_#{school_id}")
+    
     @courses = Rails.cache.fetch("course_data_#{batch_name.parameterize("_")}_#{school_id}"){
       @batches = Batch.active.find(:all, :conditions => ["name = ?", batch_name], :select => "course_id")
       @batch_ids = @batches.map{|b| b.course_id}
       @tmp_courses = Course.find(:all, :conditions => ["courses.id IN (?) and courses.is_deleted = 0 and batches.name = ?", @batch_ids, batch_name], :select => "courses.*,  GROUP_CONCAT(courses.section_name,'-',courses.id,'-',batches.id) as courses_batches", :joins=> "INNER JOIN `batches` ON batches.course_id = courses.id", :group => 'course_name')
       @tmp_courses
+      
     }
     
     unless params[:from].nil?

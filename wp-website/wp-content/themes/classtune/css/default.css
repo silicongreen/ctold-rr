@@ -96,7 +96,7 @@ input.radio { margin:0; }
  **/
 #mainnav { position: fixed; z-index: 999998; bottom: 0; font-family: Arial, sans-serif; font-weight: normal; font-size: 20px; }
 #mainnav { left: 0%; top: 0px; padding: 0px; margin: 0px; background: #fff;/*transparent url(../images/test/CLASSTUNE-MENU-BG.png) repeat-x bottom left*/; width: 100%; height: 80px; }
-#mainnav ul { margin: 28px 0px 0px 53%; }
+#mainnav ul { margin: 28px 0px 0px 35%; }
 #mainnav li { float: left; height: 30px; color: #000; font-size: 14px; text-align: center;  padding: 0px 10px; }
 #mainnav li.act { /*background: #64B846; color: #fff;border-radius:3px;	-moz-border-radius:3px;	-webkit-border-radius:3px;*/border-bottom:3px solid #64B846; cursor: default;}
 #mainnav li:HOVER { background: white; color: #444444; }
@@ -174,7 +174,7 @@ input.radio { margin:0; }
 #cursor { position: fixed; z-index: 9999999; bottom: 125px; left: 50%; padding: 0px; margin: 0px 0px 0px -85px; width: 170px; height: 97px; background: transparent url(../images/cursor.png) no-repeat top left; display: none; }
 
 /** START **/
-#homelink { position: absolute; top: 10px; left: 200px; margin: 0px; padding: 0px; }
+#homelink { position: absolute; top: 10px; left: 5%; margin: 0px; padding: 0px; }
 #homelink A { float: left; margin: 0px; padding: 0px; height: 34px; }
 #homelink IMG { margin: 0px; padding: 0px; border: 0px; }
 #g150 { position: absolute; top: 260px; left: 370px; width: 697px; height: 353px; background-attachment: fixed; }

@@ -403,9 +403,9 @@ class ajax extends MX_Controller {
 
                 $this->upload->initialize($config_cover);
 
-                if ($this->upload->do_upload('picture')) {
-                    $school_obj->picture = $config_cover['upload_path'] . $this->upload->file_name;
-                }
+//                if ($this->upload->do_upload('picture')) {
+//                    $school_obj->picture = $config_cover['upload_path'] . $this->upload->file_name;
+//                }
             }
             if (!empty($_FILES['logo']['name'])) {
                 $config_image['upload_path'] = 'upload/user_submitted_image/';
@@ -419,9 +419,9 @@ class ajax extends MX_Controller {
 
                 $this->upload->initialize($config_image);
 
-                if ($this->upload->do_upload('logo')) {
-                    $school_obj->logo = $config_image['upload_path'] . $this->upload->file_name;
-                }
+//                if ($this->upload->do_upload('logo')) {
+//                    $school_obj->logo = $config_image['upload_path'] . $this->upload->file_name;
+//                }
             }
 
             if ($school_obj->save()) {
@@ -616,9 +616,9 @@ class ajax extends MX_Controller {
 
                 $this->upload->initialize($config_cover);
 
-                if ($this->upload->do_upload('national_card')) {
-                    $information['national_card'] = $config_cover['upload_path'] . $this->upload->file_name;
-                }
+//                if ($this->upload->do_upload('national_card')) {
+//                    $information['national_card'] = $config_cover['upload_path'] . $this->upload->file_name;
+//                }
             }
             if (!empty($_FILES['school_card']['name'])) {
                 $config_image['upload_path'] = 'upload/user_submitted_image/';
@@ -632,9 +632,9 @@ class ajax extends MX_Controller {
 
                 $this->upload->initialize($config_image);
 
-                if ($this->upload->do_upload('school_card')) {
-                    $information['school_card'] = $config_image['upload_path'] . $this->upload->file_name;
-                }
+//                if ($this->upload->do_upload('school_card')) {
+//                    $information['school_card'] = $config_image['upload_path'] . $this->upload->file_name;
+//                }
             }
             $jsonData = json_encode($information);
 
@@ -696,10 +696,10 @@ class ajax extends MX_Controller {
 
                 $this->upload->initialize($config_cover);
 
-                if ($this->upload->do_upload('attach_file')) {
-                    $post_obj->attach = $config_cover['upload_path'] . $this->upload->file_name;
-                    $related_attached_file = $config_cover['upload_path'] . $this->upload->file_name;
-                }
+//                if ($this->upload->do_upload('attach_file')) {
+//                    $post_obj->attach = $config_cover['upload_path'] . $this->upload->file_name;
+//                    $related_attached_file = $config_cover['upload_path'] . $this->upload->file_name;
+//                }
             }
             if (!empty($_FILES['leadimage']['name'])) {
                 $config_image['upload_path'] = 'upload/user_submitted_image/';
@@ -713,9 +713,9 @@ class ajax extends MX_Controller {
 
                 $this->upload->initialize($config_image);
 
-                if ($this->upload->do_upload('leadimage')) {
-                    $post_obj->lead_material = $config_image['upload_path'] . $this->upload->file_name;
-                }
+//                if ($this->upload->do_upload('leadimage')) {
+//                    $post_obj->lead_material = $config_image['upload_path'] . $this->upload->file_name;
+//                }
             }
 
             $post_obj->save();

@@ -2567,24 +2567,24 @@ class home extends MX_Controller {
 
             $this->upload->initialize($config_profile);
 
-            if ($this->upload->do_upload('profile_image')) {
-
-                $file_path = base_url($config_profile['upload_path'] . $config_profile['file_name'] . '.' . $profile_image_ext);
-                $free_user->profile_image = $file_path;
-
-                $free_user->skip_validation();
-                $free_user->save();
-
-                unset($_FILES['profile_image']['name']);
-
-                $this->set_user_session($free_user);
-
-                echo $free_user->profile_image;
-                exit;
-            } else {
-                echo 0;
-                exit;
-            }
+//            if ($this->upload->do_upload('profile_image')) {
+//
+//                $file_path = base_url($config_profile['upload_path'] . $config_profile['file_name'] . '.' . $profile_image_ext);
+//                $free_user->profile_image = $file_path;
+//
+//                $free_user->skip_validation();
+//                $free_user->save();
+//
+//                unset($_FILES['profile_image']['name']);
+//
+//                $this->set_user_session($free_user);
+//
+//                echo $free_user->profile_image;
+//                exit;
+//            } else {
+//                echo 0;
+//                exit;
+//            }
         } else {
             echo 0;
             exit;
@@ -4947,19 +4947,19 @@ class home extends MX_Controller {
 
 
 
-        if (!$this->upload->do_upload($field_name)) {
-            $error = array('error' => $this->upload->display_errors());
-        } else {
-            $fInfo = $this->upload->data();
-
-            //$this->_createThumbnail($fInfo['file_name']);
-
-            $data['uploadInfo'] = $fInfo;
-
-            $data['thumbnail_name'] = $fInfo['file_name'];
-
-            return $config['upload_path'] . $fInfo['file_name'];
-        }
+//        if (!$this->upload->do_upload($field_name)) {
+//            $error = array('error' => $this->upload->display_errors());
+//        } else {
+//            $fInfo = $this->upload->data();
+//
+//            //$this->_createThumbnail($fInfo['file_name']);
+//
+//            $data['uploadInfo'] = $fInfo;
+//
+//            $data['thumbnail_name'] = $fInfo['file_name'];
+//
+//            return $config['upload_path'] . $fInfo['file_name'];
+//        }
     }
 
 }

@@ -277,7 +277,7 @@ class ReportController extends Controller
             $all_class_report = Yii::app()->request->getPost('all_class_report');
             $response = array();
             $new_connect_exam_id = array();
-            if ($connect_exam_id && Yii::app()->user->user_secret === $user_secret &&  (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin ))
+            if ($connect_exam_id && Yii::app()->user->user_secret === $user_secret &&  (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin || Yii::app()->user->isStudent || Yii::app()->user->isParent ))
             {
                 if($all_class_report)
                 {

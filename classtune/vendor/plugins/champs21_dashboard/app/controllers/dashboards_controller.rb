@@ -147,7 +147,7 @@ class DashboardsController < ApplicationController
     end
 
     @campus_attendances_count = 0 #CampusAttendance.find(:all, :conditions=>"date = '" + date_today.strftime("%Y-%m-%d").to_s + "' and type_data = 2", :group => "user_id").length
-    @hr_attendances_count = CardAttendance.find(:all, :conditions=>"date = '" + date_today.strftime("%Y-%m-%d").to_s + "' and type = 1", :group => "user_id").length
+    @hr_attendances_count = CardAttendance.find(:all, :conditions=>"date = '" + date_today.strftime("%Y-%m-%d").to_s + "' and type_data = 1", :group => "user_id").length
     
     render :partial => '/dashboards/partial/ajax/summary_strip'
   end

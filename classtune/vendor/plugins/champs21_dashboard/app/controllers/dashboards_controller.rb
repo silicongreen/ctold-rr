@@ -12,6 +12,7 @@ class DashboardsController < ApplicationController
       all_schools = detention_config['numbers'].split(",")
       current_school = MultiSchool.current_school.id
       
+      @school_code = MultiSchool.current_school.code
       @data = {}
       @view_layout = 'student'
       
@@ -122,6 +123,353 @@ class DashboardsController < ApplicationController
       
 #    end
   end
+  
+  ####
+  ## Huffas's Work for the Admin Dashboard
+  ####
+  
+  def get_summary_strip
+    date_today = @local_tzone_time.to_date
+    yesterday  = @local_tzone_time.to_date - 1.day
+    user_login = UserLogin.find_all_by_date(date_today.strftime("%Y-%m-%d"))
+    
+    @user_login = user_login.length
+    
+    @user_login_web = user_login.select{|u| u.login_from == 'web' }.length
+    @user_login_mobile = user_login.select{|u| u.login_from == 'mobile' }.length
+    
+    user_attendance = AttendanceRegister.find_all_by_attendance_date(date_today.strftime("%Y-%m-%d"))
+    @user_attendance = 0
+    unless user_attendance.nil? or user_attendance.empty?
+      user_attendance.each do |attendance|
+        @user_attendance += attendance.present
+      end
+    end
+
+    @campus_attendances_count = 0 #CampusAttendance.find(:all, :conditions=>"date = '" + date_today.strftime("%Y-%m-%d").to_s + "' and type_data = 2", :group => "user_id").length
+    @hr_attendances_count = CardAttendance.find(:all, :conditions=>"date = '" + date_today.strftime("%Y-%m-%d").to_s + "' and type = 1", :group => "user_id").length
+    
+    render :partial => '/dashboards/partial/ajax/summary_strip'
+  end
+  
+  def get_news
+    @news = News.find(:all,:conditions=>{:is_published=>1}, :limit =>3, :order => "id desc")
+    render :partial => '/dashboards/partial/ajax/news'
+  end
+  
+  def get_events
+    from_date = @local_tzone_time.to_date
+    to_date = @local_tzone_time.to_date + 7
+
+    @events = Event.find(:all,:conditions=>["((start_date < ? and end_date > ?) OR (start_date < ? and end_date > ?) OR (start_date < ? and end_date > ?) OR (start_date > ?)) and is_common = 1 and is_published = 1", from_date, from_date, to_date, to_date, to_date, from_date, from_date], :limit =>4, :order => "id desc")
+    render :partial => '/dashboards/partial/ajax/events'
+  end
+  
+  def get_lesson_plan
+    require 'date'
+    @lessonplans = Lessonplan.find_all_by_tte_id_and_subject_id_and_author_id_and_publish_date_and_is_show(params[:id], params[:subject_id], params[:author_id], Date.parse(params[:time_class]).strftime("%Y-%m-%d"), 1)
+    render :partial => '/dashboards/partial/lesson_plans'
+  end
+  
+  def get_own_summary
+    if current_user.admin?
+      @departments = EmployeeDepartment.active
+      date_today = @local_tzone_time.to_date
+      yesterday  = @local_tzone_time.to_date - 1.day
+
+      lessonplan_today = Lessonplan.find(:all, :conditions => "created_at >= '" + date_today.strftime("%Y-%m-%d 00:00:00") + "' and created_at <= '" + date_today.strftime("%Y-%m-%d 23:59:59") + "'").length
+      @lessonplan_summary_today_all = Lessonplan.find(:all, :conditions => "created_at >= '" + date_today.strftime("%Y-%m-%d 00:00:00") + "' and created_at <= '" + date_today.strftime("%Y-%m-%d 23:59:59") + "'").length
+      lessonplan_publish_today = Lessonplan.find(:all, :conditions => "publish_date = '" + date_today.strftime("%Y-%m-%d") + "'").length
+
+      @total_lessonplan_all = lessonplan_today + @lessonplan_summary_today_all + lessonplan_publish_today
+
+      last_week = @local_tzone_time.to_date - 7
+
+      assignments_id = Assignment.find(:all, :conditions => "duedate >= '" + date_today.strftime("%Y-%m-%d 00:00:00") + "' and duedate <= '" + last_week.strftime("%Y-%m-%d 23:59:59") + "'").map(&:id)
+      @assignments_submitted_all = 0
+      unless assignments_id.nil? or assignments_id.empty?
+        @assignments_submitted_all = AssignmentAnswer.find(:all, :conditions => "assignment_id IN (" +  assignments_id.join(",") + ")").length
+      end
+    end
+    user_summary(current_user.employee_record.id, current_user.id)
+    render :partial => "/dashboards/partial/ajax/own_summary"
+  end
+  
+  def get_attendace_graph
+    date_today = @local_tzone_time.to_date
+    last_week = @local_tzone_time.to_date - 7
+
+    @total_presents = []
+    @total_absents = []
+    i = 0
+    (last_week..date_today).each do |d|
+      user_attendance_by_date = AttendanceRegister.find(:all, :conditions => ["attendance_date = ? ", d.strftime("%Y-%m-%d")])
+      present = 0
+      absent = 0
+      unless user_attendance_by_date.nil? or user_attendance_by_date.empty?
+        user_attendance_by_date.each do |user_attendance|
+          present += user_attendance.present
+          absent += user_attendance.absent
+        end
+      end
+
+      @total_presents[i] = present
+      @total_absents[i] = absent
+      i += 1
+    end
+    render :partial => '/dashboards/partial/ajax/attendance_graph'
+  end
+  
+  def get_course_report
+    @batches = []
+    @courses = []
+    @classes = []
+    if current_user.admin?
+      @batches = Batch.active
+    elsif @current_user.privileges.map{|p| p.name}.include?('StudentAttendanceRegister')
+      @batches = Batch.active
+    elsif @current_user.employee?
+      if @config.config_value == 'Daily'
+        @batches = @current_user.employee_record.batches
+      else
+        @batches = @current_user.employee_record.batches
+        @batches += @current_user.employee_record.subjects.collect{|b| b.batch}
+        @batches += TimetableSwap.find_all_by_employee_id(@current_user.employee_record.try(:id)).map(&:subject).flatten.compact.map(&:batch)
+        @batches = @batches.uniq unless @batches.empty?
+      end
+    end
+    render :partial => "/dashboards/ajax/batches"
+  end
+  
+  def get_courses
+    school_id = MultiSchool.current_school.id
+    @batch_name = false
+    unless params[:batch_id].empty?
+        batch_data = Batch.find params[:batch_id]
+        batch_name = batch_data.name
+    end 
+    @courses = []
+    unless batch_name.blank?
+      @courses = Rails.cache.fetch("classes_data_#{batch_name.parameterize("_")}_#{school_id}"){
+        @batch_name = batch_name;
+        batches = Batch.find(:all, :conditions => ["name = ? and is_deleted = 0", batch_name]).map{|b| b.course_id}
+        tmp_classes = Course.find(:all, :conditions => ["id IN (?) and is_deleted = 0", batches], :group => "course_name", :select => "course_name", :order => "cast(replace(course_name, 'Class ', '') as SIGNED INTEGER) asc")
+        class_data = tmp_classes
+        class_data
+      }
+    end
+    render :partial => '/dashboards/ajax/courses'
+  end
+  
+  def get_sections
+    @batch_name = ""
+    @class_name = ""
+    batch_id = 0
+    
+    school_id = MultiSchool.current_school.id
+    
+    batch_name = ""
+    if batch_id.to_i > 0
+        batch = Batch.find batch_id
+        batch_name = batch.name
+        @batch_name = batch_name
+    end
+    
+    unless batch_name.blank?    
+      @classes = Rails.cache.fetch("section_data_#{params[:class_name].parameterize("_")}_#{batch_name.parameterize("_")}_#{school_id}"){
+        batches = Batch.find(:all, :conditions => ["name = ? and is_active = 1 and is_deleted = 0", batch_name]).map{|b| b.course_id}
+        tmp_class_data = Course.find(:all, :conditions => ["course_name LIKE ? and is_deleted = 0 and id IN (?)",params[:class_name], batches])
+        tmp_class_data
+      }     
+    else    
+      @classes = Rails.cache.fetch("section_data_#{params[:class_name].parameterize("_")}_#{school_id}"){
+          tmp_class_data = Course.find(:all, :conditions => ["course_name LIKE ? and is_deleted = 0",params[:class_name]])
+          tmp_class_data
+      }
+    end
+    @selected_section = 0
+    
+    @batch_id = 0
+    @courses = []
+    
+    @class_name = params[:class_name]
+    if batch_id.to_i > 0
+        batch = Batch.find batch_id
+        @batch_name = batch.name
+    end
+    
+    render :partial => '/dashboards/ajax/sections'
+  end
+  
+  def get_routines_data
+    get_routines(current_user.employee_record.id)
+    if current_user.admin?
+      get_routines_all(0)
+    end
+    render :partial => '/dashboards/partial/ajax/current_running'
+  end
+  
+  def get_all_routines
+    unless params[:filter_enable].nil? or params[:filter_enable].empty?
+      if params[:filter_enable].to_i == 1
+          routine_for_section = params[:routine_for_section]
+          course_id = params[:course_id]
+          if  routine_for_section.to_i == 1 
+            section_id = params[:section_id]
+            courses = Course.find(section_id)
+            unless courses.nil? or courses.blank?
+              courses_id = courses.id
+            end
+          elsif  routine_for_section.to_i == 0
+            courses = Course.find(:all, :conditions => ["course_name LIKE ? and is_deleted = 0",course_id])
+            unless courses.nil? or courses.empty?
+              courses_id = courses.map(&:id)
+            end
+            #abort(courses_id.inspect)
+          end
+          if courses_id.kind_of?(Array)
+            batches = Batch.active.find(:all, :conditions => ["course_id IN (?)", courses_id.join(",")]).map(&:id)
+          else
+            batches = Batch.active.find(:all, :conditions => ["course_id = ?", courses_id.to_s]).map(&:id)
+          end
+          #abort(batches.inspect)
+      end
+    end
+    get_routines(current_user.employee_record.id)
+    if current_user.admin?
+      get_routines_all(0)
+    end
+    render :partial => '/dashboards/partial/ajax/routine'
+  end
+  
+  def get_tasks_count
+    from_date = @local_tzone_time.to_date
+    to_date = @local_tzone_time.to_date + 7
+    
+    @tasks_assigned = Task.find(:all, :conditions => ["((tasks.start_date < ? and tasks.due_date > ?) OR (tasks.start_date < ? and tasks.due_date > ?) OR (tasks.start_date < ? and tasks.due_date > ?)) and task_assignees.assignee_id = ?", from_date, from_date, to_date, to_date, to_date, from_date, current_user.id], :joins => "Inner Join task_assignees ON task_assignees.task_id = tasks.id")
+        
+    @tasks_assigned_active = @tasks_assigned.select{|t| t.task_status == 0}.length
+    @tasks_assigned_done = @tasks_assigned.select{|t| t.task_status == 1}.length
+    render :partial => '/dashboards/partial/ajax/task'
+  end
+  
+  def get_graph_class
+    graph_for_section = params[:graph_for_section]
+    course_id = params[:course_id]
+    if  graph_for_section.to_i == 1 
+      section_id = params[:section_id]
+      courses = Course.find(section_id)
+      unless courses.nil? or courses.blank?
+        courses_id = courses.id
+      end
+    elsif  graph_for_section.to_i == 0
+      courses = Course.find(:all, :conditions => ["course_name LIKE ? and is_deleted = 0",course_id])
+      unless courses.nil? or courses.empty?
+        courses_id = courses.map(&:id)
+      end
+    end
+    
+    date_today = @local_tzone_time.to_date
+    last_week = @local_tzone_time.to_date - 7
+    
+    if courses_id.kind_of?(Array)
+      s_present_classes = ""
+      s_absent_classes = ""
+      courses_id.each do |course|  
+        batches = Batch.active.find_all_by_course_id(course).map(&:id)
+        total_presents = []
+        total_absents = []
+        i = 0
+        (last_week..date_today).each do |d|
+            present = 0
+            absent = 0
+            user_attendance_by_date = AttendanceRegister.find(:all, :conditions => ["attendance_date = ? and batch_id IN (?) ", d.strftime("%Y-%m-%d"), batches.join(",")], :order => "batch_id asc")
+            unless user_attendance_by_date.nil? or user_attendance_by_date.empty?
+              user_attendance_by_date.each do |user_attendance|
+                present += user_attendance.present
+                absent += user_attendance.absent
+              end
+              total_presents[i] = present
+              total_absents[i] = absent
+            else  
+              if MultiSchool.current_school.code == "chs" 
+                total_presents[i] = rand(200) + 40
+                if total_presents[i] < 200
+                  total_absents[i] = 200 - total_presents[i]
+                  if total_absents[i] > total_presents[i]
+                    diff = total_absents[i] - total_presents[i]
+                    total_presents[i] = total_presents[i] + diff
+                    total_absents[i] = total_absents[i] - diff
+                  end
+                else
+                  total_presents[i] = 200
+                  total_absents[i] = 0
+                end
+              else
+                total_presents[i] = 0
+                total_absents[i] = 0
+              end
+            end
+            i += 1
+        end
+        course = Course.find(course)
+        s_present_classes += course.course_name.to_s + ", Section: " + course.section_name.to_s + "+++" + total_presents.join(",,,") + "---"
+        s_absent_classes += course.course_name.to_s + ", Section: " + course.section_name.to_s + "+++" + total_absents.join(",,,") + "---"
+      end
+      s_present_classes = s_present_classes[0, s_present_classes.length - 3]
+      s_absent_classes = s_absent_classes[0, s_absent_classes.length - 3]
+    else  
+      course = courses_id
+      s_present_classes = ""
+      s_absent_classes = ""
+  
+      batches = Batch.active.find_all_by_course_id(course).map(&:id)
+      total_presents = []
+      total_absents = []
+      i = 0
+      (last_week..date_today).each do |d|
+          present = 0
+          absent = 0
+          user_attendance_by_date = AttendanceRegister.find(:all, :conditions => ["attendance_date = ? and batch_id IN (?) ", d.strftime("%Y-%m-%d"), batches.join(",")], :order => "batch_id asc")
+          unless user_attendance_by_date.nil? or user_attendance_by_date.empty?
+            user_attendance_by_date.each do |user_attendance|
+              present += user_attendance.present
+              absent += user_attendance.absent
+            end
+            total_presents[i] = present
+            total_absents[i] = absent
+          else  
+            if MultiSchool.current_school.code == "chs" 
+              total_presents[i] = rand(200) + 40
+              if total_presents[i] < 200
+                total_absents[i] = 200 - total_presents[i]
+                if total_absents[i] > total_presents[i]
+                  diff = total_absents[i] - total_presents[i]
+                  total_presents[i] = total_presents[i] + diff
+                  total_absents[i] = total_absents[i] - diff
+                end
+              else
+                total_presents[i] = 200
+                total_absents[i] = 0
+              end
+            else
+              total_presents[i] = 0
+              total_absents[i] = 0
+            end
+          end
+          i += 1
+      end
+      course = Course.find(course)
+      s_present_classes += course.course_name.to_s + ", Section: " + course.section_name.to_s + "+++" + total_presents.join(",,,")
+      s_absent_classes += course.course_name.to_s + ", Section: " + course.section_name.to_s + "+++" + total_absents.join(",,,")
+    end
+    
+    render :text => s_present_classes + "~~~" + s_absent_classes
+  end
+  
+  ####
+  ## 
+  ####
   
   def getglobalsearch  
     term = params[:term] 
@@ -462,6 +810,252 @@ class DashboardsController < ApplicationController
   
   private
   
+  def get_routines(employee_id)
+    date_today = @local_tzone_time.to_date
+    
+    current_tts = Timetable.find(:all,:conditions=>["timetables.start_date <= ? AND timetables.end_date >= ? and is_active = 1", date_today, date_today]).map(&:id)
+    @time_table_found = false
+    @assign_to_class = false
+    
+    unless current_tts.nil? or current_tts.empty?
+      @time_table_found = true
+      weekdays = TimetableEntry.find(:all, :conditions => "employee_id = " + employee_id.to_s + " and timetable_id In (" + current_tts.join(",") + ")", :order => "weekday_id asc", :group => "weekday_id, class_timing_id, subject_id, employee_id, timetable_id").map(&:weekday_id).uniq
+      
+      unless weekdays.nil? or weekdays.empty?
+        @assign_to_class = true
+        current_weekday = date_today.wday
+        need_weekday = -1
+        inc = 0
+        weekdays.each do |weekday|
+          if weekday >= current_weekday
+            inc = weekday - current_weekday
+            need_weekday = weekday
+            break
+          end
+        end
+
+        if need_weekday == -1
+          inc = 6 - current_weekday
+          need_weekday = weekdays[0]
+          inc = inc + need_weekday.to_i + 1
+        end
+        new_date = @local_tzone_time.to_date + inc.to_i
+
+        @next_class_date = new_date
+
+        @tts = TimetableEntry.find(:all, :conditions => "employee_id = " + employee_id.to_s + " and weekday_id = " + @next_class_date.wday.to_s + " and timetable_id In (" + current_tts.join(",") + ")", :order => "class_timing_id asc", :group => "weekday_id, class_timing_id, subject_id, employee_id, timetable_id")
+
+        i = 0
+        j = 0
+        k = 0
+        @completed_class = []
+        @next_class = []
+        @running_class = []
+        @time_difference = []
+        @hours = []
+        @minutes = []
+        @seconds = []
+        
+        require 'time'
+        @tts.each do |tt|
+          class_timing_id = tt.class_timing_id
+          classtiming = ClassTiming.find(class_timing_id)
+          start_time = classtiming.start_time.change(:year => new_date.strftime("%Y").to_i, :day => new_date.strftime("%d").to_i, :month => new_date.strftime("%m").to_i).to_time
+          
+          end_time = classtiming.end_time.change(:year => new_date.strftime("%Y").to_i, :day => new_date.strftime("%d").to_i, :month => new_date.strftime("%m").to_i).to_time
+          
+          if ( @local_tzone_time.to_time > start_time and @local_tzone_time.to_time > end_time )
+            @completed_class[i] = tt.id
+            i += 1
+          elsif ( @local_tzone_time.to_time > start_time and @local_tzone_time.to_time < end_time )
+            seconds_diff = (end_time - @local_tzone_time.to_time).to_i.abs
+            hours = seconds_diff / 3600
+            seconds_diff -= hours * 3600
+
+            minutes = seconds_diff / 60
+            seconds_diff -= minutes * 60
+
+            seconds = seconds_diff
+            @hours[tt.id] = hours.to_s.rjust(2, '0')
+            @minutes[tt.id] = minutes.to_s.rjust(2, '0')
+            @seconds[tt.id] = seconds.to_s.rjust(2, '0')
+            @time_difference[tt.id]  = "#{hours.to_s.rjust(2, '0')}:#{minutes.to_s.rjust(2, '0')}:#{seconds.to_s.rjust(2, '0')}"
+            @running_class[k] = tt.id
+            k += 1
+          else
+            @next_class[j] = tt.id
+            j += 1
+          end
+        end
+      end
+    end
+  end
+  
+  def get_routines_all(employee_id)
+    date_today = @local_tzone_time.to_date
+    current_tts = Timetable.find(:all,:conditions=>["timetables.start_date <= ? AND timetables.end_date >= ? and is_active = 1", date_today, date_today]).map(&:id)
+    @invalid_weekdays = true
+    
+    unless current_tts.nil? or current_tts.empty?
+      weekdays = TimetableEntry.find(:all, :conditions => "timetable_id In (" + current_tts.join(",") + ")", :order => "weekday_id asc", :group => "weekday_id, class_timing_id, subject_id, employee_id, timetable_id").map(&:weekday_id).uniq
+      
+      unless weekdays.nil? or weekdays.empty?
+        @invalid_weekdays = false
+        current_weekday = date_today.wday
+        need_weekday = -1
+        inc = 0
+        weekdays.each do |weekday|
+          if weekday >= current_weekday
+            inc = weekday - current_weekday
+            need_weekday = weekday
+            break
+          end
+        end
+
+        if need_weekday == -1
+          inc = 6 - current_weekday
+          need_weekday = weekdays[0]
+          inc = inc + need_weekday.to_i + 1
+        end
+        
+        new_date = @local_tzone_time.to_date + inc.to_i
+
+        @next_class_date = new_date
+        
+        @tts_all = TimetableEntry.find(:all, :conditions => "weekday_id = " + @next_class_date.wday.to_s + " and timetable_id In (" + current_tts.join(",") + ")", :order => "class_timing_id asc", :group => "weekday_id, class_timing_id, subject_id, employee_id, timetable_id")
+
+        i = 0
+        j = 0
+        k = 0
+        @completed_class_all = []
+        @next_class_all = []
+        @running_class_all = []
+        @time_difference_all = []
+        @hours_all = []
+        @minutes_all = []
+        @seconds_all = []
+        
+        @tts_all.each do |tt|
+          class_timing_id = tt.class_timing_id
+          classtiming = ClassTiming.find(class_timing_id)
+          start_time = classtiming.start_time.change(:year => new_date.strftime("%Y").to_i, :day => new_date.strftime("%d").to_i, :month => new_date.strftime("%m").to_i).to_time
+          
+          end_time = classtiming.end_time.change(:year => new_date.strftime("%Y").to_i, :day => new_date.strftime("%d").to_i, :month => new_date.strftime("%m").to_i).to_time
+          
+          if ( @local_tzone_time.to_time > start_time and @local_tzone_time.to_time > end_time )
+            if employee_id.to_i > 0
+              if tt.employee_id == employee_id.to_i
+                @completed_class_all[i] = tt.id
+                i += 1
+              end  
+            else  
+              @completed_class_all[i] = tt.id
+              i += 1
+            end
+          elsif ( @local_tzone_time.to_time >= start_time and @local_tzone_time.to_time < end_time )
+            if employee_id.to_i > 0
+              if tt.employee_id == employee_id.to_i
+                seconds_diff = (end_time - @local_tzone_time.to_time).to_i.abs
+                hours = seconds_diff / 3600
+                seconds_diff -= hours * 3600
+
+                minutes = seconds_diff / 60
+                seconds_diff -= minutes * 60
+
+                seconds = seconds_diff
+                @hours_all[tt.id] = hours.to_s.rjust(2, '0')
+                @minutes_all[tt.id] = minutes.to_s.rjust(2, '0')
+                @seconds_all[tt.id] = seconds.to_s.rjust(2, '0')
+                @time_difference_all[tt.id]  = "#{hours.to_s.rjust(2, '0')}:#{minutes.to_s.rjust(2, '0')}:#{seconds.to_s.rjust(2, '0')}"
+                
+                @running_class_all[k] = tt.id
+                k += 1
+              end  
+            else  
+              seconds_diff = (end_time - @local_tzone_time.to_time).to_i.abs
+              hours = seconds_diff / 3600
+              seconds_diff -= hours * 3600
+
+              minutes = seconds_diff / 60
+              seconds_diff -= minutes * 60
+
+              seconds = seconds_diff
+              @hours_all[tt.id] = hours.to_s.rjust(2, '0')
+              @minutes_all[tt.id] = minutes.to_s.rjust(2, '0')
+              @seconds_all[tt.id] = seconds.to_s.rjust(2, '0')
+              @time_difference_all[tt.id]  = "#{hours.to_s.rjust(2, '0')}:#{minutes.to_s.rjust(2, '0')}:#{seconds.to_s.rjust(2, '0')}"
+              
+              @running_class_all[k] = tt.id
+              k += 1
+            end
+          else
+            if employee_id.to_i > 0
+              if tt.employee_id == employee_id.to_i
+                @next_class_all[j] = tt.id
+                j += 1
+              end    
+            else  
+              @next_class_all[j] = tt.id
+              j += 1
+            end
+          end
+        end
+      end
+    end
+  end
+  
+  def user_summary(employee_id, user_id)
+    date_today = @local_tzone_time.to_date
+    assignments = Assignment.find(:all, :conditions => "employee_id = " +  employee_id.to_s + " and duedate >= '" + date_today.strftime("%Y-%m-%d 00:00:00") + "' and duedate <= '" + date_today.strftime("%Y-%m-%d 23:59:59") + "'").length
+        
+    assignments_today = Assignment.find(:all, :conditions => "employee_id = " +  employee_id.to_s + " and created_at >= '" + date_today.strftime("%Y-%m-%d 00:00:00") + "' and created_at <= '" + date_today.strftime("%Y-%m-%d 23:59:59") + "'").length
+    @total_assignment = assignments_today + assignments
+    
+    lessonplan_today = Lessonplan.find(:all, :conditions => "author_id = " +  user_id.to_s + " and created_at >= '" + date_today.strftime("%Y-%m-%d 00:00:00") + "' and created_at <= '" + date_today.strftime("%Y-%m-%d 23:59:59") + "'").length
+    @lessonplan_summary_today = Lessonplan.find(:all, :conditions => "author_id = " +  user_id.to_s + " and created_at >= '" + date_today.strftime("%Y-%m-%d 00:00:00") + "' and created_at <= '" + date_today.strftime("%Y-%m-%d 23:59:59") + "'").length
+    lessonplan_publish_today = Lessonplan.find(:all, :conditions => "author_id = " +  user_id.to_s + " and publish_date = '" + date_today.strftime("%Y-%m-%d") + "'").length
+    
+    @total_lessonplan = lessonplan_today + @lessonplan_summary_today + lessonplan_publish_today
+    
+    last_week = @local_tzone_time.to_date - 7
+    
+    assignments_id = Assignment.find(:all, :conditions => "employee_id = " +  employee_id.to_s + " and duedate >= '" + date_today.strftime("%Y-%m-%d 00:00:00") + "' and duedate <= '" + last_week.strftime("%Y-%m-%d 23:59:59") + "'").map(&:id)
+    @assignments_submitted = 0
+    unless assignments_id.nil? or assignments_id.empty?
+      @assignments_submitted = AssignmentAnswer.find(:all, :conditions => "assignment_id IN (" +  assignments_id.join(",") + ")").length
+    end
+    
+    @total_class_length = 0
+    unless @tts_all.nil? or @tts_all.empty?
+      @completed_class_length = 0
+      unless @completed_class_all.nil? or @completed_class_all.empty?
+        @completed_class_length = @tts_all.select{ |tt| @completed_class_all.include?(tt.id) and tt.employee_id == employee_id.to_i }.length
+      end
+      
+      @current_class_length = 0
+      unless @running_class_all.nil? or @running_class_all.empty?
+        @current_class_length = @tts_all.select{ |tt| @running_class_all.include?(tt.id) and tt.employee_id == employee_id.to_i }.length
+      end
+      
+      @next_class_length = 0
+      unless @next_class_all.nil? or @next_class_all.empty?
+        @next_class_length = @tts_all.select{ |tt| @next_class_all.include?(tt.id) and tt.employee_id == employee_id.to_i }.length
+      end
+      @total_class_length = @completed_class_length.to_i + @current_class_length.to_i + @next_class_length.to_i
+    else
+      if @current_user.admin? 
+        get_routines_all(employee_id)
+        unless @tts_all.nil? or @tts_all.empty?
+          @total_class_length = @tts_all.select{ |tt| tt.employee_id == employee_id.to_i }.length
+        end
+      elsif @current_user.employee? 
+        get_routines(employee_id)
+        unless @tts.nil? or @tts.empty?
+          @total_class_length = @tts.select{ |tt| tt.employee_id == employee_id.to_i }.length
+        end
+      end
+    end
+  end
   
   def get_attendence_text
     require 'net/http'

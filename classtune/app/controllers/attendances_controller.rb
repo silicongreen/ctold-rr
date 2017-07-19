@@ -65,6 +65,7 @@ class AttendancesController < ApplicationController
       page.replace_html 'subjects', :partial=> 'subjects2'
     end
   end
+  
   def get_subject_report_pdf
     unless params[:subject_id].nil?
       if !params[:subject_id].blank?
@@ -137,6 +138,7 @@ class AttendancesController < ApplicationController
       page.replace_html 'subjects', :partial=> 'subjects'
     end
   end
+  
   def save_attendance_subject
     now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
     if params[:attandence_date].nil? || params[:attandence_date].empty?
@@ -150,6 +152,7 @@ class AttendancesController < ApplicationController
     render :text=>"success"
     
   end
+  
   def get_subject_student
     now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
     if params[:date_to_use].nil? || params[:date_to_use].empty?
@@ -172,6 +175,7 @@ class AttendancesController < ApplicationController
       format.js { render :action => 'roll_sub' }
     end
   end
+  
   def rollcall
     @subjects = []
     @batches = []

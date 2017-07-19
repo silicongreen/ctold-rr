@@ -1,3 +1,6 @@
+<% if @school_code == "chs" && @current_user.admin? %>
+  <%= render 'dashboards/classtune/index.html' %>
+<% else %>
 <%= include_i18n_calendar_javascript %>
 <%= stylesheet_link_tag 'jquery-ui.css' %>
 <script>
@@ -468,4 +471,5 @@
 <%= stylesheet_link_tag 'bootstrap_form' %>
 <% content_for :head do %>
   <%= javascript_include_tag "custom/dashboard-filter" %>
+<% end %>
 <% end %>

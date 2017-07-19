@@ -1,0 +1,97 @@
+/*TOOL TIP*/
+
+.ui-tooltip, .arrow:after {
+    background: black;
+    border: 2px solid white;
+}
+.ui-tooltip {
+    padding: 10px 20px;
+    color: white;
+    border-radius: 5px;
+
+    width:300px;
+}
+.arrow {
+    width: 70px;
+    height: 16px;
+    overflow: hidden;
+    position: absolute;
+    left: 50%;
+    margin-left: -35px;
+    bottom: -16px;
+}
+.arrow.top {
+    top: -16px;
+    bottom: auto;
+}
+.arrow.left {
+    left: 20%;
+}
+.arrow:after {
+    content: "";
+    position: absolute;
+    left: 20px;
+    top: -20px;
+    width: 25px;
+    height: 25px;
+    box-shadow: 6px 5px 9px -9px black;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+.arrow.top:after {
+    bottom: -20px;
+    top: auto;
+}
+.view .loading-image, .view .tools{
+  margin: 95px 0 0 0 !important; }
+
+.thumbnail .image {
+  height: 170px !important; }
+
+.caption{
+    min-height: 80px;
+}
+
+.thumbnail {
+    height: 240px !important;
+}
+
+/*.nav-md .container.body .right_col {
+    padding: 10px 20px 0;
+    margin-left: 230px;
+    float: left;
+    width: 83%;
+}*/
+.select2-container--default .select2-container--focus .select2-selection--multiple {
+    border: 1px solid #ccc !important;
+}
+
+.select2-container--default .selection .select2-selection--multiple .select2-selection__rendered .select2-search--inline .select2-search__field {
+    margin-top: 5px !important;
+    width: 50% !important;
+/*    display: none !important;*/
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice{
+    padding: 7px 5px !important;
+    height: 34px !important;
+}
+
+.middle-column {
+    text-align: center;
+}
+
+.pagination a.current, .pagination span.current
+{
+    line-height: 2.7;
+}
+
+span.tag-red {
+    background: #d9534f !important;
+    border-color: #d43f3a !important;
+}
+.scroll_header_nav #institution-name
+{
+    font-size: 15px;
+}
